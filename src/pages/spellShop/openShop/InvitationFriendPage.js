@@ -55,7 +55,7 @@ export default class InvitationToShopPage extends BasePage {
             bridge.saveShopInviteFriendsImage({
                 headerImg: `${shareInfo.headUrl}`,
                 shopName: `${shareInfo.name}`,
-                shopId: `ID: ${shareInfo.storeNumber}`,
+                shopId: `ID: ${shareInfo.showNumber}`,
                 shopPerson: `店主: ${manager.nickname || ''}`,
                 codeString: this.state.codeString,
                 wxTip: this.state.wxTip
@@ -118,7 +118,7 @@ export default class InvitationToShopPage extends BasePage {
                                         }
                                         <View style={{ justifyContent: 'space-between' }}>
                                             <Text style={styles.text}>{shareInfo.name || ''}</Text>
-                                            <Text style={styles.text}>店铺ID：{shareInfo.storeNumber || ''}</Text>
+                                            <Text style={styles.text}>店铺ID：{shareInfo.showNumber || ''}</Text>
                                             <Text style={styles.text}>店主：{manager.nickname || ''}</Text>
                                         </View>
                                     </View>

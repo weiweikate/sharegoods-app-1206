@@ -74,7 +74,7 @@ export default class RecommendRow extends Component {
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺ID</Text>
-                        <Text style={styles.containBottom}>{RecommendRowItem.storeNumber || ''}</Text>
+                        <Text style={styles.containBottom}>{RecommendRowItem.showNumber || ''}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
