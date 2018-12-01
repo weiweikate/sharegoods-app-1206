@@ -313,10 +313,10 @@ export default class MyShopPage extends BasePage {
     _renderBottom = () => {
         let {
             userStatus, myStore,
-             clerkBonusCount,//clerkTotalBonusMoney
+            clerkBonusCount,
             manager, totalTradeBalance, tradeBalance,
             storeUser,
-             createTimeStr//createTime
+            createTimeStr
         } = this.state.storeData;
         storeUser = storeUser || {};
         let updateTime = StringUtils.isNoEmpty(storeUser.updateTime) ? DateUtils.formatDate(storeUser.updateTime, 'yyyy-MM-dd') : '';
@@ -330,7 +330,7 @@ export default class MyShopPage extends BasePage {
         //bonusCount店长个人分红次数
         //totalBonusMoney店长个人已获得分红金
         //managerTotalBonusMoney作为店长的总分红
-        const { totalBonusMoney } = manager; //bonusCount managerTotalBonusMoney
+        const { totalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
                 <View>
@@ -425,7 +425,9 @@ export default class MyShopPage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
-                            onRefresh={this._onRefresh} refreshing={this.state.isRefresh}/>}>
+                            onRefresh={this._onRefresh} refreshing={this.state.isRefresh}
+                            progressViewOffset={ScreenUtils.headerHeight}
+                        />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow dealerList={storeUserList.slice()}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     StyleSheet,
     View,
@@ -45,6 +45,7 @@ export default class MyCashAccountPage extends BasePage {
 
             currentPage: 1,
             isEmpty: false
+
         };
         this.currentPage = 0;
     }
@@ -52,6 +53,14 @@ export default class MyCashAccountPage extends BasePage {
     $navigationBarOptions = {
         title: "现金账户",
         show: true // false则隐藏导航
+    };
+    $NavBarRightPressed = () => {
+        this.$navigate("mine/bankCard/BankCardListPage");
+    };
+    $navigationBarOptions = {
+        title: "现金账户",
+        rightTitleStyle: { color: DesignRule.textColor_mainTitle_222, fontSize: 12 },
+        rightNavTitle: "账户设置"
     };
 
     //**********************************ViewPart******************************************
@@ -134,12 +143,12 @@ export default class MyCashAccountPage extends BasePage {
 
                 // MineApi.isFirstTimeWithdraw().then((data)=>{
                 //     if(data.data){
-                //
+                //         this.$navigate("mine/bankCard/WithdrawalAgreementPage");
                 //     }else {
                 //         this.$navigate("mine/userInformation/WithdrawCashPage");
                 //     }
                 // }).catch((error)=>{
-                //
+                //     this.$toastShow(error.msg);
                 // })
 
                 this.$navigate("mine/userInformation/WithdrawCashPage");

@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    //noinspection GradleDynamicVersion
+    api fileTree(include: ['*.jar'], dir: 'libs')
     api rootProject.ext.dependencies.support
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
