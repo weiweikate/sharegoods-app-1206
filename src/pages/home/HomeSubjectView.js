@@ -11,7 +11,7 @@ import { homeModule } from './Modules'
 import { subjectModule } from './HomeSubjectModel'
 import { getShowPrice } from '../topic/model/TopicMudelTool'
 import DesignRule from 'DesignRule'
-import ImageLoad from '@mr/react-native-image-placeholder'
+import ImageLoad from '@mr/image-placeholder'
 
 const GoodItems = ({img, title, money, press}) => <TouchableOpacity style={styles.goodsView} onPress={()=>{press && press()}}>
     <ImageLoad cacheable={true} style={styles.goodImg} source={{uri:img ? encodeURI(img) : ''}}/>

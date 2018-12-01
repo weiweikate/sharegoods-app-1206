@@ -21,10 +21,11 @@ import {
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import { NavigationActions } from 'react-navigation';
-import MentorItemView from '../components/MentorItemView';
 import UIText from '../../../comm/components/UIText';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import res from '../../../comm/res'
 
 
 export default class MentorDetailPage extends BasePage {
@@ -68,9 +69,22 @@ export default class MentorDetailPage extends BasePage {
                 <View
                     style={styles.topBgViewStyle}
                 >
-                    <MentorItemView
-                        itemData={itemData}
-                        isSelect={true}
+                    {/*<MentorItemView*/}
+                        {/*itemData={itemData}*/}
+                        {/*isSelect={true}*/}
+                    {/*/>*/}
+                    <PreLoadImage
+                        imageUri={itemData.headImg}
+                        style={{
+                            width:80,
+                            height:80,
+                            borderRadius:40
+                        }}
+                        defaultImage={res.placeholder.noHeadImage}
+                    />
+                    <UIText
+                        value={itemData.nickname ? itemData.nickname : '暂无昵称~'}
+                        style={styles.topTextViewStyle}
                     />
                     <UIText
                         value={itemData.profile ? itemData.profile : '暂无简介~'}

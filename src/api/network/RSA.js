@@ -46,7 +46,6 @@ const RSA = {
             // update data
             sig.updateString(result.join('&'));
             let s = sig.sign();
-
             // //测试
             // console.log('-----');
             // // console.log(s)

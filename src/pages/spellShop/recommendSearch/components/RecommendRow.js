@@ -14,7 +14,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-import ImageLoad from '@mr/react-native-image-placeholder';
+import ImageLoad from '@mr/image-placeholder';
 
 const StarImg = res.recommendSearch.dj_03;
 
@@ -115,7 +115,7 @@ export default class RecommendRow extends Component {
                         <TouchableOpacity style={styles.joinBtn} onPress={() => {
                             this._onPress();
                         }}>
-                            <Text style={styles.joinText}>+加入我们</Text>
+                            <Text style={styles.joinText}>+申请加入</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

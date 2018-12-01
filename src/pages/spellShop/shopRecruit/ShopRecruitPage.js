@@ -27,6 +27,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import user from '../../../model/user';
 
 const NavLeft = res.shopRecruit.NavLeft;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -328,7 +329,7 @@ export default class ShopRecruitPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>
