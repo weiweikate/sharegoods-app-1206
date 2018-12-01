@@ -136,6 +136,7 @@ export default class LoginTopView extends Component {
                                 bridge.$toast('手机号格式不对');
                             }
                         }}
+                        placeholderTextColor={DesignRule.textColor_placeholder}
                     />
                     <CommSpaceLine style={Styles.lineStyle}/>
                 </View>
@@ -182,6 +183,7 @@ export default class LoginTopView extends Component {
                         keyboardType='numeric'
                         multiline={false}
                         secureTextEntry={false}
+                        placeholderTextColor={DesignRule.textColor_placeholder}
                     />
                     <TouchableOpacity
                         onPress={this.getVertifyCode}
@@ -228,6 +230,7 @@ export default class LoginTopView extends Component {
                         underlineColorAndroid='transparent'
                         multiline={false}
                         secureTextEntry={this.LoginModel.isSecuret}
+                        placeholderTextColor={DesignRule.textColor_placeholder}
                     />
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => {
