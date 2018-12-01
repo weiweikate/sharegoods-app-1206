@@ -11,9 +11,9 @@ import {
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import {
-    UIText, TakePhotoModal, NoMoreClick
+    UIText, TakePhotoModal, NoMoreClick, UIImage
 } from "../../../../components/ui";
-import UIImage from "@mr/image-placeholder";
+import ImageLoad from "@mr/image-placeholder";
 import { color } from "../../../../constants/Theme";
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
@@ -166,10 +166,10 @@ export default class IDVertify2Page extends BasePage {
             <UIImage source={IDcard_country} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
                 this.getIDcard_country();
             }}/> :
-            <UIImage source={{ uri: this.state.backIdCard }} style={{ height: imageWidth, width: imageWidth }}
-                     onPress={() => {
-                         this.getIDcard_country();
-                     }}/>);
+            <ImageLoad source={{ uri: this.state.backIdCard }} style={{ height: imageWidth, width: imageWidth }}
+                       onPress={() => {
+                           this.getIDcard_country();
+                       }}/>);
     };
     renderFrontIdCard = () => {
         let imageWidth = (ScreenUtils.width - 45) / 2;
@@ -177,10 +177,10 @@ export default class IDVertify2Page extends BasePage {
             <UIImage source={IDcard_persion} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
                 this.getIDcard_persion();
             }}/> :
-            <UIImage source={{ uri: this.state.frontIdCard }} style={{ height: imageWidth, width: imageWidth }}
-                     onPress={() => {
-                         this.getIDcard_persion();
-                     }}/>);
+            <ImageLoad source={{ uri: this.state.frontIdCard }} style={{ height: imageWidth, width: imageWidth }}
+                       onPress={() => {
+                           this.getIDcard_persion();
+                       }}/>);
     };
     renderHintInformation = () => {
         return (

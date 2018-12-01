@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '../../../../components/ui/UIImage';
+import ImageLoad from "@mr/image-placeholder";
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import AutoExpandingInput from '../../../../components/ui/AutoExpandingInput';
@@ -224,7 +225,7 @@ export default class HelperFeedbackPage extends BasePage {
     renderPhotoItem = (item, index) => {
         return (
             <View style={{ marginLeft: 8 }} key={index}>
-                <UIImage style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
+                <ImageLoad style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => this.deletePic(index)}>
                     <UIImage style={{ width: 24, height: 24 }} source={icon_delete}/>
                 </TouchableOpacity>
