@@ -23,13 +23,13 @@ import com.meeruu.qiyu.imService.QiyuImageLoader;
 import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
+import com.meeruu.sharegoods.rn.lottie.LottiePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
-import com.reactlibrary.RNGeolocationPackage;
 import com.squareup.leakcanary.LeakCanary;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
@@ -131,7 +131,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new LinearGradientPackage(),
                     new RNFetchBlobPackage(),
                     new CookieManagerPackage(),
-                    new WebViewBridgePackage()
+                    new WebViewBridgePackage(),
+                    new LottiePackage()
             );
         }
 
