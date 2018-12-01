@@ -70,7 +70,7 @@ const api = {
     afterSaleDetail: '/after-sale/detail',
     afterSaleCancel: '/after-sale/cancel',
     afterSaleModify: '/after-sale/modify',
-
+    afterSaleFillExpress: '/after-sale/express',
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

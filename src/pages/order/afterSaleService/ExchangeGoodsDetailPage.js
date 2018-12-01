@@ -55,8 +55,9 @@ class ExchangeGoodsDetailPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: ['退款详情', '退货详情', '换货详情'][this.params.pageType],
-        show: true// false则隐藏导航
+       // title: ['退款详情', '退货详情', '换货详情'][this.params.pageType],
+        show: true,// false则隐藏导航
+        title: '售后详情',
     };
 
     $NavigationBarDefaultLeftPressed = () => {
