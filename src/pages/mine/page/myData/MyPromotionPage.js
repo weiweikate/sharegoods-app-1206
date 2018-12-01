@@ -3,6 +3,7 @@ import React from 'react';
 import {
     View,
     Text,
+    Image,
     Dimensions,
     StyleSheet,
     ScrollView,
@@ -15,7 +16,7 @@ import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
 // 图片资源
 import BasePage from '../../../../BasePage';
-import UIImage from "@mr/image-placeholder";
+import {UIImage} from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
@@ -135,7 +136,7 @@ export default class MyPromotionPage extends BasePage {
                 <View style={{flexDirection:'row',alignItems:'center',marginLeft:25,marginBottom:40}}>
                     {
                         this.state.headImg ?
-                            <UIImage style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
+                            <Image style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
                                    onError={({ nativeEvent: { error } }) => this._imgLoadFail(this.state.headImg, error)}
                                    source={{ uri: this.state.headImg }}/> : null
                     }
@@ -156,7 +157,7 @@ export default class MyPromotionPage extends BasePage {
             </ImageBackground>
             <View style={styles.whiteBg}>
                 <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
-                    <UIImage source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
+                    <Image source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
                     <Text style={{
                         fontSize: 15,
                         color: DesignRule.textColor_mainTitle

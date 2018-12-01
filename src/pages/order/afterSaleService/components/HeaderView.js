@@ -18,9 +18,8 @@ import {
 } from "react-native";
 
 import {
-    UIText
+    UIText, UIImage
 } from "../../../../components/ui";
-import UIImage from "@mr/image-placeholder";
 // import DesignRule from 'DesignRule';
 import ScreenUtils from "../../../../utils/ScreenUtils";
 // import DateUtils from '../../../../utils/DateUtils';
