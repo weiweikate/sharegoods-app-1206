@@ -39,7 +39,7 @@ if (__DEV__) {
     const waitingModuleNames = moduleIds
       .filter(moduleId => !modules[moduleId].isInitialized)
       .map(moduleId => modules[moduleId].verboseName);
-    
+
     // make sure that the modules you expect to be waiting are actually waiting
     console.log(
       'loaded:',
@@ -47,7 +47,7 @@ if (__DEV__) {
       'waiting:',
       waitingModuleNames.length
     );
-    
+
     // grab this text blob, and put it in a file named packager/moduleNames.js
     // console.log(`module.exports = ${JSON.stringify(loadedModuleNames.sort())};`);
 }
@@ -93,6 +93,7 @@ export default class App extends Component {
         //热更新 先注释掉
         bridge.removeLaunch();
         // hotUpdateUtil.isNeedToCheck();
+        // hotUpdateUtil.checkUpdate();
     }
 
     render() {

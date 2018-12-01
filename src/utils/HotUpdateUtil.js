@@ -1,7 +1,7 @@
 import {
     Platform,
     Alert,
-    Linking
+    // Linking
 } from 'react-native';
 import {
     isFirstTime,
@@ -21,9 +21,10 @@ import Storage from './storage';
 const { appKey } = _updateConfig[Platform.OS];
 
 class HotUpdateUtil {
-
+    //普通更新的时间差 key
     static TIME_INTERVAL_KEY = 'TIME_INTERVAL_KEY';
-
+    //用于存储更新失败的版本
+    static UPDATE_ERROR_VERSION = 'UPDATE_ERROR_VERSION';
     appVersion = '';
     hashVersion = '';
 
@@ -67,40 +68,88 @@ class HotUpdateUtil {
             ]);
         }).catch(err => {
             Alert.alert('提示', '更新失败.' + err);
+            console.log('失败提示' + info);
+            console.log(info);
+            this.saveErrorVersion(info);
         });
     };
     /**
      * 检测更新
+     * info 自定义字段
+     * {
+     *  downloadUrl: "https://itunes.apple.com/cn/app/id1439275146"
+     *  expired: true
+     *  ok: 1
+     *  update:bool  是否进行热更新
+     *  must:bool 是否为强制热更新
+     * }
      */
     checkUpdate = () => {
         checkUpdate(appKey).then(info => {
-            console.log(info);
-            if (info.expired) {
-                Alert.alert('提示', '您的应用版本已更新,请前往应用商店下载新的版本', [
-                    {
-                        text: '确定', onPress: () => {
-                            info.downloadUrl && Linking.openURL(info.downloadUrl);
-                        }
-                    }
-                ]);
-            } else if (info.upToDate) {
-                /**
-                 * Alert.alert('提示', '您的应用版本已是最新.');
-                 * 如果已是最新版本则什么也不需要做
-                 * */
-            } else {
-                Alert.alert('提示', '检查到新的版本' + info.name + ',是否下载?\n' + info.description + '\n' + info, [
-                    {
-                        text: '是', onPress: () => {
-                            this.doUpdate(info);
-                        }
-                    },
-                    { text: '否' }
-                ]);
-            }
+            console.log('更新数据', info);
+            // if (info.expired) {
+            //     Alert.alert('提示', '您的应用版本已更新,请前往应用商店下载新的版本', [
+            //         {
+            //             text: '确定', onPress: () => {
+            //                 info.downloadUrl && Linking.openURL(info.downloadUrl);
+            //             }
+            //         }
+            //     ]);
+            // } else
+            Storage.get(HotUpdateUtil.UPDATE_ERROR_VERSION, undefined).then(res => {
+                console.log('取出来的版本');
+                console.log(res);
+                if (res === undefined) {
+                    this.startUpdate(info);
+                } else if (res !== info.hash) {
+                    //更新失败的版本则不再提示更新
+                    this.startUpdate(info);
+                }
+            }).catch(error => {
+                this.startUpdate(info);
+            });
         }).catch(e => {
-            // Alert.alert('提示', '更新失败.');
             throw e;
+        });
+    };
+    /**
+     * 正式检测更新
+     */
+    startUpdate = (info) => {
+        /**
+         * 普通更新
+         */
+        if (info.metaInfo && info.metaInfo.indexOf('update') !== -1) {
+            Alert.alert('提示', '检测到更新' + info.name + ',是否下载?\n' + info.description, [
+                {
+                    text: '是', onPress: () => {
+                        this.doUpdate(info);
+                    }
+                },
+                { text: '否' }
+            ]);
+
+        }
+        /**
+         *   强制更新
+         */
+        else if (info.metaInfo && info.metaInfo.indexOf('must') !== -1) {
+            Alert.alert('提示', '检测到更新' + info.name + ',是否下载?\n' + info.description, [
+                {
+                    text: '是', onPress: () => {
+                        this.doUpdate(info);
+                    }
+                }
+            ]);
+        }
+    };
+    /**
+     * 存储更新失败的版本
+     */
+    saveErrorVersion = (info) => {
+        //存储更新失败的版本
+        Storage.set(HotUpdateUtil.UPDATE_ERROR_VERSION, info.hash).then(() => {
+        }).catch(() => {
         });
     };
     /**
@@ -108,7 +157,6 @@ class HotUpdateUtil {
      * @param timeInterval 更新检测的最小时间间隔 (天)
      * @return {boolean}
      */
-
     isNeedToCheck = (timeInterval = 3) => {
         Storage.get(HotUpdateUtil.TIME_INTERVAL_KEY, undefined).then(res => {
             if (res === undefined) {
