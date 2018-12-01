@@ -8,19 +8,19 @@
  * Created by huchao on 2018/11/27.
  *
  */
-'use strict';
-import React from 'react';
+"use strict";
+import React from "react";
 import {
     StyleSheet,
     View
-} from 'react-native';
+} from "react-native";
 import {
     UIText,
     UIImage
-} from '../../../../components/ui';
-import DesignRule from 'DesignRule';
-import EmptyUtils from '../../../../utils/EmptyUtils';
-import DateUtils from '../../../../utils/DateUtils';
+} from "../../../../components/ui";
+import DesignRule from "DesignRule";
+import EmptyUtils from "../../../../utils/EmptyUtils";
+import DateUtils from "../../../../utils/DateUtils";
 
 
 export default class AfterSaleInfoView extends React.Component {
@@ -54,33 +54,33 @@ export default class AfterSaleInfoView extends React.Component {
             return null;
         }
 
-        let typeStr = ['退款', '退货', '换货'][pageType];
+        let typeStr = ["退款", "退货", "换货"][pageType];
 
         return (
-            <View style={{ backgroundColor: 'white' }}>
+            <View style={{ backgroundColor: "white" }}>
                 <View style={{
                     height: 1,
                     backgroundColor: DesignRule.lineColor_inColorBg
                 }}/>
-                <UIText value={typeStr + '原因：' + pageData.returnReason}
+                <UIText value={typeStr + "原因：" + pageData.returnReason}
                         style={styles.refundReason}/>
-                <UIText value={typeStr + '说明：' + pageData.remark || ''}
+                <UIText value={typeStr + "说明：" + pageData.remark || ""}
                         style={styles.refundReason}/>
-                <UIText value={'凭证图片：'} style={styles.refundReason}/>
+                <UIText value={"凭证图片："} style={styles.refundReason}/>
                 <View style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
+                    flexDirection: "row",
+                    flexWrap: "wrap",
                     paddingRight: 15
                 }}>
 
                     {this.renderCertificateImage(pageData.imgList)}
 
                 </View>
-                <UIText value={'申请时间：' + DateUtils.getFormatDate(pageData.applyTime / 1000)}
+                <UIText value={"申请时间：" + DateUtils.getFormatDate(pageData.applyTime / 1000)}
                         style={styles.refundReason}/>
-                <UIText value={'订单编号：' + pageData.orderNum}
+                <UIText value={"订单编号：" + pageData.orderNum}
                         style={styles.refundReason}/>
-                <UIText value={typeStr + '编号：' + pageData.refundNo}
+                <UIText value={typeStr + "编号：" + pageData.refundNo}
                         style={styles.refundReason}/>
 
             </View>

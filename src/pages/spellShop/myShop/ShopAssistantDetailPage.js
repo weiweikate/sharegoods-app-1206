@@ -10,6 +10,7 @@ import {
     ImageBackground,
     TouchableOpacity
 } from 'react-native';
+import UIImage from "@mr/image-placeholder";
 //Source
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -143,7 +144,7 @@ export default class ShopAssistantDetailPage extends BasePage {
                                          style={styles.headerBg}>
                             {
                                 userInfo.headImg ?
-                                    <Image
+                                    <UIImage
                                         style={{
                                             width: headerWidth,
                                             height: headerWidth,

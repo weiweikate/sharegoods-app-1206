@@ -57,13 +57,14 @@ export default class ShopHeaderBonus extends Component {
                                 width: px2dp(60),
                                 height: px2dp(60)
                             }} source={box_img}>
-                                {/*<LottieView autoPlay*/}
-                                            {/*style={{*/}
-                                                {/*width: px2dp(60),*/}
-                                                {/*height: px2dp(60),*/}
-                                            {/*}}*/}
-                                            {/*source={require('./animation_money.json')}*/}
-                                            {/*loop/>*/}
+                                <LottieView autoPlay
+                                            style={{
+                                                width: px2dp(60),
+                                                height: px2dp(60)
+                                            }}
+                                            imageAssetsFolder={'lottie/spellShop'}
+                                            source={require('./animation_money.json')}
+                                            loop/>
                             </ImageBackground>
                             <Text style={{
                                 color: DesignRule.mainColor,

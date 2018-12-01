@@ -1,14 +1,15 @@
-import React from 'react';
-import { Image, NativeModules, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import BasePage from '../../../BasePage';
-import { RefreshList, UIImage, UIText } from '../../../components/ui';
-import { color } from '../../../constants/Theme';
-import StringUtils from '../../../utils/StringUtils';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import LogisticsDetailItem from '../components/LogisticsDetailItem';
-import OrderApi from '../api/orderApi';
-import DesignRule from 'DesignRule';
-import res from '../res';
+import React from "react";
+import { NativeModules, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import BasePage from "../../../BasePage";
+import { RefreshList, UIText } from "../../../components/ui";
+import { color } from "../../../constants/Theme";
+import StringUtils from "../../../utils/StringUtils";
+import ScreenUtils from "../../../utils/ScreenUtils";
+import LogisticsDetailItem from "../components/LogisticsDetailItem";
+import OrderApi from "../api/orderApi";
+import DesignRule from "DesignRule";
+import res from "../res";
+import UIImage from "@mr/image-placeholder";
 
 const logisticsTop = res.logisticsTop;
 const logisticsBottom = res.logisticsBottom;
@@ -34,24 +35,24 @@ class LogisticsDetailsPage extends BasePage {
         super(props);
         this.state = {
             orderId: this.params.orderId ? this.params.orderId : 0,
-            expressNo: this.params.expressNo ? this.params.expressNo : '',
-            expressName: '',
-            loadingState: 'loading',
+            expressNo: this.params.expressNo ? this.params.expressNo : "",
+            expressName: "",
+            loadingState: "loading",
             flags: false,
             viewData: []
         };
     }
 
     $navigationBarOptions = {
-        title: '物流详情',
+        title: "物流详情",
         show: true// false则隐藏导航
     };
     //**********************************ViewPart******************************************
     renderLogisticsNumber = () => {
         return (
             <TouchableOpacity style={styles.logisticsNumber} onPress={() => this.copyToClipboard()}>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                    <UIText value={this.state.expressName + '：' + this.state.expressNo}
+                <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                    <UIText value={this.state.expressName + "：" + this.state.expressNo}
                             style={{ color: color.yellow_FF7, marginLeft: 18 }}/>
                     <UIImage source={copy} style={{ height: 17, width: 17, marginRight: 15 }}/>
                 </View>
@@ -61,15 +62,15 @@ class LogisticsDetailsPage extends BasePage {
     renderBaiShiHuiTong = () => {
         return (
             <View>
-                <View style={{ position: 'absolute', width: ScreenUtils.width, marginTop: 8 }}>
-                    <Image source={logisticsTop} style={{
-                        resizeMode: 'stretch',
+                <View style={{ position: "absolute", width: ScreenUtils.width, marginTop: 8 }}>
+                    <UIImage source={logisticsTop} style={{
+                        resizeMode: "stretch",
                         width: ScreenUtils.width - 20,
                         marginLeft: 10,
                         marginRight: 10
                     }}/>
                 </View>
-                <View style={{ flexDirection: 'row', paddingLeft: 15, height: 60, paddingTop: 5 }}>
+                <View style={{ flexDirection: "row", paddingLeft: 15, height: 60, paddingTop: 5 }}>
                     <UIImage source={logisticsIcon} style={{ width: 20, height: 23, marginLeft: 10, marginTop: 15 }}/>
                     <Text style={{
                         fontSize: 13,
@@ -86,9 +87,9 @@ class LogisticsDetailsPage extends BasePage {
     };
     renderFootder = () => {
         return (
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <UIImage source={logisticsBottom}
-                         style={{ width: ScreenUtils.width - 20, resizeMode: 'contain', marginTop: -2 }}/>
+                         style={{ width: ScreenUtils.width - 20, resizeMode: "contain", marginTop: -2 }}/>
             </View>
 
         );
@@ -102,7 +103,7 @@ class LogisticsDetailsPage extends BasePage {
     };
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity style={{ elevation: 2, backgroundColor: 'white', marginLeft: 15, marginRight: 15 }}>
+            <TouchableOpacity style={{ elevation: 2, backgroundColor: "white", marginLeft: 15, marginRight: 15 }}>
                 <LogisticsDetailItem
                     time={item.time}
                     middleImage={item.middleImage}
@@ -128,9 +129,9 @@ class LogisticsDetailsPage extends BasePage {
 
     renderEmpty() {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={Nowuliu} style={{ width: 92, height: 61 }}/>
-                <Text style={{ color: '#909090', fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <UIImage source={Nowuliu} style={{ width: 92, height: 61 }}/>
+                <Text style={{ color: "#909090", fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
             </View>
         );
     }
@@ -148,7 +149,7 @@ class LogisticsDetailsPage extends BasePage {
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无数据'}
+                    emptyTip={"暂无数据"}
                 />
             </View>
         );
@@ -182,7 +183,7 @@ class LogisticsDetailsPage extends BasePage {
                     // NativeModules.commModule.toast('查询出错');
                     this.setState({
                         flags: true,
-                        loadingState: 'success'
+                        loadingState: "success"
                     });
                     // this.setState({
                     //     loadingState: 'fail'
@@ -192,14 +193,14 @@ class LogisticsDetailsPage extends BasePage {
                 response.data.showapi_res_body.data.map((item, index) => {
                     let time = item.time;
                     arrData.push({
-                        time: time.replace(' ', '\n'),
+                        time: time.replace(" ", "\n"),
                         content1: item.context
                     });
                 });
                 this.setState({
                     expressName: response.data.showapi_res_body.expTextName,
                     viewData: arrData,
-                    loadingState: 'success'
+                    loadingState: "success"
                 });
             }).catch(e => {
                 // Toast.hiddenLoading();
@@ -209,18 +210,18 @@ class LogisticsDetailsPage extends BasePage {
                 // });
                 this.setState({
                     flags: true,
-                    loadingState: 'success'
+                    loadingState: "success"
                 });
             });
         } else {
-            this.setState({ loadingState: 'success' });
+            this.setState({ loadingState: "success" });
         }
 
     }
 
     copyToClipboard = () => {
         StringUtils.clipboardSetString(this.state.expressNo);
-        NativeModules.commModule.toast('快递单号已复制到剪切板');
+        NativeModules.commModule.toast("快递单号已复制到剪切板");
     };
 }
 
@@ -231,13 +232,13 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         marginTop: 10,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         borderWidth: 1,
         borderRadius: 10,
         height: 48,
-        borderColor: 'white',
+        borderColor: "white",
         elevation: 2,
-        justifyContent: 'center'
+        justifyContent: "center"
     }
 });
 

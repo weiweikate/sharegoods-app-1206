@@ -28,7 +28,7 @@ import {
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../../../comm/res';
-import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import ImageLoad from '@mr/image-placeholder'
 
 // import ImageLoad from '@mr/image-placeholder';
 // import PropTypes from 'prop-types';
@@ -114,7 +114,7 @@ export default class MentorItemView extends Component {
                             {/*/>);*/}
                         {/*}}*/}
                     {/*/>*/}
-                    <PreLoadImage
+                    <ImageLoad
                     imageUri={this.state.itemData.headImg?this.state.itemData.headImg:null}
                     defaultImage={res.placeholder.noHeadImage}
                     errImage={res.placeholder.noHeadImage}

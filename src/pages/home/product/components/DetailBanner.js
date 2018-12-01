@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, TouchableWithoutFeedback, Text, Platform } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Text, Platform } from 'react-native';
 import XGSwiper from '../../../../components/ui/XGSwiper';
 import ViewPager from '../../../../components/ui/ViewPager';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import VideoView from '../../../../components/ui/video/VideoView';
 import StringUtils from '../../../../utils/StringUtils';
+import UIImage from "@mr/image-placeholder";
 
 export class DetailBanner extends Component {
     constructor(props) {
@@ -55,7 +56,7 @@ export class DetailBanner extends Component {
                     const { navigation } = this.props;
                     navigation && navigation.navigate('home/product/CheckBigImagesView', params);
                 }}>
-                    <Image source={{ uri: originalImg }}
+                    <UIImage source={{ uri: originalImg }}
                            style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
                            resizeMode="cover"
                     />

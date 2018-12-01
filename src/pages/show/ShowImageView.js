@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { width, px2dp } = ScreenUtils;
 const imageHeight = width;
 import ViewPager from '../../components/ui/ViewPager';
+import ImageLoad from '@mr/image-placeholder'
 
 const renderPagination = (index, total) => <View style={styles.indexView}>
     <Text style={styles.text}>{index + 1} / {total}</Text>
@@ -32,7 +33,7 @@ export default class ShowImageView extends Component {
     }
 
     _renderViewPageItem(item) {
-        return <Image style={styles.image} source={{ uri: item }} resizeMode='contain'/>;
+        return <ImageLoad style={styles.image} source={{ uri: item }} resizeMode='contain'/>;
     }
 
     render() {

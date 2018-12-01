@@ -14,6 +14,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
 
+import UIImage from "@mr/image-placeholder";
 const gwc = res.search.gwc;
 
 
@@ -39,7 +40,7 @@ export default class ResultVerticalRow extends Component {
             }}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
-                        <Image style={styles.img} source={{ uri: imgUrl || '' }}/>
+                        <UIImage style={styles.img} source={{ uri: imgUrl || '' }}/>
                         <View style={styles.textContentView}>
                             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                   numberOfLines={2}>{`${name}`}</Text>

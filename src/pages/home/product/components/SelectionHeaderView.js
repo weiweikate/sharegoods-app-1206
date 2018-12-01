@@ -9,6 +9,7 @@ import {
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import UIImage from "@mr/image-placeholder";
 
 const icon_close = res.product.icon_close;
 
@@ -53,7 +54,7 @@ export default class SelectionHeaderView extends Component {
 
         return (
             <View style={{ backgroundColor: 'transparent' }}>
-                <Image style={{
+                <UIImage style={{
                     height: 107,
                     width: 107,
                     borderColor: DesignRule.lineColor_inColorBg,
