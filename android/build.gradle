@@ -1,26 +1,29 @@
 apply from: "config.gradle"
 
 buildscript {
+
     repositories {
-        mavenLocal()
-        jcenter()
+        mavenCentral()
         google()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
-        // walle
-        classpath 'com.meituan.android.walle:plugin:1.1.6'
     }
 }
 
 allprojects {
     repositories {
-        mavenLocal()
-        jcenter()
+        mavenCentral()
         google()
+        jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
