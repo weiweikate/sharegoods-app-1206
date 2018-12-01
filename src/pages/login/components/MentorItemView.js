@@ -8,6 +8,8 @@
  * Created by huchao on 2018/11/28.
  *
  */
+
+
 'use strict';
 
 import React, { Component } from 'react';
@@ -17,7 +19,6 @@ import {
     TouchableOpacity,
     Text,
     Animated,
-    Image
 } from 'react-native';
 
 // import {
@@ -26,7 +27,10 @@ import {
 // } from '../../../components/ui';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import res from '../../../comm/res';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
+// import ImageLoad from '@mr/image-placeholder';
 // import PropTypes from 'prop-types';
 
 export default class MentorItemView extends Component {
@@ -53,7 +57,12 @@ export default class MentorItemView extends Component {
 
     render() {
         const ImageWidth = this.state.isSelect ? ScreenUtils.width / 5 : ScreenUtils.width / 5 - 20;
+        // const imageStyle = {
+        //     width: ImageWidth,
+        //     height: ImageWidth
+        // }
 
+        console.log('this.props.itemData.headImg',this.props.itemData.headImg)
         return (
             <View
                 style={{
@@ -71,18 +80,49 @@ export default class MentorItemView extends Component {
                     }
                     }
                 >
-                    <Image
-                        source={
-                            {
-                                uri: this.state.itemData.headImg?this.state.itemData.headImg:''
-                            }
+                    {/*<Image*/}
+                    {/*source={*/}
+                    {/*{*/}
+                    {/*uri: this.state.itemData.headImg?this.state.itemData.headImg:''*/}
+                    {/*}*/}
 
-                        }
-                        style={{
-                            height: ImageWidth,
-                            width: ImageWidth,
-                            borderRadius: ImageWidth / 2
-                        }}
+                    {/*}*/}
+                    {/*style={{*/}
+                    {/*height: ImageWidth,*/}
+                    {/*width: ImageWidth,*/}
+                    {/*borderRadius: ImageWidth / 2*/}
+                    {/*}}*/}
+                    {/*/>*/}
+                    {/*<ImageLoad*/}
+                        {/*height={ImageWidth}*/}
+                        {/*width={ImageWidth}*/}
+                        {/*style={imageStyle}*/}
+                        {/*borderRadius={ImageWidth / 2}*/}
+                        {/*source={{*/}
+                            {/*uri:this.props.itemData.headImg ? this.props.itemData.headImg : ''*/}
+                        {/*}}*/}
+                        {/*renderPlaceholder={() => {*/}
+                            {/*return (<Image*/}
+                                {/*style={*/}
+                                    {/*{*/}
+                                        {/*height: ImageWidth,*/}
+                                        {/*width: ImageWidth,*/}
+                                        {/*borderRadius: ImageWidth / 2*/}
+                                    {/*}*/}
+                                {/*}*/}
+                                {/*source={res.placeholder.noHeadImage}*/}
+                            {/*/>);*/}
+                        {/*}}*/}
+                    {/*/>*/}
+                    <PreLoadImage
+                    imageUri={this.state.itemData.headImg?this.state.itemData.headImg:null}
+                    defaultImage={res.placeholder.noHeadImage}
+                    errImage={res.placeholder.noHeadImage}
+                    style={{
+                    height: ImageWidth,
+                    width: ImageWidth,
+                    borderRadius: ImageWidth / 2
+                    }}
                     />
                 </TouchableOpacity>
                 <Text
@@ -93,7 +133,7 @@ export default class MentorItemView extends Component {
                         color: DesignRule.textColor_mainTitle
                     }}
                 >
-                    {this.state.itemData.nickname?this.state.itemData.nickname:'暂无昵称~'}
+                    {this.state.itemData.nickname ? this.state.itemData.nickname : '暂无昵称~'}
                 </Text>
             </View>
         );

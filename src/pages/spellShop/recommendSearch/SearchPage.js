@@ -16,7 +16,7 @@ import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from 'DesignRule';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import SearchNavView from './components/SearchNavView';
-import StringUtils from '../../../utils/StringUtils';
+import res from '../res'
 
 export default class SearchPage extends BasePage {
 
@@ -158,6 +158,11 @@ export default class SearchPage extends BasePage {
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
                 reloadBtnClick: this._refreshing
+            },
+            emptyProps: {
+                source: res.recommendSearch.shop_notHave,
+                description: '抱歉,没有你想找的拼店',
+                subDescription: '请重新确认后查找'
             }
         };
     };

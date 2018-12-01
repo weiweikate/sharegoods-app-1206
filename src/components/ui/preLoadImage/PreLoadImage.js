@@ -25,11 +25,23 @@ export default class PreLoadImage extends Component {
         };
     }
 
+    componentWillReceiveProps(nextProps,prosp) {
+        if (nextProps.imageUri !== this.props.imageUri) {
+            this.state.isLoadComplete = false;
+            this.state.type=0;
+            // this.state.type = 0;
+        }
+    }
+
+    // shouldComponentUpdate(nextProps, nextState) {
+    // return (nextProps.imageUri !== this.props.imageUri);
+    // }
+
     render() {
-        const { imageUri, style,  errImage, onClickAction, ...props } = this.props;
+        const { imageUri, style, errImage, onClickAction, defaultImage, ...props } = this.props;
         let source;
-        if (imageUri){
-           source  = { uri: imageUri };
+        if (imageUri) {
+            source = { uri: imageUri };
         } else {
             source = undefined;
         }
@@ -63,11 +75,10 @@ export default class PreLoadImage extends Component {
                     {this.state.isLoadComplete ? null :
                         <View style={PreLoadImageStyles.preImageBgStyle}>
                             <Image
-                                style={[style,{
-                                    backgroundColor:'#efefef'
+                                style={[style, {
+                                    backgroundColor: '#efefef'
                                 }]}
-                                // source={defaultImage}
-
+                                source={defaultImage}
                             />
                         </View>
                     }
@@ -92,10 +103,10 @@ export default class PreLoadImage extends Component {
                     {this.state.isLoadComplete ? null :
                         <View style={PreLoadImageStyles.preImageBgStyle}>
                             <Image
-                                style={[style,{
-                                    backgroundColor:'#efefef'
+                                style={[style, {
+                                    backgroundColor: '#efefef'
                                 }]}
-                                // source={defaultImage}
+                                source={defaultImage}
                             />
                         </View>
                     }
@@ -123,8 +134,8 @@ PreLoadImage.propTypes = {
     onClickAction: PropTypes.func
 };
 PreLoadImage.defaultProps = {
-    errImage: require('./loadImageError.png'),
-    defaultImage: require('./defaultImg.png')
+    errImage: require('./loadImageError.png')
+    // defaultImage: require('')
 };
 const PreLoadImageStyles = StyleSheet.create({
     preImageBgStyle: {

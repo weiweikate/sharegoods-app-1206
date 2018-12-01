@@ -115,7 +115,7 @@ export default class RecommendRow extends Component {
                         <TouchableOpacity style={styles.joinBtn} onPress={() => {
                             this._onPress();
                         }}>
-                            <Text style={styles.joinText}>+加入我们</Text>
+                            <Text style={styles.joinText}>+申请加入</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
