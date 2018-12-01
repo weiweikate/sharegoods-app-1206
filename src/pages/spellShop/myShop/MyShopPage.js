@@ -425,7 +425,9 @@ export default class MyShopPage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
-                            onRefresh={this._onRefresh} refreshing={this.state.isRefresh}/>}>
+                            onRefresh={this._onRefresh} refreshing={this.state.isRefresh}
+                            progressViewOffset={ScreenUtils.headerHeight}
+                        />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow dealerList={storeUserList.slice()}
