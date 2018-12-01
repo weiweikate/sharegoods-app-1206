@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ProgressBarView from './ProgressBarView';
-import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import ImageLoad from '@mr/image-placeholder'
 import PropTypes from 'prop-types';
 import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
@@ -79,7 +79,7 @@ export default class OpenPrizeItemView extends Component {
             >
                 <View style={ItemStyles.itemBgStyle}>
                     <View style={ItemStyles.itemContentStyle}>
-                        <PreLoadImage
+                        <ImageLoad
                             imageUri={itemData.specImg}
                             style={ItemStyles.itemTopImageStyle}
                         />
