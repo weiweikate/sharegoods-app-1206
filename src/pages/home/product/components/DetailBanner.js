@@ -27,8 +27,8 @@ export class DetailBanner extends Component {
     };
 
     _renderStyle = () => {
-        const { productImgList } = this.props.data;
-        const bannerCount = productImgList.length;
+        const { imgFileList } = this.props.data;
+        const bannerCount = (imgFileList || []).length;
         return <View style={styles.indexViewTwo}>
             <Text
                 style={styles.text}>{this.state.messageIndex + 1} / {this.state.haveVideo ? bannerCount + 1 : bannerCount}</Text>
@@ -43,12 +43,12 @@ export class DetailBanner extends Component {
     };
 
     _renderViewPageItem = (item = {}, index) => {
-        const { productImgList } = this.props.data;
+        const { imgFileList } = this.props.data;
         if (item.videoUrl) {
             return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
         } else {
             const { originalImg } = item;
-            let imgList = this.getImageList(productImgList);
+            let imgList = this.getImageList(imgFileList);
             return (
                 <TouchableWithoutFeedback onPress={() => {
                     const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
@@ -66,10 +66,10 @@ export class DetailBanner extends Component {
 
     render() {
         //有视频第一个添加为视频
-        const { productImgList = [], product = {} } = this.props.data || {};
-        const { videoUrl, imgUrl } = product;
+        const { imgFileList, videoUrl, imgUrl } = this.props.data || {};
 
-        let productImgListTemp = [...productImgList];
+        let productImgListTemp = [...imgFileList];
+        productImgListTemp = productImgListTemp || [];
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.state.haveVideo = true;
             productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
