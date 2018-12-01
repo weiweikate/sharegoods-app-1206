@@ -78,22 +78,22 @@ export default class BasePage extends Component {
                         this.$refreshData();
                         this.setState({ viewDidLoad: true });//为了触发render
                     }
-                }}>
-                    <View style={{
-                        height: 50,
-                        width: 150,
-                        borderRadius: 25,
-                        borderColor: DesignRule.bgColor_btn,
-                        borderWidth: DesignRule.lineHeight,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginTop: 20
-                    }}>
-                        <Text style={{
-                            color: DesignRule.bgColor_btn,
-                            fontSize: DesignRule.fontSize_mediumBtnText
-                        }}>重新加载</Text>
-                    </View>
+                }}
+                                  style={{
+                                      height: 50,
+                                      width: 150,
+                                      borderRadius: 25,
+                                      borderColor: DesignRule.bgColor_btn,
+                                      borderWidth: DesignRule.lineHeight,
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      marginTop: 20
+                                  }}
+                >
+                    <Text style={{
+                        color: DesignRule.bgColor_btn,
+                        fontSize: DesignRule.fontSize_mediumBtnText
+                    }}>重新加载</Text>
                 </TouchableOpacity>
             </View>
         );
