@@ -280,7 +280,7 @@ export default class RecommendPage extends BasePage {
             },
             emptyProps: {
                 source: res.recommendSearch.shop_notHave,
-                description: this.state.segmentIndex === 1 ? '抱歉, 附近没有店铺' : '暂无店铺'
+                description: this.state.segmentIndex === 1 ? '抱歉, 附近暂时没有拼店' : '暂无拼店'
             }
         };
     };
