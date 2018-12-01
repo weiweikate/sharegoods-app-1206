@@ -277,6 +277,10 @@ export default class RecommendPage extends BasePage {
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
                 reloadBtnClick: this._refreshing
+            },
+            emptyProps: {
+                source: res.recommendSearch.shop_notHave,
+                description: this.state.segmentIndex === 1 ? '抱歉, 附近没有店铺' : '暂无店铺'
             }
         };
     };
