@@ -52,7 +52,7 @@ class Card extends Component {
             <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
         </ImageLoad>
         <View style={styles.profileView}>
-            <ImageLoad style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}}/>
+            <ImageLoad style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}} borderRadius={px2dp(15)}/>
             <Text style={styles.name}>{item.userName}</Text>
             <View style={{flex: 1}}/>
             <View style={styles.rightRow}>

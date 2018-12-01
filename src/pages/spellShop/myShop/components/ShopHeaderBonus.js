@@ -13,10 +13,6 @@ const { shop_box_0, shop_box_25, shop_box_75, shop_box_100 } = res.myShop;
 
 export default class ShopHeaderBonus extends Component {
 
-    componentDidMount() {
-        this.LottieView.play();
-    }
-
     render() {
         //tradeBalance本月收入 bonusNeedMoney总额 //进度
         // currentUserSettle当前用户的钱(预计分红)
@@ -61,6 +57,14 @@ export default class ShopHeaderBonus extends Component {
                                 width: px2dp(60),
                                 height: px2dp(60)
                             }} source={box_img}>
+                                <LottieView autoPlay
+                                            style={{
+                                                width: px2dp(60),
+                                                height: px2dp(60)
+                                            }}
+                                            imageAssetsFolder={'lottie/spellShop'}
+                                            source={require('./animation_money.json')}
+                                            loop/>
                             </ImageBackground>
                             <Text style={{
                                 color: DesignRule.mainColor,
@@ -68,18 +72,6 @@ export default class ShopHeaderBonus extends Component {
                                 marginTop: px2dp(5)
                             }} numberOfLines={2}>{tradeBalance}<Text
                                 style={{ color: DesignRule.textColor_mainTitle }}>元待分红</Text></Text>
-                            <LottieView autoPlay
-                                        ref={ref => {
-                                            this.LottieView = ref;
-                                        }}
-                                        style={{
-                                            width: px2dp(60),
-                                            height: px2dp(60),
-                                            backgroundColor: 'red'
-                                        }}
-                                        source={require('./animation_money.json')}
-                                        loop/>
-
                         </View>
 
                         <View>

@@ -34,7 +34,6 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
-import LottieView from 'lottie-react-native';
 import user from '../../../model/user';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -426,17 +425,11 @@ export default class MyShopPage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
-                            onRefresh={this._onRefresh} refreshing={this.state.isRefresh}/>}>
+                            onRefresh={this._onRefresh} refreshing={this.state.isRefresh}
+                            progressViewOffset={ScreenUtils.headerHeight}
+                        />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
-                <LottieView autoPlay
-                            style={{
-                                width: 60,
-                                height: 60,
-                                backgroundColor: 'red'
-                            }}
-                            source={require('./components/animation_money.json')}
-                            loop/>
                 <MembersRow dealerList={storeUserList.slice()}
                             userStatus={userStatus}
                             onPressAllMembers={this._clickAllMembers}
