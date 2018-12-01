@@ -1,7 +1,6 @@
 import React from 'react';
 import { FlatList, SectionList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
-import { PreLoadImage } from '../../../components/ui';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import bridge from '../../../utils/bridge';
@@ -11,6 +10,7 @@ import UIImage from '../../../components/ui/UIImage';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import ImageLoad from '@mr/image-placeholder'
 
 const icon_search = res.search.icon_search;
 
@@ -282,7 +282,7 @@ export default class CategorySearchPage extends BasePage {
                 marginLeft: (item.index % 3 === 1 || item.index % 3 === 2) ? 15 : 10,
                 alignItems: 'center'
             }}>
-                <PreLoadImage imageUri={item.item.img}
+                <ImageLoad imageUri={item.item.img}
                               style={{
                                   height: itemImgW,
                                   width: itemImgW

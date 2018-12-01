@@ -13,10 +13,11 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
 import TotalTopicDataModel from './model/SubTopicModel';
-import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
+
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from 'DesignRule';
+import ImageLoad from '@mr/image-placeholder'
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -178,7 +179,7 @@ export default class DownPricePage extends BasePage {
                     />
                 }
             >
-                <PreLoadImage
+                <ImageLoad
                     imageUri={imgUrl}
                     style={{
                         width: ScreenUtils.width,
