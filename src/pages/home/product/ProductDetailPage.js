@@ -275,20 +275,20 @@ export default class ProductDetailPage extends BasePage {
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, priceId) => {
+    _selectionViewConfirm = (amount, skuCode) => {
         let orderProducts = [];
         if (this.state.goType === 'gwc') {
             let temp = {
                 'amount': amount,
-                'priceId': priceId,
-                'productId': this.state.data.prodCode
+                'skuCode': skuCode,
+                'prodCode': this.state.data.prodCode
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
             orderProducts.push({
-                priceId: priceId,
+                skuCode: skuCode,
                 num: amount,
-                productId: this.state.data.prodCode
+                prodCode: this.state.data.prodCode
             });
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
