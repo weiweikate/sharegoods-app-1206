@@ -49,7 +49,7 @@ export default class RecommendRow extends Component {
     };
 
     render() {
-        const { name, showNumber, totalTradeBalance, bonusCount, manager = {} } = this.props.storeData;
+        const { name, storeNumber, totalTradeBalance, bonusCount, manager = {} } = this.props.storeData;
         let { createTime, headUrl } = this.props.storeData;
         createTime = StringUtils.isNoEmpty(createTime) ? createTime : '';
         headUrl = StringUtils.isNoEmpty(headUrl) ? headUrl : '';
@@ -65,7 +65,7 @@ export default class RecommendRow extends Component {
                     <Image source={{ uri: headUrl }} style={styles.shopIcon}/>
                     <View style={{ justifyContent: 'center' }}>
                         <Text style={styles.shopName}>{name || ''}</Text>
-                        <Text style={styles.shopId}>ID：{showNumber || ''}</Text>
+                        <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
                         <Text style={{
                             fontSize: 11,
                             color: '#FFFFFF',

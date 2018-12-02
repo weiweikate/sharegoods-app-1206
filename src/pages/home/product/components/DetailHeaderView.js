@@ -43,9 +43,10 @@ export default class DetailHeaderView extends Component {
     render() {
         const { activityType } = this.props;
         const {
-            freight, monthSaleCount, originalPrice, priceType,
-            minPrice, maxPrice, groupPrice, name, afterSaleServiceDays
+            freight = 0, monthSaleTotal = 0, originalPrice = '', product = {}, priceType = '',
+            minPrice, maxPrice, groupPrice
         } = this.props.data || {};
+        const { name = '', afterSaleServiceDays } = product;
         let priceSuper = minPrice !== maxPrice ? `￥${minPrice || ''}-￥${maxPrice || ''}` : `￥${minPrice || ''}`;
         return (
             <View>
@@ -63,7 +64,7 @@ export default class DetailHeaderView extends Component {
                             marginTop: 10,
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13
-                        }} numberOfLines={2}>{`${name || ''}`}</Text>
+                        }} numberOfLines={2}>{`${name}`}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 15, alignItems: 'center' }}>
                             <View style={{ flex: 1 }}>
                                 <View style={{ alignItems: 'center', height: 26, flexDirection: 'row' }}>
@@ -100,7 +101,7 @@ export default class DetailHeaderView extends Component {
                                         color: DesignRule.textColor_instruction,
                                         fontSize: 12,
                                         marginLeft: ScreenUtils.autoSizeWidth(67)
-                                    }}>{`月销: ${monthSaleCount || ''}`}</Text>
+                                    }}>{`月销: ${monthSaleTotal}`}</Text>
                                 </View>
                             </View>
                             <View style={{ width: 62, flexDirection: 'row', alignItems: 'center' }}>

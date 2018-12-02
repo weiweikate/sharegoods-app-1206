@@ -32,14 +32,14 @@ export default class ResultHorizontalRow extends Component {
     }
 
     render() {
-        let { minPrice, name, imgUrl, prodCode } = this.props.itemData || {};
+        let { product = {}, price } = this.props.itemData || {};
+        const { name = '' } = product;
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.onPressAtIndex(prodCode);
+                this.props.onPressAtIndex(product.id);
             }}>
                 <View style={[styles.container]}>
-                    <UIImage style={styles.img} source={{ uri: imgUrl }}/>
-
+                    <UIImage style={styles.img} source={{ uri: product.imgUrl }}/>
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
                         fontSize: 13,
@@ -56,10 +56,10 @@ export default class ResultHorizontalRow extends Component {
                         marginTop: 21
                     }}>
                         <Text
-                            style={{ color: DesignRule.mainColor, fontSize: 17 }}>{`￥${minPrice}起`}</Text>
+                            style={{ color: DesignRule.mainColor, fontSize: 17 }}>{`￥${price}起`}</Text>
                     </View>
                     <TouchableWithoutFeedback onPress={() => {
-                        this.props.storeProduct(this.props.itemData);
+                        this.props.storeProduct(product.id);
                     }}>
                         <View style={{
                             width: 35,
