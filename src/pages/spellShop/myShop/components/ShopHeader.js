@@ -34,7 +34,7 @@ export default class ShopHeader extends Component {
 
     render() {
         let {
-            headUrl, name, showNumber, storeStarId, userStatus,
+            headUrl, name, storeNumber, storeStarId, userStatus,
             storeNoticeDTO, profile
         } = this.props.item;
         let { content } = storeNoticeDTO || {};
@@ -76,7 +76,7 @@ export default class ShopHeader extends Component {
                                source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
                     <View style={styles.shopInContainer}>
                         <Text style={styles.shopName}>{name || ''}</Text>
-                        <Text style={styles.shopId}>ID：{showNumber || ''}</Text>
+                        <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
                         <View style={styles.starRow}>
                             <Text style={{ fontSize: 11, color: '#999999' }}>店铺星级：</Text>
                             {
