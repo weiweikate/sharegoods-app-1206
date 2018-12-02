@@ -12,7 +12,7 @@ class ShopCartCacheTool {
 
 
     @computed isSynchronousData() {
-        //是否登录 redev
+        //是否登录
         if (user.id) {
             //登录同步数据
             this.synchronousData();
