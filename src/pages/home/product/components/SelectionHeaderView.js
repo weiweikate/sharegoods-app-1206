@@ -25,7 +25,6 @@ export default class SelectionHeaderView extends Component {
         price: PropTypes.any.isRequired,
 
         selectSpecList: PropTypes.array.isRequired,
-        selectList: PropTypes.array.isRequired,
         selectStrList: PropTypes.array.isRequired
     };
 
@@ -35,14 +34,14 @@ export default class SelectionHeaderView extends Component {
     }
 
     render() {
-        const { imgUrl } = this.props.product || {};
-        let price = this.props.price || 0;
+        const { imgUrl, minPrice } = this.props.product || {};
+        let price = minPrice || '';
         let stock = 0;
         let stockUnit = '';
         let specImg;
         this.props.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
-            stock = stock + item.stock;
+            stock = stock + item.sellStock;
             //件
             stockUnit = item.stockUnit;
             specImg = item.specImg;
@@ -86,7 +85,7 @@ export default class SelectionHeaderView extends Component {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13,
                             marginTop: 6
-                        }}>{selectStrListTemp.join(',')}</Text>
+                        }}>{selectStrListTemp.join(',').replace(/@/g, '')}</Text>
                     </View>
                     <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
                                       onPress={this.props.closeSelectionPage}>
