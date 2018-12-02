@@ -193,7 +193,6 @@ export default class SelectionPage extends Component {
             return;
         }
 
-        let priceArr = [];
         let isAll = true;
 
         const { specMap } = this.state;
@@ -208,13 +207,15 @@ export default class SelectionPage extends Component {
             bridge.$toast('请选择规格');
             return;
         }
-
-        let priceId = priceArr.join('@');
-        priceId = `@${priceId}@`;
+        let itemValues = this.state.selectStrList.map((item) => {
+            return item.replace(/@/g, '');
+        });
+        itemValues = itemValues.join('@');
+        itemValues = `@${itemValues}@`;
         let itemData;
         const { priceList = [] } = this.state;
         priceList.forEach((item) => {
-            if (item.propertyValues === priceId) {
+            if (item.propertyValues === itemValues) {
                 itemData = item;
                 return;
             }

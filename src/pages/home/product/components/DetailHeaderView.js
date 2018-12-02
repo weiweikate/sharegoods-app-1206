@@ -100,7 +100,7 @@ export default class DetailHeaderView extends Component {
                                         color: DesignRule.textColor_instruction,
                                         fontSize: 12,
                                         marginLeft: ScreenUtils.autoSizeWidth(67)
-                                    }}>{`月销: ${monthSaleCount || ''}`}</Text>
+                                    }}>{`月销: ${monthSaleCount}`}</Text>
                                 </View>
                             </View>
                             <View style={{ width: 62, flexDirection: 'row', alignItems: 'center' }}>
