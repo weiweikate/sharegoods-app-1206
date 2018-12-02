@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import {
-    UIText, UIImage
+    UIText
 } from '../../../components/ui';
+import UIImage from "@mr/image-placeholder";
 import { RefreshList } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';

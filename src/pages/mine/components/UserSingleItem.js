@@ -3,17 +3,18 @@
  * @appType crm_app
  * @Description:个人中心常用的ItemUI控件
  */
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
     TouchableOpacity,
     View,
     Image,
     Text,
     StyleSheet
-} from 'react-native';
-import StringUtils from '../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
-import res from '../res';
+} from "react-native";
+import StringUtils from "../../../utils/StringUtils";
+import DesignRule from "DesignRule";
+import res from "../res";
+import ImageLoad from "@mr/image-placeholder";
 
 export default class UserSingleItem extends Component {
     constructor(props) {
@@ -33,11 +34,11 @@ export default class UserSingleItem extends Component {
         } = this.props;
         return (
             <TouchableOpacity style={itemHeightStyle ? itemHeightStyle : styles.containerStyle} onPress={onPress}>
-                <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
-                    <View style={{ justifyContent: 'center', marginLeft: marginLeft }}>
+                <View style={{ flex: 1, justifyContent: "space-between", flexDirection: "row" }}>
+                    <View style={{ justifyContent: "center", marginLeft: marginLeft }}>
                         <Text style={leftTextStyle && leftTextStyle}>{leftText}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {this.renderRightText()}
                         {this.renderArrow()}
                     </View>
@@ -67,16 +68,17 @@ export default class UserSingleItem extends Component {
         const { headImage } = this.props;
         return (
             !headImage ? null :
-                <Image source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
-                       style={{ width: 30, height: 30, borderRadius: 15, marginRight: 15 }}/>
+                <ImageLoad source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : "" }}
+                           style={{ width: 30, height: 30, borderRadius: 15, marginRight: 15 }}
+                           borderRadius={15}/>
         );
     };
     renderArrow = () => {
         const { isArrow = true } = this.props;
         return (!isArrow ? null :
-                <View style={{ justifyContent: 'center', marginRight: 15, flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ justifyContent: "center", marginRight: 15, flexDirection: "row", alignItems: "center" }}>
                     {this.renderheadImage()}
-                    <Image source={res.button.arrow_right} />
+                    <Image source={res.button.arrow_right}/>
                 </View>
         );
     };
@@ -84,20 +86,20 @@ export default class UserSingleItem extends Component {
 }
 const styles = StyleSheet.create({
     containerStyle: {
-        height: 48, backgroundColor: 'white'
+        height: 48, backgroundColor: "white"
     },
     rightText_hasCircle: {
-        justifyContent: 'center',
+        justifyContent: "center",
         borderWidth: 1,
         borderRadius: 30,
         height: 30,
         width: 30,
-        alignItems: 'center',
+        alignItems: "center",
         borderColor: DesignRule.lineColor_inColorBg,
         marginRight: 15
     },
     rightText_noCircle: {
-        justifyContent: 'flex-end', alignItems: 'center', marginRight: 15
+        justifyContent: "flex-end", alignItems: "center", marginRight: 15
     }
 });
 
