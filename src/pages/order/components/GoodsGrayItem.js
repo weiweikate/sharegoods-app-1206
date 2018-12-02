@@ -8,21 +8,21 @@
  * Created by huchao on 2018/10/16.
  *
  */
-'use strict';
+"use strict";
 
-import React from 'react';
+import React from "react";
 
 import {
     StyleSheet,
     View,
     TouchableWithoutFeedback, Text
-} from 'react-native';
+} from "react-native";
 
 import {
-    UIText,
-    UIImage
-} from '../../../components/ui';
-import DesignRule from 'DesignRule';
+    UIText
+} from "../../../components/ui";
+import UIImage from "@mr/image-placeholder";
+import DesignRule from "DesignRule";
 
 export default class GoodsGrayItem extends React.Component {
 
@@ -49,25 +49,25 @@ export default class GoodsGrayItem extends React.Component {
                 <View style={[styles.container, this.props.style]}>
                     <UIImage source={{ uri: uri }} style={styles.image}/>
                     <View style={{ marginHorizontal: 10, flex: 1, height: 100 }}>
-                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                            <View style={{ flex: 1, flexDirection: 'row', marginRight: 10, alignItems: 'center' }}>
+                        <View style={{ flexDirection: "row", marginTop: 10 }}>
+                            <View style={{ flex: 1, flexDirection: "row", marginRight: 10, alignItems: "center" }}>
                                 {gift ? <View style={{
                                     marginRight: 8,
                                     marginTop: 10,
                                     borderWidth: 1,
                                     borderRadius: 2,
                                     borderColor: DesignRule.mainColor,
-                                    justifyContent: 'center',
+                                    justifyContent: "center",
                                     padding: 1
                                 }}><Text style={{ fontSize: 12, color: DesignRule.mainColor }}>礼包</Text></View> : null}
                                 <Text style={[styles.title]} numberOfLines={2}>{goodsName}</Text>
                             </View>
-                            <UIText value={salePrice} style={[styles.title, {marginRight: 4}]}/>
+                            <UIText value={salePrice} style={[styles.title, { marginRight: 4 }]}/>
                         </View>
-                        <View style={{ marginTop: 10, marginRight: 5, flexDirection: 'row' }}>
+                        <View style={{ marginTop: 10, marginRight: 5, flexDirection: "row" }}>
                             <UIText value={category}
-                                    style={[styles.detail, { flex: 1, textAlign: 'left', marginRight: 10 }]}/>
-                            <UIText value={'x' + goodsNum} style={styles.detail}/>
+                                    style={[styles.detail, { flex: 1, textAlign: "left", marginRight: 10 }]}/>
+                            <UIText value={"x" + goodsNum} style={styles.detail}/>
                         </View>
                     </View>
                 </View>
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
     container: {
         height: 100,
         backgroundColor: DesignRule.bgColor,
-        flexDirection: 'row',
-        alignItems: 'center'
+        flexDirection: "row",
+        alignItems: "center"
     },
     image: {
         height: 80,
@@ -96,6 +96,6 @@ const styles = StyleSheet.create({
     detail: {
         fontSize: 13,
         color: DesignRule.textColor_instruction,
-        textAlign: 'right'
+        textAlign: "right"
     }
 });

@@ -4,6 +4,7 @@ import React from 'react';
 import NoMoreClick from '../ui/NoMoreClick';
 import res from '../../comm/res';
 import ScreenUtils from '../../utils/ScreenUtils'
+import ImageLoad from '@mr/image-placeholder'
 const addPic = res.placeholder.add_picture;
 const deleteImage = res.button.delete_picture;
 
@@ -39,7 +40,7 @@ class AddPhotos extends Component {
     renderPhotoItem = (item, index) => {
         return (
             <View style={{ marginRight: ScreenUtils.autoSizeWidth(5), marginBottom: 12 }} key={index}>
-                <Image style={styles.photo_item} source={{ uri: this.props.imageArr[index].imageUrl }}/>
+                <ImageLoad style={styles.photo_item} source={{ uri: this.props.imageArr[index].imageUrl }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => {
                     this.props.deletePic(index);
                 }}>

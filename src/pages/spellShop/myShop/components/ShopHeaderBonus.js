@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet, Image, ImageBackground } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-// import LottieView from 'lottie-react-native';
+import LottieView from 'lottie-react-native';
 
 const { px2dp } = ScreenUtils;
 import res from '../../res';
@@ -53,10 +53,19 @@ export default class ShopHeaderBonus extends Component {
                         marginBottom: px2dp(20)
                     }}>
                         <View style={{ width: px2dp(100), alignItems: 'center' }}>
-                            <Image style={{
+                            <ImageBackground style={{
                                 width: px2dp(60),
                                 height: px2dp(60)
-                            }} source={box_img}/>
+                            }} source={box_img}>
+                                <LottieView autoPlay
+                                            style={{
+                                                width: px2dp(60),
+                                                height: px2dp(60)
+                                            }}
+                                            imageAssetsFolder={'lottie/spellShop'}
+                                            source={require('./animation_money.json')}
+                                            loop/>
+                            </ImageBackground>
                             <Text style={{
                                 color: DesignRule.mainColor,
                                 fontSize: 10,
@@ -64,12 +73,7 @@ export default class ShopHeaderBonus extends Component {
                             }} numberOfLines={2}>{tradeBalance}<Text
                                 style={{ color: DesignRule.textColor_mainTitle }}>元待分红</Text></Text>
                         </View>
-                        {/*<LottieView*/}
-                        {/*style={{ width: px2dp(60), height: px2dp(60), marginLeft: px2dp(20) ,backgroundColor:'red'}}*/}
-                        {/*source={require('./animation/LineAnimation.json')}*/}
-                        {/*autoPlay*/}
-                        {/*loop*/}
-                        {/*/>*/}
+
                         <View>
                             <Text style={{
                                 fontSize: 12,

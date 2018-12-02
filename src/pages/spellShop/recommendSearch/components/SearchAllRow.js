@@ -11,6 +11,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import UIImage from '@mr/image-placeholder';
 
 const StarImg = res.recommendSearch.dj_03;
 
@@ -46,8 +47,9 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {RecommendRowItem.headUrl ? <Image style={styles.icon}
-                                                               source={{ uri: RecommendRowItem.headUrl || '' }}/> :
+                            {RecommendRowItem.headUrl ? <UIImage style={styles.icon}
+                                                                 source={{ uri: RecommendRowItem.headUrl || '' }}
+                                                                 borderRadius={25}/> :
                                 <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
@@ -66,7 +68,8 @@ export default class RecommendRow extends Component {
                                 })
                             }
                         </View>
-                        <Text style={{ marginTop: 9, color: DesignRule.textColor_instruction, fontSize: 12 }}>店铺等级</Text>
+                        <Text
+                            style={{ marginTop: 9, color: DesignRule.textColor_instruction, fontSize: 12 }}>店铺等级</Text>
                     </View>
                 </View>
 
@@ -74,7 +77,7 @@ export default class RecommendRow extends Component {
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺ID</Text>
-                        <Text style={styles.containBottom}>{RecommendRowItem.storeNumber || ''}</Text>
+                        <Text style={styles.containBottom}>{RecommendRowItem.showNumber || ''}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>

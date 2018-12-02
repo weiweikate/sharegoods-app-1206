@@ -181,19 +181,9 @@ export default class SearchResultPage extends BasePage {
         });
     };
 
-    _storeProduct = (productId) => {
-        this.$loadingShow();
-        HomeAPI.getProductSpec({
-            id: productId
-        }).then((data) => {
-            this.$loadingDismiss();
-            data.data = data.data || {};
-            this.state.productId = productId;
-            this.SelectionPage.show(data.data, this._selectionViewConfirm, { needUpdate: true });
-        }).catch((data) => {
-            this.$loadingDismiss();
-            this.$toastShow(data.msg);
-        });
+    _storeProduct = (item) => {
+        this.state.productId = item.productId;
+        this.SelectionPage.show(item, this._selectionViewConfirm, { needUpdate: true });
     };
 
     _changeLayout = () => {

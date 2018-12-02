@@ -35,7 +35,7 @@
         },
         "da_wei": {
             "name": "测试环境_大为",
-            "host": "http://172.16.10.42:8180/gateway"
+            "host": "http://172.16.10.42:4090/gateway"
         },
         "gao_di": {
             "name": "测试_高迪",

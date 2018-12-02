@@ -3,7 +3,6 @@ import React from 'react';
 import {
     View,
     Text,
-    Image,
     ScrollView,
     StyleSheet,
     ImageBackground,
@@ -18,6 +17,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import user from '../../../model/user'
+import UIImage from "@mr/image-placeholder";
 
 const Banner = res.openShop.yqhy_03;
 const Center = res.openShop.yqhy_04;
@@ -55,7 +55,7 @@ export default class InvitationToShopPage extends BasePage {
             bridge.saveShopInviteFriendsImage({
                 headerImg: `${shareInfo.headUrl}`,
                 shopName: `${shareInfo.name}`,
-                shopId: `ID: ${shareInfo.storeNumber}`,
+                shopId: `ID: ${shareInfo.showNumber}`,
                 shopPerson: `店主: ${manager.nickname || ''}`,
                 codeString: this.state.codeString,
                 wxTip: this.state.wxTip
@@ -113,12 +113,12 @@ export default class InvitationToShopPage extends BasePage {
                                     <View style={styles.topContainer}>
                                         {
                                             shareInfo.headUrl ?
-                                                <Image style={styles.topImg} source={{ uri: shareInfo.headUrl }}/> :
+                                                <UIImage style={styles.topImg} source={{ uri: shareInfo.headUrl }}/> :
                                                 <View style={styles.topImg}/>
                                         }
                                         <View style={{ justifyContent: 'space-between' }}>
                                             <Text style={styles.text}>{shareInfo.name || ''}</Text>
-                                            <Text style={styles.text}>店铺ID：{shareInfo.storeNumber || ''}</Text>
+                                            <Text style={styles.text}>店铺ID：{shareInfo.showNumber || ''}</Text>
                                             <Text style={styles.text}>店主：{manager.nickname || ''}</Text>
                                         </View>
                                     </View>

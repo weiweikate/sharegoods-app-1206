@@ -14,8 +14,9 @@ import {
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
 import {
-    UIText, UIImage
+    UIText
 } from '../../../components/ui';
+import UIImage from "@mr/image-placeholder";
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import EmptyUtils from '../../../utils/EmptyUtils';

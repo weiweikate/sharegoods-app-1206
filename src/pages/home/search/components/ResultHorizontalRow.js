@@ -13,6 +13,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import UIImage from "@mr/image-placeholder";
 
 const gwc = res.search.gwc;
 
@@ -31,14 +32,14 @@ export default class ResultHorizontalRow extends Component {
     }
 
     render() {
-        let { product = {}, price } = this.props.itemData || {};
-        const { name = '' } = product;
+        let { minPrice, name, imgUrl, prodCode } = this.props.itemData || {};
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.onPressAtIndex(product.id);
+                this.props.onPressAtIndex(prodCode);
             }}>
                 <View style={[styles.container]}>
-                    <Image style={styles.img} source={{ uri: product.imgUrl }}/>
+                    <UIImage style={styles.img} source={{ uri: imgUrl }}/>
+
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
                         fontSize: 13,
@@ -55,10 +56,10 @@ export default class ResultHorizontalRow extends Component {
                         marginTop: 21
                     }}>
                         <Text
-                            style={{ color: DesignRule.mainColor, fontSize: 17 }}>{`￥${price}起`}</Text>
+                            style={{ color: DesignRule.mainColor, fontSize: 17 }}>{`￥${minPrice}起`}</Text>
                     </View>
                     <TouchableWithoutFeedback onPress={() => {
-                        this.props.storeProduct(product.id);
+                        this.props.storeProduct(this.props.itemData);
                     }}>
                         <View style={{
                             width: 35,

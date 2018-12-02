@@ -157,7 +157,6 @@ class AddBankCardPage extends BasePage {
                     flexDirection: "row",
                     alignItems: "center",
                     backgroundColor: "white",
-                    justifyContent: "space-between"
                 }}>
                     <Text style={styles.accountStyle}>{"卡类型"}</Text>
                     <Text style={styles.accountStyle2}>{`${this.state.bankName}  ${this.state.cardType}`}</Text>

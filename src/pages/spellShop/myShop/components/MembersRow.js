@@ -6,14 +6,13 @@ import PropTypes from 'prop-types';
 import {
     Text,
     View,
-    Image,
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import ImageLoad from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import UIImage from "@mr/image-placeholder";
 
 const PeopleImg = res.myShop.dy_07;
 const ArrowImg = res.myShop.xjt_03;
@@ -38,11 +37,11 @@ export default class MembersRow extends Component {
             <TouchableOpacity onPress={this.props.onPressAllMembers}
                               activeOpacity={1}
                               style={styles.allMembersRow}>
-                <Image style={styles.icon} source={PeopleImg}/>
+                <UIImage style={styles.icon} source={PeopleImg}/>
                 <Text style={styles.iconTitle}>店铺成员</Text>
                 <Text
                     style={[styles.iconDesc, { marginRight: userStatus !== 1 ? 21 : 0 }]}>{`共${dealerList.length}人`}</Text>
-                {userStatus === 1 ? <Image style={styles.arrow} source={ArrowImg}/> : null}
+                {userStatus === 1 ? <UIImage style={styles.arrow} source={ArrowImg}/> : null}
             </TouchableOpacity>
             <View style={styles.gapLine}/>
             <View style={styles.membersContainer}>
@@ -57,7 +56,7 @@ export default class MembersRow extends Component {
                             marginTop: (index >= 5) ? 0 : 9,
                             marginBottom: (index >= 5) ? 24 : 20
                         }} key={index}>
-                            {headImg ? <ImageLoad source={{ uri: headImg }}
+                            {headImg ? <UIImage source={{ uri: headImg }}
                                                   style={styles.headerImg} borderRadius={20}/> :
                                 <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <Text numberOfLines={1} style={styles.name}>{nickName || ''}</Text>
