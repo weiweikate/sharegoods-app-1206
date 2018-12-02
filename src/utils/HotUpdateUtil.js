@@ -8,7 +8,7 @@ import {
     isRolledBack,
     checkUpdate,
     downloadUpdate,
-    switchVersion,
+    // switchVersion,
     switchVersionLater,
     markSuccess,
     packageVersion,
@@ -54,23 +54,24 @@ class HotUpdateUtil {
      */
     doUpdate = info => {
         downloadUpdate(info).then(hash => {
-            Alert.alert('提示', '下载完毕,是否重启应用?', [
-                {
-                    text: '是', onPress: () => {
-                        switchVersion(hash);
-                    }
-                },
-                {
-                    text: '下次启动时', onPress: () => {
-                        switchVersionLater(hash);
-                    }
-                }
-            ]);
+            // Alert.alert('提示', '下载完毕,是否重启应用?', [
+            //     {
+            //         text: '是', onPress: () => {
+            //             switchVersion(hash);
+            //         }
+            //     },
+            //     {
+            //         text: '下次启动时', onPress: () => {
+            //             switchVersionLater(hash);
+            //         }
+            //     }
+            // ]);
+            //重新启动更新,不再有提示
+            switchVersionLater(hash);
         }).catch(err => {
             Alert.alert('提示', '更新失败.' + err);
             console.log('失败提示' + info);
-            console.log(info);
-            this.saveErrorVersion(info);
+            // this.saveErrorVersion(info);
         });
     };
     /**
@@ -96,18 +97,20 @@ class HotUpdateUtil {
             //         }
             //     ]);
             // } else
-            Storage.get(HotUpdateUtil.UPDATE_ERROR_VERSION, undefined).then(res => {
-                console.log('取出来的版本');
-                console.log(res);
-                if (res === undefined) {
-                    this.startUpdate(info);
-                } else if (res !== info.hash) {
-                    //更新失败的版本则不再提示更新
-                    this.startUpdate(info);
-                }
-            }).catch(error => {
-                this.startUpdate(info);
-            });
+            // Storage.get(HotUpdateUtil.UPDATE_ERROR_VERSION, undefined).then(res => {
+            //     console.log('取出来的版本');
+            //     console.log(res);
+            //     if (res === undefined) {
+            //         this.startUpdate(info);
+            //     } else if (res !== info.hash) {
+            //         //更新失败的版本则不再提示更新
+            //         this.startUpdate(info);
+            //     }
+            // }).catch(error => {
+            //     this.startUpdate(info);
+            // });
+            //更新
+            this.startUpdate(info);
         }).catch(e => {
             throw e;
         });
@@ -120,27 +123,28 @@ class HotUpdateUtil {
          * 普通更新
          */
         if (info.metaInfo && info.metaInfo.indexOf('update') !== -1) {
-            Alert.alert('提示', '检测到更新' + info.name + ',是否下载?\n' + info.description, [
-                {
-                    text: '是', onPress: () => {
-                        this.doUpdate(info);
-                    }
-                },
-                { text: '否' }
-            ]);
-
+            // Alert.alert('提示', '检测到更新' + info.name + ',是否下载?\n' + info.description, [
+            //     {
+            //         text: '是', onPress: () => {
+            //             this.doUpdate(info);
+            //         }
+            //     },
+            //     { text: '否' }
+            // ]);
+            this.doUpdate(info);
         }
         /**
          *   强制更新
          */
         else if (info.metaInfo && info.metaInfo.indexOf('must') !== -1) {
-            Alert.alert('提示', '检测到更新' + info.name + ',是否下载?\n' + info.description, [
-                {
-                    text: '是', onPress: () => {
-                        this.doUpdate(info);
-                    }
-                }
-            ]);
+            // Alert.alert('提示', '检测到更新' + info.name + ',是否下载?\n' + info.description, [
+            //     {
+            //         text: '是', onPress: () => {
+            //             this.doUpdate(info);
+            //         }
+            //     }
+            // ]);
+            this.doUpdate(info);
         }
     };
     /**
@@ -148,9 +152,9 @@ class HotUpdateUtil {
      */
     saveErrorVersion = (info) => {
         //存储更新失败的版本
-        Storage.set(HotUpdateUtil.UPDATE_ERROR_VERSION, info.hash).then(() => {
-        }).catch(() => {
-        });
+        // Storage.set(HotUpdateUtil.UPDATE_ERROR_VERSION, info.hash).then(() => {
+        // }).catch(() => {
+        // });
     };
     /**
      * 判断是否需要检测更新,默认三天
