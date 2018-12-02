@@ -22,8 +22,6 @@ export default class SelectionHeaderView extends Component {
 
     static propTypes = {
         product: PropTypes.object.isRequired,
-        price: PropTypes.any.isRequired,
-
         selectSpecList: PropTypes.array.isRequired,
         selectStrList: PropTypes.array.isRequired
     };
