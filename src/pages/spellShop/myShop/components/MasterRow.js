@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import {
     View,
     Text,
-    Image,
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
 import DesignRule from 'DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
+import UIImage from "@mr/image-placeholder";
 const ShopMasterIcon = res.myShop.dz_03;
 
 export default class MasterRow extends Component {
@@ -40,10 +40,10 @@ export default class MasterRow extends Component {
         contribution = StringUtils.isEmpty(contribution) ? 0 : parseFloat(contribution);
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={styles.container}>
-                <Image style={styles.iconGap} source={ShopMasterIcon}/>
+                <UIImage style={styles.iconGap} source={ShopMasterIcon}/>
                 <View style={styles.row}>
                     {
-                        headImg ? <Image source={{uri: headImg}} style={styles.headerImg}/> : <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
+                        headImg ? <UIImage source={{uri: headImg}} style={styles.headerImg}/> : <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
                     }
                     <View style={styles.right}>
                         <Text style={styles.name}>{(nickName || '  ')}</Text>

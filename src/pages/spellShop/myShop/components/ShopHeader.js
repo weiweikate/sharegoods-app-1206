@@ -62,7 +62,7 @@ export default class ShopHeader extends Component {
                         bounce
                         repeatSpacer={100}
                         marqueeDelay={2000}
-                    >公告: {content}</TextTicker>
+                    >{`公告: ${content}`}</TextTicker>
                 </View> : null}
             </View>
 

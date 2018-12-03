@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import UIImage from '../../../../components/ui/UIImage';
+import UIImage from "@mr/image-placeholder";
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
 import QYChatUtil from './QYChatModel';
@@ -59,7 +59,7 @@ export default class MyHelperPage extends BasePage {
                         <View key={index} style={styles.hotQuestionStyle}>
                             <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                <Image source={item.imgUrl ? { uri: item.imgUrl } : icon_wenti}
+                                <UIImage source={item.imgUrl ? { uri: item.imgUrl } : icon_wenti}
                                        style={{ width: 37, height: 37 }}/>
                                 <Text style={{
                                     fontSize: 11,

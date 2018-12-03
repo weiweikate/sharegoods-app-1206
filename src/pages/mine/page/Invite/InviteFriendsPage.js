@@ -22,9 +22,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import {
-    UIImage
-} from '../../../../components/ui';
+import UIImage from "@mr/image-placeholder";
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';

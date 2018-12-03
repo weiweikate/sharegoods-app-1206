@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import {
     View,
     Text,
-    Image,
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
 import DesignRule from 'DesignRule';
+import UIImage from "@mr/image-placeholder";
 
 export default class ShopInfoRow extends Component {
 
@@ -27,7 +27,7 @@ export default class ShopInfoRow extends Component {
 
             {
                 this.props.headUrl && typeof this.props.headUrl === 'string' ?
-                    <Image style={styles.icon} source={{ uri: this.props.headUrl }}/> : <View style={styles.icon}/>
+                    <UIImage style={styles.icon} source={{ uri: this.props.headUrl }}/> : <View style={styles.icon}/>
             }
 
             <View style={styles.right}>

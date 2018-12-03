@@ -1,16 +1,17 @@
 //拼店页面，店铺行数据
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
     View,
     Image,
     StyleSheet,
     Text,
     TouchableWithoutFeedback
-} from 'react-native';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
-import res from '../../res';
+} from "react-native";
+import ScreenUtils from "../../../../utils/ScreenUtils";
+import DesignRule from "DesignRule";
+import res from "../../res";
+import UIImage from "@mr/image-placeholder";
 
 const StarImg = res.recommendSearch.dj_03;
 
@@ -34,7 +35,7 @@ export default class RecommendRow extends Component {
         const { ...RecommendRowItem } = this.props.RecommendRowItem;
         const storeStar = RecommendRowItem.storeStarId;
         const starsArr = [];
-        if (storeStar && typeof storeStar === 'number') {
+        if (storeStar && typeof storeStar === "number") {
             for (let i = 0; i < storeStar; i++) {
                 i <= 2 && starsArr.push(i);
             }
@@ -46,27 +47,29 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {RecommendRowItem.headUrl ? <Image style={styles.icon}
-                                                               source={{ uri: RecommendRowItem.headUrl || '' }}/> :
+                            {RecommendRowItem.headUrl ? <UIImage style={styles.icon}
+                                                                 source={{ uri: RecommendRowItem.headUrl || "" }}
+                                                                 borderRadius={25}/> :
                                 <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
-                                <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
+                                <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ""}</Text>
                             </View>
                         </View>
                     </View>
                     <View style={{
                         width: ScreenUtils.autoSizeWidth(44 + 70),
-                        alignItems: 'center',
-                        justifyContent: 'center'
+                        alignItems: "center",
+                        justifyContent: "center"
                     }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                             {
                                 starsArr.map((item, index) => {
                                     return <Image key={index} source={StarImg}/>;
                                 })
                             }
                         </View>
-                        <Text style={{ marginTop: 9, color: DesignRule.textColor_instruction, fontSize: 12 }}>店铺等级</Text>
+                        <Text
+                            style={{ marginTop: 9, color: DesignRule.textColor_instruction, fontSize: 12 }}>店铺等级</Text>
                     </View>
                 </View>
 
@@ -74,12 +77,12 @@ export default class RecommendRow extends Component {
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺ID</Text>
-                        <Text style={styles.containBottom}>{RecommendRowItem.storeNumber || ''}</Text>
+                        <Text style={styles.containBottom}>{RecommendRowItem.storeNumber || ""}</Text>
                     </View>
-                    <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
+                    <View style={{ backgroundColor: "rgb(244,231,221)", width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺成员</Text>
-                        <Text style={styles.containBottom}>{RecommendRowItem.storeUserNum || ''}</Text>
+                        <Text style={styles.containBottom}>{RecommendRowItem.storeUserNum || ""}</Text>
                     </View>
                 </View>
 
@@ -97,19 +100,19 @@ const styles = StyleSheet.create({
     viewContainer: {
         marginTop: 9,
         marginHorizontal: 15,
-        backgroundColor: 'white'
+        backgroundColor: "white"
     },
 
     topViewContainer: {
-        alignItems: 'center',
+        alignItems: "center",
         height: 80,
-        backgroundColor: '#FEFAF7',
-        flexDirection: 'row'
+        backgroundColor: "#FEFAF7",
+        flexDirection: "row"
     },
 
 
     headerViewContainer: {
-        flexDirection: 'row',
+        flexDirection: "row",
         marginLeft: 15
     },
     icon: {
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
         borderRadius: 25
     },
     tittleContainer: {
-        justifyContent: 'center',
+        justifyContent: "center",
         marginLeft: 11,
         flex: 1
     },
@@ -129,14 +132,14 @@ const styles = StyleSheet.create({
 
 
     bottomContainer: {
-        flexDirection: 'row',
+        flexDirection: "row",
         height: 63,
-        alignItems: 'center'
+        alignItems: "center"
     },
     moneyContainer: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: "center",
+        justifyContent: "center"
     },
     containTop: {
         color: DesignRule.textColor_secondTitle,

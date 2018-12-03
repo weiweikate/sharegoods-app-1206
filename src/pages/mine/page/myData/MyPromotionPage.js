@@ -16,7 +16,7 @@ import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
 // 图片资源
 import BasePage from '../../../../BasePage';
-import {UIImage} from '../../../../components/ui';
+import { UIImage } from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
@@ -77,7 +77,7 @@ export default class MyPromotionPage extends BasePage {
                 refreshing: false,
                 netFailedInfo: null,
                 levelName: data.levelName,
-                levelRemark:data.levelRemark,
+                levelRemark: data.levelRemark,
                 experience: data.experience || 0,
                 levelExperience: data.levelExperience || 0,
                 headImg: data.headImg,
@@ -128,12 +128,14 @@ export default class MyPromotionPage extends BasePage {
         return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 + ScreenUtils.statusBarHeight }}>
 
             <ImageBackground source={HeaderBarBgImg} style={{
-                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight+30,
-                flexDirection: 'row',paddingTop:ScreenUtils.statusBarHeight,
+                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH + ScreenUtils.statusBarHeight + 30,
+                flexDirection: 'row', paddingTop: ScreenUtils.statusBarHeight
             }}>
-                <UIImage source={res.button.white_back_img} style={{marginLeft:15,marginTop:5, width: 10, height: 18}} onPress={()=>this.$navigateBack()}/>
+                <UIImage source={res.button.white_back_img}
+                         style={{ marginLeft: 15, marginTop: 5, width: 10, height: 18 }}
+                         onPress={() => this.$navigateBack()}/>
 
-                <View style={{flexDirection:'row',alignItems:'center',marginLeft:25,marginBottom:40}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 25, marginBottom: 40 }}>
                     {
                         this.state.headImg ?
                             <Image style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
@@ -144,11 +146,14 @@ export default class MyPromotionPage extends BasePage {
                         justifyContent: 'center',
                         marginLeft: 10
                     }}>
-                        <Text style={{fontSize:15,color:'white'}}>{this.state.levelName?`${this.state.levelName}品鉴官`:''}</Text>
+                        <Text style={{
+                            fontSize: 15,
+                            color: 'white'
+                        }}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ''}</Text>
                         <ImageBackground style={{
                             justifyContent: 'center', alignItems: 'center', marginTop: 10,
                             height: 15,
-                            width:35,
+                            width: 35
                         }} source={iconbg}>
                             <Text style={styles.shopName}>{this.state.levelRemark || ' '}</Text>
                         </ImageBackground>
@@ -168,7 +173,7 @@ export default class MyPromotionPage extends BasePage {
                     <Text style={{
                         marginTop: 10,
                         color: '#f00006',
-                        fontSize: 10,
+                        fontSize: 10
                     }}>{this.state.experience || 0}<Text style={{
                         color: DesignRule.textColor_secondTitle
                     }}>
@@ -197,13 +202,18 @@ export default class MyPromotionPage extends BasePage {
                     <Text style={{
                         marginTop: 10,
                         color: DesignRule.textColor_mainTitle,
-                        fontSize: 12,
-                    }}>距离晋升还差<Text style={{
-                        color: DesignRule.textColor_mainTitle,
                         fontSize: 12
-                    }}>
-                        {(this.state.levelExperience - this.state.experience) > 0 ? `${this.state.levelExperience - this.state.experience}分` : '0分'}
-                    </Text>{(this.state.levelExperience - this.state.experience) > 0?null:<Text style={{color:DesignRule.mainColor,fontSize:11}}>(经验值已满)</Text>}</Text>
+                    }}>距离晋升还差
+                        <Text style={{
+                            color: DesignRule.textColor_mainTitle,
+                            fontSize: 12
+                        }}>
+                            {(this.state.levelExperience - this.state.experience) > 0 ? `${this.state.levelExperience - this.state.experience}Exp` : '0Exp'}
+                        </Text>
+                        {(this.state.levelExperience - this.state.experience) > 0 ? null :
+                            <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}>(Exp已满)</Text>
+                        }
+                    </Text>
                 </View>
             </View>
         </View>;
@@ -214,17 +224,21 @@ export default class MyPromotionPage extends BasePage {
         return (
             <View style={{ marginBottom: 50 }}>
                 {/*<View style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>*/}
-                    {/*<Text style={{*/}
-                        {/*marginLeft: 14,*/}
-                        {/*fontSize: 14,*/}
-                        {/*color: DesignRule.textColor_mainTitle*/}
-                    {/*}}>预计晋升后可获得哪些福利？</Text>*/}
+                {/*<Text style={{*/}
+                {/*marginLeft: 14,*/}
+                {/*fontSize: 14,*/}
+                {/*color: DesignRule.textColor_mainTitle*/}
+                {/*}}>预计晋升后可获得哪些福利？</Text>*/}
                 {/*</View>*/}
                 {this.renderSepLine()}
                 {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
-                                            containerStyle={{ backgroundColor: '#fff',padding:5 }}
-                                            imagesInitialDimensions={{width:ScreenUtils.width,height:0}}
-                                            baseFontStyle={{ lineHeight: 25, color: DesignRule.textColor_secondTitle, fontSize: 13, }}/> : null}
+                                            containerStyle={{ backgroundColor: '#fff', padding: 5 }}
+                                            imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
+                                            baseFontStyle={{
+                                                lineHeight: 25,
+                                                color: DesignRule.textColor_secondTitle,
+                                                fontSize: 13
+                                            }}/> : null}
             </View>
         );
     }
@@ -328,10 +342,10 @@ export default class MyPromotionPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginBottom: ScreenUtils.safeBottom,
+        marginBottom: ScreenUtils.safeBottom
     },
     headerBg: {
-        marginTop:26,
+        marginTop: 26,
         marginLeft: 10,
         marginRight: 10,
         width: 105 / 375 * SCREEN_WIDTH,
@@ -342,7 +356,7 @@ const styles = StyleSheet.create({
     shopName: {
         fontSize: 11,
         color: 'white',
-        marginLeft:10,
+        marginLeft: 10
     },
     //白的面板背景
     whiteBg: {
