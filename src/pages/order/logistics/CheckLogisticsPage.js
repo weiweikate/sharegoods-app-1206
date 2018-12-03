@@ -59,6 +59,7 @@ export default class CheckLogisticsPage extends BasePage {
             salePrice={10}
             category={'ccc'}
             goodsNum={2}
+            bgColor={{backgroundColor:'white'}}
             />
         )
     }
@@ -79,6 +80,7 @@ export default class CheckLogisticsPage extends BasePage {
                     onLoadMore={this.onLoadMore}
                     renderSectionHeader={this.Header}
                     keyExtractor={this.extraUniqueKey}//去除警告
+
                 />
             </View>
         );

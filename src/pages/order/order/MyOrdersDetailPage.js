@@ -22,10 +22,10 @@ import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
-import RedDetailTopView from '../components/orderDetail/RedDetailTopView';
-import WhiteRectangleView from '../components/orderDetail/WhiteRectangleView';
+import OrderDetailStatusView from '../components/orderDetail/OrderDetailStatusView';
+import OrderDetailStateView from '../components/orderDetail/OrderDetailStateView';
 import DetailAddressView from '../components/orderDetail/DetailAddressView';
-import DetailBottomUnitView from '../components/orderDetail/DetailBottomUnitView';
+import OrderDetailTimeView from '../components/orderDetail/OrderDetailTimeView';
 import {orderDetailModel,orderDetailAfterServiceModel,assistDetailModel} from '../model/OrderDetailModel';
 const buyerHasPay = res.buyerHasPay;
 const productDetailHome = res.productDetailHome;
@@ -38,6 +38,7 @@ const moreIcon = res.more_icon;
 const timeUtils= new TimeDownUtils();
 import { observer } from 'mobx-react/native';
 import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
+import OrderDetailPriceView from "../components/orderDetail/OrderDetailPriceView";
 
 @observer
 export default class MyOrdersDetailPage extends BasePage {
@@ -76,11 +77,11 @@ export default class MyOrdersDetailPage extends BasePage {
          let leftIconArr=[buyerHasPay,tobePayIcon,buyerHasPay,hasDeliverIcon,finishPayIcon,finishPayIcon,refuseIcon,refuseIcon,refuseIcon,refuseIcon];
         return (
             <View style={{ marginBottom: 10 }}>
-                <RedDetailTopView
+                <OrderDetailStatusView
                     leftTopIcon={leftIconArr[orderDetailModel.status]}
                     moreDetail={orderDetailAfterServiceModel.moreDetail}
                 />
-                <WhiteRectangleView
+                <OrderDetailStateView
                     orderNum={orderDetailModel.orderNum}
                     orderId={assistDetailModel.orderId}
                     expressNo={orderDetailModel.expressNo}
@@ -185,16 +186,11 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     renderFootder = () => {
         return(
-                <DetailBottomUnitView
-                    status={orderDetailModel.status}
-                    orderType={orderDetailModel.orderType}
+            <View>
+                <OrderDetailPriceView
                     giftBagCoupons={this.state.giftBagCoupons}
-                    goodsPrice={orderDetailModel.goodsPrice}
-                    freightPrice={orderDetailModel.freightPrice}
-                    couponPrice={orderDetailModel.couponPrice}
-                    tokenCoin={orderDetailModel.couponPrice}
-                    totalPrice={orderDetailModel.totalPrice}
-                    needPrice={orderDetailModel.needPrice}
+                />
+            <OrderDetailTimeView
                     orderNum={orderDetailModel.orderNum}
                     createTime={orderDetailModel.createTime}
                     platformPayTime={orderDetailModel.platformPayTime}
@@ -211,6 +207,7 @@ export default class MyOrdersDetailPage extends BasePage {
                     callBack={this.params.callBack &&this.params.callBack()}
                     loadPageData={()=>this.loadPageData()}
                 />
+            </View>
             )
 
     };

@@ -4,26 +4,23 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image, Alert, NativeModules
+    Alert, NativeModules
 } from 'react-native';
 import {
     UIText
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
-import UserSingleItem from '../UserSingleItem';
 import DateUtils from '../../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import { orderDetailAfterServiceModel, orderDetailModel ,assistDetailModel} from '../../model/OrderDetailModel';
 import { color } from '../../../../constants/Theme';
-import res from '../../res';
 import OrderApi from '../../api/orderApi';
 import Toast from '../../../../utils/bridge';
 import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
 import { observer } from 'mobx-react/native';
-const couponIcon = res.coupons_icon;
 
 @observer
-export default class DetailBottomUnitView extends Component {
+export default class OrderDetailTimeView extends Component {
 
     renderLine = () => {
         return (
@@ -34,42 +31,6 @@ export default class DetailBottomUnitView extends Component {
         return (
             <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
-    };
-    renderGiftAfterSales = () => {
-        return (
-            <View>
-                {orderDetailAfterServiceModel.currentAsList.length === 0 ? null :
-                    <View>
-                        <View style={{
-                            flexDirection: 'row',
-                            height: 48,
-                            justifyContent: 'flex-end',
-                            alignItems: 'center',
-                            backgroundColor: 'white'
-                        }}>
-                            {this.renderMenus()}
-                        </View>
-                        {this.renderLine()}
-                    </View>
-                }
-            </View>
-        );
-    };
-    renderMenus = () => {
-        let itemArr = [];
-        for (let i = 0; i < orderDetailAfterServiceModel.currentAsList.length; i++) {
-            itemArr.push(
-                <TouchableOpacity key={i}
-                                  style={[styles.grayView, { borderColor: orderDetailAfterServiceModel.currentAsList[i].isRed ? color.red : DesignRule.color_ddd }]}
-                                  onPress={() => {
-                                      this.afterSaleServiceClick(orderDetailAfterServiceModel.currentAsList[i], i);
-                                  }}>
-                    <Text
-                        style={[styles.grayText, { color: orderDetailAfterServiceModel.currentAsList[i].isRed ? color.red : color.gray_666 }]}>{orderDetailAfterServiceModel.currentAsList[i].operation}</Text>
-                </TouchableOpacity>
-            );
-        }
-        return itemArr;
     };
     operationMenuClick = (menu) => {
         /*
@@ -324,57 +285,6 @@ export default class DetailBottomUnitView extends Component {
     render() {
         return (
             <View style={{ backgroundColor: 'white',paddingTop:10 }}>
-                {this.props.orderType === 5 ? this.renderGiftAfterSales() : null}
-                {(this.props.orderType === 5 || this.props.orderType === 98) && this.props.giftBagCoupons.length > 0 ?
-                    <View>
-                        {this.renderLine()}
-                        {this.props.giftBagCoupons.map((item, index) => {
-                            return <View style={{ backgroundColor: 'white' }} key={index}>
-                                {index === 0 ? <Image source={couponIcon} style={styles.couponsIconStyle}/> : null}
-                                <View style={styles.couponsOuterStyle}>
-                                    <Text style={styles.couponsTextStyle}>{item.couponName}</Text>
-                                    <Text style={[styles.couponsTextStyle, { marginRight: 14 }]}>x1</Text>
-                                </View>
-                                <View style={styles.couponsLineStyle}/>
-                            </View>
-                        })}
-                        {this.renderWideLine()}
-                    </View>
-                    :
-                    null}
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={StringUtils.formatMoneyString(this.props.goodsPrice)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={StringUtils.formatMoneyString(this.props.freightPrice)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={'-' + StringUtils.formatMoneyString(this.props.couponPrice)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={'-' + StringUtils.formatMoneyString(this.props.tokenCoin)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
-                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                                rightText={StringUtils.formatMoneyString(this.props.totalPrice)}
-                                rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                                isArrow={false}
-                                isLine={false}/>
-                {this.renderLine()}
-                <UserSingleItem itemHeightStyle={{ height: 55 }} leftText={'实付款'}
-                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                                rightText={StringUtils.formatMoneyString(this.props.needPrice)}
-                                rightTextStyle={{ color: color.red, fontSize: 15 }} isArrow={false}
-                                isLine={false}/>
-                {this.renderWideLine()}
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                     <UIText value={'订单编号：' + this.props.orderNum}
                             style={[styles.textGoodsDownStyle,{marginTop:10}]}/>
@@ -436,7 +346,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         height: 22,
         width: 55,
-        marginTop: 10
+        marginTop: 10,
+        borderRadius:2
     },
     couponsIconStyle: {
         width: 15,

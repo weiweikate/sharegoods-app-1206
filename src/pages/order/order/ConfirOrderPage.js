@@ -28,6 +28,33 @@ const position = res.dizhi;
 const arrow_right = res.arrow_right;
 const colorLine = res.addressLine;
 const couponIcon = res.coupons_icon;
+/*         确认订单
+           orderProductNo,//是	String	仓库商品订单号
+            userId:"22",//是	string	用户id
+            color:"22",//	是	string	商品颜色
+            size	,//	string	商品尺寸
+            quantity	,//是	Integer	商品数量
+            orderType	,//是	Integer	订单类型: 1.普通订单 2.活动订单
+         orderSubType	,//是	Integer	订单子类型: 1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+        activityCode	,//是	string	活动编号
+      source	,//string	单来源: 1.购物车 2.直接下单
+       channel,//渠道来源: 1.小程序 2.APP 3.H5
+ */
+/*     提交订单
+  userAddrId	是	string	具体地址id
+ orderProductNo	是	String	仓库商品订单号
+ colour	是	string	商品颜色
+ size	是	string	商品尺寸
+  quantity	是	Integer	商品数量
+ couponAmount	是	string	优惠券总抵扣金额
+  tokenCoinAmount	是	string	一元券总抵扣金额
+  message	是	String	买家留言
+   orderType	是	Integer	订单类型: 1.普通订单 2.活动订单
+  orderSubType	是	Integer	订单子类型: 1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+  activityCode	是	string	活动编号
+  source	是	string	单来源: 1.购物车 2.直接下单
+  channel	是	string	渠道来源: 1.小程序 2.APP 3.H5
+ */
 export default class ConfirOrderPage extends BasePage {
     constructor(props) {
         super(props);

@@ -17,7 +17,7 @@ const arrow_right = res.arrow_right;
 const logisticCar = res.car;
 
 
-export default class WhiteRectangleView extends Component{
+export default class OrderDetailStateView extends Component{
 constructor(props){
     super(props);
 }

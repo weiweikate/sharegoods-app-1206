@@ -14,7 +14,7 @@ import { observer } from 'mobx-react/native';
 import res from '../../res';
 const productDetailImg = res.productDetailImg;
 @observer
-export default class RedDetailTopView extends Component{
+export default class OrderDetailStatusView extends Component{
     constructor(props){
         super(props);
     }
