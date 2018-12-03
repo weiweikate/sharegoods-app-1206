@@ -9,8 +9,9 @@ import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import SubSwichView from './SubSwichView';
-import ImageLoad from '@mr/image-placeholder'
+// import ImageLoad from '@mr/image-placeholder'
 import DesignRule from 'DesignRule';
+import PreLoadImage from '../../../components/ui/preloadImage/PreLoadImage';
 
 class SbSectiontHeaderView extends Component {
 
@@ -73,7 +74,7 @@ class ActivityOneView extends Component {
         console.log(this.props);
         return (
             <View>
-                <ImageLoad
+                <PreLoadImage
                     imageUri={imageUrl}
                     style={[
                         ActivityOneViewStyles.bgImageStyle,
