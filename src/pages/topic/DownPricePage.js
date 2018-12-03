@@ -17,7 +17,8 @@ import TotalTopicDataModel from './model/SubTopicModel';
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from 'DesignRule';
-import ImageLoad from '@mr/image-placeholder'
+// import ImageLoad from '@mr/image-placeholder'
+import PreLoadImage from '../../components/ui/preloadImage/PreLoadImage';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -179,12 +180,11 @@ export default class DownPricePage extends BasePage {
                     />
                 }
             >
-                <ImageLoad
+
+                <PreLoadImage
+                    // source={{uri:imgUrl}}
                     imageUri={imgUrl}
-                    style={{
-                        width: ScreenUtils.width,
-                        height: ScreenUtils.width * 7 / 15
-                    }}
+                    style={Styles.topBannerImageStyle}
                 />
 
                 {
@@ -259,5 +259,9 @@ const Styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
+    },
+    topBannerImageStyle:{
+        width: ScreenUtils.width,
+        height: ScreenUtils.width * 7 / 15
     }
 });

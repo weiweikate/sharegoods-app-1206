@@ -17,10 +17,8 @@ class ShopCartCacheTool {
             //登录同步数据
             this.synchronousData();
         }
-
         return (!!(user.id));
     }
-
     /**
      * 删除本地数据
      */
@@ -96,7 +94,6 @@ class ShopCartCacheTool {
             });
         }
     }
-
     /*
     * 参数对象必须包括参数
     * "amount": 10, 商品数量
