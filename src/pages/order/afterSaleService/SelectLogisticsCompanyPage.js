@@ -11,8 +11,9 @@ import {
 } from "react-native";
 import BasePage from '../../../BasePage';
 import {
-    UIText, UIImage
+    UIText
 } from '../../../components/ui';
+import UIImage from "@mr/image-placeholder";
 import OrderApi from "../api/orderApi";
 import DesignRule from 'DesignRule';
 

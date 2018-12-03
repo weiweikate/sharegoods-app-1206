@@ -17,7 +17,7 @@ import BasePage from '../../BasePage'
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
 }}>
-    <Image style={styles.goodImg} source={{ uri: data.headImg ? data.headImg : '' }}/>
+    <ImageLoad style={styles.goodImg} source={{ uri: data.headImg ? data.headImg : '' }}/>
     <View style={styles.goodDetail}>
         <Text style={styles.name}>{data.name}</Text>
         <View style={{ height: px2dp(4) }}/>

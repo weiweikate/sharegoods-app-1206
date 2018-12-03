@@ -2,8 +2,9 @@
  * 秀场banner
  */
 import React, { Component } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
+import UIImage from "@mr/image-placeholder";
 
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
@@ -19,7 +20,7 @@ export default class ShowBannerView extends Component {
 
     renderRow(item) {
         return <View style={styles.imgView}>
-            <Image style={styles.img} source={{ uri: item.imgUrl }}/>
+            <UIImage style={styles.img} source={{ uri: item.imgUrl }}/>
         </View>;
     }
 

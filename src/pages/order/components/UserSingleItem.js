@@ -9,6 +9,7 @@ import {
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import ImageLoad from '@mr/image-placeholder'
 const {right_arrow} = res;
 
 const UserSingleItem = props => {
@@ -65,7 +66,7 @@ const UserSingleItem = props => {
     this.renderheadImage = () => {
         return (
             headImage === '' ? null :
-                <Image source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
+                <ImageLoad source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
                        style={{ width: 30, height: 30, borderRadius: 15 }}/>
         );
     };

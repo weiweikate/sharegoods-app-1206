@@ -22,6 +22,7 @@ import {
 import ImageZoom from 'FlyImageZoom';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import ImageLoad from '@mr/image-placeholder'
 
 let staticStyle = {
     show: false,
@@ -603,7 +604,7 @@ export default class FlyImageViewer extends Component {
                                onLongPress={this.handleLongPress.bind(this, image)}
                                onClick={this.handleClick.bind(this)}
                                onDoubleClick={this.handleDoubleClick.bind(this)}>
-                        <Image style={[this.styles.imageStyle, { width: width, height: height }]}
+                        <ImageLoad style={[this.styles.imageStyle, { width: width, height: height }]}
                                source={{ uri: image }}/>
                     </ImageZoom>
                 );
@@ -621,7 +622,7 @@ export default class FlyImageViewer extends Component {
                         );
                     case 'success':
                         return (
-                            <Image key={index}
+                            <ImageLoad key={index}
                                    style={[this.styles.imageStyle, { width: width, height: height }]}
                                    source={{ uri: image }}/>
                         );
@@ -641,7 +642,7 @@ export default class FlyImageViewer extends Component {
                                        onDoubleClick={this.handleDoubleClick.bind(this)}>
                                 <TouchableOpacity key={index}
                                                   style={this.styles.failContainer}>
-                                    <Image source={this.props.failImageSource}
+                                    <ImageLoad source={this.props.failImageSource}
                                            style={this.styles.failImage}/>
                                 </TouchableOpacity>
                             </ImageZoom>

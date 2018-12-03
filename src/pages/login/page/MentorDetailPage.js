@@ -24,8 +24,8 @@ import { NavigationActions } from 'react-navigation';
 import UIText from '../../../comm/components/UIText';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
-import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import res from '../../../comm/res'
+import ImageLoad from '@mr/image-placeholder'
 
 
 export default class MentorDetailPage extends BasePage {
@@ -73,7 +73,7 @@ export default class MentorDetailPage extends BasePage {
                         {/*itemData={itemData}*/}
                         {/*isSelect={true}*/}
                     {/*/>*/}
-                    <PreLoadImage
+                    <ImageLoad
                         imageUri={itemData.headImg}
                         style={{
                             width:80,
