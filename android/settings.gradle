@@ -17,8 +17,8 @@ project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../n
 include ':react-native-webview-bridge'
 project(':react-native-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview-bridge/android')
 
-include ':react-native-geolocation'
-project(':react-native-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-geolocation/android')
+include ':geolocation'
+project(':geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/geolocation/android')
 
 include ':react-native-fetch-blob'
 project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fetch-blob/android')
@@ -31,3 +31,4 @@ include ':qiyu_service'
 include ':rn_deviceinfo'
 include ':qrcode'
 include ':permissionlib'
+include ':lottie'

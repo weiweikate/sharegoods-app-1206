@@ -417,6 +417,11 @@ class User {
         });
     }
 
+    @action
+    userShare(){
+        UserApi.userShare();
+    }
+
 
 }
 

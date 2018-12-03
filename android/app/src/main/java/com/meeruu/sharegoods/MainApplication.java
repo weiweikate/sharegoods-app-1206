@@ -23,6 +23,7 @@ import com.meeruu.qiyu.imService.QiyuImageLoader;
 import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
+import com.meeruu.sharegoods.rn.lottie.LottiePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
@@ -131,7 +132,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new LinearGradientPackage(),
                     new RNFetchBlobPackage(),
                     new CookieManagerPackage(),
-                    new WebViewBridgePackage()
+                    new WebViewBridgePackage(),
+                    new LottiePackage()
             );
         }
 

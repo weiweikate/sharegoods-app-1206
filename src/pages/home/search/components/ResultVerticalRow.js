@@ -13,10 +13,11 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import UIImage from "@mr/image-placeholder";
 const gwc = res.search.gwc;
 
 
-export default class SearchBar extends Component {
+export default class ResultVerticalRow extends Component {
 
     static propTypes = {
         onPressAtIndex: PropTypes.func.isRequired,
@@ -39,7 +40,7 @@ export default class SearchBar extends Component {
             }}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
-                        <Image style={styles.img} source={{ uri: product.imgUrl || '' }}/>
+                        <UIImage style={styles.img} source={{ uri: product.imgUrl || '' }}/>
                         <View style={styles.textContentView}>
                             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                   numberOfLines={2}>{`${name}`}</Text>

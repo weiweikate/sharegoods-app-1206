@@ -313,7 +313,11 @@ class SettingPage extends BasePage {
     };
     // 账户设置
     jumpToAccountSettingPage = () => {
-        this.$navigate('mine/setting/AccountSettingPage');
+        if (user.isLogin) {
+            this.$navigate('mine/setting/AccountSettingPage');
+        } else {
+            this.$navigate('login/login/LoginPage');
+        }
     };
 
     // 版本检测

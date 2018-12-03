@@ -13,6 +13,7 @@ import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
 import res from './res';
 import DesignRule from 'DesignRule';
+import Toast from '../../utils/bridge';
 
 const imgWidth = px2dp(168);
 
@@ -63,7 +64,16 @@ export default class ShowConnectPage extends BasePage {
         });
     }
 
-    _deleteSelected() {
+    _deleteSelected(ids) {
+        if (ids.length > 0) {
+            this.recommendModules.batchCancelConnected(ids).then(data => {
+                this._refreshData();
+                this.setState({ select: false });
+            });
+        }
+    }
+
+    _delete() {
         const { selectedList, allSelected } = this.state;
         let ids = [];
         if (allSelected) {
@@ -73,13 +83,12 @@ export default class ShowConnectPage extends BasePage {
         } else {
             ids = Object.keys(selectedList);
         }
-        this.recommendModules.batchCancelConnected(ids).then(data => {
-            this._refreshData();
-            this.setState({ select: false });
-        });
-    }
 
-    _delete() {
+        if (ids.length === 0) {
+            Toast.$toast('请选择要删除的文章')
+            return
+        }
+
         Alert.alert(
             '',
             '确定删除？',
@@ -87,7 +96,7 @@ export default class ShowConnectPage extends BasePage {
                 { text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
                 {
                     text: '确定', onPress: () => {
-                        this._deleteSelected();
+                        this._deleteSelected(ids);
                     }
                 }
             ],

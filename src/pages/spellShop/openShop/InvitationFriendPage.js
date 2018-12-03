@@ -3,7 +3,6 @@ import React from 'react';
 import {
     View,
     Text,
-    Image,
     ScrollView,
     StyleSheet,
     ImageBackground,
@@ -17,6 +16,8 @@ import bridge from '../../../utils/bridge';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import user from '../../../model/user'
+import UIImage from "@mr/image-placeholder";
 
 const Banner = res.openShop.yqhy_03;
 const Center = res.openShop.yqhy_04;
@@ -34,7 +35,7 @@ export default class InvitationToShopPage extends BasePage {
         super(props);
         this.state = {
             disable: false,
-            codeString: `${apiEnvironment.getCurrentH5Url()}/download`,
+            codeString: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
             wxTip: '分享至微信，为您的店铺增添活力'
         };
     }
@@ -112,7 +113,7 @@ export default class InvitationToShopPage extends BasePage {
                                     <View style={styles.topContainer}>
                                         {
                                             shareInfo.headUrl ?
-                                                <Image style={styles.topImg} source={{ uri: shareInfo.headUrl }}/> :
+                                                <UIImage style={styles.topImg} source={{ uri: shareInfo.headUrl }}/> :
                                                 <View style={styles.topImg}/>
                                         }
                                         <View style={{ justifyContent: 'space-between' }}>
