@@ -258,8 +258,8 @@ export default class TopicDetailPage extends BasePage {
             this.setState({
                 loadingState: PageLoadingState.success
             }, () => {
-                HomeAPI.getProductDetail({
-                    productCode: prodCode
+                HomeAPI.queryByProductCode({
+                    code: prodCode
                 }).then((data) => {
                     this.setState({
                         data: data.data || {}
