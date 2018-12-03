@@ -174,8 +174,8 @@ export default class ProductDetailPage extends BasePage {
         if (!prodCode) {
             return;
         }
-        HomeAPI.queryByProductId({
-            productId: prodCode
+        HomeAPI.queryByProductCode({
+            productCode: prodCode
         }).then((data) => {
             this.$loadingDismiss();
             let dataTemp = data.data || {};
@@ -491,7 +491,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { price, name, imgUrl, buyLimit, leftBuyNum, shareMoney, status, prodCode } = this.state.data || {};
+        const { minPrice, name, imgUrl, buyLimit, leftBuyNum, shareMoney, status, prodCode } = this.state.data || {};
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -545,7 +545,7 @@ export default class ProductDetailPage extends BasePage {
                             imageJson={{
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
-                                priceStr: `￥${price}`,
+                                priceStr: `￥${minPrice}`,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`
                             }}
                             webJson={{

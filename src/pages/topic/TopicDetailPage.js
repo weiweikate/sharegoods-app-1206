@@ -7,7 +7,7 @@ import {
     FlatList,
     Text,
     // TouchableWithoutFeedback,
-    TouchableOpacity,
+    TouchableOpacity
     // AsyncStorage,
     // ImageBackground
 } from 'react-native';
@@ -160,7 +160,7 @@ export default class TopicDetailPage extends BasePage {
                 code: this.params.activityCode
             }).then((data) => {
                 this.state.activityData = data.data || {};
-                this._getProductDetail(this.state.activityData.productId);
+                this._getProductDetail(this.state.activityData.prodCode);
             }).catch((error) => {
                 this._error(error);
             });
@@ -169,7 +169,7 @@ export default class TopicDetailPage extends BasePage {
                 code: this.params.activityCode
             }).then((data) => {
                 this.state.activityData = data.data || {};
-                this._getProductDetail(this.state.activityData.productId);
+                this._getProductDetail(this.state.activityData.prodCode);
             }).catch((error) => {
                 this._error(error);
             });
@@ -227,7 +227,7 @@ export default class TopicDetailPage extends BasePage {
         if (this.state.activityType !== 3 && (status === 4 || status === 5) && type === 1) {
             this.__timer__ = setTimeout(() => {
                 this.havePushDone = true;
-                this.$navigate('home/product/ProductDetailPage', { productId: this.state.activityData.productId });
+                this.$navigate('home/product/ProductDetailPage', { productCode: this.state.activityData.prodCode });
             }, 5000);
         }
     };
@@ -247,7 +247,7 @@ export default class TopicDetailPage extends BasePage {
         return superStatus;
     };
 
-    _getProductDetail = (productId) => {
+    _getProductDetail = (prodCode) => {
         let superStatus = this._getSuperStatus();
         if (superStatus === 0) {
             this.setState({
@@ -259,7 +259,7 @@ export default class TopicDetailPage extends BasePage {
                 loadingState: PageLoadingState.success
             }, () => {
                 HomeAPI.getProductDetail({
-                    id: productId
+                    productCode: prodCode
                 }).then((data) => {
                     this.setState({
                         data: data.data || {}
@@ -386,10 +386,15 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderItem = () => {
-        let { product = {} } = this.state.data;
+        let { content = '' } = this.state.data;
         if (this.state.selectedIndex === 0) {
+            content = content.split(',') || [];
+            let html = '';
+            content.forEach((item) => {
+                html = `${html}<p><img src=${item}></p>`;
+            });
             return <View>
-                <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
+                <HTML html={html}
                       imagesMaxWidth={ScreenUtils.width}
                       imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                       containerStyle={{ backgroundColor: '#fff' }}/>
@@ -598,10 +603,9 @@ export default class TopicDetailPage extends BasePage {
             productName = name;
             productImgUrl = imgUrl;
         } else {
-            const { price = 0, product = {} } = this.state.data || {};
-            const { name = '', imgUrl } = product;
-            productPrice = price;
-            productName = `${name}`;
+            const { minPrice, name, imgUrl } = this.state.data || {};
+            productPrice = minPrice;
+            productName = name;
             productImgUrl = imgUrl;
         }
 

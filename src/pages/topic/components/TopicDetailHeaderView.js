@@ -71,11 +71,10 @@ export default class TopicDetailHeaderView extends Component {
             levelTypeName = userLevelTypeName;
             afterSaleServiceDaysTT = aferServiceDays;
         } else {
-            const { productImgList = [], freight, monthSaleTotal, product = {} } = this.props.data || {};
-            const { name, afterSaleServiceDays, videoUrl, imgUrl } = product;
+            const { imgFileList, freight, monthSaleCount, name, afterSaleServiceDays, videoUrl, imgUrl } = this.props.data || {};
 
             //有视频第一个添加为视频
-            let productImgListTemp = [...productImgList];
+            let productImgListTemp = [...(imgFileList || [])];
             if (StringUtils.isNoEmpty(videoUrl)) {
                 this.state.haveVideo = true;
                 productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
@@ -86,7 +85,7 @@ export default class TopicDetailHeaderView extends Component {
             bannerImgList = productImgListTemp;
             tittle = `${name}`;
             freightValue = freight;
-            monthSale = monthSaleTotal;
+            monthSale = monthSaleCount;
             afterSaleServiceDaysTT = afterSaleServiceDays;
         }
         return (
