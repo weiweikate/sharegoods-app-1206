@@ -6,28 +6,30 @@ import {
     Image,
     Dimensions,
     StyleSheet,
-    ScrollView,
+    ScrollView
 } from 'react-native';
+
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import res from '../res';
+
 const BgIcon = res.shopSetting.bg_07;
 const StarIcon = res.shopSetting.wjx_03;
 
 export default class ShopScorePage extends BasePage {
 
     $navigationBarOptions = {
-        title: '店铺评分',
+        title: '店铺评分'
     };
 
     _render() {
 
         const storeStar = this.params.storeData.storeStarId || 0;
         const starsArr = [];
-        if(storeStar && typeof storeStar === "number"){
-            for(let i = 0; i < storeStar; i++){
+        if (storeStar && typeof storeStar === 'number') {
+            for (let i = 0; i < storeStar; i++) {
                 i <= 2 && starsArr.push(i);
             }
         }
@@ -37,17 +39,18 @@ export default class ShopScorePage extends BasePage {
         const t2 = '如果是商城店铺，就不用为信誉等级顾虑，如果是淘宝C店，升级方式就是有销售，每一笔销售产生一个信誉评价，信誉评价的累积就是等级的累积。';
 
         return (
-            <View style={{flex:1}}>
+            <View style={{ flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.whitePanel}>
                         <View style={styles.starContainer}>
                             {
-                                starsArr.map((item,index)=>{
-                                    return <Image key={index} style={[index ? {marginLeft: 35} : null]} source={StarIcon}/>
+                                starsArr.map((item, index) => {
+                                    return <Image key={index} style={[index ? { marginLeft: 35 } : null]}
+                                                  source={StarIcon}/>;
                                 })
                             }
                         </View>
-                        <Text style={styles.shopLevel}>{this.params.storeData.starName || '店铺'}</Text>
+                        <Text style={styles.shopLevel}>{this.params.storeData.starName || '' + '店铺'}</Text>
                     </View>
                     <View style={styles.content}>
 
@@ -87,24 +90,24 @@ const styles = StyleSheet.create({
         height: WhitePanelHeight,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        backgroundColor: 'white',
+        backgroundColor: 'white'
     },
     starContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 32 / 128 * WhitePanelHeight,
+        marginBottom: 32 / 128 * WhitePanelHeight
     },
     shopLevel: {
         fontSize: 15,
         color: DesignRule.textColor_mainTitle,
-        marginBottom: 16 / 128 * WhitePanelHeight,
+        marginBottom: 16 / 128 * WhitePanelHeight
     },
     content: {
         alignItems: 'center',
         width: SCREEN_WIDTH,
         paddingHorizontal: 25,
-        marginTop: 12,
+        marginTop: 12
     },
     title: {
         marginTop: 16,
@@ -119,10 +122,10 @@ const styles = StyleSheet.create({
     },
     img: {
         marginTop: 18,
-        width: SCREEN_WIDTH - 50 ,
+        width: SCREEN_WIDTH - 50,
         height: 184 / 328 * (SCREEN_WIDTH - 50)
     },
-    gap:{
+    gap: {
         height: 25
     }
 });

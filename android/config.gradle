@@ -12,13 +12,14 @@ ext {
             applicationId    : "com.meeruu.sharegoods",
             minSdkVersion    : 16,
             targetSdkVersion : 27,
-            versionCode      : 103,
-            versionName      : "1.0.3"
+            versionCode      : 1042,
+            versionName      : "1.0.4.2"
     ]
 
     dependencies = [
             //此处是27.+，需要在rn中做排除
             support     : 'com.android.support:appcompat-v7:27.1.1',
+            recyclerview: 'com.android.support:recyclerview-v7:27.1.1',
             rn          : 'com.facebook.react:react-native:+',
             design      : 'com.android.support:design:27.1.1',
             eventbus    : 'org.greenrobot:eventbus:3.0.0',
@@ -30,6 +31,6 @@ ext {
             exoplayer   : 'com.google.android.exoplayer:exoplayer:2.7.3',
             exopOKhttp  : 'com.google.android.exoplayer:extension-okhttp:2.7.3',
             multidex    : 'com.android.support:multidex:1.0.3',
-            recyclerview: 'com.android.support:recyclerview-v7:27.1.1'
+            recyclerview: 'com.android.support:recyclerview-v7:27.1.1',
     ]
 }

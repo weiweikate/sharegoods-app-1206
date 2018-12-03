@@ -7,10 +7,11 @@ import {
     Text
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+// import ImageLoad from '@mr/image-placeholder'
 import PropTypes from 'prop-types';
 import DesignRule from 'DesignRule';
 import { getShowPrice } from '../model/TopicMudelTool';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 export default class TopicItemView extends Component {
 

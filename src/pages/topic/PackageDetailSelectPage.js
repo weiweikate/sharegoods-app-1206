@@ -5,8 +5,7 @@ import {
     TouchableWithoutFeedback,
     Text,
     ScrollView,
-    TouchableOpacity,
-    Image
+    TouchableOpacity,Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
@@ -14,6 +13,7 @@ import bridge from '../../utils/bridge';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
 import res from './res';
+import UIImage from "@mr/image-placeholder";
 
 const icon_close = res.button.close_gray_circle;
 
@@ -188,7 +188,7 @@ export default class TopicDetailSelectPage extends Component {
 
                     <View style={{ flex: 1 }}>
                         <View style={{ backgroundColor: 'transparent' }}>
-                            <Image style={{
+                            <UIImage style={{
                                 height: 107,
                                 width: 107,
                                 borderColor: DesignRule.lineColor_inColorBg,

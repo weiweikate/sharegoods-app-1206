@@ -228,6 +228,7 @@ class SettingPage extends BasePage {
                     // 正常退出，或者登录超时，都去清空数据
                     user.clearUserInfo();
                     user.clearToken();
+                    bridge.clearCookies();
                     //清空购物车
                     shopCartStore.data = [];
                     this.$navigateBackToHome();
@@ -312,7 +313,11 @@ class SettingPage extends BasePage {
     };
     // 账户设置
     jumpToAccountSettingPage = () => {
-        this.$navigate('mine/setting/AccountSettingPage');
+        if (user.isLogin) {
+            this.$navigate('mine/setting/AccountSettingPage');
+        } else {
+            this.$navigate('login/login/LoginPage');
+        }
     };
 
     // 版本检测
@@ -343,7 +348,7 @@ class SettingPage extends BasePage {
             Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
         } else {
             // 更新app
-            NativeModules.commModule.updateable(JSON.stringify(this.state.updateData), false);
+            NativeModules.commModule.updateable(JSON.stringify(this.state.updateData), false, null);
         }
     };
 }

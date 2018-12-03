@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ProgressBarView from './ProgressBarView';
-import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+// import ImageLoad from '@mr/image-placeholder'
 import PropTypes from 'prop-types';
 import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
@@ -17,6 +17,7 @@ import bridge from '../../../utils/bridge';
 import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 const noGoodImg = res.other.noGoodImg;
 const zhuanti_jieshu = res.zhuanti_jieshu;
 

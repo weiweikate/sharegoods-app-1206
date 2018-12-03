@@ -4,16 +4,14 @@ import {
     View,
     ScrollView,
     ImageBackground,
-    Image,
-    Platform,
-    Linking,
+    // Platform,
+    // Linking,
     Text,
     TouchableWithoutFeedback,
     RefreshControl, DeviceEventEmitter
 } from "react-native";
 import BasePage from "../../../BasePage";
 import UIText from "../../../components/ui/UIText";
-import UIImage from "../../../components/ui/UIImage";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
@@ -28,6 +26,8 @@ import res from "../res";
 import EmptyUtils from "../../../utils/EmptyUtils";
 import WaveView from "WaveView";
 import MessageApi from "../../message/api/MessageApi";
+import ImageLoad from "@mr/image-placeholder";
+import UIImage from "../../../components/ui/UIImage";
 
 const {
     mine_header_bg,
@@ -45,14 +45,14 @@ const {
     mine_icon_favorite_shop,
     mine_icon_help_service,
     mine_icon_address,
-    mine_icon_notificate,
-    mine_icon_mission,
+    // mine_icon_mission,
     mine_icon_discollect,
     mine_message_icon_white,
     mine_setting_icon_white,
     arrowRight,
     profile_banner,
-    mine_level_background
+    mine_level_background,
+    mine_icon_mentor
 } = res.homeBaseImg;
 
 
@@ -137,8 +137,8 @@ export default class MinePage extends BasePage {
             }
         }).catch((error) => {
             this.setState({
-                hasMessage:false
-            })
+                hasMessage: false
+            });
         });
     };
 
@@ -264,7 +264,7 @@ export default class MinePage extends BasePage {
                             {this.state.hasMessage ? <View style={{
                                 width: 10,
                                 height: 10,
-                                backgroundColor: this.state.changeHeader ?  DesignRule.white:DesignRule.mainColor ,
+                                backgroundColor: this.state.changeHeader ? DesignRule.white : DesignRule.mainColor,
                                 position: "absolute",
                                 top: -3,
                                 right: -3,
@@ -285,12 +285,12 @@ export default class MinePage extends BasePage {
             </Text>
         ) : null;
 
-        let name = '';
+        let name = "";
 
-        if(EmptyUtils.isEmpty(user.nickname)){
+        if (EmptyUtils.isEmpty(user.nickname)) {
             name = user.phone ? user.phone : "未登陆";
-        }else {
-            name = user.nickname.length > 6 ? user.nickname.substring(0,6)+'...' : user.nickname;
+        } else {
+            name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + "..." : user.nickname;
         }
 
         return (
@@ -300,7 +300,7 @@ export default class MinePage extends BasePage {
                         {
                             StringUtils.isEmpty(user.headImg) ?
                                 <View style={[styles.userIconStyle, { backgroundColor: "gray" }]}/> :
-                                <Image source={{ uri: user.headImg }} style={styles.userIconStyle}/>
+                                <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle} borderRadius={27}/>
                         }
                     </TouchableWithoutFeedback>
                     <View style={{
@@ -313,15 +313,15 @@ export default class MinePage extends BasePage {
                                 <Text
                                     maxLength={6}
                                     style={{
-                                    color: DesignRule.white,
-                                    fontSize: px2dp(18),
-                                    includeFontPadding: false
-                                }}>
+                                        color: DesignRule.white,
+                                        fontSize: px2dp(18),
+                                        includeFontPadding: false
+                                    }}>
                                     {name}
                                 </Text>
-                                <Image source={mine_icon_right}
-                                       style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
-                                       resizeMode={"stretch"}/>
+                                <UIImage source={mine_icon_right}
+                                         style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
+                                         resizeMode={"stretch"}/>
                             </View>
                         </TouchableWithoutFeedback>
                         {accreditID}
@@ -402,13 +402,13 @@ export default class MinePage extends BasePage {
                     flexDirection: "row",
                     justifyContent: "space-between"
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance?user.availableBalance:'0.00', false), "现金账户", () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : "0.00", false), "现金账户", () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(user.userScore ?user.userScore+'': "0", "秀豆账户", () => {
+                    {this.accountItemView(user.userScore ? user.userScore + "" : "0", "秀豆账户", () => {
                         this.go2CashDetailPage(2);
                     })}
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance?user.blockedBalance:'0.00', false), "待提现账户", () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : "0.00", false), "待提现账户", () => {
                         this.go2CashDetailPage(3);
                     })}
 
@@ -583,8 +583,8 @@ export default class MinePage extends BasePage {
                                         fontSize: DesignRule.fontSize_24,
                                         color: DesignRule.textColor_instruction
                                     }}/>
-                            <Image source={arrowRight} style={{ height: 12, marginLeft: 6 }}
-                                   resizeMode={"contain"}/>
+                            <UIImage source={arrowRight} style={{ height: 12, marginLeft: 6 }}
+                                     resizeMode={"contain"}/>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
@@ -664,7 +664,7 @@ export default class MinePage extends BasePage {
                 this.$navigate("ShowListPage");
 
             }}>
-                <Image style={styles.makeMoneyMoreBackground} source={profile_banner}/>
+                <UIImage style={styles.makeMoneyMoreBackground} source={profile_banner}/>
             </TouchableWithoutFeedback>
         );
     };
@@ -729,8 +729,9 @@ export default class MinePage extends BasePage {
     }
 
     renderMenu = () => {
-        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_notificate, mine_icon_mission, mine_icon_discollect];
-        let leftText = ["邀请好友", "优惠券", "我的晋升", "收藏店铺", "帮助与客服", "地址", "我的推广", "我的任务", "秀场收藏"];
+
+        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect, mine_icon_discollect,user.upUserid?mine_icon_mentor:null];
+        let leftText = ["邀请好友", "优惠券", "我的晋升", "收藏店铺", "帮助与客服", "地址", "秀场收藏", "测试h5的交互",user.upUserid ?'导师':null];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
@@ -742,8 +743,8 @@ export default class MinePage extends BasePage {
                     marginTop: 10,
                     marginBottom: 10
                 }} onPress={() => this.orderMenuJump(i)} key={i}>
-                    <Image source={leftImage[i]}
-                           style={{ height: i === 0 ? 19 : 18, width: 20, marginBottom: 10 }}/>
+                    <UIImage source={leftImage[i]}
+                             style={{ height: i === 0 ? 19 : 18, width: 20, marginBottom: 10 }}/>
                     <UIText value={leftText[i]} style={styles.greyText}/>
                 </NoMoreClick>
             );
@@ -817,26 +818,35 @@ export default class MinePage extends BasePage {
             case 5:
                 this.props.navigation.navigate(RouterMap.AddressManagerPage);
                 break;
+            // case 6:
+            //     this.props.navigation.navigate(RouterMap.UserPromotionPage);
+            //     break;
+            // case 6:
+            //     this.props.navigation.navigate(RouterMap.ShareTaskListPage);
+                break;
             case 6:
-                this.props.navigation.navigate(RouterMap.UserPromotionPage);
-                break;
-            case 7:
-                this.props.navigation.navigate(RouterMap.ShareTaskListPage);
-                break;
-            case 8:
                 this.props.navigation.navigate(RouterMap.ShowConnectPage);
                 break;
             //邀请评分
-            case 9:
-                //
-                const appId = "1";
-                const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
-                Platform.OS === "ios" && Linking.canOpenURL(url).then(() => {
-                    Linking.openURL(url);
-                }).catch(e => {
-                    console.warn(e);
-                    // Toast.toast('无法前往AppStore');
-                });
+            // case 10:
+            //     //
+            //     const appId = "1";
+            //     const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
+            //     Platform.OS === "ios" && Linking.canOpenURL(url).then(() => {
+            //         Linking.openURL(url);
+            //     }).catch(e => {
+            //         console.warn(e);
+            //         // Toast.toast('无法前往AppStore');
+            //     });
+            //     break;
+            //邀请评分
+            case 7:
+                this.props.navigation.navigate(RouterMap.WebViewDemo);
+                break;
+            case 8:
+                if(user.upUserid){
+                    this.props.navigation.navigate(RouterMap.MyMentorPage);
+                }
                 break;
             default:
 

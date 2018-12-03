@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 // 图片资源
 import res from '../../res';
+
 const HeaderBarBgImg = res.shopRecruit.bg_02;
 const Shape = res.shopRecruit.Shape;
 const shoushi = res.shopRecruit.shoushi;
@@ -29,7 +30,7 @@ export default class RecommendRow extends Component {
     _judgeCanOpenShop = () => {
         let { storeUserList, maxUser } = this.props.storeData;
         storeUserList = storeUserList || [];
-        return maxUser && maxUser <= storeUserList.length ? '已满足拼店要求' : '尚未满足拼店要求';
+        return maxUser && maxUser <= storeUserList.length ? '已满足人员要求' : '尚未满足人员要求';
     };
 
     _renderItems = (img, tittle, content) => {
@@ -63,10 +64,8 @@ export default class RecommendRow extends Component {
                 }}>
                     <Image source={{ uri: headUrl }} style={styles.shopIcon}/>
                     <View style={{ justifyContent: 'center' }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.shopName}>{name || ''}</Text>
-                            <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
-                        </View>
+                        <Text style={styles.shopName}>{name || ''}</Text>
+                        <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
                         <Text style={{
                             fontSize: 11,
                             color: '#FFFFFF',
@@ -124,14 +123,14 @@ const styles = StyleSheet.create({
         marginRight: 10,
         width: 60,
         height: 60,
-        borderRadius: 30,
+        borderRadius: 30
     },
     shopName: {
         fontSize: 13,
         color: '#FFFFFF'
     },
     shopId: {
-        marginLeft: ScreenUtils.autoSizeWidth(30),
+        marginTop: 5,
         fontSize: 11,
         color: '#FFFFFF'
     },

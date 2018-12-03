@@ -10,6 +10,7 @@ import {
     ImageBackground,
     TouchableOpacity
 } from 'react-native';
+import UIImage from "@mr/image-placeholder";
 //Source
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -20,6 +21,7 @@ import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import res from '../res';
+
 const RingImg = res.myShop.headBg;
 const HeaderBarBgImg = res.myShop.txbg_03;
 const NameIcon = res.myShop.icon_03;
@@ -27,7 +29,6 @@ const StarIcon = res.myShop.icon_03_02;
 const CodeIcon = res.myShop.icon_03_03;
 const PhoneIcon = res.myShop.icon_03_04;
 const QbIcon = res.myShop.dzfhj_03_03;
-const detail_cishu = res.myShop.detail_cishu;
 const MoneyIcon = res.myShop.ccz_03;
 const detail_zongti = res.myShop.detail_zongti;
 const detail_benci = res.myShop.detail_benci;
@@ -125,7 +126,7 @@ export default class ShopAssistantDetailPage extends BasePage {
         const { userInfo } = this.state;
         const headerWidth = 65 / 375 * SCREEN_WIDTH;
 
-        const { updateTime, dealerTotalBonusCount, dealerTotalBonus, dealerThisTimeBonus } = this.state.userInfo;
+        const { updateTime, dealerTotalBonus, dealerThisTimeBonus } = this.state.userInfo;
 
         //dealerTotalBonusCount参与店铺分红次数
         //dealerTotalBonus(店员所有) -dealerThisTimeBonus(未分红) 获得分红总额
@@ -143,7 +144,7 @@ export default class ShopAssistantDetailPage extends BasePage {
                                          style={styles.headerBg}>
                             {
                                 userInfo.headImg ?
-                                    <Image
+                                    <UIImage
                                         style={{
                                             width: headerWidth,
                                             height: headerWidth,
@@ -161,8 +162,6 @@ export default class ShopAssistantDetailPage extends BasePage {
                     </View>
                 </ImageBackground>
                 {this._renderRow(QbIcon, '加入店铺时间', DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
-                {this.renderSepLine()}
-                {this._renderRow(detail_cishu, '参与店铺分红次数', `${dealerTotalBonusCount || 0}次`)}
                 {this.renderSepLine()}
                 {this._renderRow(MoneyIcon, '共获得分红总额', `${((dealerTotalBonus || 0) - (dealerThisTimeBonus || 0))}元`)}
                 {this.renderSepLine()}

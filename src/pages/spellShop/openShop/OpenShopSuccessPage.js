@@ -20,7 +20,7 @@ const SuccessImg = res.button.tongyon_icon_check_green;
 export default class OpenShopSuccessPage extends BasePage {
 
     $navigationBarOptions = {
-        title: '开店成功'
+        title: '拼店开店成功'
     };
 
     _clickEnterShop = () => {
@@ -47,7 +47,7 @@ export default class OpenShopSuccessPage extends BasePage {
                     <Image source={SuccessImg} style={styles.icon}/>
 
                     <Text style={styles.desc}>
-                        恭喜你，开店成功
+                        开店成功
                     </Text>
 
                     <View style={{ flexDirection: 'row', marginTop: 79 }}>

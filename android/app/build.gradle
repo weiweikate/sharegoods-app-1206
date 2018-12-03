@@ -1,5 +1,4 @@
 apply plugin: rootProject.ext.plugins.application
-import com.android.build.OutputFile
 
 project.ext.react = [
         entryFile: "index.js"
@@ -8,7 +7,6 @@ project.ext.react = [
 apply from: "../../node_modules/react-native/react.gradle"
 
 def enableSeparateBuildPerCPUArchitecture = false
-
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -24,6 +22,9 @@ android {
         versionName rootProject.ext.android.versionName
         ndk {
             abiFilters "armeabi-v7a", "x86"
+        }
+        javaCompileOptions {
+            annotationProcessorOptions { includeCompileClasspath = true }
         }
     }
     dexOptions {
@@ -67,19 +68,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    // applicationVariants are e.g. debug, release
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            // For each separate APK per architecture, set a unique version code as described here:
-            // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a": 1, "x86": 2]
-            def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {  // null for the universal-debug, universal-release variants
-                output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
-            }
-        }
-    }
     repositories {
         maven {
             url "http://maven.aliyun.com/nexus/content/repositories/releases"
@@ -88,9 +76,7 @@ android {
 }
 
 dependencies {
-
     api fileTree(include: ['*.jar'], dir: 'libs')
-
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.2') {
         exclude(module: 'support-core-utils')
     }
@@ -120,10 +106,13 @@ dependencies {
     api project(':react-native-svg')
     api project(':react-native-image-picker')
     api project(':react-native-linear-gradient')
-    api project(':react-native-geolocation')
+    api project(':geolocation')
     api project(':react-native-fetch-blob')
     api project(':rn_deviceinfo')
-    api project(path: ':commonlib')
-    api project(path: ':qiyu_service')
-    api project(path: ':qrcode')
+    api project(':react-native-cookies')
+    api project(':react-native-webview-bridge')
+    api project(':commonlib')
+    api project(':qiyu_service')
+    api project(':qrcode')
+    api project(':lottie')
 }

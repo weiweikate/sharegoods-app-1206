@@ -2,8 +2,9 @@
  * 秀场banner
  */
 import React, { Component } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
+import UIImage from "@mr/image-placeholder";
 
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
@@ -19,7 +20,7 @@ export default class ShowBannerView extends Component {
 
     renderRow(item) {
         return <View style={styles.imgView}>
-            <Image style={styles.img} source={{ uri: item.imgUrl }}/>
+            <UIImage style={styles.img} source={{ uri: item.imgUrl }}/>
         </View>;
     }
 
@@ -60,7 +61,7 @@ export default class ShowBannerView extends Component {
     _onDidScrollToIndex(e) {
         this.setState({ index: e.nativeEvent.index });
     }
-
+c
     _onDidChange(item, changeIndex) {
         const { index } = this.state;
         if (index !== changeIndex) {
@@ -79,7 +80,10 @@ export default class ShowBannerView extends Component {
         });
         return <View style={styles.container}>
             <MRBannerView
-                style={[{ height: px2dp(175), width: ScreenUtils.width }]}
+                style={{
+                    height: px2dp(175),
+                    width: ScreenUtils.width
+                }}
                 imgUrlArray={items}
                 itemWidth={px2dp(300)}
                 itemSpace={px2dp(10)}
