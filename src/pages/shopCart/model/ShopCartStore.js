@@ -222,19 +222,8 @@ class ShopCartStore {
             itemData
         ).then((res) => {
             this.needSelectGoods.push(itemData)
-            this.getShopCartListData()
-            // let [...temDataArr] = this.data.slice();
-            // if (itemData.amount > 200){
-            //     itemData.amount = 200
-            //     bridge.$toast('单个商品最多加入200件')
-            // }
-            // temDataArr.map((itemValue, indexPath) => {
-            //     if (itemValue.priceId === itemData.priceId && itemValue.productId === itemData.productId) {
-            //         temDataArr[indexPath] = itemData;
-            //     }
-            // });
-            // this.data = temDataArr;
-            // this.data.splice()[[rowId]] = itemData
+            // this.getShopCartListData()
+            this.packingShopCartGoodsData(res.data);
         }).catch(error => {
             //登陆失效
             if (error.code === 10001) {
@@ -272,21 +261,21 @@ class ShopCartStore {
             //不存在本地缓存
         }
     };
+
     /*请求购物车商品*/
     getShopCartListData = () => {
+        this.setRefresh(true);
         ShopCartAPI.list().then(result => {
+            this.setRefresh(false);
             bridge.hiddenLoading();
             //组装购物车数据
             this.packingShopCartGoodsData(result.data);
-            this.setRefresh(false);
         }).catch(error => {
             bridge.hiddenLoading();
             bridge.$toast(error.msg);
             this.setRefresh(false);
         });
     };
-
-
     /*加入购物车*/
     addItemToShopCart(item) {
         if (item) {
@@ -334,7 +323,8 @@ class ShopCartStore {
              cacheList:oneMoreList
          }).then(result => {
             //添加完成再次拉取
-             this.getShopCartListData()
+            //  this.getShopCartListData()
+             this.packingShopCartGoodsData(result.data);
          }).catch(reason => {
              bridge.$toast(reason.msg)
          })
@@ -348,7 +338,7 @@ class ShopCartStore {
                 'priceId': priceId
             }).then(res => {
                 bridge.$toast('删除成功');
-                this.getShopCartListData();
+                this.packingShopCartGoodsData(res.data);
             }).catch(error => {
                 bridge.$toast(error.msg);
             });

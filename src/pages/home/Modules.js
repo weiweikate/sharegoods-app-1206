@@ -112,6 +112,7 @@ class HomeModule {
         recommendModule.loadRecommendList(this.firstLoad);
         subjectModule.loadSubjectList(this.firstLoad);
         this.page = 1;
+        this.isEnd = false
         this.homeList = [{
             id: 0,
             type: homeType.swiper

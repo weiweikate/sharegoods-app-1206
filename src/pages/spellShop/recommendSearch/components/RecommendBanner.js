@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import XGSwiper from '../../../../components/ui/XGSwiper';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import UIImage from "@mr/image-placeholder";
 
 export class RecommendBanner extends Component {
     constructor(props) {
@@ -34,7 +35,7 @@ export class RecommendBanner extends Component {
     _renderViewPageItem = (item) => {
         const { imgUrl } = item;
         return (
-            <Image style={{ width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(150) }}
+            <UIImage style={{ width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(230) }}
                    source={{ uri: imgUrl }}
                    resizeMode="cover"
             />);
@@ -44,7 +45,7 @@ export class RecommendBanner extends Component {
         const { bannerList } = this.props;
         return (
             <View>
-                <XGSwiper height={ScreenUtils.autoSizeWidth(150)} width={ScreenUtils.width}
+                <XGSwiper height={ScreenUtils.autoSizeWidth(230)} width={ScreenUtils.width}
                           renderRow={this._renderViewPageItem}
                           dataSource={EmptyUtils.isEmptyArr(bannerList) ? [] : bannerList}
                           onDidChange={(item, index) => {

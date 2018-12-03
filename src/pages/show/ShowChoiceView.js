@@ -11,7 +11,7 @@ import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule'
-import ImageLoad from '@mr/react-native-image-placeholder'
+import ImageLoad from '@mr/image-placeholder'
 import TimerMixin from 'react-timer-mixin'
 
 class Card extends Component {
@@ -52,7 +52,7 @@ class Card extends Component {
             <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
         </ImageLoad>
         <View style={styles.profileView}>
-            <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}}/>
+            <ImageLoad style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}} borderRadius={px2dp(15)}/>
             <Text style={styles.name}>{item.userName}</Text>
             <View style={{flex: 1}}/>
             <View style={styles.rightRow}>

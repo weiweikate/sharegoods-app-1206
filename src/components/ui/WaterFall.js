@@ -46,6 +46,7 @@ export class Column extends React.Component {
             data={this.state.data}
             keyExtractor={this.props.keyExtractor}
             renderItem={this.renderItem.bind( this )}
+            initialNumToRender={6}
           />
         </View>
       )
@@ -259,6 +260,7 @@ export default class Masonry extends React.Component {
           onScroll={
             this.props.infinite ? this._onInfinite.bind(this) : null
           }
+          showsVerticalScrollIndicator={false}
           scrollEventThrottle={100}>
           {this.props.renderHeader ? this.props.renderHeader() : null}
           <View style={[{flexDirection: 'row'}, this.props.containerStyle]}>

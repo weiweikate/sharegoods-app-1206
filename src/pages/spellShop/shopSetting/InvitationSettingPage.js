@@ -21,7 +21,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 export default class InvitationSettingPage extends BasePage {
 
     $navigationBarOptions = {
-        title: '开放店铺',
+        title: '店铺加入方式',
         rightNavTitle: '完成',
         rightTitleStyle: styles.rightItem
     };

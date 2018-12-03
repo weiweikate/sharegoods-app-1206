@@ -51,7 +51,7 @@ const activityString = {
 export default class ShopCartPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
-        title: '购物车',
+        title: '购物车更新2',
         leftNavItemHidden: true
 
 
@@ -75,18 +75,17 @@ export default class ShopCartPage extends BasePage {
             'didFocus',
             payload => {
                 if (this.contentList) {
-                    this.contentList.scrollTo({ x: 0, y: 10, animated: true });
+                    // this.contentList.scrollTo({ x: 0, y: 10, animated: true });
+                    // this.contentList.scrollTo({ x: 0, y: 0, animated: true });
                 }
                 shopCartCacheTool.getShopCartGoodsListData();
             }
         );
         // shopCartCacheTool.getShopCartGoodsListData();
     }
-
     componentWillUnmount() {
         this.didBlurSubscription.remove();
     }
-
     _render() {
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
@@ -563,7 +562,6 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
-        shopCartStore.isRefresh = true;
         shopCartCacheTool.getShopCartGoodsListData();
     };
     /**
@@ -613,6 +611,7 @@ export default class ShopCartPage extends BasePage {
                     productId: goods.productId
                 });
             });
+            this.$loadingShow()
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
@@ -620,27 +619,6 @@ export default class ShopCartPage extends BasePage {
                 }
             });
         }
-
-        // return;
-        // /*********************************/
-        // shopCartStore.judgeIsCanSettlement((isCan, goodArr) => {
-        //     if (isCan) {
-        //         let tempArr = [];
-        //         goodArr.map((goods) => {
-        //             tempArr.push({
-        //                 priceId: goods.priceId,
-        //                 num: goods.amount,
-        //                 productId: goods.productId
-        //             });
-        //         });
-        //         this.$navigate('order/order/ConfirOrderPage', {
-        //             orderParamVO: {
-        //                 orderType: 99,
-        //                 orderProducts: tempArr
-        //             }
-        //         });
-        //     }
-        // });
     };
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
@@ -689,6 +667,8 @@ export default class ShopCartPage extends BasePage {
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
+
+
         if (itemData.status === 0) {
             return;
         }

@@ -116,7 +116,7 @@ public class MainRNActivity extends ReactActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //继续下载apk
+        // 继续下载apk
         if (isDestroy && BaseApplication.getInstance().isDownload()) {
             Intent it = new Intent(MainRNActivity.this, VersionUpdateService.class);
             it.putExtra("version", lastVersion);

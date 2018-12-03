@@ -11,18 +11,24 @@ include ':react-native-linear-gradient'
 project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+
 include ':react-native-svg'
 project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
+include ':react-native-webview-bridge'
+project(':react-native-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview-bridge/android')
 
-include ':react-native-geolocation'
-project(':react-native-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-geolocation/android')
+include ':geolocation'
+project(':geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/geolocation/android')
 
 include ':react-native-fetch-blob'
 project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fetch-blob/android')
 
+include ':react-native-cookies'
+project(':react-native-cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-cookies/android')
 include ':app'
 include ':commonlib'
 include ':qiyu_service'
 include ':rn_deviceinfo'
 include ':qrcode'
 include ':permissionlib'
+include ':lottie'

@@ -66,6 +66,7 @@
 
     <application
         android:name=".application.SophixStubApplication"
+        android:largeHeap="true"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -305,6 +306,6 @@
         <!--&lt;!&ndash;高德地图定位&ndash;&gt;-->
         <!--<meta-data android:name="com.amap.api.v2.apikey" android:value="4a3ff7c2164aaf7d67a98fb9b88ae0e6">-->
         <!--</meta-data>-->
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService"/>
     </application>
 </manifest>

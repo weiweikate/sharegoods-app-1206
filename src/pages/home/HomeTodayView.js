@@ -9,7 +9,7 @@ import {observer} from 'mobx-react'
 import { homeModule } from './Modules'
 import { todayModule } from './HomeTodayModel'
 import DesignRule from 'DesignRule';
-import ImageLoad from '@mr/react-native-image-placeholder'
+import ImageLoad from '@mr/image-placeholder'
 
 const TodayItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <ImageLoad cacheable={true} style={styles.img} source={{uri: item.imgUrl}}/>

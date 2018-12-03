@@ -5,12 +5,19 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import Toast from './../../../utils/bridge';
 import { RSA } from '../../../api/network/RSA';
 
+var lastShowImagePickTime = null;
+
 export default {
     /**
      * callBack
      * @param callBack {ok: 是否上传成功，imageThumbUrl}
      */
      getImagePicker: (callBack) => {
+         let now = new Date().getTime();
+         if(lastShowImagePickTime !== null && now - lastShowImagePickTime < 1000){
+             return;
+         }
+         lastShowImagePickTime = now;
         const photoOptions = {
             title: '请选择', quality: 1,
             cancelButtonTitle: '取消',

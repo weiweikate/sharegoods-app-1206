@@ -3,6 +3,10 @@ import { View, StyleSheet, Image, TouchableOpacity, DeviceEventEmitter } from 'r
 import React from 'react';
 import NoMoreClick from '../ui/NoMoreClick';
 import res from '../../comm/res';
+import ScreenUtils from '../../utils/ScreenUtils'
+import ImageLoad from '@mr/image-placeholder'
+
+
 const addPic = res.placeholder.add_three_pticture;
 const deleteImage = res.button.delete_picture;
 
@@ -12,23 +16,22 @@ class AddPhotos extends Component {
         super(props);
         this.state = {
             photos: [],
-            maxNum: this.props.maxNum,
             maxTip: this.props.maxTip
         };
     }
 
     componentDidMount() {
         this.emitterListener = DeviceEventEmitter.addListener('AddPhotos', (event) => {
-            let arr = this.state.photos;
+            let arr = [...this.props.imageArr];
             arr.push(event);
-            this.setState({
-                photos: arr
-            });
             this.props.onArr && this.props.onArr(arr);
         });
     }
 
     renderAddItem = () => {
+        if (this.props.maxNum <= this.props.imageArr.length){
+            return null;
+        }
         return (
             <NoMoreClick onPress={() => this.props.addPic()}>
                 <Image style={styles.add_photo} source={addPic}/>
@@ -38,8 +41,8 @@ class AddPhotos extends Component {
 
     renderPhotoItem = (item, index) => {
         return (
-            <View style={{ marginRight: 8, marginBottom: 12 }} key={index}>
-                <Image style={styles.photo_item} source={{ uri: this.props.imageArr[index].imageUrl }}/>
+            <View style={{ marginRight: ScreenUtils.autoSizeWidth(5), marginBottom: 12 }} key={index}>
+                <ImageLoad style={styles.photo_item} source={{ uri: this.props.imageArr[index].imageUrl }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => {
                     this.props.deletePic(index);
                 }}>
@@ -51,7 +54,7 @@ class AddPhotos extends Component {
 
     render() {
         return (
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap' , paddingVertical: ScreenUtils.autoSizeWidth(10)}}>
                 {this.props.imageArr.map((item, index) => {
                     return this.renderPhotoItem(item, index);
                 })}
@@ -63,20 +66,17 @@ class AddPhotos extends Component {
 
 const styles = StyleSheet.create({
     add_photo: {
-        height: 83,
-        width: 83,
-        marginRight: 8
+        height: ScreenUtils.autoSizeWidth(108),
+        width: ScreenUtils.autoSizeWidth(108),
     },
     photo_item: {
-        height: 83,
-        width: 83,
+        height: ScreenUtils.autoSizeWidth(108),
+        width: ScreenUtils.autoSizeWidth(108),
         borderRadius: 3
     },
     delete_btn: {
-        width: 24,
-        height: 24,
         position: 'absolute',
-        left: 60 - 1
+        left: ScreenUtils.autoSizeWidth(108) - 24
     }
 });
 

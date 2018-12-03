@@ -13,7 +13,7 @@ import { bannerModule } from "./HomeBannerModel";
 
 const bannerHeight = px2dp(230);
 import MRBannerViewMode from "../../components/ui/bannerView/MRBannerViewMode";
-import OssImage from 'OssImage'
+import ImageLoad from '@mr/image-placeholder';
 @observer
 export default class HomeBannerView extends Component {
     state = {
@@ -23,7 +23,7 @@ export default class HomeBannerView extends Component {
     _renderViewPageItem(item) {
         return (
             <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(item)}>
-                <OssImage style={styles.img}
+                <ImageLoad style={styles.img}
                        source={{ uri: item }}/>
             </TouchableWithoutFeedback>
         );

@@ -3,12 +3,13 @@ import {
     View,
     StyleSheet,
     SectionList,
-    Image,
+    // Image,
     FlatList,
     Text,
-    TouchableWithoutFeedback,
-    TouchableOpacity, AsyncStorage,
-    ImageBackground
+    // TouchableWithoutFeedback,
+    TouchableOpacity,
+    // AsyncStorage,
+    // ImageBackground
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -28,17 +29,17 @@ import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 
-const { px2dp } = ScreenUtils;
+// const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
-import StringUtils from '../../utils/StringUtils';
-import CommModal from 'CommModal';
+// import StringUtils from '../../utils/StringUtils';
+// import CommModal from 'CommModal';
 import DetailNavView from '../home/product/components/DetailNavView';
 
-const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
-import res from './res';
+// const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
+// import res from './res';
 
-const redEnvelopeBg = res.other.red_big_envelope;
-const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
+// const redEnvelopeBg = res.other.red_big_envelope;
+// const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
 import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MessageAPI from '../message/api/MessageApi';
@@ -86,30 +87,30 @@ export default class TopicDetailPage extends BasePage {
 
 
     componentDidMount() {
-        this.getPromotion();
+        // this.getPromotion();
     }
 
-    getPromotion = async () => {
-        try {
-            const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
-            var currStr = new Date().getTime() + '';
-            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
-                    HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
-                        if (!EmptyUtils.isEmpty(data.data)) {
-                            this.setState({
-                                canGetCoupon: true,
-                                couponData: data.data
-                            });
-                            this.couponId = data.data.id;
-                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, currStr);
-                        }
-                    });
-                }
-            }
-        } catch (error) {
-        }
-    };
+    // getPromotion = async () => {
+    //     try {
+    //         const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
+    //         var currStr = new Date().getTime() + '';
+    //         if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
+    //             if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
+    //                 HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
+    //                     if (!EmptyUtils.isEmpty(data.data)) {
+    //                         this.setState({
+    //                             canGetCoupon: true,
+    //                             couponData: data.data
+    //                         });
+    //                         this.couponId = data.data.id;
+    //                         AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, currStr);
+    //                     }
+    //                 });
+    //             }
+    //         }
+    //     } catch (error) {
+    //     }
+    // };
 
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
@@ -130,26 +131,26 @@ export default class TopicDetailPage extends BasePage {
         this.__timer__ && clearInterval(this.__timer__);
     }
 
-    getCoupon = () => {
-        if (EmptyUtils.isEmpty(this.couponId)) {
-            this.setState({
-                canGetCoupon: false
-            });
-            this.$toastShow('领取失败！');
-        } else {
-            HomeAPI.givingPackageToUser({ id: this.couponId }).then((data) => {
-                this.setState({
-                    hasGetCoupon: true
-                });
-            }).catch((error) => {
-                this.setState({
-                    canGetCoupon: false
-                });
-                this.$toastShow(error.msg);
-            });
-
-        }
-    };
+    // getCoupon = () => {
+    //     if (EmptyUtils.isEmpty(this.couponId)) {
+    //         this.setState({
+    //             canGetCoupon: false
+    //         });
+    //         this.$toastShow('领取失败！');
+    //     } else {
+    //         HomeAPI.givingPackageToUser({ id: this.couponId }).then((data) => {
+    //             this.setState({
+    //                 hasGetCoupon: true
+    //             });
+    //         }).catch((error) => {
+    //             this.setState({
+    //                 canGetCoupon: false
+    //             });
+    //             this.$toastShow(error.msg);
+    //         });
+    //
+    //     }
+    // };
 
 
     //数据
@@ -376,7 +377,7 @@ export default class TopicDetailPage extends BasePage {
                                       activityData={this.state.activityData}
                                       navigation={this.props.navigation}
                                       showDetailModal={() => {
-                                          this.TopicDetailShowModal.show('降价拍规则', null, null, `降价拍活动规则说明：\n降价拍活动开启后，每到规定时间都降低销售价；\n什么时候降价？每个活动，每个商品的降价时间都是不固定的；\n参与降价拍的商品是有限的，而且每个商品的购买都是有限制的；\n降价拍活动时间？每个活动的时间都是规定的，直到商品拍卖结束位置；\n关于购买限制？每个用户购买成功后都会扣除购买机会，即时退款也无法增加购买次数；`);
+                                          this.TopicDetailShowModal.show('降价拍规则', null, null, `降价拍活动规则说明：\n降价拍活动开启后，每到规定时间都降低销售价；\n什么时候降价？每个活动，每个商品的降价时间都是不固定的；\n参与降价拍的商品是有限的，而且每个商品的购买都是有限制的；\n降价拍活动时间？每个活动的时间都是规定的，直到商品拍卖结束为止；\n关于购买限制？每个用户购买成功后都会扣除购买机会，即时退款也无法增加购买次数；`);
                                       }}/>;
     };
 
@@ -450,81 +451,81 @@ export default class TopicDetailPage extends BasePage {
         });
     };
 
-    _renderCouponModal = () => {
-
-        let view = (
-            <TouchableWithoutFeedback onPress={() => {
-                this.setState({
-                    canGetCoupon: false
-                });
-                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
-            }}>
-                <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
-                    <Text style={{ color: 'white', fontSize: px2dp(24) }}>
-                        领取成功
-                    </Text>
-                    <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
-                        可前往我的-
-                        <Text style={{ textDecorationLine: 'underline' }}>现金账户</Text>
-                        查看
-                    </Text>
-                </View>
-            </TouchableWithoutFeedback>
-        );
-
-        let button = (
-            <TouchableWithoutFeedback onPress={this.getCoupon}>
-                <Text
-                    style={{ position: 'absolute', top: px2dp(220), left: px2dp(115), color: '#80522A', fontSize: 14 }}>
-                    {`立即\n领取`}
-                </Text>
-            </TouchableWithoutFeedback>
-        );
-
-        return (
-            <CommModal visible={this.state.canGetCoupon}>
-                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
-                    <ImageBackground source={redEnvelopeBg} style={{
-                        height: px2dp(362), width: px2dp(257),
-                        alignItems: 'center'
-                    }}>
-                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
-                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}
-                        </Text>
-                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
-                            赠送了你一个红包
-                        </Text>
-
-                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
-                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price, false)}
-                            <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
-                                元
-                            </Text>
-                        </Text>
-                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(14), marginTop: 12 }}>
-                            红包抵扣金
-                        </Text>
-                        {this.state.hasGetCoupon ? null : button}
-
-                        {this.state.hasGetCoupon ? view : null}
-                    </ImageBackground>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.setState({
-                            canGetCoupon: false
-                        });
-                    }}>
-                        <Image source={tongyong_btn_close_white} style={{
-                            position: 'absolute',
-                            top: 107,
-                            right: 35,
-                            width: 24,
-                            height: 24
-                        }}/>
-                    </TouchableWithoutFeedback>
-                </View>
-            </CommModal>
-        );
-    };
+    // _renderCouponModal = () => {
+    //
+    //     let view = (
+    //         <TouchableWithoutFeedback onPress={() => {
+    //             this.setState({
+    //                 canGetCoupon: false
+    //             });
+    //             this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
+    //         }}>
+    //             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
+    //                 <Text style={{ color: 'white', fontSize: px2dp(24) }}>
+    //                     领取成功
+    //                 </Text>
+    //                 <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
+    //                     可前往我的-
+    //                     <Text style={{ textDecorationLine: 'underline' }}>现金账户</Text>
+    //                     查看
+    //                 </Text>
+    //             </View>
+    //         </TouchableWithoutFeedback>
+    //     );
+    //
+    //     let button = (
+    //         <TouchableWithoutFeedback onPress={this.getCoupon}>
+    //             <Text
+    //                 style={{ position: 'absolute', top: px2dp(220), left: px2dp(115), color: '#80522A', fontSize: 14 }}>
+    //                 {`立即\n领取`}
+    //             </Text>
+    //         </TouchableWithoutFeedback>
+    //     );
+    //
+    //     return (
+    //         <CommModal visible={this.state.canGetCoupon}>
+    //             <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
+    //                 <ImageBackground source={redEnvelopeBg} style={{
+    //                     height: px2dp(362), width: px2dp(257),
+    //                     alignItems: 'center'
+    //                 }}>
+    //                     <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
+    //                         {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}
+    //                     </Text>
+    //                     <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
+    //                         赠送了你一个红包
+    //                     </Text>
+    //
+    //                     <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
+    //                         {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price, false)}
+    //                         <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
+    //                             元
+    //                         </Text>
+    //                     </Text>
+    //                     <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(14), marginTop: 12 }}>
+    //                         红包抵扣金
+    //                     </Text>
+    //                     {this.state.hasGetCoupon ? null : button}
+    //
+    //                     {this.state.hasGetCoupon ? view : null}
+    //                 </ImageBackground>
+    //                 <TouchableWithoutFeedback onPress={() => {
+    //                     this.setState({
+    //                         canGetCoupon: false
+    //                     });
+    //                 }}>
+    //                     <Image source={tongyong_btn_close_white} style={{
+    //                         position: 'absolute',
+    //                         top: 107,
+    //                         right: 35,
+    //                         width: 24,
+    //                         height: 24
+    //                     }}/>
+    //                 </TouchableWithoutFeedback>
+    //             </View>
+    //         </CommModal>
+    //     );
+    // };
 
     _render() {
         let superStatus = this._getSuperStatus();
@@ -709,7 +710,7 @@ export default class TopicDetailPage extends BasePage {
                 <DetailNavShowModal ref={(ref) => {
                     this.DetailNavShowModal = ref;
                 }}/>
-                {this._renderCouponModal()}
+                {/*{this._renderCouponModal()}*/}
             </View>
         );
     };

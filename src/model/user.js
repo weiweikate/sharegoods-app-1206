@@ -150,6 +150,9 @@ class User {
     @observable
     levelCeil = null;
 
+    @observable
+    profile = null;
+
     @action getToken = () => {
         if (this.token) {
             return Promise.resolve(this.token);
@@ -255,14 +258,14 @@ class User {
         this.upUserid = info.upUserid;//上级ID，判断是否可以领推广红包
         this.levelFloor = info.levelFloor;//用户上个等级的顶部
         this.levelCeil = info.levelCeil; //升级需要的经验值
+        this.profile = info.profile;
         if (saveToDisk) {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
         }
         //同步本地购物车
         shopCartCacheTool.synchronousData();
-        //推送
-        // JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+
     }
     // 修改手机号
     @action
@@ -365,6 +368,7 @@ class User {
         this.upUserid = null;
         this.levelCeil = null;
         this.levelFloor = null;
+        this.profile = null; //简介
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
         // AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
@@ -411,6 +415,11 @@ class User {
             }
             return res.data;
         });
+    }
+
+    @action
+    userShare(){
+        UserApi.userShare();
     }
 
 

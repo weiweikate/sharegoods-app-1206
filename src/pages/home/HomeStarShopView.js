@@ -8,7 +8,7 @@ import { homeModule } from './Modules';
 import { starShopModule } from './HomeStarShopModel';
 import User from '../../model/user';
 import DesignRule from 'DesignRule';
-import ImageLoad from '@mr/react-native-image-placeholder';
+import ImageLoad from '@mr/image-placeholder';
 import res from './res';
 const starImg = res.star;
 
@@ -22,12 +22,12 @@ const starImg = res.star;
 
 
 const Banner = ({ backImage, title, press }) => <View style={styles.bannerContainer}>
-    <ImageBackground style={styles.bannerImg} source={backImage} cacheable={true}>
+    <ImageLoad style={styles.bannerImg} source={backImage} cacheable={true}>
         <Text style={styles.bannerTitle}>{title}</Text>
         <TouchableOpacity style={styles.joinBtn} onPress={() => press && press()}>
             <Text style={styles.join}>+ 申请加入</Text>
         </TouchableOpacity>
-    </ImageBackground>
+    </ImageLoad>
 </View>
 
 const Line = () => <View style={styles.line}/>;

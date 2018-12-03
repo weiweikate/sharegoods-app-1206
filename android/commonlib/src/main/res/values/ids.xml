@@ -2,6 +2,4 @@
 <resources>
     <item name="statusbarutils_fake_status_bar_view" type="id" />
     <item name="statusbarutils_translucent_view" type="id" />
-    <item name="viewpager_inner" type="id" />
-    <item name="tag" type="id"/>
 </resources>

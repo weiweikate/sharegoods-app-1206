@@ -25,6 +25,7 @@ import res from '../res';
 import OrderDetailStatusView from '../components/orderDetail/OrderDetailStatusView';
 import OrderDetailStateView from '../components/orderDetail/OrderDetailStateView';
 import DetailAddressView from '../components/orderDetail/DetailAddressView';
+import OrderDetailPriceView from '../components/orderDetail/OrderDetailPriceView';
 import OrderDetailTimeView from '../components/orderDetail/OrderDetailTimeView';
 import {orderDetailModel,orderDetailAfterServiceModel,assistDetailModel} from '../model/OrderDetailModel';
 const buyerHasPay = res.buyerHasPay;
@@ -34,11 +35,11 @@ const tobePayIcon = res.dingdanxiangqing_icon_fuk;
 const finishPayIcon = res.dingdanxiangqing_icon_yiwangcheng;
 const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
 const refuseIcon = res.dingdanxiangqing_icon_guangbi;
+const productDetailImg = res.productDetailImg;
 const moreIcon = res.more_icon;
 const timeUtils= new TimeDownUtils();
 import { observer } from 'mobx-react/native';
 import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
-import OrderDetailPriceView from "../components/orderDetail/OrderDetailPriceView";
 
 @observer
 export default class MyOrdersDetailPage extends BasePage {
@@ -74,12 +75,12 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     //**********************************ViewPart******************************************
     renderState = () => {
-         let leftIconArr=[buyerHasPay,tobePayIcon,buyerHasPay,hasDeliverIcon,finishPayIcon,finishPayIcon,refuseIcon,refuseIcon,refuseIcon,refuseIcon];
+        let leftIconArr=[buyerHasPay,tobePayIcon,buyerHasPay,hasDeliverIcon,finishPayIcon,finishPayIcon,refuseIcon,refuseIcon,refuseIcon,refuseIcon];
         return (
             <View style={{ marginBottom: 10 }}>
                 <OrderDetailStatusView
+                    productDetailImg={productDetailImg}
                     leftTopIcon={leftIconArr[orderDetailModel.status]}
-                    moreDetail={orderDetailAfterServiceModel.moreDetail}
                 />
                 <OrderDetailStateView
                     orderNum={orderDetailModel.orderNum}
@@ -147,22 +148,23 @@ export default class MyOrdersDetailPage extends BasePage {
                     salePrice={'￥' + StringUtils.formatMoneyString(item.salePrice, false)}
                     goodsNum={item.goodsNum}
                     onPress={() => this.clickItem(item)}
+                    style={{backgroundColor:'white'}}
                 />
             );
         } else {
             return (
-                    <GoodsDetailItem
-                        uri={item.uri}
-                        goodsName={item.goodsName}
-                        salePrice={'￥' + StringUtils.formatMoneyString(item.salePrice, false)}
-                        category={item.category}
-                        goodsNum={item.goodsNum}
-                        clickItem={() => {
-                            this.clickItem(index, item);
-                        }}
-                        afterSaleService={item.afterSaleService}
-                        afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, index)}
-                    />
+                <GoodsDetailItem
+                    uri={item.uri}
+                    goodsName={item.goodsName}
+                    salePrice={'￥' + StringUtils.formatMoneyString(item.salePrice, false)}
+                    category={item.category}
+                    goodsNum={item.goodsNum}
+                    clickItem={() => {
+                        this.clickItem(index, item);
+                    }}
+                    afterSaleService={item.afterSaleService}
+                    afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, index)}
+                />
             );
         }
 
@@ -188,27 +190,26 @@ export default class MyOrdersDetailPage extends BasePage {
         return(
             <View>
                 <OrderDetailPriceView
-                    giftBagCoupons={this.state.giftBagCoupons}
-                />
-            <OrderDetailTimeView
-                    orderNum={orderDetailModel.orderNum}
-                    createTime={orderDetailModel.createTime}
-                    platformPayTime={orderDetailModel.platformPayTime}
-                    shutOffTime={orderDetailModel.shutOffTime}
-                    cancelTime={orderDetailModel.cancelTime}
-                    payTime={orderDetailModel.payTime }
-                    sendTime={orderDetailModel.sendTime}
-                    deliverTime={orderDetailModel.deliverTime}
-                    finishTime={orderDetailModel.finishTime}
-                    payType={this.state.payType}
-                    outTradeNo={orderDetailModel.outTradeNo}
-                    goBack={()=>this.$navigateBack()}
-                    nav={this.$navigate}
-                    callBack={this.params.callBack &&this.params.callBack()}
-                    loadPageData={()=>this.loadPageData()}
-                />
+                    giftBagCoupons={this.state.giftBagCoupons}/>
+                <OrderDetailTimeView
+                orderNum={orderDetailModel.orderNum}
+                createTime={orderDetailModel.createTime}
+                platformPayTime={orderDetailModel.platformPayTime}
+                shutOffTime={orderDetailModel.shutOffTime}
+                cancelTime={orderDetailModel.cancelTime}
+                payTime={orderDetailModel.payTime }
+                sendTime={orderDetailModel.sendTime}
+                deliverTime={orderDetailModel.deliverTime}
+                finishTime={orderDetailModel.finishTime}
+                payType={this.state.payType}
+                outTradeNo={orderDetailModel.outTradeNo}
+                goBack={()=>this.$navigateBack()}
+                nav={this.$navigate}
+                callBack={this.params.callBack &&this.params.callBack()}
+                loadPageData={()=>this.loadPageData()}
+            />
             </View>
-            )
+        )
 
     };
     renderModal = () => {
@@ -758,16 +759,15 @@ const styles = StyleSheet.create({
         lineHeight: 18,
         color: DesignRule.textColor_secondTitle
     },
-     topOrderDetail:{
-         minHeight:81,
-         marginTop: 69,
-         backgroundColor: 'white',
-         marginLeft: 15,
-         marginRight: 15,
-         paddingTop:5,
-         paddingBottom:5,
-         borderRadius: 10,
-         justifyContent:'center'
-     }
+    topOrderDetail:{
+        minHeight:81,
+        marginTop: 69,
+        backgroundColor: 'white',
+        marginLeft: 15,
+        marginRight: 15,
+        paddingTop:5,
+        paddingBottom:5,
+        borderRadius: 10,
+        justifyContent:'center'
+    }
 });
-

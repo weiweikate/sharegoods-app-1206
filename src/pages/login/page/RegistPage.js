@@ -3,7 +3,7 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image
+    Image, DeviceEventEmitter
 } from 'react-native';
 import { observer } from 'mobx-react';
 import BasePage from '../../../BasePage';
@@ -16,11 +16,13 @@ import DeviceInfo from 'react-native-device-info';
 import DesignRule from '../../../constants/DesignRule';
 import { homeModule } from '../../home/Modules'
 import res from '../res';
+import JPushUtils from '../../../utils/JPushUtils';
 
 const {
     red_button_s,
     red_button_u,
 } = res;
+import homeRegisterFirstManager from '../../../pages/home/model/HomeRegisterFirstManager'
 
 /**
  * @author huyufeng
@@ -129,13 +131,15 @@ export default class RegistPage extends BasePage {
             nickname: this.params.nickName,
             headImg: this.params.headerImg ? this.params.headerImg : ''
         }).then((data) => {
+
             if (data.code === 10000) {
+                homeRegisterFirstManager.setJustRegistered(true);
                 this.toLogin(phone, code, password);
             } else {
                 bridge.$toast(data.msg);
             }
             this.$loadingDismiss();
-            bridge.$toast(data.msg);
+            // bridge.$toast(data.msg);
         }).catch((response) => {
             this.$loadingDismiss();
             bridge.$toast(response.msg);
@@ -157,8 +161,17 @@ export default class RegistPage extends BasePage {
             this.$loadingDismiss();
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
+            DeviceEventEmitter.emit('homePage_message',null);
+            DeviceEventEmitter.emit('contentViewed',null);
             homeModule.loadHomeList()
-            this.$navigate('login/login/GetRedpacketPage');
+            // this.$navigate('login/login/GetRedpacketPage');
+            bridge.setCookies(data.data);
+            //推送
+            JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+            /**
+             * 跳转导师选择页面
+             */
+            this.$navigate('login/login/SelectMentorPage');
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);

@@ -11,7 +11,7 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity, ListView, TouchableWithoutFeedback, Image,
+    TouchableOpacity, ListView, TouchableWithoutFeedback,Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -22,6 +22,7 @@ import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
+import UIImage from "@mr/image-placeholder";
 // import { NavigationActions } from 'react-navigation';
 
 import RES from '../../res';
@@ -94,7 +95,7 @@ export default class MyCollectPage extends BasePage {
             <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeId, 0)}>
                 <View style={styles.rowContainer}>
                     {
-                        item.headUrl ? <Image source={{ uri: item.headUrl }} style={styles.img}/> :
+                        item.headUrl ? <UIImage source={{ uri: item.headUrl }} style={styles.img} borderRadius={25}/> :
                             <View style={styles.img}/>
                     }
                     <View style={styles.right}>
@@ -137,10 +138,10 @@ export default class MyCollectPage extends BasePage {
                         <Image source={invalidIcon} style={{flex:1}} />
                     </View>
                     {
-                        item.headUrl ? <Image source={{ uri: item.headUrl }} style={[{
+                        item.headUrl ? <UIImage source={{ uri: item.headUrl }} style={[{
                                 justifyContent: 'center',
                                 alignItems: 'center'
-                            }, styles.img]}/>
+                            }, styles.img]} borderRadius={25}/>
                           :
                             <View style={[{ justifyContent: 'center', alignItems: 'center' }, styles.img]}/>
                     }

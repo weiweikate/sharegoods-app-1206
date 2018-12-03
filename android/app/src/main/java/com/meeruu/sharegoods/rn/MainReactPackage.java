@@ -2,6 +2,7 @@ package com.meeruu.sharegoods.rn;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.flat.RCTTextInputManager;
+import com.facebook.react.shell.MainPackageConfig;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.views.textinput.ReactTextInputManager;
 import com.meeruu.commonlib.utils.SPCacheUtils;
@@ -15,6 +16,10 @@ import java.util.List;
  * 修复rn输入框的bug
  */
 public class MainReactPackage extends com.facebook.react.shell.MainReactPackage {
+
+    public MainReactPackage(MainPackageConfig config) {
+        super(config);
+    }
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {

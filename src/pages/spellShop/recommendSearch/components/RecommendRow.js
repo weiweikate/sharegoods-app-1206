@@ -14,7 +14,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-import OssImage from 'OssImage';
+import ImageLoad from '@mr/image-placeholder';
 
 const StarImg = res.recommendSearch.dj_03;
 
@@ -34,7 +34,7 @@ export default class RecommendRow extends Component {
         return (<TouchableOpacity onPress={() => {
         }} style={[styles.itemIcon, { marginLeft: 15 }]}>
             {StringUtils.isNoEmpty(item.headImg) ?
-                <OssImage style={styles.itemIcon} source={{ uri: item.headImg }}/> :
+                <ImageLoad style={styles.itemIcon} source={{ uri: item.headImg }} borderRadius={20}/> :
                 <View style={[styles.itemIcon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
         </TouchableOpacity>);
     };
@@ -45,7 +45,10 @@ export default class RecommendRow extends Component {
     render() {
         const { ...RecommendRowItem } = this.props.RecommendRowItem;
         //bonusNeedMoney总额 tradeBalance本月收入 totalTradeBalance累计收入
-        const { storeUserList, tradeBalance = 0, bonusNeedMoney = 0, totalTradeBalance = 0 } = RecommendRowItem;
+        let { storeUserList, tradeBalance = 0, bonusNeedMoney = 0, totalTradeBalance = 0 } = RecommendRowItem;
+        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
+        bonusNeedMoney = StringUtils.isEmpty(bonusNeedMoney) ? 0 : parseFloat(bonusNeedMoney);
+        let progress = bonusNeedMoney === 0 ? 0.00 : ((tradeBalance / bonusNeedMoney) * 100).toFixed(2);
         let widthScale = bonusNeedMoney === 0 ? 0 : ((tradeBalance / bonusNeedMoney > 1) ? 1 : tradeBalance / bonusNeedMoney);
         const storeStar = RecommendRowItem.storeStarId;
         const starsArr = [];
@@ -61,8 +64,9 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {StringUtils.isNoEmpty(RecommendRowItem.headUrl) ? <OssImage style={styles.icon}
-                                                                                         source={{ uri: RecommendRowItem.headUrl }}/> :
+                            {StringUtils.isNoEmpty(RecommendRowItem.headUrl) ? <ImageLoad style={styles.icon}
+                                                                                          borderRadius={25}
+                                                                                          source={{ uri: RecommendRowItem.headUrl }}/> :
                                 <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
@@ -90,9 +94,9 @@ export default class RecommendRow extends Component {
                             }}/>
                         </View>
                         <Text style={{
-                            marginTop: 8, marginBottom: 14.5, paddingHorizontal: 21.5,
+                            marginTop: 8, marginBottom: 11, paddingHorizontal: 15,
                             color: DesignRule.textColor_secondTitle, fontSize: 10
-                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0}元`}</Text>
+                        }}>分红任务完成度<Text style={{ color: DesignRule.mainColor }}>{progress}%</Text></Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{
@@ -107,11 +111,11 @@ export default class RecommendRow extends Component {
                                 })
                             }
                         </View>
-                        <Text style={{ marginTop: 9, color: '#939393', fontSize: 14 }}>店铺等级</Text>
+                        <Text style={{ marginTop: 9, color: '#939393', fontSize: 12 }}>店铺等级</Text>
                         <TouchableOpacity style={styles.joinBtn} onPress={() => {
                             this._onPress();
                         }}>
-                            <Text style={styles.joinText}>+加入我们</Text>
+                            <Text style={styles.joinText}>+申请加入</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -120,17 +124,17 @@ export default class RecommendRow extends Component {
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺成员</Text>
-                        <Text style={styles.containBottom}>{RecommendRowItem.storeUserNum || 0}</Text>
+                        <Text style={styles.containBottom}>{RecommendRowItem.storeUserNum || ''}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺本月收入</Text>
-                        <Text style={styles.containBottom}>{`${tradeBalance || 0}元`}</Text>
+                        <Text style={styles.containBottom}>{`${tradeBalance || ''}元`}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺累计收入</Text>
-                        <Text style={styles.containBottom}>{`${totalTradeBalance || 0}元`}</Text>
+                        <Text style={styles.containBottom}>{`${totalTradeBalance || ''}元`}</Text>
                     </View>
                 </View>
 
@@ -165,8 +169,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         width: 50,
-        height: 50,
-        borderRadius: 25
+        height: 50
     },
     tittleContainer: {
         justifyContent: 'center',
@@ -186,14 +189,14 @@ const styles = StyleSheet.create({
         marginTop: 17,
         justifyContent: 'center',
         alignItems: 'center',
-        height: 22,
-        borderRadius: 11,
+        height: 20,
+        borderRadius: 10,
         backgroundColor: DesignRule.bgColor_btn
     },
     joinText: {
         fontFamily: 'PingFangSC-Medium',
         color: 'white',
-        fontSize: 12,
+        fontSize: 10,
         paddingHorizontal: 8
     },
 

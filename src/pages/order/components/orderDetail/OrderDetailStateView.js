@@ -33,7 +33,7 @@ constructor(props){
             }} disabled={!orderDetailModel.expressNo}>
                 <View style={{ flexDirection: 'row', alignItems: 'center'}} >
                     <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
-                    <View style={{justifyContent:'center'}}>
+                    <View style={{justifyContent:'center',flex:1}}>
                         {typeof orderDetailAfterServiceModel.totalAsList.buyState === 'string' ?
                             <View style={{ marginLeft: 10}}>
                                 <UIText value={orderDetailAfterServiceModel.totalAsList.sellerState} style={{
@@ -49,7 +49,7 @@ constructor(props){
                                     }} value={DateUtils.getFormatDate(orderDetailAfterServiceModel.totalAsList.logisticsTime / 1000)}/>:null}
                             </View>
                             :
-                            <View style={{flexDirection:'row',paddingLeft:10,justifyContent:'flex-end',paddingRight:15}}>
+                            <View style={{flexDirection:'row',marginLeft:10,justifyContent:'flex-end',marginRight:15}}>
                                     <Text style={{flex:1,fontSize:15}}>{orderDetailAfterServiceModel.totalAsList.sellerState[0]}</Text>
                                     <Text style={{fontSize:15,marginRight:30}}>{orderDetailAfterServiceModel.totalAsList.sellerState[1]}</Text>
                             </View>

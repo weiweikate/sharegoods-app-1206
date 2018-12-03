@@ -59,7 +59,7 @@ export default class CheckLogisticsPage extends BasePage {
             salePrice={10}
             category={'ccc'}
             goodsNum={2}
-            bgColor={{backgroundColor:'white'}}
+            style={{backgroundColor:'white'}}
             />
         )
     }
