@@ -7,10 +7,11 @@ import {
     Text
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ImageLoad from '@mr/image-placeholder'
+// import ImageLoad from '@mr/image-placeholder'
 import PropTypes from 'prop-types';
 import DesignRule from 'DesignRule';
 import { getShowPrice } from '../model/TopicMudelTool';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 export default class TopicItemView extends Component {
 
@@ -33,7 +34,7 @@ export default class TopicItemView extends Component {
                     ]}>
                     <View style={Styles.itemContentStyle}>
                         {/*头部image*/}
-                        <ImageLoad
+                        <PreLoadImage
                             style={{
                                 width: ScreenUtils.width / numOfColum - 16,
                                 height: ScreenUtils.width / numOfColum - 16

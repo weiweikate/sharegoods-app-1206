@@ -232,7 +232,6 @@ class HomePage extends PureComponent {
                 }
             } else {
                 this.showMessageModal();
-
             }
         }
     };

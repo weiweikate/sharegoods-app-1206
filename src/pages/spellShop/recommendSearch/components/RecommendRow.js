@@ -45,11 +45,11 @@ export default class RecommendRow extends Component {
     render() {
         const { ...RecommendRowItem } = this.props.RecommendRowItem;
         //bonusNeedMoney总额 tradeBalance本月收入 totalTradeBalance累计收入
-        let { storeUserList, tradeBalance = 0, bonusNeedMoney = 0, totalTradeBalance = 0 } = RecommendRowItem;
-        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
+        let { storeUserList, tradeBalance, bonusNeedMoney, totalTradeBalance } = RecommendRowItem;
+        let tradeBalanceS = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
         bonusNeedMoney = StringUtils.isEmpty(bonusNeedMoney) ? 0 : parseFloat(bonusNeedMoney);
-        let progress = bonusNeedMoney === 0 ? 0.00 : ((tradeBalance / bonusNeedMoney) * 100).toFixed(2);
-        let widthScale = bonusNeedMoney === 0 ? 0 : ((tradeBalance / bonusNeedMoney > 1) ? 1 : tradeBalance / bonusNeedMoney);
+        let progress = bonusNeedMoney === 0 ? 0.00 : ((tradeBalanceS / bonusNeedMoney) * 100).toFixed(2);
+        let widthScale = bonusNeedMoney === 0 ? 0 : ((tradeBalanceS / bonusNeedMoney > 1) ? 1 : tradeBalanceS / bonusNeedMoney);
         const storeStar = RecommendRowItem.storeStarId;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {

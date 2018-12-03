@@ -57,6 +57,7 @@ export default class ProfileEditPage extends BasePage {
     _commitProfile = () => {
         MineAPI.updateUserById({ type: 6, profile: this.state.profile }).then((data) => {
             this.$toastShow("编辑成功!");
+            this.$navigateBack();
             MineAPI.getUser().then(res => {
                 let data = res.data;
                 user.saveUserInfo(data);
