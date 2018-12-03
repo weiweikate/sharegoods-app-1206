@@ -21,7 +21,7 @@ import {
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
 import StringUtils from '../../../utils/StringUtils';
 import AutoExpandingInput from '../../../components/ui/AutoExpandingInput';
-import DateUtils from '../../../utils/DateUtils';
+// import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 
 import OrderApi from '../api/orderApi';
@@ -45,7 +45,44 @@ class AfterSaleServicePage extends BasePage {
             activeProduct: ['', '退回商品需由买家承担运费，请确保商品不影响二次销售', '仅可更换同规格的商品，请确保退换商品不影响二次销售'],
             reason: ['退款原因', '退货原因', '换货原因'],
             inputReason: ['退款说明', '退货说明', '换货说明'],
-            productData: {},// 里面包含了商品、订单id、价格等信息
+            returnReasons: [],
+            productData: {
+                "id": 1,
+                "orderProductNo": "c*****",
+                "warehouseOrderNo": "p****",
+                "platformOrderNo": "p****",
+                "userCode": "p*****",
+                "userPhone": "182****3343",
+                "prodCode": "c****",
+                "productName": "朵女郎",
+                "restrictions": 88,
+                "skuCode": "p****",
+                "supplierSkuCode": "s*****",
+                "specTitle": "dd,dd",
+                "specValues": "dd,dd",
+                "specImg": "****",
+                "settlementPrice": 11,
+                "originalPrice": 11,
+                "groupPrice": 11,
+                "freightTemplateId": 1,
+                "weight": 1,
+                "unitPrice": 11,
+                "quantity": 1,
+                "taxAmount": 88,
+                "freightAmount": 1,
+                "totalAmount": 110,
+                "promotionAmount": 20,
+                "couponAmount": 10,
+                "tokenCoinAmount": 11,
+                "accountPayAmount": 59,
+                "cashPayAmount": 11,
+                "payAmount": 11,
+                "invoiceAmount": 1,
+                "userRemarks": "****",
+                "status": 1,
+                "createTime": "2018-09-11 00:00:00",
+                "updateTime": "2018-09-11 00:00:00"
+            },// 里面包含了商品、订单id、价格等信息
             returnReason: this.params.isEdit === true ? this.params.returnReason : '',                  //退款原因
             remark: this.params.isEdit === true ? this.params.remark : '',                              //退款具体说明
             imageArr: this.params.isEdit === true ? this.params.imgList : [],                           //选择的图片数组
@@ -73,7 +110,7 @@ class AfterSaleServicePage extends BasePage {
     };
     //**********************************ViewPart******************************************
     renderActiveProduct = () => {
-        return (this.state.activeProduct[this.params.pageType] === '' ? null :
+        return (this.state.activeProduct[this.params.pageType || 0] === '' ? null :
                 <View>
                     <View style={{
                         height: 20,
@@ -91,7 +128,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.productData.orderNum}
+                <UIText value={'订单编号：' + this.state.productData.warehouseOrderNo}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -113,6 +150,7 @@ class AfterSaleServicePage extends BasePage {
                             <UIText value={StringUtils.formatMoneyString(this.state.productData.refundPrice)}
                                     style={{ color: DesignRule.mainColor, fontSize: 13 }}/>
                         </View>
+                        <UIText value={``}/>
                     </View>
                 );
                 break;
@@ -166,11 +204,11 @@ class AfterSaleServicePage extends BasePage {
     renderOrderTime = () => {
         return (
             <View>
-                <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                    <UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.productData.orderCreateTime / 1000)}
-                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
-                </View>
-                {this.renderWideLine()}
+                {/*<View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>*/}
+                    {/*<UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.productData.orderCreateTime / 1000)}*/}
+                            {/*style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>*/}
+                {/*</View>*/}
+                {/*{this.renderWideLine()}*/}
                 <TouchableOpacity style={{
                     height: 48,
                     backgroundColor: 'white',
@@ -255,9 +293,9 @@ class AfterSaleServicePage extends BasePage {
             <GoodsItem
                 uri={productData.specImg}
                 goodsName={productData.productName}
-                salePrice={StringUtils.formatMoneyString(productData.price)}
-                category={productData.spec}
-                goodsNum={productData.num}
+                salePrice={StringUtils.formatMoneyString(productData.unitPrice)}
+                category={productData.specValues}
+                goodsNum={productData.quantity}
                 //onPress={() => this.jumpToProductDetailPage(this.params.pageData.productId)}
             />
         );
@@ -378,12 +416,12 @@ class AfterSaleServicePage extends BasePage {
     };
 
     loadPageData() {
-        // let that = this;
-        // OrderApi.subOrderLookDetial({ orderProductNo: this.params.orderProductNo }).then((result) => {
-        //     that.setState({ productData: result.data });
-        // }).catch(error => {
-        //
-        // });
+        let that = this;
+        OrderApi.subOrder({ orderProductNo: this.params.orderProductNo }).then((result) => {
+            that.setState({ productData: result.data });
+        }).catch(error => {
+
+        });
     }
 
     /**

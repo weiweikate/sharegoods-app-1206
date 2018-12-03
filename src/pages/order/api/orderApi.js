@@ -71,6 +71,7 @@ const api = {
     afterSaleCancel: '/after-sale/cancel',
     afterSaleModify: '/after-sale/modify',
     afterSaleFillExpress: '/after-sale/express',
+    subOrder: '/after-sale/order-detail',
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
