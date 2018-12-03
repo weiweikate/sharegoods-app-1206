@@ -26,7 +26,7 @@ import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
 // import ImageLoad from '@mr/image-placeholder'
-import PreLoadImage from '../../../components/ui/preloadImage/PreLoadImage';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 
 export default class MentorDetailPage extends BasePage {

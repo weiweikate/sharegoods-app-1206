@@ -30,7 +30,7 @@ import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../../../comm/res';
 // import ImageLoad from '@mr/image-placeholder'
-import PreLoadImage from '../../../components/ui/preloadImage/PreLoadImage';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 // import ImageLoad from '@mr/image-placeholder';
 // import PropTypes from 'prop-types';

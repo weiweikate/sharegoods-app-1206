@@ -290,7 +290,7 @@ export default class SignInPage extends BasePage {
                 resizeMode={'stretch'}>
                 {this._signInButtonRender()}
                 <Text style={styles.signInCountTextStyle}>
-                    {`累计签到${count}天`}
+                    {`连续签到${count}天`}
                 </Text>
             </ImageBackground>
         );
@@ -316,7 +316,7 @@ export default class SignInPage extends BasePage {
                     </View>
                 </TouchableWithoutFeedback>
                 <Text style={styles.signInCountTextStyle}>
-                    {`累计签到${count}天`}
+                    {`连续签到${count}天`}
                 </Text>
             </ImageBackground>
         );

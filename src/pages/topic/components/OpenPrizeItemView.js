@@ -17,7 +17,7 @@ import bridge from '../../../utils/bridge';
 import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from 'DesignRule';
 import res from '../res';
-import PreLoadImage from '../../../components/ui/preloadImage/PreLoadImage';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 const noGoodImg = res.other.noGoodImg;
 const zhuanti_jieshu = res.zhuanti_jieshu;
 
