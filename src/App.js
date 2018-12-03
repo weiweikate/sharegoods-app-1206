@@ -71,7 +71,6 @@ export default class App extends Component {
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$routes = [];
-
     }
 
     componentDidMount() {
