@@ -36,7 +36,7 @@
         "react-native-autoheight-webview": "0.6.1",
         "react-native-cached-image": "^1.4.3",
         "react-native-deprecated-custom-components": "0.1.2",
-        "react-native-device-info": "^0.24.0",
+        "react-native-device-info": "^0.24.3",
         "react-native-ezswiper": "^1.2.2",
         "react-native-image-picker": "0.26.10",
         "react-native-largelist": "^1.2.12",
