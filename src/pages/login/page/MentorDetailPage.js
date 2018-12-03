@@ -24,8 +24,9 @@ import { NavigationActions } from 'react-navigation';
 import UIText from '../../../comm/components/UIText';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
-import res from '../../../comm/res'
-import ImageLoad from '@mr/image-placeholder'
+import res from '../../../comm/res';
+// import ImageLoad from '@mr/image-placeholder'
+import PreLoadImage from '../../../components/ui/preloadImage/PreLoadImage';
 
 
 export default class MentorDetailPage extends BasePage {
@@ -70,18 +71,27 @@ export default class MentorDetailPage extends BasePage {
                     style={styles.topBgViewStyle}
                 >
                     {/*<MentorItemView*/}
-                        {/*itemData={itemData}*/}
-                        {/*isSelect={true}*/}
+                    {/*itemData={itemData}*/}
+                    {/*isSelect={true}*/}
                     {/*/>*/}
-                    <ImageLoad
-                        imageUri={itemData.headImg}
-                        style={{
-                            width:80,
-                            height:80,
-                            borderRadius:40
-                        }}
-                        defaultImage={res.placeholder.noHeadImage}
-                    />
+                    {/*<View*/}
+                        {/*style={{*/}
+                            {/*width: 80,*/}
+                            {/*height: 80,*/}
+                            {/*borderRadius: 40*/}
+                        {/*}}*/}
+                    {/*>*/}
+                        <PreLoadImage
+                            imageUri={itemData.headImg}
+                            style={{
+                                width: 80,
+                                height: 80,
+                                borderRadius: 40
+                            }}
+                            defaultImage={res.placeholder.noHeadImage}
+                            errImage={res.placeholder.noHeadImage}
+                        />
+                    {/*</View>*/}
                     <UIText
                         value={itemData.nickname ? itemData.nickname : '暂无昵称~'}
                         style={styles.topTextViewStyle}
@@ -113,7 +123,6 @@ export default class MentorDetailPage extends BasePage {
                             />
                         </View>
                     </TouchableOpacity>
-
                 </View>
             </View>
         );
