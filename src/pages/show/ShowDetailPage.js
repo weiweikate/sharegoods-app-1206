@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
@@ -12,6 +12,7 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ImageLoad from '@mr/image-placeholder'
+import BasePage from '../../BasePage'
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -25,7 +26,12 @@ const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} on
 </TouchableOpacity>;
 
 @observer
-export default class ShowDetailPage extends Component {
+export default class ShowDetailPage extends BasePage {
+
+    $navigationBarOptions = {
+        title: '',
+        show: false
+    };
     constructor(props) {
         super(props);
         this.params = this.props.navigation.state.params || {}
@@ -83,7 +89,7 @@ export default class ShowDetailPage extends Component {
         this.shareModal && this.shareModal.open();
     }
 
-    render() {
+    _render() {
         const { detail, isCollecting } = this.showDetailModule;
         if (!detail) {
             return <View style={styles.loading}><ActivityIndicator size='large'/></View>;
