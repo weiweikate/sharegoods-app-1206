@@ -111,11 +111,11 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 <View style={{ flex: 1 }}/>
                 <UIImage source={wenan}
                          style={{
-                             width: autoSizeWidth(160),
+                             width: autoSizeWidth(174),
                              height: autoSizeWidth(70),
                              marginBottom: 30,
                              alignSelf: 'flex-start',
-                             marginLeft: 60
+                             marginLeft: 50
                          }}/>
                 <UIImage source={hongbao}
                          style={{
