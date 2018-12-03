@@ -1,24 +1,24 @@
-import { computed } from 'mobx';
+// import { computed } from 'mobx';
+// import {observer} from 'mobx-react'
 import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
 import user from '../../../model/user';
 import shopCartStore from './ShopCartStore';
 import Storage from '../../../utils/storage';
 
-
 class ShopCartCacheTool {
 
     static  shopCartLocalStorageKey = 'shopCartLocalStorageKey';
 
 
-    @computed isSynchronousData() {
-        //是否登录
-        if (user.id) {
-            //登录同步数据
-            this.synchronousData();
-        }
-        return (!!(user.id));
-    }
+   // isSynchronousData() {
+   //      //是否登录
+   //      if (user.isLogin) {
+   //          //登录同步数据
+   //          this.synchronousData();
+   //      }
+   //      return (!!(user.id));
+   //  }
     /**
      * 删除本地数据
      */
@@ -52,7 +52,7 @@ class ShopCartCacheTool {
                 }).catch(error => {
                     bridge.hiddenLoading();
                     // bridge.$toast(error);
-                    bridge.$toast(error.msg);
+                    // bridge.$toast(error.msg);
                 });
             } else {
                 //不存在本地缓存 但他妈的也得拉一下数据老铁

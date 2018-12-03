@@ -94,7 +94,7 @@ export default class SelectMentorPage extends BasePage {
                     selectIndex: response.data.length - 1
                 });
             }
-          this.state.mentorData.length > 0 && this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
+          // this.state.mentorData.length > 0 && this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
         }).catch(error => {
             this.$loadingDismiss();
             bridge.$toast(error.msg);
@@ -310,11 +310,11 @@ export default class SelectMentorPage extends BasePage {
                         width: ScreenUtils.width / 5 * 2
                     }}
                 />
-                {
-                    this.state.isFirstLoad&&
-                    this.scrView &&
-                    this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
-                }
+                {/*{*/}
+                    {/*this.state.isFirstLoad&&*/}
+                    {/*this.scrView &&*/}
+                    {/*this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})*/}
+                {/*}*/}
 
             </ScrollView>
         );
