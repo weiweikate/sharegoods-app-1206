@@ -316,8 +316,8 @@ export default class TopicDetailPage extends BasePage {
         selectData.forEach((item) => {
             priceList.push({
                 num: 1,
-                priceId: item.productPriceId,
-                productId: item.productId,
+                skuCode: item.skuCode,
+                prodCode: item.prodCode,
                 productName: item.productName,
                 sourceId: item.id,
                 spec: item.specValues,
@@ -327,8 +327,8 @@ export default class TopicDetailPage extends BasePage {
 
         let orderProducts = [{
             num: 1,
-            priceId: this.state.data.id,
-            productId: this.state.data.id,
+            priceId: this.state.data.packageCode,
+            productId: this.state.data.packageCode,
             priceList: priceList
         }];
 
@@ -386,8 +386,9 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderItem = () => {
-        let { content = '' } = this.state.data;
+        let { content } = this.state.data;
         if (this.state.selectedIndex === 0) {
+            content = content || '';
             content = content.split(',') || [];
             let html = '';
             content.forEach((item) => {
