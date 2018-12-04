@@ -140,7 +140,7 @@ export default class MyPromotionPage extends BasePage {
                         this.state.headImg ?
                             <Image style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
                                    onError={({ nativeEvent: { error } }) => this._imgLoadFail(this.state.headImg, error)}
-                                   source={{ uri: this.state.headImg }}/> : null
+                                   source={{ uri: this.state.headImg }}/> : <View style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 ,backgroundColor:'#efefef'}}/>
                     }
                     <View style={{
                         justifyContent: 'center',

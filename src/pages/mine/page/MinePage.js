@@ -300,7 +300,7 @@ export default class MinePage extends BasePage {
                         {
                             StringUtils.isEmpty(user.headImg) ?
                                 <View style={[styles.userIconStyle, { backgroundColor: "gray" }]}/> :
-                                <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle} borderRadius={27}/>
+                                <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle} borderRadius={px2dp(27)}/>
                         }
                     </TouchableWithoutFeedback>
                     <View style={{
