@@ -13,6 +13,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+
 import UIImage from "@mr/image-placeholder";
 const gwc = res.search.gwc;
 
@@ -32,15 +33,14 @@ export default class ResultVerticalRow extends Component {
 
 
     render() {
-        let { product = {}, price } = this.props.itemData || {};
-        const { name = '' } = product;
+        let { minPrice, imgUrl, name, prodCode } = this.props.itemData || {};
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.onPressAtIndex(product.id);
+                this.props.onPressAtIndex(prodCode);
             }}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
-                        <UIImage style={styles.img} source={{ uri: product.imgUrl || '' }}/>
+                        <UIImage style={styles.img} source={{ uri: imgUrl || '' }}/>
                         <View style={styles.textContentView}>
                             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                   numberOfLines={2}>{`${name}`}</Text>
@@ -48,13 +48,13 @@ export default class ResultVerticalRow extends Component {
                                 <Text style={{
                                     color: DesignRule.mainColor,
                                     fontSize: 17
-                                }}>{`￥${price || ' '}`}<Text
+                                }}>{`￥${minPrice || ' '}`}<Text
                                     style={{ fontSize: 12 }}>起</Text>
                                 </Text>
                             </View>
                         </View>
                         <TouchableWithoutFeedback onPress={() => {
-                            this.props.storeProduct(product.id);
+                            this.props.storeProduct(this.props.itemData);
                         }}>
                             <View style={{
                                 width: 35,

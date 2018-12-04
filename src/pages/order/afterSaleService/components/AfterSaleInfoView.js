@@ -32,17 +32,20 @@ export default class AfterSaleInfoView extends React.Component {
     /** 图片*/
     renderCertificateImage = (imgList) => {
         let arr = [];
-        imgList = imgList || [];
+        imgList = imgList || '';
+        imgList = imgList.split(',');
         for (let i = 0; i < imgList.length; i++) {
-            arr.push(
-                <UIImage source={{ uri: imgList[i].smallImg }}
-                         style={{
-                             height: 83,
-                             width: 83,
-                             marginLeft: 15,
-                             marginTop: 10
-                         }}/>
-            );
+            if (imgList[i].length > 0){
+                arr.push(
+                    <UIImage source={{ uri: imgList[i] }}
+                             style={{
+                                 height: 83,
+                                 width: 83,
+                                 marginLeft: 15,
+                                 marginTop: 10
+                             }}/>
+                );
+            }
         }
         return arr;
     };
@@ -62,9 +65,9 @@ export default class AfterSaleInfoView extends React.Component {
                     height: 1,
                     backgroundColor: DesignRule.lineColor_inColorBg
                 }}/>
-                <UIText value={typeStr + "原因：" + pageData.returnReason}
+                <UIText value={typeStr + "原因：" + pageData.reason}
                         style={styles.refundReason}/>
-                <UIText value={typeStr + "说明：" + pageData.remark || ""}
+                <UIText value={typeStr + "说明：" + pageData.description || ""}
                         style={styles.refundReason}/>
                 <UIText value={"凭证图片："} style={styles.refundReason}/>
                 <View style={{
@@ -76,11 +79,11 @@ export default class AfterSaleInfoView extends React.Component {
                     {this.renderCertificateImage(pageData.imgList)}
 
                 </View>
-                <UIText value={"申请时间：" + DateUtils.getFormatDate(pageData.applyTime / 1000)}
+                <UIText value={"申请时间：" + DateUtils.getFormatDate(pageData.createTime / 1000)}
                         style={styles.refundReason}/>
-                <UIText value={"订单编号：" + pageData.orderNum}
+                <UIText value={"订单编号：" + pageData.orderProductNo}
                         style={styles.refundReason}/>
-                <UIText value={typeStr + "编号：" + pageData.refundNo}
+                <UIText value={typeStr + "编号：" + pageData.serviceNo}
                         style={styles.refundReason}/>
 
             </View>

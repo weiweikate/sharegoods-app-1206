@@ -35,7 +35,7 @@ const AddressItem = props => {
     };
     return (
         <TouchableOpacity style={style} onPress={() => onPress()}>
-            <UIImage source={locationBlack} style={{ width: 18, height: 20, marginLeft: 17 }}/>
+            <UIImage source={locationBlack} style={{ width: 15, height: 20, marginLeft: 17 }}/>
             <View style={{ flex: 1, marginLeft: 10 }}>
                 <View style={{ flexDirection: 'row', paddingRight: 20}}>
                     <UIText value={name}

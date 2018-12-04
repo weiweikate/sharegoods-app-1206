@@ -89,9 +89,9 @@ export default class AfterSaleListPage extends BasePage<Props> {
                 <GoodsGrayItem
                     uri={item.specImg}
                     goodsName={item.productName}
-                    salePrice={StringUtils.formatMoneyString(item.price)}
-                    category={item.spec}
-                    goodsNum={item.num}
+                    salePrice={StringUtils.formatMoneyString(item.unitPrice)}
+                    category={'规格：' + item.specValues}
+                    goodsNum={item.quantity}
                     style={{backgroundColor: DesignRule.white}}
                     // onPress={() => this.jumpToProductDetailPage()}
                 />
@@ -127,19 +127,17 @@ export default class AfterSaleListPage extends BasePage<Props> {
         );
     }
 
-    getStatusText(item) {
+    getStatusText(item) {//1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭|否|
         let typeStr = ['仅退款', '退货退款', '换货'][item.type - 1];
         switch (item.status) {
             case 1:
             case 2:
-            case 4:
-            case 5:
-                return typeStr + '中';
-            case 6:
-                return typeStr + '完成';
             case 3:
-            case 7:
-            case 8:
+            case 4:
+                return typeStr + '中';
+            case 5:
+                return typeStr + '完成';
+            case 6:
                 return typeStr + '失败';
             default:
                 return typeStr + '失败';
@@ -149,18 +147,19 @@ export default class AfterSaleListPage extends BasePage<Props> {
     _render() {
         let params = {};
         if (this.params.type === 'search') {
-            params = { condition: this.params.condition };
+            params = { searchKey: this.params.condition };
         } else {
-            params = { status: 0 };
+            params = {};
         }
         return (
             <View style={styles.container}>
                 <RefreshLargeList
                     style={styles.container}
-                    url={orderApi.queryAftermarketOrderList}
+                    url={orderApi.afterSaleList}
                     renderItem={this.renderItem}
                     params={params}
                     heightForCell={() => 160}
+                    handleRequestResult={(result)=>{return result.data.list}}
                     //  ref={(ref) => {this.list = ref}}
                 />
             </View>
