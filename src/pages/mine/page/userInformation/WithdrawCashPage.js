@@ -438,7 +438,7 @@ export default class WithdrawCashPage extends BasePage {
                 }
             }, {
                 text: "马上就去", onPress: () => {
-                    this.props.navigation.navigate("mine/userInformation/IDVertify2Page");
+                    this.$navigate("mine/userInformation/IDVertify2Page");
                 }
             }]);
             return;

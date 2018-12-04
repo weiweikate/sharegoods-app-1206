@@ -284,7 +284,7 @@ export default class IDVertify2Page extends BasePage {
                 user.saveUserInfo(data);
             }).catch(err => {
                 if (err.code === 10009) {
-                    this.props.navigation.navigate("login/login/LoginPage");
+                    this.$navigate("login/login/LoginPage");
                 }
             });
             this.$navigateBack();
@@ -302,7 +302,7 @@ export default class IDVertify2Page extends BasePage {
             this.$loadingDismiss();
             this.$toastShow(err.msg);
             if (err.code === 10009) {
-                this.props.navigation.navigate("login/login/LoginPage");
+                this.$navigate("login/login/LoginPage");
             }
         });
     };

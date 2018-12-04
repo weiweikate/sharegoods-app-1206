@@ -10,6 +10,7 @@ import {
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import UIImage from '../../../../components/ui/UIImage';
+import NoMoreClick from '../../../../components/ui/NoMoreClick'
 import ImageLoad from "@mr/image-placeholder";
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -374,13 +375,13 @@ export default class HelperFeedbackPage extends BasePage {
                         })}
                         {this.renderAddItem()}
                     </View>
-                        <TouchableOpacity activeOpacity={0.9} disabled={this.state.touchable}
+                        <NoMoreClick activeOpacity={0.9} disabled={this.state.touchable}
                                           style={{alignItems:'center',justifyContent:'center',marginTop: 50}}
                                           onPress={() => this.feedback2server()}>
                             <View style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : color.red }]}>
                             <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>
                             </View>
-                        </TouchableOpacity>
+                        </NoMoreClick>
 
                 </ScrollView>
             </View>

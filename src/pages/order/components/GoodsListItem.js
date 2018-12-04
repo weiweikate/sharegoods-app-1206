@@ -24,7 +24,7 @@ const GoodsListItem = props => {
         orderNum,
         orderCreateTime,
         orderStatus,
-        // freightPrice,
+        freightPrice,
         totalPrice,
         orderProduct,
         clickItem,
@@ -209,12 +209,12 @@ const GoodsListItem = props => {
                 flexDirection: 'row',
                 paddingRight: 16
             }}>
-                <UIText value={'共' + orderProduct.length + '件商品  '+`${orderStatus<2?'需付款:':'实付款:'}`}
+                <UIText value={'共' + orderProduct.length + '件商品  '+`${orderStatus<2?'需付款: ':'实付款: '}`}
                         style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                 <UIText value={StringUtils.formatMoneyString(totalPrice)}
                         style={{ fontSize: 13, color: DesignRule.mainColor }}/>
-                {/*<UIText value={'（含运费' + StringUtils.formatMoneyString(freightPrice, false) + '）'}*/}
-                        {/*style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>*/}
+                <UIText value={'（含运费' + StringUtils.formatMoneyString(freightPrice, false) + '）'}
+                        style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
             </View>
         );
     };
@@ -274,7 +274,7 @@ const GoodsListItem = props => {
                 {this.renderGoodsList()}
                 {this.renderCalculate()}
                 {this.renderLine()}
-                {/*{this.renderTime()}*/}
+                {this.renderTime()}
                 {this.renderLine()}
             </TouchableOpacity>
             {constants.viewOrderStatus[orderStatus].menuData.length == 0 ? null :

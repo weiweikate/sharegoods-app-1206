@@ -6,6 +6,7 @@ import StringUtils from '../../../utils/StringUtils';
 import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
 import CommonTwoChoiceModal from './CommonTwoChoiceModal';
+// import OrderUtils from './../components/OrderUtils';
 import Toast from '../../../utils/bridge';
 import user from '../../../model/user';
 import OrderApi from '../api/orderApi';
@@ -34,7 +35,7 @@ export default class MyOrdersListView extends Component {
             CONFIG: []
         };
         this.currentPage = 1;
-        this.noMoreData=false;
+        this.noMoreData = false;
     }
 
     renderItem = ({ item, index }) => {
@@ -131,7 +132,6 @@ export default class MyOrdersListView extends Component {
                         this.setState({ isShowDeleteOrderModal: false });
                     }}
                 />
-
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowReceiveGoodsModal}
                     ref={(ref) => {
@@ -238,11 +238,12 @@ export default class MyOrdersListView extends Component {
                 });
 
             });
-            this.setState({ viewData: arrData });
+            // this.setState({ viewData: arrData });
         } else {
             this.noMoreData = true;
             // NativeModules.commModule.toast('无更多数据');
         }
+        this.setState({ viewData: arrData });
     };
 
     componentDidMount() {
@@ -437,7 +438,6 @@ export default class MyOrdersListView extends Component {
     };
 
     onLoadMore = () => {
-
         // console.log('onLoadMore',this.currentPage++);
         if (!this.noMoreData) {
             this.currentPage++;
@@ -453,7 +453,7 @@ export default class MyOrdersListView extends Component {
                 orderId: this.state.viewData[index].id,
                 status: this.state.viewData[index].orderStatus,
                 orderNum: this.state.viewData[index].orderNum,
-                callBack:()=>this.onRefresh
+                callBack: ()=>this.onRefresh
             });
         }
     };
@@ -493,6 +493,8 @@ export default class MyOrdersListView extends Component {
                     orderNum: this.state.viewData[index].orderNum,
                     amounts: this.state.viewData[index].totalPrice,
                     outTradeNo: this.state.viewData[index].outTradeNo
+                    // amounts: this.state.viewData[index].totalPrice + this.state.viewData[index].freightPrice,
+                    // orderType: this.state.viewData[index].pickedUp - 1
                 });
                 break;
             case 4:
@@ -540,67 +542,13 @@ export default class MyOrdersListView extends Component {
                     }
                 }
                 if (j == 0) {
-                    // this.setState({ isShowReceiveGoodsModal: true });
-                    // this.receiveModal && this.receiveModal.open();
-                    Alert.alert('',`是否确认收货?`, [
-                        {
-                            text: `取消`, onPress: () => {
-                            }
-                        },
-                        {
-                            text: `确定`, onPress: () => {
-                                Toast.showLoading();
-                                OrderApi.confirmReceipt({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('确认收货成功');
-                                    this.onRefresh();
-                                }).catch(e => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast(e.msg);
-                                });
-                            }}
-
-                    ], { cancelable: true });
+                    this.setState({ isShowReceiveGoodsModal: true });
+                    this.receiveModal && this.receiveModal.open();
                 }
                 break;
             case 7:
-                // this.setState({ isShowDeleteOrderModal: true });
-                Alert.alert('',`确定删除此订单？`, [
-                    {
-                        text: `取消`, onPress: () => {
-                        }
-                    },
-                    {
-                        text: `确定`, onPress: () => {
-                            this.setState({ isShowDeleteOrderModal: false });
-                            console.log(this.state.menu);
-                            if (this.state.viewData[this.state.index].orderStatus === 6||this.state.viewData[this.state.index].orderStatus === 7||this.state.viewData[this.state.index].orderStatus === 8) {
-                                Toast.showLoading();
-                                OrderApi.deleteClosedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('订单已删除！');
-                                    this.onRefresh();
-                                }).catch(e => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast(e.msg);
-                                });
-                            } else if (this.state.viewData[this.state.index].orderStatus === 4||this.state.viewData[this.state.index].orderStatus === 5) {
-                                Toast.showLoading();
-                                OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('订单已删除');
-                                    this.onRefresh();
-                                }).catch(e => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast(e.msg);
-                                });
-                            } else {
-                                NativeModules.commModule.toast('状态值异常，暂停操作');
-                            }
-                        }}
-
-                ], { cancelable: true });
-                // this.deleteModal && this.deleteModal.open();
+                this.setState({ isShowDeleteOrderModal: true });
+                this.deleteModal && this.deleteModal.open();
                 break;
             case 8:
                 Toast.showLoading();
@@ -631,43 +579,8 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 9:
-                // this.setState({ isShowDeleteOrderModal: true });
-                // this.deleteModal && this.deleteModal.open();
-                Alert.alert('',`确定删除此订单？`, [
-                    {
-                        text: `取消`, onPress: () => {
-                        }
-                    },
-                    {
-                        text: `确定`, onPress: () => {
-                            this.setState({ isShowDeleteOrderModal: false });
-                            console.log(this.state.menu);
-                            if (this.state.viewData[this.state.index].orderStatus === 6||this.state.viewData[this.state.index].orderStatus === 7||this.state.viewData[this.state.index].orderStatus === 8) {
-                                Toast.showLoading();
-                                OrderApi.deleteClosedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('订单已删除');
-                                    this.onRefresh();
-                                }).catch(e => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast(e.msg);
-                                });
-                            } else if (this.state.viewData[this.state.index].orderStatus === 4||this.state.viewData[this.state.index].orderStatus === 5) {
-                                Toast.showLoading();
-                                OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('订单已删除');
-                                    this.onRefresh();
-                                }).catch(e => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast(e.msg);
-                                });
-                            } else {
-                                NativeModules.commModule.toast('状态值异常，暂停操作');
-                            }
-                        }}
-
-                ], { cancelable: true });
+                this.setState({ isShowDeleteOrderModal: true });
+                this.deleteModal && this.deleteModal.open();
                 break;
         }
     };
