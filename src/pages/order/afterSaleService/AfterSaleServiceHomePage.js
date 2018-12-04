@@ -7,8 +7,8 @@ import BasePage from '../../../BasePage';
 import {
     UIText, UIImage
 } from '../../../components/ui';
-import StringUtils from '../../../utils/StringUtils';
-import GoodsItem from '../components/GoodsGrayItem';
+// import StringUtils from '../../../utils/StringUtils';
+// import GoodsItem from '../components/GoodsGrayItem';
 import DateUtils from '../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
