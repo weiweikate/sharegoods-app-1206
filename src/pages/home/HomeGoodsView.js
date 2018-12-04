@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtils
 import { homeModule } from './Modules'
 import DesignRule from 'DesignRule'
 import UIImage from "@mr/image-placeholder";
 
-const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onPress={()=> press && press()}>
+const Goods = ({goods, press}) => <TouchableWithoutFeedback onPress={()=> press && press()}>
+    <View style={styles.container}>
     <View style={styles.image}>
         <UIImage style={styles.image} source={{uri: goods.imgUrl ? goods.imgUrl : ''}}/>
         <View style={styles.titleView}>
@@ -16,14 +17,15 @@ const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onP
     <Text style={styles.dis} numberOfLines={2}>{goods.name}</Text>
     <View style={{flex: 1}}/>
     <Text style={styles.money}>¥ {goods.price} 起</Text>
-</TouchableOpacity>
+    </View>
+</TouchableWithoutFeedback>
 
 export default class GoodsCell extends Component {
     _goodsAction(data) {
         let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode)
-        const { navigation } = this.props
+        const { navigate } = this.props
         let params = homeModule.paramsNavigate(data)
-        navigation.navigate(route,  params)
+        navigate(route,  params)
     }
     render() {
         const {data} = this.props

@@ -2,7 +2,7 @@
  * 首页轮播图
  */
 import React, { Component } from "react";
-import { View, StyleSheet, Image, TouchableWithoutFeedback, Platform } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Platform } from "react-native";
 import ScreenUtils from "../../utils/ScreenUtils";
 import ViewPager from "../../components/ui/ViewPager";
 
@@ -22,10 +22,10 @@ export default class HomeBannerView extends Component {
 
     _renderViewPageItem(item) {
         return (
-            <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(item)}>
+            <TouchableOpacity onPress={() => this._onPressRowWithItem(item)} activeOpacity={1}>
                 <ImageLoad style={styles.img}
                        source={{ uri: item }}/>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 
@@ -55,8 +55,8 @@ export default class HomeBannerView extends Component {
         }
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
-        const { navigation } = this.props;
-        navigation.navigate(router, params);
+        const { navigate } = this.props;
+        navigate(router, params);
     }
 
     _onPressRow = (index) => {
@@ -64,8 +64,8 @@ export default class HomeBannerView extends Component {
         let data = bannerList[index];
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
-        const { navigation } = this.props;
-        navigation.navigate(router, params);
+        const { navigate } = this.props;
+        navigate(router, params);
     };
 
     render() {
