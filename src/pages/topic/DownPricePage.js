@@ -18,6 +18,7 @@ import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from 'DesignRule';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
+// import ImageLoad from '@mr/image-placeholder'
 
 const { statusBarHeight } = ScreenUtils;
 @observer
