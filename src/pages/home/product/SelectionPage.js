@@ -25,13 +25,12 @@ export default class SelectionPage extends Component {
             data: {},
             callBack: undefined,
             propData: {},
-            specMap: {},
-            priceList: [],
+            specMap: [],//规格
+            priceList: [],//库存
             tittleList: [],
 
-            selectList: [],//选择的id数组
             selectStrList: [],//选择的名称值
-            selectSpecList: [],//选择规格所对应的库存,
+            selectSpecList: [],//选择规格所对应的所有库存,
             maxStock: 0,//最大库存
 
             amount: 1
@@ -42,32 +41,24 @@ export default class SelectionPage extends Component {
         //type afterSpecIds
         //需要重置旧数据
         if (propData.needUpdate) {
-            this.state.selectList = [];
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
         }
-        const { specMap = {}, priceList = [] } = data;
-        let specMapTemp = JSON.parse(JSON.stringify(specMap));
-        let priceListTemp = JSON.parse(JSON.stringify(priceList));
-        //修改specMapTemp每个元素首尾增加'，'
-        for (let key in specMapTemp) {
-            specMapTemp[key].forEach((item) => {
-                if (String(item.id).indexOf(',') === -1) {
-                    item.id = `,${item.id},`;
-                }
-            });
-        }
-        //修改priceListTemp中的specIds首尾增加','
-        priceListTemp.forEach((item) => {
-            item.specIds = `,${item.specIds},`;
-        });
+        const { specifyList, skuList } = data;
+        let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
+        let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
 
-        //提取规格处理id
         let tittleList = [];
-        for (let key in specMapTemp) {
-            tittleList.push(key);
-        }
+        //提取规格处理id
+        //修改specMapTemp每个元素首尾增加'，'
+        specMapTemp.forEach((specifyListItem) => {
+            tittleList.push(specifyListItem.specName || '');
+        });
+        //修改priceListTemp中的propertyValues首尾增加','
+        priceListTemp.forEach((item) => {
+            item.propertyValues = `@${item.propertyValues}@`;
+        });
 
         this.setState({
             modalVisible: true,
@@ -86,11 +77,9 @@ export default class SelectionPage extends Component {
 
     _clickItemAction = (item, indexOfProp) => {
         if (item.isSelected) {
-            this.state.selectList[indexOfProp] = undefined;
             this.state.selectStrList[indexOfProp] = undefined;
         } else {
-            this.state.selectList[indexOfProp] = item.id;
-            this.state.selectStrList[indexOfProp] = item.specValue;
+            this.state.selectStrList[indexOfProp] = `@${item.specValue}@`;
         }
         this._indexCanSelectedItems();
     };
@@ -98,25 +87,26 @@ export default class SelectionPage extends Component {
     //获取各个列表数据 刷新页面状态
     _indexCanSelectedItems = () => {
         //afterPrice
-        //type
-        const { afterPrice, type , productPriceId} = this.state.propData;
+        //type after退换货
+        const { afterPrice, type, productPriceId } = this.state.propData;
         let tempArr = [];
         this.state.tittleList.forEach((item, index) => {
             tempArr[index] = this._indexCanSelectedItem(index);
         });
-        const { specMap = {} } = this.state;
-        let index = 0, isFirst = true, needUpdate = false;
-        //总
-        for (let key in specMap) {
-            //每行
-            specMap[key].forEach((item) => {
-                //item 每个
-                item.isSelected = this.state.selectList.indexOf(item.id) !== -1;
+        const { specMap } = this.state;
+        let isFirst = true, needUpdate = false;
+        //总规格
+        specMap.forEach((specifyListItem, index) => {
+            //每行规格
+            let specValues = specifyListItem.specValues || [];
+            specValues.forEach((item) => {
+                //item每个规格
+                item.isSelected = this.state.selectStrList.indexOf(`@${item.specValue}@`) !== -1;
                 item.canSelected = false;
                 //tempArr[index] 每行符合的数据
                 tempArr[index].forEach((item1) => {
                     //库存中有&&剩余数量不为0
-                    if (item1.specIds.indexOf(item.id) !== -1 && item1.stock !== 0) {
+                    if (item1.propertyValues.indexOf(`@${item.specValue}@`) !== -1 && item1.sellStock !== 0) {
                         //如果是退换货多一次判断
                         if (type === 'after') {
                             if (afterPrice >= item1.price || productPriceId === item1.id) {
@@ -127,18 +117,16 @@ export default class SelectionPage extends Component {
                         }
                         //单规格默认选中
                         //可以被选择 && 单规格 && 目前没被选择 && 当前总循环第一次
-                        if (item.canSelected && specMap[key].length === 1 && !item.isSelected && isFirst) {
+                        if (item.canSelected && specValues.length === 1 && !item.isSelected && isFirst) {
                             isFirst = false;
                             needUpdate = true;
-                            this.state.selectList[index] = item.id;
-                            this.state.selectStrList[index] = item.specValue;
+                            this.state.selectStrList[index] = `@${item.specValue}@`;
                         }
 
                     }
                 });
             });
-            index++;
-        }
+        });
         if (needUpdate) {
             this._indexCanSelectedItems();
         } else {
@@ -152,45 +140,29 @@ export default class SelectionPage extends Component {
         let stock = 0;
         this.state.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
-            stock = stock + item.stock;
+            stock = stock + item.sellStock;
         });
         this.state.maxStock = stock;
     };
 
     //index?获取当前列外符合条件的数据:全部数据
     _indexCanSelectedItem = (index) => {
-        let [...tempList] = this.state.selectList;
+        let [...tempList] = this.state.selectStrList;
         if (index !== undefined) {
             tempList[index] = undefined;
         }
 
-        let priceArr = [];
-        tempList.forEach((item) => {
-            if (StringUtils.isNoEmpty(item)) {
-                priceArr.push(item.replace(/,/g, ''));
-            }
-        });
-        //冒泡specId从小到大
-        for (let i = 0; i < priceArr.length - 1; i++) {
-            for (let j = 0; j < priceArr.length - 1 - i; j++) {
-                if (priceArr[j] > priceArr[j + 1]) {
-                    let tmp = priceArr[j + 1];
-                    priceArr[j + 1] = priceArr[j];
-                    priceArr[j] = tmp;
-                }
-            }
-        }
-
         let tempArr = [];
-        const { priceList = [] } = this.state;
-        if (priceArr.length === 0) {
+        const { priceList } = this.state;
+        if (tempList.length === 0) {
             tempArr = priceList;
         } else {
             tempArr = priceList.filter((item) => {
                 let contain = true;
-                priceArr.forEach((priceItem) => {
-                    //item.specIds不包含priceArr中的任意元素
-                    if (item.specIds.indexOf(`,${priceItem},`) == -1) {
+                let propertyValues = item.propertyValues || '';
+                tempList.forEach((priceItem) => {
+                    //item.specIds不包含priceArr中的任意元素就为无
+                    if (priceItem && propertyValues.indexOf(priceItem) == -1) {
                         contain = false;
                     }
                 });
@@ -221,41 +193,29 @@ export default class SelectionPage extends Component {
             return;
         }
 
-        let priceArr = [];
         let isAll = true;
 
-        const { specMap = {} } = this.state;
+        const { specMap } = this.state;
 
-        this.state.selectList.forEach((item) => {
+        this.state.selectStrList.forEach((item) => {
             if (StringUtils.isEmpty(item)) {
                 isAll = false;
-            } else {
-                priceArr.push(item.replace(/,/g, ''));
             }
         });
 
-        if (!isAll || this.state.selectList.length !== Object.keys(specMap).length) {
+        if (!isAll || this.state.selectStrList.length !== specMap.length) {
             bridge.$toast('请选择规格');
             return;
         }
-
-        //冒泡specId从小到大
-        for (let i = 0; i < priceArr.length - 1; i++) {
-            for (let j = 0; j < priceArr.length - 1 - i; j++) {
-                if (priceArr[j] > priceArr[j + 1]) {
-                    let tmp = priceArr[j + 1];
-                    priceArr[j + 1] = priceArr[j];
-                    priceArr[j] = tmp;
-                }
-            }
-        }
-
-        let priceId = priceArr.join(',');
-        priceId = `,${priceId},`;
+        let itemValues = this.state.selectStrList.map((item) => {
+            return item.replace(/@/g, '');
+        });
+        itemValues = itemValues.join('@');
+        itemValues = `@${itemValues}@`;
         let itemData;
         const { priceList = [] } = this.state;
         priceList.forEach((item) => {
-            if (item.specIds === priceId) {
+            if (item.propertyValues === itemValues) {
                 itemData = item;
                 return;
             }
@@ -264,31 +224,28 @@ export default class SelectionPage extends Component {
             return;
         }
         this.setState({ modalVisible: false }, () => {
-            this.state.callBack(this.state.amount, itemData.id, itemData.spec, itemData.specImg);
+            this.state.callBack(this.state.amount, itemData.skuCode, itemData.propertyValues, itemData.specImg);
         });
     };
 
     _addSelectionSectionView = () => {
-        const { specMap = {} } = this.state;
+        const { specMap } = this.state;
         let tagList = [];
-        let index = 0;
-        for (let key in specMap) {
-            tagList.push(<SelectionSectionView key={key}
+        specMap.forEach((item, index) => {
+            tagList.push(<SelectionSectionView key={item.specName}
                                                indexOfProp={index}
-                                               tittle={key}
-                                               listData={specMap[key]}
+                                               tittle={item.specName}
+                                               listData={item.specValues}
                                                clickItemAction={this._clickItemAction}/>);
-            index++;
-        }
+        });
         return tagList;
     };
 
     render() {
-        const { product = {}, price = '' } = this.state.data;
         const { afterAmount, type } = this.state.propData;
         return (
             <Modal
-                ref={(ref)=>this.modal = ref}
+                ref={(ref) => this.modal = ref}
                 animationType="none"
                 transparent={true}
                 visible={this.state.modalVisible}
@@ -298,9 +255,7 @@ export default class SelectionPage extends Component {
                         <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                     </TouchableWithoutFeedback>
                     <View style={{ flex: 1 }}>
-                        <SelectionHeaderView product={product}
-                                             price={price}
-                                             selectList={this.state.selectList}
+                        <SelectionHeaderView product={this.state.data}
                                              selectStrList={this.state.selectStrList}
                                              selectSpecList={this.state.selectSpecList}
                                              closeSelectionPage={() => this.setState({ modalVisible: false })}/>
