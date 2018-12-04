@@ -137,18 +137,13 @@ export default class FillReturnLogisticsPage extends BasePage {
             this.$toastShow('请填写物流单号');
             return;
         }
-        let returnAddress = this.params.pageData.returnAddress || {};
-        let { receiver, recevicePhone, provinceName, cityName, areaName, address } = returnAddress;
         let parmas = {
             expressNo: this.state.logisticsNum,
             expressName: this.state.logisticsCompanyName,
-            id: this.params.pageData.id,
-            backAddress: provinceName + cityName + areaName + address,
-            backPhone: recevicePhone,
-            backReceiver: receiver
+            serviceNo: this.params.pageData.serviceNo,
         };
         this.$loadingShow();
-        OrderApi.fillSendInfo(parmas).then(result => {
+        OrderApi.afterSaleFillExpress(parmas).then(result => {
             this.$loadingDismiss();
             DeviceEventEmitter.emit('OrderNeedRefresh');
             this.params.callBack && this.params.callBack();//刷新售后详情页面

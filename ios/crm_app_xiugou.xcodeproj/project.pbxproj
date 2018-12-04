@@ -951,6 +951,8 @@
 		037DBA7C21B0CCD30003DA18 /* animationRes */ = {
 			isa = PBXGroup;
 			children = (
+				037DBABC21B0E3030003DA18 /* money_0.png */,
+				037DBABD21B0E3030003DA18 /* money_1.png */,
 			);
 			path = animationRes;
 			sourceTree = "<group>";
@@ -1092,7 +1094,6 @@
 		5068356A21379B78001AB175 /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				037DBA7C21B0CCD30003DA18 /* animationRes */,
 				5077FC8A21A4FE37003B860D /* openssl */,
 				5068356B21379B78001AB175 /* Base */,
 				5068357021379B78001AB175 /* Category */,
@@ -1606,8 +1607,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				037DBABC21B0E3030003DA18 /* money_0.png */,
-				037DBABD21B0E3030003DA18 /* money_1.png */,
 				13B07FAE1A68108700A75B9A /* crm_app_xiugou */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* crm_app_xiugouTests */,
@@ -1748,6 +1747,7 @@
 		FA27D427516E4834811C0234 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				037DBA7C21B0CCD30003DA18 /* animationRes */,
 				2E00CEEA555A4CB28FE001B8 /* Entypo.ttf */,
 				AE4716B854E34520B3C18596 /* EvilIcons.ttf */,
 				EB6EFB6B04564EBAB951820B /* Feather.ttf */,

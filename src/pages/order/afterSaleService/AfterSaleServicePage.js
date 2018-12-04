@@ -32,7 +32,8 @@ import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
-const {arrow_right} = res;
+
+const { arrow_right } = res;
 
 
 class AfterSaleServicePage extends BasePage {
@@ -40,7 +41,6 @@ class AfterSaleServicePage extends BasePage {
         super(props);
         this.state = {
             isShowSingleSelctionModal: false,
-            isShowTakePhotoModal: false,
             pageType: this.params.pageType ? this.params.pageType : 0, //  0(退款),1(退货退款),2(换货)
             activeProduct: ['', '退回商品需由买家承担运费，请确保商品不影响二次销售', '仅可更换同规格的商品，请确保退换商品不影响二次销售'],
             reason: ['退款原因', '退货原因', '换货原因'],
@@ -50,13 +50,13 @@ class AfterSaleServicePage extends BasePage {
             remark: this.params.isEdit === true ? this.params.remark : '',                              //退款具体说明
             imageArr: this.params.isEdit === true ? this.params.imgList : [],                           //选择的图片数组
             /** 编辑申请需要的售后详情id*/
-            returnProductId: this.params.returnProductId,
+            returnProductId: this.params.orderProductNo,
+            applyRefundAmount: 0//退款金额
             /** 换货需要的数据*/
-            selectionData: {}, //规格数据
-            exchangePriceId: this.params.exchangePriceId,
-            exchangeSpec: this.params.exchangeSpec,
-            exchangeSpecImg: this.params.exchangeSpecImg,
-            returnReasons: [],
+            // selectionData: {}, //规格数据
+            // exchangeSpec: this.params.exchangeSpec,
+            // exchangeSpecImg: this.params.exchangeSpecImg,
+
         };
         this.loadSelectionData = this.loadSelectionData.bind(this);
     }
@@ -139,24 +139,24 @@ class AfterSaleServicePage extends BasePage {
                     <View>
                         {/*{this.renderWideLine()}*/}
                         {/*<TouchableOpacity style={{*/}
-                            {/*height: 48,*/}
-                            {/*backgroundColor: 'white',*/}
-                            {/*justifyContent: 'space-between',*/}
-                            {/*flexDirection: 'row',*/}
-                            {/*alignItems: 'center'*/}
+                        {/*height: 48,*/}
+                        {/*backgroundColor: 'white',*/}
+                        {/*justifyContent: 'space-between',*/}
+                        {/*flexDirection: 'row',*/}
+                        {/*alignItems: 'center'*/}
                         {/*}} onPress={() => this.exchangeType()}>*/}
-                            {/*<UIText value={'更换型号'}*/}
-                                    {/*style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>*/}
-                            {/*<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>*/}
-                                {/*<UIText style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginRight: 5 }}*/}
-                                        {/*value={this.state.exchangeSpec || '请选择'}/>*/}
-                                {/*<UIImage source={arrow_right} style={{ height: 10, width: 7, marginRight: 15 }}/>*/}
-                            {/*</View>*/}
+                        {/*<UIText value={'更换型号'}*/}
+                        {/*style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>*/}
+                        {/*<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>*/}
+                        {/*<UIText style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginRight: 5 }}*/}
+                        {/*value={this.state.exchangeSpec || '请选择'}/>*/}
+                        {/*<UIImage source={arrow_right} style={{ height: 10, width: 7, marginRight: 15 }}/>*/}
+                        {/*</View>*/}
                         {/*</TouchableOpacity>*/}
                         {/*<View style={{ height: 30, alignItems: 'center', flexDirection: 'row' }}>*/}
-                            {/*<UIText value={'*'} style={{ fontSize: 12, color: DesignRule.mainColor, marginLeft: 15 }}/>*/}
-                            {/*<UIText value={'请确保退换商品不影响二次销售'}*/}
-                                    {/*style={{ fontSize: 12, color: DesignRule.textColor_instruction }}/>*/}
+                        {/*<UIText value={'*'} style={{ fontSize: 12, color: DesignRule.mainColor, marginLeft: 15 }}/>*/}
+                        {/*<UIText value={'请确保退换商品不影响二次销售'}*/}
+                        {/*style={{ fontSize: 12, color: DesignRule.textColor_instruction }}/>*/}
                         {/*</View>*/}
                     </View>
                 );
@@ -230,7 +230,7 @@ class AfterSaleServicePage extends BasePage {
                     <UIText value={'上传凭证'}
                             style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
                     <UIText value={'（最多3张）'}
-                            style={{ color: DesignRule.textColor_placeholder, fontSize: 13}}/>
+                            style={{ color: DesignRule.textColor_placeholder, fontSize: 13 }}/>
                 </View>
                 <View
                     style={{ paddingLeft: 20, paddingRight: 20, marginBottom: 38, backgroundColor: 'white' }}>
@@ -280,7 +280,9 @@ class AfterSaleServicePage extends BasePage {
     };
     renderModal = () => {
         // let productData = this.state.productData;getReturnReason
-        let returnReasons = this.state.returnReasons.map((item)=> {return item.value});
+        let returnReasons = this.state.returnReasons.map((item) => {
+            return item.value;
+        });
         return (
             <View>
                 <BottomSingleSelectModal
@@ -297,18 +299,6 @@ class AfterSaleServicePage extends BasePage {
                         this.setState({ returnReason: returnReasons[index] });
                     }}
                 />
-                {/*<TakePhoneModal*/}
-                    {/*isShow={this.state.isShowTakePhotoModal}*/}
-                    {/*closeWindow={() => {*/}
-                        {/*this.setState({ isShowTakePhotoModal: false });*/}
-                    {/*}}*/}
-                    {/*takePhoto={() => {*/}
-                        {/*this.setState({ isShowTakePhotoModal: false });*/}
-                    {/*}}*/}
-                    {/*selectPhoto={() => {*/}
-                        {/*this.setState({ isShowTakePhotoModal: false });*/}
-                    {/*}}*/}
-                {/*/>*/}
                 {/*<ExchangeTypeModal*/}
                 {/*isShow={this.state.isShowExchangeTypeModal}*/}
                 {/*detail={[{ title: '颜色分类', arr: ['金色', '红色', '黑色', '银色'] }, {*/}
@@ -358,11 +348,11 @@ class AfterSaleServicePage extends BasePage {
         );
     };
 
-    _getReturnReason(){
+    _getReturnReason() {
         let that = this;
-        OrderApi.getReturnReason({code: ['TKLY','THTK','HHLY'][this.params.pageType]}).then((result) => {
-            that.setState({returnReasons: result.data || []});
-        }).catch((error)=> {
+        OrderApi.getReturnReason({ code: ['TKLY', 'THTK', 'HHLY'][this.params.pageType] }).then((result) => {
+            that.setState({ returnReasons: result.data || [] });
+        }).catch((error) => {
 
         });
     }
@@ -388,12 +378,12 @@ class AfterSaleServicePage extends BasePage {
     };
 
     loadPageData() {
-        let that = this;
-        OrderApi.subOrderLookDetial({ orderProductId: this.params.orderProductId }).then((result) => {
-            that.setState({ productData: result.data });
-        }).catch(error => {
-
-        });
+        // let that = this;
+        // OrderApi.subOrderLookDetial({ orderProductNo: this.params.orderProductNo }).then((result) => {
+        //     that.setState({ productData: result.data });
+        // }).catch(error => {
+        //
+        // });
     }
 
     /**
@@ -422,47 +412,42 @@ class AfterSaleServicePage extends BasePage {
     }
 
     commit = () => {
-        let imgList = [];
+        let imgList = '';
         for (let i = 0; i < this.state.imageArr.length; i++) {
-            // if (i = 0) {
-            //     imgUrls = this.state.imageArr[i].imageUrl;
-            //     smallImgUrls = this.state.imageArr[i].imageThumbUrl;
-            // } else {
-            //     imgUrls = ',' + this.state.imageArr[i].imageUrl;
-            //     smallImgUrls = ',' + this.state.imageArr[i].imageThumbUrl;
-            // }
-            let smallImg = this.state.imageArr[i].smallImg || this.state.imageArr[i].imageThumbUrl;
-            let originalImg = this.state.imageArr[i].originalImg || this.state.imageArr[i].imageUrl;
-            imgList.push({ originalImg, smallImg });
+            if (i = 0) {
+                imgList = this.state.imageArr[i];
+                // smallImgUrls = this.state.imageArr[i].imageThumbUrl;
+            } else {
+                imgList = ',' + this.state.imageArr[i];
+                // smallImgUrls = ',' + this.state.imageArr[i].imageThumbUrl;
+            }
         }
-        const params = {
+        let { orderProductNo, type, serviceNo, applyRefundAmount } = this.params;
+        let { remark, returnReason } = this.state;
+        let params = {
             imgList: imgList,
-            orderProductId: this.params.orderProductId,
-            remark: this.state.remark,
-            returnReason: this.state.returnReason
+            description: remark,
+            reason: returnReason,
+            type: type,
+            applyRefundAmount: applyRefundAmount
         };
         if (params.remark.length > 180) {
             NativeModules.commModule.toast('输入的说明文字超出了180个');
             return;
         }
-        if (StringUtils.isEmpty(params.returnReason) && this.state.pageType === 2) {
-            NativeModules.commModule.toast('请填写原因');
+        if (StringUtils.isEmpty(returnReason)) {
+            NativeModules.commModule.toast('请选择售后原因');
             return;
         }
-        // if (StringUtils.isEmpty(imgList)) {
-        //     NativeModules.commModule.toast('请上传照片');
-        //     return;
-        // }
-        if (this.params.isEdit) {
-            params.returnProductId = this.state.returnProductId;
+
+        if (applyRefundAmount === 0){
+            NativeModules.commModule.toast('售后的金额不能为0');
+            return;
         }
+
         /** 修改申请*/
         if (this.params.isEdit) {
-            if (this.params.pageType === 2) {
-                params.exchangePriceId = this.state.exchangePriceId;
-                params.exchangeSpec = this.state.exchangeSpec;
-                params.exchangeSpecImg = this.state.exchangeSpecImg;
-            }
+            params.serviceNo = serviceNo;
             OrderApi.updateApply(params).then((response) => {
                 this.$loadingDismiss();
                 this.params.callBack && this.params.callBack();
@@ -472,71 +457,26 @@ class AfterSaleServicePage extends BasePage {
                 this.$loadingDismiss();
                 bridge.$toast(e.msg);
             });
-            return;
-        }
-        /** 提交申请、提交申请成功要通知订单刷新*/
-        switch (this.params.pageType) {
-            /*
-            todo 后端返回不规范
-            * {
-             "code": 200,
-             "msg": "已在退款申请中，不能重复申请！",
-             "data": null
-             }
-            * */
+        } else {
+            /** 提交申请、提交申请成功要通知订单刷新*/
+            params.orderProductNo = orderProductNo;
+            this.$loadingShow();
+            OrderApi.applyRefund(params).then((response) => {
+                this.$loadingDismiss();
+                DeviceEventEmitter.emit('OrderNeedRefresh');
+                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                    serviceNo: response.data.serviceNo
+                });
 
-            case 0:
-                this.$loadingShow();
-                OrderApi.applyRefund(params).then((response) => {
-                    this.$loadingDismiss();
-                    DeviceEventEmitter.emit('OrderNeedRefresh');
-                    this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                        returnProductId: response.data.id,
-                        pageType: 0
-                    });
+            }).catch(e => {
+                this.$loadingDismiss();
+                bridge.$toast(e.msg);
+            });
 
-                }).catch(e => {
-                    this.$loadingDismiss();
-                    bridge.$toast(e.msg);
-                });
-                break;
-            case 1:
-                this.$loadingShow();
-                OrderApi.applyReturnGoods(params).then((response) => {
-                    this.$loadingDismiss();
-                    DeviceEventEmitter.emit('OrderNeedRefresh');
-                    this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                        returnProductId: response.data.id,
-                        pageType: 1
-                    });
-                }).catch(e => {
-                    this.$loadingDismiss();
-                    bridge.$toast(e.msg);
-                });
-                break;
-            case 2:
-                params.exchangePriceId = this.state.exchangePriceId;
-                params.exchangeSpec = this.state.exchangeSpec;
-                params.exchangeSpecImg = this.state.exchangeSpecImg;
-                this.$loadingShow();
-                OrderApi.applyExchangeGoods(params).then((response) => {
-                    this.$loadingDismiss();
-                    DeviceEventEmitter.emit('OrderNeedRefresh');
-                    this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                        returnProductId: response.data.id,
-                        pageType: 2
-                    });
-                }).catch(e => {
-                    this.$loadingDismiss();
-                    bridge.$toast(e.msg);
-                });
-                break;
         }
 
     };
-    jumpToProductDetailPage = (productId) => {
-        this.navigate('product/ProductDetailPage', { productId: productId });
-    };
+
     addPic = () => {
         let imageArr = this.state.imageArr;
         if (imageArr.length === 3) {
@@ -544,7 +484,7 @@ class AfterSaleServicePage extends BasePage {
             return;
         }
         BusinessUtils.getImagePicker(callback => {
-            imageArr.push({ imageUrl: callback.imageUrl, imageThumbUrl: callback.imageThumbUrl });
+            imageArr.push(callback.imageThumbUrl);
             this.setState({ imageArr: imageArr });
         });
     };
