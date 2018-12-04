@@ -195,7 +195,7 @@ export default class AddressManagerPage extends BasePage {
 
     _onEditAddress = (item, index) => {
         // 编辑地址页面
-        this.props.navigation.navigate('mine/address/AddressEditAndAddPage', {
+        this.$navigate('mine/address/AddressEditAndAddPage', {
             refreshing: this.refreshing.bind(this),
             from: 'edit',
             receiver: item.receiver,
