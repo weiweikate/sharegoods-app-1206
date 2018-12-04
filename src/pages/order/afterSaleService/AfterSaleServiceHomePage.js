@@ -45,23 +45,23 @@ class AfterSaleServiceHomePage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
-        let productData = this.params.pageData.orderProductList[this.state.index];
+        // let productData = this.params.pageData.orderProductList[this.state.index];
         return (
             <View style={DesignRule.style_container}>
                 {this.renderWideLine()}
                 {this.renderServiceType()}
                 {this.renderLine()}
                 {this.renderSelect()}
-                {this.renderOrderNum()}
-                <GoodsItem
-                    uri={productData.specImg}
-                    goodsName={productData.productName}
-                    salePrice={StringUtils.formatMoneyString(productData.price)}
-                    category={productData.spec}
-                    goodsNum={productData.num}
-                    onPress={() => this.jumpToProductDetailPage()}
-                />
-                {this.renderOrderTime()}
+                {/*{this.renderOrderNum()}*/}
+                {/*<GoodsItem*/}
+                    {/*uri={productData.specImg}*/}
+                    {/*goodsName={productData.productName}*/}
+                    {/*salePrice={StringUtils.formatMoneyString(productData.price)}*/}
+                    {/*category={productData.spec}*/}
+                    {/*goodsNum={productData.num}*/}
+                    {/*onPress={() => this.jumpToProductDetailPage()}*/}
+                {/*/>*/}
+                {/*{this.renderOrderTime()}*/}
             </View>
         );
     }
@@ -88,7 +88,8 @@ class AfterSaleServiceHomePage extends BasePage {
         let content = ['未收到货（包含未签收）', '已收到货，需要退换已收到的货物', '需要更换货'];
         // 1 2 4 8 16 分别代表不支持优惠券、一元、换货、退货
         let status = [4, 16, 8];
-        let productData = this.params.pageData.orderProductList[this.state.index];
+        // let productData = this.params.pageData.orderProductList[this.state.index];
+        let productData = {restrictions: 0};
         let arr = [];
         for (let i = 0; i < image.length; i++) {
             if ((productData.restrictions & status[i]) !== status[i]) {
@@ -114,7 +115,8 @@ class AfterSaleServiceHomePage extends BasePage {
         return arr;
     };
     pageSelect = (index) => {
-        let orderProductNo = this.params.pageData.orderProductList[this.state.index].id;
+       // let orderProductNo = this.params.pageData.orderProductList[this.state.index].id;
+        let orderProductNo = 1;
         switch (index) {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {

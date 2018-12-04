@@ -94,7 +94,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.productData.warehouseOrderNo}
+                <UIText value={'订单编号：' + this.state.productData.orderProductNo}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -441,66 +441,20 @@ class AfterSaleServicePage extends BasePage {
 
     loadPageData() {
         let that = this;
-        let result = {
-            data: {
-                'id': 1,
-                'orderProductNo': 'c*****',
-                'warehouseOrderNo': 'p****',
-                'platformOrderNo': 'p****',
-                'userCode': 'p*****',
-                'userPhone': '182****3343',
-                'prodCode': 'c****',
-                'productName': '朵女郎',
-                'restrictions': 88,
-                'skuCode': 'p****',
-                'supplierSkuCode': 's*****',
-                'specTitle': 'dd,dd',
-                'specValues': 'dd,dd',
-                'specImg': '****',
-                'settlementPrice': 11,
-                'originalPrice': 11,
-                'groupPrice': 11,
-                'freightTemplateId': 1,
-                'weight': 1,
-                'unitPrice': 11,
-                'quantity': 1,
-                'taxAmount': 88,
-                'freightAmount': 1,
-                'totalAmount': 110,
-                'promotionAmount': 20,
-                'couponAmount': 10,
-                'tokenCoinAmount': 11,
-                'accountPayAmount': 59,
-                'cashPayAmount': 11,
-                'payAmount': 11,
-                'invoiceAmount': 1,
-                'userRemarks': '****',
-                'status': 3,
-                'createTime': '2018-09-11 00:00:00',
-                'updateTime': '2018-09-11 00:00:00'
+        this.$loadingShow();
+        OrderApi.subOrder({ orderProductNo: this.params.orderProductNo + '' }).then((result) => {
+            that.$loadingDismiss();
+            let productData = result.data || {};
+            let status = productData.status;
+            let editable = true;
+            let payAmount = productData.payAmount || 0;
+            if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
+                editable = false;
             }
-        };
-        let productData = result.data || {};
-        let status = productData.status;
-        let editable = true;
-        let payAmount = productData.payAmount || 0;
-        if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
-            editable = false;
-        }
-        that.setState({ productData, editable, applyRefundAmount: payAmount });
-        // OrderApi.subOrder({ orderProductNo: this.params.orderProductNo }).then((result) => {
-        //
-        //     let productData = result.data || {}
-        //     let status = productData.status;
-        //     let editable = true;
-        //     let payAmount = productData.payAmount;
-        //     if (status == 2){  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
-        //         editable = false;
-        //     }
-        //         that.setState({ productData, editable, payAmount});
-        // }).catch(error => {
-        //
-        // });
+            that.setState({ productData, editable, applyRefundAmount: payAmount });
+        }).catch(error => {
+            that.$loadingDismiss();
+        });
     }
 
     /**
@@ -539,14 +493,14 @@ class AfterSaleServicePage extends BasePage {
                 // smallImgUrls = ',' + this.state.imageArr[i].imageThumbUrl;
             }
         }
-        let { orderProductNo, type, serviceNo } = this.params;
+        let { orderProductNo, pageType, serviceNo } = this.params;
         let {applyRefundAmount} = this.state;
         let { remark, returnReason } = this.state;
         let params = {
             imgList: imgList,
             description: remark,
             reason: returnReason,
-            type: type,
+            type: pageType + 1,
             applyRefundAmount: applyRefundAmount
         };
         if (params.description.length > 180) {
@@ -566,7 +520,7 @@ class AfterSaleServicePage extends BasePage {
         /** 修改申请*/
         if (this.params.isEdit) {
             params.serviceNo = serviceNo;
-            OrderApi.updateApply(params).then((response) => {
+            OrderApi.afterSaleModify(params).then((response) => {
                 this.$loadingDismiss();
                 this.params.callBack && this.params.callBack();
                 this.$navigateBack();
@@ -579,11 +533,11 @@ class AfterSaleServicePage extends BasePage {
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;
             this.$loadingShow();
-            OrderApi.applyRefund(params).then((response) => {
+            OrderApi.afterSaleApply(params).then((response) => {
                 this.$loadingDismiss();
                 DeviceEventEmitter.emit('OrderNeedRefresh');
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: response.data.serviceNo
+                    serviceNo: response.serviceNo
                 });
 
             }).catch(e => {

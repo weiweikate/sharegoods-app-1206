@@ -8,6 +8,7 @@ class AfterSaleDetailModel {
     loadingShow = null;
     loadingDismiss = null;
     toastShow = null;
+    navigationBarResetTitle = null;
     @observable
     isLoaded = false;
     @observable
@@ -18,11 +19,12 @@ class AfterSaleDetailModel {
     @action
     loadPageData(callBack){
         this.loadingShow&&this.loadingShow();
-        orderApi.returnProductLookDetail({returnProductId: this.serviceNo}).then(result => {
+        orderApi.afterSaleDetail({serviceNo: this.serviceNo}).then(result => {
             this.loadingDismiss&&this.loadingDismiss();
             this.pageData = result.data;
             this.startTimer(5);
             this.isLoaded = true;
+            this.navigationBarResetTitle(['','',''][result.data.type -1])
         }).catch((error)=>{
             this.loadingDismiss&&this.loadingDismiss();
             this.isLoaded = true;
@@ -45,6 +47,7 @@ class AfterSaleDetailModel {
                 "reason":"不要了",
                 "description":"大小不接受",
                 "remarks":"可以换货哦亲",
+                specValue: 'specValues',
                 "warehouseType":1,
                 "warehouseCode":"s***",
                 "sendWarehouseFeedback":"s****",
@@ -52,7 +55,7 @@ class AfterSaleDetailModel {
                 "status":1,
                 "subStatus":1,
                 "cancelTime":"2018-09-11 00:00:00",
-                "imgList":"l,l",
+                "imgList":"1,1",
                 "receiver":"木木",
                 "receiverPhone":"182****3333",
                 "province":"浙江省",
