@@ -165,7 +165,7 @@ export default class TopicDetailPage extends BasePage {
                 this._error(error);
             });
         } else if (this.state.activityType === 2) {
-            TopicApi.activityDepreciate_findById({
+            TopicApi.activityDepreciate_findByCode({
                 code: this.params.activityCode
             }).then((data) => {
                 this.state.activityData = data.data || {};
@@ -258,7 +258,7 @@ export default class TopicDetailPage extends BasePage {
             this.setState({
                 loadingState: PageLoadingState.success
             }, () => {
-                HomeAPI.queryByProductCode({
+                HomeAPI.getProductDetailByCode({
                     code: prodCode
                 }).then((data) => {
                     this.setState({
@@ -295,10 +295,10 @@ export default class TopicDetailPage extends BasePage {
     };
 
     //选择规格确认 秒杀 降价拍
-    _selectionViewConfirm = (amount, priceId) => {
+    _selectionViewConfirm = (amount, skuCode) => {
         let orderProducts = [];
         orderProducts.push({
-            priceId: priceId,
+            skuCode: skuCode,
             num: amount,
             code: this.state.activityData.activityCode
         });
