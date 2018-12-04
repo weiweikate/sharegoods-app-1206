@@ -5,7 +5,7 @@ import {
     TouchableWithoutFeedback,
     Text,
     ScrollView,
-    TouchableOpacity,Image
+    TouchableOpacity, Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
@@ -13,7 +13,7 @@ import bridge from '../../utils/bridge';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
 import res from './res';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '@mr/image-placeholder';
 
 const icon_close = res.button.close_gray_circle;
 
@@ -26,7 +26,6 @@ export default class TopicDetailSelectPage extends Component {
             data: {},
             selectionViewConfirm: undefined,
 
-            selectList: [],
             selectStrList: [],
             selectData: []
         };
@@ -40,7 +39,6 @@ export default class TopicDetailSelectPage extends Component {
             let tempArr = specPriceList[key];
             tempArr.forEach((item) => {
                 if (item.surplusNumber > 0 && tempArr.length === 1) {
-                    this.state.selectList[indexOfTop] = item.id;
                     this.state.selectStrList[indexOfTop] = item.specValues;
                     this.state.selectData[indexOfTop] = item;
                 }
@@ -62,12 +60,12 @@ export default class TopicDetailSelectPage extends Component {
     _selectionViewConfirm = () => {
         const { specPriceList = {} } = this.state.data || {};
         let isAll = true;
-        this.state.selectList.forEach((item, index) => {
-            if (StringUtils.isEmpty(item)) {
+        this.state.selectData.forEach((item, index) => {
+            if (!item) {
                 isAll = false;
             }
         });
-        if (this.state.selectList.length === Object.keys(specPriceList).length && isAll) {
+        if (this.state.selectData.length === Object.keys(specPriceList).length && isAll) {
             this.state.selectionViewConfirm(1, this.state.selectData);
             this._close();
         } else {
@@ -80,11 +78,9 @@ export default class TopicDetailSelectPage extends Component {
             return;
         }
         if (item.isSelected) {
-            this.state.selectList[indexOfTop] = undefined;
             this.state.selectStrList[indexOfTop] = undefined;
             this.state.selectData[indexOfTop] = undefined;
         } else {
-            this.state.selectList[indexOfTop] = item.id;
             this.state.selectStrList[indexOfTop] = item.specValues;
             this.state.selectData[indexOfTop] = item;
         }
@@ -94,10 +90,11 @@ export default class TopicDetailSelectPage extends Component {
     rendTag = (data, indexOfTop) => {
         let tagList = [];
         for (let index = 0; index < data.length; index++) {
-            let obj = data[index];
-            //单规格  默认选中状态不让选
+            let obj = data[index] || {};
+            let selectItem = this.state.selectData[indexOfTop] || {};
+            //单规格默认选中状态不让选
             obj.canSelected = obj.surplusNumber > 0 && data.length !== 1;
-            obj.isSelected = obj.id === this.state.selectList[indexOfTop];
+            obj.isSelected = obj.skuCode === selectItem.skuCode;
 
             tagList.push(
                 <View key={index}>

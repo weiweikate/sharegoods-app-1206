@@ -70,7 +70,7 @@ export default class SearchResultPage extends BasePage {
             textInput: this.params.keywords || this.params.name || '',
             keywordsArr: [],//列表搜索关键词
 
-            productId: ''//选择规格确定时使用
+            prodCode: ''//选择规格确定时使用
         };
     }
 
@@ -181,19 +181,9 @@ export default class SearchResultPage extends BasePage {
         });
     };
 
-    _storeProduct = (productId) => {
-        this.$loadingShow();
-        HomeAPI.getProductSpec({
-            id: productId
-        }).then((data) => {
-            this.$loadingDismiss();
-            data.data = data.data || {};
-            this.state.productId = productId;
-            this.SelectionPage.show(data.data, this._selectionViewConfirm, { needUpdate: true });
-        }).catch((data) => {
-            this.$loadingDismiss();
-            this.$toastShow(data.msg);
-        });
+    _storeProduct = (item) => {
+        this.state.prodCode = item.prodCode;
+        this.SelectionPage.show(item, this._selectionViewConfirm, { needUpdate: true });
     };
 
     _changeLayout = () => {
@@ -216,16 +206,16 @@ export default class SearchResultPage extends BasePage {
         this._emptyRequest();
     };
 
-    _onPressAtIndex = (productId) => {
-        this.$navigate(RouterMap.ProductDetailPage, { productId: productId });
+    _onPressAtIndex = (prodCode) => {
+        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, priceId) => {
+    _selectionViewConfirm = (amount, skuCode) => {
         let temp = {
             'amount': amount,
-            'priceId': priceId,
-            'productId': this.state.productId
+            'skuCode': skuCode,
+            'prodCode': this.state.prodCode
         };
         shopCartCacheTool.addGoodItem(temp);
     };

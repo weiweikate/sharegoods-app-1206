@@ -5,7 +5,7 @@ import ViewPager from '../../../components/ui/ViewPager';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import VideoView from '../../../components/ui/video/VideoView';
-import ImageLoad from '@mr/image-placeholder'
+import ImageLoad from '@mr/image-placeholder';
 
 export class TopicDetailBanner extends Component {
     constructor(props) {
@@ -59,10 +59,12 @@ export class TopicDetailBanner extends Component {
                     const { navigation } = this.props;
                     navigation && navigation.navigate('home/product/CheckBigImagesView', params);
                 }}>
-                    <ImageLoad source={{ uri: originalImg }}
-                           style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                           resizeMode="cover"
-                    />
+                    <View>
+                        <ImageLoad source={{ uri: originalImg }}
+                                   style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
+                                   resizeMode="cover"
+                        />
+                    </View>
                 </TouchableWithoutFeedback>
             );
         }
