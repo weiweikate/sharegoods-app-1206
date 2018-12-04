@@ -91,8 +91,8 @@ export default class ShowHotView extends Component {
     _gotoDetail(data) {
         showSelectedDetail.selectedShowAction(data, this.recommendModules.type);
 
-        const { navigation } = this.props;
-        navigation.navigate('show/ShowDetailPage', { id: data.id });
+        const { navigate } = this.props;
+        navigate('show/ShowDetailPage', { id: data.id });
     }
 
     renderItem = (data) => {
@@ -116,8 +116,8 @@ export default class ShowHotView extends Component {
         />;
     };
     renderHeader = () => {
-        return <View><ShowBannerView navigation={this.props.navigation} pageFocused={this.props.pageFocus}/>
-            <ShowChoiceView navigation={this.props.navigation}/>
+        return <View><ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
+            <ShowChoiceView navigate={this.props.navigate}/>
             {/* <ShowHotScrollView navigation={this.props.navigation}/> */}
             <View style={styles.titleView}>
                 <Text style={styles.recTitle}>推荐</Text>

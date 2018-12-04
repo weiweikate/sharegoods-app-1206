@@ -19,7 +19,7 @@ import {
     TouchableOpacity,
     Text,
     Animated,
-    // Image
+    Image
 } from 'react-native';
 
 // import {
@@ -30,9 +30,9 @@ import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../../../comm/res';
 // import ImageLoad from '@mr/image-placeholder'
-import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+// import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
-// import ImageLoad from '@mr/image-placeholder';
+import ImageLoad from '@mr/image-placeholder';
 // import PropTypes from 'prop-types';
 
 export default class MentorItemView extends Component {
@@ -116,15 +116,16 @@ export default class MentorItemView extends Component {
                     {/*/>);*/}
                     {/*}}*/}
                     {/*/>*/}
-                        <PreLoadImage
-                            imageUri={this.state.itemData.headImg ? this.state.itemData.headImg : null}
-                            defaultImage={res.placeholder.noHeadImage}
-                            errImage={res.placeholder.noHeadImage}
-                            style={{
+                        <ImageLoad
+                            source={{uri:this.state.itemData.headImg ? this.state.itemData.headImg : ''}}
+                            renderPlaceholder={()=> <Image source={res.placeholder.noHeadImage}  style={{
                                 height: ImageWidth,
                                 width: ImageWidth,
                                 borderRadius: ImageWidth / 2
-                            }}
+                            }}/>}
+                            height={ImageWidth}
+                            width={ImageWidth}
+                            borderRadius={ImageWidth / 2}
                         />
                 </TouchableOpacity>
                 <Text

@@ -43,7 +43,7 @@ import {
     View,
     TouchableWithoutFeedback,
     Animated,
-    // Modal,
+    Image,
     Platform,
     TouchableOpacity,
     Clipboard,
@@ -372,12 +372,12 @@ export default class CommShareModal extends React.Component {
                                         Linking.openURL(this.props.webJson.linkUrl);
                                     }
                                 }}>
-                                    <UIImage source={{ uri: this.state.path }}
-                                             style={{
-                                                 height: imageHeight,
-                                                 width: imageWidth,
-                                                 backgroundColor: "white"
-                                             }}/>
+                                    <Image source={{ uri: this.state.path }}
+                                           style={{
+                                               height: imageHeight,
+                                               width: imageWidth,
+                                               backgroundColor: "white"
+                                           }}/>
                                 </TouchableWithoutFeedback>
                                 {
                                     isShow ? <UIText value={"登陆以后分享才能获取赏金"}
