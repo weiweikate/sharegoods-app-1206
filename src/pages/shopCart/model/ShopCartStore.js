@@ -283,8 +283,8 @@ class ShopCartStore {
                 bridge.showLoading();
                 ShopCartAPI.addItem({
                     'amount': item.amount,
-                    'priceId': item.priceId,
-                    'productId': item.productId,
+                    'productCode': item.priceId,
+                    'skuCode': item.productId,
                     'timestamp': item.timestamp
                 }).then((res) => {
                     bridge.hiddenLoading();
@@ -332,10 +332,10 @@ class ShopCartStore {
     }
 
     /*删除购物车商品*/
-    deleteItemWithIndex(priceId) {
-        if (priceId) {
+    deleteItemWithIndex(skuCode) {
+        if (skuCode) {
             ShopCartAPI.deleteItem({
-                'priceId': priceId
+                'skuCode': skuCode
             }).then(res => {
                 bridge.$toast('删除成功');
                 this.packingShopCartGoodsData(res.data);

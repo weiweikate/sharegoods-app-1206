@@ -184,7 +184,7 @@ export default class ShopCartPage extends BasePage {
                         style={styles.standaloneRowBack}
                         onPress={() => {
                             rowMap[`${secId}${rowId}`].closeRow();
-                            this._deleteFromShoppingCartByProductId(data.priceId);
+                            this._deleteFromShoppingCartByProductId(data.skuCode);
                         }}>
                         <UIText style={styles.backUITextWhite} value='删除'/>
                     </TouchableOpacity>
@@ -698,8 +698,8 @@ export default class ShopCartPage extends BasePage {
         }
     };
     /*删除操作*/
-    _deleteFromShoppingCartByProductId = (priceId) => {
-        shopCartCacheTool.deleteShopCartGoods(priceId);
+    _deleteFromShoppingCartByProductId = (skuCode) => {
+        shopCartCacheTool.deleteShopCartGoods(skuCode);
     };
 }
 
