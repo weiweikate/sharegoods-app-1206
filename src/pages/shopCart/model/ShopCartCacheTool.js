@@ -68,17 +68,17 @@ class ShopCartCacheTool {
      * 删除购物车数据
      */
 
-    deleteShopCartGoods(priceId) {
+    deleteShopCartGoods(skuCode) {
         if (user.isLogin) {
             //登陆状态 直接后台删除
-            shopCartStore.deleteItemWithIndex(priceId);
+            shopCartStore.deleteItemWithIndex(skuCode);
         } else {
             //从本地拿出数据删除掉
             Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
                 let [...localValue] = res;
                 if (localValue && (localValue instanceof Array)) {
                     localValue.map((itemData) => {
-                        if (itemData.priceId === priceId) {
+                        if (itemData.skuCode === skuCode) {
                             localValue.splice(localValue.indexOf(itemData), 1);
                         }
                     });
@@ -129,8 +129,8 @@ class ShopCartCacheTool {
                         }
                         let isHave = false;
                         localValue.map((localItem, indexPath) => {
-                            if (localItem.priceId === goodsItem.priceId &&
-                                localItem.productId === goodsItem.productId ) {
+                            if (localItem.skuCode === goodsItem.skuCode &&
+                                localItem.productCode === goodsItem.productCode ) {
 
                                let newAmount = localItem.amount + goodsItem.amount ;
                                if (newAmount > 200){
@@ -208,8 +208,8 @@ class ShopCartCacheTool {
             Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
                 let [...localValue] = res;
                 localValue.map((localItemGood, indexPath) => {
-                    if (localItemGood.priceId === itemData.priceId &&
-                        localItemGood.productId === itemData.productId ) {
+                    if (localItemGood.productCode === itemData.productCode &&
+                        localItemGood.skuCode === itemData.skuCode ) {
                         localValue[indexPath] = itemData;
                     }
                 });
