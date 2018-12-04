@@ -163,14 +163,23 @@ export default class SelectMentorPage extends BasePage {
                     }}
                 >
                     <View
-                        style={{
+                        style={
+                            [{
                             height: 49,
                             width: ScreenUtils.width - 80,
-                            backgroundColor: DesignRule.mainColor,
                             justifyContent: 'center',
                             alignItems: 'center',
                             borderRadius: 25
-                        }}
+                        },
+                          this.state.mentorData&&this.state.mentorData.length >0?
+                                {
+                                    backgroundColor: DesignRule.mainColor,
+                                }
+                                :{
+                                    backgroundColor: DesignRule.bgColor_grayHeader,
+                                }
+                                ]
+                        }
                     >
                         <Text
                             style={{
@@ -334,17 +343,18 @@ export default class SelectMentorPage extends BasePage {
             }).catch(res => {
                 bridge.$toast(res.msg);
             });
-        } else {
-            let mentorData = this.state.mentorData[this.state.mentorData.length - 1];
-            LoginAPI.mentorBind({
-                code: mentorData.code
-            }).then(res => {
-                bridge.$toast(res.msg);
-                this.$navigateBackToHome();
-            }).catch(res => {
-                bridge.$toast(res.msg);
-            });
         }
+        // else {
+        //     let mentorData = this.state.mentorData[this.state.mentorData.length - 1];
+        //     LoginAPI.mentorBind({
+        //         code: mentorData.code
+        //     }).then(res => {
+        //         bridge.$toast(res.msg);
+        //         this.$navigateBackToHome();
+        //     }).catch(res => {
+        //         bridge.$toast(res.msg);
+        //     });
+        // }
 
     };
     jumpToWriteCodePage = () => {

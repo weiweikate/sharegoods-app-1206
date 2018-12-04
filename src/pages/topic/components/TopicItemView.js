@@ -77,7 +77,8 @@ const Styles = StyleSheet.create({
     },
     itemContentStyle: {
         backgroundColor: 'white',
-        paddingBottom:8
+        padding:8,
+        // paddingBottom:8
     },
     itemTipBgViewStyle: {
         position: 'absolute',
