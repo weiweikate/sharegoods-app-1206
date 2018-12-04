@@ -70,14 +70,14 @@ const Cell = ({ data, store, press }) => <View style={styles.cell}>
 @observer
 export default class HomeStarShopView extends Component {
     _shopPress(shop) {
-        const { navigation } = this.props;
+        const { navigate } = this.props;
         if (!User.isLogin) {
-            navigation.navigate("login/login/LoginPage");
+            navigate("login/login/LoginPage");
             return;
         }
         let route = homeModule.homeNavigate(8);
         let params = homeModule.paramsNavigate(shop);
-        navigation.navigate(route, params);
+        navigate(route, params);
     }
 
     render() {

@@ -308,23 +308,23 @@ class HomePage extends BasePage {
     _renderItem = (item) => {
         let data = item.item;
         if (data.type === homeType.swiper) {
-            return <HomeBannerView navigation={this.props.navigation}/>;
+            return <HomeBannerView navigate={this.$navigate}/>
         } else if (data.type === homeType.classify) {
-            return <HomeClassifyView navigate={this.$navigate}/>;
+            return <HomeClassifyView navigate={this.$navigate}/>
         } else if (data.type === homeType.ad) {
-            return <HomeAdView navigation={this.props.navigation}/>;
+            return <HomeAdView navigate={this.$navigate}/>
         } else if (data.type === homeType.today) {
-            return <HomeTodayView navigation={this.props.navigation}/>;
+            return <HomeTodayView navigate={this.$navigate}/>
         } else if (data.type === homeType.recommend) {
-            return <HomeRecommendView navigation={this.props.navigation}/>;
+            return <HomeRecommendView navigate={this.$navigate}/>;
         } else if (data.type === homeType.subject) {
-            return <HomeSubjectView navigation={this.props.navigation}/>;
+            return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (data.type === homeType.starShop) {
-            return <HomeStarShopView navigation={this.props.navigation}/>;
+            return <HomeStarShopView navigate={this.$navigate}/>;
         } else if (data.type === homeType.user) {
-            return <HomeUserView navigation={this.props.navigation}/>;
+            return <HomeUserView navigate={this.$navigate}/>;
         } else if (data.type === homeType.goods) {
-            return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
+            return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
         } else if (data.type === homeType.show) {
             const { isShow } = this.state;
             return <ShowView navigation={this.props.navigation} isShow={isShow}/>;

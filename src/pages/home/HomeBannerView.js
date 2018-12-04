@@ -55,8 +55,8 @@ export default class HomeBannerView extends Component {
         }
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
-        const { navigation } = this.props;
-        navigation.navigate(router, params);
+        const { navigate } = this.props;
+        navigate(router, params);
     }
 
     _onPressRow = (index) => {
@@ -64,8 +64,8 @@ export default class HomeBannerView extends Component {
         let data = bannerList[index];
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
-        const { navigation } = this.props;
-        navigation.navigate(router, params);
+        const { navigate } = this.props;
+        navigate(router, params);
     };
 
     render() {
