@@ -196,10 +196,10 @@ export default class MinePage extends BasePage {
 
     jumpToUserInformationPage = () => {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage");
+            this.$navigate("login/login/LoginPage");
             return;
         }
-        this.props.navigation.navigate("mine/userInformation/UserInformationPage");
+        this.$navigate("mine/userInformation/UserInformationPage");
     };
 
     //**********************************ViewPart******************************************
@@ -353,7 +353,7 @@ export default class MinePage extends BasePage {
                                   }}
                         />
                         <TouchableWithoutFeedback onPress={() => {
-                            this.props.navigation.navigate(RouterMap.MyPromotionPage);
+                            this.$navigate(RouterMap.MyPromotionPage);
                         }}>
                             <View style={{
                                 justifyContent: "space-between",
@@ -756,21 +756,21 @@ export default class MinePage extends BasePage {
     //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage");
+            this.$navigate("login/login/LoginPage");
             return;
         }
         switch (index) {
             case 0:
-                this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 1 });
+                this.$navigate("order/order/MyOrdersListPage", { index: 1 });
                 break;
             case 1:
-                this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 2 });
+                this.$navigate("order/order/MyOrdersListPage", { index: 2 });
                 break;
             case 2:
-                this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 3 });
+                this.$navigate("order/order/MyOrdersListPage", { index: 3 });
                 break;
             case 3:
-                this.props.navigation.navigate("order/afterSaleService/AfterSaleListPage", { index: 4 });
+                this.$navigate("order/afterSaleService/AfterSaleListPage", { index: 4 });
                 break;
         }
     };
@@ -799,24 +799,24 @@ export default class MinePage extends BasePage {
         //let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
         switch (index) {
             case 0:
-                this.props.navigation.navigate(RouterMap.InviteFriendsPage);
+                this.$navigate(RouterMap.InviteFriendsPage);
                 break;
             case 1:
-                this.props.navigation.navigate(RouterMap.CouponsPage);
+                this.$navigate(RouterMap.CouponsPage);
                 break;
             case 2:
-                this.props.navigation.navigate(RouterMap.MyPromotionPage);
+                this.$navigate(RouterMap.MyPromotionPage);
                 break;
             case 3:
                 // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
-                this.props.navigation.navigate(RouterMap.MyCollectPage);
+                this.$navigate(RouterMap.MyCollectPage);
                 break;
             case 4:
                 // this.props.navigation.navigate('mine/MyCollectPage');
-                this.props.navigation.navigate(RouterMap.MyHelperPage);
+                this.$navigate(RouterMap.MyHelperPage);
                 break;
             case 5:
-                this.props.navigation.navigate(RouterMap.AddressManagerPage);
+                this.$navigate(RouterMap.AddressManagerPage);
                 break;
             // case 6:
             //     this.props.navigation.navigate(RouterMap.UserPromotionPage);
@@ -825,7 +825,7 @@ export default class MinePage extends BasePage {
             //     this.props.navigation.navigate(RouterMap.ShareTaskListPage);
                 break;
             case 6:
-                this.props.navigation.navigate(RouterMap.ShowConnectPage);
+                this.$navigate(RouterMap.ShowConnectPage);
                 break;
             //邀请评分
             // case 10:
@@ -841,11 +841,11 @@ export default class MinePage extends BasePage {
             //     break;
             //邀请评分
             case 7:
-                this.props.navigation.navigate(RouterMap.WebViewDemo);
+                this.$navigate(RouterMap.WebViewDemo);
                 break;
             case 8:
                 if(user.upUserid){
-                    this.props.navigation.navigate(RouterMap.MyMentorPage);
+                    this.$navigate(RouterMap.MyMentorPage);
                 }
                 break;
             default:
@@ -856,21 +856,21 @@ export default class MinePage extends BasePage {
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage");
+            this.$navigate("login/login/LoginPage");
             return;
         }
-        this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 0 });
+        this.$navigate("order/order/MyOrdersListPage", { index: 0 });
     };
     jumpToServicePage = () => {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage");
+            this.$navigate("login/login/LoginPage");
             return;
         }
-        this.props.navigation.navigate("message/MessageCenterPage");
+        this.$navigate("message/MessageCenterPage");
     };
 
     jumpToSettingPage = () => {
-        this.props.navigation.navigate("mine/SettingPage", { callBack: () => this.loadPageData() });
+        this.$navigate("mine/SettingPage", { callBack: () => this.loadPageData() });
 
     };
 }

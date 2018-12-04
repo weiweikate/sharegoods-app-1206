@@ -388,7 +388,7 @@ export default class MessageGatherPage extends BasePage {
 
     renderItem = ({item, index})=> {
         let btn = (
-            <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param,item.displayTime)}}>
+            <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.$navigate,item.paramType,item.param,item.displayTime)}}>
                 <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white'}}>
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:px2dp(13)}}>
                         查看详情>>

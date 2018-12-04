@@ -503,7 +503,7 @@ class HomePage extends BasePage {
                                     opacity: bannerModule.opacity === 1 ? 0 : 0.4
                                 }]}/>
 
-                <HomeSearchView navigation={this.props.navigation}
+                <HomeSearchView navigation={this.$navigate}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
                                 hasMessage={this.state.hasMessage}
                 />
