@@ -2,7 +2,7 @@
  * 首页轮播图
  */
 import React, { Component } from "react";
-import { View, StyleSheet, Image, TouchableWithoutFeedback, Platform } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Platform } from "react-native";
 import ScreenUtils from "../../utils/ScreenUtils";
 import ViewPager from "../../components/ui/ViewPager";
 
@@ -22,12 +22,10 @@ export default class HomeBannerView extends Component {
 
     _renderViewPageItem(item) {
         return (
-            <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(item)}>
-                <View>
+            <TouchableOpacity onPress={() => this._onPressRowWithItem(item)} activeOpacity={1}>
                 <ImageLoad style={styles.img}
                        source={{ uri: item }}/>
-                </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 
