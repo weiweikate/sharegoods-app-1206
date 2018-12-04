@@ -39,12 +39,12 @@ export default class SelectMentorPage extends BasePage {
         super(props);
         this.state = {
             selectIndex: 2,
-            mentorData: []
+            mentorData: [],
+            isFirstLoad: true
         };
         this.scrView = null;
         this.itemViewArr = [];
         this.itemRefArr = [];
-
     }
 
     $navigationBarOptions = {
@@ -75,27 +75,28 @@ export default class SelectMentorPage extends BasePage {
     }
 
     loadPageData() {
-        this.$loadingShow()
+        this.$loadingShow();
         LoginAPI.queryInviterList({}).then(response => {
-            this.$loadingDismiss()
+            this.$loadingDismiss();
             console.log(response);
-            if (response.data.length < 3){
+            if (response.data.length < 3) {
                 this.setState({
                     mentorData: response.data,
-                    selectIndex:response.data.length - 1
+                    selectIndex: response.data.length - 1
                 });
-            }else {
+            } else {
                 this.setState({
-                    mentorData: response.data,
+                    mentorData: response.data
                 });
             }
-            if (this.state.selectIndex > response.data.length - 1){
+            if (this.state.selectIndex > response.data.length - 1) {
                 this.setState({
-                    selectIndex: response.data.length - 1,
+                    selectIndex: response.data.length - 1
                 });
             }
+          this.state.mentorData.length > 0 && this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
         }).catch(error => {
-            this.$loadingDismiss()
+            this.$loadingDismiss();
             bridge.$toast(error.msg);
         });
     }
@@ -192,15 +193,15 @@ export default class SelectMentorPage extends BasePage {
                         marginTop: 80,
                         width: ScreenUtils.width,
                         height: 90,
-                        alignItems:'center',
-                        justifyContent:'center'
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }
                 }
             >
                 <UIText
                     style={{
-                        fontSize:13,
-                        color:DesignRule.textColor_instruction
+                        fontSize: 13,
+                        color: DesignRule.textColor_instruction
                     }}
                     value={'暂无导师请填写授权码或跳过该步骤~'}
                 />
@@ -292,9 +293,6 @@ export default class SelectMentorPage extends BasePage {
                         // console.log('state'+this.state.selectIndex)
                     }
                 }}
-                onScroll={(event) => {
-
-                }}
             >
                 <View
                     style={{
@@ -312,6 +310,12 @@ export default class SelectMentorPage extends BasePage {
                         width: ScreenUtils.width / 5 * 2
                     }}
                 />
+                {
+                    this.state.isFirstLoad&&
+                    this.scrView &&
+                    this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
+                }
+
             </ScrollView>
         );
     };
@@ -320,27 +324,27 @@ export default class SelectMentorPage extends BasePage {
     * */
     _bindMentor = () => {
 
-      if (this.state.selectIndex < this.state.mentorData.length -1) {
-          let mentorData = this.state.mentorData[this.state.selectIndex];
-          LoginAPI.mentorBind({
-              code:mentorData.code
-          }).then(res=>{
-              bridge.$toast(res.msg);
-              this.$navigateBackToHome();
-          }).catch(res=>{
-              bridge.$toast(res.msg);
-          })
-      }else  {
-          let mentorData = this.state.mentorData[this.state.mentorData.length - 1];
-          LoginAPI.mentorBind({
-              code:mentorData.code
-          }).then(res=>{
-              bridge.$toast(res.msg);
-              this.$navigateBackToHome();
-          }).catch(res=>{
-              bridge.$toast(res.msg);
-          })
-      }
+        if (this.state.selectIndex < this.state.mentorData.length - 1) {
+            let mentorData = this.state.mentorData[this.state.selectIndex];
+            LoginAPI.mentorBind({
+                code: mentorData.code
+            }).then(res => {
+                bridge.$toast(res.msg);
+                this.$navigateBackToHome();
+            }).catch(res => {
+                bridge.$toast(res.msg);
+            });
+        } else {
+            let mentorData = this.state.mentorData[this.state.mentorData.length - 1];
+            LoginAPI.mentorBind({
+                code: mentorData.code
+            }).then(res => {
+                bridge.$toast(res.msg);
+                this.$navigateBackToHome();
+            }).catch(res => {
+                bridge.$toast(res.msg);
+            });
+        }
 
     };
     jumpToWriteCodePage = () => {
@@ -359,7 +363,7 @@ export default class SelectMentorPage extends BasePage {
                         }
                         }
                         key={index}
-                        clickItemAction={(itemData)=>{
+                        clickItemAction={(itemData) => {
                             this._toDetailPage(itemData);
                         }}
                         itemData={item}
@@ -371,8 +375,9 @@ export default class SelectMentorPage extends BasePage {
         return this.itemViewArr;
     };
     _toDetailPage = (itemData) => {
-        this.$navigate('login/login/MentorDetailPage',{
-            itemData:itemData
+
+        this.$navigate('login/login/MentorDetailPage', {
+            itemData: itemData
         });
     };
     _renderTopText = () => {
@@ -429,9 +434,9 @@ export default class SelectMentorPage extends BasePage {
             </View>
         );
     };
-    _changeMetorList=()=>{
+    _changeMetorList = () => {
         this.loadPageData();
-    }
+    };
 }
 
 const Styles = StyleSheet.create(

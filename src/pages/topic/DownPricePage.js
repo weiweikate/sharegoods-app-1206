@@ -179,14 +179,7 @@ export default class DownPricePage extends BasePage {
                     />
                 }
             >
-                <ImageLoad
-                    imageUri={imgUrl}
-                    style={{
-                        width: ScreenUtils.width,
-                        height: ScreenUtils.width * 7 / 15
-                    }}
-                />
-
+                <ImageLoad style={Styles.topBannerImageStyle} source={{ uri: imgUrl ? imgUrl : '' }}/>
                 {
                     this._getTopicType() === 0
                         ?
@@ -259,5 +252,9 @@ const Styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
+    },
+    topBannerImageStyle:{
+        width: ScreenUtils.width,
+        height: ScreenUtils.width * 7 / 15
     }
 });

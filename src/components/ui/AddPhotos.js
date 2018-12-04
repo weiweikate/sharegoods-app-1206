@@ -5,9 +5,7 @@ import NoMoreClick from '../ui/NoMoreClick';
 import res from '../../comm/res';
 import ScreenUtils from '../../utils/ScreenUtils'
 import ImageLoad from '@mr/image-placeholder'
-
-
-const addPic = res.placeholder.add_three_pticture;
+const addPic = res.placeholder.add_picture;
 const deleteImage = res.button.delete_picture;
 
 

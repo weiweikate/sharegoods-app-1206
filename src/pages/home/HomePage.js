@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import {
     View,
     StyleSheet,
@@ -55,12 +55,17 @@ const home_notice_bg = res.home_notice_bg;
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 import homeRegisterFirstManager from './model/HomeRegisterFirstManager'
+import BasePage from '../../BasePage';
 @observer
-class HomePage extends PureComponent {
+class HomePage extends BasePage {
 
     st = 0;
     shadowOpacity = 0.4;
 
+    $navigationBarOptions = {
+        title: '',
+        show: false
+    };
 
     headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0);
     state = {
@@ -303,23 +308,23 @@ class HomePage extends PureComponent {
     _renderItem = (item) => {
         let data = item.item;
         if (data.type === homeType.swiper) {
-            return <HomeBannerView navigation={this.props.navigation}/>;
+            return <HomeBannerView navigate={this.$navigate}/>
         } else if (data.type === homeType.classify) {
-            return <HomeClassifyView navigation={this.props.navigation}/>;
+            return <HomeClassifyView navigate={this.$navigate}/>
         } else if (data.type === homeType.ad) {
-            return <HomeAdView navigation={this.props.navigation}/>;
+            return <HomeAdView navigate={this.$navigate}/>
         } else if (data.type === homeType.today) {
-            return <HomeTodayView navigation={this.props.navigation}/>;
+            return <HomeTodayView navigate={this.$navigate}/>
         } else if (data.type === homeType.recommend) {
-            return <HomeRecommendView navigation={this.props.navigation}/>;
+            return <HomeRecommendView navigate={this.$navigate}/>;
         } else if (data.type === homeType.subject) {
-            return <HomeSubjectView navigation={this.props.navigation}/>;
+            return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (data.type === homeType.starShop) {
-            return <HomeStarShopView navigation={this.props.navigation}/>;
+            return <HomeStarShopView navigate={this.$navigate}/>;
         } else if (data.type === homeType.user) {
-            return <HomeUserView navigation={this.props.navigation}/>;
+            return <HomeUserView navigate={this.$navigate}/>;
         } else if (data.type === homeType.goods) {
-            return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
+            return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
         } else if (data.type === homeType.show) {
             const { isShow } = this.state;
             return <ShowView navigation={this.props.navigation} isShow={isShow}/>;

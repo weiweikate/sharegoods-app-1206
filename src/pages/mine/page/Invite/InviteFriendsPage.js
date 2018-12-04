@@ -22,7 +22,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import UIImage from "@mr/image-placeholder";
+import {UIImage} from '../../../../components/ui'
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
@@ -109,11 +109,11 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 <View style={{ flex: 1 }}/>
                 <UIImage source={wenan}
                          style={{
-                             width: autoSizeWidth(160),
+                             width: autoSizeWidth(174),
                              height: autoSizeWidth(70),
                              marginBottom: 30,
                              alignSelf: 'flex-start',
-                             marginLeft: 60
+                             marginLeft: 50
                          }}/>
                 <UIImage source={hongbao}
                          style={{

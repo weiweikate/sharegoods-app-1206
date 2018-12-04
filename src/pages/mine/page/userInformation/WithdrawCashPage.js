@@ -279,9 +279,9 @@ export default class WithdrawCashPage extends BasePage {
 
         let tip2 = (parseFloat(this.state.money) > parseFloat(user.availableBalance)) ? (<Text>
             金额已超出可提现金额
-        </Text>) : (<Text>
+        </Text>) : (<Text style={{fontSize:13}}>
             {`可用余额${user.availableBalance}元`}
-            {!EmptyUtils.isEmpty(this.state.minCount) ? (<Text>
+            {!EmptyUtils.isEmpty(this.state.minCount) ? (<Text style={{fontSize:11}}>
                 （最低提现金额为<Text style={{ color: DesignRule.mainColor }}>{this.state.minCount}元</Text>）
             </Text>) : null}
         </Text>);
@@ -359,7 +359,7 @@ export default class WithdrawCashPage extends BasePage {
                     <UIText value={tip}
                             style={{
                                 color: (!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee) && (parseFloat(this.state.money) >= parseFloat(this.state.whenLessAmount))) ? DesignRule.textColor_instruction : DesignRule.mainColor,
-                                fontSize: 12,
+                                fontSize: 11,
                                 marginLeft: 15,
                                 marginTop: 10
                             }}/>
@@ -429,6 +429,11 @@ export default class WithdrawCashPage extends BasePage {
     commit = () => {
         if (parseFloat(this.state.money) > parseFloat(user.availableBalance)) {
             this.$toastShow("超出金额限制");
+            return;
+        }
+
+        if(this.state.minCount && (parseFloat(this.state.money) < parseFloat(this.state.minCount))){
+            this.$toastShow("超出金额设置");
             return;
         }
 

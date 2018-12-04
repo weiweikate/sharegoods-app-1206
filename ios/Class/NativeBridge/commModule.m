@@ -171,7 +171,7 @@ RCT_EXPORT_METHOD(showLoadingDialog:(NSString *)msg){
       if (msg) {
          [JRLoadingAndToastTool showLoadingText:msg];
       }else{
-         [JRLoadingAndToastTool showLoadingText:@"提交中"];
+         [JRLoadingAndToastTool showLoadingText:@""];
       }
      
     });

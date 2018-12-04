@@ -19,6 +19,7 @@ import {
     TouchableOpacity,
     Text,
     Animated,
+    Image
 } from 'react-native';
 
 // import {
@@ -28,9 +29,10 @@ import {
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../../../comm/res';
-import ImageLoad from '@mr/image-placeholder'
+// import ImageLoad from '@mr/image-placeholder'
+// import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
-// import ImageLoad from '@mr/image-placeholder';
+import ImageLoad from '@mr/image-placeholder';
 // import PropTypes from 'prop-types';
 
 export default class MentorItemView extends Component {
@@ -62,7 +64,7 @@ export default class MentorItemView extends Component {
         //     height: ImageWidth
         // }
 
-        console.log('this.props.itemData.headImg',this.props.itemData.headImg)
+        console.log('this.props.itemData.headImg', this.props.itemData.headImg);
         return (
             <View
                 style={{
@@ -94,36 +96,37 @@ export default class MentorItemView extends Component {
                     {/*}}*/}
                     {/*/>*/}
                     {/*<ImageLoad*/}
-                        {/*height={ImageWidth}*/}
-                        {/*width={ImageWidth}*/}
-                        {/*style={imageStyle}*/}
-                        {/*borderRadius={ImageWidth / 2}*/}
-                        {/*source={{*/}
-                            {/*uri:this.props.itemData.headImg ? this.props.itemData.headImg : ''*/}
-                        {/*}}*/}
-                        {/*renderPlaceholder={() => {*/}
-                            {/*return (<Image*/}
-                                {/*style={*/}
-                                    {/*{*/}
-                                        {/*height: ImageWidth,*/}
-                                        {/*width: ImageWidth,*/}
-                                        {/*borderRadius: ImageWidth / 2*/}
-                                    {/*}*/}
-                                {/*}*/}
-                                {/*source={res.placeholder.noHeadImage}*/}
-                            {/*/>);*/}
-                        {/*}}*/}
+                    {/*height={ImageWidth}*/}
+                    {/*width={ImageWidth}*/}
+                    {/*style={imageStyle}*/}
+                    {/*borderRadius={ImageWidth / 2}*/}
+                    {/*source={{*/}
+                    {/*uri:this.props.itemData.headImg ? this.props.itemData.headImg : ''*/}
+                    {/*}}*/}
+                    {/*renderPlaceholder={() => {*/}
+                    {/*return (<Image*/}
+                    {/*style={*/}
+                    {/*{*/}
+                    {/*height: ImageWidth,*/}
+                    {/*width: ImageWidth,*/}
+                    {/*borderRadius: ImageWidth / 2*/}
+                    {/*}*/}
+                    {/*}*/}
+                    {/*source={res.placeholder.noHeadImage}*/}
+                    {/*/>);*/}
+                    {/*}}*/}
                     {/*/>*/}
-                    <ImageLoad
-                    imageUri={this.state.itemData.headImg?this.state.itemData.headImg:null}
-                    defaultImage={res.placeholder.noHeadImage}
-                    errImage={res.placeholder.noHeadImage}
-                    style={{
-                    height: ImageWidth,
-                    width: ImageWidth,
-                    borderRadius: ImageWidth / 2
-                    }}
-                    />
+                        <ImageLoad
+                            source={{uri:this.state.itemData.headImg ? this.state.itemData.headImg : ''}}
+                            renderPlaceholder={()=> <Image source={res.placeholder.noHeadImage}  style={{
+                                height: ImageWidth,
+                                width: ImageWidth,
+                                borderRadius: ImageWidth / 2
+                            }}/>}
+                            height={ImageWidth}
+                            width={ImageWidth}
+                            borderRadius={ImageWidth / 2}
+                        />
                 </TouchableOpacity>
                 <Text
                     numberOfLines={1}

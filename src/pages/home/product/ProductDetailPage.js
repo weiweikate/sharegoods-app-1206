@@ -5,7 +5,7 @@ import {
     SectionList,
     // Image,
     FlatList,
-    Text,
+    Text
     // TouchableWithoutFeedback,
     // ImageBackground,
     // AsyncStorage
@@ -160,32 +160,22 @@ export default class ProductDetailPage extends BasePage {
 
     //数据
     _getProductDetail = () => {
-        if (this.params.productId) {
-            HomeAPI.getProductDetail({
-                id: this.params.productId
-            }).then((data) => {
-                this._savaData(data.data || {});
-            }).catch((error) => {
-                this._error(error);
-            });
-        } else {
-            HomeAPI.getProductDetailByCode({
-                code: this.params.productCode
-            }).then((data) => {
-                this._savaData(data.data || {});
-            }).catch((error) => {
-                this._error(error);
-            });
-        }
+        HomeAPI.getProductDetailByCode({
+            code: this.params.productCode
+        }).then((data) => {
+            this._savaData(data.data || {});
+        }).catch((error) => {
+            this._error(error);
+        });
     };
     //活动数据
     _getQueryByProductId = () => {
-        const { product = {} } = this.state.data;
-        if (!product.id) {
+        const { prodCode } = this.state.data;
+        if (!prodCode) {
             return;
         }
-        HomeAPI.queryByProductId({
-            productId: product.id
+        HomeAPI.queryByProductCode({
+            productCode: prodCode
         }).then((data) => {
             this.$loadingDismiss();
             let dataTemp = data.data || {};
@@ -285,20 +275,20 @@ export default class ProductDetailPage extends BasePage {
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, priceId) => {
+    _selectionViewConfirm = (amount, skuCode) => {
         let orderProducts = [];
         if (this.state.goType === 'gwc') {
             let temp = {
                 'amount': amount,
-                'priceId': priceId,
-                'productId': this.state.data.product.id
+                'skuCode': skuCode,
+                'prodCode': this.state.data.prodCode
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
             orderProducts.push({
-                priceId: priceId,
+                skuCode: skuCode,
                 num: amount,
-                productId: this.state.data.product.id
+                prodCode: this.state.data.prodCode
             });
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
@@ -331,12 +321,16 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = () => {
-        let { product } = this.state.data;
-        product = product || {};
+        const { content } = this.state.data;
         if (this.state.selectedIndex === 0) {
-            if (product.content) {
+            if (content) {
+                let contentS = content.split(',') || [];
+                let html = '';
+                contentS.forEach((item) => {
+                    html = `${html}<p><img src=${item}></p>`;
+                });
                 return <View>
-                    <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
+                    <HTML html={html} imagesMaxWidth={ScreenUtils.width}
                           imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                           containerStyle={{ backgroundColor: '#fff' }}/>
                     <PriceExplain/>
@@ -497,8 +491,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { price = 0, product = {}, shareMoney, status } = this.state.data || {};
-        let { name = '', imgUrl, buyLimit, leftBuyNum } = product;
+        const { minPrice, name, imgUrl, buyLimit, leftBuyNum, shareMoney, status, prodCode } = this.state.data || {};
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -552,13 +545,13 @@ export default class ProductDetailPage extends BasePage {
                             imageJson={{
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
-                                priceStr: `￥${price}`,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`
+                                priceStr: `￥${minPrice}`,
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`
                             }}
                             webJson={{
                                 title: `${name}`,
                                 dec: '商品详情',
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`,
                                 thumImage: imgUrl
                             }}
                             miniProgramJson={{
@@ -566,8 +559,8 @@ export default class ProductDetailPage extends BasePage {
                                 dec: '商品详情',
                                 thumImage: 'logo.png',
                                 hdImageURL: imgUrl,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`,
-                                miniProgramPath: `/pages/index/index?type=99&id=${product.id}&inviteId=${user.id || ''}`
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`,
+                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.id || ''}`
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             <ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>

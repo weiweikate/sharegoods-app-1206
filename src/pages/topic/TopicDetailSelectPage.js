@@ -41,8 +41,8 @@ export default class TopicDetailSelectPage extends Component {
     }
 
     _selectionViewConfirm = () => {
-        const { productPriceId } = this.state.data || {};
-        this.state.selectionViewConfirm(1, productPriceId);
+        const { skuCode } = this.state.data || {};
+        this.state.selectionViewConfirm(1, skuCode);
         this._close();
     };
 
@@ -53,14 +53,14 @@ export default class TopicDetailSelectPage extends Component {
             tagList.push(
                 <View>
                     <View style={styles.headerContainer}>
-                        <Text style={styles.headerText}>{obj.specName}</Text>
+                        <Text style={styles.headerText}>{obj.paramName}</Text>
                     </View>
                     <View style={styles.containerView}>
                         <View>
                             <TouchableOpacity
                                 style={[styles.btn, { backgroundColor: DesignRule.mainColor }]}>
                                 <Text
-                                    style={[styles.btnText, { color: 'white' }]}>{obj.specValue}</Text>
+                                    style={[styles.btnText, { color: 'white' }]}>{obj.paramValue}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

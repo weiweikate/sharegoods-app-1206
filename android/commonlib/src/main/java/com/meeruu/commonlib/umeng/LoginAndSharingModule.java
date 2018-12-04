@@ -372,7 +372,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 //    headerImg: `${shareInfo.headUrl}`,
 //    shopName: `${shareInfo.name}`,
-//    shopId: `ID: ${shareInfo.storeNumber}`,
+//    shopId: `ID: ${shareInfo.showNumber}`,
 //    shopPerson: `店主: ${manager.nickname || ''}`,
 //    codeString: this.state.codeString,
 //    wxTip: this.state.wxTip

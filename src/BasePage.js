@@ -29,6 +29,7 @@ export default class BasePage extends Component {
         this.params = this.props.navigation.state.params || {};
         this.viewDidLoad = netStatus.isConnected;
         // alert(this.viewDidLoad)
+        this.navigateTime = new Date().getTime()
     }
 
     $navigationBarOptions = {
@@ -182,6 +183,12 @@ export default class BasePage extends Component {
             if (!routeName) {
                 return;
             }
+            let time = new Date().getTime()
+            if (time - this.navigateTime < 1000) {
+                return;
+            }
+            this.navigateTime = time
+            console.log('navigate time ' + this.navigateTime)
             params = params || {};
             if (this.props.screenProps) {
                 this.props.screenProps.rootNavigation.navigate(routeName, {

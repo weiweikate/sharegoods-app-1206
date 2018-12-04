@@ -34,11 +34,9 @@ export default class TopicItemView extends Component {
                     <View style={Styles.itemContentStyle}>
                         {/*头部image*/}
                         <ImageLoad
-                            style={{
-                                width: ScreenUtils.width / numOfColum - 16,
-                                height: ScreenUtils.width / numOfColum - 16
-                            }}
-                            imageUri={itemData.specImg}
+                            width={ScreenUtils.width / numOfColum - 16}
+                            height={ScreenUtils.width / numOfColum - 16}
+                            source={{uri: itemData.specImg}}
                         />
                         <Text
                             style={
