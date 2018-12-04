@@ -24,17 +24,17 @@ export default ({ navigation, whiteIcon, hasMessage }) =>
             <Image source={whiteIcon ? logoWhite : logoRed} style={styles.logo}/>
             <TouchableOpacity style={[styles.searchBox, { backgroundColor: whiteIcon ? "white" : "#E4E5E6" }]}
                               onPress={() => {
-                                  navigation.navigate("home/search/SearchPage");
+                                  navigation("home/search/SearchPage");
                               }}>
                 <Image source={searchImg} style={styles.searchIcon}/>
                 <UIText style={styles.inputText} value={"请输入关键词搜索"}/>
             </TouchableOpacity>
             <TouchableWithoutFeedback onPress={() => {
                 if (!User.isLogin) {
-                    navigation.navigate("login/login/LoginPage");
+                    navigation("login/login/LoginPage");
                     return;
                 }
-                navigation.navigate("message/MessageCenterPage");
+                navigation("message/MessageCenterPage");
             }}>
                 <View style={{ height: 32, width: 32, justifyContent: "center", alignItems: "center" }}>
                     <Image source={whiteIcon ? msgWhite : msgBlack} style={styles.msgIcon}/>
