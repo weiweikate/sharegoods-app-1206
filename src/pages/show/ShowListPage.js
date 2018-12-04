@@ -91,7 +91,6 @@ export default class ShowListPage extends BasePage {
     }
 
     _render() {
-        const { navigation } = this.props;
         const { page, left, needsExpensive } = this.state;
 
         let HotView = null
@@ -138,7 +137,7 @@ export default class ShowListPage extends BasePage {
                 {
                     needsExpensive
                     ?
-                    <HotView navigation={navigation} ref={(ref) => {
+                    <HotView navigate={this.$navigate} ref={(ref) => {
                         this.showHotViewRef = ref;
                     }} pageFocus={this.state.pageFocused}/>
                     :
@@ -149,7 +148,7 @@ export default class ShowListPage extends BasePage {
                 {
                     needsExpensive
                     ?
-                    <HotFindView navigation={navigation} ref={(ref) => {
+                    <HotFindView navigate={this.$navigate} ref={(ref) => {
                         this.showHotFindeView = ref;
                     }}/>
                     :
