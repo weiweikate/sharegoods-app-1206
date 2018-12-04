@@ -8,7 +8,7 @@ import {
     // Linking,
     Text,
     TouchableWithoutFeedback,
-    RefreshControl, DeviceEventEmitter
+    RefreshControl, DeviceEventEmitter,TouchableOpacity
 } from "react-native";
 import BasePage from "../../../BasePage";
 import UIText from "../../../components/ui/UIText";
@@ -296,13 +296,13 @@ export default class MinePage extends BasePage {
         return (
             <ImageBackground style={styles.headerBgStyle} source={mine_header_bg}>
                 <View style={{ height: px2dp(54), flexDirection: "row" }}>
-                    <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
+                    <TouchableOpacity onPress={this.jumpToUserInformationPage} activeOpacity={1}>
                         {
                             StringUtils.isEmpty(user.headImg) ?
                                 <View style={[styles.userIconStyle, { backgroundColor: "gray" }]}/> :
-                                <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle} borderRadius={27}/>
+                                <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle} borderRadius={px2dp(27)}/>
                         }
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                     <View style={{
                         height: px2dp(54),
                         marginLeft: px2dp(10),

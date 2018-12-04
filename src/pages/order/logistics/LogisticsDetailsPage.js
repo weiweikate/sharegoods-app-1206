@@ -1,3 +1,4 @@
+
 import React from "react";
 import { NativeModules, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BasePage from "../../../BasePage";
@@ -78,7 +79,7 @@ class LogisticsDetailsPage extends BasePage {
                         marginTop: 15,
                         marginLeft: 15
                     }}>本数据由</Text>
-                    <Text style={{ fontSize: 13, color: color.deliveryIncludeBlue, marginTop: 15 }}>百世汇通</Text>
+                    <Text style={{ fontSize: 13, color: DesignRule.deliveryIncludeBlue, marginTop: 15 }}>百世汇通</Text>
                     <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle_222, marginTop: 15 }}>提供</Text>
                 </View>
 

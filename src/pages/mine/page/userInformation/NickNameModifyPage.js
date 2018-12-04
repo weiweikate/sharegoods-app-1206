@@ -60,13 +60,14 @@ export default class NickNameModifyPage extends BasePage {
         );
     };
     save = () => {
+        let length = this.state.nickName.trim().length;
+        console.log('nickname',this.state.nickName,length);
+        if (length < 2 || length > 8) {
+            this.$toastShow('昵称长度位2-8位');
+            return;
+        }
         MineAPI.updateUserById({ type: 2, nickname: this.state.nickName }).then(res => {
-            let length = this.state.nickName.trim().length;
-            console.log('nickname',this.state.nickName,length);
-            if (length < 2 || length > 16) {
-                this.$toastShow('昵称长度位2-16位');
-                return;
-            }
+
             // let containSpecial = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);
             // if (containSpecial.test(this.state.nickName)) {
             //     this.$toastShow('昵称不能包含特殊字符');

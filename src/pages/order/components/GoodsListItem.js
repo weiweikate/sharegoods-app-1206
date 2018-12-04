@@ -111,16 +111,16 @@ const GoodsListItem = props => {
                                 borderWidth: 1,
                                 borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
                                 height: 30,
-                                borderRadius: 10,
+                                borderRadius: 15,
                                 marginRight: 15,
                                 justifyContent: 'center',
-                                paddingLeft: 20,
-                                paddingRight: 20
+                                alignItems:'center',
+                                width:80
                             }} onPress={() => {
                                 operationMenuClick(item);
                             }}>
                                 <Text
-                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}>{item.operation}</Text>
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle,fontSize:13 }}>{item.operation}</Text>
                             </TouchableOpacity>;
                         })}
                     </View>
@@ -140,16 +140,16 @@ const GoodsListItem = props => {
                             borderWidth: 1,
                             borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
                             height: 30,
-                            borderRadius: 10,
+                            borderRadius: 15,
                             marginRight: 15,
                             justifyContent: 'center',
-                            paddingLeft: 20,
-                            paddingRight: 20
+                            alignItems:'center',
+                            width:80
                         }} onPress={() => {
                             operationMenuClick(item);
                         }}>
                             <Text
-                                style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}>{item.operation}</Text>
+                                style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle ,fontSize:13}}>{item.operation}</Text>
                         </TouchableOpacity>;
 
                     }
@@ -209,7 +209,7 @@ const GoodsListItem = props => {
                 flexDirection: 'row',
                 paddingRight: 16
             }}>
-                <UIText value={'共' + orderProduct.length + '件商品  合计：'}
+                <UIText value={'共' + orderProduct.length + '件商品  '+`${orderStatus<2?'需付款: ':'实付款: '}`}
                         style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                 <UIText value={StringUtils.formatMoneyString(totalPrice)}
                         style={{ fontSize: 13, color: DesignRule.mainColor }}/>
