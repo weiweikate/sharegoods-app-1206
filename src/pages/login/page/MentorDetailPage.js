@@ -121,6 +121,11 @@ export default class MentorDetailPage extends BasePage {
                                     color: DesignRule.white
                                 }}
                             />
+                            onPress={
+                            ()=>{
+                                this.$navigateBack();
+                            }
+                        }
                         </View>
                     </TouchableOpacity>
                 </View>
