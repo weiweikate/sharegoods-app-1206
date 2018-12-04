@@ -1,20 +1,19 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 import { homeModule} from './Modules'
 import { adModules } from './HomeAdModel'
 import {observer} from 'mobx-react';
-import BasePage from '../../BasePage'
 import ImageLoad from '@mr/image-placeholder'
 const { px2dp }  = ScreenUtils
 
 @observer
-export default class HomeAdView extends BasePage {
+export default class HomeAdView extends Component {
     _adAction(value) {
         const router =  homeModule.homeNavigate(value.linkType, value.linkTypeCode)
-        const {navigation} = this.props
+        const {navigate} = this.props
         const params = homeModule.paramsNavigate(value)
-        navigation.navigate(router, params)
+        navigate(router, params)
     }
 
     _loadingIndicator() {

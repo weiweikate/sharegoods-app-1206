@@ -27,8 +27,8 @@ export default class ShowBannerView extends Component {
     _onPressRowWithItem(item) {
         const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
         let params = showBannerModules.paramsNavigate(item);
-        const { navigation } = this.props;
-        navigation.navigate(router, params);
+        const { navigate } = this.props;
+        navigate(router, params);
     }
 
     _onPressRow(e) {
@@ -38,8 +38,8 @@ export default class ShowBannerView extends Component {
         let item = bannerList[index];
         const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
         let params = showBannerModules.paramsNavigate(item);
-        const { navigation } = this.props;
-        navigation.navigate(router, params);
+        const { navigate } = this.props;
+        navigate(router, params);
     }
 
     renderIndexView() {
