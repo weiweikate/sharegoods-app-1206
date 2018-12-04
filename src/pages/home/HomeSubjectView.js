@@ -3,7 +3,7 @@
  */
 
 import React, {Component} from 'react'
-import {View , ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {View , ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
@@ -13,12 +13,14 @@ import { getShowPrice } from '../topic/model/TopicMudelTool'
 import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/image-placeholder'
 
-const GoodItems = ({img, title, money, press}) => <TouchableOpacity style={styles.goodsView} onPress={()=>{press && press()}}>
+const GoodItems = ({img, title, money, press}) => <TouchableWithoutFeedback onPress={()=>{press && press()}}>
+    <View style={styles.goodsView} >
     <ImageLoad cacheable={true} style={styles.goodImg} source={{uri:img ? encodeURI(img) : ''}}/>
     <Text style={styles.goodsTitle} numberOfLines={2}>{title}</Text>
     <View style={{flex: 1}}/>
     <Text style={styles.money}>{money} 起</Text>
-</TouchableOpacity>
+    </View>
+</TouchableWithoutFeedback>
 
 const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress={()=>{press && press()}}>
     <View style={styles.backView}>
@@ -47,11 +49,13 @@ const ActivityItem = ({data, press, goodsPress}) => {
         )
     })
     return <View>
-        <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
+        <TouchableWithoutFeedback onPress={()=>{press && press()}}>
+            <View style={styles.bannerBox} >
             <View style={styles.bannerView}>
                 <ImageLoad cacheable={true} style={styles.banner} source={{uri: imgUrl ? encodeURI(imgUrl) : ''}}/>
             </View>
-        </TouchableOpacity>
+            </View>
+        </TouchableWithoutFeedback>
         {
             topicBannerProductDTOList && topicBannerProductDTOList.length > 0
             ?
@@ -71,20 +75,20 @@ const ActivityItem = ({data, press, goodsPress}) => {
 @observer
 export default class HomeSubjectView extends Component {
     _subjectActions(item) {
-        const { navigation } = this.props
+        const { navigate } = this.props
         let params = homeModule.paramsNavigate(item)
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
-        navigation.navigate(router,  params)
+        navigate(router,  params)
     }
     _goodAction(good) {
-        const { navigation } = this.props
+        const { navigate } = this.props
         if (good.productType === 99) {
-            navigation.navigate('home/product/ProductDetailPage', {
+            navigate('home/product/ProductDetailPage', {
                 productId: good.productId,
                 productCode: good.prodCode
             });
         } else {
-            navigation.navigate('topic/TopicDetailPage', {
+            navigate('topic/TopicDetailPage', {
                 activityType: good.productType,
                 activityCode: good.prodCode,
             })

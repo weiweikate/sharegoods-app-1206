@@ -41,15 +41,15 @@ const Item = ({ data, onPress }) => {
 export default class HomeClassifyView extends Component {
 
     _onItemPress = (data) => {
-        const { navigation } = this.props
+        const { navigate } = this.props
         if (data.needLogin && !user.isLogin) {
-            navigation.navigate('login/login/LoginPage')
+            navigate('login/login/LoginPage')
             return
         }
         if (data.img && data.name !== '全部分类') {
-            navigation.navigate('home/search/SearchResultPage', { keywords: data.name })
+            navigate('home/search/SearchResultPage', { keywords: data.name })
         } else {
-            navigation.navigate(data.route, {fromHome: true, id: 10, linkTypeCode: data.linkTypeCode})
+            navigate(data.route, {fromHome: true, id: 10, linkTypeCode: data.linkTypeCode})
         }
     }
 
