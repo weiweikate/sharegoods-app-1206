@@ -23,8 +23,10 @@ export default class HomeBannerView extends Component {
     _renderViewPageItem(item) {
         return (
             <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(item)}>
+                <View>
                 <ImageLoad style={styles.img}
                        source={{ uri: item }}/>
+                </View>
             </TouchableWithoutFeedback>
         );
     }
