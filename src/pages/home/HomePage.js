@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import {
     View,
     StyleSheet,
@@ -55,12 +55,17 @@ const home_notice_bg = res.home_notice_bg;
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 import homeRegisterFirstManager from './model/HomeRegisterFirstManager'
+import BasePage from '../../BasePage';
 @observer
-class HomePage extends PureComponent {
+class HomePage extends BasePage {
 
     st = 0;
     shadowOpacity = 0.4;
 
+    $navigationBarOptions = {
+        title: '',
+        show: false
+    };
 
     headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0);
     state = {
@@ -305,7 +310,7 @@ class HomePage extends PureComponent {
         if (data.type === homeType.swiper) {
             return <HomeBannerView navigation={this.props.navigation}/>;
         } else if (data.type === homeType.classify) {
-            return <HomeClassifyView navigation={this.props.navigation}/>;
+            return <HomeClassifyView navigate={this.$navigate}/>;
         } else if (data.type === homeType.ad) {
             return <HomeAdView navigation={this.props.navigation}/>;
         } else if (data.type === homeType.today) {
