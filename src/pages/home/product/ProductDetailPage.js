@@ -313,6 +313,9 @@ export default class ProductDetailPage extends BasePage {
                                  activityType={this.state.activityType}
                                  activityData={this.state.activityData}
                                  productActivityViewAction={this._productActivityViewAction}
+                                 goShopAction={() => {
+                                     this.$navigateBackToStore();
+                                 }}
                                  navigation={this.props.navigation}/>;
     };
 

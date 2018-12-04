@@ -63,12 +63,10 @@ export default class MyShop_RecruitPage extends BasePage {
                     this.ConfirmAlert.show({
                         title: `定位服务未开启，请进入系统【设置】【隐私】【定位服务】中打开开关，并且允许秀购使用定位服务`,
                         closeCallBack: () => {
-                            this.props.navigation.popToTop();
-                            this.props.navigation.navigate('HomePage');
+                            this.$navigateBackToHome();
                         },
                         confirmCallBack: () => {
-                            this.props.navigation.popToTop();
-                            this.props.navigation.navigate('HomePage');
+                            this.$navigateBackToHome();
                         },
                         rightText: '去设置'
                     });
