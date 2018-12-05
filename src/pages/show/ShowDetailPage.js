@@ -122,7 +122,13 @@ export default class ShowDetailPage extends BasePage {
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
             >
-            <ShowImageView items={detail.imgs.slice()}/>
+            {
+                detail.imgs
+                ?
+                <ShowImageView items={detail.imgs.slice()}/>
+                :
+                <View style={styles.header}/>
+            }
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
                     <ImageLoad borderRadius={px2dp(15)} style={styles.portrait} source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
@@ -200,6 +206,9 @@ let styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    header: {
+        height: ScreenUtils.statusBarHeight
     },
     scroll: {
         flex: 1
