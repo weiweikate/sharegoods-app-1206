@@ -53,7 +53,7 @@ export default class MyHelperPage extends BasePage {
 
     renderHotQuestionList = () => {
         return (
-            <View style={{ width: ScreenUtils.width, backgroundColor: 'white', marginTop: -1 }}>
+            <View style={{ width: ScreenUtils.width, backgroundColor: 'white',}}>
                 {this.state.typeList.map((item, index) => {
                     return (
                         <View key={index} style={styles.hotQuestionStyle}>
@@ -100,8 +100,8 @@ export default class MyHelperPage extends BasePage {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ backgroundColor: DesignRule.bgColor }}>
-                        <Image source={{uri:'http://mr-uat-sg.oss-cn-hangzhou.aliyuncs.com/app/bangzu_kefu%403x.png'}}
-                               style={{width:ScreenUtils.width/3*2,height:ScreenUtils.px2dp(71)}}
+                        <UIImage source={{uri:'http://mr-uat-sg.oss-cn-hangzhou.aliyuncs.com/app/bangzu_kefu%403x.png'}}
+                               style={{width:ScreenUtils.width,height:ScreenUtils.px2dp(71)}}
                                resizeMode={'contain'}/>
                     </View>
                     {this.renderHotQuestionList()}
@@ -145,7 +145,7 @@ export default class MyHelperPage extends BasePage {
                         justifyContent: 'center'
                     }}
                                       onPress={() => this.jumpQYIMPage()}>
-                        <UIImage source={icon_kefu} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
+                        <Image source={icon_kefu} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
                         <View style={{ marginLeft: 9, justifyContent: 'center' }}>
                             <Text style={{
                                 fontFamily: 'PingFangSC-Regular',
@@ -168,7 +168,7 @@ export default class MyHelperPage extends BasePage {
                             flex: 1
                         }}
                         onPress={() => this.jump2Telephone()}>
-                        <UIImage source={icon_phone} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
+                        <Image source={icon_phone} style={{ height: 23, width: 24 }} resizeMode={'contain'}/>
                         <View style={{ marginLeft: 9, justifyContent: 'center' }}>
                             <Text style={{
                                 fontFamily: 'PingFangSC-Regular',
