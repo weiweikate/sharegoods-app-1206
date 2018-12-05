@@ -150,7 +150,7 @@ export default class LoginPage extends BasePage {
 
     /*老用户登陆*/
     oldUserLoginClick = () => {
-        this.props.navigation.navigate('login/login/OldUserLoginPage');
+        this.$navigate('login/login/OldUserLoginPage')
     };
     /*注册*/
     registBtnClick = () => {
@@ -226,7 +226,6 @@ export default class LoginPage extends BasePage {
                 homeModule.loadHomeList()
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
-
                 // /**
                 //  * 跳转导师选择页面
                 //  */
@@ -243,11 +242,11 @@ export default class LoginPage extends BasePage {
                 console.log(data);
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
+
                 if (data.code === 34001) {
                     this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
                 }
             });
-
         }
     };
 

@@ -79,7 +79,7 @@ export default {
     updatePushAlias: () => {
         if (userModel.id && userModel.id !== 0) {
             let tempObj = {
-                userId: userModel.id + ''
+                userId: userModel.code + ''
             };
             if (ScreenUtils.isIOS) {
                 NativeModules.commModule.updatePushAlias(tempObj);
