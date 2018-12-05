@@ -8,24 +8,27 @@ class AfterSaleDetailModel {
     loadingShow = null;
     loadingDismiss = null;
     toastShow = null;
+    navigationBarResetTitle = null;
     @observable
     isLoaded = false;
     @observable
     pageData = null;
     @observable
-    timeString = 0;
+    timeString = '';
 
     @action
     loadPageData(callBack){
         this.loadingShow&&this.loadingShow();
-        orderApi.returnProductLookDetail({returnProductId: this.serviceNo}).then(result => {
+        orderApi.afterSaleDetail({serviceNo: this.serviceNo}).then(result => {
             this.loadingDismiss&&this.loadingDismiss();
             this.pageData = result.data;
-            this.startTimer(5);
+            this.startTimer(100);
             this.isLoaded = true;
+            this.navigationBarResetTitle(['退款详情','退货详情','换货详情'][result.data.type -1])
         }).catch((error)=>{
             this.loadingDismiss&&this.loadingDismiss();
             this.isLoaded = true;
+
         })
     }
     @action

@@ -97,7 +97,7 @@ export default class MyOrdersListView extends Component {
                     ref={(ref) => {
                         this.deleteModal = ref;
                     }}
-                    detail={{ title: '删除订单', context: '确定删除此订单吗', no: '取消', yes: '确认' }}
+                    detail={{ title: '删除订单', context: '确定删除此订单?', no: '取消', yes: '确认' }}
                     closeWindow={() => {
                         this.setState({ isShowDeleteOrderModal: false });
                     }}

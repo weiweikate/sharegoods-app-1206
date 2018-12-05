@@ -7,13 +7,15 @@ import {
 import {  orderDetailModel } from '../../model/OrderDetailModel';
 import DesignRule from 'DesignRule';
 import { observer } from 'mobx-react/native';
+import ScreenUtil from '../../../../utils/ScreenUtils';
+const {px2dp} =ScreenUtil;
 
 @observer
 export default class GiftHeaderView extends Component{
 
     render(){
         return (
-            <View style={{marginTop: 10}}>
+            <View style={{marginTop:  px2dp(10)}}>
                 {orderDetailModel.orderType == 5 || orderDetailModel.orderType === 98 ?
                     <View style={styles.containerStyles}>
                         <View style={styles.leftStyles}>
@@ -33,24 +35,24 @@ const styles=StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
-        height:40
+        height: px2dp(40)
     },
     leftStyles:{
         borderWidth: 1,
-        borderRadius: 5,
+        borderRadius:  px2dp(5),
         alignItems: 'center',
         justifyContent: 'center',
         borderColor: DesignRule.mainColor,
-        marginLeft: 20,
+        marginLeft:  px2dp(20),
     },
     giftTextStyles:{
-        fontSize: 11,
+        fontSize:  px2dp(11),
         color: DesignRule.mainColor,
-        padding: 3
+        padding:  px2dp(3)
     },
     giftNameStyles:{
-        marginLeft: 10,
-        fontSize: 12,
+        marginLeft:  px2dp(10),
+        fontSize:  px2dp(12),
         color: DesignRule.textColor_instruction
     }
 
