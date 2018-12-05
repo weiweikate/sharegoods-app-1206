@@ -42,7 +42,7 @@ export default class RefundDetailView extends React.Component {
 
 
   render() {
-      let {actualAmounts, actualBalance, actualTokenCoin } = this.props.orderReturnAmounts;
+      let {refundCashAmount, refundAccountAmount} = this.props;
     return (
         <View style={{marginBottom: 10, marginTop: -5}}>
             <View
@@ -55,24 +55,24 @@ export default class RefundDetailView extends React.Component {
                 <UIText value={'退款明细'}
                         style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
             </View>
-            <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回1元现金券'}
-                            leftTextStyle={{
-                                color: DesignRule.textColor_mainTitle,
-                                fontSize: 13
-                            }}
-                            rightText={'x' + parseInt(actualTokenCoin) + '张'}
-                            rightTextStyle={{
-                                color: DesignRule.textColor_mainTitle,
-                                fontSize: 13,
-                                marginRight: 5
-                            }}
-                            isArrow={false} isLine={false}/>
+            {/*<UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回1元现金券'}*/}
+                            {/*leftTextStyle={{*/}
+                                {/*color: DesignRule.textColor_mainTitle,*/}
+                                {/*fontSize: 13*/}
+                            {/*}}*/}
+                            {/*rightText={'x' + parseInt(actualTokenCoin) + '张'}*/}
+                            {/*rightTextStyle={{*/}
+                                {/*color: DesignRule.textColor_mainTitle,*/}
+                                {/*fontSize: 13,*/}
+                                {/*marginRight: 5*/}
+                            {/*}}*/}
+                            {/*isArrow={false} isLine={false}/>*/}
             <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回第三方账户'}
                             leftTextStyle={{
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 13
                             }}
-                            rightText={StringUtils.formatMoneyString(actualAmounts)}
+                            rightText={StringUtils.formatMoneyString(refundCashAmount)}
                             rightTextStyle={{
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 13,
@@ -85,7 +85,7 @@ export default class RefundDetailView extends React.Component {
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 13
                             }}
-                            rightText={StringUtils.formatMoneyString(actualBalance)}
+                            rightText={StringUtils.formatMoneyString(refundAccountAmount)}
                             rightTextStyle={{
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 13,

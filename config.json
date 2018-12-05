@@ -65,6 +65,11 @@
             "name": "UAT",
             "host": "https://uatapi.sharegoodsmall.com/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
+        },
+        "杨飞": {
+            "name": "杨飞",
+            "host": "http://172.16.10.158:9090/gateway",
+            "h5": "https://uath5.sharegoodsmall.com"
         }
     }
 }
