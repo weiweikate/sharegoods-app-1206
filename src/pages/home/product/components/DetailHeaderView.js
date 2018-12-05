@@ -106,10 +106,7 @@ export default class DetailHeaderView extends Component {
                             <View style={{ width: 62, flexDirection: 'row', alignItems: 'center' }}>
                                 <View style={{ width: 1, backgroundColor: DesignRule.color_f2, height: 42 }}/>
                                 <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                                                  onPress={() => {
-                                                      this.props.navigation.popToTop();
-                                                      this.props.navigation.navigate('MyShop_RecruitPage');
-                                                  }}>
+                                                  onPress={this.props.goShopAction}>
                                     <Text style={{
                                         color: DesignRule.textColor_instruction,
                                         fontSize: 10

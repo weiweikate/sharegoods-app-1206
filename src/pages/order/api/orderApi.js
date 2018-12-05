@@ -43,20 +43,20 @@ const api = {
     againOrder:'/order/againOrder',
     /**  售后模块相关接口 huchao */
     //（陈帅）申请退款
-    applyRefund: '/order/returnProduct/applyRefund',
+    // applyRefund: '/order/returnProduct/applyRefund',
     //（陈帅）申请换货
-    applyExchangeGoods: '/order/returnProduct/applyExchangeGoods',
+    // applyExchangeGoods: '/order/returnProduct/applyExchangeGoods',
     //（陈帅）申请退款退货
-    applyReturnGoods: '/order/returnProduct/applyReturnGoods',
+    // applyReturnGoods: '/order/returnProduct/applyReturnGoods',
 
     //（陈帅）填写寄回信息
     fillSendInfo: '/order/returnProduct/fillSendInfo',
     //（陈帅）查看详情
-    returnProductLookDetail:'/order/returnProduct/lookDetail',
+    // returnProductLookDetail:'/order/returnProduct/lookDetail',
     //（陈帅）撤销申请
     revokeApply: '/order/returnProduct/revokeApply',
     //（陈帅）修改申请
-    updateApply: '/order/returnProduct/updateApply',
+    // updateApply: '/order/returnProduct/updateApply',
     //（陈帅）查询子订单详情
     subOrderLookDetial: ['/order/orderProduct/lookDetial',{method:'get'}],
     // 获取物流公司
@@ -66,11 +66,13 @@ const api = {
 
     getReturnReason: ['/config/sysDictionary/queryDictionaryTypeList', {method: 'get'}],
     //网关（顾佳豪）， 后台（陈帅）
-    afterSaleApply: '/after-sale/apply',
-    afterSaleDetail: '/after-sale/detail',
-    afterSaleCancel: '/after-sale/cancel',
-    afterSaleModify: '/after-sale/modify',
-    afterSaleFillExpress: '/after-sale/express',
+    afterSaleApply: '/after-sale/apply',//提交申请
+    afterSaleDetail: '/after-sale/detail',//售后详情
+    afterSaleCancel: '/after-sale/cancel',//取消申请
+    afterSaleModify: '/after-sale/modify',//修改申请
+    afterSaleFillExpress: '/after-sale/express',//填写物流
+    subOrder: '/after-sale/order-detail',//子订单
+    afterSaleList: '/after-sale/list',//列表
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

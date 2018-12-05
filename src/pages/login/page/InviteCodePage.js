@@ -174,6 +174,7 @@ export default class  extends BasePage {
                         color: DesignRule.textColor_instruction,
                         fontSize: 12
                     }}
+
                 />
             </View>
         );

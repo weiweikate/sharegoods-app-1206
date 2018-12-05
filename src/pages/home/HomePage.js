@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     View,
     StyleSheet,
@@ -7,38 +7,38 @@ import {
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager
-} from 'react-native';
-import ImageLoad from '@mr/image-placeholder'
-import ScreenUtils from '../../utils/ScreenUtils';
-import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
-import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
-import { homeType } from './HomeTypes';
-import { bannerModule } from './HomeBannerModel';
-import HomeSearchView from './HomeSearchView';
-import HomeClassifyView from './HomeClassifyView';
-import HomeStarShopView from './HomeStarShopView';
-import HomeTodayView from './HomeTodayView';
-import HomeRecommendView from './HomeRecommendView';
-import HomeSubjectView from './HomeSubjectView';
-import HomeBannerView from './HomeBannerView';
-import HomeAdView from './HomeAdView';
-import HomeGoodsView from './HomeGoodsView';
-import HomeUserView from './HomeUserView';
-import ShowView from '../show/ShowView';
-import LinearGradient from 'react-native-linear-gradient';
-import Modal from 'CommModal';
-import XQSwiper from '../../components/ui/XGSwiper';
-import MessageApi from '../message/api/MessageApi';
-import EmptyUtils from '../../utils/EmptyUtils';
-import VersionUpdateModal from './VersionUpdateModal';
-import StringUtils from '../../utils/StringUtils';
-import DesignRule from 'DesignRule';
-import TimerMixin from 'react-timer-mixin';
-import res from './res';
-import homeModalManager from './model/HomeModalManager';
-import { withNavigationFocus } from 'react-navigation';
-import user from '../../model/user';
+} from "react-native";
+import ImageLoad from "@mr/image-placeholder";
+import ScreenUtils from "../../utils/ScreenUtils";
+import ShareTaskIcon from "../shareTask/components/ShareTaskIcon";
+import { observer } from "mobx-react";
+import { homeModule } from "./Modules";
+import { homeType } from "./HomeTypes";
+import { bannerModule } from "./HomeBannerModel";
+import HomeSearchView from "./HomeSearchView";
+import HomeClassifyView from "./HomeClassifyView";
+import HomeStarShopView from "./HomeStarShopView";
+import HomeTodayView from "./HomeTodayView";
+import HomeRecommendView from "./HomeRecommendView";
+import HomeSubjectView from "./HomeSubjectView";
+import HomeBannerView from "./HomeBannerView";
+import HomeAdView from "./HomeAdView";
+import HomeGoodsView from "./HomeGoodsView";
+import HomeUserView from "./HomeUserView";
+import ShowView from "../show/ShowView";
+import LinearGradient from "react-native-linear-gradient";
+import Modal from "CommModal";
+import XQSwiper from "../../components/ui/XGSwiper";
+import MessageApi from "../message/api/MessageApi";
+import EmptyUtils from "../../utils/EmptyUtils";
+import VersionUpdateModal from "./VersionUpdateModal";
+import StringUtils from "../../utils/StringUtils";
+import DesignRule from "DesignRule";
+import TimerMixin from "react-timer-mixin";
+import res from "./res";
+import homeModalManager from "./model/HomeModalManager";
+import { withNavigationFocus } from "react-navigation";
+import user from "../../model/user";
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -54,8 +54,9 @@ const home_notice_bg = res.home_notice_bg;
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
-import homeRegisterFirstManager from './model/HomeRegisterFirstManager'
-import BasePage from '../../BasePage';
+import homeRegisterFirstManager from "./model/HomeRegisterFirstManager";
+import BasePage from "../../BasePage";
+
 @observer
 class HomePage extends BasePage {
 
@@ -63,7 +64,7 @@ class HomePage extends BasePage {
     shadowOpacity = 0.4;
 
     $navigationBarOptions = {
-        title: '',
+        title: "",
         show: false
     };
 
@@ -80,7 +81,7 @@ class HomePage extends BasePage {
         shadowOpacity: this.shadowOpacity,
         whiteIcon: true,
         hasMessage: false,
-        showRegister:false
+        showRegister: false
     };
 
     constructor(props) {
@@ -91,7 +92,7 @@ class HomePage extends BasePage {
 
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            "willFocus",
             payload => {
                 const { state } = payload;
                 if (user.token) {
@@ -101,8 +102,8 @@ class HomePage extends BasePage {
                         hasMessage: false
                     });
                 }
-                console.log('willFocusSubscription', state);
-                if (state && state.routeName === 'HomePage') {
+                console.log("willFocusSubscription", state);
+                if (state && state.routeName === "HomePage") {
                     this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
@@ -110,17 +111,17 @@ class HomePage extends BasePage {
         );
 
         this.didBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
+            "willBlur",
             payload => {
                 const { state } = payload;
-                if (state && state.routeName === 'HomePage') {
+                if (state && state.routeName === "HomePage") {
                     this.setState({ isShow: false });
                 }
             }
         );
 
         this.didFocusSubscription = this.props.navigation.addListener(
-            'didFocus',
+            "didFocus",
             payload => {
                 this.showModal();
             }
@@ -134,9 +135,9 @@ class HomePage extends BasePage {
     }
 
     componentDidMount() {
-        this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
-        this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
-        this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
+        this.listener = DeviceEventEmitter.addListener("homePage_message", this.getMessageData);
+        this.listenerMessage = DeviceEventEmitter.addListener("contentViewed", this.loadMessageCount);
+        this.listenerLogout = DeviceEventEmitter.addListener("login_out", this.loadMessageCount);
         this.loadMessageCount();
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
@@ -176,16 +177,15 @@ class HomePage extends BasePage {
     };
 
     showModal = () => {
-
-        if (EmptyUtils.isEmpty(homeModalManager.version)) {
-            if(homeRegisterFirstManager.justRegistered){
+        if (EmptyUtils.isEmpty(homeModalManager.versionData)) {
+            if (homeRegisterFirstManager.justRegistered) {
                 //活动
                 this.setState({
-                    showRegister:true
+                    showRegister: true
                 });
                 this.registerModal && this.registerModal.open();
                 homeRegisterFirstManager.setJustRegistered(false);
-            }else {
+            } else {
                 //公告弹窗
                 this.showMessageModal();
             }
@@ -196,44 +196,36 @@ class HomePage extends BasePage {
     };
 
     showUpdateModal = async () => {
-        if (!EmptyUtils.isEmpty(homeModalManager.version)) {
-            let upVersion = '';
+        if (!EmptyUtils.isEmpty(homeModalManager.versionData)) {
+            let upVersion = "";
             try {
-                upVersion = await AsyncStorage.getItem('isToUpdate');
+                upVersion = await AsyncStorage.getItem("isToUpdate");
             } catch (error) {
 
             }
-
-            let resp = homeModalManager.version;
+            let resp = homeModalManager.versionData;
             if (resp.data.upgrade === 1) {
-                if (resp.data.forceUpdate === 1) {
-                    // 强制更新
-                    this.setState({
-                        forceUpdate: true
+                if (Platform.OS !== "ios") {
+                    NativeModules.commModule.apkExist(resp.data.version, (exist) => {
+                        this.setState({
+                            updateData: resp.data,
+                            showUpdate: resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false),
+                            forceUpdate: resp.data.forceUpdate === 1,
+                            apkExist: exist
+                        });
                     });
                 } else {
-                    if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
-                        if (Platform.OS !== 'ios') {
-                            NativeModules.commModule.apkExist(resp.data.version, (exist) => {
-                                this.setState({
-                                    updateData: resp.data,
-                                    showUpdate: true,
-                                    apkExist: exist
-                                });
-                                this.updateModal && this.updateModal.open();
-                                homeModalManager.setVersion(null);
-                            });
-                        } else {
-                            this.setState({
-                                updateData: resp.data,
-                                showUpdate: true
-                            });
-                            this.updateModal && this.updateModal.open();
-                            homeModalManager.setVersion(null);
-                        }
-                    } else {
-                        this.showMessageModal();
-                    }
+                    this.setState({
+                        updateData: resp.data,
+                        showUpdate: resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false),
+                        forceUpdate: resp.data.forceUpdate === 1
+                    });
+                }
+                if (this.state.showUpdate) {
+                    this.updateModal && this.updateModal.open();
+                    homeModalManager.setVersion(null);
+                } else {
+                    this.showMessageModal();
                 }
             } else {
                 this.showMessageModal();
@@ -245,8 +237,8 @@ class HomePage extends BasePage {
     showMessageModal() {
         if (!EmptyUtils.isEmpty(homeModalManager.homeMessage)) {
             let resp = homeModalManager.homeMessage;
-            let currStr = new Date().getTime() + '';
-            AsyncStorage.getItem('lastMessageTime').then((value) => {
+            let currStr = new Date().getTime() + "";
+            AsyncStorage.getItem("lastMessageTime").then((value) => {
                 if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                     if (!EmptyUtils.isEmptyArr(resp.data.data)) {
                         this.messageModal && this.messageModal.open();
@@ -258,7 +250,7 @@ class HomePage extends BasePage {
                     }
                 }
             });
-            AsyncStorage.setItem('lastMessageTime', currStr);
+            AsyncStorage.setItem("lastMessageTime", currStr);
         }
     }
 
@@ -304,17 +296,17 @@ class HomePage extends BasePage {
         this.shareTaskIcon.close();
     }
 
-    _keyExtractor = (item, index) => item.id + '';
+    _keyExtractor = (item, index) => item.id + "";
     _renderItem = (item) => {
         let data = item.item;
         if (data.type === homeType.swiper) {
-            return <HomeBannerView navigate={this.$navigate}/>
+            return <HomeBannerView navigate={this.$navigate}/>;
         } else if (data.type === homeType.classify) {
-            return <HomeClassifyView navigate={this.$navigate}/>
+            return <HomeClassifyView navigate={this.$navigate}/>;
         } else if (data.type === homeType.ad) {
-            return <HomeAdView navigate={this.$navigate}/>
+            return <HomeAdView navigate={this.$navigate}/>;
         } else if (data.type === homeType.today) {
-            return <HomeTodayView navigate={this.$navigate}/>
+            return <HomeTodayView navigate={this.$navigate}/>;
         } else if (data.type === homeType.recommend) {
             return <HomeRecommendView navigate={this.$navigate}/>;
         } else if (data.type === homeType.subject) {
@@ -362,7 +354,7 @@ class HomePage extends BasePage {
             <Modal ref={(ref) => {
                 this.messageModal = ref;
             }} visible={this.state.showMessage}>
-                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: "center" }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
                             showMessage: false
@@ -374,7 +366,7 @@ class HomePage extends BasePage {
                     <ImageBackground source={home_notice_bg} style={styles.messageBgStyle}>
                         <XQSwiper
                             style={{
-                                alignSelf: 'center',
+                                alignSelf: "center",
                                 marginTop: px2dp(145),
                                 width: px2dp(230),
                                 height: px2dp(211)
@@ -396,13 +388,13 @@ class HomePage extends BasePage {
         );
     }
 
-    registerModalRender=()=>{
-        const url = 'http://t2.hddhhn.com/uploads/tu/201612/98/st93.png'
+    registerModalRender = () => {
+        const url = "http://t2.hddhhn.com/uploads/tu/201612/98/st93.png";
         return (
             <Modal ref={(ref) => {
                 this.registerModal = ref;
             }} visible={this.state.showRegister}>
-                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: "center" }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
                             showRegister: false
@@ -412,12 +404,12 @@ class HomePage extends BasePage {
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
 
-                    <ImageLoad source={{uri:url}} style={styles.messageBgStyle}/>
+                    <ImageLoad source={{ uri: url }} style={styles.messageBgStyle}/>
 
                 </View>
             </Modal>
-        )
-    }
+        );
+    };
 
 
     messageIndexRender() {
@@ -427,18 +419,18 @@ class HomePage extends BasePage {
         let indexs = [];
         for (let i = 0; i < this.state.messageData.length; i++) {
             let view = i === this.state.messageIndex ?
-                <View style={[styles.messageIndexStyle, { backgroundColor: '#FF427D' }]}/> :
-                <View source={messageUnselected} style={[styles.messageIndexStyle, { backgroundColor: '#f4d7e4' }]}/>;
+                <View style={[styles.messageIndexStyle, { backgroundColor: "#FF427D" }]}/> :
+                <View source={messageUnselected} style={[styles.messageIndexStyle, { backgroundColor: "#f4d7e4" }]}/>;
             indexs.push(view);
         }
         return (
             <View style={{
-                flexDirection: 'row',
-                width: px2dp(12*this.state.messageData.length),
-                justifyContent: this.state.messageData.length === 1 ? 'center' : 'space-between',
+                flexDirection: "row",
+                width: px2dp(12 * this.state.messageData.length),
+                justifyContent: this.state.messageData.length === 1 ? "center" : "space-between",
                 marginBottom: px2dp(12),
                 height: 12,
-                alignSelf: 'center'
+                alignSelf: "center"
             }}>
                 {indexs}
             </View>
@@ -452,7 +444,7 @@ class HomePage extends BasePage {
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
                         fontSize: DesignRule.fontSize_secondTitle,
-                        alignSelf: 'center'
+                        alignSelf: "center"
                     }}>
                         {item.title}
                     </Text>
@@ -496,18 +488,18 @@ class HomePage extends BasePage {
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
-                <LinearGradient colors={['#000', 'transparent']}
+                <LinearGradient colors={["#000", "transparent"]}
                                 ref={e => this.headerShadow = e}
                                 style={[styles.navBar, {
                                     height: this.headerH + 14,
                                     opacity: bannerModule.opacity === 1 ? 0 : 0.4
                                 }]}/>
 
-                <HomeSearchView navigation={this.props.navigation}
+                <HomeSearchView navigation={this.$navigate}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
                                 hasMessage={this.state.hasMessage}
                 />
-                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
+                <ShareTaskIcon style={{ position: "absolute", right: 0, top: px2dp(220) - 40 }}
                                ref={(ref) => {
                                    this.shareTaskIcon = ref;
                                }}
@@ -535,46 +527,46 @@ const styles = StyleSheet.create({
     },
     // headerBg
     navBarBg: {
-        flexDirection: 'row',
+        flexDirection: "row",
         paddingLeft: 10,
         paddingRight: 10,
         height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "absolute",
         left: 0,
         right: 0,
         zIndex: 2
     },
     // header
     navBar: {
-        flexDirection: 'row',
+        flexDirection: "row",
         paddingLeft: 10,
         paddingRight: 10,
         height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
+        alignItems: "center",
+        justifyContent: "center",
+        position: "absolute",
         left: 0,
         right: 0,
         zIndex: 3
     },
     titleView: {
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
         height: px2dp(53),
         marginTop: px2dp(10),
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: "center",
+        justifyContent: "center"
     },
     title: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
-        fontWeight: '600'
+        fontWeight: "600"
     },
     messageBgStyle: {
         width: px2dp(295),
@@ -585,7 +577,7 @@ const styles = StyleSheet.create({
         width: px2dp(24),
         height: px2dp(24),
         marginTop: px2dp(100),
-        alignSelf: 'flex-end',
+        alignSelf: "flex-end",
         marginRight: ((ScreenUtils.width) - px2dp(300)) / 2
     },
     messageIndexStyle: {
