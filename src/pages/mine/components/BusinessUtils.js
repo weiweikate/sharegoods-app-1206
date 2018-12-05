@@ -33,9 +33,10 @@ export default {
             console.log('Response = ', response);
             let uri = Platform.OS === "ios" ? response.uri : response.path;
             uri = uri || '';
-            let fileType = uri.split('.').reverse()[0].toLowerCase;
+            let array = uri.split('.');
+            array.reverse();
+            let fileType = array[0].toLowerCase();
             let videoType =  ["avi", "wmv", "mpeg", "mp4", "mov", "mkv", "flv", "f4v", "m4v", "rmvb", "rm", "3gp"];
-
             if (fileType === 'gif'){
                 Toast.$toast('不支持上传动态图');
                 return;
