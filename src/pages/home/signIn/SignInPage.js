@@ -339,7 +339,7 @@ export default class SignInPage extends BasePage {
                 {this.state.exchangeData ? this._couponRender() : null}
                 {this.state.exchangeData ? this._reminderRender() : null}
                 <View style={{ flex: 1 }}/>
-                <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('mine/coupons/CouponsPage')}>
+                <TouchableWithoutFeedback onPress={() => this.$navigate('mine/coupons/CouponsPage')}>
                     <View>
                         <Text style={styles.couponsTextStyle}>
                             已有{user.tokenCoin ? user.tokenCoin : 0}张现金券>
