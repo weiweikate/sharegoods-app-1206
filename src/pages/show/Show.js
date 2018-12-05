@@ -341,6 +341,7 @@ export class ShowDetail {
         try {
             const result = yield ShowApi.showDetail({ id: id });
             this.detail = result.data;
+            return result.data;
         } catch (error) {
             console.log(error);
         }
