@@ -28,31 +28,13 @@ const position = res.dizhi;
 const arrow_right = res.arrow_right;
 const colorLine = res.addressLine;
 const couponIcon = res.coupons_icon;
-export default class ConfirOrderPage extends BasePage {
+export default class ConfirmOrderPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            selectExpress: true,//快递
             message: '',
-            pickedUp: StringUtils.isNoEmpty(user.pickedUp),
-            oldViewData: {},
-            oldPriceList: {},
             defaultAddress: false,
-            viewData: {
-                express: {},
-                list: [
-                    {}
-                ],
-                priceList: [
-                    {}
-                ],
-                couponList: null,
-                userScore: 0,
-                reducePrice: 0,
-                canUseScore: true,
-                totalFreightFee: 0,
-                totalAmounts: 0
-            },
+            viewData: {},
             tokenCoin: 0,
             couponId: null,
             tokenCoinText: null,
@@ -71,27 +53,13 @@ export default class ConfirOrderPage extends BasePage {
     renderAddress = () => {
         return (StringUtils.isNoEmpty(this.state.viewData.express.receiverNum) ?
                 <TouchableOpacity
-                    style={{
-                        minHeight: ScreenUtils.autoSizeWidth(80) ,
-                        backgroundColor: 'white',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        paddingTop: ScreenUtils.autoSizeWidth(10),
-                        paddingBottom: ScreenUtils.autoSizeWidth(10)
-                    }}
+                    style={styles.addressSelectStyle}
                     onPress={() => this.selectAddress()}>
                     <UIImage source={position} style={{ height:ScreenUtils.autoSizeHeight(20) , width: ScreenUtils.autoSizeWidth(20), marginLeft:ScreenUtils.autoSizeWidth(20 ) }} resizeMode={'contain'}/>
                     <View style={{ flex: 1, marginLeft:ScreenUtils.autoSizeWidth(15) , marginRight:ScreenUtils.autoSizeWidth(15)}}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <Text style={{
-                                flex: 1,
-                                fontSize: ScreenUtils.px2dp(15),
-                                color: DesignRule.textColor_mainTitle
-                            }}>收货人：{this.state.viewData.express.receiverName}</Text>
-                            <Text style={{
-                                fontSize: ScreenUtils.px2dp(15),
-                                color: DesignRule.textColor_mainTitle
-                            }}>{this.state.viewData.express.receiverNum}</Text>
+                            <Text style={[styles.commonTextStyle,{flex:1}]}>收货人：{this.state.viewData.express.receiverName}</Text>
+                            <Text style={styles.commonTextStyle}>{this.state.viewData.express.receiverNum}</Text>
                         </View>
                         <UIText
                             value={
@@ -100,26 +68,18 @@ export default class ConfirOrderPage extends BasePage {
                                 + this.state.viewData.express.areaString
                                 + this.state.viewData.express.receiverAddress
                             }
-                            style={{
-                                fontSize:ScreenUtils.px2dp(13),
-                                color: DesignRule.textColor_mainTitle,
-                                marginTop:ScreenUtils.autoSizeWidth(5)
-                            }}/>
+                            style={styles.receiverAddressStyle}/>
                     </View>
-                    <Image source={arrow_right} style={{ width:ScreenUtils.autoSizeWidth(10),height:ScreenUtils.autoSizeWidth(14) , marginRight: ScreenUtils.autoSizeWidth(15) }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={'contain'}/>
                 </TouchableOpacity> :
                 <TouchableOpacity
                     style={{ height: ScreenUtils.autoSizeWidth(87), backgroundColor: 'white', flexDirection: 'row', alignItems: 'center' }}
                     onPress={() => this.selectAddress()}>
                     <UIImage source={position} style={{ height:ScreenUtils.autoSizeWidth(20), width:ScreenUtils.autoSizeWidth(20), marginLeft: ScreenUtils.autoSizeWidth(20) }} resizeMode={'contain'}/>
                     <View style={{ flex: 1, marginLeft: ScreenUtils.autoSizeWidth(15), marginRight: ScreenUtils.autoSizeWidth(20) }}>
-                        <UIText value={'请添加一个收货人地址'} style={{
-                            fontSize: ScreenUtils.px2dp(13),
-                            color: DesignRule.textColor_hint,
-                            marginLeft: ScreenUtils.autoSizeWidth(15)
-                        }}/>
+                        <UIText value={'请添加一个收货人地址'} style={styles.hintStyle}/>
                     </View>
-                    <Image source={arrow_right} style={{ width:ScreenUtils.autoSizeWidth(10),height: ScreenUtils.autoSizeWidth(14), marginRight: ScreenUtils.autoSizeWidth(15) }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={'contain'}/>
                 </TouchableOpacity>
         );
     };
@@ -130,26 +90,9 @@ export default class ConfirOrderPage extends BasePage {
                     <Image source={colorLine} style={{ height: 3, width: ScreenUtils.width }}/>
                 </View>
                 {this.state.orderParam && this.state.orderParam.orderType === 3 ?
-
-                    <View style={{
-                        marginTop: ScreenUtils.autoSizeWidth(20),
-                        backgroundColor: 'white',
-                        flexDirection: 'row',
-                        alignItems: 'center'
-                    }}>
-                        <View style={{
-                            borderWidth: 1,
-                            borderRadius: 5,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderColor: DesignRule.mainColor,
-                            marginLeft: ScreenUtils.autoSizeWidth(20)
-                        }}>
-                            <Text style={{
-                                fontSize: ScreenUtils.px2dp(11),
-                                color: DesignRule.mainColor,
-                                padding: ScreenUtils.autoSizeWidth(3)
-                            }}>礼包</Text>
+                    <View style={styles.giftOutStyle}>
+                        <View style={styles.giftInnerStyle}>
+                            <Text style={styles.giftTextStyles}>礼包</Text>
                         </View>
                     </View>
                     :
@@ -171,7 +114,6 @@ export default class ConfirOrderPage extends BasePage {
                         <Image source={arrow_right}/>
                     </View>
                 </TouchableOpacity>
-
                 {this.renderLine()}
                 {!user.tokenCoin ? null :
                     <View>
@@ -235,37 +177,12 @@ export default class ConfirOrderPage extends BasePage {
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
                         return <View style={{ backgroundColor: 'white' }} key={index}>
-                            {index == 0 ? <Image source={couponIcon} style={{
-                                width: ScreenUtils.autoSizeWidth(15),
-                                height: ScreenUtils.autoSizeWidth(12),
-                                position: 'absolute',
-                                left: ScreenUtils.autoSizeWidth(15),
-                                top: ScreenUtils.autoSizeWidth(12)
-                            }}/> : null}
-                            <View style={{
-                                height: ScreenUtils.autoSizeWidth(34),
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginLeft: ScreenUtils.autoSizeWidth(36)
-                            }}>
-                                <Text style={{
-                                    color: DesignRule.textColor_instruction,
-                                    fontSize:ScreenUtils.px2dp(13) ,
-                                    alignSelf: 'center'
-                                }}>{item.couponName}</Text>
-                                <Text style={{
-                                    color: DesignRule.textColor_instruction,
-                                    fontSize: ScreenUtils.px2dp(13) ,
-                                    alignSelf: 'center',
-                                    marginRight: ScreenUtils.autoSizeWidth(13.5)
-                                }}>X1</Text>
+                            {index == 0 ? <Image source={couponIcon} style={styles.couponIconStyle}/> : null}
+                            <View style={styles.couponsOutStyle}>
+                                <Text style={styles.couponsTextStyle}>{item.couponName}</Text>
+                                <Text style={styles.couponsNumStyle}>x1</Text>
                             </View>
-                            <View style={{
-                                marginLeft: ScreenUtils.autoSizeWidth(36),
-                                backgroundColor: DesignRule.bgColor,
-                                height: 0.5,
-                                width: '100%'
-                            }}/>
+                            <View style={styles.couponsLineStyle}/>
                         </View>;
                     })
                     :
@@ -277,33 +194,23 @@ export default class ConfirOrderPage extends BasePage {
         return (
             <View>
                 {this.renderLine()}
-                <View style={{ height: ScreenUtils.autoSizeHeight(49), flexDirection: 'row',backgroundColor:DesignRule.white}}>
+                <View style={styles.commitOutStyle }>
                     <View
-                        style={{ width: ScreenUtils.autoSizeWidth(265), flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        style={{  flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <UIText value={'应付款：'} style={{
                             fontSize: ScreenUtils.px2dp(15),
                             color: DesignRule.textColor_mainTitle,
                         }}/>
                         <UIText
                             value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
-                            style={{
-                                fontSize: ScreenUtils.px2dp(15),
-                                color: DesignRule.mainColor,
-                                marginRight: ScreenUtils.autoSizeWidth(15)
-                            }}/>
+                            style={styles.commitAmountStyle}/>
                     </View>
                     <TouchableOpacity
-                        style={{
-                            flex: 1,
-                            backgroundColor: DesignRule.mainColor,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}
+                        style={styles.commitTouStyle}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
                                 style={{ fontSize: ScreenUtils.px2dp(16), color: 'white', padding:2}}/>
                     </TouchableOpacity>
-
                 </View>
                 {this.renderLine()}
             </View>
@@ -506,10 +413,9 @@ export default class ConfirOrderPage extends BasePage {
                 productId: item.productId,
                 uri: item.specImg,
                 goodsName: item.productName,
-                salePrice: item.price,
-                category: item.spec,
-                goodsNum: item.num,
-                originalPrice: item.originalPrice,
+                salePrice: item.unitPrice,
+                category: item.specValues,
+                goodsNum: item.quantity,
                 restrictions: item.restrictions
                 // activityId: item.activityId
             });
@@ -822,6 +728,89 @@ const styles = StyleSheet.create({
         paddingLeft: ScreenUtils.autoSizeWidth(15),
         paddingRight: ScreenUtils.autoSizeWidth(15),
         justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    addressSelectStyle:{
+        minHeight: ScreenUtils.autoSizeWidth(80) ,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: ScreenUtils.autoSizeWidth(10),
+        paddingBottom: ScreenUtils.autoSizeWidth(10)
+    },
+    commonTextStyle:{
+        fontSize: ScreenUtils.px2dp(15),
+        color: DesignRule.textColor_mainTitle
+    },
+    receiverAddressStyle:{
+        fontSize:ScreenUtils.px2dp(13),
+        color: DesignRule.textColor_mainTitle,
+        marginTop:ScreenUtils.autoSizeWidth(5)
+    },
+    hintStyle:{
+        fontSize: ScreenUtils.px2dp(13),
+        color: DesignRule.textColor_hint,
+        marginLeft: ScreenUtils.autoSizeWidth(15)
+    },
+    arrowRightStyle:{ width:ScreenUtils.autoSizeWidth(10),height: ScreenUtils.autoSizeWidth(14), marginRight: ScreenUtils.autoSizeWidth(15) },
+    giftOutStyle:{
+        marginTop: ScreenUtils.autoSizeWidth(20),
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    giftInnerStyle:{
+        borderWidth: 1,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: DesignRule.mainColor,
+        marginLeft: ScreenUtils.autoSizeWidth(20)
+    },
+    giftTextStyles:{
+        fontSize: ScreenUtils.px2dp(11),
+        color: DesignRule.mainColor,
+        padding: ScreenUtils.autoSizeWidth(3)
+    },
+    couponIconStyle:{
+        width: ScreenUtils.autoSizeWidth(15),
+        height: ScreenUtils.autoSizeWidth(12),
+        position: 'absolute',
+        left: ScreenUtils.autoSizeWidth(15),
+        top: ScreenUtils.autoSizeWidth(12)
+    },
+    couponsOutStyle:{
+        height: ScreenUtils.autoSizeWidth(34),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginLeft: ScreenUtils.autoSizeWidth(36)
+    },
+    couponsTextStyle:{
+        color: DesignRule.textColor_instruction,
+        fontSize:ScreenUtils.px2dp(13) ,
+        alignSelf: 'center'
+    },
+    couponsNumStyle:{
+        color: DesignRule.textColor_instruction,
+        fontSize: ScreenUtils.px2dp(13) ,
+        alignSelf: 'center',
+        marginRight: ScreenUtils.autoSizeWidth(13.5)
+    },
+    couponsLineStyle:{
+        marginLeft: ScreenUtils.autoSizeWidth(36),
+        backgroundColor: DesignRule.bgColor,
+        height: 0.5,
+        width: '100%'
+    },
+    commitOutStyle:{ height: ScreenUtils.autoSizeHeight(49), flexDirection: 'row',backgroundColor:DesignRule.white,justifyContent: 'flex-end', alignItems: 'center'},
+    commitAmountStyle:{
+        fontSize: ScreenUtils.px2dp(15),
+        color: DesignRule.mainColor,
+        marginRight: ScreenUtils.autoSizeWidth(15)
+    },
+    commitTouStyle:{
+        backgroundColor: DesignRule.mainColor,
+        justifyContent: 'center',
         alignItems: 'center'
     }
 });
