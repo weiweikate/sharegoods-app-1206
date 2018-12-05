@@ -22,7 +22,7 @@
     <string name="ysf_msg_notify_audio">[语音]</string>
     <string name="ysf_msg_notify_location">[位置]</string>
     <string name="ysf_input_panel_photo">图 片</string>
-    <string name="ysf_input_panel_take">拍 摄</string>
+    <string name="ysf_input_panel_take">拍 照</string>
     <string name="ysf_re_download_message">重新下载？</string>
     <string name="ysf_re_send_has_blank">重 发</string>
     <string name="ysf_re_send_message">重发消息？</string>
@@ -50,6 +50,8 @@
     <string name="ysf_evaluation">评价</string>
     <string name="ysf_evaluation_complete">已评价</string>
     <string name="ysf_evaluation_tips">请对我们的服务做出评价</string>
+    <string name="ysf_evaluation_modify">修改评价</string>
+    <string name="ysf_evaluation_time_out">评价已超时，无法进行评价</string>
     <string name="ysf_evaluation_satisfied">满意</string>
     <string name="ysf_evaluation_dissatisfied">不满意</string>
     <string name="ysf_evaluation_much_dissatisfied">非常不满意</string>
@@ -63,9 +65,13 @@
     <string name="ysf_evaluation_result_default_prefix">你对我们的服务评价为</string>
     <string name="ysf_evaluation_result_suffix">非常感谢！</string>
     <string name="ysf_evaluation_dialog_message">是否放弃评价，放弃后不可恢复</string>
+    <string name="ysf_evaluation_dialog_message_multi">是否放弃评价</string>
+    <string name="ysf_evaluation_error">评价失败，请稍后重试</string>
+    <string name="ysf_evaluation_timeout">评价已超时</string>
     <string name="ysf_robot_answer_useful">有用</string>
     <string name="ysf_robot_answer_useless">没用</string>
     <string name="ysf_menu_request_staff">人工客服</string>
+    <string name="ysf_menu_request_vip_staff">专属客服</string>
     <string name="ysf_menu_shop_name">商家</string>
     <string name="ysf_menu_close_session">退出</string>
     <string name="ysf_dialog_close_session">确认退出对话？</string>
@@ -84,6 +90,7 @@
     <string name="ysf_message_text_yidun_tips">消息包含违禁信息，发送失败</string>
     <string name="ysf_message_robot_evaluation_guide">感谢你的评价，请填写具体原因供我们改进</string>
     <string name="ysf_message_robot_evaluation_hint">填写具体原因</string>
+    <string name="ysf_transfer_staff_error">转接失败，请稍后重试</string>
 
     <!-- 语音 -->
     <string name="ysf_audio_record_touch_to_record">按住 说话</string>
@@ -103,6 +110,31 @@
     <string name="ysf_audio_translate">语音转换文字</string>
     <string name="ysf_audio_translate_failed">转换失败</string>
     <string name="ysf_audio_translate_to_text_failed">语音转文字失败</string>
+
+    <!--视频-->
+    <string name="ysf_look_video_fail_try_again">暂时无法播放视频，请重试</string>
+    <string name="ysf_download_video">正在下载视频</string>
+    <string name="ysf_download_video_fail">视频下载失败,请重试</string>
+    <string name="ysf_look_video_fail">无法播放该视频</string>
+    <string name="ysf_video_play">视频播放</string>
+    <string name="ysf_video_record">视频录制</string>
+    <string name="ysf_video_record_symbol">REC</string>
+    <string name="ysf_video_record_begin">开始录制</string>
+    <string name="ysf_connect_vedio_device_fail">无法连接视频设备 ，请稍候再试</string>
+    <string name="ysf_capture_video_size_in_kb">视频文件大小为: %1$dKB,</string>
+    <string name="ysf_capture_video_size_in_mb">视频文件大小为: %1$.2fMB,</string>
+    <string name="ysf_is_send_video">是否发送该视频？</string>
+    <string name="ysf_start_camera_to_record_failed">启动摄像头录制视频失败</string>
+    <string name="ysf_stop_fail_maybe_stopped">停止失败，可能已经停止</string>
+    <string name="ysf_video_exception">视频文件异常</string>
+    <string name="ysf_im_choose_video_file_size_too_large">视频文件过大，系统限制为20MB</string>
+    <string name="ysf_im_choose_video">请选择3GP MP4格式的视频文件</string>
+    <string name="ysf_video_record_short">录制至少录制1秒</string>
+    <string name="ysf_pick_video_record">拍摄视频</string>
+    <string name="ysf_download_progress_description">%1$s（%2$s/%3$s）</string>
+    <string name="ysf_video_save_fail">视频保存失败</string>
+    <string name="ysf_video_save_to">视频已保存到手机，请在</string>
+    <string name="ysf_video_save_to_local">保存至本地</string>
 
     <!-- image picker -->
     <string name="ysf_picker_image_sdcard_not_enough_error">SD卡被拔出存储空间不足，无法保存此次多媒体消息</string>
@@ -128,6 +160,7 @@
     <string name="ysf_no_permission_send_audio">没有权限，无法发送语音！</string>
     <string name="ysf_no_permission_audio_error">消息未下载完毕或者消息错误！</string>
     <string name="ysf_no_permission_save_image">没有权限，无法保存图片！</string>
+    <string name="ysf_no_permission_video">没有权限，无法拍摄！</string>
 
     <!--ptr-->
     <string name="ysf_ptr_pull_to_refresh">下拉刷新</string>
@@ -170,4 +203,7 @@
     <string name="ysf_enter_store">进店</string>
     <string name="ysf_send_card_robot">发送失败，机器人看不懂卡片哦</string>
     <string name="ysf_send_card_error">发送失败，会话已结束</string>
+
+    <!--撤回消息-->
+    <string name="ysf_staff_withdrawal_str">“%1$s”撤回了一条消息</string>
 </resources>
