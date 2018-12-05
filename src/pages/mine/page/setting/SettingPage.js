@@ -235,6 +235,7 @@ class SettingPage extends BasePage {
                     DeviceEventEmitter.emit('login_out');
                     homeModule.loadHomeList();
                     MineApi.signOut();
+                    // 退出七鱼
                     QYChatUtil.qiYULogout();
                     this.$loadingDismiss();
 
