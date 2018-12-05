@@ -51,9 +51,9 @@ export default class AfterSaleInfoView extends React.Component {
     };
 
     render() {
-        let { pageData, pageType } = this.props;
+        let { afterSaleInfo, pageType } = this.props;
 
-        if (EmptyUtils.isEmpty(pageData) === true) {
+        if (EmptyUtils.isEmpty(afterSaleInfo) === true) {
             return null;
         }
 
@@ -65,25 +65,26 @@ export default class AfterSaleInfoView extends React.Component {
                     height: 1,
                     backgroundColor: DesignRule.lineColor_inColorBg
                 }}/>
-                <UIText value={typeStr + "原因：" + pageData.reason}
+                <UIText value={typeStr + "原因：" + afterSaleInfo.reason}
                         style={styles.refundReason}/>
-                <UIText value={typeStr + "说明：" + pageData.description || ""}
+                <UIText value={typeStr + "说明：" + afterSaleInfo.description || ""}
                         style={styles.refundReason}/>
-                <UIText value={"凭证图片："} style={styles.refundReason}/>
+                <UIText value={"凭证图片："}
+                        style={styles.refundReason}/>
                 <View style={{
                     flexDirection: "row",
                     flexWrap: "wrap",
                     paddingRight: 15
                 }}>
 
-                    {this.renderCertificateImage(pageData.imgList)}
+                    {this.renderCertificateImage(afterSaleInfo.imgList)}
 
                 </View>
-                <UIText value={"申请时间：" + DateUtils.getFormatDate(pageData.createTime / 1000)}
+                <UIText value={"申请时间：" + DateUtils.getFormatDate(afterSaleInfo.createTime / 1000)}
                         style={styles.refundReason}/>
-                <UIText value={"订单编号：" + pageData.orderProductNo}
+                <UIText value={"订单编号：" + afterSaleInfo.orderProductNo}
                         style={styles.refundReason}/>
-                <UIText value={typeStr + "编号：" + pageData.serviceNo}
+                <UIText value={typeStr + "编号：" + afterSaleInfo.serviceNo}
                         style={styles.refundReason}/>
 
             </View>

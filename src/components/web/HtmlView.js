@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-    WebView
-} from 'react-native';
 import BasePage from '../../BasePage';
-import StringUtils from '../../utils/StringUtils';
+import WebViewBridge from '@mr/react-native-webview'
 
 export default class RequestDetailPage extends BasePage {
 
@@ -23,24 +20,23 @@ export default class RequestDetailPage extends BasePage {
     }
 
     componentDidMount() {
-        this.$NavigationBarResetTitle(this.state.title);
+        this.$NavigationBarResetTitle(this.state.title || '加载中...');
     }
 
-    _render() {
-
-        return (
-            <WebView source={{ uri: this.state.uri }}
-                     javaScriptEnabled={true}
-                     domStorageEnabled={true}
-                     scalesPageToFit={true}
-                     onNavigationStateChange={(event) => this.onNavigationStateChange(event)} />
-        );
+    _render(){
+        return(
+            <WebViewBridge
+                style={{flex: 1}}
+                source={{uri: this.state.uri}}
+                navigateAppPage={(r, p) => {this.$navigate(r, p)}}
+                onNavigationStateChange={event => {this.$NavigationBarResetTitle(this.state.title || event.title)}}
+                // onLoadStart={() => this._onLoadStart()}
+                // onLoadEnd={() => this._onLoadEnd()}
+                // onError={e => this._onError(e)}
+                // postMessage={msg => this._postMessage(msg)}
+                // source={this.props.source} //uri: 'http://172.16.10.117:9528/topic/first'
+            />
+        )
     }
-
-    onNavigationStateChange = (event) => {
-        if (!StringUtils.isEmpty(event.title)) {
-            this.$NavigationBarResetTitle(event.title);
-        }
-    };
 }
 
