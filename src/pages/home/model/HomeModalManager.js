@@ -13,14 +13,14 @@ import MessageApi from "../../message/api/MessageApi";
 
 class HomeModalManager {
     @observable
-    version = null;
+    versionData = null;
     @observable
     homeMessage = null;
 
 
     @action
     setVersion(data) {
-        this.version = data;
+        this.versionData = data;
     }
 
     @action
@@ -45,7 +45,7 @@ class HomeModalManager {
                     this.setHomeMessage(resp);
                     return resp;
                 });
-            }else {
+            } else {
                 return Promise.resolve();
             }
         });
