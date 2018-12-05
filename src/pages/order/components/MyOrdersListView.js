@@ -238,11 +238,12 @@ export default class MyOrdersListView extends Component {
                 });
 
             });
-            this.setState({ viewData: arrData });
+            // this.setState({ viewData: arrData });
         } else {
             this.noMoreData = true;
             // NativeModules.commModule.toast('无更多数据');
         }
+        this.setState({ viewData: arrData });
     };
 
     componentDidMount() {
@@ -452,7 +453,7 @@ export default class MyOrdersListView extends Component {
                 orderId: this.state.viewData[index].id,
                 status: this.state.viewData[index].orderStatus,
                 orderNum: this.state.viewData[index].orderNum,
-                callBack: this.onRefresh
+                callBack: ()=>this.onRefresh
             });
         }
     };

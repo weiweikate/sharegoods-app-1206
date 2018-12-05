@@ -116,8 +116,8 @@ class MyOrdersDetailPage extends BasePage {
                 leftTopIcon=refuseIcon;
                 break;
             default:
-            leftTopIcon = buyerHasPay;
-            break;
+                leftTopIcon = buyerHasPay;
+                break;
 
 
 
@@ -150,24 +150,24 @@ class MyOrdersDetailPage extends BasePage {
                         <View style={{justifyContent:'center',flex:1}}>
                             {typeof this.state.pageStateString.sellerState === 'string' ?
                                 <View style={{ marginLeft: 10}}>
-                                <UIText value={this.state.pageStateString.sellerState} style={{
-                                    color: DesignRule.textColor_mainTitle,
-                                    fontSize: 15,
-                                    marginRight: 46
-                                }}/>
+                                    <UIText value={this.state.pageStateString.sellerState} style={{
+                                        color: DesignRule.textColor_mainTitle,
+                                        fontSize: 15,
+                                        marginRight: 46
+                                    }}/>
                                     {StringUtils.isNoEmpty(this.state.pageStateString.logisticsTime)?
-                                    <UIText style={{
-                                        color: DesignRule.textColor_instruction,
-                                        fontSize:15,
-                                        marginTop:3
-                                    }} value={DateUtils.getFormatDate(this.state.pageStateString.logisticsTime / 1000)}/>:null}
+                                        <UIText style={{
+                                            color: DesignRule.textColor_instruction,
+                                            fontSize:15,
+                                            marginTop:3
+                                        }} value={DateUtils.getFormatDate(this.state.pageStateString.logisticsTime / 1000)}/>:null}
                                 </View>
                                 :
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{
                                         flex:1,
                                         fontSize: 15,
-                                         marginLeft:10,
+                                        marginLeft:10,
                                         marginRight:3,
                                         color: DesignRule.textColor_instruction
                                     }}>{this.state.pageStateString.sellerState[0]}</Text>
@@ -644,8 +644,8 @@ class MyOrdersDetailPage extends BasePage {
 
 
 
-        renderAddress = () => {
-            console.log('this.state.heightaddredd',this.state.height);
+    renderAddress = () => {
+        console.log('this.state.heightaddredd',this.state.height);
         return (
             <View style={{
                 minHeight:83,
@@ -1339,17 +1339,17 @@ const styles = StyleSheet.create({
         lineHeight: 18,
         color: DesignRule.textColor_secondTitle
     },
-     topOrderDetail:{
-         minHeight:81,
-         marginTop: 69,
-         backgroundColor: 'white',
-         marginLeft: 15,
-         marginRight: 15,
-         paddingTop:5,
-         paddingBottom:5,
-         borderRadius: 10,
-         justifyContent:'center'
-     }
+    topOrderDetail:{
+        minHeight:81,
+        marginTop: 69,
+        backgroundColor: 'white',
+        marginLeft: 15,
+        marginRight: 15,
+        paddingTop:5,
+        paddingBottom:5,
+        borderRadius: 10,
+        justifyContent:'center'
+    }
 });
 
 export default MyOrdersDetailPage;

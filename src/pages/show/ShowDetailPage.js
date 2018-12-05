@@ -119,7 +119,7 @@ export default class ShowDetailPage extends BasePage {
                     <Text style={styles.number}>{number}</Text>
                 </View>
             </View>
-            <HTML html={content} imagesInitialDimensions={{width: width, height: 0}} containerStyle={{
+            <HTML html={content} imagesMaxWidth={width - px2dp(30)} imagesInitialDimensions={{width: width - px2dp(30), height: 0}} containerStyle={{
                 backgroundColor: '#fff',
                 marginLeft: px2dp(15),
                 marginRight: px2dp(15)

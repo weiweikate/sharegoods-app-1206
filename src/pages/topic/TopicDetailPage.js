@@ -7,7 +7,7 @@ import {
     FlatList,
     Text,
     // TouchableWithoutFeedback,
-    TouchableOpacity,
+    TouchableOpacity
     // AsyncStorage,
     // ImageBackground
 } from 'react-native';
@@ -160,16 +160,16 @@ export default class TopicDetailPage extends BasePage {
                 code: this.params.activityCode
             }).then((data) => {
                 this.state.activityData = data.data || {};
-                this._getProductDetail(this.state.activityData.productId);
+                this._getProductDetail(this.state.activityData.prodCode);
             }).catch((error) => {
                 this._error(error);
             });
         } else if (this.state.activityType === 2) {
-            TopicApi.activityDepreciate_findById({
+            TopicApi.activityDepreciate_findByCode({
                 code: this.params.activityCode
             }).then((data) => {
                 this.state.activityData = data.data || {};
-                this._getProductDetail(this.state.activityData.productId);
+                this._getProductDetail(this.state.activityData.prodCode);
             }).catch((error) => {
                 this._error(error);
             });
@@ -227,7 +227,7 @@ export default class TopicDetailPage extends BasePage {
         if (this.state.activityType !== 3 && (status === 4 || status === 5) && type === 1) {
             this.__timer__ = setTimeout(() => {
                 this.havePushDone = true;
-                this.$navigate('home/product/ProductDetailPage', { productId: this.state.activityData.productId });
+                this.$navigate('home/product/ProductDetailPage', { productCode: this.state.activityData.prodCode });
             }, 5000);
         }
     };
@@ -247,7 +247,7 @@ export default class TopicDetailPage extends BasePage {
         return superStatus;
     };
 
-    _getProductDetail = (productId) => {
+    _getProductDetail = (prodCode) => {
         let superStatus = this._getSuperStatus();
         if (superStatus === 0) {
             this.setState({
@@ -258,8 +258,8 @@ export default class TopicDetailPage extends BasePage {
             this.setState({
                 loadingState: PageLoadingState.success
             }, () => {
-                HomeAPI.getProductDetail({
-                    id: productId
+                HomeAPI.getProductDetailByCode({
+                    code: prodCode
                 }).then((data) => {
                     this.setState({
                         data: data.data || {}
@@ -295,10 +295,10 @@ export default class TopicDetailPage extends BasePage {
     };
 
     //选择规格确认 秒杀 降价拍
-    _selectionViewConfirm = (amount, priceId) => {
+    _selectionViewConfirm = (amount, skuCode) => {
         let orderProducts = [];
         orderProducts.push({
-            priceId: priceId,
+            skuCode: skuCode,
             num: amount,
             code: this.state.activityData.activityCode
         });
@@ -316,8 +316,8 @@ export default class TopicDetailPage extends BasePage {
         selectData.forEach((item) => {
             priceList.push({
                 num: 1,
-                priceId: item.productPriceId,
-                productId: item.productId,
+                skuCode: item.skuCode,
+                prodCode: item.prodCode,
                 productName: item.productName,
                 sourceId: item.id,
                 spec: item.specValues,
@@ -327,8 +327,8 @@ export default class TopicDetailPage extends BasePage {
 
         let orderProducts = [{
             num: 1,
-            priceId: this.state.data.id,
-            productId: this.state.data.id,
+            priceId: this.state.data.packageCode,
+            productId: this.state.data.packageCode,
             priceList: priceList
         }];
 
@@ -351,7 +351,7 @@ export default class TopicDetailPage extends BasePage {
     //立即购买
     _bottomAction = (type) => {
         if (!user.isLogin) {
-            this.props.navigation.navigate('login/login/LoginPage');
+            this.$navigate('login/login/LoginPage');
             return;
         }
         if (type === 1) {//设置提醒
@@ -386,10 +386,16 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderItem = () => {
-        let { product = {} } = this.state.data;
+        let { content } = this.state.data;
         if (this.state.selectedIndex === 0) {
+            content = content || '';
+            content = content.split(',') || [];
+            let html = '';
+            content.forEach((item) => {
+                html = `${html}<p><img src=${item}></p>`;
+            });
             return <View>
-                <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
+                <HTML html={html}
                       imagesMaxWidth={ScreenUtils.width}
                       imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                       containerStyle={{ backgroundColor: '#fff' }}/>
@@ -598,10 +604,9 @@ export default class TopicDetailPage extends BasePage {
             productName = name;
             productImgUrl = imgUrl;
         } else {
-            const { price = 0, product = {} } = this.state.data || {};
-            const { name = '', imgUrl } = product;
-            productPrice = price;
-            productName = `${name}`;
+            const { minPrice, name, imgUrl } = this.state.data || {};
+            productPrice = minPrice;
+            productName = name;
             productImgUrl = imgUrl;
         }
 

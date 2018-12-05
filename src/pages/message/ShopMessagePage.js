@@ -311,7 +311,7 @@ export default class ShopMessagePage extends BasePage {
         if(item.messageType === 200){
             return (
 
-                <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param)}}>
+                <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.$navigate,item.paramType,item.param)}}>
                     <View style={{height:px2dp(33),width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white',borderTopColor:DesignRule.lineColor_inGrayBg,borderTopWidth:px2dp(0,5)}}>
                         <Text style={{color:DesignRule.textColor_secondTitle,fontSize:px2dp(13)}}>
                              查看详情>>

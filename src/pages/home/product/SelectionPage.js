@@ -45,9 +45,9 @@ export default class SelectionPage extends Component {
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
         }
-        const { specifyList = {}, skuList = [] } = data;
-        let specMapTemp = JSON.parse(JSON.stringify(specifyList));
-        let priceListTemp = JSON.parse(JSON.stringify(skuList));
+        const { specifyList, skuList } = data;
+        let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
+        let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
 
         let tittleList = [];
         //提取规格处理id

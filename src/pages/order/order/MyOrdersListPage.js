@@ -76,7 +76,7 @@ class MyOrdersListPage extends BasePage {
                         this.renterTabBar()
                     )}>
                     <MyOrdersListView
-                        tabLabel={'全部'} pageStatus={0} nav={this.props.navigation.navigate}
+                        tabLabel={'全部'} pageStatus={0} nav={this.$navigate}
                         selectTab={this.state.selectTab}/>
 
                     <MyOrdersListView

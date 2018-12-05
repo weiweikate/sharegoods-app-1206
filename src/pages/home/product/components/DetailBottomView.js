@@ -77,7 +77,7 @@ export default class DetailBottomView extends Component {
                         {
                             // shareMoney未空显示?  为0显示分享赚
                             shareMoney === '0.00' ? <Text style={{ fontSize: 17, color: DesignRule.white }}>分享赚</Text>
-                                : <View style={{ flexDirection: 'row' }}>
+                                : <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ color: DesignRule.white, fontSize: 25 }}>赚</Text>
                                     <View style={{ marginLeft: 5 }}>
                                         <Text style={{ color: DesignRule.white, fontSize: 11 }}>品牌奖励金</Text>

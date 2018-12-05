@@ -93,7 +93,7 @@ export default class MyPromotionPage extends BasePage {
                 loadingState: PageLoadingState.fail
             });
             if (err.code === 10009) {
-                this.props.navigation.navigate('login/login/LoginPage');
+                this.$navigate('login/login/LoginPage');
             }
         });
         MineApi.getNextLevelInfo().then(res => {
@@ -140,7 +140,7 @@ export default class MyPromotionPage extends BasePage {
                         this.state.headImg ?
                             <Image style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
                                    onError={({ nativeEvent: { error } }) => this._imgLoadFail(this.state.headImg, error)}
-                                   source={{ uri: this.state.headImg }}/> : null
+                                   source={{ uri: this.state.headImg }}/> : <View style={{width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 ,backgroundColor:'gray'}}/>
                     }
                     <View style={{
                         justifyContent: 'center',
@@ -291,7 +291,7 @@ export default class MyPromotionPage extends BasePage {
     }
 
     _onPressInvite = () => {
-        this.props.navigation.navigate('mine/InviteFriendsPage');
+        this.$navigate('mine/InviteFriendsPage');
     };
 
     // 去购物
