@@ -68,7 +68,7 @@
         },
         "杨飞": {
             "name": "杨飞",
-            "host": "http://172.16.10.158:18082/gateway",
+            "host": "http://172.16.10.158:9090/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         }
     }

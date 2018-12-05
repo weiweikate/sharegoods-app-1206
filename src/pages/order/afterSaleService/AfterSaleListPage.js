@@ -114,8 +114,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     />
                     <TouchableOpacity onPress={() => {
                         this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                            returnProductId: item.returnProductId,
-                            pageType: item.type - 1
+                            serviceNo: item.serviceNo
                         });
                     }} style={styles.btnContainer}>
                         <UIText value={'查看详情'}
@@ -159,8 +158,8 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     renderItem={this.renderItem}
                     params={params}
                     heightForCell={() => 160}
-                    handleRequestResult={(result)=>{return result.data.list}}
-                    //  ref={(ref) => {this.list = ref}}
+                    // handleRequestResult={(result)=>{return result.data[0].list}}
+                    // ref={(ref) => {this.list = ref}}
                 />
             </View>
         );

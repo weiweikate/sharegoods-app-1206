@@ -14,7 +14,7 @@ class AfterSaleDetailModel {
     @observable
     pageData = null;
     @observable
-    timeString = 0;
+    timeString = '';
 
     @action
     loadPageData(callBack){
@@ -22,66 +22,13 @@ class AfterSaleDetailModel {
         orderApi.afterSaleDetail({serviceNo: this.serviceNo}).then(result => {
             this.loadingDismiss&&this.loadingDismiss();
             this.pageData = result.data;
-            this.startTimer(5);
+            this.startTimer(100);
             this.isLoaded = true;
-            this.navigationBarResetTitle(['','',''][result.data.type -1])
+            this.navigationBarResetTitle(['退款详情','退货详情','换货详情'][result.data.type -1])
         }).catch((error)=>{
             this.loadingDismiss&&this.loadingDismiss();
             this.isLoaded = true;
-            this.pageData = {
-                "serviceNo": "SO4514784441",
-                "platformOrderNo": "PO4514784441",
-                "warehouseOrderNo": "CO4514784441",
-                "orderProductNo": "CO4514784441",
-                "userCode": "u******",
-                "userPhone": "137****1111",
-                "supplierCode": "s******",
-                "supplierName": "朵女郎",
-                "productName": "衣服xxxx",
-                "type": 1,
-                "refundNum": 2,
-                "payAmount":10,
-                "applyRefundAmount":10,
-                "adjustAmount":8,
-                "damageNum":2,
-                "reason":"不要了",
-                "description":"大小不接受",
-                "remarks":"可以换货哦亲",
-                specValue: 'specValues',
-                "warehouseType":1,
-                "warehouseCode":"s***",
-                "sendWarehouseFeedback":"s****",
-                "refundWarehouseFeedback":"s****",
-                "status":1,
-                "subStatus":1,
-                "cancelTime":"2018-09-11 00:00:00",
-                "imgList":"1,1",
-                "receiver":"木木",
-                "receiverPhone":"182****3333",
-                "province":"浙江省",
-                "city":"杭州市",
-                "area":"西湖区",
-                "street":"文新街道",
-                "address":"****西湖区***168号",
-                "createTime":"2018-09-11 00:00:00 ",
-                "updateTime":"2018-09-11 00:00:00 ",
-                "skuCode":"sku***,sku****",
-                "specTitle":"g***,g***",
-                "specImg":"***",
-                "unitPrice":11,
-                "quantity":1,
-                "refundPrice":1,
-                "countDownSeconds":36000000,
-                "expressName":"百世汇通",
-                "expressCode":"物流单号",
-                "backInfo": [
-                    {
-                        "refundReceiver": "小姐姐",
-                        "refundreceiverPhone": "182****11111",
-                        "refundAddress": "杭州市西湖区文新街道69号"
-                    }
-                ]
-            }
+
         })
     }
     @action

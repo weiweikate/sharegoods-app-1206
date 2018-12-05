@@ -66,13 +66,13 @@ const api = {
 
     getReturnReason: ['/config/sysDictionary/queryDictionaryTypeList', {method: 'get'}],
     //网关（顾佳豪）， 后台（陈帅）
-    afterSaleApply: '/after-sale/apply',
-    afterSaleDetail: '/after-sale/detail',
-    afterSaleCancel: '/after-sale/cancel',
-    afterSaleModify: '/after-sale/modify',
-    afterSaleFillExpress: '/after-sale/express',
-    subOrder: '/after-sale/order-detail',
-    afterSaleList: '/after-sale/list',
+    afterSaleApply: '/after-sale/apply',//提交申请
+    afterSaleDetail: '/after-sale/detail',//售后详情
+    afterSaleCancel: '/after-sale/cancel',//取消申请
+    afterSaleModify: '/after-sale/modify',//修改申请
+    afterSaleFillExpress: '/after-sale/express',//填写物流
+    subOrder: '/after-sale/order-detail',//子订单
+    afterSaleList: '/after-sale/list',//列表
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

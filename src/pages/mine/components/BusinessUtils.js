@@ -31,6 +31,19 @@ export default {
 
         ImagePicker.showImagePicker(photoOptions, (response) => {
             console.log('Response = ', response);
+            let uri = Platform.OS === "ios" ? response.uri : response.path;
+            uri = uri || '';
+            let fileType = uri.split('.').reverse()[0].toLowerCase;
+            let videoType =  ["avi", "wmv", "mpeg", "mp4", "mov", "mkv", "flv", "f4v", "m4v", "rmvb", "rm", "3gp"];
+
+            if (fileType === 'gif'){
+                Toast.$toast('不支持上传动态图');
+                return;
+            } else if (videoType.indexOf(fileType) !== -1){
+                Toast.$toast('不支持上传视频');
+                return;
+            }
+
             if (response.didCancel) {
                 console.log('User cancelled image picker');
                 return;
@@ -41,11 +54,10 @@ export default {
             else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
                 return;
-            }
-            else {
+            } else {
                 // Toast.showLoading('图片上传中，请稍后');
                 // this.$toastShow('图片上传中，请稍后');
-               NativeModules.commModule.RN_ImageCompression(Platform.OS === "ios" ? response.uri : response.path, response.fileSize, 1024 * 1024 * 3 , () => {
+               NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3 , () => {
                    let datas = {
                        type: 'image/png',
                        uri: response.uri,

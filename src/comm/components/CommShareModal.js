@@ -52,9 +52,9 @@ import {
 } from "react-native";
 
 import {
-    UIText
+    UIText,
+    UIImage
 } from "../../components/ui";
-import UIImage from "@mr/image-placeholder";
 
 import ScreenUtils from "../../utils/ScreenUtils";
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;

@@ -43,15 +43,16 @@ export default class RefuseReasonView extends React.Component {
 
 
     render() {
-        //type 0 显示退款金额  1 显示平台退款原因  2显示买家拒绝原因
-        let { type, text } = this.props;
+        //type 0 显示退款金额  1 拒绝原因
+        let { type, refundPrice, reject} = this.props;
         // StringUtils.formatMoneyString(this.state.pageData.totalRefundPrice)
+        let text = reject;
         if (type === 0){
-            text = StringUtils.formatMoneyString(text);
+            text = StringUtils.formatMoneyString(refundPrice);
         }
         return (
             <View style={styles.container}>
-                    <UIText value={['退款金额:', '平台拒绝理由', ''][type]}
+                    <UIText value={['退款金额:', ''][type]}
                             style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
                     <UIText value={text}
                             style={{ color: type === 0 ? DesignRule.mainColor: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 5 }}/>

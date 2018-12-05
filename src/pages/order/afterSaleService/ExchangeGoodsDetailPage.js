@@ -42,13 +42,12 @@ class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            pageData: null,
-            pageType: this.params.pageType ? this.params.pageType : 0
+            pageData: null
         };
 
         this._bindFunc();
         this.afterSaleDetailModel = new AfterSaleDetailModel();
-        this.afterSaleDetailModel.serviceNo = this.params.returnProductId;
+        this.afterSaleDetailModel.serviceNo = this.params.serviceNo;
         this.afterSaleDetailModel.loadingShow = this.$loadingShow;
         this.afterSaleDetailModel.loadingDismiss = this.$loadingDismiss;
         this.afterSaleDetailModel.toastShow = this.$toastShow;
@@ -87,16 +86,37 @@ class ExchangeGoodsDetailPage extends BasePage {
                 return null;
             }
         }
-        let { pageType = 0 } = this.params;
+
         let pageData = this.afterSaleDetailModel.pageData;
         let {
             status,
-            orderReturnAmounts//退款明细
+            refundAccountAmount,
+            refundCashAmount,
+            refundPrice,
+            reject,
+            type
         } = pageData;
+        let pageType = type - 1;
         let isShow_operationApplyView = status === 1;
         /** 退款成功、退货成功、换货变退款成功*/
-        let isShow_refundDetailView = (pageType === 0 && status === 6) || (pageType === 1 && status === 6);
-        let isShow_refuseReasonView = true;
+        let isShow_refundDetailView = (pageType === 0 && status === 5) || (pageType === 1 && status === 5);
+
+        let isShow_refuseReasonView = false;
+        let refuseReasonViewType = 0;
+        if (pageType === 0 && (status === 1 || status === 5) ||
+            pageType === 1 && (status === 1 || status === 5)
+        ){
+            isShow_refuseReasonView = true;
+        }else if (status === 6){
+            isShow_refuseReasonView = true;
+            refuseReasonViewType = 1;
+        }
+
+        // let isShow_shippingAddressView = false;
+        // let isShow_backAddressView = false;
+        // if (pageData === 1 && (status === 2 || status === 3 || status === 4 || status === 5)){
+        //
+        // }
         let logistics = [{
             title: '平台物流',
             value: '(fsdfsdf)',
@@ -109,19 +129,26 @@ class ExchangeGoodsDetailPage extends BasePage {
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <TipView pageType={pageType} status={status}/>
-                    <HeaderView pageType={pageType} status={status}/>
+                    <HeaderView pageType={pageType}
+                                status={status}
+                                headerTitle={pageData.headerTitle}
+                                timeStr={pageData.timeString}
+                    />
                     {isShow_operationApplyView ?
                         <OperationApplyView pageType={pageType}
                                             cancelPress={this.cancelPress}
                                             changePress={this.changePress}/> : null}
                     {
                         isShow_refuseReasonView ?
-                            <RefuseReasonView type={0} text={pageData.totalRefundPrice}
+                            <RefuseReasonView type={refuseReasonViewType}
+                                              refundPrice={refundPrice}
+                                              reject={reject}
                             /> : null
                     }
                     {
                         isShow_refundDetailView ?
-                            <RefundDetailView orderReturnAmounts={orderReturnAmounts}
+                            <RefundDetailView refundAccountAmount={refundAccountAmount}
+                                              refundCashAmount={refundCashAmount}
                             /> : null
                     }
                     <ShippingAddressView/>
