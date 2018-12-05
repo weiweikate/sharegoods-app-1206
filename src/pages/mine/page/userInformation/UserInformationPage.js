@@ -150,18 +150,18 @@ export default class UserInformationPage extends BasePage {
 
                 this.$loadingDismiss();
                 if (err.code == 10009) {
-                    this.props.navigation.navigate("login/login/LoginPage");
+                    this.$navigate("login/login/LoginPage");
                 }
             });
         });
     };
     jumpToIDVertify2Page = () => {
         if (!user.realname) {
-            this.props.navigation.navigate("mine/userInformation/IDVertify2Page");
+            this.$navigate("mine/userInformation/IDVertify2Page");
         }
     };
     jumpToNickNameModifyPage = () => {
-        this.props.navigation.navigate("mine/userInformation/NickNameModifyPage", { oldNickName: user.nickname });
+        this.$navigate("mine/userInformation/NickNameModifyPage", { oldNickName: user.nickname });
     };
     renderGetCityPicker = () => {
         dismissKeyboard();
@@ -184,7 +184,7 @@ export default class UserInformationPage extends BasePage {
             this.$toastShow("地址修改成功");
         }).catch(err => {
             if (err.code == 10009) {
-                this.props.navigation.navigate("login/login/LoginPage");
+                this.$navigate("login/login/LoginPage");
             }
         });
     }

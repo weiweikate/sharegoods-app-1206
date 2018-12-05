@@ -51,10 +51,8 @@ const activityString = {
 export default class ShopCartPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
-        title: '购物车更新2',
+        title: '购物车',
         leftNavItemHidden: true
-
-
     };
 
     constructor(props) {
@@ -186,7 +184,7 @@ export default class ShopCartPage extends BasePage {
                         style={styles.standaloneRowBack}
                         onPress={() => {
                             rowMap[`${secId}${rowId}`].closeRow();
-                            this._deleteFromShoppingCartByProductId(data.priceId);
+                            this._deleteFromShoppingCartByProductId(data.skuCode);
                         }}>
                         <UIText style={styles.backUITextWhite} value='删除'/>
                     </TouchableOpacity>
@@ -606,9 +604,9 @@ export default class ShopCartPage extends BasePage {
             let buyGoodsArr = [];
             tempArr.map((goods) => {
                 buyGoodsArr.push({
-                    priceId: goods.priceId,
+                    skuCode: goods.skuCode,
                     num: goods.amount,
-                    productId: goods.productId
+                    productCode: goods.productCode
                 });
             });
             this.$loadingShow()
@@ -632,7 +630,7 @@ export default class ShopCartPage extends BasePage {
         //跳转产品详情
         this.$navigate('home/product/ProductDetailPage', {
             productId: itemData.productId,
-            productCode: itemData.productId
+            productCode: itemData.productCode
         });
     };
     onNumberTextChange = (itemData, text, rowId) => {
@@ -700,8 +698,8 @@ export default class ShopCartPage extends BasePage {
         }
     };
     /*删除操作*/
-    _deleteFromShoppingCartByProductId = (priceId) => {
-        shopCartCacheTool.deleteShopCartGoods(priceId);
+    _deleteFromShoppingCartByProductId = (skuCode) => {
+        shopCartCacheTool.deleteShopCartGoods(skuCode);
     };
 }
 

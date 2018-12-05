@@ -63,7 +63,6 @@ export default class MentorItemView extends Component {
         //     width: ImageWidth,
         //     height: ImageWidth
         // }
-
         console.log('this.props.itemData.headImg', this.props.itemData.headImg);
         return (
             <View

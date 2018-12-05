@@ -58,7 +58,7 @@ export default class AddressEditAndAddPage extends BasePage {
             bridge.$toast('请填写详细地址');
             return;
         }
-        const { refreshing, id, from } = this.props.navigation.state.params || {};
+        const { refreshing, id, from } = this.params;
         if (from === 'edit') {
             //编辑地址
             MineAPI.addOrEditAddr({
@@ -99,7 +99,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     constructor(props) {
         super(props);
-        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from } = this.props.navigation.state.params;
+        const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from } = this.params;
         if (from === 'edit') {
             this.$navigationBarOptions.title = '编辑地址';
         } else if (from === 'add') {

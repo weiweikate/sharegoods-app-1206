@@ -49,10 +49,13 @@ export default class MyCashAccountPage extends BasePage {
         };
         this.currentPage = 0;
     }
-
+    $NavBarRightPressed = () => {
+        this.$navigate('mine/bankCard/BankCardListPage')
+    };
     $navigationBarOptions = {
-        title: "现金账户",
-        show: true // false则隐藏导航
+        title: '现金账户',
+        rightTitleStyle: { color: DesignRule.textColor_mainTitle_222,fontSize:12 },
+        rightNavTitle: '账户设置'
     };
     $NavBarRightPressed = () => {
         this.$navigate("mine/bankCard/BankCardListPage");
@@ -219,7 +222,7 @@ export default class MyCashAccountPage extends BasePage {
             user.saveUserInfo(data);
         }).catch(err => {
             if (err.code === 10009) {
-                this.props.navigation.navigate("login/login/LoginPage");
+                this.$navigate("login/login/LoginPage");
             }
         });
         this.getDataFromNetwork();
