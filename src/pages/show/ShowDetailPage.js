@@ -13,6 +13,7 @@ import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ImageLoad from '@mr/image-placeholder'
 import BasePage from '../../BasePage'
+import { PageLoadingState } from '../../components/pageDecorator/PageState'
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -28,6 +29,12 @@ const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} on
 @observer
 export default class ShowDetailPage extends BasePage {
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState
+        };
+    };
+
     $navigationBarOptions = {
         title: '',
         show: false
@@ -36,6 +43,9 @@ export default class ShowDetailPage extends BasePage {
         super(props);
         this.params = this.props.navigation.state.params || {}
         this.showDetailModule = new ShowDetail()
+        this.state = {
+            loadingState: PageLoadingState.loading,
+        }
     }
 
     componentWillMount() {
@@ -44,7 +54,11 @@ export default class ShowDetailPage extends BasePage {
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
-                    this.showDetailModule.loadDetail(this.params.id)
+                    this.showDetailModule.loadDetail(this.params.id).then(() => {
+                        this.setState({
+                            loadingState: PageLoadingState.success
+                        })
+                    })
                 }
             }
         );
@@ -92,7 +106,7 @@ export default class ShowDetailPage extends BasePage {
     _render() {
         const { detail, isCollecting } = this.showDetailModule;
         if (!detail) {
-            return <View style={styles.loading}><ActivityIndicator size='large'/></View>;
+            return <View style={styles.loading}/>;
         }
         let content = `<div>${detail.content}</div>`;
         let products = detail.products;
