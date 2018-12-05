@@ -385,7 +385,6 @@ export default class SelectMentorPage extends BasePage {
         return this.itemViewArr;
     };
     _toDetailPage = (itemData) => {
-
         this.$navigate('login/login/MentorDetailPage', {
             itemData: itemData
         });
