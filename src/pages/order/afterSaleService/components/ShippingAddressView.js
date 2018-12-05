@@ -46,12 +46,13 @@ export default class ShippingAddressView extends React.Component {
 
 
   render() {
+      let {address = {}} = this.props;
     return (
         <View style={{marginBottom: 10}}>
             <AddressItem
-                name={'收货人：' + '用户地址'}
-                phone={'13185089952'}
-                address={'address'}
+                name={'收货人：' + address.receiver}
+                phone={address.receiverPhone}
+                address={address.address}
             />
             < UIImage source={addressLine} style={{ width: ScreenUtils.width, height: 3 }}/>
         </View> : null
