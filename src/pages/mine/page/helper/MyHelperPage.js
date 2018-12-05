@@ -26,7 +26,7 @@ import DesignRule from 'DesignRule';
 import res from '../../res';
 
 const {
-    //top_kefu,
+    // top_kefu,
     icon_wenti,
     icon_tuikuan,
     icon_feedback,
@@ -99,9 +99,9 @@ export default class MyHelperPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <View style={{ marginTop: 9, paddingLeft: 10, backgroundColor: DesignRule.bgColor }}>
+                    <View style={{ backgroundColor: DesignRule.bgColor }}>
                         <Image source={{uri:'http://mr-uat-sg.oss-cn-hangzhou.aliyuncs.com/app/bangzu_kefu%403x.png'}}
-                                style={{width:ScreenUtils.width/3*2,height:89}}
+                               style={{width:ScreenUtils.width/3*2,height:ScreenUtils.px2dp(71)}}
                                resizeMode={'contain'}/>
                     </View>
                     {this.renderHotQuestionList()}
