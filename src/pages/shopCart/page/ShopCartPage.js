@@ -604,9 +604,9 @@ export default class ShopCartPage extends BasePage {
             let buyGoodsArr = [];
             tempArr.map((goods) => {
                 buyGoodsArr.push({
-                    priceId: goods.priceId,
+                    skuCode: goods.skuCode,
                     num: goods.amount,
-                    productId: goods.productId
+                    productCode: goods.productCode
                 });
             });
             this.$loadingShow()
@@ -630,7 +630,7 @@ export default class ShopCartPage extends BasePage {
         //跳转产品详情
         this.$navigate('home/product/ProductDetailPage', {
             productId: itemData.productId,
-            productCode: itemData.productId
+            productCode: itemData.productCode
         });
     };
     onNumberTextChange = (itemData, text, rowId) => {
