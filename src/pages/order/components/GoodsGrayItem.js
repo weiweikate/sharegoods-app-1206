@@ -43,7 +43,7 @@ export default class GoodsGrayItem extends React.Component {
 
 
     render() {
-        let { uri, goodsName, salePrice, category, goodsNum, onPress, gift } = this.props;
+        let { uri, goodsName, salePrice, category, goodsNum, onPress, gift} = this.props;
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={[styles.container, this.props.style]}>

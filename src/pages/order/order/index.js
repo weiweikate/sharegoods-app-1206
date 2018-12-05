@@ -1,8 +1,9 @@
 import MyOrdersDetailPage from './MyOrdersDetailPage';
 import MyOrdersListPage from './MyOrdersListPage';
 import OrderSearchResultPage from './OrderSearchResultPage';
-import ConfirOrderPage from './ConfirOrderPage';
+import ConfirOrderPage from './ConfirmOrderPage';
 import SearchPage from './SearchPage';
+import PromiseTestPage from './PromiseTestPage';
 
 export default {
     moduleName: 'order',    //模块名称
@@ -11,6 +12,7 @@ export default {
         MyOrdersListPage,
         OrderSearchResultPage,
         ConfirOrderPage,
-        SearchPage
+        SearchPage,
+        PromiseTestPage
     }
 };
