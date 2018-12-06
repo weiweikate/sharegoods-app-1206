@@ -2,7 +2,8 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    AppState
+    AppState,
+    Linking
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -20,6 +21,7 @@ import user from '../../model/user';
 import Storage from '../../utils/storage';
 import geolocation from '@mr/geolocation';
 import ConfirmAlert from '../../components/ui/ConfirmAlert';
+import ScreenUtils from '../../utils/ScreenUtils';
 
 @observer
 export default class MyShop_RecruitPage extends BasePage {
@@ -31,7 +33,7 @@ export default class MyShop_RecruitPage extends BasePage {
             netFailedInfo: {},
             data: {},
             isHome: !this.params.storeId,
-            permissionsErr: true
+            permissionsErr: ''
         };
     }
 
@@ -59,7 +61,7 @@ export default class MyShop_RecruitPage extends BasePage {
             payload => {
                 const { state } = payload;
 
-                if (this.state.permissionsErr === false) {
+                if (this.state.permissionsErr === 'permissionsErr') {
                     this.ConfirmAlert.show({
                         title: `定位服务未开启，请进入系统【设置】【隐私】【定位服务】中打开开关，并且允许秀购使用定位服务`,
                         closeCallBack: () => {
@@ -67,6 +69,9 @@ export default class MyShop_RecruitPage extends BasePage {
                         },
                         confirmCallBack: () => {
                             this.$navigateBackToHome();
+                            if (ScreenUtils.isIOS) {
+                                Linking.openURL('app-settings:');
+                            }
                         },
                         rightText: '去设置'
                     });
@@ -97,14 +102,11 @@ export default class MyShop_RecruitPage extends BasePage {
     _handleAppStateChange = (nextAppState) => {
         if (nextAppState === 'active') {
             //初始化init  定位存储  和app变活跃 会定位
-            this.state.permissionsErr = true;
+            this.state.permissionsErr = '';
             geolocation.getLastLocation().then(result => {
                 Storage.set('storage_MrLocation', result);
             }).catch((error) => {
-                    if (error.code === 'permissionsErr') {
-                        //没有权限
-                        this.state.permissionsErr = false;
-                    }
+                    this.state.permissionsErr = error.code;
                 }
             );
         }
