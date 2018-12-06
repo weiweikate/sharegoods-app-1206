@@ -6,13 +6,13 @@ import {
     TouchableOpacity,
     FlatList,
     Text,
-    Platform
+    Platform,
+    Image
 } from 'react-native';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-import UIImage from "@mr/image-placeholder";
 
 const {
     detailShowBg,
@@ -67,7 +67,7 @@ export default class DetailNavShowModal extends Component {
         return <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', height: bgHeight / ImgArr.length }}
             onPress={() => this._onPress(item)}>
-            <UIImage source={item.img} style={{ marginLeft: 23 }}/>
+            <Image source={item.img} style={{ marginLeft: 23 }}/>
             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }}>{item.tittle}</Text>
             <View style={{
                 position: 'absolute',
@@ -110,6 +110,7 @@ export default class DetailNavShowModal extends Component {
                     });
                 }}>
                     <ImageBackground
+                        resizeMode={'stretch'}
                         style={{
                             top: Platform.OS === 'ios' ? ScreenUtils.headerHeight : 44,
                             right: 18,

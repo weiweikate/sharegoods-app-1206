@@ -70,7 +70,7 @@ export class DetailBanner extends Component {
         //有视频第一个添加为视频
         const { imgFileList, videoUrl, imgUrl } = this.props.data || {};
 
-        let productImgListTemp = [...imgFileList];
+        let productImgListTemp = [...(imgFileList || [])];
         productImgListTemp = productImgListTemp || [];
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.state.haveVideo = true;
