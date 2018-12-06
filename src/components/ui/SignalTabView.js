@@ -8,7 +8,6 @@ import React from 'react';
 import {
     View
 } from 'react-native';
-import { color } from '../../constants/Theme';
 import { UIText } from './index';
 import DesignRule from 'DesignRule';
 
@@ -20,7 +19,7 @@ const SignalTabView = props => {
             flex: 1,
             height: 35,
             justifyContent: 'center',
-            backgroundColor: color.gray_FFF,
+            backgroundColor: DesignRule.color_fff,
             alignItems: 'center',
             borderWidth: 0.5,
             borderColor: DesignRule.color_ddd

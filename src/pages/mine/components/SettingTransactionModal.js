@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
     StyleSheet,
     View,
     Text,
     ImageBackground
-} from 'react-native';
-import { color } from '../../../constants/Theme';
+} from "react-native";
 import {
     UIText, UIImage
-} from '../../../components/ui';
-import PasswordInput from './PasswordInput';
-import { observer } from 'mobx-react/native';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
-import res from '../res';
+} from "../../../components/ui";
+import PasswordInput from "./PasswordInput";
+import { observer } from "mobx-react/native";
+import Modal from "CommModal";
+import DesignRule from "DesignRule";
+import res from "../res";
 
 const BonusExchangeSucceedBackground = res.userInfoImg.BonusExchangeSucceedBackground;
 const bonusClose = res.userInfoImg.bonusClose;
@@ -25,7 +24,7 @@ class SettingTransactionModal extends Component {
         super(props);
         this.state = {
             passwordInputError: this.props.passwordInputError,
-            bottomText: this.props.bottomText ? this.props.bottomText : ''
+            bottomText: this.props.bottomText ? this.props.bottomText : ""
         };
         this.updateView();
     }
@@ -64,19 +63,19 @@ class SettingTransactionModal extends Component {
 
     renderPasswordInput = () => {
         return (
-            <View style={{ paddingLeft: 34, paddingRight: 34, paddingBottom: 17, alignItems: 'center', marginTop: 21 }}>
+            <View style={{ paddingLeft: 34, paddingRight: 34, paddingBottom: 17, alignItems: "center", marginTop: 21 }}>
                 <PasswordInput
                     style={{ width: 220, height: 38 }}
                     maxLength={6}
                     onChange={value => this.props.inputText(value)}/>
-                <UIText value={this.state.passwordInputError ? this.state.bottomText : ''}
+                <UIText value={this.state.passwordInputError ? this.state.bottomText : ""}
                         style={{ fontSize: 11, color: DesignRule.mainColor, marginTop: 9 }}/>
             </View>
         );
     };
     renderContext = () => {
         return (this.props.isContextRed ?
-                <View style={{ justifyContent: 'center' }}>
+                <View style={{ justifyContent: "center" }}>
                     <UIText value={this.props.detail.context} style={[styles.redTextStyle, { marginTop: 10 }]}/>
                 </View> :
                 <Text
@@ -86,17 +85,17 @@ class SettingTransactionModal extends Component {
 
     renderContent() {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
-                <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+            <View style={{ flex: 1, justifyContent: "center", alignContent: "center" }}>
+                <View style={{ justifyContent: "center", flexDirection: "row" }}>
                     <ImageBackground
                         source={this.props.backgroundImg ? this.props.backgroundImg : BonusExchangeSucceedBackground}
-                        style={{ height: 272, width: 295, alignItems: 'flex-end' }}>
+                        style={{ height: 272, width: 295, alignItems: "flex-end" }}>
                         <UIImage source={bonusClose} style={{ width: 32, height: 32, marginTop: 43 }}
                                  onPress={() => this.props.closeWindow()}/>
                         <View style={{ height: 212, width: 295 }}>
                             <View style={{
-                                alignContent: 'center',
-                                alignItems: 'center',
+                                alignContent: "center",
+                                alignItems: "center",
                                 marginTop: 30,
                                 paddingLeft: 26,
                                 paddingRight: 26
@@ -117,17 +116,17 @@ class SettingTransactionModal extends Component {
 
 const styles = StyleSheet.create({
     modalStyle: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'flex-end',
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        justifyContent: "flex-end",
         flex: 1
     }, smallTextStyle: {
         fontSize: 15,
         marginTop: 10,
         color: DesignRule.textColor_secondTitle
     }, titleTextStyle: {
-        fontSize: 24, color: color.blue_222, marginTop: 10
+        fontSize: 24, color: DesignRule.textColor_mainTitle_222, marginTop: 10
     }, contentTextStyle: {
-        fontSize: 15, color: color.blue_222, marginTop: 10
+        fontSize: 15, color: DesignRule.textColor_mainTitle_222, marginTop: 10
     }, redTextStyle: {
         fontSize: 15,
         color: DesignRule.mainColor

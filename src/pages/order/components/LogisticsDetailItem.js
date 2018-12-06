@@ -1,13 +1,12 @@
-import React from 'react';
+import React from "react";
 import {
     View,
     TouchableOpacity
-} from 'react-native';
-import { color } from '../../../constants/Theme';
+} from "react-native";
 import {
     UIText, UIImage
-} from '../../../components/ui';
-import DesignRule from 'DesignRule';
+} from "../../../components/ui";
+import DesignRule from "DesignRule";
 
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const LogisticsDetailItem = props => {
@@ -30,7 +29,7 @@ const LogisticsDetailItem = props => {
                 backgroundColor: DesignRule.lineColor_inColorBg,
                 marginTop: 10,
                 marginBottom: 10,
-                alignItems: 'center',
+                alignItems: "center",
                 marginLeft: 20,
                 marginRight: 20
             }}/>
@@ -44,13 +43,13 @@ const LogisticsDetailItem = props => {
                 backgroundColor: DesignRule.lineColor_inColorBg,
                 marginTop: 10,
                 marginBottom: 10,
-                alignItems: 'center'
+                alignItems: "center"
             }}/>
         );
     };
     this.renderMiddleImage = () => {
         return (!middleImage ?
-                <UIText value={'·'} style={{ fontSize: 40, marginLeft: 40, marginTop: -15 }}/> :
+                <UIText value={"·"} style={{ fontSize: 40, marginLeft: 40, marginTop: -15 }}/> :
                 <UIImage source={middleImage} style={{ width: 28, height: 28, marginLeft: 30, opacity: 1 }}/>
         );
     };
@@ -74,24 +73,24 @@ const LogisticsDetailItem = props => {
         );
     };
     this.renderTitle = () => {
-        return (title && title != '' ?
+        return (title && title != "" ?
             <UIText value={title} style={{ fontSize: 14, color: DesignRule.textColor_mainTitle_222, marginLeft: 15 }}/>
             : null);
     };
     return (
-        <TouchableOpacity style={{ paddingLeft: 16, paddingRight: 16, flexDirection: 'row' }}>
+        <TouchableOpacity style={{ paddingLeft: 16, paddingRight: 16, flexDirection: "row" }}>
             <UIText value={time}
                     style={{ fontSize: 11, color: DesignRule.textColor_mainTitle_222, width: 40, marginTop: 20 }}/>
             {this.renderMiddleLine()}
             <View style={{ marginTop: 25 }}>
                 {this.renderTitle()}
-                <View style={{ flex: 1, flexDirection: 'row', paddingLeft: 15, paddingRight: 48, flexWrap: 'wrap' }}>
+                <View style={{ flex: 1, flexDirection: "row", paddingLeft: 15, paddingRight: 48, flexWrap: "wrap" }}>
                     <UIText value={content1} style={{ fontSize: 12, color: DesignRule.textColor_mainTitle_222 }}/>
-                    <UIText value={content2} style={{ fontSize: 12, color: color.yellow_FF7 }}/>
+                    <UIText value={content2} style={{ fontSize: 12, color: DesignRule.yellow_FF7 }}/>
                     <UIText value={content3} style={{ fontSize: 12, color: DesignRule.textColor_mainTitle_222 }}/>
                 </View>
             </View>
-            <View style={{ position: 'absolute', marginLeft: 16, marginTop: 20 }}>
+            <View style={{ position: "absolute", marginLeft: 16, marginTop: 20 }}>
                 {this.renderMiddleImage()}
             </View>
         </TouchableOpacity>

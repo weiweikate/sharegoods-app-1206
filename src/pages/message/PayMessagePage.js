@@ -4,7 +4,6 @@ import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
 import {
     UIImage
 } from '../../components/ui';
-import { color } from '../../constants/Theme';
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 import BasePage from '../../BasePage';
@@ -77,7 +76,7 @@ export default class PayMessagePage extends BasePage {
                         fontSize: 24,
                         color: DesignRule.textColor_mainTitle
                     }}>-{StringUtils.formatMoneyString(this.params.tradeAmount, false)}</Text>
-                    <View style={{ backgroundColor: color.blue_4a9, borderRadius: 3 }}>
+                    <View style={{ backgroundColor: DesignRule.bgColor_blue, borderRadius: 3 }}>
                         <Text style={{ color: 'white', margin: 1, fontSize: 11 }}>交易成功</Text>
                     </View>
                 </View>

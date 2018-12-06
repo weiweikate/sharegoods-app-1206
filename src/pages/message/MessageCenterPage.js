@@ -10,7 +10,6 @@ import {
 import {
     UIText
 } from '../../components/ui';
-import { color } from '../../constants/Theme';
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
 // import HomeApi from '../home/api/HomeAPI';
@@ -132,7 +131,7 @@ export default class MessageCenterPage extends BasePage {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {count ? <View style={{
                                 marginRight: 7,
-                                backgroundColor: color.red,
+                                backgroundColor: DesignRule.mainColor,
                                 borderRadius: px2dp(8.5),
                                 height: px2dp(17),
                                 paddingHorizontal: px2dp(9),
