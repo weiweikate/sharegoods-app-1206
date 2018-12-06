@@ -296,7 +296,8 @@ export default class RecommendPage extends BasePage {
                                      onRefresh={this._refreshing.bind(this)}
                                      title="下拉刷新"
                                      tintColor={DesignRule.textColor_instruction}
-                                     titleColor={DesignRule.textColor_instruction}/>}
+                                     titleColor={DesignRule.textColor_instruction}
+                                     colors={[DesignRule.mainColor]}/>}
                              onEndReached={this._onEndReached.bind(this)}
                              onEndReachedThreshold={0.1}
                              ListFooterComponent={this._ListFooterComponent}
