@@ -63,6 +63,7 @@ export default class SelectMentorPage extends BasePage {
      * 跳过函数
      */
     jump = () => {
+        bridge.$toast('注册成功')
         this.$navigateBackToHome();
     };
 
@@ -76,6 +77,19 @@ export default class SelectMentorPage extends BasePage {
 
     loadPageData() {
         this.$loadingShow();
+        this.setState({
+            mentorData: [
+                {},
+                {},
+                {}
+            ],
+            selectIndex: 2
+        });
+
+        this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
+
+        return;
+
         LoginAPI.queryInviterList({}).then(response => {
             this.$loadingDismiss();
             console.log(response);
@@ -132,11 +146,9 @@ export default class SelectMentorPage extends BasePage {
                         填写授权码
                     </Text>
                 </View>
-                {/*{this._renderCouponModal()}*/}
             </View>
         );
     }
-
     _renderMentorListView = () => {
         return (
             <View
@@ -191,6 +203,9 @@ export default class SelectMentorPage extends BasePage {
                         </Text>
                     </View>
                 </TouchableOpacity>
+                {/*{*/}
+                    {/*this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})*/}
+                {/*}*/}
             </View>
         );
     };
@@ -218,6 +233,9 @@ export default class SelectMentorPage extends BasePage {
         );
     };
     _renderListView = () => {
+        // {
+        //     this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
+        // }
         return (
             <ScrollView
                 ref={
@@ -285,7 +303,6 @@ export default class SelectMentorPage extends BasePage {
                             // this.itemRefArr[this.selectIndex]._resetAnimation();
                             // this.itemRefArr[index]&& this.itemRefArr[index]._startAnimation();
                             // this.selectIndex = index;
-
                             this.setState({
                                 selectIndex: index
                             });
@@ -299,7 +316,6 @@ export default class SelectMentorPage extends BasePage {
                                 selectIndex: newSelectIndex
                             });
                         }
-                        // console.log('state'+this.state.selectIndex)
                     }
                 }}
             >
@@ -324,7 +340,6 @@ export default class SelectMentorPage extends BasePage {
                     {/*this.scrView &&*/}
                     {/*this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})*/}
                 {/*}*/}
-
             </ScrollView>
         );
     };
@@ -333,7 +348,7 @@ export default class SelectMentorPage extends BasePage {
     * */
     _bindMentor = () => {
 
-        if (this.state.selectIndex < this.state.mentorData.length - 1) {
+        if (this.state.selectIndex <= this.state.mentorData.length - 1) {
             let mentorData = this.state.mentorData[this.state.selectIndex];
             LoginAPI.mentorBind({
                 code: mentorData.code
@@ -344,17 +359,6 @@ export default class SelectMentorPage extends BasePage {
                 bridge.$toast(res.msg);
             });
         }
-        // else {
-        //     let mentorData = this.state.mentorData[this.state.mentorData.length - 1];
-        //     LoginAPI.mentorBind({
-        //         code: mentorData.code
-        //     }).then(res => {
-        //         bridge.$toast(res.msg);
-        //         this.$navigateBackToHome();
-        //     }).catch(res => {
-        //         bridge.$toast(res.msg);
-        //     });
-        // }
 
     };
     jumpToWriteCodePage = () => {
@@ -416,7 +420,6 @@ export default class SelectMentorPage extends BasePage {
                             justifyContent: 'center',
                             alignItems: 'center',
                             marginRight: 15
-
                         }}
                     >
                         <Image
