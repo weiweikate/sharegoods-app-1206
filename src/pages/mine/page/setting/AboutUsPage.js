@@ -5,6 +5,7 @@ import {
 import BasePage from "../../../../BasePage";
 import res from "../../res";
 import DesignRule from "DesignRule";
+import UIText from "../../../../components/ui/UIText";
 
 const Logo = res.other.tongyong_logo_nor;
 
@@ -23,7 +24,8 @@ export default class AboutUsPage extends BasePage {
             <View style={{ flexDirection: "column", flex: 1, alignItems: "center" }}>
                 <View style={{ flexDirection: "column", alignItems: "center" }}>
                     <Image source={Logo} style={{ height: 70, width: 70, marginTop: 30 }}/>
-                    <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginTop: 30 }}>公司简介</Text>
+                    <UIText style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginTop: 30 }}
+                            value={"公司简介"}/>
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
                         fontSize: 12,
