@@ -14,7 +14,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import { orderDetailAfterServiceModel, orderDetailModel ,assistDetailModel} from '../../model/OrderDetailModel';
-import { color } from '../../../../constants/Theme';
 import OrderApi from '../../api/orderApi';
 import Toast from '../../../../utils/bridge';
 import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
@@ -248,7 +247,7 @@ export default class OrderDetailTimeView extends Component {
             itemArr.push(
                 <TouchableOpacity key={i} style={{
                     borderWidth: px2dp(1),
-                    borderColor: nameArr[i].isRed ? color.red : DesignRule.color_ddd,
+                    borderColor: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd,
                     height: px2dp(30),
                     borderRadius: px2dp(15),
                     marginRight: px2dp(15),
@@ -258,7 +257,7 @@ export default class OrderDetailTimeView extends Component {
                 }} onPress={() => {
                     this.operationMenuClick(nameArr[i]);
                 }}>
-                    <Text style={{ color: nameArr[i].isRed ? color.red : color.gray_666 }}>{nameArr[i].operation}</Text>
+                    <Text style={{ color: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}>{nameArr[i].operation}</Text>
                 </TouchableOpacity>
             );
         }

@@ -77,6 +77,7 @@ export default class  extends BasePage {
     };
 
     jump = () => {
+        bridge.$toast("注册成功")
         this.$navigateBackToHome();
     };
 
@@ -174,6 +175,11 @@ export default class  extends BasePage {
                         color: DesignRule.textColor_instruction,
                         fontSize: 12
                     }}
+                    onPress={
+                        ()=>{
+                            this.$navigateBack()
+                        }
+                    }
 
                 />
             </View>

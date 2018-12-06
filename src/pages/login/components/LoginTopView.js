@@ -125,7 +125,7 @@ export default class LoginTopView extends Component {
 
                 <View>
                     <TextInput
-                        style={Styles.inputTextStyle}
+                        style={Styles.phoneNumberInputStyle}
                         value={   this.LoginModel.phoneNumber}
                         onChangeText={text => this.LoginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
@@ -310,6 +310,14 @@ const Styles = StyleSheet.create(
         },
         btnBottomLineNonStyle: {
             height: 0
+        },
+        phoneNumberInputStyle:{
+            marginTop: 30,
+            marginLeft: 20,
+            width: ScreenUtils.width - 40,
+            height: 40,
+            fontSize: 14,
+            fontWeight: '400'
         },
         inputTextStyle: {
             marginTop: 30,

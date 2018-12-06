@@ -19,9 +19,11 @@ class ShopCartCacheTool {
    //      }
    //      return (!!(user.id));
    //  }
+
     /**
      * 删除本地数据
      */
+
     deleteAllLocalData() {
         Storage.remove(ShopCartCacheTool.shopCartLocalStorageKey).then(() => {
 
@@ -36,7 +38,7 @@ class ShopCartCacheTool {
         Storage.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
             let [...localValue] = res;
             if (localValue && (localValue instanceof Array && localValue.length > 0)) {
-                bridge.showLoading('正在同步本地购物车数据');
+                // bridge.showLoading('正在同步本地购物车数据');
                 //存在本地缓存
                 ShopCartAPI.loginArrange(
                     {

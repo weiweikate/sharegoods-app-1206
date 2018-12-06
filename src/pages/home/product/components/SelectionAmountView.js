@@ -125,7 +125,6 @@ export default class SelectionAmountView extends Component {
                     borderWidth: 1,
                     borderRadius: 2,
                     marginRight: 16,
-                    height: 30
                 }}>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._leftAction} disabled={type === 'after'}>
@@ -135,7 +134,7 @@ export default class SelectionAmountView extends Component {
                             paddingHorizontal: 11
                         }}>-</Text>
                     </TouchableOpacity>
-                    <View style={{ height: 30, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
+                    <View style={{ height: 28, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TextInput
                             style={{ width: 92 / 2.0, padding: 0, color: DesignRule.textColor_mainTitle }}
@@ -148,7 +147,7 @@ export default class SelectionAmountView extends Component {
                             editable={false}//原先editable={type !== 'after'}
                         />
                     </View>
-                    <View style={{ height: 30, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
+                    <View style={{ height: 28, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._rightAction} disabled={type === 'after'}>
                         <Text style={{
