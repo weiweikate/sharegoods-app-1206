@@ -19,11 +19,12 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+
 const dismissKeyboard = require('dismissKeyboard');
 
 const {
     close_eye,
-    open_eye,
+    open_eye
 } = res;
 
 class CommModel {
@@ -203,35 +204,33 @@ export default class CommRegistView extends Component {
 
                     </TouchableOpacity>
                 </View>
-                <View style={
-                    [{
-                        marginRight: 30,
-                        marginLeft: 30,
-                        marginTop: 40,
-                        height: 50,
-                        borderRadius: 25
-                    },
-                        this.registModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]
-                }>
-                    <TouchableOpacity
-                        onPress={this.loginClick}
-                        activeOpacity={this.registModel.isCanClick ? 0.6 : 1}
+                <TouchableOpacity
+                    onPress={this.loginClick}
+                    activeOpacity={this.registModel.isCanClick ? 0.6 : 1}
 
-                    >
+                >
+                    <View style={
+                        [{
+                            marginRight: 30,
+                            marginLeft: 30,
+                            marginTop: 40,
+                            height: 50,
+                            borderRadius: 25,
+                            alignItems:'center',
+                            justifyContent:'center'
+                        },
+                            this.registModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]
+                    }>
                         <Text style={{
-                            textAlign: 'center',
-                            height: 45,
-                            alignItems: 'center',
                             fontSize: 17,
                             color: 'white',
-                            paddingTop: 15,
                             fontWeight: '600'
                         }}>
-
                             {this.state.viewType ? '完成' : '下一步'}
                         </Text>
-                    </TouchableOpacity>
-                </View>
+
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     }

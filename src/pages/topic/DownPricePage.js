@@ -95,7 +95,9 @@ export default class DownPricePage extends BasePage {
                         flexDirection: 'row',//设置横向布局
                         flexWrap: 'wrap',  //设置换行显示
                         backgroundColor: DesignRule.bgColor,
-                        width: ScreenUtils.width
+                        // backgroundColor:'red',
+                        width: ScreenUtils.width-20,
+                        marginLeft:10
                     }
                 }
             >
@@ -106,6 +108,7 @@ export default class DownPricePage extends BasePage {
                         return (
                             this._getTopicType() === 1 ?
                                 <OpenPrizeItemView
+                                    key={itemIndex}
                                     itemData={itemData}
                                     itemClick={(itemData) => {
                                         this._itemActionClick(itemData);
@@ -214,8 +217,7 @@ export default class DownPricePage extends BasePage {
     /**
      * 获取类型
      * 0 普通专题
-     * 1 秒杀
-     * 2 降价拍
+     * 1 秒杀 降价拍
      * */
     _getTopicType = () => {
         if (this.dataModel.templateId === 5 ||
