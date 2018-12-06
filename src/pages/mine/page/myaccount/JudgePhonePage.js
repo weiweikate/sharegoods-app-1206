@@ -26,12 +26,14 @@ export default class JudgePhoneNumPage extends BasePage {
 
     _render() {
         return (<View style={{ flex: 1 }}>
-            <View style={{ height: 38, justifyContent: "center" }}>
+            <View>
                 <UIText value={"手机验证"}
                         style={{
                             color: DesignRule.textColor_instruction,
                             fontSize: 13,
-                            marginLeft: 16
+                            marginLeft: 16,
+                            marginTop: 15,
+                            marginBottom: 10
                         }}/>
             </View>
             <View style={{ backgroundColor: "white", flexDirection: "column" }}>
