@@ -319,9 +319,9 @@ gotoLookAround(){
                                 alignItems: 'center',
                                 borderColor: DesignRule.mainColor,
                                 borderWidth: 1,
-                                borderRadius: 25,
+                                borderRadius: 18,
                                 width: 115,
-                                height: 35
+                                height: 36
                             }}
                         >
                             <Text

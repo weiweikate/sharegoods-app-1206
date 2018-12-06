@@ -142,16 +142,16 @@ export default class ShopCartPage extends BasePage {
                             alignItems: 'center',
                             borderColor: DesignRule.mainColor,
                             borderWidth: 1,
-                            borderRadius: 25,
-                            width: 150,
-                            height: 50
+                            borderRadius: 18,
+                            width: 115,
+                            height: 36
                         }}
                     >
                         <Text
                             style={{
 
                                 color: DesignRule.mainColor,
-                                fontSize: 17
+                                fontSize: 15
                             }}
                         >
                             去逛逛
