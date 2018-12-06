@@ -57,18 +57,18 @@ export default class ShowHotItem extends Component {
                     <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
                     <View style={styles.numberView}>
                         <Image style={styles.seeImg} source={seeImg}/>
-                        <Text style={styles.number}>{number}</Text>
+                        <Text style={styles.number} allowFontScaling={false}>{number}</Text>
                     </View>
                 </ImageLoad>
                 <View style={styles.profile}>
                     <Text numberOfLines={2}
-                          style={styles.title}>{data.pureContent ? data.pureContent.slice(0, 100) : ''}</Text>
+                          style={styles.title} allowFontScaling={false}>{data.pureContent ? data.pureContent.slice(0, 100) : ''}</Text>
                     <View style={styles.row}>
                         <ImageLoad borderRadius={px2dp(15)} style={styles.portrait} source={{ uri: data.userHeadImg ? data.userHeadImg : '' }}/>
                         <Text
-                            style={styles.name}>{data.userName && data.userName.length > 5 ? data.userName.slice(0, 5) + '...' : data.userName}</Text>
+                            style={styles.name} allowFontScaling={false}>{data.userName && data.userName.length > 5 ? data.userName.slice(0, 5) + '...' : data.userName}</Text>
                         <View style={{ flex: 1 }}/>
-                        <Text style={styles.time}>{data.time}</Text>
+                        <Text style={styles.time} allowFontScaling={false}>{data.time}</Text>
                     </View>
                 </View>
             </View>
