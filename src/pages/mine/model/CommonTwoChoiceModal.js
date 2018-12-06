@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Text,
-    Modal,
     TouchableOpacity
 } from 'react-native';
 // import UIImage from '../../../components/ui/UIImage';
