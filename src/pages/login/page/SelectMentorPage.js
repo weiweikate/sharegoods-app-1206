@@ -77,19 +77,11 @@ export default class SelectMentorPage extends BasePage {
 
     loadPageData() {
         this.$loadingShow();
-        this.setState({
-            mentorData: [
-                {},
-                {},
-                {}
-            ],
-            selectIndex: 2
-        });
-
-        this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
-
-        return;
-
+        // this.setState({
+        //     mentorData: [
+        //     ],
+        //     selectIndex: 2
+        // });
         LoginAPI.queryInviterList({}).then(response => {
             this.$loadingDismiss();
             console.log(response);
