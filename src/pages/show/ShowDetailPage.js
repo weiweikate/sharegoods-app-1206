@@ -20,9 +20,9 @@ const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} on
 }}>
     <ImageLoad style={styles.goodImg} source={{ uri: data.headImg ? data.headImg : '' }}/>
     <View style={styles.goodDetail}>
-        <Text style={styles.name}>{data.name}</Text>
+        <Text style={styles.name} allowFontScaling={false}>{data.name}</Text>
         <View style={{ height: px2dp(4) }}/>
-        <Text style={styles.price}>￥ {data.price}起</Text>
+        <Text style={styles.price} allowFontScaling={false}>￥ {data.price}起</Text>
     </View>
 </TouchableOpacity>;
 
@@ -132,11 +132,11 @@ export default class ShowDetailPage extends BasePage {
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
                     <ImageLoad borderRadius={px2dp(15)} style={styles.portrait} source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
-                    <Text style={styles.showName}>{detail.userName ? detail.userName : ''}</Text>
+                    <Text style={styles.showName} allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
                 </View>
                 <View style={styles.profileRight}>
                     <Image source={res.button.see}/>
-                    <Text style={styles.number}>{number}</Text>
+                    <Text style={styles.number} allowFontScaling={false}>{number}</Text>
                 </View>
             </View>
             <HTML html={content} imagesMaxWidth={width - px2dp(30)} imagesInitialDimensions={{width: width - px2dp(30), height: 0}} containerStyle={{
@@ -164,13 +164,13 @@ export default class ShowDetailPage extends BasePage {
                     :
                     <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
                         <Image style={styles.collectImg} source={detail.hadCollect ? res.collected : res.uncollected}/>
-                        <Text style={styles.bottomText}>{'人气值'} · {detail.collectCount}</Text>
+                        <Text style={styles.bottomText} allowFontScaling={false}>{'人气值'} · {detail.collectCount}</Text>
                     </TouchableOpacity>
                 }
                 <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
                     <Image source={res.share}/>
                     <View style={{width: px2dp(10)}}/>
-                    <Text style={styles.text}>秀一秀</Text>
+                    <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>

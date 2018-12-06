@@ -22,11 +22,11 @@ export default class HomeUserView extends Component {
         let { levelName } = user
         return  <View style={styles.container}>
             <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 0}}  colors={['#fff6e7', '#fedb99']} style={styles.inContainer}>
-                <Text style={styles.title}>尊敬的</Text>{levelName ? <View style={styles.levelName}><Text style={styles.text}>{levelName.length >= 5 ? levelName.slice(0, 4) + '...' : levelName}</Text></View> : null}<Text style={styles.text}>品鉴官，您好！</Text>
+                <Text style={styles.title} allowFontScaling={false}>尊敬的</Text>{levelName ? <View style={styles.levelName}><Text style={styles.text} allowFontScaling={false}>{levelName.length >= 5 ? levelName.slice(0, 4) + '...' : levelName}</Text></View> : null}<Text style={styles.text} allowFontScaling={false}>品鉴官，您好！</Text>
                 <View style={{flex: 1}}/>
                 <TouchableOpacity onPress={() => this._goToPromotionPage()}>
                     <ImageBackground style={styles.btnBack} source={res.user_level} resizeMode={'stretch'}>
-                        <Text style={styles.see}>查看收益</Text>
+                        <Text style={styles.see} allowFontScaling={false}>查看收益</Text>
                         <View style={{width: 8}}/>
                         <Image source={res.arrowRight}/>
                     </ImageBackground>
@@ -60,7 +60,7 @@ let styles = StyleSheet.create({
         paddingRight: px2dp(7),
         margin: px2dp(2),
         borderRadius: px2dp(10),
-        borderWidth: 0.5,
+        borderWidth: StyleSheet.hairlineWidth,
         height: px2dp(20),
         borderColor: '#9D732A',
         alignItems: 'center',

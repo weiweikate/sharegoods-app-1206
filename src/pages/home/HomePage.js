@@ -557,7 +557,6 @@ const styles = StyleSheet.create({
         zIndex: 3
     },
     titleView: {
-        backgroundColor: "#fff",
         height: px2dp(53),
         marginTop: px2dp(10),
         alignItems: "center",
