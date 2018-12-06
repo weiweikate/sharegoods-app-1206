@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
 import user from '../../../../model/user';
@@ -361,7 +360,7 @@ const styles = StyleSheet.create({
     },
     standaloneRowBack: {
         alignItems: 'center',
-        backgroundColor: color.red,
+        backgroundColor: DesignRule.mainColor,
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',

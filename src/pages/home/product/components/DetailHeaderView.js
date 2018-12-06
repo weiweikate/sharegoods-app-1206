@@ -42,6 +42,7 @@ export default class DetailHeaderView extends Component {
 
     render() {
         const { activityType } = this.props;
+        //priceType 3会员价  2拼店价
         const {
             freight, monthSaleCount, originalPrice, priceType,
             minPrice, maxPrice, groupPrice, name, afterSaleServiceDays
@@ -82,13 +83,15 @@ export default class DetailHeaderView extends Component {
                                         fontSize: 19,
                                         marginLeft: 5
                                     }}>{priceSuper}</Text>
-                                    {priceType !== 2 && priceType !== 3 ? null : <Text style={{
-                                        marginLeft: 5,
-                                        color: DesignRule.textColor_instruction,
-                                        fontSize: 10,
-                                        textDecorationLine: 'line-through'
-                                    }}>{`￥${originalPrice}`}</Text>}
-
+                                    {/*原价下对齐*/}
+                                    <View style={{ justifyContent: 'flex-end', height: 16 }}>
+                                        {priceType !== 2 && priceType !== 3 ? null : <Text style={{
+                                            marginLeft: 5,
+                                            color: DesignRule.textColor_instruction,
+                                            fontSize: 10,
+                                            textDecorationLine: 'line-through'
+                                        }}>{`￥${originalPrice}`}</Text>}
+                                    </View>
                                 </View>
                                 <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
                                     <Text

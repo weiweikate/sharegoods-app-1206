@@ -2,7 +2,6 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import bridge from '../../../../utils/bridge';
@@ -65,7 +64,7 @@ export default class SetNewPhoneNumPage extends BasePage {
 
             <TouchableOpacity style={{
                 marginTop: 54,
-                backgroundColor: color.red,
+                backgroundColor: DesignRule.mainColor,
                 width: ScreenUtils.width - 84,
                 height: 50,
                 marginLeft: 42,

@@ -49,15 +49,15 @@ class Card extends Component {
         <View style={styles.card}>
         <ImageLoad style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
             <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
-            <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
+            <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
         </ImageLoad>
         <View style={styles.profileView}>
             <ImageLoad style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}} borderRadius={px2dp(15)}/>
-            <Text style={styles.name}>{item.userName}</Text>
+            <Text style={styles.name} allowFontScaling={false}>{item.userName}</Text>
             <View style={{flex: 1}}/>
             <View style={styles.rightRow}>
                 <Image source={seeImg}/>
-                <Text style={styles.number}>{ number }</Text>
+                <Text style={styles.number} allowFontScaling={false}>{ number }</Text>
             </View>
         </View>
         </View>
@@ -89,7 +89,7 @@ export default class ShowChoiceView extends Component {
             ?
             <View style={styles.container}>
                 <View style={styles.titleView}>
-                    <Text style={styles.title}>精选</Text>
+                    <Text style={styles.title} allowFontScaling={false}>精选</Text>
                 </View>
                 {items}
             </View>

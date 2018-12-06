@@ -13,20 +13,27 @@ import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import ImageLoad from '@mr/image-placeholder'
 import BasePage from '../../BasePage'
+import { PageLoadingState } from '../../components/pageDecorator/PageState'
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
 }}>
     <ImageLoad style={styles.goodImg} source={{ uri: data.headImg ? data.headImg : '' }}/>
     <View style={styles.goodDetail}>
-        <Text style={styles.name}>{data.name}</Text>
+        <Text style={styles.name} allowFontScaling={false}>{data.name}</Text>
         <View style={{ height: px2dp(4) }}/>
-        <Text style={styles.price}>￥ {data.price}起</Text>
+        <Text style={styles.price} allowFontScaling={false}>￥ {data.price}起</Text>
     </View>
 </TouchableOpacity>;
 
 @observer
 export default class ShowDetailPage extends BasePage {
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState
+        };
+    };
 
     $navigationBarOptions = {
         title: '',
@@ -36,6 +43,9 @@ export default class ShowDetailPage extends BasePage {
         super(props);
         this.params = this.props.navigation.state.params || {}
         this.showDetailModule = new ShowDetail()
+        this.state = {
+            loadingState: PageLoadingState.loading,
+        }
     }
 
     componentWillMount() {
@@ -44,7 +54,11 @@ export default class ShowDetailPage extends BasePage {
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
-                    this.showDetailModule.loadDetail(this.params.id)
+                    this.showDetailModule.loadDetail(this.params.id).then(() => {
+                        this.setState({
+                            loadingState: PageLoadingState.success
+                        })
+                    })
                 }
             }
         );
@@ -92,7 +106,7 @@ export default class ShowDetailPage extends BasePage {
     _render() {
         const { detail, isCollecting } = this.showDetailModule;
         if (!detail) {
-            return <View style={styles.loading}><ActivityIndicator size='large'/></View>;
+            return <View style={styles.loading}/>;
         }
         let content = `<div>${detail.content}</div>`;
         let products = detail.products;
@@ -108,15 +122,21 @@ export default class ShowDetailPage extends BasePage {
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
             >
-            <ShowImageView items={detail.imgs.slice()}/>
+            {
+                detail.imgs
+                ?
+                <ShowImageView items={detail.imgs.slice()}/>
+                :
+                <View style={styles.header}/>
+            }
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
                     <ImageLoad borderRadius={px2dp(15)} style={styles.portrait} source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
-                    <Text style={styles.showName}>{detail.userName ? detail.userName : ''}</Text>
+                    <Text style={styles.showName} allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
                 </View>
                 <View style={styles.profileRight}>
                     <Image source={res.button.see}/>
-                    <Text style={styles.number}>{number}</Text>
+                    <Text style={styles.number} allowFontScaling={false}>{number}</Text>
                 </View>
             </View>
             <HTML html={content} imagesMaxWidth={width - px2dp(30)} imagesInitialDimensions={{width: width - px2dp(30), height: 0}} containerStyle={{
@@ -144,13 +164,13 @@ export default class ShowDetailPage extends BasePage {
                     :
                     <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
                         <Image style={styles.collectImg} source={detail.hadCollect ? res.collected : res.uncollected}/>
-                        <Text style={styles.bottomText}>{'人气值'} · {detail.collectCount}</Text>
+                        <Text style={styles.bottomText} allowFontScaling={false}>{'人气值'} · {detail.collectCount}</Text>
                     </TouchableOpacity>
                 }
                 <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
                     <Image source={res.share}/>
                     <View style={{width: px2dp(10)}}/>
-                    <Text style={styles.text}>秀一秀</Text>
+                    <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
@@ -186,6 +206,9 @@ let styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    header: {
+        height: ScreenUtils.statusBarHeight
     },
     scroll: {
         flex: 1

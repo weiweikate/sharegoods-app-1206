@@ -48,12 +48,12 @@ class AfterSaleServicePage extends BasePage {
             inputReason: ['退款说明', '退货说明', '换货说明'],
             returnReasons: [],
             productData: {},// 里面包含了商品、订单id、价格等信息
-            returnReason: this.params.isEdit === true ? this.params.returnReason : '',                  //退款原因
-            remark: this.params.isEdit === true ? this.params.remark : '',                              //退款具体说明
+            returnReason: this.params.isEdit === true ? this.params.reason : '',                  //退款原因
+            remark: this.params.isEdit === true ? this.params.description : '',                              //退款具体说明
             imageArr: this.params.isEdit === true ? this.params.imgList : [],                           //选择的图片数组
             /** 编辑申请需要的售后详情id*/
             returnProductId: this.params.orderProductNo,
-            applyRefundAmount: 0,//退款金额,
+            applyRefundAmount:  this.params.isEdit === true ? this.params.refundPrice : 0,//退款金额,
             remark: '',
             editable: false
             /** 换货需要的数据*/
@@ -451,7 +451,11 @@ class AfterSaleServicePage extends BasePage {
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
             }
-            that.setState({ productData, editable, applyRefundAmount: payAmount });
+            if (that.params.isEdit){
+                that.setState({ productData, editable});
+            }else {
+                that.setState({ productData, editable, applyRefundAmount: payAmount });
+            }
         }).catch(error => {
             that.$loadingDismiss();
         });

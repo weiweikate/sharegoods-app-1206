@@ -113,12 +113,12 @@ export default class ShowListPage extends BasePage {
                 }
                 <View style={styles.titleView}>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
-                        <Text style={page === 0 ? styles.activityIndex : styles.index}>精选热门</Text>
+                        <Text style={page === 0 ? styles.activityIndex : styles.index} allowFontScaling={false}>精选热门</Text>
                         {page === 0 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                     <View style={{ width: 50 }}/>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(1)}>
-                        <Text style={page === 1 ? styles.activityIndex : styles.index}>最新秀场</Text>
+                        <Text style={page === 1 ? styles.activityIndex : styles.index} allowFontScaling={false}>最新秀场</Text>
                         {page === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                 </View>

@@ -216,7 +216,7 @@ export default class SetShopNamePage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                <ScrollView>
+                <ScrollView keyboardDismissMode='on-drag'>
                     {/*头像*/}
                     {this._renderHeaderView()}
                     {/*店铺*/}

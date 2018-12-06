@@ -156,6 +156,7 @@ export const TabNav = TabNavigator(
                 fontSize: 11,
                 margin: 1
             },
+            allowFontScaling : false,
             //tab 页指示符的样式 (tab页下面的一条线).
             indicatorStyle: { height: 0 }
         },

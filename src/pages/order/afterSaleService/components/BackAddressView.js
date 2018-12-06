@@ -42,6 +42,7 @@ export default class BackAddressView extends React.Component {
 
 
     render() {
+        let {refundAddress = {}} = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.borderContainer}>
@@ -56,9 +57,9 @@ export default class BackAddressView extends React.Component {
                                  alignItems: 'center',
                                  backgroundColor: 'white'
                              }}
-                             name={'收货人：' + '1111'}
-                             phone={'phone'}
-                             address={'address'}
+                             name={'收货人：' + refundAddress.refundReceiver}
+                             phone={refundAddress.refundReceiverPhone}
+                             address={refundAddress.refundAddress}
                 />
             </View>
         );
