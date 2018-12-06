@@ -8,8 +8,8 @@ import {
     TouchableOpacity,
     // NativeModules
 } from 'react-native';
-import { color } from './../../constants/Theme';
 import StringUtils from '../../utils/StringUtils';
+import DesignRule from "../../constants/DesignRule";
 
 /**
  * 最近搜索view
@@ -24,7 +24,7 @@ class RecentSearch extends Component {
         return (
             <View>
                 <View style={styles.top}>
-                    <Text style={{ fontSize: 13, color: color.hintTextColor }}>历史搜素</Text>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_placeholder }}>历史搜素</Text>
                     {this.renderDeleteImg()}
                 </View>
                 <View style={styles.tagView}>
