@@ -320,15 +320,14 @@ gotoLookAround(){
                                 borderColor: DesignRule.mainColor,
                                 borderWidth: 1,
                                 borderRadius: 25,
-                                width: 150,
-                                height: 50
+                                width: 115,
+                                height: 35
                             }}
                         >
                             <Text
                                 style={{
-
                                     color: DesignRule.mainColor,
-                                    fontSize: 17
+                                    fontSize: ScreenUtils.px2dp(15)
                                 }}
                             >
                                 去逛逛

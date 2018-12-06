@@ -312,7 +312,7 @@ export default class ShopMessagePage extends BasePage {
             return (
 
                 <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.$navigate,item.paramType,item.param)}}>
-                    <View style={{height:px2dp(33),width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white',borderTopColor:DesignRule.lineColor_inGrayBg,borderTopWidth:px2dp(0,5)}}>
+                    <View style={{height:px2dp(33),width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white',borderTopColor:DesignRule.lineColor_inGrayBg,borderTopWidth:ScreenUtils.onePixel}}>
                         <Text style={{color:DesignRule.textColor_secondTitle,fontSize:px2dp(13)}}>
                              查看详情>>
                         </Text>
@@ -619,7 +619,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-around',
         flexDirection:'row',
-        borderTopWidth:px2dp(0.5),
+        borderTopWidth:ScreenUtils.onePixel,
         borderTopColor:DesignRule.lineColor_inGrayBg
     },
     whiteButtonStyle:{
