@@ -3,7 +3,6 @@ import React from "react";
 import { NativeModules, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BasePage from "../../../BasePage";
 import { RefreshList, UIText } from "../../../components/ui";
-import { color } from "../../../constants/Theme";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import LogisticsDetailItem from "../components/LogisticsDetailItem";
@@ -54,7 +53,7 @@ class LogisticsDetailsPage extends BasePage {
             <TouchableOpacity style={styles.logisticsNumber} onPress={() => this.copyToClipboard()}>
                 <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
                     <UIText value={this.state.expressName + "：" + this.state.expressNo}
-                            style={{ color: color.yellow_FF7, marginLeft: 18 }}/>
+                            style={{ color: DesignRule.yellow_FF7, marginLeft: 18 }}/>
                     <UIImage source={copy} style={{ height: 17, width: 17, marginRight: 15 }}/>
                 </View>
             </TouchableOpacity>

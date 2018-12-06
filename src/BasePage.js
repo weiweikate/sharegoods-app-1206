@@ -54,7 +54,9 @@ export default class BasePage extends Component {
         return (
             <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
                 <Image source={res.placeholder.netError}
-                       style={{ width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120) }}/>
+                       style={{ width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120) }}
+                       resizeMode={'contain'}
+                />
                 <Text
                     style={{
                         color: DesignRule.textColor_instruction,

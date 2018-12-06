@@ -118,7 +118,7 @@ export default class NetFailedView extends Component {
         return (<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[styles.container, style]}>
 
-                <Image source={this._getImgSource(source, code)} style={imgS}/>
+                <Image source={this._getImgSource(source, code)} style={imgS} resizeMode={'contain'}/>
 
                 <Text style={styles.titleStyle}>
                     {BugErrorCode === code ? '' : `${code}`}{msg}

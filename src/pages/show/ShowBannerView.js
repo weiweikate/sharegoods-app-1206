@@ -2,7 +2,7 @@
  * 秀场banner
  */
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import UIImage from "@mr/image-placeholder";
 
@@ -70,7 +70,7 @@ c
     }
 
     render() {
-        const { bannerList } = showBannerModules;
+        const { bannerList, bannerCount } = showBannerModules;
         if (!bannerList || bannerList.length <= 0) {
             return <View/>;
         }
@@ -79,6 +79,15 @@ c
             items.push(value.imgUrl);
         });
         return <View style={styles.container}>
+        {
+            bannerCount === 1
+            ?
+            <TouchableWithoutFeedback onPress={()=>this._onPressRowWithItem(bannerList[0])}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                {this.renderRow(bannerList[0])}
+            </View>
+            </TouchableWithoutFeedback>
+            :
             <MRBannerView
                 style={{
                     height: px2dp(175),
@@ -96,7 +105,8 @@ c
                     this._onDidScrollToIndex(index);
                 }}
             />
-            {this.renderIndexView()}
+        }
+        {this.renderIndexView()}
         </View>;
     }
 }

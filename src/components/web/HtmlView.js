@@ -34,7 +34,6 @@ export default class RequestDetailPage extends BasePage {
                 // onLoadEnd={() => this._onLoadEnd()}
                 // onError={e => this._onError(e)}
                 // postMessage={msg => this._postMessage(msg)}
-                // source={this.props.source} //uri: 'http://172.16.10.117:9528/topic/first'
             />
         )
     }

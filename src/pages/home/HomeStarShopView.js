@@ -24,9 +24,9 @@ const starImg = res.star;
 
 const Banner = ({ backImage, title, press }) => <View style={styles.bannerContainer}>
     <ImageLoad style={styles.bannerImg} source={backImage} cacheable={true}/>
-    <Text style={styles.bannerTitle}>{title}</Text>
+    <Text style={styles.bannerTitle}  allowFontScaling={false}>{title}</Text>
     <TouchableOpacity style={styles.joinBtn} onPress={() => press && press()}>
-        <Text style={styles.join}>+ 申请加入</Text>
+        <Text style={styles.join}  allowFontScaling={false}>+ 申请加入</Text>
     </TouchableOpacity>
 </View>;
 
@@ -37,25 +37,26 @@ const Profile = ({ avatar, name, level, member, income, allIncome }) => <View st
     <View style={styles.nameBox}>
         <View style={styles.nameView}>
             {name ? <Text numberOfLines={1}
+                          allowFontScaling={false}
                           style={styles.name}>{name.length > 5 ? name.slice(0, 5) + "..." : name}</Text> : null}
             <ImageBackground style={styles.level} source={starImg}>
-                <Text style={styles.levelText}>{level}</Text>
+                <Text style={styles.levelText}  allowFontScaling={false}>{level}</Text>
             </ImageBackground>
         </View>
         <View style={styles.space}/>
-        <Text style={styles.text}>成员：<Text style={styles.member}>{member}</Text></Text>
+        <Text style={styles.text}  allowFontScaling={false}>成员：<Text style={styles.member}  allowFontScaling={false}>{member}</Text></Text>
     </View>
     <Line/>
     <View style={styles.incomeBox}>
-        <Text style={styles.text}>店铺本月收入</Text>
+        <Text style={styles.text}  allowFontScaling={false}>店铺本月收入</Text>
         <View style={{ height: px2dp(6) }}/>
-        <Text style={styles.income}>{income}</Text>
+        <Text style={styles.income}  allowFontScaling={false}>{income}</Text>
     </View>
     <Line/>
     <View style={styles.allIncomeBox}>
-        <Text style={styles.text}>店铺累计收入</Text>
+        <Text style={styles.text}  allowFontScaling={false}>店铺累计收入</Text>
         <View style={{ height: px2dp(6) }}/>
-        <Text style={styles.income}>{allIncome}</Text>
+        <Text style={styles.income}  allowFontScaling={false}>{allIncome}</Text>
     </View>
 </View>;
 
@@ -87,7 +88,9 @@ export default class HomeStarShopView extends Component {
             return <View/>;
         }
         shopList.map((shop, index) => {
-            cells.push(<Cell key={index} data={shop} store={shop.storeDTO} press={() => this._shopPress(shop)}/>);
+            if (shop.storeDTO) {
+                cells.push(<Cell key={index} data={shop} store={shop.storeDTO} press={() => this._shopPress(shop)}/>);
+            }
         });
         return <View style={styles.container}>
             <View style={styles.titleView}><Text style={styles.title}>明星店铺</Text></View>

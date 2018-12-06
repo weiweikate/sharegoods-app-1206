@@ -9,7 +9,6 @@ import {
     View,
     Text
 } from 'react-native';
-import { color } from '../../constants/Theme';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
@@ -21,7 +20,7 @@ const HorizonalTableView = props => {
             height: 35,
             width: (ScreenUtils.width - 30) / (tableData[0].value.length + 1),
             justifyContent: 'center',
-            backgroundColor: color.gray_FFF,
+            backgroundColor: DesignRule.color_fff,
             alignItems: 'center',
             borderWidth: 0.5,
             borderColor: DesignRule.color_ddd
@@ -30,7 +29,7 @@ const HorizonalTableView = props => {
             height: 35,
             width: (ScreenUtils.width - 30) / (tableData[0].value.length + 1),
             justifyContent: 'center',
-            backgroundColor: DesignRule.lineColor_inColorBg,
+            backgroundColor: DesignRule.color_fff,
             alignItems: 'center',
             borderWidth: 0.5,
             borderColor: DesignRule.color_ddd
