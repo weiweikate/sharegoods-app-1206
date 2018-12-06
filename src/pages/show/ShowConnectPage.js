@@ -214,7 +214,7 @@ export default class ShowConnectPage extends BasePage {
 
     _renderInfinite() {
         return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.recommendModules.isEnd ? <Text style={styles.text}>我也是有底线的</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+            {this.recommendModules.isEnd ? <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}
         </View>
     }
 
@@ -228,12 +228,12 @@ export default class ShowConnectPage extends BasePage {
         if (isEmpty) {
             return <View style={styles.emptyContainer}>
                 <Image style={styles.noCollect} source={res.placeholder.noCollect}/>
-                <Text style={styles.collectWhat}>去收藏点什么吧</Text>
-                <Text style={styles.goToIndex}>快去商城逛逛吧</Text>
+                <Text style={styles.collectWhat} allowFontScaling={false}>去收藏点什么吧</Text>
+                <Text style={styles.goToIndex} allowFontScaling={false}>快去商城逛逛吧</Text>
                 <TouchableOpacity style={styles.gotobutton} onPress={() => {
                     this.goToHome();
                 }}>
-                    <Text style={styles.goToText}>逛一逛</Text>
+                    <Text style={styles.goToText} allowFontScaling={false}>逛一逛</Text>
                 </TouchableOpacity>
             </View>;
         }
@@ -263,11 +263,11 @@ export default class ShowConnectPage extends BasePage {
                             }}>
                                 <Image style={styles.allImg}
                                        source={allSelected ? res.button.selected_circle_red : res.button.unselected_circle}/>
-                                <Text style={styles.all}>全选</Text>
+                                <Text style={styles.all} allowFontScaling={false}>全选</Text>
                             </TouchableOpacity>
                             <View style={{ flex: 1 }}/>
                             <TouchableOpacity style={styles.button} onPress={() => this._delete()}>
-                                <Text style={styles.delete}>删除</Text>
+                                <Text style={styles.delete} allowFontScaling={false}>删除</Text>
                             </TouchableOpacity>
                         </View>
                         :
