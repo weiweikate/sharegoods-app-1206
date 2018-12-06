@@ -14,7 +14,6 @@ import {
     UIText, TakePhotoModal, NoMoreClick, UIImage
 } from "../../../../components/ui";
 import ImageLoad from "@mr/image-placeholder";
-import { color } from "../../../../constants/Theme";
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import UserSingleItem from "../../components/UserSingleItem";
@@ -120,7 +119,7 @@ export default class IDVertify2Page extends BasePage {
                     </View>
                     <NoMoreClick style={{
                         marginTop: 42,
-                        backgroundColor: StringUtils.isNoEmpty(this.state.name) && StringUtils.isNoEmpty(this.state.idNumber) && StringUtils.isNoEmpty(this.state.backIdCard) && StringUtils.isNoEmpty(this.state.frontIdCard) ? color.red : "#cccccc",
+                        backgroundColor: StringUtils.isNoEmpty(this.state.name) && StringUtils.isNoEmpty(this.state.idNumber) && StringUtils.isNoEmpty(this.state.backIdCard) && StringUtils.isNoEmpty(this.state.frontIdCard) ? DesignRule.mainColor : DesignRule.bgColor_grayHeader,
                         width: ScreenUtils.width - 84,
                         height: 45,
                         marginLeft: 42,
@@ -146,7 +145,7 @@ export default class IDVertify2Page extends BasePage {
                             <UIText value={"提交认证代表您已同意"}
                                     style={{ fontSize: 11, color: DesignRule.textColor_instruction }}/>
                             <UIText value={"《实名认证协议》"}
-                                    style={{ fontSize: 11, color: "#F00006" }}
+                                    style={{ fontSize: 11, color: DesignRule.mainColor }}
                                     onPress={() => {
                                         this.$navigate("HtmlPage", {
                                             title: "实名认证协议",
@@ -331,7 +330,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: DesignRule.textColor_instruction
     }, accountStyle: {
-        marginLeft: 16, color: color.loginTextBlack, width: 60
+        marginLeft: 16, color: DesignRule.textColor_mainTitle, width: 60
     }, inputTextStyle: {
         height: 40, flex: 1, backgroundColor: "white", fontSize: 14, textAlign: "right", marginRight: 15
     }
