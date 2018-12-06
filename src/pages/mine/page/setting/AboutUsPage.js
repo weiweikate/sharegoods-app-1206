@@ -6,6 +6,7 @@ import BasePage from '../../../../BasePage';
 import res from '../../res';
 import DesignRule from 'DesignRule';
 const Logo = res.other.tongyong_logo_nor;
+import ScreenUtils from '../../../../utils/ScreenUtils'
 
 export default class AboutUsPage extends BasePage {
 
@@ -15,11 +16,22 @@ export default class AboutUsPage extends BasePage {
 
     constructor(props) {
         super(props);
+        this.state={
+            height: null
+        }
     }
 
+    _onLayout(e){
+      let height = e.nativeEvent.layout.height;
+      if (height < ScreenUtils.height - ScreenUtils.headerHeight) {
+          this.setState({height: ScreenUtils.height - ScreenUtils.headerHeight});
+      }
+}
     _render() {
         return (<ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-            <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+            <View style={{ flexDirection: 'column', alignItems: 'center', backgroundColor: 'white' , height: this.state.height}}
+                  onLayout={this._onLayout.bind(this)}
+            >
                 <Image source={Logo} style={{ height: 70, width: 70, marginTop: 30 }}/>
                 <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginTop: 30 }}>公司简介</Text>
                 <Text style={{
@@ -66,6 +78,7 @@ export default class AboutUsPage extends BasePage {
                 }}>
                     秀购独创的分享赚取佣金模式，不管是线上发发朋友圈，还是线下朋友聚会聊聊天，只要你把秀购上的好货分享给别人，在分享生活和快乐的同时，每卖出一件商品，秀购就帮你向品牌商争取一份佣金。
                 </Text>
+                <View style={{flex: 1}} />
                 <Text style={{
                     color: DesignRule.textColor_instruction,
                     fontSize: 11,

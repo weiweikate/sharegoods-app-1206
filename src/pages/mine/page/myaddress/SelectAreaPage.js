@@ -61,7 +61,7 @@ export default class SelectAreaPage extends BasePage {
     _renderItem = (item) => {
         return <TouchableOpacity style={styles.container} onPress={() => this._onItemClick(item.item)}>
             <UIText value={item.item.name} style={styles.blackText}/>
-            <Image source={arrow_right} style={{ width: 12, height: 20, marginRight: 18 }} resizeMode={'contain'}/>
+            <Image source={arrow_right} style={{marginRight: 18 }} resizeMode={'contain'}/>
         </TouchableOpacity>;
     };
 
