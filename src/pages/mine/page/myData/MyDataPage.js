@@ -180,6 +180,7 @@ export default class MyDataPage extends Component {
                         refreshControl={<RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this._onRefresh}
+                            colors={[DesignRule.mainColor]}
                         />}>
                 <View style={styles.whitePanel}>
                     <TouchableWithoutFeedback onPress={this._onPressTeam}>

@@ -129,12 +129,12 @@ export default class RecommendRow extends Component {
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺本月收入</Text>
-                        <Text style={styles.containBottom}>{`${tradeBalance || ''}元`}</Text>
+                        <Text style={styles.containBottom}>{`${tradeBalance || '0.00'}元`}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺累计收入</Text>
-                        <Text style={styles.containBottom}>{`${totalTradeBalance || ''}元`}</Text>
+                        <Text style={styles.containBottom}>{`${totalTradeBalance || '0.00'}元`}</Text>
                     </View>
                 </View>
 

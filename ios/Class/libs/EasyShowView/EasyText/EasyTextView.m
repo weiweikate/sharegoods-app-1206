@@ -90,7 +90,7 @@
 {
     CALayer *addSubLayer=[CALayer layer];
     addSubLayer.frame= self.showBgView.frame;
-    addSubLayer.cornerRadius=8;
+    addSubLayer.cornerRadius=4;
     addSubLayer.backgroundColor=self.showTextConfig.bgColor.CGColor;
     addSubLayer.masksToBounds=NO;
     addSubLayer.name = @"backgrouldsubLayer";

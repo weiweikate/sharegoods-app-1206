@@ -31,6 +31,7 @@ export default class NoAccessPage extends Component {
                                                             tintColor={DesignRule.textColor_instruction}
                                                             titleColor={DesignRule.textColor_instruction}
                                                             refreshing={SpellStatusModel.refreshing}
+                                                            colors={[DesignRule.mainColor]}
                                                             onRefresh={() => {
                                                                 SpellStatusModel.getUser(1).then().catch((error)=>{
 
