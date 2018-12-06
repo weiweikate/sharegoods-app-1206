@@ -2,7 +2,8 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    AppState
+    AppState,
+    Linking
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -20,6 +21,7 @@ import user from '../../model/user';
 import Storage from '../../utils/storage';
 import geolocation from '@mr/geolocation';
 import ConfirmAlert from '../../components/ui/ConfirmAlert';
+import ScreenUtils from '../../utils/ScreenUtils';
 
 @observer
 export default class MyShop_RecruitPage extends BasePage {
@@ -67,6 +69,9 @@ export default class MyShop_RecruitPage extends BasePage {
                         },
                         confirmCallBack: () => {
                             this.$navigateBackToHome();
+                            if (ScreenUtils.isIOS) {
+                                Linking.openURL('app-settings:')
+                            }
                         },
                         rightText: '去设置'
                     });
