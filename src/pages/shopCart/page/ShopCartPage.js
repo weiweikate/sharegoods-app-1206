@@ -108,6 +108,7 @@ export default class ShopCartPage extends BasePage {
                         height: 115,
                         width: 115
                     }}
+                    resizeMode={'contain'}
                 />
                 <Text
                     style={{
