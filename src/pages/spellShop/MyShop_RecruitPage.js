@@ -79,13 +79,10 @@ export default class MyShop_RecruitPage extends BasePage {
                                     PermissionsAndroid.request(
                                         PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
                                         {
-                                            title: 'Cool Photo App Camera Permission',
                                             message:
-                                            'Cool Photo App needs access to your camera ' +
-                                            'so you can take awesome pictures.',
-                                            buttonNeutral: 'Ask Me Later',
-                                            buttonNegative: 'Cancel',
-                                            buttonPositive: 'OK',
+                                            '定位服务未开启，请进入系统-设置-应用-应用管理-权限管理中打开开关，并且允许秀购使用定位服务',
+                                            buttonNegative: '取消',
+                                            buttonPositive: '确定',
                                         },
                                     );
                                 }
