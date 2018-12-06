@@ -75,8 +75,8 @@ export default class RefreshLargeList extends React.Component {
         pageSize: 10,
         defaultPage: 1,
         params: {},
-        defaultEmptyImage: res.placeholder.defaultNoData,
-        defaultEmptyText: '没有数据',
+        defaultEmptyImage: res.placeholder.no_data,
+        defaultEmptyText: '暂未数据',
         defaultData: []
     };
 
@@ -126,7 +126,9 @@ export default class RefreshLargeList extends React.Component {
         } else {
             return (
                 <View style={{ height: this.state.height - 40, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={this.props.defaultEmptyImage} style={{ width: 100, height: 100 }}/>
+                    <Image source={this.props.defaultEmptyImage}
+                           style={{ width: 110, height: 110 }}
+                           resizeMode={'contain'}/>
                     <Text style={{
                         marginTop: 10,
                         color: DesignRule.textColor_secondTitle
