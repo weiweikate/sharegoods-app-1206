@@ -3,7 +3,8 @@ import {
     View,
     StyleSheet,
     AppState,
-    Linking
+    Linking,
+    PermissionsAndroid
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -61,7 +62,7 @@ export default class MyShop_RecruitPage extends BasePage {
             payload => {
                 const { state } = payload;
 
-                if (this.state.permissionsErr === 'permissionsErr') {
+                if (this.state.permissionsErr === 'permissionsErr' || this.state.permissionsErr === '12') {
                     this.ConfirmAlert.show({
                         title: `定位服务未开启，请进入系统【设置】【隐私】【定位服务】中打开开关，并且允许秀购使用定位服务`,
                         closeCallBack: () => {
@@ -71,11 +72,31 @@ export default class MyShop_RecruitPage extends BasePage {
                             this.$navigateBackToHome();
                             if (ScreenUtils.isIOS) {
                                 Linking.openURL('app-settings:');
+                            }else {
+                                if(this.state.permissionsErr === '12'){
+                                    geolocation.goLocationSetting()
+                                }else {
+                                    PermissionsAndroid.request(
+                                        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+                                        {
+                                            title: 'Cool Photo App Camera Permission',
+                                            message:
+                                            'Cool Photo App needs access to your camera ' +
+                                            'so you can take awesome pictures.',
+                                            buttonNeutral: 'Ask Me Later',
+                                            buttonNegative: 'Cancel',
+                                            buttonPositive: 'OK',
+                                        },
+                                    );
+                                }
                             }
+
                         },
                         rightText: '去设置'
                     });
                 }
+
+
 
                 if (!this.unFirst) {//第一次不多余刷新user
                     this.unFirst = true;

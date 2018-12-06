@@ -167,7 +167,7 @@ export default class ShowConnectPage extends BasePage {
             })
             this.setState({ allSelected: true, selectedList: selects });
         }
-       
+
     }
 
     renderItem = (data) => {
@@ -351,9 +351,9 @@ let styles = StyleSheet.create({
         marginTop: px2dp(120)
     },
     gotobutton: {
-        width: px2dp(150),
-        height: px2dp(50),
-        borderRadius: px2dp(50) / 2,
+        width: px2dp(115),
+        height: px2dp(36),
+        borderRadius: px2dp(36) / 2,
         borderColor: '#E60012',
         borderWidth: ScreenUtils.onePixel,
         alignItems: 'center',
@@ -362,7 +362,7 @@ let styles = StyleSheet.create({
     },
     goToText: {
         color: '#E60012',
-        fontSize: px2dp(17)
+        fontSize: px2dp(15)
     },
     text: {
         color: '#999',

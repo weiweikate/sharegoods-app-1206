@@ -83,9 +83,9 @@ export default class BasePage extends Component {
                     }
                 }}
                                   style={{
-                                      height: 50,
-                                      width: 150,
-                                      borderRadius: 25,
+                                      height: 36,
+                                      width: 115,
+                                      borderRadius: 18,
                                       borderColor: DesignRule.bgColor_btn,
                                       borderWidth: DesignRule.lineHeight,
                                       alignItems: 'center',
