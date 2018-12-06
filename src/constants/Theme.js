@@ -5,57 +5,6 @@ import DesignRule from 'DesignRule';
 const getUIScale = (value) => {
     return ScreenUtils.width / 375 * value;
 };
-const color = {
-    main: '#EB2224',
-    sub_main: '#FD6844',
-    page_background: '#F7F7F7',
-    page_background2: '#F9F9F9',
-    page_background3: '#F1F1F1',
-    line: '#DCDCDC',
-    one_color: '#F34646',
-    red: '#F00006',
-    lightPink: '#FEEEEE',
-    pink: '#EB22245C',
-    little_pink: '#EB222414',
-    black: '#333333',
-    black2: '#121212',
-    black_light: '#666666',
-    black_more_light: '#999999',
-    white: '#ffffff',
-    dark_blue: '#0040F6',
-    yellow: '#ffa900',
-    lightgray: '#e5e5e5',
-    separate: '#ebebeb',
-    gray_df: '#DFDFDF',
-    black_light2: '#63656A',
-    gray_text: '#333333',
-    noBGColor: '#00000080',
-    lightPink2: '#FEF9F4',
-    lightRed: '#FD6844',
-    green: '#00B362',
-    gray_f8f8f8: '#F8F8F8',
-    black_999: '#999999',
-    blue_4a9: '#4A90E2',
-    blue_222: '#222222',
-    black000: DesignRule.textColor_mainTitle,
-
-    loginTextBlack: '#222222',
-    otherLoginLine: '#DCDCDC',
-    hintTextColor: DesignRule.textColor_hint,
-    deliveryIncludeBlue: '#0186f5',
-    gray_DDD: DesignRule.lineColor_inGrayBg,
-    gray_EEE: DesignRule.lineColor_inColorBg,
-    gray_FFF: '#FFFFFF',
-    black_222: '#222204',
-    gray_f7f7: '#f7f7f7',
-    yellow_FF7: '#FF7E00',
-    gray_c8c: DesignRule.textColor_hint,
-    gray_bbb: DesignRule.textColor_instruction,
-    green_47c: '#47c546',
-    gray_666: '#666666',
-    gray_b4b: '#b4b4b4'
-};
-
 
 const ui = {
     //-----------------------------Text------------------------------//
@@ -142,7 +91,7 @@ const ui = {
                 height: 50,
                 marginRight: 10,
                 marginLeft: 10,
-                backgroundColor: color.main,
+                backgroundColor: DesignRule.mainColor,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: 5
@@ -162,7 +111,7 @@ const ui = {
                 alignItems: 'center',
                 borderWidth: ScreenUtils.onePixel,
                 borderRadius: 5,
-                borderColor: color.main,
+                borderColor: DesignRule.mainColor,
                 borderStyle: 'dashed'
             },
             btn_text: {
@@ -177,11 +126,11 @@ const ui = {
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderWidth: ScreenUtils.onePixel,
-                borderColor: color.main,
+                borderColor: DesignRule.mainColor,
                 borderRadius: 5
             },
             btn_text: {
-                color: color.main,
+                color: DesignRule.mainColor,
                 fontSize: 12
             }
         },
@@ -978,6 +927,5 @@ const ui = {
 };
 
 export {
-    ui,
-    color
+    ui
 };

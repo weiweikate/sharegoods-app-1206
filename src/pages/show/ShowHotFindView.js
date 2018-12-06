@@ -106,7 +106,7 @@ export default class ShowHotView extends Component {
 
     _renderInfinite() {
         return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.state.isEnd ? <Text style={styles.text}>我也是有底线的</Text> : this.state.isFetching ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+            {this.state.isEnd ? <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.state.isFetching ? <Text style={styles.text} allowFontScaling={false}>加载中...</Text> : <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}
         </View>
     }
 

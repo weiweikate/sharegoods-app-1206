@@ -65,8 +65,7 @@ export default class HomeAdView extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        paddingTop:  ScreenUtils.px2dp(10),
-        marginTop: -1,
+        marginTop:  ScreenUtils.px2dp(10),
         paddingLeft: px2dp(15),
         paddingRight: px2dp(15)
     },

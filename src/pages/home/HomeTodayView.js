@@ -36,7 +36,7 @@ export default class HomeTodayView extends Component {
             ?
             <View style={styles.container}>
                 <View style={styles.titleView}>
-                    <Text style={styles.title}>今日榜单</Text>
+                    <Text style={styles.title} allowFontScaling={false}>今日榜单</Text>
                 </View>
                 <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
                     {items}
