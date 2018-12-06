@@ -11,7 +11,7 @@ import {
     StyleSheet,
     Text,
     View,
-    Platform,
+    Platform
 // InteractionManager
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -29,23 +29,24 @@ import bridge from './utils/bridge';
 import geolocation from '@mr/geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
+import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
 
 if (__DEV__) {
     const modules = require.getModules();
     const moduleIds = Object.keys(modules);
     const loadedModuleNames = moduleIds
-      .filter(moduleId => modules[moduleId].isInitialized)
-      .map(moduleId => modules[moduleId].verboseName);
+        .filter(moduleId => modules[moduleId].isInitialized)
+        .map(moduleId => modules[moduleId].verboseName);
     const waitingModuleNames = moduleIds
-      .filter(moduleId => !modules[moduleId].isInitialized)
-      .map(moduleId => modules[moduleId].verboseName);
+        .filter(moduleId => !modules[moduleId].isInitialized)
+        .map(moduleId => modules[moduleId].verboseName);
 
     // make sure that the modules you expect to be waiting are actually waiting
     console.log(
-      'loaded:',
-      loadedModuleNames.length,
-      'waiting:',
-      waitingModuleNames.length
+        'loaded:',
+        loadedModuleNames.length,
+        'waiting:',
+        waitingModuleNames.length
     );
 
     // grab this text blob, and put it in a file named packager/moduleNames.js
@@ -56,7 +57,6 @@ if (__DEV__) {
 export default class App extends Component {
     constructor(props) {
         appData.setStatusBarHeight(props.statusBarHeight);
-
 
 
         super(props);
@@ -78,15 +78,18 @@ export default class App extends Component {
 
         // InteractionManager.runAfterInteractions(() => {
         //     TimerMixin.setTimeout(() => {
-                geolocation.init({
-                    ios: 'f85b644981f8642aef08e5a361e9ab6b',
-                    android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
-                }).then(() => {
-                    return geolocation.getLastLocation();
-                }).then(result => {
-                    Storage.set('storage_MrLocation', result);
-                });
-            // }, 2000);
+        geolocation.init({
+            ios: 'f85b644981f8642aef08e5a361e9ab6b',
+            android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
+        }).then(() => {
+            return geolocation.getLastLocation();
+        }).then(result => {
+            Storage.set('storage_MrLocation', result);
+        }).catch((error) => {
+            error = error || {};
+            spellStatusModel.permissionsErr = error.code;
+        });
+        // }, 2000);
         // });
 
         //热更新 先注释掉
