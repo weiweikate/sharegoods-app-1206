@@ -7,7 +7,7 @@ import {
     Text
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ImageLoad from '@mr/image-placeholder'
+import ImageLoad from '@mr/image-placeholder';
 import PropTypes from 'prop-types';
 import DesignRule from 'DesignRule';
 import { getShowPrice } from '../model/TopicMudelTool';
@@ -20,6 +20,8 @@ export default class TopicItemView extends Component {
 
     render() {
         const { itemData, numOfColum } = this.props;
+        const mainWidth = ScreenUtils.width - 20;
+        const contentWidth = (mainWidth - (20 * (numOfColum - 1)))/numOfColum;
         return (
             <TouchableOpacity onPress={() => {
                 this.props.itemClickAction && this.props.itemClickAction();
@@ -28,22 +30,27 @@ export default class TopicItemView extends Component {
                     [
                         Styles.itemBgStyle,
                         {
-                            width: ScreenUtils.width / numOfColum,
+                            width: mainWidth / numOfColum
                         }
                     ]}>
-                    <View style={Styles.itemContentStyle}>
+                    <View style={[
+                        Styles.itemContentStyle,
+                        {
+                            width: contentWidth
+                        }
+                    ]}>
                         {/*头部image*/}
                         <ImageLoad
-                            width={ScreenUtils.width / numOfColum - 16}
-                            height={ScreenUtils.width / numOfColum - 16}
-                            source={{uri: itemData.specImg}}
+                            width={contentWidth}
+                            height={contentWidth}
+                            source={{ uri: itemData.specImg }}
                         />
                         <Text
                             style={
                                 [
                                     Styles.itemBottomTextStyle,
                                     {
-                                        width: ScreenUtils.width / numOfColum - 16
+                                        width: contentWidth - 16
                                     }
                                 ]}
                             numberOfLines={2}
@@ -53,7 +60,7 @@ export default class TopicItemView extends Component {
 
                         <Text style={Styles.itemBottomPriceTextStyle}>
                             {/*{ '¥'+itemData.originalPrice+ '起'}*/}
-                            { getShowPrice(itemData)+ '起'}
+                            {getShowPrice(itemData) + '起'}
                         </Text>
                     </View>
                 </View>
@@ -69,13 +76,13 @@ TopicItemView.propTypes = {
 
 const Styles = StyleSheet.create({
     itemBgStyle: {
-        backgroundColor: DesignRule.bgColor,
-        padding: 8
+        paddingTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     itemContentStyle: {
         backgroundColor: 'white',
-        padding:8,
-        // paddingBottom:8
+        paddingBottom: 8
     },
     itemTipBgViewStyle: {
         position: 'absolute',
@@ -89,17 +96,18 @@ const Styles = StyleSheet.create({
         paddingTop: 3,
         fontSize: 11,
         color: 'white'
-
     },
     itemBottomTextStyle: {
         marginTop: 10,
         color: DesignRule.textColor_mainTitle,
         height: 27,
-        fontSize: 11
+        fontSize: 12,
+        marginLeft: 10
     },
     itemBottomPriceTextStyle: {
         color: DesignRule.mainColor,
         fontSize: 16,
         marginTop: 5,
+        marginLeft: 10
     }
 });

@@ -1,8 +1,9 @@
 import { AsyncStorage } from 'react-native';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, autorun } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 //import apiEnvironment from '../api/ApiEnvironment';
 import UserApi from './userApi';
+// import bridge from '../utils/bridge';
 // import JPushUtils from '../utils/JPushUtils';
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -263,10 +264,8 @@ class User {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
         }
-        //同步本地购物车
-        shopCartCacheTool.synchronousData();
-
     }
+
     // 修改手机号
     @action
     changePhone(phone) {
@@ -418,12 +417,13 @@ class User {
     }
 
     @action
-    userShare(){
+    userShare() {
         UserApi.userShare();
     }
-
-
 }
 
 const user = new User();
+autorun(() => {
+   user.token? shopCartCacheTool.synchronousData():null;
+});
 export default user;
