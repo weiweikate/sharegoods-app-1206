@@ -187,7 +187,19 @@ export default class ShopCartPage extends BasePage {
                             rowMap[`${secId}${rowId}`].closeRow();
                             this._deleteFromShoppingCartByProductId(data.skuCode);
                         }}>
-                        <UIText style={styles.backUITextWhite} value='删除'/>
+                        <View
+                            style={
+                                {
+                                    backgroundColor:DesignRule.mainColor,
+                                    height:120,
+                                    width:75,
+                                    justifyContent:'center',
+                                    alignItems:'center'
+                                }
+                            }
+                        >
+                            <UIText style={styles.backUITextWhite} value='删除'/>
+                        </View>
                     </TouchableOpacity>
                 )}
                 listViewRef={(listView) => this.contentList = listView}
@@ -717,17 +729,19 @@ const styles = StyleSheet.create({
         },
         standaloneRowBack: {
             alignItems: 'center',
-            backgroundColor: DesignRule.mainColor,
+            // backgroundColor: DesignRule.mainColor,
+            backgroundColor: DesignRule.bgColor,
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',
-            padding: 15
+            // padding: 15
 
         },
         backUITextWhite: {
             // flex:1,
             marginRight: 0,
-            color: 'white'
+            color: 'white',
+            fontSize:17
         },
         standaloneRowFront: {
             alignItems: 'center',
