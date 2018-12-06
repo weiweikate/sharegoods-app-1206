@@ -122,13 +122,13 @@ class ShopCartStore {
 
                 //从订单过来的选中
                 this.needSelectGoods.map(selectGood =>{
-                    if (selectGood.productId === item.productId && selectGood.priceId === item.priceId && item.status !== 0){
+                    if (selectGood.productCode === item.productCode && selectGood.skuCode === item.skuCode && item.status !== 0){
                         item.isSelected = true
                     }
                 })
 
                 originArr.map(originGood =>{
-                    if (originGood.productId === item.productId && item.priceId == originGood.priceId){
+                    if (originGood.productCode === item.productCode && item.skuCode == originGood.skuCode){
                         item.isSelected = originGood.isSelected
                     }
                 })
@@ -283,8 +283,8 @@ class ShopCartStore {
                 bridge.showLoading();
                 ShopCartAPI.addItem({
                     'amount': item.amount,
-                    'priceId': item.priceId,
-                    'productId': item.productId,
+                    'productCode': item.productCode,
+                    'skuCode': item.skuCode,
                     'timestamp': item.timestamp
                 }).then((res) => {
                     bridge.hiddenLoading();
@@ -332,10 +332,10 @@ class ShopCartStore {
     }
 
     /*删除购物车商品*/
-    deleteItemWithIndex(priceId) {
-        if (priceId) {
+    deleteItemWithIndex(skuCode) {
+        if (skuCode) {
             ShopCartAPI.deleteItem({
-                'priceId': priceId
+                'skuCode': skuCode
             }).then(res => {
                 bridge.$toast('删除成功');
                 this.packingShopCartGoodsData(res.data);

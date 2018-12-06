@@ -32,25 +32,28 @@ export default class AfterSaleInfoView extends React.Component {
     /** 图片*/
     renderCertificateImage = (imgList) => {
         let arr = [];
-        imgList = imgList || [];
+        imgList = imgList || '';
+        imgList = imgList.split(',');
         for (let i = 0; i < imgList.length; i++) {
-            arr.push(
-                <UIImage source={{ uri: imgList[i].smallImg }}
-                         style={{
-                             height: 83,
-                             width: 83,
-                             marginLeft: 15,
-                             marginTop: 10
-                         }}/>
-            );
+            if (imgList[i].length > 0){
+                arr.push(
+                    <UIImage source={{ uri: imgList[i] }}
+                             style={{
+                                 height: 83,
+                                 width: 83,
+                                 marginLeft: 15,
+                                 marginTop: 10
+                             }}/>
+                );
+            }
         }
         return arr;
     };
 
     render() {
-        let { pageData, pageType } = this.props;
+        let { afterSaleInfo, pageType } = this.props;
 
-        if (EmptyUtils.isEmpty(pageData) === true) {
+        if (EmptyUtils.isEmpty(afterSaleInfo) === true) {
             return null;
         }
 
@@ -62,25 +65,26 @@ export default class AfterSaleInfoView extends React.Component {
                     height: 1,
                     backgroundColor: DesignRule.lineColor_inColorBg
                 }}/>
-                <UIText value={typeStr + "原因：" + pageData.returnReason}
+                <UIText value={typeStr + "原因：" + afterSaleInfo.reason}
                         style={styles.refundReason}/>
-                <UIText value={typeStr + "说明：" + pageData.remark || ""}
+                <UIText value={typeStr + "说明：" + afterSaleInfo.description || ""}
                         style={styles.refundReason}/>
-                <UIText value={"凭证图片："} style={styles.refundReason}/>
+                <UIText value={"凭证图片："}
+                        style={styles.refundReason}/>
                 <View style={{
                     flexDirection: "row",
                     flexWrap: "wrap",
                     paddingRight: 15
                 }}>
 
-                    {this.renderCertificateImage(pageData.imgList)}
+                    {this.renderCertificateImage(afterSaleInfo.imgList)}
 
                 </View>
-                <UIText value={"申请时间：" + DateUtils.getFormatDate(pageData.applyTime / 1000)}
+                <UIText value={"申请时间：" + DateUtils.getFormatDate(afterSaleInfo.createTime / 1000)}
                         style={styles.refundReason}/>
-                <UIText value={"订单编号：" + pageData.orderNum}
+                <UIText value={"订单编号：" + afterSaleInfo.orderProductNo}
                         style={styles.refundReason}/>
-                <UIText value={typeStr + "编号：" + pageData.refundNo}
+                <UIText value={typeStr + "编号：" + afterSaleInfo.serviceNo}
                         style={styles.refundReason}/>
 
             </View>

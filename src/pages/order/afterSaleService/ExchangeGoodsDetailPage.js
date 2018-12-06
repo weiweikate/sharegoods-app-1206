@@ -42,16 +42,15 @@ class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            pageData: null,
-            pageType: this.params.pageType ? this.params.pageType : 0
         };
 
         this._bindFunc();
         this.afterSaleDetailModel = new AfterSaleDetailModel();
-        this.afterSaleDetailModel.serviceNo = this.params.returnProductId;
+        this.afterSaleDetailModel.serviceNo = this.params.serviceNo;
         this.afterSaleDetailModel.loadingShow = this.$loadingShow;
         this.afterSaleDetailModel.loadingDismiss = this.$loadingDismiss;
         this.afterSaleDetailModel.toastShow = this.$toastShow;
+        this.afterSaleDetailModel.navigationBarResetTitle = this.$NavigationBarResetTitle;
     }
 
     $navigationBarOptions = {
@@ -86,45 +85,105 @@ class ExchangeGoodsDetailPage extends BasePage {
                 return null;
             }
         }
-        let { pageType = 0 } = this.params;
+
         let pageData = this.afterSaleDetailModel.pageData;
         let {
             status,
-            orderReturnAmounts//退款明细
+            refundAccountAmount,
+            refundCashAmount,
+            refundPrice,
+            reject,
+            type,
+            address,
+            refundAddress,
+            afterSaleProduct,
+            afterSaleInfo,
+            serviceNo
         } = pageData;
+
+        let pageType = type - 1;
         let isShow_operationApplyView = status === 1;
         /** 退款成功、退货成功、换货变退款成功*/
-        let isShow_refundDetailView = (pageType === 0 && status === 6) || (pageType === 1 && status === 6);
-        let isShow_refuseReasonView = true;
-        let logistics = [{
-            title: '平台物流',
-            value: '(fsdfsdf)',
-            placeholder: '',
-            expressNo: '111111',
-            onPress: this.shopLogists
-        },
-            { title: '寄回物流', value: '1111', placeholder: '请填写寄回物流信息', expressNo: '1111', onPress: this.returnLogists }];
+        let isShow_refundDetailView = (pageType === 0 && status === 5) || (pageType === 1 && status === 5);
+
+        let isShow_refuseReasonView = false;
+        let refuseReasonViewType = 0;
+        /** 退款、退货、在提交申请中和完成时候显示金额*/
+        if (pageType === 0 && (status === 1 || status === 5) ||
+            pageType === 1 && (status === 1 || status === 5)
+        ){
+            isShow_refuseReasonView = true;
+            /** 只要是被拒绝就显示拒绝理由*/
+        }else if (status === 6){
+            isShow_refuseReasonView = true;
+            refuseReasonViewType = 1;
+        }
+
+        let isShow_shippingAddressView = false;
+        let isShow_backAddressView = false;
+        /** 退货 寄回地址在申请中，和关闭的情况不显示，收货人地址始终不显示*/
+        if (pageType === 1 && (status === 2 || status === 3 || status === 4 || status === 5)){
+            isShow_backAddressView = true;
+            /** 退货 寄回地址、收货人地址在申请中，和关闭的情况不显示*/
+        }else if (pageType === 2 && (status === 2 || status === 3 || status === 4 || status === 5)){
+            isShow_shippingAddressView = true;
+            isShow_backAddressView = true;
+        }
+        let logistics = [];
+        /** 平台物流只有在换货， 4.待平台处理 5.售后完成才显示*/
+        if (pageType === 2 && (status === 4 || status === 5 )){
+            logistics.push({
+                title: '平台物流',
+                value: address.expressName,
+                placeholder: '',
+                expressNo: '('+ address.expressCode +')',
+                onPress: this.shopLogists
+            })
+        }
+        /** 寄回物流在换货、退货，  2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成才显示*/
+        if ((pageType === 1 || pageType === 2) &&
+            (status === 2 || status === 3 || status === 4 || status === 5)){
+            logistics.push({
+                title: '寄回物流',
+                value: refundAddress.expressName,
+                placeholder: '请填写寄回物流信息',
+                expressNo: refundAddress.expressCode,
+                onPress: this.returnLogists })
+        }
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <TipView pageType={pageType} status={status}/>
-                    <HeaderView pageType={pageType} status={status}/>
+                    <HeaderView pageType={pageType}
+                                status={status}
+                                headerTitle={pageData.headerTitle}
+                                timeStr={pageData.timeString}
+                    />
                     {isShow_operationApplyView ?
                         <OperationApplyView pageType={pageType}
                                             cancelPress={this.cancelPress}
                                             changePress={this.changePress}/> : null}
                     {
                         isShow_refuseReasonView ?
-                            <RefuseReasonView type={0} text={pageData.totalRefundPrice}
+                            <RefuseReasonView type={refuseReasonViewType}
+                                              refundPrice={refundPrice}
+                                              reject={reject}
                             /> : null
                     }
                     {
                         isShow_refundDetailView ?
-                            <RefundDetailView orderReturnAmounts={orderReturnAmounts}
+                            <RefundDetailView refundAccountAmount={refundAccountAmount}
+                                              refundCashAmount={refundCashAmount}
                             /> : null
                     }
-                    <ShippingAddressView/>
-                    <BackAddressView/>
+                    {
+                        isShow_shippingAddressView ?
+                            <ShippingAddressView address={address}/> : null
+                    }
+                    {
+                        isShow_backAddressView ?
+                            <BackAddressView refundAddress={refundAddress}/> :  null
+                    }
                     {
                         logistics.length > 0 ?
                             <LogisticsView data={logistics}
@@ -132,15 +191,16 @@ class ExchangeGoodsDetailPage extends BasePage {
                     }
                     {this.renderOrder()}
                     <GoodsItem
-                        uri={pageData.specImg}
-                        goodsName={pageData.productName}
-                        salePrice={StringUtils.formatMoneyString(pageData.price)}
-                        category={pageData.spec}
-                        goodsNum={this.afterSaleDetailModel.timeString}
+                        uri={afterSaleProduct.specImg}
+                        goodsName={afterSaleProduct.productName}
+                        salePrice={StringUtils.formatMoneyString(afterSaleProduct.unitPrice)}
+                        category={'规格：' + afterSaleProduct.specValues}
+                        goodsNum={afterSaleProduct.quantity}
                         style={{ backgroundColor: DesignRule.white }}
                     />
                     <AfterSaleInfoView pageData={pageData}
                                        pageType={pageType}
+                                       afterSaleInfo={{...afterSaleInfo,serviceNo}}
                     />
                 </ScrollView>
                 <CustomerServiceView/>
@@ -193,50 +253,10 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     };
 
-    //**********************************BusinessPart******************************************
-    // loadPageData(callBack) {
-    //     this.$loadingShow();
-    //     OrderApi.returnProductLookDetail({ returnProductId: this.params.returnProductId }).then((response) => {
-    //         this.$loadingDismiss();
-    //         let pageData = response.data;
-    //         if (callBack) {
-    //             if (pageData.status === 1) {
-    //                 callBack();
-    //                 return;
-    //             } else {
-    //                 this.$toastShow('订单状态已修改');
-    //             }
-    //         }
-    //         if (pageData.status === 3 && pageData.expressName && pageData.expressNo) {
-    //             /** 将原来的拒绝状态（3），分成 3 -》 商家拒绝申请 和 9 -》 表示寄出商品后商家拒绝退款
-    //              * 状态为已拒绝，且有寄出物流的信息，新增加状态 9 -》 表示寄出商品后商家拒绝退款
-    //              */
-    //             pageData.status = 9;
-    //         }
-    //         if (this.params.pageType === 2 && pageData.status === 4 && pageData.ecExpressNo && pageData.ecExpressName) {
-    //             /**
-    //              * 在换货的详情，将原来的发货中状态（4）， 分成 3 -》用户发货，等待商家确认 和 10 =》表示商家发货，等待买家确认
-    //              */
-    //             pageData.status = 10;
-    //         }
-    //
-    //         this.setState({ pageData: pageData });
-    //         if (response.data.status === 2 && (this.params.pageType === 1 || this.params.pageType === 2)) {
-    //             /**为退货，或换货的详情。状态为同意申请,开始定时器倒计，倒计用户给商家发货的剩余时间*/
-    //             this.startTimer(pageData.outTime);
-    //         } else {
-    //             this.stopTimer();
-    //         }
-    //     }).catch(e => {
-    //         this.stopTimer();
-    //         this.$loadingDismiss();
-    //     });
-    // }
-
     returnLogists = (expressNo) => {
         if (EmptyUtils.isEmpty(expressNo)) {
             this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
-                pageData: this.state.pageData,
+                pageData: this.afterSaleDetailModel.pageData,
                 callBack: this.afterSaleDetailModel.loadPageData
             });
         } else {
@@ -267,7 +287,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         let that = this;
         // pageType 0 退款详情  1 退货详情   2 换货详情
         if (cancel) {
-            let tips = ['确认撤销本次退款申请？', '确认撤销本次退货退款申请？', '确认撤销本次换货申请？'];
+            let tips = ['确认撤销本次退款申请？您最多只能发起x次', '确认撤销本次退货退款申请？您最多只能发起x次', '确认撤销本次换货申请？您最多只能发起x次'];
             Alert.alert('',
                 tips[this.params.pageType],
                 [
@@ -291,25 +311,21 @@ class ExchangeGoodsDetailPage extends BasePage {
                     }
                 ]);
         } else {
-            let { orderProductId, returnReason, remark, imgList, exchangePriceId, exchangeSpec, exchangeSpecImg, productId } = this.state.pageData;
-            imgList = imgList || [];
-            for (let i = 0; i < imgList.length; i++) {
-                imgList[i].imageThumbUrl = imgList[i].smallImg;
-                imgList[i].imageUrl = imgList[i].originalImg;
-            }
+            let { serviceNo, afterSaleInfo, type, refundPrice} = this.afterSaleDetailModel;
+            let {reason, description, orderProductNo, imgList} = afterSaleInfo;
+            imgList = imgList|| '';
+            imgList = imgList.split(',');
+
             this.$navigate('order/afterSaleService/AfterSaleServicePage', {
-                pageType: this.params.pageType,
-                returnProductId: this.state.pageData.id,
+                pageType: type - 1,
                 isEdit: true,
                 callBack: this.afterSaleDetailModel.loadPageData,
-                orderProductId,
-                returnReason,
-                remark,
+                serviceNo,
+                orderProductNo,
+                reason,
+                description,
                 imgList,
-                exchangePriceId,
-                exchangeSpec,
-                exchangeSpecImg,
-                productId
+                refundPrice,
             });
 
         }

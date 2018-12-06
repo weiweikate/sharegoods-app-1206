@@ -11,7 +11,8 @@ import {
     View,
     ScrollView,
     TouchableOpacity,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    TextInput
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
@@ -21,7 +22,7 @@ import {
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
 import StringUtils from '../../../utils/StringUtils';
 import AutoExpandingInput from '../../../components/ui/AutoExpandingInput';
-import DateUtils from '../../../utils/DateUtils';
+// import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 
 import OrderApi from '../api/orderApi';
@@ -41,17 +42,20 @@ class AfterSaleServicePage extends BasePage {
         super(props);
         this.state = {
             isShowSingleSelctionModal: false,
-            pageType: this.params.pageType ? this.params.pageType : 0, //  0(退款),1(退货退款),2(换货)
+            pageType:  this.params.pageType ||  0, //  0(退款),1(退货退款),2(换货)
             activeProduct: ['', '退回商品需由买家承担运费，请确保商品不影响二次销售', '仅可更换同规格的商品，请确保退换商品不影响二次销售'],
             reason: ['退款原因', '退货原因', '换货原因'],
             inputReason: ['退款说明', '退货说明', '换货说明'],
+            returnReasons: [],
             productData: {},// 里面包含了商品、订单id、价格等信息
-            returnReason: this.params.isEdit === true ? this.params.returnReason : '',                  //退款原因
-            remark: this.params.isEdit === true ? this.params.remark : '',                              //退款具体说明
+            returnReason: this.params.isEdit === true ? this.params.reason : '',                  //退款原因
+            remark: this.params.isEdit === true ? this.params.description : '',                              //退款具体说明
             imageArr: this.params.isEdit === true ? this.params.imgList : [],                           //选择的图片数组
             /** 编辑申请需要的售后详情id*/
             returnProductId: this.params.orderProductNo,
-            applyRefundAmount: 0//退款金额
+            applyRefundAmount:  this.params.isEdit === true ? this.params.refundPrice : 0,//退款金额,
+            remark: '',
+            editable: false
             /** 换货需要的数据*/
             // selectionData: {}, //规格数据
             // exchangeSpec: this.params.exchangeSpec,
@@ -62,7 +66,6 @@ class AfterSaleServicePage extends BasePage {
     }
 
     componentDidMount() {
-
         this.loadPageData();
         this._getReturnReason();
     }
@@ -73,7 +76,7 @@ class AfterSaleServicePage extends BasePage {
     };
     //**********************************ViewPart******************************************
     renderActiveProduct = () => {
-        return (this.state.activeProduct[this.params.pageType] === '' ? null :
+        return (this.state.activeProduct[this.params.pageType || 0] === '' ? null :
                 <View>
                     <View style={{
                         height: 20,
@@ -91,12 +94,13 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.productData.orderNum}
+                <UIText value={'订单编号：' + this.state.productData.orderProductNo}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
     };
     refundAndExchangeType = () => {
+        let { payAmount, freightAmount } = this.state.productData;
         switch (this.state.pageType) {
             case 0:
                 return (
@@ -110,9 +114,38 @@ class AfterSaleServicePage extends BasePage {
                         }}>
                             <UIText value={'退款金额：'}
                                     style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
-                            <UIText value={StringUtils.formatMoneyString(this.state.productData.refundPrice)}
+                            <UIText value={'¥'}
                                     style={{ color: DesignRule.mainColor, fontSize: 13 }}/>
+                            <TextInput value={this.state.applyRefundAmount + ''}
+                                       onChangeText={(text) => {
+                                           if (text.indexOf('.') === text.lastIndexOf('.')) {
+                                               if (text.indexOf('.') !== -1 && text.split('.').length > 1) {
+                                                   if (text.split('.')[1].length > 2) {
+                                                       return;
+                                                   }
+                                               }
+                                               text = text===''? '0': text;
+                                               if (parseFloat(text) <= this.state.productData.payAmount) {
+                                                   this.setState({ applyRefundAmount: text + '' });
+                                               }else {
+                                                   this.setState({ applyRefundAmount: this.state.productData.payAmount + ''});
+                                               }
+                                           }
+                                       }
+                                       }
+                                       style={{ color: DesignRule.mainColor, fontSize: 13, flex: 1, height: 40 }}
+                                       keyboardType={'numeric'}
+                                       editable={this.state.editable}
+                            />
                         </View>
+                        <UIText value={`最多¥${payAmount}，含发货邮费¥${freightAmount}`}
+                                style={{
+                                    height: DesignRule.autoSizeWidth(14),
+                                    marginLeft: DesignRule.margin_page,
+                                    color: DesignRule.textColor_instruction,
+                                    fontSize: DesignRule.fontSize_24,
+                                    marginTop: 6
+                                }}/>
                     </View>
                 );
                 break;
@@ -128,9 +161,38 @@ class AfterSaleServicePage extends BasePage {
                         }}>
                             <UIText value={'退款金额：'}
                                     style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
-                            <UIText value={StringUtils.formatMoneyString(this.state.productData.refundPrice)}
+                            <UIText value={'¥'}
                                     style={{ color: DesignRule.mainColor, fontSize: 13 }}/>
+                            <TextInput value={this.state.applyRefundAmount + ''}
+                                       onChangeText={(text) => {
+                                           if (text.indexOf('.') === text.lastIndexOf('.')) {
+                                               if (text.indexOf('.') !== -1 && text.split('.').length > 1) {
+                                                   if (text.split('.')[1].length > 2) {
+                                                       return;
+                                                   }
+                                               }
+                                               text = text===''? '0': text;
+                                               if (parseFloat(text) <= this.state.productData.payAmount) {
+                                                   this.setState({ applyRefundAmount: text + '' });
+                                               }else {
+                                                   this.setState({ applyRefundAmount: this.state.productData.payAmount + ''});
+                                               }
+                                           }
+                                       }
+                                       }
+                                       style={{ color: DesignRule.mainColor, fontSize: 13, flex: 1, height: 40 }}
+                                       keyboardType={'numeric'}
+                                       editable={this.state.editable}
+                            />
                         </View>
+                        <UIText value={`最多¥${payAmount}，含发货邮费¥${freightAmount}`}
+                                style={{
+                                    height: 14,
+                                    marginLeft: DesignRule.margin_page,
+                                    color: DesignRule.textColor_instruction,
+                                    fontSize: DesignRule.fontSize_24,
+                                    marginTop: 6
+                                }}/>
                     </View>
                 );
                 break;
@@ -166,11 +228,11 @@ class AfterSaleServicePage extends BasePage {
     renderOrderTime = () => {
         return (
             <View>
-                <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                    <UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.productData.orderCreateTime / 1000)}
-                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
-                </View>
-                {this.renderWideLine()}
+                {/*<View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>*/}
+                {/*<UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.productData.orderCreateTime / 1000)}*/}
+                {/*style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>*/}
+                {/*</View>*/}
+                {/*{this.renderWideLine()}*/}
                 <TouchableOpacity style={{
                     height: 48,
                     backgroundColor: 'white',
@@ -255,9 +317,9 @@ class AfterSaleServicePage extends BasePage {
             <GoodsItem
                 uri={productData.specImg}
                 goodsName={productData.productName}
-                salePrice={StringUtils.formatMoneyString(productData.price)}
-                category={productData.spec}
-                goodsNum={productData.num}
+                salePrice={StringUtils.formatMoneyString(productData.unitPrice)}
+                category={productData.specValues}
+                goodsNum={productData.quantity}
                 //onPress={() => this.jumpToProductDetailPage(this.params.pageData.productId)}
             />
         );
@@ -378,12 +440,25 @@ class AfterSaleServicePage extends BasePage {
     };
 
     loadPageData() {
-        // let that = this;
-        // OrderApi.subOrderLookDetial({ orderProductNo: this.params.orderProductNo }).then((result) => {
-        //     that.setState({ productData: result.data });
-        // }).catch(error => {
-        //
-        // });
+        let that = this;
+        this.$loadingShow();
+        OrderApi.subOrder({ orderProductNo: this.params.orderProductNo + '' }).then((result) => {
+            that.$loadingDismiss();
+            let productData = result.data || {};
+            let status = productData.status;
+            let editable = true;
+            let payAmount = productData.payAmount || 0;
+            if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
+                editable = false;
+            }
+            if (that.params.isEdit){
+                that.setState({ productData, editable});
+            }else {
+                that.setState({ productData, editable, applyRefundAmount: payAmount });
+            }
+        }).catch(error => {
+            that.$loadingDismiss();
+        });
     }
 
     /**
@@ -414,24 +489,25 @@ class AfterSaleServicePage extends BasePage {
     commit = () => {
         let imgList = '';
         for (let i = 0; i < this.state.imageArr.length; i++) {
-            if (i = 0) {
+            if (i === 0) {
                 imgList = this.state.imageArr[i];
                 // smallImgUrls = this.state.imageArr[i].imageThumbUrl;
             } else {
-                imgList = ',' + this.state.imageArr[i];
+                imgList =  imgList + ',' + this.state.imageArr[i];
                 // smallImgUrls = ',' + this.state.imageArr[i].imageThumbUrl;
             }
         }
-        let { orderProductNo, type, serviceNo, applyRefundAmount } = this.params;
+        let { orderProductNo, pageType, serviceNo } = this.params;
+        let {applyRefundAmount} = this.state;
         let { remark, returnReason } = this.state;
         let params = {
             imgList: imgList,
             description: remark,
             reason: returnReason,
-            type: type,
+            type: pageType + 1,
             applyRefundAmount: applyRefundAmount
         };
-        if (params.remark.length > 180) {
+        if (params.description.length > 180) {
             NativeModules.commModule.toast('输入的说明文字超出了180个');
             return;
         }
@@ -440,7 +516,7 @@ class AfterSaleServicePage extends BasePage {
             return;
         }
 
-        if (applyRefundAmount === 0){
+        if (applyRefundAmount === 0) {
             NativeModules.commModule.toast('售后的金额不能为0');
             return;
         }
@@ -448,7 +524,7 @@ class AfterSaleServicePage extends BasePage {
         /** 修改申请*/
         if (this.params.isEdit) {
             params.serviceNo = serviceNo;
-            OrderApi.updateApply(params).then((response) => {
+            OrderApi.afterSaleModify(params).then((response) => {
                 this.$loadingDismiss();
                 this.params.callBack && this.params.callBack();
                 this.$navigateBack();
@@ -461,11 +537,11 @@ class AfterSaleServicePage extends BasePage {
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;
             this.$loadingShow();
-            OrderApi.applyRefund(params).then((response) => {
+            OrderApi.afterSaleApply(params).then((response) => {
                 this.$loadingDismiss();
                 DeviceEventEmitter.emit('OrderNeedRefresh');
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: response.data.serviceNo
+                    serviceNo: response.serviceNo
                 });
 
             }).catch(e => {

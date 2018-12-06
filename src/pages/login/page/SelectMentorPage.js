@@ -94,7 +94,7 @@ export default class SelectMentorPage extends BasePage {
                     selectIndex: response.data.length - 1
                 });
             }
-          this.state.mentorData.length > 0 && this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
+          // this.state.mentorData.length > 0 && this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
         }).catch(error => {
             this.$loadingDismiss();
             bridge.$toast(error.msg);
@@ -163,14 +163,23 @@ export default class SelectMentorPage extends BasePage {
                     }}
                 >
                     <View
-                        style={{
+                        style={
+                            [{
                             height: 49,
                             width: ScreenUtils.width - 80,
-                            backgroundColor: DesignRule.mainColor,
                             justifyContent: 'center',
                             alignItems: 'center',
                             borderRadius: 25
-                        }}
+                        },
+                          this.state.mentorData&&this.state.mentorData.length >0?
+                                {
+                                    backgroundColor: DesignRule.mainColor,
+                                }
+                                :{
+                                    backgroundColor: DesignRule.bgColor_grayHeader,
+                                }
+                                ]
+                        }
                     >
                         <Text
                             style={{
@@ -310,11 +319,11 @@ export default class SelectMentorPage extends BasePage {
                         width: ScreenUtils.width / 5 * 2
                     }}
                 />
-                {
-                    this.state.isFirstLoad&&
-                    this.scrView &&
-                    this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
-                }
+                {/*{*/}
+                    {/*this.state.isFirstLoad&&*/}
+                    {/*this.scrView &&*/}
+                    {/*this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})*/}
+                {/*}*/}
 
             </ScrollView>
         );
@@ -334,17 +343,18 @@ export default class SelectMentorPage extends BasePage {
             }).catch(res => {
                 bridge.$toast(res.msg);
             });
-        } else {
-            let mentorData = this.state.mentorData[this.state.mentorData.length - 1];
-            LoginAPI.mentorBind({
-                code: mentorData.code
-            }).then(res => {
-                bridge.$toast(res.msg);
-                this.$navigateBackToHome();
-            }).catch(res => {
-                bridge.$toast(res.msg);
-            });
         }
+        // else {
+        //     let mentorData = this.state.mentorData[this.state.mentorData.length - 1];
+        //     LoginAPI.mentorBind({
+        //         code: mentorData.code
+        //     }).then(res => {
+        //         bridge.$toast(res.msg);
+        //         this.$navigateBackToHome();
+        //     }).catch(res => {
+        //         bridge.$toast(res.msg);
+        //     });
+        // }
 
     };
     jumpToWriteCodePage = () => {
@@ -375,7 +385,6 @@ export default class SelectMentorPage extends BasePage {
         return this.itemViewArr;
     };
     _toDetailPage = (itemData) => {
-
         this.$navigate('login/login/MentorDetailPage', {
             itemData: itemData
         });
