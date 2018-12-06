@@ -87,7 +87,9 @@ export default class HomeStarShopView extends Component {
             return <View/>;
         }
         shopList.map((shop, index) => {
-            cells.push(<Cell key={index} data={shop} store={shop.storeDTO} press={() => this._shopPress(shop)}/>);
+            if (shop.storeDTO) {
+                cells.push(<Cell key={index} data={shop} store={shop.storeDTO} press={() => this._shopPress(shop)}/>);
+            }
         });
         return <View style={styles.container}>
             <View style={styles.titleView}><Text style={styles.title}>明星店铺</Text></View>
