@@ -17,17 +17,21 @@
         },
         "dev": {
             "name": "开发",
-            "host": "http://devapi.sharegoodsmall.com/gateway"
+            "host": "http://devapi.sharegoodsmall.com/gateway",
+            "oss":"https://devcdn.sharegoodsmall.com"
         },
         "qa": {
             "name": "测试",
             "host": "https://testapi.sharegoodsmall.com/gateway",
-            "h5": "https://testh5.sharegoodsmall.com"
+            "h5": "https://testh5.sharegoodsmall.com",
+            "oss":"https://testcdn.sharegoodsmall.com"
+
         },
         "online": {
             "name": "生产",
             "host": "",
-            "h5": "https://h5.sharegoodsmall.com"
+            "h5": "https://h5.sharegoodsmall.com",
+            "oss":"https://cdn.sharegoodsmall.com"
         },
         "吴承骏Login": {
             "name": "测试环境_吴承骏",
@@ -64,7 +68,8 @@
         "pre_release": {
             "name": "UAT",
             "host": "https://uatapi.sharegoodsmall.com/gateway",
-            "h5": "https://uath5.sharegoodsmall.com"
+            "h5": "https://uath5.sharegoodsmall.com",
+            "oss":"https://uatcdn.sharegoodsmall.com"
         },
         "杨飞": {
             "name": "杨飞",
