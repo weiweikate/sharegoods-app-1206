@@ -246,17 +246,18 @@ let styles = StyleSheet.create({
         width: ScreenUtils.width - 2 * px2dp(15),
         flexDirection: 'row',
         alignItems: 'center',
-        borderColor: DesignRule.lineColor_inColorBg,
+        borderColor: '#ddd',
         borderWidth: ScreenUtils.onePixel,
-        borderRadius: px2dp(2),
-        marginBottom: px2dp(10)
+        borderRadius: px2dp(5),
+        marginBottom: px2dp(10),
+        overflow: 'hidden'
     },
     collectImg: {
         marginLeft: px2dp(16)
     },
     goodImg: {
-        height: px2dp(66),
-        width: px2dp(66)
+        height: px2dp(65),
+        width: px2dp(65)
     },
     goodDetail: {
         flex: 1,
