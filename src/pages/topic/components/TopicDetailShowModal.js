@@ -55,47 +55,48 @@ export default class TopicDetailShowModal extends Component {
                     left: 0,
                     bottom: 0,
                     right: 0,
-                    position: 'absolute'
+                    position: 'absolute',
+                    alignItems: 'center'
                 }}>
-                    <View style={{
-                        backgroundColor: 'white',
-                        top: ScreenUtils.px2dp(105),
-                        width: ScreenUtils.px2dp(290),
-                        height: ScreenUtils.px2dp(360),
-                        alignSelf: 'center',
-                        position: 'absolute',
-                        alignItems: 'center'
-                    }}>
-                        <ImageBackground source={topicShow} style={{
-                            width: ScreenUtils.px2dp(290),
-                            height: ScreenUtils.px2dp(71),
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>{this.state.tittle}</Text>
-                        </ImageBackground>
-                        <View style={{ flex: 1, alignItems: 'center' }}>
-                            {this.state.name?<Text style={{
-                                marginTop: ScreenUtils.px2dp(31),
-                                color: DesignRule.textColor_mainTitle,
-                                fontSize: ScreenUtils.px2dp(15), textAlign: 'center'
-                            }}>{`${this.state.name || ''}`}</Text>:null}
-
-                            <Text style={{
-                                marginTop: ScreenUtils.px2dp(25),
-                                color: DesignRule.textColor_secondTitle,
-                                fontSize: ScreenUtils.px2dp(14),
-                                paddingHorizontal: ScreenUtils.px2dp(32)
-                            }}>{`${this.state.content || ''}`}</Text>
-                        </View>
-
-                        <TouchableOpacity style={{
-                            top: 0,
-                            right: 0,
-                            position: 'absolute'
-                        }} onPress={this._onPress}>
+                    <View style={{ top: ScreenUtils.px2dp(115) }}>
+                        <TouchableOpacity
+                            style={{ alignSelf: 'flex-end', height: 40 }}
+                            onPress={this._onPress}>
                             <Image source={topicShowClose}/>
                         </TouchableOpacity>
+                        <View style={{
+                            backgroundColor: 'white',
+                            width: ScreenUtils.px2dp(290),
+                            height: ScreenUtils.px2dp(360),
+                            borderRadius: ScreenUtils.px2dp(5),
+                            alignSelf: 'center'
+                        }}>
+                            <ImageBackground source={topicShow} style={{
+                                width: ScreenUtils.px2dp(290),
+                                height: ScreenUtils.px2dp(71),
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }} resizeMode={'stretch'}>
+                                <Text style={{
+                                    color: 'white',
+                                    fontSize: ScreenUtils.px2dp(18)
+                                }}>{this.state.tittle}</Text>
+                            </ImageBackground>
+                            <View style={{ flex: 1, alignItems: 'center' }}>
+                                {this.state.name ? <Text style={{
+                                    marginTop: ScreenUtils.px2dp(31),
+                                    color: DesignRule.textColor_mainTitle,
+                                    fontSize: ScreenUtils.px2dp(15), textAlign: 'center'
+                                }}>{`${this.state.name || ''}`}</Text> : null}
+
+                                <Text style={{
+                                    marginTop: ScreenUtils.px2dp(25),
+                                    color: DesignRule.textColor_secondTitle,
+                                    fontSize: ScreenUtils.px2dp(14),
+                                    paddingHorizontal: ScreenUtils.px2dp(32)
+                                }}>{`${this.state.content || ''}`}</Text>
+                            </View>
+                        </View>
                     </View>
                 </View>
 
