@@ -14,9 +14,9 @@ import {
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
 import {
-    UIText
+    UIText,
+    UIImage
 } from '../../../components/ui';
-import UIImage from "@mr/image-placeholder";
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import EmptyUtils from '../../../utils/EmptyUtils';
@@ -41,7 +41,8 @@ export default class FillReturnLogisticsPage extends BasePage {
             //物流公司名称
             logisticsCompanyName: null,
             //物流单号
-            logisticsNum: ''
+            logisticsNum: '',
+            code: 0,
         };
         this._bindFunc();
     }
@@ -64,9 +65,9 @@ export default class FillReturnLogisticsPage extends BasePage {
                     <GoodsItem
                         uri={this.state.pageData.specImg}
                         goodsName={this.state.pageData.productName}
-                        salePrice={StringUtils.formatMoneyString(this.state.pageData.price)}
-                        category={this.state.pageData.spec}
-                        goodsNum={this.state.pageData.num}
+                        salePrice={StringUtils.formatMoneyString(this.state.pageData.unitPrice)}
+                        category={'规格：' + this.state.pageData.specValues}
+                        goodsNum={this.state.pageData.quantity}
                         // onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
                     />
                     <TouchableWithoutFeedback onPress={this.selectLogisticsCompany}>
@@ -124,8 +125,8 @@ export default class FillReturnLogisticsPage extends BasePage {
         });
     }
 
-    callBack(logisticsCompanyName, logisticsNum) {
-        this.setState({ logisticsCompanyName, logisticsNum });
+    callBack(logisticsCompanyName, code) {
+        this.setState({ logisticsCompanyName ,code});
     }
 
     submit() {
@@ -141,6 +142,7 @@ export default class FillReturnLogisticsPage extends BasePage {
             expressNo: this.state.logisticsNum,
             expressName: this.state.logisticsCompanyName,
             serviceNo: this.params.pageData.serviceNo,
+            expressCode: this.state.code
         };
         this.$loadingShow();
         OrderApi.afterSaleFillExpress(parmas).then(result => {

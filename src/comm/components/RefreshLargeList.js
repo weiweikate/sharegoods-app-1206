@@ -22,7 +22,7 @@ import {
     NativeModules
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { LargeList } from 'react-native-largelist';
+import { LargeList } from '@mr/largelist';
 import res from '../res';
 import DesignRule from 'DesignRule';
 
@@ -312,7 +312,11 @@ export default class RefreshLargeList extends React.Component {
             } else {
                 netData = result.data.data || [];
             }
-            if (netData.length < pageSize) {
+            let length = netData.length;
+            if (this.props.totalPageNum) {
+                length = this.props.totalPageNum(result)
+            }
+            if (length < pageSize) {
                 allLoadCompleted = true;
                 footerStatus = 'noMoreData';
             }
@@ -395,6 +399,7 @@ export default class RefreshLargeList extends React.Component {
                        renderEmpty={this._renderEmpty}
                        onLayout={this.onLayout.bind(this)}
                        renderItemSeparator={renderItemSeparator}
+                       color={DesignRule.mainColor}
             />
         );
     }
