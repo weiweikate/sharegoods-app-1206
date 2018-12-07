@@ -16,7 +16,6 @@
 
 /** 自定义 **/
 #import "JRLoadingAndToastTool.h"
-#import "EasyShowView.h"
 #import "JRBaseNavVC.h"
 #import "JRBaseVC.h"
 #import "JRServiceManager.h"
