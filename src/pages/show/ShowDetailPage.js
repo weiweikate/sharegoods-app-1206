@@ -248,7 +248,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: '#ddd',
         borderWidth: ScreenUtils.onePixel,
-        borderRadius: px2dp(2),
+        borderRadius: px2dp(5),
         marginBottom: px2dp(10),
         overflow: 'hidden'
     },
