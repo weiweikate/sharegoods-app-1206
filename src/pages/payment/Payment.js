@@ -135,7 +135,7 @@ export class Payment {
         try {
             Toast.showLoading()
             const result = yield PaymentApi.wachatpay({orderNo: this.orderNo})
-            
+
             if (result && result.code === 10000) {
                 const payInfo = JSON.parse(result.data.payInfo)
                 payInfo.partnerid = payInfo.mchId
@@ -209,7 +209,7 @@ export class Payment {
         return PayUtil.appWXPay(payInfo);
     }
 
-     //微信支付
+     //微信+平台
      @action wechatAndBalance = flow(function * (password, ref) {
         try {
             Toast.showLoading()
