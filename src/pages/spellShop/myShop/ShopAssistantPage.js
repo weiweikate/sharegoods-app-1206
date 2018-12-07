@@ -8,7 +8,7 @@ import {
     View,
     Text,
     SectionList,
-    StyleSheet
+    StyleSheet, Alert
 } from 'react-native';
 import SearchBar from '../../../components/ui/searchBar/SearchBar';
 
@@ -17,9 +17,11 @@ import MasterRow from './components/MasterRow';
 
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
-import ConfirmAlert from '../../../components/ui/ConfirmAlert';
+// import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
+// import ScreenUtils from '../../../utils/ScreenUtils';
+// import bridge from '../../../utils/bridge';
 
 const sectionsArr = [
     'master',
@@ -115,16 +117,34 @@ export default class AssistantListPage extends BasePage {
 
     // 删除具体店员
     _clickDeleteAssistant = (userId) => {
-        userId && this.refs.delAlert && this.refs.delAlert.show({
-            title: '确定要将此用户移除?',
-            confirmCallBack: () => {
-                SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
-                    this.loadPageData();
-                }).catch((error) => {
-                    this.$toastShow(error.msg);
-                });
-            }
-        });
+        userId &&  Alert.alert('提示', '确定要将此用户移除?',
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }
+                },
+                {
+                    text: '确定', onPress: () => {
+                        SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
+                            this.loadPageData();
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                        });
+                    }
+                }
+            ]
+        );
+
+        // userId && this.refs.delAlert && this.refs.delAlert.show({
+        //     title: '确定要将此用户移除?',
+        //     confirmCallBack: () => {
+        //         SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
+        //             this.loadPageData();
+        //         }).catch((error) => {
+        //             this.$toastShow(error.msg);
+        //         });
+        //     }
+        // });
     };
 
     _onChangeText = (searchText) => {
@@ -191,7 +211,7 @@ export default class AssistantListPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 {this._renderList()}
-                <ConfirmAlert ref="delAlert"/>
+                {/*<ConfirmAlert ref="delAlert"/>*/}
             </View>
         );
     }
