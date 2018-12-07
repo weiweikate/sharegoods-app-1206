@@ -60,29 +60,6 @@
 		5068361221379B78001AB175 /* UIView+captureSceen.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068357821379B78001AB175 /* UIView+captureSceen.m */; };
 		5068361321379B78001AB175 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5068357B21379B78001AB175 /* AlipaySDK.bundle */; };
 		5068361421379B78001AB175 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068357C21379B78001AB175 /* AlipaySDK.framework */; };
-		5068361521379B78001AB175 /* EasyAlertConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358021379B78001AB175 /* EasyAlertConfig.m */; };
-		5068361621379B78001AB175 /* EasyAlertGlobalConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358221379B78001AB175 /* EasyAlertGlobalConfig.m */; };
-		5068361721379B78001AB175 /* EasyAlertItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358421379B78001AB175 /* EasyAlertItem.m */; };
-		5068361821379B78001AB175 /* EasyAlertPart.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358621379B78001AB175 /* EasyAlertPart.m */; };
-		5068361921379B78001AB175 /* EasyAlertTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358821379B78001AB175 /* EasyAlertTypes.m */; };
-		5068361A21379B78001AB175 /* EasyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358A21379B78001AB175 /* EasyAlertView.m */; };
-		5068361B21379B78001AB175 /* EasyEmptyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358D21379B78001AB175 /* EasyEmptyConfig.m */; };
-		5068361C21379B78001AB175 /* EasyEmptyGlobalConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358F21379B78001AB175 /* EasyEmptyGlobalConfig.m */; };
-		5068361D21379B78001AB175 /* EasyEmptyPart.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359121379B78001AB175 /* EasyEmptyPart.m */; };
-		5068361E21379B78001AB175 /* EasyEmptyTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359321379B78001AB175 /* EasyEmptyTypes.m */; };
-		5068361F21379B78001AB175 /* EasyEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359521379B78001AB175 /* EasyEmptyView.m */; };
-		5068362021379B78001AB175 /* EasyLoadingConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359821379B78001AB175 /* EasyLoadingConfig.m */; };
-		5068362121379B78001AB175 /* EasyLoadingGlobalConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359A21379B78001AB175 /* EasyLoadingGlobalConfig.m */; };
-		5068362221379B78001AB175 /* EasyLoadingTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359C21379B78001AB175 /* EasyLoadingTypes.m */; };
-		5068362321379B78001AB175 /* EasyLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359E21379B78001AB175 /* EasyLoadingView.m */; };
-		5068362421379B78001AB175 /* EasyShowLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835A121379B78001AB175 /* EasyShowLabel.m */; };
-		5068362521379B78001AB175 /* EasyShowUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835A321379B78001AB175 /* EasyShowUtils.m */; };
-		5068362621379B78001AB175 /* UIView+EasyShowExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835A521379B78001AB175 /* UIView+EasyShowExt.m */; };
-		5068362721379B78001AB175 /* EasyTextBgView.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835A921379B78001AB175 /* EasyTextBgView.m */; };
-		5068362821379B78001AB175 /* EasyTextConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835AB21379B78001AB175 /* EasyTextConfig.m */; };
-		5068362921379B78001AB175 /* EasyTextGlobalConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835AD21379B78001AB175 /* EasyTextGlobalConfig.m */; };
-		5068362A21379B78001AB175 /* EasyTextTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835AF21379B78001AB175 /* EasyTextTypes.m */; };
-		5068362B21379B78001AB175 /* EasyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835B121379B78001AB175 /* EasyTextView.m */; };
 		5068362C21379B78001AB175 /* JRCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835BA21379B78001AB175 /* JRCacheManager.m */; };
 		5068362D21379B78001AB175 /* JRServiceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835BD21379B78001AB175 /* JRServiceManager.m */; };
 		5068362E21379B78001AB175 /* JRLoadingAndToastTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835C021379B78001AB175 /* JRLoadingAndToastTool.m */; };
@@ -132,6 +109,7 @@
 		CD11955721870DE1007F602E /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11955421870DB6007F602E /* libRCTVideo.a */; };
 		CD12CE2121ABFA2F00EFFC56 /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD12CE1A21ABFA1A00EFFC56 /* libRNCookieManagerIOS.a */; };
 		CD12CE2821ABFAC400EFFC56 /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD12CE2721ABFAAE00EFFC56 /* libReact-Native-Webview-Bridge.a */; };
+		CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */ = {isa = PBXBuildFile; fileRef = CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */; };
 		CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD14EA182183FC9A00480A06 /* XGImageCompression.m */; };
 		CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */; };
 		CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */; };
@@ -570,53 +548,6 @@
 		5068357821379B78001AB175 /* UIView+captureSceen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+captureSceen.m"; sourceTree = "<group>"; };
 		5068357B21379B78001AB175 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
 		5068357C21379B78001AB175 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
-		5068357F21379B78001AB175 /* EasyAlertConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertConfig.h; sourceTree = "<group>"; };
-		5068358021379B78001AB175 /* EasyAlertConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertConfig.m; sourceTree = "<group>"; };
-		5068358121379B78001AB175 /* EasyAlertGlobalConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertGlobalConfig.h; sourceTree = "<group>"; };
-		5068358221379B78001AB175 /* EasyAlertGlobalConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertGlobalConfig.m; sourceTree = "<group>"; };
-		5068358321379B78001AB175 /* EasyAlertItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertItem.h; sourceTree = "<group>"; };
-		5068358421379B78001AB175 /* EasyAlertItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertItem.m; sourceTree = "<group>"; };
-		5068358521379B78001AB175 /* EasyAlertPart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertPart.h; sourceTree = "<group>"; };
-		5068358621379B78001AB175 /* EasyAlertPart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertPart.m; sourceTree = "<group>"; };
-		5068358721379B78001AB175 /* EasyAlertTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertTypes.h; sourceTree = "<group>"; };
-		5068358821379B78001AB175 /* EasyAlertTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertTypes.m; sourceTree = "<group>"; };
-		5068358921379B78001AB175 /* EasyAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertView.h; sourceTree = "<group>"; };
-		5068358A21379B78001AB175 /* EasyAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertView.m; sourceTree = "<group>"; };
-		5068358C21379B78001AB175 /* EasyEmptyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyConfig.h; sourceTree = "<group>"; };
-		5068358D21379B78001AB175 /* EasyEmptyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyConfig.m; sourceTree = "<group>"; };
-		5068358E21379B78001AB175 /* EasyEmptyGlobalConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyGlobalConfig.h; sourceTree = "<group>"; };
-		5068358F21379B78001AB175 /* EasyEmptyGlobalConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyGlobalConfig.m; sourceTree = "<group>"; };
-		5068359021379B78001AB175 /* EasyEmptyPart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyPart.h; sourceTree = "<group>"; };
-		5068359121379B78001AB175 /* EasyEmptyPart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyPart.m; sourceTree = "<group>"; };
-		5068359221379B78001AB175 /* EasyEmptyTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyTypes.h; sourceTree = "<group>"; };
-		5068359321379B78001AB175 /* EasyEmptyTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyTypes.m; sourceTree = "<group>"; };
-		5068359421379B78001AB175 /* EasyEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyView.h; sourceTree = "<group>"; };
-		5068359521379B78001AB175 /* EasyEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyView.m; sourceTree = "<group>"; };
-		5068359721379B78001AB175 /* EasyLoadingConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyLoadingConfig.h; sourceTree = "<group>"; };
-		5068359821379B78001AB175 /* EasyLoadingConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyLoadingConfig.m; sourceTree = "<group>"; };
-		5068359921379B78001AB175 /* EasyLoadingGlobalConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyLoadingGlobalConfig.h; sourceTree = "<group>"; };
-		5068359A21379B78001AB175 /* EasyLoadingGlobalConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyLoadingGlobalConfig.m; sourceTree = "<group>"; };
-		5068359B21379B78001AB175 /* EasyLoadingTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyLoadingTypes.h; sourceTree = "<group>"; };
-		5068359C21379B78001AB175 /* EasyLoadingTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyLoadingTypes.m; sourceTree = "<group>"; };
-		5068359D21379B78001AB175 /* EasyLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyLoadingView.h; sourceTree = "<group>"; };
-		5068359E21379B78001AB175 /* EasyLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyLoadingView.m; sourceTree = "<group>"; };
-		506835A021379B78001AB175 /* EasyShowLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyShowLabel.h; sourceTree = "<group>"; };
-		506835A121379B78001AB175 /* EasyShowLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyShowLabel.m; sourceTree = "<group>"; };
-		506835A221379B78001AB175 /* EasyShowUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyShowUtils.h; sourceTree = "<group>"; };
-		506835A321379B78001AB175 /* EasyShowUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyShowUtils.m; sourceTree = "<group>"; };
-		506835A421379B78001AB175 /* UIView+EasyShowExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+EasyShowExt.h"; sourceTree = "<group>"; };
-		506835A521379B78001AB175 /* UIView+EasyShowExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+EasyShowExt.m"; sourceTree = "<group>"; };
-		506835A621379B78001AB175 /* EasyShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyShowView.h; sourceTree = "<group>"; };
-		506835A821379B78001AB175 /* EasyTextBgView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextBgView.h; sourceTree = "<group>"; };
-		506835A921379B78001AB175 /* EasyTextBgView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextBgView.m; sourceTree = "<group>"; };
-		506835AA21379B78001AB175 /* EasyTextConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextConfig.h; sourceTree = "<group>"; };
-		506835AB21379B78001AB175 /* EasyTextConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextConfig.m; sourceTree = "<group>"; };
-		506835AC21379B78001AB175 /* EasyTextGlobalConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextGlobalConfig.h; sourceTree = "<group>"; };
-		506835AD21379B78001AB175 /* EasyTextGlobalConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextGlobalConfig.m; sourceTree = "<group>"; };
-		506835AE21379B78001AB175 /* EasyTextTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextTypes.h; sourceTree = "<group>"; };
-		506835AF21379B78001AB175 /* EasyTextTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextTypes.m; sourceTree = "<group>"; };
-		506835B021379B78001AB175 /* EasyTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextView.h; sourceTree = "<group>"; };
-		506835B121379B78001AB175 /* EasyTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextView.m; sourceTree = "<group>"; };
 		506835B321379B78001AB175 /* JRCommDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRCommDefine.h; sourceTree = "<group>"; };
 		506835B421379B78001AB175 /* JRLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRLib.h; sourceTree = "<group>"; };
 		506835B521379B78001AB175 /* JRNotiOrKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRNotiOrKey.h; sourceTree = "<group>"; };
@@ -773,6 +704,8 @@
 		CD11954E21870DB6007F602E /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		CD12CDEB21ABFA1A00EFFC56 /* RNCookieManagerIOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCookieManagerIOS.xcodeproj; path = "../node_modules/@mr/react-native-cookies/ios/RNCookieManagerIOS.xcodeproj"; sourceTree = "<group>"; };
 		CD12CE2221ABFAAE00EFFC56 /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/react-native-webview-bridge/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
+		CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+PD.m"; sourceTree = "<group>"; };
+		CD13656621BA0F4200754B0E /* MBProgressHUD+PD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+PD.h"; sourceTree = "<group>"; };
 		CD14EA172183FC9A00480A06 /* XGImageCompression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XGImageCompression.h; sourceTree = "<group>"; };
 		CD14EA182183FC9A00480A06 /* XGImageCompression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XGImageCompression.m; sourceTree = "<group>"; };
 		CD70E065E4CA4080A9DF5465 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -1119,6 +1052,8 @@
 		5068357021379B78001AB175 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				CD13656621BA0F4200754B0E /* MBProgressHUD+PD.h */,
+				CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */,
 				CDA2F52F2171D7A0005FD4B3 /* UIViewController */,
 				CDA2F5062171D780005FD4B3 /* NSObject */,
 				5068357121379B78001AB175 /* Delegate */,
@@ -1155,7 +1090,6 @@
 			isa = PBXGroup;
 			children = (
 				5068357A21379B78001AB175 /* AliPay */,
-				5068357D21379B78001AB175 /* EasyShowView */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -1167,100 +1101,6 @@
 				5068357C21379B78001AB175 /* AlipaySDK.framework */,
 			);
 			path = AliPay;
-			sourceTree = "<group>";
-		};
-		5068357D21379B78001AB175 /* EasyShowView */ = {
-			isa = PBXGroup;
-			children = (
-				5068357E21379B78001AB175 /* EasyAlert */,
-				5068358B21379B78001AB175 /* EasyEmpty */,
-				5068359621379B78001AB175 /* EasyLoading */,
-				5068359F21379B78001AB175 /* EasyShowUtils */,
-				506835A621379B78001AB175 /* EasyShowView.h */,
-				506835A721379B78001AB175 /* EasyText */,
-			);
-			path = EasyShowView;
-			sourceTree = "<group>";
-		};
-		5068357E21379B78001AB175 /* EasyAlert */ = {
-			isa = PBXGroup;
-			children = (
-				5068357F21379B78001AB175 /* EasyAlertConfig.h */,
-				5068358021379B78001AB175 /* EasyAlertConfig.m */,
-				5068358121379B78001AB175 /* EasyAlertGlobalConfig.h */,
-				5068358221379B78001AB175 /* EasyAlertGlobalConfig.m */,
-				5068358321379B78001AB175 /* EasyAlertItem.h */,
-				5068358421379B78001AB175 /* EasyAlertItem.m */,
-				5068358521379B78001AB175 /* EasyAlertPart.h */,
-				5068358621379B78001AB175 /* EasyAlertPart.m */,
-				5068358721379B78001AB175 /* EasyAlertTypes.h */,
-				5068358821379B78001AB175 /* EasyAlertTypes.m */,
-				5068358921379B78001AB175 /* EasyAlertView.h */,
-				5068358A21379B78001AB175 /* EasyAlertView.m */,
-			);
-			path = EasyAlert;
-			sourceTree = "<group>";
-		};
-		5068358B21379B78001AB175 /* EasyEmpty */ = {
-			isa = PBXGroup;
-			children = (
-				5068358C21379B78001AB175 /* EasyEmptyConfig.h */,
-				5068358D21379B78001AB175 /* EasyEmptyConfig.m */,
-				5068358E21379B78001AB175 /* EasyEmptyGlobalConfig.h */,
-				5068358F21379B78001AB175 /* EasyEmptyGlobalConfig.m */,
-				5068359021379B78001AB175 /* EasyEmptyPart.h */,
-				5068359121379B78001AB175 /* EasyEmptyPart.m */,
-				5068359221379B78001AB175 /* EasyEmptyTypes.h */,
-				5068359321379B78001AB175 /* EasyEmptyTypes.m */,
-				5068359421379B78001AB175 /* EasyEmptyView.h */,
-				5068359521379B78001AB175 /* EasyEmptyView.m */,
-			);
-			path = EasyEmpty;
-			sourceTree = "<group>";
-		};
-		5068359621379B78001AB175 /* EasyLoading */ = {
-			isa = PBXGroup;
-			children = (
-				5068359721379B78001AB175 /* EasyLoadingConfig.h */,
-				5068359821379B78001AB175 /* EasyLoadingConfig.m */,
-				5068359921379B78001AB175 /* EasyLoadingGlobalConfig.h */,
-				5068359A21379B78001AB175 /* EasyLoadingGlobalConfig.m */,
-				5068359B21379B78001AB175 /* EasyLoadingTypes.h */,
-				5068359C21379B78001AB175 /* EasyLoadingTypes.m */,
-				5068359D21379B78001AB175 /* EasyLoadingView.h */,
-				5068359E21379B78001AB175 /* EasyLoadingView.m */,
-			);
-			path = EasyLoading;
-			sourceTree = "<group>";
-		};
-		5068359F21379B78001AB175 /* EasyShowUtils */ = {
-			isa = PBXGroup;
-			children = (
-				506835A021379B78001AB175 /* EasyShowLabel.h */,
-				506835A121379B78001AB175 /* EasyShowLabel.m */,
-				506835A221379B78001AB175 /* EasyShowUtils.h */,
-				506835A321379B78001AB175 /* EasyShowUtils.m */,
-				506835A421379B78001AB175 /* UIView+EasyShowExt.h */,
-				506835A521379B78001AB175 /* UIView+EasyShowExt.m */,
-			);
-			path = EasyShowUtils;
-			sourceTree = "<group>";
-		};
-		506835A721379B78001AB175 /* EasyText */ = {
-			isa = PBXGroup;
-			children = (
-				506835A821379B78001AB175 /* EasyTextBgView.h */,
-				506835A921379B78001AB175 /* EasyTextBgView.m */,
-				506835AA21379B78001AB175 /* EasyTextConfig.h */,
-				506835AB21379B78001AB175 /* EasyTextConfig.m */,
-				506835AC21379B78001AB175 /* EasyTextGlobalConfig.h */,
-				506835AD21379B78001AB175 /* EasyTextGlobalConfig.m */,
-				506835AE21379B78001AB175 /* EasyTextTypes.h */,
-				506835AF21379B78001AB175 /* EasyTextTypes.m */,
-				506835B021379B78001AB175 /* EasyTextView.h */,
-				506835B121379B78001AB175 /* EasyTextView.m */,
-			);
-			path = EasyText;
 			sourceTree = "<group>";
 		};
 		506835B221379B78001AB175 /* Macros */ = {
@@ -2487,64 +2327,42 @@
 				5068363821379B78001AB175 /* SGQRCodeHelperTool.m in Sources */,
 				5068361021379B78001AB175 /* AppDelegate+ConfigLib.m in Sources */,
 				CDA2F57821744443005FD4B3 /* ShareImageMaker.m in Sources */,
-				5068362721379B78001AB175 /* EasyTextBgView.m in Sources */,
 				5077FCE621A504C5003B860D /* RSAManager.m in Sources */,
-				5068361D21379B78001AB175 /* EasyEmptyPart.m in Sources */,
-				5068361921379B78001AB175 /* EasyAlertTypes.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				5068363E21379B78001AB175 /* QYChatModule.m in Sources */,
 				5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */,
 				5077FCE221A4FE37003B860D /* NSData+Base64.m in Sources */,
+				CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */,
 				5068360F21379B78001AB175 /* JRBaseVC.m in Sources */,
-				5068362B21379B78001AB175 /* EasyTextView.m in Sources */,
 				50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */,
 				CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */,
 				CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */,
-				5068362021379B78001AB175 /* EasyLoadingConfig.m in Sources */,
 				CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */,
-				5068361E21379B78001AB175 /* EasyEmptyTypes.m in Sources */,
-				5068361521379B78001AB175 /* EasyAlertConfig.m in Sources */,
 				5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */,
 				5068363621379B78001AB175 /* JRAddressPickView.m in Sources */,
 				CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
-				5068362821379B78001AB175 /* EasyTextConfig.m in Sources */,
-				5068362621379B78001AB175 /* UIView+EasyShowExt.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
 				5068363321379B78001AB175 /* LoginAndShareModule.m in Sources */,
 				5077FC2721A401E3003B860D /* RSAEncryptor.m in Sources */,
-				5068362121379B78001AB175 /* EasyLoadingGlobalConfig.m in Sources */,
 				CDAB6D1F219AC5F800DE6716 /* MRWaveViewManager.m in Sources */,
 				5068363B21379B78001AB175 /* WCQRCodeScanningVC.m in Sources */,
-				5068362421379B78001AB175 /* EasyShowLabel.m in Sources */,
-				5068361A21379B78001AB175 /* EasyAlertView.m in Sources */,
-				5068361B21379B78001AB175 /* EasyEmptyConfig.m in Sources */,
 				5068360E21379B78001AB175 /* JRBaseNavVC.m in Sources */,
 				5077FDCA21A79326003B860D /* JSPushManager.m in Sources */,
 				5068363121379B78001AB175 /* commModule.m in Sources */,
 				5068362F21379B78001AB175 /* JRShareManager.m in Sources */,
-				5068362921379B78001AB175 /* EasyTextGlobalConfig.m in Sources */,
 				5068362D21379B78001AB175 /* JRServiceManager.m in Sources */,
-				5068362321379B78001AB175 /* EasyLoadingView.m in Sources */,
-				5068361C21379B78001AB175 /* EasyEmptyGlobalConfig.m in Sources */,
 				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,
 				033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */,
-				5068361621379B78001AB175 /* EasyAlertGlobalConfig.m in Sources */,
 				5068363421379B78001AB175 /* JRPay.m in Sources */,
 				5068363C21379B78001AB175 /* QRCodeModule.m in Sources */,
-				5068361721379B78001AB175 /* EasyAlertItem.m in Sources */,
-				5068361F21379B78001AB175 /* EasyEmptyView.m in Sources */,
-				5068362221379B78001AB175 /* EasyLoadingTypes.m in Sources */,
-				5068362521379B78001AB175 /* EasyShowUtils.m in Sources */,
 				5068363021379B78001AB175 /* CachesModule.m in Sources */,
 				CDCB5BDA2196DF71006B5F4E /* UIImage+Util.m in Sources */,
 				5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */,
 				CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */,
 				5068362C21379B78001AB175 /* JRCacheManager.m in Sources */,
 				5068363721379B78001AB175 /* PickerManager.m in Sources */,
-				5068362A21379B78001AB175 /* EasyTextTypes.m in Sources */,
-				5068361821379B78001AB175 /* EasyAlertPart.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
