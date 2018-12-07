@@ -37,15 +37,14 @@ export default class PaymentMethodPage extends BasePage {
             //需要支付的金额
             shouldPayMoney: this.params.amounts ? this.params.amounts : 0,
             //订单支付的参数
-            orderNum: this.params.orderNum ? this.params.orderNum : 0,
-            payPromotionSuccess: false
+            orderNum: this.params.orderNum ? this.params.orderNum : 0
         };
         this.payment = new Payment();
         if (parseFloat(this.state.shouldPayMoney).toFixed(2) === 0.00) {
             this.payment.selectedBalace = true;
         }
         this.payment.updateUserData()
-        this.payment.orderNo = this.params.orderNum || 'P181207152425000001'
+        this.payment.orderNo = this.params.orderNum
     }
 
     $NavBarLeftPressed = () => {
@@ -146,6 +145,7 @@ export default class PaymentMethodPage extends BasePage {
                 this.setState({ isShowPaymentModal: true });
                 return;
             }
+            this.setState({password: ''})
             if (selectedTypes.type === paymentType.alipay) {
                 this.payment.ailpayAndBalance(this.state.password, this.paymentResultView)
             }
