@@ -46,6 +46,7 @@ export default class ShowDetailPage extends BasePage {
         this.state = {
             loadingState: PageLoadingState.loading,
         }
+        
     }
 
     componentWillMount() {
@@ -61,7 +62,7 @@ export default class ShowDetailPage extends BasePage {
                     })
                 }
             }
-        );
+        )
     }
 
     componentWillUnmount() {
@@ -103,6 +104,24 @@ export default class ShowDetailPage extends BasePage {
         this.shareModal && this.shareModal.open();
     }
 
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y
+        let height = ScreenUtils.width
+        let shadowOpacity = 0
+        console.log('_onScroll', Y)
+        if (Y < height) {
+            shadowOpacity = Y / height
+        } else {
+            shadowOpacity = 1;
+        }
+        this._whiteNavRef.setNativeProps({
+            opacity:shadowOpacity
+        });
+        this._blackNavRef.setNativeProps({
+            opacity:1 - shadowOpacity
+        })
+    }
+
     _render() {
         const { detail, isCollecting } = this.showDetailModule;
         if (!detail) {
@@ -121,6 +140,7 @@ export default class ShowDetailPage extends BasePage {
             <ScrollView
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
+                onScroll={this._onScroll.bind(this)}
             >
             {
                 detail.imgs
@@ -173,14 +193,32 @@ export default class ShowDetailPage extends BasePage {
                     <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                <Image source={res.button.show_detail_back}/>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.shareView} onPress={() => {
-                this._goToShare();
-            }}>
-                <Image source={res.button.show_share}/>
-            </TouchableOpacity>
+            <View style={styles.whiteNav} ref={(ref)=> {this._whiteNavRef = ref}} opacity={0}>
+                <View style={styles.navTitle}>
+                    <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
+                        <Image source={res.back}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1}}/>
+                    <TouchableOpacity style={styles.shareView} onPress={() => {
+                        this._goToShare();
+                    }}>
+                        <Image source={res.more}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <View style={styles.nav} ref={(ref)=> {this._blackNavRef = ref}}>
+                <View style={styles.navTitle}>
+                    <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
+                        <Image source={res.button.show_detail_back}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1}}/>
+                    <TouchableOpacity style={styles.shareView} onPress={() => {
+                        this._goToShare();
+                    }}>
+                        <Image source={res.button.show_share}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             miniProgramJson={{
@@ -223,40 +261,23 @@ let styles = StyleSheet.create({
         borderTopColor: '#ddd',
         justifyContent: 'space-between'
     },
-    backView: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: px2dp(50),
-        height: px2dp(43) + ScreenUtils.statusBarHeight,
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end'
-    },
-    shareView: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        width: px2dp(50),
-        height: px2dp(43) + ScreenUtils.statusBarHeight,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end'
-    },
     goodsItem: {
         height: px2dp(66),
         width: ScreenUtils.width - 2 * px2dp(15),
         flexDirection: 'row',
         alignItems: 'center',
-        borderColor: DesignRule.lineColor_inColorBg,
+        borderColor: '#ddd',
         borderWidth: ScreenUtils.onePixel,
-        borderRadius: px2dp(2),
-        marginBottom: px2dp(10)
+        borderRadius: px2dp(5),
+        marginBottom: px2dp(10),
+        overflow: 'hidden'
     },
     collectImg: {
         marginLeft: px2dp(16)
     },
     goodImg: {
-        height: px2dp(66),
-        width: px2dp(66)
+        height: px2dp(65),
+        width: px2dp(65)
     },
     goodDetail: {
         flex: 1,
@@ -348,6 +369,41 @@ let styles = StyleSheet.create({
     },
     btnLoading: {
         marginLeft: px2dp(26)
-    }
+    },
+    nav: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: ScreenUtils.width,
+        height: px2dp(44) + ScreenUtils.statusBarHeight,
+        paddingTop: ScreenUtils.statusBarHeight
+    },
+    whiteNav: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: ScreenUtils.width,
+        height: px2dp(44) + ScreenUtils.statusBarHeight,
+        paddingTop: ScreenUtils.statusBarHeight,
+        backgroundColor: '#fff'
+    },
+    navTitle: {
+        height: px2dp(44),
+        width: ScreenUtils.width,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    backView: {
+        width: px2dp(50),
+        height: px2dp(44),
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    shareView: {
+        width: px2dp(50),
+        height: px2dp(44),
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 });
 

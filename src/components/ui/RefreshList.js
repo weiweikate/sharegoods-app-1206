@@ -6,8 +6,8 @@ import {
     Text,
     ActivityIndicator,
     TouchableOpacity,
-    Image
-} from 'react-native';
+    Image, RefreshControl
+} from "react-native";
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../../comm/res';
@@ -130,12 +130,13 @@ export default class RefreshList extends Component {
                     showsVerticalScrollIndicator={false}
                     renderItem={renderItem}
                     onEndReached={this.props.onLoadMore ? this.onEndReached : null}
-                    onRefresh={onRefresh ? this.refresh : null}
                     extraData={extraData}
-                    refreshing={this.state.refreshing}
                     onEndReachedThreshold={0.1}
                     ListFooterComponent={this.renderFooter}
                     keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
+                    refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                    onRefresh={onRefresh ? this.refresh : null}
+                                                    colors={[DesignRule.mainColor]}/>}
                     ref={'flatlist'}
                     {...attributes}
                 />

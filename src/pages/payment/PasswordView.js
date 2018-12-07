@@ -27,7 +27,6 @@ export default class PasswordView extends Component {
     }
 
     inputText(value) {
-        console.log('inputText', value)
         if (value.length === 6) {
             this.props.finishedAction(value)
         }
@@ -51,14 +50,14 @@ export default class PasswordView extends Component {
                     <View style={styles.header}>
                         <View style={styles.closeButton}/>
                         <View style={styles.titleView}>
-                            <Text style={styles.title}>平台支付密码</Text>
+                            <Text allowFontScaling={false} style={styles.title}>平台支付密码</Text>
                         </View>
                         <TouchableOpacity style={styles.closeButton} onPress={()=>{this.props.closeAction()}}>
                             <Image source={closeImg}/>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.line}/>
-                    <Text style={styles.input}>请输入平台的支付密码</Text>
+                    <Text style={styles.input} allowFontScaling={false}>请输入平台的支付密码</Text>
                     <View style={{flex: 1}}/>
                     <PasswordInput
                         style={styles.password}
@@ -66,7 +65,7 @@ export default class PasswordView extends Component {
                         onChange={value => this.inputText(value)}
                     />
                     <TouchableOpacity style={styles.forget} onPress={()=>this.forgetAction()}>
-                        <Text style={styles.forgetText}>忘记支付密码</Text>
+                        <Text style={styles.forgetText} allowFontScaling={false}>忘记支付密码</Text>
                     </TouchableOpacity>
                 </View>
             </View>
