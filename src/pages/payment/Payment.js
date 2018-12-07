@@ -93,38 +93,6 @@ export class Payment {
         }
     })
 
-    //预支付
-    @action perpay  = flow(function * (params) {
-        try {
-            const res = yield PaymentApi.prePay(params)
-            return res
-        } catch (error) {
-            // Toast.$toast(error.msg);
-            console.log(error)
-            return error
-        }
-    })
-
-    //继续支付
-    @action continuePay = flow(function *(params) {
-        try {
-            const res = yield PaymentApi.continuePay(params)
-            return res
-        } catch (error) {
-            console.log(error)
-        }
-    })
-
-
-    @action continueToPay = flow(function * (params) {
-        try {
-            const res = yield PaymentApi.continueToPay(params)
-            return res
-        } catch (error) {
-            console.log(error)
-        }
-    })
-
     //支付宝支付
     @action alipay = flow(function * (ref) {
         try {
