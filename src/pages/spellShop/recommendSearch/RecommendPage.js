@@ -77,21 +77,29 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
-        Storage.get('storage_MrLocation', {}).then((value) => {
-                if (value) {
-                    this.state.locationResult = value;
-                    this._loadPageData();
-                } else {
-                    geolocation.getLastLocation().then(result => {
-                        this.state.locationResult = result;
-                        Storage.set('storage_MrLocation', result);
-                        this._loadPageData();
-                    });
-                }
-            }
-        );
+        this._getLocationWithData();
         this._getSwipers();
     }
+
+    _getLocationWithData = () => {
+        Storage.get('storage_MrLocation', {}).then((value) => {
+                value = value || {};
+                //有缓存加载缓存
+                if (value.latitude) {
+                    this.state.locationResult = value;
+                    this._loadPageData();
+                }
+                //更新定位数据  没缓存的话加载数据
+                geolocation.getLastLocation().then(result => {
+                    this.state.locationResult = result;
+                    Storage.set('storage_MrLocation', result);
+                    if (!value.latitude) {
+                        this._loadPageData();
+                    }
+                });
+            }
+        );
+    };
 
     _getSize = () => {
         const segmentIndex = this.state.segmentIndex;
@@ -101,7 +109,7 @@ export default class RecommendPage extends BasePage {
         this.setState({
             refreshing: true
         }, () => {
-            this._loadPageData();
+            this._getLocationWithData();
             this._getSwipers();
             SpellStatusModel.getUser(0);
         });
@@ -230,7 +238,7 @@ export default class RecommendPage extends BasePage {
             loadingState: PageLoadingState.loading,
             segmentIndex: index
         }, () => {
-            this._loadPageData();
+            this._getLocationWithData();
         });
     };
 

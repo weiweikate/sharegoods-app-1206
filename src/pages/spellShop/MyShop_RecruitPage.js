@@ -33,7 +33,7 @@ export default class MyShop_RecruitPage extends BasePage {
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
             data: {},
-            isHome: !this.params.storeId,
+            isHome: !this.params.storeId
         };
     }
 
@@ -62,7 +62,7 @@ export default class MyShop_RecruitPage extends BasePage {
                 const { state } = payload;
 
                 if (spellStatusModel.permissionsErr === 'permissionsErr' || spellStatusModel.permissionsErr === '12') {
-                    this.ConfirmAlert.show({
+                    this.ConfirmAlert && this.ConfirmAlert.show({
                         title: `定位服务未开启，请进入系统【设置】【隐私】【定位服务】中打开开关，并且允许秀购使用定位服务`,
                         closeCallBack: () => {
                             this.$navigateBackToHome();
@@ -106,15 +106,6 @@ export default class MyShop_RecruitPage extends BasePage {
         );
     }
 
-    componentWillUnmount() {
-        AppState.removeEventListener('change', this._handleAppStateChange);
-        this.willFocusSubscription && this.willFocusSubscription.remove();
-    }
-
-    componentDidMount() {
-        this._loadPageData();
-    }
-
     _handleAppStateChange = (nextAppState) => {
         if (nextAppState === 'active') {
             //初始化init  定位存储  和app变活跃 会定位
@@ -127,6 +118,15 @@ export default class MyShop_RecruitPage extends BasePage {
             );
         }
     };
+
+    componentDidMount() {
+        this._loadPageData();
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
 
     _loadPageData = () => {
         const { isHome } = this.state;
