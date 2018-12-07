@@ -22,7 +22,8 @@
         "qa": {
             "name": "测试",
             "host": "https://testapi.sharegoodsmall.com/gateway",
-            "h5": "https://testh5.sharegoodsmall.com"
+            "h5": "https://testh5.sharegoodsmall.com",
+            "oss":"http://mr-uat-sg.oss-cn-hangzhou.aliyuncs.com"
         },
         "online": {
             "name": "生产",
