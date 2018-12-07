@@ -15,8 +15,6 @@
  */
 
 #import "AppDelegate+ConfigLib.h"
-#import "EasyTextGlobalConfig.h"
-#import "EasyLoadingGlobalConfig.h"
 #import "JRPay.h"
 #import <QYSDK.h>
 #import <UMShare/UMShare.h>
@@ -30,7 +28,6 @@
 {
   [self configUM];
   [self configQYLib];
-  [self configGlobalToastAndLoading];
   [self IQKeyboardManager];
 }
 
@@ -44,27 +41,7 @@
   manager.shouldResignOnTouchOutside = YES;
 }
 
--(void)configGlobalToastAndLoading{
-  EasyTextGlobalConfig *textGlobalConfig = [EasyTextGlobalConfig shared];
-  textGlobalConfig.superReceiveEvent = YES;
-  textGlobalConfig.animationType = TextAnimationTypeFade;
-  textGlobalConfig.bgColor = [UIColor blackColor];
-  textGlobalConfig.titleFont = [UIFont systemFontOfSize:13];
-  textGlobalConfig.titleColor = [UIColor whiteColor];
-  textGlobalConfig.shadowColor = [UIColor clearColor];
-  textGlobalConfig.textShowTimeBlock = ^float(NSString * _Nonnull text) {
-    return 2.f;//全部设置成两秒，后期根据需求再改
-  };
-  
-  EasyLoadingGlobalConfig * loadingGlobalConfig = [EasyLoadingGlobalConfig shared];
-  loadingGlobalConfig.animationType = LoadingAnimationTypeNone;
-  loadingGlobalConfig.showOnWindow = YES;
-  loadingGlobalConfig.superReceiveEvent = NO;
-  loadingGlobalConfig.tintColor = [UIColor whiteColor];
-  loadingGlobalConfig.LoadingType = LoadingShowTypeIndicatorLeft;
-  loadingGlobalConfig.textFont = [UIFont systemFontOfSize:13];
-  loadingGlobalConfig.bgColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.9];
-}
+
 -(void)configUM{
   [UMConfigure initWithAppkey:KUmSocialAppkey channel:nil];
   [[UMSocialManager defaultManager] openLog:YES];
