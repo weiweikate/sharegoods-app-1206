@@ -3,8 +3,6 @@ const api = {
     prePay: '/order/prePay',
     //支付成功回调
     paySuccess: '/order/paySuccess',
-    //取消订单
-    cancelOrder: '/order/cancelOrder',
     //继续支付
     continuePay:'/order/payRecord/continuePay',
     //继续去支付
@@ -14,11 +12,19 @@ const api = {
     //店铺保证金
     storePayment:['/user/store/deposit', {method:'get'}],
     //支付宝查账
-    alipayCheck: ['/aliPay/aliPayQuery', {method:'get'}],
+    alipayCheck: ['http://172.16.10.178:9090/gateway/pay/alipay/query', {method:'get'}],
     //微信支付查账
-    wechatCheck: ['/weChatPay/weChatQuery', {method: 'get'}],
-    //推广套餐
-    payPromotion:['/promotion/promotionPromoter/pay',{method:'get'}]
+    wechatCheck: ['http://172.16.10.178:9090/gateway/pay/wxpay/query', {method: 'get'}],
+    //支付宝支付:
+    alipay: ['http://172.16.10.178:9090/gateway/pay/alipay'],
+    //微信支付
+    wachatpay: ['http://172.16.10.178:9090/gateway/pay/wxpay'],
+    //支付宝+平台
+    alipayAndBalance: ['http://172.16.10.178:9090/gateway/pay/ali-sg-pay'],
+    //微信+平台
+    wechatAndBalance: ['http://172.16.10.178:9090/gateway/pay/wx-sg-pay'],
+    //平台
+    balance: ['http://172.16.10.178:9090/gateway/pay/sgpay']
 };
 import ApiUtils from '../../api/network/ApiUtils';
 
