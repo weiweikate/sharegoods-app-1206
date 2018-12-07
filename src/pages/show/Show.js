@@ -1,7 +1,6 @@
 import { observable, computed, action, flow } from 'mobx';
 import ShowApi from './ShowApi';
-import Toast from '../../utils/bridge';
-import {Platform} from 'react-native'
+import Toast from '../../utils/bridge'
 
 //推广 1：精选 2：热门 3：推荐 4：最新 全部则不传
 export const tag = {
@@ -204,8 +203,7 @@ export class ShowRecommendModules {
     }
 
     @action fetchRecommendList = (params, currentDate, page) => {
-        let size = Platform.OS === 'ios' ? 20 : 10
-        return ShowApi.showQuery({...params, page: page, size: size}).then(result => {
+        return ShowApi.showQuery({...params, page: page, size: 20}).then(result => {
             this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 this.page = 2

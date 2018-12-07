@@ -32,11 +32,11 @@ export default class ShowHotView extends Component {
 
     infiniting(done) {
         console.log('infiniting');
+        const {isFetching} = this.state
+        if (isFetching) {
+            return
+        }
         setTimeout(() => {
-            const {isFetching} = this.state
-            if (isFetching) {
-                return
-            }
             this.setState({ isFetching: true})
             this.recommendModules.getMoreRecommendList().then(data => {
                 console.log('infiniting'.data);
@@ -67,10 +67,11 @@ export default class ShowHotView extends Component {
         this.recommendModules.isEnd = false
         setTimeout(() => {
             this.waterfall && this.waterfall.clear();
+            this.waterfall.index = 1
+            this.waterfall.itemQueue = [];
             this.recommendModules.fetchRecommendList({}, currentDate, 1).then(data => {
                 this.setState({ isFetching: false})
-                this.waterfall.index = 1
-                this.waterfall.addItems(data);
+                this.waterfall.addItems(data)
             });
             done && done();
         }, 1000);
