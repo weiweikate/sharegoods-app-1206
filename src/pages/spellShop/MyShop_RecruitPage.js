@@ -34,7 +34,6 @@ export default class MyShop_RecruitPage extends BasePage {
             netFailedInfo: {},
             data: {},
             isHome: !this.params.storeId,
-            permissionsErr: ''
         };
     }
 
@@ -62,7 +61,7 @@ export default class MyShop_RecruitPage extends BasePage {
             payload => {
                 const { state } = payload;
 
-                if (this.state.permissionsErr === 'permissionsErr' || this.state.permissionsErr === '12') {
+                if (spellStatusModel.permissionsErr === 'permissionsErr' || spellStatusModel.permissionsErr === '12') {
                     this.ConfirmAlert.show({
                         title: `定位服务未开启，请进入系统【设置】【隐私】【定位服务】中打开开关，并且允许秀购使用定位服务`,
                         closeCallBack: () => {
@@ -72,21 +71,18 @@ export default class MyShop_RecruitPage extends BasePage {
                             this.$navigateBackToHome();
                             if (ScreenUtils.isIOS) {
                                 Linking.openURL('app-settings:');
-                            }else {
-                                if(this.state.permissionsErr === '12'){
-                                    geolocation.goLocationSetting()
-                                }else {
+                            } else {
+                                if (spellStatusModel.permissionsErr === '12') {
+                                    geolocation.goLocationSetting();
+                                } else {
                                     PermissionsAndroid.request(
                                         PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
                                         {
-                                            title: 'Cool Photo App Camera Permission',
                                             message:
-                                            'Cool Photo App needs access to your camera ' +
-                                            'so you can take awesome pictures.',
-                                            buttonNeutral: 'Ask Me Later',
-                                            buttonNegative: 'Cancel',
-                                            buttonPositive: 'OK',
-                                        },
+                                                '定位服务未开启，请进入系统-设置-应用-应用管理-权限管理中打开开关，并且允许秀购使用定位服务',
+                                            buttonNegative: '取消',
+                                            buttonPositive: '确定'
+                                        }
                                     );
                                 }
                             }
@@ -95,7 +91,6 @@ export default class MyShop_RecruitPage extends BasePage {
                         rightText: '去设置'
                     });
                 }
-
 
 
                 if (!this.unFirst) {//第一次不多余刷新user
@@ -123,11 +118,11 @@ export default class MyShop_RecruitPage extends BasePage {
     _handleAppStateChange = (nextAppState) => {
         if (nextAppState === 'active') {
             //初始化init  定位存储  和app变活跃 会定位
-            this.state.permissionsErr = '';
+            spellStatusModel.permissionsErr = '';
             geolocation.getLastLocation().then(result => {
                 Storage.set('storage_MrLocation', result);
             }).catch((error) => {
-                    this.state.permissionsErr = error.code;
+                    spellStatusModel.permissionsErr = error.code;
                 }
             );
         }

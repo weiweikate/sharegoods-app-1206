@@ -1,6 +1,7 @@
 import { observable, computed, action, flow } from 'mobx';
 import ShowApi from './ShowApi';
 import Toast from '../../utils/bridge';
+import {Platform} from 'react-native'
 
 //推广 1：精选 2：热门 3：推荐 4：最新 全部则不传
 export const tag = {
@@ -202,25 +203,28 @@ export class ShowRecommendModules {
         return this.fetchRecommendList(params, currentDate, this.page)
     }
 
-    @action fetchRecommendList = (params, currentDate, page) => ShowApi.showQuery({...params, page: page, size: 20}).then(result => {
-        this.isRefreshing = false
-        if (parseInt(result.code, 0) === 10000) {
-            this.page = 2
-            let data = result.data.data
-            if (data && data.length > 0) {
-                data.map(value => {
-                    value.currentDate = currentDate
-                })
-                return Promise.resolve(data)
+    @action fetchRecommendList = (params, currentDate, page) => {
+        let size = Platform.OS === 'ios' ? 20 : 10
+        return ShowApi.showQuery({...params, page: page, size: size}).then(result => {
+            this.isRefreshing = false
+            if (parseInt(result.code, 0) === 10000) {
+                this.page = 2
+                let data = result.data.data
+                if (data && data.length > 0) {
+                    data.map(value => {
+                        value.currentDate = currentDate
+                    })
+                    return Promise.resolve(data)
+                } else {
+                    return Promise.resolve([])
+                }
             } else {
-                return Promise.resolve([])
+                return Promise.reject('获取列表错误')
             }
-        } else {
-            return Promise.reject('获取列表错误')
-        }
-    }).catch(error => {
-        return Promise.reject(error)
-    })
+        }).catch(error => {
+            return Promise.reject(error)
+        })
+    }
 
     @action getMoreRecommendList = (params) => {
         if (this.isEnd) {

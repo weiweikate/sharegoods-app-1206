@@ -132,6 +132,7 @@ export default class EmptyView extends Component {
             refreshing={this.props.isRefresh}
             onRefresh={this.props.onRefresh}
             progressBackgroundColor="white"
+            colors={[DesignRule.mainColor]}
         />;
     };
 
