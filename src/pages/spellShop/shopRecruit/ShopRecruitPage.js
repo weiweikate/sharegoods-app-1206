@@ -7,7 +7,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Image,
-    RefreshControl
+    RefreshControl, Alert
 } from 'react-native';
 
 
@@ -21,7 +21,7 @@ import ReportAlert from '../components/ReportAlert';
 
 // 图片资源
 import spellStatusModel from '../model/SpellStatusModel';
-import ConfirmAlert from '../../../components/ui/ConfirmAlert';
+// import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
@@ -205,23 +205,47 @@ export default class ShopRecruitPage extends BasePage {
 
     //加入店铺
     _joinStore = () => {
-        this.refs.delAlert && this.refs.delAlert.show({
-            title: `·该店铺为新发起店铺，需满足人员招募后才会正式开启;\n·如开启成功，则自动加入;\n·如开启不成功，则可以选择加入其他店铺`,
-            confirmCallBack: () => {
-                this.$loadingShow();
-                SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
-                    if (!this.props.leftNavItemHidden) {
-                        this._loadPageData();
+        // this.refs.delAlert && this.refs.delAlert.show({
+        //     title: `·该店铺为新发起店铺，需满足人员招募后才会正式开启;\n·如开启成功，则自动加入;\n·如开启不成功，则可以选择加入其他店铺`,
+        //     confirmCallBack: () => {
+        //         this.$loadingShow();
+        //         SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
+        //             if (!this.props.leftNavItemHidden) {
+        //                 this._loadPageData();
+        //             }
+        //             spellStatusModel.getUser(2);
+        //             this.$loadingDismiss();
+        //         }).catch((error) => {
+        //             this.$toastShow(error.msg);
+        //             this.$loadingDismiss();
+        //         });
+        //     },
+        //     alignType: 'left'
+        // });
+
+        Alert.alert('提示', '·该店铺为新发起店铺，需满足人员招募后才会正式开启;\n·如开启成功，则自动加入;\n·如开启不成功，则可以选择加入其他店铺',
+            [
+                {
+                    text: '取消', onPress: () => {
                     }
-                    spellStatusModel.getUser(2);
-                    this.$loadingDismiss();
-                }).catch((error) => {
-                    this.$toastShow(error.msg);
-                    this.$loadingDismiss();
-                });
-            },
-            alignType: 'left'
-        });
+                },
+                {
+                    text: '确定', onPress: () => {
+                        this.$loadingShow();
+                        SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
+                            if (!this.props.leftNavItemHidden) {
+                                this._loadPageData();
+                            }
+                            spellStatusModel.getUser(2);
+                            this.$loadingDismiss();
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                            this.$loadingDismiss();
+                        });                    }
+                }
+            ]
+        );
+
     };
 
     //退出店铺
@@ -324,7 +348,7 @@ export default class ShopRecruitPage extends BasePage {
                 <ReportAlert ref={ref => {
                     this.reportAlert = ref;
                 }}/>
-                <ConfirmAlert ref="delAlert"/>
+                {/*<ConfirmAlert ref="delAlert"/>*/}
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 webJson={{

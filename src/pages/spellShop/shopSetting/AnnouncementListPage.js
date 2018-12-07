@@ -2,7 +2,7 @@
 import React from 'react';
 import {
     View,
-    FlatList, RefreshControl
+    FlatList, RefreshControl , Alert
 } from "react-native";
 import BasePage from '../../../BasePage';
 import AnnouncementRow from './components/AnnouncementRow';
@@ -128,17 +128,36 @@ export default class AnnouncementListPage extends BasePage {
     };
 
     _delItem = ({ id }) => {
-        id && this.refs.delAlert && this.refs.delAlert.show({
-            title: '确定要删除此条公告？',
-            confirmCallBack: () => {
-                SpellShopApi.deleteById({ id: id }).then(() => {
-                    this.loadPageData();
-                    bridge.$toast('删除成功');
-                }).catch((error) => {
-                    this.$toastShow(error.msg);
-                });
-            }
-        });
+        // id && this.refs.delAlert && this.refs.delAlert.show({
+        //     title: '确定要删除此条公告？',
+        //     confirmCallBack: () => {
+        //         SpellShopApi.deleteById({ id: id }).then(() => {
+        //             this.loadPageData();
+        //             bridge.$toast('删除成功');
+        //         }).catch((error) => {
+        //             this.$toastShow(error.msg);
+        //         });
+        //     }
+        // });
+
+        id &&  Alert.alert('提示', '确定要删除此条公告',
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }
+                },
+                {
+                    text: '确定', onPress: () => {
+                        SpellShopApi.deleteById({ id: id }).then(() => {
+                            this.loadPageData();
+                            bridge.$toast('删除成功');
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                        });
+                    }
+                }
+            ]
+        );
     };
 
     _clickRow = (info) => {
