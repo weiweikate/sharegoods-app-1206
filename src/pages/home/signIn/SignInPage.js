@@ -127,7 +127,7 @@ export default class SignInPage extends BasePage {
 
     showMore = () => {
         this.$navigate('HtmlPage', {
-            title: '推广说明',
+            title: '签到规则',
             uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/signInRule.html`
         });
     };
