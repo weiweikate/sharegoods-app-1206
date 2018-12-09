@@ -19,7 +19,7 @@
         "src/**/*.js": "eslint"
     },
     "dependencies": {
-        "@mr/geolocation": "0.1.4",
+        "@mr/geolocation": "0.1.5",
         "@mr/image-placeholder": "0.1.13",
         "@mr/react-native-cookies": "0.0.3",
         "@mr/react-native-webview": "0.2.4",
