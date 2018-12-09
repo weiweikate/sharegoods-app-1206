@@ -42,28 +42,8 @@ const api = {
     //（陈帅）再来一单
     againOrder:'/order/againOrder',
     /**  售后模块相关接口 huchao */
-    //（陈帅）申请退款
-    // applyRefund: '/order/returnProduct/applyRefund',
-    //（陈帅）申请换货
-    // applyExchangeGoods: '/order/returnProduct/applyExchangeGoods',
-    //（陈帅）申请退款退货
-    // applyReturnGoods: '/order/returnProduct/applyReturnGoods',
 
-    //（陈帅）填写寄回信息
-    fillSendInfo: '/order/returnProduct/fillSendInfo',
-    //（陈帅）查看详情
-    // returnProductLookDetail:'/order/returnProduct/lookDetail',
-    //（陈帅）撤销申请
-    revokeApply: '/order/returnProduct/revokeApply',
-    //（陈帅）修改申请
-    // updateApply: '/order/returnProduct/updateApply',
-    //（陈帅）查询子订单详情
-    subOrderLookDetial: ['/order/orderProduct/lookDetial',{method:'get'}],
-    // 获取物流公司
-    findAllExpress: ['/sysExpress/findAllExpress', {method: 'get'}],
-    //售后订单列表 chengjun.wu
-    queryAftermarketOrderList: '/order/queryAftermarketOrderList',
-
+    findAllExpress: ['/express/query', {method: 'get'}],
     getReturnReason: ['/config/sysDictionary/queryDictionaryTypeList', {method: 'get'}],
     //网关（顾佳豪）， 后台（陈帅）
     afterSaleApply: '/after-sale/apply',//提交申请
