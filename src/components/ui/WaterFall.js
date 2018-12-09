@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 
 import PropTypes from 'prop-types'
+import DesignRule from "../../constants/DesignRule";
 
 class Item extends React.PureComponent {
   render() {
@@ -112,7 +113,7 @@ export default class Masonry extends React.Component {
       hasMore: true,
       refreshConf: {
         title: '下拉加载',
-        colors: ['#ff0000', '#00ff00', '#3ad564', '#0000ff']
+        colors: [DesignRule.mainColor]
       }
     };
 

@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
 import user from '../../../../model/user';
@@ -319,16 +318,15 @@ gotoLookAround(){
                                 alignItems: 'center',
                                 borderColor: DesignRule.mainColor,
                                 borderWidth: 1,
-                                borderRadius: 25,
-                                width: 150,
-                                height: 50
+                                borderRadius: 18,
+                                width: 115,
+                                height: 36
                             }}
                         >
                             <Text
                                 style={{
-
                                     color: DesignRule.mainColor,
-                                    fontSize: 17
+                                    fontSize: ScreenUtils.px2dp(15)
                                 }}
                             >
                                 去逛逛
@@ -361,7 +359,7 @@ const styles = StyleSheet.create({
     },
     standaloneRowBack: {
         alignItems: 'center',
-        backgroundColor: color.red,
+        backgroundColor: DesignRule.mainColor,
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',

@@ -6,7 +6,8 @@ import {
     Text,
     ImageBackground,
     TouchableWithoutFeedback,
-    Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager
+    Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
+    RefreshControl
 } from "react-native";
 import ImageLoad from "@mr/image-placeholder";
 import ScreenUtils from "../../utils/ScreenUtils";
@@ -478,13 +479,14 @@ class HomePage extends BasePage {
                     renderItem={this._renderItem.bind(this)}
                     keyExtractor={this._keyExtractor.bind(this)}
                     onScroll={this._onScroll.bind(this)}
-                    refreshing={homeModule.isRefreshing}
-                    onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
-                    progressViewOffset={ScreenUtils.headerHeight}
+                    refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
+                                                    onRefresh={this._onRefresh.bind(this)}
+                                                    colors={[DesignRule.mainColor]}
+                                                    progressViewOffset={ScreenUtils.headerHeight}/>}
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
@@ -557,7 +559,6 @@ const styles = StyleSheet.create({
         zIndex: 3
     },
     titleView: {
-        backgroundColor: "#fff",
         height: px2dp(53),
         marginTop: px2dp(10),
         alignItems: "center",

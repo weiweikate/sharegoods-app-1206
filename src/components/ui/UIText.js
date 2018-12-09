@@ -13,7 +13,7 @@ const UIText = (props) => {
         value,
         ...attributes
     } = props;
-    return (<RNText {...attributes}>{value}</RNText>);
+    return (<RNText {...attributes} allowFontScaling={false}>{value}</RNText>);
 };
 
 export default connectStyle('Text')(UIText);

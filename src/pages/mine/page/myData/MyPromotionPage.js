@@ -264,6 +264,7 @@ export default class MyPromotionPage extends BasePage {
                         refreshControl={<RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this._onRefresh}
+                            colors={[DesignRule.mainColor]}
                         />}>
                 {this.renderHeader()}
                 {this.renderWelfare()}

@@ -18,6 +18,7 @@ import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+
 const noGoodImg = res.other.noGoodImg;
 const zhuanti_jieshu = res.zhuanti_jieshu;
 
@@ -33,8 +34,8 @@ const statues = {
 
 const statuesImg = {
     [statues.haveSoldOut]: noGoodImg,
-    [statues.timeOver]:  zhuanti_jieshu,
-    [statues.handOver]:  zhuanti_jieshu
+    [statues.timeOver]: zhuanti_jieshu,
+    [statues.handOver]: zhuanti_jieshu
 };
 const statuesString = {
     [statues.isBeginning]: '马上抢',
@@ -42,7 +43,6 @@ const statuesString = {
     [statues.timeOver]: '已结束',
     [statues.handOver]: '已结束'
 };
-
 
 
 export default class OpenPrizeItemView extends Component {
@@ -91,10 +91,10 @@ export default class OpenPrizeItemView extends Component {
                                     style={
                                         {
                                             position: 'absolute',
-                                            top: 10,
-                                            left: 5,
-                                            width: ScreenUtils.width / 2 - 16 - 15,
-                                            height: ScreenUtils.width / 2 - 16 - 15
+                                            top: 25,
+                                            left: 25,
+                                            width: ScreenUtils.width / 2 - 16 - 50,
+                                            height: ScreenUtils.width / 2 - 16 - 50
                                         }
                                     }
                                 />
@@ -149,7 +149,7 @@ export default class OpenPrizeItemView extends Component {
                                     textDecorationLine: 'line-through',
                                     color: DesignRule.textColor_instruction
                                 }}>
-                                    {'¥'+itemData.originalPrice}
+                                    {'¥' + itemData.originalPrice}
                                 </Text>
                             </View>
                             {/*右下角按钮*/}
@@ -174,13 +174,13 @@ export default class OpenPrizeItemView extends Component {
                                                     height: 30,
                                                     width: (ScreenUtils.width / 2 - 16) / 2,
                                                     borderRadius: 5,
-                                                    flexDirection:'row',
-                                                    justifyContent:'center',
-                                                    alignItems:'center'
+                                                    flexDirection: 'row',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center'
                                                 }}
                                             >
                                                 {
-                                                    this.state.itemData.notifyFlag?
+                                                    this.state.itemData.notifyFlag ?
                                                         null
                                                         :
                                                         <Image
@@ -193,7 +193,7 @@ export default class OpenPrizeItemView extends Component {
                                                         {
                                                             color: 'white',
                                                             fontSize: 12,
-                                                            marginLeft:5
+                                                            marginLeft: 5
                                                         }
                                                     }
                                                 >
@@ -276,12 +276,13 @@ export default class OpenPrizeItemView extends Component {
         });
     };
 }
+const mainWidth = ScreenUtils.width - 20;
 const ItemStyles = StyleSheet.create({
     itemBgStyle: {
-        width: ScreenUtils.width / 2,
-        height: ScreenUtils.width / 2 + 105,
+        width: mainWidth / 2,
+        height: mainWidth / 2 + 105,
         backgroundColor: DesignRule.bgColor,
-        padding: 8,
+        padding: 5,
         paddingBottom: 0
     },
     itemContentStyle: {
@@ -290,14 +291,14 @@ const ItemStyles = StyleSheet.create({
     },
     itemTopImageStyle: {
         // backgroundColor: DesignRule.mainColor
-        width: ScreenUtils.width / 2 - 16,
-        height: ScreenUtils.width / 2 - 16
+        width: mainWidth / 2 - 16,
+        height: mainWidth / 2 - 16
     },
 
     itemBottomTextStyle: {
         padding: 10,
         color: DesignRule.textColor_mainTitle,
-        width: ScreenUtils.width / 2 - 16,
+        width: mainWidth / 2 - 16,
         height: 37,
         fontSize: 12
     },

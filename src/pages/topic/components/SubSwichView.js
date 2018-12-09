@@ -100,7 +100,7 @@ export default class SubSwichView extends Component {
                                                 width: 50,
                                                 marginLeft: (titleWidth - 50) / 2,
                                                 marginTop: 10,
-                                                height: 1,
+                                                height: 2,
                                                 backgroundColor: DesignRule.mainColor
                                             }
                                         }
@@ -137,11 +137,13 @@ export default class SubSwichView extends Component {
 const SwichStyles = StyleSheet.create({
         swichBgStyle: {
             width: ScreenUtils.width,
-            height: 48
+            height: 48,
+            backgroundColor:DesignRule.textColor_white
         },
         titleBgStyle: {
             height: 47,
-            flexDirection: 'row'
+            flexDirection: 'row',
+            backgroundColor:DesignRule.textColor_white
         },
         titleItemStyle: {
             paddingTop: 15,

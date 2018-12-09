@@ -11,16 +11,13 @@ import {
 
 const { CachesModule } = NativeModules;
 import BasePage from '../../../../BasePage';
-import CommonTwoChoiceModal from '../../model/CommonTwoChoiceModal';
 import UIText from '../../../../components/ui/UIText';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
-import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
@@ -133,7 +130,7 @@ class SettingPage extends BasePage {
                 </View>
                 <TouchableOpacity style={{
                     marginTop: 42,
-                    backgroundColor: color.red,
+                    backgroundColor: DesignRule.mainColor,
                     width: ScreenUtils.width - 84,
                     height: 50,
                     marginLeft: 42,
@@ -145,8 +142,6 @@ class SettingPage extends BasePage {
                     <Text style={{ fontSize: 17, color: 'white' }}>退出登录</Text>
                 </TouchableOpacity>
 
-                {this.renderModal()}
-                {this.renderUpdateModal()}
             </View>
         );
     };
@@ -207,102 +202,36 @@ class SettingPage extends BasePage {
         );
     };
     toLoginOut = () => {
-        this.setState({ isShowLoginOutModal: true });
-        this.loginOutModal && this.loginOutModal.open();
-    };
-    renderModal = () => {
-        return (
-
-            <CommonTwoChoiceModal
-                isShow={this.state.isShowLoginOutModal}
-                ref={(ref) => this.loginOutModal = ref}
-                detail={{ title: '', context: '是否确认退出登录', no: '取消', yes: '确认' }}
-                closeWindow={() => {
-                    this.setState({ isShowLoginOutModal: false });
-                }}
-                yes={() => {
-                    this.setState({ isShowLoginOutModal: false });
-                    AsyncStorage.removeItem('lastMessageTime').catch(e => {
-                    });
-                    this.$loadingShow();
-                    // 正常退出，或者登录超时，都去清空数据
-                    user.clearUserInfo();
-                    user.clearToken();
-                    bridge.clearCookies();
-                    //清空购物车
-                    shopCartStore.data = [];
-                    this.$navigateBackToHome();
-                    DeviceEventEmitter.emit('login_out');
-                    homeModule.loadHomeList();
-                    MineApi.signOut();
-                    QYChatUtil.qiYULogout();
-                    this.$loadingDismiss();
-
-                }}
-                no={() => {
-                    this.setState({ isShowLoginOutModal: false });
-                }}
-            />
-
-
+        Alert.alert(
+            '退出登录',
+            '是否确认退出登录',
+            [
+                { text: '取消' ,onPress:()=>{}},
+                {
+                    text: '确认', onPress: () => {
+                        AsyncStorage.removeItem('lastMessageTime').catch(e => {
+                        });
+                        this.$loadingShow();
+                        // 正常退出，或者登录超时，都去清空数据
+                        user.clearUserInfo();
+                        user.clearToken();
+                        bridge.clearCookies();
+                        //清空购物车
+                        shopCartStore.data = [];
+                        this.$navigateBackToHome();
+                        DeviceEventEmitter.emit('login_out');
+                        homeModule.loadHomeList();
+                        MineApi.signOut();
+                        // 退出七鱼
+                        QYChatUtil.qiYULogout();
+                        this.$loadingDismiss();
+                    }
+                }
+            ]
         );
     };
 
-    renderUpdateModal = () => {
-        return (
-            <CommModal
-                animationType='fade'
-                transparent={true}
-                ref={(ref) => {
-                    this.updateModal = ref;
-                }}
-                visible={this.state.showUpdate}>
-                <View style={{
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignContent: 'center',
-                    backgroundColor: '#fff',
-                    width: ScreenUtils.width - 84,
-                    borderRadius: 10,
-                    borderWidth: 0
-                }}>
-                    <UIText value={this.state.updateContent}
-                            style={{
-                                fontSize: 17,
-                                color: DesignRule.textColor_mainTitle,
-                                marginTop: 40,
-                                marginBottom: 40,
-                                alignSelf: 'center'
-                            }}/>
-                    <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity
-                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
-                            onPress={() => {
-                                this.setState({ showUpdate: false });
-                            }}>
-                            <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
-                        </TouchableOpacity>
-                        <View style={{ width: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
-                        <TouchableOpacity
-                            style={{
-                                flex: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                height: 45,
-                                backgroundColor: DesignRule.mainColor,
-                                borderBottomRightRadius: 10
-                            }}
-                            onPress={() => {
-                                this.toUpdate();
-                            }}>
-                            <UIText value={'立即更新'} style={{ color: '#fff' }}/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </CommModal>
-        );
-    };
+
 
     //**********************************BusinessPart******************************************
     jumpToAddressManagePage = () => {
@@ -325,12 +254,19 @@ class SettingPage extends BasePage {
         // Android调用原生检测版本
         MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
             if (res.data.upgrade === 1) {
-                this.setState({
-                    updateData: res.data,
-                    showUpdate: true,
-                    updateContent: '是否更新为V' + res.data.version + '版本？'
-                });
-                this.updateModal && this.updateModal.open();
+                Alert.alert('提示', '是否更新为V' + res.data.version + '版本？',
+                    [
+                        {
+                            text: '取消', onPress: () => {
+                            }
+                        },
+                        {
+                            text: '确定', onPress: () => {
+                                this.toUpdate();
+                            }
+                        }
+                    ]
+                );
             } else {
                 bridge.$toast('当前已是最新版本');
             }

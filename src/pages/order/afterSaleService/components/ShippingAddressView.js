@@ -13,11 +13,11 @@
 import React from 'react';
 
 import {
-  View
+    View
 } from 'react-native';
 
 import {
-  UIImage
+    UIImage
 } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import AddressItem from '../../components/AddressItem';
@@ -29,33 +29,50 @@ const {
 
 export default class ShippingAddressView extends React.Component {
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this._bind();
+        this._bind();
 
-    this.state = {};
-  }
+        this.state = {};
+    }
 
-  _bind() {
+    _bind() {
 
-  }
+    }
 
-  componentDidMount() {
-  }
+    componentDidMount() {
+    }
 
 
-  render() {
-    return (
-        <View style={{marginBottom: 10}}>
-            <AddressItem
-                name={'收货人：' + '用户地址'}
-                phone={'13185089952'}
-                address={'address'}
-            />
-            < UIImage source={addressLine} style={{ width: ScreenUtils.width, height: 3 }}/>
-        </View> : null
-    );
-  }
+    render() {
+        let {
+            receiver,
+            receiverPhone,
+            province,
+            city,
+            area,
+            street,
+            address
+        } = this.props;
+
+        receiver = receiver || '';
+        receiverPhone = receiverPhone || '';
+        province = province || '';
+        city = city || '';
+        area = area || '';
+        street = street || '';
+        address = address || '';
+        return (
+            <View style={{ marginBottom: 10 }}>
+                <AddressItem
+                    name={'收货人：' + receiver}
+                    phone={receiverPhone}
+                    address={province + city + area + street + address}
+                />
+                < UIImage source={addressLine} style={{ width: ScreenUtils.width, height: 3 }}/>
+            </View>: null
+        );
+    }
 }
 

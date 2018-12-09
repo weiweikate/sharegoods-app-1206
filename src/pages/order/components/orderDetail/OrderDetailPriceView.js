@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
     View,
     Text,
-    Image, StyleSheet,TouchableOpacity
+    Image, StyleSheet, TouchableOpacity
 } from "react-native";
 import { orderDetailAfterServiceModel, orderDetailModel } from "../../model/OrderDetailModel";
-import { observer } from 'mobx-react/native';
-import StringUtils from '../../../../utils/StringUtils';
-import UserSingleItem from '../UserSingleItem';
+import { observer } from "mobx-react/native";
+import StringUtils from "../../../../utils/StringUtils";
+import UserSingleItem from "../UserSingleItem";
 import res from "../../res";
-import DesignRule from 'DesignRule';
-import { color } from "../../../../constants/Theme";
+import DesignRule from "DesignRule";
+
 const couponIcon = res.coupons_icon;
 
 @observer
-export default class OrderDetailPriceView extends Component{
+export default class OrderDetailPriceView extends Component {
 
     renderGiftAfterSales = () => {
         return (
@@ -22,11 +22,11 @@ export default class OrderDetailPriceView extends Component{
                 {orderDetailAfterServiceModel.currentAsList.length === 0 ? null :
                     <View>
                         <View style={{
-                            flexDirection: 'row',
+                            flexDirection: "row",
                             height: 48,
-                            justifyContent: 'flex-end',
-                            alignItems: 'center',
-                            backgroundColor: 'white'
+                            justifyContent: "flex-end",
+                            alignItems: "center",
+                            backgroundColor: "white"
                         }}>
                             {this.renderMenus()}
                         </View>
@@ -51,12 +51,12 @@ export default class OrderDetailPriceView extends Component{
         for (let i = 0; i < orderDetailAfterServiceModel.currentAsList.length; i++) {
             itemArr.push(
                 <TouchableOpacity key={i}
-                                  style={[styles.grayView, { borderColor: orderDetailAfterServiceModel.currentAsList[i].isRed ? color.red : DesignRule.color_ddd }]}
+                                  style={[styles.grayView, { borderColor: orderDetailAfterServiceModel.currentAsList[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
                                   onPress={() => {
                                       this.afterSaleServiceClick(orderDetailAfterServiceModel.currentAsList[i], i);
                                   }}>
                     <Text
-                        style={[styles.grayText, { color: orderDetailAfterServiceModel.currentAsList[i].isRed ? color.red : color.gray_666 }]}>{orderDetailAfterServiceModel.currentAsList[i].operation}</Text>
+                        style={[styles.grayText, { color: orderDetailAfterServiceModel.currentAsList[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]}>{orderDetailAfterServiceModel.currentAsList[i].operation}</Text>
                 </TouchableOpacity>
             );
         }
@@ -118,26 +118,26 @@ const styles = StyleSheet.create({
     couponsIconStyle: {
         width: 15,
         height: 12,
-        position: 'absolute',
+        position: "absolute",
         left: 15,
         top: 12
     },
     couponsOuterStyle: {
         height: 34,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
         marginLeft: 36
     },
     couponsTextStyle: {
         color: DesignRule.textColor_instruction,
         fontSize: 13,
-        alignSelf: 'center'
+        alignSelf: "center"
     },
     couponsLineStyle: {
         marginLeft: 36,
         backgroundColor: DesignRule.bgColor,
         height: 0.5,
-        width: '100%'
+        width: "100%"
     }
 });
 

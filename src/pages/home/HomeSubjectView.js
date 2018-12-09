@@ -16,17 +16,17 @@ import ImageLoad from '@mr/image-placeholder'
 const GoodItems = ({img, title, money, press}) => <TouchableWithoutFeedback onPress={()=>{press && press()}}>
     <View style={styles.goodsView} >
     <ImageLoad cacheable={true} style={styles.goodImg} source={{uri:img ? encodeURI(img) : ''}}/>
-    <Text style={styles.goodsTitle} numberOfLines={2}>{title}</Text>
+    <Text style={styles.goodsTitle} numberOfLines={2} allowFontScaling={false}>{title}</Text>
     <View style={{flex: 1}}/>
-    <Text style={styles.money}>{money} 起</Text>
+    <Text style={styles.money} allowFontScaling={false}>{money} 起</Text>
     </View>
 </TouchableWithoutFeedback>
 
 const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress={()=>{press && press()}}>
     <View style={styles.backView}>
-        <Text style={styles.seeMore}>查看更多</Text>
+        <Text style={styles.seeMore} allowFontScaling={false}>查看更多</Text>
         <View style={styles.line}/>
-        <Text style={styles.seeMoreEn}>View More</Text>
+        <Text style={styles.seeMoreEn} allowFontScaling={false}>View More</Text>
     </View>
 </TouchableOpacity>
 

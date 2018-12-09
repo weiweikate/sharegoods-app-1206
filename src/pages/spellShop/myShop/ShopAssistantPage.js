@@ -8,31 +8,31 @@ import {
     View,
     Text,
     SectionList,
-    StyleSheet
-} from 'react-native';
-import SearchBar from '../../../components/ui/searchBar/SearchBar';
+    StyleSheet, RefreshControl,Alert
+} from "react-native";
+import SearchBar from "../../../components/ui/searchBar/SearchBar";
 
-import AssistantRow from './components/AssistantRow';
-import MasterRow from './components/MasterRow';
+import AssistantRow from "./components/AssistantRow";
+import MasterRow from "./components/MasterRow";
 
-import BasePage from '../../../BasePage';
-import SpellShopApi from '../api/SpellShopApi';
-import ConfirmAlert from '../../../components/ui/ConfirmAlert';
-import { PageLoadingState } from '../../../components/pageDecorator/PageState';
-import DesignRule from 'DesignRule';
+import BasePage from "../../../BasePage";
+import SpellShopApi from "../api/SpellShopApi";
+// import ConfirmAlert from "../../../components/ui/ConfirmAlert";
+import { PageLoadingState } from "../../../components/pageDecorator/PageState";
+import DesignRule from "DesignRule";
 
 const sectionsArr = [
-    'master',
-    'A', 'B', 'C', 'D', 'E', 'F', 'G',
-    'H', 'I', 'J', 'K', 'L', 'M', 'N',
-    'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-    'V', 'W', 'X', 'Y', 'Z', '*'
+    "master",
+    "A", "B", "C", "D", "E", "F", "G",
+    "H", "I", "J", "K", "L", "M", "N",
+    "O", "P", "Q", "R", "S", "T", "U",
+    "V", "W", "X", "Y", "Z", "*"
 ];
 
 export default class AssistantListPage extends BasePage {
 
     $navigationBarOptions = {
-        title: '店员管理'
+        title: "店员管理"
     };
     //contribution/tradeBalance本月收入
     constructor(props) {
@@ -83,7 +83,7 @@ export default class AssistantListPage extends BasePage {
     };
 
     loadPageData() {
-        const keyword = this.state.searchText || '';
+        const keyword = this.state.searchText || "";
         SpellShopApi.listByKeyword({ keyword: keyword, storeId: this.params.storeData.id }).then((data) => {
             data.data = data.data || {};
             const list = this._transformList(data.data);
@@ -109,22 +109,40 @@ export default class AssistantListPage extends BasePage {
     _clickAssistantDetail = (userId) => {
         const { myStore } = this.params.storeData;
         if (myStore) {
-            this.$navigate('spellShop/myShop/ShopAssistantDetailPage', { userId });
+            this.$navigate("spellShop/myShop/ShopAssistantDetailPage", { userId });
         }
     };
 
     // 删除具体店员
     _clickDeleteAssistant = (userId) => {
-        userId && this.refs.delAlert && this.refs.delAlert.show({
-            title: '确定要将此用户移除?',
-            confirmCallBack: () => {
-                SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
-                    this.loadPageData();
-                }).catch((error) => {
-                    this.$toastShow(error.msg);
-                });
-            }
-        });
+        userId &&  Alert.alert('提示', '确定要将此用户移除?',
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }
+                },
+                {
+                    text: '确定', onPress: () => {
+                        SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
+                            this.loadPageData();
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                        });
+                    }
+                }
+            ]
+        );
+
+        // userId && this.refs.delAlert && this.refs.delAlert.show({
+        //     title: '确定要将此用户移除?',
+        //     confirmCallBack: () => {
+        //         SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
+        //             this.loadPageData();
+        //         }).catch((error) => {
+        //             this.$toastShow(error.msg);
+        //         });
+        //     }
+        // });
     };
 
     _onChangeText = (searchText) => {
@@ -151,10 +169,10 @@ export default class AssistantListPage extends BasePage {
 
     _renderSectionHeader = ({ section }) => {
         const { title, data } = section || {};
-        if (title === 'master' || !title || !data || !data.length) {
+        if (title === "master" || !title || !data || !data.length) {
             return null;
         }
-        return (<View style={{ height: 20, justifyContent: 'center', alignItems: 'center', marginTop: 11 }}>
+        return (<View style={{ height: 20, justifyContent: "center", alignItems: "center", marginTop: 11 }}>
             <Text style={{
                 fontSize: 13,
                 color: DesignRule.textColor_instruction
@@ -164,7 +182,7 @@ export default class AssistantListPage extends BasePage {
 
     _renderHeaderComponent = () => {
         return <View style={styles.headerBg}>
-            <SearchBar placeholder={'搜索用户名'}
+            <SearchBar placeholder={"搜索用户名"}
                        style={{ marginBottom: 10 }}
                        onChangeText={this._onChangeText}
                        title={this.state.searchText}/>
@@ -178,12 +196,16 @@ export default class AssistantListPage extends BasePage {
             {this._renderHeaderComponent()}
             <SectionList style={{ flex: 1 }} sections={this.state.list}
                          renderSectionHeader={this._renderSectionHeader}
-                         onRefresh={this._onRefresh}
                          stickySectionHeadersEnabled={false}
                          ListFooterComponent={<View style={{ height: 15 }}/>}
-                         refreshing={this.state.refreshing}
                          renderItem={this._renderItem}
-                         keyExtractor={this._keyExtractor}/>
+                         keyExtractor={this._keyExtractor}
+                         refreshControl={
+                             <RefreshControl
+                                 refreshing={this.state.refreshing}
+                                 onRefresh={this._onRefresh}
+                                 colors={[DesignRule.mainColor]}/>}
+            />
         </View>;
     };
 
@@ -191,7 +213,7 @@ export default class AssistantListPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 {this._renderList()}
-                <ConfirmAlert ref="delAlert"/>
+                {/*<ConfirmAlert ref="delAlert"/>*/}
             </View>
         );
     }

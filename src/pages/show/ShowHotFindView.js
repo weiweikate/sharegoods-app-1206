@@ -32,11 +32,11 @@ export default class ShowHotView extends Component {
 
     infiniting(done) {
         console.log('infiniting');
+        const {isFetching} = this.state
+        if (isFetching) {
+            return
+        }
         setTimeout(() => {
-            const {isFetching} = this.state
-            if (isFetching) {
-                return
-            }
             this.setState({ isFetching: true})
             this.recommendModules.getMoreRecommendList().then(data => {
                 console.log('infiniting'.data);
@@ -67,10 +67,11 @@ export default class ShowHotView extends Component {
         this.recommendModules.isEnd = false
         setTimeout(() => {
             this.waterfall && this.waterfall.clear();
+            this.waterfall.index = 1
+            this.waterfall.itemQueue = [];
             this.recommendModules.fetchRecommendList({}, currentDate, 1).then(data => {
                 this.setState({ isFetching: false})
-                this.waterfall.index = 1
-                this.waterfall.addItems(data);
+                this.waterfall.addItems(data)
             });
             done && done();
         }, 1000);
@@ -106,7 +107,7 @@ export default class ShowHotView extends Component {
 
     _renderInfinite() {
         return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.state.isEnd ? <Text style={styles.text}>我也是有底线的</Text> : this.state.isFetching ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+            {this.state.isEnd ? <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.state.isFetching ? <Text style={styles.text} allowFontScaling={false}>加载中...</Text> : <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}
         </View>
     }
 

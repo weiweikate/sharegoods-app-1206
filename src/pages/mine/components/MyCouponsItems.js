@@ -12,8 +12,8 @@ import {
     TextInput,
     TouchableOpacity,
     View,
-    NativeModules
-} from 'react-native';
+    NativeModules, RefreshControl
+} from "react-native";
 // import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
@@ -303,13 +303,13 @@ export default class MyCouponsItems extends Component {
                         alignItems: 'center',
                         borderColor: DesignRule.mainColor,
                         borderWidth: 1,
-                        borderRadius: 25,
-                        width: 150,
-                        height: 50
+                        borderRadius: 18,
+                        width: 115,
+                        height: 36
                     }}>
                         <Text style={{
                             color: DesignRule.mainColor,
-                            fontSize: 17
+                            fontSize: 15
                         }}>
                             去逛逛
                         </Text>
@@ -335,10 +335,11 @@ export default class MyCouponsItems extends Component {
                     onEndReachedThreshold={10}
                     onEndReached={() => this.onLoadMore()}
                     ListEmptyComponent={this._renderEmptyView}
-                    refreshing={false}
-                    onRefresh={this.onRefresh}
                     showsVerticalScrollIndicator={false}
                     initialNumToRender={5}
+                    refreshControl={<RefreshControl refreshing={false}
+                                                    onRefresh={this.onRefresh}
+                                                    colors={[DesignRule.mainColor]}/>}
                 />
                 {this.renderDialogModal()}
                 {this.props.isgiveup ?

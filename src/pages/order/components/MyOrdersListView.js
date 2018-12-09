@@ -422,7 +422,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 2:
                 this.props.nav('payment/PaymentMethodPage', {
-                    orderNum: this.state.viewData[index].orderNo,
+                    orderNo: this.state.viewData[index].orderNo,
                     amounts: this.state.viewData[index].totalPrice
                 });
                 break;

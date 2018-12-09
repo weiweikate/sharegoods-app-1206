@@ -22,7 +22,7 @@ import {
     NativeModules
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { LargeList } from 'react-native-largelist';
+import { LargeList } from '@mr/largelist';
 import res from '../res';
 import DesignRule from 'DesignRule';
 
@@ -75,8 +75,8 @@ export default class RefreshLargeList extends React.Component {
         pageSize: 10,
         defaultPage: 1,
         params: {},
-        defaultEmptyImage: res.placeholder.defaultNoData,
-        defaultEmptyText: '没有数据',
+        defaultEmptyImage: res.placeholder.no_data,
+        defaultEmptyText: '暂未数据',
         defaultData: []
     };
 
@@ -126,7 +126,9 @@ export default class RefreshLargeList extends React.Component {
         } else {
             return (
                 <View style={{ height: this.state.height - 40, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={this.props.defaultEmptyImage} style={{ width: 100, height: 100 }}/>
+                    <Image source={this.props.defaultEmptyImage}
+                           style={{ width: 110, height: 110 }}
+                           resizeMode={'contain'}/>
                     <Text style={{
                         marginTop: 10,
                         color: DesignRule.textColor_secondTitle
@@ -310,7 +312,11 @@ export default class RefreshLargeList extends React.Component {
             } else {
                 netData = result.data.data || [];
             }
-            if (netData.length < pageSize) {
+            let length = netData.length;
+            if (this.props.totalPageNum) {
+                length = this.props.totalPageNum(result)
+            }
+            if (length < pageSize) {
                 allLoadCompleted = true;
                 footerStatus = 'noMoreData';
             }
@@ -393,6 +399,7 @@ export default class RefreshLargeList extends React.Component {
                        renderEmpty={this._renderEmpty}
                        onLayout={this.onLayout.bind(this)}
                        renderItemSeparator={renderItemSeparator}
+                       color={DesignRule.mainColor}
             />
         );
     }

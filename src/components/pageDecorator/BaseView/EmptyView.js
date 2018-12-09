@@ -77,7 +77,7 @@ export default class EmptyView extends Component {
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={[styles.container, style]}>
-                    <Image source={this._getImgSource()} style={[styles.img, imageStyle]}/>
+                    <Image source={this._getImgSource()} style={[styles.img, imageStyle]} resizeMode={'contain'}/>
                     <Text style={styles.description}>{description}</Text>
                     <Text style={styles.subDescription}>{subDescription}</Text>
                 </View>
@@ -132,6 +132,7 @@ export default class EmptyView extends Component {
             refreshing={this.props.isRefresh}
             onRefresh={this.props.onRefresh}
             progressBackgroundColor="white"
+            colors={[DesignRule.mainColor]}
         />;
     };
 

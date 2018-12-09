@@ -36,6 +36,11 @@ class ApiEnvironment {
         return ApiConfig[this.envType].h5;
     }
 
+    // 获取当前oss域名
+    getCurrentOssHost() {
+        return ApiConfig[this.envType].oss;
+    }
+
 
     // 获取所有的主机地址配置
     getAllHostCase() {

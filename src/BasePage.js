@@ -47,14 +47,16 @@ export default class BasePage extends Component {
     }
 
     $isMonitorNetworkStatus() {
-        return true;
+        return false;
     }
 
     _renderDefaultNoNet() {
         return (
             <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
                 <Image source={res.placeholder.netError}
-                       style={{ width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120) }}/>
+                       style={{ width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120) }}
+                       resizeMode={'contain'}
+                />
                 <Text
                     style={{
                         color: DesignRule.textColor_instruction,
@@ -81,11 +83,11 @@ export default class BasePage extends Component {
                     }
                 }}
                                   style={{
-                                      height: 50,
-                                      width: 150,
-                                      borderRadius: 25,
+                                      height: 36,
+                                      width: 115,
+                                      borderRadius: 18,
                                       borderColor: DesignRule.bgColor_btn,
-                                      borderWidth: DesignRule.lineHeight,
+                                      borderWidth: DesignRule.lineHeight*1.5,
                                       alignItems: 'center',
                                       justifyContent: 'center',
                                       marginTop: 20

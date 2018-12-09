@@ -118,7 +118,7 @@ export default class NetFailedView extends Component {
         return (<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[styles.container, style]}>
 
-                <Image source={this._getImgSource(source, code)} style={imgS}/>
+                <Image source={this._getImgSource(source, code)} style={imgS} resizeMode={'contain'}/>
 
                 <Text style={styles.titleStyle}>
                     {BugErrorCode === code ? '' : `${code}`}{msg}
@@ -148,9 +148,9 @@ const styles = StyleSheet.create({
         textAlign : 'center'
     },
     btn: {
-        width: 150,
-        height: 44,
-        borderRadius: 5,
+        width: 115,
+        height: 36,
+        borderRadius: 18,
         marginTop: 27,
         alignItems: 'center',
         justifyContent: 'center',
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     btnText: {
-        fontSize: 16,
+        fontSize: 15,
         color: DesignRule.mainColor,
         textAlign: 'center'
     }

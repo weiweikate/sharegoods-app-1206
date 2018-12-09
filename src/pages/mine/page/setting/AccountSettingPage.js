@@ -31,7 +31,7 @@ export default class AccountSettingPage extends BasePage {
                     <UIText value={'修改手机号'} style={[styles.blackText, { flex: 1 }]}/>
                     <UIText value={user.phone}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
-                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
@@ -41,7 +41,7 @@ export default class AccountSettingPage extends BasePage {
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPwd()}>
                     <UIText value={'修改密码'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
@@ -51,7 +51,7 @@ export default class AccountSettingPage extends BasePage {
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPayPwd()}>
                     <UIText value={'交易密码设置'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right}  resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
@@ -63,7 +63,7 @@ export default class AccountSettingPage extends BasePage {
                     <UIText value={'微信账号'} style={[styles.blackText, { flex: 1 }]}/>
                     <UIText value={StringUtils.isEmpty(user.openid) ? '未绑定' : user.wechatName}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
-                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>
             </View>
         );

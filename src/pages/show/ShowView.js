@@ -11,7 +11,7 @@ import res from './res'
 const homeShowImg = res.other.home_show;
 
 const TagView = ({ text }) => <View style={styles.tagView}>
-    <Text style={styles.tag}>{text}</Text>
+    <Text style={styles.tag} allowFontScaling={false}>{text}</Text>
 </View>;
 
 @observer
@@ -25,7 +25,7 @@ export default class ShowView extends Component {
     _renderItems(item, index) {
         return <View key={index} style={styles.item}><TagView
             text={tagName[item.generalize ? item.generalize : 0]}/><Text numberOfLines={1}
-                                                                         style={styles.text}>{item.title}</Text></View>;
+                                                                         style={styles.text} allowFontScaling={false}>{item.title}</Text></View>;
     }
 
     _goToShow() {

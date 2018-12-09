@@ -45,6 +45,7 @@ const colors = {
         color_deepYellow: '#F1C11B', //深黄色颜色
         color_green: '#47c546', //绿色颜色
         color_ddd: '#dddddd', //ddd颜色
+        color_fff: '#ffffff', //fff颜色
         color_f2: '#f2f2f2' ,//f2颜色
         color_90:'#909090',//90颜色
         yellow_FF7: '#FF7E00',//深黄色
