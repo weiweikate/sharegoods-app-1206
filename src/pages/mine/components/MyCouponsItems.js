@@ -457,9 +457,9 @@ export default class MyCouponsItems extends Component {
             // priceId  productId
             this.props.orderParam.orderProducts.map((item, index) => {
                 arr.push({
-                    priceId: item.priceId,
-                    productId: item.productId,
-                    amount: item.num
+                    priceCode: item.skuCode,
+                    productCode: item.productCode,
+                    amount: item.quantity
                 });
             });
             this.isLoadMore = true;

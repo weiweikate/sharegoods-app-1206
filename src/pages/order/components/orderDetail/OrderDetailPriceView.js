@@ -63,55 +63,55 @@ export default class OrderDetailPriceView extends Component {
         return itemArr;
     };
 
-    render() {
-        return (
-            <View style={{ backgroundColor: "white", paddingTop: 10 }}>
-                {orderDetailModel.orderType === 5 ? this.renderGiftAfterSales() : null}
-                {(orderDetailModel.orderType === 5 || orderDetailModel.orderType === 98) && this.props.giftBagCoupons.length > 0 ?
-                    <View>
-                        {this.renderLine()}
-                        {this.props.giftBagCoupons.map((item, index) => {
-                            return <View style={{ backgroundColor: "white" }} key={index}>
-                                {index === 0 ? <Image source={couponIcon} style={styles.couponsIconStyle}/> : null}
-                                <View style={styles.couponsOuterStyle}>
-                                    <Text style={styles.couponsTextStyle}>{item.couponName}</Text>
-                                    <Text style={[styles.couponsTextStyle, { marginRight: 14 }]}>x1</Text>
-                                </View>
-                                <View style={styles.couponsLineStyle}/>
-                            </View>;
-                        })}
-                        {this.renderWideLine()}
-                    </View>
-                    :
-                    null}
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={"商品总价"}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={StringUtils.formatMoneyString(this.props.goodsPrice)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={"运费（快递）"}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={StringUtils.formatMoneyString(this.props.freightPrice)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={"优惠券优惠"}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={"-" + StringUtils.formatMoneyString(this.props.couponPrice)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={"1元现金券"}
-                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                                rightText={"-" + StringUtils.formatMoneyString(this.props.tokenCoin)}
-                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
-                                isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={"订单总价"}
-                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                                rightText={StringUtils.formatMoneyString(this.props.totalPrice)}
-                                rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                                isArrow={false}
-                                isLine={false}/>
-            </View>
-        );
+   render(){
+       return(
+           <View style={{ backgroundColor: 'white',paddingTop:10 }}>
+               {orderDetailModel.orderType === 5 ? this.renderGiftAfterSales() : null}
+               {(orderDetailModel.orderType === 5 || orderDetailModel.orderType === 98) && this.props.giftBagCoupons.length > 0 ?
+                   <View>
+                       {this.renderLine()}
+                       {this.props.giftBagCoupons.map((item, index) => {
+                           return <View style={{ backgroundColor: 'white' }} key={index}>
+                               {index === 0 ? <Image source={couponIcon} style={styles.couponsIconStyle}/> : null}
+                               <View style={styles.couponsOuterStyle}>
+                                   <Text style={styles.couponsTextStyle}>{item.couponName}</Text>
+                                   <Text style={[styles.couponsTextStyle, { marginRight: 14 }]}>x1</Text>
+                               </View>
+                               <View style={styles.couponsLineStyle}/>
+                           </View>
+                       })}
+                       {this.renderWideLine()}
+                   </View>
+                   :
+                   null}
+               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
+                               leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].orderAmount)}
+                               rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                               isLine={false}/>
+               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
+                               leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].freightAmount)}
+                               rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                               isLine={false}/>
+               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
+                               leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                               rightText={'-' + StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].couponAmount)}
+                               rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                               isLine={false}/>
+               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
+                               leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                               rightText={'-' + StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount)}
+                               rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                               isLine={false}/>
+               <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
+                               leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
+                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].payAmount)}
+                               rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
+                               isArrow={false}
+                               isLine={false}/>
+           </View>
+       )
     }
 }
 const styles = StyleSheet.create({
