@@ -86,27 +86,27 @@ export default class OrderDetailPriceView extends Component{
                    null}
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={StringUtils.formatMoneyString(this.props.goodsPrice)}
+                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].orderAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={StringUtils.formatMoneyString(this.props.freightPrice)}
+                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].freightAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={'-' + StringUtils.formatMoneyString(this.props.couponPrice)}
+                               rightText={'-' + StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].couponAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={'-' + StringUtils.formatMoneyString(this.props.tokenCoin)}
+                               rightText={'-' + StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                               rightText={StringUtils.formatMoneyString(this.props.totalPrice)}
+                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].payAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
                                isArrow={false}
                                isLine={false}/>

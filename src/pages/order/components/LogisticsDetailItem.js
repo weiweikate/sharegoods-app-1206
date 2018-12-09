@@ -3,7 +3,7 @@ import {
     View,
     TouchableOpacity
 } from 'react-native';
-import { color } from '../../../constants/Theme';
+// import { color } from '../../../constants/Theme';
 import {
     UIText, UIImage
 } from '../../../components/ui';
@@ -16,8 +16,6 @@ const LogisticsDetailItem = props => {
         middleImage,
         title,
         content1,
-        content2,
-        content3,
         isTop,
         isBottom
     } = props;
@@ -87,8 +85,6 @@ const LogisticsDetailItem = props => {
                 {this.renderTitle()}
                 <View style={{ flex: 1, flexDirection: 'row', paddingLeft: 15, paddingRight: 48, flexWrap: 'wrap' }}>
                     <UIText value={content1} style={{ fontSize: 12, color: DesignRule.textColor_mainTitle_222 }}/>
-                    <UIText value={content2} style={{ fontSize: 12, color: color.yellow_FF7 }}/>
-                    <UIText value={content3} style={{ fontSize: 12, color: DesignRule.textColor_mainTitle_222 }}/>
                 </View>
             </View>
             <View style={{ position: 'absolute', marginLeft: 16, marginTop: 20 }}>
