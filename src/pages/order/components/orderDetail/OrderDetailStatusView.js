@@ -26,7 +26,7 @@ export default class OrderDetailStatusView extends Component{
             <View>
                 <ImageBackground style={styles.redRectangle} source={productDetailImg}>
                     <UIImage source={this.props.leftTopIcon} style={{ height: px2dp(25), width:px2dp(25), marginTop: px2dp(-22) }}/>
-                    <View style={{ marginTop:px2dp(-22)  }}>
+                    <View style={{ marginTop:px2dp(-22)}}>
                         <UIText value={orderDetailAfterServiceModel.totalAsList.buyState} style={styles.textStyle}/>
                         {StringUtils.isNoEmpty(orderDetailAfterServiceModel.moreDetail) ?
                             <UIText value={orderDetailAfterServiceModel.moreDetail}

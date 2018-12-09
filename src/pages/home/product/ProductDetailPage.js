@@ -299,14 +299,14 @@ export default class ProductDetailPage extends BasePage {
             let temp = {
                 'amount': amount,
                 'skuCode': skuCode,
-                'prodCode': this.state.data.prodCode
+                'productCode': this.state.data.prodCode
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
             orderProducts.push({
                 skuCode: skuCode,
-                num: amount,
-                prodCode: this.state.data.prodCode
+                quantity: amount,
+                productCode: this.state.data.prodCode
             });
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
