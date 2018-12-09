@@ -82,7 +82,7 @@ export default class AfterSaleInfoView extends React.Component {
                 </View>
                 <UIText value={"申请时间：" + DateUtils.getFormatDate(afterSaleInfo.createTime / 1000)}
                         style={styles.refundReason}/>
-                <UIText value={"订单编号：" + afterSaleInfo.orderProductNo}
+                <UIText value={"订单编号：" + afterSaleInfo.warehouseOrderNo}
                         style={styles.refundReason}/>
                 <UIText value={typeStr + "编号：" + afterSaleInfo.serviceNo}
                         style={styles.refundReason}/>

@@ -101,7 +101,7 @@ export default class SelectLogisticsCompanyPage extends BasePage {
 
     _onPressItem(item, index, section){
         this.$navigateBack();
-        this.params.callBack &&  this.params.callBack(item.name)
+        this.params.callBack &&  this.params.callBack(item.name, item.code)
     }
 }
 

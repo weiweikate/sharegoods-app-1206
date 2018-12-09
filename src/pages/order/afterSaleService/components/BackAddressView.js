@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 
 import {
-    UIText,
+    UIText
 } from '../../../../components/ui';
 import DesignRule from 'DesignRule';
 import AddressItem from '../../components/AddressItem';
@@ -42,13 +42,31 @@ export default class BackAddressView extends React.Component {
 
 
     render() {
-        let {refundAddress = {}} = this.props;
+        let refundAddress = this.props.refundAddress || {};
+        let {
+            receiver,
+            receiverPhone,
+            province,
+            city,
+            area ,
+            street ,
+            address
+        } = refundAddress;
+        receiver = receiver || '';
+        receiverPhone = receiverPhone || '';
+        province = province || '';
+        city = city || '';
+        area = area || '';
+        street = street || '';
+        address = address || '';
+
         return (
             <View style={styles.container}>
                 <View style={styles.borderContainer}>
                     <UIText value={'寄回\n地址'} style={{ fontSize: 12, color: DesignRule.mainColor }}/>
                 </View>
-                <View style={{ backgroundColor: DesignRule.lineColor_inColorBg, width: 1, height: 40, marginLeft: 10}}/>
+                <View
+                    style={{ backgroundColor: DesignRule.lineColor_inColorBg, width: 1, height: 40, marginLeft: 10 }}/>
                 <AddressItem height={82}
                              style={{
                                  flex: 1,
@@ -57,9 +75,9 @@ export default class BackAddressView extends React.Component {
                                  alignItems: 'center',
                                  backgroundColor: 'white'
                              }}
-                             name={'收货人：' + refundAddress.refundReceiver}
-                             phone={refundAddress.refundReceiverPhone}
-                             address={refundAddress.refundAddress}
+                             name={'收货人：' + receiver}
+                             phone={receiverPhone}
+                             address={province + city + area + street + address}
                 />
             </View>
         );

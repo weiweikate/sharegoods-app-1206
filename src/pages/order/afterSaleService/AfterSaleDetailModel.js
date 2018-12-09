@@ -10,6 +10,8 @@ class AfterSaleDetailModel {
     toastShow = null;
     navigationBarResetTitle = null;
     @observable
+    refreshing = false;
+    @observable
     isLoaded = false;
     @observable
     pageData = null;
@@ -18,12 +20,15 @@ class AfterSaleDetailModel {
 
     @action
     loadPageData(callBack){
+        this.refreshing = true;
         this.loadingShow&&this.loadingShow();
         orderApi.afterSaleDetail({serviceNo: this.serviceNo}).then(result => {
             this.loadingDismiss&&this.loadingDismiss();
             this.pageData = result.data;
             let status = this.pageData.status;
-            let countDownSeconds = this.pageData.countDownSeconds;
+            let cancelTime = this.pageData.cancelTime || 0;
+            let nowTime = this.pageData.nowTime || 0;
+            let countDownSeconds = Math.ceil((cancelTime - nowTime)/1000);
             if (status === 2 && countDownSeconds > 0){
                 this.startTimer(countDownSeconds);
             }else {
@@ -37,8 +42,10 @@ class AfterSaleDetailModel {
                 return;
             }
             this.isLoaded = true;
+            this.refreshing = false;
             this.navigationBarResetTitle(['退款详情','退货详情','换货详情'][result.data.type -1])
         }).catch((error)=>{
+            this.refreshing = false;
             this.loadingDismiss&&this.loadingDismiss();
             this.isLoaded = true;
 
