@@ -177,9 +177,9 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ["", "用户收益", "提现支出", "消费支出", "店主分红", "店员分红", "销售提成", "现金红包", "任务奖励"];
+        let use_type = ["", "用户收益", "提现支出", "消费支出", "店主分红", "店员分红", "销售提成", "现金红包", "任务奖励","消费退款"];
         let use_type_symbol = ["", "+", "-"];
-        let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
+        let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu,xiaofei];
         Toast.showLoading();
         let arrData = this.currentPage == 1 ? [] : this.state.viewData;
         MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: 1 }).then((response) => {
@@ -190,7 +190,7 @@ export default class MyCashAccountPage extends BasePage {
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
-                            type: item.useType === 3 && item.biType == 1 ? "消费退款" : use_type[item.useType],
+                            type: use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: "编号：" + item.serialNo,
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),

@@ -24,13 +24,13 @@ const GoodsListItem = props => {
         orderNum,
         orderCreateTime,
         orderStatus,
-        freightPrice,
+        // freightPrice,
         totalPrice,
         orderProduct,
         clickItem,
         goodsItemClick,
         operationMenuClick,
-        outTradeNo,
+        // outTradeNo,
         platformPayTime,
         sendTime,
         finishTime,
@@ -65,32 +65,6 @@ const GoodsListItem = props => {
     this.renderMenu = () => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
         if (orderStatus == 1) {
-
-            if (StringUtils.isNoEmpty(outTradeNo)) {
-                nameArr = [{
-                    id: 1,
-                    operation: '取消订单',
-                    isRed: false
-                },
-                    {
-                        id: 3,
-                        operation: '继续支付',
-                        isRed: true
-                    }
-                ];
-            } else {
-                nameArr = [{
-                    id: 1,
-                    operation: '取消订单',
-                    isRed: false
-                },
-                    {
-                        id: 2,
-                        operation: '去支付',
-                        isRed: true
-                    }
-                ];
-            }
             return (
                 <View style={{
                     flex: 1,
@@ -175,7 +149,6 @@ const GoodsListItem = props => {
                 <GoodsGrayItem
                     key={i}
                     uri={orderProduct[i].imgUrl}
-                    gift={orderType == 5 || orderType == 98}
                     goodsName={orderProduct[i].productName}
                     salePrice={orderProduct[i].price}
                     category={orderProduct[i].spec}
@@ -213,8 +186,8 @@ const GoodsListItem = props => {
                         style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                 <UIText value={StringUtils.formatMoneyString(totalPrice)}
                         style={{ fontSize: 13, color: DesignRule.mainColor }}/>
-                <UIText value={'（含运费' + StringUtils.formatMoneyString(freightPrice, false) + '）'}
-                        style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
+                {/*<UIText value={'（含运费' + StringUtils.formatMoneyString(freightPrice, false) + '）'}*/}
+                        {/*style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>*/}
             </View>
         );
     };
@@ -274,7 +247,7 @@ const GoodsListItem = props => {
                 {this.renderGoodsList()}
                 {this.renderCalculate()}
                 {this.renderLine()}
-                {this.renderTime()}
+                {/*{this.renderTime()}*/}
                 {this.renderLine()}
             </TouchableOpacity>
             {constants.viewOrderStatus[orderStatus].menuData.length == 0 ? null :

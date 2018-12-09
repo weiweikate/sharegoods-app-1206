@@ -36,7 +36,8 @@ export default class ConfirmOrderPage extends BasePage {
             defaultAddress: false,
             viewData: {},
             tokenCoin: 0,
-            couponId: null,
+            addressId:null,
+            userCouponCode: null,
             tokenCoinText: null,
             couponName: null,
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
@@ -49,6 +50,15 @@ export default class ConfirmOrderPage extends BasePage {
         show: true // false则隐藏导航
     };
 
+    isSupportCoupons(){
+        let k=0;
+        this.state.viewData.list.map((item)=>{
+            if(item.restrictions&1===1){
+                k++;
+            }
+        });
+        return k>0||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2
+    }
     //**********************************ViewPart******************************************
     renderAddress = () => {
         return (StringUtils.isNoEmpty(this.state.viewData.express.receiverNum) ?
@@ -104,12 +114,12 @@ export default class ConfirmOrderPage extends BasePage {
         return (
             <View style={{ backgroundColor: 'white' }}>
                 <TouchableOpacity style={styles.couponsStyle}
-                                  disabled={(this.state.viewData.list[0].restrictions & 1) == 1 || this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
+                                  disabled={this.isSupportCoupons()}
                                   onPress={() => this.jumpToCouponsPage()}>
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={(this.state.viewData.list[0].restrictions & 1) == 1 || this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不支持使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
+                            value={this.isSupportCoupons() ? '不支持使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -196,7 +206,7 @@ export default class ConfirmOrderPage extends BasePage {
                 {this.renderLine()}
                 <View style={styles.commitOutStyle }>
                     <View
-                        style={{  flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        style={{  flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' ,flex:1}}>
                         <UIText value={'应付款：'} style={{
                             fontSize: ScreenUtils.px2dp(15),
                             color: DesignRule.textColor_mainTitle,
@@ -209,7 +219,7 @@ export default class ConfirmOrderPage extends BasePage {
                         style={styles.commitTouStyle}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
-                                style={{ fontSize: ScreenUtils.px2dp(16), color: 'white', padding:2}}/>
+                                style={{ fontSize: ScreenUtils.px2dp(16), color: 'white', paddingLeft:15,paddingRight:15}}/>
                     </TouchableOpacity>
                 </View>
                 {this.renderLine()}
@@ -268,7 +278,7 @@ export default class ConfirmOrderPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
 
@@ -278,9 +288,9 @@ export default class ConfirmOrderPage extends BasePage {
         console.log('loadmore', this.state.orderParam);
         this.state.orderParam.orderProducts.map((item, index) => {
             arr.push({
-                priceId: item.priceId,
-                productId: item.productId,
-                amount: item.num
+                priceCode: item.skuCode,
+                productCode: item.productCode,
+                amount: item.quantity
             });
         });
         API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(res => {
@@ -341,10 +351,14 @@ export default class ConfirmOrderPage extends BasePage {
                     }
                 });
                 break;
-            case 99:
+            case 99://普通商品
                 OrderApi.makeSureOrder({
-                    orderType: this.params.orderParamVO.orderType,
-                    orderProducts: this.params.orderParamVO.orderProducts,
+                    // orderType: this.params.orderParamVO.orderType,
+                    orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
+                    //orderSubType:  1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                    source:2,//1.购物车 2.直接下单
+                    channel:2,//1.小程序 2.APP 3.H5
+                    orderProductList: this.params.orderParamVO.orderProducts,
                     ...params
                 }).then(response => {
                     Toast.hiddenLoading();
@@ -410,7 +424,6 @@ export default class ConfirmOrderPage extends BasePage {
         let viewData = this.state.viewData;
         data.orderProductList.map((item, index) => {
             arrData.push({
-                productId: item.productId,
                 uri: item.specImg,
                 goodsName: item.productName,
                 salePrice: item.unitPrice,
@@ -420,27 +433,27 @@ export default class ConfirmOrderPage extends BasePage {
                 // activityId: item.activityId
             });
         });
-        if (data.userAddress && !this.state.defaultAddress) {
+        if (data.userAddressDTO.address) {
             viewData.express = {
-                id: data.userAddress.id,
-                receiverName: data.userAddress.receiver,
-                receiverNum: data.userAddress.receiverPhone,
-                receiverAddress: data.userAddress.address,
-                areaCode: data.userAddress.areaCode,
-                cityCode: data.userAddress.cityCode,
-                provinceCode: data.userAddress.provinceCode,
-                provinceString: data.userAddress.province,
-                cityString: data.userAddress.city,
-                areaString: data.userAddress.area
+                id: data.userAddressDTO.id,
+                receiverName: data.userAddressDTO.receiver,
+                receiverNum: data.userAddressDTO.receiverPhone,
+                receiverAddress: data.userAddressDTO.address,
+                areaCode: data.userAddressDTO.areaCode,
+                cityCode: data.userAddressDTO.cityCode,
+                provinceCode: data.userAddressDTO.provinceCode,
+                provinceString: data.userAddressDTO.province,
+                cityString: data.userAddressDTO.city,
+                areaString: data.userAddressDTO.area
             };
         } else {
             // viewData.express = {};
         }
-        viewData.totalAmounts = data.totalAmounts;
-        viewData.totalFreightFee = data.totalFreightFee;
+        viewData.totalAmounts = data.payAmount;
+        viewData.totalFreightFee = data.totalFreightFee?data.totalFreightFee:0;
         viewData.list = arrData;
         viewData.couponList = data.couponList ? data.couponList : null;
-        this.setState({ viewData });
+        this.setState({ viewData,addressId:data.userAddressDTO.id });
     };
 
     clickItem = (index, item) => {
@@ -461,31 +474,32 @@ export default class ConfirmOrderPage extends BasePage {
         }
 
     };
-    selectAddress = () => {
+    selectAddress = () => {//地址重新选择
         this.$navigate('mine/address/AddressManagerPage', {
             from: 'order',
             callBack: (json) => {
                 console.log(json);
-                let viewData = this.state.viewData;
-                viewData.express = {
-                    id: json.id,
-                    receiverName: json.receiver,
-                    receiverNum: json.receiverPhone,
-                    receiverAddress: json.address,
-                    areaCode: json.areaCode,
-                    cityCode: json.cityCode,
-                    provinceCode: json.provinceCode,
-                    provinceString: json.province,
-                    cityString: json.city,
-                    areaString: json.area
-                };
-                this.setState({ viewData, defaultAddress: true });
+                // let viewData = this.state.viewData;
+                // viewData.express = {
+                //     id: json.id,
+                //     receiverName: json.receiver,
+                //     receiverNum: json.receiverPhone,
+                //     receiverAddress: json.address,
+                //     areaCode: json.areaCode,
+                //     cityCode: json.cityCode,
+                //     provinceCode: json.provinceCode,
+                //     provinceString: json.province,
+                //     cityString: json.city,
+                //     areaString: json.area
+                // };
+                this.setState({ addressId:json.id, defaultAddress: true });
                 let params = {
-                    areaCode: json.areaCode,
-                    cityCode: json.cityCode,
-                    provinceCode: json.provinceCode,
+                    // areaCode: json.areaCode,
+                    // cityCode: json.cityCode,
+                    // provinceCode: json.provinceCode,
+                    addressId:json.id,
                     tokenCoin: this.state.tokenCoin,
-                    couponId: this.state.couponId
+                    userCouponCode: this.state.userCouponCode
                 };
                 this.loadPageData(params);
             }
@@ -493,15 +507,15 @@ export default class ConfirmOrderPage extends BasePage {
     };
     commitOrder = () => {
         let baseParams = {
-            areaCode: this.state.viewData.express.areaCode,
-            cityCode: this.state.viewData.express.cityCode,
-            provinceCode: this.state.viewData.express.provinceCode,
-            receiver: this.state.viewData.express.receiverName,
-            recevicePhone: this.state.viewData.express.receiverNum,
-            buyerRemark: this.state.message,
+            // areaCode: this.state.viewData.express.areaCode,
+            // cityCode: this.state.viewData.express.cityCode,
+            // provinceCode: this.state.viewData.express.provinceCode,
+            // receiver: this.state.viewData.express.receiverName,
+            // recevicePhone: this.state.viewData.express.receiverNum,
+            message: this.state.message,
             tokenCoin: this.state.tokenCoin,
-            couponId: this.state.couponId,
-            address: this.state.viewData.express.receiverAddress
+            userCouponCode: this.state.userCouponCode,
+            addressId: this.state.addressId
         };
 
         if (StringUtils.isEmpty(this.state.viewData.express.areaCode)) {
@@ -601,8 +615,11 @@ export default class ConfirmOrderPage extends BasePage {
         } else {
             let params = {
                 ...baseParams,
-                orderProducts: this.state.orderParam.orderProducts,
-                orderType: this.state.orderParam.orderType
+                orderProductList: this.state.orderParam.orderProducts,
+                // orderType: this.state.orderParam.orderType,
+                orderType:1,
+                source:2,
+                channel:2,
             };
             OrderApi.submitOrder(params).then((response) => {
                 this.$loadingDismiss();
@@ -636,8 +653,9 @@ export default class ConfirmOrderPage extends BasePage {
                 justOne: this.state.viewData.totalAmounts ? this.state.viewData.totalAmounts : 1, callBack: (data) => {
                     console.log(typeof data);
                     if (parseInt(data) >= 0) {
-                        let params = { tokenCoin: parseInt(data), couponId: this.state.couponId };
+                        let params = { tokenCoin: parseInt(data), userCouponCode: this.state.userCouponCode };
                         this.setState({
+                            addressId:this.state.addressId,
                             tokenCoin: data,
                             tokenCoinText: parseInt(data) > 0 ? '-¥' + parseInt(data) : '选择使用1元券'
                         });
@@ -650,16 +668,17 @@ export default class ConfirmOrderPage extends BasePage {
                 fromOrder: 1,
                 orderParam: this.state.orderParam, callBack: (data) => {
                     if (data && data.id) {
-                        let params = { couponId: data.id, tokenCoin: 0 };
+                        let params = { userCouponCode: data.id, tokenCoin: 0 };
                         this.setState({
-                            couponId: data.id,
+                            userCouponCode: data.id,
                             couponName: data.name,
                             tokenCoin: 0,
-                            tokenCoinText: '选择使用1元券'
+                            tokenCoinText: '选择使用1元券',
+                            addressId:this.state.addressId
                         });
                         this.loadPageData(params);
                     } else if (data == 'giveUp') {
-                        this.setState({ couponId: null, couponName: null });
+                        this.setState({ userCouponCode: null, couponName: null });
                         this.loadPageData();
                     }
                 }
@@ -670,10 +689,10 @@ export default class ConfirmOrderPage extends BasePage {
     replaceRouteName(data) {
         this.$navigate('payment/PaymentMethodPage',
             {
-                orderNum: data.orderNum,
-                amounts: this.state.viewData.totalAmounts,
+                orderNum: data.orderNo,
+                amounts: data.payAmount,
                 pageType: 0,
-                availableBalance: data.user.availableBalance}
+               }
         )
         // let replace = NavigationActions.replace({
         //     key: this.props.navigation.state.key,
@@ -811,6 +830,7 @@ const styles = StyleSheet.create({
     commitTouStyle:{
         backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        height: ScreenUtils.autoSizeHeight(49),
     }
 });

@@ -100,7 +100,7 @@ export default class RefreshList extends Component {
         return (
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                               onPress={() => this.props.onRefresh()}>
-                <Image resizeMode={'contain'} style={{ height: 140, width: 140 }} source={this.state.emptyIcon}/>
+                <Image style={{ height: 140, width: 140 }} source={this.state.emptyIcon} resizeMode={'contain'}/>
                 <Text
                     style={{ marginTop: 20, fontSize: 14, color: DesignRule.textColor_mainTitle_more_light }}>{this.state.emptyTip}</Text>
             </TouchableOpacity>);
