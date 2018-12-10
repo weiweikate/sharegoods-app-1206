@@ -39,6 +39,10 @@ export default class MyMentorPage extends BasePage {
         show: false
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
     componentDidMount() {
         this._findLeader();
     }
