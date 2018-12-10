@@ -17,6 +17,7 @@ import UIImage from '@mr/image-placeholder';
 
 const gwc = res.search.gwc;
 
+const imgHeight = (ScreenUtils.width - 30 - 5) / 2;
 
 export default class ResultHorizontalRow extends Component {
 
@@ -51,28 +52,28 @@ export default class ResultHorizontalRow extends Component {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        paddingHorizontal: 10,
-                        marginBottom: 11,
-                        marginTop: 21
+                        paddingTop: 10,
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 0,
+                        left: 10
                     }}>
                         <Text
                             style={{ color: DesignRule.mainColor, fontSize: 17 }}>{`￥${minPrice || ''}起`}</Text>
-                    </View>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.props.storeProduct(this.props.itemData);
-                    }}>
-                        <View style={{
-                            width: 35,
-                            height: 35,
-                            position: 'absolute',
-                            bottom: 0,
-                            right: 0,
-                            alignItems: 'center',
-                            justifyContent: 'center'
+
+                        <TouchableWithoutFeedback onPress={() => {
+                            this.props.storeProduct(this.props.itemData);
                         }}>
-                            <Image source={gwc}/>
-                        </View>
-                    </TouchableWithoutFeedback>
+                            <View style={{
+                                width: 35,
+                                height: 35,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <Image source={gwc}/>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -84,13 +85,13 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 5,
         marginLeft: 5,
+        height: imgHeight + 164 / 2,
         backgroundColor: 'white',
-        width: (ScreenUtils.width - 30 - 5) / 2
+        width: imgHeight
     },
     img: {
-        backgroundColor: DesignRule.lineColor_inColorBg,
-        height: (ScreenUtils.width - 30 - 5) / 2,
-        width: (ScreenUtils.width - 30 - 5) / 2
+        height: imgHeight,
+        width: imgHeight
     }
 });
 
