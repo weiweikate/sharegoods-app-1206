@@ -63,7 +63,7 @@ export default class SelectMentorPage extends BasePage {
      * 跳过函数
      */
     jump = () => {
-        bridge.$toast('注册成功')
+        bridge.$toast('注册成功');
         this.$navigateBackToHome();
     };
 
@@ -75,13 +75,36 @@ export default class SelectMentorPage extends BasePage {
         this.loadPageData();
     }
 
+    componentDidUpdate() {
+        (this.state.mentorData.length > 0 &&
+            this.state.isFirstLoad &&
+            this.scrView)
+            ?
+            this._testScro()
+            :
+            null;
+    }
+
     loadPageData() {
         this.$loadingShow();
         // this.setState({
         //     mentorData: [
+        //         {},
+        //         {},
+        //         {}
         //     ],
         //     selectIndex: 2
+        // }, () => {
+        //     console.log('执行了回调');
+        //     console.log(this.state.selectIndex);
+        //     console.log(this.scrView);
+        //
+        //     // const offset = {x:2 * ScreenUtils.width / 5,y: 0,animated: false };
+        //     // console.log(offset);
+        //     // this.scrView.scrollTo(offset);
         // });
+        //
+        // return;
         LoginAPI.queryInviterList({}).then(response => {
             this.$loadingDismiss();
             console.log(response);
@@ -89,18 +112,22 @@ export default class SelectMentorPage extends BasePage {
                 this.setState({
                     mentorData: response.data,
                     selectIndex: response.data.length - 1
+                },()=>{
+                    setTimeout(()=>{
+                        this.scrView.scrollTo({x:2 * ScreenUtils.width / 5,y: 0,animated: false });
+
+                    },300)
                 });
             } else {
                 this.setState({
                     mentorData: response.data
+                },()=>{
+                    setTimeout(()=>{
+                        this.scrView.scrollTo({x:2 * ScreenUtils.width / 5,y: 0,animated: false });
+
+                    },300)
                 });
             }
-            if (this.state.selectIndex > response.data.length - 1) {
-                this.setState({
-                    selectIndex: response.data.length - 1
-                });
-            }
-          // this.state.mentorData.length > 0 && this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
         }).catch(error => {
             this.$loadingDismiss();
             bridge.$toast(error.msg);
@@ -141,6 +168,11 @@ export default class SelectMentorPage extends BasePage {
             </View>
         );
     }
+
+    _testScro = () => {
+        this.scrView.scrollTo({ x: this.state.selectIndex * ScreenUtils.width / 5, y: 0, animated: true });
+
+    };
     _renderMentorListView = () => {
         return (
             <View
@@ -169,20 +201,20 @@ export default class SelectMentorPage extends BasePage {
                     <View
                         style={
                             [{
-                            height: 49,
-                            width: ScreenUtils.width - 80,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 25
-                        },
-                          this.state.mentorData&&this.state.mentorData.length >0?
-                                {
-                                    backgroundColor: DesignRule.mainColor,
-                                }
-                                :{
-                                    backgroundColor: DesignRule.bgColor_grayHeader,
-                                }
-                                ]
+                                height: 49,
+                                width: ScreenUtils.width - 80,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: 25
+                            },
+                                this.state.mentorData && this.state.mentorData.length > 0 ?
+                                    {
+                                        backgroundColor: DesignRule.mainColor
+                                    }
+                                    : {
+                                        backgroundColor: DesignRule.bgColor_grayHeader
+                                    }
+                            ]
                         }
                     >
                         <Text
@@ -195,9 +227,6 @@ export default class SelectMentorPage extends BasePage {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                {/*{*/}
-                    {/*this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})*/}
-                {/*}*/}
             </View>
         );
     };
@@ -225,9 +254,6 @@ export default class SelectMentorPage extends BasePage {
         );
     };
     _renderListView = () => {
-        // {
-        //     this.scrView && this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})
-        // }
         return (
             <ScrollView
                 ref={
@@ -255,15 +281,10 @@ export default class SelectMentorPage extends BasePage {
                             index = index + 1;
                         }
                         console.log('索引------' + index);
-                        // this._resetSizeItemView();
-                        // console.log(this.itemRefArr);
                         if (index === this.selectIndex) {
                             return;
                         }
                         if (this.itemViewArr.length > 0 && this.itemViewArr.length > index) {
-                            // this.itemRefArr[this.selectIndex]._resetAnimation();
-                            // this.itemRefArr[index]&& this.itemRefArr[index]._startAnimation();
-                            // this.selectIndex = index;
                             this.setState({
                                 selectIndex: index
                             });
@@ -327,11 +348,7 @@ export default class SelectMentorPage extends BasePage {
                         width: ScreenUtils.width / 5 * 2
                     }}
                 />
-                {/*{*/}
-                    {/*this.state.isFirstLoad&&*/}
-                    {/*this.scrView &&*/}
-                    {/*this.scrView.scrollTo({x: this.state.selectIndex  * ScreenUtils.width / 5, y: 0, animated: true})*/}
-                {/*}*/}
+
             </ScrollView>
         );
     };
