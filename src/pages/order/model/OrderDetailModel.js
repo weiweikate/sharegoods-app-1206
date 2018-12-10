@@ -51,7 +51,8 @@ class OrderDetailModel {
                     orderProductNo:item.orderProductNo,
                     serviceNo:item.serviceNo,
                     afterSaleTime:item.afterSaleTime,
-                    orderSubType:item.orderSubType
+                    orderSubType:item.orderSubType,
+                    prodCode:item.prodCode
 
                 })
             })
@@ -64,7 +65,7 @@ class OrderDetailModel {
     @action loadDetailInfo(orderNo) {
         orderDetailAfterServiceModel.addAfterServiceList();
         return OrderApi.lookDetail({
-            orderNo:'C181204205935000001'
+            orderNo:orderNo
         }).then(rep => {
             this.detail = rep.data
             this.expressList = rep.data.warehouseOrderDTOList[0].expressList
