@@ -83,6 +83,10 @@ export default class WithdrawCashPage extends BasePage {
         show: true // false则隐藏导航
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
     $getPageStateOptions = () => {
         return {
             loadingState: this.state.loadingState,
@@ -520,7 +524,7 @@ export default class WithdrawCashPage extends BasePage {
         };
         MineAPI.userWithdrawApply(params).then((data) => {
             this.$toastShow("提交申请成功\n" +
-                "预计2个工作日内到款");
+                "预计1-3个工作日内到款");
             this.$navigateBack("mine/userInformation/MyCashAccountPage");
         }).catch((err) => {
             this.$toastShow(err.msg);

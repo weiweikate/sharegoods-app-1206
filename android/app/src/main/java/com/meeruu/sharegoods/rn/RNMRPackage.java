@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.meeruu.PopModal.PopModalManager;
 import com.meeruu.WaveView.WaveViewManager;
+import com.meeruu.commonlib.umeng.AnalyticsModule;
 import com.meeruu.commonlib.umeng.LoginAndSharingModule;
 import com.meeruu.qiyu.imService.QYChatModule;
 import com.meeruu.sharegoods.rn.module.AppPayModule;
@@ -28,6 +29,7 @@ public class RNMRPackage implements ReactPackage {
     public AppPayModule appPayModule;
     public LoginAndSharingModule loginAndSharingModule;
     public QRCodeModule qrCodeModule;
+    public AnalyticsModule analyticsModule;
 
     /**
      * 创建Native Module
@@ -43,11 +45,13 @@ public class RNMRPackage implements ReactPackage {
         appPayModule = new AppPayModule(reactContext);
         loginAndSharingModule = new LoginAndSharingModule(reactContext);
         qrCodeModule = new QRCodeModule(reactContext);
+        analyticsModule = new AnalyticsModule(reactContext);
         modules.add(mModule);
         modules.add(qyChatModule);
         modules.add(appPayModule);
         modules.add(loginAndSharingModule);
         modules.add(qrCodeModule);
+        modules.add(analyticsModule);
         return modules;
     }
 

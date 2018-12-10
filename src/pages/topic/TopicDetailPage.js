@@ -427,7 +427,7 @@ export default class TopicDetailPage extends BasePage {
                     marginLeft: 10,
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 12
-                }}>{this.state.activityType === 3 ? item.param || '' : item.paramName || ''}</Text>
+                }}>{item.paramName || ''}</Text>
             </View>
             <Text style={{
                 flex: 1,
@@ -435,7 +435,7 @@ export default class TopicDetailPage extends BasePage {
                 marginLeft: 20,
                 color: DesignRule.textColor_instruction,
                 fontSize: 12
-            }}>{item.paramValue || ' '}</Text>
+            }}>{item.paramValue || ''}</Text>
         </View>;
     };
 

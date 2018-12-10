@@ -66,6 +66,9 @@ export default class MyCashAccountPage extends BasePage {
         rightNavTitle: "账户设置"
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
     //**********************************ViewPart******************************************
     _render() {
         return (
