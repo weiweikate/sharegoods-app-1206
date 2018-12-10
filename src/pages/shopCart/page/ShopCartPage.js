@@ -761,7 +761,7 @@ const styles = StyleSheet.create({
             alignItems: 'center'
         },
         addOrReduceBtnStyle: {
-            fontSize: 11,
+            fontSize: 13,
             color: DesignRule.textColor_mainTitle
         },
         validItemContainer: {
