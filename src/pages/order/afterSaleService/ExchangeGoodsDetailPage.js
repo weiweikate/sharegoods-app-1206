@@ -399,7 +399,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                 pageType: type - 1,
                 isEdit: true,
-                callBack: this.afterSaleDetailModel.loadPageData,
+                callBack: ()=> {this.afterSaleDetailModel.loadPageData()},
                 serviceNo,
                 orderProductNo,
                 reason,
