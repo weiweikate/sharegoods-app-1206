@@ -72,6 +72,10 @@ export default class BankCardListPage extends BasePage {
 
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
     componentDidMount() {
         this.$loadingShow();
         this._getBankInfo();

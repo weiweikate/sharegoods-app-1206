@@ -83,6 +83,10 @@ export default class WithdrawCashPage extends BasePage {
         show: true // false则隐藏导航
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
     $getPageStateOptions = () => {
         return {
             loadingState: this.state.loadingState,
