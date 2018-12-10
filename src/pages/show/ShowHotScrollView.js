@@ -6,7 +6,7 @@ import { View, ScrollView, StyleSheet, Text, Image, TouchableWithoutFeedback } f
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { showHotModules, showSelectedDetail } from './Show'
+import { showHotModules } from './Show'
 import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
@@ -64,7 +64,6 @@ class HotItem extends Component {
 export default class ShowHotScrollView extends Component {
 
     _hotItemAction(item) {
-        showSelectedDetail.selectedShowAction(item, showHotModules.type)
         const { navigation } = this.props
         navigation.navigate('show/ShowDetailPage', {id: item.id})
     }

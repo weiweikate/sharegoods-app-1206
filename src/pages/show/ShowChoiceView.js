@@ -6,7 +6,7 @@ import { View, StyleSheet, Text, Image, TouchableWithoutFeedback } from 'react-n
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { showChoiceModules, showSelectedDetail } from './Show'
+import { showChoiceModules } from './Show'
 import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
@@ -69,7 +69,6 @@ class Card extends Component {
 export default class ShowChoiceView extends Component {
 
     _onChoiceAction(item) {
-        showSelectedDetail.selectedShowAction(item, showChoiceModules.type)
         const { navigate } = this.props
         navigate('show/ShowDetailPage', {id: item.id})
     }
