@@ -64,6 +64,10 @@ class ExchangeGoodsDetailPage extends BasePage {
         this.$navigateBack('order/order/MyOrdersDetailPage');
     };
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     _bindFunc() {
         this._onRefresh = this._onRefresh.bind(this);
     }
@@ -177,7 +181,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 title: '寄回物流',
                 value: orderRefundExpress.expressName,
                 placeholder: '请填写寄回物流信息',
-                expressNo:  orderRefundExpress.expressCode ,
+                expressNo: orderRefundExpress.expressCode,
                 onPress: this.returnLogists
             });
         }
@@ -315,7 +319,9 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (EmptyUtils.isEmpty(expressNo)) {
             this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
                 pageData: this.afterSaleDetailModel.pageData,
-                callBack: () => {this.afterSaleDetailModel.loadPageData()}
+                callBack: () => {
+                    this.afterSaleDetailModel.loadPageData();
+                }
             });
         } else {
             this.$navigate('order/logistics/LogisticsDetailsPage', {
@@ -345,9 +351,16 @@ class ExchangeGoodsDetailPage extends BasePage {
         let that = this;
         // pageType 0 退款详情  1 退货详情   2 换货详情
         let pageType = this.afterSaleDetailModel.pageData.type - 1;
-        let num = this.afterSaleDetailModel.pageData.maxRevokeTimes - this.afterSaleDetailModel.pageData.hadRevokeTimes || '';
+        let num = this.afterSaleDetailModel.pageData.maxRevokeTimes - this.afterSaleDetailModel.pageData.hadRevokeTimes || 0;
         if (cancel) {
-            let tips = ['确认撤销本次退款申请？您最多只能发起' + num + '次', '确认撤销本次退货退款申请？您最多只能发起' + num + '次', '确认撤销本次换货申请？您最多只能发起' + num + '次'];
+            let tips = ['确认撤销本次退款申请？您最多只能发起' + num + '次',
+                '确认撤销本次退货退款申请？您最多只能发起' + num + '次',
+                '确认撤销本次换货申请？您最多只能发起' + num + '次'];
+            if (num <= 0){
+                this.$toastShow('平台售后操作已到上线');
+                return;
+            };
+
             Alert.alert('',
                 tips[pageType],
                 [

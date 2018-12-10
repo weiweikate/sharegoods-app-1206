@@ -58,6 +58,10 @@ export default class ShareTaskListPage extends BasePage<Props> {
 
     }
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     componentDidMount() {
 
     }

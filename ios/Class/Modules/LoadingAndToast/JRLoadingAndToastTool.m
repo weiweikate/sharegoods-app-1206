@@ -8,13 +8,15 @@
 
 #import "JRLoadingAndToastTool.h"
 #import "MBProgressHUD+PD.h"
+MBProgressHUD * hub = nil;
 @implementation JRLoadingAndToastTool
 
 +(void)showLoadingText:(NSString *)loadingStr{
-  [MBProgressHUD showMessage:loadingStr toView:nil];
+  [self dissmissLoading];
+  hub = [MBProgressHUD showMessage:loadingStr toView:nil];
 }
 +(void)dissmissLoading{
-  [MBProgressHUD hideHUD];
+  [hub hideAnimated:YES];
 }
 +(void)showToast:(NSString *)toastStr andDelyTime:(NSTimeInterval)delyTime{
   
