@@ -40,8 +40,8 @@ export default class ShowListPage extends BasePage {
                     if (showSelectedDetail.selectedShow) {
                         return;
                     }
-                    this.showHotViewRef && this.showHotViewRef.refresh();
-                    this.showHotFindeView && this.showHotFindeView.refreshing();
+                    // this.showHotViewRef && this.showHotViewRef.refresh();
+                    // this.showHotFindeView && this.showHotFindeView.refreshing();
                 }
                 this.setState({
                     pageFocused: true
