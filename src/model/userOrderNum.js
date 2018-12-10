@@ -30,10 +30,10 @@ class UserOrderNum {
             return;
         }
 
-        this.afterSaleServiceNum = data.afterSaleServiceNum;
-        this.waitPayNum = data.waitPayNum;
-        this.waitReceiveNum = data.waitReceiveNum;
-        this.waitSendNum = data.waitSendNum;
+        this.afterSaleServiceNum = data.afterSale;
+        this.waitPayNum = data.nonPay;
+        this.waitReceiveNum = data.nonReceiving;
+        this.waitSendNum = data.nonDelivery;
     }
 
     @action getUserOrderNum() {

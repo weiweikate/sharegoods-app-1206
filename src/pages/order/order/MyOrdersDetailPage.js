@@ -68,12 +68,13 @@ export default class MyOrdersDetailPage extends BasePage {
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity onPress={this.showMore} style={{
-                width: px2dp(20),
+                width: px2dp(40),
                 height: px2dp(44),
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
+                marginRight: px2dp(5)
             }}>
-                <Image source={moreIcon} style={{ width: px2dp(20), marginRight: px2dp(15) }} resizeMode='contain'/>
+                <Image source={moreIcon} style={{ width: px2dp(40) }} resizeMode={'contain'}/>
             </TouchableOpacity>
         );
     };
@@ -90,11 +91,6 @@ export default class MyOrdersDetailPage extends BasePage {
                     leftTopIcon={leftIconArr[orderDetailModel.status]}
                 />
                 <OrderDetailStateView
-                    orderNum={orderDetailModel.orderNum}
-                    expressNo={orderDetailModel.expressNo}
-                    sellerState={orderDetailAfterServiceModel.totalAsList.sellerState}
-                    logisticsTime={orderDetailAfterServiceModel.totalAsList.logisticsTime}
-                    sellerTime={orderDetailAfterServiceModel.totalAsList.sellerTime}
                     nav={this.$navigate}
                 />
             </View>
@@ -167,10 +163,11 @@ export default class MyOrdersDetailPage extends BasePage {
                     salePrice={"￥" + StringUtils.formatMoneyString(item.salePrice, false)}
                     category={item.category}
                     goodsNum={item.goodsNum}
+                    style={{backgroundColor:'white'}}
                     clickItem={() => {
                         this.clickItem(index, item);
                     }}
-                    // afterSaleService={item.afterSaleService}
+                    afterSaleService={item.afterSaleService}
                     afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, index)}
                 />
             );
@@ -181,14 +178,7 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View>
                 {this.renderState()}
-                {orderDetailAfterServiceModel.totalAsList.disNextView ? <DetailAddressView
-                    receiver={orderDetailModel.receiver}
-                    recevicePhone={orderDetailModel.recevicePhone}
-                    province={orderDetailModel.province}
-                    city={orderDetailModel.city}
-                    area={orderDetailModel.area}
-                    address={orderDetailModel.address}
-                /> : null}
+                {orderDetailModel.status>1 ? <DetailAddressView/> : null}
                 <GiftHeaderView
                     giftPackageName={this.state.giftPackageName}/>
             </View>
@@ -251,8 +241,10 @@ export default class MyOrdersDetailPage extends BasePage {
                         assistDetailModel.setIsShowSingleSelctionModal(false);
                         Toast.showLoading();
                         OrderApi.cancelOrder({
-                            buyerRemark: assistDetailModel.cancelArr[index],
-                            orderNum: orderDetailModel.orderNum
+                            cancelReason: assistDetailModel.cancelArr[index],
+                            orderNo: orderDetailModel.getOrderNo(),
+                            cancelType:2,
+                            platformRemarks:null
                         }).then((response) => {
                             Toast.hiddenLoading();
                             NativeModules.commModule.toast("订单已取消");
@@ -283,6 +275,7 @@ export default class MyOrdersDetailPage extends BasePage {
     startCutDownTime = (overtimeClosedTime) => {
         let autoConfirmTime = Math.round((overtimeClosedTime - new Date().valueOf()) / 1000);
         if (autoConfirmTime < 0) {
+            orderDetailAfterServiceModel.moreDetail = "";
             return;
         }
         timeUtils.settimer((time) => {
@@ -298,6 +291,7 @@ export default class MyOrdersDetailPage extends BasePage {
     startCutDownTime2 = (autoReceiveTime2) => {
         let autoConfirmTime = Math.round((autoReceiveTime2 - new Date().valueOf()) / 1000);
         if (autoConfirmTime < 0) {
+            orderDetailAfterServiceModel.moreDetail = "";
             return;
         }
         timeUtils.settimer(time => {
@@ -313,101 +307,156 @@ export default class MyOrdersDetailPage extends BasePage {
     getAfterSaleService = (data, index) => {
         //售后状态
         let afterSaleService = [];
-        afterSaleService.push({
-                                    id: 2,
-                                    operation: "退款中",
-                                    isRed: false
-                                });
-        // let statusArr = [4, 16, 8];
-        // let isAfterSale = (data[index].restrictions & statusArr[0]) == statusArr[0] && (data[index].restrictions & statusArr[1]) == statusArr[1] &&
-        //     (data[index].restrictions & statusArr[2]) == statusArr[2];
-        // switch (data[index].status) {
-        //     case 2:
-        //         if ((data[index].restrictions & statusArr[0]) == statusArr[0]) {
-        //             afterSaleService.push();
-        //         } else {
-        //             afterSaleService.push({
-        //                 id: 0,
-        //                 operation: "退款",
-        //                 isRed: false
-        //             });
-        //         }
-        //
-        //         break;
-        //     case 3:
-        //     case 4:
-        //         if (isAfterSale) {
-        //             afterSaleService.push();
-        //         } else {
-        //             switch (data[index].returnType) {
-        //                 case 1://申请退款
-        //                     afterSaleService.push({
-        //                         id: 2,
-        //                         operation: "退款中",
-        //                         isRed: false
-        //                     });
-        //                     break;
-        //                 case 2://申请退货
-        //                     afterSaleService.push({
-        //                         id: 3,
-        //                         operation: "退货中",
-        //                         isRed: false
-        //                     });
-        //                     break;
-        //                 case 3://申请换货
-        //                     afterSaleService.push({
-        //                         id: 6,
-        //                         operation: "换货中",
-        //                         isRed: false
-        //                     });
-        //                     break;
-        //                 default:
-        //                     afterSaleService.push({
-        //                         id: 1,
-        //                         operation: "退换",
-        //                         isRed: false
-        //                     });
-        //             }
-        //         }
-        //         break;
-        //     case 5:
-                // if (isAfterSale) {
-                //     afterSaleService.push();
-                // } else if ((data[index].finishTime || 0) - (new Date().valueOf()) < 0) {
-                //     afterSaleService.push();
-                // }
-                // else {
-                //     switch (data[index].returnType) {
-                //         case 1://申请退款
-                //             afterSaleService.push({
-                //                 id: 2,
-                //                 operation: "退款中",
-                //                 isRed: false
-                //             });
-                //             break;
-                //         case 2://申请退货
-                //             afterSaleService.push({
-                //                 id: 3,
-                //                 operation: "退货中",
-                //                 isRed: false
-                //             });
-                //             break;
-                //         case 3://申请换货
-                //             afterSaleService.push({
-                //                 id: 6,
-                //                 operation: "换货中",
-                //                 isRed: false
-                //             });
-                //             break;
-                //         default:
-                //             afterSaleService.push({
-                //                 id: 1,
-                //                 operation: "退换",
-                //                 isRed: false
-                //             });
-                //     // }
-                // }
-                // break;
+
+        switch(data.status) {
+            case 1:
+                afterSaleService.push({
+                    id: 0,
+                    operation: "退款",
+                    isRed: false
+                });
+                break;
+
+            case 2:
+            case 3:
+            case 4:
+                let condition = (data.orderCustomerServiceInfoVO && data.orderCustomerServiceInfoVO.type) || 9999;
+                switch (condition) {
+                    case 1://申请退款
+                        afterSaleService.push({
+                            id: 2,
+                            operation: "退款中",
+                            isRed: false
+                        });
+                        break;
+                    case 2://申请退货
+                        afterSaleService.push({
+                            id: 3,
+                            operation: "退货中",
+                            isRed: false
+                        });
+                        break;
+                    case 3://申请换货
+                        afterSaleService.push({
+                            id: 6,
+                            operation: "换货中",
+                            isRed: false
+                        });
+                        break;
+                    default:
+                        afterSaleService.push({
+                            id: 1,
+                            operation: "退换",
+                            isRed: false
+                        });
+                }
+                break;
+            case 5:
+                afterSaleService.push({
+                    id: 2,
+                    operation: "售后完成",
+                    isRed: false
+                });
+                break;
+            case 6:
+                afterSaleService.push({
+                    id: 2,
+                    operation: "售后关闭",
+                    isRed: false
+                });
+                break;
+
+
+            // let statusArr = [4, 16, 8];
+            // let isAfterSale = (data[index].restrictions & statusArr[0]) == statusArr[0] && (data[index].restrictions & statusArr[1]) == statusArr[1] &&
+            //     (data[index].restrictions & statusArr[2]) == statusArr[2];
+            // switch (data[index].status) {
+            //     case 2:
+            //         if ((data[index].restrictions & statusArr[0]) == statusArr[0]) {
+            //             afterSaleService.push();
+            //         } else {
+            //             afterSaleService.push({
+            //                 id: 0,
+            //                 operation: "退款",
+            //                 isRed: false
+            //             });
+            //         }
+            //
+            //         break;
+            //     case 3:
+            //     case 4:
+            //         if (isAfterSale) {
+            //             afterSaleService.push();
+            //         } else {
+            //             switch (data[index].returnType) {
+            //                 case 1://申请退款
+            //                     afterSaleService.push({
+            //                         id: 2,
+            //                         operation: "退款中",
+            //                         isRed: false
+            //                     });
+            //                     break;
+            //                 case 2://申请退货
+            //                     afterSaleService.push({
+            //                         id: 3,
+            //                         operation: "退货中",
+            //                         isRed: false
+            //                     });
+            //                     break;
+            //                 case 3://申请换货
+            //                     afterSaleService.push({
+            //                         id: 6,
+            //                         operation: "换货中",
+            //                         isRed: false
+            //                     });
+            //                     break;
+            //                 default:
+            //                     afterSaleService.push({
+            //                         id: 1,
+            //                         operation: "退换",
+            //                         isRed: false
+            //                     });
+            //             }
+            //         }
+            //         break;
+            //     case 5:
+            // if (isAfterSale) {
+            //     afterSaleService.push();
+            // } else if ((data[index].finishTime || 0) - (new Date().valueOf()) < 0) {
+            //     afterSaleService.push();
+            // }
+            // else {
+            //     switch (data[index].returnType) {
+            //         case 1://申请退款
+            //             afterSaleService.push({
+            //                 id: 2,
+            //                 operation: "退款中",
+            //                 isRed: false
+            //             });
+            //             break;
+            //         case 2://申请退货
+            //             afterSaleService.push({
+            //                 id: 3,
+            //                 operation: "退货中",
+            //                 isRed: false
+            //             });
+            //             break;
+            //         case 3://申请换货
+            //             afterSaleService.push({
+            //                 id: 6,
+            //                 operation: "换货中",
+            //                 isRed: false
+            //             });
+            //             break;
+            //         default:
+            //             afterSaleService.push({
+            //                 id: 1,
+            //                 operation: "退换",
+            //                 isRed: false
+            //             });
+            //     // }
+            // }
+            // break;
             // case 6:
             //     switch (data[index].returnType) {
             //         case 1://申请退款
@@ -439,8 +488,9 @@ export default class MyOrdersDetailPage extends BasePage {
             // case 8:
             //     afterSaleService.push();
             //     break;
-        // }
-        // return afterSaleService;
+            // }
+            // return afterSaleService;
+        }
         return orderDetailAfterServiceModel.currentAsList = afterSaleService;
     };
 
@@ -454,7 +504,6 @@ export default class MyOrdersDetailPage extends BasePage {
         let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(orderDetailModel.warehouseOrderDTOList[0].status)];
         if (orderDetailModel.warehouseOrderDTOList[0].status === 1) {
             this.startCutDownTime(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
-            pageStateString.sellerState = ["收货人:" + orderDetailModel.receiver, "" + orderDetailModel.recevicePhone];
             pageStateString.sellerTime = "收货地址:" + orderDetailModel.province + orderDetailModel.city + orderDetailModel.area + orderDetailModel.address;
             orderDetailAfterServiceModel.menu=[{
                 id:1,
@@ -474,9 +523,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         salePrice: StringUtils.isNoEmpty(item.payAmount) ? item.payAmount : 0,
                         category: item.specValues,
                         goodsNum: item.quantity,
-                        // afterSaleService: this.getAfterSaleService(item, index),
-                        // returnProductStatus: item.returnProductStatus,
-                        // returnType: item.returnType,
+                        afterSaleService: this.getAfterSaleService(item, index),
                         status: item.status,
                         activityCode: item.activityCode
                     })
@@ -493,9 +540,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         salePrice: StringUtils.isNoEmpty(item.payAmount) ? item.payAmount : 0,
                         category: item.specValues,
                         goodsNum: item.quantity,
-                        // afterSaleService: this.getAfterSaleService(item, index),
-                        // returnProductStatus: item.returnProductStatus,
-                        // returnType: item.returnType,
+                        afterSaleService: this.getAfterSaleService(item, index),
                         status: item.status,
                         activityCode: item.skuCode
                     })
@@ -504,7 +549,6 @@ export default class MyOrdersDetailPage extends BasePage {
         }
         this.setState({viewData:dataArr})
         console.log('viewdata',dataArr);
-        // let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(data.status)];
 
         /*
          * operationMenuCheckList
@@ -516,6 +560,7 @@ export default class MyOrdersDetailPage extends BasePage {
          * */
         switch (parseInt(orderDetailModel.warehouseOrderDTOList[0].status)) {
             case 2:
+                orderDetailAfterServiceModel.moreDetail = "";
                 orderDetailAfterServiceModel.menu = [];
                 break;
             case 3:
@@ -534,17 +579,9 @@ export default class MyOrdersDetailPage extends BasePage {
                 pageStateString.sellerTime = "";
                 break;
             case 4:
-                // if (data.orderType == 5 || data.orderType == 98) {
-                //     pageStateString.menu = [
-                //         {
-                //             id: 7,
-                //             operation: "删除订单",
-                //             isRed: false
-                //         }
-                //     ];
-                // }
+                timeUtils.stop();
                 pageStateString.sellerState = "已签收";
-                pageStateString.moreDetail = "";
+                orderDetailAfterServiceModel.moreDetail = "";
                 orderDetailAfterServiceModel.menu=[
                     {
                         id:7,
@@ -556,21 +593,10 @@ export default class MyOrdersDetailPage extends BasePage {
                         isRed:true,
                     },
                 ],
-                timeUtils.stop();
                 pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime : orderDetailModel.warehouseOrderDTOList[0].finishTime;
                 break;
             //订单已完成
             case 5:
-                // if (data.orderType == 5 || data.orderType == 98) {
-                //     pageStateString.menu = [
-                //         {
-                //             id: 7,
-                //             operation: "删除订单",
-                //             isRed: false
-                //         }
-                //     ];
-                // }
-                // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                 pageStateString.menu = [
                     {
                         id:7,
@@ -582,172 +608,13 @@ export default class MyOrdersDetailPage extends BasePage {
                     isRed:true,
                 },
                 ],
-                pageStateString.moreDetail = "";
+                    orderDetailAfterServiceModel.moreDetail = "";
                 timeUtils.stop();
                 pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].cancelTime;
                 break;
 
         }
         orderDetailAfterServiceModel.totalAsList = pageStateString;
-
-
-        // OrderApi.lookDetail({
-        //     orderNo: "P666668"
-        // }).then((response) => {
-        //     Toast.hiddenLoading();
-        //     let data = response.data;
-        //     orderDetailModel.saveOrderDetailInfo(data);
-        //     console.log(orderDetailModel);
-        //     let arr = [];
-        //     if (data.orderType === 5 || data.orderType === 98) {//礼包。。。
-        //         data.orderProductList[0].orderProductPriceList.map((item, index) => {
-        //             arr.push({
-        //                 id: data.orderProductList[0].id,
-        //                 orderId: item.orderProductId,
-        //                 productId: item.productId,
-        //                 uri: item.specImg,
-        //                 goodsName: item.productName,
-        //                 salePrice: StringUtils.isNoEmpty(item.originalPrice) ? item.originalPrice : 0,
-        //                 category: item.spec,
-        //                 goodsNum: item.productNum,
-        //                 returnProductId: data.orderProductList[0].returnProductId,
-        //                 returnType: data.orderProductList[0].returnType,
-        //                 returnProductStatus: data.orderProductList[0].returnProductStatus,
-        //                 status: data.orderProductList[0].status
-        //             });
-        //         });
-        //     } else {
-        //         data.orderProductList.map((item, index) => {
-        //             arr.push({
-        //                 id: item.id,
-        //                 orderId: item.orderId,
-        //                 productId: item.productId,
-        //                 uri: item.specImg,
-        //                 goodsName: item.productName,
-        //                 salePrice: StringUtils.isNoEmpty(item.price) ? item.price : 0,
-        //                 category: item.spec,
-        //                 goodsNum: item.num,
-        //                 returnProductId: item.returnProductId,
-        //                 afterSaleService: this.getAfterSaleService(data.orderProductList, index),
-        //                 returnProductStatus: item.returnProductStatus,
-        //                 returnType: item.returnType,
-        //                 status: item.status,
-        //                 activityCode: item.activityCode
-        //             });
-        //         });
-        //     }
-        //
-        //     // let pageStateString = constants.pageStateString[parseInt(data.status)];
-        //     let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(data.status)];
-        //
-        //     /*
-        //      * operationMenuCheckList
-        //      * 取消订单                 ->  1
-        //      * 去支付                   ->  2
-        //      * 继续支付                 ->  3
-        //      * 订单退款                 ->  4
-        //      * 查看物流                 ->  5
-        //      * 确认收货                 ->  6
-        //      * 删除订单(已完成)          ->  7
-        //      * 再次购买                 ->  8
-        //      * 删除订单(已关闭(取消))    ->  9
-        //      * */
-        //     switch (parseInt(orderDetailModel.status)) {
-        //         // case 0:
-        //         //     break
-        //         //等待买家付款
-        //         case 1:
-        //
-        //         //买家已付款 待发货
-        //         case 2:
-        //             pageStateString.menu = [];
-        //             break;
-        //         //卖家已发货 待收货
-        //         case 3:
-        //             this.startCutDownTime2(data.autoReceiveTime);
-        //             pageStateString.sellerTime = "";
-        //             break;
-        //         //   确认收货
-        //         case 4:
-        //             if (data.orderType == 5 || data.orderType == 98) {
-        //                 pageStateString.menu = [
-        //                     {
-        //                         id: 7,
-        //                         operation: "删除订单",
-        //                         isRed: false
-        //                     }
-        //                 ];
-        //             }
-        //             pageStateString.sellerState = "已签收";
-        //             pageStateString.moreDetail = "";
-        //             timeUtils.stop();
-        //             pageStateString.logisticsTime = data.deliverTime ? data.deliverTime : data.finishTime;
-        //             break;
-        //         //订单已完成
-        //         case 5:
-        //             if (data.orderType == 5 || data.orderType == 98) {
-        //                 pageStateString.menu = [
-        //                     {
-        //                         id: 7,
-        //                         operation: "删除订单",
-        //                         isRed: false
-        //                     }
-        //                 ];
-        //             }
-        //             // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
-        //             pageStateString.moreDetail = "";
-        //             timeUtils.stop();
-        //             pageStateString.logisticsTime = data.deliverTime ? data.deliverTime : data.finishTime;
-        //             break;
-        //         case 6://退货关闭
-        //         case 7://用户关闭
-        //         case 8://超时关闭
-        //             if (data.orderType == 5 || data.orderType == 98) {
-        //                 pageStateString.menu = [
-        //                     {
-        //                         id: 7,
-        //                         operation: "删除订单",
-        //                         isRed: false
-        //                     }
-        //                 ];
-        //             }
-        //             pageStateString.sellerState = "订单已关闭";
-        //             pageStateString.moreDetail = data.buyerRemark;
-        //             pageStateString.logisticsTime = data.shutOffTime ? data.shutOffTime : null;
-        //             break;
-        //
-        //     }
-        //     orderDetailAfterServiceModel.totalAsList = pageStateString;
-            // this.setState({
-            //     viewData: {
-            //         expressNo: data.expressNo,
-            //         orderId: this.params.orderId,
-            //         list: arr,
-            //         receiver: data.receiver,
-            //         recevicePhone: data.recevicePhone,
-            //         address: data.address,
-            //         province: data.province,
-            //         city: data.city,
-            //         area: data.area,
-            //         goodsPrice: data.totalProductPrice,//商品价格(detail.totalPrice-detail.freightPrice)
-            //         freightPrice: data.freightPrice,//运费（快递）
-            //         tokenCoin: data.tokenCoin || 0,//一元券抵扣
-            //         couponPrice: data.couponPrice || 0,//优惠券抵扣
-            //         totalPrice: data.totalOrderPrice,//订单总价
-            //         needPrice: data.needPrice,//需付款
-            //         orderNum: data.orderNum,//订单编号
-            //         createTime: data.createTime,//创建时间
-            //         platformPayTime: data.platformPayTime,//平台付款时间
-            //         payTime: data.payTime,//三方付款时间
-            //         outTradeNo: data.outTradeNo,//三方交易号
-            //         sendTime: data.sendTime,//发货时间
-            //         finishTime: data.finishTime,//成交时间
-            //         autoReceiveTime: data.autoReceiveTime,//自动确认时间
-            //         deliverTime: data.deliverTime,
-            //         pickedUp: data.pickedUp,//
-            //         cancelTime: data.cancelTime ? data.cancelTime : null,//取消时间,
-            //         shutOffTime: data.shutOffTime//超时关闭时间
-            //     },
             //     afterSaleService: this.getAfterSaleService(data.orderProductList, 0),
             //     returnProductStatus: data.orderProductList[0].returnProductStatus,
             //     pageStateString: pageStateString,
@@ -816,35 +683,41 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     afterSaleServiceClick = (menu, index) => {
         console.log(menu);
+        let products=orderDetailModel.productsList()[index];
+         if(products.afterSaleTime<orderDetailModel.warehouseOrderDTOList[0].nowTime){
+             NativeModules.commModule.toast("该商品售后已过期");
+             return;
+         }else if(products.orderSubType===3){
+             NativeModules.commModule.toast("该商品属于升级礼包产品，不存在售后功能");
+             return;
+         }
+
         switch (menu.id) {
             case 0:
-                this.$navigate("order/afterSaleService/AfterSaleServicePage", {
-                    pageType: 0,
-                    orderProductId: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].id : this.state.viewData.list[index].id
-                });
+                    this.$navigate("order/afterSaleService/AfterSaleServicePage", {
+                        pageType: 0,
+                        orderProductNo: products.orderProductNo
+                    });
+
                 break;
             case 1:
                 this.$navigate("order/afterSaleService/AfterSaleServiceHomePage", {
-                    pageData: this.state.allData,
-                    index: index
+                    pageData: orderDetailModel.warehouseOrderDTOList,
                 });
                 break;
             case 2:
                 this.$navigate("order/afterSaleService/ExchangeGoodsDetailPage", {
-                    pageType: 0,
-                    returnProductId: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
+                    serviceNo: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
                 });
                 break;
             case 3:
                 this.$navigate("order/afterSaleService/ExchangeGoodsDetailPage", {
-                    pageType: 1,
-                    returnProductId: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
+                    serviceNo: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
                 });
                 break;
             case 6:
                 this.$navigate("order/afterSaleService/ExchangeGoodsDetailPage", {
-                    pageType: 2,
-                    returnProductId: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
+                    serviceNo: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
                 });
                 break;
         }
@@ -862,7 +735,7 @@ const styles = StyleSheet.create({
         height: px2dp(30),
         borderRadius: px2dp(15),
         backgroundColor: "white",
-        borderStyle: "solid",
+        // borderStyle: "solid",
         borderWidth: 1,
         borderColor: DesignRule.lineColor_inGrayBg,
         marginRight: px2dp(15),
