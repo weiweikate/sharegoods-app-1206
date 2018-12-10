@@ -33,9 +33,8 @@ export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {
         show: false, // false则隐藏导航
-        title: '我的晋升情况'
+        title: '我的晋升'
     };
-
     $getPageStateOptions = () => {
         return {
             loadingState: this.state.loadingState,
@@ -140,7 +139,12 @@ export default class MyPromotionPage extends BasePage {
                         this.state.headImg ?
                             <Image style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
                                    onError={({ nativeEvent: { error } }) => this._imgLoadFail(this.state.headImg, error)}
-                                   source={{ uri: this.state.headImg }}/> : <View style={{width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 ,backgroundColor:'gray'}}/>
+                                   source={{ uri: this.state.headImg }}/> : <View style={{
+                                width: headerWidth,
+                                height: headerWidth,
+                                borderRadius: headerWidth / 2,
+                                backgroundColor: 'gray'
+                            }}/>
                     }
                     <View style={{
                         justifyContent: 'center',
@@ -224,11 +228,11 @@ export default class MyPromotionPage extends BasePage {
         return (
             <View style={{ marginBottom: 50 }}>
                 {/*<View style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>*/}
-                    {/*<Text style={{*/}
-                        {/*marginLeft: 14,*/}
-                        {/*fontSize: 14,*/}
-                        {/*color: DesignRule.textColor_mainTitle*/}
-                    {/*}}>预计晋升后可获得哪些福利？</Text>*/}
+                {/*<Text style={{*/}
+                {/*marginLeft: 14,*/}
+                {/*fontSize: 14,*/}
+                {/*color: DesignRule.textColor_mainTitle*/}
+                {/*}}>预计晋升后可获得哪些福利？</Text>*/}
                 {/*</View>*/}
                 {this.renderSepLine()}
                 {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
