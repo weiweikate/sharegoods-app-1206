@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         SoftReference<MainActivity> softReference = new SoftReference(MainActivity.this);
         ReactNativePreLoader.preLoad(softReference, ParameterUtils.RN_MAIN_NAME);
-        Log.d("device", Utils.isEmulator() + "");
+        Log.d("is_phone", !Utils.isEmulator() + "");
     }
 
     @Override
