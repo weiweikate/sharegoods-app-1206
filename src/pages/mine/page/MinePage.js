@@ -583,7 +583,7 @@ export default class MinePage extends BasePage {
                                         fontSize: DesignRule.fontSize_24,
                                         color: DesignRule.textColor_instruction
                                     }}/>
-                            <UIImage source={arrowRight} style={{ height: 12, marginLeft: 6 }}
+                            <UIImage source={arrowRight} style={{ height: 12, marginLeft: 3 }}
                                      resizeMode={"contain"}/>
                         </View>
                     </TouchableWithoutFeedback>

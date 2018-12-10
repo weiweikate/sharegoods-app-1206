@@ -11,7 +11,7 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity, ListView, TouchableWithoutFeedback,Image
+    TouchableOpacity, ListView, TouchableWithoutFeedback, Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -21,10 +21,11 @@ import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '@mr/image-placeholder';
 // import { NavigationActions } from 'react-navigation';
 
 import RES from '../../res';
+
 const MoneyIcon = RES.money;
 const StarIcon = RES.colloct_start;
 const invalidIcon = RES.setting.shoucang_icon_shixiao_nor;
@@ -40,13 +41,18 @@ export default class MyCollectPage extends BasePage {
             totalPrice: 0,
             selectGoodsNum: 0
         };
-        this.currentPage = 1
+        this.currentPage = 1;
     }
 
     $navigationBarOptions = {
         title: '收藏店铺',
         show: true // false则隐藏导航
     };
+
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     //**********************************ViewPart******************************************
     //删除收藏
     deleteFromShoppingCartByProductId = (storeId) => {
@@ -105,7 +111,8 @@ export default class MyCollectPage extends BasePage {
                         <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
-                            <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance?item.totalTradeBalance:0}元</Text>
+                            <Text
+                                style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance ? item.totalTradeBalance : 0}元</Text>
                             <View style={{ flex: 1 }}/>
                             <View style={styles.starContainer}>
                                 {
@@ -133,15 +140,23 @@ export default class MyCollectPage extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeId, 1)}>
                 <View style={[styles.rowContainer, { backgroundColor: '#c7c7c7' }]}>
-                    <View style={{position:'absolute',left:0,top:0,width:'100%',height:'100%',justifyContent:'center',alignItems:'center'}}>
-                        <Image source={invalidIcon} style={{flex:1}} />
+                    <View style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Image source={invalidIcon} style={{ flex: 1 }}/>
                     </View>
                     {
                         item.headUrl ? <UIImage source={{ uri: item.headUrl }} style={[{
                                 justifyContent: 'center',
                                 alignItems: 'center'
                             }, styles.img]} borderRadius={25}/>
-                          :
+                            :
                             <View style={[{ justifyContent: 'center', alignItems: 'center' }, styles.img]}/>
                     }
                     <View style={styles.right}>
@@ -170,11 +185,11 @@ export default class MyCollectPage extends BasePage {
     };
 
     onLoadMore = () => {
-       this.currentPage++;
+        this.currentPage++;
         this.getDataFromNetwork();
     };
     onRefresh = () => {
-      this.currentPage = 1;
+        this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
@@ -209,7 +224,7 @@ export default class MyCollectPage extends BasePage {
                         totalTradeBalance: item.totalTradeBalance,
                         userCount: item.userCount,
                         userId: item.userId,
-                        status:item.status,
+                        status: item.status
                     });
                 });
                 console.log(arr);
@@ -256,86 +271,88 @@ export default class MyCollectPage extends BasePage {
             />
         );
     };
-gotoLookAround(){
-    // const resetAction = NavigationActions.reset({
-    //     index: 0,
-    //     actions: [
-    //         NavigationActions.navigate({
-    //             routeName: 'Tab',
-    //             params: {}
-    //         })
-    //     ]
-    // });
-    // this.props.navigation.dispatch(resetAction);
-    this.$navigateBackToStore();
-}
-        _renderEmptyView = () => {
-            return (
-                <View style={{
-                    backgroundColor: DesignRule.bgColor,
-                    flex: 1,
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <Image
-                        source={RES.placeholder.noCollect}
-                        style={{
-                            height: 115,
-                            width: 115
-                        }}
-                    />
-                    <Text
-                        style={{
-                            marginTop: 10,
-                            fontSize: 15,
-                            color: DesignRule.textColor_secondTitle
-                        }}
-                    >
-                        去收藏点什么吧
-                    </Text>
-                    <Text
-                        style={{
-                            marginTop: 10,
-                            fontSize: 12,
-                            color: DesignRule.textColor_secondTitle
-                        }}
-                    >
-                        快去商城逛逛吧~
-                    </Text>
 
-                    <TouchableOpacity
-                        onPress={
-                            () => {
-                                this.gotoLookAround();
-                            }
+    gotoLookAround() {
+        // const resetAction = NavigationActions.reset({
+        //     index: 0,
+        //     actions: [
+        //         NavigationActions.navigate({
+        //             routeName: 'Tab',
+        //             params: {}
+        //         })
+        //     ]
+        // });
+        // this.props.navigation.dispatch(resetAction);
+        this.$navigateBackToStore();
+    }
+
+    _renderEmptyView = () => {
+        return (
+            <View style={{
+                backgroundColor: DesignRule.bgColor,
+                flex: 1,
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+                <Image
+                    source={RES.placeholder.noCollect}
+                    style={{
+                        height: 115,
+                        width: 115
+                    }}
+                />
+                <Text
+                    style={{
+                        marginTop: 10,
+                        fontSize: 15,
+                        color: DesignRule.textColor_secondTitle
+                    }}
+                >
+                    去收藏点什么吧
+                </Text>
+                <Text
+                    style={{
+                        marginTop: 10,
+                        fontSize: 12,
+                        color: DesignRule.textColor_secondTitle
+                    }}
+                >
+                    快去商城逛逛吧~
+                </Text>
+
+                <TouchableOpacity
+                    onPress={
+                        () => {
+                            this.gotoLookAround();
                         }
+                    }
+                >
+                    <View
+                        style={{
+                            marginTop: 22,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderColor: DesignRule.mainColor,
+                            borderWidth: 1,
+                            borderRadius: 18,
+                            width: 115,
+                            height: 36
+                        }}
                     >
-                        <View
+                        <Text
                             style={{
-                                marginTop: 22,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderColor: DesignRule.mainColor,
-                                borderWidth: 1,
-                                borderRadius: 18,
-                                width: 115,
-                                height: 36
+                                color: DesignRule.mainColor,
+                                fontSize: ScreenUtils.px2dp(15)
                             }}
                         >
-                            <Text
-                                style={{
-                                    color: DesignRule.mainColor,
-                                    fontSize: ScreenUtils.px2dp(15)
-                                }}
-                            >
-                                去逛逛
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            );
-        };
+                            去逛逛
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        );
+    };
 
 }
 
