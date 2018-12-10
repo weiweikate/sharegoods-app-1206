@@ -106,7 +106,7 @@ let constants = {
             menuData2:['退款','退款中','售后完成']
         },{
             index:5,
-            orderStatus:'已完成',
+            orderStatus:'已关闭',
             menuData:[{
                 id:7,
                 operation:'删除订单',

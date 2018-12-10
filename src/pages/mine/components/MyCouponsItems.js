@@ -414,6 +414,7 @@ export default class MyCouponsItems extends Component {
             }
             dataList.map((item) => {
                 arrData.push({
+                    code:item.code,
                     id: item.id,
                     status: item.status,
                     name: item.name,
@@ -430,6 +431,7 @@ export default class MyCouponsItems extends Component {
         } else {//more
             dataList.map((item) => {
                 arrData.push({
+                    code:item.code,
                     id: item.id,
                     status: item.status,
                     name: item.name,

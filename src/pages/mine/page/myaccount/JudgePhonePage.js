@@ -2,7 +2,6 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-// import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import bridge from '../../../../utils/bridge';
@@ -56,9 +55,16 @@ export default class JudgePhoneNumPage extends BasePage {
                     flexDirection: 'row',
                     alignItems: 'center'
                 }}>
-                    <UIText value={'验证码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
+                    <UIText value={'验证码'}
+                            style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
                     <TextInput underlineColorAndroid={'transparent'}
-                               style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
+                               style={{
+                                   flex: 1,
+                                   padding: 0,
+                                   fontSize: 13,
+                                   color: DesignRule.textColor_mainTitle,
+                                   marginLeft: 20
+                               }}
                                placeholder={'请输入验证码'}
                                placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => {
@@ -94,18 +100,18 @@ export default class JudgePhoneNumPage extends BasePage {
     _onGetCode = (tel) => {
         //获取验证码
         if (StringUtils.checkPhone(tel)) {
-           if(this.state.vertifyCodeTime <= 0) {
-               SMSTool.sendVerificationCode(SMSTool.SMSType.OldPhoneType, tel).then((data) => {
-                   (new TimeDownUtils()).startDown((time) => {
-                       this.setState({
-                           vertifyCodeTime: time
-                       });
-                   });
-                   bridge.$toast('验证码已发送请注意查收');
-               }).catch((data) => {
-                   bridge.$toast(data.msg);
-               });
-           }
+            if (this.state.vertifyCodeTime <= 0) {
+                SMSTool.sendVerificationCode(this.params.title === '设置交易密码' ? SMSTool.SMSType.SetSaleType : SMSTool.SMSType.ForgetSaleType, tel).then((data) => {
+                    (new TimeDownUtils()).startDown((time) => {
+                        this.setState({
+                            vertifyCodeTime: time
+                        });
+                    });
+                    bridge.$toast('验证码已发送请注意查收');
+                }).catch((data) => {
+                    bridge.$toast(data.msg);
+                });
+            }
         } else {
             bridge.$toast('手机格式不对');
         }

@@ -5,13 +5,10 @@ import constants from '../../../constants/constants';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
-import CommonTwoChoiceModal from './CommonTwoChoiceModal';
-// import OrderUtils from './../components/OrderUtils';
 import Toast from '../../../utils/bridge';
-// import user from '../../../model/user';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-// import userOrderNum from '../../../model/userOrderNum';
+import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
@@ -82,71 +79,6 @@ export default class MyOrdersListView extends Component {
     renderModal = () => {
         return (
             <View>
-                <CommonTwoChoiceModal
-                    isShow={this.state.isShowDeleteOrderModal}
-                    ref={(ref) => {
-                        this.deleteModal = ref;
-                    }}
-                    detail={{ title: '删除订单', context: '确定删除此订单?', no: '取消', yes: '确认' }}
-                    closeWindow={() => {
-                        this.setState({ isShowDeleteOrderModal: false });
-                    }}
-                    yes={() => {
-                        this.setState({ isShowDeleteOrderModal: false });
-                        console.log(this.state.menu);
-                        if (this.state.viewData[this.state.index].orderStatus === 6 || this.state.viewData[this.state.index].orderStatus === 7 || this.state.viewData[this.state.index].orderStatus === 8) {
-                            Toast.showLoading();
-                            OrderApi.deleteClosedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
-                                Toast.hiddenLoading();
-                                NativeModules.commModule.toast('订单已删除');
-                                this.onRefresh();
-                            }).catch(e => {
-                                Toast.hiddenLoading();
-                                NativeModules.commModule.toast(e.msg);
-                            });
-                        } else if (this.state.viewData[this.state.index].orderStatus === 4 || this.state.viewData[this.state.index].orderStatus === 5) {
-                            Toast.showLoading();
-                            OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
-                                Toast.hiddenLoading();
-                                NativeModules.commModule.toast('订单已删除');
-                                this.onRefresh();
-                            }).catch(e => {
-                                Toast.hiddenLoading();
-                                NativeModules.commModule.toast(e.msg);
-                            });
-                        } else {
-                            NativeModules.commModule.toast('状态值异常，暂停操作');
-                        }
-                    }}
-                    no={() => {
-                        this.setState({ isShowDeleteOrderModal: false });
-                    }}
-                />
-                <CommonTwoChoiceModal
-                    isShow={this.state.isShowReceiveGoodsModal}
-                    ref={(ref) => {
-                        this.receiveModal = ref;
-                    }}
-                    detail={{ title: '确认收货', context: '是否确认收货?', no: '取消', yes: '确认' }}
-                    closeWindow={() => {
-                        this.setState({ isShowReceiveGoodsModal: false });
-                    }}
-                    yes={() => {
-                        this.setState({ isShowReceiveGoodsModal: false });
-                        Toast.showLoading();
-                        OrderApi.confirmReceipt({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
-                            Toast.hiddenLoading();
-                            NativeModules.commModule.toast('确认收货成功');
-                            this.onRefresh();
-                        }).catch(e => {
-                            Toast.hiddenLoading();
-                            NativeModules.commModule.toast(e.msg);
-                        });
-                    }}
-                    no={() => {
-                        this.setState({ isShowReceiveGoodsModal: false });
-                    }}
-                />
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
                     ref={(ref) => {
@@ -160,8 +92,10 @@ export default class MyOrdersListView extends Component {
                         this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
                         OrderApi.cancelOrder({
-                            buyerRemark: this.state.CONFIG[index],
-                            orderNum: this.state.viewData[this.state.index].orderNum
+                            cancelReason: this.state.CONFIG[index],
+                            orderNo: this.state.viewData[this.state.index].orderNo,
+                            cancelType:2,
+                            platformRemarks:null
                         }).then((response) => {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
@@ -195,8 +129,8 @@ export default class MyOrdersListView extends Component {
                 num: item.quantity,
                 status: item.status,
                 orderType:item.subStatus,
-                // returnProductStatus: item.returnProductStatus,
-                // returnType: item.returnType
+                prodCode:item.prodCode,
+                skuCode:item.skuCode,
             });
         });
         return arrData;
@@ -215,7 +149,8 @@ export default class MyOrdersListView extends Component {
                             orderType:resp.subStatus,
                             orderStatus:resp.status,
                             totalPrice: resp.payAmount,
-                            expressList:resp.expressList||[]
+                            expressList:resp.expressList||[],
+
 
                         })
                     })
@@ -226,11 +161,11 @@ export default class MyOrdersListView extends Component {
                             orderProduct: this.getOrderProduct(resp.products),
                             orderNo:resp.warehouseOrderNo,
                             cancelTime:resp.cancelTime,
-                            quantity:resp.products.length,
+                            quantity:this.totalAmount(resp.products),
                             orderType:resp.subStatus,
                             orderStatus:resp.status,
                             totalPrice: resp.payAmount,
-                            expressList:resp.expressList||[]
+                            expressList:resp.expressList||[],
                         })
                     })
                 }
@@ -264,7 +199,13 @@ export default class MyOrdersListView extends Component {
         }
         this.setState({ viewData: arrData });
     };
-
+    totalAmount(data){
+        let num=0;
+        data.map((item)=>{
+           num=num+item.quantity
+        })
+        return num;
+    }
     componentDidMount() {
         //网络请求，业务处理
         if (this.isFirst) {
@@ -335,7 +276,7 @@ export default class MyOrdersListView extends Component {
 
     getDataFromNetwork = () => {
         console.log('orderlistrefresh');
-        // userOrderNum.getUserOrderNum();
+        userOrderNum.getUserOrderNum();
         Toast.showLoading();
         if (this.props.orderNum) {
             OrderApi.queryPage({
@@ -421,12 +362,14 @@ export default class MyOrdersListView extends Component {
 
                 break;
             case 2:
+                console.log("payment/PaymentMethodPage2",this.state.viewData[index])
                 this.props.nav('payment/PaymentMethodPage', {
-                    orderNo: this.state.viewData[index].orderNo,
+                    orderNum: this.state.viewData[index].orderNo,
                     amounts: this.state.viewData[index].totalPrice
                 });
                 break;
             case 3:
+                console.log("payment/PaymentMethodPage3",this.state.viewData[index])
                 this.props.nav('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNo,
                     amounts: this.state.viewData[index].totalPrice,
@@ -435,23 +378,17 @@ export default class MyOrdersListView extends Component {
                 break;
             case 4:
                 this.props.nav('payment/PaymentMethodPage', {
-                    orderNum: this.state.viewData[index].orderNo,
+                    orderNo: this.state.viewData[index].orderNo,
                     amounts: this.state.viewData[index].price
                 });
                 break;
             case 5:
-                // OrderApi.findLogisticsDetail({})
-                // this.props.nav('order/logistics/LogisticsDetailsPage', {
-                //     orderNo: this.state.viewData[index].orderNo,
-                //     // orderId: this.state.viewData[index].id,
-                //     expressNo: this.state.viewData[index].expressNo
-                // });
                 if(this.state.viewData[index].expressList.length===0){
                     NativeModules.commModule.toast('当前物流信息不存在！');
                 }
                 else if(this.state.viewData[index].expressList.length===1){
                     this.props.nav("order/logistics/LogisticsDetailsPage", {
-                        expressList: this.state.viewData[this.state.index].expressList
+                        expressNo: this.state.viewData[index].expressList[0].expressNo
                     });
                 }else{
                     this.props.nav("order/logistics/CheckLogisticsPage", {
@@ -461,8 +398,6 @@ export default class MyOrdersListView extends Component {
                 break;
             case 6:
                 console.log(this.state.viewData[index]);
-                    // this.setState({ isShowReceiveGoodsModal: true });
-                    // this.receiveModal && this.receiveModal.open();
                     Alert.alert('',`是否确认收货?`, [
                         {
                             text: `取消`, onPress: () => {
@@ -471,7 +406,7 @@ export default class MyOrdersListView extends Component {
                         {
                             text: `确定`, onPress: () => {
                                 Toast.showLoading();
-                                OrderApi.confirmReceipt({ orderNo: this.state.viewData[this.state.index].orderNum }).then((response) => {
+                                OrderApi.confirmReceipt({ orderNo: this.state.viewData[index].orderNo }).then((response) => {
                                     Toast.hiddenLoading();
                                     NativeModules.commModule.toast('确认收货成功');
                                     this.onRefresh();
@@ -484,7 +419,6 @@ export default class MyOrdersListView extends Component {
                     ], { cancelable: true });
                 break;
             case 7:
-                // this.setState({ isShowDeleteOrderModal: true });
                 Alert.alert('',`确定删除此订单？`, [
                     {
                         text: `取消`, onPress: () => {
@@ -494,7 +428,7 @@ export default class MyOrdersListView extends Component {
                         text: `确定`, onPress: () => {
                             console.log(this.state.menu);
                                 Toast.showLoading();
-                                OrderApi.deleteOrder({ orderNo: this.state.viewData[this.state.index].orderNum }).then((response) => {
+                                OrderApi.deleteOrder({ orderNo: this.state.viewData[index].orderNo }).then((response) => {
                                     Toast.hiddenLoading();
                                     NativeModules.commModule.toast('订单已删除！');
                                     this.onRefresh();
@@ -505,39 +439,16 @@ export default class MyOrdersListView extends Component {
                         }}
 
                 ], { cancelable: true });
-                // this.deleteModal && this.deleteModal.open();
                 break;
             case 8:
-                Toast.showLoading();
-                OrderApi.againOrder({
-                    orderNum: this.state.viewData[index].orderNum,
-                    id: this.state.viewData[index].id
-                }).then((response) => {
-                    Toast.hiddenLoading();
-                    let cartData = [];
-                    /**
-                     * 'amount': item.amount,
-                     'priceId': item.priceId,
-                     'productId': item.productId,
-                     */
-                    response.data.orderProducts.map((item, index) => {
-                        cartData.push({ productId: item.productId, priceId: item.priceId, amount: item.num });
+                  let cartData = [];
+                    this.state.viewData[index].orderProduct.map((item, index) => {
+                        cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
                     });
-                    // let params = {
-                    //     amount: response.data.orderProducts[0].num,
-                    //     priceId: response.data.orderProducts[0].priceId,
-                    //     productId: response.data.orderProducts[0].productId
-                    // };
                     shopCartCacheTool.addGoodItem(cartData);
                     this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
-                }).catch(e => {
-                    Toast.hiddenLoading();
-                    NativeModules.commModule.toast(e.msg);
-                });
                 break;
             case 9:
-                // this.setState({ isShowDeleteOrderModal: true });
-                // this.deleteModal && this.deleteModal.open();
                 Alert.alert('',`确定删除此订单？`, [
                     {
                         text: `取消`, onPress: () => {
