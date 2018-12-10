@@ -37,6 +37,10 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
         show: true// false则隐藏导航
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
 
     _render() {
         return (

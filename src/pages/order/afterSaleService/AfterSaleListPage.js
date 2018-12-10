@@ -54,6 +54,10 @@ export default class AfterSaleListPage extends BasePage<Props> {
 
     };
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     $NavBarRenderRightItem = () => {
         if (this.params.type === 'search') {
             return null;

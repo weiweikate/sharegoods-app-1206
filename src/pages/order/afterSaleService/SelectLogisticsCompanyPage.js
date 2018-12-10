@@ -75,6 +75,10 @@ export default class SelectLogisticsCompanyPage extends BasePage {
         show: true// false则隐藏导航
     };
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     _render() {
         return (
             <View style={styles.container}>

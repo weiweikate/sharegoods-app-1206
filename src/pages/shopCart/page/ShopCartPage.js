@@ -618,7 +618,7 @@ export default class ShopCartPage extends BasePage {
             tempArr.map((goods) => {
                 buyGoodsArr.push({
                     skuCode: goods.skuCode,
-                    num: goods.amount,
+                    quantity: goods.amount,
                     productCode: goods.productCode
                 });
             });
@@ -631,6 +631,7 @@ export default class ShopCartPage extends BasePage {
             });
         }
     };
+
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
