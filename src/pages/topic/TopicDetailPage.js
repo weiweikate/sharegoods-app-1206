@@ -549,6 +549,7 @@ export default class TopicDetailPage extends BasePage {
 
     _renderContainer = () => {
         let bottomTittle, colorType;
+        const { activityType } = this.state;
         if (this.state.activityType === 3) {
             //buyTime当前时间是否可购买 userBuy是否有权限
             //leftBuyNum剩余购买数量 buyLimit限购数量(-1: 不限购)
@@ -581,11 +582,11 @@ export default class TopicDetailPage extends BasePage {
                 bottomTittle = '已结束';
             } else {
                 if (surplusNumber === 0) {
-                    bottomTittle = '已抢光';
+                    bottomTittle = activityType === 1 ? '已抢完' : '已拍完';
                 } else if (limitNumber !== -1 && limitFlag === 1) {
                     bottomTittle = `每人限购${limitNumber}次\n(您已购买过本商品）`;
                 } else {
-                    bottomTittle = '立即拍';
+                    bottomTittle = activityType === 1 ? '立即抢' : '立即拍';
                     colorType = 2;
                 }
             }

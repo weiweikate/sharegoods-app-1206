@@ -27,15 +27,16 @@ export class DetailBanner extends Component {
         }
     };
 
+    //ios
     _renderStyle = () => {
-        const { imgFileList } = this.props.data;
-        const bannerCount = (imgFileList || []).length;
+        const bannerCount = (this.productImgListTemp || []).length;
         return <View style={styles.indexViewTwo}>
             <Text
                 style={styles.text}>{this.state.messageIndex + 1} / {this.state.haveVideo ? bannerCount + 1 : bannerCount}</Text>
         </View>;
     };
 
+    //android
     _renderPagination = (index, total) => {
         return <View style={styles.indexViewTwo}>
             <Text
@@ -44,12 +45,11 @@ export class DetailBanner extends Component {
     };
 
     _renderViewPageItem = (item = {}, index) => {
-        const { imgFileList } = this.props.data;
         if (item.videoUrl) {
             return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
         } else {
             const { originalImg } = item;
-            let imgList = this.getImageList(imgFileList);
+            let imgList = this.getImageList(this.productImgListTemp);
             return (
                 <TouchableWithoutFeedback onPress={() => {
                     const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
@@ -72,12 +72,14 @@ export class DetailBanner extends Component {
 
         let productImgListTemp = [...(imgFileList || [])];
         productImgListTemp = productImgListTemp || [];
+        productImgListTemp.unshift({ originalImg: imgUrl });
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.state.haveVideo = true;
             productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
         } else {
             this.state.haveVideo = false;
         }
+        this.productImgListTemp = productImgListTemp;
         if (productImgListTemp.length > 0) {
             return (
                 <View>
