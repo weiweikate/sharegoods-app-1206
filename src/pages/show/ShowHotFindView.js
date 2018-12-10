@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
-import { ShowRecommendModules, tag, showSelectedDetail } from './Show';
+import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils'
 const { px2dp } = ScreenUtils;
@@ -81,7 +81,6 @@ export default class ShowHotView extends Component {
         const { navigate } = this.props;
         data.click = data.click + 1
         // this.recommendModules.recommendList.replace
-        showSelectedDetail.selectedShowAction(data, this.recommendModules.type)
         navigate && navigate('show/ShowDetailPage', { id: data.id });
     }
 
