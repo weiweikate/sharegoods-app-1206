@@ -5,7 +5,8 @@ import {
     SectionList,
     // Image,
     FlatList,
-    Text
+    Text,
+    Alert
     // TouchableWithoutFeedback,
     // ImageBackground,
     // AsyncStorage
@@ -32,12 +33,13 @@ import DesignRule from 'DesignRule';
 import user from '../../../model/user';
 import EmptyUtils from '../../../utils/EmptyUtils';
 // import StringUtils from '../../../utils/StringUtils';
-import ConfirmAlert from '../../../components/ui/ConfirmAlert';
+// import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
 // import res from '../res';
 import MessageApi from '../../message/api/MessageApi';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
+// import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
 
@@ -250,13 +252,29 @@ export default class ProductDetailPage extends BasePage {
         switch (type) {
             case 'jlj':
                 if (!user.isLogin) {
-                    this.ConfirmAlert.show({
-                        title: '登录后分享才能赚取赏金', rightText: '去登录', confirmCallBack: () => {
-                            this.$navigate('login/login/LoginPage');
-                        }, closeCallBack: () => {
-                            this.shareModal.open();
-                        }
-                    });
+                    // this.ConfirmAlert.show({
+                    //     title: '登录后分享才能赚取赏金', rightText: '去登录', confirmCallBack: () => {
+                    //         this.$navigate('login/login/LoginPage');
+                    //     }, closeCallBack: () => {
+                    //         this.shareModal.open();
+                    //     }
+                    // });
+
+                    Alert.alert('提示', '登录后分享才能赚取赏金',
+                        [
+                            {
+                                text: '取消', onPress: () => {
+                                }
+                            },
+                            {
+                                text: '确定', onPress: () => {
+                                    this.$navigate('login/login/LoginPage');
+                                }
+                            }
+                        ]
+                    );
+
+
                 } else {
                     this.shareModal.open();
                 }
@@ -281,14 +299,14 @@ export default class ProductDetailPage extends BasePage {
             let temp = {
                 'amount': amount,
                 'skuCode': skuCode,
-                'prodCode': this.state.data.prodCode
+                'productCode': this.state.data.prodCode
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
             orderProducts.push({
                 skuCode: skuCode,
-                num: amount,
-                prodCode: this.state.data.prodCode
+                quantity: amount,
+                productCode: this.state.data.prodCode
             });
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
@@ -566,7 +584,7 @@ export default class ProductDetailPage extends BasePage {
                                 miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.id || ''}`
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
-            <ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>
+            {/*<ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>*/}
             {/*{this._renderCouponModal()}*/}
         </View>;
     };

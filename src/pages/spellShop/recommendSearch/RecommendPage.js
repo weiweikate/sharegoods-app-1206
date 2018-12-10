@@ -8,7 +8,7 @@ import {
     StyleSheet,
     SectionList,
     TouchableOpacity,
-    RefreshControl
+    RefreshControl, Alert, Linking, PermissionsAndroid
 } from 'react-native';
 
 import { observer } from 'mobx-react';
@@ -77,15 +77,19 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
-        this._getLocationWithData();
+        this._verifyLocation();
         this._getSwipers();
     }
 
-    _getLocationWithData = () => {
+    _getSize = () => {
+        const segmentIndex = this.state.segmentIndex;
+        return segmentIndex === 1 ? 10 : 10;
+    };
+
+    _verifyLocation = () => {
         Storage.get('storage_MrLocation', {}).then((value) => {
-                value = value || {};
                 //有缓存加载缓存
-                if (value.latitude) {
+                if (value && StringUtils.isNoEmpty(value.latitude)) {
                     this.state.locationResult = value;
                     this._loadPageData();
                 }
@@ -96,20 +100,55 @@ export default class RecommendPage extends BasePage {
                     if (!value.latitude) {
                         this._loadPageData();
                     }
-                });
+                }).catch((error) => {
+                        SpellStatusModel.permissionsErr = error.code;
+                        if (SpellStatusModel.permissionsErr === 'permissionsErr' || SpellStatusModel.permissionsErr === '12') {
+                            setTimeout(() => {
+                                Alert.alert('提示', '定位服务未开启，请进入系统－设置－定位服务中打开开关，允许秀购使用定位服务',
+                                    [
+                                        {
+                                            text: '取消', onPress: () => {
+                                                this.$navigateBackToHome();
+                                            }
+                                        },
+                                        {
+                                            text: '去设置', onPress: () => {
+                                                if (ScreenUtils.isIOS) {
+                                                    Linking.openURL('app-settings:');
+                                                } else {
+                                                    if (SpellStatusModel.permissionsErr === '12') {
+                                                        geolocation.goLocationSetting();
+                                                    } else {
+                                                        PermissionsAndroid.request(
+                                                            PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+                                                            {
+                                                                message:
+                                                                    '定位服务未开启，请进入系统－设置－应用－应用管理－权限管理中打开开关，并且允许秀购使用定位服务',
+                                                                buttonNegative: '取消',
+                                                                buttonPositive: '确定'
+                                                            }
+                                                        );
+                                                    }
+                                                }
+                                                this.$navigateBackToHome();
+                                            }
+                                        }
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }, 600);
+                        }
+                    }
+                );
             }
         );
     };
 
-    _getSize = () => {
-        const segmentIndex = this.state.segmentIndex;
-        return segmentIndex === 1 ? 10 : 10;
-    };
     _refreshing = () => {
         this.setState({
             refreshing: true
         }, () => {
-            this._getLocationWithData();
+            this._verifyLocation();
             this._getSwipers();
             SpellStatusModel.getUser(0);
         });
@@ -304,7 +343,8 @@ export default class RecommendPage extends BasePage {
                                      onRefresh={this._refreshing.bind(this)}
                                      title="下拉刷新"
                                      tintColor={DesignRule.textColor_instruction}
-                                     titleColor={DesignRule.textColor_instruction}/>}
+                                     titleColor={DesignRule.textColor_instruction}
+                                     colors={[DesignRule.mainColor]}/>}
                              onEndReached={this._onEndReached.bind(this)}
                              onEndReachedThreshold={0.1}
                              ListFooterComponent={this._ListFooterComponent}

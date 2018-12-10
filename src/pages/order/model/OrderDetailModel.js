@@ -1,5 +1,6 @@
 import { observable, action, computed } from 'mobx'
 import OrderApi from '../api/orderApi'
+import StringUtils from "../../../utils/StringUtils";
 
 export const orderStatus = {
     prePayment: 1,
@@ -21,238 +22,63 @@ export const orderStatusModel = new OrderStatusModel()
 class OrderDetailModel {
 
     @observable detail = {}
-    @observable statusDic = [{
+    @observable statusDic = [{}]
+    @observable expressList=[]
+    @observable warehouseOrderDTOList=[]
+    @observable status=null
 
-    }]
-    @action loadDetailInfo(orderId, id, status, orderNum) {
-        OrderApi.lookDetail({
-            id: orderId,
-            userId: id,
-            status: status,
-            orderNum:orderNum
+    @computed get productsList() {
+        let dataArr = []
+        this.warehouseOrderDTOList.map((value) => {
+            value.products.map((item)=>{
+                dataArr.push({
+                    productId: item.id,
+                    uri: item.specImg,
+                    goodsName: item.productName,
+                    salePrice: StringUtils.isNoEmpty(item.payAmount) ? item.payAmount : 0,
+                    category: item.specValues,
+                    goodsNum: item.quantity,
+                    // afterSaleService: this.getAfterSaleService(item, index),
+                    // returnProductStatus: item.returnProductStatus,
+                    // returnType: item.returnType,
+                    status: item.status,
+                    activityCode: item.activityCode
+                })
+            })
+        })
+        return dataArr
+    }
+
+
+    @action loadDetailInfo(orderNo) {
+        orderDetailAfterServiceModel.addAfterServiceList();
+        return OrderApi.lookDetail({
+            orderNo:'O1166141'
         }).then(rep => {
             this.detail = rep.data
-            orderStatusModel.status = rep.data.status
+            this.expressList = rep.data.expressList
             orderStatusModel.statusMsg = orderStatusMessage[rep.data.status]
+            orderDetailModel.giftCouponDTOList=rep.data.giftCouponDTOList
+            orderDetailModel.orderSubType=rep.data.orderSubType
+            this.warehouseOrderDTOList=rep.data.warehouseOrderDTOList
+            orderDetailModel.receiverPhone=rep.data.receiverPhone
+            orderDetailModel.receiver=rep.data.receiver
+            orderDetailModel.tokenCoinAmount=rep.data.tokenCoinAmount
+            orderDetailModel.platformOrderNo=rep.data.platformOrderNo
+            orderDetailModel.source=rep.data.source
+            orderDetailModel.channel=rep.data.channel
+            orderDetailModel.quantity=rep.data.quantity
+            orderDetailModel.province=rep.data.province
+            orderDetailModel.street=rep.data.street
+            orderDetailModel.city=rep.data.city
+            orderDetailModel.area=rep.data.area
+            orderDetailModel.address=rep.data.address
+            this.status=rep.data.warehouseOrderDTOList[0].status
+
+            return rep
         })
     }
 
-    @observable
-    address = '';
-    @observable
-    adminRemark = null;
-    @observable
-    adminStars = null;
-    @observable
-    area = '';
-    @observable
-    areaCode = '';
-    @observable
-    autoReceiveTime = null;
-    @observable
-    buyerRemark = '';
-    @observable
-    cancelTime = null;
-    @observable
-    city = '';
-    @observable
-    cityCode = '';
-    @observable
-    cloudHadSend = null;
-    @observable
-    couponId = null;
-    @observable
-    couponPrice = null;
-    @observable
-    createTime = null;
-    @observable
-    dealerName = null;
-    @observable
-    deliverTime = null;
-    @observable
-    expressName = null;
-    @observable
-    expressNo = null;
-    @observable
-    finishTime = null;
-    @observable
-    freightPrice = '';
-    @observable
-    hadSquareUp = null;
-    @observable
-    hasReturnGoods = null;
-    @observable
-    id = null;
-    @observable
-    needPrice = '';
-    @observable
-    orderNum = '';
-    @observable
-    orderPayRecord = null;
-    @observable
-    orderType = null;
-    @observable
-    outTradeNo = null;
-    @observable
-    payTime = null;
-    @observable
-    pickedUp = null;
-    @observable
-    pickupAddressId = null;
-    @observable
-    platformPayTime = null;
-    @observable
-    province = '';
-    @observable
-    provinceCode = '';
-    @observable
-    receiver = '';
-    @observable
-    recevicePhone = '';
-    @observable
-    scorePrice = null;
-    @observable
-    sendTime = null;
-    @observable
-    shutOffTime = null;
-    @observable
-    status = null;
-    @observable
-    storeId = null;
-    @observable
-    tokenCoin = null;
-    @observable
-    totalGroupPrice = '';
-    @observable
-    totalOrderPrice = '';
-    @observable
-    totalPrice = null;
-    @observable
-    totalProductPrice = '';
-    @observable
-    totalSettlementPrice = '';
-    @observable
-    totalUserScore = null;
-    @observable
-    userHide = null;
-    @observable
-    userId = null;
-    @observable
-    userScoreToBalance = null;
-    @observable
-    orderProductList = [];
-
-    @action
-    saveOrderDetailInfo(data){
-        this.address = data.address;
-        this.adminRemark = data.adminRemark;
-        this.adminStars = data.adminStars;
-        this.area = data.area;
-        this.areaCode = data.areaCode;
-        this.autoReceiveTime = data.autoReceiveTime;
-        this.buyerRemark = data.buyerRemark;
-        this.cancelTime = data.cancelTime;
-        this.city = data.city;
-        this.cityCode = data.cityCode;
-        this.cloudHadSend = data.cloudHadSend;
-        this.couponId = data.couponId;
-        this.couponPrice = data.couponPrice;
-        this.createTime = data.createTime;
-        this.dealerName = data.dealerName;
-        this.deliverTime = data.deliverTime;
-        this.expressName = data.expressName;
-        this.expressNo = data.expressNo;
-        this.finishTime = data.finishTime;
-        this.freightPrice = data.freightPrice;
-        this.hadSquareUp = data.hadSquareUp;
-        this.hasReturnGoods = data.hasReturnGoods;
-        this.id = data.id;
-        this.needPrice = data.needPrice;
-        this.orderNum = data.orderNum;
-        this.orderPayRecord = data.orderPayRecord;
-        this.orderType = data.orderType;
-        this.outTradeNo = data.outTradeNo;
-        this.payTime = data.payTime;
-        this.pickedUp = data.pickedUp;
-        this.pickupAddressId = data.pickupAddressId;
-        this.platformPayTime = data.platformPayTime;
-        this.province = data.province;
-        this.provinceCode = data.provinceCode;
-        this.receiver = data.receiver;
-        this.recevicePhone = data.recevicePhone;
-        this.scorePrice = data.scorePrice;
-        this.sendTime = data.sendTime;
-        this.shutOffTime = data.shutOffTime;
-        this.status = data.status;
-        this.storeId = data.storeId;
-        this.tokenCoin = data.tokenCoin;
-        this.totalGroupPrice = data.totalGroupPrice;
-        this.totalOrderPrice = data.totalOrderPrice;
-        this.totalPrice = data.totalPrice;
-        this.totalProductPrice = data.totalProductPrice;
-        this. totalSettlementPrice = data.totalSettlementPrice;
-        this.totalUserScore = data.totalUserScore;
-        this.userHide = data.userHide;
-        this.userId = data.userId;
-        this.userScoreToBalance = data.userScoreToBalance;
-        this.orderProductList = data.orderProductList;
-        orderDetailAfterServiceModel.addAfterServiceList();
-    }
-    @action
-    clearOrderDetailInfo(){
-        this.address = '';
-        this.adminRemark = null;
-        this.adminStars = null;
-        this.area = '';
-        this.areaCode = '';
-        this.autoReceiveTime = null;
-        this.buyerRemark = '';
-        this.cancelTime = null;
-        this.city = '';
-        this.cityCode = '';
-        this.cloudHadSend = null;
-        this.couponId = null;
-        this.couponPrice = null;
-        this.createTime = null;
-        this.dealerName = null;
-        this.deliverTime = null;
-        this.expressName = null;
-        this.expressNo = null;
-        this.finishTime = null;
-        this.freightPrice = '';
-        this.hadSquareUp = null;
-        this.hasReturnGoods = null;
-        this.id = null;
-        this.needPrice = '';
-        this.orderNum = '';
-        this.orderPayRecord = null;
-        this.orderType = null;
-        this.outTradeNo = null;
-        this.payTime = null;
-        this.pickedUp = null;
-        this.pickupAddressId = null;
-        this.platformPayTime = null;
-        this.province = '';
-        this.provinceCode = '';
-        this.receiver = '';
-        this.recevicePhone = '';
-        this.scorePrice = null;
-        this.sendTime = null;
-        this.shutOffTime = null;
-        this.status = null;
-        this.storeId = null;
-        this.tokenCoin = null;
-        this.totalGroupPrice = '';
-        this.totalOrderPrice = '';
-        this.totalPrice = null;
-        this.totalProductPrice = '';
-        this. totalSettlementPrice = '';
-        this.totalUserScore = null;
-        this.userHide = null;
-        this.userId = null;
-        this.userScoreToBalance = null;
-        this.orderProductList = [];
-    }
 
     @computed
     get upDateOrderProductList(){
@@ -280,7 +106,8 @@ class OrderDetailAfterServiceModel{
     sellerTime:'';
     @observable
     totalAsList={};
-
+    @observable
+    menu=[]
 
     @action
     addAfterServiceList=()=>{
@@ -298,10 +125,6 @@ class OrderDetailAfterServiceModel{
                 },{
                     id:2,
                     operation:'去支付',
-                    isRed:true,
-                },{
-                    id:3,
-                    operation:'继续支付',
                     isRed:true,
                 },
             ],
@@ -370,56 +193,6 @@ class OrderDetailAfterServiceModel{
                     id:8,
                     operation:'再次购买',
                     isRed:true,
-                },
-            ],
-        },{
-            index:6,
-            buyState:'已完成',
-            moreDetail:'',
-            sellerState:'已关闭',
-            disNextView:true,
-            menu:[
-                {
-                    id:9,
-                    operation:'删除订单',
-                    isRed:false,
-                },{
-                    id:8,
-                    operation:'再次购买',
-                    isRed:false,
-                },
-            ],
-        },{
-            index:7,
-            buyState:'交易关闭',
-            moreDetail:'',
-            sellerState:'已关闭',
-            disNextView:true,
-            menu:[
-                {
-                    id:9,
-                    operation:'删除订单',
-                    isRed:false,
-                },{
-                    id:8,
-                    operation:'再次购买',
-                    isRed:false,
-                },
-            ],
-        },{
-            index:8,
-            buyState:'交易关闭',
-            moreDetail:'',
-            disNextView:true,
-            menu:[
-                {
-                    id:9,
-                    operation:'删除订单',
-                    isRed:false,
-                },{
-                    id:8,
-                    operation:'再次购买',
-                    isRed:false,
                 },
             ],
         },]

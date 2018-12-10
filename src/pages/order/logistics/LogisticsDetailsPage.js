@@ -109,8 +109,6 @@ class LogisticsDetailsPage extends BasePage {
                     middleImage={item.middleImage}
                     title={item.title}
                     content1={item.content1}
-                    content2={item.content2}
-                    content3={item.content3}
                     isTop={index === 0}
                     isBottom={index + 1 === this.state.viewData.length}
                 />
@@ -174,40 +172,23 @@ class LogisticsDetailsPage extends BasePage {
     loadPageData() {
         console.log(this.params);
         if (StringUtils.isNoEmpty(this.state.expressNo)) {
-            // Toast.showLoading();
-            OrderApi.findLogisticsDetail({ expNum: this.state.expressNo }).then((response) => {
-                // Toast.hiddenLoading();
+            OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo }).then((response) => {
                 console.log(response);
                 let arrData = [];
-                if (!response.data.showapi_res_body.flag) {
-                    // NativeModules.commModule.toast('查询出错');
-                    this.setState({
-                        flags: true,
-                        loadingState: "success"
-                    });
-                    // this.setState({
-                    //     loadingState: 'fail'
-                    // });
-                    return;
-                }
-                response.data.showapi_res_body.data.map((item, index) => {
+                JSON.parse(response.data).result.list.map((item, index) => {
                     let time = item.time;
                     arrData.push({
                         time: time.replace(" ", "\n"),
-                        content1: item.context
+                        content1: item.status
                     });
                 });
                 this.setState({
-                    expressName: response.data.showapi_res_body.expTextName,
+                    expressName: JSON.parse(response.data).result.expName,
                     viewData: arrData,
                     loadingState: "success"
                 });
             }).catch(e => {
-                // Toast.hiddenLoading();
                 this.$toastShow(e.msg);
-                // this.setState({
-                //     loadingState: 'fail'
-                // });
                 this.setState({
                     flags: true,
                     loadingState: "success"

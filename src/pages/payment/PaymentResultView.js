@@ -76,11 +76,11 @@ export default class PaymentResultView extends Component {
                         <View style={styles.content}>
                             <Image style={styles.image}
                                    source={result === PaymentResult.sucess ? successImg : failImg}/>
-                            <Text style={styles.text}>{resultText}</Text>
+                            <Text allowFontScaling={false}  style={styles.text}>{resultText}</Text>
                             {
                                 message
                                     ?
-                                    <Text style={styles.message}>{message}</Text>
+                                    <Text allowFontScaling={false}  style={styles.message}>{message}</Text>
                                     :
                                     null
                             }
@@ -90,19 +90,19 @@ export default class PaymentResultView extends Component {
                                     ?
                                     <View style={styles.bottom}>
                                         <TouchableOpacity style={styles.button} onPress={() => this._goToHome()}>
-                                            <Text style={styles.buttonText}>返回首页</Text>
+                                            <Text allowFontScaling={false}  style={styles.buttonText}>返回首页</Text>
                                         </TouchableOpacity>
                                         <View style={{ flex: 1 }}/>
                                         <TouchableOpacity style={styles.button} onPress={() => {
                                             this._goToOrder();
                                         }}>
-                                            <Text style={styles.buttonText}>查看订单</Text>
+                                            <Text allowFontScaling={false}  style={styles.buttonText}>查看订单</Text>
                                         </TouchableOpacity>
                                     </View>
                                     :
                                     <View style={styles.bottom}>
                                         <TouchableOpacity style={styles.button} onPress={() => this.dismiss()}>
-                                            <Text style={styles.buttonText}>重新支付</Text>
+                                            <Text allowFontScaling={false}  style={styles.buttonText}>重新支付</Text>
                                         </TouchableOpacity>
                                     </View>
                             }

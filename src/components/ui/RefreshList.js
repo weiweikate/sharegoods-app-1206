@@ -6,8 +6,8 @@ import {
     Text,
     ActivityIndicator,
     TouchableOpacity,
-    Image
-} from 'react-native';
+    Image, RefreshControl
+} from "react-native";
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../../comm/res';
@@ -100,7 +100,7 @@ export default class RefreshList extends Component {
         return (
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                               onPress={() => this.props.onRefresh()}>
-                <Image resizeMode={'contain'} style={{ height: 140, width: 140 }} source={this.state.emptyIcon}/>
+                <Image style={{ height: 140, width: 140 }} source={this.state.emptyIcon} resizeMode={'contain'}/>
                 <Text
                     style={{ marginTop: 20, fontSize: 14, color: DesignRule.textColor_mainTitle_more_light }}>{this.state.emptyTip}</Text>
             </TouchableOpacity>);
@@ -130,12 +130,13 @@ export default class RefreshList extends Component {
                     showsVerticalScrollIndicator={false}
                     renderItem={renderItem}
                     onEndReached={this.props.onLoadMore ? this.onEndReached : null}
-                    onRefresh={onRefresh ? this.refresh : null}
                     extraData={extraData}
-                    refreshing={this.state.refreshing}
                     onEndReachedThreshold={0.1}
                     ListFooterComponent={this.renderFooter}
                     keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
+                    refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                    onRefresh={onRefresh ? this.refresh : null}
+                                                    colors={[DesignRule.mainColor]}/>}
                     ref={'flatlist'}
                     {...attributes}
                 />

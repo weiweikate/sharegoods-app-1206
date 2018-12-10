@@ -7,24 +7,17 @@
 //
 
 #import "JRLoadingAndToastTool.h"
-#import "EasyLoadingConfig.h"
+#import "MBProgressHUD+PD.h"
 @implementation JRLoadingAndToastTool
 
 +(void)showLoadingText:(NSString *)loadingStr{
-  [EasyLoadingView showLoadingText:loadingStr config:^EasyLoadingConfig *{
-    return [EasyLoadingConfig shared].setLoadingType(LoadingShowTypeIndicator);
-  }];
+  [MBProgressHUD showMessage:loadingStr toView:nil];
 }
 +(void)dissmissLoading{
-  [EasyLoadingView hidenLoading];
+  [MBProgressHUD hideHUD];
 }
 +(void)showToast:(NSString *)toastStr andDelyTime:(NSTimeInterval)delyTime{
   
-  [EasyTextView showText:toastStr config:^EasyTextConfig *{
-      [EasyTextConfig shared].textShowTimeBlock = ^float(NSString * _Nonnull text) {
-      return delyTime;
-    };
-    return [EasyTextConfig shared];
-  }];
+  [MBProgressHUD showSuccess:toastStr];
 }
 @end

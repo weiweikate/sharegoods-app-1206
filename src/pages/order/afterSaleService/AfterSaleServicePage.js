@@ -79,7 +79,6 @@ class AfterSaleServicePage extends BasePage {
         return (this.state.activeProduct[this.params.pageType || 0] === '' ? null :
                 <View>
                     <View style={{
-                        height: 20,
                         backgroundColor: DesignRule.mainColor,
                         justifyContent: 'center',
                         alignItems: 'center'
@@ -541,7 +540,7 @@ class AfterSaleServicePage extends BasePage {
                 this.$loadingDismiss();
                 DeviceEventEmitter.emit('OrderNeedRefresh');
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: response.serviceNo
+                    serviceNo: response.data.serviceNo
                 });
 
             }).catch(e => {
