@@ -9,7 +9,6 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import { orderDetailAfterServiceModel, orderDetailModel ,assistDetailModel} from '../../model/OrderDetailModel';
-import { color } from '../../../../constants/Theme';
 import OrderApi from '../../api/orderApi';
 import Toast from '../../../../utils/bridge';
 import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
@@ -34,10 +33,10 @@ export default  class OrderDetailBottomButtonView extends Component{
         let itemArr = [];
         for (let i = 0; i < nameArr.length; i++) {
             itemArr.push(
-                <TouchableOpacity key={i} style={[styles.touchableStyle,{borderColor: nameArr[i].isRed ? color.red : DesignRule.color_ddd}]} onPress={() => {
+                <TouchableOpacity key={i} style={[styles.touchableStyle,{borderColor: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd}]} onPress={() => {
                     this.operationMenuClick(nameArr[i]);
                 }}>
-                    <Text style={{ color: nameArr[i].isRed ? color.red : color.gray_666 }}>{nameArr[i].operation}</Text>
+                    <Text style={{ color: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}>{nameArr[i].operation}</Text>
                 </TouchableOpacity>
             );
         }
@@ -67,28 +66,31 @@ export default  class OrderDetailBottomButtonView extends Component{
                 break;
             case 2:
                 this.props.nav('payment/PaymentMethodPage', {
-                    orderNum: orderDetailModel.orderNo,
-                    amounts: orderDetailModel.needPrice
+                    orderNum: orderDetailModel.getOrderNo(),
+                    amounts: orderDetailModel.payAmount
                     // orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
                 this.props.nav('payment/PaymentMethodPage', {
-                    orderNum: orderDetailModel.orderNo,
-                    amounts: orderDetailModel.needPrice,
+                    orderNum: orderDetailModel.getOrderNo(),
+                    amounts: orderDetailModel.payAmount,
                     outTradeNo: orderDetailModel.outTradeNo
                 });
                 break;
             case 4:
                 break;
             case 5:
+                if(orderDetailModel.expressList.length===0){
+                    NativeModules.commModule.toast('当前物流信息不存在！');
+                }
                 if(orderDetailModel.expressList.length===1){
                     this.props.nav("order/logistics/LogisticsDetailsPage", {
-                        expressNo: orderDetailModel.expressList
+                        expressNo: orderDetailModel.expressList[0].expressNo
                     });
                 }else{
                     this.props.nav("order/logistics/CheckLogisticsPage", {
-                        expressNo: orderDetailModel.expressList
+                        expressList: orderDetailModel.expressList
                     });
                 }
                 break;
@@ -101,7 +103,7 @@ export default  class OrderDetailBottomButtonView extends Component{
                         {
                             text: `确定`, onPress: () => {
                                 Toast.showLoading();
-                                OrderApi.confirmReceipt({ orderNo: orderDetailModel.orderNo }).then((response) => {
+                                OrderApi.confirmReceipt({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                     Toast.hiddenLoading();
                                     NativeModules.commModule.toast('确认收货成功');
                                     this.props.loadPageData();
@@ -124,7 +126,7 @@ export default  class OrderDetailBottomButtonView extends Component{
                     {
                         text: `确定`, onPress: () => {
                                 Toast.showLoading();
-                                OrderApi.deleteOrder({ orderNo: orderDetailModel.orderNo }).then((response) => {
+                                OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                     Toast.hiddenLoading();
                                     NativeModules.commModule.toast('订单已删除');
                                     this.props.goBack();
@@ -139,22 +141,12 @@ export default  class OrderDetailBottomButtonView extends Component{
                 ], { cancelable: true });
                 break;
             case 8:
-                Toast.showLoading();
-                OrderApi.againOrder({
-                    orderNum: orderDetailModel.orderNum,
-                    id: assistDetailModel.orderId
-                }).then((response) => {
-                    let cartData = [];
-                    Toast.hiddenLoading();
-                    response.data.orderProducts.map((item, index) => {
-                        cartData.push({ productId: item.productId, priceId: item.priceId, amount: item.num });
-                    });
+                let cartData = [];
+                orderDetailModel.warehouseOrderDTOList[0].products.map((item, index) => {
+                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
+                });
                     shopCartCacheTool.addGoodItem(cartData);
                     this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
-                }).catch(e => {
-                    Toast.hiddenLoading();
-                    NativeModules.commModule.toast(e.msg);
-                });
                 break;
             case 9:
                 // this.setState({ isShowDeleteOrderModal: true });
@@ -167,7 +159,7 @@ export default  class OrderDetailBottomButtonView extends Component{
                     {
                         text: `确定`, onPress: () => {
                                 Toast.showLoading();
-                                OrderApi.deleteOrder({ orderNo: orderDetailModel.orderNo }).then((response) => {
+                                OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                     Toast.hiddenLoading();
                                     NativeModules.commModule.toast('订单已删除');
                                     this.props.goBack();
@@ -187,7 +179,7 @@ export default  class OrderDetailBottomButtonView extends Component{
 const styles=StyleSheet.create({
     containerStyle:{ height: px2dp(48), flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' },
     touchableStyle:{
-        borderWidth: px2dp(1),
+        borderWidth: 1,
         height: px2dp(30),
         borderRadius: px2dp(15),
         marginRight: px2dp(15),

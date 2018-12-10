@@ -34,7 +34,7 @@ export default class DetailBottomView extends Component {
         let disable = status === 2;//是否下架  样式
 
         //btn不能点 变灰
-        let cantBuy = status !== 1 || isLimit;
+        let cantBuy = false;
         return (
             <View style={{ height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0), backgroundColor: 'white' }}>
                 {disable ? <View style={{
