@@ -8,8 +8,7 @@ const { px2dp } = ScreenUtils;
 // import ShowHotView from './ShowHotView';
 // import ShowHotFindView from './ShowHotFindView';
 import backIconImg from '../../components/pageDecorator/NavigatorBar/source/icon_header_back.png';
-import DesignRule from 'DesignRule';
-import { showSelectedDetail } from './Show';
+import DesignRule from 'DesignRule'
 import { observer } from 'mobx-react';
 
 @observer
@@ -37,15 +36,11 @@ export default class ShowListPage extends BasePage {
                 const { state } = payload;
                 console.log('ShowListPage willFocus', state);
                 if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
-                    if (showSelectedDetail.selectedShow) {
-                        return;
-                    }
-                    // this.showHotViewRef && this.showHotViewRef.refresh();
-                    // this.showHotFindeView && this.showHotFindeView.refreshing();
+                    this.setState({
+                        pageFocused: true
+                    });
                 }
-                this.setState({
-                    pageFocused: true
-                });
+                
             }
         );
         this.didBlurSubscription = this.props.navigation.addListener(
