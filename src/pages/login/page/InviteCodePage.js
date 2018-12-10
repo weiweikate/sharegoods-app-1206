@@ -197,8 +197,8 @@ export default class  extends BasePage {
                 this.$loadingDismiss();
                 this.$navigateBackToHome();
             }).catch(res => {
-                bridge.$toast(res.msg);
                 this.$loadingDismiss();
+                bridge.$toast(res.msg);
             });
         }
     };

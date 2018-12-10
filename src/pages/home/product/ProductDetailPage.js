@@ -186,13 +186,13 @@ export default class ProductDetailPage extends BasePage {
                 this.setState({
                     activityData: dataTemp.depreciate
                 }, () => {
-                    this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this._getQueryByProductId);
+                    this.DetailHeaderView && this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this._getQueryByProductId);
                 });
             } else if (dataTemp.activityType === 1 && dataTemp.seckill) {
                 this.setState({
                     activityData: dataTemp.seckill
                 }, () => {
-                    this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this._getQueryByProductId);
+                    this.DetailHeaderView && this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this._getQueryByProductId);
                 });
             }
         }).catch((error) => {
