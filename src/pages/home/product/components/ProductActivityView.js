@@ -23,6 +23,7 @@ export default class ActivityView extends Component {
 
     constructor(props) {
         super(props);
+        this.errorDateCount = 0;
         this.state = {
             countTime: 0
         };
@@ -51,6 +52,18 @@ export default class ActivityView extends Component {
             } else {
                 this._time(date, endTime);
             }
+        }
+
+        //1.未开始实际已经开始 2.进行中实际已经结束   脏数据需要再次请求数据  最多请求3次  1.2s
+        if (status === 1 && beginTime < date || (status === 2 || status === 3) && endTime < date) {
+            if (this.errorDateCount < 3) {
+                setTimeout(() => {
+                    this.callBack && this.callBack();
+                }, 400);
+            }
+            this.errorDateCount++;
+        } else {
+            this.errorDateCount = 0;
         }
     }
 

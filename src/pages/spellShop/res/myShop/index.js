@@ -13,7 +13,6 @@ const index = {
     icon_03_03: require('./icon_03_03.png'),
     icon_03_04: require('./icon_03_04.png'),
     jdt_05: require('./jdt_05.png'),
-    NavLeft: require('./NavLeft.png'),
     sc_03: require('./sc_03.png'),
     shezhi: require('./shezhi.png'),
     system_charge: require('./system_charge.png'),

@@ -50,6 +50,10 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
         this.loadPageData = this.loadPageData.bind(this);
     }
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     componentDidMount() {
         this.loadPageData();
     }

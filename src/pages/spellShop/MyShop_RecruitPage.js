@@ -60,6 +60,7 @@ export default class MyShop_RecruitPage extends BasePage {
             'willFocus',
             payload => {
                 const { state } = payload;
+
                 NetInfo.isConnected.fetch().done((isConnected) => {
                     // 有网络
                     if (isConnected) {
@@ -127,15 +128,6 @@ export default class MyShop_RecruitPage extends BasePage {
         );
     }
 
-    componentWillUnmount() {
-        AppState.removeEventListener('change', this._handleAppStateChange);
-        this.willFocusSubscription && this.willFocusSubscription.remove();
-    }
-
-    componentDidMount() {
-        this._loadPageData();
-    }
-
     _handleAppStateChange = (nextAppState) => {
         if (nextAppState === 'active') {
             //初始化init  定位存储  和app变活跃 会定位
@@ -148,6 +140,15 @@ export default class MyShop_RecruitPage extends BasePage {
             );
         }
     };
+
+    componentDidMount() {
+        this._loadPageData();
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
 
     _loadPageData = () => {
         const { isHome } = this.state;

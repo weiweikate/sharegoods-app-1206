@@ -77,24 +77,8 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
+        this._verifyLocation();
         this._getSwipers();
-        Storage.get('storage_MrLocation', {}).then((value) => {
-                if (value && StringUtils.isNoEmpty(value.latitude)) {
-                    this.state.locationResult = value;
-                    this._loadPageData();
-                } else {
-                    this.setState({
-                        refreshing: false,
-                        loadingState: PageLoadingState.fail
-                    });
-                    geolocation.getLastLocation().then(result => {
-                        this.state.locationResult = result;
-                        Storage.set('storage_MrLocation', result);
-                        this._loadPageData();
-                    });
-                }
-            }
-        );
     }
 
     _getSize = () => {
@@ -104,55 +88,58 @@ export default class RecommendPage extends BasePage {
 
     _verifyLocation = () => {
         Storage.get('storage_MrLocation', {}).then((value) => {
+                //有缓存加载缓存
                 if (value && StringUtils.isNoEmpty(value.latitude)) {
                     this.state.locationResult = value;
                     this._loadPageData();
-                } else {
-                    geolocation.getLastLocation().then(result => {
-                        this.state.locationResult = result;
-                        Storage.set('storage_MrLocation', result);
-                        this._loadPageData();
-                    }).catch((error) => {
-                            SpellStatusModel.permissionsErr = error.code;
-                            if (SpellStatusModel.permissionsErr === 'permissionsErr' || SpellStatusModel.permissionsErr === '12') {
-                                setTimeout(() => {
-                                    Alert.alert('提示', '定位服务未开启，请进入系统－设置－定位服务中打开开关，允许秀购使用定位服务',
-                                        [
-                                            {
-                                                text: '取消', onPress: () => {
-                                                    this.$navigateBackToHome();
-                                                }
-                                            },
-                                            {
-                                                text: '去设置', onPress: () => {
-                                                    if (ScreenUtils.isIOS) {
-                                                        Linking.openURL('app-settings:');
-                                                    } else {
-                                                        if (SpellStatusModel.permissionsErr === '12') {
-                                                            geolocation.goLocationSetting();
-                                                        } else {
-                                                            PermissionsAndroid.request(
-                                                                PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-                                                                {
-                                                                    message:
-                                                                        '定位服务未开启，请进入系统－设置－应用－应用管理－权限管理中打开开关，并且允许秀购使用定位服务',
-                                                                    buttonNegative: '取消',
-                                                                    buttonPositive: '确定'
-                                                                }
-                                                            );
-                                                        }
-                                                    }
-                                                    this.$navigateBackToHome();
-                                                }
-                                            }
-                                        ],
-                                        { cancelable: false }
-                                    );
-                                }, 600);
-                            }
-                        }
-                    );
                 }
+                //更新定位数据  没缓存的话加载数据
+                geolocation.getLastLocation().then(result => {
+                    this.state.locationResult = result;
+                    Storage.set('storage_MrLocation', result);
+                    if (!value.latitude) {
+                        this._loadPageData();
+                    }
+                }).catch((error) => {
+                        SpellStatusModel.permissionsErr = error.code;
+                        if (SpellStatusModel.permissionsErr === 'permissionsErr' || SpellStatusModel.permissionsErr === '12') {
+                            setTimeout(() => {
+                                Alert.alert('提示', '定位服务未开启，请进入系统－设置－定位服务中打开开关，允许秀购使用定位服务',
+                                    [
+                                        {
+                                            text: '取消', onPress: () => {
+                                                this.$navigateBackToHome();
+                                            }
+                                        },
+                                        {
+                                            text: '去设置', onPress: () => {
+                                                if (ScreenUtils.isIOS) {
+                                                    Linking.openURL('app-settings:');
+                                                } else {
+                                                    if (SpellStatusModel.permissionsErr === '12') {
+                                                        geolocation.goLocationSetting();
+                                                    } else {
+                                                        PermissionsAndroid.request(
+                                                            PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+                                                            {
+                                                                message:
+                                                                    '定位服务未开启，请进入系统－设置－应用－应用管理－权限管理中打开开关，并且允许秀购使用定位服务',
+                                                                buttonNegative: '取消',
+                                                                buttonPositive: '确定'
+                                                            }
+                                                        );
+                                                    }
+                                                }
+                                                this.$navigateBackToHome();
+                                            }
+                                        }
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }, 600);
+                        }
+                    }
+                );
             }
         );
     };
@@ -161,8 +148,8 @@ export default class RecommendPage extends BasePage {
         this.setState({
             refreshing: true
         }, () => {
-            this._getSwipers();
             this._verifyLocation();
+            this._getSwipers();
             SpellStatusModel.getUser(0);
         });
     };
@@ -290,7 +277,7 @@ export default class RecommendPage extends BasePage {
             loadingState: PageLoadingState.loading,
             segmentIndex: index
         }, () => {
-            this._loadPageData();
+            this._verifyLocation();
         });
     };
 

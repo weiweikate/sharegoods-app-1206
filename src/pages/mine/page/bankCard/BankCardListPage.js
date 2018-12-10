@@ -61,7 +61,7 @@ export default class BankCardListPage extends BasePage {
         headerStyle: {
             backgroundColor: DesignRule.textColor_mainTitle
         },
-        leftNavImage: res.button.white_back_img,
+        leftNavImage: res.button.white_back,
         leftImageStyle: {
             width: 9, height: 15
         },
