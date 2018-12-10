@@ -307,14 +307,14 @@ export default class MyShopPage extends BasePage {
         //     }
         // });
 
-        Alert.alert('提示', `确定要申请${name}吗?`,
+        Alert.alert('提示', `确定要申请${name}么?`,
             [
                 {
-                    text: '取消', onPress: () => {
+                    text: '算了', onPress: () => {
                     }
                 },
                 {
-                    text: '确定', onPress: () => {
+                    text: '申请', onPress: () => {
                         this.$loadingShow();
                         SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
                             if (!this.props.leftNavItemHidden) {

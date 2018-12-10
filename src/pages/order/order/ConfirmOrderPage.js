@@ -246,21 +246,6 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     renderItem = ({ item, index }) => {
-        console.log(item);
-        // if (this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98) {
-        //         //     return (
-        //         //         <View>
-        //         //         <GoodsItem
-        //         //             uri={item.specImg}
-        //         //             goodsName={item.productName}
-        //         //             category={item.spec}
-        //         //             goodsNum={'X' + item.num}
-        //         //             onPress={() => this.clickItem(index, item)}
-        //         //         />
-        //         //
-        //         //         </View>
-        //         //     );
-        //         // } else {
         return (
             <TouchableOpacity>
                 <GoodsItem
@@ -427,7 +412,7 @@ export default class ConfirmOrderPage extends BasePage {
                 uri: item.specImg,
                 goodsName: item.productName,
                 salePrice: item.unitPrice,
-                category: item.specValues,
+                category: item.specValues.replace(/@/g, '—'),
                 goodsNum: item.quantity,
                 restrictions: item.restrictions
                 // activityId: item.activityId
@@ -479,24 +464,8 @@ export default class ConfirmOrderPage extends BasePage {
             from: 'order',
             callBack: (json) => {
                 console.log(json);
-                // let viewData = this.state.viewData;
-                // viewData.express = {
-                //     id: json.id,
-                //     receiverName: json.receiver,
-                //     receiverNum: json.receiverPhone,
-                //     receiverAddress: json.address,
-                //     areaCode: json.areaCode,
-                //     cityCode: json.cityCode,
-                //     provinceCode: json.provinceCode,
-                //     provinceString: json.province,
-                //     cityString: json.city,
-                //     areaString: json.area
-                // };
                 this.setState({ addressId:json.id, defaultAddress: true });
                 let params = {
-                    // areaCode: json.areaCode,
-                    // cityCode: json.cityCode,
-                    // provinceCode: json.provinceCode,
                     addressId:json.id,
                     tokenCoin: this.state.tokenCoin,
                     userCouponCode: this.state.userCouponCode
@@ -507,11 +476,6 @@ export default class ConfirmOrderPage extends BasePage {
     };
     commitOrder = () => {
         let baseParams = {
-            // areaCode: this.state.viewData.express.areaCode,
-            // cityCode: this.state.viewData.express.cityCode,
-            // provinceCode: this.state.viewData.express.provinceCode,
-            // receiver: this.state.viewData.express.receiverName,
-            // recevicePhone: this.state.viewData.express.receiverNum,
             message: this.state.message,
             tokenCoin: this.state.tokenCoin,
             userCouponCode: this.state.userCouponCode,
@@ -667,10 +631,11 @@ export default class ConfirmOrderPage extends BasePage {
             this.$navigate('mine/coupons/CouponsPage', {
                 fromOrder: 1,
                 orderParam: this.state.orderParam, callBack: (data) => {
+                    console.log('CouponsPage',data);
                     if (data && data.id) {
-                        let params = { userCouponCode: data.id, tokenCoin: 0 };
+                        let params = { userCouponCode: data.code, tokenCoin: 0 };
                         this.setState({
-                            userCouponCode: data.id,
+                            userCouponCode: data.code,
                             couponName: data.name,
                             tokenCoin: 0,
                             tokenCoinText: '选择使用1元券',

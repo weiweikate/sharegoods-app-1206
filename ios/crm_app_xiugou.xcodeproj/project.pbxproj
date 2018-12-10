@@ -27,6 +27,7 @@
 		101157C6219AB715001F5E99 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C5219AB715001F5E99 /* libc++.tbd */; };
 		101157C8219AB72A001F5E99 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C7219AB72A001F5E99 /* GLKit.framework */; };
 		103CEC7421B27221004861B6 /* libRNGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 103CEC7321B271FB004861B6 /* libRNGeolocation.a */; };
+		105CAD0421BE369F00F4746D /* UMAnalyticsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 105CACD221BE369F00F4746D /* UMAnalyticsModule.m */; };
 		1073EFBE21798F5800C202AC /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1073EFBA21798F4900C202AC /* libRNDeviceInfo.a */; };
 		10BDD7F8219D6F3E00B56251 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 10BDD7F4219D6F3100B56251 /* libRNFetchBlob.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -512,6 +513,8 @@
 		101157C5219AB715001F5E99 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		101157C7219AB72A001F5E99 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		103CEC6E21B271FB004861B6 /* RNGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGeolocation.xcodeproj; path = "../node_modules/@mr/geolocation/ios/RNGeolocation.xcodeproj"; sourceTree = "<group>"; };
+		105CACD121BE369F00F4746D /* UMAnalyticsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMAnalyticsModule.h; sourceTree = "<group>"; };
+		105CACD221BE369F00F4746D /* UMAnalyticsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMAnalyticsModule.m; sourceTree = "<group>"; };
 		1073EF8D21798F4900C202AC /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		10BDD7C3219D6F3100B56251 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		120228A31812462B96F8AA63 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -924,6 +927,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		105CACD021BE369F00F4746D /* UMCAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				105CACD121BE369F00F4746D /* UMAnalyticsModule.h */,
+				105CACD221BE369F00F4746D /* UMAnalyticsModule.m */,
+			);
+			path = UMCAnalytics;
+			sourceTree = "<group>";
+		};
 		1073EF8E21798F4900C202AC /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1117,6 +1129,7 @@
 		506835B721379B78001AB175 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				105CACD021BE369F00F4746D /* UMCAnalytics */,
 				5077FD9721A7930D003B860D /* JSPush */,
 				5077FC2421A4019A003B860D /* RSA */,
 				CD14EA162183FC2500480A06 /* ImageCompression */,
@@ -2334,6 +2347,7 @@
 				5077FCE221A4FE37003B860D /* NSData+Base64.m in Sources */,
 				CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */,
 				5068360F21379B78001AB175 /* JRBaseVC.m in Sources */,
+				105CAD0421BE369F00F4746D /* UMAnalyticsModule.m in Sources */,
 				50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */,
 				CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */,
 				CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */,

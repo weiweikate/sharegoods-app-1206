@@ -37,9 +37,8 @@ export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {
         show: false, // false则隐藏导航
-        title: '我的晋升情况'
+        title: '我的晋升'
     };
-
     $getPageStateOptions = () => {
         return {
             loadingState: this.state.loadingState,

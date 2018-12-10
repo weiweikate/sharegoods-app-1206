@@ -53,9 +53,10 @@ export default class TopicDetailHeaderView extends Component {
         let nowPrice, oldPrice, levelTypeName, afterSaleServiceDaysTT;
 
         if (activityType === 3) {
-            const { imgFileList = [], name, levelPrice, originalPrice, freightTemplatePrice, saleNum, userLevelTypeName, aferServiceDays, videoUrl, imgUrl } = this.props.data || {};
+            const { imgFileList, name, levelPrice, originalPrice, freightTemplatePrice, saleNum, userLevelTypeName, aferServiceDays, videoUrl, imgUrl } = this.props.data || {};
             //有视频第一个添加为视频
-            let productImgListTemp = [...imgFileList];
+            let productImgListTemp = [...(imgFileList || [])];
+            productImgListTemp.unshift({ originalImg: imgUrl });
             if (StringUtils.isNoEmpty(videoUrl)) {
                 this.state.haveVideo = true;
                 productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
@@ -75,13 +76,13 @@ export default class TopicDetailHeaderView extends Component {
 
             //有视频第一个添加为视频
             let productImgListTemp = [...(imgFileList || [])];
+            productImgListTemp.unshift({ originalImg: imgUrl });
             if (StringUtils.isNoEmpty(videoUrl)) {
                 this.state.haveVideo = true;
                 productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
             } else {
                 this.state.haveVideo = false;
             }
-
             bannerImgList = productImgListTemp;
             tittle = `${name}`;
             freightValue = freight;

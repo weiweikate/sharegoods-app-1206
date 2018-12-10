@@ -38,7 +38,6 @@ export default class LoginPage extends BasePage {
         super(props);
 
     }
-
     // 禁用某个页面的手势
     static navigationOptions = {
         gesturesEnabled: false
