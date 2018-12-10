@@ -29,6 +29,7 @@ import res from '../res';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import UIText from '../../../comm/components/UIText';
+import Styles from '../style/SelectMentorPage.style'
 
 const {
     refresh
@@ -75,36 +76,18 @@ export default class SelectMentorPage extends BasePage {
         this.loadPageData();
     }
 
+    /**
+     * 更新坐标
+     */
     componentDidUpdate() {
-        (this.state.mentorData.length > 0 &&
-            this.state.isFirstLoad &&
-            this.scrView)
-            ?
-            this._testScro()
-            :
-            null;
+        this._testScro();
     }
 
+    /**
+     * 拉取数据
+     */
     loadPageData() {
         this.$loadingShow();
-        // this.setState({
-        //     mentorData: [
-        //         {},
-        //         {},
-        //         {}
-        //     ],
-        //     selectIndex: 2
-        // }, () => {
-        //     console.log('执行了回调');
-        //     console.log(this.state.selectIndex);
-        //     console.log(this.scrView);
-        //
-        //     // const offset = {x:2 * ScreenUtils.width / 5,y: 0,animated: false };
-        //     // console.log(offset);
-        //     // this.scrView.scrollTo(offset);
-        // });
-        //
-        // return;
         LoginAPI.queryInviterList({}).then(response => {
             this.$loadingDismiss();
             console.log(response);
@@ -112,20 +95,20 @@ export default class SelectMentorPage extends BasePage {
                 this.setState({
                     mentorData: response.data,
                     selectIndex: response.data.length - 1
-                },()=>{
-                    setTimeout(()=>{
-                        this.scrView.scrollTo({x:2 * ScreenUtils.width / 5,y: 0,animated: false });
+                }, () => {
+                    setTimeout(() => {
+                        this.scrView.scrollTo({ x: 2 * ScreenUtils.width / 5, y: 0, animated: false });
 
-                    },300)
+                    }, 300);
                 });
             } else {
                 this.setState({
                     mentorData: response.data
-                },()=>{
-                    setTimeout(()=>{
-                        this.scrView.scrollTo({x:2 * ScreenUtils.width / 5,y: 0,animated: false });
+                }, () => {
+                    setTimeout(() => {
+                        this.scrView.scrollTo({ x: 2 * ScreenUtils.width / 5, y: 0, animated: false });
 
-                    },300)
+                    }, 300);
                 });
             }
         }).catch(error => {
@@ -460,32 +443,32 @@ export default class SelectMentorPage extends BasePage {
     };
 }
 
-const Styles = StyleSheet.create(
-    {
-        contentStyle: {
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            flex: 1,
-            margin: 0,
-            marginTop: -2,
-            backgroundColor: DesignRule.textColor_white
-        },
-        rightTopTitleStyle: {
-            fontSize: 15,
-            color: DesignRule.textColor_secondTitle
-        },
-        topViewStyle: {
-            height: ScreenUtils.px2dp(430)
-            // backgroundColor:ColorUtil.Color_222222
-
-        },
-        bottomViewStyle: {
-            height: 100,
-            justifyContent: 'center',
-            alignItems: 'center'
-        }
-    }
-);
+// const Styles = StyleSheet.create(
+//     {
+//         contentStyle: {
+//             flexDirection: 'column',
+//             justifyContent: 'space-between',
+//             flex: 1,
+//             margin: 0,
+//             marginTop: -2,
+//             backgroundColor: DesignRule.textColor_white
+//         },
+//         rightTopTitleStyle: {
+//             fontSize: 15,
+//             color: DesignRule.textColor_secondTitle
+//         },
+//         topViewStyle: {
+//             height: ScreenUtils.px2dp(430)
+//             // backgroundColor:ColorUtil.Color_222222
+//
+//         },
+//         bottomViewStyle: {
+//             height: 100,
+//             justifyContent: 'center',
+//             alignItems: 'center'
+//         }
+//     }
+// );
 const SwichStyles = StyleSheet.create({
     bgStyle: {
         color: DesignRule.textColor_white,
