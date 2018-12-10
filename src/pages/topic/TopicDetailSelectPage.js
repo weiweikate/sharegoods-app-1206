@@ -79,9 +79,12 @@ export default class TopicDetailSelectPage extends Component {
     };
 
     render() {
-        const { markdownPrice = '', seckillPrice = '', specImg, surplusNumber = 0, spec = '', productSpec = '' } = this.state.data || {};
+        const { markdownPrice = '', seckillPrice = '', specImg, surplusNumber = 0 ,productSpecValue} = this.state.data || {};
         let price = this.state.activityType === 1 ? seckillPrice : markdownPrice;
-        let specs = this.state.activityType === 1 ? productSpec : spec;
+        let specs = productSpecValue ||[];
+        specs = specs.map((item)=>{
+            return item.paramValue
+        })
 
         return (
             <Modal animationType="none" transparent={true} visible={this.state.isShow}>
@@ -124,7 +127,7 @@ export default class TopicDetailSelectPage extends Component {
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: 13,
                                         marginTop: 8
-                                    }} numberOfLines={2}>{specs}</Text>
+                                    }} numberOfLines={2}>{(specs||[]).join(',')}</Text>
                                 </View>
                                 <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
                                                   onPress={this._close}>
