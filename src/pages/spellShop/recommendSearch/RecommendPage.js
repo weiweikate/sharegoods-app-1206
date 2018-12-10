@@ -277,7 +277,7 @@ export default class RecommendPage extends BasePage {
             loadingState: PageLoadingState.loading,
             segmentIndex: index
         }, () => {
-            this._getLocationWithData();
+            this._verifyLocation();
         });
     };
 
