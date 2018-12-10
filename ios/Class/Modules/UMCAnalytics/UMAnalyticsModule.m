@@ -1,10 +1,3 @@
-//
-//  analytics.m
-//  analytics
-//
-//
-//  Copyright (c) 2016年 tendcloud. All rights reserved.
-//
 
 #import <UMAnalytics/MobClick.h>
 #import <UMAnalytics/MobClickGameAnalytics.h>
@@ -16,7 +9,6 @@
 @implementation UMAnalyticsModule
 
 RCT_EXPORT_MODULE();
-
 
 RCT_EXPORT_METHOD(onEvent:(NSString *)eventId)
 {
@@ -61,7 +53,7 @@ RCT_EXPORT_METHOD(onEventWithMapAndCount:(NSString *)eventId parameters:(NSDicti
   [MobClick event:eventId attributes:parameters counter:eventNum];
 }
 
-RCT_EXPORT_METHOD(onPageBegin:(NSString *)pageName)
+RCT_EXPORT_METHOD(onPageStart:(NSString *)pageName)
 {
   if (pageName == nil || [pageName isKindOfClass:[NSNull class]]) {
     return;

@@ -53,7 +53,7 @@ Navigator.router.getStateForAction = (action, state) => {
 
     if (action.type === NavigationActions.INIT) {
         const currentPage = 'HomePage'
-        Analytics.onPageBegin(currentPage)
+        Analytics.onPageStart(currentPage)
     }
 
     if (action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK) {
@@ -65,7 +65,7 @@ Navigator.router.getStateForAction = (action, state) => {
     if (action.type === 'Navigation/COMPLETE_TRANSITION') {
         const currentPage = getCurrentRouteName(state)
         console.log('currentpage start', currentPage)
-        Analytics.onPageBegin(currentPage)
+        Analytics.onPageStart(currentPage)
     }
 
     // console.log('getStateForAction', action, state)
