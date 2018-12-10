@@ -36,6 +36,9 @@ const {
 } = res.helperAndCustomerService;
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
+import OssHelper from '../../../../utils/OssHelper';
+import ImageLoad from '@mr/image-placeholder'
+
 
 @observer
 export default class MyHelperPage extends BasePage {
@@ -96,11 +99,12 @@ export default class MyHelperPage extends BasePage {
         );
     };
     renderBodyView = () => {
+        let helperIcon = OssHelper('/app/bangzu_kefu%403x.png');
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ backgroundColor: DesignRule.bgColor }}>
-                        <UIImage source={{uri:'http://mr-uat-sg.oss-cn-hangzhou.aliyuncs.com/app/bangzu_kefu%403x.png'}}
+                        <ImageLoad source={{uri:helperIcon}}
                                style={{width:ScreenUtils.width,height:ScreenUtils.px2dp(71)}}
                                resizeMode={'contain'}/>
                     </View>

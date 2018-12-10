@@ -12,7 +12,11 @@ const SMSInterface = {
     // 第一次设置交易密码验证码
     SMSSalePhone: ['/sms/sendTransactionMessage', { method: 'get', isRSA: true }],
     //忘记登录密码
-    SMSForgetLoginPassword:['/sms/sendForgetLoginPasswordMessage', { method: 'get', isRSA: true }],
+    SMSForgetLoginPassword: ['/sms/sendForgetLoginPasswordMessage', { method: 'get', isRSA: true }],
+    // 设置交易密码手机验证验证码
+    SMSSetSalePhone: ['/sms/sendTransPasswordMessage', { method: 'get', isRSA: true }],
+    // 忘记交易密码手机验证验证码
+    SMSForgetSalePhone: ['/sms/sendForgetTransPasswordMessage', { method: 'get', isRSA: true }]
 };
 
 const SMSAPI = ApiUtils(SMSInterface);
@@ -24,8 +28,9 @@ const SMSTool = {
         OldPhoneType: 2,
         NewPhoneType: 3,
         SalePwdType: 4,
-        ForgetPasswordType:5,
-
+        SetSaleType: 5,
+        ForgetSaleType: 6,
+        ForgetPasswordType: 7
     },
     /**
      *
@@ -57,6 +62,17 @@ const SMSTool = {
                 break;
             case this.SMSType.SalePwdType:
                 return SMSAPI.SMSSalePhone({
+                    phone: phoneNumber
+                });
+                break;
+
+            case this.SMSType.SetSaleType:
+                return SMSAPI.SMSSetSalePhone({
+                    phone: phoneNumber
+                });
+                break;
+            case this.SMSType.ForgetSaleType:
+                return SMSAPI.SMSForgetSalePhone({
                     phone: phoneNumber
                 });
                 break;

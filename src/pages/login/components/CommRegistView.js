@@ -252,7 +252,7 @@ export default class CommRegistView extends Component {
                 this.registModel.dowTime = time;
             });
             // let SMSType = this.props.viewType === 1 ? SMSTool.OldPhoneType : SMSTool.RegType;
-            SMSTool.sendVerificationCode(this.props.viewType === 1 ? 5 : 1, this.registModel.phoneNumber)
+            SMSTool.sendVerificationCode(this.props.viewType === 1 ? 7 : 1, this.registModel.phoneNumber)
         } else {
             bridge.$toast('手机格式不对');
         }

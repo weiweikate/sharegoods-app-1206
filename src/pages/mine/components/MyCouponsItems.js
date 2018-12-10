@@ -12,8 +12,8 @@ import {
     TextInput,
     TouchableOpacity,
     View,
-    NativeModules
-} from 'react-native';
+    NativeModules, RefreshControl
+} from "react-native";
 // import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
@@ -335,10 +335,11 @@ export default class MyCouponsItems extends Component {
                     onEndReachedThreshold={10}
                     onEndReached={() => this.onLoadMore()}
                     ListEmptyComponent={this._renderEmptyView}
-                    refreshing={false}
-                    onRefresh={this.onRefresh}
                     showsVerticalScrollIndicator={false}
                     initialNumToRender={5}
+                    refreshControl={<RefreshControl refreshing={false}
+                                                    onRefresh={this.onRefresh}
+                                                    colors={[DesignRule.mainColor]}/>}
                 />
                 {this.renderDialogModal()}
                 {this.props.isgiveup ?
@@ -456,9 +457,9 @@ export default class MyCouponsItems extends Component {
             // priceId  productId
             this.props.orderParam.orderProducts.map((item, index) => {
                 arr.push({
-                    priceId: item.priceId,
-                    productId: item.productId,
-                    amount: item.num
+                    priceCode: item.skuCode,
+                    productCode: item.productCode,
+                    amount: item.quantity
                 });
             });
             this.isLoadMore = true;

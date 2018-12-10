@@ -50,6 +50,10 @@ export default class SignInPage extends BasePage {
         show: true// false则隐藏导航
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
     $getPageStateOptions = () => {
         return {
             loadingState: this.state.loadingState,
@@ -127,7 +131,7 @@ export default class SignInPage extends BasePage {
 
     showMore = () => {
         this.$navigate('HtmlPage', {
-            title: '推广说明',
+            title: '签到规则',
             uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/signInRule.html`
         });
     };

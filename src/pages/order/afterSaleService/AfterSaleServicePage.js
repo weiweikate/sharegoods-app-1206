@@ -70,6 +70,10 @@ class AfterSaleServicePage extends BasePage {
         this._getReturnReason();
     }
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     $navigationBarOptions = {
         title: ['申请退款', '申请退货', '申请换货'][this.params.pageType ? this.params.pageType : 0],
         show: true// false则隐藏导航
@@ -79,7 +83,6 @@ class AfterSaleServicePage extends BasePage {
         return (this.state.activeProduct[this.params.pageType || 0] === '' ? null :
                 <View>
                     <View style={{
-                        height: 20,
                         backgroundColor: DesignRule.mainColor,
                         justifyContent: 'center',
                         alignItems: 'center'
@@ -541,7 +544,7 @@ class AfterSaleServicePage extends BasePage {
                 this.$loadingDismiss();
                 DeviceEventEmitter.emit('OrderNeedRefresh');
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    serviceNo: response.serviceNo
+                    serviceNo: response.data.serviceNo
                 });
 
             }).catch(e => {

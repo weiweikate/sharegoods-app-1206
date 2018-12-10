@@ -54,6 +54,10 @@ export default class AfterSaleListPage extends BasePage<Props> {
 
     };
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     $NavBarRenderRightItem = () => {
         if (this.params.type === 'search') {
             return null;
@@ -146,10 +150,11 @@ export default class AfterSaleListPage extends BasePage<Props> {
     _render() {
         let params = {};
         if (this.params.type === 'search') {
-            params = { searchKey: this.params.condition };
+            params = { searchKey: this.params.condition};
         } else {
             params = {};
         }
+
         return (
             <View style={styles.container}>
                 <RefreshLargeList
@@ -158,7 +163,8 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     renderItem={this.renderItem}
                     params={params}
                     heightForCell={() => 160}
-                    // handleRequestResult={(result)=>{return result.data[0].list}}
+                    totalPageNum={(result)=> {return result.data.totalPageNum}}
+                    handleRequestResult={(result)=>{return result.data.list}}
                     // ref={(ref) => {this.list = ref}}
                 />
             </View>

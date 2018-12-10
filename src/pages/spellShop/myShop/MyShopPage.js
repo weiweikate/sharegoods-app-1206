@@ -9,8 +9,8 @@ import {
     ScrollView,
     RefreshControl,
     TouchableOpacity,
-    Text
-} from "react-native";
+    Text, Alert
+} from 'react-native';
 
 import { observer } from "mobx-react/native";
 import BasePage from "../../../BasePage";
@@ -27,7 +27,7 @@ import SpellShopApi from "../api/SpellShopApi";
 import DateUtils from "../../../utils/DateUtils";
 import StringUtils from "../../../utils/StringUtils";
 import spellStatusModel from "../model/SpellStatusModel";
-import ConfirmAlert from "../../../components/ui/ConfirmAlert";
+// import ConfirmAlert from "../../../components/ui/ConfirmAlert";
 import CommShareModal from "../../../comm/components/CommShareModal";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
 import apiEnvironment from "../../../api/ApiEnvironment";
@@ -35,9 +35,11 @@ import DesignRule from "DesignRule";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import res from "../res";
 import user from "../../../model/user";
+// import bridge from '../../../utils/bridge';
+import resCommon from '../../../comm/res'
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
-const NavLeft = res.myShop.NavLeft;
+const NavLeft = resCommon.button.white_back;
 const shezhi = res.myShop.shezhi;
 const my_Shop_gengduo = res.myShop.my_Shop_gengduo;
 const onSc_03 = res.myShop.sc_03;
@@ -261,8 +263,8 @@ export default class MyShopPage extends BasePage {
                         spellStatusModel.getUser(2);
                         this.$loadingDismiss();
                     }).catch((error) => {
-                        this.$toastShow(error.msg);
                         this.$loadingDismiss();
+                        this.$toastShow(error.msg);
                     });
                 }
             });
@@ -288,22 +290,46 @@ export default class MyShopPage extends BasePage {
     //加入店铺
     _joinBtnAction = () => {
         const { name } = this.state.storeData;
-        this.delAlert.show({
-            title: `确定要申请${name}吗?`,
-            confirmCallBack: () => {
-                this.$loadingShow();
-                SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
-                    if (!this.props.leftNavItemHidden) {
-                        this._loadPageData();
+        // this.delAlert.show({
+        //     title: `确定要申请${name}吗?`,
+        //     confirmCallBack: () => {
+        //         this.$loadingShow();
+        //         SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
+        //             if (!this.props.leftNavItemHidden) {
+        //                 this._loadPageData();
+        //             }
+        //             spellStatusModel.getUser(2);
+        //             this.$loadingDismiss();
+        //         }).catch((error) => {
+        //             this.$toastShow(error.msg);
+        //             this.$loadingDismiss();
+        //         });
+        //     }
+        // });
+
+        Alert.alert('提示', `确定要申请${name}吗?`,
+            [
+                {
+                    text: '取消', onPress: () => {
                     }
-                    spellStatusModel.getUser(2);
-                    this.$loadingDismiss();
-                }).catch((error) => {
-                    this.$toastShow(error.msg);
-                    this.$loadingDismiss();
-                });
-            }
-        });
+                },
+                {
+                    text: '确定', onPress: () => {
+                        this.$loadingShow();
+                        SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
+                            if (!this.props.leftNavItemHidden) {
+                                this._loadPageData();
+                            }
+                            spellStatusModel.getUser(2);
+                            this.$loadingDismiss();
+                        }).catch((error) => {
+                            this.$loadingDismiss();
+                            this.$toastShow(error.msg);
+                        });
+                    }
+                }
+            ]
+        );
     };
 
     _renderRow = (icon, title, desc) => {
@@ -454,7 +480,7 @@ export default class MyShopPage extends BasePage {
                 <ReportAlert ref={ref => {
                     this.reportAlert = ref;
                 }}/>
-                <ConfirmAlert ref={(ref) => this.delAlert = ref}/>
+                {/*<ConfirmAlert ref={(ref) => this.delAlert = ref}/>*/}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,

@@ -4,6 +4,7 @@ import Router from './Stack'
 import { Platform, NativeModules } from 'react-native'
 import RouterMap from './RouterMap'
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
+import Analytics from '../utils/AnalyticsUtil'
 
 const Navigator = StackNavigator(Router,
     {
@@ -43,13 +44,30 @@ Navigator.router.getStateForAction = (action, state) => {
         let length =  state.routes.length
         let currentRoute = state.routes[length - 1]
         let nextRoute = action.routeName
-        console.log('currentRoute',action,  currentRoute.routeName, nextRoute, currentRoute && currentRoute.routeName === RouterMap.LoginPage)
         if (currentRoute
             && nextRoute === RouterMap.LoginPage
             && currentRoute.routeName === RouterMap.LoginPage) {
             return null
         }
     }
+
+    if (action.type === NavigationActions.INIT) {
+        const currentPage = 'HomePage'
+        Analytics.onPageStart(currentPage)
+    }
+
+    if (action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK) {
+        const currentPage = getCurrentRouteName(state)
+        console.log('currentpage end', currentPage)
+        Analytics.onPageEnd(currentPage)
+    }
+
+    if (action.type === 'Navigation/COMPLETE_TRANSITION') {
+        const currentPage = getCurrentRouteName(state)
+        console.log('currentpage start', currentPage)
+        Analytics.onPageStart(currentPage)
+    }
+
     // console.log('getStateForAction', action, state)
     return defaultStateAction(action, state);
 };

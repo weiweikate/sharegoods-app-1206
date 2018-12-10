@@ -50,16 +50,15 @@ export default class HeaderView extends React.Component {
 
 
     render() {
-        let { status, pageType, headerTitle, timeStr} = this.props;
+        let { status, pageType, headerTitle, timeString} = this.props;
         let titleCommpent = () => {
             return <UIText value={headerTitle} style={styles.header_title}/>;
         };
         let timerCommpent = () => {
         };
-
-        if (status === 2 && (pageType === 1 && pageType === 2)){
+        if (status === 2 && (pageType === 1 || pageType === 2)){
             timerCommpent = () => {
-                return <UIText value={timeStr} style={styles.header_detail}/>;
+                return <UIText value={timeString} style={styles.header_detail}/>;
             };
 
         }

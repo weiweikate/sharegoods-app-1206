@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
     View,
     ImageBackground,
@@ -8,11 +8,11 @@ import {
     Text,
     Platform,
     Image
-} from 'react-native';
+} from "react-native";
 
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
-import res from '../../res';
+import ScreenUtils from "../../../../utils/ScreenUtils";
+import DesignRule from "DesignRule";
+import res from "../../res";
 
 const {
     detailShowBg,
@@ -25,10 +25,10 @@ const {
 const bgHeight = ScreenUtils.autoSizeWidth(410 / 2.0);
 const bgWidth = 286 / 2.0;
 const ImgArr = [
-    { img: message, tittle: '消息', index: 0 },
-    { img: detail_search, tittle: '搜索', index: 1 },
-    { img: share, tittle: '分享', index: 2 },
-    { img: detail_kefu, tittle: '客服', index: 3 }
+    { img: message, tittle: "消息", index: 0 },
+    { img: detail_search, tittle: "搜索", index: 1 },
+    { img: share, tittle: "分享", index: 2 },
+    { img: detail_kefu, tittle: "客服", index: 3 }
 ];
 
 export default class DetailNavShowModal extends Component {
@@ -63,20 +63,24 @@ export default class DetailNavShowModal extends Component {
         this.state.confirmCallBack && this.state.confirmCallBack(item);
     };
 
+    _separator = () => {
+        return <View
+            style={{ height: 0.5, marginLeft: 6, marginRight: 6, backgroundColor: DesignRule.lineColor_inWhiteBg }}/>;
+    };
+
     _renderItem = ({ item }) => {
         return <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', height: bgHeight / ImgArr.length }}
+            style={{
+                flexDirection: "row",
+                alignItems: "center",
+                height: (bgHeight - 20) / ImgArr.length,
+                marginTop: item.index === 0 ? 16 : 0
+            }}
             onPress={() => this._onPress(item)}>
             <Image source={item.img} style={{ marginLeft: 23 }}/>
             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }}>{item.tittle}</Text>
-            <View style={{
-                position: 'absolute',
-                bottom: 0, left: 0, right: 0,
-                height: 1,
-                backgroundColor: DesignRule.lineColor_inColorBg
-            }}/>
             {item.index === 0 && this.state.messageCount > 0 ? <View style={{
-                position: 'absolute',
+                position: "absolute",
                 top: ScreenUtils.autoSizeWidth(9),
                 left: ScreenUtils.autoSizeWidth(31),
                 backgroundColor: DesignRule.mainColor,
@@ -103,23 +107,25 @@ export default class DetailNavShowModal extends Component {
                     left: 0,
                     bottom: 0,
                     right: 0,
-                    position: 'absolute'
+                    position: "absolute"
                 }} onPress={() => {
                     this.setState({
                         modalVisible: false
                     });
-                }}>
+                }} activeOpacity={1}>
                     <ImageBackground
-                        resizeMode={'stretch'}
+                        resizeMode={"stretch"}
                         style={{
-                            top: Platform.OS === 'ios' ? ScreenUtils.headerHeight : 44,
-                            right: 18,
-                            position: 'absolute', width: bgWidth, height: bgHeight
+                            top: Platform.OS === "ios" ? ScreenUtils.headerHeight : 44,
+                            right: 12,
+                            position: "absolute", width: bgWidth, height: bgHeight
                         }}
                         source={detailShowBg}>
                         <FlatList data={ImgArr}
                                   keyExtractor={(item, index) => `${index}`}
                                   renderItem={this._renderItem}
+                                  ItemSeparatorComponent={this._separator}
+                                  showsVerticalScrollIndicator={false}
                         />
 
                     </ImageBackground>

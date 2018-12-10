@@ -85,7 +85,7 @@ let styles = StyleSheet.create({
         borderRadius: 15,  // 设置圆角边
         alignItems: "center",
         marginLeft: px2dp(10),
-        marginRight: px2dp(6),
+        marginRight: px2dp(5),
         opacity: 0.8
     },
     msgIcon: {
