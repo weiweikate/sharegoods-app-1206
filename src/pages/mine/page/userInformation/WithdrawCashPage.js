@@ -524,7 +524,7 @@ export default class WithdrawCashPage extends BasePage {
         };
         MineAPI.userWithdrawApply(params).then((data) => {
             this.$toastShow("提交申请成功\n" +
-                "预计2个工作日内到款");
+                "预计1-3个工作日内到款");
             this.$navigateBack("mine/userInformation/MyCashAccountPage");
         }).catch((err) => {
             this.$toastShow(err.msg);
