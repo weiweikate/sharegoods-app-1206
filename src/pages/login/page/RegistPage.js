@@ -46,6 +46,10 @@ export default class RegistPage extends BasePage {
         };
     }
 
+    $isMonitorNetworkStatus() {
+        return false;
+    }
+
     _render() {
         // 测试环境:https://testh5.sharegoodsmall.com/static/protocol/service.html
         // 预发布环境：https://uath5.sharegoodsmall.com/static/protocol/service.html

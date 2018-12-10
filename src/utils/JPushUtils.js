@@ -60,9 +60,6 @@ export default {
          */
         let version = deviceInfo.getVersion();
         temObj.version = version;
-
-        console.log('++++++++++++++++++++++');
-        console.log(temObj);
         if (ScreenUtils.isIOS) {
             NativeModules.commModule.updatePushTags(temObj);
         }else {

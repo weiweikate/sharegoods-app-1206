@@ -47,6 +47,10 @@ class AddBankCardPage extends BasePage {
 
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
     _formatPhone(text){
         if(text){
             let phone =  text.replace(/ /g,'');

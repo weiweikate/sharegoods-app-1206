@@ -57,6 +57,9 @@ export default class LoginPage extends BasePage {
             </Text>
         );
     };
+    $isMonitorNetworkStatus() {
+        return false;
+    }
 
     $NavBarLeftPressed = () => {
         if (UserModel.isLogin) {
@@ -242,7 +245,6 @@ export default class LoginPage extends BasePage {
                 console.log(data);
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
-
                 if (data.code === 34001) {
                     this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
                 }
