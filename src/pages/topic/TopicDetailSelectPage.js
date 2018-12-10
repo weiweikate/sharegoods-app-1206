@@ -6,13 +6,14 @@ import {
     Text,
     ScrollView,
     TouchableOpacity,
-    Image,
+    Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
 import res from './res';
-import ImageLoad from '@mr/image-placeholder'
+import ImageLoad from '@mr/image-placeholder';
+
 const icon_close = res.button.close_gray_circle;
 
 export default class TopicDetailSelectPage extends Component {
@@ -64,7 +65,12 @@ export default class TopicDetailSelectPage extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+                    <View style={{
+                        height: 1,
+                        marginTop: 15,
+                        marginLeft: 16,
+                        backgroundColor: DesignRule.lineColor_inColorBg
+                    }}/>
                 </View>
             );
         });
@@ -79,12 +85,12 @@ export default class TopicDetailSelectPage extends Component {
     };
 
     render() {
-        const { markdownPrice = '', seckillPrice = '', specImg, surplusNumber = 0 ,productSpecValue} = this.state.data || {};
+        const { markdownPrice = '', seckillPrice = '', specImg, surplusNumber = 0, productSpecValue } = this.state.data || {};
         let price = this.state.activityType === 1 ? seckillPrice : markdownPrice;
-        let specs = productSpecValue ||[];
-        specs = specs.map((item)=>{
-            return item.paramValue
-        })
+        let specs = productSpecValue || [];
+        specs = specs.map((item) => {
+            return item.paramValue;
+        });
 
         return (
             <Modal animationType="none" transparent={true} visible={this.state.isShow}>
@@ -98,7 +104,7 @@ export default class TopicDetailSelectPage extends Component {
                             <ImageLoad style={{
                                 height: 107,
                                 width: 107,
-                                backgroundColor:DesignRule.lineColor_inColorBg,
+                                backgroundColor: DesignRule.lineColor_inColorBg,
                                 borderColor: DesignRule.lineColor_inColorBg,
                                 borderWidth: 1,
                                 borderRadius: 5,
@@ -127,7 +133,7 @@ export default class TopicDetailSelectPage extends Component {
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: 13,
                                         marginTop: 8
-                                    }} numberOfLines={2}>{(specs||[]).join(',')}</Text>
+                                    }} numberOfLines={2}>{(specs || []).join(',')}</Text>
                                 </View>
                                 <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
                                                   onPress={this._close}>
@@ -145,7 +151,11 @@ export default class TopicDetailSelectPage extends Component {
                                     justifyContent: 'space-between',
                                     alignItems: 'center'
                                 }]}>
-                                    <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }}>购买数量</Text>
+                                    <Text style={{
+                                        color: DesignRule.textColor_secondTitle,
+                                        marginLeft: 16,
+                                        fontSize: 13
+                                    }}>购买数量</Text>
                                     <View style={{
                                         flexDirection: 'row',
                                         borderColor: DesignRule.lineColor_inGrayBg,
@@ -160,11 +170,22 @@ export default class TopicDetailSelectPage extends Component {
                                                 paddingHorizontal: 11
                                             }}>-</Text>
                                         </TouchableOpacity>
-                                        <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
+                                        <View style={{
+                                            height: 21,
+                                            width: 1,
+                                            backgroundColor: DesignRule.lineColor_inGrayBg
+                                        }}/>
                                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                            <Text style={{ paddingHorizontal: 15 ,color: DesignRule.textColor_mainTitle}}>{1}</Text>
+                                            <Text style={{
+                                                paddingHorizontal: 15,
+                                                color: DesignRule.textColor_mainTitle
+                                            }}>{1}</Text>
                                         </View>
-                                        <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
+                                        <View style={{
+                                            height: 21,
+                                            width: 1,
+                                            backgroundColor: DesignRule.lineColor_inGrayBg
+                                        }}/>
                                         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{
                                                 color: DesignRule.lineColor_inGrayBg,
