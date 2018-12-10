@@ -191,8 +191,9 @@ export default class ShopCartPage extends BasePage {
                             style={
                                 {
                                     backgroundColor:DesignRule.mainColor,
-                                    height:120,
+                                    height:140,
                                     width:75,
+                                    marginTop:-20,
                                     justifyContent:'center',
                                     alignItems:'center'
                                 }
