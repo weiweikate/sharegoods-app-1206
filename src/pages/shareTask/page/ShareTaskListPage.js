@@ -58,6 +58,10 @@ export default class ShareTaskListPage extends BasePage<Props> {
 
     }
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     componentDidMount() {
 
     }
@@ -91,8 +95,8 @@ export default class ShareTaskListPage extends BasePage<Props> {
             }
            that.$loadingDismiss();
         }).catch((error) => {
-            that.$toastShow(error.msg);
             that.$loadingDismiss();
+            that.$toastShow(error.msg);
         });
     }
 

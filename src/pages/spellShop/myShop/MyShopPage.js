@@ -36,9 +36,10 @@ import ScreenUtils from "../../../utils/ScreenUtils";
 import res from "../res";
 import user from "../../../model/user";
 // import bridge from '../../../utils/bridge';
+import resCommon from '../../../comm/res'
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
-const NavLeft = res.myShop.NavLeft;
+const NavLeft = resCommon.button.white_back;
 const shezhi = res.myShop.shezhi;
 const my_Shop_gengduo = res.myShop.my_Shop_gengduo;
 const onSc_03 = res.myShop.sc_03;
@@ -262,8 +263,8 @@ export default class MyShopPage extends BasePage {
                         spellStatusModel.getUser(2);
                         this.$loadingDismiss();
                     }).catch((error) => {
-                        this.$toastShow(error.msg);
                         this.$loadingDismiss();
+                        this.$toastShow(error.msg);
                     });
                 }
             });
@@ -322,8 +323,8 @@ export default class MyShopPage extends BasePage {
                             spellStatusModel.getUser(2);
                             this.$loadingDismiss();
                         }).catch((error) => {
-                            this.$toastShow(error.msg);
                             this.$loadingDismiss();
+                            this.$toastShow(error.msg);
                         });
                     }
                 }

@@ -27,9 +27,10 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import resCommon from '../../../comm/res';
 import user from '../../../model/user';
 
-const NavLeft = res.shopRecruit.NavLeft;
+const NavLeft = resCommon.button.white_back;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const icons9_shop = res.shopRecruit.icons9_shop;
 
@@ -186,8 +187,8 @@ export default class ShopRecruitPage extends BasePage {
             spellStatusModel.getUser(2);
             this.$loadingDismiss();
         }).catch((error) => {
-            this.$toastShow(error.msg);
             this.$loadingDismiss();
+            this.$toastShow(error.msg);
         });
     };
 
@@ -239,9 +240,10 @@ export default class ShopRecruitPage extends BasePage {
                             spellStatusModel.getUser(2);
                             this.$loadingDismiss();
                         }).catch((error) => {
-                            this.$toastShow(error.msg);
                             this.$loadingDismiss();
-                        });                    }
+                            this.$toastShow(error.msg);
+                        });
+                    }
                 }
             ]
         );
@@ -258,8 +260,8 @@ export default class ShopRecruitPage extends BasePage {
             spellStatusModel.getUser(2);
             this.$loadingDismiss();
         }).catch((error) => {
-            this.$toastShow(error.msg);
             this.$loadingDismiss();
+            this.$toastShow(error.msg);
         });
     };
 
@@ -288,6 +290,7 @@ export default class ShopRecruitPage extends BasePage {
                 }}>
                     <TouchableOpacity onPress={this._closeStore}
                                       style={[styles.unOpen, {
+                                          borderRadius: this.state.canOpen ? 5 : ScreenUtils.autoSizeWidth(345) / 2,
                                           width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(345)
                                       }]}>
                         <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{'取消开启'}</Text>
@@ -310,6 +313,7 @@ export default class ShopRecruitPage extends BasePage {
                     userStatus === 1 ?
                         <TouchableOpacity onPress={this._quitStore}
                                           style={[styles.unOpen, {
+                                              borderRadius: ScreenUtils.autoSizeWidth(345) / 2,
                                               width: ScreenUtils.autoSizeWidth(345)
                                           }]}>
                             <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{'退出拼店'}</Text>
@@ -392,7 +396,6 @@ const styles = StyleSheet.create({
     },
     unOpen: {
         height: 48,
-        borderRadius: 5,
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: DesignRule.mainColor,
@@ -403,7 +406,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.autoSizeWidth(345),
         height: 48,
         backgroundColor: DesignRule.mainColor,
-        borderRadius: 5,
+        borderRadius: ScreenUtils.autoSizeWidth(345) / 2,
         justifyContent: 'center',
         alignItems: 'center'
     },

@@ -79,8 +79,8 @@ export default class SetShopNamePage extends BasePage {
                 });
                 this.$loadingDismiss();
             }).catch((error) => {
-                this.$toastShow(error.msg);
                 this.$loadingDismiss();
+                this.$toastShow(error.msg);
             });
         }
     }
