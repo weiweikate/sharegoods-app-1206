@@ -28,20 +28,19 @@ export default class OrderDetailStateView extends Component {
     }
 
     go2Logistics(){
-        if(orderDetailModel.expressList.length===1){
+        if(orderDetailModel.expressList&&orderDetailModel.expressList.length===1){
             this.props.nav("order/logistics/LogisticsDetailsPage", {
-                orderNum: orderDetailModel.orderNum,
-                expressNo: orderDetailModel.expressNo
+                expressNo: orderDetailModel.expressList[0].expressNo
             });
-        }else{
+        }else if(orderDetailModel.expressList&&orderDetailModel.expressList.length>1){
             this.props.nav("order/logistics/CheckLogisticsPage", {
-                expressNo: orderDetailModel.expressList
+                expressList: orderDetailModel.expressList
             });
         }
 
     }
     render() {
-        if(orderDetailModel.expressList.length>1){
+        if(orderDetailModel.expressList&&orderDetailModel.expressList.length>1){
             orderDetailAfterServiceModel.totalAsList.sellerState=`该订单已拆成${orderDetailModel.expressList.length}个包裹发出，点击"查看物流"可查看详情`
         }
         if (orderDetailModel.status === 1) {
@@ -49,7 +48,7 @@ export default class OrderDetailStateView extends Component {
                 <View style={styles.topOrderDetail}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <UIImage source={position}
-                                 style={{ height: px2dp(19), width: px2dp(19), marginLeft: px2dp(21) }}/>
+                                 style={{ height: px2dp(19), width: px2dp(19), marginLeft: px2dp(21) }} resizeMode={'contain'}/>
                         <View style={{ justifyContent: "center", flex: 1 }}>
                             <View style={{
                                 flexDirection: "row",
@@ -60,11 +59,11 @@ export default class OrderDetailStateView extends Component {
                                 <Text style={{
                                     flex: 1,
                                     fontSize: px2dp(15)
-                                }}>{orderDetailAfterServiceModel.totalAsList.sellerState[0]}</Text>
+                                }}>{orderDetailModel.receiver}</Text>
                                 <Text style={{
                                     fontSize: px2dp(15),
                                     marginRight: px2dp(30)
-                                }}>{orderDetailAfterServiceModel.totalAsList.sellerState[1]}</Text>
+                                }}>{orderDetailModel.receiverPhone}</Text>
                             </View>
                             {StringUtils.isNoEmpty(orderDetailAfterServiceModel.totalAsList.sellerTime) ?
                                 <UIText value={orderDetailAfterServiceModel.totalAsList.sellerTime}

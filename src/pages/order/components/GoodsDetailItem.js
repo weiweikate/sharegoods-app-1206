@@ -19,7 +19,8 @@ const GoodsDetailItem = props => {
         goodsNum,
         clickItem,
         afterSaleService,
-        afterSaleServiceClick
+        afterSaleServiceClick,
+        style
     } = props;
 
     this.renderLine = () => {
@@ -81,9 +82,10 @@ const GoodsDetailItem = props => {
                 salePrice={salePrice}
                 category={category}
                 goodsNum={goodsNum}
-                onPress={clickItem}/>
+                onPress={clickItem}
+                style={style}/>
             {this.renderLine()}
-            {/*{this.renderAfterSaleService()}*/}
+            {this.renderAfterSaleService()}
         </View>
     );
 };

@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -18,6 +19,7 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
+import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
@@ -54,6 +56,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         SoftReference<MainActivity> softReference = new SoftReference(MainActivity.this);
         ReactNativePreLoader.preLoad(softReference, ParameterUtils.RN_MAIN_NAME);
+        Log.d("is_phone", !Utils.isEmulator() + "");
     }
 
     @Override
