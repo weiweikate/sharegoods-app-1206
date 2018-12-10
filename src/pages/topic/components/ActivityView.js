@@ -142,7 +142,7 @@ export default class MyShop_RecruitPage extends Component {
                 price = markdownPrice;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '起拍价'}`;
                 three = (markdownPrice === floorPrice || status === 3) ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? `已拍完` : `还剩${surplusNumber}件`}`;
             }
         } else {
             const { originalPrice, seckillPrice = '', reseCount = '' } = this.props.activityData;
