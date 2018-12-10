@@ -155,7 +155,7 @@ export default class MyShop_RecruitPage extends Component {
             } else {
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '秒杀价'}`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? `已抢完` : `还剩${surplusNumber}件`}`;
             }
         }
 
@@ -182,7 +182,11 @@ export default class MyShop_RecruitPage extends Component {
                 </View>
             </View>
             {end ?
-                <Text style={{ color: DesignRule.color_yellow, fontSize: 13, marginRight: 15 }}>活动已结束</Text>
+                <Text style={{
+                    color: DesignRule.color_yellow,
+                    fontSize: 13,
+                    marginRight: 15
+                }}>{activityType === 1 ? '秒杀已结束' : '活动已结束'}</Text>
                 :
                 <View style={{ alignItems: 'flex-end' }}>
                     <View style={{ width: 106 + 30, alignItems: 'center' }}>
