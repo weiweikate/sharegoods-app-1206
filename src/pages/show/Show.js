@@ -166,18 +166,6 @@ class ShowHotModules {
 }
 
 export const showHotModules = new ShowHotModules();
-
-class ShowSelectedDetail {
-    @observable selectedShow = null;
-    @observable selectedType = 0;
-    @action selectedShowAction = (data, type) => {
-        this.selectedShow = data;
-        this.selectedType = type;
-    };
-}
-
-export const showSelectedDetail = new ShowSelectedDetail();
-
 export class ShowRecommendModules {
     @observable recommendList = [];
     @observable selectedList = new Map();

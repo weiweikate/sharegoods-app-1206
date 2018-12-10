@@ -140,9 +140,9 @@ export default class MyShop_RecruitPage extends Component {
                 four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
                 price = markdownPrice;
-                two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '起拍价'}`;
+                two = `起拍价`;
                 three = (markdownPrice === floorPrice || status === 3) ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? `已拍完` : `还剩${surplusNumber}件`}`;
             }
         } else {
             const { originalPrice, seckillPrice = '', reseCount = '' } = this.props.activityData;
@@ -153,9 +153,9 @@ export default class MyShop_RecruitPage extends Component {
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
-                two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '秒杀价'}`;
+                two = `${totalNumber - surplusNumber !== 0 ? `已抢${totalNumber - surplusNumber}件` : '秒杀价'}`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? `已抢完` : `还剩${surplusNumber}件`}`;
             }
         }
 
@@ -182,7 +182,11 @@ export default class MyShop_RecruitPage extends Component {
                 </View>
             </View>
             {end ?
-                <Text style={{ color: DesignRule.color_yellow, fontSize: 13, marginRight: 15 }}>活动已结束</Text>
+                <Text style={{
+                    color: DesignRule.color_yellow,
+                    fontSize: 13,
+                    marginRight: 15
+                }}>{activityType === 1 ? '秒杀已结束' : '活动已结束'}</Text>
                 :
                 <View style={{ alignItems: 'flex-end' }}>
                     <View style={{ width: 106 + 30, alignItems: 'center' }}>

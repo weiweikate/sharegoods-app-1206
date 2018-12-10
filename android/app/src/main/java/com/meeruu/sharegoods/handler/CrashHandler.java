@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.utils.SDCardUtils;
+import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.MainActivity;
 
 import java.io.File;
@@ -125,6 +126,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 String versionCode = pi.versionCode + "";
                 infos.put("versionName", versionName);
                 infos.put("versionCode", versionCode);
+                infos.put("is_phone", !Utils.isEmulator()+"");
             }
             // 便于跟踪反馈
 //            String account = (String) SPCacheUtils.get("user_account", "");

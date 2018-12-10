@@ -32,12 +32,12 @@ export default class OrderDetailTimeView extends Component {
     };
 
     copyOrderNumToClipboard = () => {
-        StringUtils.clipboardSetString(orderDetailModel.orderNum);
+        StringUtils.clipboardSetString(orderDetailModel.getOrderNo());
         NativeModules.commModule.toast('订单号已经复制到剪切板');
     };
     render() {
         return (
-            <View style={{ backgroundColor: 'white',paddingTop:px2dp(10) }}>
+            <View style={{ backgroundColor: 'white',paddingTop:px2dp(10),marginTop:px2dp(10) }}>
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                     <UIText value={'订单编号：' + orderDetailModel.warehouseOrderDTOList[0].warehouseOrderNo}
                             style={[styles.textGoodsDownStyle,{marginTop:px2dp(10)}]}/>
@@ -47,16 +47,13 @@ export default class OrderDetailTimeView extends Component {
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].createTime / 1000)}
                         style={styles.textGoodsDownStyle}/>
-                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].payTime) && this.props.status > 1 ?
-                    <UIText value={'平台付款时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].payTime / 1000)}
+                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].payTime) && orderDetailModel.status > 1 ?
+                    <UIText value={'付款时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].payTime / 1000)}
                             style={styles.textGoodsDownStyle}/> : null}
-                {StringUtils.isEmpty(orderDetailModel.warehouseOrderDTOList[0].cancelTime) ? null :
+                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].cancelTime) && orderDetailModel.status === 5 ?
                     <UIText value={'关闭时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].cancelTime / 1000)}
-                            style={styles.textGoodsDownStyle}/>}
-                {StringUtils.isNoEmpty(this.props.payTime) && (this.props.payType % 2 === 0) && this.props.status > 1 ?
-                    <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.props.payTime / 1000)}
-                            style={styles.textGoodsDownStyle}/> : null}
-                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].outTradeNo) && (this.props.payType % 2 === 0) ?
+                            style={styles.textGoodsDownStyle}/>:null}
+                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].outTradeNo)  ?
                     <UIText value={'交易订单号：' + orderDetailModel.warehouseOrderDTOList[0].outTradeNo}
                             style={styles.textOrderDownStyle}/> : null}
                 {StringUtils.isEmpty(orderDetailModel.warehouseOrderDTOList[0].deliverTime) ? null :
@@ -64,7 +61,7 @@ export default class OrderDetailTimeView extends Component {
                             style={styles.textOrderDownStyle}/>}
                 {StringUtils.isEmpty(orderDetailModel.warehouseOrderDTOList[0].finishTime) ? null :
                     <UIText
-                        value={'完成时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000)}
+                        value={'完成时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].finishTime ? orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].deliverTime / 1000)}
                         style={styles.textOrderDownStyle}/>}
                 {this.renderWideLine()}
             </View>

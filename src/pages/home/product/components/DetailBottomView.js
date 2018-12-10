@@ -27,14 +27,14 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
-        let { shareMoney, status, buyLimit, leftBuyNum } = this.props;
+        let { shareMoney, productStatus, buyLimit, leftBuyNum } = this.props;
         //限购
         let isLimit = buyLimit !== -1 && leftBuyNum === 0;
         //status2：产品下架    1正常  2下架  3当前时间不能买
-        let disable = status === 2;//是否下架  样式
+        let disable = productStatus === 2;//是否下架  样式
 
         //btn不能点 变灰
-        let cantBuy = status !== 1 || isLimit;
+        let cantBuy = productStatus !== 1 || isLimit;
         return (
             <View style={{ height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0), backgroundColor: 'white' }}>
                 {disable ? <View style={{

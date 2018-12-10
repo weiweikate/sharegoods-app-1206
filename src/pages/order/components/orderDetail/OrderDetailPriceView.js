@@ -65,7 +65,7 @@ export default class OrderDetailPriceView extends Component {
 
    render(){
        return(
-           <View style={{ backgroundColor: 'white',paddingTop:10 }}>
+           <View style={{ backgroundColor: 'white',marginTop:10 ,paddingTop:10}}>
                {orderDetailModel.orderType === 5 ? this.renderGiftAfterSales() : null}
                {(orderDetailModel.orderType === 5 || orderDetailModel.orderType === 98) && this.props.giftBagCoupons.length > 0 ?
                    <View>

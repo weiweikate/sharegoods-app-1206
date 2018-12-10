@@ -21,7 +21,7 @@ export default class CheckLogisticsPage extends BasePage {
 
     show(expressNo){
         this.$navigate("order/logistics/LogisticsDetailsPage", {
-            expressNo: "3831428737475"
+            expressNo: expressNo
         });
     }
 
@@ -40,7 +40,7 @@ export default class CheckLogisticsPage extends BasePage {
                         <TouchableOpacity style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}
                                           onPress={() => {this.show(item.expressNo)}}>
                             <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:15,paddingRight:15}}>
-                                <Text style={{ fontSize: 12,color:DesignRule.textColor_mainTitle }}>{item.expressName}</Text>
+                                <Text style={{ fontSize: 12,color:DesignRule.textColor_mainTitle }}>{`${item.expressName}: ${item.expressNo}`}</Text>
                                 <Image source={res.button.arrow_right_black}/>
                             </View>
                         </TouchableOpacity>
@@ -53,19 +53,10 @@ export default class CheckLogisticsPage extends BasePage {
                         goodsNum={item.quantity}
                         style={{backgroundColor:'white'}}
                     />
-                        <View style={{backgroundColor:'#E4E4E4',height:10,width:ScreenUtils.width}}/>
+                        <View style={{backgroundColor:DesignRule.bgColor,height:10,width:ScreenUtils.width}}/>
                     </View>
                )
                 })}
-                {/*<SectionList*/}
-                    {/*sections={this.state.AllArr}*/}
-                    {/*renderItem={this.renderItem}*/}
-                    {/*onRefresh={this.onRefresh}*/}
-                    {/*onLoadMore={this.onLoadMore}*/}
-                    {/*renderSectionHeader={this.Header}*/}
-                    {/*keyExtractor={this.extraUniqueKey}//去除警告*/}
-
-                {/*/>*/}
             </View>
         );
     }

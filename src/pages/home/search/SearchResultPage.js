@@ -215,7 +215,7 @@ export default class SearchResultPage extends BasePage {
         let temp = {
             'amount': amount,
             'skuCode': skuCode,
-            'prodCode': this.state.prodCode
+            'productCode': this.state.prodCode
         };
         shopCartCacheTool.addGoodItem(temp);
     };

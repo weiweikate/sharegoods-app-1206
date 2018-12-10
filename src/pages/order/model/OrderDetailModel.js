@@ -27,7 +27,12 @@ class OrderDetailModel {
     @observable warehouseOrderDTOList=[]
     @observable status=null
 
-    @computed get productsList() {
+    @action  getOrderNo(){
+     return   this.status>1?this.warehouseOrderDTOList[0].warehouseOrderNo:this.warehouseOrderDTOList[0].platformOrderNo
+    }
+
+
+    @action  productsList() {
         let dataArr = []
         this.warehouseOrderDTOList.map((value) => {
             value.products.map((item)=>{
@@ -42,10 +47,17 @@ class OrderDetailModel {
                     // returnProductStatus: item.returnProductStatus,
                     // returnType: item.returnType,
                     status: item.status,
-                    activityCode: item.activityCode
+                    activityCode: item.activityCode,
+                    orderProductNo:item.orderProductNo,
+                    serviceNo:item.serviceNo,
+                    afterSaleTime:item.afterSaleTime,
+                    orderSubType:item.orderSubType,
+                    prodCode:item.prodCode
+
                 })
             })
         })
+        console.log('dataArr',dataArr);
         return dataArr
     }
 
@@ -53,10 +65,10 @@ class OrderDetailModel {
     @action loadDetailInfo(orderNo) {
         orderDetailAfterServiceModel.addAfterServiceList();
         return OrderApi.lookDetail({
-            orderNo:'O1166141'
+            orderNo:orderNo
         }).then(rep => {
             this.detail = rep.data
-            this.expressList = rep.data.expressList
+            this.expressList = rep.data.warehouseOrderDTOList[0].expressList
             orderStatusModel.statusMsg = orderStatusMessage[rep.data.status]
             orderDetailModel.giftCouponDTOList=rep.data.giftCouponDTOList
             orderDetailModel.orderSubType=rep.data.orderSubType
@@ -74,6 +86,7 @@ class OrderDetailModel {
             orderDetailModel.area=rep.data.area
             orderDetailModel.address=rep.data.address
             this.status=rep.data.warehouseOrderDTOList[0].status
+                orderDetailModel.payAmount=rep.data.payAmount
 
             return rep
         })
@@ -180,9 +193,9 @@ class OrderDetailAfterServiceModel{
             ],
         },{
             index:5,
-            buyState:'订单已完成',
+            buyState:'订单已关闭',
             moreDetail:'',
-            sellerState:'已签收',
+            sellerState:'已关闭',
             disNextView:true,
             menu:[
                 {
