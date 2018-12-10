@@ -66,7 +66,7 @@ export default class SelectionHeaderView extends Component {
                     zIndex: 1
                 }} source={{ uri: specImg || imgUrl || '' }}/>
 
-                <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
+                <View style={{ backgroundColor: 'white', marginTop: 20, height: 95 }}>
                     <View style={{ marginLeft: 132 }}>
                         <Text style={{
                             color: DesignRule.mainColor,
@@ -83,7 +83,7 @@ export default class SelectionHeaderView extends Component {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13,
                             marginTop: 6
-                        }}>{selectStrListTemp.join(',').replace(/@/g, '')}</Text>
+                        }} numberOfLines={2}>{selectStrListTemp.join(',').replace(/@/g, '')}</Text>
                     </View>
                     <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
                                       onPress={this.props.closeSelectionPage}>
