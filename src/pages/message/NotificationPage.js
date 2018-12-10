@@ -36,6 +36,10 @@ export default class NotificationPage extends BasePage {
         this.loadPageData();
     }
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
     renderItem = ({ item, index }) => {
         return (this.renderNoticeItem({
             item,

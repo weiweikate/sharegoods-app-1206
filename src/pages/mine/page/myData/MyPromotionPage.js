@@ -11,7 +11,7 @@ import {
     ImageBackground,
     TouchableWithoutFeedback
 } from 'react-native';
-import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
+import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
 // 图片资源
@@ -27,7 +27,11 @@ const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;
 const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
 const CCZImg = res.myData.ccz_03;
 const ProgressImg = res.myData.jdt_05;
+import LinearGradient from 'react-native-linear-gradient';
 
+const headerBgHeight = 182 / 375 * SCREEN_WIDTH + ScreenUtils.statusBarHeight + 30;
+const headerHeight = ScreenUtils.statusBarHeight + 44;
+const offset = headerBgHeight - headerHeight;
 
 export default class MyPromotionPage extends BasePage {
 
@@ -56,7 +60,8 @@ export default class MyPromotionPage extends BasePage {
             loading: true,
             netFailedInfo: null,
             headImg: null,
-            realName: null
+            realName: null,
+            changeHeader: true
         };
     }
 
@@ -130,9 +135,7 @@ export default class MyPromotionPage extends BasePage {
                 width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH + ScreenUtils.statusBarHeight + 30,
                 flexDirection: 'row', paddingTop: ScreenUtils.statusBarHeight
             }}>
-                <UIImage source={res.button.white_back}
-                         style={{ marginLeft: 15, marginTop: 5, width: 10, height: 18 }}
-                         onPress={() => this.$navigateBack()}/>
+
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 25, marginBottom: 40 }}>
                     {
@@ -261,10 +264,72 @@ export default class MyPromotionPage extends BasePage {
         }, this.loadPageData);
     };
 
+
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        if (Y < offset) {
+            this.st = Y / offset;
+
+            this.setState({
+                changeHeader: this.st > 0.7 ? false : true
+            });
+        } else {
+            this.st = 1;
+            this.setState({
+                changeHeader: false
+            });
+        }
+
+
+        this.headerBg.setNativeProps({
+            opacity: this.st
+        });
+    };
+
+    _navRender = () => {
+
+        let title = !this.state.changeHeader || this.state.loadingState === PageLoadingState.fail ? <Text style={{
+            color: DesignRule.white,
+            alignSelf: 'center',
+            fontSize: 17,
+            includeFontPadding: false
+        }}>我的晋升</Text> : null;
+        return (
+            <View style={{
+                width: SCREEN_WIDTH, height: ScreenUtils.statusBarHeight + 44,
+                paddingTop: ScreenUtils.statusBarHeight,
+                position: 'absolute', top: 0,
+                left: 0,
+                flexDirection: 'row',
+                alignItems: 'center'
+            }}>
+
+                <LinearGradient ref={(ref) => {
+                    this.headerBg = ref;
+                }} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#FF1C89', '#FF156E']} style={{
+                    width: SCREEN_WIDTH, height: ScreenUtils.statusBarHeight + 44,
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    opacity: this.state.loadingState === PageLoadingState.fail ? 1 : 0
+                }}>
+                </LinearGradient>
+                <View style={{ flex: 1 }}>
+                    <UIImage source={res.button.white_back}
+                             style={{ width: 10, height: 18, marginLeft: 15 }}
+                             onPress={() => this.$navigateBack()}/>
+                </View>
+                {title}
+                <View style={{ flex: 1 }}/>
+            </View>
+        );
+    };
+
     // 主题内容
     renderBodyView = () => {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
+                        onScroll={this._onScroll.bind(this)}
                         refreshControl={<RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this._onRefresh}
@@ -285,6 +350,24 @@ export default class MyPromotionPage extends BasePage {
             loadingState: PageLoadingState.loading
         }, this.loadPageData);
     };
+
+    renderContianer() {
+        let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
+        return (
+            controlParams ? renderViewByLoadingState(controlParams, () => {
+                return this._render();
+            }) : this._render()
+        );
+    }
+
+
+    render() {
+        return (<View style={{ flex: 1 }}>
+            {this.renderContianer()}
+            {this._navRender()}
+        </View>);
+
+    }
 
     _render() {
         return (
