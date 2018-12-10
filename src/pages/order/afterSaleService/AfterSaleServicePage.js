@@ -519,7 +519,7 @@ class AfterSaleServicePage extends BasePage {
             return;
         }
 
-        if (applyRefundAmount === 0) {
+        if (applyRefundAmount === 0 && pageType !== 2) {
             NativeModules.commModule.toast('售后的金额不能为0');
             return;
         }
