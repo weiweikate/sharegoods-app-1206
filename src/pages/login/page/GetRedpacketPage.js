@@ -39,8 +39,6 @@ export default class GetRedpacketPage extends BasePage {
             phone: '*****',
             price: 0
         };
-
-
     }
 
     // 导航配置
