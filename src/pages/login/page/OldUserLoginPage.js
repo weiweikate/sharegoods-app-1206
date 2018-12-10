@@ -88,6 +88,10 @@ export default class OldUserLoginPage extends BasePage {
 
     };
 
+    $isMonitorNetworkStatus() {
+        return false;
+    }
+
     _render() {
         return (
             <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>

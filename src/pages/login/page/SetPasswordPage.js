@@ -36,6 +36,9 @@ export default class SetPasswordPage extends BasePage {
 
         );
     }
+    $isMonitorNetworkStatus() {
+        return false;
+    }
 
     //点击下一步
     clickNext = (phone, code, password) => {
