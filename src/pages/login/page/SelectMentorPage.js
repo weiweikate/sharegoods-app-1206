@@ -80,7 +80,7 @@ export default class SelectMentorPage extends BasePage {
      * 更新坐标
      */
     componentDidUpdate() {
-        this._testScro();
+        // this._testScro();
     }
 
     /**
