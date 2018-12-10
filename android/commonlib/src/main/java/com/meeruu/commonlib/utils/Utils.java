@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
+import android.telephony.TelephonyManager;
 
 import com.meeruu.commonlib.base.BaseApplication;
 
@@ -87,5 +88,34 @@ public class Utils {
             return mNetworkInfo.isAvailable();
         }
         return false;
+    }
+
+    /**
+     * 检测是否是模拟器
+     *
+     * @return
+     */
+    public static boolean isEmulator() {
+        String url = "tel:" + "123456";
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(url));
+        intent.setAction(Intent.ACTION_DIAL);
+        // 是否可以处理跳转到拨号的 Intent
+        boolean canResolveIntent = intent.resolveActivity(BaseApplication.appContext.getPackageManager()) != null;
+
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.toLowerCase().contains("vbox")
+                || Build.FINGERPRINT.toLowerCase().contains("test-keys")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.SERIAL.equalsIgnoreCase("unknown")
+                || Build.SERIAL.equalsIgnoreCase("android")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT)
+                || ((TelephonyManager) BaseApplication.appContext.getSystemService(Context.TELEPHONY_SERVICE))
+                .getNetworkOperatorName().toLowerCase().equals("android")
+                || !canResolveIntent;
     }
 }
