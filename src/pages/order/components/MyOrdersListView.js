@@ -123,7 +123,7 @@ export default class MyOrdersListView extends Component {
                 id: item.id,
                 productId: item.prodCode,
                 productName: item.productName,
-                spec: item.specValues,
+                spec: item.specValues.replace(/@/g, ''),
                 imgUrl: item.specImg,
                 price: StringUtils.formatMoneyString(item.payAmount),
                 num: item.quantity,
@@ -150,7 +150,7 @@ export default class MyOrdersListView extends Component {
                             orderStatus:resp.status,
                             totalPrice: resp.payAmount,
                             expressList:resp.expressList||[],
-
+                            nowTime:resp.nowTime
 
                         })
                     })
@@ -166,6 +166,7 @@ export default class MyOrdersListView extends Component {
                             orderStatus:resp.status,
                             totalPrice: resp.payAmount,
                             expressList:resp.expressList||[],
+                            nowTime:resp.nowTime
                         })
                     })
                 }
@@ -197,7 +198,7 @@ export default class MyOrdersListView extends Component {
             this.noMoreData = true;
             // NativeModules.commModule.toast('无更多数据');
         }
-        this.setState({ viewData: arrData });
+        this.setState({ viewData: arrData },this.timeDown);
     };
     totalAmount(data){
         let num=0;
@@ -213,7 +214,7 @@ export default class MyOrdersListView extends Component {
         }
         this.getCancelOrder();
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.onRefresh());
-        this.timeDown();
+        // this.timeDown();
     }
 
     getCancelOrder() {
