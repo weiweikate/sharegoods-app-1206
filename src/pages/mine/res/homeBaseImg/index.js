@@ -20,7 +20,6 @@ const index = {
     mine_icon_mission:require('./mine_icon_mission.png'),
     mine_icon_discollect:require('./mine_icon_discollect.png'),
     fanhui:require('./fanhui.png'),
-    arrowRight:require('./icon3_07.png'),
     mine_level_background:require('./mine_level_background.png'),
     profile_banner:require('./profile_banner.png'),
 
