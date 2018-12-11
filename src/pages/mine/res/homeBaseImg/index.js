@@ -4,7 +4,6 @@ const index = {
     mine_setting_icon_white:require('./mine_setting_icon_white.png'),
     mine_message_icon_gray:require('./mine_message_icon_gray.png'),
     mine_message_icon_white:require('./mine_message_icon_white.png'),
-    mine_icon_right:require('./mine_icon_right.png'),
     mine_wait_pay_icon:require('./mine_wait_pay_icon.png'),
     mine_wait_send_icon:require('./mine_wait_send_icon.png'),
     mine_wait_receive_icon:require('./mine_wait_receive_icon.png'),
@@ -19,8 +18,6 @@ const index = {
     mine_icon_notificate:require('./mine_icon_notificate.png'),
     mine_icon_mission:require('./mine_icon_mission.png'),
     mine_icon_discollect:require('./mine_icon_discollect.png'),
-    fanhui:require('./fanhui.png'),
-    arrowRight:require('./icon3_07.png'),
     mine_level_background:require('./mine_level_background.png'),
     profile_banner:require('./profile_banner.png'),
 
