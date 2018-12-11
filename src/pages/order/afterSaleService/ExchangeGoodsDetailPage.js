@@ -192,7 +192,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                 <RefreshControl
                                     refreshing={this.afterSaleDetailModel.refreshing}
                                     onRefresh={this._onRefresh}
-                                    colors={DesignRule.mainColor}
+                                    colors={[DesignRule.mainColor]}
                                     tintColor={DesignRule.mainColor}
                                 />
                             }
