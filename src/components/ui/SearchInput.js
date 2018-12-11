@@ -14,7 +14,7 @@ import search_img from '../../pages/order/res/search_icon.png';
 import {
     UIText, UIImage
 } from '../../components/ui';
-import left_arrow from '../../pages/order/res/left_arrow.png';
+import left_arrow from '../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
