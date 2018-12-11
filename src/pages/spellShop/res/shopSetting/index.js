@@ -1,7 +1,6 @@
 const index = {
     banner_02: require('./banner_02.png'),
     bg_02: require('./bg_02.png'),
-    bg_03: require('./bg_03.png'),
     bg_07: require('./bg_07.png'),
     del_icon: require('./del_icon.png'),
     je_07: require('./je_07.png'),

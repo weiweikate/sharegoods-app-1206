@@ -39,7 +39,7 @@ const tobePayIcon = res.dingdanxiangqing_icon_fuk;
 const finishPayIcon = res.dingdanxiangqing_icon_yiwangcheng;
 const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
 const refuseIcon = res.dingdanxiangqing_icon_guangbi;
-const moreIcon = res.more_icon;
+const moreIcon = res.message_three;
 const timeUtils = new TimeDownUtils();
 const { px2dp } = ScreenUtils;
 
@@ -72,9 +72,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 height: px2dp(44),
                 alignItems: "center",
                 justifyContent: "center",
-                marginRight: px2dp(5)
             }}>
-                <Image source={moreIcon} style={{ width: px2dp(40) }} resizeMode={'contain'}/>
+                <Image source={moreIcon} />
             </TouchableOpacity>
         );
     };
@@ -307,9 +306,9 @@ export default class MyOrdersDetailPage extends BasePage {
     getAfterSaleService = (data, index) => {
         //售后状态
         let afterSaleService = [];
-
-        switch(data.status) {
-            case 1:
+        let outStatus=orderDetailModel.status
+        switch(outStatus) {
+            case 2:
                 afterSaleService.push({
                     id: 0,
                     operation: "退款",
@@ -317,29 +316,28 @@ export default class MyOrdersDetailPage extends BasePage {
                 });
                 break;
 
-            case 2:
             case 3:
             case 4:
-                let condition = (data.orderCustomerServiceInfoVO && data.orderCustomerServiceInfoVO.type) || 9999;
+                let condition = (data.orderCustomerServiceInfoVO && data.orderCustomerServiceInfoVO.type) || null;
                 switch (condition) {
                     case 1://申请退款
                         afterSaleService.push({
                             id: 2,
-                            operation: "退款中",
+                            operation: data.status==5?"退款成功":"退款中",
                             isRed: false
                         });
                         break;
                     case 2://申请退货
                         afterSaleService.push({
                             id: 3,
-                            operation: "退货中",
+                            operation: data.status==5?"售后完成":"退货中",
                             isRed: false
                         });
                         break;
                     case 3://申请换货
                         afterSaleService.push({
                             id: 6,
-                            operation: "换货中",
+                            operation:  data.status==5?"售后完成":"换货中",
                             isRed: false
                         });
                         break;
@@ -352,19 +350,9 @@ export default class MyOrdersDetailPage extends BasePage {
                 }
                 break;
             case 5:
-                afterSaleService.push({
-                    id: 2,
-                    operation: "售后完成",
-                    isRed: false
-                });
+                afterSaleService.push();
                 break;
-            case 6:
-                afterSaleService.push({
-                    id: 2,
-                    operation: "售后关闭",
-                    isRed: false
-                });
-                break;
+
 
 
             // let statusArr = [4, 16, 8];
@@ -595,7 +583,6 @@ export default class MyOrdersDetailPage extends BasePage {
                 ],
                 pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime : orderDetailModel.warehouseOrderDTOList[0].finishTime;
                 break;
-            //订单已完成
             case 5:
                 pageStateString.menu = [
                     {
@@ -608,41 +595,13 @@ export default class MyOrdersDetailPage extends BasePage {
                     isRed:true,
                 },
                 ],
-                    orderDetailAfterServiceModel.moreDetail = "";
+                    orderDetailAfterServiceModel.moreDetail = orderDetailModel.warehouseOrderDTOList[0].cancelReason;
                 timeUtils.stop();
                 pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].cancelTime;
                 break;
 
         }
         orderDetailAfterServiceModel.totalAsList = pageStateString;
-            //     afterSaleService: this.getAfterSaleService(data.orderProductList, 0),
-            //     returnProductStatus: data.orderProductList[0].returnProductStatus,
-            //     pageStateString: pageStateString,
-            //     expressNo: data.expressNo,
-            //     pageState: data.pageState,
-            //     activityId: data.activityId,
-            //     orderType: data.orderType,
-            //     allData: data,
-            //     payType: (data.orderPayRecord ? data.orderPayRecord.type : null),
-            //     orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的,
-            //     giftPackageName: data.orderType == 5 || data.orderType == 98 ? data.orderProductList[0].productName : "礼包",
-            //     status: data.status,//订单状态
-            //     activityCode: data.orderProductList[0] && data.orderProductList[0].activityCode ? data.orderProductList[0].activityCode : null,//礼包的code
-            //     giftBagCoupons: data.orderProductList[0] && data.orderProductList[0].giftBagCoupons ? data.orderProductList[0].giftBagCoupons : []
-            //
-            // });
-        //     console.log("setView", orderDetailModel);
-        // }).catch(e => {
-        //     Toast.hiddenLoading();
-        //     Toast.$toast(e.msg);
-        //     if (e.code === 10009) {
-        //         this.$navigate("login/login/LoginPage", {
-        //             callback: () => {
-        //                 this.loadPageData();
-        //             }
-        //         });
-        //     }
-        // });
     }
 
     clickItem = (index, item) => {
@@ -669,7 +628,7 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     afterSaleServiceClick = (menu, index) => {
         console.log(menu);
-        let products=orderDetailModel.productsList()[index];
+        let products=orderDetailModel.warehouseOrderDTOList[0].products[index];
          if(products.afterSaleTime<orderDetailModel.warehouseOrderDTOList[0].nowTime){
              NativeModules.commModule.toast("该商品售后已过期");
              return;

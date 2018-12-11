@@ -15,13 +15,13 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    TouchableWithoutFeedback, Text,Image
+    TouchableWithoutFeedback, Text,
 } from "react-native";
 
 import {
     UIText,
 } from "../../../components/ui";
-// import UIImage from "@mr/image-placeholder";
+import UIImage from "@mr/image-placeholder";
 import DesignRule from "DesignRule";
 
 export default class GoodsGrayItem extends React.Component {
@@ -47,7 +47,7 @@ export default class GoodsGrayItem extends React.Component {
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={[styles.container, this.props.style]}>
-                    <Image source={{ uri: uri }} style={styles.image}/>
+                    <UIImage source={{ uri: uri }} style={styles.image}/>
                     <View style={{ marginHorizontal: 10, flex: 1, height: 100 }}>
                         <View style={{ flexDirection: "row", marginTop: 10 }}>
                             <View style={{ flex: 1, flexDirection: "row", marginRight: 10, alignItems: "center" }}>

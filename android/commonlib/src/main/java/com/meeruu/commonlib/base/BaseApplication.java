@@ -12,6 +12,7 @@ import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
+import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
 
@@ -64,8 +65,6 @@ public class BaseApplication extends MultiDexApplication {
             Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
-            String umKey = "5b7663a3f29d9830cb0000d8";
-            UApp.init(this, umKey, channel);
             if (Utils.isApkInDebug()) {
                 // jpush debug
                 JPushInterface.setDebugMode(true);
@@ -74,12 +73,15 @@ public class BaseApplication extends MultiDexApplication {
                 // 禁止极光捕获crash
                 JPushInterface.stopCrashHandler(this);
             } else {
+                // 友盟统计
+                UApp.init(this, ParameterUtils.UM_KEY, channel);
+                // 初始化分享
+                UShare.init(this, ParameterUtils.UM_KEY);
+                // 初始化极光
+                JPushInterface.init(this);
                 JPushInterface.initCrashHandler(this);
+                JPushInterface.setChannel(this, channel);
             }
-            // 初始化分享
-            UShare.init(this, umKey);
-            // 初始化极光
-            JPushInterface.init(this);
         }
     }
 

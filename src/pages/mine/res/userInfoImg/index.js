@@ -1,16 +1,9 @@
 const userInfoImg = {
     addressSelect: require('./addressSelect.png'),
     addressUnselect: require('./addressUnselect.png'),
-    bonusClose: require('./bonusClose.png'),
-    BonusExchangeSucceedBackground: require('./BonusExchangeSucceedBackground.png'),
-    BonusExchangeSucceedModal: require('./BonusExchangeSucceedModal.png'),
     cash: require('./cash.png'),
-    close: require('./close.png'),
-    close_icon: require('./close_icon.png'),
-    commonBankCardIcon: require('./commonBankCardIcon.png'),
     IDcard_country: require('./IDcard_country.png'),
     IDcard_persion: require('./IDcard_persion.png'),
-    IDVertify: require('./IDVertify.png'),
     qdaojianli_icon: require('./qdaojianli_icon.png'),
     questionImage_gray: require('./questionImage_gray.png'),
     questionImage_white: require('./questionImage_white.png'),
@@ -23,7 +16,6 @@ const userInfoImg = {
     xiangjzhanghu_icon03_14: require('./xiangjzhanghu_icon03_14.png'),
     xiangjzhanghu_icon03_16: require('./xiangjzhanghu_icon03_16.png'),
     xiudozhanghu_icon_xjaingquan: require('./xiudozhanghu_icon_xjaingquan.png'),
-    yonghuxiayi_img: require('./yonghuxiayi_img.png'),
-    bank_card_icon:require('./bank_card_icon.png')
+    bank_card_icon: require('./bank_card_icon.png')
 };
 export default userInfoImg;

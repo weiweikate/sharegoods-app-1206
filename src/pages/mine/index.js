@@ -5,7 +5,6 @@ import Coupons from './page/coupons';
 import helper from './page/helper';
 import AddressManagerPage from './page/myaddress/AddressManagerPage';
 import SettingPage from './page/setting/SettingPage';
-import MyDataPage from './page/myData/MyDataPage';
 import MyPromotionPage from './page/myData/MyPromotionPage';
 import setting from './page/setting';
 import MyAddress from './page/myaddress';
@@ -29,7 +28,6 @@ export default {
         MyAddress,
         MyAccount,
         bankCard,
-        MyDataPage,
         MyPromotionPage,
         InviteFriendsPage,
         promotion,

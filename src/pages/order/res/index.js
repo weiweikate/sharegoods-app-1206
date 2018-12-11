@@ -16,10 +16,8 @@ const index = {
     dizhi_icon: require('./dizhi_icon.png'),
     kongbeiye_wulian: require('./kongbeiye_wulian.png'),
     kongbeuye_dingdan: require('./kongbeuye_dingdan.png'),
-    left_arrow: require('./left_arrow.png'),
     logisticsBottom: require('./logisticsBottom.png'),
     logisticsTop: require('./logisticsTop.png'),
-    more_icon: require('./more_icon.png'),
     no_wuliu: require('./no_wuliu.png'),
     productDetailHome: require('./productDetailHome.png'),
     productDetailImg: require('./productDetailImg.png'),
@@ -27,6 +25,8 @@ const index = {
     search_icon: require('./search_icon.png'),
     search: require('./search.png'),
     coupons_icon: require('./coupons_icon.png'),
+    message_bg:require('./dingdan_bg_gengduo_nor.png'),
+    message_three:require('./tongyong_icon_more_nor.png'),
     afterSaleService:{
         ...afterSaleService
     },
