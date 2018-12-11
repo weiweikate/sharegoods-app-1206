@@ -44,9 +44,9 @@ const PageKey = {};
 
 function getPathWithPageName(pageName) {
     if (pageName === 'RegistPage') {
-        return 'path/'+pageName+'/:phone'
+        return 'path/' + pageName + '/:phone'
     }else {
-        return 'path/'+pageName;
+        return 'path/' + pageName;
     }
 }
 

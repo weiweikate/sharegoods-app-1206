@@ -51,7 +51,7 @@ class CommModel {
             return;
         }
 
-        if (0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
+        if (parseInt(phoneNmber.charAt(phoneNmber.length - 1)) >= 0 &&
             parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9) {
             this.phoneNumber = phoneNmber;
         }

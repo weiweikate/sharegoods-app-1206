@@ -424,6 +424,6 @@ class User {
 
 const user = new User();
 autorun(() => {
-   user.token? shopCartCacheTool.synchronousData():null;
+   user.token ? shopCartCacheTool.synchronousData() : null;
 });
 export default user;

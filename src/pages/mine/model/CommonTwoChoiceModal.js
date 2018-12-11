@@ -133,8 +133,7 @@ export default class CommonTwoChoiceModal extends Component {
                         position: 'absolute',
                         justifyContent: 'flex-start',
                         alignItems: 'flex-end'
-                    }}>
-                    </View>
+                    }} />
                     <View style={{ height: 180, width: 295, justifyContent: 'space-between' }}>
                         <View style={{
                             flex: 1,

@@ -127,7 +127,7 @@ class AfterSaleServicePage extends BasePage {
                                                        return;
                                                    }
                                                }
-                                               text = text===''? '0': text;
+                                               text = text === '' ? '0' : text;
                                                if (parseFloat(text) <= this.state.productData.payAmount) {
                                                    this.setState({ applyRefundAmount: text + '' });
                                                }else {
@@ -174,7 +174,7 @@ class AfterSaleServicePage extends BasePage {
                                                        return;
                                                    }
                                                }
-                                               text = text===''? '0': text;
+                                               text = text === '' ? '0' : text;
                                                if (parseFloat(text) <= this.state.productData.payAmount) {
                                                    this.setState({ applyRefundAmount: text + '' });
                                                }else {

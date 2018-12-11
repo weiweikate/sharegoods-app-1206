@@ -30,7 +30,7 @@ export default class ProfileEditPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            textNum: user.profile?user.profile.length:0,
+            textNum: user.profile ? user.profile.length : 0,
             profile: user.profile
         };
     }

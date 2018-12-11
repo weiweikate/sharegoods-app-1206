@@ -121,7 +121,7 @@ class TotalTopicresultDataModel {
                         key: otherSectionIndex,
                         bannerImg: otherSection.bannerImg,
                         data: productlist.slice(),
-                        aspectRatio:(otherSection.height/otherSection.width) || (16 / 75),
+                        aspectRatio:(otherSection.height / otherSection.width) || (16 / 75),
                     };
                     //开始加入从第二组开始的数据
                     sections.sectionDataList.push(otherSections);
