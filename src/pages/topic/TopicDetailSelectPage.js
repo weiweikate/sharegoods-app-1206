@@ -52,6 +52,7 @@ export default class TopicDetailSelectPage extends Component {
         let tagList = [];
         productSpecValue.forEach((obj) => {
             tagList.push(
+                <TouchableWithoutFeedback>
                 <View>
                     <View style={styles.headerContainer}>
                         <Text style={styles.headerText}>{obj.paramName}</Text>
@@ -72,6 +73,7 @@ export default class TopicDetailSelectPage extends Component {
                         backgroundColor: DesignRule.lineColor_inColorBg
                     }}/>
                 </View>
+                </TouchableWithoutFeedback>
             );
         });
         return tagList;

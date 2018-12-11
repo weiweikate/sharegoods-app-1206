@@ -5,7 +5,8 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableWithoutFeedback
 } from 'react-native';
 import DesignRule from 'DesignRule';
 
@@ -59,6 +60,7 @@ export default class SelectionSectionView extends Component {
 
     render() {
         return (
+            <TouchableWithoutFeedback>
             <View>
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>{this.props.tittle}</Text>
@@ -68,6 +70,7 @@ export default class SelectionSectionView extends Component {
                 </View>
                 <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             </View>
+            </TouchableWithoutFeedback>
         );
     }
 }

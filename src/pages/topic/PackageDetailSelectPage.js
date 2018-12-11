@@ -120,6 +120,7 @@ export default class TopicDetailSelectPage extends Component {
             let tempArr = specPriceList[key];
             let obj = tempArr[0] || {};
             tagList.push(
+                <TouchableWithoutFeedback>
                 <View>
                     <View style={styles.headerContainer}>
                         <Text style={styles.headerText}>{obj.productName || ''}</Text>
@@ -134,6 +135,7 @@ export default class TopicDetailSelectPage extends Component {
                         backgroundColor: DesignRule.lineColor_inColorBg
                     }}/>
                 </View>
+                </TouchableWithoutFeedback>
             );
             indexOfTop++;
         }
