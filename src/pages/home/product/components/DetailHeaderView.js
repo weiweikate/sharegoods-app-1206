@@ -13,6 +13,7 @@ import user from '../../../../model/user';
 import DesignRule from 'DesignRule';
 import DetailBanner from './DetailBanner';
 import RES from '../../../../comm/res';
+import StringUtils from '../../../../utils/StringUtils';
 
 const arrow_right = RES.button.arrow_right_black;
 /**
@@ -45,7 +46,7 @@ export default class DetailHeaderView extends Component {
         //priceType 3会员价  2拼店价
         const {
             freight, monthSaleCount, originalPrice, priceType,
-            minPrice, maxPrice, groupPrice, name, afterSaleServiceDays
+            minPrice, maxPrice, groupPrice, name, secondName, afterSaleServiceDays
         } = this.props.data || {};
         let priceSuper = minPrice !== maxPrice ? `￥${minPrice || ''}-￥${maxPrice || ''}` : `￥${minPrice || ''}`;
         return (
@@ -65,6 +66,10 @@ export default class DetailHeaderView extends Component {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13
                         }} numberOfLines={2}>{`${name || ''}`}</Text>
+                        {StringUtils.isNoEmpty(secondName) ? <Text style={{
+                            marginTop: 5, color: DesignRule.textColor_secondTitle,
+                            fontSize: 13
+                        }}>{secondName}</Text> : null}
                         <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 15, alignItems: 'center' }}>
                             <View style={{ flex: 1 }}>
                                 <View style={{ alignItems: 'center', height: 26, flexDirection: 'row' }}>
