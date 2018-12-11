@@ -55,25 +55,28 @@ class ShowMessageModal extends Component {
             itemArr.push(
                 <View key={i}>
                     <TouchableOpacity key={i}
-                                      style={{ height: 46, justifyContent: 'center', marginTop: 2 }}
+                                      style={{
+                                          flexDirection: 'row',
+                                          height: 40,
+                                          alignItems: 'center',
+                                          paddingLeft: 20
+                                      }}
                                       onPress={() => {
                                           this.props.clickSelect(i);
                                       }}>
-                        <View style={{ flexDirection: 'row', height: 40, alignItems: 'center', paddingLeft: 17 }}>
-                            <Image source={this.props.detail[i].icon} style={{ height: 18, width: 18 }}/>
-                            <Text style={{
-                                marginLeft: 16,
-                                fontSize: 13,
-                                color: DesignRule.textColor_mainTitle
-                            }}>{this.props.detail[i].title}</Text>
-                        </View>
+                        <Image source={this.props.detail[i].icon} style={{ height: 18, width: 18 }}/>
+                        <Text style={{
+                            marginLeft: 12,
+                            fontSize: 13,
+                            color: DesignRule.textColor_mainTitle
+                        }}>{this.props.detail[i].title}</Text>
                     </TouchableOpacity>
                     {i === arrLen - 1 ? null : <View
                         style={{
                             backgroundColor: DesignRule.lineColor_inColorBg,
                             height: 1,
                             marginLeft: 48,
-                            marginRight: 2
+                            marginRight: 5
                         }}/>}
                 </View>
             );
@@ -87,10 +90,11 @@ class ShowMessageModal extends Component {
                 flex: 1,
                 justifyContent: 'flex-start',
                 alignItems: 'flex-end',
-                paddingRight: 15,
-                paddingTop: ScreenUtils.headerHeight
+                paddingRight: 8,
+                paddingTop: ScreenUtils.headerHeight - 3
             }}>
-                <ImageBackground style={{ width: 143, height: 93 }} source={message_bg} resizeMode={'stretch'}>
+                <ImageBackground style={{ width: 143, height: 93, paddingTop: 9 }} source={message_bg}
+                                 resizeMode={'stretch'}>
                     {this.renderMenu()}
                 </ImageBackground>
             </View>
