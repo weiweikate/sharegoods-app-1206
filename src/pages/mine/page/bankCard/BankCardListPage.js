@@ -111,7 +111,7 @@ export default class BankCardListPage extends BasePage {
                     {this.renderList()}
                     <TouchableOpacity
                         disabled={(this.state.viewData && this.state.viewData.length === 5)}
-                        style={[styles.addBankCardView, { marginTop: this.state.viewData.length == 0 ? 76 : 47 }]}
+                        style={[styles.addBankCardView, { marginTop: this.state.viewData.length === 0 ? 76 : 47 }]}
                         onPress={() => this.addBankCard()}>
                         <ImageBackground source={(this.state.viewData && this.state.viewData.length === 5) ? add_bank_disable : add_bank_button} style={{
                             height: 48, width: 290, justifyContent: "center",

@@ -57,7 +57,7 @@ export default class InvitePromotionPage extends BasePage<Props> {
 
     loadPageData = () => {
         MineApi.getPromotionPackageList({ page: this.currentPage, pageSize: 15 }).then((res) => {
-            let arrs = this.currentPage == 1 ? [] : this.state.viewData;
+            let arrs = this.currentPage === 1 ? [] : this.state.viewData;
             if (!EmptyUtils.isEmptyArr(res.data.data)) {
                 res.data.data.map((item, index) => {
                     arrs.push(item);

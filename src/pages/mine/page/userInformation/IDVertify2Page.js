@@ -278,8 +278,8 @@ export default class IDVertify2Page extends BasePage {
         MineApi.addUserCertification(params).then((response) => {
             this.$loadingDismiss();
             NativeModules.commModule.toast("实名认证成功");
-            MineApi.getUser().then(res => {
-                let data = res.data;
+            MineApi.getUser().then(resp => {
+                let data = resp.data;
                 user.saveUserInfo(data);
             }).catch(err => {
                 if (err.code === 10009) {

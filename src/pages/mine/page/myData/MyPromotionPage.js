@@ -100,8 +100,8 @@ export default class MyPromotionPage extends BasePage {
                 this.$navigate('login/login/LoginPage');
             }
         });
-        MineApi.getNextLevelInfo().then(res => {
-            const { data } = res;
+        MineApi.getNextLevelInfo().then(resp => {
+            const { data } = resp;
             this.setState({
                 nextArr: data.content
             });

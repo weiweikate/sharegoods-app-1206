@@ -128,7 +128,7 @@ class ShopCartStore {
                 })
 
                 originArr.map(originGood =>{
-                    if (originGood.productCode === item.productCode && item.skuCode == originGood.skuCode){
+                    if (originGood.productCode === item.productCode && item.skuCode === originGood.skuCode){
                         item.isSelected = originGood.isSelected
                     }
                 })

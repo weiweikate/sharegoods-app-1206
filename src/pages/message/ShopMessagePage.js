@@ -47,13 +47,13 @@ export default class ShopMessagePage extends BasePage {
     }
 
     go2DetailPage(id,type,ids) {
-        if(type == 1 || type == 7 || type == 8){
+        if(type === 1 || type === 7 || type === 8){
             this.$navigate("message/PayMessagePage", {id:id,type:type})
-        }else if(type == 16){
+        }else if(type === 16){
             this.$navigate('product/ProductDetailPage',{productId:id,ids:ids,activityCode:5})
-        }else if(type == 17){
+        }else if(type === 17){
             this.$navigate('product/ProductDetailPage',{productId:id,ids:ids,id:5})
-        }else if(type == 2 || type == 3 || type == 2 || type == 3){
+        }else if(type === 2 || type === 3 || type === 2 || type === 3){
             this.$navigate('order/order/MyOrdersDetailPage',{orderId:ids})
         }
     }
