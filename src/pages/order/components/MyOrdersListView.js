@@ -140,7 +140,7 @@ export default class MyOrdersListView extends Component {
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if (StringUtils.isNoEmpty(data) && StringUtils.isNoEmpty(data.data)) {
             data.data.map((item, index) => {
-                if (item.warehouseOrderDTOList[0].status == 1) {//未付款的
+                if (item.warehouseOrderDTOList[0].status === 1) {//未付款的
                     item.warehouseOrderDTOList.map((resp, index1) => {
                         arrData.push({
                             orderProduct: this.getOrderProduct(resp.products),
@@ -222,9 +222,9 @@ export default class MyOrdersListView extends Component {
 
     getCancelOrder() {
         let arrs = [];
-        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
-            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
-                res.data.map((item, i) => {
+        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(resp => {
+            if (resp.code === 10000 && StringUtils.isNoEmpty(resp.data)) {
+                resp.data.map((item, i) => {
                     arrs.push(item.value);
                 });
                 this.setState({

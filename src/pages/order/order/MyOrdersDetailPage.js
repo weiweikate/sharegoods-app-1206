@@ -323,21 +323,21 @@ export default class MyOrdersDetailPage extends BasePage {
                     case 1://申请退款
                         afterSaleService.push({
                             id: 2,
-                            operation: data.status == 5 ? "退款成功" : "退款中",
+                            operation: data.status === 5 ? "退款成功" : "退款中",
                             isRed: false
                         });
                         break;
                     case 2://申请退货
                         afterSaleService.push({
                             id: 3,
-                            operation: data.status == 5 ? "售后完成" : "退货中",
+                            operation: data.status === 5 ? "售后完成" : "退货中",
                             isRed: false
                         });
                         break;
                     case 3://申请换货
                         afterSaleService.push({
                             id: 6,
-                            operation:  data.status == 5 ? "售后完成" : "换货中",
+                            operation:  data.status === 5 ? "售后完成" : "换货中",
                             isRed: false
                         });
                         break;

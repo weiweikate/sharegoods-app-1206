@@ -13,6 +13,7 @@ import GoodsItem from '../components/GoodsGrayItem';
 import DateUtils from '../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
+
 const {
     refund,
     return_goods,
@@ -28,7 +29,7 @@ class AfterSaleServiceHomePage extends BasePage {
             thirdType: 1,
             passwordDis: false,
             phoneError: false,
-            passwordError: false,
+            passwordError: false
             /** pageData.orderProductList 如果是产品订单里面就是一个一个商品，如果是礼包、优惠券订单，该数组就只有一个。
              * orderProductList.orderProductPriceList 就是礼包里面的子商品
              * index 表示当前退的哪一个商品，如果没有index，说明退的是礼包，那么默认取orderProductList第一个来显示就行
@@ -57,7 +58,7 @@ class AfterSaleServiceHomePage extends BasePage {
     //**********************************ViewPart******************************************
     _render() {
 
-         let productData = this.params.pageData
+        let productData = this.params.pageData;
         return (
             <ScrollView style={DesignRule.style_container}>
                 {this.renderWideLine()}
@@ -71,7 +72,7 @@ class AfterSaleServiceHomePage extends BasePage {
                     salePrice={StringUtils.formatMoneyString(productData.unitPrice)}
                     category={'规格：' + productData.specValues}
                     goodsNum={productData.quantity}
-                   // onPress={() => this.jumpToProductDetailPage()}
+                    // onPress={() => this.jumpToProductDetailPage()}
                 />
                 {this.renderOrderTime()}
             </ScrollView>
@@ -100,9 +101,10 @@ class AfterSaleServiceHomePage extends BasePage {
         let content = ['未收到货（包含未签收）', '已收到货，需要退换已收到的货物', '需要更换货'];
         // 1 2 4 8 16 分别代表不支持优惠券、一元、换货、退货
         let status = [4, 16, 8];
-        let productData = this.params.pageData || {}
+        let productData = this.params.pageData || {};
         let arr = [];
-        for (let i = 0; i < image.length; i++) {
+        let len = image.length;
+        for (let i = 0; i < len; i++) {
             if ((productData.restrictions & status[i]) !== status[i]) {
                 arr.push(
                     <TouchableOpacity style={{
@@ -131,20 +133,20 @@ class AfterSaleServiceHomePage extends BasePage {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
-                    orderProductNo,
+                    orderProductNo
                 });
                 break;
             case 1:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 1,
-                    orderProductNo,
+                    orderProductNo
                 });
                 break;
             case 2:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 2,
-                    orderProductNo,
-                  //  productId: this.params.pageData.orderProductList[this.state.index].productId
+                    orderProductNo
+                    //  productId: this.params.pageData.orderProductList[this.state.index].productId
                 });
                 break;
         }

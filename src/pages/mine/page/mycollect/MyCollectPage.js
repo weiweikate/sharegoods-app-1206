@@ -194,7 +194,7 @@ export default class MyCollectPage extends BasePage {
     };
 
     go2PruductDetailPage(storeId, index) {
-        if (index != 1) {
+        if (index !== 1) {
             this.$navigate('spellShop/MyShop_RecruitPage', { storeId: storeId });
         }
 
@@ -208,7 +208,7 @@ export default class MyCollectPage extends BasePage {
         this.$loadingShow();
         MineApi.queryCollection({ page: this.currentPage, size: 20 }).then(res => {
             this.$loadingDismiss();
-            let arr = this.currentPage == 1 ? [] : this.state.viewData;
+            let arr = this.currentPage === 1 ? [] : this.state.viewData;
             console.log(res);
             if (res.code === 10000) {
                 let icons = res.data ? (res.data.data ? res.data.data : []) : [];

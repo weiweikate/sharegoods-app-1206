@@ -85,8 +85,9 @@ export default class PasswordInput extends Component {
     _getInputItem() {
         let inputItem = [];
         let { text } = this.state;
-        for (let i = 0; i < parseInt(this.props.maxLength); i++) {
-            if (i == 0) {
+        let maxLen = parseInt(this.props.maxLength);
+        for (let i = 0; i < maxLen; i++) {
+            if (i === 0) {
                 inputItem.push(
                     <View key={i} style={[styles.inputItem, this.props.inputItemStyle]}>
                         {i < text.length ? <View style={[styles.iconStyle, this.props.iconStyle]}/> : null}

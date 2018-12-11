@@ -64,7 +64,7 @@ const GoodsListItem = props => {
     //28:45:45后自动取消订单
     this.renderMenu = () => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
-        if (orderStatus == 1) {
+        if (orderStatus === 1) {
             return (
                 <View style={{
                     flex: 1,
@@ -251,7 +251,7 @@ const GoodsListItem = props => {
                 {/*{this.renderTime()}*/}
                 {this.renderLine()}
             </TouchableOpacity>
-            {constants.viewOrderStatus[orderStatus].menuData.length == 0 ? null :
+            {constants.viewOrderStatus[orderStatus].menuData.length === 0 ? null :
                 <View style={{
                     flexDirection: 'row',
                     height: 48,

@@ -72,7 +72,7 @@ const LogisticsDetailItem = props => {
         );
     };
     this.renderTitle = () => {
-        return (title && title != "" ?
+        return (title && title !== "" ?
             <UIText value={title} style={{ fontSize: 14, color: DesignRule.textColor_mainTitle_222, marginLeft: 15 }}/>
             : null);
     };

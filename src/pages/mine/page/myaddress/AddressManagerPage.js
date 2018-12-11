@@ -177,7 +177,7 @@ export default class AddressManagerPage extends BasePage {
 
     _onItemClick = (item) => {
         // 地址列表点击
-        if (this.params.from == "order") {
+        if (this.params.from === "order") {
             this.params.callBack && this.params.callBack(item);
             this.$navigateBack();
         }
@@ -185,7 +185,7 @@ export default class AddressManagerPage extends BasePage {
 
     _onSelectImgClick = (item, index) => {
         // 设置默认地址
-        if (index != this.state.selectIndex) {
+        if (index !== this.state.selectIndex) {
             MineAPI.setDefaultAddr({ id: item.id }).then((response) => {
                 this.setState({
                     selectIndex: index

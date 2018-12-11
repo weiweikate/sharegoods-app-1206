@@ -74,7 +74,7 @@ export default class MyCouponsItems extends Component {
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 && !item.levelimit ? unuesdBg : usedBg;
-        let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status == 1 ? usedRIcon : ActivedIcon));
+        let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 1 ? usedRIcon : ActivedIcon));
         return (
             <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor }}
                               onPress={() => this.clickItem(index, item)}>
@@ -271,7 +271,7 @@ export default class MyCouponsItems extends Component {
         if ((num >= 0) && (num <= user.tokenCoin)) {
             this.setState({ tokenCoinNum: num });
         }
-        if (num == '') {
+        if (num === '') {
             this.setState({ tokenCoinNum: 0 });
         }
         if (parseInt(num) > user.tokenCoin) {
@@ -453,7 +453,7 @@ export default class MyCouponsItems extends Component {
     // 1表示刷新，2代表加载
     getDataFromNetwork = () => {
         let status = this.state.pageStatus;
-        if (this.props.fromOrder && status == 0) {
+        if (this.props.fromOrder && status === 0) {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
             // priceId  productId
@@ -486,7 +486,7 @@ export default class MyCouponsItems extends Component {
                 this.isLoadMore = false;
                 UI.$toast(result.msg);
             });
-        } else if (this.props.justOne && status == 0) {
+        } else if (this.props.justOne && status === 0) {
             let arrData = [];
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
