@@ -614,6 +614,7 @@ export default class TopicDetailPage extends BasePage {
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
+                {/*导航栏事件和动画*/}
                 <DetailNavView ref={(e) => this.DetailNavView = e}
                                source={productImgUrl}
                                messageCount={this.state.messageCount}
@@ -671,6 +672,7 @@ export default class TopicDetailPage extends BasePage {
                     }}>
                         <Text style={{ color: DesignRule.white, fontSize: 13 }}>商品已经下架啦~</Text>
                     </View> : null}
+                    {/*正常购买按钮 colorType === 2红  1蓝  0灰*/}
                     <TouchableOpacity style={{
                         height: 49,
                         backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? DesignRule.mainColor : '#CCCCCC'),
@@ -684,10 +686,12 @@ export default class TopicDetailPage extends BasePage {
                     </TouchableOpacity>
                 </View>
 
+                {/*规格选择*/}
                 {this.state.activityType === 3 ?
                     <PackageDetailSelectPage ref={(ref) => this.PackageDetailSelectPage = ref}/> :
                     <TopicDetailSelectPage ref={(ref) => this.TopicDetailSelectPage = ref}/>}
 
+                {/*分享*/}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Image'}
                                 imageJson={{
@@ -710,9 +714,11 @@ export default class TopicDetailPage extends BasePage {
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`,
                                     miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}&inviteId=${user.id || ''}`
                                 }}/>
+                {/*弹框提示介绍*/}
                 <TopicDetailShowModal ref={(ref) => {
                     this.TopicDetailShowModal = ref;
                 }}/>
+                {/*点击nav更多*/}
                 <DetailNavShowModal ref={(ref) => {
                     this.DetailNavShowModal = ref;
                 }}/>
