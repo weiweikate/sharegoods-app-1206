@@ -247,7 +247,7 @@ export default class ShopCartPage extends BasePage {
             >
                 <View style={styles.CartBottomContainer}>
                     <TouchableOpacity
-                        style={{ flexDirection: 'row', paddingLeft: 19 }}
+                        style={{ flexDirection: 'row', marginLeft: 19 }}
                         onPress={() => this._selectAll()}
                     >
                         <Image
@@ -260,7 +260,7 @@ export default class ShopCartPage extends BasePage {
                                 fontSize: 13,
                                 color: DesignRule.textColor_instruction,
                                 marginLeft: 10,
-                                paddingTop:4
+                                paddingTop:2
                             }}/>
                     </TouchableOpacity>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
