@@ -70,7 +70,7 @@ class OrderDetailModel {
             this.detail = rep.data
             this.expressList = rep.data.warehouseOrderDTOList[0].expressList
             orderStatusModel.statusMsg = orderStatusMessage[rep.data.status]
-            orderDetailModel.giftCouponDTOList=rep.data.giftCouponDTOList
+            orderDetailModel.giftCouponDTOList=rep.data.giftCouponDTOList||[]
             orderDetailModel.orderSubType=rep.data.orderSubType
             this.warehouseOrderDTOList=rep.data.warehouseOrderDTOList
             orderDetailModel.receiverPhone=rep.data.receiverPhone
@@ -86,7 +86,7 @@ class OrderDetailModel {
             orderDetailModel.area=rep.data.area
             orderDetailModel.address=rep.data.address
             this.status=rep.data.warehouseOrderDTOList[0].status
-                orderDetailModel.payAmount=rep.data.payAmount
+            orderDetailModel.payAmount=rep.data.payAmount
 
             return rep
         })
