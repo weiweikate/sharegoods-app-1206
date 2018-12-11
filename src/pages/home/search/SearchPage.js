@@ -97,14 +97,18 @@ export default class SearchPage extends BasePage {
     };
     //跳转
     _clickItemAction = (text, index, hotWordId) => {
-        if (StringUtils.isEmpty(text)){
-            this.$toastShow('搜索内容不能为空')
+        if (StringUtils.isEmpty(text)) {
+            this.$toastShow('搜索内容不能为空');
             return;
         }
         if (StringUtils.isNoEmpty(text)) {
             if (!this.state.recentData.includes(text)) {
                 this.state.recentData.unshift(text);
             } else {
+                //热词的index需要重新赋值
+                if (hotWordId) {
+                    index = this.state.recentData.indexOf(text);
+                }
                 if (index && index !== 0) {
                     this.state.recentData.splice(index, 1);
                     this.state.recentData.unshift(text);
@@ -127,7 +131,12 @@ export default class SearchPage extends BasePage {
                 this._clickItemAction(item);
             }}>
                 <View>
-                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
+                    <Text style={{
+                        fontSize: 13,
+                        color: DesignRule.textColor_mainTitle,
+                        marginLeft: 16,
+                        paddingVertical: 15
+                    }}>{item}</Text>
                     <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
