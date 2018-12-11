@@ -198,7 +198,9 @@ export default class ShowDetailPage extends BasePage {
                     <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
                         <Image source={res.back}/>
                     </TouchableOpacity>
-                    <View style={{flex: 1}}/>
+                    <View style={styles.titleView}>
+                        <Text style={styles.title}>秀场</Text>
+                    </View>
                     <TouchableOpacity style={styles.shareView} onPress={() => {
                         this._goToShare();
                     }}>
@@ -405,5 +407,14 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    titleView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    title: {
+        color: '#333',
+        fontSize: px2dp(17)
+    }
 });
 
