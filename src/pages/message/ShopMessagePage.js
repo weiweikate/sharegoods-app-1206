@@ -40,6 +40,12 @@ export default class ShopMessagePage extends BasePage {
         title:'消息',
         show: true // false则隐藏导航
     };
+
+
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
     go2DetailPage(id,type,ids) {
         if(type == 1 || type == 7 || type == 8){
             this.$navigate("message/PayMessagePage", {id:id,type:type})
