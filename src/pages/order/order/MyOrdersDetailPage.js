@@ -39,7 +39,7 @@ const tobePayIcon = res.dingdanxiangqing_icon_fuk;
 const finishPayIcon = res.dingdanxiangqing_icon_yiwangcheng;
 const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
 const refuseIcon = res.dingdanxiangqing_icon_guangbi;
-const moreIcon = res.more_icon;
+const moreIcon = res.message_three;
 const timeUtils = new TimeDownUtils();
 const { px2dp } = ScreenUtils;
 
@@ -72,9 +72,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 height: px2dp(44),
                 alignItems: "center",
                 justifyContent: "center",
-                marginRight: px2dp(5)
             }}>
-                <Image source={moreIcon} style={{ width: px2dp(40) }} resizeMode={'contain'}/>
+                <Image source={moreIcon} />
             </TouchableOpacity>
         );
     };

@@ -57,7 +57,7 @@ export default class ConfirmOrderPage extends BasePage {
                 k++;
             }
         });
-        return k>0||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2
+        return k===this.state.viewData.list.length||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2
     }
     //**********************************ViewPart******************************************
     renderAddress = () => {
@@ -271,6 +271,9 @@ export default class ConfirmOrderPage extends BasePage {
         this.loadPageData();
         let arr = [];
         console.log('loadmore', this.state.orderParam);
+        if(this.params.orderParamVO.orderType==3){
+            return;
+        }
         this.state.orderParam.orderProducts.map((item, index) => {
             arr.push({
                 priceCode: item.skuCode,
@@ -293,12 +296,15 @@ export default class ConfirmOrderPage extends BasePage {
 
     loadPageData(params) {
         Toast.showLoading();
+        console.log
         switch (this.state.orderParam.orderType) {
             case 1://秒杀
                 OrderApi.SeckillMakeSureOrder({
-                    orderType: this.params.orderParamVO.orderType,
-                    code: this.params.orderParamVO.orderProducts[0].code,
-                    num: this.params.orderParamVO.orderProducts[0].num,
+                    activityCode:this.params.orderParamVO.orderProducts[0].code,
+                    channel:2,
+                    num:this.params.orderParamVO.orderProducts[0].num,
+                    source:2,
+                    submitType:1,
                     ...params
                 }).then(response => {
                     Toast.hiddenLoading();
@@ -317,9 +323,11 @@ export default class ConfirmOrderPage extends BasePage {
                 break;
             case 2://降价拍
                 OrderApi.DepreciateMakeSureOrder({
-                    orderType: this.params.orderParamVO.orderType,
-                    code: this.params.orderParamVO.orderProducts[0].code,
-                    num: this.params.orderParamVO.orderProducts[0].num,
+                    activityCode:this.params.orderParamVO.orderProducts[0].code,
+                    channel:2,
+                    num:this.params.orderParamVO.orderProducts[0].num,
+                    source:2,
+                    submitType:1,
                     ...params
                 }).then(response => {
                     Toast.hiddenLoading();
@@ -378,9 +386,28 @@ export default class ConfirmOrderPage extends BasePage {
                 break;
             case 3://礼包
                 OrderApi.PackageMakeSureOrder({
-                    packageCode: this.params.orderParamVO.packageCode,
-                    orderType: 5,
-                    orderProducts: this.params.orderParamVO.orderProducts,
+                    // activityCode:this.params.orderParamVO.activityCode,
+                    // orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
+                    // orderSubType: this.params.orderParamVO.orderSubType ,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                    // source:2,//1.购物车 2.直接下单
+                    // channel:2,//1.小程序 2.APP 3.H5
+                    // orderProductList:this.params.orderParamVO.orderProductList,
+                    // submitType:1,
+                    // quantity:1,
+                   activityCode: "TC201811290008",
+                    quantity: 1,
+                    source: 2,
+                    submitType: 1,
+                    userCode: "W181107000002",
+                    channel: 2,
+                    orderProductList: [
+                        {
+                            skuCode: "SKU000000390001"
+                        },
+                        {
+                            skuCode: "SKU000000390003"
+                        }
+                    ],
                     ...params
                 }).then(
                     response => {
@@ -418,18 +445,19 @@ export default class ConfirmOrderPage extends BasePage {
                 // activityId: item.activityId
             });
         });
-        if (data.userAddressDTO.address) {
+        let  addressData=data.userAddressDTO||data.userAddress||{}
+        if (addressData.address) {
             viewData.express = {
-                id: data.userAddressDTO.id,
-                receiverName: data.userAddressDTO.receiver,
-                receiverNum: data.userAddressDTO.receiverPhone,
-                receiverAddress: data.userAddressDTO.address,
-                areaCode: data.userAddressDTO.areaCode,
-                cityCode: data.userAddressDTO.cityCode,
-                provinceCode: data.userAddressDTO.provinceCode,
-                provinceString: data.userAddressDTO.province,
-                cityString: data.userAddressDTO.city,
-                areaString: data.userAddressDTO.area
+                id: addressData.id,
+                receiverName: addressData.receiver,
+                receiverNum: addressData.receiverPhone,
+                receiverAddress: addressData.address,
+                areaCode: addressData.areaCode,
+                cityCode: addressData.cityCode,
+                provinceCode: addressData.provinceCode,
+                provinceString: addressData.province,
+                cityString: addressData.city,
+                areaString: addressData.area
             };
         } else {
             // viewData.express = {};
@@ -438,7 +466,7 @@ export default class ConfirmOrderPage extends BasePage {
         viewData.totalFreightFee = data.totalFreightFee?data.totalFreightFee:0;
         viewData.list = arrData;
         viewData.couponList = data.couponList ? data.couponList : null;
-        this.setState({ viewData,addressId:data.userAddressDTO.id });
+        this.setState({ viewData,addressId:addressData.id });
     };
 
     clickItem = (index, item) => {
@@ -487,12 +515,14 @@ export default class ConfirmOrderPage extends BasePage {
             return;
         }
         this.$loadingShow();
-        if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2 || this.state.orderParam.orderType === 98 || this.state.orderParam.orderType === 3) {
+        if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2 ) {
             let params = {
                 ...baseParams,
-                num: this.state.orderParam.orderProducts[0].num,
-                code: this.state.orderParam.orderProducts[0].code,
-                orderType: this.state.orderParam.orderType
+                activityCode:this.params.orderParamVO.orderProducts[0].code,
+                channel:2,
+                num:this.params.orderParamVO.orderProducts[0].num,
+                source:2,
+                submitType:2,
             };
             if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
                 OrderApi.SeckillSubmitOrder(params).then((response) => {
@@ -547,9 +577,7 @@ export default class ConfirmOrderPage extends BasePage {
             else if (this.state.orderParam && this.state.orderParam.orderType === 3) {
                 let params1 = {
                     ...baseParams,
-                    orderType: 5,
-                    orderProducts: this.state.orderParam.orderProducts,
-                    packageCode: this.state.orderParam.packageCode
+                    orderProductList: [this.params.orderParamVO,{submitType:2}],
                 };
                 OrderApi.PackageSubmitOrder(params1).then((response) => {
                     this.$loadingDismiss();
