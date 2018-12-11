@@ -37,6 +37,10 @@ export default class MessageGatherPage extends BasePage {
         show: true // false则隐藏导航
     };
 
+    $isMonitorNetworkStatus(){
+        return true;
+    }
+
 
     componentDidMount() {
         this.loadPageData();

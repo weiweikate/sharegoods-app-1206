@@ -8,7 +8,7 @@ import UIImage from "@mr/image-placeholder";
 
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
-import { showBannerModules, showSelectedDetail } from './Show';
+import { showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 
@@ -32,7 +32,6 @@ export default class ShowBannerView extends Component {
     }
 
     _onPressRow(e) {
-        showSelectedDetail.selectedShowAction(1, showBannerModules.type);
         let index = e.nativeEvent.index;
         const { bannerList } = showBannerModules;
         let item = bannerList[index];

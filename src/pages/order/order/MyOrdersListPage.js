@@ -6,7 +6,8 @@ import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
-const {search} = res;
+
+const { search } = res;
 
 /**
  * @author chenxiang
@@ -32,6 +33,11 @@ class MyOrdersListPage extends BasePage {
         title: '我的订单',
         show: true// false则隐藏导航
     };
+
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     $getPageStateOptions = () => {
         return {
             loadingState: 'success',
