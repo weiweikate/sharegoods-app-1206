@@ -243,6 +243,7 @@ const GoodsListItem = props => {
     return (
         <View>
             <TouchableOpacity onPress={clickItem}>
+                <View style={{marginTop:10}}/>
                 {this.renderOrderNum()}
                 {this.renderGoodsList()}
                 {this.renderCalculate()}

@@ -130,28 +130,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         marginBottom: ScreenUtils.safeBottom
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    instructions: {
-        textAlign: 'center',
-        color: DesignRule.textColor_mainTitle,
-        marginBottom: 5,
-        fontSize: 28
-    },
-    circle: {
-        marginRight: 4,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 14,
-        height: 14,
-        backgroundColor: '#EB2224',
-        borderColor: '#EB2224',
-        borderStyle: 'dotted',
-        borderRadius: 15
     }
 });
 

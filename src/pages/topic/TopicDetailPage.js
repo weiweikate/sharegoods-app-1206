@@ -315,28 +315,35 @@ export default class TopicDetailPage extends BasePage {
         let priceList = [];
         selectData.forEach((item) => {
             priceList.push({
-                num: 1,
+                // num: 1,
                 skuCode: item.skuCode,
-                prodCode: item.prodCode,
-                productName: item.productName,
-                sourceId: item.id,
-                spec: item.specValues,
-                specImg: item.specImg
+                // prodCode: item.prodCode,
+                // productName: item.productName,
+                // sourceId: item.id,
+                // spec: item.specValues,
+                // specImg: item.specImg
             });
         });
-
-        let orderProducts = [{
-            num: 1,
-            priceId: this.state.data.packageCode,
-            productId: this.state.data.packageCode,
-            priceList: priceList
-        }];
+        //
+        // let orderProducts = [{
+        //     num: 1,
+        //     priceId: this.state.data.packageCode,
+        //     productId: this.state.data.packageCode,
+        //     priceList: priceList
+        // }];
 
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
-                packageCode: this.params.activityCode,
-                orderType: this.state.activityType,
-                orderProducts: orderProducts
+                activityCode: this.params.activityCode,
+                orderType: 3,
+                // orderProducts: orderProducts
+                orderSubType:this.state.data.type === 2?3:4,
+                orderProductList: priceList,
+                channel:2,
+                source:2,
+                quantity:1,
+
+
             }
         });
     };

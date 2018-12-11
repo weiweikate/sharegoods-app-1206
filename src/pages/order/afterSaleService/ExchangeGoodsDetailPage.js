@@ -325,7 +325,6 @@ class ExchangeGoodsDetailPage extends BasePage {
             });
         } else {
             this.$navigate('order/logistics/LogisticsDetailsPage', {
-                orderId: '1',
                 expressNo: expressNo
             });
         }
@@ -337,7 +336,6 @@ class ExchangeGoodsDetailPage extends BasePage {
             return;
         }
         this.$navigate('order/logistics/LogisticsDetailsPage', {
-            orderNum: this.state.pageData.orderNum,
             expressNo: expressNo
         });
     };
