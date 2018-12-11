@@ -49,7 +49,7 @@ export default class TopicDetailHeaderView extends Component {
 
     render() {
         const { activityType } = this.props;
-        let bannerImgList, tittle, freightValue, monthSale;
+        let bannerImgList, tittle, secondNameS, freightValue, monthSale;
         let nowPrice, oldPrice, levelTypeName, afterSaleServiceDaysTT;
 
         if (activityType === 3) {
@@ -72,7 +72,7 @@ export default class TopicDetailHeaderView extends Component {
             levelTypeName = userLevelTypeName;
             afterSaleServiceDaysTT = aferServiceDays;
         } else {
-            const { imgFileList, freight, monthSaleCount, name, afterSaleServiceDays, videoUrl, imgUrl } = this.props.data || {};
+            const { imgFileList, freight, monthSaleCount, name, secondName, afterSaleServiceDays, videoUrl, imgUrl } = this.props.data || {};
 
             //有视频第一个添加为视频
             let productImgListTemp = [...(imgFileList || [])];
@@ -85,6 +85,7 @@ export default class TopicDetailHeaderView extends Component {
             }
             bannerImgList = productImgListTemp;
             tittle = `${name}`;
+            secondNameS = secondName;
             freightValue = freight;
             monthSale = monthSaleCount;
             afterSaleServiceDaysTT = afterSaleServiceDays;
@@ -101,8 +102,12 @@ export default class TopicDetailHeaderView extends Component {
                         <Text style={{
                             marginTop: 14,
                             color: DesignRule.textColor_mainTitle,
-                            fontSize: 15
+                            fontSize: 13
                         }}>{tittle}</Text>
+                        {StringUtils.isNoEmpty(secondNameS) ? <Text style={{
+                            marginTop: 5, color: DesignRule.textColor_secondTitle,
+                            fontSize: 13
+                        }}>{secondNameS}</Text> : null}
                         {activityType === 3 ?
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                                 <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
