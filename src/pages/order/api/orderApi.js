@@ -32,17 +32,17 @@ const api = {
     // 查看物流详情
     findLogisticsDetail:'/order/deliverInfo',
     //降价拍的确认订单
-    DepreciateMakeSureOrder:['/operator/activityDepreciate/makeSureOrder',{ isRSA: true }],
+    DepreciateMakeSureOrder:['/operator/activityDepreciate/submit',{ isRSA: true }],
     //降价拍的提交订单 沈耀鑫
-    DepreciateSubmitOrder:['/operator/activityDepreciate/submitOrder',{ isRSA: true }],
+    DepreciateSubmitOrder:['/operator/activityDepreciate/submit',{ isRSA: true }],
     //秒杀的确认订单
-    SeckillMakeSureOrder:['/operator/seckill/makeSureOrder',{ isRSA: true }],
+    SeckillMakeSureOrder:['/operator/seckill/submit',{ isRSA: true }],
     //秒杀的提交订单
-    SeckillSubmitOrder:['/operator/seckill/submitOrder',{ isRSA: true }],
+    SeckillSubmitOrder:['/operator/seckill/submit',{ isRSA: true }],
     //礼包的确认订单
-    PackageMakeSureOrder:['/operator/activitypackage/makeSureOrder',{ isRSA: true }],
+    PackageMakeSureOrder:['/operator/activitypackage/submit',{ isRSA: true }],
     //礼包的提交订单
-    PackageSubmitOrder:['/operator/activitypackage/submitOrder',{ isRSA: true }],
+    PackageSubmitOrder:['/operator/activitypackage/submit',{ isRSA: true }],
     //（陈帅）再来一单
     againOrder:'/order/buy-again',
     /**  售后模块相关接口 huchao */

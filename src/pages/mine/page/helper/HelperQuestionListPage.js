@@ -12,7 +12,7 @@ import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-const arrow_right =  res.homeBaseImg.arrowRight;
+const arrow_right =  res.button.arrow_right_black;
 
 /**
  * @author chenxiang

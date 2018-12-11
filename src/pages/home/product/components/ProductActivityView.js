@@ -11,7 +11,7 @@ import { formatDate } from '../../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
 
-const whiteArrowRight = res.product.icon3_03;
+const whiteArrowRight = res.button.white_go;
 
 
 export default class ActivityView extends Component {

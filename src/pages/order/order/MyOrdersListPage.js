@@ -6,7 +6,8 @@ import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
-const {search} = res;
+
+const { search } = res;
 
 /**
  * @author chenxiang
@@ -32,6 +33,11 @@ class MyOrdersListPage extends BasePage {
         title: '我的订单',
         show: true// false则隐藏导航
     };
+
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     $getPageStateOptions = () => {
         return {
             loadingState: 'success',
@@ -124,28 +130,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         marginBottom: ScreenUtils.safeBottom
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    instructions: {
-        textAlign: 'center',
-        color: DesignRule.textColor_mainTitle,
-        marginBottom: 5,
-        fontSize: 28
-    },
-    circle: {
-        marginRight: 4,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 14,
-        height: 14,
-        backgroundColor: '#EB2224',
-        borderColor: '#EB2224',
-        borderStyle: 'dotted',
-        borderRadius: 15
     }
 });
 

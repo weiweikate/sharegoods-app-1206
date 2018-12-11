@@ -7,7 +7,6 @@ import MessageCenterPage from './MessageCenterPage';
 import PayMessagePage from './PayMessagePage'
 import NotificationPage from './NotificationPage';
 import MessageGatherPage from './MessageGatherPage';
-import QuestionnairePage from './QuestionnairePage';
 import ShopMessagePage from './ShopMessagePage';
 export default {
     moduleName: 'message',    //模块名称
@@ -16,7 +15,6 @@ export default {
         NotificationPage,
         PayMessagePage,
         MessageGatherPage,
-        QuestionnairePage,
         ShopMessagePage
     }
 };

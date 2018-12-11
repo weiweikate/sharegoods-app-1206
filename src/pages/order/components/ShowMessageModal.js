@@ -5,11 +5,13 @@ import {
     Text,
     Image,
     // Modal,
-    TouchableOpacity
+    TouchableOpacity,ImageBackground
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const {message_bg}=res;
 
 class ShowMessageModal extends Component {
 
@@ -50,7 +52,7 @@ class ShowMessageModal extends Component {
             itemArr.push(
                 <View key={i}>
                     <TouchableOpacity key={i}
-                                      style={{ height: 48, justifyContent: 'center', backgroundColor: 'white' }}
+                                      style={{ height: 46, justifyContent: 'center', backgroundColor: 'white' }}
                                       onPress={() => {
                                           this.props.clickSelect(i);
                                       }}>
@@ -77,11 +79,11 @@ class ShowMessageModal extends Component {
                 justifyContent: 'flex-start',
                 alignItems: 'flex-end',
                 paddingRight: 20,
-                paddingTop: ScreenUtils.headerHeight
+                paddingTop: ScreenUtils.headerHeight-10
             }}>
-                <View style={{ backgroundColor: 'white', width: 143 }}>
+                <ImageBackground style={{width: 143,height:93 }} source={message_bg} resizeMode={'stretch'}>
                     {this.renderMenu()}
-                </View>
+                </ImageBackground>
             </View>
         );
     }

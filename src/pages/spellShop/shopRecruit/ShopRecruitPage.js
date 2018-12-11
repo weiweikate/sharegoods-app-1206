@@ -29,6 +29,7 @@ import DesignRule from 'DesignRule';
 import res from '../res';
 import resCommon from '../../../comm/res';
 import user from '../../../model/user';
+import LinearGradient from 'react-native-linear-gradient';
 
 const NavLeft = resCommon.button.white_back;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -328,12 +329,32 @@ export default class ShopRecruitPage extends BasePage {
         );
     };
 
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        let oldSt = this.st;
+        if (Y <= 0) {
+            this.st = 0;
+        } else {
+            this.st = 1;
+        }
+        if (oldSt === this.st) {
+            return;
+        }
+        this.LinearGradient.setNativeProps({
+            opacity: this.st
+        });
+    };
+
     _render() {
         return (
             <View style={styles.container}>
+                <LinearGradient colors={['#FF1C89', '#FF156E']}
+                                ref={e => this.LinearGradient = e}
+                                style={styles.LinearGradient}/>
                 {this._NavBarRenderRightItem()}
                 <ScrollView showsVerticalScrollIndicator={false}
                             style={DesignRule.bgColor}
+                            onScroll={this._onScroll}
                             refreshControl={
                                 <RefreshControl
                                     refreshing={this.state.refreshing}
@@ -370,6 +391,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+    LinearGradient: {
+        opacity: 0,
+        position: 'absolute',
+        top: 0, left: 0, right: 0,
+        zIndex: 3,
+        height: ScreenUtils.headerHeight
+    },
     transparentView: {
         top: ScreenUtils.statusBarHeight,
         height: 44,
@@ -377,7 +405,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 15,
         right: 15,
-        zIndex: 3,
+        zIndex: 4,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'

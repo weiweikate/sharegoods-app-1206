@@ -13,6 +13,8 @@ import com.smartstudy.qrcode.CodeScanActivity;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class QrCodeScanActivity extends CodeScanActivity implements PermissionUtil.PermissionCallbacks {
 
     public static final int SCAN_RESULT_CODE = 501;
@@ -29,6 +31,13 @@ public class QrCodeScanActivity extends CodeScanActivity implements PermissionUt
                     ParameterUtils.REQUEST_CODE_CAMERA, Permission.CAMERA);
         }
         super.onResume();
+        JPushInterface.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
     }
 
     @Override
@@ -36,9 +45,9 @@ public class QrCodeScanActivity extends CodeScanActivity implements PermissionUt
         super.handleResult(result);
         //TODO
         Intent intent = new Intent();
-        intent.putExtra("isSuccess",true);
-        intent.putExtra("ScanInfo",result);
-        setResult(SCAN_RESULT_CODE,intent);
+        intent.putExtra("isSuccess", true);
+        intent.putExtra("ScanInfo", result);
+        setResult(SCAN_RESULT_CODE, intent);
         finish();
     }
 
@@ -56,8 +65,8 @@ public class QrCodeScanActivity extends CodeScanActivity implements PermissionUt
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         Intent intent = new Intent();
-        intent.putExtra("isSuccess",false);
-        setResult(SCAN_RESULT_CODE,intent);
+        intent.putExtra("isSuccess", false);
+        setResult(SCAN_RESULT_CODE, intent);
         finish();
     }
 }

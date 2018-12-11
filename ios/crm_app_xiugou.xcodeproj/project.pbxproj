@@ -111,6 +111,7 @@
 		CD12CE2121ABFA2F00EFFC56 /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD12CE1A21ABFA1A00EFFC56 /* libRNCookieManagerIOS.a */; };
 		CD12CE2821ABFAC400EFFC56 /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD12CE2721ABFAAE00EFFC56 /* libReact-Native-Webview-Bridge.a */; };
 		CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */ = {isa = PBXBuildFile; fileRef = CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */; };
+		CD1366CF21BE3FF200754B0E /* STTVTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1366CE21BE3FCB00754B0E /* STTVTableView.framework */; };
 		CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD14EA182183FC9A00480A06 /* XGImageCompression.m */; };
 		CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */; };
 		CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */; };
@@ -172,13 +173,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
-		};
-		101157B0219AB3D0001F5E99 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EE52B1B9AC8B453496EC35C3 /* STTVTableView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8E87A9901FAB62CC00B9C54E;
-			remoteInfo = STTVTableView;
 		};
 		103CEC7221B271FB004861B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -488,6 +482,13 @@
 			remoteGlobalIDString = 4114DC4C1C187C3A003CD988;
 			remoteInfo = "React-Native-Webview-Bridge";
 		};
+		CD1366CD21BE3FCB00754B0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8E87A9901FAB62CC00B9C54E;
+			remoteInfo = STTVTableView;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -709,6 +710,7 @@
 		CD12CE2221ABFAAE00EFFC56 /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/react-native-webview-bridge/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+PD.m"; sourceTree = "<group>"; };
 		CD13656621BA0F4200754B0E /* MBProgressHUD+PD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+PD.h"; sourceTree = "<group>"; };
+		CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = STTVTableView.xcodeproj; path = "../node_modules/@mr/largelist/ios/STTVTableView.xcodeproj"; sourceTree = "<group>"; };
 		CD14EA172183FC9A00480A06 /* XGImageCompression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XGImageCompression.h; sourceTree = "<group>"; };
 		CD14EA182183FC9A00480A06 /* XGImageCompression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XGImageCompression.m; sourceTree = "<group>"; };
 		CD70E065E4CA4080A9DF5465 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -729,7 +731,6 @@
 		CDCB5BD82196DF71006B5F4E /* UIImage+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
 		CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
 		EB6EFB6B04564EBAB951820B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		EE52B1B9AC8B453496EC35C3 /* STTVTableView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = STTVTableView.xcodeproj; path = "../node_modules/react-native-largelist/ios/STTVTableView.xcodeproj"; sourceTree = "<group>"; };
 		EF0420E07D6F40B080CEAA13 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		FBD5EA1410A844119F7CCA6A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		FED5F2163DB441AEAFBF1AB2 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -748,6 +749,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD1366CF21BE3FF200754B0E /* STTVTableView.framework in Frameworks */,
 				103CEC7421B27221004861B6 /* libRNGeolocation.a in Frameworks */,
 				CD12CE2821ABFAC400EFFC56 /* libReact-Native-Webview-Bridge.a in Frameworks */,
 				CD12CE2121ABFA2F00EFFC56 /* libRNCookieManagerIOS.a in Frameworks */,
@@ -897,14 +899,6 @@
 			isa = PBXGroup;
 			children = (
 				03AD6BDD215A05B00080FA6E /* libRNImagePicker.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		101157AD219AB3D0001F5E99 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				101157B1219AB3D0001F5E99 /* STTVTableView.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1422,6 +1416,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */,
 				103CEC6E21B271FB004861B6 /* RNGeolocation.xcodeproj */,
 				CD12CE2221ABFAAE00EFFC56 /* React-Native-Webview-Bridge.xcodeproj */,
 				CD12CDEB21ABFA1A00EFFC56 /* RNCookieManagerIOS.xcodeproj */,
@@ -1443,7 +1438,6 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				EE52B1B9AC8B453496EC35C3 /* STTVTableView.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1532,6 +1526,14 @@
 			isa = PBXGroup;
 			children = (
 				CD12CE2721ABFAAE00EFFC56 /* libReact-Native-Webview-Bridge.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CD1366CA21BE3FCB00754B0E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD1366CE21BE3FCB00754B0E /* STTVTableView.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1824,8 +1826,8 @@
 					ProjectRef = 03AD6BB1215A05AF0080FA6E /* RNImagePicker.xcodeproj */;
 				},
 				{
-					ProductGroup = 101157AD219AB3D0001F5E99 /* Products */;
-					ProjectRef = EE52B1B9AC8B453496EC35C3 /* STTVTableView.xcodeproj */;
+					ProductGroup = CD1366CA21BE3FCB00754B0E /* Products */;
+					ProjectRef = CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1879,13 +1881,6 @@
 			fileType = archive.ar;
 			path = libRNImagePicker.a;
 			remoteRef = 03AD6BDC215A05B00080FA6E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		101157B1219AB3D0001F5E99 /* STTVTableView.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = STTVTableView.framework;
-			remoteRef = 101157B0219AB3D0001F5E99 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		103CEC7321B271FB004861B6 /* libRNGeolocation.a */ = {
@@ -2187,6 +2182,13 @@
 			fileType = archive.ar;
 			path = "libReact-Native-Webview-Bridge.a";
 			remoteRef = CD12CE2621ABFAAE00EFFC56 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD1366CE21BE3FCB00754B0E /* STTVTableView.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = STTVTableView.framework;
+			remoteRef = CD1366CD21BE3FCB00754B0E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
