@@ -121,20 +121,20 @@ export default class TopicDetailSelectPage extends Component {
             let obj = tempArr[0] || {};
             tagList.push(
                 <TouchableWithoutFeedback>
-                <View>
-                    <View style={styles.headerContainer}>
-                        <Text style={styles.headerText}>{obj.productName || ''}</Text>
+                    <View>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.headerText}>{obj.productName || ''}</Text>
+                        </View>
+                        <View style={styles.containerView}>
+                            {this.rendTag(specPriceList[key], indexOfTop)}
+                        </View>
+                        <View style={{
+                            height: 1,
+                            marginTop: 15,
+                            marginLeft: 16,
+                            backgroundColor: DesignRule.lineColor_inColorBg
+                        }}/>
                     </View>
-                    <View style={styles.containerView}>
-                        {this.rendTag(specPriceList[key], indexOfTop)}
-                    </View>
-                    <View style={{
-                        height: 1,
-                        marginTop: 15,
-                        marginLeft: 16,
-                        backgroundColor: DesignRule.lineColor_inColorBg
-                    }}/>
-                </View>
                 </TouchableWithoutFeedback>
             );
             indexOfTop++;

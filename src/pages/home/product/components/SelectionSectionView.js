@@ -50,7 +50,7 @@ export default class SelectionSectionView extends Component {
                             this._clickItemAction(index);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: canSelected ? (isSelected?DesignRule.white:DesignRule.textColor_secondTitle) : DesignRule.color_ddd }]}>{this.props.listData[index].specValue}</Text>
+                            style={[styles.btnText, { color: canSelected ? (isSelected ? DesignRule.white : DesignRule.textColor_secondTitle) : DesignRule.color_ddd }]}>{this.props.listData[index].specValue}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -61,15 +61,20 @@ export default class SelectionSectionView extends Component {
     render() {
         return (
             <TouchableWithoutFeedback>
-            <View>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>{this.props.tittle}</Text>
+                <View>
+                    <View style={styles.headerContainer}>
+                        <Text style={styles.headerText}>{this.props.tittle}</Text>
+                    </View>
+                    <View style={styles.containerView}>
+                        {this.rendTag()}
+                    </View>
+                    <View style={{
+                        height: 1,
+                        marginTop: 15,
+                        marginLeft: 16,
+                        backgroundColor: DesignRule.lineColor_inColorBg
+                    }}/>
                 </View>
-                <View style={styles.containerView}>
-                    {this.rendTag()}
-                </View>
-                <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: DesignRule.lineColor_inColorBg }}/>
-            </View>
             </TouchableWithoutFeedback>
         );
     }
