@@ -1,13 +1,13 @@
 package com.meeruu.commonlib.utils;
 
 public class ParameterUtils {
-    public static final long SMS_TIMEOUT = 30 * 1000;  //短信验证倒计时
-
-    // / 没有连接
+    // 没有连接
+    public static final String UM_KEY = "5b7663a3f29d9830cb0000d8";
+    // 没有连接
     public static final String NETWORN_NONE = "NETWORN_NONE";
-    // / wifi连接
+    // wifi连接
     public static final String NETWORN_WIFI = "NETWORN_WIFI";
-    // / 手机网络数据连接
+    // 手机网络数据连接
     public static final String NETWORN_2G = "NETWORN_2G";
     public static final String NETWORN_3G = "NETWORN_3G";
     public static final String NETWORN_4G = "NETWORN_4G";
@@ -18,7 +18,7 @@ public class ParameterUtils {
     public static final String DOWNLOAD_ERR = "下载失败!";
     public static final String NET_ERR = "请检查网络连接状态!";
     public static final String RESPONSE_CODE_SUCCESS = "10000";  //响应成功码
-    //无网络连接错误码
+    // 无网络连接错误码
     public static final String RESPONE_CODE_NETERR = "net_err";
     public static final String RN_MAIN_NAME = "sharegoods";
     // 应用更新
