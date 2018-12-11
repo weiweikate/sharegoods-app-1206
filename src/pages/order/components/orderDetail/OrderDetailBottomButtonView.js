@@ -81,7 +81,11 @@ export default  class OrderDetailBottomButtonView extends Component{
             case 4:
                 break;
             case 5:
-                if(orderDetailModel.expressList.length===0){
+                if(!orderDetailModel.expressList){
+                    NativeModules.commModule.toast('当前物流信息不存在！');
+                    return;
+                }
+                 if(orderDetailModel.expressList.length===0){
                     NativeModules.commModule.toast('当前物流信息不存在！');
                 }
                 if(orderDetailModel.expressList.length===1){
