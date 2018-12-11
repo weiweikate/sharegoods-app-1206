@@ -4,7 +4,6 @@ const index = {
     mine_setting_icon_white:require('./mine_setting_icon_white.png'),
     mine_message_icon_gray:require('./mine_message_icon_gray.png'),
     mine_message_icon_white:require('./mine_message_icon_white.png'),
-    mine_icon_right:require('./mine_icon_right.png'),
     mine_wait_pay_icon:require('./mine_wait_pay_icon.png'),
     mine_wait_send_icon:require('./mine_wait_send_icon.png'),
     mine_wait_receive_icon:require('./mine_wait_receive_icon.png'),

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image ,Keyboard} from "react-native";
-// import BonusExchangeSucceedBackground from '../mine/res/userInfoImg/BonusExchangeSucceedBackground.png'
-// import bonusClose from '../mine/res/userInfoImg/bonusClose.png'
 // import { UIText, UIImage } from '../../components/ui'
 import PasswordInput from "./PasswordInput";
 import ScreenUtils from "../../../utils/ScreenUtils";

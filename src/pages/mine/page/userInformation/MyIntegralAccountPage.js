@@ -121,7 +121,7 @@ export default class MyIntegralAccountPage extends BasePage {
     renderLine = () => {
         return (
             <View style={{
-                height: 1,
+                height: 0.5,
                 backgroundColor: DesignRule.lineColor_inColorBg,
                 marginLeft: 48,
                 marginRight: 48

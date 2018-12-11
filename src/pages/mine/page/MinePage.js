@@ -33,7 +33,6 @@ const {
     mine_header_bg,
     mine_setting_icon_gray,
     mine_message_icon_gray,
-    mine_icon_right,
     mine_wait_pay_icon,
     mine_wait_send_icon,
     mine_wait_receive_icon,
@@ -319,7 +318,7 @@ export default class MinePage extends BasePage {
                                     }}>
                                     {name}
                                 </Text>
-                                <UIImage source={mine_icon_right}
+                                <UIImage source={res.button.white_go}
                                          style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
                                          resizeMode={"stretch"}/>
                             </View>
