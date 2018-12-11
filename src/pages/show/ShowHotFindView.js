@@ -98,7 +98,7 @@ export default class ShowHotView extends Component {
             img = data.img
         }
         let imgHeight = (imgHigh / imgWide) * imgWidth;
-       
+
         // const itemHeight = this._getHeightForItem({item})
         return <ItemView imageStyle={{ height: imgHeight }} data={data} press={() => this._gotoDetail(data)} imageUrl={ img }/>;
     };
@@ -114,7 +114,7 @@ export default class ShowHotView extends Component {
         return (
             <View style={styles.container}>
                 <Waterfall
-                    space={10}
+                    space={px2dp(10)}
                     ref={(ref) => {
                         this.waterfall = ref;
                     }}
@@ -122,7 +122,7 @@ export default class ShowHotView extends Component {
                     infinite={true}
                     hasMore={true}
                     renderItem={item => this.renderItem(item)}
-                    containerStyle={{ marginLeft: 15, marginRight: 15 }}
+                    containerStyle={{ marginLeft: px2dp(15), marginRight: px2dp(15),marginTop: px2dp(12) }}
                     keyExtractor={(data) => this._keyExtractor(data)}
                     infiniting={(done) => this.infiniting(done)}
                     refreshing={(done) => this.refreshing(done)}
@@ -136,8 +136,7 @@ export default class ShowHotView extends Component {
 
 let styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingTop: px2dp(12)
+        flex: 1
     },
     text: {
         color: '#999',
