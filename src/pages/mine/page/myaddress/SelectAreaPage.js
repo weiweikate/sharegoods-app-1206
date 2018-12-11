@@ -25,6 +25,10 @@ export default class SelectAreaPage extends BasePage {
         };
     }
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     componentDidMount() {
         // 拿数据
         this.getArea();

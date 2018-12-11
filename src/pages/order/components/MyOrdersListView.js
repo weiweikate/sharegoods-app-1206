@@ -12,6 +12,7 @@ import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
+
 const emptyIcon = res.kongbeuye_dingdan;
 
 export default class MyOrdersListView extends Component {
@@ -69,6 +70,7 @@ export default class MyOrdersListView extends Component {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无订单'}
                     emptyIcon={emptyIcon}
+                    ListHeaderComponent={<View style={{ height: 10 }}/>}
                 />
                 {this.renderModal()}
             </View>
@@ -93,8 +95,8 @@ export default class MyOrdersListView extends Component {
                         OrderApi.cancelOrder({
                             cancelReason: this.state.CONFIG[index],
                             orderNo: this.state.viewData[this.state.index].orderNo,
-                            cancelType:2,
-                            platformRemarks:null
+                            cancelType: 2,
+                            platformRemarks: null
                         }).then((response) => {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
@@ -127,9 +129,9 @@ export default class MyOrdersListView extends Component {
                 price: StringUtils.formatMoneyString(item.payAmount),
                 num: item.quantity,
                 status: item.status,
-                orderType:item.subStatus,
-                prodCode:item.prodCode,
-                skuCode:item.skuCode,
+                orderType: item.subStatus,
+                prodCode: item.prodCode,
+                skuCode: item.skuCode
             });
         });
         return arrData;
@@ -138,36 +140,36 @@ export default class MyOrdersListView extends Component {
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if (StringUtils.isNoEmpty(data) && StringUtils.isNoEmpty(data.data)) {
             data.data.map((item, index) => {
-                if(item.warehouseOrderDTOList[0].status==1){//未付款的
-                    item.warehouseOrderDTOList.map((resp,index1)=>{
+                if (item.warehouseOrderDTOList[0].status == 1) {//未付款的
+                    item.warehouseOrderDTOList.map((resp, index1) => {
                         arrData.push({
                             orderProduct: this.getOrderProduct(resp.products),
-                            orderNo:resp.platformOrderNo,
-                            cancelTime:resp.cancelTime,
-                            quantity:resp.quantity,
-                            orderType:resp.subStatus,
-                            orderStatus:resp.status,
+                            orderNo: resp.platformOrderNo,
+                            cancelTime: resp.cancelTime,
+                            quantity: resp.quantity,
+                            orderType: resp.subStatus,
+                            orderStatus: resp.status,
                             totalPrice: resp.payAmount,
-                            expressList:resp.expressList||[],
-                            nowTime:resp.nowTime
+                            expressList: resp.expressList || [],
+                            nowTime: resp.nowTime
 
-                        })
-                    })
+                        });
+                    });
 
-                }else{
-                    item.warehouseOrderDTOList.map((resp,index1)=>{
+                } else {
+                    item.warehouseOrderDTOList.map((resp, index1) => {
                         arrData.push({
                             orderProduct: this.getOrderProduct(resp.products),
-                            orderNo:resp.warehouseOrderNo,
-                            cancelTime:resp.cancelTime,
-                            quantity:this.totalAmount(resp.products),
-                            orderType:resp.subStatus,
-                            orderStatus:resp.status,
+                            orderNo: resp.warehouseOrderNo,
+                            cancelTime: resp.cancelTime,
+                            quantity: this.totalAmount(resp.products),
+                            orderType: resp.subStatus,
+                            orderStatus: resp.status,
                             totalPrice: resp.payAmount,
-                            expressList:resp.expressList||[],
-                            nowTime:resp.nowTime
-                        })
-                    })
+                            expressList: resp.expressList || [],
+                            nowTime: resp.nowTime
+                        });
+                    });
                 }
                 // arrData.push({
                 //     id: item.id,
@@ -197,15 +199,17 @@ export default class MyOrdersListView extends Component {
             this.noMoreData = true;
             // NativeModules.commModule.toast('无更多数据');
         }
-        this.setState({ viewData: arrData },this.timeDown);
+        this.setState({ viewData: arrData }, this.timeDown);
     };
-    totalAmount(data){
-        let num=0;
-        data.map((item)=>{
-           num=num+item.quantity
-        })
+
+    totalAmount(data) {
+        let num = 0;
+        data.map((item) => {
+            num = num + item.quantity;
+        });
         return num;
     }
+
     componentDidMount() {
         //网络请求，业务处理
         if (this.isFirst) {
@@ -244,35 +248,35 @@ export default class MyOrdersListView extends Component {
         DeviceEventEmitter.removeAllListeners('OrderNeedRefresh');
     }
 
-   handleDatas(){
-       let params = {
-           page: this.currentPage,
-           size: constants.PAGESIZE,
-           keywords:null,
-           orderNo:null
-       };
-       let status=null;
-       if(this.state.pageStatus>0){
-           status=this.state.pageStatus
-       }
-       OrderApi.queryPage({ ...params, status: status }).then((response) => {
-           Toast.hiddenLoading();
-           this.getList(response.data);
-           console.log(response);
-           this.setState({ isEmpty: response.data.totalNum===0 });
-           this.isFirst = false;
-       }).catch(e => {
-           Toast.hiddenLoading();
-           NativeModules.commModule.toast(e.msg);
-           if (e.code === 10009) {
-               this.props.nav('login/login/LoginPage', {
-                   callback: () => {
-                       this.getDataFromNetwork();
-                   }
-               });
-           }
-       });
-   }
+    handleDatas() {
+        let params = {
+            page: this.currentPage,
+            size: constants.PAGESIZE,
+            keywords: null,
+            orderNo: null
+        };
+        let status = null;
+        if (this.state.pageStatus > 0) {
+            status = this.state.pageStatus;
+        }
+        OrderApi.queryPage({ ...params, status: status }).then((response) => {
+            Toast.hiddenLoading();
+            this.getList(response.data);
+            console.log(response);
+            this.setState({ isEmpty: response.data.totalNum === 0 });
+            this.isFirst = false;
+        }).catch(e => {
+            Toast.hiddenLoading();
+            NativeModules.commModule.toast(e.msg);
+            if (e.code === 10009) {
+                this.props.nav('login/login/LoginPage', {
+                    callback: () => {
+                        this.getDataFromNetwork();
+                    }
+                });
+            }
+        });
+    }
 
     getDataFromNetwork = () => {
         console.log('orderlistrefresh');
@@ -283,13 +287,13 @@ export default class MyOrdersListView extends Component {
                 keywords: this.props.orderNum,
                 page: this.currentPage,
                 size: constants.PAGESIZE,
-                status:null,
-                orderNo:null
+                status: null,
+                orderNo: null
             }).then((response) => {
                 Toast.hiddenLoading();
                 this.isFirst = false;
                 this.getList(response.data);
-                this.setState({ isEmpty: response.data.totalNum===0});
+                this.setState({ isEmpty: response.data.totalNum === 0 });
             }).catch(e => {
                 Toast.hiddenLoading();
                 NativeModules.commModule.toast(e.msg);
@@ -332,7 +336,7 @@ export default class MyOrdersListView extends Component {
         } else {
             this.props.nav('order/order/MyOrdersDetailPage', {
                 orderNo: this.state.viewData[index].orderNo,
-                callBack: ()=>this.onRefresh
+                callBack: () => this.onRefresh
             });
         }
     };
@@ -362,14 +366,14 @@ export default class MyOrdersListView extends Component {
 
                 break;
             case 2:
-                console.log("payment/PaymentMethodPage2",this.state.viewData[index])
+                console.log('payment/PaymentMethodPage2', this.state.viewData[index]);
                 this.props.nav('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNo,
                     amounts: this.state.viewData[index].totalPrice
                 });
                 break;
             case 3:
-                console.log("payment/PaymentMethodPage3",this.state.viewData[index])
+                console.log('payment/PaymentMethodPage3', this.state.viewData[index]);
                 this.props.nav('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNo,
                     amounts: this.state.viewData[index].totalPrice,
@@ -383,43 +387,44 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 5:
-                if(this.state.viewData[index].expressList.length===0){
+                if (this.state.viewData[index].expressList.length === 0) {
                     NativeModules.commModule.toast('当前物流信息不存在！');
                 }
-                else if(this.state.viewData[index].expressList.length===1){
-                    this.props.nav("order/logistics/LogisticsDetailsPage", {
+                else if (this.state.viewData[index].expressList.length === 1) {
+                    this.props.nav('order/logistics/LogisticsDetailsPage', {
                         expressNo: this.state.viewData[index].expressList[0].expressNo
                     });
-                }else{
-                    this.props.nav("order/logistics/CheckLogisticsPage", {
+                } else {
+                    this.props.nav('order/logistics/CheckLogisticsPage', {
                         expressList: this.state.viewData[index].expressList
                     });
                 }
                 break;
             case 6:
                 console.log(this.state.viewData[index]);
-                    Alert.alert('',`是否确认收货?`, [
-                        {
-                            text: `取消`, onPress: () => {
-                            }
-                        },
-                        {
-                            text: `确定`, onPress: () => {
-                                Toast.showLoading();
-                                OrderApi.confirmReceipt({ orderNo: this.state.viewData[index].orderNo }).then((response) => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('确认收货成功');
-                                    this.onRefresh();
-                                }).catch(e => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast(e.msg);
-                                });
-                            }}
+                Alert.alert('', `是否确认收货?`, [
+                    {
+                        text: `取消`, onPress: () => {
+                        }
+                    },
+                    {
+                        text: `确定`, onPress: () => {
+                            Toast.showLoading();
+                            OrderApi.confirmReceipt({ orderNo: this.state.viewData[index].orderNo }).then((response) => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast('确认收货成功');
+                                this.onRefresh();
+                            }).catch(e => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast(e.msg);
+                            });
+                        }
+                    }
 
-                    ], { cancelable: true });
+                ], { cancelable: true });
                 break;
             case 7:
-                Alert.alert('',`确定删除此订单？`, [
+                Alert.alert('', `确定删除此订单？`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -427,29 +432,30 @@ export default class MyOrdersListView extends Component {
                     {
                         text: `确定`, onPress: () => {
                             console.log(this.state.menu);
-                                Toast.showLoading();
-                                OrderApi.deleteOrder({ orderNo: this.state.viewData[index].orderNo }).then((response) => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('订单已删除！');
-                                    this.onRefresh();
-                                }).catch(e => {
-                                    Toast.hiddenLoading();
-                                    NativeModules.commModule.toast(e.msg);
-                                });
-                        }}
+                            Toast.showLoading();
+                            OrderApi.deleteOrder({ orderNo: this.state.viewData[index].orderNo }).then((response) => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast('订单已删除！');
+                                this.onRefresh();
+                            }).catch(e => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast(e.msg);
+                            });
+                        }
+                    }
 
                 ], { cancelable: true });
                 break;
             case 8:
-                  let cartData = [];
-                    this.state.viewData[index].orderProduct.map((item, index) => {
-                        cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
-                    });
-                    shopCartCacheTool.addGoodItem(cartData);
-                    this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
+                let cartData = [];
+                this.state.viewData[index].orderProduct.map((item, index) => {
+                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
+                });
+                shopCartCacheTool.addGoodItem(cartData);
+                this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
                 break;
             case 9:
-                Alert.alert('',`确定删除此订单？`, [
+                Alert.alert('', `确定删除此订单？`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -466,7 +472,8 @@ export default class MyOrdersListView extends Component {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
                             });
-                        }}
+                        }
+                    }
 
                 ], { cancelable: true });
                 break;

@@ -50,6 +50,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * @author louis
  * @date on 2018/9/3
@@ -145,12 +147,14 @@ public class MainRNActivity extends ReactActivity {
             bindService(it, conn, Context.BIND_AUTO_CREATE);
         }
         UApp.pageSessionStart(this);
+        JPushInterface.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         UApp.pageSessionEnd(this);
+        JPushInterface.onPause(this);
     }
 
     @Override
