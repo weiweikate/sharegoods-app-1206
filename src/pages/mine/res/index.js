@@ -8,9 +8,11 @@ import address from './address';
 import setting from './setting';
 import myData from './myData';
 import userInfoImg from './userInfoImg';
+import collectShop from './collectShop';
 const index = {
-    money: require('./money.png'),
-    colloct_start: require('./colloct_start.png'),
+    collectShop: {
+        ...collectShop
+    },
     homeBaseImg:{
         ...homeBaseImg
     },

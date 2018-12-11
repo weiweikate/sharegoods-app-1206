@@ -26,8 +26,8 @@ import UIImage from '@mr/image-placeholder';
 
 import RES from '../../res';
 
-const MoneyIcon = RES.money;
-const StarIcon = RES.colloct_start;
+const MoneyIcon = RES.collectShop.ic_money;
+const StarIcon = RES.collectShop.colloct_star;
 const invalidIcon = RES.setting.shoucang_icon_shixiao_nor;
 @observer
 export default class MyCollectPage extends BasePage {
