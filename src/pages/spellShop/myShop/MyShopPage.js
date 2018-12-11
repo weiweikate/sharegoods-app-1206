@@ -1,7 +1,7 @@
 //我的店铺页面
 //三种角色身份 普通 店长 店员
 
-import React from "react";
+import React from 'react';
 import {
     View,
     Image,
@@ -12,31 +12,32 @@ import {
     Text, Alert
 } from 'react-native';
 
-import { observer } from "mobx-react/native";
-import BasePage from "../../../BasePage";
+import { observer } from 'mobx-react/native';
+import BasePage from '../../../BasePage';
 
-import ShopHeader from "./components/ShopHeader";
-import ShopHeaderBonus from "./components/ShopHeaderBonus";
-import MembersRow from "./components/MembersRow";
-import InfoRow from "./components/InfoRow";
-import ActionSheetView from "../components/ActionSheetView";
-import ReportAlert from "../components/ReportAlert";
+import ShopHeader from './components/ShopHeader';
+import ShopHeaderBonus from './components/ShopHeaderBonus';
+import MembersRow from './components/MembersRow';
+import InfoRow from './components/InfoRow';
+import ActionSheetView from '../components/ActionSheetView';
+import ReportAlert from '../components/ReportAlert';
 // 图片资源
 
-import SpellShopApi from "../api/SpellShopApi";
-import DateUtils from "../../../utils/DateUtils";
-import StringUtils from "../../../utils/StringUtils";
-import spellStatusModel from "../model/SpellStatusModel";
+import SpellShopApi from '../api/SpellShopApi';
+import DateUtils from '../../../utils/DateUtils';
+import StringUtils from '../../../utils/StringUtils';
+import spellStatusModel from '../model/SpellStatusModel';
 // import ConfirmAlert from "../../../components/ui/ConfirmAlert";
-import CommShareModal from "../../../comm/components/CommShareModal";
-import { PageLoadingState } from "../../../components/pageDecorator/PageState";
-import apiEnvironment from "../../../api/ApiEnvironment";
-import DesignRule from "DesignRule";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import res from "../res";
-import user from "../../../model/user";
+import CommShareModal from '../../../comm/components/CommShareModal';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import res from '../res';
+import user from '../../../model/user';
 // import bridge from '../../../utils/bridge';
-import resCommon from '../../../comm/res'
+import resCommon from '../../../comm/res';
+import LinearGradient from 'react-native-linear-gradient';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.white_back;
@@ -59,7 +60,7 @@ export default class MyShopPage extends BasePage {
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
             isRefresh: false,
-            tittle: "店铺详情",
+            tittle: '店铺详情',
 
             storeData: {},
             storeId: this.props.storeId,
@@ -82,8 +83,8 @@ export default class MyShopPage extends BasePage {
                             <Image source={NavLeft}/>
                         </TouchableOpacity> : null}
                 </View>
-                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-                    <Text style={{ fontSize: 17, color: "#ffffff" }}>{this.state.tittle}</Text>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 17, color: '#ffffff' }}>{this.state.tittle}</Text>
                 </View>
                 {this._RightItem()}
             </View>
@@ -96,7 +97,7 @@ export default class MyShopPage extends BasePage {
             return (
                 <View style={styles.rightBarItemContainer}>
                     <TouchableOpacity onPress={() => {
-                        this.$navigate("spellShop/recommendSearch/RecommendPage");
+                        this.$navigate('spellShop/recommendSearch/RecommendPage');
                     }}>
                         <Image style={{ marginRight: 10 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
@@ -128,11 +129,11 @@ export default class MyShopPage extends BasePage {
 
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
-            "willFocus",
+            'willFocus',
             payload => {
                 const { state } = payload;
-                console.log("willFocus", state);
-                if (state && state.routeName === "MyShop_RecruitPage") {//tab出现的时候
+                console.log('willFocus', state);
+                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
                     this._loadPageData();
                 }
             }
@@ -172,7 +173,7 @@ export default class MyShopPage extends BasePage {
                 isRefresh: false,
                 storeData: dataTemp,
                 storeId: dataTemp.id,
-                tittle: userStatus === 1 ? "我的店铺" : "店铺详情"
+                tittle: userStatus === 1 ? '我的店铺' : '店铺详情'
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -206,7 +207,7 @@ export default class MyShopPage extends BasePage {
             this.setState({
                 isLike: true
             });
-            this.$toastShow("收藏成功");
+            this.$toastShow('收藏成功');
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
@@ -217,7 +218,7 @@ export default class MyShopPage extends BasePage {
             this.setState({
                 isLike: false
             });
-            this.$toastShow("取消收藏成功");
+            this.$toastShow('取消收藏成功');
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
@@ -226,13 +227,13 @@ export default class MyShopPage extends BasePage {
     _clickSettingItem = () => {
         const { myStore } = this.state.storeData;
         if (myStore) {
-            this.$navigate("spellShop/shopSetting/ShopPageSettingPage", {
+            this.$navigate('spellShop/shopSetting/ShopPageSettingPage', {
                 storeData: this.state.storeData,
                 myShopCallBack: this._loadPageData
             });
         } else {
             this.actionSheetRef.show({
-                items: ["分享店铺", "举报店铺", "退出店铺"]//
+                items: ['分享店铺', '举报店铺', '退出店铺']//
             }, (item, index) => {
                 if (index === 0) {
                     setTimeout(() => {
@@ -247,7 +248,7 @@ export default class MyShopPage extends BasePage {
                                     content: text,
                                     storeId: this.state.storeId
                                 }).then(() => {
-                                    this.$toastShow("举报成功");
+                                    this.$toastShow('举报成功');
                                 }).catch((error) => {
                                     this.$toastShow(error.msg);
                                 });
@@ -273,13 +274,13 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺公告
     _clickShopAnnouncement = () => {
-        this.$navigate("spellShop/shopSetting/AnnouncementListPage", { storeData: this.state.storeData });
+        this.$navigate('spellShop/shopSetting/AnnouncementListPage', { storeData: this.state.storeData });
     };
 
     // 点击全部成员
     _clickAllMembers = () => {
         if (this.state.storeData.userStatus === 1) {
-            this.$navigate("spellShop/myShop/ShopAssistantPage", { storeData: this.state.storeData });
+            this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
         }
     };
 
@@ -345,7 +346,7 @@ export default class MyShopPage extends BasePage {
             createTimeStr
         } = this.state.storeData;
         storeUser = storeUser || {};
-        let updateTime = StringUtils.isNoEmpty(storeUser.updateTime) ? DateUtils.formatDate(storeUser.updateTime, "yyyy-MM-dd") : "";
+        let updateTime = StringUtils.isNoEmpty(storeUser.updateTime) ? DateUtils.formatDate(storeUser.updateTime, 'yyyy-MM-dd') : '';
         //店员
         //clerkTotalBonusMoney店员个人已完成分红总额
         //clerkBonusCount店铺内个人分红次数
@@ -361,23 +362,23 @@ export default class MyShopPage extends BasePage {
             return (
                 <View>
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(RmbIcon, "店铺已完成分红总额", `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
+                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}
-                    {this._renderRow(system_charge, "个人已获得分红金", `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
+                    {this._renderRow(system_charge, '个人已获得分红金', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
 
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(QbIcon, "店铺成立时间", createTimeStr)}
+                    {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
                     {!myStore ? this.renderSepLine() : null}
-                    {!myStore ? this._renderRow(myShop_join, "加入时间", updateTime) : null}
+                    {!myStore ? this._renderRow(myShop_join, '加入时间', updateTime) : null}
                 </View>
             );
         } else {
             return (
                 <View>
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(RmbIcon, "店铺已完成分红总额", `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
+                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(QbIcon, "店铺成立时间", createTimeStr)}
+                    {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
                 </View>
             );
         }
@@ -394,33 +395,33 @@ export default class MyShopPage extends BasePage {
         let canJoin = (userStatus !== 10 && userStatus !== 2 && status !== 0) && (recruitStatus === 0 || recruitStatus === 1) && storeMaxUser > storeUserList.length;
         switch (userStatus) {
             case 2:
-                btnText = "申请中";
+                btnText = '申请中';
                 break;
             case 10:
-                btnText = "店铺关闭";
+                btnText = '店铺关闭';
                 break;
             default:
                 if (recruitStatus === 0) {
                     if (canJoin) {
-                        btnText = "申请加入";
+                        btnText = '申请加入';
                     } else {
-                        btnText = "人员已满";
+                        btnText = '人员已满';
                     }
                 } else if (recruitStatus === 1) {
                     if (canJoin) {
-                        btnText = "加入店铺";
+                        btnText = '加入店铺';
                     } else {
-                        btnText = "人员已满";
+                        btnText = '人员已满';
 
                     }
                 } else {
-                    btnText = "暂不允许加入";
+                    btnText = '暂不允许加入';
                 }
                 break;
         }
 
         if (status === 0) {
-            btnText = "店铺已关闭";
+            btnText = '店铺已关闭';
         }
 
         return <TouchableOpacity onPress={this._joinBtnAction}
@@ -428,12 +429,12 @@ export default class MyShopPage extends BasePage {
                                  style={{
                                      height: 48,
                                      width: 150,
-                                     backgroundColor: canJoin ? DesignRule.mainColor : "rgb(221,109,140)",
+                                     backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
                                      borderRadius: 5,
                                      marginTop: 30,
-                                     alignSelf: "center", justifyContent: "center", alignItems: "center"
+                                     alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
                                  }}>
-            <Text style={{ fontSize: 16, color: "white" }}>{btnText}</Text>
+            <Text style={{ fontSize: 16, color: 'white' }}>{btnText}</Text>
         </TouchableOpacity>;
     };
 
@@ -441,7 +442,7 @@ export default class MyShopPage extends BasePage {
         return (<View style={{
             height: StyleSheet.hairlineWidth,
             borderWidth: 0.5,
-            borderColor: "#fdfcfc"
+            borderColor: '#fdfcfc'
         }}/>);
     };
     // 主题内容
@@ -450,6 +451,7 @@ export default class MyShopPage extends BasePage {
         storeUserList = storeUserList || [];
         return (
             <ScrollView showsVerticalScrollIndicator={false}
+                        onScroll={this._onScroll}
                         refreshControl={<RefreshControl
                             onRefresh={this._onRefresh}
                             refreshing={this.state.isRefresh}
@@ -469,9 +471,28 @@ export default class MyShopPage extends BasePage {
 
     };
 
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        let oldSt = this.st;
+        if (Y <= 0) {
+            this.st = 0;
+        } else {
+            this.st = 1;
+        }
+        if (oldSt === this.st) {
+            return;
+        }
+        this.LinearGradient.setNativeProps({
+            opacity: this.st
+        });
+    };
+
     _render() {
         return (
             <View style={styles.container}>
+                <LinearGradient colors={['#FF1C89', '#FF156E']}
+                                ref={e => this.LinearGradient = e}
+                                style={styles.LinearGradient}/>
                 {this._NavBarRender()}
                 {this.renderBodyView()}
                 <ActionSheetView ref={ref => {
@@ -484,8 +505,8 @@ export default class MyShopPage extends BasePage {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
-                                    dec: "店铺",
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ""}`,
+                                    dec: '店铺',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>
@@ -497,28 +518,35 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+    LinearGradient: {
+        opacity: 0,
+        position: 'absolute',
+        top: 0, left: 0, right: 0,
+        zIndex: 3,
+        height: ScreenUtils.headerHeight
+    },
     transparentView: {
         top: ScreenUtils.statusBarHeight,
         height: 44,
-        backgroundColor: "transparent",
-        position: "absolute",
+        backgroundColor: 'transparent',
+        position: 'absolute',
         left: 15,
         right: 15,
-        zIndex: 3,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between"
+        zIndex: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     rightBarItemContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-end",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
         width: 88
     },
     leftBarItemContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-start",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
         width: 88
     }
 });
