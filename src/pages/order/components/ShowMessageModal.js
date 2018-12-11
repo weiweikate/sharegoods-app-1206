@@ -4,14 +4,14 @@ import {
     View,
     Text,
     Image,
-    // Modal,
-    TouchableOpacity,ImageBackground
+    TouchableOpacity, ImageBackground
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
 import res from '../res';
-const {message_bg}=res;
+
+const { message_bg } = res;
 
 class ShowMessageModal extends Component {
 
@@ -36,9 +36,11 @@ class ShowMessageModal extends Component {
                     this.modal = ref;
                 }}
                 visible={this.props.isShow && this.state.dis}>
-                <TouchableOpacity style={styles.modalStyle} onPress={() => {
-                    this.props.closeWindow();
-                }}>
+                <TouchableOpacity style={styles.modalStyle}
+                                  activeOpacity={1}
+                                  onPress={() => {
+                                      this.props.closeWindow();
+                                  }}>
                     {this.renderContent()}
                 </TouchableOpacity>
             </Modal>
@@ -48,11 +50,12 @@ class ShowMessageModal extends Component {
     renderMenu = () => {
         let nameArr = this.props.detail;
         let itemArr = [];
-        for (let i = 0; i < nameArr.length; i++) {
+        let arrLen = nameArr.length;
+        for (let i = 0; i < arrLen; i++) {
             itemArr.push(
                 <View key={i}>
                     <TouchableOpacity key={i}
-                                      style={{ height: 46, justifyContent: 'center', backgroundColor: 'white' }}
+                                      style={{ height: 46, justifyContent: 'center', marginTop: 2 }}
                                       onPress={() => {
                                           this.props.clickSelect(i);
                                       }}>
@@ -65,7 +68,13 @@ class ShowMessageModal extends Component {
                             }}>{this.props.detail[i].title}</Text>
                         </View>
                     </TouchableOpacity>
-                    <View style={{ backgroundColor: DesignRule.lineColor_inColorBg, height: 1, marginLeft: 50 }}/>
+                    {i === arrLen - 1 ? null : <View
+                        style={{
+                            backgroundColor: DesignRule.lineColor_inColorBg,
+                            height: 1,
+                            marginLeft: 48,
+                            marginRight: 2
+                        }}/>}
                 </View>
             );
         }
@@ -78,10 +87,10 @@ class ShowMessageModal extends Component {
                 flex: 1,
                 justifyContent: 'flex-start',
                 alignItems: 'flex-end',
-                paddingRight: 20,
-                paddingTop: ScreenUtils.headerHeight-10
+                paddingRight: 15,
+                paddingTop: ScreenUtils.headerHeight
             }}>
-                <ImageBackground style={{width: 143,height:93 }} source={message_bg} resizeMode={'stretch'}>
+                <ImageBackground style={{ width: 143, height: 93 }} source={message_bg} resizeMode={'stretch'}>
                     {this.renderMenu()}
                 </ImageBackground>
             </View>
@@ -91,10 +100,10 @@ class ShowMessageModal extends Component {
 
 const styles = StyleSheet.create({
     modalStyle: {
-        backgroundColor: 'rgba(0,0,0,0)',
+        backgroundColor: 'transparent',
         justifyContent: 'flex-end',
         flex: 1,
-        width:ScreenUtils.width
+        width: ScreenUtils.width
     }
 });
 
