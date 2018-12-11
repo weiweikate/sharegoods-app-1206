@@ -32,7 +32,7 @@ export class DetailBanner extends Component {
         const bannerCount = (this.productImgListTemp || []).length;
         return <View style={styles.indexViewTwo}>
             <Text
-                style={styles.text}>{this.state.messageIndex + 1} / {this.state.haveVideo ? bannerCount + 1 : bannerCount}</Text>
+                style={styles.text}>{this.state.messageIndex + 1} / {bannerCount}</Text>
         </View>;
     };
 
@@ -49,7 +49,7 @@ export class DetailBanner extends Component {
             return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
         } else {
             const { originalImg } = item;
-            let imgList = this.getImageList(this.productImgListTemp);
+            let imgList = this.getImageList(this.productImgListOutVideo);
             return (
                 <TouchableWithoutFeedback onPress={() => {
                     const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
@@ -73,6 +73,7 @@ export class DetailBanner extends Component {
         let productImgListTemp = [...(imgFileList || [])];
         productImgListTemp = productImgListTemp || [];
         productImgListTemp.unshift({ originalImg: imgUrl });
+        this.productImgListOutVideo = productImgListTemp;
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.state.haveVideo = true;
             productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
