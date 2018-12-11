@@ -107,7 +107,7 @@ export default class OldUserLoginPage extends BasePage {
                             onChangeText={text => {
                                 this.oldUserLoginModel.savePhoneNumber(text);
                             }}
-                            placeholder='请输入手机号'
+                            placeholder='请输入用户名'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
                         />
