@@ -27,6 +27,8 @@ const index = {
     search_icon: require('./search_icon.png'),
     search: require('./search.png'),
     coupons_icon: require('./coupons_icon.png'),
+    message_bg:require('./dingdan_bg_gengduo_nor.png'),
+    message_three:require('./tongyong_icon_more_nor.png'),
     afterSaleService:{
         ...afterSaleService
     },

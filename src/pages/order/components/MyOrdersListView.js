@@ -61,7 +61,6 @@ export default class MyOrdersListView extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                 <RefreshList
-                    style={{ marginTop: 10 }}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
