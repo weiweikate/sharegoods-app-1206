@@ -246,21 +246,6 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     renderItem = ({ item, index }) => {
-        console.log(item);
-        // if (this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98) {
-        //         //     return (
-        //         //         <View>
-        //         //         <GoodsItem
-        //         //             uri={item.specImg}
-        //         //             goodsName={item.productName}
-        //         //             category={item.spec}
-        //         //             goodsNum={'X' + item.num}
-        //         //             onPress={() => this.clickItem(index, item)}
-        //         //         />
-        //         //
-        //         //         </View>
-        //         //     );
-        //         // } else {
         return (
             <TouchableOpacity>
                 <GoodsItem

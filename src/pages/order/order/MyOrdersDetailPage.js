@@ -143,7 +143,7 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
     renderItem = ({ item, index }) => {
-        if (orderDetailModel.orderType === 5 || orderDetailModel.orderType === 98) {
+        if (orderDetailModel.orderSubType===3) {
             return (
                 <GoodsGrayItem
                     uri={item.uri}
@@ -151,7 +151,7 @@ export default class MyOrdersDetailPage extends BasePage {
                     category={item.category}
                     salePrice={"￥" + StringUtils.formatMoneyString(item.salePrice, false)}
                     goodsNum={item.goodsNum}
-                    onPress={() => this.clickItem(item)}
+                    onPress={() => this.clickItem(index,item)}
                     style={{ backgroundColor: "white" }}
                 />
             );
@@ -161,11 +161,11 @@ export default class MyOrdersDetailPage extends BasePage {
                     uri={item.uri}
                     goodsName={item.goodsName}
                     salePrice={"￥" + StringUtils.formatMoneyString(item.salePrice, false)}
-                    category={item.category}
+                    category={item.category.replace(/@/g, '')}
                     goodsNum={item.goodsNum}
                     style={{backgroundColor:'white'}}
                     clickItem={() => {
-                        this.clickItem(index, item);
+                        this.clickItem( index,item);
                     }}
                     afterSaleService={item.afterSaleService}
                     afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, index)}
@@ -273,7 +273,7 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     //28:45:45后自动取消订单
     startCutDownTime = (overtimeClosedTime) => {
-        let autoConfirmTime = Math.round((overtimeClosedTime - new Date().valueOf()) / 1000);
+        let autoConfirmTime = Math.round((overtimeClosedTime - orderDetailModel.warehouseOrderDTOList[0].nowTime) / 1000);
         if (autoConfirmTime < 0) {
             orderDetailAfterServiceModel.moreDetail = "";
             return;
@@ -647,37 +647,23 @@ export default class MyOrdersDetailPage extends BasePage {
 
     clickItem = (index, item) => {
         console.log("clickItem", index, item);
-        switch (this.state.orderType) {
+        switch (orderDetailModel.productsList()[index].orderSubType) {
             case 1://秒杀
             case 2://降价拍
                 this.$navigate("home/product/ProductDetailPage", {
-                    activityType: this.state.orderType,
-                    // activityCode: this.state.viewData.list[index].activityCode//
-                    productId: this.state.viewData.list[index].productId
+                    activityType: orderDetailModel.productsList()[index].orderSubType,
+                    activityCode: orderDetailModel.productsList()[index].activityCode//
                 });
                 break;
-            case 3://不是礼包，5才是
+            case 3://
+            case 4:
                 this.$navigate("topic/TopicDetailPage", {
-                    activityType: 3,
-                    activityCode: this.state.viewData.list[index].activityCode
+                    activityType: orderDetailModel.productsList()[index].orderSubType,
+                    activityCode: orderDetailModel.productsList()[index].activityCode
                 });
                 break;
-            case 5://普通礼包
-                this.$navigate("topic/TopicDetailPage", {
-                    activityType: 3,
-                    activityCode: this.state.activityCode
-                });
-                break;
-
-            case 98://升级礼包
-                this.$navigate("topic/TopicDetailPage", {
-                    activityType: 3,
-                    activityCode: this.state.activityCode
-                });
-                break;
-
-            case 99://普通商品
-                this.$navigate("home/product/ProductDetailPage", { productId: this.state.viewData.list[index].productId });
+            default://普通商品
+                this.$navigate("home/product/ProductDetailPage", { productCode: orderDetailModel.productsList()[index].prodCode });
                 break;
         }
     };
@@ -702,22 +688,22 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
             case 1:
                 this.$navigate("order/afterSaleService/AfterSaleServiceHomePage", {
-                    pageData: orderDetailModel.warehouseOrderDTOList,
+                    pageData: products,
                 });
                 break;
             case 2:
                 this.$navigate("order/afterSaleService/ExchangeGoodsDetailPage", {
-                    serviceNo: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
+                    serviceNo:  products.serviceNo
                 });
                 break;
             case 3:
                 this.$navigate("order/afterSaleService/ExchangeGoodsDetailPage", {
-                    serviceNo: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
+                    serviceNo:  products.serviceNo
                 });
                 break;
             case 6:
                 this.$navigate("order/afterSaleService/ExchangeGoodsDetailPage", {
-                    serviceNo: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
+                    serviceNo:  products.serviceNo
                 });
                 break;
         }

@@ -186,7 +186,7 @@ export default class BasePage extends Component {
                 return;
             }
             let time = new Date().getTime()
-            if (time - this.navigateTime < 1000) {
+            if (time - this.navigateTime < 600) {
                 return;
             }
             this.navigateTime = time

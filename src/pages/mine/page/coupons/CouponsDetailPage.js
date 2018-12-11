@@ -42,6 +42,10 @@ export default class CouponsDetailPage extends BasePage {
         };
     }
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     $navigationBarOptions = {
         show: true,
         title: '优惠券详情'

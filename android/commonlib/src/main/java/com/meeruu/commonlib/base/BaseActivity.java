@@ -21,6 +21,8 @@ import com.meeruu.permissions.PermissionUtil;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
+
 
 /**
  * activity父类基本封装
@@ -53,12 +55,14 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         requestPermissions();
         super.onResume();
         UApp.pageSessionStart(this);
+        JPushInterface.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         UApp.pageSessionEnd(this);
+        JPushInterface.onPause(this);
     }
 
     @AfterPermissionGranted(ParameterUtils.REQUEST_CODE_PERMISSIONS)

@@ -40,6 +40,10 @@ export default class AddressManagerPage extends BasePage {
         });
     };
 
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
     // 构造
     constructor(props) {
         super(props);
