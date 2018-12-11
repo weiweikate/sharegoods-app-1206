@@ -52,26 +52,28 @@ export default class TopicDetailSelectPage extends Component {
         let tagList = [];
         productSpecValue.forEach((obj) => {
             tagList.push(
-                <View>
-                    <View style={styles.headerContainer}>
-                        <Text style={styles.headerText}>{obj.paramName}</Text>
-                    </View>
-                    <View style={styles.containerView}>
-                        <View>
-                            <TouchableOpacity
-                                style={[styles.btn, { backgroundColor: DesignRule.mainColor }]}>
-                                <Text
-                                    style={[styles.btnText, { color: 'white' }]}>{obj.paramValue}</Text>
-                            </TouchableOpacity>
+                <TouchableWithoutFeedback>
+                    <View>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.headerText}>{obj.paramName}</Text>
                         </View>
+                        <View style={styles.containerView}>
+                            <View>
+                                <TouchableOpacity
+                                    style={[styles.btn, { backgroundColor: DesignRule.mainColor }]}>
+                                    <Text
+                                        style={[styles.btnText, { color: 'white' }]}>{obj.paramValue}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View style={{
+                            height: 1,
+                            marginTop: 15,
+                            marginLeft: 16,
+                            backgroundColor: DesignRule.lineColor_inColorBg
+                        }}/>
                     </View>
-                    <View style={{
-                        height: 1,
-                        marginTop: 15,
-                        marginLeft: 16,
-                        backgroundColor: DesignRule.lineColor_inColorBg
-                    }}/>
-                </View>
+                </TouchableWithoutFeedback>
             );
         });
         return tagList;
