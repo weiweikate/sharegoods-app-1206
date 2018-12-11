@@ -55,7 +55,7 @@ export default class WebViewDemo extends BasePage {
                 // onLoadStart={() => this._onLoadStart()}
                 // onLoadEnd={() => this._onLoadEnd()}
                 // onError={e => this._onError(e)}
-                onNavigationStateChange={event => event.title.length>0 && this.$NavigationBarResetTitle(event.title)}
+                onNavigationStateChange={event => event.title.length > 0 && this.$NavigationBarResetTitle(event.title)}
             />
         )
     }

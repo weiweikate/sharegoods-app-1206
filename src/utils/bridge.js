@@ -38,7 +38,7 @@ export default {
      * @param timeout   加载中最长展示时间(提示语展示时间)。单位秒。默认为0秒，无限loading。
      * Prompt:          loading是全局的，尽量慎用，在合适的场景中使用。
      */
-    showLoading(message, timeout=0 , callback=()=>{}) {
+    showLoading(message, timeout = 0 , callback = ()=>{}) {
         NativeModules.commModule.showLoadingDialog(message);
         if(timeout > 0){
             TimerMixin.setTimeout(() => {
@@ -51,7 +51,7 @@ export default {
     /**
      * hiddenLoading  隐藏全局loading
      */
-    hiddenLoading(callback=()=>{}) {
+    hiddenLoading(callback = ()=>{}) {
         callback();
         NativeModules.commModule.hideLoadingDialog();
     },
@@ -153,7 +153,7 @@ export default {
 //         memorySize: temp
 //     });
 // });
-    getTotalCacheSize(callback=()=>{}) {
+    getTotalCacheSize(callback = ()=>{}) {
         NativeModules.commModule.getTotalCacheSize(callback);
     },
 

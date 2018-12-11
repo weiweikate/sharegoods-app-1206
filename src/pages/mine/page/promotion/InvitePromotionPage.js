@@ -85,12 +85,12 @@ export default class InvitePromotionPage extends BasePage<Props> {
 
     _itemRender = ({ item }) => {
         let tip = (
-            <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 )? '#FF0050' : '#999999'}]}>
+            <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 ) ? '#FF0050' : '#999999'}]}>
                 库存不足
             </Text>
         );
         let limit = (
-            <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 )? '#FF0050' : '#999999'}]}>
+            <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 ) ? '#FF0050' : '#999999'}]}>
                 {`每人限购${item.buyLimit}份`}
             </Text>
         );
@@ -101,10 +101,10 @@ export default class InvitePromotionPage extends BasePage<Props> {
                         this.$navigate('mine/promotion/PromotionPayPage', item);
                     }
                 }}>
-                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy && (item.status === 1 )? '#FFDBB2' : '#FFECD7',
-                        opacity:item.userBuy && (item.status === 1 )? 1 : 0.9
+                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy && (item.status === 1 ) ? '#FFDBB2' : '#FFECD7',
+                        opacity:item.userBuy && (item.status === 1 ) ? 1 : 0.9
                     }]}>
-                        <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 )? '#FF0050' : '#999999'}]}>
+                        <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 ) ? '#FF0050' : '#999999'}]}>
                             {item.name}{`/推广周期${item.cycle}天`}
                         </Text>
                         {item.status === 2 ? tip : null}

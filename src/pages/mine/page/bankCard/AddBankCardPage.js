@@ -17,7 +17,7 @@ import Toast from "../../../../utils/bridge";
 import user from "../../../../model/user";
 import DesignRule from "DesignRule";
 import { observer } from "mobx-react/native";
-var lastcommit = null;
+let lastcommit = null;
 @observer
 class AddBankCardPage extends BasePage {
     constructor(props) {
@@ -255,7 +255,7 @@ class AddBankCardPage extends BasePage {
 
     confirm = () => {
         let now = new Date().getTime();
-        if(lastcommit != null && now-lastcommit<500){
+        if(lastcommit != null && now - lastcommit < 500){
             lastcommit = now;
             return;
         }

@@ -51,13 +51,13 @@ export default class ConfirmOrderPage extends BasePage {
     };
 
     isSupportCoupons(){
-        let k=0;
+        let k = 0;
         this.state.viewData.list.map((item)=>{
-            if(item.restrictions&1 !==1){
+            if(item.restrictions & 1 !== 1){
                 k++;
             }
         });
-        return k===this.state.viewData.list.length||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2
+        return k === this.state.viewData.list.length || this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2
     }
     //**********************************ViewPart******************************************
     renderAddress = () => {
@@ -271,7 +271,7 @@ export default class ConfirmOrderPage extends BasePage {
         this.loadPageData();
         let arr = [];
         console.log('loadmore', this.state.orderParam);
-        if(this.params.orderParamVO.orderType==3){
+        if(this.params.orderParamVO.orderType == 3){
             return;
         }
         this.state.orderParam.orderProducts.map((item, index) => {
@@ -444,7 +444,7 @@ export default class ConfirmOrderPage extends BasePage {
                 // activityId: item.activityId
             });
         });
-        let  addressData=data.userAddressDTO||data.userAddress||{}
+        let  addressData = data.userAddressDTO || data.userAddress || {}
         if (addressData.address) {
             viewData.express = {
                 id: addressData.id,
@@ -462,7 +462,7 @@ export default class ConfirmOrderPage extends BasePage {
             // viewData.express = {};
         }
         viewData.totalAmounts = data.payAmount;
-        viewData.totalFreightFee = data.totalFreightFee?data.totalFreightFee:0;
+        viewData.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         viewData.list = arrData;
         viewData.couponList = data.couponList ? data.couponList : null;
         this.setState({ viewData,addressId:addressData.id });

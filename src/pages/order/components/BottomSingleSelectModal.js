@@ -93,7 +93,7 @@ export default class BottomSingleSelectModal extends Component {
                 alignContent: 'center',
                 flexDirection: 'row'
             }}>
-                <View style={{ height: ScreenUtils.height/3 * 2, backgroundColor: 'white', flex: 1, paddingBottom: ScreenUtils.safeBottom}}>
+                <View style={{ height: ScreenUtils.height / 3 * 2, backgroundColor: 'white', flex: 1, paddingBottom: ScreenUtils.safeBottom}}>
                     <View style={{
                         height: 48,
                         justifyContent: 'space-between',

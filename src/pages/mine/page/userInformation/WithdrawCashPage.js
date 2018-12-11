@@ -30,17 +30,17 @@ const bank = res.userInfoImg.bank_card_icon;
 const delete_icon = res.bankCard.delete_icon;
 
 function accMul(num1, num2) {
-    var m = 0, s1 = num1.toString(), s2 = num2.toString();
+    let m = 0, s1 = num1.toString(), s2 = num2.toString();
     try {
         m += s1.split(".")[1].length;
     } catch (e) {
     }
-    ;
+
     try {
         m += s2.split(".")[1].length;
     } catch (e) {
     }
-    ;
+
     return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
 }
 
@@ -321,7 +321,7 @@ export default class WithdrawCashPage extends BasePage {
                     }}>
                         <Image source={delete_icon}
                                style={{ width: 16, height: 16, marginRight: DesignRule.margin_page, borderRadius: 8 }}/>
-                    </TouchableWithoutFeedback>):null}
+                    </TouchableWithoutFeedback>) : null}
 
                 </View>
                 <View style={{

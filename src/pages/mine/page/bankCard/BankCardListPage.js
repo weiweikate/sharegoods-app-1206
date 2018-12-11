@@ -113,11 +113,11 @@ export default class BankCardListPage extends BasePage {
                         disabled={(this.state.viewData && this.state.viewData.length === 5)}
                         style={[styles.addBankCardView, { marginTop: this.state.viewData.length == 0 ? 76 : 47 }]}
                         onPress={() => this.addBankCard()}>
-                        <ImageBackground source={(this.state.viewData && this.state.viewData.length === 5)?add_bank_disable : add_bank_button} style={{
+                        <ImageBackground source={(this.state.viewData && this.state.viewData.length === 5) ? add_bank_disable : add_bank_button} style={{
                             height: 48, width: 290, justifyContent: "center",
                             alignItems: "center"
                         }} resizeMode={"stretch"}>
-                            <UIText value={(this.state.viewData && this.state.viewData.length === 5) ?'+  最多添加5张银行卡' : "+  点击添加银行卡"}
+                            <UIText value={(this.state.viewData && this.state.viewData.length === 5) ? '+  最多添加5张银行卡' : "+  点击添加银行卡"}
                                     style={{ fontSize: 16, color: (this.state.viewData && this.state.viewData.length === 5) ? '#8f8f8f' : "white" }}/>
                         </ImageBackground>
                     </TouchableOpacity>

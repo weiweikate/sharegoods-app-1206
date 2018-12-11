@@ -74,7 +74,7 @@ class ShopCartStore {
             }
         });
 
-        return   Math.round(totalMoney * 100)/100;
+        return   Math.round(totalMoney * 100) / 100;
 
 
     }

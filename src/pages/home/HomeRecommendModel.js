@@ -17,7 +17,7 @@ class RecommendModule {
             this.recommendList = JSON.parse(storeRes)
           }
         }
-        
+
           const res = yield HomeApi.getRecommends({ type: homeType.recommend });
           this.recommendList = res.data;
           AsyncStorage.setItem(kHomeRecommendStore, JSON.stringify(res.data))
