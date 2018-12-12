@@ -121,6 +121,7 @@
 		CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1C219AC5F800DE6716 /* TYWaterWaveView.m */; };
 		CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D23219AC74800DE6716 /* MRWaveView.m */; };
 		CDCB5BDA2196DF71006B5F4E /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */; };
+		CDE9907521C0FA6900F46B45 /* libRNReactNativeRequest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE9907321C0FA5C00F46B45 /* libRNReactNativeRequest.a */; };
 		DF4AABE386544D87A6FBFFD0 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C21E6CAAF624B8198676636 /* MaterialCommunityIcons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -489,6 +490,13 @@
 			remoteGlobalIDString = 8E87A9901FAB62CC00B9C54E;
 			remoteInfo = STTVTableView;
 		};
+		CDE9907221C0FA5C00F46B45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDE9903D21C0FA5C00F46B45 /* RNReactNativeRequest.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNReactNativeRequest;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -730,6 +738,7 @@
 		CDAB6D23219AC74800DE6716 /* MRWaveView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRWaveView.m; sourceTree = "<group>"; };
 		CDCB5BD82196DF71006B5F4E /* UIImage+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
 		CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
+		CDE9903D21C0FA5C00F46B45 /* RNReactNativeRequest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeRequest.xcodeproj; path = "../node_modules/@mr/request/ios/RNReactNativeRequest.xcodeproj"; sourceTree = "<group>"; };
 		EB6EFB6B04564EBAB951820B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		EF0420E07D6F40B080CEAA13 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		FBD5EA1410A844119F7CCA6A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -749,6 +758,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDE9907521C0FA6900F46B45 /* libRNReactNativeRequest.a in Frameworks */,
 				CD1366CF21BE3FF200754B0E /* STTVTableView.framework in Frameworks */,
 				103CEC7421B27221004861B6 /* libRNGeolocation.a in Frameworks */,
 				CD12CE2821ABFAC400EFFC56 /* libReact-Native-Webview-Bridge.a in Frameworks */,
@@ -1416,6 +1426,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				CDE9903D21C0FA5C00F46B45 /* RNReactNativeRequest.xcodeproj */,
 				CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */,
 				103CEC6E21B271FB004861B6 /* RNGeolocation.xcodeproj */,
 				CD12CE2221ABFAAE00EFFC56 /* React-Native-Webview-Bridge.xcodeproj */,
@@ -1588,6 +1599,14 @@
 				AB39A891905F4966BC073930 /* libRNGeolocation.a */,
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		CDE9903E21C0FA5C00F46B45 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDE9907321C0FA5C00F46B45 /* libRNReactNativeRequest.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		D798038E2908BF90C2F657C7 /* Pods */ = {
@@ -1824,6 +1843,10 @@
 				{
 					ProductGroup = 03AD6BB2215A05AF0080FA6E /* Products */;
 					ProjectRef = 03AD6BB1215A05AF0080FA6E /* RNImagePicker.xcodeproj */;
+				},
+				{
+					ProductGroup = CDE9903E21C0FA5C00F46B45 /* Products */;
+					ProjectRef = CDE9903D21C0FA5C00F46B45 /* RNReactNativeRequest.xcodeproj */;
 				},
 				{
 					ProductGroup = CD1366CA21BE3FCB00754B0E /* Products */;
@@ -2189,6 +2212,13 @@
 			fileType = wrapper.framework;
 			path = STTVTableView.framework;
 			remoteRef = CD1366CD21BE3FCB00754B0E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDE9907321C0FA5C00F46B45 /* libRNReactNativeRequest.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNReactNativeRequest.a;
+			remoteRef = CDE9907221C0FA5C00F46B45 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
