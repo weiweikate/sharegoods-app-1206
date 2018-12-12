@@ -49,16 +49,12 @@ public class AnalyticsModule extends ReactContextBaseJavaModule {
     /********************************U-App统计*********************************/
     @ReactMethod
     public void onPageStart(String mPageName) {
-
         MobclickAgent.onPageStart(mPageName);
-
     }
 
     @ReactMethod
     public void onPageEnd(String mPageName) {
-
         MobclickAgent.onPageEnd(mPageName);
-
     }
 
     @ReactMethod
