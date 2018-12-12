@@ -61,7 +61,7 @@ export class TopicDetailBanner extends Component {
                 }}>
                     <View>
                         <ImageLoad source={{ uri: originalImg }}
-                                   style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
+                                   style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}
                                    resizeMode="contain"
                         />
                     </View>
@@ -76,7 +76,7 @@ export class TopicDetailBanner extends Component {
         if (bannerImgList.length > 0) {
             return (
                 <View>
-                    {Platform.OS === 'ios' ? <XGSwiper height={ScreenUtils.autoSizeWidth(377)} width={ScreenUtils.width}
+                    {Platform.OS === 'ios' ? <XGSwiper height={ScreenUtils.autoSizeWidth(375)} width={ScreenUtils.width}
                                                        loop={false}
                                                        renderRow={this._renderViewPageItem}
                                                        dataSource={EmptyUtils.isEmptyArr(bannerImgList) ? [] : bannerImgList}
@@ -91,7 +91,7 @@ export class TopicDetailBanner extends Component {
                             swiperShow={true}
                             arrayData={EmptyUtils.isEmptyArr(bannerImgList) ? [] : bannerImgList}
                             renderItem={this._renderViewPageItem}
-                            height={ScreenUtils.autoSizeWidth(377)}
+                            height={ScreenUtils.autoSizeWidth(375)}
                             scrollsToTop={true}
                             autoplay={false}
                             loop={false}
@@ -104,7 +104,7 @@ export class TopicDetailBanner extends Component {
                 </View>
             );
         } else {
-            return <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>;
+            return <View style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}/>;
         }
     }
 }

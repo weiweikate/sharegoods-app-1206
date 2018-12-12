@@ -58,7 +58,7 @@ export class DetailBanner extends Component {
                 }}>
                     <View>
                         <UIImage source={{ uri: originalImg }}
-                                 style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
+                                 style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}
                                  resizeMode="contain"/>
                     </View>
                 </TouchableWithoutFeedback>
@@ -86,7 +86,7 @@ export class DetailBanner extends Component {
                 <View>
                     {
                         Platform.OS === 'ios' ?
-                            <XGSwiper height={ScreenUtils.autoSizeWidth(377)} width={ScreenUtils.width}
+                            <XGSwiper height={ScreenUtils.autoSizeWidth(375)} width={ScreenUtils.width}
                                       loop={false}
                                       renderRow={this._renderViewPageItem}
                                       dataSource={EmptyUtils.isEmptyArr(productImgListTemp) ? [] : productImgListTemp}
@@ -101,7 +101,7 @@ export class DetailBanner extends Component {
                                 swiperShow={true}
                                 arrayData={EmptyUtils.isEmptyArr(productImgListTemp) ? [] : productImgListTemp}
                                 renderItem={this._renderViewPageItem}
-                                height={ScreenUtils.autoSizeWidth(377)}
+                                height={ScreenUtils.autoSizeWidth(375)}
                                 scrollsToTop={true}
                                 autoplay={false}
                                 loop={false}
@@ -114,7 +114,7 @@ export class DetailBanner extends Component {
                 </View>
             );
         } else {
-            return <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>;
+            return <View style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}/>;
         }
     }
 }

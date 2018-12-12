@@ -453,8 +453,8 @@ export default class TopicDetailPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y < 44) {
             this.st = 0;
-        } else if (Y < ScreenUtils.autoSizeWidth(377)) {
-            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(377) - 44);
+        } else if (Y < ScreenUtils.autoSizeWidth(375)) {
+            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(375) - 44);
         } else {
             this.st = 1;
         }
