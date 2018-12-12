@@ -80,7 +80,7 @@ export class TopicDetailBanner extends Component {
                                                        loop={false}
                                                        renderRow={this._renderViewPageItem}
                                                        dataSource={EmptyUtils.isEmptyArr(bannerImgList) ? [] : bannerImgList}
-                                                       onWillChange={(item, index) => {
+                                                       onDidChange={(item, index) => {
                                                            if (this.state.messageIndex !== index) {
                                                                this.setState({
                                                                    messageIndex: index
