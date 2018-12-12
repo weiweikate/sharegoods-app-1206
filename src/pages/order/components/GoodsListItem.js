@@ -37,7 +37,7 @@ const GoodsListItem = props => {
         shutOffTime,
         cancelTime,
         callBack,
-        // autoReceiveTime,
+        quantity,
         deliverTime,//发货时间
         orderType
     } = props;
@@ -182,7 +182,8 @@ const GoodsListItem = props => {
                 flexDirection: 'row',
                 paddingRight: 16
             }}>
-                <UIText value={'共' + orderProduct.length + '件商品  ' + `${orderStatus < 2 ? '需付款: ' : '实付款: '}`}
+                <UIText value={`共${quantity}件商品  ${orderStatus<2?'需付款: ':'实付款: '}`}
+
                         style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                 <UIText value={StringUtils.formatMoneyString(totalPrice)}
                         style={{ fontSize: 13, color: DesignRule.mainColor }}/>
