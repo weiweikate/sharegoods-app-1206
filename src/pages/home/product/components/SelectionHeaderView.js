@@ -4,12 +4,12 @@ import {
     Text,
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity, StyleSheet
 } from 'react-native';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '@mr/image-placeholder';
 
 const icon_close = res.product.icon_close;
 
@@ -52,20 +52,7 @@ export default class SelectionHeaderView extends Component {
 
         return (
             <View style={{ backgroundColor: 'transparent' }}>
-                <UIImage style={{
-                    height: 107,
-                    width: 107,
-                    borderColor: DesignRule.lineColor_inColorBg,
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    top: 0,
-                    left: 15,
-                    zIndex: 1
-                }} source={{ uri: specImg || imgUrl || '' }}/>
-
+                <UIImage style={styles.headerImg} source={{ uri: specImg || imgUrl || '' }} borderRadius={5}/>
                 <View style={{ backgroundColor: 'white', marginTop: 20, height: 95 }}>
                     <View style={{ marginLeft: 132 }}>
                         <Text style={{
@@ -95,3 +82,16 @@ export default class SelectionHeaderView extends Component {
     }
 }
 
+const styles = StyleSheet.create({
+    headerImg: {
+        height: 107,
+        width: 107,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        left: 15,
+        zIndex: 1
+    }
+});
