@@ -264,10 +264,11 @@ export default class ProductDetailPage extends BasePage {
                         [
                             {
                                 text: '取消', onPress: () => {
+                                    this.shareModal.open();
                                 }
                             },
                             {
-                                text: '确定', onPress: () => {
+                                text: '去登录', onPress: () => {
                                     this.$navigate('login/login/LoginPage');
                                 }
                             }
