@@ -287,7 +287,7 @@ export default class TopicDetailPage extends BasePage {
             param
         ).then(result => {
             this._getActivityData();
-            this.$toastShow(result.msg);
+            this.$toastShow(`已关注本商品,\n活动开始前3分钟会有消息通知您`);
         }).catch(error => {
             this.$toastShow(error.msg);
         });
