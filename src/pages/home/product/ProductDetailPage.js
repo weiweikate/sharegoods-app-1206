@@ -110,6 +110,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     componentWillUnmount() {
+        this.needUpdateDate && clearTimeout(this.needUpdateDate);
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
@@ -214,7 +215,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _savaData = (data) => {
-        let { productStatus } = data;
+        let { productStatus, upTime } = data;
         //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)3
         if (productStatus === 0) {
             this.setState({
@@ -227,6 +228,13 @@ export default class ProductDetailPage extends BasePage {
                 data: data
             }, () => {
                 this._getQueryByProductId();
+                /*productStatus===3的时候需要刷新*/
+                if (productStatus === 3 && upTime) {
+                    this.needUpdateDate && clearTimeout(this.needUpdateDate);
+                    this.needUpdateDate = setTimeout(() => {
+                        this._getProductDetail();
+                    }, upTime - new Date().getTime() + 500);
+                }
             });
         }
     };
@@ -559,7 +567,8 @@ export default class ProductDetailPage extends BasePage {
                          sections={[{ data: [{}] }]}
                          scrollEventThrottle={10}
                          showsVerticalScrollIndicator={false}/>
-            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney} productStatus={productStatus}
+            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney}
+                              productStatus={productStatus}
                               buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
