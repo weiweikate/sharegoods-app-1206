@@ -187,38 +187,25 @@ export default class TopicDetailSelectPage extends Component {
 
                     <View style={{ flex: 1 }}>
                         <View style={{ backgroundColor: 'transparent' }}>
-                            <UIImage style={{
-                                height: 107,
-                                width: 107,
-                                borderColor: DesignRule.lineColor_inColorBg,
-                                backgroundColor: DesignRule.lineColor_inColorBg,
-                                borderWidth: 1,
-                                borderRadius: 5,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                position: 'absolute',
-                                top: 0,
-                                left: 15,
-                                zIndex: 1
-                            }} source={{ uri: imgUrl }}/>
+                            <UIImage style={styles.headerImg} source={{ uri: imgUrl }} borderRadius={5}/>
 
                             <View style={{ backgroundColor: 'white', marginTop: 20, height: 95 }}>
                                 <View style={{ marginLeft: 132 }}>
                                     <Text style={{
                                         color: DesignRule.mainColor,
                                         fontSize: 16,
-                                        marginTop: 16
+                                        marginTop: 14
                                     }}>{`￥${levelPrice}`}</Text>
                                     <Text
                                         style={{
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: 13,
-                                            marginTop: 8
+                                            marginTop: 6
                                         }}>{`库存${surplusNumber}件`}</Text>
                                     <Text style={{
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: 13,
-                                        marginTop: 8
+                                        marginTop: 6
                                     }} numberOfLines={2}>{specs.join(',')}</Text>
                                 </View>
                                 <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
@@ -306,6 +293,17 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width,
         backgroundColor: 'rgba(59, 59, 59, 0.7)',
         flex: 1
+    },
+    headerImg: {
+        height: 107,
+        width: 107,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        left: 15,
+        zIndex: 1
     },
     headerContainer: {
         marginTop: 18,
