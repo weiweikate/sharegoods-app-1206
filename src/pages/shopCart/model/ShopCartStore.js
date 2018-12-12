@@ -275,7 +275,6 @@ class ShopCartStore {
 
     /*请求购物车商品*/
     getShopCartListData = () => {
-        this.setRefresh(true);
         ShopCartAPI.list().then(result => {
             this.setRefresh(false);
             bridge.hiddenLoading();
