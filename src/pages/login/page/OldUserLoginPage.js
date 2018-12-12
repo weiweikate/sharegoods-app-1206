@@ -54,7 +54,7 @@ class OldUserLoginModel {
 
     @computed
     get isCanClick() {
-        if ((this.phoneNumber.length === 11) && (this.password.length >= 1)) {
+        if ((this.phoneNumber.length > 3) && (this.password.length >= 1)) {
             return true;
         } else {
             return false;
@@ -192,7 +192,7 @@ export default class OldUserLoginPage extends BasePage {
 
     /*d点击登录*/
     loginClick = () => {
-        if (StringUtils.checkPhone(this.oldUserLoginModel.phoneNumber)) {
+        if (this.oldUserLoginModel.isCanClick) {
             this.$loadingShow();
             LoginAPI.existedUserVerify(
                 {
@@ -227,10 +227,7 @@ export default class OldUserLoginPage extends BasePage {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
             });
-        } else {
-
         }
-
         // this.$navigate("login/login/SetPasswordPage");
     };
 
