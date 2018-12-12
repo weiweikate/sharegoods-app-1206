@@ -13,7 +13,7 @@ import { observable, computed, action } from 'mobx';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import LoginAPI from '../api/LoginApi';
-import StringUtils from '../../../utils/StringUtils';
+// import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
 import res from '../res';
