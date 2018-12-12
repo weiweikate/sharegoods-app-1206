@@ -311,7 +311,8 @@ export default class ProductDetailPage extends BasePage {
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
-                    orderProducts: orderProducts
+                    orderProducts: orderProducts,
+                    source:2
                 }
             });
         }

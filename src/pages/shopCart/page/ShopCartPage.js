@@ -629,7 +629,8 @@ export default class ShopCartPage extends BasePage {
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
-                    orderProducts: buyGoodsArr
+                    orderProducts: buyGoodsArr,
+                    source:1,
                 }
             });
         }

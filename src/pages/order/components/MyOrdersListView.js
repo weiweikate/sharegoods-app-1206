@@ -45,6 +45,7 @@ export default class MyOrdersListView extends Component {
                 orderProduct={item.orderProduct}
                 shutOffTime={item.cancelTime}
                 totalPrice={item.totalPrice}
+                quantity={item.quantity}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
@@ -126,7 +127,7 @@ export default class MyOrdersListView extends Component {
                 productName: item.productName,
                 spec: item.specValues.replace(/@/g, ''),
                 imgUrl: item.specImg,
-                price: StringUtils.formatMoneyString(item.payAmount),
+                price: StringUtils.formatMoneyString(item.unitPrice),
                 num: item.quantity,
                 status: item.status,
                 orderType: item.subStatus,
@@ -449,7 +450,7 @@ export default class MyOrdersListView extends Component {
             case 8:
                 let cartData = [];
                 this.state.viewData[index].orderProduct.map((item, index) => {
-                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
+                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.quantity });
                 });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
