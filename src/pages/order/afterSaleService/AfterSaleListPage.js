@@ -163,7 +163,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     renderItem={this.renderItem}
                     params={params}
                     heightForCell={() => 160}
-                    totalPageNum={(result)=> {return result.data.totalPageNum}}
+                    totalPageNum={(result)=> {return result.data.total}}
                     handleRequestResult={(result)=>{return result.data.list}}
                     // ref={(ref) => {this.list = ref}}
                 />
