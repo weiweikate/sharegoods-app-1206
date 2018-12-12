@@ -79,14 +79,14 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _getPageStateOptions = () => {
-        const { status } = this.state.data;
+        const { productStatus } = this.state.data;
         //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
         return {
             loadingState: this.state.loadingState,
             netFailedProps: {
-                buttonText: status === 0 ? '去首页' : '重新加载',
+                buttonText: productStatus === 0 ? '去首页' : '重新加载',
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: status === 0 ? (() => this.$navigateBackToHome()) : (() => this._getProductDetail())
+                reloadBtnClick: productStatus === 0 ? (() => this.$navigateBackToHome()) : (() => this._getProductDetail())
             }
         };
     };
@@ -214,9 +214,9 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _savaData = (data) => {
-        let { status } = data;
-        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
-        if (status === 0) {
+        let { productStatus } = data;
+        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)3
+        if (productStatus === 0) {
             this.setState({
                 loadingState: PageLoadingState.fail,
                 netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
@@ -499,12 +499,12 @@ export default class ProductDetailPage extends BasePage {
 
     _render() {
         this._renderContent();
-        const { status } = this.state.data;
+        const { productStatus } = this.state.data;
         let dic = this._getPageStateOptions();
         return (
             <View style={styles.container}>
                 {dic.loadingState === PageLoadingState.fail ?
-                    <NavigatorBar title={status === 0 ? '暂无商品' : ''} leftPressed={() => {
+                    <NavigatorBar title={productStatus === 0 ? '暂无商品' : ''} leftPressed={() => {
                         this.$navigateBack();
                     }}/> : null}
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderContent)}

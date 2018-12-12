@@ -30,7 +30,7 @@ export default class DetailBottomView extends Component {
         let { shareMoney, productStatus, buyLimit, leftBuyNum } = this.props;
         //限购
         let isLimit = buyLimit !== -1 && leftBuyNum === 0;
-        //status2：产品下架    1正常  2下架  3当前时间不能买
+        //productStatus 2：产品下架    1正常  2下架  3当前时间不能买
         let disable = productStatus === 2;//是否下架  样式
 
         //btn不能点 变灰
