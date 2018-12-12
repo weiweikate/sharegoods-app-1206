@@ -75,6 +75,7 @@ export default class ShopCartPage extends BasePage {
             hiddeLeft = true;
         }
         this.$navigationBarOptions.leftNavItemHidden = hiddeLeft;
+        this.state = {};
     }
 
     componentDidMount() {
