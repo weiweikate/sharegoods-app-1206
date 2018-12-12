@@ -59,7 +59,7 @@ export class DetailBanner extends Component {
                     <View>
                         <UIImage source={{ uri: originalImg }}
                                  style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                                 resizeMode="cover"/>
+                                 resizeMode="contain"/>
                     </View>
                 </TouchableWithoutFeedback>
             );
