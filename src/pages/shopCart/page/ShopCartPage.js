@@ -79,29 +79,36 @@ export default class ShopCartPage extends BasePage {
 
     componentDidMount() {
         // this.contentList && this.contentList._updateVisibleRows();
-        this.didBlurSubscription = this.props.navigation.addListener(
-            'didFocus',
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
             payload => {
-                if (this.contentList) {
-                    // this.contentList.scrollTo({ x: 0, y: 10, animated: true });
-                    // this.contentList.scrollTo({ x: 0, y: 0, animated: true });
-                }
+                this.setState({
+                    pageFocus: true
+                });
                 shopCartCacheTool.getShopCartGoodsListData();
             }
         );
-        // shopCartCacheTool.getShopCartGoodsListData();
+        this.didBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                this.setState({
+                    pageFocus: false
+                });
+            }
+        );
     }
 
     componentWillUnmount() {
-        this.didBlurSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.didBlurSubscription && this.didBlurSubscription.remove();
     }
 
     _render() {
-        return (
-            <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
-                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
-                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
-            </View>
+        return (this.state.pageFocus ?
+                <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
+                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
+                </View> : null
         );
     }
 
@@ -599,6 +606,7 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
+        shopCartStore.setRefresh(true);
         shopCartCacheTool.getShopCartGoodsListData();
     };
     /**
