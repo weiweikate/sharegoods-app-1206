@@ -68,7 +68,7 @@ class AfterSaleDetailModel {
         if (remainingTime <= 0) {
             return '已超时';
         }
-        let s = remainingTime;
+        let s = remainingTime % 60;
         remainingTime = (remainingTime - s) / 60;
         let m = remainingTime % 60;
         remainingTime = (remainingTime - m) / 60;
