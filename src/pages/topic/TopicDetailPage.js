@@ -317,7 +317,7 @@ export default class TopicDetailPage extends BasePage {
             priceList.push({
                 // num: 1,
                 skuCode: item.skuCode,
-                // prodCode: item.prodCode,
+                prodCode: item.prodCode,
                 // productName: item.productName,
                 // sourceId: item.id,
                 // spec: item.specValues,
