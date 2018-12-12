@@ -38,7 +38,7 @@ class HomeModalManager {
 
     @action
     getMessage() {
-        var currStr = new Date().getTime() + "";
+        let currStr = new Date().getTime() + "";
         return AsyncStorage.getItem("lastMessageTime").then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                 return MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {

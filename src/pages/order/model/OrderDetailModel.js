@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx'
 import OrderApi from '../api/orderApi'
 import StringUtils from "../../../utils/StringUtils";
+import Toast from "../../../utils/bridge";
 
 export const orderStatus = {
     prePayment: 1,
@@ -23,12 +24,13 @@ class OrderDetailModel {
 
     @observable detail = {}
     @observable statusDic = [{}]
-    @observable expressList=[]
+    @observable expList=[]
     @observable warehouseOrderDTOList=[]
+    @observable unSendProductInfoList=[]
     @observable status=null
 
     @action  getOrderNo(){
-     return   this.status>1?this.warehouseOrderDTOList[0].warehouseOrderNo:this.warehouseOrderDTOList[0].platformOrderNo
+     return   this.status > 1 ? this.warehouseOrderDTOList[0].warehouseOrderNo : this.warehouseOrderDTOList[0].platformOrderNo
     }
 
 
@@ -68,27 +70,32 @@ class OrderDetailModel {
             orderNo:orderNo
         }).then(rep => {
             this.detail = rep.data
-            this.expressList = rep.data.warehouseOrderDTOList[0].expressList
+            this.expList = rep.data.warehouseOrderDTOList[0].expList||[]
+            this.unSendProductInfoList= rep.data.warehouseOrderDTOList[0].unSendProductInfoList||[]
             orderStatusModel.statusMsg = orderStatusMessage[rep.data.status]
-            orderDetailModel.giftCouponDTOList=rep.data.giftCouponDTOList
-            orderDetailModel.orderSubType=rep.data.orderSubType
-            this.warehouseOrderDTOList=rep.data.warehouseOrderDTOList
-            orderDetailModel.receiverPhone=rep.data.receiverPhone
-            orderDetailModel.receiver=rep.data.receiver
-            orderDetailModel.tokenCoinAmount=rep.data.tokenCoinAmount
-            orderDetailModel.platformOrderNo=rep.data.platformOrderNo
-            orderDetailModel.source=rep.data.source
-            orderDetailModel.channel=rep.data.channel
-            orderDetailModel.quantity=rep.data.quantity
-            orderDetailModel.province=rep.data.province
-            orderDetailModel.street=rep.data.street
-            orderDetailModel.city=rep.data.city
-            orderDetailModel.area=rep.data.area
-            orderDetailModel.address=rep.data.address
-            this.status=rep.data.warehouseOrderDTOList[0].status
-                orderDetailModel.payAmount=rep.data.payAmount
+            orderDetailModel.giftCouponDTOList = rep.data.giftCouponDTOList || []
+            orderDetailModel.orderSubType = rep.data.orderSubType
+            this.warehouseOrderDTOList = rep.data.warehouseOrderDTOList
+            orderDetailModel.receiverPhone = rep.data.receiverPhone
+            orderDetailModel.receiver = rep.data.receiver
+            orderDetailModel.tokenCoinAmount = rep.data.tokenCoinAmount
+            orderDetailModel.platformOrderNo = rep.data.platformOrderNo
+            orderDetailModel.source = rep.data.source
+            orderDetailModel.channel = rep.data.channel
+            orderDetailModel.quantity = rep.data.quantity
+            orderDetailModel.province = rep.data.province
+            orderDetailModel.street = rep.data.street
+            orderDetailModel.city = rep.data.city
+            orderDetailModel.area = rep.data.area
+            orderDetailModel.address = rep.data.address
+            this.status = rep.data.warehouseOrderDTOList[0].status
+            orderDetailModel.payAmount = rep.data.payAmount
 
             return rep
+        }).catch(err=>{
+            Toast.hiddenLoading();
+            Toast.$toast(err.msg);
+            console.log(err);
         })
     }
 
@@ -124,7 +131,7 @@ class OrderDetailAfterServiceModel{
 
     @action
     addAfterServiceList=()=>{
-        this.AfterServiceList=[ {
+        this.AfterServiceList = [ {
 
         }, {
             index:1,
@@ -212,7 +219,7 @@ class OrderDetailAfterServiceModel{
     }
 
 }
-export const orderDetailAfterServiceModel =new OrderDetailAfterServiceModel();
+export const orderDetailAfterServiceModel = new OrderDetailAfterServiceModel();
 
 class AssistDetailModel{
     @observable
@@ -226,19 +233,19 @@ class AssistDetailModel{
 
     @action
     setIsShowSingleSelctionModal(bool){
-        this.isShowSingleSelctionModal=bool
+        this.isShowSingleSelctionModal = bool
     }
     @action
     setIsShowShowMessageModal(bool){
-        this.isShowShowMessageModal=bool;
+        this.isShowShowMessageModal = bool;
     }
     @action
     setOrderId(data){
-        this.orderId=data;
+        this.orderId = data;
     }
     @action
     getCancelArr(arr){
-        this.cancelArr=arr;
+        this.cancelArr = arr;
     }
 }
-export const assistDetailModel=new AssistDetailModel();
+export const assistDetailModel = new AssistDetailModel();

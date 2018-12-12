@@ -7,7 +7,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 const { px2dp } = ScreenUtils;
 // import ShowHotView from './ShowHotView';
 // import ShowHotFindView from './ShowHotFindView';
-import backIconImg from '../../components/pageDecorator/NavigatorBar/source/icon_header_back.png';
+import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from 'DesignRule'
 import { observer } from 'mobx-react';
 
@@ -40,7 +40,7 @@ export default class ShowListPage extends BasePage {
                         pageFocused: true
                     });
                 }
-                
+
             }
         );
         this.didBlurSubscription = this.props.navigation.addListener(
@@ -148,7 +148,7 @@ export default class ShowListPage extends BasePage {
                     }}/>
                     :
                     null
-                }  
+                }
                 </View>
             </ScrollableTabView>
         </View>;

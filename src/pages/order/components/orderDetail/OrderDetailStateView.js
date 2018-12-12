@@ -28,20 +28,23 @@ export default class OrderDetailStateView extends Component {
     }
 
     go2Logistics(){
-        if(orderDetailModel.expressList&&orderDetailModel.expressList.length===1){
+        if(orderDetailModel.expList.length === 0){
+            // orderDetailAfterServiceModel.totalAsList.sellerState='';
+        }else if( orderDetailModel.expList.length === 1&&orderDetailModel.unSendProductInfoList.length===0){
             this.props.nav("order/logistics/LogisticsDetailsPage", {
-                expressNo: orderDetailModel.expressList[0].expressNo
-            });
-        }else if(orderDetailModel.expressList&&orderDetailModel.expressList.length>1){
+                expressNo: orderDetailModel.expList[0].expNO
+            })
+        }else {
             this.props.nav("order/logistics/CheckLogisticsPage", {
-                expressList: orderDetailModel.expressList
+                expressList: orderDetailModel.expList,
+                unSendProductInfoList:orderDetailModel.unSendProductInfoList
             });
         }
 
     }
     render() {
-        if(orderDetailModel.expressList&&orderDetailModel.expressList.length>1){
-            orderDetailAfterServiceModel.totalAsList.sellerState=`该订单已拆成${orderDetailModel.expressList.length}个包裹发出，点击"查看物流"可查看详情`
+        if(orderDetailModel.expList.length > 1){
+            orderDetailAfterServiceModel.totalAsList.sellerState = `该订单已拆成${orderDetailModel.expList.length+orderDetailModel.unSendProductInfoList.length}个包裹发出，点击"查看物流"可查看详情`
         }
         if (orderDetailModel.status === 1) {
             return (
@@ -75,9 +78,8 @@ export default class OrderDetailStateView extends Component {
             );
         } else {
             return (
-                <TouchableOpacity style={styles.topOrderDetail} onPress={() => {
-                    this.go2Logistics();
-                }} disabled={!orderDetailModel.expressNo}>
+                <TouchableOpacity style={styles.topOrderDetail} onPress={() => this.go2Logistics()
+                } disabled={!orderDetailModel.expList.length} activeOpacity={1}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <UIImage source={logisticCar}
                                  style={{ height: px2dp(19), width: px2dp(19), marginLeft: px2dp(21) }}/>
@@ -96,8 +98,7 @@ export default class OrderDetailStateView extends Component {
                                     }}
                                     value={DateUtils.getFormatDate(orderDetailAfterServiceModel.totalAsList.logisticsTime / 1000)}/> : null}
                             </View>
-                            <View>
-                            </View>
+                            <View />
                         </View>
                         <UIImage source={arrow_right}
                                  style={{ height: px2dp(14), width: px2dp(10), marginRight: px2dp(11) }}

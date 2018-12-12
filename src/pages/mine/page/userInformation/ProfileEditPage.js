@@ -30,7 +30,7 @@ export default class ProfileEditPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            textNum: user.profile?user.profile.length:0,
+            textNum: user.profile ? user.profile.length : 0,
             profile: user.profile
         };
     }
@@ -55,13 +55,12 @@ export default class ProfileEditPage extends BasePage {
 
 
     _commitProfile = () => {
-        MineAPI.updateUserById({ type: 6, profile: this.state.profile }).then((data) => {
+        MineAPI.updateUserById({ type: 6, profile: this.state.profile }).then((resp) => {
             this.$toastShow("编辑成功!");
             this.$navigateBack();
             MineAPI.getUser().then(res => {
                 let data = res.data;
                 user.saveUserInfo(data);
-
             }).catch(err => {
             });
         }).catch((error) => {

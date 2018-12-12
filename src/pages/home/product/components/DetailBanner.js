@@ -7,6 +7,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import VideoView from '../../../../components/ui/video/VideoView';
 import StringUtils from '../../../../utils/StringUtils';
 import UIImage from '@mr/image-placeholder';
+import DesignRule from '../../../../constants/DesignRule';
+import { formatDate } from '../../../../utils/DateUtils';
 
 export class DetailBanner extends Component {
     constructor(props) {
@@ -58,8 +60,8 @@ export class DetailBanner extends Component {
                 }}>
                     <View>
                         <UIImage source={{ uri: originalImg }}
-                                 style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                                 resizeMode="cover"/>
+                                 style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}
+                                 resizeMode="contain"/>
                     </View>
                 </TouchableWithoutFeedback>
             );
@@ -68,7 +70,7 @@ export class DetailBanner extends Component {
 
     render() {
         //有视频第一个添加为视频
-        const { imgFileList, videoUrl, imgUrl } = this.props.data || {};
+        const { imgFileList, videoUrl, imgUrl, productStatus, upTime } = this.props.data || {};
 
         let productImgListTemp = [...(imgFileList || [])];
         productImgListTemp = productImgListTemp || [];
@@ -86,11 +88,11 @@ export class DetailBanner extends Component {
                 <View>
                     {
                         Platform.OS === 'ios' ?
-                            <XGSwiper height={ScreenUtils.autoSizeWidth(377)} width={ScreenUtils.width}
+                            <XGSwiper height={ScreenUtils.autoSizeWidth(375)} width={ScreenUtils.width}
                                       loop={false}
                                       renderRow={this._renderViewPageItem}
                                       dataSource={EmptyUtils.isEmptyArr(productImgListTemp) ? [] : productImgListTemp}
-                                      onWillChange={(item, index) => {
+                                      onDidChange={(item, index) => {
                                           if (this.state.messageIndex !== index) {
                                               this.setState({
                                                   messageIndex: index
@@ -101,7 +103,7 @@ export class DetailBanner extends Component {
                                 swiperShow={true}
                                 arrayData={EmptyUtils.isEmptyArr(productImgListTemp) ? [] : productImgListTemp}
                                 renderItem={this._renderViewPageItem}
-                                height={ScreenUtils.autoSizeWidth(377)}
+                                height={ScreenUtils.autoSizeWidth(375)}
                                 scrollsToTop={true}
                                 autoplay={false}
                                 loop={false}
@@ -110,11 +112,24 @@ export class DetailBanner extends Component {
                                 bounces={true}
                             />
                     }
+                    {/*未开始售卖*/}
+                    {productStatus === 3 ? <View style={{
+                        position: 'absolute',
+                        bottom: 0, left: 0, right: 0, height: 20,
+                        backgroundColor: 'rgba(255,0,80,0.8)',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Text style={{
+                            color: DesignRule.white,
+                            fontSize: 13
+                        }}>{`${upTime ? formatDate(upTime, 'MM月dd号HH:mm') : ''}开始售卖`}</Text>
+                    </View> : null}
                     {Platform.OS === 'ios' ? this._renderStyle() : null}
                 </View>
             );
         } else {
-            return <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>;
+            return <View style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}/>;
         }
     }
 }

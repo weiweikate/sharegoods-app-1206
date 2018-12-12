@@ -38,7 +38,7 @@ class UserOrderNum {
 
     @action getUserOrderNum() {
         return UserApi.getUserOrderNum().then(res => {
-            if (res.code == 10000) {
+            if (res.code === 10000) {
                 let data = res.data;
                 this.updateNum(data);
             }

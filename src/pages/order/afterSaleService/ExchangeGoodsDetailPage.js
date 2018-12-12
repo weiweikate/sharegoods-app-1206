@@ -192,7 +192,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                                 <RefreshControl
                                     refreshing={this.afterSaleDetailModel.refreshing}
                                     onRefresh={this._onRefresh}
-                                    colors={DesignRule.mainColor}
+                                    colors={[DesignRule.mainColor]}
                                     tintColor={DesignRule.mainColor}
                                 />
                             }
@@ -357,7 +357,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             if (num <= 0){
                 this.$toastShow('平台售后操作已到上线');
                 return;
-            };
+            }
 
             Alert.alert('',
                 tips[pageType],
@@ -392,7 +392,11 @@ class ExchangeGoodsDetailPage extends BasePage {
                 reason
             } = this.afterSaleDetailModel.pageData;
             imgList = imgList || '';
-            imgList = imgList.split(',');
+            if (EmptyUtils.isEmpty(imgList)) {
+                imgList = [];
+            }else {
+                imgList = imgList.split(',');
+            }
 
             this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                 pageType: type - 1,

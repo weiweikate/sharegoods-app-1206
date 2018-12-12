@@ -25,7 +25,7 @@ export default class ProgressBarDetailView extends Component {
                 <Text style={{
                     fontSize: 11,
                     color: DesignRule.mainColor
-                }}>{this.state.nav == 1 ? '已售完' : `还剩 ${this.state.num}件`}</Text>
+                }}>{this.state.nav === 1 ? '已售完' : `还剩 ${this.state.num}件`}</Text>
             </View>
         );
     }

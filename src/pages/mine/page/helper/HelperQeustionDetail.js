@@ -70,29 +70,29 @@ export default class HelperQuestionDetail extends BasePage {
                         height: 48,
                         borderRadius: 5,
                         borderWidth: 1,
-                        borderColor: this.state.type === null || this.state.type == 1 ? DesignRule.mainColor : 'white',
-                        backgroundColor: this.state.type === null || this.state.type == 1 ? 'white' : DesignRule.mainColor,
+                        borderColor: this.state.type === null || this.state.type === 1 ? DesignRule.mainColor : 'white',
+                        backgroundColor: this.state.type === null || this.state.type === 1 ? 'white' : DesignRule.mainColor,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
                         <Text style={{
                             fontSize: 16,
-                            color: this.state.type === null || this.state.type == 1 ? DesignRule.mainColor : 'white'
+                            color: this.state.type === null || this.state.type === 1 ? DesignRule.mainColor : 'white'
                         }}>{`没啥帮助?  (${this.state.noHelpNum > 9999 ? '9999+' : this.state.noHelpNum})`}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackGoodUse()} style={{
                         width: 140,
                         height: 48,
                         borderRadius: 5,
-                        backgroundColor: this.state.type === null || this.state.type == 0 ? 'white' : DesignRule.mainColor,
-                        borderColor: this.state.type === null || this.state.type == 0 ? DesignRule.mainColor : 'white',
+                        backgroundColor: this.state.type === null || this.state.type === 0 ? 'white' : DesignRule.mainColor,
+                        borderColor: this.state.type === null || this.state.type === 0 ? DesignRule.mainColor : 'white',
                         borderWidth: 1,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
                         <Text style={{
                             fontSize: 16,
-                            color: this.state.type === null || this.state.type == 0 ? DesignRule.mainColor : 'white'
+                            color: this.state.type === null || this.state.type === 0 ? DesignRule.mainColor : 'white'
                         }}>{`有用  (${this.state.useHelpNum > 9999 ? '9999+' : this.state.useHelpNum})`}</Text>
                     </TouchableOpacity>
                 </View>
@@ -118,7 +118,7 @@ export default class HelperQuestionDetail extends BasePage {
             this.$toastShow('' + res.data);
             this.loadPageData();
         }).catch(err => {
-            if (err.code == 10009) {
+            if (err.code === 10009) {
                 this.$navigate('login/login/LoginPage');
             }
         });
@@ -129,7 +129,7 @@ export default class HelperQuestionDetail extends BasePage {
             this.$toastShow('' + res.data);
             this.loadPageData();
         }).catch(err => {
-            if (err.code == 10009) {
+            if (err.code === 10009) {
                 this.$navigate('login/login/LoginPage');
             }
         });

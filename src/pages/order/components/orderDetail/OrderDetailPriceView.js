@@ -66,11 +66,11 @@ export default class OrderDetailPriceView extends Component {
    render(){
        return(
            <View style={{ backgroundColor: 'white',marginTop:10 ,paddingTop:10}}>
-               {orderDetailModel.orderType === 5 ? this.renderGiftAfterSales() : null}
-               {(orderDetailModel.orderType === 5 || orderDetailModel.orderType === 98) && this.props.giftBagCoupons.length > 0 ?
+               {orderDetailModel.orderSubType >= 3 ? this.renderGiftAfterSales() : null}
+               {orderDetailModel.orderSubType >= 3 && orderDetailModel.giftCouponDTOList.length > 0 ?
                    <View>
                        {this.renderLine()}
-                       {this.props.giftBagCoupons.map((item, index) => {
+                       {orderDetailModel.giftCouponDTOList.map((item, index) => {
                            return <View style={{ backgroundColor: 'white' }} key={index}>
                                {index === 0 ? <Image source={couponIcon} style={styles.couponsIconStyle}/> : null}
                                <View style={styles.couponsOuterStyle}>
@@ -86,7 +86,7 @@ export default class OrderDetailPriceView extends Component {
                    null}
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].orderAmount)}
+                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].productPrice)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
@@ -106,10 +106,15 @@ export default class OrderDetailPriceView extends Component {
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].payAmount)}
-                               rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                               isArrow={false}
+                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].orderAmount)}
+                               rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }} isArrow={false}
                                isLine={false}/>
+               {this.renderLine()}
+               <UserSingleItem itemHeightStyle={{ height: 45 }} leftText={`${orderDetailModel.status > 1 ? '实付款' : '需付款'}`}
+                               leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
+                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].payAmount)}
+                               rightTextStyle={{ color: DesignRule.mainColor, fontSize: 15 }} isArrow={false}
+                               isLine={true}/>
            </View>
        )
     }

@@ -16,7 +16,7 @@ export default class AboutUsPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             height: null
         }
     }

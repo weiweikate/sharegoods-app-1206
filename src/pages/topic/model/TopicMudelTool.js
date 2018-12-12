@@ -39,9 +39,9 @@ const typeName = {
 function getShowPrice(itemData) {
     let showPrice = itemData.productType === 2
         ?
-         '¥'+itemData[typeName[itemData.productType][itemData.status]]
+         '¥' + itemData[typeName[itemData.productType][itemData.status]]
         :
-         '¥'+itemData[typeName[itemData.productType]];
+         '¥' + itemData[typeName[itemData.productType]];
     return showPrice;
 }
 

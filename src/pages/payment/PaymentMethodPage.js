@@ -16,7 +16,7 @@ import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import PasswordView from './PasswordView';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import PayCell from './PaymentCell'
 import PayBottom from './PaymentBottom'
 const { px2dp } = ScreenUtils
@@ -48,11 +48,12 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     $NavBarLeftPressed = () => {
-        const { paySuccessFul } = this.payment;
-        const popAction = NavigationActions.pop({
-            n: paySuccessFul ? 2 : 1
-        });
-        this.props.navigation.dispatch(popAction);
+        // const { paySuccessFul } = this.payment;
+        // const popAction = NavigationActions.pop({
+        //     n: paySuccessFul ? 2 : 1
+        // });
+        // this.props.navigation.dispatch(popAction);
+        this.$navigateBack();
     };
 
     componentDidMount() {

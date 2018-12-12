@@ -151,7 +151,7 @@ export default class MyShop_RecruitPage extends Component {
             if (begin) {
                 two = `秒杀价|${isNoEmpty(reseCount) ? reseCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开抢`;
             } else {
                 two = `${totalNumber - surplusNumber !== 0 ? `已抢${totalNumber - surplusNumber}件` : '秒杀价'}`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;

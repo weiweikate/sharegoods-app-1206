@@ -96,7 +96,7 @@ export default class DownPricePage extends BasePage {
                         flexWrap: 'wrap',  //设置换行显示
                         backgroundColor: DesignRule.bgColor,
                         // backgroundColor:'red',
-                        width: ScreenUtils.width-20,
+                        width: ScreenUtils.width - 20,
                         marginLeft:10
                     }
                 }

@@ -127,7 +127,7 @@ class AfterSaleServicePage extends BasePage {
                                                        return;
                                                    }
                                                }
-                                               text = text===''? '0': text;
+                                               text = text === '' ? '0' : text;
                                                if (parseFloat(text) <= this.state.productData.payAmount) {
                                                    this.setState({ applyRefundAmount: text + '' });
                                                }else {
@@ -174,7 +174,7 @@ class AfterSaleServicePage extends BasePage {
                                                        return;
                                                    }
                                                }
-                                               text = text===''? '0': text;
+                                               text = text === '' ? '0' : text;
                                                if (parseFloat(text) <= this.state.productData.payAmount) {
                                                    this.setState({ applyRefundAmount: text + '' });
                                                }else {
@@ -348,6 +348,10 @@ class AfterSaleServicePage extends BasePage {
         let returnReasons = this.state.returnReasons.map((item) => {
             return item.value;
         });
+        if(this.state.productData.restrictions&&((this.state.productData.restrictions & 4) === 4) ){
+            returnReasons.unshift('七天无理由退换');
+        }
+
         return (
             <View>
                 <BottomSingleSelectModal
@@ -519,7 +523,9 @@ class AfterSaleServicePage extends BasePage {
             return;
         }
 
-        if (applyRefundAmount === 0 && pageType !== 2) {
+
+
+        if (parseFloat(applyRefundAmount) === 0 && pageType !== 2) {
             NativeModules.commModule.toast('售后的金额不能为0');
             return;
         }

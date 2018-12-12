@@ -11,7 +11,7 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import BackIcon from './source/icon_header_back.png';
+import BackIcon from '../../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
@@ -50,7 +50,7 @@ export default class NavigatorBar extends Component {
         headerStyle: PropTypes.object,
         title: PropTypes.string,
         titleStyle: PropTypes.object,
-        leftImageStyle:PropTypes.object,
+        leftImageStyle: PropTypes.object,
         leftNavTitle: PropTypes.string,
         leftNavImage: PropTypes.any,
         leftNavItemHidden: PropTypes.bool,
@@ -183,13 +183,13 @@ export default class NavigatorBar extends Component {
             return <TouchableOpacity
                 style={[styles.left,
                     {
-                        top: statusBarHeight,
+                        top: statusBarHeight
                     }]}
                 onPress={this._onLeftPressed}>
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
-                    style={[{ height: 15, width: 15 ,},leftImageStyle]}
+                    style={[{ height: 15, width: 15 }, leftImageStyle]}
                 />
             </TouchableOpacity>;
         }
@@ -235,8 +235,8 @@ export default class NavigatorBar extends Component {
     };
 
     _renderTitle = () => {
-        const { title ,titleStyle} = this.state;
-        return (<Text style={[styles.title,titleStyle]} numberOfLines={1}>{title || ' '}</Text>);
+        const { title, titleStyle } = this.state;
+        return (<Text style={[styles.title, titleStyle]} numberOfLines={1}>{title || ' '}</Text>);
     };
 
     _renderStatusBar = () => {
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 10,
+        paddingHorizontal: 10
     },
     button: {
         color: DesignRule.mainColor,

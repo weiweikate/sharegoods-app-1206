@@ -20,6 +20,9 @@ project(':react-native-webview-bridge').projectDir = new File(rootProject.projec
 include ':geolocation'
 project(':geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/geolocation/android')
 
+include ':request'
+project(':request').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/request/android')
+
 include ':react-native-fetch-blob'
 project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fetch-blob/android')
 
