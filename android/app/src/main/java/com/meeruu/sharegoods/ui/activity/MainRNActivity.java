@@ -30,7 +30,6 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.OnProgressListener;
 import com.meeruu.commonlib.handler.WeakHandler;
-import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
@@ -146,14 +145,12 @@ public class MainRNActivity extends ReactActivity {
             startService(it);
             bindService(it, conn, Context.BIND_AUTO_CREATE);
         }
-        UApp.pageSessionStart(this);
         JPushInterface.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        UApp.pageSessionEnd(this);
         JPushInterface.onPause(this);
     }
 
