@@ -9,7 +9,7 @@ import shopCartCacheTool from './ShopCartCacheTool';
 
 class ShopCartStore {
 
-    needSelectGoods = []
+    needSelectGoods = [];
     @observable
     isRefresh = false;
     @observable
@@ -58,7 +58,7 @@ class ShopCartStore {
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
         this.data.slice().map(item => {
-            if (item.isSelected && !isNaN(item.amount) ) {
+            if (item.isSelected && !isNaN(item.amount)) {
                 totalSelectNum += item.amount;
             }
         });
@@ -69,12 +69,12 @@ class ShopCartStore {
     get getTotalMoney() {
         let totalMoney = 0.00;
         this.data.slice().map(item => {
-            if (item.isSelected && !isNaN(item.amount) ) {
+            if (item.isSelected && !isNaN(item.amount)) {
                 totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
             }
         });
 
-        return   Math.round(totalMoney * 100) / 100;
+        return Math.round(totalMoney * 100) / 100;
 
 
     }
@@ -121,21 +121,21 @@ class ShopCartStore {
                 item.specString = tempString;
 
                 //从订单过来的选中
-                this.needSelectGoods.map(selectGood =>{
-                    if (selectGood.productCode === item.productCode && selectGood.skuCode === item.skuCode && item.status !== 0){
-                        item.isSelected = true
+                this.needSelectGoods.map(selectGood => {
+                    if (selectGood.productCode === item.productCode && selectGood.skuCode === item.skuCode && item.status !== 0) {
+                        item.isSelected = true;
                     }
-                })
+                });
 
-                originArr.map(originGood =>{
-                    if (originGood.productCode === item.productCode && item.skuCode === originGood.skuCode){
-                        item.isSelected = originGood.isSelected
+                originArr.map(originGood => {
+                    if (originGood.productCode === item.productCode && item.skuCode === originGood.skuCode) {
+                        item.isSelected = originGood.isSelected;
                     }
-                })
+                });
                 tempArr.push(item);
             });
             //将需要选中的数组清空
-            this.needSelectGoods = []
+            this.needSelectGoods = [];
             this.data = tempArr;
         } else {
             this.data = [];
@@ -146,42 +146,42 @@ class ShopCartStore {
     /**
      * 判断是否可以结算
      */
-    judgeIsCanSettlement=(callBack)=>{
+    judgeIsCanSettlement = (callBack) => {
         let [...selectArr] = shopCartStore.startSettlement();
-        if (selectArr.length <= 0){
+        if (selectArr.length <= 0) {
             bridge.$toast('请先选择结算商品~');
-            callBack(false,[]);
+            callBack(false, []);
             return;
         }
 
-        let isCanSettlement = true
-        let haveNaNGood = false
-        let  tempArr = [];
+        let isCanSettlement = true;
+        let haveNaNGood = false;
+        let tempArr = [];
         selectArr.map(good => {
             if (good.amount > good.stock) {
-                isCanSettlement = false
+                isCanSettlement = false;
             }
-            if (good.amount > 0 && !isNaN(good.amount)){
+            if (good.amount > 0 && !isNaN(good.amount)) {
                 tempArr.push(good);
             }
-            if (isNaN(good.amount)){
-                haveNaNGood = true
-                isCanSettlement = false
+            if (isNaN(good.amount)) {
+                haveNaNGood = true;
+                isCanSettlement = false;
             }
-        })
+        });
 
-        if (haveNaNGood){
-            bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~')
+        if (haveNaNGood) {
+            bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~');
             return;
         }
         if (!isCanSettlement) {
-            bridge.$toast('商品库存不足请确认~')
+            bridge.$toast('商品库存不足请确认~');
             return;
         }
-        if (isCanSettlement && !haveNaNGood){
-            callBack(isCanSettlement,tempArr)
+        if (isCanSettlement && !haveNaNGood) {
+            callBack(isCanSettlement, tempArr);
         }
-    }
+    };
     /**
      * 获取结算选中商品
      * @returns {any[]}
@@ -221,7 +221,7 @@ class ShopCartStore {
         ShopCartAPI.updateItem(
             itemData
         ).then((res) => {
-            this.needSelectGoods.push(itemData)
+            this.needSelectGoods.push(itemData);
             // this.getShopCartListData()
             this.packingShopCartGoodsData(res.data);
         }).catch(error => {
@@ -264,7 +264,7 @@ class ShopCartStore {
 
     /*请求购物车商品*/
     getShopCartListData = () => {
-        this.setRefresh(true);
+        // this.setRefresh(true);
         ShopCartAPI.list().then(result => {
             this.setRefresh(false);
             bridge.hiddenLoading();
@@ -276,35 +276,36 @@ class ShopCartStore {
             this.setRefresh(false);
         });
     };
+
     /*加入购物车*/
     addItemToShopCart(item) {
         if (item) {
-                //加入单个商品
-                bridge.showLoading();
-                ShopCartAPI.addItem({
-                    'amount': item.amount,
-                    'productCode': item.productCode,
-                    'skuCode': item.skuCode,
-                    'timestamp': item.timestamp
-                }).then((res) => {
-                    bridge.hiddenLoading();
-                    bridge.$toast('加入购物车成功');
-                    this.getShopCartListData();
-                }).catch((error) => {
-                    bridge.$toast(error.msg || '加入购物车失败');
-                    if (error.code === 10009) {
-                        user.clearUserInfo();
-                        user.clearToken();
-                        //清空购物车
-                        this.data = [];
-                        MineApi.signOut();
-                        QYChatUtil.qiYULogout();
-                        shopCartCacheTool.addGoodItem(item)
-                    }else {
-                        bridge.$toast(error.msg)
-                    }
-                    bridge.hiddenLoading();
-                });
+            //加入单个商品
+            bridge.showLoading();
+            ShopCartAPI.addItem({
+                'amount': item.amount,
+                'productCode': item.productCode,
+                'skuCode': item.skuCode,
+                'timestamp': item.timestamp
+            }).then((res) => {
+                bridge.hiddenLoading();
+                bridge.$toast('加入购物车成功');
+                this.getShopCartListData();
+            }).catch((error) => {
+                bridge.$toast(error.msg || '加入购物车失败');
+                if (error.code === 10009) {
+                    user.clearUserInfo();
+                    user.clearToken();
+                    //清空购物车
+                    this.data = [];
+                    MineApi.signOut();
+                    QYChatUtil.qiYULogout();
+                    shopCartCacheTool.addGoodItem(item);
+                } else {
+                    bridge.$toast(error.msg);
+                }
+                bridge.hiddenLoading();
+            });
         } else {
             bridge.$toast('添加商品不能为空');
         }
@@ -317,17 +318,17 @@ class ShopCartStore {
     addOneMoreList(oneMoreList) {
         if (oneMoreList instanceof Array && oneMoreList.length > 0) {
 
-            this.needSelectGoods = oneMoreList
+            this.needSelectGoods = oneMoreList;
 
-         ShopCartAPI.oneMoreOrder({
-             cacheList:oneMoreList
-         }).then(result => {
-            //添加完成再次拉取
-            //  this.getShopCartListData()
-             this.packingShopCartGoodsData(result.data);
-         }).catch(reason => {
-             bridge.$toast(reason.msg)
-         })
+            ShopCartAPI.oneMoreOrder({
+                cacheList: oneMoreList
+            }).then(result => {
+                //添加完成再次拉取
+                //  this.getShopCartListData()
+                this.packingShopCartGoodsData(result.data);
+            }).catch(reason => {
+                bridge.$toast(reason.msg);
+            });
         }
     }
 
