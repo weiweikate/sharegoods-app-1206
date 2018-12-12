@@ -207,18 +207,18 @@ export default class TopicDetailSelectPage extends Component {
                                     <Text style={{
                                         color: DesignRule.mainColor,
                                         fontSize: 16,
-                                        marginTop: 16
+                                        marginTop: 14
                                     }}>{`￥${levelPrice}`}</Text>
                                     <Text
                                         style={{
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: 13,
-                                            marginTop: 8
+                                            marginTop: 6
                                         }}>{`库存${surplusNumber}件`}</Text>
                                     <Text style={{
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: 13,
-                                        marginTop: 8
+                                        marginTop: 6
                                     }} numberOfLines={2}>{specs.join(',')}</Text>
                                 </View>
                                 <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
