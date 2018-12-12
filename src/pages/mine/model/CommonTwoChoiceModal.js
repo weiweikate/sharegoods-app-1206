@@ -9,7 +9,6 @@ import {
 import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
 // import res from '../res';
-// const BonusExchangeSucceedBackground = res.userInfoImg.BonusExchangeSucceedBackground;
 /*
 * usage:
 * renderModal = () => {
@@ -128,18 +127,13 @@ export default class CommonTwoChoiceModal extends Component {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
                 <View style={{ justifyContent: 'center', flexDirection: 'row' , backgroundColor: DesignRule.white, borderRadius: 4}}>
-                    {/*<Image source={this.props.backgroundImg ? this.props.backgroundImg : BonusExchangeSucceedBackground}*/}
-                           {/*style={{ position: 'absolute' }}/>*/}
                     <View style={{
                         height: 180,
                         width: 295,
                         position: 'absolute',
                         justifyContent: 'flex-start',
                         alignItems: 'flex-end'
-                    }}>
-                        {/*<UIImage source={bonusClose} style={{ width: 32, height: 32, marginTop: 43 }}*/}
-                                 {/*onPress={() => this.props.closeWindow()}/>*/}
-                    </View>
+                    }} />
                     <View style={{ height: 180, width: 295, justifyContent: 'space-between' }}>
                         <View style={{
                             flex: 1,

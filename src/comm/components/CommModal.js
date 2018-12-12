@@ -31,7 +31,7 @@ export default class CommModal extends PureComponent {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({ visible: props.visible});
+        this.setState({ visible: props.visible });
     }
 
     componentWillUnmount() {
@@ -60,12 +60,12 @@ export default class CommModal extends PureComponent {
     /**
      * modal的打开方法统一使用这个方法，防止android后退键引起bug
      */
-    open = ()=>{
+    open = () => {
         this.setState({
             visible: true,
-            update:!this.state.update
-        })
-    }
+            update: !this.state.update
+        });
+    };
 
 
     render() {
@@ -95,14 +95,15 @@ export default class CommModal extends PureComponent {
                 ref={(modalAndroid) => {
                     this.modalAndroid = modalAndroid;
                 }}
-                onModalDismiss={()=>{
-                    this.setState({ visible : false})
+                onModalDismiss={() => {
+                    this.setState({ visible: false });
                 }}
                 visible={[this.state.visible, this.state.update]}>
                 <TouchableOpacity
                     activeOpacity={1}
                 >
-                    <View style={styles.container}>
+                    <View
+                        style={[styles.container, { backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
                         {this.props.children}
                     </View>
                 </TouchableOpacity>
@@ -119,7 +120,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'center',
         alignItems: 'center'
     }

@@ -54,7 +54,7 @@ const api = {
     afterSaleDetail: '/after-sale/detail',//售后详情
     afterSaleCancel: '/after-sale/cancel',//取消申请
     afterSaleModify: '/after-sale/modify',//修改申请
-    afterSaleFillExpress: '/express/query',//填写物流
+    afterSaleFillExpress: '/after-sale/express',//填写物流
     subOrder: '/after-sale/order-detail',//子订单
     afterSaleList: '/after-sale/list',//列表
 };

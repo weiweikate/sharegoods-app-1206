@@ -13,7 +13,7 @@ import apiEnvironment from '../api/ApiEnvironment';
 
 export default function(url) {
     if(url){
-        return apiEnvironment.getCurrentOssHost()+url;
+        return apiEnvironment.getCurrentOssHost() + url;
     }else {
         return url;
     }

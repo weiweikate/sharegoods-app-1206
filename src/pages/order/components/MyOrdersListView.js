@@ -45,6 +45,7 @@ export default class MyOrdersListView extends Component {
                 orderProduct={item.orderProduct}
                 shutOffTime={item.cancelTime}
                 totalPrice={item.totalPrice}
+                quantity={item.quantity}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
@@ -126,7 +127,7 @@ export default class MyOrdersListView extends Component {
                 productName: item.productName,
                 spec: item.specValues.replace(/@/g, ''),
                 imgUrl: item.specImg,
-                price: StringUtils.formatMoneyString(item.payAmount),
+                price: StringUtils.formatMoneyString(item.unitPrice),
                 num: item.quantity,
                 status: item.status,
                 orderType: item.subStatus,
@@ -140,7 +141,7 @@ export default class MyOrdersListView extends Component {
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if (StringUtils.isNoEmpty(data) && StringUtils.isNoEmpty(data.data)) {
             data.data.map((item, index) => {
-                if (item.warehouseOrderDTOList[0].status == 1) {//未付款的
+                if (item.warehouseOrderDTOList[0].status === 1) {//未付款的
                     item.warehouseOrderDTOList.map((resp, index1) => {
                         arrData.push({
                             orderProduct: this.getOrderProduct(resp.products),
@@ -222,9 +223,9 @@ export default class MyOrdersListView extends Component {
 
     getCancelOrder() {
         let arrs = [];
-        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
-            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
-                res.data.map((item, i) => {
+        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(resp => {
+            if (resp.code === 10000 && StringUtils.isNoEmpty(resp.data)) {
+                resp.data.map((item, i) => {
                     arrs.push(item.value);
                 });
                 this.setState({
@@ -449,7 +450,7 @@ export default class MyOrdersListView extends Component {
             case 8:
                 let cartData = [];
                 this.state.viewData[index].orderProduct.map((item, index) => {
-                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
+                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.quantity });
                 });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });

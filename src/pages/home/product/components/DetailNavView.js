@@ -96,8 +96,7 @@ export default class DetailNavView extends Component {
                             paddingHorizontal: 4,
                             backgroundColor: DesignRule.mainColor,
                             borderRadius: 5, justifyContent: 'center', alignItems: 'center'
-                        }}>
-                        </View>}
+                        }} />}
                     </TouchableOpacity>
                 </View>
             </View>

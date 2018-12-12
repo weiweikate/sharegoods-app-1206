@@ -100,8 +100,8 @@ export default class MyPromotionPage extends BasePage {
                 this.$navigate('login/login/LoginPage');
             }
         });
-        MineApi.getNextLevelInfo().then(res => {
-            const { data } = res;
+        MineApi.getNextLevelInfo().then(resp => {
+            const { data } = resp;
             this.setState({
                 nextArr: data.content
             });
@@ -312,8 +312,7 @@ export default class MyPromotionPage extends BasePage {
                     left: 0,
                     top: 0,
                     opacity: this.state.loadingState === PageLoadingState.fail ? 1 : 0
-                }}>
-                </LinearGradient>
+                }} />
                 <View style={{ flex: 1 }}>
                     <UIImage source={res.button.white_back}
                              style={{ width: 10, height: 18, marginLeft: 15 }}

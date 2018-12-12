@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    NativeModules,
     StyleSheet,
     View,
     Image,
@@ -13,14 +12,15 @@ import {
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import bridge from "../../../utils/bridge";
 import GoodsItem from '../components/GoodsItem';
 import user from '../../../model/user';
-import Toast from '../../../utils/bridge';
+// import Toast from '../../../utils/bridge';
 import BasePage from '../../../BasePage';
 import OrderApi from './../api/orderApi';
 import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
-// import { NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import userOrderNum from '../../../model/userOrderNum';
 import res from '../res';
@@ -34,7 +34,9 @@ export default class ConfirmOrderPage extends BasePage {
         this.state = {
             message: '',
             defaultAddress: false,
-            viewData: {},
+            viewData: {
+                express:{}
+            },
             tokenCoin: 0,
             addressId:null,
             userCouponCode: null,
@@ -51,17 +53,17 @@ export default class ConfirmOrderPage extends BasePage {
     };
 
     isSupportCoupons(){
-        let k=0;
+        let k = 0;
         this.state.viewData.list.map((item)=>{
-            if(item.restrictions&1===1){
+            if(item.restrictions & 1 !== 1){
                 k++;
             }
         });
-        return k===this.state.viewData.list.length||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2
+        return k === this.state.viewData.list.length || this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2
     }
     //**********************************ViewPart******************************************
     renderAddress = () => {
-        return (StringUtils.isNoEmpty(this.state.viewData.express.receiverNum) ?
+        return (StringUtils.isNoEmpty(this.state.addressId) ?
                 <TouchableOpacity
                     style={styles.addressSelectStyle}
                     onPress={() => this.selectAddress()}>
@@ -187,7 +189,7 @@ export default class ConfirmOrderPage extends BasePage {
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
                         return <View style={{ backgroundColor: 'white' }} key={index}>
-                            {index == 0 ? <Image source={couponIcon} style={styles.couponIconStyle}/> : null}
+                            {index === 0 ? <Image source={couponIcon} style={styles.couponIconStyle}/> : null}
                             <View style={styles.couponsOutStyle}>
                                 <Text style={styles.couponsTextStyle}>{item.couponName}</Text>
                                 <Text style={styles.couponsNumStyle}>x1</Text>
@@ -272,7 +274,13 @@ export default class ConfirmOrderPage extends BasePage {
         let arr = [];
         console.log('loadmore', this.state.orderParam);
         if(this.params.orderParamVO.orderType==3){
-            return;
+            this.props.orderParam.orderProductList.map((item, index) => {
+                arr.push({
+                    priceCode: item.skuCode,
+                    productCode: item.productCode,
+                    amount: 1
+                });
+            });
         }
         this.state.orderParam.orderProducts.map((item, index) => {
             arr.push({
@@ -281,10 +289,10 @@ export default class ConfirmOrderPage extends BasePage {
                 amount: item.quantity
             });
         });
-        API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(res => {
-            let data = res.data || {};
+        API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(resp => {
+            let data = resp.data || {};
             let dataList = data.data || [];
-            if (dataList.length == 0) {
+            if (dataList.length === 0) {
                 this.setState({ couponName: '暂无优惠券' });
             }
         }).catch(result => {
@@ -295,8 +303,7 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     loadPageData(params) {
-        Toast.showLoading();
-        console.log
+        bridge.showLoading();
         switch (this.state.orderParam.orderType) {
             case 1://秒杀
                 OrderApi.SeckillMakeSureOrder({
@@ -307,11 +314,11 @@ export default class ConfirmOrderPage extends BasePage {
                     submitType:1,
                     ...params
                 }).then(response => {
-                    Toast.hiddenLoading();
+                    bridge.hiddenLoading();
                     this.handleNetData(response.data);
                 }).catch(err => {
-                    Toast.hiddenLoading();
-                    this.$toastShow(err.msg);
+                    bridge.hiddenLoading();
+                    bridge.$toast(err.msg);
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -330,11 +337,11 @@ export default class ConfirmOrderPage extends BasePage {
                     submitType:1,
                     ...params
                 }).then(response => {
-                    Toast.hiddenLoading();
+                    bridge.hiddenLoading();
                     this.handleNetData(response.data);
                 }).catch(err => {
-                    Toast.hiddenLoading();
-                    this.$toastShow(err.msg);
+                    bridge.hiddenLoading();
+                    bridge.$toast(err.msg);
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -349,16 +356,16 @@ export default class ConfirmOrderPage extends BasePage {
                     // orderType: this.params.orderParamVO.orderType,
                     orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
                     //orderSubType:  1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source:2,//1.购物车 2.直接下单
+                    source:this.params.orderParamVO.source,//1.购物车 2.直接下单
                     channel:2,//1.小程序 2.APP 3.H5
                     orderProductList: this.params.orderParamVO.orderProducts,
                     ...params
                 }).then(response => {
-                    Toast.hiddenLoading();
+                    bridge.hiddenLoading();
                     this.handleNetData(response.data);
                 }).catch(err => {
                     console.log('err', err);
-                    Toast.hiddenLoading();
+                    bridge.hiddenLoading();
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -375,7 +382,7 @@ export default class ConfirmOrderPage extends BasePage {
                             // { text: '否' }
                         ]);
                     } else if (err.code === 54001) {
-                        this.$toastShow('商品库存不足！');
+                        bridge.$toast('商品库存不足！');
                         // shopCartCacheTool.getShopCartGoodsListData();
                         this.$navigateBack();
                     }
@@ -386,37 +393,39 @@ export default class ConfirmOrderPage extends BasePage {
                 break;
             case 3://礼包
                 OrderApi.PackageMakeSureOrder({
-                    // activityCode:this.params.orderParamVO.activityCode,
-                    // orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
-                    // orderSubType: this.params.orderParamVO.orderSubType ,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    // source:2,//1.购物车 2.直接下单
-                    // channel:2,//1.小程序 2.APP 3.H5
-                    // orderProductList:this.params.orderParamVO.orderProductList,
-                    // submitType:1,
-                    // quantity:1,
-                   activityCode: "TC201811290008",
-                    quantity: 1,
-                    source: 2,
-                    submitType: 1,
-                    userCode: "W181107000002",
-                    channel: 2,
-                    orderProductList: [
-                        {
-                            skuCode: "SKU000000390001"
-                        },
-                        {
-                            skuCode: "SKU000000390003"
-                        }
-                    ],
+                    activityCode:this.params.orderParamVO.activityCode,
+                    orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
+                    orderSubType: this.params.orderParamVO.orderSubType ,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                    source:2,//1.购物车 2.直接下单
+                    channel:2,//1.小程序 2.APP 3.H5
+                    orderProductList:this.params.orderParamVO.orderProductList,
+                    submitType:1,
+                    quantity:1,
+                   // activityCode: "TC201811290008",
+                   //  quantity: 1,
+                   //  source: 2,
+                   //  submitType: 1,
+                   //  userCode: "W181107000002",
+                   //  channel: 2,
+                   //  orderProductList: [
+                   //      {
+                   //          skuCode: "SKU000000390001"
+                   //      },
+                   //      {
+                   //          skuCode: "SKU000000390003"
+                   //      }
+                   //  ],
                     ...params
                 }).then(
                     response => {
-                        Toast.hiddenLoading();
+                        bridge.hiddenLoading();
                         this.handleNetData(response.data);
                     }
                 ).catch(err => {
-                    Toast.hiddenLoading();
+                    console.log(err);
                     this.$toastShow(err.msg);
+                    bridge.hiddenLoading();
+                    // bridge.toast(err.msg);
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -445,7 +454,7 @@ export default class ConfirmOrderPage extends BasePage {
                 // activityId: item.activityId
             });
         });
-        let  addressData=data.userAddressDTO||data.userAddress||{}
+        let  addressData = data.userAddressDTO || data.userAddress || {}
         if (addressData.address) {
             viewData.express = {
                 id: addressData.id,
@@ -463,7 +472,7 @@ export default class ConfirmOrderPage extends BasePage {
             // viewData.express = {};
         }
         viewData.totalAmounts = data.payAmount;
-        viewData.totalFreightFee = data.totalFreightFee?data.totalFreightFee:0;
+        viewData.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         viewData.list = arrData;
         viewData.couponList = data.couponList ? data.couponList : null;
         this.setState({ viewData,addressId:addressData.id });
@@ -510,19 +519,19 @@ export default class ConfirmOrderPage extends BasePage {
             addressId: this.state.addressId
         };
 
-        if (StringUtils.isEmpty(this.state.viewData.express.areaCode)) {
-            NativeModules.commModule.toast('请先添加地址');
+        if (StringUtils.isEmpty(this.state.addressId)) {
+            bridge.$toast('请先添加地址');
             return;
         }
         this.$loadingShow();
-        if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2 ) {
+        if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2) {
             let params = {
                 ...baseParams,
-                activityCode:this.params.orderParamVO.orderProducts[0].code,
-                channel:2,
-                num:this.params.orderParamVO.orderProducts[0].num,
-                source:2,
-                submitType:2,
+                activityCode: this.params.orderParamVO.orderProducts[0].code,
+                channel: 2,
+                num: this.params.orderParamVO.orderProducts[0].num,
+                source: 2,
+                submitType: 2,
             };
             if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
                 OrderApi.SeckillSubmitOrder(params).then((response) => {
@@ -574,10 +583,18 @@ export default class ConfirmOrderPage extends BasePage {
                     }
                 });
             }
+        }
             else if (this.state.orderParam && this.state.orderParam.orderType === 3) {
                 let params1 = {
                     ...baseParams,
-                    orderProductList: [this.params.orderParamVO,{submitType:2}],
+                    activityCode:this.params.orderParamVO.activityCode,
+                    orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
+                    orderSubType: this.params.orderParamVO.orderSubType ,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                    source:2,//1.购物车 2.直接下单
+                    channel:2,//1.小程序 2.APP 3.H5
+                    orderProductList:this.params.orderParamVO.orderProductList,
+                    submitType:2,
+                    quantity:1,
                 };
                 OrderApi.PackageSubmitOrder(params1).then((response) => {
                     this.$loadingDismiss();
@@ -604,13 +621,13 @@ export default class ConfirmOrderPage extends BasePage {
                 });
 
             }
-        } else {
+         else {
             let params = {
                 ...baseParams,
                 orderProductList: this.state.orderParam.orderProducts,
                 // orderType: this.state.orderParam.orderType,
                 orderType:1,
-                source:2,
+                source:this.state.orderParam.source,
                 channel:2,
             };
             OrderApi.submitOrder(params).then((response) => {
@@ -640,7 +657,7 @@ export default class ConfirmOrderPage extends BasePage {
     };
     //选择优惠券
     jumpToCouponsPage = (params) => {
-        if (params == 'justOne') {
+        if (params === 'justOne') {
             this.$navigate('mine/coupons/CouponsPage', {
                 justOne: this.state.viewData.totalAmounts ? this.state.viewData.totalAmounts : 1, callBack: (data) => {
                     console.log(typeof data);
@@ -670,7 +687,7 @@ export default class ConfirmOrderPage extends BasePage {
                             addressId:this.state.addressId
                         });
                         this.loadPageData(params);
-                    } else if (data == 'giveUp') {
+                    } else if (data === 'giveUp') {
                         this.setState({ userCouponCode: null, couponName: null });
                         this.loadPageData();
                     }
@@ -680,24 +697,23 @@ export default class ConfirmOrderPage extends BasePage {
     };
 
     replaceRouteName(data) {
-        this.$navigate('payment/PaymentMethodPage',
-            {
+        // this.$navigate('payment/PaymentMethodPage',
+        //     {
+        //         orderNum: data.orderNo,
+        //         amounts: data.payAmount,
+        //         pageType: 0,
+        //        }
+        // )
+        let replace = NavigationActions.replace({
+            key: this.props.navigation.state.key,
+            routeName: 'payment/PaymentMethodPage',
+            params: {
                 orderNum: data.orderNo,
                 amounts: data.payAmount,
                 pageType: 0,
-               }
-        )
-        // let replace = NavigationActions.replace({
-        //     key: this.props.navigation.state.key,
-        //     routeName: 'payment/PaymentMethodPage',
-        //     params: {
-        //         orderNum: data.orderNum,
-        //         amounts: this.state.viewData.totalAmounts,
-        //         pageType: 0,
-        //         availableBalance: data.user.availableBalance
-        //     }
-        // });
-        // this.props.navigation.dispatch(replace);
+            }
+        });
+        this.props.navigation.dispatch(replace);
     }
 }
 

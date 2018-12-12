@@ -8,7 +8,7 @@ import {  orderDetailModel } from '../../model/OrderDetailModel';
 import DesignRule from 'DesignRule';
 import { observer } from 'mobx-react/native';
 import ScreenUtil from '../../../../utils/ScreenUtils';
-const {px2dp} =ScreenUtil;
+const {px2dp} = ScreenUtil;
 
 @observer
 export default class GiftHeaderView extends Component{
@@ -16,12 +16,12 @@ export default class GiftHeaderView extends Component{
     render(){
         return (
             <View style={{marginTop:  px2dp(10)}}>
-                {orderDetailModel.orderType == 5 || orderDetailModel.orderType === 98 ?
+                {orderDetailModel.orderSubType >= 3 ?
                     <View style={styles.containerStyles}>
                         <View style={styles.leftStyles}>
                             <Text style={styles.giftTextStyles}>礼包</Text>
                         </View>
-                        <Text style={styles.giftNameStyles}>{this.props.giftPackageName}</Text>
+                        {/*<Text style={styles.giftNameStyles}>{this.props.giftPackageName}</Text>*/}
                     </View>
                     :
                     null}
@@ -30,7 +30,7 @@ export default class GiftHeaderView extends Component{
     }
 }
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
     containerStyles:{
         backgroundColor: '#fff',
         flexDirection: 'row',

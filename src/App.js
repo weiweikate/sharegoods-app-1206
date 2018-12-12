@@ -99,7 +99,7 @@ export default class App extends Component {
     }
 
     render() {
-        const prefix = Platform.OS == 'android' ? 'meeruu://com.meeruu.sharegoods.mobile/' : 'meeruu://';
+        const prefix = Platform.OS === 'android' ? 'meeruu://com.meeruu.sharegoods.mobile/' : 'meeruu://';
         return (
             <View style={styles.container}>
                 <Navigator

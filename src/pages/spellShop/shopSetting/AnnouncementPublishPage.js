@@ -51,7 +51,7 @@ export default class AnnouncementPublishPage extends BasePage {
     };
 
     _onChangeText = (text) => {
-        if (text.length>180) {
+        if (text.length > 180) {
             text = text.substring(0, 180);
         }
         this.setState({ text });

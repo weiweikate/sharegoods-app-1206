@@ -37,7 +37,7 @@ const GoodsListItem = props => {
         shutOffTime,
         cancelTime,
         callBack,
-        // autoReceiveTime,
+        quantity,
         deliverTime,//发货时间
         orderType
     } = props;
@@ -64,7 +64,7 @@ const GoodsListItem = props => {
     //28:45:45后自动取消订单
     this.renderMenu = () => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
-        if (orderStatus == 1) {
+        if (orderStatus === 1) {
             return (
                 <View style={{
                     flex: 1,
@@ -182,7 +182,8 @@ const GoodsListItem = props => {
                 flexDirection: 'row',
                 paddingRight: 16
             }}>
-                <UIText value={'共' + orderProduct.length + '件商品  '+`${orderStatus<2?'需付款: ':'实付款: '}`}
+                <UIText value={`共${quantity}件商品  ${orderStatus<2?'需付款: ':'实付款: '}`}
+
                         style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                 <UIText value={StringUtils.formatMoneyString(totalPrice)}
                         style={{ fontSize: 13, color: DesignRule.mainColor }}/>
@@ -251,7 +252,7 @@ const GoodsListItem = props => {
                 {/*{this.renderTime()}*/}
                 {this.renderLine()}
             </TouchableOpacity>
-            {constants.viewOrderStatus[orderStatus].menuData.length == 0 ? null :
+            {constants.viewOrderStatus[orderStatus].menuData.length === 0 ? null :
                 <View style={{
                     flexDirection: 'row',
                     height: 48,
