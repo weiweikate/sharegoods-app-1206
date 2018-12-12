@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx'
 import OrderApi from '../api/orderApi'
 import StringUtils from "../../../utils/StringUtils";
+import Toast from "../../../utils/bridge";
 
 export const orderStatus = {
     prePayment: 1,
@@ -23,8 +24,9 @@ class OrderDetailModel {
 
     @observable detail = {}
     @observable statusDic = [{}]
-    @observable expressList=[]
+    @observable expList=[]
     @observable warehouseOrderDTOList=[]
+    @observable unSendProductInfoList=[]
     @observable status=null
 
     @action  getOrderNo(){
@@ -68,7 +70,8 @@ class OrderDetailModel {
             orderNo:orderNo
         }).then(rep => {
             this.detail = rep.data
-            this.expressList = rep.data.warehouseOrderDTOList[0].expressList
+            this.expList = rep.data.warehouseOrderDTOList[0].expList||[]
+            this.unSendProductInfoList= rep.data.warehouseOrderDTOList[0].unSendProductInfoList||[]
             orderStatusModel.statusMsg = orderStatusMessage[rep.data.status]
             orderDetailModel.giftCouponDTOList = rep.data.giftCouponDTOList || []
             orderDetailModel.orderSubType = rep.data.orderSubType
@@ -89,6 +92,10 @@ class OrderDetailModel {
             orderDetailModel.payAmount = rep.data.payAmount
 
             return rep
+        }).catch(err=>{
+            Toast.hiddenLoading();
+            Toast.$toast(err.msg);
+            console.log(err);
         })
     }
 

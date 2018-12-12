@@ -54,6 +54,7 @@ let constants = {
     viewOrderStatus:[
         {
             index:0,
+            menuData:[],
         },{
             index:1,
             orderStatus:'待支付',

@@ -281,14 +281,15 @@ export default class ConfirmOrderPage extends BasePage {
                     amount: 1
                 });
             });
-        }
-        this.state.orderParam.orderProducts.map((item, index) => {
-            arr.push({
-                priceCode: item.skuCode,
-                productCode: item.productCode,
-                amount: item.quantity
+        }else{
+            this.state.orderParam.orderProducts.map((item, index) => {
+                arr.push({
+                    priceCode: item.skuCode,
+                    productCode: item.productCode,
+                    amount: item.quantity
+                });
             });
-        });
+        }
         API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(resp => {
             let data = resp.data || {};
             let dataList = data.data || [];
@@ -401,20 +402,6 @@ export default class ConfirmOrderPage extends BasePage {
                     orderProductList:this.params.orderParamVO.orderProductList,
                     submitType:1,
                     quantity:1,
-                   // activityCode: "TC201811290008",
-                   //  quantity: 1,
-                   //  source: 2,
-                   //  submitType: 1,
-                   //  userCode: "W181107000002",
-                   //  channel: 2,
-                   //  orderProductList: [
-                   //      {
-                   //          skuCode: "SKU000000390001"
-                   //      },
-                   //      {
-                   //          skuCode: "SKU000000390003"
-                   //      }
-                   //  ],
                     ...params
                 }).then(
                     response => {
