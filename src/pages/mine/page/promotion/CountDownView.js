@@ -20,12 +20,12 @@ export  default class CountDownView extends PureComponent {
       this.date = Date.parse(new Date());
       if (this.date < this.props.endTime) {
           let seconds = parseInt((this.props.endTime - this.date) / 1000);
-          this.state={
+          this.state = {
               showCountDown:true,
               countDownStr: `剩余推广时间： ${this.timeFormat(seconds)}`,
           }
       }else {
-          this.state={
+          this.state = {
               showCountDown:false,
               countDownStr: ''
           }

@@ -408,7 +408,7 @@ class User {
 
     @action updateUserData() {
         return UserApi.getUser().then(res => {
-            if (res.code == 10000) {
+            if (res.code === 10000) {
                 let data = res.data;
                 this.saveUserInfo(data);
             }
@@ -424,6 +424,6 @@ class User {
 
 const user = new User();
 autorun(() => {
-   user.token? shopCartCacheTool.synchronousData():null;
+   user.token ? shopCartCacheTool.synchronousData() : null;
 });
 export default user;

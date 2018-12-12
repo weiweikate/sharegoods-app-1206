@@ -47,7 +47,7 @@ export default class RefreshList extends Component {
         this.onEndReached();
     };
     isEnd = () => {
-        return this.props.data.length % defaultPageSize != 0;
+        return this.props.data.length % defaultPageSize !== 0;
     };
 
     isNoraml = () => {

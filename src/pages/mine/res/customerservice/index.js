@@ -1,4 +1,4 @@
-const  helperAndCustomerService={
+const  helperAndCustomerService = {
     top_kefu:require('./bangzu_kefu.png'),
     icon_phone:require('./shouhou_icon_dianhua.png'),
     icon_kefu:require('./shouhou_icon_kefu.png'),

@@ -68,7 +68,7 @@ export default class HelperFeedbackPage extends BasePage {
 
     componentDidMount() {
         MineApi.queryDictionaryTypeList({ code: "WTLX" }).then(res => {
-            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
+            if (res.code === 10000 && StringUtils.isNoEmpty(res.data)) {
                 this.setState({
                     CONFIG: res.data
                 });
@@ -110,7 +110,7 @@ export default class HelperFeedbackPage extends BasePage {
         }
         let smallImgs = smallImagarr.join(",");
         let orignImgs = orignImagarr.join(",");
-        if (this.state.typeKey == -1) {
+        if (this.state.typeKey === -1) {
             this.$toastShow("请选择反馈类型!");
             return;
         }
@@ -197,7 +197,7 @@ export default class HelperFeedbackPage extends BasePage {
     }
 
     renderAddItem = () => {
-        let isShowIcon = this.state.imageArr.length == 3;
+        let isShowIcon = this.state.imageArr.length === 3;
         if (isShowIcon) {
             return null;
         } else {
@@ -287,11 +287,11 @@ export default class HelperFeedbackPage extends BasePage {
                                                           activeOpacity={0.6}
                                                           onPress={() => this.selCourse(item.value, item.detailId, i)}>
                                             <Text style={{
-                                                color: i == this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                                color: i === this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
                                                 fontSize: 15,
                                                 marginLeft: 15
                                             }}>{item.value}</Text>
-                                            {i == this.state.selectIndex ? <Image source={icon_red_select} style={{
+                                            {i === this.state.selectIndex ? <Image source={icon_red_select} style={{
                                                 width: 17,
                                                 height: 12,
                                                 marginRight: 19
@@ -379,7 +379,7 @@ export default class HelperFeedbackPage extends BasePage {
                                  style={{ alignItems: "center", justifyContent: "center", marginTop: 50 }}
                                  onPress={() => this.feedback2server()}>
                         <View
-                            style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == "请选择问题类型" || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : DesignRule.mainColor }]}>
+                            style={[styles.buttoncolorStyle, { backgroundColor: this.state.course === "请选择问题类型" || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : DesignRule.mainColor }]}>
                             <Text style={{ fontSize: 16, color: "#fff" }}>提交</Text>
                         </View>
                     </NoMoreClick>

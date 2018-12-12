@@ -51,7 +51,7 @@ const AccountItem = props => {
                             style={{
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 13,
-                                marginTop: serialNumber == '' ? 10 : 0
+                                marginTop: serialNumber === '' ? 10 : 0
                             }}/>
                 </View>
                 <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>

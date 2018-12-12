@@ -142,7 +142,7 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
     renderItem = ({ item, index }) => {
-        if (orderDetailModel.orderSubType===3) {
+        if (orderDetailModel.orderSubType === 3) {
             return (
                 <GoodsGrayItem
                     uri={item.uri}
@@ -177,7 +177,7 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View>
                 {this.renderState()}
-                {orderDetailModel.status>1 ? <DetailAddressView/> : null}
+                {orderDetailModel.status > 1 ? <DetailAddressView/> : null}
                 <GiftHeaderView
                     giftPackageName={this.state.giftPackageName}/>
             </View>
@@ -306,7 +306,7 @@ export default class MyOrdersDetailPage extends BasePage {
     getAfterSaleService = (data, index) => {
         //售后状态
         let afterSaleService = [];
-        let outStatus=orderDetailModel.status
+        let outStatus = orderDetailModel.status
         switch(outStatus) {
             case 2:
                 afterSaleService.push({
@@ -324,21 +324,21 @@ export default class MyOrdersDetailPage extends BasePage {
                     case 1://申请退款
                         afterSaleService.push({
                             id: 2,
-                            operation: data.status==5?"退款成功":"退款中",
+                            operation: data.status === 5 ? "退款成功" : "退款中",
                             isRed: false
                         });
                         break;
                     case 2://申请退货
                         afterSaleService.push({
                             id: 3,
-                            operation: data.status==5?"售后完成":"退货中",
+                            operation: data.status === 5 ? "售后完成" : "退货中",
                             isRed: false
                         });
                         break;
                     case 3://申请换货
                         afterSaleService.push({
                             id: 6,
-                            operation:  data.status==5?"售后完成":"换货中",
+                            operation:  data.status === 5 ? "售后完成" : "换货中",
                             isRed: false
                         });
                         break;
@@ -489,12 +489,12 @@ export default class MyOrdersDetailPage extends BasePage {
         // orderDetailModel.loadDetailInfo(this.params.orderNo);
         console.log('loadPageData',result);
         Toast.hiddenLoading();
-        let dataArr=[];
+        let dataArr = [];
         let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(orderDetailModel.warehouseOrderDTOList[0].status)];
         if (orderDetailModel.warehouseOrderDTOList[0].status === 1) {
             this.startCutDownTime(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
             pageStateString.sellerTime = "收货地址:" + orderDetailModel.province + orderDetailModel.city + orderDetailModel.area + orderDetailModel.address;
-            orderDetailAfterServiceModel.menu=[{
+            orderDetailAfterServiceModel.menu = [{
                 id:1,
                 operation:'取消订单',
                 isRed:false,
@@ -554,7 +554,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
             case 3:
                 this.startCutDownTime2(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime);
-                orderDetailAfterServiceModel.menu=[
+                orderDetailAfterServiceModel.menu = [
                 {
                     id:5,
                     operation:'查看物流',
@@ -571,7 +571,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 timeUtils.stop();
                 pageStateString.sellerState = "已签收";
                 orderDetailAfterServiceModel.moreDetail = "";
-                orderDetailAfterServiceModel.menu=[
+                orderDetailAfterServiceModel.menu = [
                     {
                         id:7,
                         operation:'删除订单',
@@ -629,11 +629,11 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     afterSaleServiceClick = (menu, index) => {
         console.log(menu);
-        let products=orderDetailModel.warehouseOrderDTOList[0].products[index];
-         if(products.afterSaleTime<orderDetailModel.warehouseOrderDTOList[0].nowTime){
+        let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
+         if(products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime){
              NativeModules.commModule.toast("该商品售后已过期");
              return;
-         }else if(products.orderSubType===3){
+         }else if(products.orderSubType === 3){
              NativeModules.commModule.toast("该商品属于升级礼包产品，不存在售后功能");
              return;
          }

@@ -121,7 +121,7 @@ export default class SignInPage extends BasePage {
 
     reSaveUserInfo = () => {
         MineApi.getUser({}, { nav: this.props.navigation, callback: this.loadPageData }).then(res => {
-            if (res.code == 10000) {
+            if (res.code === 10000) {
                 let data = res.data;
                 user.saveUserInfo(data);
             }

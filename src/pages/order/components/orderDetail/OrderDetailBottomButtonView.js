@@ -57,7 +57,7 @@ export default  class OrderDetailBottomButtonView extends Component{
         // this.setState({ menu: menu });
         switch (menu.id) {
             case 1:
-                if(assistDetailModel.cancelArr.length>0){
+                if(assistDetailModel.cancelArr.length > 0){
                     assistDetailModel.setIsShowSingleSelctionModal(true);
                 }else{
                     NativeModules.commModule.toast('无取消类型！');
@@ -85,10 +85,10 @@ export default  class OrderDetailBottomButtonView extends Component{
                     NativeModules.commModule.toast('当前物流信息不存在！');
                     return;
                 }
-                 if(orderDetailModel.expressList.length===0){
+                 if(orderDetailModel.expressList.length === 0){
                     NativeModules.commModule.toast('当前物流信息不存在！');
                 }
-                if(orderDetailModel.expressList.length===1){
+                if(orderDetailModel.expressList.length === 1){
                     this.props.nav("order/logistics/LogisticsDetailsPage", {
                         expressNo: orderDetailModel.expressList[0].expressNo
                     });
@@ -180,7 +180,7 @@ export default  class OrderDetailBottomButtonView extends Component{
         }
     };
 }
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
     containerStyle:{ height: px2dp(48), flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' },
     touchableStyle:{
         borderWidth: 1,

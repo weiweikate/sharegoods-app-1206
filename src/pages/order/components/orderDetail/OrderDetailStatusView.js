@@ -13,7 +13,7 @@ import { orderDetailAfterServiceModel } from '../../model/OrderDetailModel';
 import { observer } from 'mobx-react/native';
 import res from '../../res';
 const productDetailImg = res.productDetailImg;
-const {px2dp} =ScreenUtils;
+const {px2dp} = ScreenUtils;
 
 @observer
 export default class OrderDetailStatusView extends Component{
@@ -39,7 +39,7 @@ export default class OrderDetailStatusView extends Component{
     }
 
 }
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
     redRectangle: {
         width: ScreenUtils.width,
         height: px2dp(100),

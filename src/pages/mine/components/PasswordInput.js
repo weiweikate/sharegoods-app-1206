@@ -41,10 +41,10 @@ export default class PasswordInput extends Component {
         text: ''
     };
 
-    clear(){
+    clear() {
         this.setState({
-            text:''
-        })
+            text: ''
+        });
     }
 
     componentDidMount() {
@@ -106,8 +106,9 @@ export default class PasswordInput extends Component {
     _getInputItem() {
         let inputItem = [];
         let { text } = this.state;
-        for (let i = 0; i < parseInt(this.props.maxLength); i++) {
-            if (i == 0) {
+        let maxLen = parseInt(this.props.maxLength);
+        for (let i = 0; i < maxLen; i++) {
+            if (i === 0) {
                 inputItem.push(
                     <View key={i} style={[styles.inputItem, this.props.inputItemStyle]}>
                         {i < text.length ? <View style={[styles.iconStyle, this.props.iconStyle]}/> : null}
@@ -118,7 +119,7 @@ export default class PasswordInput extends Component {
                     <View key={i}
                           style={[styles.inputItem, styles.inputItemBorderLeftWidth, this.props.inputItemStyle]}>
                         {i < text.length ?
-                            <View style={[styles.iconStyle, this.props.iconStyle]} /> : null}
+                            <View style={[styles.iconStyle, this.props.iconStyle]}/> : null}
                     </View>);
             }
         }
@@ -155,6 +156,6 @@ const styles = StyleSheet.create({
         width: 16,
         height: 16,
         backgroundColor: DesignRule.textColor_mainTitle,
-        borderRadius: 8,
-    },
+        borderRadius: 8
+    }
 });

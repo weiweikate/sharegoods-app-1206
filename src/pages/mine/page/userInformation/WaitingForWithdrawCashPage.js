@@ -266,11 +266,11 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         let use_type_symbol = ['', '+', '-'];
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();
-        let arrData = this.currentPage == 1 ? [] : this.state.viewData;
+        let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 2 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
-            if (response.code == 10000) {
+            if (response.code === 10000) {
                 let data = response.data;
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
@@ -301,8 +301,8 @@ export default class WaitingForWithdrawCashPage extends BasePage {
     };
     onRefresh = () => {
         this.currentPage = 1;
-        MineApi.getUser().then(res => {
-            let data = res.data;
+        MineApi.getUser().then(resp => {
+            let data = resp.data;
             user.saveUserInfo(data);
         }).catch(err => {
             if (err.code === 10009) {

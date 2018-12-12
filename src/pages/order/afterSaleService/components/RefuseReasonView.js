@@ -55,7 +55,7 @@ export default class RefuseReasonView extends React.Component {
                     <UIText value={['退款金额:', ''][type]}
                             style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
                     <UIText value={text}
-                            style={{ color: type === 0 ? DesignRule.mainColor: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 5 }}/>
+                            style={{ color: type === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 5 }}/>
             </View>
         );
     }

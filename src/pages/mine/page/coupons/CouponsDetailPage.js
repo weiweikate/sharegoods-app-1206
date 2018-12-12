@@ -73,7 +73,7 @@ export default class CouponsDetailPage extends BasePage {
 
     renderBodyView = (item) => {
         let BG = item.status === 0 && !item.levelimit ? unuesdBg : usedBg;
-        let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status == 1 ? usedRIcon : ActivedIcon));
+        let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 1 ? usedRIcon : ActivedIcon));
         return (
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ alignItems: 'center' }}>

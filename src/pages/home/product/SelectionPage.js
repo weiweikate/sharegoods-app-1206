@@ -162,7 +162,7 @@ export default class SelectionPage extends Component {
                 let propertyValues = item.propertyValues || '';
                 tempList.forEach((priceItem) => {
                     //item.specIds不包含priceArr中的任意元素就为无
-                    if (priceItem && propertyValues.indexOf(priceItem) == -1) {
+                    if (priceItem && propertyValues.indexOf(priceItem) === -1) {
                         contain = false;
                     }
                 });
