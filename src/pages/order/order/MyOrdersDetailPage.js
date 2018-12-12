@@ -129,7 +129,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFootder}
-                    data={orderDetailModel.orderType === 5 || orderDetailModel.orderType === 98 ? this.state.viewData : this.state.viewData}
+                    data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
@@ -318,7 +318,8 @@ export default class MyOrdersDetailPage extends BasePage {
 
             case 3:
             case 4:
-                let condition = (data.orderCustomerServiceInfoVO && data.orderCustomerServiceInfoVO.type) || null;
+                let condition = (data.orderCustomerServiceInfoDTO && data.orderCustomerServiceInfoDTO.type) || null;
+                console.log('data.orderCustomerServiceInfoVO',data.orderCustomerServiceInfoDTO);
                 switch (condition) {
                     case 1://申请退款
                         afterSaleService.push({
@@ -508,7 +509,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         productId: item.id,
                         uri: item.specImg,
                         goodsName: item.productName,
-                        salePrice: StringUtils.isNoEmpty(item.payAmount) ? item.payAmount : 0,
+                        salePrice: StringUtils.isNoEmpty(item.unitPrice) ? item.unitPrice : 0,
                         category: item.specValues,
                         goodsNum: item.quantity,
                         afterSaleService: this.getAfterSaleService(item, index),
@@ -525,7 +526,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         productId: item.id,
                         uri: item.specImg,
                         goodsName: item.productName,
-                        salePrice: StringUtils.isNoEmpty(item.payAmount) ? item.payAmount : 0,
+                        salePrice: StringUtils.isNoEmpty(item.unitPrice) ? item.unitPrice : 0,
                         category: item.specValues,
                         goodsNum: item.quantity,
                         afterSaleService: this.getAfterSaleService(item, index),
