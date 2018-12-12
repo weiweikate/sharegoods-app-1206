@@ -153,7 +153,7 @@ export default class MyIntegralAccountPage extends BasePage {
         }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
-            if (response.code == 10000) {
+            if (response.code === 10000) {
                 let data = response.data;
                 data.data.map((item, index) => {
                     arrData.push({
@@ -179,8 +179,8 @@ export default class MyIntegralAccountPage extends BasePage {
     };
     onRefresh = () => {
         this.currentPage = 1;
-        MineApi.getUser().then(res => {
-            let data = res.data;
+        MineApi.getUser().then(resp => {
+            let data = resp.data;
             user.saveUserInfo(data);
         }).catch(err => {
             if (err.code === 10009) {

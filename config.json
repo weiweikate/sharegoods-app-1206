@@ -29,7 +29,7 @@
         },
         "online": {
             "name": "生产",
-            "host": "",
+            "host": "https://api.sharegoodsmall.com/gateway",
             "h5": "https://h5.sharegoodsmall.com",
             "oss":"https://cdn.sharegoodsmall.com"
         },

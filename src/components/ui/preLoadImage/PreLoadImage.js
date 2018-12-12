@@ -28,7 +28,7 @@ export default class PreLoadImage extends Component {
     componentWillReceiveProps(nextProps,prosp) {
         if (nextProps.imageUri !== this.props.imageUri) {
             this.state.isLoadComplete = false;
-            this.state.type=0;
+            this.state.type = 0;
             // this.state.type = 0;
         }
     }

@@ -25,7 +25,7 @@ export default class NoAccessPage extends Component {
                               leftPressed={() => {
                                   this.props.navigation.goBack();
                               }}
-                              title={this.props.leftNavItemHidden?'拼店':'店铺详情'}/>
+                              title={this.props.leftNavItemHidden ? '拼店' : '店铺详情'}/>
                 <ScrollView showsVerticalScrollIndicator={false}
                             refreshControl={<RefreshControl title="下拉刷新"
                                                             tintColor={DesignRule.textColor_instruction}

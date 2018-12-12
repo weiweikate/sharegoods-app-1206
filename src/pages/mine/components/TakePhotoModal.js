@@ -47,13 +47,13 @@ class TakePhotoModal extends Component {
                     <TouchableOpacity key={i} style={{
                         height: 48,
                         justifyContent: 'center',
-                        backgroundColor: this.state.currentSelect == i ? DesignRule.bgColor : 'white'
+                        backgroundColor: this.state.currentSelect === i ? DesignRule.bgColor : 'white'
                     }} onPress={() => {
                         this.setState({ currentSelect: i });
                     }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <Text style={{ marginLeft: 21 }}>{nameArr[i]}</Text>
-                            <UIImage source={this.state.currentSelect == i ? circleSelect : circleUnselect}
+                            <UIImage source={this.state.currentSelect === i ? circleSelect : circleUnselect}
                                      style={{ width: 22, height: 22, marginRight: 22 }}/>
                         </View>
                     </TouchableOpacity>

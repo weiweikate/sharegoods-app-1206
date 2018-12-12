@@ -28,11 +28,11 @@ export default class OrderDetailStateView extends Component {
     }
 
     go2Logistics(){
-        if(orderDetailModel.expressList&&orderDetailModel.expressList.length===1){
+        if(orderDetailModel.expressList && orderDetailModel.expressList.length === 1){
             this.props.nav("order/logistics/LogisticsDetailsPage", {
                 expressNo: orderDetailModel.expressList[0].expressNo
             });
-        }else if(orderDetailModel.expressList&&orderDetailModel.expressList.length>1){
+        }else if(orderDetailModel.expressList && orderDetailModel.expressList.length > 1){
             this.props.nav("order/logistics/CheckLogisticsPage", {
                 expressList: orderDetailModel.expressList
             });
@@ -40,8 +40,8 @@ export default class OrderDetailStateView extends Component {
 
     }
     render() {
-        if(orderDetailModel.expressList&&orderDetailModel.expressList.length>1){
-            orderDetailAfterServiceModel.totalAsList.sellerState=`该订单已拆成${orderDetailModel.expressList.length}个包裹发出，点击"查看物流"可查看详情`
+        if(orderDetailModel.expressList && orderDetailModel.expressList.length > 1){
+            orderDetailAfterServiceModel.totalAsList.sellerState = `该订单已拆成${orderDetailModel.expressList.length}个包裹发出，点击"查看物流"可查看详情`
         }
         if (orderDetailModel.status === 1) {
             return (
@@ -96,8 +96,7 @@ export default class OrderDetailStateView extends Component {
                                     }}
                                     value={DateUtils.getFormatDate(orderDetailAfterServiceModel.totalAsList.logisticsTime / 1000)}/> : null}
                             </View>
-                            <View>
-                            </View>
+                            <View />
                         </View>
                         <UIImage source={arrow_right}
                                  style={{ height: px2dp(14), width: px2dp(10), marginRight: px2dp(11) }}

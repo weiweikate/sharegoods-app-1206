@@ -1,10 +1,11 @@
-import detailNavView from './detailNavView'
+import detailNavView from './detailNavView';
+
 const product = {
     detailShowBg: require('./detailShowBg.png'),
     home: require('./home.png'),
     icon_close: require('./icon_close.png'),
     jiarugouwuche_no: require('./jiarugouwuche_no.png'),
-    message: require('./message.png'),
+    message: require('../message_black.png'),
     share: require('./share.png'),
     detail_search: require('./detail_search.png'),
     detail_kefu: require('./detail_kefu.png'),

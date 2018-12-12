@@ -142,14 +142,14 @@ export default class UserInformationPage extends BasePage {
             MineApi.updateUserById({ headImg: callback.imageUrl, type: 1 }).then((response) => {
                 console.log(response);
                 this.$loadingDismiss();
-                if (response.code == 10000) {
+                if (response.code === 10000) {
                     user.headImg = callback.imageUrl;
                     this.$toastShow("头像修改成功");
                 }
             }).catch(err => {
 
                 this.$loadingDismiss();
-                if (err.code == 10009) {
+                if (err.code === 10009) {
                     this.$navigate("login/login/LoginPage");
                 }
             });
@@ -183,7 +183,7 @@ export default class UserInformationPage extends BasePage {
         MineApi.updateUserById({ type: 3, provinceId: provinceCode, cityId: cityCode, areaId: areaCode }).then(res => {
             this.$toastShow("地址修改成功");
         }).catch(err => {
-            if (err.code == 10009) {
+            if (err.code === 10009) {
                 this.$navigate("login/login/LoginPage");
             }
         });

@@ -107,7 +107,7 @@ export default class CustomProgress extends Component {
     }
 
     _startAniProgress(progress) {
-        if (this._progress >= 0 && this.totalWidth != 0) {
+        if (this._progress >= 0 && this.totalWidth !== 0) {
             Animated.timing(this._progressAni, {
                 toValue: progress * this.totalWidth,
                 duration: this.props.progressAniDuration,
@@ -117,7 +117,7 @@ export default class CustomProgress extends Component {
     }
 
     _startAniBuffer(buffer) {
-        if (this._buffer >= 0 && this.totalWidth != 0) {
+        if (this._buffer >= 0 && this.totalWidth !== 0) {
             Animated.timing(this._bufferAni, {
                 toValue: buffer * this.totalWidth,
                 duration: this.props.bufferAniDuration
@@ -141,7 +141,7 @@ export default class CustomProgress extends Component {
 }
 Object.defineProperty(CustomProgress.prototype, 'progress', {
     set(value) {
-        if (value >= 0 && this._progress != value) {
+        if (value >= 0 && this._progress !== value) {
             this._progress = value;
             this._startAniProgress(value);
         }
@@ -153,7 +153,7 @@ Object.defineProperty(CustomProgress.prototype, 'progress', {
 });
 Object.defineProperty(CustomProgress.prototype, 'buffer', {
     set(value) {
-        if (value >= 0 && this._buffer != value) {
+        if (value >= 0 && this._buffer !== value) {
             this._buffer = value;
             this._startAniBuffer(value);
         }

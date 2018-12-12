@@ -357,7 +357,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             if (num <= 0){
                 this.$toastShow('平台售后操作已到上线');
                 return;
-            };
+            }
 
             Alert.alert('',
                 tips[pageType],

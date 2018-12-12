@@ -72,7 +72,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
             pageSize: 15,
             packageId: this.params.id
         }).then(res => {
-            let arrs = this.currentPage == 1 ? [] : this.state.data;
+            let arrs = this.currentPage === 1 ? [] : this.state.data;
             if (!EmptyUtils.isEmptyArr(res.data.data)) {
                 res.data.data.map((item, index) => {
                     arrs.push(item);

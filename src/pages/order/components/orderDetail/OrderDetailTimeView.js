@@ -52,7 +52,7 @@ export default class OrderDetailTimeView extends Component {
                             style={styles.textGoodsDownStyle}/> : null}
                 {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].cancelTime) && orderDetailModel.status === 5 ?
                     <UIText value={'关闭时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].cancelTime / 1000)}
-                            style={styles.textGoodsDownStyle}/>:null}
+                            style={styles.textGoodsDownStyle}/> : null}
                 {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].outTradeNo)  ?
                     <UIText value={'交易订单号：' + orderDetailModel.warehouseOrderDTOList[0].outTradeNo}
                             style={styles.textOrderDownStyle}/> : null}

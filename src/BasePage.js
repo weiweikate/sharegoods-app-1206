@@ -87,7 +87,7 @@ export default class BasePage extends Component {
                                       width: 115,
                                       borderRadius: 18,
                                       borderColor: DesignRule.bgColor_btn,
-                                      borderWidth: DesignRule.lineHeight*1.5,
+                                      borderWidth: DesignRule.lineHeight * 1.5,
                                       alignItems: 'center',
                                       justifyContent: 'center',
                                       marginTop: 20

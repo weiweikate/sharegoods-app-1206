@@ -54,7 +54,7 @@ const VerticalTableView = props => {
     };
     this.renderItemListView = (index) => {
         let arr = [];
-        if (index == 0) {
+        if (index === 0) {
             for (let i = 0; i < tableData.length; i++) {
                 arr.push(
                     //剩余宽度345

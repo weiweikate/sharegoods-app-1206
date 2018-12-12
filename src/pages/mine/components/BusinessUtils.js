@@ -5,7 +5,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import Toast from './../../../utils/bridge';
 import { RSA } from '../../../api/network/RSA';
 
-var lastShowImagePickTime = null;
+let lastShowImagePickTime = null;
 
 export default {
     /**

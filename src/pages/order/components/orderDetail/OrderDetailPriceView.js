@@ -66,8 +66,8 @@ export default class OrderDetailPriceView extends Component {
    render(){
        return(
            <View style={{ backgroundColor: 'white',marginTop:10 ,paddingTop:10}}>
-               {orderDetailModel.orderSubType >=3 ? this.renderGiftAfterSales() : null}
-               {orderDetailModel.orderSubType>=3 && orderDetailModel.giftCouponDTOList.length > 0 ?
+               {orderDetailModel.orderSubType >= 3 ? this.renderGiftAfterSales() : null}
+               {orderDetailModel.orderSubType >= 3 && orderDetailModel.giftCouponDTOList.length > 0 ?
                    <View>
                        {this.renderLine()}
                        {orderDetailModel.giftCouponDTOList.map((item, index) => {
@@ -110,7 +110,7 @@ export default class OrderDetailPriceView extends Component {
                                rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }} isArrow={false}
                                isLine={false}/>
                {this.renderLine()}
-               <UserSingleItem itemHeightStyle={{ height: 45 }} leftText={`${orderDetailModel.status>1?'实付款':'需付款'}`}
+               <UserSingleItem itemHeightStyle={{ height: 45 }} leftText={`${orderDetailModel.status > 1 ? '实付款' : '需付款'}`}
                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
                                rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].payAmount)}
                                rightTextStyle={{ color: DesignRule.mainColor, fontSize: 15 }} isArrow={false}

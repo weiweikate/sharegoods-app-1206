@@ -58,13 +58,13 @@ class ActivityOneView extends Component {
     };
     constructor(props){
         super(props)
-        this.state={
+        this.state = {
             ratio:1
         }
 
         Image.getSize(this.props.imageUrl,(width,heigth)=>{
             this.setState({
-                ratio:heigth/width
+                ratio:heigth / width
             })
         })
     }

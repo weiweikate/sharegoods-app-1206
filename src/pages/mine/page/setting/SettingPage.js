@@ -252,9 +252,9 @@ class SettingPage extends BasePage {
     // 版本检测
     getNewVersion = () => {
         // Android调用原生检测版本
-        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
-            if (res.data.upgrade === 1) {
-                Alert.alert('提示', '是否更新为V' + res.data.version + '版本？',
+        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
+            if (resp.data.upgrade === 1) {
+                Alert.alert('提示', '是否更新为V' + resp.data.version + '版本？',
                     [
                         {
                             text: '取消', onPress: () => {

@@ -51,13 +51,13 @@ export default class ConfirmOrderPage extends BasePage {
     };
 
     isSupportCoupons(){
-        let k=0;
+        let k = 0;
         this.state.viewData.list.map((item)=>{
-            if(item.restrictions&1 !==1){
+            if(item.restrictions & 1 !== 1){
                 k++;
             }
         });
-        return k===this.state.viewData.list.length||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2
+        return k === this.state.viewData.list.length || this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2
     }
     //**********************************ViewPart******************************************
     renderAddress = () => {
@@ -187,7 +187,7 @@ export default class ConfirmOrderPage extends BasePage {
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
                         return <View style={{ backgroundColor: 'white' }} key={index}>
-                            {index == 0 ? <Image source={couponIcon} style={styles.couponIconStyle}/> : null}
+                            {index === 0 ? <Image source={couponIcon} style={styles.couponIconStyle}/> : null}
                             <View style={styles.couponsOutStyle}>
                                 <Text style={styles.couponsTextStyle}>{item.couponName}</Text>
                                 <Text style={styles.couponsNumStyle}>x1</Text>
@@ -271,7 +271,7 @@ export default class ConfirmOrderPage extends BasePage {
         this.loadPageData();
         let arr = [];
         console.log('loadmore', this.state.orderParam);
-        if(this.params.orderParamVO.orderType==3){
+        if(this.params.orderParamVO.orderType === 3){
             return;
         }
         this.state.orderParam.orderProducts.map((item, index) => {
@@ -281,10 +281,10 @@ export default class ConfirmOrderPage extends BasePage {
                 amount: item.quantity
             });
         });
-        API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(res => {
-            let data = res.data || {};
+        API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(resp => {
+            let data = resp.data || {};
             let dataList = data.data || [];
-            if (dataList.length == 0) {
+            if (dataList.length === 0) {
                 this.setState({ couponName: '暂无优惠券' });
             }
         }).catch(result => {
@@ -444,7 +444,7 @@ export default class ConfirmOrderPage extends BasePage {
                 // activityId: item.activityId
             });
         });
-        let  addressData=data.userAddressDTO||data.userAddress||{}
+        let  addressData = data.userAddressDTO || data.userAddress || {}
         if (addressData.address) {
             viewData.express = {
                 id: addressData.id,
@@ -462,7 +462,7 @@ export default class ConfirmOrderPage extends BasePage {
             // viewData.express = {};
         }
         viewData.totalAmounts = data.payAmount;
-        viewData.totalFreightFee = data.totalFreightFee?data.totalFreightFee:0;
+        viewData.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         viewData.list = arrData;
         viewData.couponList = data.couponList ? data.couponList : null;
         this.setState({ viewData,addressId:addressData.id });
@@ -647,7 +647,7 @@ export default class ConfirmOrderPage extends BasePage {
     };
     //选择优惠券
     jumpToCouponsPage = (params) => {
-        if (params == 'justOne') {
+        if (params === 'justOne') {
             this.$navigate('mine/coupons/CouponsPage', {
                 justOne: this.state.viewData.totalAmounts ? this.state.viewData.totalAmounts : 1, callBack: (data) => {
                     console.log(typeof data);
@@ -677,7 +677,7 @@ export default class ConfirmOrderPage extends BasePage {
                             addressId:this.state.addressId
                         });
                         this.loadPageData(params);
-                    } else if (data == 'giveUp') {
+                    } else if (data === 'giveUp') {
                         this.setState({ userCouponCode: null, couponName: null });
                         this.loadPageData();
                     }

@@ -46,7 +46,7 @@ export default class ShowDetailPage extends BasePage {
         this.state = {
             loadingState: PageLoadingState.loading,
         }
-        
+
     }
 
     componentWillMount() {

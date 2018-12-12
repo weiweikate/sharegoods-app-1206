@@ -74,7 +74,7 @@ class ShopCartStore {
             }
         });
 
-        return   Math.round(totalMoney * 100)/100;
+        return   Math.round(totalMoney * 100) / 100;
 
 
     }
@@ -128,7 +128,7 @@ class ShopCartStore {
                 })
 
                 originArr.map(originGood =>{
-                    if (originGood.productCode === item.productCode && item.skuCode == originGood.skuCode){
+                    if (originGood.productCode === item.productCode && item.skuCode === originGood.skuCode){
                         item.isSelected = originGood.isSelected
                     }
                 })

@@ -191,10 +191,10 @@ class SearchPage extends BasePage {
             //         this.state.recentData.push(inputText);
             //     }
             // }
-            this.state.recentData.length == 10 ? this.state.recentData.splice(9, 1) : this.state.recentData
+            this.state.recentData.length === 10 ? this.state.recentData.splice(9, 1) : this.state.recentData
             this.state.recentData.unshift(inputText)
             let setArr = new Set(this.state.recentData)
-            this.state.recentData=[...setArr]
+            this.state.recentData = [...setArr]
             console.log('最近搜索记录=' + array);
             // let data = JSON.stringify(array);
             Storage.set(recentDataKey, this.state.recentData);
