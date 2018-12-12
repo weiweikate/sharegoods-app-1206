@@ -35,6 +35,7 @@ export default class DetailBottomView extends Component {
 
         //btn不能点 变灰
         let cantBuy = productStatus !== 1 || isLimit;
+        let buyText = productStatus === 3 ? '暂不可购买' : (isLimit ? '您已经购买过该商品' : '立即购买');
         return (
             <View style={{ height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0), backgroundColor: 'white' }}>
                 {disable ? <View style={{
@@ -64,7 +65,7 @@ export default class DetailBottomView extends Component {
                         <Text style={{
                             color: isLimit ? DesignRule.textColor_instruction : DesignRule.white,
                             fontSize: 17
-                        }}>{isLimit ? '您已经购买过该商品' : '立即购买'}</Text>
+                        }}>{buyText}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{

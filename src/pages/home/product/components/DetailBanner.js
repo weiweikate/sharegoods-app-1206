@@ -90,7 +90,7 @@ export class DetailBanner extends Component {
                                       loop={false}
                                       renderRow={this._renderViewPageItem}
                                       dataSource={EmptyUtils.isEmptyArr(productImgListTemp) ? [] : productImgListTemp}
-                                      onWillChange={(item, index) => {
+                                      onDidChange={(item, index) => {
                                           if (this.state.messageIndex !== index) {
                                               this.setState({
                                                   messageIndex: index
