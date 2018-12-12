@@ -457,13 +457,24 @@ export default class MyCouponsItems extends Component {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
             // priceId  productId
-            this.props.orderParam.orderProducts.map((item, index) => {
-                arr.push({
-                    priceCode: item.skuCode,
-                    productCode: item.productCode,
-                    amount: item.quantity
+            if(this.props.orderParam.orderType==99){
+                this.props.orderParam.orderProducts.map((item, index) => {
+                    arr.push({
+                        priceCode: item.skuCode,
+                        productCode: item.prodCode,
+                        amount: item.quantity
+                    });
                 });
-            });
+            }else{
+                this.props.orderParam.orderProductList.map((item, index) => {
+                    arr.push({
+                        priceCode: item.skuCode,
+                        productCode: item.productCode,
+                        amount: 1
+                    });
+                });
+            }
+
             this.isLoadMore = true;
             API.listAvailable({ page: this.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
                 this.setState({

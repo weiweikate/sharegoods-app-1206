@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    NativeModules,
     StyleSheet,
     View,
     Image,
@@ -13,14 +12,15 @@ import {
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import bridge from "../../../utils/bridge";
 import GoodsItem from '../components/GoodsItem';
 import user from '../../../model/user';
-import Toast from '../../../utils/bridge';
+// import Toast from '../../../utils/bridge';
 import BasePage from '../../../BasePage';
 import OrderApi from './../api/orderApi';
 import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
-// import { NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import userOrderNum from '../../../model/userOrderNum';
 import res from '../res';
@@ -34,7 +34,9 @@ export default class ConfirmOrderPage extends BasePage {
         this.state = {
             message: '',
             defaultAddress: false,
-            viewData: {},
+            viewData: {
+                express:{}
+            },
             tokenCoin: 0,
             addressId:null,
             userCouponCode: null,
@@ -272,7 +274,13 @@ export default class ConfirmOrderPage extends BasePage {
         let arr = [];
         console.log('loadmore', this.state.orderParam);
         if(this.params.orderParamVO.orderType==3){
-            return;
+            this.props.orderParam.orderProductList.map((item, index) => {
+                arr.push({
+                    priceCode: item.skuCode,
+                    productCode: item.productCode,
+                    amount: 1
+                });
+            });
         }
         this.state.orderParam.orderProducts.map((item, index) => {
             arr.push({
@@ -295,7 +303,7 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     loadPageData(params) {
-        Toast.showLoading();
+        bridge.showLoading();
         switch (this.state.orderParam.orderType) {
             case 1://秒杀
                 OrderApi.SeckillMakeSureOrder({
@@ -306,11 +314,11 @@ export default class ConfirmOrderPage extends BasePage {
                     submitType:1,
                     ...params
                 }).then(response => {
-                    Toast.hiddenLoading();
+                    bridge.hiddenLoading();
                     this.handleNetData(response.data);
                 }).catch(err => {
-                    Toast.hiddenLoading();
-                    this.$toastShow(err.msg);
+                    bridge.hiddenLoading();
+                    bridge.$toast(err.msg);
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -329,11 +337,11 @@ export default class ConfirmOrderPage extends BasePage {
                     submitType:1,
                     ...params
                 }).then(response => {
-                    Toast.hiddenLoading();
+                    bridge.hiddenLoading();
                     this.handleNetData(response.data);
                 }).catch(err => {
-                    Toast.hiddenLoading();
-                    this.$toastShow(err.msg);
+                    bridge.hiddenLoading();
+                    bridge.$toast(err.msg);
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -348,16 +356,16 @@ export default class ConfirmOrderPage extends BasePage {
                     // orderType: this.params.orderParamVO.orderType,
                     orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
                     //orderSubType:  1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source:2,//1.购物车 2.直接下单
+                    source:this.params.orderParamVO.source,//1.购物车 2.直接下单
                     channel:2,//1.小程序 2.APP 3.H5
                     orderProductList: this.params.orderParamVO.orderProducts,
                     ...params
                 }).then(response => {
-                    Toast.hiddenLoading();
+                    bridge.hiddenLoading();
                     this.handleNetData(response.data);
                 }).catch(err => {
                     console.log('err', err);
-                    Toast.hiddenLoading();
+                    bridge.hiddenLoading();
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -374,7 +382,7 @@ export default class ConfirmOrderPage extends BasePage {
                             // { text: '否' }
                         ]);
                     } else if (err.code === 54001) {
-                        this.$toastShow('商品库存不足！');
+                        bridge.$toast('商品库存不足！');
                         // shopCartCacheTool.getShopCartGoodsListData();
                         this.$navigateBack();
                     }
@@ -410,12 +418,14 @@ export default class ConfirmOrderPage extends BasePage {
                     ...params
                 }).then(
                     response => {
-                        Toast.hiddenLoading();
+                        bridge.hiddenLoading();
                         this.handleNetData(response.data);
                     }
                 ).catch(err => {
-                    Toast.hiddenLoading();
+                    console.log(err);
                     this.$toastShow(err.msg);
+                    bridge.hiddenLoading();
+                    // bridge.toast(err.msg);
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -510,7 +520,7 @@ export default class ConfirmOrderPage extends BasePage {
         };
 
         if (StringUtils.isEmpty(this.state.addressId)) {
-            NativeModules.commModule.toast('请先添加地址');
+            bridge.$toast('请先添加地址');
             return;
         }
         this.$loadingShow();
@@ -617,7 +627,7 @@ export default class ConfirmOrderPage extends BasePage {
                 orderProductList: this.state.orderParam.orderProducts,
                 // orderType: this.state.orderParam.orderType,
                 orderType:1,
-                source:2,
+                source:this.state.orderParam.source,
                 channel:2,
             };
             OrderApi.submitOrder(params).then((response) => {
@@ -687,24 +697,23 @@ export default class ConfirmOrderPage extends BasePage {
     };
 
     replaceRouteName(data) {
-        this.$navigate('payment/PaymentMethodPage',
-            {
+        // this.$navigate('payment/PaymentMethodPage',
+        //     {
+        //         orderNum: data.orderNo,
+        //         amounts: data.payAmount,
+        //         pageType: 0,
+        //        }
+        // )
+        let replace = NavigationActions.replace({
+            key: this.props.navigation.state.key,
+            routeName: 'payment/PaymentMethodPage',
+            params: {
                 orderNum: data.orderNo,
                 amounts: data.payAmount,
                 pageType: 0,
-               }
-        )
-        // let replace = NavigationActions.replace({
-        //     key: this.props.navigation.state.key,
-        //     routeName: 'payment/PaymentMethodPage',
-        //     params: {
-        //         orderNum: data.orderNum,
-        //         amounts: this.state.viewData.totalAmounts,
-        //         pageType: 0,
-        //         availableBalance: data.user.availableBalance
-        //     }
-        // });
-        // this.props.navigation.dispatch(replace);
+            }
+        });
+        this.props.navigation.dispatch(replace);
     }
 }
 
