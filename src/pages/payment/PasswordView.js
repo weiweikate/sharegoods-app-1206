@@ -37,7 +37,6 @@ export default class PasswordView extends Component {
     render() {
         return <Modal
             animationType='fade'
-            transparent={true}
             onRequestClose={()=>this.onRequestClose()}
             visible={this.props.visible}
         >
