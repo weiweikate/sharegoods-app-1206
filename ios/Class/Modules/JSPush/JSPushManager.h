@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 // 引入 JPush 功能所需头文件
 #import "JPUSHService.h"
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JSPushManager : NSObject
