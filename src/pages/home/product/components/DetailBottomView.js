@@ -30,11 +30,12 @@ export default class DetailBottomView extends Component {
         let { shareMoney, productStatus, buyLimit, leftBuyNum } = this.props;
         //限购
         let isLimit = buyLimit !== -1 && leftBuyNum === 0;
-        //status2：产品下架    1正常  2下架  3当前时间不能买
+        //productStatus 2：产品下架    1正常  2下架  3当前时间不能买
         let disable = productStatus === 2;//是否下架  样式
 
         //btn不能点 变灰
         let cantBuy = productStatus !== 1 || isLimit;
+        let buyText = productStatus === 3 ? '暂不可购买' : (isLimit ? '您已经购买过该商品' : '立即购买');
         return (
             <View style={{ height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0), backgroundColor: 'white' }}>
                 {disable ? <View style={{
@@ -64,7 +65,7 @@ export default class DetailBottomView extends Component {
                         <Text style={{
                             color: isLimit ? DesignRule.textColor_instruction : DesignRule.white,
                             fontSize: 17
-                        }}>{isLimit ? '您已经购买过该商品' : '立即购买'}</Text>
+                        }}>{buyText}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{

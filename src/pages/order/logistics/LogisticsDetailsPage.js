@@ -71,7 +71,7 @@ class LogisticsDetailsPage extends BasePage {
                     }}/>
                 </View>
                 <View style={{ flexDirection: "row", paddingLeft: 15, height: 60, paddingTop: 5 }}>
-                    <Image source={logisticsIcon} style={{ width: 20, height: 23, marginLeft: 10, marginTop: 15 }}/>
+                    <Image source={logisticsIcon} style={{ width: 20, height: 23, marginLeft: 10, marginTop: 15 }} resizeMode={'contain'}/>
                     <Text style={{
                         fontSize: 13,
                         color: DesignRule.textColor_mainTitle_222,

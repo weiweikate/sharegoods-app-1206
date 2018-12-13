@@ -287,7 +287,7 @@ export default class TopicDetailPage extends BasePage {
             param
         ).then(result => {
             this._getActivityData();
-            this.$toastShow(result.msg);
+            this.$toastShow(`已关注本商品,\n活动开始前3分钟会有消息通知您`);
         }).catch(error => {
             this.$toastShow(error.msg);
         });
@@ -302,6 +302,7 @@ export default class TopicDetailPage extends BasePage {
             num: amount,
             code: this.state.activityData.activityCode
         });
+        this.$loadingShow();
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
                 orderType: this.state.activityType,
@@ -332,6 +333,7 @@ export default class TopicDetailPage extends BasePage {
         //     priceList: priceList
         // }];
 
+        this.$loadingShow();
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
                 activityCode: this.params.activityCode,
@@ -453,8 +455,8 @@ export default class TopicDetailPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y < 44) {
             this.st = 0;
-        } else if (Y < ScreenUtils.autoSizeWidth(377)) {
-            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(377) - 44);
+        } else if (Y < ScreenUtils.autoSizeWidth(375)) {
+            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(375) - 44);
         } else {
             this.st = 1;
         }

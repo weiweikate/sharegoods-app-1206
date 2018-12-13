@@ -5,6 +5,7 @@
  * @returns 返回格式化后的日期字符串
  */
 export function formatDate(date, fmt) {
+    date = parseInt(date.toString(), 0);
     fmt = fmt || 'yyyy-MM-dd HH:mm:ss';
     date = date || new Date();
     date = typeof date === 'number' ? new Date(date) : date;

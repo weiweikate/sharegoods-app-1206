@@ -27,6 +27,7 @@
   // 再设置模式
     hud.mode = MBProgressHUDModeCustomView;
     hud.label.text = text;
+    hud.label.numberOfLines = 0;
     hud.contentColor = [UIColor whiteColor];//文字和菊花的颜色
     //hud.bezelView.style = MBProgressHUDBackgroundStyleSolidCo;
     hud.label.font = [UIFont systemFontOfSize:13.0];
