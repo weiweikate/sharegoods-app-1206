@@ -22,4 +22,4 @@ class HomeRegisterFirstManager {
 }
 
 const homeRegisterFirstManager = new HomeRegisterFirstManager();
-export default { homeRegisterFirstManager, newuser_n, newuser_y, olduser };
+export  { homeRegisterFirstManager, newuser_n, newuser_y, olduser };
