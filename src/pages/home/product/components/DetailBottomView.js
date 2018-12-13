@@ -27,18 +27,21 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
+        //productStatus  1正常  2下架  3当前时间不能买
         let { shareMoney, productStatus, buyLimit, leftBuyNum } = this.props;
+        //是否下架
+        let isDown = productStatus === 2;//是否下架  样式
+
         //限购
         let isLimit = buyLimit !== -1 && leftBuyNum === 0;
-        //productStatus 2：产品下架    1正常  2下架  3当前时间不能买
-        let disable = productStatus === 2;//是否下架  样式
 
-        //btn不能点 变灰
+        //正常能买&&不限购
         let cantBuy = productStatus !== 1 || isLimit;
+        //立即购买文案
         let buyText = productStatus === 3 ? '暂不可购买' : (isLimit ? '您已经购买过该商品' : '立即购买');
         return (
-            <View style={{ height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0), backgroundColor: 'white' }}>
-                {disable ? <View style={{
+            <View style={{ height: 49 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
+                {isDown ? <View style={{
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: 20,
@@ -63,7 +66,7 @@ export default class DetailBottomView extends Component {
                         }}
                         onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
                         <Text style={{
-                            color: isLimit ? DesignRule.textColor_instruction : DesignRule.white,
+                            color: cantBuy ? DesignRule.textColor_instruction : DesignRule.white,
                             fontSize: 17
                         }}>{buyText}</Text>
                     </TouchableOpacity>
