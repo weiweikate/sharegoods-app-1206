@@ -4,7 +4,6 @@ import {
     StyleSheet, ScrollView, RefreshControl
 } from "react-native";
 import BasePage from "../../../../BasePage";
-import TakePhotoModal from "../../components/TakePhotoModal";
 import UserSingleItem from "../../components/UserSingleItem";
 import user from "../../../../model/user";
 import { observer } from "mobx-react/native";
@@ -46,25 +45,7 @@ export default class UserInformationPage extends BasePage {
             <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
-    renderModal = () => {
-        return (
-            <View>
-                <TakePhotoModal
-                    isShow={this.state.isShowTakePhotoModal}
-                    closeWindow={() => {
-                        this.setState({ isShowTakePhotoModal: false });
-                    }}
-                    takePhoto={() => {
-                        this.setState({ isShowTakePhotoModal: false });
-                    }}
-                    selectPhoto={() => {
-                        this.setState({ isShowTakePhotoModal: false });
-                    }}
-                />
-            </View>
 
-        );
-    };
     _reload = () => {
         MineApi.getUser().then(res => {
             let data = res.data;
