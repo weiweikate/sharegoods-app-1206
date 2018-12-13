@@ -68,7 +68,6 @@ export default class ShareTaskAnimation extends React.Component {
                        this.modal = ref;
                    }}
                    visible={this.state.modalVisible}
-                   transparent={true}
             >
                 <TouchableWithoutFeedback
                     onPress={() => {

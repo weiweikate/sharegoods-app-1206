@@ -86,33 +86,33 @@ export default class OrderDetailPriceView extends Component {
                    null}
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].productPrice)}
+                               rightText={orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].productPrice):StringUtils.formatMoneyString(orderDetailModel.detail.productPrice)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].freightAmount)}
+                               rightText={orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].freightAmount):StringUtils.formatMoneyString(orderDetailModel.detail.freightAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={'-' + StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].couponAmount)}
+                               rightText={'-' + orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].couponAmount):StringUtils.formatMoneyString(orderDetailModel.detail.couponAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={'-' + StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount)}
+                               rightText={'-' + orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount):StringUtils.formatMoneyString(orderDetailModel.detail.tokenCoinAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].orderAmount)}
+                               rightText={orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].orderAmount):StringUtils.formatMoneyString(orderDetailModel.detail.orderAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }} isArrow={false}
                                isLine={false}/>
                {this.renderLine()}
                <UserSingleItem itemHeightStyle={{ height: 45 }} leftText={`${orderDetailModel.status > 1 ? '实付款' : '需付款'}`}
                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
-                               rightText={StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].payAmount)}
+                               rightText={orderDetailModel.status > 1 ? StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].payAmount):StringUtils.formatMoneyString(orderDetailModel.detail.payAmount)}
                                rightTextStyle={{ color: DesignRule.mainColor, fontSize: 15 }} isArrow={false}
                                isLine={true}/>
            </View>

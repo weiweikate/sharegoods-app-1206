@@ -59,7 +59,7 @@ export default class ConfirmOrderPage extends BasePage {
                 k++;
             }
         });
-        return k === this.state.viewData.list.length || this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2
+        return k === this.state.viewData.list.length
     }
     //**********************************ViewPart******************************************
     renderAddress = () => {
@@ -185,7 +185,7 @@ export default class ConfirmOrderPage extends BasePage {
     };
     renderCouponsPackage = () => {
         return (
-            <View style={{ borderColor: DesignRule.lineColor_inWhiteBg, borderWidth: 0.5 }}>
+            <View style={{ borderTopColor: DesignRule.lineColor_inWhiteBg, borderTopWidth: 0.5 }}>
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
                         return <View style={{ backgroundColor: 'white' }} key={index}>
@@ -272,25 +272,29 @@ export default class ConfirmOrderPage extends BasePage {
     componentDidMount() {
         this.loadPageData();
         let arr = [];
+        let params={};
         console.log('loadmore', this.state.orderParam);
-        if(this.params.orderParamVO.orderType==3){
-            this.props.orderParam.orderProductList.map((item, index) => {
+        if(this.params.orderParamVO.orderType==99){
+            this.state.orderParam.orderProducts.map((item, index) => {
                 arr.push({
                     priceCode: item.skuCode,
                     productCode: item.productCode,
-                    amount: 1
+                    amount: item.quantity||item.num
                 });
             });
+            params={productPriceIds: arr}
         }else{
             this.state.orderParam.orderProducts.map((item, index) => {
                 arr.push({
                     priceCode: item.skuCode,
                     productCode: item.productCode,
-                    amount: item.quantity
+                    amount: 1
                 });
+
             });
+            params={productPriceIds: arr,activityCode: this.state.orderParam.activityCode, activityType: this.state.orderParam.orderType}
         }
-        API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(resp => {
+        API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
             let data = resp.data || {};
             let dataList = data.data || [];
             if (dataList.length === 0) {
@@ -354,7 +358,6 @@ export default class ConfirmOrderPage extends BasePage {
                 break;
             case 99://普通商品
                 OrderApi.makeSureOrder({
-                    // orderType: this.params.orderParamVO.orderType,
                     orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
                     //orderSubType:  1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source:this.params.orderParamVO.source,//1.购物车 2.直接下单
@@ -399,7 +402,7 @@ export default class ConfirmOrderPage extends BasePage {
                     orderSubType: this.params.orderParamVO.orderSubType ,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source:2,//1.购物车 2.直接下单
                     channel:2,//1.小程序 2.APP 3.H5
-                    orderProductList:this.params.orderParamVO.orderProductList,
+                    orderProductList:this.params.orderParamVO.orderProducts,
                     submitType:1,
                     quantity:1,
                     ...params
@@ -579,7 +582,7 @@ export default class ConfirmOrderPage extends BasePage {
                     orderSubType: this.params.orderParamVO.orderSubType ,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source:2,//1.购物车 2.直接下单
                     channel:2,//1.小程序 2.APP 3.H5
-                    orderProductList:this.params.orderParamVO.orderProductList,
+                    orderProductList:this.params.orderParamVO.orderProducts,
                     submitType:2,
                     quantity:1,
                 };
