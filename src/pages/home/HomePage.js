@@ -40,7 +40,7 @@ import res from './res';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
-
+import {homeRegisterFirstManager} from './model/HomeRegisterFirstManager';
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
 const home_notice_bg = res.home_notice_bg;
@@ -55,7 +55,6 @@ const home_notice_bg = res.home_notice_bg;
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
-import homeRegisterFirstManager from './model/HomeRegisterFirstManager';
 import BasePage from '../../BasePage';
 
 @observer
@@ -179,13 +178,13 @@ class HomePage extends BasePage {
 
     showModal = () => {
         if (EmptyUtils.isEmpty(homeModalManager.versionData)) {
-            if (homeRegisterFirstManager.justRegistered) {
+            if (homeRegisterFirstManager.showRegisterModalUrl) {
                 //活动
                 this.setState({
                     showRegister: true
                 });
                 this.registerModal && this.registerModal.open();
-                homeRegisterFirstManager.setJustRegistered(false);
+                homeRegisterFirstManager.setShowRegisterModalUrl(null);
             } else {
                 //公告弹窗
                 this.showMessageModal();
@@ -390,7 +389,6 @@ class HomePage extends BasePage {
     }
 
     registerModalRender = () => {
-        const url = 'http://t2.hddhhn.com/uploads/tu/201612/98/st93.png';
         return (
             <Modal ref={(ref) => {
                 this.registerModal = ref;
@@ -405,7 +403,7 @@ class HomePage extends BasePage {
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
 
-                    <ImageLoad source={{ uri: url }} style={styles.messageBgStyle}/>
+                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }} style={styles.messageBgStyle}/>
 
                 </View>
             </Modal>
