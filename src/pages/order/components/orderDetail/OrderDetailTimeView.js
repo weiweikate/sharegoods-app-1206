@@ -53,16 +53,16 @@ export default class OrderDetailTimeView extends Component {
                 {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].cancelTime) && orderDetailModel.status === 5 ?
                     <UIText value={'关闭时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].cancelTime / 1000)}
                             style={styles.textGoodsDownStyle}/> : null}
-                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].outTradeNo)  ?
+                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].outTradeNo)&&orderDetailModel.status<5  ?
                     <UIText value={'交易订单号：' + orderDetailModel.warehouseOrderDTOList[0].outTradeNo}
                             style={styles.textOrderDownStyle}/> : null}
-                {StringUtils.isEmpty(orderDetailModel.warehouseOrderDTOList[0].deliverTime) ? null :
+                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].deliverTime)&&orderDetailModel.status<5 ?
                     <UIText value={'发货时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].deliverTime / 1000)}
-                            style={styles.textOrderDownStyle}/>}
-                {StringUtils.isEmpty(orderDetailModel.warehouseOrderDTOList[0].finishTime) ? null :
+                            style={styles.textOrderDownStyle}/>:null}
+                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].finishTime)&&orderDetailModel.status<5 ?
                     <UIText
                         value={'完成时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].finishTime ? orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].deliverTime / 1000)}
-                        style={styles.textOrderDownStyle}/>}
+                        style={styles.textOrderDownStyle}/>:null}
                 {this.renderWideLine()}
             </View>
         );
