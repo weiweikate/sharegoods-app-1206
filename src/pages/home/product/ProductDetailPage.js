@@ -317,6 +317,7 @@ export default class ProductDetailPage extends BasePage {
                 quantity: amount,
                 productCode: this.state.data.prodCode
             });
+            this.$loadingShow();
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
@@ -507,7 +508,6 @@ export default class ProductDetailPage extends BasePage {
 
 
     _render() {
-        this._renderContent();
         const { productStatus } = this.state.data;
         let dic = this._getPageStateOptions();
         return (
