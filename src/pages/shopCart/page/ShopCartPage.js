@@ -20,51 +20,13 @@ import {
 } from '../../../components/ui/index';
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
-// import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
+import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
+// import { renderShopCartCell } from './ShopCartCell';
 
 const dismissKeyboard = require('dismissKeyboard');
-
-
-const activityCode = {
-    skill: 1,//秒杀
-    makeDown: 2,//降价拍
-    discount: 3,//优惠套餐
-    helpFree: 4,//助力免费领
-    payGift: 5,//支付有礼
-    fullReduce: 6,//满减
-    guaguaLe: 7//呱呱乐
-};
-
-const activityString = {
-    [activityCode.skill]: '秒',
-    [activityCode.makeDown]: '降',
-    [activityCode.discount]: '优',
-    [activityCode.helpFree]: '助',
-    [activityCode.payGift]: '支',
-    [activityCode.fullReduce]: '满',
-    [activityCode.guaguaLe]: '刮'
-};
-
-//0 删除 1 正常商品 2 下架 无效 3 暂未开售
-const statueImage = {
-    0: res.other.invalidGoodImg,
-    1: null,
-    2: res.other.invalidGoodImg,
-    3: res.ZanWeiKaiShou
-};
-
-const getSelectImage =(itemData)=>{
-
-    if (itemData.status === 0 || itemData.status === 2 || itemData.status === 3){
-        return res.button.unAbleSelected_circle;
-    } else if (itemData.status === 1){
-        return itemData.isSelected?  res.button.selected_circle_red : res.button.unselected_circle;
-    }
-}
-
 
 @observer
 export default class ShopCartPage extends BasePage {
@@ -118,11 +80,11 @@ export default class ShopCartPage extends BasePage {
         return (
             // this.state.pageFocus
             //     ?
-                <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
-                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
-                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
-                </View>
-                // : null
+            <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
+            </View>
+            // : null
         );
     }
 
@@ -212,6 +174,8 @@ export default class ShopCartPage extends BasePage {
                 // )}
                 renderRow={(rowData, secId, rowId, rowMap) => (
                     this._renderValidItem(rowData, rowId, rowMap)
+                    // renderShopCartCell(rowData, rowId, rowMap)
+
                 )}
                 renderHiddenRow={(data, secId, rowId, rowMap) => (
                     <TouchableOpacity
