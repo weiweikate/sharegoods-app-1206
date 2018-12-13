@@ -84,9 +84,9 @@ export default class RecommendRow extends Component {
                             initialNumToRender={5}
                         />
                         <View style={{
-                            flexDirection: 'row', alignSelf: 'center',
+                            backgroundColor: DesignRule.lineColor_inWhiteBg, alignSelf: 'center', flexDirection: 'row',
                             width: ScreenUtils.autoSizeWidth(200), height: 5, marginTop: 6,
-                            borderRadius: 2, borderWidth: 0.5, borderColor: DesignRule.bgColor_btn
+                            borderRadius: 2, overflow: 'hidden'
                         }}>
                             <View style={{
                                 width: widthScale * ScreenUtils.autoSizeWidth(200),

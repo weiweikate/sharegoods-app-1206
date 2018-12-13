@@ -327,6 +327,7 @@ export default class ShopCartPage extends BasePage {
             return;
         }
         if (isCanSettlement && !haveNaNGood) {
+            this.$loadingShow();
             let buyGoodsArr = [];
             tempArr.map((goods) => {
                 buyGoodsArr.push({
@@ -335,7 +336,6 @@ export default class ShopCartPage extends BasePage {
                     productCode: goods.productCode
                 });
             });
-            this.$loadingShow();
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,

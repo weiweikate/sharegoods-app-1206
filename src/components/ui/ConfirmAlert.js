@@ -115,7 +115,7 @@ export default class ConfirmAlert extends Component {
             return null;
         }
         return (
-            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true}>
+            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated}>
                 <View style={[styles.container, { backgroundColor: 'transparent' }]}>
                     {/*<Animated.View*/}
                     {/*style={[*/}

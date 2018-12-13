@@ -56,7 +56,6 @@ export default class TopicDetailHeaderView extends Component {
             const { imgFileList, name, levelPrice, originalPrice, freightTemplatePrice, saleNum, userLevelTypeName, aferServiceDays, videoUrl, imgUrl } = this.props.data || {};
             //有视频第一个添加为视频
             let productImgListTemp = [...(imgFileList || [])];
-            productImgListTemp.unshift({ originalImg: imgUrl });
             if (StringUtils.isNoEmpty(videoUrl)) {
                 this.state.haveVideo = true;
                 productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });

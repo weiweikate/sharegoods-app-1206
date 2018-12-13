@@ -296,28 +296,32 @@ export default class TopicDetailPage extends BasePage {
 
     //选择规格确认 秒杀 降价拍
     _selectionViewConfirm = (amount, skuCode) => {
+        this.$loadingShow();
         let orderProducts = [];
         orderProducts.push({
             skuCode: skuCode,
             num: amount,
-            code: this.state.activityData.activityCode
+            code: this.state.activityData.activityCode,
+            productCode:this.state.activityData.prodCode
         });
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
                 orderType: this.state.activityType,
-                orderProducts: orderProducts
+                orderProducts: orderProducts,
+                activityCode:this.state.activityData.activityCode,
             }
         });
     };
 
     //选择规格确认 礼包
     _selectionViewPakageConfirm = (amount, selectData) => {
+        this.$loadingShow();
         let priceList = [];
         selectData.forEach((item) => {
             priceList.push({
                 // num: 1,
                 skuCode: item.skuCode,
-                prodCode: item.prodCode,
+                prodCode: item.prodCode
                 // productName: item.productName,
                 // sourceId: item.id,
                 // spec: item.specValues,
@@ -336,14 +340,11 @@ export default class TopicDetailPage extends BasePage {
             orderParamVO: {
                 activityCode: this.params.activityCode,
                 orderType: 3,
-                // orderProducts: orderProducts
-                orderSubType:this.state.data.type === 2 ? 3 : 4,
-                orderProductList: priceList,
-                channel:2,
-                source:2,
-                quantity:1,
-
-
+                orderSubType: this.state.data.type === 2 ? 3 : 4,
+                orderProducts: priceList,
+                channel: 2,
+                source: 2,
+                quantity: 1
             }
         });
     };

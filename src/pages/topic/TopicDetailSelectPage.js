@@ -95,7 +95,7 @@ export default class TopicDetailSelectPage extends Component {
         });
 
         return (
-            <Modal animationType="none" transparent={true} visible={this.state.isShow}>
+            <Modal animationType="none"  visible={this.state.isShow}>
                 <View style={styles.container}>
                     <TouchableWithoutFeedback onPress={this._close}>
                         <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>

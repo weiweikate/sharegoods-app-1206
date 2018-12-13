@@ -268,7 +268,6 @@ export default class CommShareModal extends React.Component {
         return (
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
-                       transparent={true}
                        ref={(ref) => {
                            this.modal = ref;
                        }}
