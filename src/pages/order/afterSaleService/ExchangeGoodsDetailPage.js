@@ -177,6 +177,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         /** 寄回物流在换货、退货，  2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成才显示*/
         if ((pageType === 1 || pageType === 2) &&
             (status === 2 || status === 3 || status === 4 || status === 5)) {
+            orderRefundExpress = orderRefundExpress || {};
             logistics.push({
                 title: '寄回物流',
                 value: orderRefundExpress.expressName,

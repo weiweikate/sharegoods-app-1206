@@ -5,10 +5,10 @@
 
 'use strict';
 import { action, observable } from 'mobx';
-
-const newuser_n = 'https://cdn.sharegoodsmall.com/sharegoods/resource/sg/images/package/newuser_n.png';
-const newuser_y = 'https://cdn.sharegoodsmall.com/sharegoods/resource/sg/images/package/newuser_y.png';
-const olduser = 'https://cdn.sharegoodsmall.com/sharegoods/resource/sg/images/package/olduser.png';
+import OssHelper from '../../../utils/OssHelper';
+const newuser_n = OssHelper('/sharegoods/resource/sg/images/package/newuser_n.png');
+const newuser_y = OssHelper('/sharegoods/resource/sg/images/package/newuser_y.png');
+const olduser = OssHelper('/sharegoods/resource/sg/images/package/olduser.png');
 
 class HomeRegisterFirstManager {
     @observable
