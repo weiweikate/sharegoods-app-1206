@@ -185,7 +185,7 @@ export default class RegistPage extends BasePage {
             /**
              * 跳转导师选择页面
              */
-            this.$navigate('login/login/SelectMentorPage');
+            this.$navigate('login/login/SelectMentorPage',{isHaveRedPocket:data.give});
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);
