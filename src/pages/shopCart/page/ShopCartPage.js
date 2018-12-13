@@ -56,6 +56,16 @@ const statueImage = {
     3: res.ZanWeiKaiShou
 };
 
+const getSelectImage =(itemData)=>{
+
+    if (itemData.status === 0 || itemData.status === 2 || itemData.status === 3){
+        return res.button.unAbleSelected_circle;
+    } else if (itemData.status === 1){
+        return itemData.isSelected?  res.button.selected_circle_red : res.button.unselected_circle;
+    }
+}
+
+
 @observer
 export default class ShopCartPage extends BasePage {
     // 导航配置
@@ -314,7 +324,8 @@ export default class ShopCartPage extends BasePage {
                     style={styles.itemContainer}>
                     <View style={styles.standaloneRowFront}>
                         <UIImage
-                            source={itemData.isSelected ? res.button.selected_circle_red : res.button.unselected_circle}
+                            // source={itemData.isSelected ? res.button.selected_circle_red : res.button.unselected_circle}
+                            source={getSelectImage(itemData)}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
 

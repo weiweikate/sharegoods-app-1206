@@ -88,11 +88,11 @@ export default class LoginPage extends BasePage {
                 />
                 <View style={Styles.otherLoginBgStyle}>
                     <View style={Styles.lineBgStyle}>
-                        <CommSpaceLine style={{ width: 80, marginLeft: 5 }}/>
+                        <CommSpaceLine style={{ width: 80 }}/>
                         <Text style={Styles.otherLoginTextStyle}>
                             其他登录方式
                         </Text>
-                        <CommSpaceLine style={{ width: 80, marginLeft: 5 }}/>
+                        <CommSpaceLine style={{ width: 80 ,marginLeft:5}}/>
                     </View>
                     <View style={{
                         marginTop: 15,
@@ -228,11 +228,11 @@ export default class LoginPage extends BasePage {
                 homeModule.loadHomeList()
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
-                // /**
-                //  * 跳转导师选择页面
-                //  */
-                // this.$navigate('login/login/SelectMentorPage');
-                // return;
+                /**
+                 * 跳转导师选择页面
+                 */
+                this.$navigate('login/login/SelectMentorPage');
+                return;
                 if (this.params.callback) {
                   this.$navigateBackToHome();
                 } else {
@@ -283,7 +283,8 @@ const Styles = StyleSheet.create(
             alignItems: 'center'
         },
         otherLoginTextStyle: {
-            color: DesignRule.textColor_secondTitle
+            color: DesignRule.textColor_secondTitle,
+            marginLeft:5,
         }
     }
 );
