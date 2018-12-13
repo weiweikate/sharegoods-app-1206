@@ -58,7 +58,6 @@ export default class BankTradingModal extends Component {
     render() {
         return <Modal
             animationType='fade'
-            transparent={true}
             onRequestClose={() => this.onRequestClose()}
             visible={this.props.visible}
             ref={(ref) => {

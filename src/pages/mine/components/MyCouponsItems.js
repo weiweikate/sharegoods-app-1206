@@ -159,7 +159,6 @@ export default class MyCouponsItems extends Component {
         return (
             <Modal
                 animationType='fade'
-                transparent={true}
                 onRequestClose={() => this.onRequestClose()}
                 visible={this.state.showDialogModal}>
                 <View style={styles.modalStyle}>
