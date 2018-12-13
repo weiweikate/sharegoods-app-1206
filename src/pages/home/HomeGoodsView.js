@@ -90,7 +90,9 @@ let styles = StyleSheet.create({
     },
     title: {
         color: DesignRule.textColor_secondTitle,
-        fontSize: px2dp(12)
+        fontSize: px2dp(12),
+        marginLeft: px2dp(5),
+        marginRight: px2dp(5)
     },
     money: {
         color: DesignRule.mainColor,

@@ -7,12 +7,10 @@ import React, { Component } from "react";
 import DesignRule from 'DesignRule';
 
 export default class CommSpaceLine extends Component {
-
     constructor(props) {
         super(props);
         this.style = props.style;
     }
-
     render() {
         return (
             <View style={[Styles.CommLineStyle, this.style]}/>

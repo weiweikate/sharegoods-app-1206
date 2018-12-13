@@ -215,7 +215,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _savaData = (data) => {
-        let { productStatus, upTime } = data;
+        let { productStatus, upTime, now } = data;
         //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)3
         if (productStatus === 0) {
             this.setState({
@@ -229,11 +229,11 @@ export default class ProductDetailPage extends BasePage {
             }, () => {
                 this._getQueryByProductId();
                 /*productStatus===3的时候需要刷新*/
-                if (productStatus === 3 && upTime) {
+                if (productStatus === 3 && upTime && now) {
                     this.needUpdateDate && clearTimeout(this.needUpdateDate);
                     this.needUpdateDate = setTimeout(() => {
                         this._getProductDetail();
-                    }, upTime - new Date().getTime() + 500);
+                    }, upTime - now + 500);
                 }
             });
         }
@@ -260,14 +260,6 @@ export default class ProductDetailPage extends BasePage {
         switch (type) {
             case 'jlj':
                 if (!user.isLogin) {
-                    // this.ConfirmAlert.show({
-                    //     title: '登录后分享才能赚取赏金', rightText: '去登录', confirmCallBack: () => {
-                    //         this.$navigate('login/login/LoginPage');
-                    //     }, closeCallBack: () => {
-                    //         this.shareModal.open();
-                    //     }
-                    // });
-
                     Alert.alert('提示', '登录后分享才能赚取赏金',
                         [
                             {
@@ -282,18 +274,18 @@ export default class ProductDetailPage extends BasePage {
                             }
                         ]
                     );
-
-
                 } else {
                     this.shareModal.open();
                 }
                 break;
-            case 'buy': {
+            case 'buy':
                 if (!user.isLogin) {
                     this.$navigate('login/login/LoginPage');
                     return;
                 }
-            }
+                this.state.goType = type;
+                this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
+                break;
             case 'gwc':
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
@@ -312,17 +304,17 @@ export default class ProductDetailPage extends BasePage {
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
+            this.$loadingShow()
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: this.state.data.prodCode
             });
-            this.$loadingShow();
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: orderProducts,
-                    source:2
+                    source: 2
                 }
             });
         }
