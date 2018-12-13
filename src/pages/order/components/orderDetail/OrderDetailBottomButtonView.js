@@ -81,20 +81,21 @@ export default  class OrderDetailBottomButtonView extends Component{
             case 4:
                 break;
             case 5:
-                if(!orderDetailModel.expressList){
+                if(!orderDetailModel.warehouseOrderDTOList[0].expList){
                     NativeModules.commModule.toast('当前物流信息不存在！');
                     return;
                 }
-                 if(orderDetailModel.expressList.length === 0){
+                 if(orderDetailModel.warehouseOrderDTOList[0].expList.length === 0){
                     NativeModules.commModule.toast('当前物流信息不存在！');
                 }
-                if(orderDetailModel.expressList.length === 1){
+                if(orderDetailModel.warehouseOrderDTOList[0].expList.length === 1&&orderDetailModel.warehouseOrderDTOList[0].unSendProductInfoList.length === 0){
                     this.props.nav("order/logistics/LogisticsDetailsPage", {
-                        expressNo: orderDetailModel.expressList[0].expressNo
+                        expressNo: orderDetailModel.warehouseOrderDTOList[0].expList[0].expNO
                     });
                 }else{
                     this.props.nav("order/logistics/CheckLogisticsPage", {
-                        expressList: orderDetailModel.expressList
+                        expressList: orderDetailModel.warehouseOrderDTOList[0].expList,
+                        unSendProductInfoList: orderDetailModel.warehouseOrderDTOList[0].unSendProductInfoList
                     });
                 }
                 break;
@@ -147,7 +148,7 @@ export default  class OrderDetailBottomButtonView extends Component{
             case 8:
                 let cartData = [];
                 orderDetailModel.warehouseOrderDTOList[0].products.map((item, index) => {
-                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
+                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.quantity });
                 });
                     shopCartCacheTool.addGoodItem(cartData);
                     this.props.nav('shopCart/ShopCart', { hiddeLeft: false });

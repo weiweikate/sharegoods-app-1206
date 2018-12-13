@@ -26,12 +26,14 @@ export default class JudgePhoneNumPage extends BasePage {
 
     _render() {
         return (<View style={{ flex: 1 }}>
-            <View style={{ height: 38, justifyContent: 'center' }}>
+            <View>
                 <UIText value={'手机验证'}
                         style={{
                             color: DesignRule.textColor_instruction,
                             fontSize: 13,
-                            marginLeft: 16
+                            marginLeft: 16,
+                            marginTop: 13,
+                            marginBottom: 8
                         }}/>
             </View>
             <View style={{ backgroundColor: 'white', flexDirection: 'column' }}>
@@ -49,7 +51,7 @@ export default class JudgePhoneNumPage extends BasePage {
                         placeholderTextColor={DesignRule.textColor_hint}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginLeft: 20 }}/>
                 <View style={{
                     height: 44,
                     flexDirection: 'row',

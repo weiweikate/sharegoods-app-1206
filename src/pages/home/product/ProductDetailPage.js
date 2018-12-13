@@ -79,14 +79,14 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _getPageStateOptions = () => {
-        const { status } = this.state.data;
+        const { productStatus } = this.state.data;
         //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
         return {
             loadingState: this.state.loadingState,
             netFailedProps: {
-                buttonText: status === 0 ? '去首页' : '重新加载',
+                buttonText: productStatus === 0 ? '去首页' : '重新加载',
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: status === 0 ? (() => this.$navigateBackToHome()) : (() => this._getProductDetail())
+                reloadBtnClick: productStatus === 0 ? (() => this.$navigateBackToHome()) : (() => this._getProductDetail())
             }
         };
     };
@@ -110,6 +110,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     componentWillUnmount() {
+        this.needUpdateDate && clearTimeout(this.needUpdateDate);
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
@@ -214,9 +215,9 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _savaData = (data) => {
-        let { status } = data;
-        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
-        if (status === 0) {
+        let { productStatus, upTime, now } = data;
+        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)3
+        if (productStatus === 0) {
             this.setState({
                 loadingState: PageLoadingState.fail,
                 netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
@@ -227,6 +228,13 @@ export default class ProductDetailPage extends BasePage {
                 data: data
             }, () => {
                 this._getQueryByProductId();
+                /*productStatus===3的时候需要刷新*/
+                if (productStatus === 3 && upTime && now) {
+                    this.needUpdateDate && clearTimeout(this.needUpdateDate);
+                    this.needUpdateDate = setTimeout(() => {
+                        this._getProductDetail();
+                    }, upTime - now + 500);
+                }
             });
         }
     };
@@ -252,39 +260,32 @@ export default class ProductDetailPage extends BasePage {
         switch (type) {
             case 'jlj':
                 if (!user.isLogin) {
-                    // this.ConfirmAlert.show({
-                    //     title: '登录后分享才能赚取赏金', rightText: '去登录', confirmCallBack: () => {
-                    //         this.$navigate('login/login/LoginPage');
-                    //     }, closeCallBack: () => {
-                    //         this.shareModal.open();
-                    //     }
-                    // });
-
                     Alert.alert('提示', '登录后分享才能赚取赏金',
                         [
                             {
                                 text: '取消', onPress: () => {
+                                    this.shareModal.open();
                                 }
                             },
                             {
-                                text: '确定', onPress: () => {
+                                text: '去登录', onPress: () => {
                                     this.$navigate('login/login/LoginPage');
                                 }
                             }
                         ]
                     );
-
-
                 } else {
                     this.shareModal.open();
                 }
                 break;
-            case 'buy': {
+            case 'buy':
                 if (!user.isLogin) {
                     this.$navigate('login/login/LoginPage');
                     return;
                 }
-            }
+                this.state.goType = type;
+                this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
+                break;
             case 'gwc':
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
@@ -303,6 +304,7 @@ export default class ProductDetailPage extends BasePage {
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
+            this.$loadingShow()
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
@@ -311,7 +313,8 @@ export default class ProductDetailPage extends BasePage {
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
-                    orderProducts: orderProducts
+                    orderProducts: orderProducts,
+                    source: 2
                 }
             });
         }
@@ -405,8 +408,8 @@ export default class ProductDetailPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y < 44) {
             this.st = 0;
-        } else if (Y < ScreenUtils.autoSizeWidth(377)) {
-            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(377) - 44);
+        } else if (Y < ScreenUtils.autoSizeWidth(375)) {
+            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(375) - 44);
         } else {
             this.st = 1;
         }
@@ -497,13 +500,12 @@ export default class ProductDetailPage extends BasePage {
 
 
     _render() {
-        this._renderContent();
-        const { status } = this.state.data;
+        const { productStatus } = this.state.data;
         let dic = this._getPageStateOptions();
         return (
             <View style={styles.container}>
                 {dic.loadingState === PageLoadingState.fail ?
-                    <NavigatorBar title={status === 0 ? '暂无商品' : ''} leftPressed={() => {
+                    <NavigatorBar title={productStatus === 0 ? '暂无商品' : ''} leftPressed={() => {
                         this.$navigateBack();
                     }}/> : null}
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderContent)}
@@ -558,7 +560,8 @@ export default class ProductDetailPage extends BasePage {
                          sections={[{ data: [{}] }]}
                          scrollEventThrottle={10}
                          showsVerticalScrollIndicator={false}/>
-            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney} productStatus={productStatus}
+            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney}
+                              productStatus={productStatus}
                               buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}

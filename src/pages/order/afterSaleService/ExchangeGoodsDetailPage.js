@@ -392,7 +392,11 @@ class ExchangeGoodsDetailPage extends BasePage {
                 reason
             } = this.afterSaleDetailModel.pageData;
             imgList = imgList || '';
-            imgList = imgList.split(',');
+            if (EmptyUtils.isEmpty(imgList)) {
+                imgList = [];
+            }else {
+                imgList = imgList.split(',');
+            }
 
             this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                 pageType: type - 1,

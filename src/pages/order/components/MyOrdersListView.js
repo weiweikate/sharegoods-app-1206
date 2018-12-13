@@ -40,11 +40,11 @@ export default class MyOrdersListView extends Component {
         return (
             <GoodsListItem
                 orderNum={item.orderNo}
-                orderType={item.orderType}
                 orderStatus={item.orderStatus}
                 orderProduct={item.orderProduct}
                 shutOffTime={item.cancelTime}
                 totalPrice={item.totalPrice}
+                quantity={item.quantity}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
@@ -126,7 +126,7 @@ export default class MyOrdersListView extends Component {
                 productName: item.productName,
                 spec: item.specValues.replace(/@/g, ''),
                 imgUrl: item.specImg,
-                price: StringUtils.formatMoneyString(item.payAmount),
+                price: StringUtils.formatMoneyString(item.unitPrice),
                 num: item.quantity,
                 status: item.status,
                 orderType: item.subStatus,
@@ -136,25 +136,41 @@ export default class MyOrdersListView extends Component {
         });
         return arrData;
     };
+    getPlatformProduct= (list) => {
+        let arrData = [];
+        list.map((unit, index) => {
+            unit.products.map((item)=>{
+                arrData.push({
+                    id: item.id,
+                    productId: item.prodCode,
+                    productName: item.productName,
+                    spec: item.specValues.replace(/@/g, ''),
+                    imgUrl: item.specImg,
+                    price: StringUtils.formatMoneyString(item.unitPrice),
+                    num: item.quantity,
+                    status: item.status,
+                    orderType: item.subStatus,
+                    prodCode: item.prodCode,
+                    skuCode: item.skuCode
+                });
+            })
+        });
+        return arrData;
+    };
     getList = (data) => {
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if (StringUtils.isNoEmpty(data) && StringUtils.isNoEmpty(data.data)) {
             data.data.map((item, index) => {
                 if (item.warehouseOrderDTOList[0].status === 1) {//未付款的
-                    item.warehouseOrderDTOList.map((resp, index1) => {
-                        arrData.push({
-                            orderProduct: this.getOrderProduct(resp.products),
-                            orderNo: resp.platformOrderNo,
-                            cancelTime: resp.cancelTime,
-                            quantity: resp.quantity,
-                            orderType: resp.subStatus,
-                            orderStatus: resp.status,
-                            totalPrice: resp.payAmount,
-                            expressList: resp.expressList || [],
-                            nowTime: resp.nowTime
-
-                        });
-                    });
+                    arrData.push({
+                        orderProduct: this.getPlatformProduct(item.warehouseOrderDTOList),
+                        orderNo: item.platformOrderNo,
+                        quantity: item.quantity,
+                        orderStatus: 1,
+                        totalPrice: item.payAmount,
+                        nowTime: item.nowTime,
+                        cancelTime:item.warehouseOrderDTOList[0].cancelTime
+                    })
 
                 } else {
                     item.warehouseOrderDTOList.map((resp, index1) => {
@@ -166,32 +182,12 @@ export default class MyOrdersListView extends Component {
                             orderType: resp.subStatus,
                             orderStatus: resp.status,
                             totalPrice: resp.payAmount,
-                            expressList: resp.expressList || [],
-                            nowTime: resp.nowTime
+                            expList: resp.expList || [],
+                            nowTime: resp.nowTime,
+                            unSendProductInfoList:resp.unSendProductInfoList||[]
                         });
                     });
                 }
-                // arrData.push({
-                //     id: item.id,
-                //     orderNum: item.orderNum,
-                //     expressNo: item.expressNo,
-                //     orderCreateTime: item.createTime,
-                //     platformPayTime: item.platformPayTime,
-                //     payTime: item.payTime,
-                //     sendTime: item.sendTime,
-                //     finishTime: item.finishTime,
-                //     deliverTime: item.deliverTime ? item.deliverTime : item.finishTime,
-                //     autoReceiveTime: item.autoReceiveTime ? item.autoReceiveTime : item.sendTime,
-                //     orderStatus: item.status,
-                //     freightPrice: item.freightPrice,
-                //     totalPrice: item.needPrice,
-                //     cancelTime: item.cancelTime ? item.cancelTime : null,
-                //     orderProduct: this.getOrderProduct(item.orderProductList),
-                //     pickedUp: item.pickedUp,
-                //     outTradeNo: item.outTradeNo,
-                //     shutOffTime: item.shutOffTime,
-                //     orderType: item.orderType
-                // });
 
             });
             // this.setState({ viewData: arrData });
@@ -387,16 +383,17 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 5:
-                if (this.state.viewData[index].expressList.length === 0) {
+                if (this.state.viewData[index].expList.length === 0) {
                     NativeModules.commModule.toast('当前物流信息不存在！');
                 }
-                else if (this.state.viewData[index].expressList.length === 1) {
+                else if (this.state.viewData[index].expList.length === 1&&this.state.viewData[index].unSendProductInfoList.length==0) {
                     this.props.nav('order/logistics/LogisticsDetailsPage', {
-                        expressNo: this.state.viewData[index].expressList[0].expressNo
+                        expressNo: this.state.viewData[index].expList[0].expNO
                     });
                 } else {
                     this.props.nav('order/logistics/CheckLogisticsPage', {
-                        expressList: this.state.viewData[index].expressList
+                        expressList: this.state.viewData[index].expList,
+                        unSendProductInfoList: this.state.viewData[index].unSendProductInfoList
                     });
                 }
                 break;

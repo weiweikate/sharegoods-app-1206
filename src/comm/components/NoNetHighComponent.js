@@ -14,7 +14,7 @@ class NetStatus {
 
     constructor() {
         this.netStatus = Platform.os === 'ios' ? 'none' : 'UNKNOWN';
-        this.isConnected = false;
+        this.isConnected = true;
         this.setNetStatus = this.setNetStatus.bind(this);
 
     }

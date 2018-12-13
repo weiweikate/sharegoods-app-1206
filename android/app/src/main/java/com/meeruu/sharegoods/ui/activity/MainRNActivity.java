@@ -146,15 +146,15 @@ public class MainRNActivity extends ReactActivity {
             startService(it);
             bindService(it, conn, Context.BIND_AUTO_CREATE);
         }
-        UApp.pageSessionStart(this);
         JPushInterface.onResume(this);
+        UApp.pageSessionStart(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        UApp.pageSessionEnd(this);
         JPushInterface.onPause(this);
+        UApp.pageSessionEnd(this);
     }
 
     @Override

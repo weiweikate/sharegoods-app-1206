@@ -287,7 +287,7 @@ export default class TopicDetailPage extends BasePage {
             param
         ).then(result => {
             this._getActivityData();
-            this.$toastShow(result.msg);
+            this.$toastShow(`已关注本商品,\n活动开始前3分钟会有消息通知您`);
         }).catch(error => {
             this.$toastShow(error.msg);
         });
@@ -296,6 +296,7 @@ export default class TopicDetailPage extends BasePage {
 
     //选择规格确认 秒杀 降价拍
     _selectionViewConfirm = (amount, skuCode) => {
+        this.$loadingShow();
         let orderProducts = [];
         orderProducts.push({
             skuCode: skuCode,
@@ -312,12 +313,13 @@ export default class TopicDetailPage extends BasePage {
 
     //选择规格确认 礼包
     _selectionViewPakageConfirm = (amount, selectData) => {
+        this.$loadingShow();
         let priceList = [];
         selectData.forEach((item) => {
             priceList.push({
                 // num: 1,
                 skuCode: item.skuCode,
-                // prodCode: item.prodCode,
+                prodCode: item.prodCode
                 // productName: item.productName,
                 // sourceId: item.id,
                 // spec: item.specValues,
@@ -337,13 +339,11 @@ export default class TopicDetailPage extends BasePage {
                 activityCode: this.params.activityCode,
                 orderType: 3,
                 // orderProducts: orderProducts
-                orderSubType:this.state.data.type === 2 ? 3 : 4,
+                orderSubType: this.state.data.type === 2 ? 3 : 4,
                 orderProductList: priceList,
-                channel:2,
-                source:2,
-                quantity:1,
-
-
+                channel: 2,
+                source: 2,
+                quantity: 1
             }
         });
     };
@@ -453,8 +453,8 @@ export default class TopicDetailPage extends BasePage {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y < 44) {
             this.st = 0;
-        } else if (Y < ScreenUtils.autoSizeWidth(377)) {
-            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(377) - 44);
+        } else if (Y < ScreenUtils.autoSizeWidth(375)) {
+            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(375) - 44);
         } else {
             this.st = 1;
         }

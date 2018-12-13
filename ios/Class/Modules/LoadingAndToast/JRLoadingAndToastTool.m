@@ -19,7 +19,7 @@ MBProgressHUD * hub = nil;
   [hub hideAnimated:YES];
 }
 +(void)showToast:(NSString *)toastStr andDelyTime:(NSTimeInterval)delyTime{
-  
+  toastStr = [NSString stringWithFormat:@" %@ ",toastStr];
   [MBProgressHUD showSuccess:toastStr];
 }
 @end

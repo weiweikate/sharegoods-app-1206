@@ -129,7 +129,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFootder}
-                    data={orderDetailModel.orderType === 5 || orderDetailModel.orderType === 98 ? this.state.viewData : this.state.viewData}
+                    data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
@@ -318,7 +318,8 @@ export default class MyOrdersDetailPage extends BasePage {
 
             case 3:
             case 4:
-                let condition = (data.orderCustomerServiceInfoVO && data.orderCustomerServiceInfoVO.type) || null;
+                let condition = (data.orderCustomerServiceInfoDTO && data.orderCustomerServiceInfoDTO.type) || null;
+                console.log('data.orderCustomerServiceInfoVO',data.orderCustomerServiceInfoDTO);
                 switch (condition) {
                     case 1://申请退款
                         afterSaleService.push({
@@ -352,140 +353,13 @@ export default class MyOrdersDetailPage extends BasePage {
             case 5:
                 afterSaleService.push();
                 break;
-
-
-
-            // let statusArr = [4, 16, 8];
-            // let isAfterSale = (data[index].restrictions & statusArr[0]) == statusArr[0] && (data[index].restrictions & statusArr[1]) == statusArr[1] &&
-            //     (data[index].restrictions & statusArr[2]) == statusArr[2];
-            // switch (data[index].status) {
-            //     case 2:
-            //         if ((data[index].restrictions & statusArr[0]) == statusArr[0]) {
-            //             afterSaleService.push();
-            //         } else {
-            //             afterSaleService.push({
-            //                 id: 0,
-            //                 operation: "退款",
-            //                 isRed: false
-            //             });
-            //         }
-            //
-            //         break;
-            //     case 3:
-            //     case 4:
-            //         if (isAfterSale) {
-            //             afterSaleService.push();
-            //         } else {
-            //             switch (data[index].returnType) {
-            //                 case 1://申请退款
-            //                     afterSaleService.push({
-            //                         id: 2,
-            //                         operation: "退款中",
-            //                         isRed: false
-            //                     });
-            //                     break;
-            //                 case 2://申请退货
-            //                     afterSaleService.push({
-            //                         id: 3,
-            //                         operation: "退货中",
-            //                         isRed: false
-            //                     });
-            //                     break;
-            //                 case 3://申请换货
-            //                     afterSaleService.push({
-            //                         id: 6,
-            //                         operation: "换货中",
-            //                         isRed: false
-            //                     });
-            //                     break;
-            //                 default:
-            //                     afterSaleService.push({
-            //                         id: 1,
-            //                         operation: "退换",
-            //                         isRed: false
-            //                     });
-            //             }
-            //         }
-            //         break;
-            //     case 5:
-            // if (isAfterSale) {
-            //     afterSaleService.push();
-            // } else if ((data[index].finishTime || 0) - (new Date().valueOf()) < 0) {
-            //     afterSaleService.push();
-            // }
-            // else {
-            //     switch (data[index].returnType) {
-            //         case 1://申请退款
-            //             afterSaleService.push({
-            //                 id: 2,
-            //                 operation: "退款中",
-            //                 isRed: false
-            //             });
-            //             break;
-            //         case 2://申请退货
-            //             afterSaleService.push({
-            //                 id: 3,
-            //                 operation: "退货中",
-            //                 isRed: false
-            //             });
-            //             break;
-            //         case 3://申请换货
-            //             afterSaleService.push({
-            //                 id: 6,
-            //                 operation: "换货中",
-            //                 isRed: false
-            //             });
-            //             break;
-            //         default:
-            //             afterSaleService.push({
-            //                 id: 1,
-            //                 operation: "退换",
-            //                 isRed: false
-            //             });
-            //     // }
-            // }
-            // break;
-            // case 6:
-            //     switch (data[index].returnType) {
-            //         case 1://申请退款
-            //             afterSaleService.push({
-            //                 id: 2,
-            //                 operation: "售后完成",
-            //                 isRed: false
-            //             });
-            //             break;
-            //         case 2://申请退货
-            //             afterSaleService.push({
-            //                 id: 3,
-            //                 operation: "售后完成",
-            //                 isRed: false
-            //             });
-            //             break;
-            //         case 3://申请换货
-            //             afterSaleService.push({
-            //                 id: 6,
-            //                 operation: "售后完成",
-            //                 isRed: false
-            //             });
-            //             break;
-            //         default:
-            //             afterSaleService.push();
-            //     }
-            //     break;
-            // case 7:
-            // case 8:
-            //     afterSaleService.push();
-            //     break;
-            // }
-            // return afterSaleService;
         }
         return orderDetailAfterServiceModel.currentAsList = afterSaleService;
     };
 
     async loadPageData() {
         Toast.showLoading();
-        let result = await orderDetailModel.loadDetailInfo(this.params.orderNo);
-        // orderDetailModel.loadDetailInfo(this.params.orderNo);
+        let result = await orderDetailModel.loadDetailInfo(this.params.orderNo)||{};
         console.log('loadPageData',result);
         Toast.hiddenLoading();
         let dataArr = [];
@@ -508,7 +382,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         productId: item.id,
                         uri: item.specImg,
                         goodsName: item.productName,
-                        salePrice: StringUtils.isNoEmpty(item.payAmount) ? item.payAmount : 0,
+                        salePrice: StringUtils.isNoEmpty(item.unitPrice) ? item.unitPrice : 0,
                         category: item.specValues,
                         goodsNum: item.quantity,
                         afterSaleService: this.getAfterSaleService(item, index),
@@ -525,7 +399,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         productId: item.id,
                         uri: item.specImg,
                         goodsName: item.productName,
-                        salePrice: StringUtils.isNoEmpty(item.payAmount) ? item.payAmount : 0,
+                        salePrice: StringUtils.isNoEmpty(item.unitPrice) ? item.unitPrice : 0,
                         category: item.specValues,
                         goodsNum: item.quantity,
                         afterSaleService: this.getAfterSaleService(item, index),

@@ -73,10 +73,7 @@ class ShopCartStore {
                 totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
             }
         });
-
-        return   Math.round(totalMoney * 100) / 100;
-
-
+        return   Math.round(totalMoney * 100)/100;
     }
 
     @computed
@@ -93,13 +90,27 @@ class ShopCartStore {
         if (this.data.length === 0) {
             return false;
         }
+        //是否存在正常商品
+        let isHaveNormalGood = false;
         let flag = true;
         this.data.map(item => {
-            if (item.status === 1 && !item.isSelected) {
-                flag = false;
+            if (item.status === 1){
+                isHaveNormalGood = true;
+                if (!item.isSelected) {
+                    flag = false;
+                }
             }
+            // if (item.status === 1 && !item.isSelected) {
+            //     flag = false;
+            // }
         });
-        return flag;
+
+        if (isHaveNormalGood && flag){
+            return true;
+        } else {
+            return false;
+        }
+        // return flag;
     }
 
     /**
@@ -204,7 +215,7 @@ class ShopCartStore {
     isSelectAllItem = (isSelectAll) => {
         if (isSelectAll) {
             this.data.slice().map(item => {
-                if (item.status === 0) {
+                if (item.status === 0 || item.status === 2  || item.status === 3) {
                     item.isSelected = false;
                 } else {
                     item.isSelected = true;
@@ -244,7 +255,7 @@ class ShopCartStore {
                     'cacheList': localValue
                 };
             //存在本地缓存
-            this.setRefresh(true);
+            // this.setRefresh(true);
             ShopCartAPI.getRichItemList(
                 params
             ).then(res => {
