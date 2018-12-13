@@ -20,7 +20,6 @@ const  Styles =  StyleSheet.create(
         },
         topViewStyle: {
             height: ScreenUtils.px2dp(430)
-            // backgroundColor:ColorUtil.Color_222222
         },
         bottomViewStyle: {
             height: 100,

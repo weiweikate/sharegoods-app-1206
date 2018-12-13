@@ -22,8 +22,10 @@
         view =((AppDelegate *)[UIApplication sharedApplication].delegate).window;
     // 快速显示一个提示信息
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+     hud.margin = 11;
+     hud.offset = CGPointMake(0, -30);
   // 再设置模式
-   hud.mode = MBProgressHUDModeCustomView;
+    hud.mode = MBProgressHUDModeCustomView;
     hud.label.text = text;
     hud.label.numberOfLines = 0;
     hud.contentColor = [UIColor whiteColor];//文字和菊花的颜色
@@ -32,7 +34,7 @@
     hud.userInteractionEnabled= NO;
     
     hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:icon]];  // 设置图片
-    hud.bezelView.backgroundColor =  [UIColor colorWithHexString:@"333333"];    //背景颜色
+    hud.bezelView.backgroundColor = [[UIColor colorWithHexString:@"000000"] colorWithAlphaComponent:0.8];    //背景颜色
     // 设置图片
 //    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"MBProgressHUD.bundle/%@", icon]]];
   
@@ -94,8 +96,10 @@
     // 快速显示一个提示信息
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     hud.label.text = message;
+    hud.margin = 15;
     hud.contentColor = [UIColor whiteColor];//文字和菊花的颜色
-    hud.bezelView.backgroundColor =  [UIColor colorWithHexString:@"333333"];
+    hud.label.font = [UIFont systemFontOfSize:13.0];
+    hud.bezelView.backgroundColor =  [[UIColor colorWithHexString:@"000000"] colorWithAlphaComponent:0.8];
     //隐藏时候从父控件中移除
     hud.removeFromSuperViewOnHide = YES;
     // YES代表需要蒙版效果

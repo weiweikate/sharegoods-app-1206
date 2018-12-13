@@ -70,7 +70,7 @@ class ActivityOneView extends Component {
     }
 
     render() {
-        const { imageUrl, ratio } = this.props;
+        const { imageUrl } = this.props;
         console.log(this.props);
         return (
             <View>
@@ -78,19 +78,11 @@ class ActivityOneView extends Component {
                     imageUri={imageUrl}
                     style={[
                         ActivityOneViewStyles.bgImageStyle,
-                        ratio ?
                             {
                                 height: ScreenUtils.width * this.state.ratio
                             }
-                            :
-                            {
-                                height: ScreenUtils.width * this.state.ratio
-                            }
-
                     ]}
-
-                    resizeMode={'stretch'}
-
+                    // resizeMode={'stretch'}
                 />
             </View>
         );
@@ -101,7 +93,9 @@ const ActivityOneViewStyles = StyleSheet.create({
     bgImageStyle: {
         // height: ScreenUtils.width * 16 / 75,
         width: ScreenUtils.width,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        marginLeft:-10,
+        marginTop:10,
     }
 });
 
