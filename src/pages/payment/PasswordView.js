@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { StyleSheet, View, Text,  Modal, TouchableOpacity, Image} from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native'
 // import { UIText, UIImage } from '../../components/ui'
 import PasswordInput from '../mine/components/PasswordInput'
 import ScreenUtils from '../../utils/ScreenUtils'
@@ -7,7 +7,7 @@ const { px2dp } = ScreenUtils
 import PropTypes from 'prop-types';
 import res from './res';
 const closeImg = res.close;
-
+import Modal from 'CommModal';
 export default class PasswordView extends Component {
     static propTypes = {
         finishedAction: PropTypes.func,
@@ -21,7 +21,7 @@ export default class PasswordView extends Component {
     }
 
     onRequestClose() {
-
+        this.passwordInput && this.passwordInput.clear()
     }
 
     inputText(value) {
@@ -36,6 +36,7 @@ export default class PasswordView extends Component {
 
     render() {
         return <Modal
+            transparent={true}
             animationType='fade'
             onRequestClose={()=>this.onRequestClose()}
             visible={this.props.visible}
@@ -57,6 +58,7 @@ export default class PasswordView extends Component {
                     <Text style={styles.input} allowFontScaling={false}>请输入平台的支付密码</Text>
                     <View style={{flex: 1}}/>
                     <PasswordInput
+                        ref={(ref)=>{this.passwordInput = ref}}
                         style={styles.password}
                         maxLength={6}
                         onChange={value => this.inputText(value)}
@@ -75,7 +77,8 @@ export default class PasswordView extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        flex: 1
+        flex: 1,
+        width:ScreenUtils.width
     },
     password: {
         width:220,
