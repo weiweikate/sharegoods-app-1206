@@ -166,7 +166,7 @@ export default class TopicDetailHeaderView extends Component {
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,
                             fontSize: 12
-                        }}>{`正品保证·急速发货 ${afterSaleServiceDaysTT === 0 ? `无售后服务` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT || ''}天无理由退换`}`}</Text>
+                        }}>{`正品保证·急速发货 ${activityType === 3 ? '' : (afterSaleServiceDaysTT === 0 ? `无售后服务` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT || ''}天无理由退换`)}`}</Text>
                     </View>
                 </View>
             </View>

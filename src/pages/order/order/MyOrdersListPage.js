@@ -84,7 +84,6 @@ class MyOrdersListPage extends BasePage {
                     <MyOrdersListView
                         tabLabel={'全部'} pageStatus={0} nav={this.$navigate}
                         selectTab={this.state.selectTab}/>
-
                     <MyOrdersListView
                         tabLabel={'待付款'} pageStatus={1}
                         nav={this.$navigate}

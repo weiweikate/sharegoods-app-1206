@@ -30,6 +30,7 @@ import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import UIText from '../../../comm/components/UIText';
 import Styles from '../style/SelectMentorPage.style';
+import {homeRegisterFirstManager, newuser_n, newuser_y } from '../../home/model/HomeRegisterFirstManager'
 
 const {
     refresh
@@ -65,9 +66,11 @@ export default class SelectMentorPage extends BasePage {
      */
     jump = () => {
         bridge.$toast('注册成功');
+        if (this.params.give) {
+            homeRegisterFirstManager.setShowRegisterModalUrl(newuser_n);
+        }
         this.$navigateBackToHome();
     };
-
     _bind() {
         this.loadPageData = this.loadPageData.bind(this);
     }
@@ -360,6 +363,9 @@ export default class SelectMentorPage extends BasePage {
                 code: mentorData.code
             }).then(res => {
                 bridge.$toast(res.msg);
+                if (this.params.give) {
+                    homeRegisterFirstManager.setShowRegisterModalUrl(newuser_y);
+                }
                 this.$navigateBackToHome();
             }).catch(res => {
                 bridge.$toast(res.msg);
@@ -396,7 +402,8 @@ export default class SelectMentorPage extends BasePage {
     };
     _toDetailPage = (itemData) => {
         this.$navigate('login/login/MentorDetailPage', {
-            itemData: itemData
+            itemData: itemData,
+            give:this.params.give,
         });
     };
     _renderTopText = () => {

@@ -268,8 +268,6 @@ class ShopCartStore {
             });
         } else {
             this.data = [];
-            // bridge.$toast('不存在本地缓存')
-            //不存在本地缓存
         }
     };
 

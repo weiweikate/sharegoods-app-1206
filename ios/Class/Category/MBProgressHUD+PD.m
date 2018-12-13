@@ -34,7 +34,8 @@
     hud.userInteractionEnabled= NO;
     
     hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:icon]];  // 设置图片
-    hud.bezelView.backgroundColor = [[UIColor colorWithHexString:@"000000"] colorWithAlphaComponent:0.8];    //背景颜色
+    hud.bezelView.backgroundColor = [UIColor blackColor];
+    hud.layer.opacity = 0.8;
     // 设置图片
 //    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"MBProgressHUD.bundle/%@", icon]]];
   
@@ -99,7 +100,8 @@
     hud.margin = 15;
     hud.contentColor = [UIColor whiteColor];//文字和菊花的颜色
     hud.label.font = [UIFont systemFontOfSize:13.0];
-    hud.bezelView.backgroundColor =  [[UIColor colorWithHexString:@"000000"] colorWithAlphaComponent:0.8];
+    hud.bezelView.backgroundColor =  [UIColor colorWithHexString:@"000000"];
+    hud.layer.opacity = 0.8;
     //隐藏时候从父控件中移除
     hud.removeFromSuperViewOnHide = YES;
     // YES代表需要蒙版效果
