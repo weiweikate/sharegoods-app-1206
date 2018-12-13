@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Text,
-    // Modal,
     NativeModules,
     TouchableOpacity,
     ScrollView
