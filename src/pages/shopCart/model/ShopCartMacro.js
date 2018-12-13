@@ -31,7 +31,6 @@ const statueImage = {
 };
 
 const getSelectImage =(itemData)=>{
-
     if (itemData.status === 0 || itemData.status === 2 || itemData.status === 3){
         return res.button.unAbleSelected_circle;
     } else if (itemData.status === 1){

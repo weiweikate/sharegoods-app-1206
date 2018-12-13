@@ -23,8 +23,11 @@ import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
-import {activityString,statueImage,getSelectImage} from '../model/ShopCartMacro'
+import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
+// import { renderShopCartCell } from './ShopCartCell';
+
 const dismissKeyboard = require('dismissKeyboard');
+
 @observer
 export default class ShopCartPage extends BasePage {
     // 导航配置
@@ -32,6 +35,7 @@ export default class ShopCartPage extends BasePage {
         title: '购物车',
         leftNavItemHidden: true
     };
+
     constructor(props) {
         super(props);
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -76,11 +80,11 @@ export default class ShopCartPage extends BasePage {
         return (
             // this.state.pageFocus
             //     ?
-                <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
-                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
-                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
-                </View>
-                // : null
+            <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
+            </View>
+            // : null
         );
     }
 
@@ -170,6 +174,8 @@ export default class ShopCartPage extends BasePage {
                 // )}
                 renderRow={(rowData, secId, rowId, rowMap) => (
                     this._renderValidItem(rowData, rowId, rowMap)
+                    // renderShopCartCell(rowData, rowId, rowMap)
+
                 )}
                 renderHiddenRow={(data, secId, rowId, rowMap) => (
                     <TouchableOpacity
