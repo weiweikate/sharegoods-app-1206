@@ -440,9 +440,7 @@ export default class MyShopPage extends BasePage {
 
     renderSepLine = () => {
         return (<View style={{
-            height: StyleSheet.hairlineWidth,
-            borderWidth: 0.5,
-            borderColor: '#fdfcfc'
+            height: StyleSheet.hairlineWidth,backgroundColor:DesignRule.lineColor_inWhiteBg
         }}/>);
     };
     // 主题内容

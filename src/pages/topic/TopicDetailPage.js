@@ -301,12 +301,14 @@ export default class TopicDetailPage extends BasePage {
         orderProducts.push({
             skuCode: skuCode,
             num: amount,
-            code: this.state.activityData.activityCode
+            code: this.state.activityData.activityCode,
+            productCode:this.state.activityData.prodCode
         });
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
                 orderType: this.state.activityType,
-                orderProducts: orderProducts
+                orderProducts: orderProducts,
+                activityCode:this.state.activityData.activityCode,
             }
         });
     };
@@ -338,9 +340,8 @@ export default class TopicDetailPage extends BasePage {
             orderParamVO: {
                 activityCode: this.params.activityCode,
                 orderType: 3,
-                // orderProducts: orderProducts
                 orderSubType: this.state.data.type === 2 ? 3 : 4,
-                orderProductList: priceList,
+                orderProducts: priceList,
                 channel: 2,
                 source: 2,
                 quantity: 1

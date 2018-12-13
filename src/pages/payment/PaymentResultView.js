@@ -67,7 +67,6 @@ export default class PaymentResultView extends Component {
                 style={styles.container}
                 animationType="fade"
                 visible={this.state.modalVisible}
-                transparent={true}
                 onRequestClose={() => {
 
                 }}>

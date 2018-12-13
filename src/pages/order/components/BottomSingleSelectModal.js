@@ -36,7 +36,6 @@ export default class BottomSingleSelectModal extends Component {
         return (
             <Modal
                 animationType='slide'
-                transparent={true}
                 ref={(ref) => {
                     this.modal = ref;
                 }}

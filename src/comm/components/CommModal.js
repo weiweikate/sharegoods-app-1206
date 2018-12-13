@@ -82,7 +82,7 @@ export default class CommModal extends PureComponent {
                         activeOpacity={1}
 
                     >
-                        <View style={styles.container}>
+                        <View style={[styles.container,{ backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
                             {this.props.children}
                         </View>
                     </TouchableOpacity>

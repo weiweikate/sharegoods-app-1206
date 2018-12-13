@@ -33,7 +33,6 @@ class OrderDetailModel {
      return   this.status > 1 ? this.warehouseOrderDTOList[0].warehouseOrderNo : this.warehouseOrderDTOList[0].platformOrderNo
     }
 
-
     @action  productsList() {
         let dataArr = []
         this.warehouseOrderDTOList.map((value) => {
@@ -51,7 +50,7 @@ class OrderDetailModel {
                     status: item.status,
                     activityCode: item.activityCode,
                     orderProductNo:item.orderProductNo,
-                    serviceNo:item.serviceNo,
+                    orderCustomerServiceInfoDTO:item.orderCustomerServiceInfoDTO,
                     afterSaleTime:item.afterSaleTime,
                     orderSubType:item.orderSubType,
                     prodCode:item.prodCode
@@ -102,7 +101,9 @@ class OrderDetailModel {
 
     @computed
     get upDateOrderProductList(){
-        return this.orderProductList.length;
+      let k=  this.warehouseOrderDTOList.length;
+      console.log('upDateOrderProductList',k);
+        // return this.orderProductList.length;
     }
 
 }
@@ -123,11 +124,11 @@ class OrderDetailAfterServiceModel{
     @observable
     sellerState:'';
     @observable
-    sellerTime:'';
-    @observable
     totalAsList={};
     @observable
     menu=[]
+    @observable
+    sellerState=''
 
     @action
     addAfterServiceList=()=>{
@@ -136,7 +137,6 @@ class OrderDetailAfterServiceModel{
         }, {
             index:1,
             buyState:'等待买家付款',
-            disNextView:false,
             menu:[
                 {
                     id:1,
@@ -152,9 +152,7 @@ class OrderDetailAfterServiceModel{
             index:2,
             buyState:'买家已付款',
             moreDetail:'',
-            sellerState:'等待卖家发货...',
-            sellerTime:'',
-            disNextView:true,
+            sellerState:'订单正在处理中...',
             menu:[
                 {
                     id:4,
@@ -165,10 +163,8 @@ class OrderDetailAfterServiceModel{
         },{
             index:3,
             buyState:'卖家已发货',
-            // moreDetail:'06天18:24:45后自动确认收货',
-            sellerState:'仓库正在扫描出库...',
-            // sellerTime:'2018-04-25 12:45:45',
-            disNextView:true,
+            moreDetail:'',
+            sellerState:'等待平台发货',
             menu:[
                 {
                     id:5,
@@ -185,8 +181,6 @@ class OrderDetailAfterServiceModel{
             buyState:'订单已完成',
             moreDetail:'',
             sellerState:'已签收',
-            sellerTime:'',
-            disNextView:true,
             menu:[
                 {
                     id:7,
@@ -203,7 +197,6 @@ class OrderDetailAfterServiceModel{
             buyState:'订单已关闭',
             moreDetail:'',
             sellerState:'已关闭',
-            disNextView:true,
             menu:[
                 {
                     id:7,

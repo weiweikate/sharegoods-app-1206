@@ -45,7 +45,7 @@ export default class CheckLogisticsPage extends BasePage {
                             </View>
                         </TouchableOpacity>
                         <View style={{backgroundColor:'#E4E4E4',height:0.5,width:ScreenUtils.width}}/>
-                        {item.list.map((data)=>{
+                        {item.list&&item.list.map((data)=>{
                         return     <GoodsGrayItem
                                 uri={data.specImg}
                                 goodsName={data.productName}
