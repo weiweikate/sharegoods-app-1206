@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View,Image} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View,Image,ScrollView} from 'react-native';
 import BasePage from '../../../BasePage';
 // import { UIImage, UIText } from '../../../components/ui';
 // import StringUtils from '../../../utils/StringUtils';
@@ -27,7 +27,7 @@ export default class CheckLogisticsPage extends BasePage {
 
     _render() {
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <View style={{height:20,width:ScreenUtils.width,backgroundColor:DesignRule.mainColor,alignItems:'center',justifyContent:'center'}}>
                     <Text style={{fontSize:13,color:DesignRule.white}}>{`${this.params.expressList.length}个包裹已发出`}</Text>
                 </View>
@@ -82,7 +82,7 @@ export default class CheckLogisticsPage extends BasePage {
                         </View>
                     )
                 })}
-            </View>
+            </ScrollView>
         );
     }
 
