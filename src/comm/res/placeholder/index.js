@@ -1,6 +1,6 @@
 const placeholder = {
     no_data: require('./no_data.png'),
-    messageNoData: require('./messageNoData.png'),
+    messageNoData: require('./no_data.png'),
     netError: require('./netError.png'),
     noCollect: require('./no_collect.png'),
     add_three_pticture: require('./add_three_pticture.png'),
