@@ -78,8 +78,10 @@ const LogisticsDetailItem = props => {
     };
     return (
         <TouchableOpacity style={{ paddingLeft: 16, paddingRight: 16, flexDirection: "row" }}>
-            <UIText value={time}
-                    style={{ fontSize: 11, color: DesignRule.textColor_mainTitle_222, width: 40, marginTop: 20 }}/>
+            <View style={{width: 40, marginTop: 20}}>
+                <UIText value={time.substr(5,5)} style={{ fontSize: 14, color: DesignRule.textColor_mainTitle_222,textAlign:'right'}}/>
+            <UIText value={time.substr(10,6)} style={{ fontSize: 11, color: DesignRule.textColor_mainTitle_222,marginTop:-10 ,textAlign:'right' }}/>
+            </View>
             {this.renderMiddleLine()}
             <View style={{ marginTop: 25 }}>
                 {this.renderTitle()}
