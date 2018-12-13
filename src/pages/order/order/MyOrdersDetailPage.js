@@ -306,7 +306,8 @@ export default class MyOrdersDetailPage extends BasePage {
     getAfterSaleService = (data, index) => {
         //售后状态
         let afterSaleService = [];
-        let outStatus = orderDetailModel.status
+        let outStatus = orderDetailModel.status;
+        let condition = (data.orderCustomerServiceInfoDTO && data.orderCustomerServiceInfoDTO.type) || null;
         switch(outStatus) {
             case 2:
                 afterSaleService.push({
@@ -318,7 +319,6 @@ export default class MyOrdersDetailPage extends BasePage {
 
             case 3:
             case 4:
-                let condition = (data.orderCustomerServiceInfoDTO && data.orderCustomerServiceInfoDTO.type) || null;
                 console.log('data.orderCustomerServiceInfoVO',data.orderCustomerServiceInfoDTO);
                 switch (condition) {
                     case 1://申请退款
@@ -351,7 +351,15 @@ export default class MyOrdersDetailPage extends BasePage {
                 }
                 break;
             case 5:
-                afterSaleService.push();
+                if(condition>0){
+                    afterSaleService.push({
+                        id: 6,
+                        operation:  "售后完成" ,
+                        isRed: false
+                    });
+                }else{
+                    afterSaleService.push();
+                }
                 break;
         }
         return orderDetailAfterServiceModel.currentAsList = afterSaleService;
@@ -366,7 +374,6 @@ export default class MyOrdersDetailPage extends BasePage {
         let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(orderDetailModel.warehouseOrderDTOList[0].status)];
         if (orderDetailModel.warehouseOrderDTOList[0].status === 1) {
             this.startCutDownTime(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
-            pageStateString.sellerTime = "收货地址:" + orderDetailModel.province + orderDetailModel.city + orderDetailModel.area + orderDetailModel.address;
             orderDetailAfterServiceModel.menu = [{
                 id:1,
                 operation:'取消订单',
@@ -437,8 +444,20 @@ export default class MyOrdersDetailPage extends BasePage {
                     operation:'确认收货',
                     isRed:true,
                 },
-            ],
-                pageStateString.sellerTime = "";
+            ];
+                if(orderDetailModel.expList.length === 0){
+                    pageStateString.sellerState ='等待平台发货';
+                }else if( orderDetailModel.expList.length === 1&&orderDetailModel.unSendProductInfoList.length===0){
+                    OrderApi.findLogisticsDetail({ expressNo: orderDetailModel.expList[0].expNO }).then((response) => {
+                        console.log(response);
+                        pageStateString.sellerState=JSON.parse(response.data).result.list[0].status||'等待平台发货';
+                    }).catch(e => {
+                        pageStateString.sellerState='等待平台发货';
+                    });
+                }else {
+                    pageStateString.sellerState = `该订单已拆成${orderDetailModel.expList.length+(orderDetailModel.unSendProductInfoList.length>1?1:0)}个包裹发出，点击"查看物流"可查看详情`
+                }
+
                 break;
             case 4:
                 timeUtils.stop();
@@ -458,7 +477,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime : orderDetailModel.warehouseOrderDTOList[0].finishTime;
                 break;
             case 5:
-                pageStateString.menu = [
+                timeUtils.stop();
+                orderDetailAfterServiceModel.menu = [
                     {
                         id:7,
                         operation:'删除订单',
@@ -467,10 +487,8 @@ export default class MyOrdersDetailPage extends BasePage {
                     id:8,
                     operation:'再次购买',
                     isRed:true,
-                },
-                ],
+                }],
                     orderDetailAfterServiceModel.moreDetail = orderDetailModel.warehouseOrderDTOList[0].cancelReason;
-                timeUtils.stop();
                 pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].cancelTime;
                 break;
 
@@ -503,6 +521,7 @@ export default class MyOrdersDetailPage extends BasePage {
     afterSaleServiceClick = (menu, index) => {
         console.log(menu);
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
+        console.log('products',products);
          if(products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime){
              NativeModules.commModule.toast("该商品售后已过期");
              return;
@@ -526,17 +545,17 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
             case 2:
                 this.$navigate("order/afterSaleService/ExchangeGoodsDetailPage", {
-                    serviceNo:  products.serviceNo
+                    serviceNo:  products.orderCustomerServiceInfoDTO.serviceNo
                 });
                 break;
             case 3:
                 this.$navigate("order/afterSaleService/ExchangeGoodsDetailPage", {
-                    serviceNo:  products.serviceNo
+                    serviceNo:  products.orderCustomerServiceInfoDTO.serviceNo
                 });
                 break;
             case 6:
                 this.$navigate("order/afterSaleService/ExchangeGoodsDetailPage", {
-                    serviceNo:  products.serviceNo
+                    serviceNo:  products.orderCustomerServiceInfoDTO.serviceNo
                 });
                 break;
         }

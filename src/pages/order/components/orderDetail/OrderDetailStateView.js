@@ -43,9 +43,6 @@ export default class OrderDetailStateView extends Component {
 
     }
     render() {
-        if(orderDetailModel.expList.length > 1){
-            orderDetailAfterServiceModel.totalAsList.sellerState = `该订单已拆成${orderDetailModel.expList.length+orderDetailModel.unSendProductInfoList.length}个包裹发出，点击"查看物流"可查看详情`
-        }
         if (orderDetailModel.status === 1) {
             return (
                 <View style={styles.topOrderDetail}>
@@ -68,10 +65,8 @@ export default class OrderDetailStateView extends Component {
                                     marginRight: px2dp(30)
                                 }}>{orderDetailModel.receiverPhone}</Text>
                             </View>
-                            {StringUtils.isNoEmpty(orderDetailAfterServiceModel.totalAsList.sellerTime) ?
-                                <UIText value={orderDetailAfterServiceModel.totalAsList.sellerTime}
+                                <UIText value={"收货地址:" + orderDetailModel.province + orderDetailModel.city + orderDetailModel.area + orderDetailModel.address}
                                         style={styles.DetailAddressStyle}/>
-                                : null}
                         </View>
                     </View>
                 </View>
