@@ -26,8 +26,10 @@ export class Payment {
         icon: balanceImg,
         hasBalance: true
     }
-    @observable outTradeNo = ''
+    @observable isGoToPay = false
     @observable orderNo = ''
+    @observable amount = 0
+    @observable payError = ''
     @observable paymentList = [
         {
             type: paymentType.section,
@@ -81,7 +83,7 @@ export class Payment {
     @action balancePay = flow(function * (password, ref) {
         try {
             Toast.showLoading()
-            const result = yield PaymentApi.balance({orderNo: this.orderNo, salePsw: password})
+            const result = yield PaymentApi.balance({orderNo: this.orderNo, salePswd: password})
             this.updateUserData()
             Toast.hiddenLoading()
             return result
@@ -98,34 +100,22 @@ export class Payment {
         try {
             Toast.showLoading()
             const result = yield PaymentApi.alipay({orderNo: this.orderNo})
+            Toast.hiddenLoading();
             if (result && result.code === 10000) {
+                this.isGoToPay = true
                 const resultStr = yield PayUtil.appAliPay(result.data.payInfo)
                 console.log('alipay result str', resultStr)
                 if (resultStr.sdkCode !== 9000) {
                     throw new Error(resultStr.msg)
                 }
-                Toast.hiddenLoading();
                 return resultStr;
             } else {
-                Toast.hiddenLoading()
                 Toast.$toast(result.msg)
                 return ''
             }
         } catch(error) {
-            Toast.hiddenLoading()
+            this.payError = error
             ref && ref.show(2, error.msg || error.message)
-            return error
-        }
-    })
-
-    //支付宝支付查账
-    @action alipayCheck = flow(function * (params) {
-        try {
-            const resultStr = yield PaymentApi.alipayCheck(params)
-            return {resultStr}
-        } catch (error) {
-            Toast.hiddenLoading()
-            console.log(error)
             return error
         }
     })
@@ -137,7 +127,15 @@ export class Payment {
             const result = yield PaymentApi.wachatpay({orderNo: this.orderNo})
 
             if (result && result.code === 10000) {
+                if (!result.data) {
+                    throw new Error('支付异常')
+                }
+                if (!result.data.payInfo) {
+                    throw new Error('支付异常')
+                }
+                this.isGoToPay = true
                 const payInfo = JSON.parse(result.data.payInfo)
+                Toast.hiddenLoading()
                 payInfo.partnerid = payInfo.mchId
                 payInfo.timestamp = payInfo.timeStamp
                 payInfo.prepayid = payInfo.prepayId
@@ -148,30 +146,18 @@ export class Payment {
                 console.log(JSON.stringify(resultStr));
                 if (parseInt(resultStr.code, 0) !== 0) {
                     // ref && ref.show(2, resultStr.msg)
-                    Toast.hiddenLoading()
                     throw new Error(resultStr.msg)
                 }
-                Toast.hiddenLoading()
                 return resultStr
             } else {
-                Toast.hiddenLoading()
                 Toast.$toast(result.msg);
                 return
             }
 
         } catch (error) {
             Toast.hiddenLoading()
+            this.payError = error
             ref && ref.show(2, error.msg || error.message)
-            console.log(error)
-        }
-    })
-
-    @action wechatCheck = flow(function * (params) {
-        try {
-            const resultStr = yield PaymentApi.wechatCheck(params)
-            return {resultStr}
-        } catch (error) {
-            Toast.hiddenLoading()
             console.log(error)
         }
     })
@@ -194,6 +180,7 @@ export class Payment {
             }
         } catch (error) {
             Toast.hiddenLoading()
+            this.payError = error
             ref && ref.show(2, error.msg || error.message)
             console.log(error)
         }
@@ -231,7 +218,42 @@ export class Payment {
 
         } catch (error) {
             Toast.hiddenLoading()
+            this.payError = error
             ref && ref.show(2, error.msg || error.message)
+            console.log(error)
+        }
+    })
+
+    @action checkPayStatus = flow(function * (){
+        try {
+            if (this.payError) {
+                throw new Error('支付失败')
+            }
+            const result = yield PaymentApi.payStatus({platformOrderNo: this.orderNo})
+            if (result && result.code === 10000) {
+                return result.data
+            } else {
+                return
+            }
+        } catch (error) {
+            // ref && ref.show(2, error.msg || error.message)
+            console.log(error)
+            this.payError = ''
+            return error
+        }
+    })
+
+    //关闭订单
+    @action closeOrder = flow(function*(){
+        try {
+            let result = yield PaymentApi.closeWeChatorder({outTradeNo: this.orderNo})
+            if (result && result.code === 10000) {
+                return result.data
+            } else {
+                return
+            }
+        } catch (error) {
+            // ref && ref.show(2, error.msg || error.message)
             console.log(error)
         }
     })

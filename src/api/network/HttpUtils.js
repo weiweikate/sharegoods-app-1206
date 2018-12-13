@@ -156,7 +156,6 @@ export default class HttpUtils {
             signParam = RSA.sign()
         }
         data = {
-            ...defaultData,
             ...data
         };
 
