@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
+import {  View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
-
+import Modal from 'CommModal';
 const { px2dp } = ScreenUtil;
 import { NavigationActions } from 'react-navigation';
 const successImg = res.button.tongyon_icon_check_green;
@@ -65,10 +65,11 @@ export default class PaymentResultView extends Component {
         return (
             <Modal
                 style={styles.container}
+                transparent={true}
                 animationType="fade"
                 visible={this.state.modalVisible}
                 onRequestClose={() => {
-
+                    this.setState({modalVisible:false})
                 }}>
                 <TouchableWithoutFeedback style={styles.container} onPress={() => this.dismiss()}>
                     <View style={styles.container}>
@@ -119,7 +120,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width:ScreenUtils.width
     },
     content: {
         width: px2dp(250),
