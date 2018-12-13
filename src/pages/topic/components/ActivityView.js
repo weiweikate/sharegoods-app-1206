@@ -140,7 +140,7 @@ export default class MyShop_RecruitPage extends Component {
                 four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
                 price = markdownPrice;
-                two = `起拍价`;
+                two = `当前价`;
                 three = (markdownPrice === floorPrice || status === 3) ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${surplusNumber === 0 ? `已拍完` : `还剩${surplusNumber}件`}`;
             }

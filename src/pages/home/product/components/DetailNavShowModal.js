@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
     View,
     ImageBackground,
-    Modal,
     TouchableOpacity,
     FlatList,
     Text,
@@ -13,7 +12,7 @@ import {
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "DesignRule";
 import res from "../../res";
-
+import Modal from 'CommModal'
 const {
     detailShowBg,
     message,
@@ -116,7 +115,7 @@ export default class DetailNavShowModal extends Component {
                     <ImageBackground
                         resizeMode={"stretch"}
                         style={{
-                            top: Platform.OS === "ios" ? ScreenUtils.headerHeight : 44,
+                            top: Platform.OS === "ios" ? ScreenUtils.headerHeight : 44+ScreenUtils.statusBarHeight,
                             right: 12,
                             position: "absolute", width: bgWidth, height: bgHeight
                         }}
