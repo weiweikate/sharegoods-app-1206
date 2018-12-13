@@ -341,7 +341,7 @@ export default class TopicDetailPage extends BasePage {
                 activityCode: this.params.activityCode,
                 orderType: 3,
                 orderSubType: this.state.data.type === 2 ? 3 : 4,
-                orderProductList: priceList,
+                orderProducts: priceList,
                 channel: 2,
                 source: 2,
                 quantity: 1
