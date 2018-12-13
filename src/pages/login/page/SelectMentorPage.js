@@ -29,7 +29,7 @@ import res from '../res';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import UIText from '../../../comm/components/UIText';
-import Styles from '../style/SelectMentorPage.style'
+import Styles from '../style/SelectMentorPage.style';
 
 const {
     refresh
@@ -97,7 +97,11 @@ export default class SelectMentorPage extends BasePage {
                     selectIndex: response.data.length - 1
                 }, () => {
                     setTimeout(() => {
-                        this.scrView.scrollTo({ x: 2 * ScreenUtils.width / 5, y: 0, animated: false });
+                        this.scrView.scrollTo({
+                            x: this.state.selectIndex * ScreenUtils.width / 5,
+                            y: 0,
+                            animated: false
+                        });
 
                     }, 300);
                 });
@@ -106,7 +110,11 @@ export default class SelectMentorPage extends BasePage {
                     mentorData: response.data
                 }, () => {
                     setTimeout(() => {
-                        this.scrView.scrollTo({ x: 2 * ScreenUtils.width / 5, y: 0, animated: false });
+                        this.scrView.scrollTo({
+                            x: this.state.selectIndex * ScreenUtils.width / 5,
+                            y: 0,
+                            animated: false
+                        });
 
                     }, 300);
                 });
@@ -129,24 +137,30 @@ export default class SelectMentorPage extends BasePage {
                 <View
                     style={Styles.bottomViewStyle}
                 >
-                    <Text
-                        onPress={
-                            () => this.jumpToWriteCodePage()
-                        }
+                    <View
                         style={{
-                            color: '#979797',
-                            height: 20,
-                            width: 100,
-                            fontSize: 13,
                             borderWidth: 1,
                             borderRadius: 10,
-                            textAlign: 'center',
-                            borderColor: DesignRule.textColor_instruction,
-                            paddingTop: 2
+                            height: 20,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: 100,
+                            borderColor: DesignRule.textColor_instruction
                         }}
                     >
-                        填写授权码
-                    </Text>
+                        <Text
+                            onPress={
+                                () => this.jumpToWriteCodePage()
+                            }
+                            style={{
+                                color: '#979797',
+                                fontSize: 13
+
+                            }}
+                        >
+                            填写授权码
+                        </Text>
+                    </View>
                 </View>
             </View>
         );

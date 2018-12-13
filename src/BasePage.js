@@ -17,11 +17,13 @@ import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
-import { netStatus } from './comm/components/NoNetHighComponent';
+// import { netStatus } from './comm/components/NoNetHighComponent';
+import { netStateUtils } from '@mr/request'
 import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from 'DesignRule';
 import Toast from './utils/bridge';
+const  netStatus = netStateUtils;
 
 export default class BasePage extends Component {
     constructor(props) {

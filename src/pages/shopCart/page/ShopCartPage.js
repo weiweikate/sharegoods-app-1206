@@ -48,6 +48,24 @@ const activityString = {
     [activityCode.guaguaLe]: '刮'
 };
 
+//0 删除 1 正常商品 2 下架 无效 3 暂未开售
+const statueImage = {
+    0: res.other.invalidGoodImg,
+    1: null,
+    2: res.other.invalidGoodImg,
+    3: res.ZanWeiKaiShou
+};
+
+const getSelectImage =(itemData)=>{
+
+    if (itemData.status === 0 || itemData.status === 2 || itemData.status === 3){
+        return res.button.unAbleSelected_circle;
+    } else if (itemData.status === 1){
+        return itemData.isSelected?  res.button.selected_circle_red : res.button.unselected_circle;
+    }
+}
+
+
 @observer
 export default class ShopCartPage extends BasePage {
     // 导航配置
@@ -67,33 +85,44 @@ export default class ShopCartPage extends BasePage {
             hiddeLeft = true;
         }
         this.$navigationBarOptions.leftNavItemHidden = hiddeLeft;
+        this.state = {};
     }
 
     componentDidMount() {
         // this.contentList && this.contentList._updateVisibleRows();
-        this.didBlurSubscription = this.props.navigation.addListener(
-            'didFocus',
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
             payload => {
-                if (this.contentList) {
-                    // this.contentList.scrollTo({ x: 0, y: 10, animated: true });
-                    // this.contentList.scrollTo({ x: 0, y: 0, animated: true });
-                }
+                this.setState({
+                    pageFocus: true
+                });
                 shopCartCacheTool.getShopCartGoodsListData();
             }
         );
-        // shopCartCacheTool.getShopCartGoodsListData();
+        this.didBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                this.setState({
+                    pageFocus: false
+                });
+            }
+        );
     }
 
     componentWillUnmount() {
-        this.didBlurSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.didBlurSubscription && this.didBlurSubscription.remove();
     }
 
     _render() {
         return (
-            <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
-                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
-                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
-            </View>
+            // this.state.pageFocus
+            //     ?
+                <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
+                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
+                </View>
+                // : null
         );
     }
 
@@ -251,7 +280,7 @@ export default class ShopCartPage extends BasePage {
             >
                 <View style={styles.CartBottomContainer}>
                     <TouchableOpacity
-                        style={{ flexDirection: 'row', paddingLeft: 19 ,alignItems:'center'}}
+                        style={{ flexDirection: 'row', paddingLeft: 19, alignItems: 'center' }}
                         onPress={() => this._selectAll()}
                     >
                         <Image
@@ -262,7 +291,7 @@ export default class ShopCartPage extends BasePage {
                             style={{
                                 fontSize: 13,
                                 color: DesignRule.textColor_instruction,
-                                marginLeft: 10,
+                                marginLeft: 10
                             }}/>
                     </TouchableOpacity>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -298,14 +327,18 @@ export default class ShopCartPage extends BasePage {
                     style={styles.itemContainer}>
                     <View style={styles.standaloneRowFront}>
                         <UIImage
-                            source={itemData.isSelected ? res.button.selected_circle_red : res.button.unselected_circle}
+                            // source={itemData.isSelected ? res.button.selected_circle_red : res.button.unselected_circle}
+                            source={getSelectImage(itemData)}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
 
                                 let [...tempValues] = shopCartStore.data;
 
-                                if (tempValues[rowId].status === 0) {
-                                    bridge.$toast('失效商品不可结算');
+                                if (tempValues[rowId].status === 0 ||
+                                    tempValues[rowId].status === 2 ||
+                                    tempValues[rowId].status === 3) {
+                                    bridge.$toast('此商品不可结算');
+                                    tempValues[rowId].isSelected = false;
                                 } else {
                                     tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
                                 }
@@ -348,9 +381,11 @@ export default class ShopCartPage extends BasePage {
                                 : null
                         }
                         {
-                            itemData.status === 0 ?
-                                <UIImage
-                                    source={res.other.invalidGoodImg}
+                            itemData.status === 1
+                                ?
+                                null
+                                : <UIImage
+                                    source={statueImage[itemData.status]}
                                     style={{
                                         // backgroundColor:DesignRule.mainColor,
                                         position: 'absolute',
@@ -359,7 +394,6 @@ export default class ShopCartPage extends BasePage {
                                         height: 60
                                     }}
                                 />
-                                : null
                         }
 
                         <View style={styles.validContextContainer}>
@@ -429,7 +463,9 @@ export default class ShopCartPage extends BasePage {
                                             value={'-'}
                                             style={
                                                 [styles.addOrReduceBtnStyle,
-                                                    (itemData.stock === 0 || itemData.status === 0) ?
+                                                    (itemData.stock === 0 ||
+                                                        itemData.status === 0 ||
+                                                        itemData.status === 2) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -445,7 +481,9 @@ export default class ShopCartPage extends BasePage {
                                         <TextInput
                                             style={
                                                 [styles.TextInputStyle,
-                                                    (itemData.stock === 0 || itemData.status === 0) ?
+                                                    (itemData.stock === 0 ||
+                                                        itemData.status === 0 ||
+                                                        itemData.status === 2) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -454,13 +492,16 @@ export default class ShopCartPage extends BasePage {
                                             value={itemData.amount ? '' + itemData.amount : ''}
                                             underlineColorAndroid={'transparent'}
                                             onFocus={() => {
-                                                if (itemData.stock === 0) {
+                                                if (itemData.stock === 0 ||
+                                                    itemData.status === 0 ||
+                                                    itemData.status === 2) {
                                                     dismissKeyboard();
                                                 }
                                             }}
                                             onChangeText={text => {
-                                                if (itemData.status === 0) {
-                                                    bridge.$toast('此商品已失效');
+                                                if (itemData.status === 0 ||
+                                                    itemData.status === 2) {
+                                                    bridge.$toast('此商品不可编辑');
                                                 } else {
                                                     console.log('输入后的值' + text);
                                                     itemData.amount = parseInt(text);
@@ -484,10 +525,14 @@ export default class ShopCartPage extends BasePage {
                                             style={
                                                 [styles.addOrReduceBtnStyle,
 
-                                                    (itemData.stock === 0 || itemData.status === 0) ?
+                                                    (itemData.stock === 0 ||
+                                                        itemData.status === 0 ||
+                                                        itemData.status === 2)
+                                                        ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
-                                                        } : null
+                                                        }
+                                                        : null
                                                 ]
                                             }
 
@@ -576,6 +621,7 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
+        // shopCartStore.setRefresh(true);
         shopCartCacheTool.getShopCartGoodsListData();
     };
     /**
@@ -617,6 +663,7 @@ export default class ShopCartPage extends BasePage {
             return;
         }
         if (isCanSettlement && !haveNaNGood) {
+            this.$loadingShow();
             let buyGoodsArr = [];
             tempArr.map((goods) => {
                 buyGoodsArr.push({
@@ -625,12 +672,11 @@ export default class ShopCartPage extends BasePage {
                     productCode: goods.productCode
                 });
             });
-            this.$loadingShow();
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: buyGoodsArr,
-                    source:1,
+                    source: 1
                 }
             });
         }
@@ -652,7 +698,7 @@ export default class ShopCartPage extends BasePage {
         });
     };
     onNumberTextChange = (itemData, text, rowId) => {
-        if (itemData.status === 0) {
+        if (itemData.status === 0 || itemData.status === 2) {
             bridge.$toast('此商品已失效');
             return;
         }
@@ -683,9 +729,7 @@ export default class ShopCartPage extends BasePage {
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
-
-
-        if (itemData.status === 0) {
+        if (itemData.status === 0 || itemData.status === 2) {
             return;
         }
         if (itemData.stock === 0) {
@@ -701,7 +745,7 @@ export default class ShopCartPage extends BasePage {
     };
     /*加号按钮操作*/
     _addProductNum = (itemData, rowId) => {
-        if (itemData.status === 0) {
+        if (itemData.status === 0 || itemData.status === 2) {
             return;
         }
         if (itemData.stock === 0) {
@@ -826,7 +870,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     totalPrice: {
         fontSize: 13,

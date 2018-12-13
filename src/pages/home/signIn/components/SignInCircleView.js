@@ -63,7 +63,8 @@ export default class SignInCircleView extends PureComponent {
 
     noSignInRender(){
         return (
-            <View style={[styles.circleStyle,{ backgroundColor: '#c6b478',borderRadius:px2dp(12), borderWidth: px2dp(2),
+            <View style={[styles.circleStyle,{ width:px2dp(26),
+                height:px2dp(26),backgroundColor: '#c6b478',borderRadius:px2dp(13), borderWidth: px2dp(2),
                 borderColor:'white'
             }]}>
                 <Text style={[styles.textStyle,{color:DesignRule.textColor_secondTitle}]}>
