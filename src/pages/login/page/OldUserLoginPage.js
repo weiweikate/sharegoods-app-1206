@@ -140,12 +140,10 @@ export default class OldUserLoginPage extends BasePage {
                         <TouchableOpacity onPress={this.loginClick}>
                             <Text style={{
                                 textAlign: 'center',
-                                height: 45,
                                 alignItems: 'center',
                                 color: '#fff',
-                                fontSize: 14,
-                                paddingTop: 15,
-                                fontWeight: '600'
+                                fontSize: 17,
+                                paddingTop: 15
 
                             }}>
                                 登录

@@ -96,6 +96,7 @@ export default class CommModal extends PureComponent {
                     this.modalAndroid = modalAndroid;
                 }}
                 onModalDismiss={() => {
+                    this.props.onRequestClose && this.props.onRequestClose();
                     this.setState({ visible: false });
                 }}
                 visible={[this.state.visible, this.state.update]}>

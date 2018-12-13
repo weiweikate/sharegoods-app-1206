@@ -6,9 +6,8 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
-    ListView, TouchableHighlight,
+    ListView,
     Text,
-    TextInput,
     RefreshControl
 } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
@@ -16,15 +15,17 @@ import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import {
     UIText,
-    UIImage
 } from '../../../components/ui/index';
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
-import bridge from '../../../utils/bridge';
+// import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
-import {activityString,statueImage,getSelectImage} from '../model/ShopCartMacro'
+// import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
+// import { renderShopCartCell } from './ShopCartCell';
+import ShopCartCell from './ShopCartCell'
 const dismissKeyboard = require('dismissKeyboard');
+
 @observer
 export default class ShopCartPage extends BasePage {
     // 导航配置
@@ -32,6 +33,7 @@ export default class ShopCartPage extends BasePage {
         title: '购物车',
         leftNavItemHidden: true
     };
+
     constructor(props) {
         super(props);
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -76,11 +78,11 @@ export default class ShopCartPage extends BasePage {
         return (
             // this.state.pageFocus
             //     ?
-                <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
-                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
-                    {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
-                </View>
-                // : null
+            <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
+            </View>
+            // : null
         );
     }
 
@@ -153,7 +155,6 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     };
-
     _gotoLookAround = () => {
         this.$navigateBackToHome();
     };
@@ -170,6 +171,8 @@ export default class ShopCartPage extends BasePage {
                 // )}
                 renderRow={(rowData, secId, rowId, rowMap) => (
                     this._renderValidItem(rowData, rowId, rowMap)
+                    // renderShopCartCell(rowData, rowId, rowMap)
+
                 )}
                 renderHiddenRow={(data, secId, rowId, rowMap) => (
                     <TouchableOpacity
@@ -213,7 +216,6 @@ export default class ShopCartPage extends BasePage {
             />
         );
     };
-
 
     _renderShopCartBottomMenu = () => {
         let hiddeLeft = true;
@@ -276,302 +278,10 @@ export default class ShopCartPage extends BasePage {
 
     _renderValidItem = (itemData, rowId, rowMap) => {
         return (
-            <View>
-                <TouchableHighlight
-                    onPress={() => {
-                        rowMap;
-                        this._jumpToProductDetailPage(itemData);
-                    }}
-                    style={styles.itemContainer}>
-                    <View style={styles.standaloneRowFront}>
-                        <UIImage
-                            // source={itemData.isSelected ? res.button.selected_circle_red : res.button.unselected_circle}
-                            source={getSelectImage(itemData)}
-                            style={{ width: 22, height: 22, marginLeft: 10 }}
-                            onPress={() => {
-
-                                let [...tempValues] = shopCartStore.data;
-
-                                if (tempValues[rowId].status === 0 ||
-                                    tempValues[rowId].status === 2 ||
-                                    tempValues[rowId].status === 3) {
-                                    bridge.$toast('此商品不可结算');
-                                    tempValues[rowId].isSelected = false;
-                                } else {
-                                    tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
-                                }
-                                shopCartStore.data = tempValues;
-                            }}
-                        />
-                        <UIImage
-                            source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
-                            style={[styles.validProductImg]}
-                        />
-                        {
-                            activityString[itemData.activityType]
-                                ?
-                                <View
-                                    style={{
-                                        position: 'absolute',
-                                        left: 140,
-                                        top: 20,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        borderWidth: 1,
-                                        borderRadius: 4,
-                                        borderColor: DesignRule.mainColor,
-                                        width: 16,
-                                        height: 16
-                                    }}
-                                >
-                                    <UIText
-                                        value={
-                                            activityString[itemData.activityType]
-                                        }
-                                        style={
-                                            {
-                                                fontSize: 10,
-                                                color: DesignRule.mainColor
-                                            }
-                                        }
-                                    />
-                                </View>
-                                : null
-                        }
-                        {
-                            itemData.status === 1
-                                ?
-                                null
-                                : <UIImage
-                                    source={statueImage[itemData.status]}
-                                    style={{
-                                        // backgroundColor:DesignRule.mainColor,
-                                        position: 'absolute',
-                                        marginLeft: 55,
-                                        width: 60,
-                                        height: 60
-                                    }}
-                                />
-                        }
-
-                        <View style={styles.validContextContainer}>
-                            <View>
-                                <UIText
-                                    value={
-                                        itemData.productName
-                                            ?
-                                            (
-                                                activityString[itemData.activityType]
-                                                    ?
-                                                    '    ' + itemData.productName
-                                                    :
-                                                    '' + itemData.productName
-                                            )
-                                            :
-                                            ''}
-                                    numberOfLines={2}
-                                    style={{
-                                        marginTop: 0,
-                                        fontSize: 13,
-                                        lineHeight: 16,
-                                        height: 32,
-                                        color: DesignRule.textColor_mainTitle
-                                    }}
-                                />
-
-                                <UIText
-                                    value={itemData.specString ? itemData.specString : ''}
-                                    numberOfLines={2}
-                                    style={{
-                                        fontSize: 13,
-                                        color: DesignRule.textColor_instruction
-                                    }}/>
-
-                                {
-                                    itemData.amount > itemData.stock
-                                        ?
-                                        <UIText
-                                            value={'库存不足'}
-                                            numberOfLines={2}
-                                            style={{
-                                                fontSize: 11,
-                                                color: DesignRule.mainColor
-                                            }}/>
-                                        :
-                                        null
-                                }
-
-                            </View>
-                            <View style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center'
-                            }}>
-                                <UIText
-                                    value={'￥ ' + itemData.price}
-                                    style={{ fontSize: 14, color: DesignRule.mainColor }}/>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <TouchableOpacity
-                                        style={styles.rectangle}
-                                        onPress={() => {
-                                            this._reduceProductNum(itemData, rowId);
-                                        }}
-                                    >
-                                        <UIText
-                                            value={'-'}
-                                            style={
-                                                [styles.addOrReduceBtnStyle,
-                                                    (itemData.stock === 0 ||
-                                                        itemData.status === 0 ||
-                                                        itemData.status === 2) ?
-                                                        {
-                                                            color: DesignRule.textColor_placeholder
-                                                        } : null
-                                                ]
-                                            }
-                                        />
-                                    </TouchableOpacity>
-                                    <View style={[styles.rectangle, {
-                                        width: 46,
-                                        borderLeftWidth: 0,
-                                        borderRightWidth: 0
-                                    }]}>
-                                        <TextInput
-                                            style={
-                                                [styles.TextInputStyle,
-                                                    (itemData.stock === 0 ||
-                                                        itemData.status === 0 ||
-                                                        itemData.status === 2) ?
-                                                        {
-                                                            color: DesignRule.textColor_placeholder
-                                                        } : null
-                                                ]
-                                            }
-                                            value={itemData.amount ? '' + itemData.amount : ''}
-                                            underlineColorAndroid={'transparent'}
-                                            onFocus={() => {
-                                                if (itemData.stock === 0 ||
-                                                    itemData.status === 0 ||
-                                                    itemData.status === 2) {
-                                                    dismissKeyboard();
-                                                }
-                                            }}
-                                            onChangeText={text => {
-                                                if (itemData.status === 0 ||
-                                                    itemData.status === 2) {
-                                                    bridge.$toast('此商品不可编辑');
-                                                } else {
-                                                    console.log('输入后的值' + text);
-                                                    itemData.amount = parseInt(text);
-                                                    let [...tempArr] = shopCartStore.data.slice();
-                                                    tempArr[rowId] = itemData;
-                                                    shopCartStore.data = tempArr;
-                                                }
-                                            }}
-                                            onEndEditing={text => this.onNumberTextChange(itemData, text, rowId)}
-                                            placeholder=''
-                                            keyboardType='numeric'
-                                        />
-                                    </View>
-                                    <TouchableOpacity
-                                        style={styles.rectangle}
-                                        onPress={() => {
-                                            this._addProductNum(itemData, rowId);
-                                        }}>
-                                        <UIText
-                                            value={'+'}
-                                            style={
-                                                [styles.addOrReduceBtnStyle,
-
-                                                    (itemData.stock === 0 ||
-                                                        itemData.status === 0 ||
-                                                        itemData.status === 2)
-                                                        ?
-                                                        {
-                                                            color: DesignRule.textColor_placeholder
-                                                        }
-                                                        : null
-                                                ]
-                                            }
-
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </TouchableHighlight>
-
-                <View
-                    style={{
-                        backgroundColor: DesignRule.bgColor
-                    }}
-                >
-                    {
-                        (
-                            (itemData.activityType === 1 || itemData.activityType === 2) &&
-                            this._getSkillIsBegin(itemData) === 1 || this._getSkillIsBegin(itemData) === 0
-                        )
-                            ?
-                            <View
-                                style={
-                                    [{
-                                        height: 15,
-                                        width: ScreenUtils.width,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: DesignRule.mainColor
-
-                                    },
-                                        this._getSkillIsBegin(itemData) === 0
-                                            ?
-                                            { opacity: 0.5 }
-                                            :
-                                            { opacity: 1 }
-                                    ]
-                                }
-                            >
-                                <Text style={{
-                                    flex: 1,
-                                    color: 'white',
-                                    fontSize: 11
-                                }}>
-                                    {
-                                        itemData.activityType === 1 ?
-                                            (this._getSkillIsBegin(itemData) === 0 ? '秒杀活动未开始,暂不可购买~' : '该商品正在进行秒杀活动,快去看看~') :
-                                            '该商品正在进行降价拍活动,快去看看~'
-                                    }
-                                </Text>
-                            </View>
-                            : null
-                    }
-                    <View
-                        style={{ height: 10, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}
-                    />
-                </View>
-            </View>
-
+           <ShopCartCell itemData={itemData} rowMap={rowMap} rowId={rowId} cellClickAction={(itemData)=>{
+               this._jumpToProductDetailPage(itemData)
+           }}/>
         );
-    };
-
-
-    /**
-     * 获取秒杀是否开始或者结束
-     * @param itemData
-     * @private
-     * return 0 未开始 1进行中 2已结束
-     */
-    _getSkillIsBegin = (itemData) => {
-        if ((new Date().getTime()) < itemData.activityBeginTime) {
-            return 0;
-        } else if (
-            (new Date().getTime()) > itemData.activityBeginTime &&
-            (new Date().getTime()) < itemData.activityEndTime
-        ) {
-            return 1;
-        } else {
-            return 2;
-        }
     };
     /**
      * 下拉刷新
@@ -579,7 +289,6 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
-        // shopCartStore.setRefresh(true);
         shopCartCacheTool.getShopCartGoodsListData();
     };
     /**
@@ -591,7 +300,6 @@ export default class ShopCartPage extends BasePage {
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0) {
             this.$toastShow('请先选择结算商品~');
-            // bridge.$toast('请先选择结算商品~');
             return;
         }
         let isCanSettlement = true;
@@ -612,12 +320,10 @@ export default class ShopCartPage extends BasePage {
 
         if (haveNaNGood) {
             this.$toastShow('存在选中商品数量为空,或存在正在编辑的商品,请确认~');
-            // bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~')
             return;
         }
         if (!isCanSettlement) {
             this.$toastShow('商品库存不足请确认~');
-            // bridge.$toast('商品库存不足请确认~')
             return;
         }
         if (isCanSettlement && !haveNaNGood) {
@@ -639,11 +345,6 @@ export default class ShopCartPage extends BasePage {
             });
         }
     };
-
-    _selectAll = () => {
-        shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
-    };
-
     _jumpToProductDetailPage = (itemData) => {
         if (itemData.status === 0) {
             //失效商品不可进入详情
@@ -655,67 +356,8 @@ export default class ShopCartPage extends BasePage {
             productCode: itemData.productCode
         });
     };
-    onNumberTextChange = (itemData, text, rowId) => {
-        if (itemData.status === 0 || itemData.status === 2) {
-            bridge.$toast('此商品已失效');
-            return;
-        }
-        if (itemData.stock === 0) {
-            bridge.$toast('此商品库存为零不可编辑');
-            return;
-        }
-        if (isNaN(itemData.amount)) {
-            itemData.amount = 1;
-            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
-        }
-        if (itemData.amount >= itemData.stock) {
-            bridge.$toast('已达商品库存最大数');
-            itemData.amount = itemData.stock;
-            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
-        }
-        if (itemData.amount <= 0) {
-            itemData.amount = 1;
-            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
-        }
-        if (itemData.amount > 200) {
-            itemData.amount = 200;
-            bridge.$toast('单个商品最多200件');
-            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
-        }
-        shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
-    };
-    /*action*/
-    /*减号操作*/
-    _reduceProductNum = (itemData, rowId) => {
-        if (itemData.status === 0 || itemData.status === 2) {
-            return;
-        }
-        if (itemData.stock === 0) {
-            bridge.$toast('此商品库存为零不可编辑');
-            return;
-        }
-        if (itemData.amount > 1) {
-            itemData.amount--;
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
-        } else if (itemData.amount === 1) {
-            bridge.$toast('已达商品最小数量');
-        }
-    };
-    /*加号按钮操作*/
-    _addProductNum = (itemData, rowId) => {
-        if (itemData.status === 0 || itemData.status === 2) {
-            return;
-        }
-        if (itemData.stock === 0) {
-            bridge.$toast('此商品库存为零不可编辑');
-            return;
-        }
-        if (itemData.amount >= itemData.stock) {
-            bridge.$toast('已达商品库存最大数');
-        } else {
-            itemData.amount++;
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
-        }
+    _selectAll = () => {
+        shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
     /*删除操作*/
     _deleteFromShoppingCartByProductId = (skuCode) => {
@@ -724,47 +366,17 @@ export default class ShopCartPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-end'
-    },
-    whatLeft: {  // 组件定义了一个上边框
-        flex: 1,
-        borderTopWidth: 1,
-        borderColor: 'black',
-        backgroundColor: 'green' //每个界面背景颜色不一样
-    },
     standaloneRowBack: {
         alignItems: 'center',
-        // backgroundColor: DesignRule.mainColor,
         backgroundColor: DesignRule.bgColor,
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end'
-        // padding: 15
-
     },
     backUITextWhite: {
-        // flex:1,
         marginRight: 0,
         color: 'white',
         fontSize: 17
-    },
-    standaloneRowFront: {
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        height: 130,
-        width: ScreenUtils.width,
-        flexDirection: 'row',
-        marginRight: 16
-    },
-    rectangle: {
-        height: 30,
-        width: 30,
-        justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: DesignRule.lineColor_inColorBg,
-        alignItems: 'center'
     },
     addOrReduceBtnStyle: {
         fontSize: 13,
@@ -789,11 +401,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         paddingRight: 15
     },
-    // itemContainer: {
-    //     height: 40,
-    //     justifyContent: 'center',
-    //     alignItems: 'center'
-    // },
     invalidItemContainer: {
         height: 100,
         flexDirection: 'row',
