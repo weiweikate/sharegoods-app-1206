@@ -20,7 +20,9 @@ const activityString = {
     [activityCode.guaguaLe]: '刮'
 };
 
-//0 删除 1 正常商品 2 下架 无效 3 暂未开售
+/**
+ * 0 删除 1 正常商品 2 下架 无效 3 暂未开售
+ */
 const statueImage = {
     0: res.other.invalidGoodImg,
     1: null,
