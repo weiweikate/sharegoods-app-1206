@@ -40,7 +40,7 @@ const finishPayIcon = res.dingdanxiangqing_icon_yiwangcheng;
 const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
 const refuseIcon = res.dingdanxiangqing_icon_guangbi;
 const moreIcon = res.message_three;
-const timeUtils = new TimeDownUtils();
+
 const { px2dp } = ScreenUtils;
 
 
@@ -56,8 +56,9 @@ export default class MyOrdersDetailPage extends BasePage {
             viewData: {},
             menu: {},
             giftBagCoupons: [],
-            cancelArr: []
+            cancelArr: [],
         };
+        this.timeUtils = new TimeDownUtils();
         assistDetailModel.setOrderId(this.params.orderId);
     }
 
@@ -83,7 +84,7 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     //**********************************ViewPart******************************************
     renderState = () => {
-        let leftIconArr = [buyerHasPay, tobePayIcon, buyerHasPay, hasDeliverIcon, finishPayIcon, finishPayIcon, refuseIcon, refuseIcon, refuseIcon, refuseIcon];
+        let leftIconArr = [buyerHasPay, tobePayIcon, buyerHasPay, hasDeliverIcon, finishPayIcon, refuseIcon, refuseIcon, refuseIcon, refuseIcon, refuseIcon];
         return (
             <View style={{ marginBottom: px2dp(10) }}>
                 <OrderDetailStatusView
@@ -120,7 +121,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     componentWillUnmount() {
         DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
-        timeUtils.stop();
+        this.timeUtils.stop();
     }
 
     _render = () => {
@@ -277,7 +278,7 @@ export default class MyOrdersDetailPage extends BasePage {
             orderDetailAfterServiceModel.moreDetail = "";
             return;
         }
-        timeUtils.settimer((time) => {
+        this.timeUtils.settimer((time) => {
             orderDetailAfterServiceModel.moreDetail = time.hours + ":" + time.min + ":" + time.sec + "后自动取消订单";
             console.log(orderDetailAfterServiceModel.totalAsList);
             if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
@@ -293,7 +294,7 @@ export default class MyOrdersDetailPage extends BasePage {
             orderDetailAfterServiceModel.moreDetail = "";
             return;
         }
-        timeUtils.settimer(time => {
+        this.timeUtils.settimer(time => {
             orderDetailAfterServiceModel.moreDetail = time.days + "天" + time.hours + ":" + time.min + ":" + time.sec + "后自动确认收货";
             if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
                 orderDetailAfterServiceModel.totalAsList = orderDetailAfterServiceModel.AfterServiceList[5];
@@ -460,7 +461,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
                 break;
             case 4:
-                timeUtils.stop();
+                this.timeUtils.stop();
                 pageStateString.sellerState = "已签收";
                 orderDetailAfterServiceModel.moreDetail = "";
                 orderDetailAfterServiceModel.menu = [
@@ -477,7 +478,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime : orderDetailModel.warehouseOrderDTOList[0].finishTime;
                 break;
             case 5:
-                timeUtils.stop();
+                this.timeUtils.stop();
                 orderDetailAfterServiceModel.menu = [
                     {
                         id:7,
