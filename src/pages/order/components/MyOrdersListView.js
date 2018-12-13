@@ -190,12 +190,11 @@ export default class MyOrdersListView extends Component {
                 }
 
             });
-            // this.setState({ viewData: arrData });
         } else {
             this.noMoreData = true;
-            // NativeModules.commModule.toast('无更多数据');
         }
-        this.setState({ viewData: arrData }, this.timeDown);
+        // this.setState({ viewData: arrData }, this.timeDown);
+        this.setState({ viewData: arrData });
     };
 
     totalAmount(data) {

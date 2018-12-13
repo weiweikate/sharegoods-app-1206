@@ -34,7 +34,7 @@ const GoodsListItem = props => {
         platformPayTime,
         sendTime,
         finishTime,
-        shutOffTime,
+        // shutOffTime,
         cancelTime,
         callBack,
         quantity,
@@ -60,7 +60,7 @@ const GoodsListItem = props => {
             return str;
         }
     };
-    //28:45:45后自动取消订单
+    //28:45:45后自动取消订单 {this.startCutDownTime2(shutOffTime)}
     this.renderMenu = () => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
         if (orderStatus === 1) {
@@ -76,7 +76,7 @@ const GoodsListItem = props => {
                             style={{
                                 color: DesignRule.mainColor,
                                 fontSize: 13
-                            }}>{this.startCutDownTime2(shutOffTime)}</Text>
+                            }}/>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         {nameArr.map((item, i) => {
@@ -236,11 +236,11 @@ const GoodsListItem = props => {
     return (
         <View>
             <TouchableOpacity onPress={clickItem}>
-                <View style={{marginTop:10}}/>
+                <View />
                 {this.renderOrderNum()}
                 {this.renderGoodsList()}
                 {this.renderCalculate()}
-                {this.renderLine()}
+                {/*{this.renderLine()}*/}
                 {/*{this.renderTime()}*/}
                 {this.renderLine()}
             </TouchableOpacity>
