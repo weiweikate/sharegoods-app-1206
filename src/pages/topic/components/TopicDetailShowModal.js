@@ -49,7 +49,8 @@ export default class TopicDetailShowModal extends Component {
                        ref={(ref) => {
                            this.modal = ref;
                        }}
-                       transparent={true}>
+                       transparent={true}
+            >
                 <View style={{
                     backgroundColor: 'rgba(0,0,0,0.5)', top: 0,
                     left: 0,

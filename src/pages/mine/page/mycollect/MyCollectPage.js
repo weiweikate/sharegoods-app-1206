@@ -408,9 +408,6 @@ const styles = StyleSheet.create({
     img: {
         width: 50,
         height: 50,
-        borderWidth: 1,
-        borderColor: DesignRule.textColor_hint,
-        backgroundColor: __DEV__ ? DesignRule.textColor_hint : 'white'
     },
     ingContainer: {
         width: 46,

@@ -69,7 +69,6 @@ export default class VersionUpdateModal extends React.Component {
     render() {
         return (<CommModal
             animationType='fade'
-            transparent={true}
             ref={(ref) => {
                 this.modal = ref;
             }}

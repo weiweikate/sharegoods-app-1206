@@ -247,7 +247,6 @@ export default class SelectionPage extends Component {
             <Modal
                 ref={(ref) => this.modal = ref}
                 animationType="none"
-                transparent={true}
                 visible={this.state.modalVisible}
                 onRequestClose={() => this.setState({ modalVisible: false })}>
                 <View style={styles.container}>
