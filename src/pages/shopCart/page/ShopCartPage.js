@@ -115,11 +115,14 @@ export default class ShopCartPage extends BasePage {
     }
 
     _render() {
-        return (this.state.pageFocus ?
+        return (
+            // this.state.pageFocus
+            //     ?
                 <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                     {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
                     {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
-                </View> : null
+                </View>
+                // : null
         );
     }
 
@@ -618,7 +621,7 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
-        shopCartStore.setRefresh(true);
+        // shopCartStore.setRefresh(true);
         shopCartCacheTool.getShopCartGoodsListData();
     };
     /**
