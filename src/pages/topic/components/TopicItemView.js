@@ -54,6 +54,7 @@ export default class TopicItemView extends Component {
                                     }
                                 ]}
                             numberOfLines={2}
+
                         >
                             {itemData.productName}
                         </Text>
@@ -98,9 +99,10 @@ const Styles = StyleSheet.create({
         color: 'white'
     },
     itemBottomTextStyle: {
+        includeFontPadding: false,
         marginTop: 10,
         color: DesignRule.textColor_mainTitle,
-        height: 27,
+        height: 29,
         fontSize: 12,
         marginLeft: 10
     },
