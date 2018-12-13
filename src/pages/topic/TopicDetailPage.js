@@ -302,6 +302,7 @@ export default class TopicDetailPage extends BasePage {
             num: amount,
             code: this.state.activityData.activityCode
         });
+        this.$loadingShow();
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
                 orderType: this.state.activityType,
@@ -332,6 +333,7 @@ export default class TopicDetailPage extends BasePage {
         //     priceList: priceList
         // }];
 
+        this.$loadingShow();
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
                 activityCode: this.params.activityCode,

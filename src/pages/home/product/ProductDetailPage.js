@@ -317,6 +317,7 @@ export default class ProductDetailPage extends BasePage {
                 quantity: amount,
                 productCode: this.state.data.prodCode
             });
+            this.$loadingShow();
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
