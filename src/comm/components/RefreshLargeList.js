@@ -76,7 +76,7 @@ export default class RefreshLargeList extends React.Component {
         defaultPage: 1,
         params: {},
         defaultEmptyImage: res.placeholder.no_data,
-        defaultEmptyText: '暂未数据',
+        defaultEmptyText: '暂无数据',
         defaultData: []
     };
 
