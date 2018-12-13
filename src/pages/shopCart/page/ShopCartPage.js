@@ -14,7 +14,7 @@ import { SwipeListView } from '../../../components/ui/react-native-swipe-list-vi
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import {
-    UIText,
+    UIText
 } from '../../../components/ui/index';
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
@@ -23,7 +23,8 @@ import shopCartCacheTool from '../model/ShopCartCacheTool';
 import DesignRule from 'DesignRule';
 // import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
 // import { renderShopCartCell } from './ShopCartCell';
-import ShopCartCell from './ShopCartCell'
+import ShopCartCell from './ShopCartCell';
+
 const dismissKeyboard = require('dismissKeyboard');
 
 @observer
@@ -51,20 +52,16 @@ export default class ShopCartPage extends BasePage {
     componentDidMount() {
         // this.contentList && this.contentList._updateVisibleRows();
         this.didFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            'didFocus',
             payload => {
-                this.setState({
-                    pageFocus: true
-                });
+                this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
             }
         );
         this.didBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
+            'didBlur',
             payload => {
-                this.setState({
-                    pageFocus: false
-                });
+                this.pageFocus = false;
             }
         );
     }
@@ -76,13 +73,10 @@ export default class ShopCartPage extends BasePage {
 
     _render() {
         return (
-            // this.state.pageFocus
-            //     ?
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
             </View>
-            // : null
         );
     }
 
@@ -159,10 +153,14 @@ export default class ShopCartPage extends BasePage {
         this.$navigateBackToHome();
     };
     _renderListView = () => {
+        if (!this.pageFocus) {
+            return;
+        }
         const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
         const { statusBarHeight } = ScreenUtils;
         return (
             <SwipeListView
+                extraData={this.state}
                 style={{ backgroundColor: DesignRule.bgColor }}
                 dataSource={tempArr}
                 disableRightSwipe={true}
@@ -218,6 +216,9 @@ export default class ShopCartPage extends BasePage {
     };
 
     _renderShopCartBottomMenu = () => {
+        if (!this.pageFocus) {
+            return;
+        }
         let hiddeLeft = true;
         if (!(this.params.hiddeLeft === undefined)) {
             hiddeLeft = this.params.hiddeLeft;
@@ -278,9 +279,9 @@ export default class ShopCartPage extends BasePage {
 
     _renderValidItem = (itemData, rowId, rowMap) => {
         return (
-           <ShopCartCell itemData={itemData} rowMap={rowMap} rowId={rowId} cellClickAction={(itemData)=>{
-               this._jumpToProductDetailPage(itemData)
-           }}/>
+            <ShopCartCell itemData={itemData} rowMap={rowMap} rowId={rowId} cellClickAction={(itemData) => {
+                this._jumpToProductDetailPage(itemData);
+            }}/>
         );
     };
     /**
@@ -289,6 +290,7 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
+        shopCartStore.setRefresh(true);
         shopCartCacheTool.getShopCartGoodsListData();
     };
     /**
