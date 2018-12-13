@@ -13,7 +13,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../../comm/res';
 import DesignRule from 'DesignRule';
 
-const empty_list_message = res.placeholder.messageNoData
+const empty_list_message = res.placeholder.no_data
 
 const defaultPageSize = 10;
 
@@ -100,9 +100,9 @@ export default class RefreshList extends Component {
         return (
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                               onPress={() => this.props.onRefresh()}>
-                <Image style={{ height: 140, width: 140 }} source={this.state.emptyIcon} resizeMode={'contain'}/>
+                <Image style={{ height: 110, width: 110 }} source={this.state.emptyIcon} resizeMode={'contain'}/>
                 <Text
-                    style={{ marginTop: 20, fontSize: 14, color: DesignRule.textColor_mainTitle_more_light }}>{this.state.emptyTip}</Text>
+                    style={{ marginTop: 20, fontSize: 14, color: DesignRule.textColor_instruction }}>{this.state.emptyTip}</Text>
             </TouchableOpacity>);
     };
 
