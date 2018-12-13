@@ -12,6 +12,7 @@ import { HotSearch, RecentSearch } from './../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import Storage from '../../../utils/storage';
 import SearchNav from '../../home/search/components/SearchNav';
+import DesignRule from '../../../constants/DesignRule';
 const dismissKeyboard = require('dismissKeyboard');
 //全局变量，历史搜索记录,因为是递加的
 let array = [];
@@ -234,9 +235,8 @@ class SearchPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.bgColor
     },
     item: {
         marginLeft: 15,
