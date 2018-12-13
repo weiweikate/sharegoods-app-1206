@@ -215,7 +215,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _savaData = (data) => {
-        let { productStatus, upTime } = data;
+        let { productStatus, upTime, now } = data;
         //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)3
         if (productStatus === 0) {
             this.setState({
@@ -229,11 +229,11 @@ export default class ProductDetailPage extends BasePage {
             }, () => {
                 this._getQueryByProductId();
                 /*productStatus===3的时候需要刷新*/
-                if (productStatus === 3 && upTime) {
+                if (productStatus === 3 && upTime && now) {
                     this.needUpdateDate && clearTimeout(this.needUpdateDate);
                     this.needUpdateDate = setTimeout(() => {
                         this._getProductDetail();
-                    }, upTime - new Date().getTime() + 500);
+                    }, upTime - now + 500);
                 }
             });
         }
