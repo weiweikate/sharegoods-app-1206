@@ -42,7 +42,7 @@ class AfterSaleServicePage extends BasePage {
         super(props);
         this.state = {
             isShowSingleSelctionModal: false,
-            pageType:  this.params.pageType ||  0, //  0(退款),1(退货退款),2(换货)
+            pageType: this.params.pageType || 0, //  0(退款),1(退货退款),2(换货)
             activeProduct: ['', '退回商品需由买家承担运费，请确保商品不影响二次销售', '仅可更换同规格的商品，请确保退换商品不影响二次销售'],
             reason: ['退款原因', '退货原因', '换货原因'],
             inputReason: ['退款说明', '退货说明', '换货说明'],
@@ -53,7 +53,7 @@ class AfterSaleServicePage extends BasePage {
             imageArr: this.params.isEdit === true ? this.params.imgList : [],                           //选择的图片数组
             /** 编辑申请需要的售后详情id*/
             returnProductId: this.params.orderProductNo,
-            applyRefundAmount:  this.params.isEdit === true ? this.params.refundPrice : 0,//退款金额,
+            applyRefundAmount: this.params.isEdit === true ? this.params.refundPrice : 0,//退款金额,
             remark: '',
             editable: false
             /** 换货需要的数据*/
@@ -130,13 +130,19 @@ class AfterSaleServicePage extends BasePage {
                                                text = text === '' ? '0' : text;
                                                if (parseFloat(text) <= this.state.productData.payAmount) {
                                                    this.setState({ applyRefundAmount: text + '' });
-                                               }else {
-                                                   this.setState({ applyRefundAmount: this.state.productData.payAmount + ''});
+                                               } else {
+                                                   this.setState({ applyRefundAmount: this.state.productData.payAmount + '' });
                                                }
                                            }
                                        }
                                        }
-                                       style={{ color: DesignRule.mainColor, fontSize: 13, flex: 1, height: 40 }}
+                                       style={{
+                                           color: DesignRule.mainColor,
+                                           fontSize: 13,
+                                           flex: 1,
+                                           height: 40,
+                                           underlineColorAndroid: 'transparent'
+                                       }}
                                        keyboardType={'numeric'}
                                        editable={this.state.editable}
                             />
@@ -177,8 +183,8 @@ class AfterSaleServicePage extends BasePage {
                                                text = text === '' ? '0' : text;
                                                if (parseFloat(text) <= this.state.productData.payAmount) {
                                                    this.setState({ applyRefundAmount: text + '' });
-                                               }else {
-                                                   this.setState({ applyRefundAmount: this.state.productData.payAmount + ''});
+                                               } else {
+                                                   this.setState({ applyRefundAmount: this.state.productData.payAmount + '' });
                                                }
                                            }
                                        }
@@ -348,7 +354,7 @@ class AfterSaleServicePage extends BasePage {
         let returnReasons = this.state.returnReasons.map((item) => {
             return item.value;
         });
-        if(this.state.productData.restrictions&&((this.state.productData.restrictions & 4) === 4) ){
+        if (this.state.productData.restrictions && ((this.state.productData.restrictions & 4) === 4)) {
             returnReasons.unshift('七天无理由退换');
         }
 
@@ -458,9 +464,9 @@ class AfterSaleServicePage extends BasePage {
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
             }
-            if (that.params.isEdit){
-                that.setState({ productData, editable});
-            }else {
+            if (that.params.isEdit) {
+                that.setState({ productData, editable });
+            } else {
                 that.setState({ productData, editable, applyRefundAmount: payAmount });
             }
         }).catch(error => {
@@ -500,12 +506,12 @@ class AfterSaleServicePage extends BasePage {
                 imgList = this.state.imageArr[i];
                 // smallImgUrls = this.state.imageArr[i].imageThumbUrl;
             } else {
-                imgList =  imgList + ',' + this.state.imageArr[i];
+                imgList = imgList + ',' + this.state.imageArr[i];
                 // smallImgUrls = ',' + this.state.imageArr[i].imageThumbUrl;
             }
         }
         let { orderProductNo, pageType, serviceNo } = this.params;
-        let {applyRefundAmount} = this.state;
+        let { applyRefundAmount } = this.state;
         let { remark, returnReason } = this.state;
         let params = {
             imgList: imgList,
@@ -522,7 +528,6 @@ class AfterSaleServicePage extends BasePage {
             NativeModules.commModule.toast('请选择售后原因');
             return;
         }
-
 
 
         if (parseFloat(applyRefundAmount) === 0 && pageType !== 2) {
