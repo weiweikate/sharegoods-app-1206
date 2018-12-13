@@ -115,6 +115,7 @@ export class Payment {
             }
         } catch(error) {
             this.payError = error
+            this.isGoToPay = false
             ref && ref.show(2, error.msg || error.message)
             return error
         }
@@ -150,6 +151,7 @@ export class Payment {
                 }
                 return resultStr
             } else {
+                
                 Toast.$toast(result.msg);
                 return
             }
@@ -157,6 +159,7 @@ export class Payment {
         } catch (error) {
             Toast.hiddenLoading()
             this.payError = error
+            this.isGoToPay = false
             ref && ref.show(2, error.msg || error.message)
             console.log(error)
         }
@@ -165,8 +168,9 @@ export class Payment {
     //支付宝+平台
     @action ailpayAndBalance = flow(function * (password, ref) {
         try {
-            const result = yield PaymentApi.alipayAndBalance({orderNo: this.orderNo, salePsw: password})
+            const result = yield PaymentApi.alipayAndBalance({orderNo: this.orderNo, salePswd: password})
             if (result && result.code === 10000) {
+                this.isGoToPay = true
                 const resultStr = yield PayUtil.appAliPay(result.data.payInfo)
                 if (resultStr.sdkCode !== 9000) {
                     throw new Error(resultStr.msg)
@@ -181,6 +185,7 @@ export class Payment {
         } catch (error) {
             Toast.hiddenLoading()
             this.payError = error
+            this.isGoToPay = false
             ref && ref.show(2, error.msg || error.message)
             console.log(error)
         }
@@ -200,9 +205,10 @@ export class Payment {
      @action wechatAndBalance = flow(function * (password, ref) {
         try {
             Toast.showLoading()
-            const result = yield PaymentApi.wachatpay({orderNo: this.orderNo, salePsw: password})
+            const result = yield PaymentApi.wachatpay({orderNo: this.orderNo, salePswd: password})
             if (result && result.code === 10000) {
                 const payInfo = JSON.parse(result.data.payInfo)
+                this.isGoToPay = true
                 const resultStr = yield this.openWechat(payInfo)
                 if (parseInt(resultStr.code, 0) !== 0) {
                     Toast.hiddenLoading()
@@ -219,6 +225,7 @@ export class Payment {
         } catch (error) {
             Toast.hiddenLoading()
             this.payError = error
+            this.isGoToPay = false
             ref && ref.show(2, error.msg || error.message)
             console.log(error)
         }

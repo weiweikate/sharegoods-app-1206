@@ -39,7 +39,7 @@ export default class PaymentMethodPage extends BasePage {
     constructor(props) {
         super(props);
         this.payment = new Payment();
-        if (parseFloat(this.params.amounts).toFixed(2) === 0.00) {
+        if (parseFloat(this.params.amounts).toFixed(2) === '0.00') {
             this.payment.selectedBalace = true;
         }
         this.payment.isGoToPay = false
@@ -105,7 +105,8 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     _selectedPayType(value) {
-        if (this.payment.selectedBalace && this.payment.availableBalance > this.payment.amounts) {
+        // console.log('_selectedPayType', this.payment.availableBalance, this.payment.amounts)
+        if (this.payment.selectedBalace && this.payment.availableBalance * 100 > this.payment.amounts * 100) {
             Toast.$toast('余额充足，不需要三方支付');
             return;
         }
@@ -113,7 +114,7 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     _selectedBalancePay() {
-        if (this.payment.selectedTypes && this.payment.availableBalance > this.payment.amounts) {
+        if (this.payment.selectedTypes &&  this.payment.availableBalance * 100 > this.payment.amounts * 100) {
             this.payment.clearPaymentType();
         }
         this.payment.selectBalancePayment();
@@ -164,13 +165,13 @@ export default class PaymentMethodPage extends BasePage {
                 this.setState({ isShowPaymentModal: true });
                 return;
             }
-            this.setState({password: ''})
             if (selectedTypes.type === paymentType.alipay) {
                 this.payment.ailpayAndBalance(this.state.password, this.paymentResultView)
             }
             if (selectedTypes.type === paymentType.wechat) {
                 this.payment.wechatAndBalance(this.state.password, this.paymentResultView)
             }
+            this.setState({password: ''})
         }
         else {
             this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
@@ -227,7 +228,7 @@ export default class PaymentMethodPage extends BasePage {
                     <Text style={styles.sectionTitle} allowFontScaling={false}>{value.name}</Text>
                 </View>);
             } else {
-                items.push(<PayCell disabled={value.type !== paymentType.balance && parseFloat(this.payment.amounts).toFixed(2) === 0.00}
+                items.push(<PayCell disabled={value.type !== paymentType.balance && parseFloat(this.payment.amounts).toFixed(2) === '0.00'}
                                     key={index + ''} selectedTypes={selectedTypes} data={value}
                                     balance={availableBalance} press={() => this._selectedPayType(value)}/>);
             }
@@ -238,7 +239,7 @@ export default class PaymentMethodPage extends BasePage {
             <PayCell
                 disabled={this.params.outTradeNo}
                 data={balancePayment}
-                isSelected={selectedBalace || parseFloat(this.payment.amounts).toFixed(2) === 0.00} balance={availableBalance}
+                isSelected={selectedBalace || parseFloat(this.payment.amounts).toFixed(2) === '0.00'} balance={availableBalance}
                 press={() => this._selectedBalancePay(balancePayment)}
             />
             {items}

@@ -8,11 +8,17 @@ const api = {
     //微信支付
     wachatpay: ['/pay/wxpay'],
     //支付宝+平台
-    alipayAndBalance: ['/pay/ali-sg-pay'],
+    alipayAndBalance: ['/pay/mix-sg-alipay'],
     //微信+平台
-    wechatAndBalance: ['/pay/wx-sg-pay'],
+    wechatAndBalance: ['/pay/mix-sg-wxpay'],
     //平台
-    balance: ['/pay/sgpay']
+    balance: ['/pay/sgpay'],
+    //支付宝支付关闭
+    closeAlipayOrder: ['/pay/close/alipay'],
+    //微信支付关闭
+    closeWeChatorder: ['/pay/close/wxpay'],
+    //检查订单状态
+    payStatus: ['/order/pay-status']
 };
 import ApiUtils from '../../api/network/ApiUtils';
 
