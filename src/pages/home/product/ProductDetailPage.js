@@ -507,7 +507,6 @@ export default class ProductDetailPage extends BasePage {
 
 
     _render() {
-        this._renderContent();
         const { productStatus } = this.state.data;
         let dic = this._getPageStateOptions();
         return (
