@@ -135,7 +135,6 @@ export default class HelperFeedbackPage extends BasePage {
         return (
             <Modal
                 animationType="fade"
-                transparent={true}
                 onRequestClose={() => {
                 }}
                 ref={(ref) => {

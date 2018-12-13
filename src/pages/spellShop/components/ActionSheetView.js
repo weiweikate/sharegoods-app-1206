@@ -188,7 +188,7 @@ export default class ActionSheetView extends Component {
             this._closeAnimated(this.state.cancelCallBack);
         };
         return (
-            <Modal onRequestClose={clickHidden} transparent={true} visible={this.state.modalVisible}>
+            <Modal onRequestClose={clickHidden}  visible={this.state.modalVisible}>
                 <TouchableWithoutFeedback disabled={!this.state.modalVisible} onPress={clickHidden}>
                     <View style={[styles.container, { backgroundColor: 'transparent' }]}>
 

@@ -127,7 +127,6 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         return (
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
-                       transparent={true}
                        ref={(ref)=>{
                            this.modal = ref;
                        }}

@@ -6,7 +6,6 @@ import {
     FlatList,
     Image,
     ImageBackground,
-    Modal,
     StyleSheet,
     Text,
     TextInput,
@@ -27,7 +26,7 @@ import DesignRule from "DesignRule";
 // import { NavigationActions } from 'react-navigation';
 import MineApi from "../api/MineApi";
 import res from "../res";
-
+import Modal from 'CommModal';
 const NoMessage = res.couponsImg.coupons_no_data;
 const usedBg = res.couponsImg.youhuiquan_bg_zhihui;
 const unuesdBg = res.couponsImg.youhuiquan_bg_nor;
@@ -160,6 +159,7 @@ export default class MyCouponsItems extends Component {
             <Modal
                 animationType='fade'
                 transparent={true}
+
                 onRequestClose={() => this.onRequestClose()}
                 visible={this.state.showDialogModal}>
                 <View style={styles.modalStyle}>
