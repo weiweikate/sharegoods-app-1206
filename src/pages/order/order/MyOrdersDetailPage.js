@@ -317,11 +317,20 @@ export default class MyOrdersDetailPage extends BasePage {
         let innerStatus = (data.orderCustomerServiceInfoDTO && data.orderCustomerServiceInfoDTO.status) || null;
         switch (outStatus) {
             case 2:
-                afterSaleService.push({
-                    id: 0,
-                    operation: "退款",
-                    isRed: false
-                });
+                if(innerStatus===5){
+                    afterSaleService.push({
+                        id: 2,
+                        operation:  "退款成功",
+                        isRed: false
+                    });
+                }else{
+                    afterSaleService.push({
+                        id: 0,
+                        operation: "退款",
+                        isRed: false
+                    });
+                }
+
                 break;
 
             case 3:
