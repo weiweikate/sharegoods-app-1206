@@ -304,12 +304,12 @@ export default class ProductDetailPage extends BasePage {
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
+            this.$loadingShow()
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: this.state.data.prodCode
             });
-            this.$loadingShow();
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
