@@ -787,7 +787,7 @@ export default class MinePage extends BasePage {
                 this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
                 break;
             default:
-            // this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
+                break;
         }
     }
 

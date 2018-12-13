@@ -260,14 +260,6 @@ export default class ProductDetailPage extends BasePage {
         switch (type) {
             case 'jlj':
                 if (!user.isLogin) {
-                    // this.ConfirmAlert.show({
-                    //     title: '登录后分享才能赚取赏金', rightText: '去登录', confirmCallBack: () => {
-                    //         this.$navigate('login/login/LoginPage');
-                    //     }, closeCallBack: () => {
-                    //         this.shareModal.open();
-                    //     }
-                    // });
-
                     Alert.alert('提示', '登录后分享才能赚取赏金',
                         [
                             {
@@ -282,18 +274,18 @@ export default class ProductDetailPage extends BasePage {
                             }
                         ]
                     );
-
-
                 } else {
                     this.shareModal.open();
                 }
                 break;
-            case 'buy': {
+            case 'buy':
                 if (!user.isLogin) {
                     this.$navigate('login/login/LoginPage');
                     return;
                 }
-            }
+                this.state.goType = type;
+                this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
+                break;
             case 'gwc':
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
@@ -312,17 +304,17 @@ export default class ProductDetailPage extends BasePage {
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
+            this.$loadingShow()
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: this.state.data.prodCode
             });
-            this.$loadingShow();
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: orderProducts,
-                    source:2
+                    source: 2
                 }
             });
         }

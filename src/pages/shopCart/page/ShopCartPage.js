@@ -56,6 +56,16 @@ const statueImage = {
     3: res.ZanWeiKaiShou
 };
 
+const getSelectImage =(itemData)=>{
+
+    if (itemData.status === 0 || itemData.status === 2 || itemData.status === 3){
+        return res.button.unAbleSelected_circle;
+    } else if (itemData.status === 1){
+        return itemData.isSelected?  res.button.selected_circle_red : res.button.unselected_circle;
+    }
+}
+
+
 @observer
 export default class ShopCartPage extends BasePage {
     // 导航配置
@@ -105,11 +115,14 @@ export default class ShopCartPage extends BasePage {
     }
 
     _render() {
-        return (this.state.pageFocus ?
+        return (
+            // this.state.pageFocus
+            //     ?
                 <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                     {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
                     {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
-                </View> : null
+                </View>
+                // : null
         );
     }
 
@@ -314,7 +327,8 @@ export default class ShopCartPage extends BasePage {
                     style={styles.itemContainer}>
                     <View style={styles.standaloneRowFront}>
                         <UIImage
-                            source={itemData.isSelected ? res.button.selected_circle_red : res.button.unselected_circle}
+                            // source={itemData.isSelected ? res.button.selected_circle_red : res.button.unselected_circle}
+                            source={getSelectImage(itemData)}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
 
@@ -607,7 +621,7 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
-        shopCartStore.setRefresh(true);
+        // shopCartStore.setRefresh(true);
         shopCartCacheTool.getShopCartGoodsListData();
     };
     /**
@@ -649,6 +663,7 @@ export default class ShopCartPage extends BasePage {
             return;
         }
         if (isCanSettlement && !haveNaNGood) {
+            this.$loadingShow();
             let buyGoodsArr = [];
             tempArr.map((goods) => {
                 buyGoodsArr.push({
@@ -657,7 +672,6 @@ export default class ShopCartPage extends BasePage {
                     productCode: goods.productCode
                 });
             });
-            this.$loadingShow();
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
