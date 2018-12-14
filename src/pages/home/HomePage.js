@@ -40,7 +40,8 @@ import res from './res';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
-import {homeRegisterFirstManager} from './model/HomeRegisterFirstManager';
+import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
+
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
 const home_notice_bg = res.home_notice_bg;
@@ -53,7 +54,7 @@ const home_notice_bg = res.home_notice_bg;
  * @email zhangjian@meeruu.com
  */
 
-const { px2dp, statusBarHeight } = ScreenUtils;
+const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 import BasePage from '../../BasePage';
 
@@ -68,7 +69,7 @@ class HomePage extends BasePage {
         show: false
     };
 
-    headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0);
+    headerH = headerHeight - (ScreenUtils.isIOSX ? 10 : 0);
     state = {
         isShow: true,
         showMessage: false,
@@ -403,7 +404,8 @@ class HomePage extends BasePage {
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
 
-                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }} style={styles.messageBgStyle}/>
+                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
+                               style={styles.messageBgStyle}/>
 
                 </View>
             </Modal>
@@ -463,7 +465,7 @@ class HomePage extends BasePage {
     }
 
     _renderTableHeader() {
-        return !bannerModule.isShowHeader ? null : <View style={{ height: statusBarHeight + 44 }}/>;
+        return !bannerModule.isShowHeader ? null : <View style={{ height: headerHeight }}/>;
     }
 
     render() {
@@ -530,7 +532,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
+        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         backgroundColor: '#fff',
@@ -546,7 +548,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
+        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         alignItems: 'center',

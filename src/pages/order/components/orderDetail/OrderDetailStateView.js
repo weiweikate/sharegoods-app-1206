@@ -95,9 +95,12 @@ export default class OrderDetailStateView extends Component {
                             </View>
                             <View />
                         </View>
-                        <UIImage source={arrow_right}
-                                 style={{ height: px2dp(14), width: px2dp(10), marginRight: px2dp(11) }}
-                                 resizeMode={"contain"}/>
+                        {orderDetailModel.status==2||orderDetailModel.status==5?
+                             <View style={{ height: px2dp(14), width: px2dp(10), marginRight: px2dp(11) }}/>:
+                             <UIImage source={arrow_right}
+                                          style={{ height: px2dp(14), width: px2dp(10), marginRight: px2dp(11) }}
+                                          resizeMode={"contain"}/>}
+
                     </View>
 
                 </TouchableOpacity>

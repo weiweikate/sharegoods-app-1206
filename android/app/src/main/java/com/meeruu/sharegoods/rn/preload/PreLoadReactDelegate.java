@@ -56,11 +56,6 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
         mActivity = null;
     }
 
-    protected @Nullable
-    Bundle getLaunchOptions() {
-        return null;
-    }
-
     protected ReactRootView createRootView() {
         return new ReactRootView(getContext());
     }
@@ -83,18 +78,15 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
     protected void onCreate(Bundle savedInstanceState) {
         if (mMainComponentName != null) {
             // 1.从缓存中获取RootView
-            mReactRootView = ReactNativePreLoader.getReactRootView(mMainComponentName);
+            mReactRootView = ReactNativePreLoader.getReactRootView(getPlainActivity(), mMainComponentName);
             if (mReactRootView == null) {
-
-                // 2.缓存中不存在RootView,直接创建
-                mReactRootView = new ReactRootView(mActivity);
-                mReactRootView.startReactApplication(
-                        getReactInstanceManager(),
+                mReactRootView = ReactNativePreLoader.startReactApplication(
+                        getPlainActivity(), getReactNativeHost().getReactInstanceManager(),
                         mMainComponentName,
-                        null);
+                        getLaunchOptions());
             }
             // 3.将RootView设置到Activity布局
-            mActivity.setContentView(mReactRootView);
+            getPlainActivity().setContentView(mReactRootView);
         }
         mDoubleTapReloadRecognizer = new DoubleTapReloadRecognizer();
     }
@@ -127,7 +119,7 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
             getReactNativeHost().getReactInstanceManager().onHostDestroy(getPlainActivity());
         }
         // 清除View
-        ReactNativePreLoader.deatchView(mMainComponentName);
+        ReactNativePreLoader.detachView(mMainComponentName);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

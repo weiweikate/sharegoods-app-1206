@@ -15,10 +15,6 @@ import BackIcon from '../../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
-
-const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
-const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
-const IPHONEX = (MIN_SCREENT === 375.00 && MAX_SCREENT === 812.0) || ScreenUtils.isIphoneMax;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default class NavigatorBar extends Component {
@@ -90,9 +86,7 @@ export default class NavigatorBar extends Component {
             hideNavBar,
             rightNavTitle,
             leftNavItemHidden,
-            rightNavItemHidden,
-            androidStatusH: ScreenUtils.androidStatusHeight(),
-            statusHeight: ScreenUtils.allStatusBarHeight()
+            rightNavItemHidden
         };
     }
 
@@ -162,13 +156,12 @@ export default class NavigatorBar extends Component {
         if (this.state.leftNavItemHidden) {
             return null;
         }
-        const { statusBarHeight } = ScreenUtils;
         // 文案
         if (leftNavTitle && typeof leftNavTitle === 'string') {
             return <TouchableOpacity
                 style={[styles.left,
                     {
-                        top: statusBarHeight
+                        top: ScreenUtils.statusBarHeight
                     }]}
                 onPress={this._onLeftPressed}>
                 <Text numberOfLines={1}
@@ -183,7 +176,7 @@ export default class NavigatorBar extends Component {
             return <TouchableOpacity
                 style={[styles.left,
                     {
-                        top: statusBarHeight
+                        top: ScreenUtils.statusBarHeight
                     }]}
                 onPress={this._onLeftPressed}>
                 <Image
@@ -205,7 +198,7 @@ export default class NavigatorBar extends Component {
 
         if (this.props.renderRight) {
             return <View
-                style={[styles.right, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH }]}>
+                style={styles.right}>
                 {this.props.renderRight()}
             </View>;
         }
@@ -217,7 +210,7 @@ export default class NavigatorBar extends Component {
         }
         if (rightNavImage) {
             return <TouchableOpacity
-                style={[styles.right, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH }]}
+                style={styles.right}
                 onPress={this._onRightPressed}>
                 <View>
                     <Image source={rightNavImage}/>
@@ -226,7 +219,7 @@ export default class NavigatorBar extends Component {
         }
         if (rightNavTitle && typeof rightNavTitle === 'string') {
             return <TouchableOpacity
-                style={[styles.right, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH }]}
+                style={styles.right}
                 onPress={this._onRightPressed}>
                 <Text style={[styles.button, this.props.rightTitleStyle]}>{rightNavTitle || ''}</Text>
             </TouchableOpacity>;
@@ -256,15 +249,11 @@ export default class NavigatorBar extends Component {
         const {
             headerStyle
         } = this.props;
-        const { statusBarHeight } = ScreenUtils;
         return (
 
             <View style={[styles.navBar, headerStyle, {
-                // paddingTop: this.state.androidStatusH,
-                // paddingTop:this.state.statusHeight,
-                paddingTop: statusBarHeight,
-                height: statusBarHeight + 44
-                // height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 44
+                paddingTop: ScreenUtils.statusBarHeight,
+                height: ScreenUtils.headerHeight
             }]}>
                 {/*{this._renderStatusBar()}*/}
                 {this._renderLeftItem()}
@@ -306,7 +295,7 @@ const styles = StyleSheet.create({
     },
     left: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
+        top: ScreenUtils.statusBarHeight,
         left: 0,
         bottom: 0,
         justifyContent: 'center',
@@ -314,7 +303,7 @@ const styles = StyleSheet.create({
     },
     leftImage: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
+        top: ScreenUtils.statusBarHeight,
         left: 40,
         bottom: 0,
         justifyContent: 'center',
@@ -322,7 +311,7 @@ const styles = StyleSheet.create({
     },
     right: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
+        top: ScreenUtils.statusBarHeight,
         right: 0,
         bottom: 0,
         justifyContent: 'center',
