@@ -1,5 +1,6 @@
-import { Dimensions, Platform, PixelRatio } from 'react-native';
-import appData from '../model/appData';
+import { NativeModules, Dimensions, Platform, PixelRatio } from 'react-native';
+
+const { RNDeviceInfo } = NativeModules;
 
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -68,15 +69,11 @@ function px2dp(size) {
     return size / DEFAULT_DENSITY;
 }
 
-function getStatusH() {
-    return appData.androidStatusH > 0 ? appData.androidStatusH : 24;
-}
-
-
 export type Size = {
     width: number;
     height: number;
 };
+
 function getImgHeightWithWidth(size: Size, width: number = screenW): number {
     if (!size || !size.width || !size.height) {
         return 0;
@@ -93,11 +90,10 @@ export default {
     height: Dimensions.get('window').height,
     pixelRatio: PixelRatio.get(),
     onePixel: 1 / PixelRatio.get(),
-    androidStatusHeight: getStatusH,
-    allStatusBarHeight: getStatusH,
-    statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : getStatusH(),
+    androidStatusHeight: RNDeviceInfo.statusBarHeight,
+    statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : RNDeviceInfo.statusBarHeight,
     // 44为头部不包含状态栏高度
-    headerHeight: (Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : getStatusH()) + 44,
+    headerHeight: (Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : RNDeviceInfo.statusBarHeight) + 44,
     tabBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 83 : 49) : 49,
     tabBarHeightMore: this.tabBarHeight - 49,
     isIOS: Platform.OS === 'ios',
@@ -108,7 +104,7 @@ export default {
     safeBottomMax: Platform.OS === 'ios' ? (__ISIPHONEXSMAX__ ? 37 : 0) : 0,
     safeBottomX: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 37 : 0) : 0,
     safeBottom: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 37 : 0) : 0,
-    isIphoneMax: __ISIPHONEXSMAX__,
+    isIphoneMax: __ISIPHONEXSMAX__
     // saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0
 
 };
