@@ -45,6 +45,7 @@ export default class ConfirmOrderPage extends BasePage {
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
 
         };
+        this.canUseCou=false
     }
 
     $navigationBarOptions = {
@@ -53,13 +54,18 @@ export default class ConfirmOrderPage extends BasePage {
     };
 
     isSupportCoupons(){
-        let k = 0;
+        // let k = 0;
+        // this.state.viewData.list.map((item)=>{
+        //     if(item.restrictions & 1 !== 1){
+        //         k++;
+        //     }
+        // });
+        // return k === this.state.viewData.list.length
         this.state.viewData.list.map((item)=>{
-            if(item.restrictions & 1 !== 1){
-                k++;
-            }
-        });
-        return k === this.state.viewData.list.length
+                if(item.restrictions & 1 === 1){
+                    return true;
+                }
+            });
     }
     //**********************************ViewPart******************************************
     renderAddress = () => {
@@ -116,12 +122,12 @@ export default class ConfirmOrderPage extends BasePage {
         return (
             <View style={{ backgroundColor: 'white' }}>
                 <TouchableOpacity style={styles.couponsStyle}
-                                  disabled={this.isSupportCoupons()}
+                                  disabled={!this.isSupportCoupons()}
                                   onPress={() => this.jumpToCouponsPage()}>
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.isSupportCoupons() ? '不支持使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
+                            value={!this.isSupportCoupons() ? '不支持使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -283,28 +289,27 @@ export default class ConfirmOrderPage extends BasePage {
                 });
             });
             params={productPriceIds: arr}
-        }else{
-            this.state.orderParam.orderProducts.map((item, index) => {
-                arr.push({
-                    priceCode: item.skuCode,
-                    productCode: item.productCode,
-                    amount: 1
-                });
-
+            API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
+                let data = resp.data || {};
+                let dataList = data.data || [];
+                if (dataList.length === 0) {
+                    this.setState({ couponName: '暂无优惠券' });
+                }
+            }).catch(result => {
+               console.log(result)
             });
-            params={productPriceIds: arr,activityCode: this.state.orderParam.activityCode, activityType: this.state.orderParam.orderType}
         }
-        API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
-            let data = resp.data || {};
-            let dataList = data.data || [];
-            if (dataList.length === 0) {
-                this.setState({ couponName: '暂无优惠券' });
-            }
-        }).catch(result => {
-            if (result.code === 10009) {
-                this.$navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
-            }
-        });
+        // else{
+        //     this.state.orderParam.orderProducts.map((item, index) => {
+        //         arr.push({
+        //             priceCode: item.skuCode,
+        //             productCode: item.productCode,
+        //             amount: 1
+        //         });
+        //
+        //     });
+        //     params={productPriceIds: arr,activityCode: this.state.orderParam.activityCode, activityType: this.state.orderParam.orderType}
+        // }
     }
 
     loadPageData(params) {

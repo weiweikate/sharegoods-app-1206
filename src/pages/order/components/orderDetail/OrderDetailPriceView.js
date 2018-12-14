@@ -96,12 +96,12 @@ export default class OrderDetailPriceView extends Component {
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={'-' + orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].couponAmount):StringUtils.formatMoneyString(orderDetailModel.detail.couponAmount)}
+                               rightText={'-' + (orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].couponAmount):StringUtils.formatMoneyString(orderDetailModel.detail.couponAmount))}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={'-' + orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount):StringUtils.formatMoneyString(orderDetailModel.detail.tokenCoinAmount)}
+                               rightText={'-' + (orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount):StringUtils.formatMoneyString(orderDetailModel.detail.tokenCoinAmount))}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}

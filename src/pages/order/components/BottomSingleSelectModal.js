@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Text,
-    // Modal,
     NativeModules,
     TouchableOpacity,
     ScrollView
@@ -62,8 +61,8 @@ export default class BottomSingleSelectModal extends Component {
                     }} onPress={() => {
                         this.setState({ currentSelect: i });
                     }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={{ marginLeft: 21 }}>{nameArr[i]}</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Text style={{ marginLeft: 21 , includeFontPadding: false}}>{nameArr[i]}</Text>
                             <UIImage source={this.state.currentSelect === i ? circleSelect : circleUnselect}
                                      style={{ width: 22, height: 22, marginRight: 22 }}/>
                         </View>
@@ -98,15 +97,17 @@ export default class BottomSingleSelectModal extends Component {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         alignContent: 'center',
-                        flexDirection: 'row'
+                        flexDirection: 'row',
+                        borderBottomWidth: DesignRule.lineHeight,
+                        borderBottomColor: DesignRule.lineColor_inWhiteBg
                     }}>
+                        <TouchableOpacity style={{ paddingRight: 17, width: 50 }}>
+                            <UIText value={' '} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
+                        </TouchableOpacity>
+                        <UIText value={'请选择'}/>
                         <TouchableOpacity style={{ paddingLeft: 17, width: 50 }}
                                           onPress={() => {this.props.closeWindow(),this.setState({currentSelect: -1})}}>
                             <UIText value={'x'} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
-                        </TouchableOpacity>
-                        <UIText value={'请选择'}/>
-                        <TouchableOpacity style={{ paddingRight: 17, width: 50 }}>
-                            <UIText value={' '} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
                     </View>
                     <ScrollView >
