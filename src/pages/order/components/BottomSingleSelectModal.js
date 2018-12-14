@@ -113,13 +113,10 @@ export default class BottomSingleSelectModal extends Component {
                     <ScrollView >
                     {this.renderMenu()}
                     </ScrollView>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', height: 64 }}>
-                        <UIButton
-                            value={'确定'}
-                            style={{ backgroundColor: DesignRule.mainColor, height: 43 }}
-                            onPress={() => this.commitSelect()}/>
-                    </View>
-
+                    <TouchableOpacity style={{  height:  45 ,justifyContent: 'center', alignItems: 'center',backgroundColor: DesignRule.mainColor}}
+                                      onPress={() => {this.commitSelect()}}>
+                        <UIText value={'确定'} style={{ color: 'white', fontSize: 16}}/>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
