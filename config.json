@@ -7,69 +7,69 @@
             "name": "开发mock环境",
             "host": "http://localhost:9090"
         },
-        "dev_zb": {
-            "name": "开发环境-zb",
-            "host": "http://172.16.10.41:8903/gateway"
-        },
-        "dev_wkl": {
-            "name": "开发环境-wkl",
-            "host": "http://172.16.10.111:8903/gateway"
-        },
         "dev": {
             "name": "开发",
             "host": "http://devapi.sharegoodsmall.com/gateway",
-            "oss":"https://devcdn.sharegoodsmall.com"
+            "oss": "https://devcdn.sharegoodsmall.com"
         },
         "qa": {
             "name": "测试",
             "host": "https://testapi.sharegoodsmall.com/gateway",
             "h5": "https://testh5.sharegoodsmall.com",
-            "oss":"https://testcdn.sharegoodsmall.com"
-
-        },
-        "online": {
-            "name": "生产",
-            "host": "https://api.sharegoodsmall.com/gateway",
-            "h5": "https://h5.sharegoodsmall.com",
-            "oss":"https://cdn.sharegoodsmall.com"
-        },
-        "吴承骏Login": {
-            "name": "测试环境_吴承骏",
-            "host": "http://172.16.10.19:8903/gateway"
-        },
-        "da_wei": {
-            "name": "测试环境_大为",
-            "host": "http://172.16.10.42:4090/gateway"
-        },
-        "gao_di": {
-            "name": "测试_高迪",
-            "host": "http://172.16.10.238:8180/gateway"
-        },
-        "zhou_hao": {
-            "name": "测试_周浩",
-            "host": "http://172.16.10.64:9090/gateway"
-        },
-        "shen_yaoxing": {
-            "name": "测试_沈耀鑫",
-            "host": "http://172.16.10.56:8180/gateway"
-        },
-        "dev_cs": {
-            "name": "开发环境-陈帅",
-            "host": "http://172.16.10.88:8180/gateway"
-        },
-        "dev_yxm": {
-            "name": "开发环境-杨小猛",
-            "host": "http://172.16.10.12:8180/gateway"
-        },
-        "申祥瑀": {
-            "name": "延签测试",
-            "host": "http://172.16.10.21:8080/gateway"
+            "oss": "https://testcdn.sharegoodsmall.com"
         },
         "pre_release": {
             "name": "UAT",
             "host": "https://uatapi.sharegoodsmall.com/gateway",
             "h5": "https://uath5.sharegoodsmall.com",
-            "oss":"https://uatcdn.sharegoodsmall.com"
+            "oss": "https://uatcdn.sharegoodsmall.com"
+        },
+        "online": {
+            "name": "生产",
+            "host": "https://api.sharegoodsmall.com/gateway",
+            "h5": "https://h5.sharegoodsmall.com",
+            "oss": "https://cdn.sharegoodsmall.com"
+        },
+        "吴承骏Login": {
+            "name": "吴承骏",
+            "host": "http://172.16.10.19:8903/gateway"
+        },
+        "da_wei": {
+            "name": "蒋大为",
+            "host": "http://172.16.10.42:4090/gateway"
+        },
+        "gao_di": {
+            "name": "高迪",
+            "host": "http://172.16.10.238:8180/gateway"
+        },
+        "zhou_hao": {
+            "name": "测试_周浩",
+            "host": "http://172.16.10.64:9090/gateway",
+            "oss": "https://devcdn.sharegoodsmall.com"
+        },
+        "shen_yaoxing": {
+            "name": "沈耀鑫",
+            "host": "http://172.16.10.60:8180/gateway"
+        },
+        "dev_cs": {
+            "name": "陈帅",
+            "host": "http://172.16.10.62:8180/gateway"
+        },
+        "dev_wkl": {
+            "name": "王昆仑",
+            "host": "http://172.16.10.16:8903/gateway"
+        },
+        "dev_yxm": {
+            "name": "杨小猛",
+            "host": "http://172.16.10.38:8180/gateway"
+        },
+        "dev_zb": {
+            "name": "张波",
+            "host": "http://172.16.10.41:8903/gateway"
+        },
+        "申祥瑀": {
+            "name": "延签测试",
+            "host": "http://172.16.10.21:8080/gateway"
         },
         "杨飞": {
             "name": "杨飞",
@@ -78,7 +78,7 @@
         },
         "顾嘉豪": {
             "name": "顾嘉豪",
-            "host": "http://172.16.10.164:9090/gateway",
+            "host": "http://172.16.10.58:9090/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "高建伟": {
@@ -86,13 +86,17 @@
             "host": "http://172.16.10.192:18080/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
-        "龚日红":{
+        "龚日红": {
             "name": "龚日红",
             "host": "http://172.16.10.177:9090/gateway"
         },
         "支付":{
             "name":"黄佳欢",
             "host":"http://172.16.10.69:9090/gateway"
+        },
+        "李俊": {
+            "name": "李俊",
+            "host": "http://172.16.10.79:9090/gateway"
         }
     }
 }

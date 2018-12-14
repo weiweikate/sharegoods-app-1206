@@ -228,18 +228,18 @@ export default class LoginPage extends BasePage {
                 homeModule.loadHomeList()
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
-                // /**
-                //  * 跳转导师选择页面
-                //  */
-                // this.$navigate('login/login/SelectMentorPage');
-                // return;
-                if (this.params.callback) {
-                  this.$navigateBackToHome();
-                } else {
-                    this.$navigateBack();
-                }
-                //推送
-                JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+                /**
+                 * 跳转导师选择页面
+                 */
+                this.$navigate('login/login/SelectMentorPage');
+                return;
+                // if (this.params.callback) {
+                //   this.$navigateBackToHome();
+                // } else {
+                //     this.$navigateBack();
+                // }
+                // //推送
+                // JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
             }).catch((data) => {
                 console.log(data);
                 this.$loadingDismiss();

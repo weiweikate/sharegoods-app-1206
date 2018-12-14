@@ -20,7 +20,6 @@ import user from '../src/model/user';
 import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
-import appData from './model/appData';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
@@ -56,9 +55,6 @@ if (__DEV__) {
 
 export default class App extends Component {
     constructor(props) {
-        appData.setStatusBarHeight(props.statusBarHeight);
-
-
         super(props);
         this.state = {
             load: false

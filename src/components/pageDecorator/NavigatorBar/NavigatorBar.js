@@ -91,8 +91,7 @@ export default class NavigatorBar extends Component {
             rightNavTitle,
             leftNavItemHidden,
             rightNavItemHidden,
-            androidStatusH: ScreenUtils.androidStatusHeight(),
-            statusHeight: ScreenUtils.allStatusBarHeight()
+            androidStatusH: ScreenUtils.androidStatusHeight,
         };
     }
 

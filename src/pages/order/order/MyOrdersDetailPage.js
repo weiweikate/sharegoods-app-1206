@@ -59,7 +59,6 @@ export default class MyOrdersDetailPage extends BasePage {
             cancelArr: []
         };
         this.timeUtils = new TimeDownUtils();
-        assistDetailModel.setOrderId(this.params.orderId);
     }
 
     $navigationBarOptions = {
@@ -125,7 +124,8 @@ export default class MyOrdersDetailPage extends BasePage {
 
     componentWillUnmount() {
         DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
-        this.timeUtils.stop();
+        this.stop();
+        // this.timeUtils.stop();
     }
 
     _render = () => {
@@ -275,39 +275,66 @@ export default class MyOrdersDetailPage extends BasePage {
             <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
-    //28:45:45后自动取消订单
-    startCutDownTime = (overtimeClosedTime) => {
+    getDateData(diff) {
+        const timeLeft = {
+            years: 0,
+            days: 0,
+            hours: 0,
+            min: 0,
+            sec: 0,
+            millisec: 0,
+        };
+        if (diff <= 0) {
+            // this.sec = 0
+            this.stop() // 倒计时为0的时候, 将计时器清除
+            return {sec: -1};
+        }
+
+        if (diff >= (365.25 * 86400)) {
+            timeLeft.years = Math.floor(diff / (365.25 * 86400));
+            diff -= timeLeft.years * 365.25 * 86400;
+        }
+        if (diff >= 86400) {
+            timeLeft.days = Math.floor(diff / 86400);
+            diff -= timeLeft.days * 86400;
+        }
+        if (diff >= 3600) {
+            timeLeft.hours = Math.floor(diff / 3600);
+            diff -= timeLeft.hours * 3600;
+        }
+        if (diff >= 60) {
+            timeLeft.min = Math.floor(diff / 60);
+            diff -= timeLeft.min * 60;
+        }
+        this.sec = diff
+        timeLeft.sec = diff;
+        return timeLeft;
+    }
+    settimer(overtimeClosedTime) {
         let autoConfirmTime = Math.round((overtimeClosedTime - orderDetailModel.warehouseOrderDTOList[0].nowTime) / 1000);
         if (autoConfirmTime < 0) {
             orderDetailAfterServiceModel.moreDetail = "";
             return;
         }
-        this.timeUtils.settimer((time) => {
-            orderDetailAfterServiceModel.moreDetail = time.hours + ":" + time.min + ":" + time.sec + "后自动取消订单";
-            console.log(orderDetailAfterServiceModel.totalAsList);
-            if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
+        this.interval = setInterval(() => {
+            autoConfirmTime--;
+            let time = this.getDateData(autoConfirmTime)
+            if (time.sec >= 0) {
+                if(orderDetailModel.status===1){
+                    orderDetailAfterServiceModel.moreDetail = time.hours + ":" + time.min + ":" + time.sec + "后自动取消订单";
+                } else if(orderDetailModel.status===3){
+                    orderDetailAfterServiceModel.moreDetail = time.days + "天" + time.hours + ":" + time.min + ":" + time.sec + "后自动确认收货";
+                }
+            }else{
                 orderDetailAfterServiceModel.moreDetail = "";
                 this.loadPageData();
             }
-        }, autoConfirmTime);
-    };
-    //06天18:24:45后自动确认收货
-    startCutDownTime2 = (autoReceiveTime2) => {
-        let autoConfirmTime = Math.round((autoReceiveTime2 - orderDetailModel.warehouseOrderDTOList[0].nowTime) / 1000);
-        console.log("startCutDownTime2", autoReceiveTime2, orderDetailModel.warehouseOrderDTOList[0].nowTime, autoConfirmTime);
-        if (autoConfirmTime < 0 || !autoReceiveTime2) {
-            orderDetailAfterServiceModel.moreDetail = "";
-            return;
-        }
-        this.timeUtils.settimer(time => {
-            orderDetailAfterServiceModel.moreDetail = time.days + "天" + time.hours + ":" + time.min + ":" + time.sec + "后自动确认收货";
-            if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
-                orderDetailAfterServiceModel.totalAsList = orderDetailAfterServiceModel.AfterServiceList[5];
-                orderDetailAfterServiceModel.moreDetail = "";
-                this.loadPageData();
-            }
-        }, autoConfirmTime);
-    };
+        }, 1000)
+    }
+    stop() {
+        orderDetailAfterServiceModel.moreDetail = "";
+        this.interval&&clearInterval(this.interval);
+    }
     //**********************************BusinessPart******************************************
     getAfterSaleService = (data, index) => {
         //售后状态
@@ -390,7 +417,7 @@ export default class MyOrdersDetailPage extends BasePage {
     };
 
     async loadPageData() {
-        this.timeUtils.stop();
+        this.stop();
         Toast.showLoading();
         let result = await orderDetailModel.loadDetailInfo(this.params.orderNo) || {};
         console.log("loadPageData", result);
@@ -398,7 +425,8 @@ export default class MyOrdersDetailPage extends BasePage {
         let dataArr = [];
         let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(orderDetailModel.warehouseOrderDTOList[0].status)];
         if (orderDetailModel.warehouseOrderDTOList[0].status === 1) {
-            this.startCutDownTime(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
+            // this.startCutDownTime(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
+            this.settimer(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
             orderDetailAfterServiceModel.menu = [{
                 id: 1,
                 operation: "取消订单",
@@ -458,7 +486,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 orderDetailAfterServiceModel.menu = [];
                 break;
             case 3:
-                this.startCutDownTime2(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime);
+                // this.startCutDownTime2(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime);
+                this.settimer(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime);
                 orderDetailAfterServiceModel.menu = [
                     {
                         id: 5,
@@ -485,7 +514,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
                 break;
             case 4:
-                this.timeUtils.stop();
+                this.stop();
                 pageStateString.sellerState = "已签收";
                 orderDetailAfterServiceModel.moreDetail = "";
                 orderDetailAfterServiceModel.menu = [
@@ -502,7 +531,7 @@ export default class MyOrdersDetailPage extends BasePage {
                     pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime : orderDetailModel.warehouseOrderDTOList[0].finishTime;
                 break;
             case 5:
-                this.timeUtils.stop();
+                this.stop();
                 orderDetailAfterServiceModel.menu = [
                     {
                         id: 7,
@@ -546,15 +575,14 @@ export default class MyOrdersDetailPage extends BasePage {
     afterSaleServiceClick = (menu, index) => {
         console.log(menu);
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
-        console.log("products", products);
-        if (orderDetailModel.status > 2) {
-            if (products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime) {
+        let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
+        if (orderDetailModel.status > 2&&products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime&&orderDetailModel.warehouseOrderDTOList[0].nowTime
+        &&!(innerStatus<6&&innerStatus>=1)) {
                 NativeModules.commModule.toast("该商品售后已过期");
                 return;
-            } else if (products.orderSubType === 3) {
-                NativeModules.commModule.toast("该商品属于升级礼包产品，不存在售后功能");
-                return;
-            }
+        }else if (products.orderSubType === 3) {
+            NativeModules.commModule.toast("该商品属于升级礼包产品，不存在售后功能");
+            return;
         }
 
 
