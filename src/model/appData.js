@@ -4,6 +4,7 @@ class AppData {
 
     // 固定高度，不需要监听
     androidStatusH = 0;
+    androidChannel = 'guanwang';
 
 
     // 状态栏高度
@@ -12,6 +13,11 @@ class AppData {
         // bridge.$toast('stateheight是'+height)
         // this.androidStatusH = height;
         this.statusBarHeight = height;
+    }
+
+    // android渠道
+    setAndroidChannel(channel) {
+        this.androidChannel = channel;
     }
 }
 

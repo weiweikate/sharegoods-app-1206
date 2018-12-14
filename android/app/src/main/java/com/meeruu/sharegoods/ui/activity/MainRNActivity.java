@@ -25,6 +25,7 @@ import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactNativeHost;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
@@ -38,12 +39,14 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
+import com.meeruu.sharegoods.MainApplication;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.rn.preload.PreLoadReactDelegate;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
+import com.meituan.android.walle.WalleChannelReader;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
@@ -118,7 +121,14 @@ public class MainRNActivity extends ReactActivity {
             Bundle bundle = new Bundle();
             // android状态栏高度
             bundle.putInt("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
+            String channel = WalleChannelReader.getChannel(MainRNActivity.this, "guanwang");
+            bundle.putString("channel", channel);
             return bundle;
+        }
+
+        @Override
+        protected ReactNativeHost getReactNativeHost() {
+            return super.getReactNativeHost();
         }
     }
 
