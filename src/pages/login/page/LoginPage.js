@@ -208,6 +208,7 @@ export default class LoginPage extends BasePage {
                 }
             });
         } else {
+            // this.$loadingShow();
             LoginAPI.passwordLogin({
                 authcode: '22',
                 code: LoginParam.code,
