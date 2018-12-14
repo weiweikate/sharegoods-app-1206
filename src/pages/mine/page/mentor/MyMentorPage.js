@@ -72,12 +72,12 @@ export default class MyMentorPage extends BasePage {
             <View style={styles.container}>
                 {this._headerRender()}
                 {this._itemRender("名称", this.state.nickName)}
-                {this._lineRender()}
-                {this._itemRender("职称", this.state.levelName)}
-                {this._lineRender()}
-                {this._itemRender("授权号", this.state.code)}
-                {this._lineRender()}
-                {this._itemRender("手机号", this.state.phone)}
+                {/*{this._lineRender()}*/}
+                {/*{this._itemRender("职称", this.state.levelName)}*/}
+                {/*{this._lineRender()}*/}
+                {/*{this._itemRender("授权号", this.state.code)}*/}
+                {/*{this._lineRender()}*/}
+                {/*{this._itemRender("手机号", this.state.phone)}*/}
                 {this._profileRender(this.state.profile)}
                 {this._navRender()}
             </View>
