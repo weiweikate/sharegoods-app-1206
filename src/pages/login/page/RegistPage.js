@@ -135,20 +135,22 @@ export default class RegistPage extends BasePage {
             headImg: this.params.headerImg ? this.params.headerImg : ''
         }).then((data) => {
             if (data.code === 10000) {
-                UserModel.saveUserInfo(data.data);
-                UserModel.saveToken(data.data.token);
-                DeviceEventEmitter.emit('homePage_message',null);
-                DeviceEventEmitter.emit('contentViewed',null);
-                homeModule.loadHomeList()
-                // this.$navigate('login/login/GetRedpacketPage');
-                bridge.setCookies(data.data);
-                //推送
-                JPushUtils.updatePushTags();
-                JPushUtils.updatePushAlias();
-                /**
-                 * 跳转导师选择页面
-                 */
-                this.$navigate('login/login/SelectMentorPage',{isHaveRedPocket:data.give});
+                // UserModel.saveUserInfo(data.data);
+                // UserModel.saveToken(data.data.token);
+                // DeviceEventEmitter.emit('homePage_message',null);
+                // DeviceEventEmitter.emit('contentViewed',null);
+                // homeModule.loadHomeList()
+                // // this.$navigate('login/login/GetRedpacketPage');
+                // bridge.setCookies(data.data);
+                // //推送
+                // JPushUtils.updatePushTags();
+                // JPushUtils.updatePushAlias();
+                // /**
+                //  * 跳转导师选择页面
+                //  */
+                // this.$navigate('login/login/SelectMentorPage',{isHaveRedPocket:data.give});
+
+                this.toLogin(phone,code,password,data.give)
             } else {
                 bridge.$toast(data.msg);
             }
@@ -160,7 +162,7 @@ export default class RegistPage extends BasePage {
         });
 
     };
-    toLogin = (phone, code, password) => {
+    toLogin = (phone, code, password,isGive) => {
         LoginApi.passwordLogin({
             authcode: '22',
             code: '',
@@ -185,7 +187,7 @@ export default class RegistPage extends BasePage {
             /**
              * 跳转导师选择页面
              */
-            this.$navigate('login/login/SelectMentorPage',{isHaveRedPocket:data.give});
+            this.$navigate('login/login/SelectMentorPage',{isHaveRedPocket:isGive});
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);
