@@ -250,19 +250,4 @@ export class Payment {
         }
     })
 
-    //关闭订单
-    @action closeOrder = flow(function*(){
-        try {
-            let result = yield PaymentApi.closeWeChatorder({outTradeNo: this.orderNo})
-            if (result && result.code === 10000) {
-                return result.data
-            } else {
-                return
-            }
-        } catch (error) {
-            // ref && ref.show(2, error.msg || error.message)
-            console.log(error)
-        }
-    })
-
 }
