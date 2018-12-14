@@ -75,7 +75,7 @@ export class DetailBanner extends Component {
         let productImgListTemp = [...(imgFileList || [])];
         productImgListTemp = productImgListTemp || [];
         productImgListTemp.unshift({ originalImg: imgUrl });
-        this.productImgListOutVideo = productImgListTemp;
+        this.productImgListOutVideo = [...productImgListTemp];
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.state.haveVideo = true;
             productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
