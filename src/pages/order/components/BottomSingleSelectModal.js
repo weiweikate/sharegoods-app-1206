@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Modal from 'CommModal';
 import {
-    UIText, UIImage, UIButton
+    UIText, UIImage
 } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
