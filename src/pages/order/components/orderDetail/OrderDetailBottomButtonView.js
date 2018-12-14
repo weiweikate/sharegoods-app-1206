@@ -66,16 +66,15 @@ export default  class OrderDetailBottomButtonView extends Component{
                 break;
             case 2:
                 this.props.nav('payment/PaymentMethodPage', {
-                    orderNum: orderDetailModel.getOrderNo(),
+                    orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
                     amounts: orderDetailModel.payAmount
                     // orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
                 this.props.nav('payment/PaymentMethodPage', {
-                    orderNum: orderDetailModel.getOrderNo(),
+                    orderNum:  orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
                     amounts: orderDetailModel.payAmount,
-                    outTradeNo: orderDetailModel.outTradeNo
                 });
                 break;
             case 4:
