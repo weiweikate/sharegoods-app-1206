@@ -262,21 +262,21 @@ export default class MyCouponsItems extends Component {
     };
     plusTokenCoin = () => {
         let num = this.state.tokenCoinNum;
-        if (num <= (user.tokenCoin - 1)) {
+        if (num <= (this.props.justOne - 1)) {
             this.setState({ tokenCoinNum: (num + 1) });
         }
     };
     _onChangeText = (num) => {
         console.log("coupons", num);
-        if ((num >= 0) && (num <= user.tokenCoin)) {
+        if ((num >= 0) && (num <= this.props.justOne)&& (num <= user.tokenCoin)) {
             this.setState({ tokenCoinNum: num });
         }
         if (num === "") {
             this.setState({ tokenCoinNum: 0 });
         }
-        if (parseInt(num) > user.tokenCoin) {
+        if (parseInt(num) > this.props.justOne||parseInt(num) > user.tokenCoin) {
             NativeModules.commModule.toast(`1元券超出使用张数~`);
-            this.setState({ tokenCoinNum: user.tokenCoin });
+            this.setState({ tokenCoinNum: Math.min(parseInt(this.props.justOne),user.tokenCoin)});
         }
     };
     _onFocus = () => {
@@ -456,6 +456,10 @@ export default class MyCouponsItems extends Component {
         if (this.props.fromOrder && status === 0) {
             let arr = [];
             let params={};
+            if(this.props.orderParam.orderType == 3){
+                this.parseData(arr);
+                return
+            }
             if (this.props.orderParam.orderType == 99) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
@@ -465,7 +469,7 @@ export default class MyCouponsItems extends Component {
                     });
                 });
                 params={productPriceIds: arr}
-            } else {
+            } else  if(this.props.orderParam.orderType == 1||this.props.orderParam.orderType == 2){
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,

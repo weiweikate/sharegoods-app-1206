@@ -42,10 +42,10 @@ export default class ConfirmOrderPage extends BasePage {
             userCouponCode: null,
             tokenCoinText: null,
             couponName: null,
-            orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
+            orderParam: this.params.orderParamVO ? this.params.orderParamVO : [],
+            canUseCou:false
 
         };
-        this.canUseCou=false
     }
 
     $navigationBarOptions = {
@@ -53,20 +53,6 @@ export default class ConfirmOrderPage extends BasePage {
         show: true // false则隐藏导航
     };
 
-    isSupportCoupons(){
-        // let k = 0;
-        // this.state.viewData.list.map((item)=>{
-        //     if(item.restrictions & 1 !== 1){
-        //         k++;
-        //     }
-        // });
-        // return k === this.state.viewData.list.length
-        this.state.viewData.list.map((item)=>{
-                if(item.restrictions & 1 === 1){
-                    return true;
-                }
-            });
-    }
     //**********************************ViewPart******************************************
     renderAddress = () => {
         return (StringUtils.isNoEmpty(this.state.addressId) ?
@@ -122,12 +108,12 @@ export default class ConfirmOrderPage extends BasePage {
         return (
             <View style={{ backgroundColor: 'white' }}>
                 <TouchableOpacity style={styles.couponsStyle}
-                                  disabled={!this.isSupportCoupons()}
+                                  disabled={!this.state.canUseCou}
                                   onPress={() => this.jumpToCouponsPage()}>
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={!this.isSupportCoupons() ? '不支持使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
+                            value={!this.state.canUseCou? '不支持使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -262,7 +248,7 @@ export default class ConfirmOrderPage extends BasePage {
                     salePrice={StringUtils.formatMoneyString(item.salePrice)}
                     category={item.category}
                     goodsNum={'X' + item.goodsNum}
-                    onPress={() => this.clickItem(index, item)}
+                    onPress={() => {}}
                 />
             </TouchableOpacity>
         );
@@ -470,6 +456,11 @@ export default class ConfirmOrderPage extends BasePage {
         viewData.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         viewData.list = arrData;
         viewData.couponList = data.couponList ? data.couponList : null;
+        arrData.map((item)=>{
+            if(item.restrictions & 1 === 1){
+                this.setState({canUseCou:true})
+            }
+        });
         this.setState({ viewData,addressId:addressData.id });
     };
 
@@ -657,11 +648,11 @@ export default class ConfirmOrderPage extends BasePage {
                 justOne: this.state.viewData.totalAmounts ? this.state.viewData.totalAmounts : 1, callBack: (data) => {
                     console.log(typeof data);
                     if (parseInt(data) >= 0) {
-                        let params = { tokenCoin: parseInt(data), userCouponCode: this.state.userCouponCode };
+                        let params = { tokenCoin: parseInt(data) > 0 &&parseInt(data)<=parseInt(this.state.viewData.totalAmounts)? parseInt(data):0, userCouponCode: this.state.userCouponCode };
                         this.setState({
                             addressId:this.state.addressId,
                             tokenCoin: data,
-                            tokenCoinText: parseInt(data) > 0 ? '-¥' + parseInt(data) : '选择使用1元券'
+                            tokenCoinText: parseInt(data) > 0 &&parseInt(data)<=parseInt(this.state.viewData.totalAmounts)? '-¥' + parseInt(data) : '选择使用1元券'
                         });
                         this.loadPageData(params);
                     }
