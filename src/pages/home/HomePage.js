@@ -140,6 +140,17 @@ class HomePage extends BasePage {
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.loadMessageCount();
+        this._homeModaldata();
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
+        this.listenerMessage && this.listenerMessage.remove();
+        this.listenerLogout && this.listenerLogout.remove();
+
+    }
+
+    _homeModaldata = () => {
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
@@ -154,13 +165,6 @@ class HomePage extends BasePage {
                 });
             }, 2500);
         });
-    }
-
-    componentWillUnmount() {
-        this.listener && this.listener.remove();
-        this.listenerMessage && this.listenerMessage.remove();
-        this.listenerLogout && this.listenerLogout.remove();
-
     }
 
     loadMessageCount = () => {
@@ -179,22 +183,28 @@ class HomePage extends BasePage {
 
     showModal = () => {
         if (EmptyUtils.isEmpty(homeModalManager.versionData)) {
-            if (homeRegisterFirstManager.showRegisterModalUrl) {
-                //活动
-                this.setState({
-                    showRegister: true
-                });
-                this.registerModal && this.registerModal.open();
-                homeRegisterFirstManager.setShowRegisterModalUrl(null);
-            } else {
-                //公告弹窗
-                this.showMessageModal();
-            }
+           this._showMessageOrActivity();
         } else {
             //展示升级提示
             this.showUpdateModal();
         }
     };
+
+    _showMessageOrActivity=()=>{
+        if (homeRegisterFirstManager.showRegisterModalUrl) {
+            //活动
+            this.setState({
+                showRegister: true
+            });
+            this.registerModal && this.registerModal.open();
+            homeRegisterFirstManager.setShowRegisterModalUrl(null);
+        } else {
+            //公告弹窗
+            if(!this.state.showUpdate) {
+                this.showMessageModal();
+            }
+        }
+    }
 
     showUpdateModal = async () => {
         if (!EmptyUtils.isEmpty(homeModalManager.versionData)) {
@@ -224,12 +234,11 @@ class HomePage extends BasePage {
                 }
                 if (this.state.showUpdate) {
                     this.updateModal && this.updateModal.open();
-                    homeModalManager.setVersion(null);
                 } else {
-                    this.showMessageModal();
+                    this._showMessageOrActivity()
                 }
             } else {
-                this.showMessageModal();
+                this._showMessageOrActivity();
             }
         }
     };
@@ -510,11 +519,17 @@ class HomePage extends BasePage {
                 {this.registerModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
+                                    onRequestClose={() => {
+                                        homeModalManager.setVersion(null);
+                                        this.setState({showUpdate:false})
+                                    }}
                                     ref={(ref) => {
                                         this.updateModal = ref;
                                     }}
                                     forceUpdate={this.state.forceUpdate} onDismiss={() => {
                     this.setState({ showUpdate: false });
+                    homeModalManager.setVersion(null);
+
                 }}/>
             </View>
         );
