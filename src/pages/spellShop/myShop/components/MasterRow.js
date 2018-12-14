@@ -43,7 +43,7 @@ export default class MasterRow extends Component {
                 <UIImage style={styles.iconGap} source={ShopMasterIcon}/>
                 <View style={styles.row}>
                     {
-                        headImg ? <UIImage source={{uri: headImg}} style={styles.headerImg}/> : <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
+                        headImg ? <UIImage source={{uri: headImg}} style={styles.headerImg} borderRadius={14}/> : <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
                     }
                     <View style={styles.right}>
                         <Text style={styles.name} allowFontScaling={false}>{(nickName || '  ')}</Text>
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     headerImg: {
         width: 28,
         height: 28,
-        borderRadius: 14,
         marginLeft: 20,
         marginTop: 15
     },
