@@ -35,7 +35,6 @@ const detail_zongti = res.myShop.detail_zongti;
 const detail_benci = res.myShop.detail_benci;
 const NavLeft = resCommon.button.white_back;
 
-
 export default class ShopAssistantDetailPage extends BasePage {
 
     constructor(props) {
@@ -125,8 +124,6 @@ export default class ShopAssistantDetailPage extends BasePage {
 
     renderContent = () => {
         const { userInfo } = this.state;
-        const headerWidth = 65 / 375 * SCREEN_WIDTH;
-
         const { updateTime, dealerTotalBonus, dealerThisTimeBonus } = this.state.userInfo;
 
         //dealerTotalBonusCount参与店铺分红次数
@@ -143,16 +140,10 @@ export default class ShopAssistantDetailPage extends BasePage {
                     }}>
                         <ImageBackground source={RingImg}
                                          style={styles.headerBg}>
-                            {
-                                userInfo.headImg ?
-                                    <UIImage
-                                        style={{
-                                            width: headerWidth,
-                                            height: headerWidth,
-                                            borderRadius: headerWidth / 2
-                                        }}
-                                        source={{ uri: userInfo.headImg }}/> : null
-                            }
+                            <UIImage
+                                style={styles.headImg}
+                                source={{ uri: userInfo.headImg }}
+                                borderRadius={34}/>
                         </ImageBackground>
                         <View style={styles.shopInContainer}>
                             {this._renderDescRow(NameIcon, `名称：${userInfo.nickName || ''}`)}
@@ -217,6 +208,10 @@ const styles = StyleSheet.create({
         height: 105 / 375 * SCREEN_WIDTH,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    headImg: {
+        width: 68,
+        height: 68
     },
     shopInContainer: {
         height: 105 / 375 * SCREEN_WIDTH,
