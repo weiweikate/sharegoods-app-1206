@@ -49,6 +49,15 @@ export default class SelectMentorPage extends BasePage {
         this.itemRefArr = [];
     }
 
+    // 禁用某个页面的手势
+    static navigationOptions = {
+        gesturesEnabled: false
+    };
+
+    $NavBarLeftPressed = () => {
+        this.$toastShow('注册成功');
+        this.$navigateBackToHome();
+    };
     $navigationBarOptions = {
         title: '选择导师',
         show: true// false则隐藏导航
