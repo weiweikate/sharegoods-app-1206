@@ -72,6 +72,9 @@ export default class VersionUpdateModal extends React.Component {
             ref={(ref) => {
                 this.modal = ref;
             }}
+            onRequestClose={()=>{
+                this.props.onRequestClose && this.props.onRequestClose();
+            }}
             visible={this.props.showUpdate}>
             <View style={{
                 flexDirection: 'column',
