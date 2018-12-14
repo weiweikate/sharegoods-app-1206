@@ -48,11 +48,11 @@
         },
         "shen_yaoxing": {
             "name": "沈耀鑫",
-            "host": "http://172.16.10.56:8180/gateway"
+            "host": "http://172.16.10.60:8180/gateway"
         },
         "dev_cs": {
             "name": "陈帅",
-            "host": "http://172.16.10.88:8180/gateway"
+            "host": "http://172.16.10.62:8180/gateway"
         },
         "dev_wkl": {
             "name": "王昆仑",
@@ -60,7 +60,7 @@
         },
         "dev_yxm": {
             "name": "杨小猛",
-            "host": "http://172.16.10.12:8180/gateway"
+            "host": "http://172.16.10.38:8180/gateway"
         },
         "dev_zb": {
             "name": "张波",
@@ -88,6 +88,10 @@
         "龚日红": {
             "name": "龚日红",
             "host": "http://172.16.10.61:9090/gateway"
+        },
+        "李俊": {
+            "name": "李俊",
+            "host": "http://172.16.10.79:9090/gateway"
         }
     }
 }
