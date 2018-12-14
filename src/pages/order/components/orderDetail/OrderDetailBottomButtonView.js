@@ -54,7 +54,6 @@ export default  class OrderDetailBottomButtonView extends Component{
          * 再次购买                 ->  8
          * 删除订单(已关闭(取消))    ->  9
          * */
-        // this.setState({ menu: menu });
         switch (menu.id) {
             case 1:
                 if(assistDetailModel.cancelArr.length > 0){
@@ -68,7 +67,6 @@ export default  class OrderDetailBottomButtonView extends Component{
                 this.props.nav('payment/PaymentMethodPage', {
                     orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
                     amounts: orderDetailModel.payAmount
-                    // orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
