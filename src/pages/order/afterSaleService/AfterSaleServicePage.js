@@ -54,7 +54,6 @@ class AfterSaleServicePage extends BasePage {
             /** 编辑申请需要的售后详情id*/
             returnProductId: this.params.orderProductNo,
             applyRefundAmount: this.params.isEdit === true ? this.params.refundPrice : 0,//退款金额,
-            remark: '',
             editable: false
             /** 换货需要的数据*/
             // selectionData: {}, //规格数据

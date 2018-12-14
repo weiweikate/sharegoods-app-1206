@@ -10,7 +10,7 @@ import BasePage from "../../../BasePage";
 import { RefreshList } from "../../../components/ui";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
-import { TimeDownUtils } from "../../../utils/TimeDownUtils";
+// import { TimeDownUtils } from "../../../utils/TimeDownUtils";
 import GoodsDetailItem from "../components/GoodsDetailItem";
 import SingleSelectionModal from "../components/BottomSingleSelectModal";
 import ShowMessageModal from "../components/ShowMessageModal";
@@ -58,7 +58,7 @@ export default class MyOrdersDetailPage extends BasePage {
             giftBagCoupons: [],
             cancelArr: []
         };
-        this.timeUtils = new TimeDownUtils();
+        // this.timeUtils = new TimeDownUtils();
     }
 
     $navigationBarOptions = {
