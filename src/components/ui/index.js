@@ -8,7 +8,6 @@ import RefreshList from "./RefreshList";
 import HotSearch from "./HotSearch";
 import RecentSearch from "./RecentSearch";
 import SearchInput from "./SearchInput";
-import TakePhoneModal from "./TakePhotoModal";
 import AddPhotos from "./AddPhotos";
 import NoMoreClick from "./NoMoreClick";
 import PasswordInput from "./PasswordInput";
@@ -25,7 +24,6 @@ export {
     HotSearch,
     RecentSearch,
     SearchInput,
-    TakePhoneModal,
     AddPhotos,
     NoMoreClick,
     PasswordInput,

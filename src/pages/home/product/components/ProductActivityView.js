@@ -141,10 +141,10 @@ export default class ActivityView extends Component {
                 four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
                 price = markdownPrice;
-                one = '起拍价';
+                one = '当前价';
                 two = `${reseCount}人关注`;
                 three = (markdownPrice === floorPrice || status === 3) ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢完` : `还剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? `已拍完` : `还剩${surplusNumber}件`}`;
             }
         } else {
             const { seckillPrice = '', subscribeCount = '' } = this.props.activityData;

@@ -25,6 +25,7 @@ import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactNativeHost;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
@@ -32,9 +33,7 @@ import com.meeruu.commonlib.callback.OnProgressListener;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
-import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
@@ -49,6 +48,8 @@ import com.umeng.socialize.UMShareAPI;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import javax.annotation.Nullable;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -108,17 +109,13 @@ public class MainRNActivity extends ReactActivity {
     //自定义MyReactDelegate
     class MyReactDelegate extends PreLoadReactDelegate {
 
-        public MyReactDelegate(Activity activity, @javax.annotation.Nullable String mainComponentName) {
+        public MyReactDelegate(Activity activity, @Nullable String mainComponentName) {
             super(activity, mainComponentName);
         }
 
-        @javax.annotation.Nullable
         @Override
-        protected Bundle getLaunchOptions() {
-            Bundle bundle = new Bundle();
-            // android状态栏高度
-            bundle.putInt("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
-            return bundle;
+        protected ReactNativeHost getReactNativeHost() {
+            return super.getReactNativeHost();
         }
     }
 

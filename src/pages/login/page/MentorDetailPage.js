@@ -20,13 +20,13 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
-import { NavigationActions } from 'react-navigation';
 import UIText from '../../../comm/components/UIText';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
 // import ImageLoad from '@mr/image-placeholder'
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import {homeRegisterFirstManager, newuser_n, newuser_y } from '../../home/model/HomeRegisterFirstManager'
 
 
 export default class MentorDetailPage extends BasePage {
@@ -52,13 +52,10 @@ export default class MentorDetailPage extends BasePage {
      * 跳过函数
      */
     jump = () => {
-        let resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+        if (this.params.give){
+            homeRegisterFirstManager.setShowRegisterModalUrl(newuser_n)
+        }
+        this.$navigateBackToHome();
     };
 
     _render() {
@@ -139,6 +136,9 @@ export default class MentorDetailPage extends BasePage {
             code: mentorData.code
         }).then(res => {
             bridge.$toast(res.msg);
+            if (this.params.give){
+                homeRegisterFirstManager.setShowRegisterModalUrl(newuser_y);
+            }
             this.$navigateBackToHome();
         }).catch(res => {
             bridge.$toast(res.msg);
