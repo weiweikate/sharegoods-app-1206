@@ -117,9 +117,9 @@ export default class InvitationToShopPage extends BasePage {
                                                 <View style={styles.topImg}/>
                                         }
                                         <View style={{ justifyContent: 'space-between' }}>
-                                            <Text style={styles.text}>{shareInfo.name || ''}</Text>
-                                            <Text style={styles.text}>店铺ID：{shareInfo.showNumber || ''}</Text>
-                                            <Text style={styles.text}>店主：{manager.nickname || ''}</Text>
+                                            <Text style={styles.text} allowFontScaling={false}>{shareInfo.name || ''}</Text>
+                                            <Text style={styles.text} allowFontScaling={false}>店铺ID：{shareInfo.showNumber || ''}</Text>
+                                            <Text style={styles.text} allowFontScaling={false}>店主：{manager.nickname || ''}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -131,7 +131,7 @@ export default class InvitationToShopPage extends BasePage {
                                         bgColor={DesignRule.textColor_mainTitle}
                                         fgColor={'white'}/>
                                 </View>
-                                <Text style={styles.wxTip}>{this.state.wxTip}</Text>
+                                <Text style={styles.wxTip} allowFontScaling={false}>{this.state.wxTip}</Text>
                             </ImageBackground>
                             <View style={{
                                 flexDirection: 'row',
@@ -141,13 +141,13 @@ export default class InvitationToShopPage extends BasePage {
                                 <TouchableOpacity onPress={this._saveImg}
                                                   disabled={this.state.disable}>
                                     <ImageBackground source={yqhy_Btn} style={styles.bottomBtn}>
-                                        <Text style={styles.textBtn}>保存图片</Text>
+                                        <Text style={styles.textBtn} allowFontScaling={false}>保存图片</Text>
                                     </ImageBackground>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{ marginLeft: 20 }}
                                                   onPress={this._shareImg}>
                                     <ImageBackground source={yqhy_Btn} style={styles.bottomBtn}>
-                                        <Text style={styles.textBtn}>分享到...</Text>
+                                        <Text style={styles.textBtn} allowFontScaling={false}>分享到...</Text>
                                     </ImageBackground>
                                 </TouchableOpacity>
                             </View>

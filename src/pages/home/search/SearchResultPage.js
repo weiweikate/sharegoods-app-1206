@@ -268,7 +268,7 @@ export default class SearchResultPage extends BasePage {
                         color: DesignRule.textColor_mainTitle,
                         marginLeft: 16,
                         paddingVertical: 15
-                    }}>{item}</Text>
+                    }} allowFontScaling={false}>{item}</Text>
                     <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
@@ -392,7 +392,7 @@ export default class SearchResultPage extends BasePage {
                             <Text style={{
                                 color: 'white',
                                 fontSize: 10
-                            }}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
+                            }} allowFontScaling={false}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity>
                     {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop}>

@@ -273,7 +273,7 @@ export default class SelectionPage extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Text style={{ fontSize: 16, color: 'white' }}>确认</Text>
+                                    <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>确认</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>

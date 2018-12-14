@@ -65,11 +65,11 @@ export default class DetailHeaderView extends Component {
                             marginTop: 10,
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13
-                        }} numberOfLines={2}>{`${name || ''}`}</Text>
+                        }} numberOfLines={2} allowFontScaling={false}>{`${name || ''}`}</Text>
                         {StringUtils.isNoEmpty(secondName) ? <Text style={{
                             marginTop: 5, color: DesignRule.textColor_secondTitle,
                             fontSize: 13
-                        }}>{secondName}</Text> : null}
+                        }} allowFontScaling={false}>{secondName}</Text> : null}
                         <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 15, alignItems: 'center' }}>
                             <View style={{ flex: 1 }}>
                                 <View style={{ alignItems: 'center', height: 26, flexDirection: 'row' }}>
@@ -81,13 +81,13 @@ export default class DetailHeaderView extends Component {
                                         <Text style={{
                                             color: DesignRule.textColor_redWarn,
                                             fontSize: 10, paddingHorizontal: 6, paddingVertical: 2
-                                        }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : '原价'}</Text>
+                                        }} allowFontScaling={false}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : '原价'}</Text>
                                     </View>
                                     <Text style={{
                                         color: DesignRule.textColor_redWarn,
                                         fontSize: 19,
                                         marginLeft: 5
-                                    }}>{priceSuper}</Text>
+                                    }} allowFontScaling={false}>{priceSuper}</Text>
                                     {/*原价下对齐*/}
                                     <View style={{ justifyContent: 'flex-end', height: 16 }}>
                                         {priceType !== 2 && priceType !== 3 ? null : <Text style={{
@@ -103,12 +103,12 @@ export default class DetailHeaderView extends Component {
                                         style={{
                                             color: DesignRule.textColor_instruction,
                                             fontSize: 12
-                                        }}>快递：{freight === 0 ? '包邮' : `${freight}元`}</Text>
+                                        }} allowFontScaling={false}>快递：{freight === 0 ? '包邮' : `${freight}元`}</Text>
                                     <Text style={{
                                         color: DesignRule.textColor_instruction,
                                         fontSize: 12,
                                         marginLeft: ScreenUtils.autoSizeWidth(67)
-                                    }}>{`月销: ${monthSaleCount}`}</Text>
+                                    }} allowFontScaling={false}>{`月销: ${monthSaleCount}`}</Text>
                                 </View>
                             </View>
                             <View style={{ width: 62, flexDirection: 'row', alignItems: 'center' }}>
@@ -118,12 +118,12 @@ export default class DetailHeaderView extends Component {
                                     <Text style={{
                                         color: DesignRule.textColor_instruction,
                                         fontSize: 10
-                                    }}>拼店价</Text>
+                                    }} allowFontScaling={false}>拼店价</Text>
                                     <Text style={{
                                         marginTop: 4,
                                         color: DesignRule.textColor_redWarn,
                                         fontSize: 10
-                                    }}>{`￥${groupPrice || ''}`}</Text>
+                                    }} allowFontScaling={false}>{`￥${groupPrice || ''}`}</Text>
                                 </TouchableOpacity>
                                 <Image source={arrow_right}/>
                             </View>
@@ -138,12 +138,12 @@ export default class DetailHeaderView extends Component {
                         marginVertical: 13,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}>服务</Text>
+                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }} allowFontScaling={false}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,
                             fontSize: 12
-                        }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays || ''}天无理由退换`}`}</Text>
+                        }} allowFontScaling={false}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays || ''}天无理由退换`}`}</Text>
                     </View>
                 </View>
             </View>

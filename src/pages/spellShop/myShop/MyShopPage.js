@@ -84,7 +84,7 @@ export default class MyShopPage extends BasePage {
                         </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 17, color: '#ffffff' }}>{this.state.tittle}</Text>
+                    <Text style={{ fontSize: 17, color: '#ffffff' }} allowFontScaling={false}>{this.state.tittle}</Text>
                 </View>
                 {this._RightItem()}
             </View>
@@ -434,7 +434,7 @@ export default class MyShopPage extends BasePage {
                                      marginTop: 30,
                                      alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
                                  }}>
-            <Text style={{ fontSize: 16, color: 'white' }}>{btnText}</Text>
+            <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{btnText}</Text>
         </TouchableOpacity>;
     };
 

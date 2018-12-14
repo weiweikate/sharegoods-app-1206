@@ -389,7 +389,7 @@ export default class ProductDetailPage extends BasePage {
                     marginLeft: 10,
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 12
-                }}>{item.paramName || ''}</Text>
+                }} allowFontScaling={false}>{item.paramName || ''}</Text>
             </View>
             <Text style={{
                 flex: 1,
@@ -397,7 +397,7 @@ export default class ProductDetailPage extends BasePage {
                 marginLeft: 20,
                 color: DesignRule.textColor_instruction,
                 fontSize: 12
-            }}>{item.paramValue || ' '}</Text>
+            }} allowFontScaling={false}>{item.paramValue || ' '}</Text>
         </View>;
     };
 

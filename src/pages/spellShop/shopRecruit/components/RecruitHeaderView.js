@@ -37,14 +37,14 @@ export default class RecommendRow extends Component {
         return (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={img}/>
-                <Text style={{ color: '#333333', fontSize: 13, marginLeft: 2 }}>{tittle}</Text>
+                <Text style={{ color: '#333333', fontSize: 13, marginLeft: 2 }} allowFontScaling={false}>{tittle}</Text>
             </View>
             <Text style={{
                 color: '#666666',
                 fontSize: 13,
                 marginTop: 8,
                 paddingHorizontal: ScreenUtils.autoSizeWidth(8)
-            }} numberOfLines={1}>{content}</Text>
+            }} numberOfLines={1} allowFontScaling={false}>{content}</Text>
         </View>);
     };
 
@@ -64,19 +64,19 @@ export default class RecommendRow extends Component {
                 }}>
                     <Image source={{ uri: headUrl }} style={styles.shopIcon}/>
                     <View style={{ justifyContent: 'center' }}>
-                        <Text style={styles.shopName}>{name || ''}</Text>
-                        <Text style={styles.shopId}>ID：{showNumber || ''}</Text>
+                        <Text style={styles.shopName} allowFontScaling={false}>{name || ''}</Text>
+                        <Text style={styles.shopId} allowFontScaling={false}>ID：{showNumber || ''}</Text>
                         <Text style={{
                             fontSize: 11,
                             color: '#FFFFFF',
                             marginTop: 5
-                        }}>{`${DateUtils.formatDate(createTime, 'yyyy-MM-dd')}日发起招募`}</Text>
+                        }} allowFontScaling={false}>{`${DateUtils.formatDate(createTime, 'yyyy-MM-dd')}日发起招募`}</Text>
                         <Text style={{
                             fontFamily: 'PingFangSC-Medium',
                             fontSize: 13,
                             color: '#FFFFFF',
                             marginTop: 5
-                        }}>{this._judgeCanOpenShop()}</Text>
+                        }} allowFontScaling={false}>{this._judgeCanOpenShop()}</Text>
                     </View>
                 </View>
 
@@ -102,7 +102,7 @@ export default class RecommendRow extends Component {
                         <Text style={{
                             fontSize: 12,
                             color: '#666666'
-                        }}>参与平台分红：<Text style={{ color: '#FE1A54' }}>{`${bonusCount || 0}`}</Text>次</Text>
+                        }} allowFontScaling={false}>参与平台分红：<Text style={{ color: '#FE1A54' }}>{`${bonusCount || 0}`}</Text>次</Text>
                     </View>
                 </View>
             </ImageBackground>

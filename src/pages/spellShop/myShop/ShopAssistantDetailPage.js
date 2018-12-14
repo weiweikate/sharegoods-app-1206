@@ -80,7 +80,7 @@ export default class ShopAssistantDetailPage extends BasePage {
     _renderDescRow = (icon, title, style = { marginBottom: 15 }) => {
         return <View style={[{ flexDirection: 'row', alignItems: 'center' }, style]}>
             <Image source={icon}/>
-            <Text style={styles.rowTitle}>{title}</Text>
+            <Text style={styles.rowTitle} allowFontScaling={false}>{title}</Text>
         </View>;
     };
 
@@ -112,8 +112,8 @@ export default class ShopAssistantDetailPage extends BasePage {
     _renderRow = (icon, title, desc) => {
         return (<View style={styles.row}>
             <Image style={styles.icon} source={icon}/>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.desc}>{desc}</Text>
+            <Text style={styles.title} allowFontScaling={false}>{title}</Text>
+            <Text style={styles.desc} allowFontScaling={false}>{desc}</Text>
         </View>);
     };
 

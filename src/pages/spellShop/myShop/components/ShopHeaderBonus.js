@@ -39,7 +39,7 @@ export default class ShopHeaderBonus extends Component {
                 <View style={styles.whiteBg}>
                     <View style={styles.whiteBgTopRow}>
                         <Image source={CCZImg}/>
-                        <Text style={styles.gongXian}>{`贡献度: ${gxd}%`}</Text>
+                        <Text style={styles.gongXian} allowFontScaling={false}>{`贡献度: ${gxd}%`}</Text>
                     </View>
                     <View style={{
                         marginHorizontal: px2dp(10),
@@ -70,7 +70,7 @@ export default class ShopHeaderBonus extends Component {
                                 color: DesignRule.mainColor,
                                 fontSize: 10,
                                 marginTop: px2dp(5)
-                            }} numberOfLines={2}>{tradeBalance}<Text
+                            }} numberOfLines={2} allowFontScaling={false}>{tradeBalance}<Text
                                 style={{ color: DesignRule.textColor_mainTitle }}>元待分红</Text></Text>
                         </View>
 
@@ -79,24 +79,24 @@ export default class ShopHeaderBonus extends Component {
                                 fontSize: 12,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_secondTitle
-                            }}>本次分红任务完成度<Text style={{ color: DesignRule.textColor_redWarn }}>{progress}%</Text></Text>
+                            }} allowFontScaling={false}>本次分红任务完成度<Text style={{ color: DesignRule.textColor_redWarn }}>{progress}%</Text></Text>
                             <Text style={{
                                 fontSize: 12,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_secondTitle
-                            }}>距离本次分红还有<Text
+                            }} allowFontScaling={false}>距离本次分红还有<Text
                                 style={{ color: DesignRule.textColor_redWarn }}>{nextBonusTime || ''}</Text>天</Text>
                             <Text style={{
                                 fontSize: 12,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_secondTitle
-                            }} numberOfLines={2}>预计本次可得额外品牌分红奖励金<Text
+                            }} numberOfLines={2} allowFontScaling={false}>预计本次可得额外品牌分红奖励金<Text
                                 style={{ color: DesignRule.textColor_redWarn }}>{currentUserSettle}</Text>元</Text>
                             <Text style={{
                                 fontSize: 10,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_instruction
-                            }}>分红任务达到100%，才可以分红</Text>
+                            }} allowFontScaling={false}>分红任务达到100%，才可以分红</Text>
                         </View>
                     </View>
                 </View>

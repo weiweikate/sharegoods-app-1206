@@ -38,7 +38,7 @@ export default class TopicDetailSegmentView extends Component {
         }}>
             <View style={styles.btnContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selectedIndex === index ? DesignRule.mainColor : DesignRule.textColor_instruction }]}>{title}</Text>
+                    style={[styles.title, { color: this.state.selectedIndex === index ? DesignRule.mainColor : DesignRule.textColor_instruction }]} allowFontScaling={false}>{title}</Text>
                 {this.state.selectedIndex === index ? <View style={{
                     width: 45,
                     height: 3,

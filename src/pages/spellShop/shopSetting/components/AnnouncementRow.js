@@ -69,17 +69,17 @@ export default class AnnouncementRow extends Component {
         return (<TouchableWithoutFeedback onPress={this._onPress}>
             <View style={styles.rowContainer}>
                 <View style={styles.titleRow}>
-                    <Text style={styles.title}>{this._formatDateTime()}</Text>
+                    <Text style={styles.title} allowFontScaling={false}>{this._formatDateTime()}</Text>
                     {
                         canDelete ? <TouchableOpacity onPress={this._onPressDelete} style={styles.delBtn}>
                             <Image style={styles.delImg} source={DeleteIcon}/>
-                            <Text style={styles.delTitle}>删除</Text>
+                            <Text style={styles.delTitle} allowFontScaling={false}>删除</Text>
                         </TouchableOpacity> : null
                     }
                 </View>
                 <Image style={styles.dashLine} source={DashLine}/>
                 <View style={styles.contentContainer}>
-                    <Text numberOfLines={5} style={styles.content}>
+                    <Text numberOfLines={5} style={styles.content} allowFontScaling={false}>
                         {content}
                     </Text>
                 </View>

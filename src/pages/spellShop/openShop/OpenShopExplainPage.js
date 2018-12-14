@@ -66,7 +66,7 @@ export default class OpenShopExplainPage extends BasePage {
                     <View style={{ flexDirection: 'row' }}>
                         <View>
                             <View style={styles.circle}>
-                                <Text style={styles.circleText}>{index + 1}</Text>
+                                <Text style={styles.circleText} allowFontScaling={false}>{index + 1}</Text>
                             </View>
                             {index !== maxIndex - 1 ?
                                 <View style={{
@@ -82,7 +82,7 @@ export default class OpenShopExplainPage extends BasePage {
                                 marginRight: 0,
                                 fontSize: 13,
                                 color: DesignRule.textColor_mainTitle
-                            }}>{title}</Text>
+                            }} allowFontScaling={false}>{title}</Text>
                         </View>
                     </View>
                 </View>
@@ -109,7 +109,7 @@ export default class OpenShopExplainPage extends BasePage {
                         marginTop: 41,
                         fontSize: 17,
                         color: DesignRule.textColor_mainTitle
-                    }}>拼店规则说明</Text>
+                    }} allowFontScaling={false}>拼店规则说明</Text>
                     <View style={{ marginTop: 32 }}>
                         {
                             arr.map((item, index) => {
@@ -125,7 +125,7 @@ export default class OpenShopExplainPage extends BasePage {
                             <Text style={{
                                 fontSize: 17,
                                 color: 'white'
-                            }}>我要开店</Text>
+                            }} allowFontScaling={false}>我要开店</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -137,9 +137,9 @@ export default class OpenShopExplainPage extends BasePage {
                     }}>
                         <Image source={this.state.isSelected ? openShop_yes : openShop_no}/>
                     </TouchableOpacity>
-                    <Text style={styles.descText}>阅读同意</Text>
+                    <Text style={styles.descText} allowFontScaling={false}>阅读同意</Text>
                     <TouchableOpacity onPress={this._onPress}>
-                        <Text style={[styles.descText, { color: DesignRule.mainColor }]}>《拼店管理条例》</Text>
+                        <Text style={[styles.descText, { color: DesignRule.mainColor }]} allowFontScaling={false}>《拼店管理条例》</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -81,21 +81,21 @@ export default class TopicDetailShowModal extends Component {
                                 <Text style={{
                                     color: 'white',
                                     fontSize: ScreenUtils.px2dp(18)
-                                }}>{this.state.tittle}</Text>
+                                }} allowFontScaling={false}>{this.state.tittle}</Text>
                             </ImageBackground>
                             <View style={{ flex: 1, alignItems: 'center' }}>
                                 {this.state.name ? <Text style={{
                                     marginTop: ScreenUtils.px2dp(31),
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: ScreenUtils.px2dp(15), textAlign: 'center'
-                                }}>{`${this.state.name || ''}`}</Text> : null}
+                                }} allowFontScaling={false}>{`${this.state.name || ''}`}</Text> : null}
 
                                 <Text style={{
                                     marginTop: ScreenUtils.px2dp(25),
                                     color: DesignRule.textColor_secondTitle,
                                     fontSize: ScreenUtils.px2dp(14),
                                     paddingHorizontal: ScreenUtils.px2dp(32)
-                                }}>{`${this.state.content || ''}`}</Text>
+                                }} allowFontScaling={false}>{`${this.state.content || ''}`}</Text>
                             </View>
                         </View>
                     </View>

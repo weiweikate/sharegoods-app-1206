@@ -35,14 +35,14 @@ export class TopicDetailBanner extends Component {
         const bannerCount = bannerImgList.length;
         return <View style={styles.indexViewTwo}>
             <Text
-                style={styles.text}>{this.state.messageIndex + 1} / {bannerCount}</Text>
+                style={styles.text} allowFontScaling={false}>{this.state.messageIndex + 1} / {bannerCount}</Text>
         </View>;
     };
 
     _renderPagination = (index, total) => {
         return <View style={styles.indexViewTwo}>
             <Text
-                style={styles.text}>{index + 1}/{total}</Text>
+                style={styles.text} allowFontScaling={false}>{index + 1}/{total}</Text>
         </View>;
     };
 
