@@ -94,7 +94,7 @@ export default class NetFailedView extends Component {
         ///按钮文字样式
         const btnTextStyle = [styles.btnText];
         return (<TouchableOpacity activeOpacity={0.5} style={btnStyle} onPress={this.props.reloadBtnClick}>
-            <Text style={btnTextStyle}>
+            <Text style={btnTextStyle} allowFontScaling={false}>
                 {buttonText}
             </Text>
         </TouchableOpacity>);
@@ -120,7 +120,7 @@ export default class NetFailedView extends Component {
 
                 <Image source={this._getImgSource(source, code)} style={imgS} resizeMode={'contain'}/>
 
-                <Text style={styles.titleStyle}>
+                <Text style={styles.titleStyle} allowFontScaling={false}>
                     {BugErrorCode === code ? '' : `${code}`}{msg}
                 </Text>
 

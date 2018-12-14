@@ -50,24 +50,24 @@ export default class ShopScorePage extends BasePage {
                                 })
                             }
                         </View>
-                        <Text style={styles.shopLevel}>{this.params.storeData.starName || '' + '店铺'}</Text>
+                        <Text style={styles.shopLevel} allowFontScaling={false}>{this.params.storeData.starName || '' + '店铺'}</Text>
                     </View>
                     <View style={styles.content}>
 
-                        <Text style={styles.title}>
+                        <Text style={styles.title} allowFontScaling={false}>
                             店铺如何升级？
                         </Text>
-                        <Text style={styles.subTitle}>
+                        <Text style={styles.subTitle} allowFontScaling={false}>
                             {t1}
                         </Text>
 
                         <Image style={styles.img} source={BgIcon}/>
 
-                        <Text style={styles.title}>
+                        <Text style={styles.title} allowFontScaling={false}>
                             升级后有哪些好处？
                         </Text>
 
-                        <Text style={styles.subTitle}>
+                        <Text style={styles.subTitle} allowFontScaling={false}>
                             {t2}
                         </Text>
 

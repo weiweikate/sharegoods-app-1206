@@ -36,7 +36,7 @@ export default class HotSearchView extends Component {
                 <View key={index}>
                     <TouchableOpacity style={styles.btn}
                                       onPress={() => this.props.clickItemAction(item.wordName, index, item.id)}>
-                        <Text style={styles.btnText}>{textshow}</Text>
+                        <Text style={styles.btnText} allowFontScaling={false}>{textshow}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -48,7 +48,7 @@ export default class HotSearchView extends Component {
         return (
             <View>
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>热门搜索</Text>
+                    <Text style={styles.headerText} allowFontScaling={false}>热门搜索</Text>
                 </View>
                 <View style={styles.containerView}>
                     {this.rendTag()}

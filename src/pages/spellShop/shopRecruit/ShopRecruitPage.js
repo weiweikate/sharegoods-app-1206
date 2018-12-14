@@ -52,7 +52,7 @@ export default class ShopRecruitPage extends BasePage {
                         </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 17, color: '#ffffff' }}>店铺招募中</Text>
+                    <Text style={{ fontSize: 17, color: '#ffffff' }} allowFontScaling={false}>店铺招募中</Text>
                 </View>
                 <View style={styles.rightBarItemContainer}>
                     <TouchableOpacity onPress={() => {
@@ -294,11 +294,11 @@ export default class ShopRecruitPage extends BasePage {
                                           borderRadius: this.state.canOpen ? 5 : ScreenUtils.autoSizeWidth(345) / 2,
                                           width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(345)
                                       }]}>
-                        <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{'取消开启'}</Text>
+                        <Text style={{ fontSize: 16, color: DesignRule.mainColor }} allowFontScaling={false}>{'取消开启'}</Text>
                     </TouchableOpacity>
                     {
                         this.state.canOpen ? <TouchableOpacity onPress={this._openStore} style={styles.open}>
-                            <Text style={{ fontSize: 16, color: 'white' }}>{'开启店铺'}</Text>
+                            <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{'开启店铺'}</Text>
                         </TouchableOpacity> : null
                     }
                 </View>
@@ -317,11 +317,11 @@ export default class ShopRecruitPage extends BasePage {
                                               borderRadius: ScreenUtils.autoSizeWidth(345) / 2,
                                               width: ScreenUtils.autoSizeWidth(345)
                                           }]}>
-                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{'退出拼店'}</Text>
+                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }} allowFontScaling={false}>{'退出拼店'}</Text>
                         </TouchableOpacity>
                         : <TouchableOpacity onPress={this._joinStore}
                                             style={[styles.OutStore]}>
-                            <Text style={{ fontSize: 16, color: 'white' }}>{'加入拼店'}</Text>
+                            <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{'加入拼店'}</Text>
                         </TouchableOpacity>
                 }
 

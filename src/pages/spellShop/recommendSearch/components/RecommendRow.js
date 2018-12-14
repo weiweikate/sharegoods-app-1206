@@ -69,9 +69,9 @@ export default class RecommendRow extends Component {
                                                                                           source={{ uri: RecommendRowItem.headUrl }}/> :
                                 <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
-                                <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
+                                <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>{RecommendRowItem.name || ''}</Text>
                                 <Text style={styles.member}
-                                      numberOfLines={1}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
+                                      numberOfLines={1} allowFontScaling={false}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
                             </View>
                         </View>
                         <FlatList
@@ -96,7 +96,7 @@ export default class RecommendRow extends Component {
                         <Text style={{
                             marginTop: 8, marginBottom: 11, paddingHorizontal: 15,
                             color: DesignRule.textColor_secondTitle, fontSize: 10
-                        }}>分红任务完成度<Text style={{ color: DesignRule.mainColor }}>{progress}%</Text></Text>
+                        }} allowFontScaling={false}>分红任务完成度<Text style={{ color: DesignRule.mainColor }}>{progress}%</Text></Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{
@@ -111,11 +111,11 @@ export default class RecommendRow extends Component {
                                 })
                             }
                         </View>
-                        <Text style={{ marginTop: 9, color: '#939393', fontSize: 12 }}>店铺等级</Text>
+                        <Text style={{ marginTop: 9, color: '#939393', fontSize: 12 }} allowFontScaling={false}>店铺等级</Text>
                         <TouchableOpacity style={styles.joinBtn} onPress={() => {
                             this._onPress();
                         }}>
-                            <Text style={styles.joinText}>+申请加入</Text>
+                            <Text style={styles.joinText} allowFontScaling={false}>+申请加入</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -123,18 +123,18 @@ export default class RecommendRow extends Component {
 
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop}>店铺成员</Text>
-                        <Text style={styles.containBottom}>{RecommendRowItem.storeUserNum || ''}</Text>
+                        <Text style={styles.containTop} allowFontScaling={false}>店铺成员</Text>
+                        <Text style={styles.containBottom} allowFontScaling={false}>{RecommendRowItem.storeUserNum || ''}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop}>店铺本月收入</Text>
-                        <Text style={styles.containBottom}>{`${tradeBalance || '0.00'}元`}</Text>
+                        <Text style={styles.containTop} allowFontScaling={false}>店铺本月收入</Text>
+                        <Text style={styles.containBottom} allowFontScaling={false}>{`${tradeBalance || '0.00'}元`}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop}>店铺累计收入</Text>
-                        <Text style={styles.containBottom}>{`${totalTradeBalance || '0.00'}元`}</Text>
+                        <Text style={styles.containTop} allowFontScaling={false}>店铺累计收入</Text>
+                        <Text style={styles.containBottom} allowFontScaling={false}>{`${totalTradeBalance || '0.00'}元`}</Text>
                     </View>
                 </View>
 

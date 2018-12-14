@@ -47,7 +47,7 @@ export default class ResultHorizontalRow extends Component {
                         paddingHorizontal: 10,
                         marginTop: 9
                     }}
-                          numberOfLines={2}>{`${name || ''}`}</Text>
+                          numberOfLines={2} allowFontScaling={false}>{`${name || ''}`}</Text>
                     <View style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
@@ -59,7 +59,7 @@ export default class ResultHorizontalRow extends Component {
                         left: 10
                     }}>
                         <Text
-                            style={{ color: DesignRule.mainColor, fontSize: 17 }}>{`￥${minPrice || ''}起`}</Text>
+                            style={{ color: DesignRule.mainColor, fontSize: 17 }} allowFontScaling={false}>{`￥${minPrice || ''}起`}</Text>
 
                         <TouchableWithoutFeedback onPress={() => {
                             this.props.storeProduct(this.props.itemData);

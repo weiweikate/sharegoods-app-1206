@@ -77,7 +77,7 @@ export default class DetailNavShowModal extends Component {
             }}
             onPress={() => this._onPress(item)}>
             <Image source={item.img} style={{ marginLeft: 23 }}/>
-            <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }}>{item.tittle}</Text>
+            <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }} allowFontScaling={false}>{item.tittle}</Text>
             {item.index === 0 && this.state.messageCount > 0 ? <View style={{
                 position: "absolute",
                 top: ScreenUtils.autoSizeWidth(9),
@@ -90,7 +90,7 @@ export default class DetailNavShowModal extends Component {
                     fontSize: 9,
                     paddingHorizontal: 4,
                     paddingVertical: 2
-                }}>{this.state.messageCount > 99 ? 99 : this.state.messageCount}</Text>
+                }} allowFontScaling={false}>{this.state.messageCount > 99 ? 99 : this.state.messageCount}</Text>
             </View> : null}
         </TouchableOpacity>;
     };

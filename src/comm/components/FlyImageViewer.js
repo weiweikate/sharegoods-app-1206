@@ -683,7 +683,7 @@ export default class FlyImageViewer extends Component {
                 {this.props.imageUrls[this.state.currentShowIndex].originSizeKb && this.props.imageUrls[this.state.currentShowIndex].originUrl &&
                 <View style={this.styles.watchOrigin}>
                     <TouchableOpacity style={this.styles.watchOriginTouchable}>
-                        <Text style={this.styles.watchOriginText}>查看原图(2M)</Text>
+                        <Text style={this.styles.watchOriginText} allowFontScaling={false}>查看原图(2M)</Text>
                     </TouchableOpacity>
                 </View>
                 }
@@ -721,12 +721,12 @@ export default class FlyImageViewer extends Component {
                     <TouchableHighlight underlayColor={DesignRule.color_f2}
                                         onPress={this.saveToLocal.bind(this)}
                                         style={this.styles.operateContainer}>
-                        <Text style={this.styles.operateText}>{this.props.menuContext.saveToLocal}</Text>
+                        <Text style={this.styles.operateText} allowFontScaling={false}>{this.props.menuContext.saveToLocal}</Text>
                     </TouchableHighlight>
                     <TouchableHighlight underlayColor={DesignRule.color_f2}
                                         onPress={this.handleLeaveMenu.bind(this)}
                                         style={this.styles.operateContainer}>
-                        <Text style={this.styles.operateText}>{this.props.menuContext.cancel}</Text>
+                        <Text style={this.styles.operateText} allowFontScaling={false}>{this.props.menuContext.cancel}</Text>
                     </TouchableHighlight>
                 </View>
             </View>

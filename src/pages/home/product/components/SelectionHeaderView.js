@@ -59,18 +59,18 @@ export default class SelectionHeaderView extends Component {
                             color: DesignRule.mainColor,
                             fontSize: 16,
                             marginTop: 14
-                        }}>{`￥${price}`}</Text>
+                        }} allowFontScaling={false}>{`￥${price}`}</Text>
                         <Text
                             style={{
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 13,
                                 marginTop: 6
-                            }}>{`库存${stock}${stockUnit || ''}`}</Text>
+                            }} allowFontScaling={false}>{`库存${stock}${stockUnit || ''}`}</Text>
                         <Text style={{
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13,
                             marginTop: 6
-                        }} numberOfLines={2}>{selectStrListTemp.join(',').replace(/@/g, '')}</Text>
+                        }} numberOfLines={2} allowFontScaling={false}>{selectStrListTemp.join(',').replace(/@/g, '')}</Text>
                     </View>
                     <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
                                       onPress={this.props.closeSelectionPage}>

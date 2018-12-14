@@ -75,10 +75,10 @@ export default class ShopHeader extends Component {
                     <ImageLoad style={styles.headerImg} borderRadius={px2dp(30)}
                                source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
                     <View style={styles.shopInContainer}>
-                        <Text style={styles.shopName}>{name || ''}</Text>
-                        <Text style={styles.shopId}>ID：{showNumber || ''}</Text>
+                        <Text style={styles.shopName} allowFontScaling={false}>{name || ''}</Text>
+                        <Text style={styles.shopId} allowFontScaling={false}>ID：{showNumber || ''}</Text>
                         <View style={styles.starRow}>
-                            <Text style={{ fontSize: 11, color: '#999999' }}>店铺星级：</Text>
+                            <Text style={{ fontSize: 11, color: '#999999' }} allowFontScaling={false}>店铺星级：</Text>
                             {
                                 starsArr.map((item, index) => {
                                     return <Image key={index} source={StarImg}/>;
@@ -89,7 +89,7 @@ export default class ShopHeader extends Component {
 
                     {userStatus === 1 ? <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
                                                           style={styles.announcementContainer}>
-                        <Text style={styles.announcementTitle}>店铺公告</Text>
+                        <Text style={styles.announcementTitle} allowFontScaling={false}>店铺公告</Text>
                     </TouchableOpacity> : null}
                 </View>
                 <View style={{
@@ -102,13 +102,13 @@ export default class ShopHeader extends Component {
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 13,
                     marginHorizontal: px2dp(20)
-                }}>店铺简介</Text>
+                }} allowFontScaling={false}>店铺简介</Text>
                 <Text style={{
                     color: DesignRule.textColor_secondTitle,
                     fontSize: 12,
                     marginHorizontal: px2dp(20),
                     marginTop: px2dp(5), marginBottom: px2dp(15)
-                }}>{StringUtils.isNoEmpty(profile) ? profile : '店家很懒，没有介绍自己~'}</Text>
+                }} allowFontScaling={false}>{StringUtils.isNoEmpty(profile) ? profile : '店家很懒，没有介绍自己~'}</Text>
             </View>
         </View>;
     }

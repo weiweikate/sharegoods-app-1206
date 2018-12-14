@@ -55,14 +55,14 @@ export default class TopicDetailSelectPage extends Component {
                 <TouchableWithoutFeedback>
                     <View>
                         <View style={styles.headerContainer}>
-                            <Text style={styles.headerText}>{obj.paramName}</Text>
+                            <Text style={styles.headerText} allowFontScaling={false}>{obj.paramName}</Text>
                         </View>
                         <View style={styles.containerView}>
                             <View>
                                 <TouchableOpacity
                                     style={[styles.btn, { backgroundColor: DesignRule.mainColor }]}>
                                     <Text
-                                        style={[styles.btnText, { color: 'white' }]}>{obj.paramValue}</Text>
+                                        style={[styles.btnText, { color: 'white' }]} allowFontScaling={false}>{obj.paramValue}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -111,18 +111,18 @@ export default class TopicDetailSelectPage extends Component {
                                         color: DesignRule.mainColor,
                                         fontSize: 16,
                                         marginTop: 14
-                                    }}>{`￥${price}`}</Text>
+                                    }} allowFontScaling={false}>{`￥${price}`}</Text>
                                     <Text
                                         style={{
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: 13,
                                             marginTop: 6
-                                        }}>{`库存${surplusNumber}件`}</Text>
+                                        }} allowFontScaling={false}>{`库存${surplusNumber}件`}</Text>
                                     <Text style={{
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: 13,
                                         marginTop: 6
-                                    }} numberOfLines={2}>{(specs || []).join(',')}</Text>
+                                    }} numberOfLines={2} allowFontScaling={false}>{(specs || []).join(',')}</Text>
                                 </View>
                                 <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
                                                   onPress={this._close}>
@@ -144,7 +144,7 @@ export default class TopicDetailSelectPage extends Component {
                                         color: DesignRule.textColor_secondTitle,
                                         marginLeft: 16,
                                         fontSize: 13
-                                    }}>购买数量</Text>
+                                    }} allowFontScaling={false}>购买数量</Text>
                                     <View style={{
                                         flexDirection: 'row',
                                         borderColor: DesignRule.lineColor_inGrayBg,
@@ -157,7 +157,7 @@ export default class TopicDetailSelectPage extends Component {
                                                 color: DesignRule.lineColor_inGrayBg,
                                                 fontSize: 15,
                                                 paddingHorizontal: 11
-                                            }}>-</Text>
+                                            }} allowFontScaling={false}>-</Text>
                                         </TouchableOpacity>
                                         <View style={{
                                             height: 21,
@@ -168,7 +168,7 @@ export default class TopicDetailSelectPage extends Component {
                                             <Text style={{
                                                 paddingHorizontal: 15,
                                                 color: DesignRule.textColor_mainTitle
-                                            }}>{1}</Text>
+                                            }} allowFontScaling={false}>{1}</Text>
                                         </View>
                                         <View style={{
                                             height: 21,
@@ -180,7 +180,7 @@ export default class TopicDetailSelectPage extends Component {
                                                 color: DesignRule.lineColor_inGrayBg,
                                                 fontSize: 15,
                                                 paddingHorizontal: 11
-                                            }}>+</Text>
+                                            }} allowFontScaling={false}>+</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -193,7 +193,7 @@ export default class TopicDetailSelectPage extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Text style={{ fontSize: 16, color: 'white' }}>确认</Text>
+                                    <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>确认</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
