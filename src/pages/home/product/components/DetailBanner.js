@@ -61,7 +61,7 @@ export class DetailBanner extends Component {
                     <View>
                         <UIImage source={{ uri: originalImg }}
                                  style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}
-                                 resizeMode="contain"/>
+                                 resizeMode="cover"/>
                     </View>
                 </TouchableWithoutFeedback>
             );
@@ -75,7 +75,7 @@ export class DetailBanner extends Component {
         let productImgListTemp = [...(imgFileList || [])];
         productImgListTemp = productImgListTemp || [];
         productImgListTemp.unshift({ originalImg: imgUrl });
-        this.productImgListOutVideo = productImgListTemp;
+        this.productImgListOutVideo = [...productImgListTemp];
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.state.haveVideo = true;
             productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
