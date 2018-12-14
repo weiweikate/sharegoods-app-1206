@@ -363,7 +363,7 @@ export default class SelectMentorPage extends BasePage {
                 code: mentorData.code
             }).then(res => {
                 bridge.$toast(res.msg);
-                if (this.params.give) {
+                if (res.give) {
                     homeRegisterFirstManager.setShowRegisterModalUrl(newuser_y);
                 }
                 this.$navigateBackToHome();

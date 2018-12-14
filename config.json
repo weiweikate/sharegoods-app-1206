@@ -47,7 +47,7 @@
         },
         "zhou_hao": {
             "name": "测试_周浩",
-            "host": "http://172.16.10.29:8180/gateway"
+            "host": "http://172.16.10.64:9090/gateway"
         },
         "shen_yaoxing": {
             "name": "测试_沈耀鑫",
@@ -89,6 +89,10 @@
         "龚日红":{
             "name": "龚日红",
             "host": "http://172.16.10.177:9090/gateway"
+        },
+        "支付":{
+            "name":"黄佳欢",
+            "host":"http://172.16.10.69:9090/gateway"
         }
     }
 }
