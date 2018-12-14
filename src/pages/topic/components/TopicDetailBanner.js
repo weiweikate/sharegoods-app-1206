@@ -62,7 +62,7 @@ export class TopicDetailBanner extends Component {
                     <View>
                         <ImageLoad source={{ uri: originalImg }}
                                    style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}
-                                   resizeMode="contain"
+                                   resizeMode="cover"
                         />
                     </View>
                 </TouchableWithoutFeedback>
