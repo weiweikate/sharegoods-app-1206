@@ -179,7 +179,7 @@ export default  class OrderDetailBottomButtonView extends Component{
     };
 }
 const styles = StyleSheet.create({
-    containerStyle:{ height: px2dp(48), flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' },
+    containerStyle:{ height: px2dp(48), flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end',backgroundColor:'white',marginTop:1 },
     touchableStyle:{
         borderWidth: 1,
         height: px2dp(30),

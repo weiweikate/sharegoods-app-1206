@@ -78,8 +78,8 @@ export default class EmptyView extends Component {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={[styles.container, style]}>
                     <Image source={this._getImgSource()} style={[styles.img, imageStyle]} resizeMode={'contain'}/>
-                    <Text style={styles.description}>{description}</Text>
-                    <Text style={styles.subDescription}>{subDescription}</Text>
+                    <Text style={styles.description} allowFontScaling={false}>{description}</Text>
+                    <Text style={styles.subDescription} allowFontScaling={false}>{subDescription}</Text>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -114,7 +114,7 @@ export default class EmptyView extends Component {
                         source={this._getImgSource()}
                         style={[styles.img, imageStyle]}
                     />
-                    <Text style={styles.description}>
+                    <Text style={styles.description} allowFontScaling={false}>
                         {description}
                     </Text>
                 </View>

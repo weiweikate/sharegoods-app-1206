@@ -40,8 +40,7 @@ export default class RecommendSegmentView extends Component {
         }}>
             <View style={styles.itemContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selectIndex === index ? DesignRule.bgColor_btn : '#999999' }]}
-                >{title}</Text>
+                    style={[styles.title, { color: this.state.selectIndex === index ? DesignRule.bgColor_btn : '#999999' }]} allowFontScaling={false}>{title}</Text>
                 {index === this.state.selectIndex && < View style={styles.itemLine}/>}
             </View>
         </TouchableWithoutFeedback>;

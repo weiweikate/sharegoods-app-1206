@@ -32,7 +32,7 @@ export default class RecentSearchView extends Component {
 
         if (this.props.listData.length === 0) {
             return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 19 }}>
-                <Text style={styles.headerText}>暂无搜索历史</Text>
+                <Text style={styles.headerText} allowFontScaling={false}>暂无搜索历史</Text>
             </View>;
         } else {
             let tagList = [];
@@ -43,7 +43,7 @@ export default class RecentSearchView extends Component {
                     <View key={index}>
                         <TouchableOpacity style={styles.btn}
                                           onPress={() => this.props.clickItemAction(this.props.listData[index], index)}>
-                            <Text style={styles.btnText}>{textshow}</Text>
+                            <Text style={styles.btnText} allowFontScaling={false}>{textshow}</Text>
                         </TouchableOpacity>
                     </View>
                 );
@@ -56,7 +56,7 @@ export default class RecentSearchView extends Component {
         return (
             <View>
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>历史搜索</Text>
+                    <Text style={styles.headerText} allowFontScaling={false}>历史搜索</Text>
                     <TouchableOpacity onPress={this.props.clearHistory}>
                         <Image style={styles.image} source={deleteImg}/>
                     </TouchableOpacity>

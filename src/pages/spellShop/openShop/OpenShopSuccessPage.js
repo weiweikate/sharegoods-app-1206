@@ -46,13 +46,13 @@ export default class OpenShopSuccessPage extends BasePage {
 
                     <Image source={SuccessImg} style={styles.icon}/>
 
-                    <Text style={styles.desc}>
+                    <Text style={styles.desc} allowFontScaling={false}>
                         开店成功
                     </Text>
 
                     <View style={{ flexDirection: 'row', marginTop: 79 }}>
                         <TouchableOpacity activeOpacity={0.5} onPress={this._clickEnterShop} style={styles.btnStyle}>
-                            <Text style={styles.btnText}>
+                            <Text style={styles.btnText} allowFontScaling={false}>
                                 进入店铺
                             </Text>
                         </TouchableOpacity>
@@ -62,7 +62,7 @@ export default class OpenShopSuccessPage extends BasePage {
                             marginLeft: 20,
                             backgroundColor: DesignRule.mainColor
                         }]}>
-                            <Text style={[styles.btnText, { color: '#fff' }]}>
+                            <Text style={[styles.btnText, { color: '#fff' }]} allowFontScaling={false}>
                                 马上邀请好友
                             </Text>
                         </TouchableOpacity>

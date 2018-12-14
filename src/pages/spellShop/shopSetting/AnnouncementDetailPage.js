@@ -26,10 +26,10 @@ export default class AnnouncementDetailPage extends BasePage {
             <ScrollView showsVerticalScrollIndicator={false}
                         style={styles.container}>
                 <ImageBackground style={styles.banner} source={Banner}>
-                    <Text style={styles.title}>{title || " "}</Text>
+                    <Text style={styles.title} allowFontScaling={false}>{title || " "}</Text>
                 </ImageBackground>
                 <View style={styles.bgContainer}>
-                    <Text style={styles.content}>
+                    <Text style={styles.content} allowFontScaling={false}>
                         {content || " "}
                     </Text>
                 </View>
