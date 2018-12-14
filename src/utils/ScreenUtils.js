@@ -90,7 +90,6 @@ export default {
     height: Dimensions.get('window').height,
     pixelRatio: PixelRatio.get(),
     onePixel: 1 / PixelRatio.get(),
-    androidStatusHeight: RNDeviceInfo.statusBarHeight,
     statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : RNDeviceInfo.statusBarHeight,
     // 44为头部不包含状态栏高度
     headerHeight: (Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : RNDeviceInfo.statusBarHeight) + 44,

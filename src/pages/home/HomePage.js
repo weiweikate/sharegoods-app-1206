@@ -40,7 +40,8 @@ import res from './res';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
-import {homeRegisterFirstManager} from './model/HomeRegisterFirstManager';
+import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
+
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
 const home_notice_bg = res.home_notice_bg;
@@ -53,7 +54,7 @@ const home_notice_bg = res.home_notice_bg;
  * @email zhangjian@meeruu.com
  */
 
-const { px2dp, statusBarHeight } = ScreenUtils;
+const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 import BasePage from '../../BasePage';
 
@@ -68,7 +69,7 @@ class HomePage extends BasePage {
         show: false
     };
 
-    headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0);
+    headerH = headerHeight - (ScreenUtils.isIOSX ? 10 : 0);
     state = {
         isShow: true,
         showMessage: false,
@@ -139,6 +140,17 @@ class HomePage extends BasePage {
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.loadMessageCount();
+        this._homeModaldata();
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
+        this.listenerMessage && this.listenerMessage.remove();
+        this.listenerLogout && this.listenerLogout.remove();
+
+    }
+
+    _homeModaldata = () => {
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
@@ -153,13 +165,6 @@ class HomePage extends BasePage {
                 });
             }, 2500);
         });
-    }
-
-    componentWillUnmount() {
-        this.listener && this.listener.remove();
-        this.listenerMessage && this.listenerMessage.remove();
-        this.listenerLogout && this.listenerLogout.remove();
-
     }
 
     loadMessageCount = () => {
@@ -178,22 +183,28 @@ class HomePage extends BasePage {
 
     showModal = () => {
         if (EmptyUtils.isEmpty(homeModalManager.versionData)) {
-            if (homeRegisterFirstManager.showRegisterModalUrl) {
-                //活动
-                this.setState({
-                    showRegister: true
-                });
-                this.registerModal && this.registerModal.open();
-                homeRegisterFirstManager.setShowRegisterModalUrl(null);
-            } else {
-                //公告弹窗
-                this.showMessageModal();
-            }
+           this._showMessageOrActivity();
         } else {
             //展示升级提示
             this.showUpdateModal();
         }
     };
+
+    _showMessageOrActivity=()=>{
+        if (homeRegisterFirstManager.showRegisterModalUrl) {
+            //活动
+            this.setState({
+                showRegister: true
+            });
+            this.registerModal && this.registerModal.open();
+            homeRegisterFirstManager.setShowRegisterModalUrl(null);
+        } else {
+            //公告弹窗
+            if(!this.state.showUpdate) {
+                this.showMessageModal();
+            }
+        }
+    }
 
     showUpdateModal = async () => {
         if (!EmptyUtils.isEmpty(homeModalManager.versionData)) {
@@ -223,12 +234,11 @@ class HomePage extends BasePage {
                 }
                 if (this.state.showUpdate) {
                     this.updateModal && this.updateModal.open();
-                    homeModalManager.setVersion(null);
                 } else {
-                    this.showMessageModal();
+                    this._showMessageOrActivity()
                 }
             } else {
-                this.showMessageModal();
+                this._showMessageOrActivity();
             }
         }
     };
@@ -403,7 +413,8 @@ class HomePage extends BasePage {
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
 
-                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }} style={styles.messageBgStyle}/>
+                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
+                               style={styles.messageBgStyle}/>
 
                 </View>
             </Modal>
@@ -463,7 +474,7 @@ class HomePage extends BasePage {
     }
 
     _renderTableHeader() {
-        return !bannerModule.isShowHeader ? null : <View style={{ height: statusBarHeight + 44 }}/>;
+        return !bannerModule.isShowHeader ? null : <View style={{ height: headerHeight }}/>;
     }
 
     render() {
@@ -508,11 +519,17 @@ class HomePage extends BasePage {
                 {this.registerModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
+                                    onRequestClose={() => {
+                                        homeModalManager.setVersion(null);
+                                        this.setState({showUpdate:false})
+                                    }}
                                     ref={(ref) => {
                                         this.updateModal = ref;
                                     }}
                                     forceUpdate={this.state.forceUpdate} onDismiss={() => {
                     this.setState({ showUpdate: false });
+                    homeModalManager.setVersion(null);
+
                 }}/>
             </View>
         );
@@ -530,7 +547,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
+        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         backgroundColor: '#fff',
@@ -546,7 +563,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
+        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         alignItems: 'center',
