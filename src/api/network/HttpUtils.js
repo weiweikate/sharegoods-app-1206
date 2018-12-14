@@ -1,14 +1,18 @@
 import axios from 'axios';
+import {
+    NativeModules,
+    Platform
+} from 'react-native';
 import configureResponseError from './interceptors/ResponseError';
 import configureTimeout from './interceptors/timeout';
 import fetchHistory from '../../model/FetchHistory';
 import apiEnvironment from '../ApiEnvironment';
-import user from '../../model/user'
-import DeviceInfo from 'react-native-device-info'
+import user from '../../model/user';
+import DeviceInfo from 'react-native-device-info';
 import { RSA } from './RSA';
 import rsa_config from './rsa_config';
 // console.log('user token', user.getToken())
-
+const { RNDeviceInfo } = NativeModules;
 const Qs = require('qs');
 
 let defaultData = {
@@ -25,7 +29,7 @@ export function setToken(data) {
 // 这是默认post
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 // axios.defaults.headers.common['sg-token'] =  user && user.getToken() ? user.getToken : ''
-axios.defaults.headers.common.device = DeviceInfo && DeviceInfo.getUniqueID() + ''
+axios.defaults.headers.common.device = DeviceInfo && DeviceInfo.getUniqueID() + '';
 axios.interceptors.response.use(null, configureResponseError);
 axios.interceptors.request.use(configureTimeout, err => {
 
@@ -69,8 +73,9 @@ function createHistory(response, requestStamp) {
 
 export default class HttpUtils {
 
-    platform = ''
-    static get(uri,isRSA, params) {
+    platform = '';
+
+    static get(uri, isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
         if (params) {
@@ -87,14 +92,14 @@ export default class HttpUtils {
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
 
-         let signParam = {}
-        if (isRSA){
-             signParam = RSA.sign(params)
+        let signParam = {};
+        if (isRSA) {
+            signParam = RSA.sign(params);
         }
         let timeLineStart = +new Date();
 
         if (!this.platform) {
-            this.platform =  DeviceInfo.getSystemName() + ' '  + DeviceInfo.getSystemVersion()
+            this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
 
         return user.getToken().then(token => {
@@ -104,10 +109,11 @@ export default class HttpUtils {
                     'Security-Policy': 'SIGNATURE',//区分app和h5
                     'sg-token': token ? token : '',
                     'platform': this.platform,
-                    'version':rsa_config.version
+                    'version': rsa_config.version,
+                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
                 }
-            }
-            return axios.get(url, config)
+            };
+            return axios.get(url, config);
         }).then(response => {
             let data = response.data;
             let history = createHistory(response, timeLineStart);
@@ -143,7 +149,7 @@ export default class HttpUtils {
     //
     // }
 
-    static post(uri,isRSA, data, config) {
+    static post(uri, isRSA, data, config) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
         /**
@@ -151,9 +157,9 @@ export default class HttpUtils {
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
 
-        let signParam = {}
-        if (isRSA){
-            signParam = RSA.sign()
+        let signParam = {};
+        if (isRSA) {
+            signParam = RSA.sign();
         }
         data = {
             ...defaultData,
@@ -161,25 +167,27 @@ export default class HttpUtils {
         };
 
         if (!this.platform) {
-            this.platform =  DeviceInfo.getSystemName() + ' '  + DeviceInfo.getSystemVersion()
+            this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
 
         let timeLineStart = +new Date();
         return user.getToken().then(token => {
             config.headers = {
+                ...signParam,
                 'Security-Policy': 'SIGNATURE',//区分app和h5
                 'sg-token': token ? token : '',
                 'platform': this.platform,
-                ...signParam
-            }
-            return axios.post(url, data, config)
-            }).then(response => {
-                let history = createHistory(response, timeLineStart);
+                'version': rsa_config.version,
+                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
+            };
+            return axios.post(url, data, config);
+        }).then(response => {
+            let history = createHistory(response, timeLineStart);
 
-                fetchHistory.insertData(history);
+            fetchHistory.insertData(history);
 
-                return response.data;
-            })
+            return response.data;
+        })
             .catch(response => {
                 let history = createHistory(response, timeLineStart);
 

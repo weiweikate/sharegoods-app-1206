@@ -169,7 +169,8 @@ export default class MyOrdersListView extends Component {
                         orderStatus: 1,
                         totalPrice: item.payAmount,
                         nowTime: item.nowTime,
-                        cancelTime:item.warehouseOrderDTOList[0].cancelTime
+                        cancelTime:item.warehouseOrderDTOList[0].cancelTime,
+                        outTradeNo:item.warehouseOrderDTOList[0].outTradeNo
                     })
 
                 } else {
@@ -184,7 +185,8 @@ export default class MyOrdersListView extends Component {
                             totalPrice: resp.payAmount,
                             expList: resp.expList || [],
                             nowTime: resp.nowTime,
-                            unSendProductInfoList:resp.unSendProductInfoList||[]
+                            unSendProductInfoList:resp.unSendProductInfoList||[],
+                            outTradeNo:resp.outTradeNo
                         });
                     });
                 }
@@ -363,16 +365,15 @@ export default class MyOrdersListView extends Component {
             case 2:
                 console.log('payment/PaymentMethodPage2', this.state.viewData[index]);
                 this.props.nav('payment/PaymentMethodPage', {
-                    orderNum: this.state.viewData[index].orderNo,
+                    orderNum: this.state.viewData[index].outTradeNo,
                     amounts: this.state.viewData[index].totalPrice
                 });
                 break;
             case 3:
                 console.log('payment/PaymentMethodPage3', this.state.viewData[index]);
                 this.props.nav('payment/PaymentMethodPage', {
-                    orderNum: this.state.viewData[index].orderNo,
+                    orderNum: this.state.viewData[index].outTradeNo,
                     amounts: this.state.viewData[index].totalPrice,
-                    outTradeNo: this.state.viewData[index].outTradeNo
                 });
                 break;
             case 4:

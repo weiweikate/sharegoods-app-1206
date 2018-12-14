@@ -51,7 +51,7 @@ export default class AccountSettingPage extends BasePage {
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPayPwd()}>
                     <UIText value={'交易密码设置'} style={styles.blackText}/>
-                    <Image source={arrow_right}  resizeMode={'contain'}/>
+                    <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
                     height: 0.5,
