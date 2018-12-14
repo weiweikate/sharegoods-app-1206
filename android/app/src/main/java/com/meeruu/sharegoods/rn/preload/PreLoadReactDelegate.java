@@ -56,11 +56,6 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
         mActivity = null;
     }
 
-    protected @Nullable
-    Bundle getLaunchOptions() {
-        return null;
-    }
-
     protected ReactRootView createRootView() {
         return new ReactRootView(getContext());
     }

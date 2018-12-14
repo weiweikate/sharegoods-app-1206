@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+    NativeModules,
     Platform
 } from 'react-native';
 import configureResponseError from './interceptors/ResponseError';
@@ -9,10 +10,9 @@ import apiEnvironment from '../ApiEnvironment';
 import user from '../../model/user';
 import DeviceInfo from 'react-native-device-info';
 import { RSA } from './RSA';
-import appData from '../../model/appData';
 import rsa_config from './rsa_config';
 // console.log('user token', user.getToken())
-
+const { RNDeviceInfo } = NativeModules;
 const Qs = require('qs');
 
 let defaultData = {
@@ -110,7 +110,7 @@ export default class HttpUtils {
                     'sg-token': token ? token : '',
                     'platform': this.platform,
                     'version': rsa_config.version,
-                    'channel': Platform.OS === 'ios' ? 'appstore' : appData.androidChannel
+                    'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
                 }
             };
             return axios.get(url, config);
@@ -178,7 +178,7 @@ export default class HttpUtils {
                 'sg-token': token ? token : '',
                 'platform': this.platform,
                 'version': rsa_config.version,
-                'channel': Platform.OS === 'ios' ? 'appstore' : appData.androidChannel
+                'channel': Platform.OS === 'ios' ? 'appstore' : RNDeviceInfo.channel
             };
             return axios.post(url, data, config);
         }).then(response => {
