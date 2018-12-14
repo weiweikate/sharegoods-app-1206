@@ -205,25 +205,22 @@ export class Payment {
      @action wechatAndBalance = flow(function * (password, ref) {
         try {
             Toast.showLoading()
-            const result = yield PaymentApi.wachatpay({orderNo: this.orderNo, salePswd: password})
+            const result = yield PaymentApi.wechatAndBalance({orderNo: this.orderNo, salePswd: password})
+            Toast.hiddenLoading()
             if (result && result.code === 10000) {
                 const payInfo = JSON.parse(result.data.payInfo)
                 this.isGoToPay = true
                 const resultStr = yield this.openWechat(payInfo)
                 if (parseInt(resultStr.code, 0) !== 0) {
-                    Toast.hiddenLoading()
                     throw new Error(resultStr.msg)
                 }
-                Toast.hiddenLoading()
                 return resultStr
             } else {
-                Toast.hiddenLoading()
                 Toast.$toast(result.msg);
                 return
             }
 
         } catch (error) {
-            Toast.hiddenLoading()
             this.payError = error
             this.isGoToPay = false
             ref && ref.show(2, error.msg || error.message)
