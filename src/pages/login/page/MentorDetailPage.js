@@ -26,7 +26,7 @@ import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
 // import ImageLoad from '@mr/image-placeholder'
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
-import {homeRegisterFirstManager, newuser_n, newuser_y } from '../../home/model/HomeRegisterFirstManager'
+import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
 
 
 export default class MentorDetailPage extends BasePage {
@@ -52,10 +52,13 @@ export default class MentorDetailPage extends BasePage {
      * 跳过函数
      */
     jump = () => {
-        if (this.params.give){
-            homeRegisterFirstManager.setShowRegisterModalUrl(newuser_n)
-        }
-        this.$navigateBackToHome();
+        bridge.$toast('注册成功');
+        LoginAPI.givePackage().then(result => {
+            homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
+            this.$navigateBackToHome();
+        }).catch(error => {
+            this.$navigateBackToHome();
+        });
     };
 
     _render() {
@@ -72,22 +75,22 @@ export default class MentorDetailPage extends BasePage {
                     {/*isSelect={true}*/}
                     {/*/>*/}
                     {/*<View*/}
-                        {/*style={{*/}
-                            {/*width: 80,*/}
-                            {/*height: 80,*/}
-                            {/*borderRadius: 40*/}
-                        {/*}}*/}
+                    {/*style={{*/}
+                    {/*width: 80,*/}
+                    {/*height: 80,*/}
+                    {/*borderRadius: 40*/}
+                    {/*}}*/}
                     {/*>*/}
-                        <PreLoadImage
-                            imageUri={itemData.headImg}
-                            style={{
-                                width: 80,
-                                height: 80,
-                                borderRadius: 40
-                            }}
-                            defaultImage={res.placeholder.noHeadImage}
-                            errImage={res.placeholder.noHeadImage}
-                        />
+                    <PreLoadImage
+                        imageUri={itemData.headImg}
+                        style={{
+                            width: 80,
+                            height: 80,
+                            borderRadius: 40
+                        }}
+                        defaultImage={res.placeholder.noHeadImage}
+                        errImage={res.placeholder.noHeadImage}
+                    />
                     {/*</View>*/}
                     <UIText
                         value={itemData.nickname ? itemData.nickname : '暂无昵称~'}
@@ -118,7 +121,7 @@ export default class MentorDetailPage extends BasePage {
                                     color: DesignRule.white
                                 }}
                                 onPress={
-                                    ()=>{
+                                    () => {
                                         this.$navigateBack();
                                     }
                                 }
@@ -136,9 +139,7 @@ export default class MentorDetailPage extends BasePage {
             code: mentorData.code
         }).then(res => {
             bridge.$toast(res.msg);
-            if (this.params.give){
-                homeRegisterFirstManager.setShowRegisterModalUrl(newuser_y);
-            }
+            homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
             this.$navigateBackToHome();
         }).catch(res => {
             bridge.$toast(res.msg);
