@@ -39,9 +39,9 @@ export default class MembersRow extends Component {
                               activeOpacity={1}
                               style={styles.allMembersRow}>
                 <Image style={styles.icon} source={PeopleImg}/>
-                <Text style={styles.iconTitle}>店铺成员</Text>
+                <Text style={styles.iconTitle} allowFontScaling={false}>店铺成员</Text>
                 <Text
-                    style={[styles.iconDesc, { marginRight: userStatus !== 1 ? 21 : 0 }]}>{`共${dealerList.length}人`}</Text>
+                    style={[styles.iconDesc, { marginRight: userStatus !== 1 ? 21 : 0 }]} allowFontScaling={false}>{`共${dealerList.length}人`}</Text>
                 {userStatus === 1 ? <Image style={styles.arrow} source={ArrowImg}/> : null}
             </TouchableOpacity>
             <View style={styles.gapLine}/>
@@ -60,7 +60,7 @@ export default class MembersRow extends Component {
                             {headImg ? <UIImage source={{ uri: headImg }}
                                                 style={styles.headerImg} borderRadius={20}/> :
                                 <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
-                            <Text numberOfLines={1} style={styles.name}>{nickName || ''}</Text>
+                            <Text numberOfLines={1} style={styles.name} allowFontScaling={false}>{nickName || ''}</Text>
                         </View>);
                     })
                 }

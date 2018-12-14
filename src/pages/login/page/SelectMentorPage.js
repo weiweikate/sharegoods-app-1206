@@ -75,9 +75,8 @@ export default class SelectMentorPage extends BasePage {
      */
     jump = () => {
         bridge.$toast('注册成功');
-        homeRegisterFirstManager.setShowRegisterModalUrl(3);
         LoginAPI.givePackage().then(result => {
-            // homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
+            homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
             this.$navigateBackToHome();
         }).catch(error => {
             this.$navigateBackToHome();

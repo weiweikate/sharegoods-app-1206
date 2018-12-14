@@ -169,24 +169,24 @@ export default class ActivityView extends Component {
             justifyContent: 'space-between'
         }} onPress={() => this.props.productActivityViewAction()}>
             <View style={{ marginLeft: 11, flexDirection: 'row', paddingVertical: 10 }}>
-                <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
-                    style={{ fontSize: 40 }}>{price}</Text></Text>
+                <Text style={{ color: 'white', fontSize: 18 }} allowFontScaling={false}>￥<Text
+                    style={{ fontSize: 40 }} allowFontScaling={false}>{price}</Text></Text>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
-                    <Text style={{ color: DesignRule.bgColor, fontSize: 12 }}>{one}</Text>
+                    <Text style={{ color: DesignRule.bgColor, fontSize: 12 }} allowFontScaling={false}>{one}</Text>
                     <Text style={{
                         color: DesignRule.bgColor,
                         fontSize: 10,
                         marginTop: 4
-                    }}>{two}</Text>
+                    }} allowFontScaling={false}>{two}</Text>
                 </View>
             </View>
             {end ?
-                <Text style={{ color: '#FFFC00', fontSize: 13, marginRight: 15 }}>活动已结束</Text>
+                <Text style={{ color: '#FFFC00', fontSize: 13, marginRight: 15 }} allowFontScaling={false}>活动已结束</Text>
                 :
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ alignItems: 'flex-end' }}>
                         <View style={{ width: 106 + 30, alignItems: 'center' }}>
-                            <Text style={{ color: '#1B7BB3', fontSize: 11 }} numberOfLines={1}>{three}</Text>
+                            <Text style={{ color: '#1B7BB3', fontSize: 11 }} numberOfLines={1} allowFontScaling={false}>{three}</Text>
                         </View>
                         <View style={{
                             marginTop: 5,
@@ -198,7 +198,7 @@ export default class ActivityView extends Component {
                             backgroundColor: '#2B99D9',
                             borderRadius: 2.5
                         }}>
-                            <Text style={{ color: DesignRule.bgColor, fontSize: 11 }}>{four}</Text>
+                            <Text style={{ color: DesignRule.bgColor, fontSize: 11 }} allowFontScaling={false}>{four}</Text>
                         </View>
                     </View>
 

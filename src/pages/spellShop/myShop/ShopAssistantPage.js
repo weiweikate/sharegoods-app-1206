@@ -176,7 +176,7 @@ export default class AssistantListPage extends BasePage {
             <Text style={{
                 fontSize: 13,
                 color: DesignRule.textColor_instruction
-            }}>{title} ({data.length}人）</Text>
+            }} allowFontScaling={false}>{title} ({data.length}人）</Text>
         </View>);
     };
 

@@ -166,19 +166,19 @@ export default class MyShop_RecruitPage extends Component {
             justifyContent: 'space-between'
         }}>
             <View style={{ marginLeft: 11, flexDirection: 'row', paddingVertical: 10 }}>
-                <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
+                <Text style={{ color: 'white', fontSize: 18 }} allowFontScaling={false}>￥<Text
                     style={{ fontSize: 40 }}>{price}</Text></Text>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
                     <Text style={{
                         color: DesignRule.bgColor,
                         fontSize: 12,
                         textDecorationLine: 'line-through'
-                    }}>{one}</Text>
+                    }} allowFontScaling={false}>{one}</Text>
                     <Text style={{
                         color: DesignRule.bgColor,
                         fontSize: 10,
                         marginTop: 4
-                    }}>{two}</Text>
+                    }} allowFontScaling={false}>{two}</Text>
                 </View>
             </View>
             {end ?
@@ -186,7 +186,7 @@ export default class MyShop_RecruitPage extends Component {
                     color: DesignRule.color_yellow,
                     fontSize: 13,
                     marginRight: 15
-                }}>{activityType === 1 ? '秒杀已结束' : '活动已结束'}</Text>
+                }} allowFontScaling={false}>{activityType === 1 ? '秒杀已结束' : '活动已结束'}</Text>
                 :
                 <View style={{ alignItems: 'flex-end' }}>
                     <View style={{ width: 106 + 30, alignItems: 'center' }}>
@@ -195,7 +195,7 @@ export default class MyShop_RecruitPage extends Component {
                                 color: begin ? DesignRule.textColor_deepBlue : DesignRule.color_yellow,
                                 fontSize: 11
                             }}
-                            numberOfLines={1}>{three}</Text>
+                            numberOfLines={1} allowFontScaling={false}>{three}</Text>
                     </View>
                     <View style={{
                         marginRight: 15,
@@ -220,7 +220,7 @@ export default class MyShop_RecruitPage extends Component {
                             <Text style={{
                                 color: begin ? DesignRule.bgColor : DesignRule.mainColor,
                                 fontSize: 11
-                            }}>{four}</Text>
+                            }} allowFontScaling={false}>{four}</Text>
                         </View>
                     </View>
                 </View>

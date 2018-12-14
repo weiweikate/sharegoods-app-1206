@@ -435,7 +435,7 @@ export default class TopicDetailPage extends BasePage {
                     marginLeft: 10,
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 12
-                }}>{item.paramName || ''}</Text>
+                }} allowFontScaling={false}>{item.paramName || ''}</Text>
             </View>
             <Text style={{
                 flex: 1,
@@ -443,7 +443,7 @@ export default class TopicDetailPage extends BasePage {
                 marginLeft: 20,
                 color: DesignRule.textColor_instruction,
                 fontSize: 12
-            }}>{item.paramValue || ''}</Text>
+            }} allowFontScaling={false}>{item.paramValue || ''}</Text>
         </View>;
     };
 
@@ -678,7 +678,7 @@ export default class TopicDetailPage extends BasePage {
                         height: 20,
                         backgroundColor: 'rgba(0,0,0,0.5)'
                     }}>
-                        <Text style={{ color: DesignRule.white, fontSize: 13 }}>商品已经下架啦~</Text>
+                        <Text style={{ color: DesignRule.white, fontSize: 13 }} allowFontScaling={false}>商品已经下架啦~</Text>
                     </View> : null}
                     {/*正常购买按钮 colorType === 2红  1蓝  0灰*/}
                     <TouchableOpacity style={{
@@ -690,7 +690,7 @@ export default class TopicDetailPage extends BasePage {
                         <Text style={{
                             color: 'white',
                             fontSize: 14
-                        }}>{bottomTittle}</Text>
+                        }} allowFontScaling={false}>{bottomTittle}</Text>
                     </TouchableOpacity>
                 </View>
 

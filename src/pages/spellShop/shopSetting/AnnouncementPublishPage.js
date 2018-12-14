@@ -65,7 +65,7 @@ export default class AnnouncementPublishPage extends BasePage {
                     <View style={styles.gap}/>
                     <View style={styles.bgContainer}>
                         <View style={styles.topBar}>
-                            <Text style={styles.barTitle}>公告内容</Text>
+                            <Text style={styles.barTitle} allowFontScaling={false}>公告内容</Text>
                         </View>
                         <View style={styles.textInputContainer}>
                             <TextInput value={this.state.text}
@@ -80,7 +80,7 @@ export default class AnnouncementPublishPage extends BasePage {
                                 bottom: 10,
                                 right: 10,
                                 color:DesignRule.textColor_instruction
-                            }}>{`${this.state.text.length}/180`}</Text>
+                            }} allowFontScaling={false}>{`${this.state.text.length}/180`}</Text>
                         </View>
                         <View style={styles.btnRow}>
                             {this.renderBtn(this._goBack, styles.canCelBtn, styles.canCelTitle, '取消')}
@@ -94,7 +94,7 @@ export default class AnnouncementPublishPage extends BasePage {
 
     renderBtn = (onPress, style, titleStyle, title) => {
         return (<TouchableOpacity onPress={onPress} style={style}>
-            <Text style={titleStyle}>{title}</Text>
+            <Text style={titleStyle} allowFontScaling={false}>{title}</Text>
         </TouchableOpacity>);
     };
 

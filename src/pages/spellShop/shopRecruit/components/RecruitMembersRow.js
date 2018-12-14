@@ -29,8 +29,8 @@ export default class AssistantRow extends Component {
         return (<View style={styles.row}>
             <TouchableOpacity activeOpacity={1} onPress={this.props.clickAllMembers} style={styles.topRow}>
                 <Image style={styles.topIcon} source={PeopleImg}/>
-                <Text style={styles.topTitle}>{'店铺成员'}</Text>
-                <Text style={styles.topDescText}>{`${storeUserList.length || 0}人`}</Text>
+                <Text style={styles.topTitle} allowFontScaling={false}>{'店铺成员'}</Text>
+                <Text style={styles.topDescText} allowFontScaling={false}>{`${storeUserList.length || 0}人`}</Text>
                 {/*<Image style={styles.topArrow} source={ArrowImg}/>*/}
             </TouchableOpacity>
             <View style={styles.dash}/>
@@ -50,7 +50,7 @@ export default class AssistantRow extends Component {
                                 {headImg ? <Image source={{ uri: headImg }}
                                                   style={styles.headerImg}/> :
                                     <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
-                                <Text numberOfLines={1} style={styles.name}>{nickName || ''}</Text>
+                                <Text numberOfLines={1} style={styles.name} allowFontScaling={false}>{nickName || ''}</Text>
                             </View>);
                         })
                     }

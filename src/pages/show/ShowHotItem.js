@@ -25,6 +25,14 @@ export default class ShowHotItem extends Component {
         this.setState({ readNumber: data.click ? data.click : 0 });
     }
 
+    componentWillReceiveProps(nextProps) {
+        const { data } = nextProps
+        if (data.click !== this.state.readNumber) {
+            this.state.readNumber = data.click
+        }
+    }
+
+
     _onSelectedItem() {
         const { press } = this.props;
         press && press();

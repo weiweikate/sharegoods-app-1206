@@ -215,11 +215,12 @@ class HomePage extends BasePage {
             }
             let resp = homeModalManager.versionData;
             if (resp.data.upgrade === 1) {
+                let showUpdate = resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false);
                 if (Platform.OS !== 'ios') {
                     NativeModules.commModule.apkExist(resp.data.version, (exist) => {
                         this.setState({
                             updateData: resp.data,
-                            showUpdate: resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false),
+                            showUpdate: showUpdate,
                             forceUpdate: resp.data.forceUpdate === 1,
                             apkExist: exist
                         });
@@ -227,11 +228,11 @@ class HomePage extends BasePage {
                 } else {
                     this.setState({
                         updateData: resp.data,
-                        showUpdate: resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false),
+                        showUpdate: showUpdate,
                         forceUpdate: resp.data.forceUpdate === 1
                     });
                 }
-                if (this.state.showUpdate) {
+                if (showUpdate) {
                     this.updateModal && this.updateModal.open();
                 } else {
                     this._showMessageOrActivity()
@@ -362,7 +363,13 @@ class HomePage extends BasePage {
         return (
             <Modal ref={(ref) => {
                 this.messageModal = ref;
-            }} visible={this.state.showMessage}>
+            }}
+                   onRequestClose={()=>{
+                       this.setState({
+                           showMessage:false
+                       })
+                   }}
+                   visible={this.state.showMessage}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
