@@ -35,7 +35,10 @@ export default class DetailBottomView extends Component {
         //限购
         let isLimit = buyLimit !== -1 && leftBuyNum === 0;
 
-        //正常能买&&不限购
+        //不能加入购物车
+        let cantJoin = productStatus === 2;
+
+        //不能买 不正常||限购
         let cantBuy = productStatus !== 1 || isLimit;
         //立即购买文案
         let buyText = productStatus === 3 ? '暂不可购买' : (isLimit ? '您已经购买过该商品' : '立即购买');
@@ -52,9 +55,9 @@ export default class DetailBottomView extends Component {
                 <View style={styles.container}>
                     <TouchableOpacity
                         style={{ width: ScreenUtils.autoSizeWidth(85), justifyContent: 'center', alignItems: 'center' }}
-                        onPress={() => this.props.bottomViewAction('gwc')} disabled={cantBuy}>
+                        onPress={() => this.props.bottomViewAction('gwc')} disabled={cantJoin}>
                         <Image style={{ marginBottom: 6 }}
-                               source={cantBuy ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
+                               source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
                         <Text style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}>加入购物车</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
