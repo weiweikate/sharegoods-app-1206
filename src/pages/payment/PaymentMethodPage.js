@@ -4,7 +4,8 @@ import {
     Text,
     StyleSheet,
     ScrollView,
-    AppState
+    AppState,
+    ActivityIndicator
 } from 'react-native';
 import BasePage from '../../BasePage';
 import StringUtils from '../../utils/StringUtils';
@@ -29,22 +30,22 @@ export default class PaymentMethodPage extends BasePage {
         show: true // false则隐藏导航
     };
 
+    state = {
+        isShowPaymentModal: false,
+        password: '',
+        orderChecking: false
+    }
+
     constructor(props) {
         super(props);
-        this.state = {
-            isShowPaymentModal: false,
-            password: '',
-            //需要支付的金额
-            shouldPayMoney: this.params.amounts ? this.params.amounts : 0,
-            //订单支付的参数
-            orderNum: this.params.orderNum ? this.params.orderNum : 0
-        };
         this.payment = new Payment();
-        if (parseFloat(this.state.shouldPayMoney).toFixed(2) === 0.00) {
+        if (parseFloat(this.params.amounts).toFixed(2) === '0.00') {
             this.payment.selectedBalace = true;
         }
-        this.payment.updateUserData()
+        this.payment.isGoToPay = false
+        this.payment.amounts = this.params.amounts ? this.params.amounts : 0
         this.payment.orderNo = this.params.orderNum
+        this.payment.updateUserData()
     }
 
     $NavBarLeftPressed = () => {
@@ -67,27 +68,45 @@ export default class PaymentMethodPage extends BasePage {
     _handleAppStateChange = (state) => {
         console.log('_handleAppStateChange AppState', state);
         const { selectedTypes } = this.payment;
-        if (state === 'active' && this.payment.orderNo && selectedTypes) {
-            if ( selectedTypes.type === paymentType.alipay) {
-                this.payment.alipayCheck({
-                    orderNo: this.payment.orderNo
-                }).then(checkStr => {
-                    console.log('_handleAppStateChange', state, checkStr);
-                    this._showPayresult(checkStr.resultStr);
-                });
-            } else {
-                this.payment.wechatCheck({
-                    orderNo: this.payment.orderNo
-                }).then(checkStr => {
-                    console.log('_handleAppStateChange', state, checkStr);
-                    this._showPayresult(checkStr.resultStr);
-                });
-            }
+        if (this.state.orderChecking === true) {
+            return
         }
-    };
+        if (state === 'active' && this.payment.orderNo && selectedTypes && this.payment.isGoToPay === true) {
+            this.setState({orderChecking: true})
+            this.orderTime = (new Date().getTime()) / 1000
+            this.payment.isGoToPay = false
+            this._checkOrder()
+        }
+    }
+
+    _checkOrder() {
+        let time = (new Date().getTime()) / 1000
+        console.log('checkorder', this.orderTime, time)
+        if (time - this.orderTime > 10) {
+            // if (this.payment.selectedTypes.type === paymentType.wechat) { 
+            //     this.payment.closeOrder()
+            // }
+            return
+        }
+        this.payment.checkPayStatus().then(data => {
+            if (data === 1) {
+                setTimeout(() => {
+                    this._checkOrder()
+                }, 1000)
+                return
+            }
+            this.setState({orderChecking: false})
+            if (data === 3){
+                this.paymentResultView.show(1)
+            }
+        }).catch(()=> {
+            this.setState({orderChecking: false})
+        })
+    }
 
     _selectedPayType(value) {
-        if (this.payment.selectedBalace && this.payment.availableBalance > this.state.shouldPayMoney) {
+        // console.log('_selectedPayType', this.payment.availableBalance, this.payment.amounts)
+        if (this.payment.selectedBalace && this.payment.availableBalance * 100 > this.payment.amounts * 100) {
             Toast.$toast('余额充足，不需要三方支付');
             return;
         }
@@ -95,7 +114,7 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     _selectedBalancePay() {
-        if (this.payment.selectedTypes && this.payment.availableBalance > this.state.shouldPayMoney) {
+        if (this.payment.selectedTypes &&  this.payment.availableBalance * 100 > this.payment.amounts * 100) {
             this.payment.clearPaymentType();
         }
         this.payment.selectBalancePayment();
@@ -146,13 +165,13 @@ export default class PaymentMethodPage extends BasePage {
                 this.setState({ isShowPaymentModal: true });
                 return;
             }
-            this.setState({password: ''})
             if (selectedTypes.type === paymentType.alipay) {
                 this.payment.ailpayAndBalance(this.state.password, this.paymentResultView)
             }
             if (selectedTypes.type === paymentType.wechat) {
                 this.payment.wechatAndBalance(this.state.password, this.paymentResultView)
             }
+            this.setState({password: ''})
         }
         else {
             this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
@@ -209,7 +228,7 @@ export default class PaymentMethodPage extends BasePage {
                     <Text style={styles.sectionTitle} allowFontScaling={false}>{value.name}</Text>
                 </View>);
             } else {
-                items.push(<PayCell disabled={value.type !== paymentType.balance && parseFloat(this.state.shouldPayMoney).toFixed(2) === 0.00}
+                items.push(<PayCell disabled={value.type !== paymentType.balance && parseFloat(this.payment.amounts).toFixed(2) === '0.00'}
                                     key={index + ''} selectedTypes={selectedTypes} data={value}
                                     balance={availableBalance} press={() => this._selectedPayType(value)}/>);
             }
@@ -220,12 +239,12 @@ export default class PaymentMethodPage extends BasePage {
             <PayCell
                 disabled={this.params.outTradeNo}
                 data={balancePayment}
-                isSelected={selectedBalace || parseFloat(this.state.shouldPayMoney).toFixed(2) === 0.00} balance={availableBalance}
+                isSelected={selectedBalace || parseFloat(this.payment.amounts).toFixed(2) === '0.00'} balance={availableBalance}
                 press={() => this._selectedBalancePay(balancePayment)}
             />
             {items}
         </ScrollView>
-            <PayBottom onPress={() => this.commitOrder()} shouldPayMoney={this.state.shouldPayMoney}/>
+            <PayBottom onPress={() => this.commitOrder()} shouldPayMoney={this.payment.amounts}/>
             <PasswordView
                 forgetAction={() => this.forgetTransactionPassword()}
                 closeAction={() => this.setState({ isShowPaymentModal: false })}
@@ -239,6 +258,19 @@ export default class PaymentMethodPage extends BasePage {
                 navigation={this.props.navigation}
                 payment={this.payment}
             />
+            {
+                this.state.orderChecking
+                ?
+                <View style={styles.loadingView}>
+                    <View style={styles.loading}>
+                        <ActivityIndicator size='large' color='#fff'/>
+                        <View style={styles.loadingSpace}/>
+                        <Text style={styles.loadingText}>支付结果等待中...</Text>
+                    </View>
+                </View>
+                :
+                null
+            }
         </View>;
     }
 }
@@ -256,6 +288,30 @@ const styles = StyleSheet.create({
         fontSize: px2dp(13),
         color: DesignRule.textColor_instruction,
         marginLeft: px2dp(15)
+    },
+    loadingView: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    loading: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: px2dp(140),
+        height: px2dp(140),
+        borderRadius: px2dp(10),
+    },
+    loadingText: {
+        color: '#fff',
+        fontSize: px2dp(13)
+    },
+    loadingSpace: {
+        height: px2dp(27)
     }
 });
 

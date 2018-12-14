@@ -140,6 +140,17 @@ class HomePage extends BasePage {
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.loadMessageCount();
+        this._homeModaldata();
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
+        this.listenerMessage && this.listenerMessage.remove();
+        this.listenerLogout && this.listenerLogout.remove();
+
+    }
+
+    _homeModaldata = () => {
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
@@ -154,13 +165,6 @@ class HomePage extends BasePage {
                 });
             }, 2500);
         });
-    }
-
-    componentWillUnmount() {
-        this.listener && this.listener.remove();
-        this.listenerMessage && this.listenerMessage.remove();
-        this.listenerLogout && this.listenerLogout.remove();
-
     }
 
     loadMessageCount = () => {
@@ -179,22 +183,27 @@ class HomePage extends BasePage {
 
     showModal = () => {
         if (EmptyUtils.isEmpty(homeModalManager.versionData)) {
-            if (homeRegisterFirstManager.showRegisterModalUrl) {
-                //活动
-                this.setState({
-                    showRegister: true
-                });
-                this.registerModal && this.registerModal.open();
-                homeRegisterFirstManager.setShowRegisterModalUrl(null);
-            } else {
-                //公告弹窗
-                this.showMessageModal();
-            }
+           this._showMessageOrActivity();
         } else {
             //展示升级提示
             this.showUpdateModal();
         }
     };
+
+    _showMessageOrActivity=()=>{
+        if (homeRegisterFirstManager.showRegisterModalUrl) {
+            //活动
+            this.setState({
+                showRegister: true
+            });
+            this.registerModal && this.registerModal.open();
+        } else {
+            //公告弹窗
+            if(!this.state.showUpdate) {
+                this.showMessageModal();
+            }
+        }
+    }
 
     showUpdateModal = async () => {
         if (!EmptyUtils.isEmpty(homeModalManager.versionData)) {
@@ -206,11 +215,12 @@ class HomePage extends BasePage {
             }
             let resp = homeModalManager.versionData;
             if (resp.data.upgrade === 1) {
+                let showUpdate = resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false);
                 if (Platform.OS !== 'ios') {
                     NativeModules.commModule.apkExist(resp.data.version, (exist) => {
                         this.setState({
                             updateData: resp.data,
-                            showUpdate: resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false),
+                            showUpdate: showUpdate,
                             forceUpdate: resp.data.forceUpdate === 1,
                             apkExist: exist
                         });
@@ -218,18 +228,17 @@ class HomePage extends BasePage {
                 } else {
                     this.setState({
                         updateData: resp.data,
-                        showUpdate: resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false),
+                        showUpdate: showUpdate,
                         forceUpdate: resp.data.forceUpdate === 1
                     });
                 }
-                if (this.state.showUpdate) {
+                if (showUpdate) {
                     this.updateModal && this.updateModal.open();
-                    homeModalManager.setVersion(null);
                 } else {
-                    this.showMessageModal();
+                    this._showMessageOrActivity()
                 }
             } else {
-                this.showMessageModal();
+                this._showMessageOrActivity();
             }
         }
     };
@@ -354,7 +363,13 @@ class HomePage extends BasePage {
         return (
             <Modal ref={(ref) => {
                 this.messageModal = ref;
-            }} visible={this.state.showMessage}>
+            }}
+                   onRequestClose={()=>{
+                       this.setState({
+                           showMessage:false
+                       })
+                   }}
+                   visible={this.state.showMessage}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
@@ -390,22 +405,35 @@ class HomePage extends BasePage {
     }
 
     registerModalRender = () => {
+
         return (
             <Modal ref={(ref) => {
                 this.registerModal = ref;
-            }} visible={this.state.showRegister}>
+            }}
+                   onRequestClose={()=>{
+                       this.setState({
+                           showRegister: false
+                       });
+                       homeRegisterFirstManager.setShowRegisterModalUrl(null);
+                   }}
+                   visible={this.state.showRegister}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
                             showRegister: false
                         });
                         this.registerModal.close();
+                        homeRegisterFirstManager.setShowRegisterModalUrl(null);
+
                     }}>
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
+                    {
+                        homeRegisterFirstManager.showRegisterModalUrl ? <ImageLoad source={{uri:homeRegisterFirstManager.showRegisterModalUrl}}
+                                                                                   style={styles.messageBgStyle}/> : <View style={styles.messageBgStyle}/>
+                    }
 
-                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
-                               style={styles.messageBgStyle}/>
+
 
                 </View>
             </Modal>
@@ -510,11 +538,17 @@ class HomePage extends BasePage {
                 {this.registerModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
+                                    onRequestClose={() => {
+                                        homeModalManager.setVersion(null);
+                                        this.setState({showUpdate:false})
+                                    }}
                                     ref={(ref) => {
                                         this.updateModal = ref;
                                     }}
                                     forceUpdate={this.state.forceUpdate} onDismiss={() => {
                     this.setState({ showUpdate: false });
+                    homeModalManager.setVersion(null);
+
                 }}/>
             </View>
         );
