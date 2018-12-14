@@ -10,7 +10,7 @@ import {
     ImageBackground,
     TouchableOpacity
 } from 'react-native';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '@mr/image-placeholder';
 //Source
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -21,6 +21,7 @@ import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import res from '../res';
+import resCommon from '../../../comm/res';
 
 const RingImg = res.myShop.headBg;
 const HeaderBarBgImg = res.myShop.txbg_03;
@@ -32,7 +33,7 @@ const QbIcon = res.myShop.dzfhj_03_03;
 const MoneyIcon = res.myShop.ccz_03;
 const detail_zongti = res.myShop.detail_zongti;
 const detail_benci = res.myShop.detail_benci;
-const NavLeft = res.myShop.NavLeft;
+const NavLeft = resCommon.button.white_back;
 
 
 export default class ShopAssistantDetailPage extends BasePage {
@@ -161,7 +162,7 @@ export default class ShopAssistantDetailPage extends BasePage {
                         </View>
                     </View>
                 </ImageBackground>
-                {this._renderRow(QbIcon, '加入店铺时间', DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
+                {this._renderRow(QbIcon, '加入店铺时间', updateTime && DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
                 {this.renderSepLine()}
                 {this._renderRow(MoneyIcon, '共获得分红总额', `${((dealerTotalBonus || 0) - (dealerThisTimeBonus || 0))}元`)}
                 {this.renderSepLine()}
