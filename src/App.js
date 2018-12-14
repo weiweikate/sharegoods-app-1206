@@ -57,6 +57,7 @@ if (__DEV__) {
 export default class App extends Component {
     constructor(props) {
         appData.setStatusBarHeight(props.statusBarHeight);
+        appData.setAndroidChannel(props.channel);
 
 
         super(props);

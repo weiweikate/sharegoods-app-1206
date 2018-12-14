@@ -15,7 +15,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    // Modal,
     Animated,
     TouchableWithoutFeedback
 } from 'react-native';
