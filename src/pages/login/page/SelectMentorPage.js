@@ -30,7 +30,7 @@ import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import UIText from '../../../comm/components/UIText';
 import Styles from '../style/SelectMentorPage.style';
-import {homeRegisterFirstManager, newuser_n, newuser_y } from '../../home/model/HomeRegisterFirstManager'
+import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
 
 const {
     refresh
@@ -49,6 +49,15 @@ export default class SelectMentorPage extends BasePage {
         this.itemRefArr = [];
     }
 
+    // 禁用某个页面的手势
+    static navigationOptions = {
+        gesturesEnabled: false
+    };
+
+    $NavBarLeftPressed = () => {
+        this.$toastShow('注册成功');
+        this.$navigateBackToHome();
+    };
     $navigationBarOptions = {
         title: '选择导师',
         show: true// false则隐藏导航
@@ -66,11 +75,15 @@ export default class SelectMentorPage extends BasePage {
      */
     jump = () => {
         bridge.$toast('注册成功');
-        if (this.params.give) {
-            homeRegisterFirstManager.setShowRegisterModalUrl(newuser_n);
-        }
-        this.$navigateBackToHome();
+        homeRegisterFirstManager.setShowRegisterModalUrl(3);
+        LoginAPI.givePackage().then(result => {
+            // homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
+            this.$navigateBackToHome();
+        }).catch(error => {
+            this.$navigateBackToHome();
+        });
     };
+
     _bind() {
         this.loadPageData = this.loadPageData.bind(this);
     }
@@ -356,19 +369,17 @@ export default class SelectMentorPage extends BasePage {
     * 绑定导师
     * */
     _bindMentor = () => {
-
         if (this.state.selectIndex <= this.state.mentorData.length - 1) {
             let mentorData = this.state.mentorData[this.state.selectIndex];
             LoginAPI.mentorBind({
                 code: mentorData.code
             }).then(res => {
                 bridge.$toast(res.msg);
-                if (this.params.give) {
-                    homeRegisterFirstManager.setShowRegisterModalUrl(newuser_y);
-                }
+                homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(res => {
                 bridge.$toast(res.msg);
+                // this.$navigateBackToHome();
             });
         }
 
@@ -403,7 +414,7 @@ export default class SelectMentorPage extends BasePage {
     _toDetailPage = (itemData) => {
         this.$navigate('login/login/MentorDetailPage', {
             itemData: itemData,
-            give:this.params.give,
+            give: this.params.give
         });
     };
     _renderTopText = () => {

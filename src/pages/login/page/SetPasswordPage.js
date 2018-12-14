@@ -9,7 +9,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import CommRegistView from '../components/CommRegistView';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
-import { homeRegisterFirstManager, olduser } from '../../home/model/HomeRegisterFirstManager';
+import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import UserModel from '../../../model/user';
 import { homeModule } from '../../home/Modules';
@@ -67,7 +67,10 @@ export default class SetPasswordPage extends BasePage {
             wechatVersion: ''
         }).then(data => {
             this.$loadingDismiss();
-            this.toLogin(phone,code,password,data.give)
+            if (data.give) {
+                homeRegisterFirstManager.setShowRegisterModalUrl(data.give);
+            }
+            this.toLogin(phone, code, password, data.give);
             // UserModel.saveUserInfo(data.data);
             // UserModel.saveToken(data.data.token);
             // DeviceEventEmitter.emit('homePage_message', null);
@@ -94,7 +97,7 @@ export default class SetPasswordPage extends BasePage {
         });
     };
 
-    toLogin = (phone, code, password,isGive) => {
+    toLogin = (phone, code, password, isGive) => {
         LoginAPI.passwordLogin({
             authcode: '22',
             code: '',
@@ -117,9 +120,7 @@ export default class SetPasswordPage extends BasePage {
             //推送
             JPushUtils.updatePushTags();
             JPushUtils.updatePushAlias();
-            if (isGive){
-                homeRegisterFirstManager.setShowRegisterModalUrl(olduser);
-            }
+            homeRegisterFirstManager.setShowRegisterModalUrl(data.data.give);
             this.$navigateBackToHome();
         }).catch((data) => {
             this.$loadingDismiss();
