@@ -197,7 +197,6 @@ class HomePage extends BasePage {
                 showRegister: true
             });
             this.registerModal && this.registerModal.open();
-            homeRegisterFirstManager.setShowRegisterModalUrl(null);
         } else {
             //公告弹窗
             if(!this.state.showUpdate) {
@@ -399,22 +398,35 @@ class HomePage extends BasePage {
     }
 
     registerModalRender = () => {
+
         return (
             <Modal ref={(ref) => {
                 this.registerModal = ref;
-            }} visible={this.state.showRegister}>
+            }}
+                   onRequestClose={()=>{
+                       this.setState({
+                           showRegister: false
+                       });
+                       homeRegisterFirstManager.setShowRegisterModalUrl(null);
+                   }}
+                   visible={this.state.showRegister}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
                             showRegister: false
                         });
                         this.registerModal.close();
+                        homeRegisterFirstManager.setShowRegisterModalUrl(null);
+
                     }}>
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
+                    {
+                        homeRegisterFirstManager.showRegisterModalUrl ? <ImageLoad source={{uri:homeRegisterFirstManager.showRegisterModalUrl}}
+                                                                                   style={styles.messageBgStyle}/> : <View style={styles.messageBgStyle}/>
+                    }
 
-                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
-                               style={styles.messageBgStyle}/>
+
 
                 </View>
             </Modal>

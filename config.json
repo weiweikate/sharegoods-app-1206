@@ -43,8 +43,9 @@
             "host": "http://172.16.10.238:8180/gateway"
         },
         "zhou_hao": {
-            "name": "周浩",
-            "host": "http://172.16.10.29:8180/gateway"
+            "name": "测试_周浩",
+            "host": "http://172.16.10.64:9090/gateway",
+            "oss": "https://devcdn.sharegoodsmall.com"
         },
         "shen_yaoxing": {
             "name": "沈耀鑫",
@@ -87,7 +88,11 @@
         },
         "龚日红": {
             "name": "龚日红",
-            "host": "http://172.16.10.61:9090/gateway"
+            "host": "http://172.16.10.177:9090/gateway"
+        },
+        "支付":{
+            "name":"黄佳欢",
+            "host":"http://172.16.10.69:9090/gateway"
         },
         "李俊": {
             "name": "李俊",

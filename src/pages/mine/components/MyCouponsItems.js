@@ -262,19 +262,19 @@ export default class MyCouponsItems extends Component {
     };
     plusTokenCoin = () => {
         let num = this.state.tokenCoinNum;
-        if (num <= (this.props.justOne - 1)) {
+        if (num <= (parseInt(this.props.justOne)  - 1)) {
             this.setState({ tokenCoinNum: (num + 1) });
         }
     };
     _onChangeText = (num) => {
         console.log("coupons", num);
-        if ((num >= 0) && (num <= this.props.justOne)&& (num <= user.tokenCoin)) {
-            this.setState({ tokenCoinNum: num });
+        if ((parseInt(num) >= 0) && (parseInt(num) <= parseInt(this.props.justOne))&& (num <= user.tokenCoin)) {
+            this.setState({ tokenCoinNum: parseInt(num) });
         }
         if (num === "") {
-            this.setState({ tokenCoinNum: 0 });
+            this.setState({ tokenCoinNum: '' });
         }
-        if (parseInt(num) > this.props.justOne||parseInt(num) > user.tokenCoin) {
+        if (parseInt(num) > parseInt(this.props.justOne)||parseInt(num) > user.tokenCoin) {
             NativeModules.commModule.toast(`1元券超出使用张数~`);
             this.setState({ tokenCoinNum: Math.min(parseInt(this.props.justOne),user.tokenCoin)});
         }
