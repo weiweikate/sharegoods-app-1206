@@ -30,7 +30,7 @@
             "h5": "https://h5.sharegoodsmall.com",
             "oss": "https://cdn.sharegoodsmall.com"
         },
-        "吴承骏Login": {
+        "吴承骏": {
             "name": "吴承骏",
             "host": "http://172.16.10.19:8903/gateway"
         },
