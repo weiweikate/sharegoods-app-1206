@@ -1,8 +1,5 @@
 import { AppRegistry } from "react-native";
 import App from "./src/App";
-// import updateDemo from './src/updateDemo';
-
-
 
 (function numberPolyfill() {
 
@@ -40,4 +37,3 @@ console.ignoredYellowBox = ['Warning: BackAndroid is deprecated. Please use Back
 console.disableYellowBox = true; // 关闭全部黄色警告
 
 AppRegistry.registerComponent("sharegoods", () => App);
-// AppRegistry.registerComponent("sharegoods", () => updateDemo);
