@@ -29,7 +29,7 @@ Navigator.router.getStateForAction = (action, state) => {
     if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
         console.log('退出RN页面');
         // Android物理回退键到桌面
-        if (Platform.OS !== 'ios') {
+        if (Platform.OS === 'android') {
             NativeModules.commModule.nativeTaskToBack();
         }
         const routes = [...state.routes];

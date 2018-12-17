@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -31,6 +30,7 @@ import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.ImageCacheUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
+import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
@@ -42,10 +42,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -370,6 +368,26 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setLightMode() {
+        getCurrentActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                StatusBarUtils.setLightMode(getCurrentActivity());
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setDarkMode() {
+        getCurrentActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                StatusBarUtils.setDarkMode(getCurrentActivity());
+            }
+        });
+    }
+
+    @ReactMethod
     public void nativeTaskToBack() {
         getCurrentActivity().moveTaskToBack(true);
     }
@@ -416,6 +434,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void isPushStopped(Callback callback) {
         callback.invoke(JPushInterface.isPushStopped(mContext));
     }
+
     /*
      * 推送相关方法
      * userId
@@ -424,39 +443,34 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void updatePushAlias(ReadableMap data) {
         if (data.hasKey("userId")) {
             String lastVersion = data.getString("userId");
-            JPushInterface.setAlias(this.mContext, lastVersion,null);
+            JPushInterface.setAlias(this.mContext, lastVersion, null);
         }
     }
 
     /**
-     * @param data
-     * {
-     * environment: "测试"
-     * levelRemark: "V0"
-     * status: "已激活"
-     * version: "1.0.3"
-     * }
+     * @param data {
+     *             environment: "测试"
+     *             levelRemark: "V0"
+     *             status: "已激活"
+     *             version: "1.0.3"
+     *             }
      */
     @ReactMethod
     public void updatePushTags(ReadableMap data) {
-//        String environment;
-//        String levelRemark;
-//        String status;
-//        String version;
         HashSet tagSet = new HashSet();
 
         if (data.hasKey("environment")) {
             tagSet.add(data.getString("environment"));
         }
-        if (data.hasKey("levelRemark")){
+        if (data.hasKey("levelRemark")) {
             tagSet.add(data.getString("levelRemark"));
         }
-        if (data.hasKey("status")){
+        if (data.hasKey("status")) {
             tagSet.add(data.getString("status"));
         }
-        if (data.hasKey("version")){
+        if (data.hasKey("version")) {
             tagSet.add(data.getString("version"));
         }
-        JPushInterface.setTags(this.mContext,tagSet,null);
+        JPushInterface.setTags(this.mContext, tagSet, null);
     }
 }
