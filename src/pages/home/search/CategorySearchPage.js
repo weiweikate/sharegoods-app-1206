@@ -185,7 +185,7 @@ export default class CategorySearchPage extends BasePage {
                         fontSize: 13,
                         fontWeight: item.index === this.state.leftIndex ? 'bold' : 'normal',
                         color: DesignRule.textColor_mainTitle
-                    }}>
+                    }} allowFontScaling={false}>
                         {item.item.name.length > 4 ? item.item.name.substr(0, 4) + '...' : item.item.name}
                     </Text>
                 </View>

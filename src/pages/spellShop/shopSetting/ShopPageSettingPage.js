@@ -99,9 +99,9 @@ export default class ShopPageSettingPage extends BasePage {
         return (<TouchableWithoutFeedback key={index} onPress={onPres}>
             <View style={[styles.row, index === 0 ? { marginTop: 10 } : null]}>
                 <View style={styles.rowTop}>
-                    <Text style={styles.text}>{key}</Text>
+                    <Text style={styles.text} allowFontScaling={false}>{key}</Text>
                     {
-                        showArrow ? <Image source={ArrowImg}/> : <Text style={styles.desc}>{value || ''}</Text>
+                        showArrow ? <Image source={ArrowImg}/> : <Text style={styles.desc} allowFontScaling={false}>{value || ''}</Text>
                     }
                 </View>
                 {index === 4 ? null : <View style={styles.line}/>}

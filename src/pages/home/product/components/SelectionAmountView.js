@@ -118,7 +118,7 @@ export default class SelectionAmountView extends Component {
                 justifyContent: 'space-between',
                 alignItems: 'center'
             }, this.props.style]}>
-                <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }}>购买数量</Text>
+                <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }} allowFontScaling={false}>购买数量</Text>
                 <View style={{
                     flexDirection: 'row',
                     borderColor: DesignRule.lineColor_inGrayBg,
@@ -132,7 +132,7 @@ export default class SelectionAmountView extends Component {
                             color: leftEnable ? DesignRule.textColor_mainTitle : DesignRule.lineColor_inGrayBg,
                             fontSize: 15,
                             paddingHorizontal: 11
-                        }}>-</Text>
+                        }} allowFontScaling={false}>-</Text>
                     </TouchableOpacity>
                     <View style={{ height: 28, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -154,7 +154,7 @@ export default class SelectionAmountView extends Component {
                             color: rightEnable ? DesignRule.textColor_mainTitle : DesignRule.lineColor_inGrayBg,
                             fontSize: 15,
                             paddingHorizontal: 11
-                        }}>+</Text>
+                        }} allowFontScaling={false}>+</Text>
                     </TouchableOpacity>
                 </View>
             </View>

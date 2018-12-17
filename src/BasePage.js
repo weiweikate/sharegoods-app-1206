@@ -65,7 +65,7 @@ export default class BasePage extends Component {
                         fontSize: DesignRule.fontSize_threeTitle_28,
                         includeFontPadding: false,
                         marginTop: 10
-                    }}>
+                    }} allowFontScaling={false}>
                     网络请求失败
                 </Text>
                 <Text
@@ -74,7 +74,7 @@ export default class BasePage extends Component {
                         fontSize: DesignRule.fontSize_22,
                         marginTop: 5,
                         includeFontPadding: false
-                    }}>
+                    }} allowFontScaling={false}>
                     请检查你的网络
                 </Text>
                 <TouchableOpacity onPress={() => {
@@ -98,7 +98,7 @@ export default class BasePage extends Component {
                     <Text style={{
                         color: DesignRule.bgColor_btn,
                         fontSize: DesignRule.fontSize_mediumBtnText
-                    }}>重新加载</Text>
+                    }} allowFontScaling={false}>重新加载</Text>
                 </TouchableOpacity>
             </View>
         );

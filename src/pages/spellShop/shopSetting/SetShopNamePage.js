@@ -200,7 +200,7 @@ export default class SetShopNamePage extends BasePage {
             return <TouchableOpacity style={styles.updateWhite} onPress={this._clickHeader}>
                 <Image source={uri ? { uri } : openShop_image_pre} style={styles.updateImg}/>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.updateText}>修改头像</Text>
+                    <Text style={styles.updateText} allowFontScaling={false}>修改头像</Text>
                     <Image source={arrow_right} style={styles.arrowImg}/>
                 </View>
             </TouchableOpacity>;
@@ -221,7 +221,7 @@ export default class SetShopNamePage extends BasePage {
                     {this._renderHeaderView()}
                     {/*店铺*/}
                     <View style={styles.textContainer}>
-                        <Text style={styles.textTitle}>店铺名称</Text>
+                        <Text style={styles.textTitle} allowFontScaling={false}>店铺名称</Text>
                         <TextInput value={this.state.textName}
                                    onChangeText={(text) => {
                                        this.setState({
@@ -236,7 +236,7 @@ export default class SetShopNamePage extends BasePage {
                     <View style={styles.viewLine}/>
                     {/*区域*/}
                     <View style={styles.textContainer}>
-                        <Text style={styles.textTitle}>拼店区域</Text>
+                        <Text style={styles.textTitle} allowFontScaling={false}>拼店区域</Text>
                         <TextInput value={this.state.textArea}
                                    underlineColorAndroid={'transparent'}
                                    placeholder={'请选择店铺位置'}
@@ -249,7 +249,7 @@ export default class SetShopNamePage extends BasePage {
                     </View>
                     {/*简介*/}
                     <View style={styles.profileContainer}>
-                        <Text style={styles.profileTittle}>店铺简介</Text>
+                        <Text style={styles.profileTittle} allowFontScaling={false}>店铺简介</Text>
                         <TextInput value={this.state.textProfile}
                                    onChangeText={this._onChangeText}
                                    underlineColorAndroid={'transparent'}
@@ -257,7 +257,7 @@ export default class SetShopNamePage extends BasePage {
                                    placeholder={'可以简单介绍下你拼店的目标方向'}
                                    blurOnSubmit={false}
                                    style={styles.profileText}/>
-                        <Text style={styles.profileTextAbsolute}>{`${this.state.textProfile.length}/180`}</Text>
+                        <Text style={styles.profileTextAbsolute} allowFontScaling={false}>{`${this.state.textProfile.length}/180`}</Text>
                     </View>
 
                 </ScrollView>
@@ -265,7 +265,7 @@ export default class SetShopNamePage extends BasePage {
                 {
                     this.params.storeData ? null : <TouchableWithoutFeedback onPress={this._complete}>
                         <View style={styles.btnRow}>
-                            <Text style={styles.btnTitle}>开店</Text>
+                            <Text style={styles.btnTitle} allowFontScaling={false}>开店</Text>
                         </View>
                     </TouchableWithoutFeedback>
                 }

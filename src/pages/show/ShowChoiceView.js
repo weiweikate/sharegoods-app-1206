@@ -25,6 +25,13 @@ class Card extends Component {
         this.setState({readNumber: item.click})
     }
 
+    componentWillReceiveProps(nextProps) {
+        const { item } = nextProps
+        if (item.click !== this.state.readNumber) {
+            this.state.readNumber = item.click
+        }
+    }
+
     _onSelectedCard() {
         const { press } = this.props
         press && press()
@@ -36,7 +43,7 @@ class Card extends Component {
     }
 
     render () {
-        const {item } = this.props
+        const { item } = this.props
         const { readNumber } = this.state
         let number = readNumber
         if (!number) {

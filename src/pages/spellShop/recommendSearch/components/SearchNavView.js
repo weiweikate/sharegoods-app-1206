@@ -90,7 +90,7 @@ export default class SearchNavView extends Component {
                             paddingLeft: 10,
                             paddingRight: 15,
                             color: DesignRule.textColor_mainTitle
-                        }}>取消</Text>
+                        }} allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>}
                 </View>
             </View>);
