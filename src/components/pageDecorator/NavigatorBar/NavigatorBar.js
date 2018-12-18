@@ -251,10 +251,7 @@ export default class NavigatorBar extends Component {
         } = this.props;
         return (
 
-            <View style={[styles.navBar, headerStyle, {
-                paddingTop: ScreenUtils.statusBarHeight,
-                height: ScreenUtils.headerHeight
-            }]}>
+            <View style={[styles.navBar, headerStyle]}>
                 {/*{this._renderStatusBar()}*/}
                 {this._renderLeftItem()}
                 {this._renderTitle()}
@@ -268,10 +265,8 @@ export default class NavigatorBar extends Component {
 const styles = StyleSheet.create({
     navBar: { //考虑适配 iPhone X
         width: SCREEN_WIDTH,
-        // height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20) + 44,
-        // height: this.state.statusHeight + 44,
-        // paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
-        // paddingTop: this.state.statusHeight,
+        paddingTop: ScreenUtils.statusBarHeight,
+        height: ScreenUtils.headerHeight,
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
@@ -287,11 +282,9 @@ const styles = StyleSheet.create({
         // shadowOpacity: 1
     },
     title: {
-        // marginTop:10,
         fontSize: 18,
         color: DesignRule.textColor_mainTitle,
         backgroundColor: 'transparent'
-        // backgroundColor:DesignRule.mainColor
     },
     left: {
         position: 'absolute',

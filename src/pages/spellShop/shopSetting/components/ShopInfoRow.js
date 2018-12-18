@@ -31,8 +31,8 @@ export default class ShopInfoRow extends Component {
             }
 
             <View style={styles.right}>
-                <Text numberOfLines={2} style={styles.shopName}>{this.props.name || ''}</Text>
-                <Text numberOfLines={1} style={styles.desc}>{this.props.hadUser || 0}成员</Text>
+                <Text numberOfLines={2} style={styles.shopName} allowFontScaling={false}>{this.props.name || ''}</Text>
+                <Text numberOfLines={1} style={styles.desc} allowFontScaling={false}>{this.props.hadUser || 0}成员</Text>
             </View>
 
         </TouchableOpacity>);

@@ -24,8 +24,8 @@ export default class InfoRow extends Component {
     render() {
         return (<View style={styles.row}>
             <Image style={styles.img} source={this.props.icon}/>
-            <Text style={styles.title}>{StringUtils.isNoEmpty(this.props.title) ? this.props.title : ''}</Text>
-            <Text style={styles.desc}>{StringUtils.isNoEmpty(this.props.desc) ? this.props.desc : ''}</Text>
+            <Text style={styles.title} allowFontScaling={false}>{StringUtils.isNoEmpty(this.props.title) ? this.props.title : ''}</Text>
+            <Text style={styles.desc} allowFontScaling={false}>{StringUtils.isNoEmpty(this.props.desc) ? this.props.desc : ''}</Text>
         </View>);
     }
 }

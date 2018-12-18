@@ -72,7 +72,7 @@ export default class SearchBar extends Component {
 
                     </View>
                     <TouchableOpacity onPress={this.props.cancel}>
-                        <Text style={{ paddingRight: 15, color: DesignRule.textColor_instruction }}>取消</Text>
+                        <Text style={{ paddingRight: 15, color: DesignRule.textColor_instruction }} allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>
                 </View>
             </View>);

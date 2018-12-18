@@ -28,6 +28,7 @@
   [self JR_ConfigLib:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
+  [self initSensorsAnalyticsWithLaunchOptions:launchOptions];
   [self addLaunchToWindow];
   
  

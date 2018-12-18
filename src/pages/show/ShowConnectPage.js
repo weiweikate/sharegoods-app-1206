@@ -7,7 +7,8 @@ import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
-import EmptyUtils from '../../utils/EmptyUtils'
+import EmptyUtils from '../../utils/EmptyUtils';
+
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
@@ -53,7 +54,7 @@ export default class ShowConnectPage extends BasePage {
         this.waterfall && this.waterfall.clear();
         this.recommendModules.loadCollect().then(data => {
             this.setState({ firstLoad: false });
-            this.waterfall.index = 1
+            this.waterfall.index = 1;
             if (data && data.length > 0) {
                 this.waterfall.addItems(data);
             } else {
@@ -85,8 +86,8 @@ export default class ShowConnectPage extends BasePage {
         }
 
         if (ids.length === 0) {
-            Toast.$toast('请选择要删除的文章')
-            return
+            Toast.$toast('请选择要删除的文章');
+            return;
         }
 
         Alert.alert(
@@ -114,7 +115,7 @@ export default class ShowConnectPage extends BasePage {
             this.recommendModules.getMoreCollect().then(data => {
                 this.waterfall.addItems(data);
                 if (data.length > 0) {
-                    this.setState({allSelected : false})
+                    this.setState({ allSelected: false });
                 }
                 this.state.collectData = [...this.state.collectData, ...data];
             });
@@ -137,14 +138,14 @@ export default class ShowConnectPage extends BasePage {
         const { selectedList, allSelected, collectData } = this.state;
 
         if (allSelected) {
-            let selecteds = {}
+            let selecteds = {};
             collectData.map((value) => {
                 if (value.id !== data.id) {
-                    selecteds[value.id] = value.id
+                    selecteds[value.id] = value.id;
                 }
-            })
-            this.setState({ allSelected: false, selectedList: selecteds})
-            return
+            });
+            this.setState({ allSelected: false, selectedList: selecteds });
+            return;
         }
 
         if (selectedList[data.id]) {
@@ -153,18 +154,21 @@ export default class ShowConnectPage extends BasePage {
             selectedList[data.id] = data.id;
         }
 
-        this.setState({ selectedList: selectedList, allSelected : Object.keys(selectedList).length === this.state.collectData.length });
+        this.setState({
+            selectedList: selectedList,
+            allSelected: Object.keys(selectedList).length === this.state.collectData.length
+        });
     }
 
     _selectedAllAction() {
         const { allSelected, collectData } = this.state;
-        if (allSelected)  {
+        if (allSelected) {
             this.setState({ allSelected: false, selectedList: {} });
         } else {
-            let selects = {}
+            let selects = {};
             collectData.map(value => {
-                selects[value.id] = value.id
-            })
+                selects[value.id] = value.id;
+            });
             this.setState({ allSelected: true, selectedList: selects });
         }
 
@@ -197,6 +201,12 @@ export default class ShowConnectPage extends BasePage {
                     ?
                     <TouchableOpacity style={styles.selectedView} onPress={() => this._selectedAction(data)}>
                         <Image
+                            style={
+                                {
+                                    width: 22,
+                                    height: 22
+                                }
+                            }
                             source={allSelected ? res.button.selected_circle_red : (selectedList[data.id] ? res.button.selected_circle_red : res.button.unselected_circle)}/>
                     </TouchableOpacity>
                     :
@@ -208,14 +218,17 @@ export default class ShowConnectPage extends BasePage {
 
     goToHome() {
         // this.$navigateBackToHome();
-        this.props.navigation.popToTop()
-        this.props.navigation.navigate('ShowListPage')
+        this.props.navigation.popToTop();
+        this.props.navigation.navigate('ShowListPage');
     }
 
     _renderInfinite() {
-        return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.recommendModules.isEnd ? <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}
-        </View>
+        return <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
+            {this.recommendModules.isEnd ?
+                <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.recommendModules.isRefreshing ?
+                    <Text style={styles.text}>加载中...</Text> :
+                    <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}
+        </View>;
     }
 
     _render() {
@@ -252,7 +265,7 @@ export default class ShowConnectPage extends BasePage {
                     keyExtractor={(data) => this._keyExtractor(data)}
                     infiniting={(done) => this.infiniting(done)}
                     refreshing={(done) => this.refreshing(done)}
-                    renderInfinite={()=>this._renderInfinite()}
+                    renderInfinite={() => this._renderInfinite()}
                 />
                 {
                     select
@@ -321,7 +334,9 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     allImg: {
-        marginLeft: px2dp(20)
+        marginLeft: px2dp(20),
+        height: px2dp(22),
+        width: px2dp(22)
     },
     allView: {
         height: px2dp(49),

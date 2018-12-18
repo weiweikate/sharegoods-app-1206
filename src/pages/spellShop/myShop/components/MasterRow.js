@@ -43,12 +43,12 @@ export default class MasterRow extends Component {
                 <UIImage style={styles.iconGap} source={ShopMasterIcon}/>
                 <View style={styles.row}>
                     {
-                        headImg ? <UIImage source={{uri: headImg}} style={styles.headerImg}/> : <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
+                        headImg ? <UIImage source={{uri: headImg}} style={styles.headerImg} borderRadius={14}/> : <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
                     }
                     <View style={styles.right}>
-                        <Text style={styles.name}>{(nickName || '  ')}</Text>
-                        <Text style={styles.level}>{levelName || ' '}</Text>
-                        <Text style={styles.desc}>贡献度：{tradeBalance === 0 ? 0 : ((contribution / tradeBalance) * 100).toFixed(2)}%</Text>
+                        <Text style={styles.name} allowFontScaling={false}>{(nickName || '  ')}</Text>
+                        <Text style={styles.level} allowFontScaling={false}>{levelName || ' '}</Text>
+                        <Text style={styles.desc} allowFontScaling={false}>贡献度：{tradeBalance === 0 ? 0 : ((contribution / tradeBalance) * 100).toFixed(2)}%</Text>
                     </View>
                 </View>
             </View>
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     headerImg: {
         width: 28,
         height: 28,
-        borderRadius: 14,
         marginLeft: 20,
         marginTop: 15
     },

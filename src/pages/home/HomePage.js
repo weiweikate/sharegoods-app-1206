@@ -6,7 +6,7 @@ import {
     Text,
     ImageBackground,
     TouchableWithoutFeedback,
-    Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
+    Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
     RefreshControl
 } from 'react-native';
 import ImageLoad from '@mr/image-placeholder';
@@ -57,6 +57,7 @@ const home_notice_bg = res.home_notice_bg;
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 import BasePage from '../../BasePage';
+import bridge from '../../utils/bridge';
 
 @observer
 class HomePage extends BasePage {
@@ -116,7 +117,10 @@ class HomePage extends BasePage {
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
-                    this.setState({ isShow: false });
+                    this.setState({ isShow: false }, () => {
+                        // android状态栏黑色字体
+                        bridge.setLightMode();
+                    });
                 }
             }
         );
@@ -165,7 +169,7 @@ class HomePage extends BasePage {
                 });
             }, 2500);
         });
-    }
+    };
 
     loadMessageCount = () => {
         MessageApi.getNewNoticeMessageCount().then(result => {
@@ -183,14 +187,14 @@ class HomePage extends BasePage {
 
     showModal = () => {
         if (EmptyUtils.isEmpty(homeModalManager.versionData)) {
-           this._showMessageOrActivity();
+            this._showMessageOrActivity();
         } else {
             //展示升级提示
             this.showUpdateModal();
         }
     };
 
-    _showMessageOrActivity=()=>{
+    _showMessageOrActivity = () => {
         if (homeRegisterFirstManager.showRegisterModalUrl) {
             //活动
             this.setState({
@@ -199,11 +203,11 @@ class HomePage extends BasePage {
             this.registerModal && this.registerModal.open();
         } else {
             //公告弹窗
-            if(!this.state.showUpdate) {
+            if (!this.state.showUpdate) {
                 this.showMessageModal();
             }
         }
-    }
+    };
 
     showUpdateModal = async () => {
         if (!EmptyUtils.isEmpty(homeModalManager.versionData)) {
@@ -215,11 +219,12 @@ class HomePage extends BasePage {
             }
             let resp = homeModalManager.versionData;
             if (resp.data.upgrade === 1) {
+                let showUpdate = resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false);
                 if (Platform.OS !== 'ios') {
-                    NativeModules.commModule.apkExist(resp.data.version, (exist) => {
+                    bridge.isApkExist(resp.data.version, (exist) => {
                         this.setState({
                             updateData: resp.data,
-                            showUpdate: resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false),
+                            showUpdate: showUpdate,
                             forceUpdate: resp.data.forceUpdate === 1,
                             apkExist: exist
                         });
@@ -227,14 +232,14 @@ class HomePage extends BasePage {
                 } else {
                     this.setState({
                         updateData: resp.data,
-                        showUpdate: resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false),
+                        showUpdate: showUpdate,
                         forceUpdate: resp.data.forceUpdate === 1
                     });
                 }
-                if (this.state.showUpdate) {
+                if (showUpdate) {
                     this.updateModal && this.updateModal.open();
                 } else {
-                    this._showMessageOrActivity()
+                    this._showMessageOrActivity();
                 }
             } else {
                 this._showMessageOrActivity();
@@ -362,7 +367,13 @@ class HomePage extends BasePage {
         return (
             <Modal ref={(ref) => {
                 this.messageModal = ref;
-            }} visible={this.state.showMessage}>
+            }}
+                   onRequestClose={() => {
+                       this.setState({
+                           showMessage: false
+                       });
+                   }}
+                   visible={this.state.showMessage}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
@@ -403,7 +414,7 @@ class HomePage extends BasePage {
             <Modal ref={(ref) => {
                 this.registerModal = ref;
             }}
-                   onRequestClose={()=>{
+                   onRequestClose={() => {
                        this.setState({
                            showRegister: false
                        });
@@ -422,10 +433,10 @@ class HomePage extends BasePage {
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
                     {
-                        homeRegisterFirstManager.showRegisterModalUrl ? <ImageLoad source={{uri:homeRegisterFirstManager.showRegisterModalUrl}}
-                                                                                   style={styles.messageBgStyle}/> : <View style={styles.messageBgStyle}/>
+                        homeRegisterFirstManager.showRegisterModalUrl ?
+                            <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
+                                       style={styles.messageBgStyle}/> : <View style={styles.messageBgStyle}/>
                     }
-
 
 
                 </View>
@@ -533,7 +544,7 @@ class HomePage extends BasePage {
                                     apkExist={this.state.apkExist}
                                     onRequestClose={() => {
                                         homeModalManager.setVersion(null);
-                                        this.setState({showUpdate:false})
+                                        this.setState({ showUpdate: false });
                                     }}
                                     ref={(ref) => {
                                         this.updateModal = ref;

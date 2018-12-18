@@ -52,7 +52,7 @@ export default class RecommendRow extends Component {
                                                                  borderRadius={25}/> :
                                 <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
-                                <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
+                                <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>{RecommendRowItem.name || ''}</Text>
                             </View>
                         </View>
                     </View>
@@ -69,20 +69,20 @@ export default class RecommendRow extends Component {
                             }
                         </View>
                         <Text
-                            style={{ marginTop: 9, color: DesignRule.textColor_instruction, fontSize: 12 }}>店铺等级</Text>
+                            style={{ marginTop: 9, color: DesignRule.textColor_instruction, fontSize: 12 }} allowFontScaling={false}>店铺等级</Text>
                     </View>
                 </View>
 
 
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop}>店铺ID</Text>
-                        <Text style={styles.containBottom}>{RecommendRowItem.showNumber || 0}</Text>
+                        <Text style={styles.containTop} allowFontScaling={false}>店铺ID</Text>
+                        <Text style={styles.containBottom} allowFontScaling={false}>{RecommendRowItem.showNumber || 0}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop}>店铺成员</Text>
-                        <Text style={styles.containBottom}>{RecommendRowItem.storeUserNum || 0}</Text>
+                        <Text style={styles.containTop} allowFontScaling={false}>店铺成员</Text>
+                        <Text style={styles.containBottom} allowFontScaling={false}>{RecommendRowItem.storeUserNum || 0}</Text>
                     </View>
                 </View>
 

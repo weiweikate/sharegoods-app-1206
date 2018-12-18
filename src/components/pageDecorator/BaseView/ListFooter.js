@@ -76,7 +76,7 @@ export default class ListFooter extends Component {
                                 outputRange: ['0deg','360deg']
                             })
                         }]}} source={LoadingImg}/>
-                    <Text style={{marginLeft: 8,color: '#B5B5B5',fontSize: 12}}>加载更多中...</Text>
+                    <Text style={{marginLeft: 8,color: '#B5B5B5',fontSize: 12}} allowFontScaling={false}>加载更多中...</Text>
                     {/*<ActivityIndicator animating={true} color={'gray'} size={'small'} />*/}
                 </View>
             );
@@ -87,7 +87,7 @@ export default class ListFooter extends Component {
             errorDesc = typeof errorDesc === 'string' ? errorDesc : '未知错误~';
             return (
                 <TouchableOpacity style={styles.container} onPress={this._clickError}>
-                    <Text numberOfLines={2} style={styles.title}>
+                    <Text numberOfLines={2} style={styles.title} allowFontScaling={false}>
                         {`${errorDesc}\n点击重新加载`}
                     </Text>
                 </TouchableOpacity>
@@ -97,7 +97,7 @@ export default class ListFooter extends Component {
         // 没有更多数据
         return (
             <View style={styles.container}>
-                <Text num style={styles.title}>
+                <Text num style={styles.title} allowFontScaling={false}>
                     到底啦~
                 </Text>
             </View>

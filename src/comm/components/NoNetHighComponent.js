@@ -89,7 +89,7 @@ export default function NoNetHighComponent(WrappedComponent) {
                     <TouchableWithoutFeedback onPress={this.onPress}>
                         <View>
                             <Image source={res.placeholder.netError} style={{ height: 100, width: 100 }}/>
-                            <Text style={{ marginTop: 10, color: DesignRule.textColor_secondTitle }}>无网络</Text>
+                            <Text style={{ marginTop: 10, color: DesignRule.textColor_secondTitle }} allowFontScaling={false}>无网络</Text>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
