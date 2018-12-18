@@ -7,7 +7,6 @@ import {
     Image,
     TouchableOpacity,
     ListView,
-    Text,
     RefreshControl,
     // requireNativeComponent
 } from 'react-native';
