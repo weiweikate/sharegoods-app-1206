@@ -1,4 +1,6 @@
 apply plugin: rootProject.ext.plugins.application
+//添加 com.sensorsdata.analytics.android 插件
+apply plugin: 'com.sensorsdata.analytics.android'
 
 project.ext.react = [
         entryFile: "index.js"
@@ -93,6 +95,7 @@ dependencies {
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.wechat
     api rootProject.ext.dependencies.recyclerview
+    api rootProject.ext.dependencies.sensors
 
     implementation(rootProject.ext.dependencies.sophix) {
         exclude(module: 'alicloud-android-utdid')
