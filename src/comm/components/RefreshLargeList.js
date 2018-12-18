@@ -76,7 +76,7 @@ export default class RefreshLargeList extends React.Component {
         defaultPage: 1,
         params: {},
         defaultEmptyImage: res.placeholder.no_data,
-        defaultEmptyText: '暂无数据',
+        defaultEmptyText: '我也是有底线的~',
         defaultData: []
     };
 
@@ -232,7 +232,7 @@ export default class RefreshLargeList extends React.Component {
             if (renderLoadMoreComponent) {
                 footer = renderLoadMoreComponent(this.state.footerStatus);
             } else {
-                loadMoreComponent = <DefaultLoadMoreComponent status={this.state.footerStatus}/>;
+                loadMoreComponent = <DefaultLoadMoreComponent status={this.state.footerStatus}  defaultEmptyText={this.props.defaultEmptyText}/>;
             }
         }
 
@@ -457,7 +457,7 @@ class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
     renderLoadCompleted() {
         return (
             <View style={styles.footer}>
-                <Text style={styles.footerText}>没有更多数据了～</Text>
+                <Text style={styles.footerText}>{this.props.defaultEmptyText}</Text>
             </View>
         );
     }

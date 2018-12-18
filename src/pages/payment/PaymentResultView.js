@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
+import {  View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
 import Modal from 'CommModal';
@@ -71,45 +71,43 @@ export default class PaymentResultView extends Component {
                 onRequestClose={() => {
                     this.setState({modalVisible:false})
                 }}>
-                <TouchableWithoutFeedback style={styles.container} onPress={() => this.dismiss()}>
-                    <View style={styles.container}>
-                        <View style={styles.content}>
-                            <Image style={styles.image}
-                                   source={result === PaymentResult.sucess ? successImg : failImg}/>
-                            <Text allowFontScaling={false}  style={styles.text}>{resultText}</Text>
-                            {
-                                message
-                                    ?
-                                    <Text allowFontScaling={false}  style={styles.message}>{message}</Text>
-                                    :
-                                    null
-                            }
-                            <View style={{ flex: 1 }}/>
-                            {
-                                result === PaymentResult.sucess
-                                    ?
-                                    <View style={styles.bottom}>
-                                        <TouchableOpacity style={styles.button} onPress={() => this._goToHome()}>
-                                            <Text allowFontScaling={false}  style={styles.buttonText}>返回首页</Text>
-                                        </TouchableOpacity>
-                                        <View style={{ flex: 1 }}/>
-                                        <TouchableOpacity style={styles.button} onPress={() => {
-                                            this._goToOrder();
-                                        }}>
-                                            <Text allowFontScaling={false}  style={styles.buttonText}>查看订单</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    :
-                                    <View style={styles.bottom}>
-                                        <TouchableOpacity style={styles.button} onPress={() => this.dismiss()}>
-                                            <Text allowFontScaling={false}  style={styles.buttonText}>重新支付</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                            }
+                <View style={styles.container}>
+                    <View style={styles.content}>
+                        <Image style={styles.image}
+                                source={result === PaymentResult.sucess ? successImg : failImg}/>
+                        <Text allowFontScaling={false}  style={styles.text}>{resultText}</Text>
+                        {
+                            message
+                                ?
+                                <Text allowFontScaling={false}  style={styles.message}>{message}</Text>
+                                :
+                                null
+                        }
+                        <View style={{ flex: 1 }}/>
+                        {
+                            result === PaymentResult.sucess
+                                ?
+                                <View style={styles.bottom}>
+                                    <TouchableOpacity style={styles.button} onPress={() => this._goToHome()}>
+                                        <Text allowFontScaling={false}  style={styles.buttonText}>返回首页</Text>
+                                    </TouchableOpacity>
+                                    <View style={{ flex: 1 }}/>
+                                    <TouchableOpacity style={styles.button} onPress={() => {
+                                        this._goToOrder();
+                                    }}>
+                                        <Text allowFontScaling={false}  style={styles.buttonText}>查看订单</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                :
+                                <View style={styles.bottom}>
+                                    <TouchableOpacity style={styles.button} onPress={() => this.dismiss()}>
+                                        <Text allowFontScaling={false}  style={styles.buttonText}>重新支付</Text>
+                                    </TouchableOpacity>
+                                </View>
+                        }
 
-                        </View>
                     </View>
-                </TouchableWithoutFeedback>
+                </View>
             </Modal>
         );
     }

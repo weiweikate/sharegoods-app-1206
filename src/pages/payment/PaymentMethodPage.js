@@ -39,11 +39,11 @@ export default class PaymentMethodPage extends BasePage {
     constructor(props) {
         super(props);
         this.payment = new Payment();
-        if (parseFloat(this.params.amounts).toFixed(2) === '0.00') {
-            this.payment.selectedBalace = true;
-        }
         this.payment.isGoToPay = false
         this.payment.amounts = this.params.amounts ? this.params.amounts : 0
+        if (this.isZeroPay()) {
+            this.payment.selectedBalace = true;
+        }
         this.payment.orderNo = this.params.orderNum
         this.payment.updateUserData()
     }
@@ -63,6 +63,10 @@ export default class PaymentMethodPage extends BasePage {
 
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    isZeroPay() {
+        return parseFloat(this.payment.amounts).toFixed(2) === '0.00'
     }
 
     _handleAppStateChange = (state) => {
@@ -114,6 +118,9 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     _selectedBalancePay() {
+        if (this.isZeroPay()) {
+            return
+        }
         if (this.payment.selectedTypes &&  this.payment.availableBalance * 100 > this.payment.amounts * 100) {
             this.payment.clearPaymentType();
         }
@@ -134,6 +141,14 @@ export default class PaymentMethodPage extends BasePage {
     };
 
     async _balancePay() {
+        if (this.isZeroPay()) {
+            let result = await this.payment.balancePay(this.state.password, this.paymentResultView);
+            this.setState({ password: '' });
+            console.log('checkRes', result);
+            this._showPayresult(result);
+            return
+        }
+
         if (user.hadSalePassword) {
             if (StringUtils.isEmpty(this.state.password)) {
                 this.setState({ isShowPaymentModal: true });
@@ -228,7 +243,7 @@ export default class PaymentMethodPage extends BasePage {
                     <Text style={styles.sectionTitle} allowFontScaling={false}>{value.name}</Text>
                 </View>);
             } else {
-                items.push(<PayCell disabled={value.type !== paymentType.balance && parseFloat(this.payment.amounts).toFixed(2) === '0.00'}
+                items.push(<PayCell disabled={value.type !== paymentType.balance && this.isZeroPay()}
                                     key={index + ''} selectedTypes={selectedTypes} data={value}
                                     balance={availableBalance} press={() => this._selectedPayType(value)}/>);
             }
@@ -239,7 +254,7 @@ export default class PaymentMethodPage extends BasePage {
             <PayCell
                 disabled={this.params.outTradeNo}
                 data={balancePayment}
-                isSelected={selectedBalace || parseFloat(this.payment.amounts).toFixed(2) === '0.00'} balance={availableBalance}
+                isSelected={selectedBalace || this.isZeroPay()} balance={availableBalance}
                 press={() => this._selectedBalancePay(balancePayment)}
             />
             {items}
