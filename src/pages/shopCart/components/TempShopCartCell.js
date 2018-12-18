@@ -15,7 +15,6 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    TouchableHighlight,
     TextInput,
     Text
 } from 'react-native';
@@ -52,15 +51,20 @@ const getSkillIsBegin = (itemData) => {
         return 2;
     }
 };
-export default class ShopCartCell extends Component {
+export default class TempShopCartCell extends Component {
     constructor(props) {
         super(props);
     }
     render() {
         const { itemData, rowMap, rowId ,cellClickAction} = this.props;
         return (
-            <View>
-                <TouchableHighlight
+            <View
+            style={{
+                justifyContent:'center',
+                alignItems:'center'
+            }}
+            >
+                <TouchableOpacity
                     onPress={() => {
                         rowMap;
                         cellClickAction(itemData);
@@ -70,6 +74,7 @@ export default class ShopCartCell extends Component {
 
                     }>
                         <UIImage
+                            // source={itemData.isSelected ? res.button.selected_circle_red : res.button.unselected_circle}
                             source={getSelectImage(itemData)}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
@@ -284,7 +289,7 @@ export default class ShopCartCell extends Component {
                             </View>
                         </View>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
 
                 <View
                     style={{
@@ -400,7 +405,7 @@ export default class ShopCartCell extends Component {
         }
     };
 }
-ShopCartCell.propTypes = {
+TempShopCartCell.propTypes = {
     //cell 数据
     itemData: PropTypes.object.isRequired,
     //section id
@@ -442,10 +447,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
         height: 130,
-        // width: ScreenUtils.width - 100,
-        width: ScreenUtils.width,
+        width: ScreenUtils.width - 40,
+        // width: ScreenUtils.width,
         flexDirection: 'row',
-        marginRight: 16
+        marginRight: 16,
+        borderRadius:15,
+        marginLeft:15,
     },
     rectangle: {
         height: 30,
