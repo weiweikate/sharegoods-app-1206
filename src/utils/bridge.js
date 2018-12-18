@@ -1,6 +1,6 @@
 // 原生桥接接口函数请使用'$'开头
 import {
-    NativeModules, Platform
+    NativeModules
 } from 'react-native';
 import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
@@ -181,17 +181,15 @@ export default {
         clearCookies();
     },
 
+    //背景风格
     setDarkMode: () => {
-        if (Platform.OS === 'android') {
-            // NativeModules.commModule.setDarkMode();
-        }
+        NativeModules.commModule.setDarkMode();
     },
+    //背景风格
     setLightMode: () => {
-        if (Platform.OS === 'android') {
-          //  NativeModules.commModule.setLightMode();
-        }
+        NativeModules.commModule.setLightMode();
     },
     isApkExist: (version, onSuccess) => {
-        // NativeModules.commModule.apkExist(version, onSuccess);
+        NativeModules.commModule.apkExist(version, onSuccess);
     }
 };
