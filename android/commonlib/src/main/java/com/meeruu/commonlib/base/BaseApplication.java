@@ -13,6 +13,7 @@ import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
+import com.meeruu.commonlib.utils.SensorsUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
 
@@ -66,6 +67,8 @@ public class BaseApplication extends MultiDexApplication {
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
             if (Utils.isApkInDebug()) {
+                // 初始化 Sensors SDK
+                SensorsUtils.initDebugMode(this, channel);
                 // jpush debug
                 JPushInterface.setDebugMode(true);
                 // umeng debug
@@ -73,6 +76,8 @@ public class BaseApplication extends MultiDexApplication {
                 // 禁止极光捕获crash
                 JPushInterface.stopCrashHandler(this);
             } else {
+                // 初始化 Sensors SDK
+                SensorsUtils.initReleaseMode(this, channel);
                 // 友盟统计
                 UApp.init(this, ParameterUtils.UM_KEY, channel);
                 // 初始化分享

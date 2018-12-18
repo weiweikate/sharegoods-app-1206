@@ -1,14 +1,19 @@
 apply from: "config.gradle"
 
 buildscript {
-
     repositories {
         mavenCentral()
         google()
         jcenter()
+        //添加 Sensors Analytics maven 库地址
+        maven {
+            url 'https://dl.bintray.com/zouyuhan/maven'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
+        //添加神策分析 android-gradle-plugin 依赖
+        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:2.2.3'
     }
 }
 
@@ -20,6 +25,10 @@ allprojects {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
+        }
+        //添加 Sensors Analytics maven 库地址
+        maven {
+            url 'https://dl.bintray.com/zouyuhan/maven'
         }
     }
 }
