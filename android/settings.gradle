@@ -1,4 +1,28 @@
 rootProject.name = 'sharegoods'
+include ':react-native-webview-bridge'
+project(':react-native-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview-bridge/android')
+include ':react-native-video'
+project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android-exoplayer')
+include ':react-native-vector-icons'
+project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+include ':react-native-update'
+project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
+include ':react-native-svg'
+project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
+include ':react-native-image-picker'
+project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
+include ':react-native-device-info'
+project(':react-native-device-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-device-info/android')
+include ':react-native-autoheight-webview'
+project(':react-native-autoheight-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-autoheight-webview/android')
+include ':lottie-react-native'
+project(':lottie-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/lottie-react-native/src/android')
+include ':@sensors.data/react-native-sensors-analytics'
+project(':@sensors.data/react-native-sensors-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/@sensors.data/react-native-sensors-analytics/android')
+include ':@mr/react-native-cookies'
+project(':@mr/react-native-cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-cookies/android')
+include ':@mr/geolocation'
+project(':@mr/geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/geolocation/android')
 include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
 include ':react-native-autoheight-webview'

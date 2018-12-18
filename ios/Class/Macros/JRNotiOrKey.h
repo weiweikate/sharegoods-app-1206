@@ -24,6 +24,12 @@
 #define KWeiboAppSecret  @"ac38535a71796c40d4315ab436784b3e" //微博 secret
 #define KUmSocialAppkey  @"5b73de76f43e4807ff000024"  //友盟key
 
-
+#ifdef DEBUG
+#define SA_SERVER_URL @"http://stat.sharegoodsmall.com/sa?project=default"
+#define SA_DEBUG_MODE SensorsAnalyticsDebugAndTrack
+#else
+#define SA_SERVER_URL @"http://stat.sharegoodsmall.com/sa?project=default"
+#define SA_DEBUG_MODE SensorsAnalyticsDebugOff
+#endif
 
 #endif /* JRNotiOrKey_h */
