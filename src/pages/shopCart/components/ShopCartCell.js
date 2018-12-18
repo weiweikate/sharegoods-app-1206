@@ -20,7 +20,6 @@ import {
     Text
 } from 'react-native';
 import PropTypes from 'prop-types';
-
 import {
     UIText,
     UIImage

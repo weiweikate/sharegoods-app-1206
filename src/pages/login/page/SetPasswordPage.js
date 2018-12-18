@@ -22,7 +22,6 @@ export default class SetPasswordPage extends BasePage {
     $navigationBarOptions = {
         title: '设置账号及密码'
     };
-
     _render() {
         return (
             <View style={{ flex: 1 }}>
@@ -43,11 +42,9 @@ export default class SetPasswordPage extends BasePage {
 
         );
     }
-
     $isMonitorNetworkStatus() {
         return false;
     }
-
     //点击下一步
     clickNext = (phone, code, password) => {
         console.warn(this.params);
@@ -71,20 +68,6 @@ export default class SetPasswordPage extends BasePage {
                 homeRegisterFirstManager.setShowRegisterModalUrl(data.give);
             }
             this.toLogin(phone, code, password, data.give);
-            // UserModel.saveUserInfo(data.data);
-            // UserModel.saveToken(data.data.token);
-            // DeviceEventEmitter.emit('homePage_message', null);
-            // DeviceEventEmitter.emit('contentViewed', null);
-            // homeModule.loadHomeList();
-            // // this.$navigate('login/login/GetRedpacketPage');
-            // bridge.setCookies(data.data);
-            // //推送
-            // JPushUtils.updatePushTags();
-            // JPushUtils.updatePushAlias();
-            // if (data.give){
-            //     homeRegisterFirstManager.setShowRegisterModalUrl(olduser);
-            // }
-            // this.$navigateBackToHome();
         }).catch(data => {
             this.$loadingDismiss();
             if (data.code === 34007) {

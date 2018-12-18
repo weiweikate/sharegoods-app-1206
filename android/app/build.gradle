@@ -78,6 +78,18 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-webview-bridge')
+    compile project(':react-native-video')
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-update')
+    compile project(':react-native-svg')
+    compile project(':react-native-image-picker')
+    compile project(':react-native-device-info')
+    compile project(':react-native-autoheight-webview')
+    compile project(':lottie-react-native')
+    compile project(':@sensors.data/react-native-sensors-analytics')
+    compile project(':@mr/react-native-cookies')
+    compile project(':@mr/geolocation')
     api fileTree(include: ['*.jar'], dir: 'libs')
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.2') {
         exclude(module: 'support-core-utils')
