@@ -54,6 +54,11 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* crm_app_xiugouTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* crm_app_xiugouTests.m */; };
 		49AE7C48A8514C03A1EA34A3 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E00CEEA555A4CB28FE001B8 /* Entypo.ttf */; };
+		50043A7B21C76EC800270DFA /* ShopCartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A7A21C76EC300270DFA /* ShopCartCell.m */; };
+		50043A7E21C772AF00270DFA /* MRShopCartCellManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A7D21C772AF00270DFA /* MRShopCartCellManager.m */; };
+		50043A8121C79C4900270DFA /* ShopCartListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A8021C79C4800270DFA /* ShopCartListView.m */; };
+		50043A8421C79D5400270DFA /* SCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A8321C79D5400270DFA /* SCCell.m */; };
+		50043A8721C79D7F00270DFA /* ShopCartListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A8621C79D7F00270DFA /* ShopCartListManager.m */; };
 		50216F03218C53C600619C67 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 50216F02218C53C600619C67 /* libbz2.1.0.tbd */; };
 		5068360E21379B78001AB175 /* JRBaseNavVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068356D21379B78001AB175 /* JRBaseNavVC.m */; };
 		5068360F21379B78001AB175 /* JRBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068356F21379B78001AB175 /* JRBaseVC.m */; };
@@ -555,6 +560,16 @@
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E00CEEA555A4CB28FE001B8 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		4C21E6CAAF624B8198676636 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		50043A7921C76EC300270DFA /* ShopCartCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCartCell.h; sourceTree = "<group>"; };
+		50043A7A21C76EC300270DFA /* ShopCartCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCartCell.m; sourceTree = "<group>"; };
+		50043A7C21C772AF00270DFA /* MRShopCartCellManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRShopCartCellManager.h; sourceTree = "<group>"; };
+		50043A7D21C772AF00270DFA /* MRShopCartCellManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRShopCartCellManager.m; sourceTree = "<group>"; };
+		50043A7F21C79C4800270DFA /* ShopCartListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCartListView.h; sourceTree = "<group>"; };
+		50043A8021C79C4800270DFA /* ShopCartListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCartListView.m; sourceTree = "<group>"; };
+		50043A8221C79D5400270DFA /* SCCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCell.h; sourceTree = "<group>"; };
+		50043A8321C79D5400270DFA /* SCCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCCell.m; sourceTree = "<group>"; };
+		50043A8521C79D7F00270DFA /* ShopCartListManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCartListManager.h; sourceTree = "<group>"; };
+		50043A8621C79D7F00270DFA /* ShopCartListManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCartListManager.m; sourceTree = "<group>"; };
 		501D93E4214B4E6000271BE5 /* crm_app_xiugou.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = crm_app_xiugou.entitlements; path = crm_app_xiugou/crm_app_xiugou.entitlements; sourceTree = "<group>"; };
 		50216F02218C53C600619C67 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
 		5068356C21379B78001AB175 /* JRBaseNavVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRBaseNavVC.h; sourceTree = "<group>"; };
@@ -1053,6 +1068,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		50043A7721C76D6100270DFA /* ShopCart */ = {
+			isa = PBXGroup;
+			children = (
+				50043A7821C76E7900270DFA /* View */,
+			);
+			path = ShopCart;
+			sourceTree = "<group>";
+		};
+		50043A7821C76E7900270DFA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				50043A7921C76EC300270DFA /* ShopCartCell.h */,
+				50043A7A21C76EC300270DFA /* ShopCartCell.m */,
+				50043A7C21C772AF00270DFA /* MRShopCartCellManager.h */,
+				50043A7D21C772AF00270DFA /* MRShopCartCellManager.m */,
+				50043A7F21C79C4800270DFA /* ShopCartListView.h */,
+				50043A8021C79C4800270DFA /* ShopCartListView.m */,
+				50043A8221C79D5400270DFA /* SCCell.h */,
+				50043A8321C79D5400270DFA /* SCCell.m */,
+				50043A8521C79D7F00270DFA /* ShopCartListManager.h */,
+				50043A8621C79D7F00270DFA /* ShopCartListManager.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		5068356A21379B78001AB175 /* Class */ = {
 			isa = PBXGroup;
 			children = (
@@ -1199,6 +1239,7 @@
 		506835C421379B78001AB175 /* NativeBridge */ = {
 			isa = PBXGroup;
 			children = (
+				50043A7721C76D6100270DFA /* ShopCart */,
 				CDAB6D18219AC5F800DE6716 /* WaveProgressView */,
 				506835C521379B78001AB175 /* CachesModule.h */,
 				506835C621379B78001AB175 /* CachesModule.m */,
@@ -2419,10 +2460,12 @@
 				5077FCE621A504C5003B860D /* RSAManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				5068363E21379B78001AB175 /* QYChatModule.m in Sources */,
+				50043A7E21C772AF00270DFA /* MRShopCartCellManager.m in Sources */,
 				5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */,
 				5077FCE221A4FE37003B860D /* NSData+Base64.m in Sources */,
 				CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */,
 				5068360F21379B78001AB175 /* JRBaseVC.m in Sources */,
+				50043A7B21C76EC800270DFA /* ShopCartCell.m in Sources */,
 				105CAD0421BE369F00F4746D /* UMAnalyticsModule.m in Sources */,
 				50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */,
 				CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */,
@@ -2431,6 +2474,7 @@
 				5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */,
 				5068363621379B78001AB175 /* JRAddressPickView.m in Sources */,
 				CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */,
+				50043A8121C79C4900270DFA /* ShopCartListView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
@@ -2447,12 +2491,14 @@
 				033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */,
 				5068363421379B78001AB175 /* JRPay.m in Sources */,
 				5068363C21379B78001AB175 /* QRCodeModule.m in Sources */,
+				50043A8421C79D5400270DFA /* SCCell.m in Sources */,
 				5068363021379B78001AB175 /* CachesModule.m in Sources */,
 				CDCB5BDA2196DF71006B5F4E /* UIImage+Util.m in Sources */,
 				5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */,
 				CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */,
 				5068362C21379B78001AB175 /* JRCacheManager.m in Sources */,
 				5068363721379B78001AB175 /* PickerManager.m in Sources */,
+				50043A8721C79D7F00270DFA /* ShopCartListManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
