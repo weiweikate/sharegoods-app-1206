@@ -89,13 +89,13 @@ dependencies {
     debugImplementation('com.squareup.leakcanary:leakcanary-support-fragment:1.6.2') {
         exclude(module: 'support-core-utils')
     }
-    api rootProject.ext.dependencies.support
 
+    api rootProject.ext.dependencies.support
     api rootProject.ext.dependencies.eventbus
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.wechat
     api rootProject.ext.dependencies.recyclerview
-    api rootProject.ext.dependencies.sensors
+    implementation rootProject.ext.dependencies.sensors
 
     implementation(rootProject.ext.dependencies.sophix) {
         exclude(module: 'alicloud-android-utdid')
