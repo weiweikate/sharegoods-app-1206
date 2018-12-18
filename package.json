@@ -25,7 +25,7 @@
         "@mr/react-native-cookies": "0.0.3",
         "@mr/react-native-webview": "0.2.4",
         "@mr/request": "0.0.22",
-        "@sensors.data/react-native-sensors-analytics": "^1.0.0",
+        "@sensors.data/react-native-sensors-analytics": "^1.0.0",//神策
         "axios": "0.18.0",
         "jsrsasign": "8.0.12",
         "lottie-react-native": "2.5.10",
