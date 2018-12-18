@@ -55,6 +55,11 @@ class ShopCartStore {
     }
 
     @computed
+    get getTotalGoodsNumber(){
+        return this.data.slice().length;
+    }
+
+    @computed
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
         this.data.slice().map(item => {
