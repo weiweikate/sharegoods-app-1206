@@ -35,7 +35,6 @@ class SwipeListView extends Component {
 			}
 		}
 	}
-
 	setScrollEnabled(enable) {
 		// Due to multiple issues reported across different versions of RN
 		// We do this in the safest way possible...
@@ -241,6 +240,7 @@ class SwipeListView extends Component {
 				onScroll={ e => this.onScroll(e) }
 				renderRow={(rowData, secId, rowId) => this.renderRow(rowData, secId, rowId, this._rows)}
                 refreshControl={this.props.swipeRefreshControl || null}
+                renderHeader={this.props.listHeaderView || null}
 			/>
 		)
 	}
@@ -410,6 +410,8 @@ SwipeListView.propTypes = {
      * 下拉组件
      */
     swipeRefreshControl:PropTypes.element,
+
+    listHeaderView:PropTypes.func,
 
 }
 
