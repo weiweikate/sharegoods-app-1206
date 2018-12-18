@@ -11,6 +11,7 @@ import UIText from '../../components/ui/UIText';
 import DesignRule from 'DesignRule';
 import User from '../../model/user';
 import res from './res';
+import bridge from '../../utils/bridge';
 
 const logoRed = res.home_icon_logo_red;
 const logoWhite = res.home_icon_logo_white;
@@ -21,6 +22,8 @@ const msgWhite = res.message_white;
 export default ({ navigation, whiteIcon, hasMessage }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
+            {/*改变状态栏字体颜色*/}
+            {whiteIcon ? bridge.setDarkMode() : bridge.setLightMode()}
             <Image source={whiteIcon ? logoWhite : logoRed} style={styles.logo}/>
             <TouchableOpacity style={[styles.searchBox, { backgroundColor: whiteIcon ? 'white' : '#E4E5E6' }]}
                               onPress={() => {

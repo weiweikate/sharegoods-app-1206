@@ -21,6 +21,7 @@
 #import <UMCommon/UMCommon.h>
 #import "IQKeyboardManager.h"
 #import <React/RCTLinkingManager.h>
+#import "SensorsAnalyticsSDK.h"
 
 
 @implementation AppDelegate (ConfigLib)
@@ -79,6 +80,20 @@
   result = [RCTLinkingManager application:application openURL:url
                         sourceApplication:nil annotation:nil];
   return YES;
+}
+
+- (void)initSensorsAnalyticsWithLaunchOptions:(NSDictionary *)launchOptions {
+  
+  // 初始化 SDK
+  [SensorsAnalyticsSDK sharedInstanceWithServerURL:SA_SERVER_URL
+                                  andLaunchOptions:launchOptions
+                                      andDebugMode:SA_DEBUG_MODE];
+  
+  // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
+  [[SensorsAnalyticsSDK sharedInstance] enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
+   SensorsAnalyticsEventTypeAppEnd|
+   SensorsAnalyticsEventTypeAppClick];
+  
 }
 
 

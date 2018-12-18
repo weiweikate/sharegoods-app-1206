@@ -30,7 +30,7 @@
             "h5": "https://h5.sharegoodsmall.com",
             "oss": "https://cdn.sharegoodsmall.com"
         },
-        "吴承骏Login": {
+        "吴承骏": {
             "name": "吴承骏",
             "host": "http://172.16.10.19:8903/gateway"
         },
@@ -88,7 +88,7 @@
         },
         "龚日红": {
             "name": "龚日红",
-            "host": "http://172.16.10.177:9090/gateway"
+            "host": "http://172.16.10.61:9090/gateway"
         },
         "支付":{
             "name":"黄佳欢",
@@ -97,6 +97,10 @@
         "李俊": {
             "name": "李俊",
             "host": "http://172.16.10.79:9090/gateway"
+        },
+        "申xiangyu": {
+            "name": "申xiangyu",
+            "host": "http://172.16.10.91:18080/gateway"
         }
     }
 }

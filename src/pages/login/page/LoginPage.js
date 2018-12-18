@@ -239,8 +239,7 @@ export default class LoginPage extends BasePage {
                 } else {
                     this.$navigateBack();
                 }
-                //推送
-                JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+
             }).catch((data) => {
                 console.log(data);
                 this.$loadingDismiss();

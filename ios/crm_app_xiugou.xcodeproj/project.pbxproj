@@ -41,6 +41,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		22FBCAEC54794EDFAFA3D853 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBD5EA1410A844119F7CCA6A /* SimpleLineIcons.ttf */; };
 		253FF86C82E44F8EA16F7C6C /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD70E065E4CA4080A9DF5465 /* Foundation.ttf */; };
+		2A217542E6074AE38A88F88A /* libRNSensorsAnalyticsModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5B1AC20114D4E68971B3AB1 /* libRNSensorsAnalyticsModule.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4C21E0B4AEC006451C7 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -53,6 +54,11 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* crm_app_xiugouTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* crm_app_xiugouTests.m */; };
 		49AE7C48A8514C03A1EA34A3 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E00CEEA555A4CB28FE001B8 /* Entypo.ttf */; };
+		50043A7B21C76EC800270DFA /* ShopCartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A7A21C76EC300270DFA /* ShopCartCell.m */; };
+		50043A7E21C772AF00270DFA /* MRShopCartCellManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A7D21C772AF00270DFA /* MRShopCartCellManager.m */; };
+		50043A8121C79C4900270DFA /* ShopCartListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A8021C79C4800270DFA /* ShopCartListView.m */; };
+		50043A8421C79D5400270DFA /* SCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A8321C79D5400270DFA /* SCCell.m */; };
+		50043A8721C79D7F00270DFA /* ShopCartListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 50043A8621C79D7F00270DFA /* ShopCartListManager.m */; };
 		50216F03218C53C600619C67 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 50216F02218C53C600619C67 /* libbz2.1.0.tbd */; };
 		5068360E21379B78001AB175 /* JRBaseNavVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068356D21379B78001AB175 /* JRBaseNavVC.m */; };
 		5068360F21379B78001AB175 /* JRBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068356F21379B78001AB175 /* JRBaseVC.m */; };
@@ -490,6 +496,13 @@
 			remoteGlobalIDString = 8E87A9901FAB62CC00B9C54E;
 			remoteInfo = STTVTableView;
 		};
+		CD45EE0021C77E1A00846B39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9BBF480BD9C40F1BBCB4697 /* RNSensorsAnalyticsModule.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A18E9FA621A6AB4300A66E41;
+			remoteInfo = RNSensorsAnalyticsModule;
+		};
 		CDE9907221C0FA5C00F46B45 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CDE9903D21C0FA5C00F46B45 /* RNReactNativeRequest.xcodeproj */;
@@ -547,6 +560,16 @@
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E00CEEA555A4CB28FE001B8 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		4C21E6CAAF624B8198676636 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		50043A7921C76EC300270DFA /* ShopCartCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCartCell.h; sourceTree = "<group>"; };
+		50043A7A21C76EC300270DFA /* ShopCartCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCartCell.m; sourceTree = "<group>"; };
+		50043A7C21C772AF00270DFA /* MRShopCartCellManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRShopCartCellManager.h; sourceTree = "<group>"; };
+		50043A7D21C772AF00270DFA /* MRShopCartCellManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRShopCartCellManager.m; sourceTree = "<group>"; };
+		50043A7F21C79C4800270DFA /* ShopCartListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCartListView.h; sourceTree = "<group>"; };
+		50043A8021C79C4800270DFA /* ShopCartListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCartListView.m; sourceTree = "<group>"; };
+		50043A8221C79D5400270DFA /* SCCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCell.h; sourceTree = "<group>"; };
+		50043A8321C79D5400270DFA /* SCCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCCell.m; sourceTree = "<group>"; };
+		50043A8521C79D7F00270DFA /* ShopCartListManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCartListManager.h; sourceTree = "<group>"; };
+		50043A8621C79D7F00270DFA /* ShopCartListManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCartListManager.m; sourceTree = "<group>"; };
 		501D93E4214B4E6000271BE5 /* crm_app_xiugou.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = crm_app_xiugou.entitlements; path = crm_app_xiugou/crm_app_xiugou.entitlements; sourceTree = "<group>"; };
 		50216F02218C53C600619C67 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
 		5068356C21379B78001AB175 /* JRBaseNavVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRBaseNavVC.h; sourceTree = "<group>"; };
@@ -720,6 +743,7 @@
 		CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = STTVTableView.xcodeproj; path = "../node_modules/@mr/largelist/ios/STTVTableView.xcodeproj"; sourceTree = "<group>"; };
 		CD14EA172183FC9A00480A06 /* XGImageCompression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XGImageCompression.h; sourceTree = "<group>"; };
 		CD14EA182183FC9A00480A06 /* XGImageCompression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XGImageCompression.m; sourceTree = "<group>"; };
+		CD45EE1A21C7885000846B39 /* liblottie-react-native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblottie-react-native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD70E065E4CA4080A9DF5465 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		CDA2F5302171D8D2005FD4B3 /* UIViewController+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Util.h"; sourceTree = "<group>"; };
 		CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Util.m"; sourceTree = "<group>"; };
@@ -740,7 +764,9 @@
 		CDE9903D21C0FA5C00F46B45 /* RNReactNativeRequest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeRequest.xcodeproj; path = "../node_modules/@mr/request/ios/RNReactNativeRequest.xcodeproj"; sourceTree = "<group>"; };
 		EB6EFB6B04564EBAB951820B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		EF0420E07D6F40B080CEAA13 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		F5B1AC20114D4E68971B3AB1 /* libRNSensorsAnalyticsModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSensorsAnalyticsModule.a; sourceTree = "<group>"; };
 		F79D51B5CB2B0A8841DF9766 /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
+		F9BBF480BD9C40F1BBCB4697 /* RNSensorsAnalyticsModule.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSensorsAnalyticsModule.xcodeproj; path = "../node_modules/@sensors.data/react-native-sensors-analytics/ios/RNSensorsAnalyticsModule.xcodeproj"; sourceTree = "<group>"; };
 		FBD5EA1410A844119F7CCA6A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		FED5F2163DB441AEAFBF1AB2 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -800,6 +826,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				8FEF9F2832D98C9091C3A80D /* libPods-crm_app_xiugou.a in Frameworks */,
 				5077FCE021A4FE37003B860D /* libssl.a in Frameworks */,
+				2A217542E6074AE38A88F88A /* libRNSensorsAnalyticsModule.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1019,6 +1046,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD45EE1A21C7885000846B39 /* liblottie-react-native.a */,
 				101157C7219AB72A001F5E99 /* GLKit.framework */,
 				101157C5219AB715001F5E99 /* libc++.tbd */,
 				101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */,
@@ -1038,6 +1066,31 @@
 				2C4C91D58EA7AF8B3CE24FE3 /* libPods-crm_app_xiugouTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		50043A7721C76D6100270DFA /* ShopCart */ = {
+			isa = PBXGroup;
+			children = (
+				50043A7821C76E7900270DFA /* View */,
+			);
+			path = ShopCart;
+			sourceTree = "<group>";
+		};
+		50043A7821C76E7900270DFA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				50043A7921C76EC300270DFA /* ShopCartCell.h */,
+				50043A7A21C76EC300270DFA /* ShopCartCell.m */,
+				50043A7C21C772AF00270DFA /* MRShopCartCellManager.h */,
+				50043A7D21C772AF00270DFA /* MRShopCartCellManager.m */,
+				50043A7F21C79C4800270DFA /* ShopCartListView.h */,
+				50043A8021C79C4800270DFA /* ShopCartListView.m */,
+				50043A8221C79D5400270DFA /* SCCell.h */,
+				50043A8321C79D5400270DFA /* SCCell.m */,
+				50043A8521C79D7F00270DFA /* ShopCartListManager.h */,
+				50043A8621C79D7F00270DFA /* ShopCartListManager.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		5068356A21379B78001AB175 /* Class */ = {
@@ -1186,6 +1239,7 @@
 		506835C421379B78001AB175 /* NativeBridge */ = {
 			isa = PBXGroup;
 			children = (
+				50043A7721C76D6100270DFA /* ShopCart */,
 				CDAB6D18219AC5F800DE6716 /* WaveProgressView */,
 				506835C521379B78001AB175 /* CachesModule.h */,
 				506835C621379B78001AB175 /* CachesModule.m */,
@@ -1449,6 +1503,7 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
+				F9BBF480BD9C40F1BBCB4697 /* RNSensorsAnalyticsModule.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1558,6 +1613,14 @@
 			path = ImageCompression;
 			sourceTree = "<group>";
 		};
+		CD45EDFD21C77E1A00846B39 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD45EE0121C77E1A00846B39 /* libRNSensorsAnalyticsModule.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		CDA2F5062171D780005FD4B3 /* NSObject */ = {
 			isa = PBXGroup;
 			children = (
@@ -1597,6 +1660,7 @@
 				22A6FFEBE58244A4AC56DB5E /* libRNGestureHandler.a */,
 				819703F9E0F54FA6A75C43D4 /* libRCTHotUpdate.a */,
 				AB39A891905F4966BC073930 /* libRNGeolocation.a */,
+				F5B1AC20114D4E68971B3AB1 /* libRNSensorsAnalyticsModule.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1847,6 +1911,10 @@
 				{
 					ProductGroup = CDE9903E21C0FA5C00F46B45 /* Products */;
 					ProjectRef = CDE9903D21C0FA5C00F46B45 /* RNReactNativeRequest.xcodeproj */;
+				},
+				{
+					ProductGroup = CD45EDFD21C77E1A00846B39 /* Products */;
+					ProjectRef = F9BBF480BD9C40F1BBCB4697 /* RNSensorsAnalyticsModule.xcodeproj */;
 				},
 				{
 					ProductGroup = CD1366CA21BE3FCB00754B0E /* Products */;
@@ -2214,6 +2282,13 @@
 			remoteRef = CD1366CD21BE3FCB00754B0E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CD45EE0121C77E1A00846B39 /* libRNSensorsAnalyticsModule.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSensorsAnalyticsModule.a;
+			remoteRef = CD45EE0021C77E1A00846B39 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		CDE9907321C0FA5C00F46B45 /* libRNReactNativeRequest.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2340,6 +2415,7 @@
 				"${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/GenericFolderIcon.png",
 				"${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/lj_Pictures.png",
 				"${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/lj_unknow_icon.png",
+				"${PODS_ROOT}/SensorsAnalyticsSDK/SensorsAnalyticsSDK/SensorsAnalyticsSDK.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
@@ -2352,6 +2428,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GenericFolderIcon.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lj_Pictures.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/lj_unknow_icon.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SensorsAnalyticsSDK.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2383,10 +2460,12 @@
 				5077FCE621A504C5003B860D /* RSAManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				5068363E21379B78001AB175 /* QYChatModule.m in Sources */,
+				50043A7E21C772AF00270DFA /* MRShopCartCellManager.m in Sources */,
 				5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */,
 				5077FCE221A4FE37003B860D /* NSData+Base64.m in Sources */,
 				CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */,
 				5068360F21379B78001AB175 /* JRBaseVC.m in Sources */,
+				50043A7B21C76EC800270DFA /* ShopCartCell.m in Sources */,
 				105CAD0421BE369F00F4746D /* UMAnalyticsModule.m in Sources */,
 				50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */,
 				CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */,
@@ -2395,6 +2474,7 @@
 				5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */,
 				5068363621379B78001AB175 /* JRAddressPickView.m in Sources */,
 				CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */,
+				50043A8121C79C4900270DFA /* ShopCartListView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
@@ -2411,12 +2491,14 @@
 				033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */,
 				5068363421379B78001AB175 /* JRPay.m in Sources */,
 				5068363C21379B78001AB175 /* QRCodeModule.m in Sources */,
+				50043A8421C79D5400270DFA /* SCCell.m in Sources */,
 				5068363021379B78001AB175 /* CachesModule.m in Sources */,
 				CDCB5BDA2196DF71006B5F4E /* UIImage+Util.m in Sources */,
 				5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */,
 				CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */,
 				5068362C21379B78001AB175 /* JRCacheManager.m in Sources */,
 				5068363721379B78001AB175 /* PickerManager.m in Sources */,
+				50043A8721C79D7F00270DFA /* ShopCartListManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2483,12 +2565,14 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 					"$(SRCROOT)/../node_modules/@mr/react-native-geolocation/ios",
 					"$(SRCROOT)/../node_modules/react-native-largelist/ios/STTVTableView",
+					"$(SRCROOT)/../node_modules/@sensors.data/react-native-sensors-analytics/ios",
 				);
 				INFOPLIST_FILE = crm_app_xiugouTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2523,12 +2607,14 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 					"$(SRCROOT)/../node_modules/@mr/react-native-geolocation/ios",
 					"$(SRCROOT)/../node_modules/react-native-largelist/ios/STTVTableView",
+					"$(SRCROOT)/../node_modules/@sensors.data/react-native-sensors-analytics/ios",
 				);
 				INFOPLIST_FILE = crm_app_xiugouTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2575,6 +2661,7 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 					"$(SRCROOT)/../node_modules/react-native-largelist/ios/STTVTableView",
 					"$(SRCROOT)/**",
+					"$(SRCROOT)/../node_modules/@sensors.data/react-native-sensors-analytics/ios",
 				);
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -2624,6 +2711,7 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 					"$(SRCROOT)/../node_modules/react-native-largelist/ios/STTVTableView",
 					"$(SRCROOT)/**",
+					"$(SRCROOT)/../node_modules/@sensors.data/react-native-sensors-analytics/ios",
 				);
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -2668,11 +2756,13 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 					"$(SRCROOT)/../node_modules/@mr/react-native-geolocation/ios",
 					"$(SRCROOT)/../node_modules/react-native-largelist/ios/STTVTableView",
+					"$(SRCROOT)/../node_modules/@sensors.data/react-native-sensors-analytics/ios",
 				);
 				INFOPLIST_FILE = "crm_app_xiugou-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2716,11 +2806,13 @@
 					"$(SRCROOT)/../node_modules/react-native-update/ios/RCTHotUpdate/**",
 					"$(SRCROOT)/../node_modules/@mr/react-native-geolocation/ios",
 					"$(SRCROOT)/../node_modules/react-native-largelist/ios/STTVTableView",
+					"$(SRCROOT)/../node_modules/@sensors.data/react-native-sensors-analytics/ios",
 				);
 				INFOPLIST_FILE = "crm_app_xiugou-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2765,6 +2857,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.crm_app_xiugou-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2789,6 +2882,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
