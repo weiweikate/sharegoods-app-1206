@@ -2,8 +2,8 @@ import { Linking, NativeModules,Platform} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
-import Toast from './../../../utils/bridge';
-import { RSA } from '../../../api/network/RSA';
+import Toast from './../../../utils/bridge'
+import { request } from '@mr/request'
 
 let lastShowImagePickTime = null;
 
@@ -68,29 +68,18 @@ export default {
                    formData.append('file', datas);
                    //commonAPI/ossClient
                    //user/
-                   let url = apiEnvironment.getCurrentHostUrl();
-                   // if (apiEnvironment.envType.indexOf('dev') === 0) {//非dev,但是有端口号的，全部删除端口号
-                   //     url = url + ':8102';
-                   // }
-                    let singParams = RSA.sign({})
-                   fetch(`${url}/common/upload/oss`, {
-                       method: 'POST',
-                       headers: {
-                           'Content-Type': 'multipart/form-data',
-                           'Accept': 'application/json',
-                           ...singParams
-                       },
-                       body: formData
-                   }).then(resq => resq.json()).then(response => {
+                   let url = apiEnvironment.getCurrentHostUrl()
+                   request.setBaseUrl(url)
+                    request.upload(`/common/upload/oss`,datas, {}).then(res => {
                        console.log('+++++')
-                       console.log(response)
+                       console.log(res)
                        console.log('+++++')
                        Toast.hiddenLoading();
-                       if (response.code === 10000 && response.data) {
+                       if (res.code === 10000 && res.data) {
                            callBack({
                                ok: true,
-                               imageUrl: response.data,
-                               imageThumbUrl: response.data
+                               imageUrl: res.data,
+                               imageThumbUrl: res.data
                            });
                        } else {
                            callBack({ ok: false, msg: '上传图片失败' });

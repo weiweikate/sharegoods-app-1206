@@ -181,15 +181,13 @@ export default {
         clearCookies();
     },
 
+    //背景风格
     setDarkMode: () => {
-        if (Platform.OS === 'android') {
-            NativeModules.commModule.setDarkMode();
-        }
+        NativeModules.commModule.setDarkMode();
     },
+    //背景风格
     setLightMode: () => {
-        if (Platform.OS === 'android') {
-            NativeModules.commModule.setLightMode();
-        }
+        NativeModules.commModule.setLightMode();
     },
     isApkExist: (version, onSuccess) => {
         NativeModules.commModule.apkExist(version, onSuccess);

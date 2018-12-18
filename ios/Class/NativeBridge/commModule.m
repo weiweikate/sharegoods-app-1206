@@ -309,4 +309,16 @@ RCT_EXPORT_METHOD(signWith:(NSString *)signString callback:(RCTResponseSenderBlo
   }
 }
 
+RCT_EXPORT_METHOD(setDarkMode){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+  });
+}
+
+RCT_EXPORT_METHOD(setLightMode){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+  });
+}
+
 @end
