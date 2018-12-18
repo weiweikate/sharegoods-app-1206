@@ -529,10 +529,10 @@ class AfterSaleServicePage extends BasePage {
         }
 
 
-        if (parseFloat(applyRefundAmount) === 0 && pageType !== 2) {
-            NativeModules.commModule.toast('售后的金额不能为0');
-            return;
-        }
+        // if (parseFloat(applyRefundAmount) === 0 && pageType !== 2) {
+        //     NativeModules.commModule.toast('售后的金额不能为0');
+        //     return;
+        // }
 
         /** 修改申请*/
         if (this.params.isEdit) {

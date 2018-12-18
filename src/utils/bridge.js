@@ -183,15 +183,15 @@ export default {
 
     setDarkMode: () => {
         if (Platform.OS === 'android') {
-            NativeModules.commModule.setDarkMode();
+            // NativeModules.commModule.setDarkMode();
         }
     },
     setLightMode: () => {
         if (Platform.OS === 'android') {
-            NativeModules.commModule.setLightMode();
+          //  NativeModules.commModule.setLightMode();
         }
     },
     isApkExist: (version, onSuccess) => {
-        NativeModules.commModule.apkExist(version, onSuccess);
+        // NativeModules.commModule.apkExist(version, onSuccess);
     }
 };
