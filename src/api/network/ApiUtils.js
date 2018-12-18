@@ -34,6 +34,7 @@ export default function ApiUtils(Urls) {
                 {
                     console.log('未登陆');
                     User.clearUserInfo();
+                    User.clearToken();
                     // config.auth &&
                     config.nav && config.nav.navigate('login/login/LoginPage', {
                         callback: config.callback
