@@ -7,7 +7,7 @@ import {
     Image,
     TouchableOpacity,
     ListView,
-    RefreshControl,
+    RefreshControl
     // requireNativeComponent
 } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
@@ -19,22 +19,20 @@ import {
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
-// import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
 // import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
 // import { renderShopCartCell } from './ShopCartCell';
-import ShopCartCell from './ShopCartCell';
+import ShopCartCell from '../components/ShopCartCell';
 // import Cell from '../NativeUI/MRShopCartCell';
-
 const dismissKeyboard = require('dismissKeyboard');
+import ShopCartEmptyView from '../components/ShopCartEmptyView';
 // const CartListView = requireNativeComponent('ShopCartListView');
-
 @observer
 export default class ShopCartPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
         title: '购物车',
-        leftNavItemHidden: true,
+        leftNavItemHidden: true
         // show:false
     };
 
@@ -85,67 +83,9 @@ export default class ShopCartPage extends BasePage {
 
     _renderEmptyView = () => {
         return (
-            <View style={{
-                backgroundColor: DesignRule.bgColor,
-                flex: 1,
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <Image
-                    source={res.kongShopCartImg}
-                    style={{
-                        height: 115,
-                        width: 115
-                    }}
-                    resizeMode={'contain'}
-                />
-                <UIText
-                value={'去添加点什么吧'}
-                style={{
-                    marginTop: 10,
-                    fontSize: 15,
-                    color: DesignRule.textColor_secondTitle
-                }}
-                />
-                <UIText
-                    value={'快去商城逛逛吧~'}
-                    style={{
-                        marginTop: 10,
-                        fontSize: 12,
-                        color: DesignRule.textColor_secondTitle
-                    }}
-                />
-
-                <TouchableOpacity
-                    onPress={
-                        () => {
-                            this._gotoLookAround();
-                        }
-                    }
-                >
-                    <View
-                        style={{
-                            marginTop: 22,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderColor: DesignRule.mainColor,
-                            borderWidth: 1,
-                            borderRadius: 18,
-                            width: 115,
-                            height: 36
-                        }}
-                    >
-                        <UIText
-                            value={'去逛逛'}
-                            style={{
-                                color: DesignRule.mainColor,
-                                fontSize: 15
-                            }}
-                        />
-                    </View>
-                </TouchableOpacity>
-            </View>
+            <ShopCartEmptyView btnClickAction={() => {
+                this._gotoLookAround();
+            }}/>
         );
     };
     _gotoLookAround = () => {
@@ -278,15 +218,13 @@ export default class ShopCartPage extends BasePage {
 
     _renderValidItem = (itemData, rowId, rowMap) => {
         return (
-            <ShopCartCell itemData={itemData} rowMap={rowMap} rowId={rowId} cellClickAction={(itemData) => {
-                this._jumpToProductDetailPage(itemData);
-            }}/>
-            //{/*<Cell*/}
-            // {/*style={{*/}
-            // {/*width: ScreenUtils.width,*/}
-//                {/*}}*/}
-            // {/*itemData={itemData}*/}
-            // {/*/>*/}
+            <ShopCartCell itemData={itemData}
+                          rowMap={rowMap}
+                          rowId={rowId}
+                          cellClickAction={
+                              (itemData) => {
+                                  this._jumpToProductDetailPage(itemData);
+                              }}/>
         );
     };
     /**
