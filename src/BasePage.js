@@ -17,19 +17,17 @@ import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
-// import { netStatus } from './comm/components/NoNetHighComponent';
-import { netStateUtils } from '@mr/request'
+import { netState } from '@mr/request'
 import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from 'DesignRule';
 import Toast from './utils/bridge';
-const  netStatus = netStateUtils;
 
 export default class BasePage extends Component {
     constructor(props) {
         super(props);
         this.params = this.props.navigation.state.params || {};
-        this.viewDidLoad = netStatus.isConnected;
+        this.viewDidLoad = netState.isConnected;
         // alert(this.viewDidLoad)
         this.navigateTime = new Date().getTime()
     }
@@ -40,7 +38,7 @@ export default class BasePage extends Component {
     };
 
     componentDidMount() {
-        if (netStatus.isConnected === false) {
+        if (netState.isConnected === false) {
             return;
         }
     }
@@ -78,7 +76,7 @@ export default class BasePage extends Component {
                     请检查你的网络
                 </Text>
                 <TouchableOpacity onPress={() => {
-                    if (netStatus.isConnected) {
+                    if (netState.isConnected) {
                         this.viewDidLoad = true;
                         this.$refreshData();
                         this.setState({ viewDidLoad: true });//为了触发render
@@ -130,7 +128,7 @@ export default class BasePage extends Component {
                                                       this.$navigatorBar = bar;
                                                   }}/>
                 }
-                {this.$isMonitorNetworkStatus() && netStatus.isConnected === false && this.viewDidLoad === false ?
+                {this.$isMonitorNetworkStatus() && netState.isConnected === false && this.viewDidLoad === false ?
                     this._renderDefaultNoNet() :
                     this.renderContianer()}
             </View>
