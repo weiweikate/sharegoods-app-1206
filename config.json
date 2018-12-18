@@ -97,6 +97,10 @@
         "李俊": {
             "name": "李俊",
             "host": "http://172.16.10.79:9090/gateway"
+        },
+        "申xiangyu": {
+            "name": "申xiangyu",
+            "host": "http://172.16.10.91:18080/gateway"
         }
     }
 }

@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     ListView,
     Text,
-    RefreshControl
+    RefreshControl,
+    // requireNativeComponent
 } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
@@ -24,15 +25,18 @@ import DesignRule from 'DesignRule';
 // import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
 // import { renderShopCartCell } from './ShopCartCell';
 import ShopCartCell from './ShopCartCell';
+// import Cell from '../NativeUI/MRShopCartCell';
 
 const dismissKeyboard = require('dismissKeyboard');
+// const CartListView = requireNativeComponent('ShopCartListView');
 
 @observer
 export default class ShopCartPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
         title: '购物车',
-        leftNavItemHidden: true
+        leftNavItemHidden: true,
+        // show:false
     };
 
     constructor(props) {
@@ -97,24 +101,22 @@ export default class ShopCartPage extends BasePage {
                     }}
                     resizeMode={'contain'}
                 />
-                <Text
-                    style={{
-                        marginTop: 10,
-                        fontSize: 15,
-                        color: DesignRule.textColor_secondTitle
-                    }}
-                >
-                    去添加点什么吧
-                </Text>
-                <Text
+                <UIText
+                value={'去添加点什么吧'}
+                style={{
+                    marginTop: 10,
+                    fontSize: 15,
+                    color: DesignRule.textColor_secondTitle
+                }}
+                />
+                <UIText
+                    value={'快去商城逛逛吧~'}
                     style={{
                         marginTop: 10,
                         fontSize: 12,
                         color: DesignRule.textColor_secondTitle
                     }}
-                >
-                    快去商城逛逛吧~
-                </Text>
+                />
 
                 <TouchableOpacity
                     onPress={
@@ -135,15 +137,13 @@ export default class ShopCartPage extends BasePage {
                             height: 36
                         }}
                     >
-                        <Text
+                        <UIText
+                            value={'去逛逛'}
                             style={{
-
                                 color: DesignRule.mainColor,
                                 fontSize: 15
                             }}
-                        >
-                            去逛逛
-                        </Text>
+                        />
                     </View>
                 </TouchableOpacity>
             </View>
@@ -282,6 +282,12 @@ export default class ShopCartPage extends BasePage {
             <ShopCartCell itemData={itemData} rowMap={rowMap} rowId={rowId} cellClickAction={(itemData) => {
                 this._jumpToProductDetailPage(itemData);
             }}/>
+            //{/*<Cell*/}
+            // {/*style={{*/}
+            // {/*width: ScreenUtils.width,*/}
+//                {/*}}*/}
+            // {/*itemData={itemData}*/}
+            // {/*/>*/}
         );
     };
     /**
