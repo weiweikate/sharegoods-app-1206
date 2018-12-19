@@ -44,6 +44,7 @@ import { PageLoadingState, renderViewByLoadingState } from '../../components/pag
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MessageAPI from '../message/api/MessageApi';
 import QYChatUtil from '../mine/page/helper/QYChatModel';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -188,6 +189,17 @@ export default class TopicDetailPage extends BasePage {
                     this.setState({
                         loadingState: PageLoadingState.success
                     }, () => {
+                        /*商品详情埋点*/
+                        const { packageCode, name, firstCategoryId, secCategoryId, levelPrice } = this.state.data;
+                        track(trackEvent.commodityDetail, {
+                            preseat: this.params.preseat || '',
+                            commodityID: packageCode,
+                            commodityName: name,
+                            firstCommodity: firstCategoryId,
+                            secondCommodity: secCategoryId,
+                            pricePerCommodity: levelPrice
+                        });
+
                         if (this.state.data.type === 2) {//1普通礼包  2升级礼包
                             this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退换货，如有产品质量问题，可联系客服进行申诉`);
                         }
@@ -227,7 +239,10 @@ export default class TopicDetailPage extends BasePage {
         if (this.state.activityType !== 3 && (status === 4 || status === 5) && type === 1) {
             this.__timer__ = setTimeout(() => {
                 this.havePushDone = true;
-                this.$navigate('home/product/ProductDetailPage', { productCode: this.state.activityData.prodCode });
+                this.$navigate('home/product/ProductDetailPage', {
+                    productCode: this.state.activityData.prodCode,
+                    preseat: '活动结束跳转'
+                });
             }, 5000);
         }
     };
@@ -264,6 +279,17 @@ export default class TopicDetailPage extends BasePage {
                     this.setState({
                         data: data.data || {}
                     }, () => {
+                        /*商品详情埋点*/
+                        const { name, firstCategoryId, secCategoryId, minPrice } = data.data || {};
+                        track(trackEvent.commodityDetail, {
+                            preseat: this.params.preseat || '',
+                            commodityID: prodCode,
+                            commodityName: name,
+                            firstCommodity: firstCategoryId,
+                            secondCommodity: secCategoryId,
+                            pricePerCommodity: minPrice
+                        });
+
                         this._needPushToNormal();
                         this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
                     });
@@ -302,13 +328,13 @@ export default class TopicDetailPage extends BasePage {
             skuCode: skuCode,
             num: amount,
             code: this.state.activityData.activityCode,
-            productCode:this.state.activityData.prodCode
+            productCode: this.state.activityData.prodCode
         });
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
                 orderType: this.state.activityType,
                 orderProducts: orderProducts,
-                activityCode:this.state.activityData.activityCode,
+                activityCode: this.state.activityData.activityCode
             }
         });
     };
@@ -606,7 +632,7 @@ export default class TopicDetailPage extends BasePage {
             colorType = 0;
         }
 
-        let productPrice, productName, productImgUrl;
+        let productPrice, productName, productImgUrl, firstCategoryId, secCategoryId;
         if (this.state.activityType === 3) {
             const { name, levelPrice, imgUrl } = this.state.data || {};
             productPrice = levelPrice;
@@ -618,6 +644,8 @@ export default class TopicDetailPage extends BasePage {
             productName = name;
             productImgUrl = imgUrl;
         }
+        firstCategoryId = (this.state.data || {}).firstCategoryId;
+        secCategoryId = (this.state.data || {}).secCategoryId;
 
         return (
             <View style={styles.container}>
@@ -701,6 +729,14 @@ export default class TopicDetailPage extends BasePage {
 
                 {/*分享*/}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
+                                trackParmas={{
+                                    commodityID: this.params.activityCode,
+                                    commodityName: productName,
+                                    firstCommodity: firstCategoryId,
+                                    secondCommodity: secCategoryId,
+                                    pricePerCommodity: productPrice
+                                }}
+                                trackEvent={trackEvent.share}
                                 type={'Image'}
                                 imageJson={{
                                     imageUrlStr: productImgUrl,

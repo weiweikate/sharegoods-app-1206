@@ -369,27 +369,33 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setLightMode() {
-        getCurrentActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                StatusBarUtils.setLightMode(getCurrentActivity());
-            }
-        });
+        if (getCurrentActivity() != null) {
+            getCurrentActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    StatusBarUtils.setLightMode(getCurrentActivity());
+                }
+            });
+        }
     }
 
     @ReactMethod
     public void setDarkMode() {
-        getCurrentActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                StatusBarUtils.setDarkMode(getCurrentActivity());
-            }
-        });
+        if (getCurrentActivity() != null) {
+            getCurrentActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    StatusBarUtils.setDarkMode(getCurrentActivity());
+                }
+            });
+        }
     }
 
     @ReactMethod
     public void nativeTaskToBack() {
-        getCurrentActivity().moveTaskToBack(true);
+        if (getCurrentActivity() != null) {
+            getCurrentActivity().moveTaskToBack(true);
+        }
     }
 
     @ReactMethod

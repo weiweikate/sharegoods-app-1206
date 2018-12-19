@@ -85,12 +85,14 @@ export default class HomeSubjectView extends Component {
         if (good.productType === 99) {
             navigate('home/product/ProductDetailPage', {
                 productId: good.productId,
-                productCode: good.prodCode
+                productCode: good.prodCode,
+                preseat:'首页专题'
             });
         } else {
             navigate('topic/TopicDetailPage', {
                 activityType: good.productType,
                 activityCode: good.prodCode,
+                preseat:'首页专题'
             })
         }
     }

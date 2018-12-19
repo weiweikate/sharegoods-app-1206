@@ -64,7 +64,7 @@ const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommModal from 'CommModal';
 import res from '../res';
 import bridge from '../../utils/bridge';
-import {track}from '../../utils/SensorsTrack'
+import { track } from '../../utils/SensorsTrack';
 import DesignRule from 'DesignRule';
 import user from '../../model/user';
 
@@ -72,7 +72,6 @@ export default class CommShareModal extends React.Component {
 
     constructor(props) {
         super(props);
-
         this._bind();
         this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare') ? 2 : 1;
 
@@ -152,13 +151,12 @@ export default class CommShareModal extends React.Component {
             params.miniProgramPath = miniProgramPath;
             params.hdImageURL = hdImageURL;
         }
-        let that = this;
+        if (this.props.trackEvent) {
+            let p = this.props.trackParmas || {};
+            let shareMethod = ['微信好友', '朋友圈', 'QQ好友', 'QQ空间', '微博'][platformType];
+            track(this.props.trackEvent, {shareMethod, ...p});
+        }
         bridge.share(params, () => {
-            if (that.props.trackEvent) {
-                let p = that.props.trackParmas || {};
-                p.shareMethod = ['微信好友', '朋友圈', 'QQ好友', 'QQ空间', '微博'][platformType];
-                track(that.props.trackEvent, p);
-            }
 
         }, (errorStr) => {
 
@@ -166,10 +164,16 @@ export default class CommShareModal extends React.Component {
     }
 
     saveImage(path) {
+        if (this.props.trackEvent) {
+            track(this.props.trackEvent, {shareMethod: '保存图片',...this.props.trackParmas});
+        }
         bridge.saveImage(path);
     }
 
     copyUrl() {
+        if (this.props.trackEvent) {
+            track(this.props.trackEvent, {shareMethod: '复制链接',...this.props.trackParmas});
+        }
         Clipboard.setString(this.props.webJson.linkUrl);
         NativeModules.commModule.toast('复制链接成功');
     }

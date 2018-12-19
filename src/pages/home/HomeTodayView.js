@@ -21,7 +21,7 @@ export default class HomeTodayView extends Component {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
         let params = homeModule.paramsNavigate(item)
         const {navigate} = this.props
-        navigate && navigate(router,  params)
+        navigate && navigate(router,  {...params, preseat:'今日榜单'})
     }
 
     render() {
