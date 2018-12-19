@@ -103,7 +103,7 @@ class User {
     @observable
     pickedUp = null;        //
     @observable
-    storeId = null;         //
+    storeCode = null;         //
     @observable
     roleType = null;        //
     @observable
@@ -142,7 +142,7 @@ class User {
     token = '';
 
     @observable
-    upUserid = null;
+    upUserCode = null;
 
 
     @observable
@@ -241,7 +241,7 @@ class User {
         this.salt = info.salt;                      //加密盐
         this.encryptionCount = info.encryptionCount;//加密次数
         this.pickedUp = info.pickedUp;              //
-        this.storeId = info.storeId;                //
+        this.storeCode = info.storeCode;                //
         this.roleType = info.roleType;              //
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
@@ -256,7 +256,7 @@ class User {
         this.area = info.area;                      //
         this.storeBonusDto = info.storeBonusDto;    //
         this.realnameStatus = info.realnameStatus;    //
-        this.upUserid = info.upUserid;//上级ID，判断是否可以领推广红包
+        this.upUserCode = info.upUserCode;//上级ID，判断是否可以领推广红包
         this.levelFloor = info.levelFloor;//用户上个等级的顶部
         this.levelCeil = info.levelCeil; //升级需要的经验值
         this.profile = info.profile;
@@ -350,7 +350,7 @@ class User {
         this.salt = null;            //加密盐
         this.encryptionCount = 0;    //加密次数
         this.pickedUp = null;        //
-        this.storeId = null;         //
+        this.storeCode = null;         //
         this.roleType = null;        //
         this.level = null;           //
         this.levelName = null;       //
@@ -364,7 +364,7 @@ class User {
         this.area = null;            //
         this.storeBonusDto = null;   //
         this.realnameStatus = null;   //
-        this.upUserid = null;
+        this.upUserCode = null;
         this.levelCeil = null;
         this.levelFloor = null;
         this.profile = null; //简介

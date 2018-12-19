@@ -15,6 +15,8 @@ const bannerHeight = px2dp(230);
 import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode';
 import ImageLoad from '@mr/image-placeholder';
 
+import { track, trackEvent } from '../../utils/SensorsTrack'
+
 @observer
 export default class HomeBannerView extends Component {
     state = {
@@ -57,7 +59,8 @@ export default class HomeBannerView extends Component {
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
         const { navigate } = this.props;
-        navigate(router, params);
+        track(trackEvent.bannerClick, {pageType: 'home', bannerLocation: 'home', bannerID: data.id, bannerRank: data.rank, url: data.imgUrl, bannerName: data.linkTypeCode})
+        navigate(router, {...params, preseat:'home_banner'})
     }
 
     _onPressRow = (index) => {
@@ -66,6 +69,8 @@ export default class HomeBannerView extends Component {
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
         const { navigate } = this.props;
+        console.log('_onPressRow', data)
+        track(trackEvent.bannerClick, {pageType: 'home', bannerLocation: 'home', bannerID: data.id, bannerRank: data.rank, url: data.imgUrl, bannerName: data.linkTypeCode})
         navigate(router, {...params, preseat:'home_banner'})
     };
 

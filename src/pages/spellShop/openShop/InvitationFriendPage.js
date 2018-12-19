@@ -35,7 +35,7 @@ export default class InvitationToShopPage extends BasePage {
         super(props);
         this.state = {
             disable: false,
-            codeString: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
+            codeString: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.code || ''}`,
             wxTip: '分享至微信，为您的店铺增添活力'
         };
     }

@@ -28,9 +28,9 @@ export default class MasterRow extends Component {
     };
 
     _clickAssistantDetail = ()=>{
-        const {userId} = this.props.item;
+        const {userCode} = this.props.item;
         const {onPress} = this.props;
-        onPress && userId && onPress(userId);
+        onPress && userCode && onPress(userCode);
     };
 
     render() {

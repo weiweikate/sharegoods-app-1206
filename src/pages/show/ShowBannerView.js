@@ -11,6 +11,7 @@ import { observer } from 'mobx-react';
 import { showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
+import { track, trackEvent } from '../../utils/SensorsTrack'
 
 @observer
 export default class ShowBannerView extends Component {
@@ -28,6 +29,8 @@ export default class ShowBannerView extends Component {
         const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
         let params = showBannerModules.paramsNavigate(item);
         const { navigate } = this.props;
+        track(trackEvent.bannerClick, {pageType: 'home', bannerLocation: 'home', bannerID: item.id, bannerRank: item.rank, url: item.imgUrl, bannerName: item.linkTypeCode})
+       
         navigate(router, {...params, preseat:'秀场_banner'});
     }
 
@@ -38,6 +41,8 @@ export default class ShowBannerView extends Component {
         const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
         let params = showBannerModules.paramsNavigate(item);
         const { navigate } = this.props;
+
+        track(trackEvent.bannerClick, {pageType: 'home', bannerLocation: 'home', bannerID: item.id, bannerRank: item.rank, url: item.imgUrl, bannerName: item.linkTypeCode})
         navigate(router, {...params, preseat:'秀场_banner'});
     }
 

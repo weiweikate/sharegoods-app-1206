@@ -33,7 +33,7 @@ export default class MyCashAccountPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            id: user.id,
+            id: user.code,
             phone: "",
             pwd: "",
             thirdType: 1,
@@ -92,17 +92,17 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.container}>
                 <ImageBackground style={styles.imageBackgroundStyle}/>
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 13, color: "white" }}>账户余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 13, color: "white" }} allowFontScaling={false}>账户余额(元)</Text>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <View style={{ height: 44, justifyContent: "space-between", marginTop: 10 }}>
                             <Text style={{
                                 marginLeft: 25,
                                 fontSize: 24,
                                 color: "white"
-                            }}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
+                            }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
                         <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text style={{ fontSize: 15, color: "white" }}>提现</Text>
+                            <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
