@@ -27,6 +27,8 @@ import MineApi from '../../mine/api/MineApi';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import apiEnvironment from "../../../api/ApiEnvironment";
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+// import {track,trackEvent}from '../../../utils/SensorsTrack'
 
 const {
     sign_in_bg: signInImageBg,
@@ -149,6 +151,7 @@ export default class SignInPage extends BasePage {
 
     //兑换一元优惠券
     exchangeCoupon = () => {
+        track(trackEvent.receiveDiscountreceiveDiscount,{discountName:'1元抵扣券',discountAmount:1});
         HomeAPI.exchangeTokenCoin().then((data) => {
             this.$toastShow('成功兑换一张1元抵扣券');
             this.reSaveUserInfo();

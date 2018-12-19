@@ -197,7 +197,7 @@ export default class CategorySearchPage extends BasePage {
         // banner点击跳转
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
-                productCode: item.linkTypeCode
+                productCode: item.linkTypeCode,preseat:'类目banner'
             });
         } else if (item.linkType === 2) {
             this.$navigate('topic/DownPricePage', {
@@ -212,7 +212,7 @@ export default class CategorySearchPage extends BasePage {
             let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
-                activityType: type
+                activityType: type,preseat:'专题列表页'
             });
         }
     };

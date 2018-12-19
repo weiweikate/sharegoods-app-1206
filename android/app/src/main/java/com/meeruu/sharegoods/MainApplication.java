@@ -24,6 +24,8 @@ import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
+import com.meeruu.sharegoods.utils.SensorsUtils;
+import com.meituan.android.walle.WalleChannelReader;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
@@ -32,6 +34,7 @@ import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
 import com.reactlibrary.RNGeolocationPackage;
 import com.request.MRNetStatePackage;
+import com.sensorsdata.analytics.RNSensorsAnalyticsPackage;
 import com.squareup.leakcanary.LeakCanary;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
@@ -88,9 +91,16 @@ public class MainApplication extends BaseApplication implements ReactApplication
         }
         LeakCanary.install(this);
         if (getProcessName(this).equals(getPackageName())) {
-            if (!Utils.isApkInDebug()) {
+            // umeng初始化
+            String channel = WalleChannelReader.getChannel(this, "guanwang");
+            if (Utils.isApkInDebug()) {
+                // 初始化 Sensors SDK
+                SensorsUtils.initDebugMode(this, channel);
+            } else {
                 // 捕获闪退日志
                 CrashHandler.getInstance().init(this);
+                // 初始化 Sensors SDK
+                SensorsUtils.initReleaseMode(this, channel);
             }
             // 七鱼初始化
             Unicorn.init(this, "b87fd67831699ca494a9d3de266cd3b0", options(), new QiyuImageLoader(this));
@@ -135,7 +145,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new CookieManagerPackage(),
                     new WebViewBridgePackage(),
                     new LottiePackage(),
-                    new MRNetStatePackage()
+                    new MRNetStatePackage(),
+                    new RNSensorsAnalyticsPackage()
             );
         }
 

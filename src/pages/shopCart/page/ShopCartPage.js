@@ -22,17 +22,23 @@ import shopCartCacheTool from '../model/ShopCartCacheTool';
 import DesignRule from 'DesignRule';
 // import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
 // import { renderShopCartCell } from './ShopCartCell';
-import ShopCartCell from '../components/ShopCartCell';
+
 // import Cell from '../NativeUI/MRShopCartCell';
 const dismissKeyboard = require('dismissKeyboard');
 import ShopCartEmptyView from '../components/ShopCartEmptyView';
+// import ShopCartHeaderView from '../components/ListHeaderView';
 // const CartListView = requireNativeComponent('ShopCartListView');
+import ShopCartCell from '../components/ShopCartCell';
+// import TempShopCartCell from '../components/TempShopCartCell';
+// import  NavHeaderView from '../components/ShopCartNavHeaderView'
+// import HeaderView from '../../order/afterSaleService/components/HeaderView';
+
 @observer
 export default class ShopCartPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
         title: '购物车',
-        leftNavItemHidden: true
+        leftNavItemHidden: true,
         // show:false
     };
 
@@ -47,7 +53,10 @@ export default class ShopCartPage extends BasePage {
             hiddeLeft = true;
         }
         this.$navigationBarOptions.leftNavItemHidden = hiddeLeft;
-        this.state = {};
+        this.state = {
+            showNav:false
+
+        };
     }
 
     componentDidMount() {
@@ -71,7 +80,6 @@ export default class ShopCartPage extends BasePage {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.didBlurSubscription && this.didBlurSubscription.remove();
     }
-
     _render() {
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
@@ -80,6 +88,20 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     }
+
+    // _renderNavHeaderView=()=>{
+    //     return(
+    //         <View
+    //         style={{
+    //             position:'absolute',
+    //             zIndex:10
+    //         }}
+    //         >
+    //             <NavHeaderView/>
+    //         </View>
+    //     )
+    //
+    // }
 
     _renderEmptyView = () => {
         return (
@@ -98,59 +120,108 @@ export default class ShopCartPage extends BasePage {
         const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
         const { statusBarHeight } = ScreenUtils;
         return (
-            <SwipeListView
-                extraData={this.state}
-                style={{ backgroundColor: DesignRule.bgColor }}
-                dataSource={tempArr}
-                disableRightSwipe={true}
-                // renderRow={ data => (
-                //     data.status==validCode? this._renderValidItem(data): this._renderInvalidItem(data)
-                // )}
-                renderRow={(rowData, secId, rowId, rowMap) => (
-                    this._renderValidItem(rowData, rowId, rowMap)
-                    // renderShopCartCell(rowData, rowId, rowMap)
 
-                )}
-                renderHiddenRow={(data, secId, rowId, rowMap) => (
-                    <TouchableOpacity
-                        style={styles.standaloneRowBack}
-                        onPress={() => {
-                            rowMap[`${secId}${rowId}`].closeRow();
-                            this._deleteFromShoppingCartByProductId(data.skuCode);
-                        }}>
-                        <View
-                            style={
-                                {
-                                    backgroundColor: DesignRule.mainColor,
-                                    height: 140,
-                                    width: 75,
-                                    marginTop: -20,
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }
+            <View
+                style={{
+                    width:ScreenUtils.width,
+                    justifyContent:'center',
+                    alignItems:'center',
+                    flex:1
+                }}>
+                {/*{this.state.showNav?this._renderNavHeaderView():null}*/}
+                <SwipeListView
+                    extraData={this.state}
+                    style={{
+                        width: ScreenUtils.width,
+                    }}
+                    dataSource={tempArr}
+                    disableRightSwipe={true}
+                    renderRow={(rowData, secId, rowId, rowMap) => (
+                        this._renderValidItem(rowData, rowId, rowMap)
+                    )}
+                    renderHiddenRow={(data, secId, rowId, rowMap) => (
+                        this._renderRowHiddenComponent(data, secId, rowId, rowMap)
+                    )}
+
+                    listViewRef={(listView) => this.contentList = listView}
+                    rightOpenValue={-75}
+                    swipeRefreshControl={
+                        <RefreshControl
+                            refreshing={shopCartStore.isRefresh}
+                            onRefresh={() => {
+                                this._refreshFun();
                             }
-                        >
-                            <UIText style={styles.backUITextWhite} value='删除'/>
-                        </View>
-                    </TouchableOpacity>
-                )}
-                listViewRef={(listView) => this.contentList = listView}
-                rightOpenValue={-75}
-                swipeRefreshControl={
-                    <RefreshControl
-                        refreshing={shopCartStore.isRefresh}
-                        onRefresh={() => {
-                            this._refreshFun();
+                            }
+                            progressViewOffset={statusBarHeight + 44}
+                            colors={[DesignRule.mainColor]}
+                            title="下拉刷新"
+                            tintColor={DesignRule.textColor_instruction}
+                            titleColor={DesignRule.textColor_instruction}
+                        />
+                    }
+                    // onScroll={(event) => {
+                    //     console.log(event.nativeEvent.contentOffset.y);
+                    //     const offSetY = event.nativeEvent.contentOffset.y;
+                    //     if (offSetY > 100){
+                    //         this.setState(
+                    //             {
+                    //                 showNav:true
+                    //             }
+                    //         )
+                    //     } else {
+                    //         this.setState(
+                    //             {
+                    //                 showNav:false
+                    //             }
+                    //         )
+                    //     }
+                    // }}
+                    // listHeaderView={() => {
+                    //     return (
+                    //       <ShopCartHeaderView/>
+                    //     );
+                    // }}
+                />
+            </View>
+        );
+    };
+    /**
+     * 渲染每行的隐藏组件
+     * @param data
+     * @param secId
+     * @param rowId
+     * @param rowMap
+     * @return {*}
+     * @private
+     */
+    _renderRowHiddenComponent = (data, secId, rowId, rowMap) => {
+        return (
+            <TouchableOpacity
+                style={styles.standaloneRowBack}
+                onPress={() => {
+                    rowMap[`${secId}${rowId}`].closeRow();
+                    this._deleteFromShoppingCartByProductId(data.skuCode);
+                }}>
+                <View
+                    style={
+                        {
+                            backgroundColor: DesignRule.mainColor,
+                            height: 140,
+                            width: 75,
+                            marginTop: -20,
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }
-                        }
-                        progressViewOffset={statusBarHeight + 44}
-                        colors={[DesignRule.mainColor]}
-                        title="下拉刷新"
-                        tintColor={DesignRule.textColor_instruction}
-                        titleColor={DesignRule.textColor_instruction}
-                    />
-                }
-            />
+                    }
+                >
+                    <UIText style={styles.backUITextWhite} value='删除'/>
+                </View>
+                {/*<View*/}
+                {/*style={{*/}
+                    {/*width:40*/}
+                {/*}}*/}
+                {/*/>*/}
+            </TouchableOpacity>
         );
     };
 
@@ -169,7 +240,8 @@ export default class ShopCartPage extends BasePage {
                 style={[{
                     height: 49,
                     width: ScreenUtils.width,
-                    backgroundColor: 'white'
+                    backgroundColor: 'white',
+                    zIndex:20
                 },
                     (!hiddeLeft && ScreenUtils.tabBarHeight > 49)
                         ?
@@ -219,12 +291,12 @@ export default class ShopCartPage extends BasePage {
     _renderValidItem = (itemData, rowId, rowMap) => {
         return (
             <ShopCartCell itemData={itemData}
-                          rowMap={rowMap}
-                          rowId={rowId}
-                          cellClickAction={
-                              (itemData) => {
-                                  this._jumpToProductDetailPage(itemData);
-                              }}/>
+                              rowMap={rowMap}
+                              rowId={rowId}
+                              cellClickAction={
+                                  (itemData) => {
+                                      this._jumpToProductDetailPage(itemData);
+                                  }}/>
         );
     };
     /**
@@ -298,7 +370,8 @@ export default class ShopCartPage extends BasePage {
         //跳转产品详情
         this.$navigate('home/product/ProductDetailPage', {
             productId: itemData.productId,
-            productCode: itemData.productCode
+            productCode: itemData.productCode,
+            preseat:'购物车'
         });
     };
     _selectAll = () => {
@@ -313,7 +386,7 @@ export default class ShopCartPage extends BasePage {
 const styles = StyleSheet.create({
     standaloneRowBack: {
         alignItems: 'center',
-        backgroundColor: DesignRule.bgColor,
+        // backgroundColor: DesignRule.bgColor,
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end'
