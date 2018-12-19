@@ -32,6 +32,7 @@ import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
 import com.reactlibrary.RNGeolocationPackage;
 import com.request.MRNetStatePackage;
+import com.sensorsdata.analytics.RNSensorsAnalyticsPackage;
 import com.squareup.leakcanary.LeakCanary;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
@@ -135,7 +136,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new CookieManagerPackage(),
                     new WebViewBridgePackage(),
                     new LottiePackage(),
-                    new MRNetStatePackage()
+                    new MRNetStatePackage(),
+                    new RNSensorsAnalyticsPackage()
             );
         }
 
