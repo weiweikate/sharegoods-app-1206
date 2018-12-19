@@ -143,7 +143,7 @@ export default class SearchResultPage extends BasePage {
             track(trackEvent.search, {
                 keyWord: this.params.keywords,
                 hasResult: dataArr.length !== 0,
-                isHistory: StringUtils.isNoEmpty(this.params.isHistory),
+                isHistory: this.params.isHistory,
                 isRecommend: StringUtils.isNoEmpty(this.params.hotWordId)
             });
             this.setState({
@@ -255,7 +255,7 @@ export default class SearchResultPage extends BasePage {
             this.$toastShow('搜索内容不能为空');
             return;
         }
-        this.params.isHistory = undefined;
+        this.params.isHistory = false;
         this.params.categoryId = undefined;
         this.params.hotWordId = undefined;
         this.params.keywords = text;
