@@ -227,7 +227,7 @@ export default class TopicDetailPage extends BasePage {
         if (this.state.activityType !== 3 && (status === 4 || status === 5) && type === 1) {
             this.__timer__ = setTimeout(() => {
                 this.havePushDone = true;
-                this.$navigate('home/product/ProductDetailPage', { productCode: this.state.activityData.prodCode });
+                this.$navigate('home/product/ProductDetailPage', { productCode: this.state.activityData.prodCode ,preseat:'活动结束跳转'});
             }, 5000);
         }
     };

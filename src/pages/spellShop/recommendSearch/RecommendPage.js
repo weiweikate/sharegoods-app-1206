@@ -251,7 +251,7 @@ export default class RecommendPage extends BasePage {
     _clickItem = (item) => {
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
-                productCode: item.linkTypeCode
+                productCode: item.linkTypeCode,preseat:'拼店推荐banner'
             });
         } else if (item.linkType === 2) {
             this.$navigate('topic/DownPricePage', {

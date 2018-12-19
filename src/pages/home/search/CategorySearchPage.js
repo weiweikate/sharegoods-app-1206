@@ -197,7 +197,7 @@ export default class CategorySearchPage extends BasePage {
         // banner点击跳转
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
-                productCode: item.linkTypeCode
+                productCode: item.linkTypeCode,preseat:'类目banner'
             });
         } else if (item.linkType === 2) {
             this.$navigate('topic/DownPricePage', {

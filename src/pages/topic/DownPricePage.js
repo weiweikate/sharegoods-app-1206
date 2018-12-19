@@ -141,7 +141,8 @@ export default class DownPricePage extends BasePage {
         if (itemData.productType === 99) {
             this.$navigate('home/product/ProductDetailPage', {
                 productId: itemData.productId,
-                productCode: itemData.prodCode
+                productCode: itemData.prodCode,
+                preseat:'专题列表页'
             });
         } else if (itemData.productType === 1 || itemData.productType === 2 || itemData.productType === 3) {
             this.$navigate('topic/TopicDetailPage', {
