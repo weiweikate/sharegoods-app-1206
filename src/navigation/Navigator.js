@@ -1,11 +1,10 @@
-
-import { NavigationActions, StackNavigator } from 'react-navigation'
-import Router from './Stack'
-import { Platform, NativeModules } from 'react-native'
-import RouterMap from './RouterMap'
+import { NavigationActions, StackNavigator } from 'react-navigation';
+import Router from './Stack';
+import { Platform, NativeModules } from 'react-native';
+import RouterMap from './RouterMap';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
-import Analytics from '../utils/AnalyticsUtil'
-import { trackViewScreen } from '../utils/SensorsTrack'
+import Analytics from '../utils/AnalyticsUtil';
+import { trackViewScreen } from '../utils/SensorsTrack';
 
 const Navigator = StackNavigator(Router,
     {
@@ -16,10 +15,10 @@ const Navigator = StackNavigator(Router,
         navigationOptions: {
             gesturesEnabled: true
         },
-        transitionConfig: (transitionProps,prevTransitionProps,isModal) =>{
-                return({
-                    screenInterpolator: CardStackStyleInterpolator.forHorizontal
-                })
+        transitionConfig: (transitionProps, prevTransitionProps, isModal) => {
+            return ({
+                screenInterpolator: CardStackStyleInterpolator.forHorizontal
+            });
         }
     }
 );
@@ -42,36 +41,37 @@ Navigator.router.getStateForAction = (action, state) => {
     }
 
     if (state && action.type === NavigationActions.NAVIGATE) {
-        let length =  state.routes.length
-        let currentRoute = state.routes[length - 1]
-        let nextRoute = action.routeName
+        let length = state.routes.length;
+        let currentRoute = state.routes[length - 1];
+        let nextRoute = action.routeName;
         if (currentRoute
             && nextRoute === RouterMap.LoginPage
             && currentRoute.routeName === RouterMap.LoginPage) {
-            return null
+            return null;
         }
     }
 
     if (action.type === NavigationActions.INIT) {
-        const currentPage = 'HomePage'
-        Analytics.onPageStart(currentPage)
-        trackViewScreen(currentPage, {})
-        // trackTimerStart(encodeURIComponent(currentPage))
+        const currentPage = 'HomePage';
+        Analytics.onPageStart(currentPage);
+        trackViewScreen('$AppViewScreen', {
+            '$screen_name': currentPage
+        });
     }
 
     if (action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK) {
-        const currentPage = getCurrentRouteName(state)
-        console.log('getStateForAction currentpage end', currentPage)
-        Analytics.onPageEnd(currentPage)
-        // trackTimerEnd(encodeURIComponent(currentPage), {})
+        const currentPage = getCurrentRouteName(state);
+        console.log('getStateForAction currentpage end', currentPage);
+        Analytics.onPageEnd(currentPage);
     }
 
     if (action.type === 'Navigation/COMPLETE_TRANSITION') {
-        const currentPage = getCurrentRouteName(state)
-        console.log('getStateForAction currentpage start', currentPage)
-        Analytics.onPageStart(currentPage)
-        trackViewScreen(currentPage, {})
-        // trackTimerStart( encodeURIComponent(currentPage))
+        const currentPage = getCurrentRouteName(state);
+        console.log('getStateForAction currentpage start', currentPage);
+        Analytics.onPageStart(currentPage);
+        trackViewScreen('$AppViewScreen', {
+            '$screen_name': currentPage
+        });
     }
 
     // console.log('getStateForAction', action, state)
@@ -87,6 +87,6 @@ export const getCurrentRouteName = (navigationState) => {
         return getCurrentRouteName(route);
     }
     return route.routeName;
-}
+};
 
-export default Navigator
+export default Navigator;
