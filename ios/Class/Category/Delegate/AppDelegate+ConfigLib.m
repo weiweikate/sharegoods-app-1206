@@ -23,6 +23,7 @@
 #import <React/RCTLinkingManager.h>
 #import "SensorsAnalyticsSDK.h"
 #import "BGKeychainTool.h"
+#import "JRBaseVC.h"
 
 
 @implementation AppDelegate (ConfigLib)
@@ -86,12 +87,12 @@
 - (void)initSensorsAnalyticsWithLaunchOptions:(NSDictionary *)launchOptions {
   
   // 初始化 SDK
-  [SensorsAnalyticsSDK sharedInstanceWithServerURL:SA_SERVER_URL
+  SensorsAnalyticsSDK * sdkInstance = [SensorsAnalyticsSDK sharedInstanceWithServerURL:SA_SERVER_URL
                                   andLaunchOptions:launchOptions
                                       andDebugMode:SA_DEBUG_MODE];
   
   // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
-  [[SensorsAnalyticsSDK sharedInstance] enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
+  [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
    SensorsAnalyticsEventTypeAppEnd|
    SensorsAnalyticsEventTypeAppClick];
   /** 设置公共属性*/
@@ -102,9 +103,12 @@
                                     @"product": [NSString stringWithFormat:@"%@-App", app_Name]
                                     };
   NSString *uuid = [BGKeychainTool getDeviceIDInKeychain];
-  [[SensorsAnalyticsSDK sharedInstance] registerSuperProperties:superProperties];
-  [[SensorsAnalyticsSDK sharedInstance] trackInstallation:@"AppInstall" withProperties:@{@"DownloadChannel": @"appStore"}];
-  [[SensorsAnalyticsSDK sharedInstance] identify: uuid];
+  
+  [sdkInstance registerSuperProperties:superProperties];
+  [sdkInstance trackInstallation:@"AppInstall" withProperties:@{@"DownloadChannel": @"appStore"}];
+  // 忽略单个页面
+  [sdkInstance ignoreAutoTrackViewControllers:@[[JRBaseVC class]]];
+  [sdkInstance identify: uuid];
   
 }
 

@@ -267,7 +267,7 @@ export default class RefreshFlatList extends React.Component {
           //onLayout={this.onLayout.bind(this)}
           refreshControl={
               <RefreshControl
-                  refreshing={this.refreshing}
+                  refreshing={this.state.refreshing}
                   onRefresh={this._onRefresh.bind(this)}
                   colors={[DesignRule.mainColor]}
                   tintColor={DesignRule.mainColor}
