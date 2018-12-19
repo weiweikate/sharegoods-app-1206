@@ -154,14 +154,13 @@ export default class LoginTopView extends Component {
 
                     </View>
                 </TouchableOpacity>
-                <View style={Styles.oldUserLoginBgStyle}>
-                    <TouchableOpacity onPress={this.props.oldUserLoginClick}>
-                        <Text style={Styles.oldUserLoginBtn}>
-                            老用户激活>>
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
+                {/*<View style={Styles.oldUserLoginBgStyle}>*/}
+                    {/*<TouchableOpacity onPress={this.props.oldUserLoginClick}>*/}
+                        {/*<Text style={Styles.oldUserLoginBtn}>*/}
+                            {/*老用户激活>>*/}
+                        {/*</Text>*/}
+                    {/*</TouchableOpacity>*/}
+                {/*</View>*/}
             </View>
         );
     }

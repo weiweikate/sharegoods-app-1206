@@ -305,7 +305,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             user.saveUserInfo(data);
         }).catch(err => {
             if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+                this.gotoLoginPage();
             }
         });
         this.getDataFromNetwork();

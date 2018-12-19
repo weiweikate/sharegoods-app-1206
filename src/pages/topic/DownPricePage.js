@@ -150,7 +150,7 @@ export default class DownPricePage extends BasePage {
                 activityType: itemData.productType,preseat:'专题列表页'
             });
         } else if (itemData.productType === 5) {
-            this.$navigate('topic/TopicPage', {
+            this.$navigate('topic/DownPricePage', {
                 linkTypeCode: itemData.prodCode
             });
         }

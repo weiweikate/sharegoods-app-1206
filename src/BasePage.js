@@ -22,6 +22,7 @@ import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from 'DesignRule';
 import Toast from './utils/bridge';
+import RouterMap from './navigation/RouterMap';
 
 export default class BasePage extends Component {
     constructor(props) {
@@ -101,7 +102,16 @@ export default class BasePage extends Component {
             </View>
         );
     }
-
+    /**
+     * 跳转登录页面
+     */
+    gotoLoginPage=(params={})=>{
+        if (true){
+            this.$navigate(RouterMap.LoginPage,params);
+        } else {
+            this.$navigate(RouterMap.OldUserLoginPage,params);
+        }
+    }
     renderContianer() {
         let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
         return (

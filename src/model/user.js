@@ -154,6 +154,10 @@ class User {
     @observable
     profile = null;
 
+    //用户靓号
+    @observable
+    perfectNumberCode = null;
+
     @action getToken = () => {
         if (this.token) {
             return Promise.resolve(this.token);
@@ -260,6 +264,8 @@ class User {
         this.levelFloor = info.levelFloor;//用户上个等级的顶部
         this.levelCeil = info.levelCeil; //升级需要的经验值
         this.profile = info.profile;
+        //用户靓号
+        this.perfectNumberCode = info.perfectNumberCode;
         if (saveToDisk) {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });

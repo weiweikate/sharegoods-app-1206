@@ -71,7 +71,7 @@ export default class MyMentorPage extends BasePage {
         return (
             <View style={styles.container}>
                 {this._headerRender()}
-                {this._itemRender("名称", this.state.nickName)}
+                {this._itemRender("昵称", this.state.nickName)}
                 {/*{this._lineRender()}*/}
                 {/*{this._itemRender("职称", this.state.levelName)}*/}
                 {/*{this._lineRender()}*/}
