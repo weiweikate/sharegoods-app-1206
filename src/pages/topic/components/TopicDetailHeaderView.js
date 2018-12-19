@@ -102,37 +102,37 @@ export default class TopicDetailHeaderView extends Component {
                             marginTop: 14,
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13
-                        }}>{tittle}</Text>
+                        }} allowFontScaling={false}>{tittle}</Text>
                         {StringUtils.isNoEmpty(secondNameS) ? <Text style={{
                             marginTop: 5, color: DesignRule.textColor_secondTitle,
                             fontSize: 13
                         }}>{secondNameS}</Text> : null}
                         {activityType === 3 ?
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                                <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
+                                <Text style={{ color: DesignRule.mainColor, fontSize: 18 }} allowFontScaling={false}>{`￥${nowPrice}起`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
                                     color: DesignRule.textColor_instruction,
                                     fontSize: 10,
                                     textDecorationLine: 'line-through'
-                                }}>{`￥${oldPrice}`}</Text>
+                                }} allowFontScaling={false}>{`￥${oldPrice}`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
                                     backgroundColor: DesignRule.mainColor,
                                     color: 'white',
                                     fontSize: 10, paddingHorizontal: 5
-                                }}>{levelTypeName}</Text>
+                                }} allowFontScaling={false}>{levelTypeName}</Text>
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11
-                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
+                            }} allowFontScaling={false}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
-                            }}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
+                            }} allowFontScaling={false}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
                         </View>
                     </View>
                 </View>
@@ -148,7 +148,7 @@ export default class TopicDetailHeaderView extends Component {
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: 13,
                                 marginLeft: 16
-                            }}>抢拍规则</Text>
+                            }} allowFontScaling={false}>抢拍规则</Text>
                             <Image style={{ marginRight: 16 }} source={xjt_03}/>
                         </TouchableOpacity>
                         <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
@@ -161,12 +161,12 @@ export default class TopicDetailHeaderView extends Component {
                         marginVertical: 16,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}>服务</Text>
+                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }} allowFontScaling={false}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,
                             fontSize: 12
-                        }}>{`正品保证·急速发货 ${activityType === 3 ? '' : (afterSaleServiceDaysTT === 0 ? `无售后服务` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT || ''}天无理由退换`)}`}</Text>
+                        }} allowFontScaling={false}>{`正品保证·急速发货 ${activityType === 3 ? '' : (afterSaleServiceDaysTT === 0 ? `无售后服务` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT || ''}天无理由退换`)}`}</Text>
                     </View>
                 </View>
             </View>

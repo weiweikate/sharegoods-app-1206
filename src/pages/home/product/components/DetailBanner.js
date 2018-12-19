@@ -34,7 +34,7 @@ export class DetailBanner extends Component {
         const bannerCount = (this.productImgListTemp || []).length;
         return <View style={styles.indexViewTwo}>
             <Text
-                style={styles.text}>{this.state.messageIndex + 1} / {bannerCount}</Text>
+                style={styles.text} allowFontScaling={false}>{this.state.messageIndex + 1} / {bannerCount}</Text>
         </View>;
     };
 
@@ -42,7 +42,7 @@ export class DetailBanner extends Component {
     _renderPagination = (index, total) => {
         return <View style={styles.indexViewTwo}>
             <Text
-                style={styles.text}>{index + 1}/{total}</Text>
+                style={styles.text} allowFontScaling={false}>{index + 1}/{total}</Text>
         </View>;
     };
 
@@ -61,7 +61,7 @@ export class DetailBanner extends Component {
                     <View>
                         <UIImage source={{ uri: originalImg }}
                                  style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}
-                                 resizeMode="contain"/>
+                                 resizeMode={'cover'}/>
                     </View>
                 </TouchableWithoutFeedback>
             );
@@ -75,7 +75,7 @@ export class DetailBanner extends Component {
         let productImgListTemp = [...(imgFileList || [])];
         productImgListTemp = productImgListTemp || [];
         productImgListTemp.unshift({ originalImg: imgUrl });
-        this.productImgListOutVideo = productImgListTemp;
+        this.productImgListOutVideo = [...productImgListTemp];
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.state.haveVideo = true;
             productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
@@ -123,7 +123,7 @@ export class DetailBanner extends Component {
                         <Text style={{
                             color: DesignRule.white,
                             fontSize: 13
-                        }}>{`${upTime ? formatDate(upTime, 'MM月dd号HH:mm') : ''}开始售卖`}</Text>
+                        }} allowFontScaling={false}>{`${upTime ? formatDate(upTime, 'MM月dd号HH:mm') : ''}开始售卖`}</Text>
                     </View> : null}
                     {Platform.OS === 'ios' ? this._renderStyle() : null}
                 </View>

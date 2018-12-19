@@ -10,7 +10,7 @@ import {
     ImageBackground,
     TouchableOpacity
 } from 'react-native';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '@mr/image-placeholder';
 //Source
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -21,6 +21,7 @@ import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import res from '../res';
+import resCommon from '../../../comm/res';
 
 const RingImg = res.myShop.headBg;
 const HeaderBarBgImg = res.myShop.txbg_03;
@@ -32,8 +33,7 @@ const QbIcon = res.myShop.dzfhj_03_03;
 const MoneyIcon = res.myShop.ccz_03;
 const detail_zongti = res.myShop.detail_zongti;
 const detail_benci = res.myShop.detail_benci;
-const NavLeft = res.myShop.NavLeft;
-
+const NavLeft = resCommon.button.white_back;
 
 export default class ShopAssistantDetailPage extends BasePage {
 
@@ -80,7 +80,7 @@ export default class ShopAssistantDetailPage extends BasePage {
     _renderDescRow = (icon, title, style = { marginBottom: 15 }) => {
         return <View style={[{ flexDirection: 'row', alignItems: 'center' }, style]}>
             <Image source={icon}/>
-            <Text style={styles.rowTitle}>{title}</Text>
+            <Text style={styles.rowTitle} allowFontScaling={false}>{title}</Text>
         </View>;
     };
 
@@ -112,8 +112,8 @@ export default class ShopAssistantDetailPage extends BasePage {
     _renderRow = (icon, title, desc) => {
         return (<View style={styles.row}>
             <Image style={styles.icon} source={icon}/>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.desc}>{desc}</Text>
+            <Text style={styles.title} allowFontScaling={false}>{title}</Text>
+            <Text style={styles.desc} allowFontScaling={false}>{desc}</Text>
         </View>);
     };
 
@@ -124,8 +124,6 @@ export default class ShopAssistantDetailPage extends BasePage {
 
     renderContent = () => {
         const { userInfo } = this.state;
-        const headerWidth = 65 / 375 * SCREEN_WIDTH;
-
         const { updateTime, dealerTotalBonus, dealerThisTimeBonus } = this.state.userInfo;
 
         //dealerTotalBonusCount参与店铺分红次数
@@ -142,16 +140,10 @@ export default class ShopAssistantDetailPage extends BasePage {
                     }}>
                         <ImageBackground source={RingImg}
                                          style={styles.headerBg}>
-                            {
-                                userInfo.headImg ?
-                                    <UIImage
-                                        style={{
-                                            width: headerWidth,
-                                            height: headerWidth,
-                                            borderRadius: headerWidth / 2
-                                        }}
-                                        source={{ uri: userInfo.headImg }}/> : null
-                            }
+                            <UIImage
+                                style={styles.headImg}
+                                source={{ uri: userInfo.headImg }}
+                                borderRadius={34}/>
                         </ImageBackground>
                         <View style={styles.shopInContainer}>
                             {this._renderDescRow(NameIcon, `名称：${userInfo.nickName || ''}`)}
@@ -161,7 +153,7 @@ export default class ShopAssistantDetailPage extends BasePage {
                         </View>
                     </View>
                 </ImageBackground>
-                {this._renderRow(QbIcon, '加入店铺时间', DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
+                {this._renderRow(QbIcon, '加入店铺时间', updateTime && DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
                 {this.renderSepLine()}
                 {this._renderRow(MoneyIcon, '共获得分红总额', `${((dealerTotalBonus || 0) - (dealerThisTimeBonus || 0))}元`)}
                 {this.renderSepLine()}
@@ -216,6 +208,10 @@ const styles = StyleSheet.create({
         height: 105 / 375 * SCREEN_WIDTH,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    headImg: {
+        width: 68,
+        height: 68
     },
     shopInContainer: {
         height: 105 / 375 * SCREEN_WIDTH,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {  View ,} from 'react-native';
 import Swiper from 'react-native-swiper';
 import EmptyUtils from '../../utils/EmptyUtils';
-
+import _ from 'lodash'
 // const ViewPager = props => {
 //     const {
 //         horizontal = true,
@@ -112,8 +112,9 @@ class ViewPager extends Component{
     }
 
 
-    componentWillReceiveProps(nextprops) {
-        if(nextprops.arrayData !== this.props.arrayData){
+    componentWillReceiveProps(nextprops,nextState) {
+        let deff = _.differenceWith(nextprops.arrayData, this.props.arrayData, _.isEqual);
+        if(deff && deff.length > 0){
             this.setState({
                 arrayData:[]
             },()=>{
@@ -123,7 +124,15 @@ class ViewPager extends Component{
             })
         }
     }
-
+    shouldComponentUpdate(nextProps,nextState){
+        let deffProps = _.differenceWith(nextProps.arrayData, this.props.arrayData, _.isEqual);
+        let deffState = _.differenceWith(nextState.arrayData, this.state.arrayData, _.isEqual);
+        if((deffProps && deffProps.length > 0) || (deffState && deffState.length >  0)){
+            return true;
+        }else {
+            return false;
+        }
+    }
 
     renderSwiper = () => {
         let { ...props } = this.props;

@@ -319,3 +319,41 @@ public static final int *;
     public static final ** CREATOR;
 }
 -keepattributes Signature
+
+#sensor
+-dontwarn com.sensorsdata.analytics.android.**
+-keep class com.sensorsdata.analytics.android.** {
+*;
+}
+-keep class **.R$* {
+    <fields>;
+}
+-keep public class * extends android.content.ContentProvider
+-keepnames class * extends android.view.View
+
+-keep class * extends android.app.Fragment {
+ public void setUserVisibleHint(boolean);
+ public void onHiddenChanged(boolean);
+ public void onResume();
+ public void onPause();
+}
+-keep class android.support.v4.app.Fragment {
+ public void setUserVisibleHint(boolean);
+ public void onHiddenChanged(boolean);
+ public void onResume();
+ public void onPause();
+}
+-keep class * extends android.support.v4.app.Fragment {
+ public void setUserVisibleHint(boolean);
+ public void onHiddenChanged(boolean);
+ public void onResume();
+ public void onPause();
+}
+
+# 如果使用了 DataBinding
+-dontwarn android.databinding.**
+-keep class android.databinding.** { *; }
+-keep class 您项目的包名.databinding.** {
+    <fields>;
+    <methods>;
+}

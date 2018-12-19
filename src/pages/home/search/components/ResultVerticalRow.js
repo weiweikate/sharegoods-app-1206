@@ -44,13 +44,13 @@ export default class ResultVerticalRow extends Component {
                         <UIImage style={styles.img} source={{ uri: imgUrl || '' }}/>
                         <View style={styles.textContentView}>
                             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
-                                  numberOfLines={2}>{`${name || ''}`}</Text>
+                                  numberOfLines={2} allowFontScaling={false}>{`${name || ''}`}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={{
                                     color: DesignRule.mainColor,
                                     fontSize: 17
-                                }}>{`￥${minPrice || ' '}`}<Text
-                                    style={{ fontSize: 12 }}>起</Text>
+                                }} allowFontScaling={false}>{`￥${minPrice || ' '}`}<Text
+                                    style={{ fontSize: 12 }} allowFontScaling={false}>起</Text>
                                 </Text>
                             </View>
                         </View>

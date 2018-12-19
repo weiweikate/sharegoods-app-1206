@@ -24,9 +24,9 @@ import StringUtils from '../../../utils/StringUtils';
 import {
     UIText, UIImage
 } from '../../../components/ui';
-import RefreshLargeList from 'RefreshLargeList';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import RefreshFlatList from '../../../comm/components/RefreshFlatList';
 const {
     afterSaleService: {
         icon_refund,
@@ -88,7 +88,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
 
     renderItem({ item }) {
         return (
-            <View>
+            <View style={{height: 160}}>
                 <View style={{ height: 10 }}/>
                 <GoodsGrayItem
                     uri={item.specImg}
@@ -157,12 +157,11 @@ export default class AfterSaleListPage extends BasePage<Props> {
 
         return (
             <View style={styles.container}>
-                <RefreshLargeList
+                <RefreshFlatList
                     style={styles.container}
                     url={orderApi.afterSaleList}
                     renderItem={this.renderItem}
                     params={params}
-                    heightForCell={() => 160}
                     totalPageNum={(result)=> {return result.data.isMore ? 10 : 0}}
                     handleRequestResult={(result)=>{return result.data.list}}
                     // ref={(ref) => {this.list = ref}}

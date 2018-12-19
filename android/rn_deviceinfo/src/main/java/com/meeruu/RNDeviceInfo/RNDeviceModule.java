@@ -1,44 +1,46 @@
 package com.meeruu.RNDeviceInfo;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.net.wifi.WifiManager;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
-import android.os.BatteryManager;
-import android.provider.Settings.Secure;
-import android.webkit.WebSettings;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
-import android.app.ActivityManager;
 import android.util.DisplayMetrics;
+import android.webkit.WebSettings;
 
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.Promise;
+import com.meeruu.commonlib.base.BaseApplication;
+import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.DeviceUtils;
+import com.meeruu.commonlib.utils.ScreenUtils;
+import com.meituan.android.walle.WalleChannelReader;
 
+import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.lang.Runtime;
-import java.net.NetworkInterface;
 
 import javax.annotation.Nullable;
 
@@ -99,15 +101,28 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         return current.getCountry();
     }
 
-    private Boolean isEmulator() {
+    public boolean isEmulator() {
+        String url = "tel:" + "123456";
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(url));
+        intent.setAction(Intent.ACTION_DIAL);
+        // 是否可以处理跳转到拨号的 Intent
+        boolean canResolveIntent = intent.resolveActivity(BaseApplication.appContext.getPackageManager()) != null;
+
         return Build.FINGERPRINT.startsWith("generic")
-                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.FINGERPRINT.toLowerCase().contains("vbox")
+                || Build.FINGERPRINT.toLowerCase().contains("test-keys")
                 || Build.MODEL.contains("google_sdk")
                 || Build.MODEL.contains("Emulator")
+                || Build.SERIAL.equalsIgnoreCase("unknown")
+                || Build.SERIAL.equalsIgnoreCase("android")
                 || Build.MODEL.contains("Android SDK built for x86")
                 || Build.MANUFACTURER.contains("Genymotion")
                 || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-                || "google_sdk".equals(Build.PRODUCT);
+                || "google_sdk".equals(Build.PRODUCT)
+                || ((TelephonyManager) BaseApplication.appContext.getSystemService(Context.TELEPHONY_SERVICE))
+                .getNetworkOperatorName().toLowerCase().equals("android")
+                || !canResolveIntent;
     }
 
     private Boolean isTablet() {
@@ -310,6 +325,8 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
         actMgr.getMemoryInfo(memInfo);
         constants.put("totalMemory", memInfo.totalMem);
+        constants.put("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
+        constants.put("channel", WalleChannelReader.getChannel(reactContext, "guanwang"));
 
         return constants;
     }

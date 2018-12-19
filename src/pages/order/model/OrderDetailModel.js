@@ -194,7 +194,7 @@ class OrderDetailAfterServiceModel{
             ],
         },{
             index:5,
-            buyState:'订单已关闭',
+            buyState:'交易关闭',
             moreDetail:'',
             sellerState:'已关闭',
             menu:[

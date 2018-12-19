@@ -2,15 +2,16 @@
 * 首页查询
 */
 
-import React from "react";
-import { View, StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-import ScreenUtils from "../../utils/ScreenUtils";
+import React from 'react';
+import { View, StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils';
 
-const { px2dp, statusBarHeight } = ScreenUtils;
-import UIText from "../../components/ui/UIText";
-import DesignRule from "DesignRule";
-import User from "../../model/user";
-import res from "./res";
+const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
+import UIText from '../../components/ui/UIText';
+import DesignRule from 'DesignRule';
+import User from '../../model/user';
+import res from './res';
+import bridge from '../../utils/bridge';
 
 const logoRed = res.home_icon_logo_red;
 const logoWhite = res.home_icon_logo_white;
@@ -21,28 +22,30 @@ const msgWhite = res.message_white;
 export default ({ navigation, whiteIcon, hasMessage }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
+            {/*改变状态栏字体颜色*/}
+            {whiteIcon ? bridge.setDarkMode() : bridge.setLightMode()}
             <Image source={whiteIcon ? logoWhite : logoRed} style={styles.logo}/>
-            <TouchableOpacity style={[styles.searchBox, { backgroundColor: whiteIcon ? "white" : "#E4E5E6" }]}
+            <TouchableOpacity style={[styles.searchBox, { backgroundColor: whiteIcon ? 'white' : '#E4E5E6' }]}
                               onPress={() => {
-                                  navigation("home/search/SearchPage");
+                                  navigation('home/search/SearchPage');
                               }}>
                 <Image source={searchImg} style={styles.searchIcon}/>
-                <UIText style={styles.inputText} value={"请输入关键词搜索"}/>
+                <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
             </TouchableOpacity>
             <TouchableWithoutFeedback onPress={() => {
                 if (!User.isLogin) {
-                    navigation("login/login/LoginPage");
+                    navigation('login/login/LoginPage');
                     return;
                 }
-                navigation("message/MessageCenterPage");
+                navigation('message/MessageCenterPage');
             }}>
-                <View style={{ height: 32, width: 32, justifyContent: "center", alignItems: "center" }}>
+                <View style={{ height: 32, width: 32, justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={whiteIcon ? msgWhite : msgBlack} style={styles.msgIcon}/>
                     {hasMessage ? <View style={{
                         width: 10,
                         height: 10,
                         backgroundColor: DesignRule.mainColor,
-                        position: "absolute",
+                        position: 'absolute',
                         top: 2,
                         right: 2,
                         borderRadius: 5
@@ -52,24 +55,24 @@ export default ({ navigation, whiteIcon, hasMessage }) =>
         </View>
         {
             whiteIcon ? null :
-                <View style={{ height: 0.5, backgroundColor: "#ccc" }}/>}
+                <View style={{ height: 0.5, backgroundColor: '#ccc' }}/>}
     </View>
 
 let styles = StyleSheet.create({
     navBar: {
-        flexDirection: "column",
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
-        position: "absolute",
+        flexDirection: 'column',
+        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
+        position: 'absolute',
         left: 0,
         right: 0,
         zIndex: 4
     },
     navContent: {
         flex: 1,
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "transparent",
-        justifyContent: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
         paddingTop: statusBarHeight - (ScreenUtils.isIOSX ? 10 : 0),
         marginLeft: px2dp(15),
         marginRight: px2dp(11)
@@ -80,10 +83,10 @@ let styles = StyleSheet.create({
     },
     searchBox: {
         height: 30,
-        flexDirection: "row",
+        flexDirection: 'row',
         flex: 1,  // 类似于android中的layout_weight,设置为1即自动拉伸填充
         borderRadius: 15,  // 设置圆角边
-        alignItems: "center",
+        alignItems: 'center',
         marginLeft: px2dp(10),
         marginRight: px2dp(5),
         opacity: 0.8

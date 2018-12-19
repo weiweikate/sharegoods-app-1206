@@ -55,11 +55,17 @@ class ShopCartStore {
     }
 
     @computed
+    get getTotalGoodsNumber(){
+        return this.data.slice().length;
+    }
+
+    @computed
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
         this.data.slice().map(item => {
             if (item.isSelected && !isNaN(item.amount) ) {
-                totalSelectNum += item.amount;
+                // totalSelectNum += item.amount;
+                totalSelectNum += 1;
             }
         });
         return totalSelectNum;

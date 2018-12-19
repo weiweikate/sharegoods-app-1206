@@ -23,7 +23,6 @@ RCT_EXPORT_VIEW_PROPERTY(topTitle, NSString)
 - (UIView *)view
 {
     MRWaveView *view = [[MRWaveView alloc] init];
-
      return view;
 }
 @end

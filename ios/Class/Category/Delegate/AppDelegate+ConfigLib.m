@@ -21,6 +21,8 @@
 #import <UMCommon/UMCommon.h>
 #import "IQKeyboardManager.h"
 #import <React/RCTLinkingManager.h>
+#import "SensorsAnalyticsSDK.h"
+#import "BGKeychainTool.h"
 
 
 @implementation AppDelegate (ConfigLib)
@@ -79,6 +81,31 @@
   result = [RCTLinkingManager application:application openURL:url
                         sourceApplication:nil annotation:nil];
   return YES;
+}
+
+- (void)initSensorsAnalyticsWithLaunchOptions:(NSDictionary *)launchOptions {
+  
+  // 初始化 SDK
+  [SensorsAnalyticsSDK sharedInstanceWithServerURL:SA_SERVER_URL
+                                  andLaunchOptions:launchOptions
+                                      andDebugMode:SA_DEBUG_MODE];
+  
+  // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
+  [[SensorsAnalyticsSDK sharedInstance] enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
+   SensorsAnalyticsEventTypeAppEnd|
+   SensorsAnalyticsEventTypeAppClick];
+  /** 设置公共属性*/
+  NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+  NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+  NSDictionary *superProperties = @{@"platform": @"iOS",
+                                    @"platformType": @"iOSApp",
+                                    @"product": [NSString stringWithFormat:@"%@-App", app_Name]
+                                    };
+  NSString *uuid = [BGKeychainTool getDeviceIDInKeychain];
+  [[SensorsAnalyticsSDK sharedInstance] registerSuperProperties:superProperties];
+  [[SensorsAnalyticsSDK sharedInstance] trackInstallation:@"AppInstall" withProperties:@{@"DownloadChannel": @"appStore"}];
+  [[SensorsAnalyticsSDK sharedInstance] identify: uuid];
+  
 }
 
 

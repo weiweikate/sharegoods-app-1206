@@ -24,7 +24,9 @@ const api = {
     //获取导师列表
     queryInviterList: '/user/userSign/queryInviterList',
     //导师绑定
-    mentorBind:  ['/user/userSign/mentorBind',{method:'get'}]
+    mentorBind:  ['/user/userSign/mentorBind',{method:'get'}],
+    //选择导师跳过调用接口
+    givePackage:['/user/userSign/givePackage',{method:'get'}],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

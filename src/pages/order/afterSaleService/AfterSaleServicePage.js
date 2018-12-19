@@ -54,7 +54,6 @@ class AfterSaleServicePage extends BasePage {
             /** 编辑申请需要的售后详情id*/
             returnProductId: this.params.orderProductNo,
             applyRefundAmount: this.params.isEdit === true ? this.params.refundPrice : 0,//退款金额,
-            remark: '',
             editable: false
             /** 换货需要的数据*/
             // selectionData: {}, //规格数据
@@ -530,10 +529,10 @@ class AfterSaleServicePage extends BasePage {
         }
 
 
-        if (parseFloat(applyRefundAmount) === 0 && pageType !== 2) {
-            NativeModules.commModule.toast('售后的金额不能为0');
-            return;
-        }
+        // if (parseFloat(applyRefundAmount) === 0 && pageType !== 2) {
+        //     NativeModules.commModule.toast('售后的金额不能为0');
+        //     return;
+        // }
 
         /** 修改申请*/
         if (this.params.isEdit) {

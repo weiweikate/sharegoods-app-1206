@@ -87,7 +87,10 @@ export default class FillReturnLogisticsPage extends BasePage {
                                    placeholder={'请填写物流单号'}
                                    style={styles.item_detail}
                                    onChangeText={(text) => {
-                                       this.setState({ logisticsNum: text });
+                                       let reg = /^[0-9a-zA-Z]*$/;
+                                       if(reg.test(text)) {
+                                           this.setState({ logisticsNum: text });
+                                       }
                                    }}
                                    value={this.state.logisticsNum}
                                    keyboardType={'number-pad'}

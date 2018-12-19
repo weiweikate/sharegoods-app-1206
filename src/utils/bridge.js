@@ -5,7 +5,7 @@ import {
 import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
 import TimerMixin from 'react-timer-mixin';
-import {setCookieToken, setCookies, clearCookies} from '@mr/react-native-webview';
+import { setCookieToken, setCookies, clearCookies } from '@mr/react-native-webview';
 
 export default {
     $toast(msg) {
@@ -38,9 +38,10 @@ export default {
      * @param timeout   加载中最长展示时间(提示语展示时间)。单位秒。默认为0秒，无限loading。
      * Prompt:          loading是全局的，尽量慎用，在合适的场景中使用。
      */
-    showLoading(message, timeout = 0 , callback = ()=>{}) {
+    showLoading(message, timeout = 0, callback = () => {
+    }) {
         NativeModules.commModule.showLoadingDialog(message);
-        if(timeout > 0){
+        if (timeout > 0) {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
                 NativeModules.commModule.hideLoadingDialog();
@@ -51,7 +52,8 @@ export default {
     /**
      * hiddenLoading  隐藏全局loading
      */
-    hiddenLoading(callback = ()=>{}) {
+    hiddenLoading(callback = () => {
+    }) {
         callback();
         NativeModules.commModule.hideLoadingDialog();
     },
@@ -113,14 +115,14 @@ export default {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
     },
     saveInviteFriendsImage(QRString, onSuccess, onError = (errorStr) => {
-    }){
-        NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString,onSuccess, onError);
+    }) {
+        NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString, onSuccess, onError);
     },
 
     //{headerImg,shopName,shopId,shopPerson,codeString,wxTip}
     saveShopInviteFriendsImage(jsonParam, onSuccess, onError = (errorStr) => {
-    }){
-        NativeModules.LoginAndShareModule.saveShopInviteFriendsImage(jsonParam,onSuccess, onError);
+    }) {
+        NativeModules.LoginAndShareModule.saveShopInviteFriendsImage(jsonParam, onSuccess, onError);
     },
 
     /**
@@ -153,7 +155,8 @@ export default {
 //         memorySize: temp
 //     });
 // });
-    getTotalCacheSize(callback = ()=>{}) {
+    getTotalCacheSize(callback = () => {
+    }) {
         NativeModules.commModule.getTotalCacheSize(callback);
     },
 
@@ -168,13 +171,25 @@ export default {
     resumePush: () => NativeModules.commModule.resumePush(),
     isPushStopped: (callback = () => {
     }) => NativeModules.commModule.isPushStopped(callback),
-    setCookies: (data)=>{
+    setCookies: (data) => {
         // setCookieToken(data.token,'172.16.10.117');
         // setCookies("userData", {id: data.id},'172.16.10.117');
-        setCookieToken(data.token,'devh5.sharegoodsmall.com');
-        setCookies("userData", {id: data.id},'devh5.sharegoodsmall.com');
+        setCookieToken(data.token, 'devh5.sharegoodsmall.com');
+        setCookies('userData', { id: data.id }, 'devh5.sharegoodsmall.com');
     },
-    clearCookies: ()=>{
+    clearCookies: () => {
         clearCookies();
+    },
+
+    //背景风格
+    setDarkMode: () => {
+        NativeModules.commModule.setDarkMode();
+    },
+    //背景风格
+    setLightMode: () => {
+        NativeModules.commModule.setLightMode();
+    },
+    isApkExist: (version, onSuccess) => {
+        NativeModules.commModule.apkExist(version, onSuccess);
     }
 };

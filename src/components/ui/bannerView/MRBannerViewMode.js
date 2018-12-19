@@ -57,7 +57,7 @@ export default class MRBannerViewMode extends Component {
 
         const bannerCount = this.props.imgUrlArray.length;
         return <View style={styles.indexViewTwo}>
-            <Text style={styles.text}>{this.state.index + 1} / {bannerCount}</Text>
+            <Text style={styles.text} allowFontScaling={false}>{this.state.index + 1} / {bannerCount}</Text>
         </View>;
     };
     _onDidScrollToIndex = (e) => {

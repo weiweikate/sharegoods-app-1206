@@ -182,7 +182,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 title: '寄回物流',
                 value: orderRefundExpress.expressName,
                 placeholder: '请填写寄回物流信息',
-                expressNo: orderRefundExpress.expressCode,
+                expressNo: orderRefundExpress.expressNo,
                 onPress: this.returnLogists
             });
         }

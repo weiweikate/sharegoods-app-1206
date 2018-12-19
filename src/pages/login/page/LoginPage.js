@@ -19,6 +19,7 @@ import DesignRule from 'DesignRule';
 import { homeModule } from '../../home/Modules'
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const {
     share: {
@@ -118,6 +119,7 @@ export default class LoginPage extends BasePage {
     };
     /*微信登陆*/
     weChatLoginClick = () => {
+        track(trackEvent.login,{loginMethod:'微信登录用'})
         bridge.$loginWx((data) => {
             console.log(data);
             LoginAPI.appWechatLogin({
@@ -163,6 +165,7 @@ export default class LoginPage extends BasePage {
     loginClick = (loginType, LoginParam) => {
         this.$loadingShow();
         if (loginType === 0) {
+            track(trackEvent.login,{loginMethod:'验证码登录'})
             LoginAPI.codeLogin({
                 authcode: '',
                 code: LoginParam.code,
@@ -208,6 +211,8 @@ export default class LoginPage extends BasePage {
                 }
             });
         } else {
+            // this.$loadingShow();
+            track(trackEvent.login,{loginMethod:'密码登录'})
             LoginAPI.passwordLogin({
                 authcode: '22',
                 code: LoginParam.code,
@@ -238,8 +243,7 @@ export default class LoginPage extends BasePage {
                 } else {
                     this.$navigateBack();
                 }
-                //推送
-                JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+
             }).catch((data) => {
                 console.log(data);
                 this.$loadingDismiss();
