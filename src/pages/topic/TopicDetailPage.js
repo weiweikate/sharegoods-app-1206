@@ -385,7 +385,7 @@ export default class TopicDetailPage extends BasePage {
     //立即购买
     _bottomAction = (type) => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            this.gotoLoginPage();
             return;
         }
         if (type === 1) {//设置提醒

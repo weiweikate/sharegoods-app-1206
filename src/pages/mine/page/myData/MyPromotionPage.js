@@ -98,7 +98,7 @@ export default class MyPromotionPage extends BasePage {
                 loadingState: PageLoadingState.fail
             });
             if (err.code === 10009) {
-                this.$navigate("login/login/LoginPage");
+                this.gotoLoginPage()
             }
         });
         MineApi.getNextLevelInfo().then(resp => {

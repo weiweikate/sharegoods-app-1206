@@ -317,11 +317,11 @@ export default class ConfirmOrderPage extends BasePage {
                     bridge.hiddenLoading();
                     bridge.$toast(err.msg);
                     if (err.code === 10009) {
-                        this.$navigate('login/login/LoginPage', {
+                        this.gotoLoginPage({
                             callback: () => {
                                 this.loadPageData();
                             }
-                        });
+                        })
                     }
                 });
                 break;
