@@ -1,8 +1,11 @@
-package com.meeruu.commonlib.utils;
+package com.meeruu.sharegoods.utils;
 
 import android.content.Context;
 import android.webkit.WebView;
 
+import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.DeviceUtils;
+import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import org.json.JSONObject;
@@ -21,7 +24,7 @@ public class SensorsUtils {
 
     public static void initDebugMode(Context context, String channel) {
         SensorsDataAPI.sharedInstance(context, "https://stat.sharegoodsmall.com/debug?project=default",
-                SensorsDataAPI.DebugMode.DEBUG_ONLY);
+                SensorsDataAPI.DebugMode.DEBUG_OFF);
         //开启调试日志（ true 表示开启调试日志）
         SensorsDataAPI.sharedInstance().enableLog(false);
         initConfig(context, channel);
@@ -30,7 +33,7 @@ public class SensorsUtils {
     public static void initReleaseMode(Context context, String channel) {
         // 初始化
         SensorsDataAPI.sharedInstance(context, "http://stat.sharegoodsmall.com/sa?project=default",
-                SensorsDataAPI.DebugMode.DEBUG_ONLY);
+                SensorsDataAPI.DebugMode.DEBUG_OFF);
         initConfig(context, channel);
     }
 
@@ -56,13 +59,15 @@ public class SensorsUtils {
             // 这里安装事件取名为 AppInstall。
             // 注意 由于要追踪不同渠道链接中投放的推广渠道，所以 Manifest 中不能按照“方案一”神策meta-data方式定制渠道信息，代码中也不能传入 $utm_ 开头的渠道字段！！！
             SensorsDataAPI.sharedInstance(context).trackInstallation("AppInstall", installation);
+            // 忽略单个页面
+            SensorsDataAPI.sharedInstance().ignoreAutoTrackActivity(MainRNActivity.class);
             // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
             List<SensorsDataAPI.AutoTrackEventType> eventTypeList = new ArrayList<>();
             // $AppStart
             eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_START);
             // $AppEnd
             eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_END);
-            // $AppViewScreen
+            // $AppViewScreen，目前只有rn页面，不需要自动采集原生页面
             eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_VIEW_SCREEN);
             // $AppClick
             eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_CLICK);

@@ -393,7 +393,9 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void nativeTaskToBack() {
-        getCurrentActivity().moveTaskToBack(true);
+        if (getCurrentActivity() != null) {
+            getCurrentActivity().moveTaskToBack(true);
+        }
     }
 
     @ReactMethod
