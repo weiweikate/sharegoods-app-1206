@@ -648,7 +648,10 @@ export default class ConfirmOrderPage extends BasePage {
                 justOne: this.state.viewData.totalAmounts ? this.state.viewData.totalAmounts : 1, callBack: (data) => {
                     console.log(typeof data);
                     if (parseInt(data) >= 0) {
-                        let params = { tokenCoin: parseInt(data) > 0 &&parseInt(data)<=parseInt(this.state.viewData.totalAmounts)? parseInt(data):0, userCouponCode: this.state.userCouponCode };
+                        let params = { tokenCoin: parseInt(data) > 0 &&parseInt(data)<=parseInt(this.state.viewData.totalAmounts)? parseInt(data):0,
+                            userCouponCode: this.state.userCouponCode,
+                            addressId:this.state.addressId,
+                        };
                         this.setState({
                             addressId:this.state.addressId,
                             tokenCoin: data,
@@ -674,7 +677,7 @@ export default class ConfirmOrderPage extends BasePage {
                         });
                         this.loadPageData(params);
                     } else if (data === 'giveUp') {
-                        this.setState({ userCouponCode: null, couponName: null });
+                        this.setState({ userCouponCode: null, couponName: null , addressId:this.state.addressId});
                         this.loadPageData();
                     }
                 }

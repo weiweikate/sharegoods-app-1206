@@ -139,7 +139,7 @@ export default class MyPromotionPage extends BasePage {
 
 
                 <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 25, marginBottom: 40 }}>
-                    <ImageLoad style={{ width: headerWidth, height: headerWidth }} borderRadius={headerWidth / 2}
+                    <ImageLoad style={{ width: headerWidth, height: headerWidth,borderRadius: headerWidth / 2}} borderRadius={headerWidth / 2}
                                source={{ uri: this.state.headImg }}/>
                     <View style={{
                         justifyContent: "center",

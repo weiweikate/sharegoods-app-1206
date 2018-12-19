@@ -1,6 +1,6 @@
 // 原生桥接接口函数请使用'$'开头
 import {
-    NativeModules, Platform
+    NativeModules
 } from 'react-native';
 import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
