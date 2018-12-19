@@ -13,6 +13,7 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "DesignRule";
 import res from "../../res";
 import Modal from 'CommModal'
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 const {
     detailShowBg,
     message,
@@ -56,6 +57,10 @@ export default class DetailNavShowModal extends Component {
     };
 
     _onPress = (item) => {
+        /*点击客服埋点*/
+        if (item.index === 3){
+            track(trackEvent.contact,{origin:'在线',questionType:'商品详情'})
+        }
         this.setState({
             modalVisible: false
         });
