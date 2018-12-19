@@ -93,7 +93,7 @@ const GoodsListItem = props => {
                                 operationMenuClick(item);
                             }}>
                                 <Text
-                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle,fontSize:13 }}>{item.operation}</Text>
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle,fontSize:13 }} allowFontScaling={false}>{item.operation}</Text>
                             </TouchableOpacity>;
                         })}
                     </View>
