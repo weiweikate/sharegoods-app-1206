@@ -26,6 +26,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const {
     toGwc,
@@ -122,13 +123,13 @@ export default class SearchResultPage extends BasePage {
         });
     };
 
-    _emptyRequest = ()=>{
+    _emptyRequest = () => {
         this.setState({
-            loadingState: PageLoadingState.loading,
-        },()=>{
+            loadingState: PageLoadingState.loading
+        }, () => {
             this._productList();
-        })
-    }
+        });
+    };
 
     //数据
     _productList = () => {
@@ -138,6 +139,13 @@ export default class SearchResultPage extends BasePage {
             this.state.page++;
             data = data.data || {};
             let dataArr = data.data || [];
+
+            track(trackEvent.search, {
+                keyWord: this.params.keywords,
+                hasResult: dataArr.length !== 0,
+                isHistory: StringUtils.isNoEmpty(this.params.isHistory),
+                isRecommend: StringUtils.isNoEmpty(this.params.hotWordId)
+            });
             this.setState({
                 refreshing: false,
                 noMore: data.isMore === 0,
@@ -247,6 +255,7 @@ export default class SearchResultPage extends BasePage {
             this.$toastShow('搜索内容不能为空');
             return;
         }
+        this.params.isHistory = undefined;
         this.params.categoryId = undefined;
         this.params.hotWordId = undefined;
         this.params.keywords = text;
@@ -392,7 +401,8 @@ export default class SearchResultPage extends BasePage {
                             <Text style={{
                                 color: 'white',
                                 fontSize: 10
-                            }} allowFontScaling={false}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
+                            }}
+                                  allowFontScaling={false}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity>
                     {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop}>

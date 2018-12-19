@@ -122,7 +122,11 @@ export default class SearchPage extends BasePage {
             this.forceUpdate();
         }
 
-        this.$navigate(RouterMap.SearchResultPage, { keywords: text, hotWordId: hotWordId || '' });
+        this.$navigate(RouterMap.SearchResultPage, {
+            keywords: text,
+            hotWordId: hotWordId,
+            isHistory: index && !hotWordId
+        });
     };
 
     //components
