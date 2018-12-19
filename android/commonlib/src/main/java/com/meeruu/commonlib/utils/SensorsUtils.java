@@ -4,7 +4,6 @@ import android.content.Context;
 import android.webkit.WebView;
 
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
-//import com.smartstudy.commonlib.entity.ChannelInfo;
 
 import org.json.JSONObject;
 
@@ -21,8 +20,8 @@ import java.util.List;
 public class SensorsUtils {
 
     public static void initDebugMode(Context context, String channel) {
-        SensorsDataAPI.sharedInstance(context, "http://sea.smartstudy.com/sa?project=default",
-            SensorsDataAPI.DebugMode.DEBUG_OFF);
+        SensorsDataAPI.sharedInstance(context, "https://stat.sharegoodsmall.com/debug?project=default",
+                SensorsDataAPI.DebugMode.DEBUG_ONLY);
         //开启调试日志（ true 表示开启调试日志）
         SensorsDataAPI.sharedInstance().enableLog(false);
         initConfig(context, channel);
@@ -30,30 +29,33 @@ public class SensorsUtils {
 
     public static void initReleaseMode(Context context, String channel) {
         // 初始化
-        SensorsDataAPI.sharedInstance(context, "http://sea.smartstudy.com/sa?project=production",
-            SensorsDataAPI.DebugMode.DEBUG_OFF);
+        SensorsDataAPI.sharedInstance(context, "http://stat.sharegoodsmall.com/sa?project=default",
+                SensorsDataAPI.DebugMode.DEBUG_ONLY);
         initConfig(context, channel);
     }
 
     private static void initConfig(Context context, String channel) {
-        //初始化SDK后，开启 RN 页面控件点击事件的自动采集
-        SensorsDataAPI.sharedInstance().enableReactNativeAutoTrack();
         // 设置匿名ID
         SensorsDataAPI.sharedInstance().identify(DeviceUtils.getUniquePsuedoID());
         try {
-//            ChannelInfo channelInfo = ChannelUtils.getChannelObject(channel);
-//            // 初始化SDK后，获取应用名称设置为公共属性
-//            JSONObject obj_super = new JSONObject();
-//            obj_super.put("platform", "AndroidApp");
-//            obj_super.put("product", AppUtils.getAppName(context) + "-APP");
-//            obj_super.put("pid", channelInfo.getId());
+            // 初始化SDK后，获取应用名称设置为公共属性
+            JSONObject obj_super = new JSONObject();
+            obj_super.put("platform", "AndroidApp");
+            obj_super.put("platformType", "Android");
+            obj_super.put("product", AppUtils.getAppName() + "-APP");
 //            obj_super.put("$latest_utm_source", channelInfo.getName());
 //            obj_super.put("$latest_utm_medium", channelInfo.getMedium());
 //            obj_super.put("$latest_utm_term", channelInfo.getTerm());
 //            obj_super.put("$latest_utm_content", channelInfo.getContent());
 //            obj_super.put("$latest_utm_campaign", channelInfo.getCampaign());
-//            SensorsDataAPI.sharedInstance().registerSuperProperties(obj_super);
-
+            SensorsDataAPI.sharedInstance().registerSuperProperties(obj_super);
+            // 初始化我们SDK后 调用这段代码，用于记录安装事件、渠道追踪。
+            JSONObject installation = new JSONObject();
+            // 这里的 DownloadChannel 负责记录下载商店的渠道。
+            installation.put("DownloadChannel", channel);
+            // 这里安装事件取名为 AppInstall。
+            // 注意 由于要追踪不同渠道链接中投放的推广渠道，所以 Manifest 中不能按照“方案一”神策meta-data方式定制渠道信息，代码中也不能传入 $utm_ 开头的渠道字段！！！
+            SensorsDataAPI.sharedInstance(context).trackInstallation("AppInstall", installation);
             // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
             List<SensorsDataAPI.AutoTrackEventType> eventTypeList = new ArrayList<>();
             // $AppStart
@@ -65,14 +67,6 @@ public class SensorsUtils {
             // $AppClick
             eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_CLICK);
             SensorsDataAPI.sharedInstance().enableAutoTrack(eventTypeList);
-
-            // 初始化我们SDK后 调用这段代码，用于记录安装事件、渠道追踪。
-            JSONObject installation = new JSONObject();
-            // 这里的 DownloadChannel 负责记录下载商店的渠道。
-            installation.put("DownloadChannel", channel);
-            // 这里安装事件取名为 AppInstall。
-            // 注意 由于要追踪不同渠道链接中投放的推广渠道，所以 Manifest 中不能按照“方案一”神策meta-data方式定制渠道信息，代码中也不能传入 $utm_ 开头的渠道字段！！！
-            SensorsDataAPI.sharedInstance(context).trackInstallation("AppInstall", installation);
         } catch (Exception e) {
             e.printStackTrace();
         }
