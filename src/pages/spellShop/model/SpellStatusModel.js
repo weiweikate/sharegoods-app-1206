@@ -14,7 +14,7 @@ class SpellStatusModel {
     @observable
     allowGroupStore = null;       //能否看到拼店推荐页面1允许 2不允许
     @observable
-    storeId = null;//是否有店
+    storeCode = null;//是否有店
     @observable
     storeStatus = null;//店铺状态	integer($int32)状态 0-关闭 1-正常 2-已缴纳保证金 3-招募中
 
@@ -40,7 +40,7 @@ class SpellStatusModel {
         this.refreshing = false;
         this.allowCreateStore = data.allowCreateStore;
         this.allowGroupStore = data.allowGroupStore;
-        this.storeId = data.storeId;
+        this.storeCode = data.storeCode;
         this.storeStatus = data.storeStatus;
     }
 
@@ -49,7 +49,7 @@ class SpellStatusModel {
         this.refreshing = false;
         this.allowCreateStore = null;
         this.allowGroupStore = null;
-        this.storeId = null;
+        this.storeCode = null;
         this.storeStatus = null;
     }
 
@@ -58,7 +58,7 @@ class SpellStatusModel {
         this.refreshing = false;
         this.allowCreateStore = null;
         this.allowGroupStore = null;
-        this.storeId = null;
+        this.storeCode = null;
         this.storeStatus = null;
     }
 

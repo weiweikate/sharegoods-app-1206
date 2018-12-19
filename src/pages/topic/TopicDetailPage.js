@@ -307,7 +307,7 @@ export default class TopicDetailPage extends BasePage {
             'activityId': itemData.id,
             'activityType': this.state.activityType,
             'type': itemData.notifyFlag ? 0 : 1,
-            'userId': user.id
+            'userCode': user.code
         };
         TopicApi.followAction(
             param
@@ -742,12 +742,12 @@ export default class TopicDetailPage extends BasePage {
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
                                     priceStr: `￥${productPrice}`,
-                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`
                                 }}
                                 webJson={{
                                     title: productName,
                                     dec: '商品详情',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`,
                                     thumImage: productImgUrl
                                 }}
                                 miniProgramJson={{
@@ -755,8 +755,8 @@ export default class TopicDetailPage extends BasePage {
                                     dec: '商品详情',
                                     thumImage: 'logo.png',
                                     hdImageURL: productImgUrl,
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`,
-                                    miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}&inviteId=${user.id || ''}`
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`,
+                                    miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}&inviteId=${user.code || ''}`
                                 }}/>
                 {/*弹框提示介绍*/}
                 <TopicDetailShowModal ref={(ref) => {

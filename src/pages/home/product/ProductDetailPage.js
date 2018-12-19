@@ -601,12 +601,12 @@ export default class ProductDetailPage extends BasePage {
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
                                 priceStr: `￥${minPrice}`,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
                             }}
                             webJson={{
                                 title: `${name}`,
                                 dec: '商品详情',
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
                                 thumImage: imgUrl
                             }}
                             miniProgramJson={{
@@ -614,8 +614,8 @@ export default class ProductDetailPage extends BasePage {
                                 dec: '商品详情',
                                 thumImage: 'logo.png',
                                 hdImageURL: imgUrl,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`,
-                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.id || ''}`
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             {/*<ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>*/}

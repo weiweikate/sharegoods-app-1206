@@ -33,7 +33,7 @@ export default class MyShop_RecruitPage extends BasePage {
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
             data: {},
-            isHome: !this.params.storeId
+            isHome: !this.params.storeCode
         };
     }
 
@@ -158,8 +158,8 @@ export default class MyShop_RecruitPage extends BasePage {
                     loadingState: PageLoadingState.success
                 });
             } else {//其他店铺 有权限或者自己的能看
-                if (spellStatusModel.canSeeGroupStore || spellStatusModel.storeId === this.params.storeId) {
-                    SpellShopApi.getById({ id: this.params.storeId }).then((data) => {
+                if (spellStatusModel.canSeeGroupStore || spellStatusModel.storeCode === this.params.storeCode) {
+                    SpellShopApi.getById({ storeCode: this.params.storeCode }).then((data) => {
                         let dataTemp = data.data || {};
                         this.setState({
                             loadingState: PageLoadingState.success,
@@ -194,17 +194,17 @@ export default class MyShop_RecruitPage extends BasePage {
         //2.首页推荐页面缴纳了保证金的不管有没有权限都能看
 
         //3.非首页  自己的||有权限和首页逻辑一样
-        if (isHome ? user.isLogin : (spellStatusModel.canSeeGroupStore || spellStatusModel.storeId === this.params.storeId) && user.isLogin) {
+        if (isHome ? user.isLogin : (spellStatusModel.canSeeGroupStore || spellStatusModel.storeCode === this.params.storeCode) && user.isLogin) {
             //首页
             switch (statust) {
                 case 1://店铺开启中
                     return <MyShopPage navigation={this.props.navigation}
                                        leftNavItemHidden={isHome}
-                                       storeId={this.params.storeId}/>;
+                                       storeCode={this.params.storeCode}/>;
                 case 3://招募中的店铺
                     return <ShopRecruitPage navigation={this.props.navigation}
                                             leftNavItemHidden={isHome}
-                                            storeId={this.params.storeId}
+                                            storeCode={this.params.storeCode}
                                             propReload={this._loadPageData}/>;//不是首页 关闭或者开启店铺
                 case 2://店铺已缴纳保证金
                     return (

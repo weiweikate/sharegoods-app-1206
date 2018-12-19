@@ -34,7 +34,7 @@ export default {
             groupId: 0,
             staffId: 0,
             title: '秀购客服',
-            userId: user.id + '',
+            userId: user.code + '',
             userIcon: user.headImg,
             nickName: user.nickname,
             device: DeviceInfo.getDeviceName(),

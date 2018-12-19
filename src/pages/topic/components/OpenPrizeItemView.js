@@ -256,7 +256,7 @@ export default class OpenPrizeItemView extends Component {
             'activityId': this.state.itemData.id,
             'activityType': this.state.itemData.productType,
             'type': type,
-            'userId': user.id
+            'userCode': user.code
         };
         TopicAPI.followAction(
             param
