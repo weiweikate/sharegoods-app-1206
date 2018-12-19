@@ -4,7 +4,7 @@ import {
     View,
 } from "react-native";
 
-import FlyImageViewer from "FlyImageViewer";
+import FlyImageViewer from "../../../comm/components/FlyImageViewer";
 import BasePage from "../../../BasePage";
 
 export default class CheckBigImagesView extends BasePage {

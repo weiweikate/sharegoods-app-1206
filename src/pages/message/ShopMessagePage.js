@@ -19,9 +19,9 @@ import Toast from '../../utils/bridge';
 import EmptyUtils from '../../utils/EmptyUtils'
 import MessageAPI from "./api/MessageApi";
 const { px2dp } = ScreenUtils;
-import CommonUtils from 'CommonUtils'
+import CommonUtils from '../../utils/CommonUtils'
 import MessageUtils from './utils/MessageUtils'
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 const emptyIcon = RES.message_empty;
 const arrorw_rightIcon = RES.button.arrow_right_black;

@@ -6,7 +6,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 // import TopicItemView from './TopicItemView';
 import PropTypes from 'prop-types';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
 const statues = {
     deleteStatue: 0,

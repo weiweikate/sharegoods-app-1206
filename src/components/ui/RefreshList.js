@@ -11,7 +11,7 @@ import {
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../../comm/res';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 const empty_list_message = res.placeholder.no_data
 

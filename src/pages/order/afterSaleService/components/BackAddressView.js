@@ -20,7 +20,7 @@ import {
 import {
     UIText
 } from '../../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import AddressItem from '../../components/AddressItem';
 
 export default class BackAddressView extends React.Component {

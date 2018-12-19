@@ -19,7 +19,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 
-import Modal from 'CommModal';
+import Modal from '../../../comm/components/CommModal';
 
 export default class ShareTaskAnimation extends React.Component {
 

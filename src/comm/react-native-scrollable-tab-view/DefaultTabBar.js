@@ -1,5 +1,5 @@
-import DesignRule from 'DesignRule';
 
+import DesignRule from '../../constants/DesignRule'
 const React = require('react');
 // const { ViewPropTypes } = ReactNative = require('react-native');
 import {

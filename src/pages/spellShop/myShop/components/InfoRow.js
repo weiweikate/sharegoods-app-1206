@@ -10,7 +10,7 @@ import {
     Image,
     StyleSheet
 } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 
 export default class InfoRow extends Component {

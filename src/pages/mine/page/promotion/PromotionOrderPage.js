@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import res from '../../res';

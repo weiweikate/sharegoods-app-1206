@@ -9,7 +9,7 @@ import { UIButton } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class NickNameModifyPage extends BasePage {
     constructor(props) {

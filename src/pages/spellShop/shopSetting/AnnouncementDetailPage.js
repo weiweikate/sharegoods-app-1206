@@ -9,7 +9,7 @@ import {
     ImageBackground
 } from "react-native";
 import BasePage from "../../../BasePage";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 import res from "../res";
 
 const Banner = res.shopSetting.banner_02;

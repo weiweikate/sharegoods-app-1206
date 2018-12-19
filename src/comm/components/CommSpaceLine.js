@@ -4,7 +4,7 @@ import {
 
 } from "react-native";
 import React, { Component } from "react";
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 export default class CommSpaceLine extends Component {
     constructor(props) {

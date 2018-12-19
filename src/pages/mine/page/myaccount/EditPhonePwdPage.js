@@ -11,7 +11,7 @@ import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 const openEyeImage = res.button.open_eye;
 const closeEyeImage = res.button.close_eye;

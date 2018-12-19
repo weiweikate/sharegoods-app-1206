@@ -13,7 +13,7 @@ import {
     Image
 } from 'react-native';
 import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from  '../../res';
 const signingInIcon = res.signIn.complete_check;
 

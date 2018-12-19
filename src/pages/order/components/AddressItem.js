@@ -5,7 +5,7 @@ import {
     UIText
 } from '../../../components/ui';
 import connectStyle from '../../../components/ui/connectStyle';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 const locationBlack = res.dizhi;
 const arrow_right = res.arrow_right;

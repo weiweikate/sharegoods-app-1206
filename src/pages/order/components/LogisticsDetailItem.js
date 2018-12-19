@@ -7,7 +7,7 @@ import {
 import {
     UIText, UIImage
 } from "../../../components/ui";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const LogisticsDetailItem = props => {

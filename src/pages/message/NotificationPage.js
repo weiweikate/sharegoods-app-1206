@@ -12,7 +12,7 @@ import RefreshList from '../../components/ui/RefreshList';
 import BasePage from '../../BasePage';
 import MessageApi from './api/MessageApi';
 import Toast from '../../utils/bridge';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 const emptyIcon = RES.message_empty;
 

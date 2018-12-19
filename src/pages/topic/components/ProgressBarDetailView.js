@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 export default class ProgressBarDetailView extends Component {
     constructor(props) {

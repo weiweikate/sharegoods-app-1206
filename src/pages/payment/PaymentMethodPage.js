@@ -15,7 +15,7 @@ import { observer } from 'mobx-react/native';
 import { Payment, paymentType } from './Payment';
 import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import PasswordView from './PasswordView';
 // import { NavigationActions } from 'react-navigation';
 import PayCell from './PaymentCell'
@@ -87,7 +87,7 @@ export default class PaymentMethodPage extends BasePage {
         let time = (new Date().getTime()) / 1000
         console.log('checkorder', this.orderTime, time)
         if (time - this.orderTime > 10) {
-            // if (this.payment.selectedTypes.type === paymentType.wechat) { 
+            // if (this.payment.selectedTypes.type === paymentType.wechat) {
             //     this.payment.closeOrder()
             // }
             return

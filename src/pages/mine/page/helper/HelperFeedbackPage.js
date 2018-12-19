@@ -18,7 +18,7 @@ import res from "../../res";
 import BusinessUtils from "../../components/BusinessUtils";
 import StringUtils from "../../../../utils/StringUtils";
 import MineApi from "../../api/MineApi";
-import Modal from "CommModal";
+import Modal from '../../../../comm/components/CommModal';
 
 const {
     icon_arrow_up,
@@ -30,7 +30,7 @@ const {
 } = res.helperAndCustomerService;
 
 const rightIcon = res.button.tongyon_icon_check_green;
-import DesignRule from "DesignRule";
+import DesignRule from "../../../../constants/DesignRule";
 import NavigatorBar from "../../../../components/pageDecorator/NavigatorBar/NavigatorBar";
 
 /**

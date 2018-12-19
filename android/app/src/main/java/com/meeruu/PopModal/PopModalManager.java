@@ -37,6 +37,11 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
     }
 
     @Override
+    public int getPriority() {
+        return 0;
+    }
+
+    @Override
     public LayoutShadowNode createShadowNodeInstance() {
         return new ModalHostShadowNode();
     }

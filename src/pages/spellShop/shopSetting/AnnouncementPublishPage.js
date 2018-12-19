@@ -12,7 +12,7 @@ import {
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 import SpellShopApi from '../api/SpellShopApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;

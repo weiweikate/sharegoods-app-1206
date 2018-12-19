@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import res from '../../res';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 const Logo = res.other.tongyong_logo_nor;
 import ScreenUtils from '../../../../utils/ScreenUtils'
 

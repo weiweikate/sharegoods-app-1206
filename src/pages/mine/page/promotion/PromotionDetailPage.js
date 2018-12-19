@@ -26,7 +26,7 @@ import RefreshList from '../../../../components/ui/RefreshList';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import apiEnvironment from '../../../../api/ApiEnvironment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 type Props = {};

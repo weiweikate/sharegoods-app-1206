@@ -4,7 +4,7 @@ import BasePage from '../../../BasePage';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 
 const { search } = res;

@@ -10,7 +10,7 @@ import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
 import RouterMap from './RouterMap';
-import DesignRule from 'DesignRule';
+import DesignRule from '../constants/DesignRule';
 
 export const TabNav = TabNavigator(
     {

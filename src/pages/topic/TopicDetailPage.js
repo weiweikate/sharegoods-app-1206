@@ -27,7 +27,7 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 // const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';

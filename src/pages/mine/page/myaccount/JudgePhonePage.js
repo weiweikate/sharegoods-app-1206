@@ -9,7 +9,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class JudgePhoneNumPage extends BasePage {
 

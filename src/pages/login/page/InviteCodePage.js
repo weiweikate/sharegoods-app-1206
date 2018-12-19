@@ -22,7 +22,7 @@ import {
     Text
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import UIText from '../../../comm/components/UIText';
 import LoginAPI from '../api/LoginApi';

@@ -10,7 +10,7 @@ import ShowChoiceView from './ShowChoiceView';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';

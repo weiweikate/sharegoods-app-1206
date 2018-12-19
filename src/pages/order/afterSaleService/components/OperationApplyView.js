@@ -21,7 +21,7 @@ import {
 import {
     UIText
 } from '../../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class OperationApplyView extends React.Component {
 

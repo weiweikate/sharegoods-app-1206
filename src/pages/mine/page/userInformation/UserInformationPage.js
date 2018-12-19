@@ -12,7 +12,7 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 
 const dismissKeyboard = require("dismissKeyboard");
 import MineApi from "../../api/MineApi";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import RouterMap from "../../../../navigation/RouterMap";
 
 /**

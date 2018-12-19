@@ -10,9 +10,9 @@ import {
 } from "react-native";
 
 import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "DesignRule";
+import DesignRule from "../../../../constants/DesignRule";
 import res from "../../res";
-import Modal from 'CommModal'
+import Modal from '../../../../comm/components/CommModal';
 const {
     detailShowBg,
     message,

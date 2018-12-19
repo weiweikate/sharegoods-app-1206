@@ -21,7 +21,7 @@ import {
     ScrollView
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import MentorItemView from '../components/MentorItemView';
 // import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../utils/ScreenUtils';

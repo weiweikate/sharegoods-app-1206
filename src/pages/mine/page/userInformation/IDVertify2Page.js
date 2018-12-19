@@ -20,7 +20,7 @@ import UserSingleItem from "../../components/UserSingleItem";
 import BusinessUtils from "../../components/BusinessUtils";
 import user from "../../../../model/user";
 import MineApi from "../../api/MineApi";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 
 const IDcard_country = res.userInfoImg.IDcard_country;

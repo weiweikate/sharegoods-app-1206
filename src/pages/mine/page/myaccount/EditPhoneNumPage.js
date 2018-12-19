@@ -10,7 +10,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import bridge from '../../../../utils/bridge';
 import MineAPI from '../../api/MineApi';
 import SMSTool from '../../../../utils/SMSTool';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 /**
  * @author chenxiang

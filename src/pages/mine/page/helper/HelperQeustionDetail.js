@@ -9,7 +9,7 @@ import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
 import MineApi from '../../api/MineApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 /**
  * @author chenxiang

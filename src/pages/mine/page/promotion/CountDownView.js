@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 const {px2dp} = ScreenUtils;
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export  default class CountDownView extends PureComponent {
   constructor(props) {

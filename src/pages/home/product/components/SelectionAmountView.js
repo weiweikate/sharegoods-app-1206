@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 /**
  * 选择数量view

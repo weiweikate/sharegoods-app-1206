@@ -8,7 +8,7 @@ import {
     Text
 } from 'react-native';
 import res from '../res';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 class NetStatus {
 

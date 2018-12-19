@@ -21,7 +21,7 @@ import {
     UIText,
 
 } from '../../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils'
 
 export default class RefuseReasonView extends React.Component {

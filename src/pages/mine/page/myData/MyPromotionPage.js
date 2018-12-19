@@ -19,7 +19,7 @@ import BasePage from "../../../../BasePage";
 import { UIImage } from "../../../../components/ui";
 import { NavigationActions } from "react-navigation";
 import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import ImageLoad from "@mr/image-placeholder";
 // 常量

@@ -16,7 +16,7 @@ import TotalTopicDataModel from './model/SubTopicModel';
 
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder'
 
 const { statusBarHeight } = ScreenUtils;

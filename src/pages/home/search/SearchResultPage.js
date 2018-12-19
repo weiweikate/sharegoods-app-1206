@@ -13,7 +13,7 @@ import ResultSearchNav from './components/ResultSearchNav';
 import ResultSegmentView from './components/ResultSegmentView';
 import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
-import RouterMap from 'RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
 import SelectionPage from '../product/SelectionPage';
@@ -24,7 +24,7 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 
 const {

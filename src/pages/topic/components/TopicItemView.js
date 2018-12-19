@@ -9,7 +9,7 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ImageLoad from '@mr/image-placeholder';
 import PropTypes from 'prop-types';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import { getShowPrice } from '../model/TopicMudelTool';
 
 export default class TopicItemView extends Component {

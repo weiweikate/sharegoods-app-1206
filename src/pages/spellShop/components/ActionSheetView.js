@@ -11,8 +11,8 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../../comm/components/CommModal';
+import DesignRule from '../../../constants/DesignRule';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);

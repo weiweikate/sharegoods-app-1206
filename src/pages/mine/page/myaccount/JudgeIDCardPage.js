@@ -8,7 +8,7 @@ import bridge from '../../../../utils/bridge';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import user from '../../../../model/user';
 import MineAPI from '../../api/MineApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class SetNewPhoneNumPage extends BasePage {
 

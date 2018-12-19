@@ -7,7 +7,7 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MyCouponsItems from './../../components/MyCouponsItems';
 import User from '../../../../model/user';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class CouponsPage extends BasePage {
     constructor(props) {

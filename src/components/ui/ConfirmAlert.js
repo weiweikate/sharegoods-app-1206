@@ -6,8 +6,8 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../comm/components/CommModal';
+import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 

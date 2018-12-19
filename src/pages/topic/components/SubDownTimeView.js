@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import UIText from '../../../comm/components/UIText';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 
 export default class SubDownTimeView extends Component {

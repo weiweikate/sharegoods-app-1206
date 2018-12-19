@@ -8,7 +8,7 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 
 const deleteImg = res.search.search_delete;

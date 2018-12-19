@@ -4,7 +4,7 @@ import BasePage from "../../../../BasePage";
 import MineAPI from "../../api/MineApi";
 import bridge from "../../../../utils/bridge";
 import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 
 const addrBorderImgN = res.address.dizhi_img_nor;

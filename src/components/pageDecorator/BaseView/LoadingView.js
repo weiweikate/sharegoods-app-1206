@@ -14,7 +14,7 @@ import {
     // ActivityIndicator,
     Easing, Animated
 } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../../../comm/res';
 import UIImage from "@mr/image-placeholder";
 

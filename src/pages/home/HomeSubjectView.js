@@ -10,7 +10,7 @@ import {observer} from 'mobx-react'
 import { homeModule } from './Modules'
 import { subjectModule } from './HomeSubjectModel'
 import { getShowPrice } from '../topic/model/TopicMudelTool'
-import DesignRule from 'DesignRule'
+import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder'
 
 const GoodItems = ({img, title, money, press}) => <TouchableWithoutFeedback onPress={()=>{press && press()}}>

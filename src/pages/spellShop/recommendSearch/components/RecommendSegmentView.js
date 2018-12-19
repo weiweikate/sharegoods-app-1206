@@ -7,7 +7,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class RecommendSegmentView extends Component {
 

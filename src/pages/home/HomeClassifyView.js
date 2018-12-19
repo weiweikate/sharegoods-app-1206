@@ -15,7 +15,7 @@ import { observer } from 'mobx-react';
 import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user'
-import DesignRule from 'DesignRule'
+import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 

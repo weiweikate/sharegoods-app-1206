@@ -27,7 +27,7 @@ import taskApi from '../api/taskApi';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import user from '../../../model/user';
 import res from '../res';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 const banner = res.banner;
 
 type Props = {};

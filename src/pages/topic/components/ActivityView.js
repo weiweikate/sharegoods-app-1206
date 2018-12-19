@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import { formatDate } from '../../../utils/DateUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 export default class MyShop_RecruitPage extends Component {
 

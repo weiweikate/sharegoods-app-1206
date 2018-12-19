@@ -9,7 +9,7 @@ import { observer } from "mobx-react/native";
 import StringUtils from "../../../../utils/StringUtils";
 import UserSingleItem from "../UserSingleItem";
 import res from "../../res";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 
 const couponIcon = res.coupons_icon;
 

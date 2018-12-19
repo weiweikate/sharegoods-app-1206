@@ -11,12 +11,12 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native';
-import Modal from 'CommModal';
+import Modal from '../../../comm/components/CommModal';
 
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = ScreenUtils.autoSizeWidth(357);
 const Animated_Duration = 300; //默认的动画持续时间
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res'
 import ScreenUtils from '../../../utils/ScreenUtils';
 const KeFuIcon = res.jbtk_03;

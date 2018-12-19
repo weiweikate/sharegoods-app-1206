@@ -18,7 +18,7 @@ const xiuling = res.shopRecruit.xiuling;
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 
 export default class RecommendRow extends Component {

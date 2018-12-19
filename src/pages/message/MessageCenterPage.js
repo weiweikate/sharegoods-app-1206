@@ -17,7 +17,7 @@ import BasePage from '../../BasePage';
 
 import MessageApi from './api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import res from './res';
 
 const {

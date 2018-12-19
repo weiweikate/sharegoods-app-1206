@@ -24,7 +24,7 @@ import StringUtils from '../../../utils/StringUtils';
 import {
     UIText, UIImage
 } from '../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import RefreshFlatList from '../../../comm/components/RefreshFlatList';
 const {

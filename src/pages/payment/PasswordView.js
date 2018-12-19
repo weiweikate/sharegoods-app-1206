@@ -7,7 +7,7 @@ const { px2dp } = ScreenUtils
 import PropTypes from 'prop-types';
 import res from './res';
 const closeImg = res.close;
-import Modal from 'CommModal';
+import Modal from '../../comm/components/CommModal';
 export default class PasswordView extends Component {
     static propTypes = {
         finishedAction: PropTypes.func,

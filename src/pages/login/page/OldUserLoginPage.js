@@ -15,7 +15,7 @@ import BasePage from '../../../BasePage';
 import LoginAPI from '../api/LoginApi';
 // import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 
 const {

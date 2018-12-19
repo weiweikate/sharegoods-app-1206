@@ -6,7 +6,7 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { HomeShowModules, tagName } from './Show';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import res from './res'
 const homeShowImg = res.other.home_show;
 

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { isNoEmpty } from '../../../../utils/StringUtils';
 import { formatDate } from '../../../../utils/DateUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 
 const whiteArrowRight = res.button.white_go;

@@ -12,7 +12,7 @@ import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { SbSectiontHeaderView, ActivityOneView } from './SbSectiontHeaderView';
 import PropTypes from 'prop-types';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 export default class TwoColumnListView extends Component {
 

@@ -27,7 +27,7 @@ import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 // import CommModal from '../../../comm/components/CommModal';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 // const { px2dp } = ScreenUtils;
 import user from '../../../model/user';

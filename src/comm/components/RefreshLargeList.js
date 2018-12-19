@@ -24,7 +24,7 @@ import {
 import PropTypes from 'prop-types';
 import { LargeList } from '@mr/largelist';
 import res from '../res';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 export default class RefreshLargeList extends React.Component {
     static propTypes = {

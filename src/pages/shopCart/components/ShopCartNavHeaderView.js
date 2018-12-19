@@ -20,7 +20,7 @@ import {
 import {
     UIText,
 } from '../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
 export default class ShopCartNavHeaderView extends React.Component {

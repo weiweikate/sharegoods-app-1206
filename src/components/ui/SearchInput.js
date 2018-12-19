@@ -16,7 +16,7 @@ import {
 } from '../../components/ui';
 import left_arrow from '../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 /**
  * 搜索输入框组件

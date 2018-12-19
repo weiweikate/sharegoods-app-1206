@@ -7,8 +7,8 @@ import {
     TouchableOpacity, ImageBackground
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../../comm/components/CommModal';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 
 const { message_bg } = res;

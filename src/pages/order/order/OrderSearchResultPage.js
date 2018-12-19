@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import MyOrdersListView from './../components/MyOrdersListView';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 class OrderSearchResultPage extends BasePage {
     constructor(props) {

@@ -11,7 +11,7 @@ import {
 import StringUtils from '../../../utils/StringUtils';
 import GoodsItem from '../components/GoodsGrayItem';
 import DateUtils from '../../../utils/DateUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 const {
     refund,

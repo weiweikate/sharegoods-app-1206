@@ -10,7 +10,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import SubSwichView from './SubSwichView';
 // import ImageLoad from '@mr/image-placeholder'
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 class SbSectiontHeaderView extends Component {

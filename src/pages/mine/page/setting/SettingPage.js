@@ -18,7 +18,7 @@ import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';

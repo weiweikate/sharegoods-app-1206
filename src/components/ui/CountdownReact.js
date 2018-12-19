@@ -10,7 +10,7 @@ import {
     View,
     Text
 } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 const styles = StyleSheet.create({
     cardItemTimeRemainTxt: {
