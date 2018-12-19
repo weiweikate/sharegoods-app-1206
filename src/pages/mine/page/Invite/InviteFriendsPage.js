@@ -32,7 +32,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
-import { trackEvent } from '../../../../utils/SensorsTrack';
+import { trackEvent, track} from '../../../../utils/SensorsTrack';
 
 const {
     button: {
@@ -84,6 +84,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 
     //截屏
     _saveImg = () => {
+        track(trackEvent.QrcodeShareto, {QrCodeID: this.linkUrl, shareMethod: '保存图片'})
         this.setState({
             disable: true
         }, () => {

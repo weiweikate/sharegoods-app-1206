@@ -4,7 +4,7 @@ import {
     View,
     Image,
     NativeModules,
-    TouchableOpacity, Alert, Switch, Text, Platform, AsyncStorage,
+    TouchableOpacity, Alert, Switch, Platform, AsyncStorage,
     Linking,
     DeviceEventEmitter
 } from 'react-native';
@@ -24,6 +24,7 @@ import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
 import { homeModule } from '../../../home/Modules';
 import { logout } from '../../../../utils/SensorsTrack';
+import {MRText as Text} from '../../../../components/ui'
 
 /**
  * @author luoyongming
