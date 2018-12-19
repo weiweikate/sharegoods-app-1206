@@ -23,6 +23,7 @@ import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
 import { homeModule } from '../../../home/Modules';
+import { logout } from '../../../../utils/SensorsTrack';
 import {MRText as Text} from '../../../../components/ui'
 
 /**
@@ -226,6 +227,8 @@ class SettingPage extends BasePage {
                         // 退出七鱼
                         QYChatUtil.qiYULogout();
                         this.$loadingDismiss();
+                        // 神策退出登录
+                        logout()
                     }
                 }
             ]
