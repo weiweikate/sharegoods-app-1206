@@ -254,7 +254,8 @@ export default class ProductDetailPage extends BasePage {
         if (this.state.activityType === 1 || this.state.activityType === 2) {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: this.state.activityData.activityCode,
-                activityType: this.state.activityType
+                activityType: this.state.activityType,
+                preseat:'商品详情活动信息'
             });
         }
     };

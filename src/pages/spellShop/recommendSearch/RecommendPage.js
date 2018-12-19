@@ -266,7 +266,7 @@ export default class RecommendPage extends BasePage {
             let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
-                activityType: type
+                activityType: type,preseat:'拼店推荐banner'
             });
         }
     };

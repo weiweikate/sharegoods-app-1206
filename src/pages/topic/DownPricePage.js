@@ -147,7 +147,7 @@ export default class DownPricePage extends BasePage {
         } else if (itemData.productType === 1 || itemData.productType === 2 || itemData.productType === 3) {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: itemData.prodCode,
-                activityType: itemData.productType
+                activityType: itemData.productType,preseat:'专题列表页'
             });
         } else if (itemData.productType === 5) {
             this.$navigate('topic/TopicPage', {
