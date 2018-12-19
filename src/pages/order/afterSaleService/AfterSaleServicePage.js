@@ -63,11 +63,11 @@ class AfterSaleServicePage extends BasePage {
 
         };
         this.loadSelectionData = this.loadSelectionData.bind(this);
+        this._getReturnReason = this._getReturnReason.bind(this);
     }
 
     componentDidMount() {
         this.loadPageData();
-        this._getReturnReason();
     }
 
     $isMonitorNetworkStatus() {
@@ -423,9 +423,14 @@ class AfterSaleServicePage extends BasePage {
         );
     };
 
-    _getReturnReason() {
+    _getReturnReason(editable) {
+        //不能编辑 《=》 未发货
+        let pageType = this.params.pageType;
+        if (editable === false){
+            pageType = 3;
+        };
         let that = this;
-        OrderApi.getReturnReason({ code: ['TKLY', 'THTK', 'HHLY'][this.params.pageType] }).then((result) => {
+        OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH','WFH'][pageType] }).then((result) => {
             that.setState({ returnReasons: result.data || [] });
         }).catch((error) => {
 
@@ -464,6 +469,7 @@ class AfterSaleServicePage extends BasePage {
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
             }
+            that._getReturnReason(editable);
             if (that.params.isEdit) {
                 that.setState({ productData, editable });
             } else {
