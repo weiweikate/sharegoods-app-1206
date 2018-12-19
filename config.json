@@ -43,7 +43,7 @@
             "host": "http://172.16.10.238:8180/gateway"
         },
         "zhou_hao": {
-            "name": "测试_周浩",
+            "name": "周浩",
             "host": "http://172.16.10.64:9090/gateway",
             "oss": "https://devcdn.sharegoodsmall.com"
         },
@@ -101,6 +101,10 @@
         "申xiangyu": {
             "name": "申xiangyu",
             "host": "http://172.16.10.91:18080/gateway"
+        },
+        "岑登":{
+            "name": "岑登",
+            "host": "http://172.16.10.74:18080/gateway"
         }
     }
 }
