@@ -5,7 +5,6 @@ import {
     StyleSheet,
     View,
     ImageBackground,
-    Text,
     Image,
     TouchableWithoutFeedback
 } from "react-native";
@@ -16,6 +15,7 @@ const { px2dp } = ScreenUtils;
 import res from "../../../spellShop/res";
 import DesignRule from "../../../../constants/DesignRule";
 import MineAPI from "../../api/MineApi";
+import {MRText as Text} from '../../../../components/ui'
 
 const HeaderBarBgImg = res.myShop.txbg_03;
 const white_back = res.button.white_back;

@@ -6,7 +6,6 @@ import {
     ImageBackground,
     // Platform,
     // Linking,
-    Text,
     TouchableWithoutFeedback,
     RefreshControl, DeviceEventEmitter, TouchableOpacity
 } from 'react-native';
@@ -28,6 +27,7 @@ import WaveView from 'WaveView';
 import MessageApi from '../../message/api/MessageApi';
 import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
+import {MRText as Text} from '../../../components/ui'
 
 const {
     mine_header_bg,
@@ -725,8 +725,8 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
 
-        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect, mine_icon_discollect, user.upUserid ? mine_icon_mentor : null];
-        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏', '测试h5的交互', user.upUserid ? '导师' : null];
+        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect, mine_icon_discollect, user.upUserCode ? mine_icon_mentor : null];
+        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏', '测试h5的交互', user.upUserCode ? '导师' : null];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
@@ -839,7 +839,7 @@ export default class MinePage extends BasePage {
                 this.$navigate(RouterMap.WebViewDemo);
                 break;
             case 8:
-                if (user.upUserid) {
+                if (user.upUserCode) {
                     this.$navigate(RouterMap.MyMentorPage);
                 }
                 break;

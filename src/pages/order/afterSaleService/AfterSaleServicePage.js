@@ -33,6 +33,7 @@ import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
+import { trackEvent, track } from '../../../utils/SensorsTrack';
 
 const { arrow_right } = res;
 
@@ -62,11 +63,11 @@ class AfterSaleServicePage extends BasePage {
 
         };
         this.loadSelectionData = this.loadSelectionData.bind(this);
+        this._getReturnReason = this._getReturnReason.bind(this);
     }
 
     componentDidMount() {
         this.loadPageData();
-        this._getReturnReason();
     }
 
     $isMonitorNetworkStatus() {
@@ -422,9 +423,14 @@ class AfterSaleServicePage extends BasePage {
         );
     };
 
-    _getReturnReason() {
+    _getReturnReason(editable) {
+        //不能编辑 《=》 未发货
+        let pageType = this.params.pageType;
+        if (editable === false){
+            pageType = 3;
+        };
         let that = this;
-        OrderApi.getReturnReason({ code: ['TKLY', 'THTK', 'HHLY'][this.params.pageType] }).then((result) => {
+        OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH','WFH'][pageType] }).then((result) => {
             that.setState({ returnReasons: result.data || [] });
         }).catch((error) => {
 
@@ -463,6 +469,7 @@ class AfterSaleServicePage extends BasePage {
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
             }
+            that._getReturnReason(editable);
             if (that.params.isEdit) {
                 that.setState({ productData, editable });
             } else {
@@ -534,6 +541,8 @@ class AfterSaleServicePage extends BasePage {
         //     return;
         // }
 
+        let { productName, warehouseOrderNo, payAmount, prodCode } = this.state.productData;
+
         /** 修改申请*/
         if (this.params.isEdit) {
             params.serviceNo = serviceNo;
@@ -547,6 +556,22 @@ class AfterSaleServicePage extends BasePage {
                 bridge.$toast(e.msg);
             });
         } else {
+            // applicationIDorderID	申请单号订单ID
+            // commodityID	商品ID
+            // commodityName	商品名称
+            // firstCommodity	商品一级分类
+            // secondCommodity	商品二级分类
+            // commodityAmount	支付商品全额
+            // PartlyReturn	是否部分退款
+            track(trackEvent.applyReturn,
+                {
+                    orderID: warehouseOrderNo,
+                    applicationIDorderID: orderProductNo,
+                    commodityName: productName,
+                    commodityAmount: payAmount,
+                    PartlyReturn: 0,
+                    commodityID: prodCode
+                });
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;
             this.$loadingShow();

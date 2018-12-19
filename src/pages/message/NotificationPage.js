@@ -2,9 +2,9 @@
 import React from 'react';
 import {
     StyleSheet, DeviceEventEmitter,
-    View, Text,
+    View
 } from 'react-native';
-
+import {MRText as Text} from '../../components/ui'
 import ScreenUtils from '../../utils/ScreenUtils';
 import DateUtils from '../../utils/DateUtils';
 import StringUtils from '../../utils/StringUtils';

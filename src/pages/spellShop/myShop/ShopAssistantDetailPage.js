@@ -67,8 +67,8 @@ export default class ShopAssistantDetailPage extends BasePage {
     }
 
     loadPageData() {
-        const { userId } = this.params;
-        SpellShopApi.findUserDetail({ userId }).then((data) => {
+        const { userCode } = this.params;
+        SpellShopApi.findUserDetail({ userCode }).then((data) => {
             this.setState({
                 userInfo: data.data || {}
             });

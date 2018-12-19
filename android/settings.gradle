@@ -1,33 +1,31 @@
 rootProject.name = 'sharegoods'
+include ':react-native-linear-gradient'
+project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
+include ':react-native-fetch-blob'
+project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fetch-blob/android')
+include ':react-native-webview-bridge'
+project(':react-native-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview-bridge/android')
+include ':react-native-video'
+project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android-exoplayer')
+include ':react-native-vector-icons'
+project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+include ':react-native-update'
+project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
+include ':react-native-svg'
+project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
 include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
 include ':react-native-autoheight-webview'
 project(':react-native-autoheight-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-autoheight-webview/android')
-include ':react-native-update'
-project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
-include ':react-native-video'
-project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android-exoplayer')
-include ':react-native-linear-gradient'
-project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
-include ':react-native-vector-icons'
-project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+include ':@sensors.data/react-native-sensors-analytics'
+project(':@sensors.data/react-native-sensors-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/@sensors.data/react-native-sensors-analytics/android')
+include ':@mr/request'
+project(':@mr/request').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/request/android')
+include ':@mr/react-native-cookies'
+project(':@mr/react-native-cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-cookies/android')
+include ':@mr/geolocation'
+project(':@mr/geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/geolocation/android')
 
-include ':react-native-svg'
-project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
-include ':react-native-webview-bridge'
-project(':react-native-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview-bridge/android')
-
-include ':geolocation'
-project(':geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/geolocation/android')
-
-include ':request'
-project(':request').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/request/android')
-
-include ':react-native-fetch-blob'
-project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fetch-blob/android')
-
-include ':react-native-cookies'
-project(':react-native-cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-cookies/android')
 include ':app'
 include ':commonlib'
 include ':qiyu_service'

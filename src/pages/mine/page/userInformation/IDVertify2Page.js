@@ -80,7 +80,7 @@ export default class IDVertify2Page extends BasePage {
                         backgroundColor: "white",
                         justifyContent: "space-between"
                     }}>
-                        <Text style={styles.accountStyle}>姓名</Text>
+                        <Text style={styles.accountStyle} allowFontScaling={false}>姓名</Text>
                         <RNTextInput
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ name: text })}
@@ -96,7 +96,7 @@ export default class IDVertify2Page extends BasePage {
                         backgroundColor: "white",
                         justifyContent: "space-between"
                     }}>
-                        <Text style={styles.accountStyle}>证件号</Text>
+                        <Text style={styles.accountStyle} allowFontScaling={false}>证件号</Text>
                         <RNTextInput
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ idNumber: text })}
@@ -128,7 +128,7 @@ export default class IDVertify2Page extends BasePage {
                         justifyContent: "center",
                         borderRadius: 25
                     }} onPress={() => this.commit()}>
-                        <Text style={{ fontSize: 17, color: "white" }}>提交</Text>
+                        <Text style={{ fontSize: 17, color: "white" }} allowFontScaling={false}>提交</Text>
                     </NoMoreClick>
                     <View style={{ alignItems: "center" }}>
                         <UIText value={"（信息仅用户自己可见）"} style={{

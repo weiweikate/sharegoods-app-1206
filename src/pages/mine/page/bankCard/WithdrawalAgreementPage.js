@@ -16,9 +16,9 @@ import {
     StyleSheet,
     View,
     WebView,
-    Text,
     TouchableWithoutFeedback
 } from "react-native";
+import {MRText as Text} from '../../../../components/ui'
 import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "../../../../constants/DesignRule";

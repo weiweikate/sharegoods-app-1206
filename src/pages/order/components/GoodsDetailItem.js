@@ -45,7 +45,7 @@ const GoodsDetailItem = props => {
                                       afterSaleServiceClick(afterSaleService[i]);
                                   }}>
                     <Text
-                        style={[styles.grayText, { color: afterSaleService[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]}>{afterSaleService[i].operation}</Text>
+                        style={[styles.grayText, { color: afterSaleService[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]} allowFontScaling={false}>{afterSaleService[i].operation}</Text>
                 </TouchableOpacity>
             );
         }

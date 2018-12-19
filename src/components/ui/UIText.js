@@ -16,4 +16,10 @@ const UIText = (props) => {
     return (<RNText {...attributes} allowFontScaling={false}>{value}</RNText>);
 };
 
+export class MRText extends React.Component{
+
+    render(){
+        return(<RNText {...this.props} allowFontScaling={false}>{this.props.children}</RNText>)
+    }
+}
 export default connectStyle('Text')(UIText);

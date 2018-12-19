@@ -69,7 +69,7 @@ class ShowMessageModal extends Component {
                             marginLeft: 12,
                             fontSize: 13,
                             color: DesignRule.textColor_mainTitle
-                        }}>{this.props.detail[i].title}</Text>
+                        }} allowFontScaling={false}>{this.props.detail[i].title}</Text>
                     </TouchableOpacity>
                     {i === arrLen - 1 ? null : <View
                         style={{

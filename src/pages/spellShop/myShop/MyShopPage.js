@@ -63,7 +63,7 @@ export default class MyShopPage extends BasePage {
             tittle: '店铺详情',
 
             storeData: {},
-            storeId: this.props.storeId,
+            storeCode: this.props.storeCode,
             isLike: false
         };
     }
@@ -165,14 +165,14 @@ export default class MyShopPage extends BasePage {
 
     _requestGetById = () => {
         //店铺信息
-        SpellShopApi.getById({ id: this.state.storeId }).then((data) => {
+        SpellShopApi.getById({ storeCode: this.state.storeCode }).then((data) => {
             let dataTemp = data.data || {};
             const { userStatus } = dataTemp;
             this.setState({
                 loadingState: PageLoadingState.success,
                 isRefresh: false,
                 storeData: dataTemp,
-                storeId: dataTemp.id,
+                storeCode: dataTemp.storeNumber,
                 tittle: userStatus === 1 ? '我的店铺' : '店铺详情'
             });
         }).catch((error) => {
@@ -187,7 +187,7 @@ export default class MyShopPage extends BasePage {
 
     _requestGetByStoreId = () => {
         //是否收藏店铺
-        SpellShopApi.getByStoreId({ storeId: this.state.storeId }).then((data) => {
+        SpellShopApi.getByStoreId({ storeCode: this.state.storeCode }).then((data) => {
             if (data.data) {
                 this.setState({
                     isLike: true
@@ -203,7 +203,7 @@ export default class MyShopPage extends BasePage {
 
     //收藏
     _clickLikeItem = () => {
-        SpellShopApi.storeCollectionCollection({ storeId: this.state.storeId }).then(() => {
+        SpellShopApi.storeCollectionCollection({ storeCode: this.state.storeCode }).then(() => {
             this.setState({
                 isLike: true
             });
@@ -214,7 +214,7 @@ export default class MyShopPage extends BasePage {
     };
     //取消收藏
     _clickUnLikeItem = () => {
-        SpellShopApi.storeCollectionCancel({ storeId: this.state.storeId }).then(() => {
+        SpellShopApi.storeCollectionCancel({ storeCode: this.state.storeCode }).then(() => {
             this.setState({
                 isLike: false
             });
@@ -246,7 +246,7 @@ export default class MyShopPage extends BasePage {
                             confirmCallBack: (text) => {
                                 SpellShopApi.storeTipOffInsert({
                                     content: text,
-                                    storeId: this.state.storeId
+                                    storeCode: this.state.storeCode
                                 }).then(() => {
                                     this.$toastShow('举报成功');
                                 }).catch((error) => {
@@ -257,7 +257,7 @@ export default class MyShopPage extends BasePage {
                     }, 500);
                 } else if (index === 2) {
                     this.$loadingShow();
-                    SpellShopApi.quitStore({ storeId: this.state.storeId }).then((data) => {
+                    SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
                         if (!this.props.leftNavItemHidden) {
                             this._loadPageData();
                         }
@@ -317,7 +317,7 @@ export default class MyShopPage extends BasePage {
                 {
                     text: '申请', onPress: () => {
                         this.$loadingShow();
-                        SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
+                        SpellShopApi.addToStore({ storeCode: this.state.storeCode }).then((data) => {
                             if (!this.props.leftNavItemHidden) {
                                 this._loadPageData();
                             }
@@ -504,7 +504,7 @@ export default class MyShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.code || ''}`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>

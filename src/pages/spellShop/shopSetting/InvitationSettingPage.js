@@ -48,7 +48,7 @@ export default class InvitationSettingPage extends BasePage {
 
     _loadPageData = () => {
         //店铺信息
-        SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
+        SpellShopApi.getById({ storeCode: this.params.storeData.storeNumber }).then((data) => {
             let dataTemp = data.data || {};
             this.setState({
                 selIndex: dataTemp.recruitStatus
