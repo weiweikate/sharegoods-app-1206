@@ -535,7 +535,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 } else if (orderDetailModel.expList.length === 1 && orderDetailModel.unSendProductInfoList.length === 0) {
                     OrderApi.findLogisticsDetail({ expressNo: orderDetailModel.expList[0].expNO }).then((response) => {
                         console.log(response);
-                        pageStateString.sellerState = JSON.parse(response.data).result.list[0].status || "等待平台发货";
+                        pageStateString.sellerState = response.data.list[0].status || "等待平台发货";
                     }).catch(e => {
                         pageStateString.sellerState = "等待平台发货";
                     });
