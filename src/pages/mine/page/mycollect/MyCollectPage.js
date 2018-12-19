@@ -105,14 +105,14 @@ export default class MyCollectPage extends BasePage {
                     }
                     <View style={styles.right}>
                         <View style={styles.row}>
-                            <Text numberOfLines={1} style={styles.title}>{item.name || ''}</Text>
+                            <Text numberOfLines={1} style={styles.title} allowFontScaling={false}>{item.name || ''}</Text>
                         </View>
 
-                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}成员</Text>
+                        <Text style={[styles.desc, styles.margin]} allowFontScaling={false}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
                             <Text
-                                style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance ? item.totalTradeBalance : 0}元</Text>
+                                style={[styles.desc, { color: '#f39500' }]} allowFontScaling={false}>交易额:{item.totalTradeBalance ? item.totalTradeBalance : 0}元</Text>
                             <View style={{ flex: 1 }}/>
                             <View style={styles.starContainer}>
                                 {
@@ -161,13 +161,13 @@ export default class MyCollectPage extends BasePage {
                     }
                     <View style={styles.right}>
                         <View style={styles.row}>
-                            <Text numberOfLines={1} style={styles.title}>{item.name || ''}</Text>
+                            <Text numberOfLines={1} style={styles.title} allowFontScaling={false}>{item.name || ''}</Text>
                         </View>
 
-                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}成员</Text>
+                        <Text style={[styles.desc, styles.margin]} allowFontScaling={false}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
-                            <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance}元</Text>
+                            <Text style={[styles.desc, { color: '#f39500' }]} allowFontScaling={false}>交易额:{item.totalTradeBalance}元</Text>
                             <View style={{ flex: 1 }}/>
                             <View style={styles.starContainer}>
                                 {

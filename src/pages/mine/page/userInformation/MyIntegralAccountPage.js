@@ -83,13 +83,13 @@ export default class MyIntegralAccountPage extends BasePage {
                             marginTop: 15,
                             fontSize: 13,
                             color: 'white'
-                        }}>秀豆账户(枚)</Text>
+                        }} allowFontScaling={false}>秀豆账户(枚)</Text>
                         <Text style={{
                             marginLeft: 25,
                             fontSize: 25,
                             marginTop: 10,
                             color: 'white'
-                        }}>{user.userScore ? user.userScore : 0}</Text>
+                        }} allowFontScaling={false}>{user.userScore ? user.userScore : 0}</Text>
                     </View>
                     <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
                         this.$navigate('home/signIn/SignInPage');
