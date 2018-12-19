@@ -64,7 +64,7 @@ const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommModal from 'CommModal';
 import res from '../res';
 import bridge from '../../utils/bridge';
-import { track, trackEvent } from '../../utils/SensorsTrack';
+import { track } from '../../utils/SensorsTrack';
 import DesignRule from 'DesignRule';
 import user from '../../model/user';
 
