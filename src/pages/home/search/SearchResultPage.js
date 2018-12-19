@@ -26,6 +26,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const {
     toGwc,
@@ -75,7 +76,7 @@ export default class SearchResultPage extends BasePage {
     }
 
     componentDidMount() {
-        this._productList();
+        this._productList(true);
     }
 
     _getPageStateOptions = () => {
@@ -93,7 +94,7 @@ export default class SearchResultPage extends BasePage {
         };
     };
 
-    _getParams = (isMore) => {
+    _getParams = () => {
         let param = {};
         param.page = this.state.page;
         param.pageSize = 10;
@@ -122,22 +123,30 @@ export default class SearchResultPage extends BasePage {
         });
     };
 
-    _emptyRequest = ()=>{
+    _emptyRequest = () => {
         this.setState({
-            loadingState: PageLoadingState.loading,
-        },()=>{
+            loadingState: PageLoadingState.loading
+        }, () => {
             this._productList();
-        })
-    }
+        });
+    };
 
     //数据
-    _productList = () => {
+    _productList = (needTrack) => {
         this.state.page = 1;
         let param = this._getParams();
         HomeAPI.productList(param).then((data) => {
             this.state.page++;
             data = data.data || {};
             let dataArr = data.data || [];
+
+            /*搜索埋点*/
+            needTrack && track(trackEvent.search, {
+                keyWord: this.params.keywords,
+                hasResult: dataArr.length !== 0,
+                isHistory: this.params.isHistory,
+                isRecommend: StringUtils.isNoEmpty(this.params.hotWordId)
+            });
             this.setState({
                 refreshing: false,
                 noMore: data.isMore === 0,
@@ -160,7 +169,7 @@ export default class SearchResultPage extends BasePage {
         this.setState({
             loadingMore: true
         }, () => {
-            let param = this._getParams(true);
+            let param = this._getParams();
             HomeAPI.productList(param).then((data) => {
                 this.state.page++;
                 this.onEndReached = false;
@@ -183,6 +192,7 @@ export default class SearchResultPage extends BasePage {
 
     _storeProduct = (item) => {
         this.state.prodCode = item.prodCode;
+        this.productItem = item;
         this.SelectionPage.show(item, this._selectionViewConfirm, { needUpdate: true });
     };
 
@@ -207,7 +217,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     _onPressAtIndex = (prodCode) => {
-        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,preseat:'搜索结果' });
     };
 
     //选择规格确认
@@ -217,6 +227,9 @@ export default class SearchResultPage extends BasePage {
             'skuCode': skuCode,
             'productCode': this.state.prodCode
         };
+        /*加入购物车埋点*/
+        const {prodCode,name,firstCategoryId,secCategoryId,minPrice} = this.productItem||{};
+        track(trackEvent.addToShoppingcart,{shoppingcartEntrance:'搜索页面',commodityNumber:amount,commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
         shopCartCacheTool.addGoodItem(temp);
     };
 
@@ -247,11 +260,12 @@ export default class SearchResultPage extends BasePage {
             this.$toastShow('搜索内容不能为空');
             return;
         }
+        this.params.isHistory = false;
         this.params.categoryId = undefined;
         this.params.hotWordId = undefined;
         this.params.keywords = text;
         this.setState({ onFocus: false, textInput: text }, () => {
-            this._productList();
+            this._productList(true);
         });
     };
 
@@ -392,7 +406,8 @@ export default class SearchResultPage extends BasePage {
                             <Text style={{
                                 color: 'white',
                                 fontSize: 10
-                            }} allowFontScaling={false}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
+                            }}
+                                  allowFontScaling={false}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity>
                     {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop}>
