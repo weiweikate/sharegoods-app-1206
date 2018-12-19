@@ -28,7 +28,7 @@ export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            id: user.id,
+            id: user.code,
             phone: '',
             pwd: '',
             thirdType: 1,

@@ -63,7 +63,7 @@ export default class RecommendPage extends BasePage {
     };
 
     $NavBarRenderRightItem = () => {
-        const showShopItem = SpellStatusModel.canCreateStore || SpellStatusModel.storeId && SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0;
+        const showShopItem = SpellStatusModel.canCreateStore || SpellStatusModel.storeCode && SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0;
         return <View style={styles.rightBarItemContainer}>
             {
                 showShopItem ? <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
@@ -230,7 +230,7 @@ export default class RecommendPage extends BasePage {
         //已缴纳保证金
         if (SpellStatusModel.storeStatus === 2) {
             this.$navigate('spellShop/shopSetting/SetShopNamePage');
-        } else if (SpellStatusModel.storeId && StringUtils.isNoEmpty(SpellStatusModel.storeStatus) && SpellStatusModel.storeStatus !== 0) {//有店铺店铺没关闭
+        } else if (SpellStatusModel.storeCode && StringUtils.isNoEmpty(SpellStatusModel.storeStatus) && SpellStatusModel.storeStatus !== 0) {//有店铺店铺没关闭
             this.props.navigation.popToTop();
         } else {
             this.$navigate('spellShop/openShop/OpenShopExplainPage');
@@ -243,8 +243,8 @@ export default class RecommendPage extends BasePage {
     };
 
     // 点击查看某个店铺
-    _RecommendRowOnPress = (id) => {
-        this.$navigate('spellShop/MyShop_RecruitPage', { storeId: id });
+    _RecommendRowOnPress = (storeCode) => {
+        this.$navigate('spellShop/MyShop_RecruitPage', { storeCode: storeCode });
     };
 
     // 点击轮播图广告

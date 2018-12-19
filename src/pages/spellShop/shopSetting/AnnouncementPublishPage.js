@@ -35,7 +35,7 @@ export default class AnnouncementPublishPage extends BasePage {
             return;
         }
 
-        SpellShopApi.storeNoticeInsert({ content: this.state.text, storeId: this.params.storeData.id }).then(() => {
+        SpellShopApi.storeNoticeInsert({ content: this.state.text, storeCode: this.params.storeData.storeNumber }).then(() => {
             const { publishSuccess } = this.params;
             this.$toastShow('发布成功');
             publishSuccess && publishSuccess();

@@ -228,8 +228,8 @@ export default class ShowDetailPage extends BasePage {
                                 dec: '分享小程序子标题',
                                 thumImage: 'logo.png',
                                 hdImageURL: detail.img,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/detail/${detail.id}?upuserid=${user.id || ''}`,
-                                miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.id || ''}`
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/detail/${detail.id}?upuserid=${user.code || ''}`,
+                                miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
                             }}
             />
         </View>;
