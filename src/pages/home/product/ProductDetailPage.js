@@ -216,9 +216,6 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _savaData = (data) => {
-        const {prodCode,name,firstCategoryId,secCategoryId,minPrice} = data||{};
-        track(trackEvent.commodityDetail,{preseat:this.params.preseat||'',commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
-
         let { productStatus, upTime, now } = data;
         //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)3
         if (productStatus === 0) {
@@ -231,6 +228,9 @@ export default class ProductDetailPage extends BasePage {
                 loadingState: PageLoadingState.success,
                 data: data
             }, () => {
+                /*商品详情埋点*/
+                const {prodCode,name,firstCategoryId,secCategoryId,minPrice} = data||{};
+                track(trackEvent.commodityDetail,{preseat:this.params.preseat||'',commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
                 this._getQueryByProductId();
                 /*productStatus===3的时候需要刷新*/
                 if (productStatus === 3 && upTime && now) {

@@ -44,6 +44,7 @@ import { PageLoadingState, renderViewByLoadingState } from '../../components/pag
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MessageAPI from '../message/api/MessageApi';
 import QYChatUtil from '../mine/page/helper/QYChatModel';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -188,6 +189,10 @@ export default class TopicDetailPage extends BasePage {
                     this.setState({
                         loadingState: PageLoadingState.success
                     }, () => {
+                        /*商品详情埋点*/
+                        const {packageCode,name,firstCategoryId,secCategoryId,levelPrice} = this.state.data;
+                        track(trackEvent.commodityDetail,{preseat:this.params.preseat||'',commodityID:packageCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:levelPrice})
+
                         if (this.state.data.type === 2) {//1普通礼包  2升级礼包
                             this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退换货，如有产品质量问题，可联系客服进行申诉`);
                         }
@@ -264,6 +269,10 @@ export default class TopicDetailPage extends BasePage {
                     this.setState({
                         data: data.data || {}
                     }, () => {
+                        /*商品详情埋点*/
+                        const {name,firstCategoryId,secCategoryId,minPrice} = data||{};
+                        track(trackEvent.commodityDetail,{preseat:this.params.preseat||'',commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
+
                         this._needPushToNormal();
                         this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
                     });
