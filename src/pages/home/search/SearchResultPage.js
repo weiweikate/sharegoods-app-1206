@@ -192,6 +192,7 @@ export default class SearchResultPage extends BasePage {
 
     _storeProduct = (item) => {
         this.state.prodCode = item.prodCode;
+        this.productItem = item;
         this.SelectionPage.show(item, this._selectionViewConfirm, { needUpdate: true });
     };
 
@@ -226,6 +227,9 @@ export default class SearchResultPage extends BasePage {
             'skuCode': skuCode,
             'productCode': this.state.prodCode
         };
+        /*加入购物车埋点*/
+        const {prodCode,name,firstCategoryId,secCategoryId,minPrice} = this.productItem||{};
+        track(trackEvent.addToShoppingcart,{shoppingcartEntrance:'搜索页面',commodityNumber:amount,commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
         shopCartCacheTool.addGoodItem(temp);
     };
 

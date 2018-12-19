@@ -28,6 +28,7 @@ import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 // import CommModal from '../../../comm/components/CommModal';
 import DesignRule from 'DesignRule';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 // const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
@@ -302,6 +303,9 @@ export default class ProductDetailPage extends BasePage {
                 'skuCode': skuCode,
                 'productCode': this.state.data.prodCode
             };
+            /*加入购物车埋点*/
+            const {prodCode,name,firstCategoryId,secCategoryId,minPrice} = this.state.data||{};
+            track(trackEvent.addToShoppingcart,{shoppingcartEntrance:'详情页面',commodityNumber:amount,commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
             this.$loadingShow()
