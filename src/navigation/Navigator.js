@@ -5,6 +5,7 @@ import { Platform, NativeModules } from 'react-native'
 import RouterMap from './RouterMap'
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import Analytics from '../utils/AnalyticsUtil'
+import { trackViewScreen } from '../utils/SensorsTrack'
 
 const Navigator = StackNavigator(Router,
     {
@@ -54,18 +55,23 @@ Navigator.router.getStateForAction = (action, state) => {
     if (action.type === NavigationActions.INIT) {
         const currentPage = 'HomePage'
         Analytics.onPageStart(currentPage)
+        trackViewScreen(currentPage, {})
+        // trackTimerStart(encodeURIComponent(currentPage))
     }
 
     if (action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK) {
         const currentPage = getCurrentRouteName(state)
-        console.log('currentpage end', currentPage)
+        console.log('getStateForAction currentpage end', currentPage)
         Analytics.onPageEnd(currentPage)
+        // trackTimerEnd(encodeURIComponent(currentPage), {})
     }
 
     if (action.type === 'Navigation/COMPLETE_TRANSITION') {
         const currentPage = getCurrentRouteName(state)
-        console.log('currentpage start', currentPage)
+        console.log('getStateForAction currentpage start', currentPage)
         Analytics.onPageStart(currentPage)
+        trackViewScreen(currentPage, {})
+        // trackTimerStart( encodeURIComponent(currentPage))
     }
 
     // console.log('getStateForAction', action, state)
