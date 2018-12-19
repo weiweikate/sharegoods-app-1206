@@ -280,7 +280,7 @@ export default class TopicDetailPage extends BasePage {
                         data: data.data || {}
                     }, () => {
                         /*商品详情埋点*/
-                        const { name, firstCategoryId, secCategoryId, minPrice } = data || {};
+                        const { name, firstCategoryId, secCategoryId, minPrice } = data.data || {};
                         track(trackEvent.commodityDetail, {
                             preseat: this.params.preseat || '',
                             commodityID: prodCode,
