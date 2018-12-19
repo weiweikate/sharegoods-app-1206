@@ -78,7 +78,7 @@ export default class HelperQuestionDetail extends BasePage {
                         <Text style={{
                             fontSize: 16,
                             color: this.state.type === null || this.state.type === 1 ? DesignRule.mainColor : 'white'
-                        }}>{`没啥帮助?  (${this.state.noHelpNum > 9999 ? '9999+' : this.state.noHelpNum})`}</Text>
+                        }} allowFontScaling={false}>{`没啥帮助?  (${this.state.noHelpNum > 9999 ? '9999+' : this.state.noHelpNum})`}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackGoodUse()} style={{
                         width: 140,
@@ -93,7 +93,7 @@ export default class HelperQuestionDetail extends BasePage {
                         <Text style={{
                             fontSize: 16,
                             color: this.state.type === null || this.state.type === 0 ? DesignRule.mainColor : 'white'
-                        }}>{`有用  (${this.state.useHelpNum > 9999 ? '9999+' : this.state.useHelpNum})`}</Text>
+                        }} allowFontScaling={false}>{`有用  (${this.state.useHelpNum > 9999 ? '9999+' : this.state.useHelpNum})`}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -119,7 +119,7 @@ export default class HelperQuestionDetail extends BasePage {
             this.loadPageData();
         }).catch(err => {
             if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+                this.gotoLoginPage()
             }
         });
     }

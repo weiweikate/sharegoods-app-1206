@@ -5,7 +5,6 @@ import {
     StyleSheet,
     View,
     ImageBackground,
-    Text,
     Image,
     TouchableWithoutFeedback
 } from "react-native";
@@ -16,6 +15,7 @@ const { px2dp } = ScreenUtils;
 import res from "../../../spellShop/res";
 import DesignRule from "../../../../constants/DesignRule";
 import MineAPI from "../../api/MineApi";
+import {MRText as Text} from '../../../../components/ui'
 
 const HeaderBarBgImg = res.myShop.txbg_03;
 const white_back = res.button.white_back;
@@ -71,7 +71,7 @@ export default class MyMentorPage extends BasePage {
         return (
             <View style={styles.container}>
                 {this._headerRender()}
-                {this._itemRender("名称", this.state.nickName)}
+                {this._itemRender("昵称", this.state.nickName)}
                 {/*{this._lineRender()}*/}
                 {/*{this._itemRender("职称", this.state.levelName)}*/}
                 {/*{this._lineRender()}*/}

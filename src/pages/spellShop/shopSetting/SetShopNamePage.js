@@ -66,7 +66,7 @@ export default class SetShopNamePage extends BasePage {
     componentDidMount() {
         if (this.params.storeData) {
             this.$loadingShow();
-            SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
+            SpellShopApi.getById({ storeCode: this.params.storeData.storeCode }).then((data) => {
                 let dataTemp = data.data || {};
                 this.setState({
                     storeHeadUrlOrigin: dataTemp.headUrl,

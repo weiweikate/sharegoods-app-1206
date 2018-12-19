@@ -5,7 +5,6 @@
 import React from 'react';
 import {
     StyleSheet,
-    Text,
     View,
     TouchableOpacity,
     ImageBackground,
@@ -30,6 +29,7 @@ import apiEnvironment from "../../../api/ApiEnvironment";
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 // import {track,trackEvent}from '../../../utils/SensorsTrack'
 
+import {MRText as Text} from '../../../components/ui'
 const {
     sign_in_bg: signInImageBg,
     showbean_icon: showBeanIcon,

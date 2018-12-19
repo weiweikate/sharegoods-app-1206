@@ -105,9 +105,9 @@ class ShowBannerModules {
         }
 
         const { storeDTO } = data;
-        let storeId = 0;
+        let storeCode = 0;
         if (storeDTO) {
-            storeId = storeDTO.id;
+            storeCode = storeDTO.storeNumber;
         }
 
         const { linkType } = data;
@@ -117,7 +117,7 @@ class ShowBannerModules {
             linkTypeCode: data.linkTypeCode,
             productCode: data.linkTypeCode,
             productType: productType,
-            storeId: storeId
+            storeCode: storeCode
         };
 
     };

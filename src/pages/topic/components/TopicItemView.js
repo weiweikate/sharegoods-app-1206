@@ -54,15 +54,22 @@ export default class TopicItemView extends Component {
                                     }
                                 ]}
                             numberOfLines={2}
-
                         >
                             {itemData.productName}
                         </Text>
 
-                        <Text style={Styles.itemBottomPriceTextStyle}>
-                            {/*{ '¥'+itemData.originalPrice+ '起'}*/}
-                            {getShowPrice(itemData) + '起'}
-                        </Text>
+                        {itemData.productType !== 5
+                            ?
+                            <Text style={Styles.itemBottomPriceTextStyle}>
+                                {/*{ '¥'+itemData.originalPrice+ '起'}*/}
+                                {getShowPrice(itemData) + '起'}
+                            </Text>
+                            :
+                            <Text style={Styles.itemBottomPriceTextStyle}>
+                                {/*{ '¥'+itemData.originalPrice+ '起'}*/}
+                                {'专题类目'}
+                            </Text>
+                        }
                     </View>
                 </View>
             </TouchableOpacity>

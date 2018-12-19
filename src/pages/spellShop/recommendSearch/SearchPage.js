@@ -115,7 +115,7 @@ export default class SearchPage extends BasePage {
     };
 
     _clickShopAtRow = (item) => {
-        this.$navigate('spellShop/MyShop_RecruitPage', { storeId: item.id });
+        this.$navigate('spellShop/MyShop_RecruitPage', { storeCode: item.storeNumber });
     };
 
     // 渲染行

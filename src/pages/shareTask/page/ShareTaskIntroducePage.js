@@ -107,7 +107,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                                     thumImage: 'logo.png',
                                     hdImageURL: '',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
-                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.id}`
+                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.code}&jobId=${this.params.id}`
                                 }}
                 />
             </View>
