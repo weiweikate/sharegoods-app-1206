@@ -4,7 +4,7 @@ import android.content.Context;
 import android.webkit.WebView;
 
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
-import com.smartstudy.commonlib.entity.ChannelInfo;
+//import com.smartstudy.commonlib.entity.ChannelInfo;
 
 import org.json.JSONObject;
 
@@ -41,18 +41,18 @@ public class SensorsUtils {
         // 设置匿名ID
         SensorsDataAPI.sharedInstance().identify(DeviceUtils.getUniquePsuedoID());
         try {
-            ChannelInfo channelInfo = ChannelUtils.getChannelObject(channel);
-            // 初始化SDK后，获取应用名称设置为公共属性
-            JSONObject obj_super = new JSONObject();
-            obj_super.put("platform", "AndroidApp");
-            obj_super.put("product", AppUtils.getAppName(context) + "-APP");
-            obj_super.put("pid", channelInfo.getId());
-            obj_super.put("$latest_utm_source", channelInfo.getName());
-            obj_super.put("$latest_utm_medium", channelInfo.getMedium());
-            obj_super.put("$latest_utm_term", channelInfo.getTerm());
-            obj_super.put("$latest_utm_content", channelInfo.getContent());
-            obj_super.put("$latest_utm_campaign", channelInfo.getCampaign());
-            SensorsDataAPI.sharedInstance().registerSuperProperties(obj_super);
+//            ChannelInfo channelInfo = ChannelUtils.getChannelObject(channel);
+//            // 初始化SDK后，获取应用名称设置为公共属性
+//            JSONObject obj_super = new JSONObject();
+//            obj_super.put("platform", "AndroidApp");
+//            obj_super.put("product", AppUtils.getAppName(context) + "-APP");
+//            obj_super.put("pid", channelInfo.getId());
+//            obj_super.put("$latest_utm_source", channelInfo.getName());
+//            obj_super.put("$latest_utm_medium", channelInfo.getMedium());
+//            obj_super.put("$latest_utm_term", channelInfo.getTerm());
+//            obj_super.put("$latest_utm_content", channelInfo.getContent());
+//            obj_super.put("$latest_utm_campaign", channelInfo.getCampaign());
+//            SensorsDataAPI.sharedInstance().registerSuperProperties(obj_super);
 
             // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
             List<SensorsDataAPI.AutoTrackEventType> eventTypeList = new ArrayList<>();
