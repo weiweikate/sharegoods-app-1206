@@ -28,7 +28,7 @@ export default class ShowBannerView extends Component {
         const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
         let params = showBannerModules.paramsNavigate(item);
         const { navigate } = this.props;
-        navigate(router, params);
+        navigate(router, {...params, preseat:'秀场_banner'});
     }
 
     _onPressRow(e) {
@@ -38,7 +38,7 @@ export default class ShowBannerView extends Component {
         const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
         let params = showBannerModules.paramsNavigate(item);
         const { navigate } = this.props;
-        navigate(router, params);
+        navigate(router, {...params, preseat:'秀场_banner'});
     }
 
     renderIndexView() {

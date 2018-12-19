@@ -66,7 +66,7 @@ export default class HomeBannerView extends Component {
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
         const { navigate } = this.props;
-        navigate(router, params);
+        navigate(router, {...params, preseat:'home_banner'})
     };
 
     render() {

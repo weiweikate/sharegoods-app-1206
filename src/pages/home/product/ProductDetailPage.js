@@ -28,6 +28,7 @@ import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 // import CommModal from '../../../comm/components/CommModal';
 import DesignRule from 'DesignRule';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 // const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
@@ -227,6 +228,16 @@ export default class ProductDetailPage extends BasePage {
                 loadingState: PageLoadingState.success,
                 data: data
             }, () => {
+                /*商品详情埋点*/
+                const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = data || {};
+                track(trackEvent.commodityDetail, {
+                    preseat: this.params.preseat || '',
+                    commodityID: prodCode,
+                    commodityName: name,
+                    firstCommodity: firstCategoryId,
+                    secondCommodity: secCategoryId,
+                    pricePerCommodity: minPrice
+                });
                 this._getQueryByProductId();
                 /*productStatus===3的时候需要刷新*/
                 if (productStatus === 3 && upTime && now) {
@@ -250,7 +261,8 @@ export default class ProductDetailPage extends BasePage {
         if (this.state.activityType === 1 || this.state.activityType === 2) {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: this.state.activityData.activityCode,
-                activityType: this.state.activityType
+                activityType: this.state.activityType,
+                preseat: '商品详情活动信息'
             });
         }
     };
@@ -302,9 +314,20 @@ export default class ProductDetailPage extends BasePage {
                 'skuCode': skuCode,
                 'productCode': this.state.data.prodCode
             };
+            /*加入购物车埋点*/
+            const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.state.data || {};
+            track(trackEvent.addToShoppingcart, {
+                shoppingcartEntrance: '详情页面',
+                commodityNumber: amount,
+                commodityID: prodCode,
+                commodityName: name,
+                firstCommodity: firstCategoryId,
+                secondCommodity: secCategoryId,
+                pricePerCommodity: minPrice
+            });
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
-            this.$loadingShow()
+            this.$loadingShow();
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
@@ -514,7 +537,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { minPrice, name, imgUrl, buyLimit, leftBuyNum, shareMoney, productStatus, prodCode } = this.state.data || {};
+        const { minPrice, name, imgUrl, buyLimit, leftBuyNum, shareMoney, productStatus, prodCode, firstCategoryId, secCategoryId } = this.state.data || {};
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -565,6 +588,14 @@ export default class ProductDetailPage extends BasePage {
                               buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
+                            trackParmas={{
+                                commodityID: this.params.activityCode,
+                                commodityName: name,
+                                firstCommodity: firstCategoryId,
+                                secondCommodity: secCategoryId,
+                                pricePerCommodity: minPrice
+                            }}
+                            trackEvent={trackEvent.share}
                             type={'Image'}
                             imageJson={{
                                 imageUrlStr: imgUrl,
