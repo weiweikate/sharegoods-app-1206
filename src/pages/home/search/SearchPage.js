@@ -105,10 +105,11 @@ export default class SearchPage extends BasePage {
             if (!this.state.recentData.includes(text)) {
                 this.state.recentData.unshift(text);
             } else {
-                //热词的index需要重新赋值
+                //热词的index需要重新赋值 变成recentData中的index
                 if (hotWordId) {
                     index = this.state.recentData.indexOf(text);
                 }
+                //操作位置
                 if (index && index !== 0) {
                     this.state.recentData.splice(index, 1);
                     this.state.recentData.unshift(text);
