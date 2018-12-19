@@ -14,6 +14,7 @@ import DeviceInfo from 'react-native-device-info/deviceinfo';
 import UserModel from '../../../model/user';
 import { homeModule } from '../../home/Modules';
 import JPushUtils from '../../../utils/JPushUtils';
+import { login } from '../../../utils/SensorsTrack';
 
 
 @observer
@@ -100,6 +101,8 @@ export default class SetPasswordPage extends BasePage {
             homeModule.loadHomeList();
             // this.$navigate('login/login/GetRedpacketPage');
             bridge.setCookies(data.data);
+            //埋点登录成功
+            login(data.data.code)
             //推送
             JPushUtils.updatePushTags();
             JPushUtils.updatePushAlias();

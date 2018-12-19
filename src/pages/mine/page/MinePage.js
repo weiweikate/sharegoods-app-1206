@@ -194,7 +194,7 @@ export default class MinePage extends BasePage {
 
     jumpToUserInformationPage = () => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            this.gotoLoginPage();
             return;
         }
         this.$navigate('mine/userInformation/UserInformationPage');
@@ -851,7 +851,7 @@ export default class MinePage extends BasePage {
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            this.gotoLoginPage()
             return;
         }
         this.$navigate('order/order/MyOrdersListPage', { index: 0 });

@@ -200,7 +200,7 @@ export default class MyHelperPage extends BasePage {
 
     questionfeedBack(type) {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            this.gotoLoginPage();
             return;
         }
         if (type === 1) {

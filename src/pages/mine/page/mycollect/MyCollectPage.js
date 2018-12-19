@@ -71,7 +71,7 @@ export default class MyCollectPage extends BasePage {
                 console.log(err);
             });
         } else {
-            this.$navigate('login/login/LoginPage');
+            this.gotoLoginPage();
         }
     };
     isValidItem = (index) => {

@@ -373,7 +373,7 @@ export default class SelectMentorPage extends BasePage {
             LoginAPI.mentorBind({
                 code: mentorData.code
             }).then(res => {
-                bridge.$toast('绑定成功');
+                bridge.$toast('选择成功');
                 homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(error => {

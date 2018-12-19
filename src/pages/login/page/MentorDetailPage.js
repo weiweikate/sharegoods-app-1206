@@ -138,11 +138,13 @@ export default class MentorDetailPage extends BasePage {
         LoginAPI.mentorBind({
             code: mentorData.code
         }).then(res => {
-            bridge.$toast(res.msg);
+            bridge.$toast('选择成功');
             homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
-            this.$navigateBackToHome();
+            // this.$navigateBackToHome();
+            this.$navigateBack()
         }).catch(res => {
             bridge.$toast(res.msg);
+            this.$navigateBack()
         });
     };
 }

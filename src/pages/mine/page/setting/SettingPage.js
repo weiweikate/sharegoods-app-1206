@@ -245,7 +245,7 @@ class SettingPage extends BasePage {
         if (user.isLogin) {
             this.$navigate('mine/setting/AccountSettingPage');
         } else {
-            this.$navigate('login/login/LoginPage');
+            this.gotoLoginPage()
         }
     };
 

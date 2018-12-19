@@ -192,7 +192,7 @@ export default class AddressManagerPage extends BasePage {
                 });
             }).catch((data) => {
                 if (data.code === 10009 || data.code === 10001) {
-                    this.$navigate("login/login/LoginPage");
+                    this.gotoLoginPage()
                 }
                 bridge.$toast(data.msg);
             });

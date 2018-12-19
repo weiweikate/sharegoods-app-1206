@@ -19,7 +19,7 @@ import DesignRule from 'DesignRule';
 import { homeModule } from '../../home/Modules'
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { login, track, trackEvent } from '../../../utils/SensorsTrack';
 
 const {
     share: {
@@ -142,6 +142,8 @@ export default class LoginPage extends BasePage {
                     homeModule.loadHomeList()
                     bridge.setCookies(res.data);
                     this.$navigateBack();
+                    // 埋点登录成功
+                    login(data.data.code)
                 }
             }).catch((error) => {
                 if (error.code === 34005) {
@@ -186,6 +188,8 @@ export default class LoginPage extends BasePage {
                 homeModule.loadHomeList()
                 bridge.setCookies(data.data);
                 console.log(UserModel)
+                // 埋点登录成功
+                login(data.data.code)
 
                 if (this.params.callback) {
                     let resetAction = NavigationActions.reset({
@@ -233,6 +237,8 @@ export default class LoginPage extends BasePage {
                 homeModule.loadHomeList()
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
+                // 埋点登录成功
+                login(data.data.code)
                 // /**
                 //  * 跳转导师选择页面
                 //  */
