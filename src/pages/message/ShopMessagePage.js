@@ -5,10 +5,11 @@
 
 import React from 'react';
 import {
-    StyleSheet, View, Text, Image,  DeviceEventEmitter,
+    StyleSheet, View, Image,  DeviceEventEmitter,
     TouchableOpacity,
     TouchableWithoutFeedback
 } from 'react-native'
+import {MRText as Text} from '../../components/ui'
 import {color} from "../../constants/Theme";
 import ScreenUtils from '../../utils/ScreenUtils'
 import StringUtils from "../../utils/StringUtils";

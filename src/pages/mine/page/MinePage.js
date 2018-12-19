@@ -6,7 +6,6 @@ import {
     ImageBackground,
     // Platform,
     // Linking,
-    Text,
     TouchableWithoutFeedback,
     RefreshControl, DeviceEventEmitter, TouchableOpacity
 } from 'react-native';
@@ -28,6 +27,7 @@ import WaveView from 'WaveView';
 import MessageApi from '../../message/api/MessageApi';
 import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
+import {MRText as Text} from '../../../components/ui'
 
 const {
     mine_header_bg,
