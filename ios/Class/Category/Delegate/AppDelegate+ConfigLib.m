@@ -22,6 +22,7 @@
 #import "IQKeyboardManager.h"
 #import <React/RCTLinkingManager.h>
 #import "SensorsAnalyticsSDK.h"
+#import "BGKeychainTool.h"
 
 
 @implementation AppDelegate (ConfigLib)
@@ -93,6 +94,17 @@
   [[SensorsAnalyticsSDK sharedInstance] enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
    SensorsAnalyticsEventTypeAppEnd|
    SensorsAnalyticsEventTypeAppClick];
+  /** 设置公共属性*/
+  NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+  NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+  NSDictionary *superProperties = @{@"platform": @"iOS",
+                                    @"platformType": @"iOSApp",
+                                    @"product": [NSString stringWithFormat:@"%@-App", app_Name]
+                                    };
+  NSString *uuid = [BGKeychainTool getDeviceIDInKeychain];
+  [[SensorsAnalyticsSDK sharedInstance] registerSuperProperties:superProperties];
+  [[SensorsAnalyticsSDK sharedInstance] trackInstallation:@"AppInstall" withProperties:@{@"DownloadChannel": @"appStore"}];
+  [[SensorsAnalyticsSDK sharedInstance] identify: uuid];
   
 }
 

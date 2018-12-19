@@ -118,6 +118,7 @@
 		CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */ = {isa = PBXBuildFile; fileRef = CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */; };
 		CD1366CF21BE3FF200754B0E /* STTVTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1366CE21BE3FCB00754B0E /* STTVTableView.framework */; };
 		CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD14EA182183FC9A00480A06 /* XGImageCompression.m */; };
+		CD1E51C921C9D96B007103A1 /* BGKeychainTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */; };
 		CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */; };
 		CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */; };
 		CDA2F57821744443005FD4B3 /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F57721744443005FD4B3 /* ShareImageMaker.m */; };
@@ -742,6 +743,8 @@
 		CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = STTVTableView.xcodeproj; path = "../node_modules/@mr/largelist/ios/STTVTableView.xcodeproj"; sourceTree = "<group>"; };
 		CD14EA172183FC9A00480A06 /* XGImageCompression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XGImageCompression.h; sourceTree = "<group>"; };
 		CD14EA182183FC9A00480A06 /* XGImageCompression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XGImageCompression.m; sourceTree = "<group>"; };
+		CD1E51C721C9D96B007103A1 /* BGKeychainTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BGKeychainTool.h; sourceTree = "<group>"; };
+		CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BGKeychainTool.m; sourceTree = "<group>"; };
 		CD45EE1A21C7885000846B39 /* liblottie-react-native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblottie-react-native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD70E065E4CA4080A9DF5465 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		CDA2F5302171D8D2005FD4B3 /* UIViewController+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Util.h"; sourceTree = "<group>"; };
@@ -1095,6 +1098,7 @@
 		5068356A21379B78001AB175 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				CD1E519221C9D935007103A1 /* tool */,
 				5077FC8A21A4FE37003B860D /* openssl */,
 				5068356B21379B78001AB175 /* Base */,
 				5068357021379B78001AB175 /* Category */,
@@ -1610,6 +1614,15 @@
 				CD14EA182183FC9A00480A06 /* XGImageCompression.m */,
 			);
 			path = ImageCompression;
+			sourceTree = "<group>";
+		};
+		CD1E519221C9D935007103A1 /* tool */ = {
+			isa = PBXGroup;
+			children = (
+				CD1E51C721C9D96B007103A1 /* BGKeychainTool.h */,
+				CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */,
+			);
+			path = tool;
 			sourceTree = "<group>";
 		};
 		CD45EDFD21C77E1A00846B39 /* Products */ = {
@@ -2473,6 +2486,7 @@
 				5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */,
 				5068363621379B78001AB175 /* JRAddressPickView.m in Sources */,
 				CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */,
+				CD1E51C921C9D96B007103A1 /* BGKeychainTool.m in Sources */,
 				50043A8121C79C4900270DFA /* ShopCartListView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,

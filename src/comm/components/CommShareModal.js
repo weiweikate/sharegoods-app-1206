@@ -152,13 +152,13 @@ export default class CommShareModal extends React.Component {
             params.miniProgramPath = miniProgramPath;
             params.hdImageURL = hdImageURL;
         }
-        let that = this;
+        if (this.props.trackEvent) {
+            let p = this.props.trackParmas || {};
+            // p = {...p};
+            p.shareMethod = ['微信好友', '朋友圈', 'QQ好友', 'QQ空间', '微博'][platformType];
+            track(this.props.trackEvent, p);
+        }
         bridge.share(params, () => {
-            if (that.props.trackEvent) {
-                let p = that.props.trackParmas || {};
-                p.shareMethod = ['微信好友', '朋友圈', 'QQ好友', 'QQ空间', '微博'][platformType];
-                track(that.props.trackEvent, p);
-            }
 
         }, (errorStr) => {
 

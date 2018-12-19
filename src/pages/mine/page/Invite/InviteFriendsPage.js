@@ -8,6 +8,7 @@
  * Created by huchao on 2018/10/16.
  *
  */
+
 'use strict';
 import React from 'react';
 import {
@@ -31,6 +32,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
+import { trackEvent } from '../../../../utils/SensorsTrack';
 
 const {
     button: {
@@ -207,6 +209,8 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //     linkUrl: '${apiEnvironment.getCurrentH5Url()}/pages/index/index',
                     //     userName: 'gh_3ac2059ac66f',
                     //     miniProgramPath: 'pages/index/index'}}
+                                trackParmas={{QrCodeID: this.linkUrl}}
+                                trackEvent={trackEvent.QrcodeShareto}
                 />
             </View>
         );
