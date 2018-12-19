@@ -17,6 +17,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { homeModule } from '../../home/Modules'
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const {
     red_button_s,
@@ -122,6 +123,7 @@ export default class RegistPage extends BasePage {
         }
         console.log(this.params);
         this.$loadingShow();
+        track(trackEvent.signUp,{signUpMethod:'App注册'})
         LoginApi.findMemberByPhone({
             code: code,
             device: this.params.device ? this.params.device : '',
