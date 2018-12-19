@@ -76,7 +76,7 @@ export default class SearchResultPage extends BasePage {
     }
 
     componentDidMount() {
-        this._productList();
+        this._productList(true);
     }
 
     _getPageStateOptions = () => {
@@ -94,7 +94,7 @@ export default class SearchResultPage extends BasePage {
         };
     };
 
-    _getParams = (isMore) => {
+    _getParams = () => {
         let param = {};
         param.page = this.state.page;
         param.pageSize = 10;
@@ -132,7 +132,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     //数据
-    _productList = () => {
+    _productList = (needTrack) => {
         this.state.page = 1;
         let param = this._getParams();
         HomeAPI.productList(param).then((data) => {
@@ -140,7 +140,8 @@ export default class SearchResultPage extends BasePage {
             data = data.data || {};
             let dataArr = data.data || [];
 
-            track(trackEvent.search, {
+            /*搜索埋点*/
+            needTrack && track(trackEvent.search, {
                 keyWord: this.params.keywords,
                 hasResult: dataArr.length !== 0,
                 isHistory: this.params.isHistory,
@@ -168,7 +169,7 @@ export default class SearchResultPage extends BasePage {
         this.setState({
             loadingMore: true
         }, () => {
-            let param = this._getParams(true);
+            let param = this._getParams();
             HomeAPI.productList(param).then((data) => {
                 this.state.page++;
                 this.onEndReached = false;
@@ -260,7 +261,7 @@ export default class SearchResultPage extends BasePage {
         this.params.hotWordId = undefined;
         this.params.keywords = text;
         this.setState({ onFocus: false, textInput: text }, () => {
-            this._productList();
+            this._productList(true);
         });
     };
 

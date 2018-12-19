@@ -110,7 +110,7 @@ export default class SearchPage extends BasePage {
                     index = this.state.recentData.indexOf(text);
                 }
                 //操作位置
-                if (index && index !== 0) {
+                if (index) {
                     this.state.recentData.splice(index, 1);
                     this.state.recentData.unshift(text);
                 }
@@ -125,7 +125,7 @@ export default class SearchPage extends BasePage {
         this.$navigate(RouterMap.SearchResultPage, {
             keywords: text,
             hotWordId: hotWordId,
-            isHistory: index && !hotWordId
+            isHistory: index !== undefined && !hotWordId
         });
     };
 
