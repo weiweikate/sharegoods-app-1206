@@ -281,7 +281,7 @@ export default class ProductDetailPage extends BasePage {
                             },
                             {
                                 text: '去登录', onPress: () => {
-                                    this.$navigate('login/login/LoginPage');
+                                    this.gotoLoginPage();
                                 }
                             }
                         ]
@@ -556,7 +556,7 @@ export default class ProductDetailPage extends BasePage {
                                    switch (item.index) {
                                        case 0:
                                            if (!user.isLogin) {
-                                               this.$navigate('login/login/LoginPage');
+                                               this.gotoLoginPage();
                                                return;
                                            }
                                            this.$navigate('message/MessageCenterPage');

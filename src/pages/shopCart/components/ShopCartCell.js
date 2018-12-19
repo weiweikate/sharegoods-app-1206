@@ -56,8 +56,10 @@ export default class ShopCartCell extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
-        const { itemData, rowMap, rowId ,cellClickAction} = this.props;
+        const { itemData, rowMap, rowId, cellClickAction } = this.props;
+
         return (
             <View>
                 <TouchableHighlight
@@ -78,7 +80,8 @@ export default class ShopCartCell extends Component {
 
                                 if (tempValues[rowId].status === 0 ||
                                     tempValues[rowId].status === 2 ||
-                                    tempValues[rowId].status === 3) {
+                                    tempValues[rowId].status === 3 ||
+                                    tempValues[rowId].stock  === 0) {
                                     bridge.$toast('此商品不可结算');
                                     tempValues[rowId].isSelected = false;
                                 } else {
@@ -408,7 +411,7 @@ ShopCartCell.propTypes = {
     //rowid 行数
     rowId: PropTypes.number.isRequired,
     //cell 点击回调函数
-    cellClickAction:PropTypes.func,
+    cellClickAction: PropTypes.func
 };
 
 const styles = StyleSheet.create({

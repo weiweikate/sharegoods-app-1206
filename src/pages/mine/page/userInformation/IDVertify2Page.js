@@ -283,7 +283,7 @@ export default class IDVertify2Page extends BasePage {
                 user.saveUserInfo(data);
             }).catch(err => {
                 if (err.code === 10009) {
-                    this.$navigate("login/login/LoginPage");
+                    this.gotoLoginPage()
                 }
             });
             this.$navigateBack();

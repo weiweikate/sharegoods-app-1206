@@ -119,7 +119,7 @@ export default class HelperQuestionDetail extends BasePage {
             this.loadPageData();
         }).catch(err => {
             if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+                this.gotoLoginPage()
             }
         });
     }

@@ -81,9 +81,9 @@
             "host": "http://172.16.10.58:8903/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
-        "高建伟": {
-            "name": "高建伟",
-            "host": "http://172.16.10.192:18080/gateway",
+        "高建伟":{
+            "name":"高建伟",
+            "host":"http://172.16.10.89:18080/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "龚日红": {
