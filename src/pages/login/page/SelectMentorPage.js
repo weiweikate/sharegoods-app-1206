@@ -371,7 +371,7 @@ export default class SelectMentorPage extends BasePage {
         if (this.state.selectIndex <= this.state.mentorData.length - 1) {
             let mentorData = this.state.mentorData[this.state.selectIndex];
             LoginAPI.mentorBind({
-                code: mentorData.code
+                code: mentorData.perfectNumberCode
             }).then(res => {
                 bridge.$toast('选择成功');
                 homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);

@@ -27,6 +27,9 @@ const api = {
     mentorBind:  ['/user/userSign/mentorBind',{method:'get'}],
     //选择导师跳过调用接口
     givePackage:['/user/userSign/givePackage',{method:'get'}],
+    //老用户激活日期校验
+    oldUserActivateJudge:['/user/userSign/oldUserActivateJudge',{method:'get'}],
+
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

@@ -136,7 +136,7 @@ export default class MentorDetailPage extends BasePage {
     _selectMentor = () => {
         let mentorData = this.params.itemData;
         LoginAPI.mentorBind({
-            code: mentorData.code
+            code: mentorData.perfectNumberCode
         }).then(res => {
             bridge.$toast('选择成功');
             homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
