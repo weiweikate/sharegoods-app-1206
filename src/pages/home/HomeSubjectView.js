@@ -9,18 +9,30 @@ const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { homeModule } from './Modules'
 import { subjectModule } from './HomeSubjectModel'
-import { getShowPrice } from '../topic/model/TopicMudelTool'
+import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTool'
 import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/image-placeholder'
+import EmptyUtils from '../../utils/EmptyUtils'
 
-const GoodItems = ({img, title, money, press}) => <TouchableWithoutFeedback onPress={()=>{press && press()}}>
+const GoodItems = ({img, title, money, press}) => {
+
+console.log('GoodItems', money, EmptyUtils.isEmpty(money))
+
+return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
     <View style={styles.goodsView} >
     <ImageLoad cacheable={true} style={styles.goodImg} source={{uri:img ? encodeURI(img) : ''}}/>
     <Text style={styles.goodsTitle} numberOfLines={2} allowFontScaling={false}>{title}</Text>
     <View style={{flex: 1}}/>
-    <Text style={styles.money} allowFontScaling={false}>{money} 起</Text>
+    {
+        EmptyUtils.isEmpty(money)
+        ?
+        null
+        :
+        <Text style={styles.money} allowFontScaling={false}>{money} 起</Text>
+    }
     </View>
 </TouchableWithoutFeedback>
+} 
 
 const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress={()=>{press && press()}}>
     <View style={styles.backView}>
@@ -42,7 +54,7 @@ const ActivityItem = ({data, press, goodsPress}) => {
         <GoodItems
             key={index}
             title={value.productName}
-            money={price ? price : 0}
+            money={price}
             img={value.specImg ? value.specImg : ''}
             press={()=>{goodsPress && goodsPress(value)}}
             />
@@ -82,19 +94,9 @@ export default class HomeSubjectView extends Component {
     }
     _goodAction(good) {
         const { navigate } = this.props
-        if (good.productType === 99) {
-            navigate('home/product/ProductDetailPage', {
-                productId: good.productId,
-                productCode: good.prodCode,
-                preseat:'首页专题'
-            });
-        } else {
-            navigate('topic/TopicDetailPage', {
-                activityType: good.productType,
-                activityCode: good.prodCode,
-                preseat:'首页专题'
-            })
-        }
+        const pageObj =   getTopicJumpPageParam(good,'首页');
+        console.log('_goodAction', good, pageObj.params)
+        navigate(pageObj.pageRoute,{...pageObj.params})
     }
     render() {
         const { subjectList } = subjectModule
