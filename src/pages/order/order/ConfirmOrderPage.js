@@ -525,8 +525,8 @@ export default class ConfirmOrderPage extends BasePage {
                 OrderApi.SeckillSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
-                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
-                        receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
+                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
+                        receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
                         discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
                         YiyuanDiscountAmount:this.state.tokenCoin})
                     MineApi.getUser().then(res => {
@@ -554,8 +554,8 @@ export default class ConfirmOrderPage extends BasePage {
                 OrderApi.DepreciateSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
-                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
-                        receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
+                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
+                        receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
                         discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
                         YiyuanDiscountAmount:this.state.tokenCoin})
                     MineApi.getUser().then(res => {
@@ -598,8 +598,8 @@ export default class ConfirmOrderPage extends BasePage {
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
-                        track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
-                            receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
+                        track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
+                            receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
                             discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
                             YiyuanDiscountAmount:this.state.tokenCoin})
                         user.saveUserInfo(data);
