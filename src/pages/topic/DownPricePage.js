@@ -17,7 +17,8 @@ import TotalTopicDataModel from './model/SubTopicModel';
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from 'DesignRule';
-import ImageLoad from '@mr/image-placeholder'
+import ImageLoad from '@mr/image-placeholder';
+// import { getTopicJumpPageParam } from './model/TopicMudelTool';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -46,6 +47,7 @@ export default class DownPricePage extends BasePage {
             }
         );
     }
+
     /**
      * 渲染底部组列表
      * @param sections 所有组数据
@@ -97,11 +99,12 @@ export default class DownPricePage extends BasePage {
                         backgroundColor: DesignRule.bgColor,
                         // backgroundColor:'red',
                         width: ScreenUtils.width - 20,
-                        marginLeft:10
+                        marginLeft: 10
                     }
                 }
             >
-                {section.key !== 'one' ? <ActivityOneView imageUrl={section.bannerImg} ratio={section.aspectRatio}/> : null}
+                {section.key !== 'one' ?
+                    <ActivityOneView imageUrl={section.bannerImg} ratio={section.aspectRatio}/> : null}
 
                 {
                     sectionListData.map((itemData, itemIndex) => {
@@ -147,13 +150,16 @@ export default class DownPricePage extends BasePage {
         } else if (itemData.productType === 1 || itemData.productType === 2 || itemData.productType === 3) {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: itemData.prodCode,
-                activityType: itemData.productType,preseat:'专题列表页'
+                activityType: itemData.productType,
+                preseat:'专题列表页'
             });
         } else if (itemData.productType === 5) {
             this.$navigate('topic/DownPricePage', {
                 linkTypeCode: itemData.prodCode
             });
         }
+        // const pageObj = getTopicJumpPageParam(itemData);
+        // this.$navigate(pageObj.pageRoute, pageObj.params);
     };
 
     _render() {
@@ -256,7 +262,7 @@ const Styles = StyleSheet.create({
         padding: 8,
         paddingBottom: 0
     },
-    topBannerImageStyle:{
+    topBannerImageStyle: {
         width: ScreenUtils.width,
         height: ScreenUtils.width * 7 / 15
     }
