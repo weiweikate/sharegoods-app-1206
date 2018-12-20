@@ -10,7 +10,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity, ListView, TouchableWithoutFeedback, Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
@@ -22,6 +21,7 @@ import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 import UIImage from '@mr/image-placeholder';
+import {MRText as Text} from '../../../../components/ui'
 // import { NavigationActions } from 'react-navigation';
 
 import RES from '../../res';

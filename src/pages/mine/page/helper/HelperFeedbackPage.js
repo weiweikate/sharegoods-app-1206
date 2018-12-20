@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Image,
-    Text,
     TouchableOpacity,
     TouchableWithoutFeedback, ScrollView, ImageBackground
 } from "react-native";
@@ -19,6 +18,7 @@ import BusinessUtils from "../../components/BusinessUtils";
 import StringUtils from "../../../../utils/StringUtils";
 import MineApi from "../../api/MineApi";
 import Modal from "CommModal";
+import {MRText as Text} from '../../../../components/ui'
 
 const {
     icon_arrow_up,
