@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     TouchableOpacity,
     Image, DeviceEventEmitter
 } from 'react-native';
@@ -18,6 +17,7 @@ import { homeModule } from '../../home/Modules'
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
+import {MRText as Text} from '../../../components/ui'
 
 const {
     red_button_s,

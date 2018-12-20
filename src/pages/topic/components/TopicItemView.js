@@ -4,13 +4,13 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
-    Text
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ImageLoad from '@mr/image-placeholder';
 import PropTypes from 'prop-types';
 import DesignRule from 'DesignRule';
 import { getShowPrice } from '../model/TopicMudelTool';
+import UIText from '../../../components/ui/UIText';
 
 export default class TopicItemView extends Component {
 
@@ -45,7 +45,7 @@ export default class TopicItemView extends Component {
                             height={contentWidth}
                             source={{ uri: itemData.specImg }}
                         />
-                        <Text
+                        <UIText
                             style={
                                 [
                                     Styles.itemBottomTextStyle,
@@ -54,21 +54,20 @@ export default class TopicItemView extends Component {
                                     }
                                 ]}
                             numberOfLines={2}
-                        >
-                            {itemData.productName}
-                        </Text>
-
+                            value={itemData.productName}
+                        />
                         {itemData.productType !== 5
                             ?
-                            <Text style={Styles.itemBottomPriceTextStyle}>
+                            <UIText style={Styles.itemBottomPriceTextStyle}
+                                    value={getShowPrice(itemData) + '起'}>
                                 {/*{ '¥'+itemData.originalPrice+ '起'}*/}
-                                {getShowPrice(itemData) + '起'}
-                            </Text>
+                                {/*{getShowPrice(itemData) + '起'}*/}
+                            </UIText>
                             :
-                            <Text style={Styles.itemBottomPriceTextStyle}>
+                            <UIText style={Styles.itemBottomPriceTextStyle}>
                                 {/*{ '¥'+itemData.originalPrice+ '起'}*/}
-                                {'专题类目'}
-                            </Text>
+                                {/*{'专题类目'}*/}
+                            </UIText>
                         }
                     </View>
                 </View>

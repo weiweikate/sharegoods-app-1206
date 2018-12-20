@@ -18,6 +18,7 @@ import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import UIText from '../../../comm/components/UIText';
 
 const noGoodImg = res.other.noGoodImg;
 const zhuanti_jieshu = res.zhuanti_jieshu;
@@ -101,12 +102,17 @@ export default class OpenPrizeItemView extends Component {
                                 :
                                 null
                         }
-                        <Text
+                        <UIText
                             style={ItemStyles.itemBottomTextStyle}
                             number={2}
-                        >
-                            {itemData.productName}
-                        </Text>
+                            value= {itemData.productName}
+                            />
+                        {/*<Text*/}
+                            {/*style={ItemStyles.itemBottomTextStyle}*/}
+                            {/*number={2}*/}
+                        {/*>*/}
+                            {/*{itemData.productName}*/}
+                        {/*</Text>*/}
                         {/*中部视图 关注或者进度条*/}
                         <View
                             style={{

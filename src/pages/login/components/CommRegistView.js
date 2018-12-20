@@ -1,13 +1,12 @@
 import {
     View,
-    Text,
     TextInput,
     StyleSheet,
     TouchableOpacity,
     Image
 
 } from 'react-native';
-
+// import UIText from '../../../components/ui/UIText';
 import React, { Component } from 'react';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
@@ -19,6 +18,7 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import {MRText as Text} from '../../../components/ui'
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -117,6 +117,7 @@ export default class CommRegistView extends Component {
                             手机号
                         </Text>
                         <TextInput
+                            allowFontScaling={false}
                             style={Styles.inputTextStyle}
                             value={this.registModel.phoneNumber}
                             onChangeText={text => {
@@ -143,6 +144,7 @@ export default class CommRegistView extends Component {
                                     验证码
                                 </Text>
                                 <TextInput
+                                    allowFontScaling={false}
                                     style={Styles.inputTextStyle}
                                     value={this.registModel.vertifyCode}
                                     onChangeText={text => {
@@ -181,6 +183,7 @@ export default class CommRegistView extends Component {
                             新密码
                         </Text>
                         <TextInput
+                            allowFontScaling={false}
                             style={Styles.inputTextStyle}
                             value={this.registModel.password}
                             onChangeText={text => {
