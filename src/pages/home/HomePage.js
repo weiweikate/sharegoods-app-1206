@@ -336,7 +336,7 @@ class HomePage extends BasePage {
             return <ShowView navigation={this.props.navigation} isShow={isShow}/>;
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
-                <Text style={styles.title}>为你推荐</Text>
+                <Text style={styles.title} allowFontScaling={false}>为你推荐</Text>
             </View>;
         }
         return <View/>;
