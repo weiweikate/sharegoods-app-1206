@@ -5,7 +5,7 @@ import {
 import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
 import TimerMixin from 'react-timer-mixin';
-import { setCookieToken, setCookies, clearCookies } from '@mr/react-native-webview';
+import { setCookieToken, setCookies, clearCookies } from '@mr/webview';
 
 export default {
     $toast(msg) {

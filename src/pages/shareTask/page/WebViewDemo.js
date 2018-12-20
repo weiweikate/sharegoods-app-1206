@@ -17,7 +17,7 @@ import React from 'react';
 import BasePage from '../../../BasePage';
 // import DesignRule from 'DesignRule';
 // import RouterMap from 'RouterMap';
-import WebViewBridge from '@mr/react-native-webview'
+import WebViewBridge from '@mr/webview'
 
 
 export default class WebViewDemo extends BasePage {
