@@ -52,33 +52,21 @@ const jumpPageParams = {
  * @param preseat 埋点所需来源字符串
  */
 function getTopicJumpPageParam(itemData, preseat = '专题列表') {
-    let obj = {};
-
-    if (itemData.productType === productTypes.newTopic){
-        obj={
-            pageRoute: jumpPageParams[itemData.productType],
-            params: {
-                // productId: itemData.productId,
-                // productCode: itemData.prodCode,
-                // preseat: preseat,
-                linkTypeCode: itemData.prodCode
-            }
-        }
-    } else {
-        obj =  {
-            pageRoute: jumpPageParams[itemData.productType],
-            params: {
-                productId: itemData.productId,
-                productCode: itemData.prodCode,
-                preseat: preseat
-            }
+    return {
+        pageRoute: jumpPageParams[itemData.productType],
+        params: {
+            productId: itemData.productId,
+            productCode: itemData.prodCode,
+            preseat: preseat,
+            linkTypeCode: itemData.prodCode
         }
     }
-
-    return obj;
 }
 
 function getShowPrice(itemData) {
+    if (itemData.productType === productTypes.newTopic) {
+        return ''
+    }
     let showPrice = itemData.productType === 2
         ?
         '¥' + itemData[typeName[itemData.productType][itemData.status]]
