@@ -14,6 +14,8 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+
+        AndroidBug5497Workaround.assistActivity(findViewById(android.R.id.content));
         int result = StatusBarUtils.setLightMode(this);
         int statusColor = android.R.color.white;
         if (result == 3) {

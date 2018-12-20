@@ -14,7 +14,6 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import LoginAPI from '../api/LoginApi';
 // import StringUtils from '../../../utils/StringUtils';
-import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
 import res from '../res';
 
@@ -220,10 +219,7 @@ export default class OldUserLoginPage extends BasePage {
                 }
             }).catch((data) => {
                 this.$loadingDismiss();
-                console.warn(data);
-                // this.$toast(data.msg);
-                this.$loadingDismiss();
-                bridge.$toast(data.msg);
+                this.$toastShow(data.msg)
             });
         }
         // this.$navigate("login/login/SetPasswordPage");
