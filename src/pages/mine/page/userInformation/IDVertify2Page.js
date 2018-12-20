@@ -5,7 +5,6 @@ import {
     View,
     Image,
     TextInput as RNTextInput,
-    Text,
     TouchableOpacity,
     ScrollView
 } from "react-native";
@@ -22,6 +21,7 @@ import user from "../../../../model/user";
 import MineApi from "../../api/MineApi";
 import DesignRule from "DesignRule";
 import res from "../../res";
+import {MRText as Text} from '../../../../components/ui'
 
 const IDcard_country = res.userInfoImg.IDcard_country;
 const IDcard_persion = res.userInfoImg.IDcard_persion;

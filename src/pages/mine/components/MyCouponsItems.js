@@ -7,7 +7,6 @@ import {
     Image,
     ImageBackground,
     StyleSheet,
-    Text,
     TextInput,
     TouchableOpacity,
     View,
@@ -27,6 +26,7 @@ import DesignRule from 'DesignRule';
 import MineApi from '../api/MineApi';
 import res from '../res';
 import Modal from 'CommModal';
+import {MRText as Text} from '../../../components/ui'
 
 const NoMessage = res.couponsImg.coupons_no_data;
 const usedBg = res.couponsImg.youhuiquan_bg_zhihui;

@@ -14,7 +14,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     Platform,
     TouchableWithoutFeedback,
     ImageBackground,
@@ -24,6 +23,7 @@ import {
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import {UIImage} from '../../../../components/ui'
+import {MRText as Text} from '../../../../components/ui'
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';

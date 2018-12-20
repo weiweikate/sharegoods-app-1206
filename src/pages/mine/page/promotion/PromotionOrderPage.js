@@ -13,12 +13,12 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../../../components/ui'
 
 const { px2dp } = ScreenUtils;
 import res from '../../res';
