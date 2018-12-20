@@ -71,9 +71,7 @@ export default {
                    let url = apiEnvironment.getCurrentHostUrl()
                    request.setBaseUrl(url)
                     request.upload(`/common/upload/oss`,datas, {}).then(res => {
-                       console.log('+++++')
                        console.log(res)
-                       console.log('+++++')
                        Toast.hiddenLoading();
                        if (res.code === 10000 && res.data) {
                            callBack({
@@ -86,9 +84,7 @@ export default {
                        }
                    }).catch(error => {
                        // Toast.hiddenLoading();
-                       console.log('+++++')
                        console.log(error)
-                       console.log('+++++')
                        Toast.hiddenLoading();
                        callBack({ ok: false, msg: '上传图片失败' });
                        console.log(error);

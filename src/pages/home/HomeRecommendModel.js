@@ -1,7 +1,7 @@
 import { observable, flow, action } from 'mobx';
 import HomeApi from './api/HomeAPI';
 import { homeType }   from './HomeTypes'
-import { AsyncStorage } from 'react-native'
+import { get, save } from '@mr/rn-store'
 
 const kHomeRecommendStore = '@home/kHomeRecommendStore'
 
@@ -12,15 +12,15 @@ class RecommendModule {
   @action loadRecommendList = flow(function* (isCache) {
       try {
         if (isCache) {
-          const storeRes = yield AsyncStorage.getItem(kHomeRecommendStore)
+          const storeRes = yield get(kHomeRecommendStore)
           if (storeRes) {
-            this.recommendList = JSON.parse(storeRes)
+            this.recommendList = storeRes
           }
         }
 
           const res = yield HomeApi.getRecommends({ type: homeType.recommend });
           this.recommendList = res.data;
-          AsyncStorage.setItem(kHomeRecommendStore, JSON.stringify(res.data))
+          save(kHomeRecommendStore, res.data)
       } catch (error) {
           console.log(error);
       }
