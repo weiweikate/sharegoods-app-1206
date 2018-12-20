@@ -99,13 +99,13 @@ export default class MyCouponsItems extends Component {
                                                     fontSize: 14,
                                                     color: DesignRule.textColor_mainTitle,
                                                     marginBottom: 4
-                                                }}>￥</Text>
+                                                }} allowFontScaling={false}>￥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
                                         fontSize: item.type === 4 ? 20 : (item.type === 11 ? 31 : 34),
                                         color: DesignRule.textColor_mainTitle
-                                    }}>{item.value}</Text>
+                                    }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
                                 {
                                     item.type === 3 ?
@@ -115,7 +115,7 @@ export default class MyCouponsItems extends Component {
                                                     fontSize: 14,
                                                     color: DesignRule.textColor_mainTitle,
                                                     marginBottom: 4
-                                                }}>折</Text>
+                                                }} allowFontScaling={false}>折</Text>
                                         </View> : null}
                             </View>
                         </View>
@@ -126,7 +126,7 @@ export default class MyCouponsItems extends Component {
                                     fontSize: 15,
                                     color: DesignRule.textColor_mainTitle,
                                     marginRight: 30
-                                }}>
+                                }} allowFontScaling={false}>
                                     {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction
@@ -140,7 +140,7 @@ export default class MyCouponsItems extends Component {
                                 fontSize: 11,
                                 color: DesignRule.textColor_instruction,
                                 marginTop: 6
-                            }}>使用有效期：{item.timeStr}</Text>
+                            }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
                         </View>
                         <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
                         {item.type === 99 ?
@@ -199,7 +199,7 @@ export default class MyCouponsItems extends Component {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
-                        <Text style={{ fontSize: px2dp(17), color: 'black' }}>请选择券数</Text>
+                        <Text style={{ fontSize: px2dp(17), color: 'black' }} allowFontScaling={false}>请选择券数</Text>
                     </View>
 
                     <View style={{
@@ -246,12 +246,12 @@ export default class MyCouponsItems extends Component {
                 <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                       onPress={this.quitTokenCoin}>
-                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }}>取消</Text>
+                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>
                     <View style={{ height: '100%', width: 0.5, backgroundColor: 'grey' }}/>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                       onPress={this.commitTokenCoin}>
-                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }}>确定</Text>
+                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>确定</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -301,8 +301,8 @@ export default class MyCouponsItems extends Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}>还没有优惠券哦</Text>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}>快去商城逛逛吧</Text>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }} allowFontScaling={false}>还没有优惠券哦</Text>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }} allowFontScaling={false}>快去商城逛逛吧</Text>
                 <TouchableOpacity
                     onPress={() => {
                         this._gotoLookAround();
@@ -320,7 +320,7 @@ export default class MyCouponsItems extends Component {
                         <Text style={{
                             color: DesignRule.mainColor,
                             fontSize: 15
-                        }}>
+                        }} allowFontScaling={false}>
                             去逛逛
                         </Text>
                     </View>
@@ -367,7 +367,7 @@ export default class MyCouponsItems extends Component {
                             <Text style={{
                                 fontSize: 14,
                                 color: DesignRule.textColor_secondTitle
-                            }}>放弃使用优惠券</Text>
+                            }} allowFontScaling={false}>放弃使用优惠券</Text>
                         </TouchableOpacity></View> : null}
 
             </View>

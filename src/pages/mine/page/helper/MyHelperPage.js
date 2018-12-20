@@ -120,17 +120,17 @@ export default class MyHelperPage extends BasePage {
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(1)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_tuikuan} style={{ width: 37, height: 37 }}/>
-                            <Text style={styles.textFontstyle}>查看售后</Text>
+                            <Text style={styles.textFontstyle} allowFontScaling={false}>查看售后</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(2)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_feedback} style={{ width: 37, height: 37 }}/>
-                            <Text style={styles.textFontstyle}>问题反馈</Text>
+                            <Text style={styles.textFontstyle} allowFontScaling={false}>问题反馈</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(3)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_auto_feedback} style={{ width: 37, height: 37 }}/>
-                            <Text style={styles.textFontstyle}>查看订单</Text>
+                            <Text style={styles.textFontstyle} allowFontScaling={false}>查看订单</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ height: 177, backgroundColor: DesignRule.bgColor }}/>
@@ -156,7 +156,7 @@ export default class MyHelperPage extends BasePage {
                                 fontSize: 16,
                                 color: DesignRule.textColor_mainTitle_222
                             }} allowFontScaling={false}>在线客服</Text>
-                            <Text style={styles.text2Style}>9:00-22:00</Text>
+                            <Text style={styles.text2Style} allowFontScaling={false}>9:00-22:00</Text>
                         </View>
                     </TouchableOpacity>
 

@@ -5,11 +5,10 @@ import {
     Animated,
     ScrollView
 } from 'react-native';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import DesignRule from 'DesignRule';
-
 
 export default class SubSwichView extends Component {
 
