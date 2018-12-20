@@ -121,21 +121,15 @@ class AfterSaleServicePage extends BasePage {
                                     style={{ color: DesignRule.mainColor, fontSize: 13 }}/>
                             <TextInput value={this.state.applyRefundAmount + ''}
                                        onChangeText={(text) => {
-                                           if (text.indexOf('.') === text.lastIndexOf('.')) {
-                                               if (text.indexOf('.') !== -1 && text.split('.').length > 1) {
-                                                   if (text.split('.')[1].length > 2) {
-                                                       return;
-                                                   }
-                                               }
-                                               text = text === '' ? '0' : text;
-                                               if (parseFloat(text) <= this.state.productData.payAmount) {
-                                                   this.setState({ applyRefundAmount: text + '' });
+                                           let reg = /^[0-9]*[.]?[0-9]{0,2}$/;
+                                           if(reg.test(text)) {
+                                               if (parseFloat(text) <= this.state.productData.payAmount || text === '') {
+                                                   this.setState({ applyRefundAmount: text});
                                                } else {
                                                    this.setState({ applyRefundAmount: this.state.productData.payAmount + '' });
                                                }
                                            }
-                                       }
-                                       }
+                                       }}
                                        style={{
                                            color: DesignRule.mainColor,
                                            fontSize: 13,
@@ -174,21 +168,15 @@ class AfterSaleServicePage extends BasePage {
                                     style={{ color: DesignRule.mainColor, fontSize: 13 }}/>
                             <TextInput value={this.state.applyRefundAmount + ''}
                                        onChangeText={(text) => {
-                                           if (text.indexOf('.') === text.lastIndexOf('.')) {
-                                               if (text.indexOf('.') !== -1 && text.split('.').length > 1) {
-                                                   if (text.split('.')[1].length > 2) {
-                                                       return;
-                                                   }
-                                               }
-                                               text = text === '' ? '0' : text;
-                                               if (parseFloat(text) <= this.state.productData.payAmount) {
-                                                   this.setState({ applyRefundAmount: text + '' });
+                                           let reg = /^[0-9]*[.]?[0-9]{0,2}$/;
+                                           if(reg.test(text)) {
+                                               if (parseFloat(text) <= this.state.productData.payAmount || text === '') {
+                                                   this.setState({ applyRefundAmount: text});
                                                } else {
                                                    this.setState({ applyRefundAmount: this.state.productData.payAmount + '' });
                                                }
                                            }
-                                       }
-                                       }
+                                       }}
                                        style={{ color: DesignRule.mainColor, fontSize: 13, flex: 1, height: 40 }}
                                        keyboardType={'numeric'}
                                        editable={this.state.editable}
@@ -423,10 +411,9 @@ class AfterSaleServicePage extends BasePage {
         );
     };
 
-    _getReturnReason(editable) {
-        //不能编辑 《=》 未发货
+    _getReturnReason(fah) {//是否发货
         let pageType = this.params.pageType;
-        if (editable === false){
+        if (fah === false){
             pageType = 3;
         };
         let that = this;
@@ -468,12 +455,17 @@ class AfterSaleServicePage extends BasePage {
             let payAmount = productData.payAmount || 0;
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
+                that._getReturnReason(false);
+            }else {
+                that._getReturnReason(true);
             }
-            that._getReturnReason(editable);
+            if (payAmount === 0){
+                editable = false;
+            }
             if (that.params.isEdit) {
                 that.setState({ productData, editable });
             } else {
-                that.setState({ productData, editable, applyRefundAmount: payAmount });
+                that.setState({ productData, editable, applyRefundAmount: payAmount+ '' });
             }
         }).catch(error => {
             that.$loadingDismiss();
@@ -536,10 +528,10 @@ class AfterSaleServicePage extends BasePage {
         }
 
 
-        // if (parseFloat(applyRefundAmount) === 0 && pageType !== 2) {
-        //     NativeModules.commModule.toast('售后的金额不能为0');
-        //     return;
-        // }
+        if (applyRefundAmount.length === 0 && pageType !== 2) {
+            NativeModules.commModule.toast('请填写退款的金额');
+            return;
+        }
 
         let { productName, warehouseOrderNo, payAmount, prodCode } = this.state.productData;
 
