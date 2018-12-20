@@ -435,6 +435,7 @@ class HomePage extends BasePage {
                     {
                         homeRegisterFirstManager.showRegisterModalUrl ?
                             <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
+                                       resizeMode={'contain'}
                                        style={styles.messageBgStyle}/> : <View style={styles.messageBgStyle}/>
                     }
 
