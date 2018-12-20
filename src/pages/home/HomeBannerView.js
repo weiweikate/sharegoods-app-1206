@@ -26,8 +26,7 @@ export default class HomeBannerView extends Component {
     _renderViewPageItem(item) {
         return (
             <TouchableOpacity onPress={() => this._onPressRowWithItem(item)} activeOpacity={1}>
-                <ImageLoad style={styles.img}
-                           source={{ uri: item }}/>
+                <ImageLoad style={styles.img} source={{ uri: item }}/>
             </TouchableOpacity>
         );
     }
