@@ -63,7 +63,7 @@ export default class ConfirmOrderPage extends BasePage {
                     <UIImage source={position} style={{ height:ScreenUtils.autoSizeHeight(20) , width: ScreenUtils.autoSizeWidth(20), marginLeft:ScreenUtils.autoSizeWidth(20 ) }} resizeMode={'contain'}/>
                     <View style={{ flex: 1, marginLeft:ScreenUtils.autoSizeWidth(15) , marginRight:ScreenUtils.autoSizeWidth(15)}}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <Text style={[styles.commonTextStyle,{flex:1}]} allowFontScaling={false}>收货人：{this.state.viewData.express.receiverName}</Text>
+                            <Text style={[styles.commonTextStyle,{flex:1}]} allowFontScaling={false} >收货人：{this.state.viewData.express.receiverName}</Text>
                             <Text style={styles.commonTextStyle} allowFontScaling={false}>{this.state.viewData.express.receiverNum}</Text>
                         </View>
                         <UIText
