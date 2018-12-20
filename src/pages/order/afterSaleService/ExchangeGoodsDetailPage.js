@@ -166,13 +166,15 @@ class ExchangeGoodsDetailPage extends BasePage {
         let logistics = [];
         /** 平台物流只有在换货， 4.待平台处理 5.售后完成才显示*/
         if (pageType === 2 && (status === 4 || status === 5)) {
-            logistics.push({
-                title: '平台物流',
-                value: sendExpressName,
-                placeholder: '',
-                expressNo: sendExpressNo,
-                onPress: this.shopLogists
-            });
+            if (sendExpressNo) {
+                logistics.push({
+                    title: '平台物流',
+                    value: sendExpressName,
+                    placeholder: '',
+                    expressNo: sendExpressNo,
+                    onPress: this.shopLogists
+                });
+            }
         }
         /** 寄回物流在换货、退货，  2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成才显示*/
         if ((pageType === 1 || pageType === 2) &&
