@@ -263,11 +263,11 @@ export default class LoginPage extends BasePage {
                 this.params.callback && this.params.callback();
                 // 埋点登录成功
                 login(data.data.code)
-                // /**
-                //  * 跳转导师选择页面
-                //  */
-                // this.$navigate('login/login/SelectMentorPage');
-                // return;
+                /**
+                 * 跳转导师选择页面
+                 */
+                this.$navigate('login/login/SelectMentorPage');
+                return;
                 if (this.params.callback) {
                   this.$navigateBackToHome();
                 } else {

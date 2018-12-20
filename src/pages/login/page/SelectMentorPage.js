@@ -377,10 +377,8 @@ export default class SelectMentorPage extends BasePage {
                 homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(error => {
-                // bridge.$toast(error.msg);
+                this.$toastShow(error.msg)
                 // homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
-                this.$navigateBackToHome();
-                // this.$navigateBackToHome();
             });
         }
 
