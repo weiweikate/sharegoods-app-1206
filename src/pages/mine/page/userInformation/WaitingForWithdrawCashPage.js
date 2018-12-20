@@ -261,7 +261,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '现金红包', '任务奖励'];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '导师管理费', '品牌分红奖励金', '品牌推广奖励金', '现金红包', '任务奖励金'];
         let use_type_symbol = ['', '+', '-'];
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();
