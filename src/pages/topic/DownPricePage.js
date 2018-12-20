@@ -18,7 +18,7 @@ import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from 'DesignRule';
 import ImageLoad from '@mr/image-placeholder';
-// import { getTopicJumpPageParam } from './model/TopicMudelTool';
+import { getTopicJumpPageParam } from './model/TopicMudelTool';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -141,25 +141,25 @@ export default class DownPricePage extends BasePage {
      * @private
      */
     _itemActionClick = (itemData) => {
-        if (itemData.productType === 99) {
-            this.$navigate('home/product/ProductDetailPage', {
-                productId: itemData.productId,
-                productCode: itemData.prodCode,
-                preseat:'专题列表页'
-            });
-        } else if (itemData.productType === 1 || itemData.productType === 2 || itemData.productType === 3) {
-            this.$navigate('topic/TopicDetailPage', {
-                activityCode: itemData.prodCode,
-                activityType: itemData.productType,
-                preseat:'专题列表页'
-            });
-        } else if (itemData.productType === 5) {
-            this.$navigate('topic/DownPricePage', {
-                linkTypeCode: itemData.prodCode
-            });
-        }
-        // const pageObj = getTopicJumpPageParam(itemData);
-        // this.$navigate(pageObj.pageRoute, pageObj.params);
+        // if (itemData.productType === 99) {
+        //     this.$navigate('home/product/ProductDetailPage', {
+        //         productId: itemData.productId,
+        //         productCode: itemData.prodCode,
+        //         preseat:'专题列表页'
+        //     });
+        // } else if (itemData.productType === 1 || itemData.productType === 2 || itemData.productType === 3) {
+        //     this.$navigate('topic/TopicDetailPage', {
+        //         activityCode: itemData.prodCode,
+        //         activityType: itemData.productType,
+        //         preseat:'专题列表页'
+        //     });
+        // } else if (itemData.productType === 5) {
+        //     this.$navigate('topic/DownPricePage', {
+        //         linkTypeCode: itemData.prodCode
+        //     });
+        // }
+        const pageObj = getTopicJumpPageParam(itemData);
+        this.$navigate(pageObj.pageRoute, pageObj.params);
     };
 
     _render() {
