@@ -91,6 +91,7 @@ export default class ProgressBarView extends Component {
                     number={1}
                 >
                     {itemData.reseCount + '人已关注'}
+                    {/*{itemData.notifyFlag + '人已关注'}*/}
                 </Text>
             </View>
 
