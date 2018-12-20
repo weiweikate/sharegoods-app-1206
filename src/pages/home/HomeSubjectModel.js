@@ -1,8 +1,7 @@
 import { observable, flow, action } from 'mobx';
 import HomeApi from './api/HomeAPI';
 import { homeType }   from './HomeTypes'
-import { AsyncStorage } from 'react-native'
-
+import { get, save } from '@mr/rn-store'
 const kHomeSujectStore = '@home/kHomeSujectStore'
 
 //专题
@@ -13,14 +12,14 @@ class SubjectModule {
   loadSubjectList = flow(function* (isCache) {
       try {
         if (isCache) {
-          const storeRes = yield AsyncStorage.getItem(kHomeSujectStore)
+          const storeRes = yield get(kHomeSujectStore)
           if (storeRes) {
-            this.subjectList = JSON.parse(storeRes)
+            this.subjectList = storeRes
           }
         }
           const res = yield HomeApi.getSubject({ type: homeType.subject });
           this.subjectList = res.data;
-          AsyncStorage.setItem(kHomeSujectStore, JSON.stringify(res.data))
+          save(kHomeSujectStore, res.data)
       } catch (error) {
           console.log(error);
       }
