@@ -2,8 +2,7 @@
 import { observable, computed, action, flow } from 'mobx';
 import HomeApi from './api/HomeAPI';
 import { homeType }   from './HomeTypes'
-import { AsyncStorage } from 'react-native'
-
+import { get, save } from '@mr/rn-store'
 const kHomeBannerStore = '@home/kHomeBannerStore'
 
 export class BannerModules {
@@ -22,9 +21,9 @@ export class BannerModules {
   @action loadBannerList = flow(function* (isCache) {
       try {
         if (isCache) {
-          const storeRes = yield AsyncStorage.getItem(kHomeBannerStore)
+          const storeRes = yield get(kHomeBannerStore)
           if (storeRes) {
-            this.bannerList = JSON.parse(storeRes);
+            this.bannerList = storeRes
           }
         }
           const res = yield HomeApi.getSwipers({ type: homeType.swiper });
@@ -34,7 +33,7 @@ export class BannerModules {
           } else {
             this.isShowHeader = true
           }
-          AsyncStorage.setItem(kHomeBannerStore, JSON.stringify(res.data))
+          save(kHomeBannerStore, res.data)
       } catch (error) {
           console.log(error);
       }
