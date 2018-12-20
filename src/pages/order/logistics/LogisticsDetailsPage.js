@@ -172,8 +172,8 @@ class LogisticsDetailsPage extends BasePage {
     loadPageData() {
         console.log(this.params);
         if (StringUtils.isNoEmpty(this.state.expressNo)) {
-            OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo }).then((response) => {
-                console.log(response);
+            OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo}).then((response) => {
+                console.log(response.data.list);
                 let arrData = [];
                response.data.list.map((item, index) => {
                     let time = item.time;
@@ -183,7 +183,7 @@ class LogisticsDetailsPage extends BasePage {
                     });
                 });
                 this.setState({
-                    expressName: JSON.parse(response.data).result.expName,
+                    expressName: response.data.expName,
                     viewData: arrData,
                     loadingState: "success"
                 });
