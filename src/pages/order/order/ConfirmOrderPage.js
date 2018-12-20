@@ -663,17 +663,17 @@ export default class ConfirmOrderPage extends BasePage {
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {
             this.$navigate('mine/coupons/CouponsPage', {
-                justOne: this.state.viewData.totalAmounts ? this.state.viewData.totalAmounts : 1, callBack: (data) => {
+                justOne: (parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin) )? (parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin) ) : 1, callBack: (data) => {
                     console.log(typeof data);
                     if (parseInt(data) >= 0) {
-                        let params = { tokenCoin: parseInt(data) > 0 &&parseInt(data)<=parseInt(this.state.viewData.totalAmounts)? parseInt(data):0,
+                        let params = { tokenCoin: parseInt(data) > 0 &&parseInt(data)<=(parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin))? parseInt(data):0,
                             userCouponCode: this.state.userCouponCode,
                             addressId:this.state.addressId,
                         };
                         this.setState({
                             addressId:this.state.addressId,
-                            tokenCoin: data,
-                            tokenCoinText: parseInt(data) > 0 &&parseInt(data)<=parseInt(this.state.viewData.totalAmounts)? '-¥' + parseInt(data) : '选择使用1元券'
+                            tokenCoin: parseInt(data) > 0 &&parseInt(data)<=(parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin))? parseInt(data):0,
+                            tokenCoinText: parseInt(data) > 0 &&(parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin))? '-¥' + parseInt(data) : '选择使用1元券'
                         });
                         this.loadPageData(params);
                     }
