@@ -1,8 +1,7 @@
 import { observable, flow, action } from 'mobx';
 import HomeApi from './api/HomeAPI';
 import { homeType }   from './HomeTypes'
-import { AsyncStorage } from 'react-native'
-
+import { get, save } from '@mr/rn-store'
 const kHomeStarShopStore = '@home/kHomeStarShopStore'
 
 class StarShopModule {
@@ -11,14 +10,14 @@ class StarShopModule {
   @action loadShopList = flow(function* (isCache) {
       try {
         if (isCache) {
-          const storeRes = yield AsyncStorage.getItem(kHomeStarShopStore)
+          const storeRes = yield get(kHomeStarShopStore)
           if (storeRes) {
-            this.shopList = JSON.parse(storeRes)
+            this.shopList = storeRes
           }
         }
           const res = yield HomeApi.getStarShop({ type: homeType.starShop });
           this.shopList = res.data;
-          AsyncStorage.setItem(kHomeStarShopStore, JSON.stringify(res.data))
+          save(kHomeStarShopStore, res.data)
       } catch (error) {
           console.log(error);
       }

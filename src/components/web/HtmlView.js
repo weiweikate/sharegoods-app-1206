@@ -1,6 +1,6 @@
 import React from 'react';
 import BasePage from '../../BasePage';
-import WebViewBridge from '@mr/react-native-webview'
+import WebViewBridge from '@mr/webview'
 
 export default class RequestDetailPage extends BasePage {
 
