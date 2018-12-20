@@ -178,6 +178,7 @@ export default class RecommendPage extends BasePage {
             this.setState({
                 refreshing: false,
                 netFailedInfo: error,
+                dataList: [{}],
                 loadingState: PageLoadingState.fail
             });
         });
@@ -251,7 +252,7 @@ export default class RecommendPage extends BasePage {
     _clickItem = (item) => {
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
-                productCode: item.linkTypeCode,preseat:'拼店推荐banner'
+                productCode: item.linkTypeCode, preseat: '拼店推荐banner'
             });
         } else if (item.linkType === 2) {
             this.$navigate('topic/DownPricePage', {
@@ -266,7 +267,7 @@ export default class RecommendPage extends BasePage {
             let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
-                activityType: type,preseat:'拼店推荐banner'
+                activityType: type, preseat: '拼店推荐banner'
             });
         }
     };
