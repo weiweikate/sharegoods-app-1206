@@ -24,8 +24,8 @@ export default class DetailAddressView extends Component{
                 <UIImage source={position} style={{ height: px2dp(20), width:  px2dp(20), marginLeft:  px2dp(20) }} resizeMode={'contain'}/>
                 <View style={{ flex: 1, marginLeft:  px2dp(15), marginRight:  px2dp(20) }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <Text style={[styles.innerTextStyle,{flex:1}]}>收货人:{orderDetailModel.receiver}</Text>
-                        <Text style={[styles.innerTextStyle,{marginLeft: px2dp(5)}]}>{orderDetailModel.receiverPhone}</Text>
+                        <Text style={[styles.innerTextStyle,{flex:1}]} allowFontScaling={false}>收货人:{orderDetailModel.receiver}</Text>
+                        <Text style={[styles.innerTextStyle,{marginLeft: px2dp(5)}]} allowFontScaling={false}>{orderDetailModel.receiverPhone}</Text>
                     </View>
                     <UIText value={
                         '收货地址:' + orderDetailModel.province

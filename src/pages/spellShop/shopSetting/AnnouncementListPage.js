@@ -77,7 +77,7 @@ export default class AnnouncementListPage extends BasePage {
         SpellShopApi.queryByStoreId({
             page: this.state.page,
             pageSize: 10,
-            storeId: storeData.id
+            storeCode: storeData.storeNumber
         }).then((data) => {
             this.state.page++;
             let dateTemp = data.data || {};
@@ -106,7 +106,7 @@ export default class AnnouncementListPage extends BasePage {
             SpellShopApi.queryByStoreId({
                 page: this.state.page,
                 pageSize: 10,
-                storeId: storeData.id
+                storeCode: storeData.storeNumber
             }).then((data) => {
                 this.state.page++;
                 this.onEndReached = false;

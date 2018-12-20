@@ -78,7 +78,7 @@ export default class HomeStarShopView extends Component {
         }
         let route = homeModule.homeNavigate(8);
         let params = homeModule.paramsNavigate(shop);
-        navigate(route, params);
+        navigate(route, {...params, preseat:'starShop'})
     }
 
     render() {

@@ -4,7 +4,8 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Image, DeviceEventEmitter
+    Image, DeviceEventEmitter,
+    ScrollView
 } from "react-native";
 import BasePage from "../../../BasePage";
 import { RefreshList } from "../../../components/ui";
@@ -18,6 +19,7 @@ import Toast from "../../../utils/bridge";
 import GoodsGrayItem from "../components/GoodsGrayItem";
 import OrderApi from "../api/orderApi";
 // import user from "../../../model/user";
+import { PageLoadingState, renderViewByLoadingState } from "../../../components/pageDecorator/PageState";
 import { NavigationActions } from "react-navigation";
 import DesignRule from "DesignRule";
 import MineApi from "../../mine/api/MineApi";
@@ -65,6 +67,22 @@ export default class MyOrdersDetailPage extends BasePage {
         title: "订单详情",
         show: true// false则隐藏导航
     };
+    $getPageStateOptions = () => {
+        return {
+            loadingState: orderDetailModel.loadingState,
+            netFailedProps: {
+                netFailedInfo: orderDetailModel.netFailedInfo,
+                reloadBtnClick: this._reload
+            }
+        };
+    };
+
+    _reload() {
+        orderDetailModel.netFailedInfo = null;
+        orderDetailModel.loadingState = PageLoadingState.loading;
+        this.loadPageData;
+    }
+
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity onPress={this.showMore} style={{
@@ -128,20 +146,35 @@ export default class MyOrdersDetailPage extends BasePage {
         // this.timeUtils.stop();
     }
 
+    _renderContent = () => {
+        return (
+            <View style={{marginBottom:ScreenUtils.safeBottom}}>
+            <ScrollView>
+            <RefreshList
+                ListHeaderComponent={this.renderHeader}
+                ListFooterComponent={this.renderFootder}
+                data={this.state.viewData}
+                renderItem={this.renderItem}
+                onRefresh={this.onRefresh}
+                onLoadMore={this.onLoadMore}
+                extraData={this.state}
+                isEmpty={this.state.isEmpty}
+                emptyTip={"暂无数据！"}
+            />
+            </ScrollView>
+            <OrderDetailBottomButtonView
+        goBack={() => this.$navigateBack()}
+        nav={this.$navigate}
+        callBack={this.params.callBack && this.params.callBack()}
+        loadPageData={() => this.loadPageData()}/>
+            </View>
+        );
+    };
+
     _render = () => {
         return (
             <View style={styles.container}>
-                <RefreshList
-                    ListHeaderComponent={this.renderHeader}
-                    ListFooterComponent={this.renderFootder}
-                    data={this.state.viewData}
-                    renderItem={this.renderItem}
-                    onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    extraData={this.state}
-                    isEmpty={this.state.isEmpty}
-                    emptyTip={"暂无数据！"}
-                />
+                {renderViewByLoadingState(this.$getPageStateOptions(), this._renderContent)}
                 {this.renderModal()}
             </View>
         );
@@ -183,8 +216,7 @@ export default class MyOrdersDetailPage extends BasePage {
             <View>
                 {this.renderState()}
                 {orderDetailModel.status > 1 ? <DetailAddressView/> : null}
-                <GiftHeaderView
-                    giftPackageName={this.state.giftPackageName}/>
+                <GiftHeaderView/>
             </View>
         );
     };
@@ -194,11 +226,6 @@ export default class MyOrdersDetailPage extends BasePage {
                 <OrderDetailPriceView
                     giftBagCoupons={this.state.giftBagCoupons}/>
                 <OrderDetailTimeView/>
-                <OrderDetailBottomButtonView
-                    goBack={() => this.$navigateBack()}
-                    nav={this.$navigate}
-                    callBack={this.params.callBack && this.params.callBack()}
-                    loadPageData={() => this.loadPageData()}/>
             </View>
         );
 
@@ -275,6 +302,7 @@ export default class MyOrdersDetailPage extends BasePage {
             <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
+
     getDateData(diff) {
         const timeLeft = {
             years: 0,
@@ -282,12 +310,12 @@ export default class MyOrdersDetailPage extends BasePage {
             hours: 0,
             min: 0,
             sec: 0,
-            millisec: 0,
+            millisec: 0
         };
         if (diff <= 0) {
             // this.sec = 0
-            this.stop() // 倒计时为0的时候, 将计时器清除
-            return {sec: -1};
+            this.stop(); // 倒计时为0的时候, 将计时器清除
+            return { sec: -1 };
         }
 
         if (diff >= (365.25 * 86400)) {
@@ -306,10 +334,11 @@ export default class MyOrdersDetailPage extends BasePage {
             timeLeft.min = Math.floor(diff / 60);
             diff -= timeLeft.min * 60;
         }
-        this.sec = diff
+        this.sec = diff;
         timeLeft.sec = diff;
         return timeLeft;
     }
+
     settimer(overtimeClosedTime) {
         let autoConfirmTime = Math.round((overtimeClosedTime - orderDetailModel.warehouseOrderDTOList[0].nowTime) / 1000);
         if (autoConfirmTime < 0) {
@@ -318,23 +347,25 @@ export default class MyOrdersDetailPage extends BasePage {
         }
         this.interval = setInterval(() => {
             autoConfirmTime--;
-            let time = this.getDateData(autoConfirmTime)
+            let time = this.getDateData(autoConfirmTime);
             if (time.sec >= 0) {
-                if(orderDetailModel.status===1){
+                if (orderDetailModel.status === 1) {
                     orderDetailAfterServiceModel.moreDetail = time.hours + ":" + time.min + ":" + time.sec + "后自动取消订单";
-                } else if(orderDetailModel.status===3){
+                } else if (orderDetailModel.status === 3) {
                     orderDetailAfterServiceModel.moreDetail = time.days + "天" + time.hours + ":" + time.min + ":" + time.sec + "后自动确认收货";
                 }
-            }else{
+            } else {
                 orderDetailAfterServiceModel.moreDetail = "";
                 this.loadPageData();
             }
-        }, 1000)
+        }, 1000);
     }
+
     stop() {
         orderDetailAfterServiceModel.moreDetail = "";
-        this.interval&&clearInterval(this.interval);
+        this.interval && clearInterval(this.interval);
     }
+
     //**********************************BusinessPart******************************************
     getAfterSaleService = (data, index) => {
         //售后状态
@@ -344,13 +375,13 @@ export default class MyOrdersDetailPage extends BasePage {
         let innerStatus = (data.orderCustomerServiceInfoDTO && data.orderCustomerServiceInfoDTO.status) || null;
         switch (outStatus) {
             case 2:
-                if(innerStatus===5){
+                if (innerStatus === 5) {
                     afterSaleService.push({
                         id: 2,
-                        operation:  "退款成功",
+                        operation: "退款成功",
                         isRed: false
                     });
-                }else{
+                } else {
                     afterSaleService.push({
                         id: 0,
                         operation: "退款",
@@ -504,7 +535,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 } else if (orderDetailModel.expList.length === 1 && orderDetailModel.unSendProductInfoList.length === 0) {
                     OrderApi.findLogisticsDetail({ expressNo: orderDetailModel.expList[0].expNO }).then((response) => {
                         console.log(response);
-                        pageStateString.sellerState = JSON.parse(response.data).result.list[0].status || "等待平台发货";
+                        pageStateString.sellerState = response.data.list[0].status || "等待平台发货";
                     }).catch(e => {
                         pageStateString.sellerState = "等待平台发货";
                     });
@@ -576,12 +607,12 @@ export default class MyOrdersDetailPage extends BasePage {
         console.log(menu);
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
         let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
-        if (orderDetailModel.status > 2&&products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime&&orderDetailModel.warehouseOrderDTOList[0].nowTime
-        &&!(innerStatus<6&&innerStatus>=1)) {
-                NativeModules.commModule.toast("该商品售后已过期");
-                return;
-        }else if (products.orderSubType === 3) {
+        if (products.orderSubType === 3) {
             NativeModules.commModule.toast("该商品属于升级礼包产品，不存在售后功能");
+            return;
+        } else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime
+            && !(innerStatus < 6 && innerStatus >= 1)) {
+            NativeModules.commModule.toast("该商品售后已过期");
             return;
         }
 
@@ -622,7 +653,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: DesignRule.bgColor,
-        marginBottom: ScreenUtils.safeBottom
+        marginBottom: ScreenUtils.safeBottom,
     },
     grayView: {
         width: px2dp(90),

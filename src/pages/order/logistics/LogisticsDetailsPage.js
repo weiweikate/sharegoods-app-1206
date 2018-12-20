@@ -175,7 +175,7 @@ class LogisticsDetailsPage extends BasePage {
             OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo }).then((response) => {
                 console.log(response);
                 let arrData = [];
-                JSON.parse(response.data).result.list.map((item, index) => {
+               response.data.list.map((item, index) => {
                     let time = item.time;
                     arrData.push({
                         time: time.replace(" ", "\n"),

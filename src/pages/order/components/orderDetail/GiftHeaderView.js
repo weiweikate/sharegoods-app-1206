@@ -19,7 +19,7 @@ export default class GiftHeaderView extends Component{
                 {orderDetailModel.orderSubType >= 3 ?
                     <View style={styles.containerStyles}>
                         <View style={styles.leftStyles}>
-                            <Text style={styles.giftTextStyles}>礼包</Text>
+                            <Text style={styles.giftTextStyles} allowFontScaling={false}>礼包</Text>
                         </View>
                         {/*<Text style={styles.giftNameStyles}>{this.props.giftPackageName}</Text>*/}
                     </View>

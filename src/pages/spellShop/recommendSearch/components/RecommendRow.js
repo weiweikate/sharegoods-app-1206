@@ -39,7 +39,7 @@ export default class RecommendRow extends Component {
         </TouchableOpacity>);
     };
     _onPress = () => {
-        this.props.RecommendRowOnPress && this.props.RecommendRowOnPress(this.props.RecommendRowItem.id);
+        this.props.RecommendRowOnPress && this.props.RecommendRowOnPress(this.props.RecommendRowItem.storeNumber);
     };
 
     render() {

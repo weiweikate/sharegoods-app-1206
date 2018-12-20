@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, NativeModules, Alert, DeviceEventEmitter } from 'react-native';
+import { View, NativeModules, Alert, DeviceEventEmitter, Keyboard ,TouchableWithoutFeedback,
+    StyleSheet,TouchableOpacity,Image,Text} from "react-native";
 import RefreshList from '../../../components/ui/RefreshList';
 import constants from '../../../constants/constants';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
+import {track,trackEvent} from '../../../utils/SensorsTrack';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
@@ -12,7 +14,6 @@ import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
-
 const emptyIcon = res.kongbeuye_dingdan;
 
 export default class MyOrdersListView extends Component {
@@ -29,7 +30,9 @@ export default class MyOrdersListView extends Component {
             isShowReceiveGoodsModal: false,
             menu: {},
             index: -1,
-            CONFIG: []
+            CONFIG: [],
+            isError:false,
+            errMsgText:'发生错误'
         };
         this.currentPage = 1;
         this.noMoreData = false;
@@ -57,11 +60,32 @@ export default class MyOrdersListView extends Component {
             />
         );
     };
+    renderError(){
+      return(
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.errContainer}>
+                  <Image source={res.placeholder.netError}
+                         style={{ width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120) }}
+                         resizeMode={'contain'}/>
+                  <Text style={styles.titleStyle} allowFontScaling={false}>
+                      {this.state.errMsgText}
+                  </Text>
+                  <TouchableOpacity activeOpacity={0.5} style={styles.btnStyle} onPress={()=>this.getDataFromNetwork()}>
+                      <Text style={{color: DesignRule.bgColor_btn,
+                          fontSize: DesignRule.fontSize_mediumBtnText}} allowFontScaling={false}>
+                          重新加载
+                      </Text>
+                  </TouchableOpacity>
+
+              </View>
+          </TouchableWithoutFeedback>
+      )
+    }
 
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
-                <RefreshList
+                {this.state.isError?this.renderError():<RefreshList
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
@@ -71,7 +95,7 @@ export default class MyOrdersListView extends Component {
                     emptyTip={'暂无订单'}
                     emptyIcon={emptyIcon}
                     ListHeaderComponent={<View style={{ height: 10 }}/>}
-                />
+                />}
                 {this.renderModal()}
             </View>
         );
@@ -101,6 +125,8 @@ export default class MyOrdersListView extends Component {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 NativeModules.commModule.toast('订单已取消');
+                                track(trackEvent.cancelPayOrder,{orderID:this.state.viewData[this.state.index].orderNo,orderAmount:this.state.viewData[this.state.index].orderAmount
+                                });
                                 index = -1;
                                 this.onRefresh();
                             } else {
@@ -170,7 +196,9 @@ export default class MyOrdersListView extends Component {
                         totalPrice: item.payAmount,
                         nowTime: item.nowTime,
                         cancelTime:item.warehouseOrderDTOList[0].cancelTime,
-                        outTradeNo:item.warehouseOrderDTOList[0].outTradeNo
+                        outTradeNo:item.warehouseOrderDTOList[0].outTradeNo,
+                        orderAmount:item.orderAmount,
+
                     })
 
                 } else {
@@ -260,18 +288,15 @@ export default class MyOrdersListView extends Component {
             Toast.hiddenLoading();
             this.getList(response.data);
             console.log(response);
-            this.setState({ isEmpty: response.data.totalNum === 0 });
+            this.setState({ isEmpty: response.data.totalNum === 0 ,isError:false,});
             this.isFirst = false;
         }).catch(e => {
             Toast.hiddenLoading();
             NativeModules.commModule.toast(e.msg);
             if (e.code === 10009) {
-                this.props.nav('login/login/LoginPage', {
-                    callback: () => {
-                        this.getDataFromNetwork();
-                    }
-                });
+                this.props.nav('login/login/LoginPage');
             }
+            this.setState({isError:true,errMsgText:e.msg||'未知错误'})
         });
     }
 
@@ -290,9 +315,10 @@ export default class MyOrdersListView extends Component {
                 Toast.hiddenLoading();
                 this.isFirst = false;
                 this.getList(response.data);
-                this.setState({ isEmpty: response.data.totalNum === 0 });
+                this.setState({ isEmpty: response.data.totalNum === 0 ,isError:false});
             }).catch(e => {
                 Toast.hiddenLoading();
+                this.setState({isError:true,errMsgText:e.msg||'未知错误'})
                 NativeModules.commModule.toast(e.msg);
             });
 
@@ -308,10 +334,6 @@ export default class MyOrdersListView extends Component {
 
         }
     }
-
-    onLoadNumber = () => {
-        this.props.onLoadNumber && this.props.onLoadTabNumber();
-    };
 
     onRefresh = () => {
         console.log('onRefresh', this.currentPage);
@@ -478,3 +500,32 @@ export default class MyOrdersListView extends Component {
 
     };
 }
+
+const styles=StyleSheet.create({
+    errContainer:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    titleStyle: {
+        fontSize: 15,
+        color: DesignRule.textColor_instruction,
+        marginTop: 10,
+        textAlign : 'center'
+    },
+    btnText: {
+        fontSize: 15,
+        color: DesignRule.mainColor,
+        textAlign: 'center'
+    },
+    btnStyle: {
+        height: 36,
+        width: 115,
+        borderRadius: 18,
+        borderColor: DesignRule.bgColor_btn,
+        borderWidth: DesignRule.lineHeight * 1.5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20
+    },
+})

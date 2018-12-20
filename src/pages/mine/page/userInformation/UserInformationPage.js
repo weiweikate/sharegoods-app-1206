@@ -131,7 +131,7 @@ export default class UserInformationPage extends BasePage {
 
                 this.$loadingDismiss();
                 if (err.code === 10009) {
-                    this.$navigate("login/login/LoginPage");
+                    this.gotoLoginPage();
                 }
             });
         });

@@ -186,7 +186,7 @@ export default class HelperFeedbackPage extends BasePage {
                                     style={{
                                         fontSize: 15,
                                         color: DesignRule.textColor_mainTitle
-                                    }}>确定</Text>
+                                    }} allowFontScaling={false}>确定</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -215,7 +215,7 @@ export default class HelperFeedbackPage extends BasePage {
                     fontSize: 13,
                     color: DesignRule.textColor_hint,
                     marginTop: 4
-                }}>{this.state.imageArr.length}/3</Text>
+                }} allowFontScaling={false}>{this.state.imageArr.length}/3</Text>
 
             </ImageBackground>;
 
@@ -271,7 +271,7 @@ export default class HelperFeedbackPage extends BasePage {
                                     marginLeft: 16,
                                     fontSize: 15,
                                     color: DesignRule.textColor_instruction
-                                }}>请选择问题类型</Text>
+                                }} allowFontScaling={false}>请选择问题类型</Text>
                                 <UIImage source={icon_arrow_up} style={{ width: 10, height: 7, marginRight: 16 }}/>
                             </View>
                             <View style={{ width: ScreenUtils.width, backgroundColor: "white" }}>
@@ -289,7 +289,7 @@ export default class HelperFeedbackPage extends BasePage {
                                                 color: i === this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
                                                 fontSize: 15,
                                                 marginLeft: 15
-                                            }}>{item.value}</Text>
+                                            }} allowFontScaling={false}>{item.value}</Text>
                                             {i === this.state.selectIndex ? <Image source={icon_red_select} style={{
                                                 width: 17,
                                                 height: 12,
@@ -335,7 +335,7 @@ export default class HelperFeedbackPage extends BasePage {
                             marginLeft: 16,
                             fontSize: 15,
                             color: DesignRule.textColor_mainTitle
-                        }}>{this.state.course}</Text>
+                        }} allowFontScaling={false}>{this.state.course}</Text>
                         <UIImage source={icon_arrow_down} style={{ width: 10, height: 7, marginRight: 16 }}/>
                     </TouchableOpacity>
                     <View style={styles.containerView1}>
@@ -343,7 +343,7 @@ export default class HelperFeedbackPage extends BasePage {
                             marginLeft: 16,
                             fontSize: 15,
                             color: DesignRule.textColor_mainTitle
-                        }}>详细说明（必填）</Text>
+                        }} allowFontScaling={false}>详细说明（必填）</Text>
                     </View>
                     <View style={{ height: 130, backgroundColor: "white" }}>
                         <AutoExpandingInput
@@ -359,14 +359,14 @@ export default class HelperFeedbackPage extends BasePage {
                             position: "absolute",
                             bottom: 10,
                             right: 16
-                        }}>{this.state.textLength}/90</Text>
+                        }} allowFontScaling={false}>{this.state.textLength}/90</Text>
                     </View>
                     <View style={styles.containerView2}>
                         <Text style={{
                             marginLeft: 16,
                             fontSize: 15,
                             color: DesignRule.textColor_mainTitle
-                        }}>上传图片（选填）</Text>
+                        }} allowFontScaling={false}>上传图片（选填）</Text>
                     </View>
                     <View style={styles.containerView3}>
                         {this.state.imageArr.map((item, index) => {
@@ -379,7 +379,7 @@ export default class HelperFeedbackPage extends BasePage {
                                  onPress={() => this.feedback2server()}>
                         <View
                             style={[styles.buttoncolorStyle, { backgroundColor: this.state.course === "请选择问题类型" || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : DesignRule.mainColor }]}>
-                            <Text style={{ fontSize: 16, color: "#fff" }}>提交</Text>
+                            <Text style={{ fontSize: 16, color: "#fff" }} allowFontScaling={false}>提交</Text>
                         </View>
                     </NoMoreClick>
 
