@@ -112,7 +112,7 @@ export default class HomeSubjectView extends Component {
         })
         return <View style={styles.container}>
             <View style={styles.titleView}>
-                <Text style={styles.title}>超值热卖</Text>
+                <Text style={styles.title} allowFontScaling={false}>超值热卖</Text>
             </View>
             {items}
         </View>
