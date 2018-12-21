@@ -77,8 +77,12 @@ export default class  extends BasePage {
 
     jump = () => {
         bridge.$toast("注册成功")
-
-        this.$navigateBackToHome();
+        LoginAPI.givePackage().then(result => {
+            homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
+            this.$navigateBackToHome();
+        }).catch(error => {
+            this.$navigateBackToHome();
+        });
     };
 
     _bind() {
