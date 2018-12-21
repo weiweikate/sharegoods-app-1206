@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     FlatList,
-    Text,
     TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -15,6 +14,7 @@ import HomeAPI from '../api/HomeAPI';
 import Storage from '../../../utils/storage';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../../components/ui';
 
 const recentDataKey = 'recentDataKey';
 export default class SearchPage extends BasePage {

@@ -6,9 +6,7 @@
 import React from 'react';
 import {
     View,
-    Text,
     Image,
-    TextInput,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -23,6 +21,9 @@ import spellStatusModel from '../model/SpellStatusModel';
 import DesignRule from 'DesignRule';
 import res from '../../../comm/res';
 import openShopRes from '../res';
+import {
+    MRText as Text, MRTextInput as TextInput
+} from '../../../components/ui';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;

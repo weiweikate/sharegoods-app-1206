@@ -8,7 +8,6 @@ import React, { Component } from 'react';
 import {
     TouchableOpacity,
     View,
-    Text,
     Image,
     Animated,
     TouchableHighlight,
@@ -23,6 +22,7 @@ import ImageZoom from 'FlyImageZoom';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import ImageLoad from '@mr/image-placeholder'
+import {MRText as Text} from '../../components/ui';
 
 let staticStyle = {
     show: false,

@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     ScrollView,
     StyleSheet,
     ImageBackground,
@@ -18,6 +17,10 @@ import DesignRule from 'DesignRule';
 import res from '../res';
 import user from '../../../model/user'
 import UIImage from "@mr/image-placeholder";
+import {
+    MRText as Text
+} from '../../../components/ui';
+
 
 const Banner = res.openShop.yqhy_03;
 const Center = res.openShop.yqhy_04;

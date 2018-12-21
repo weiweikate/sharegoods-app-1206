@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text as RNText } from 'react-native';
+import { Text as RNText , TextInput} from 'react-native';
 import connectStyle from './connectStyle';
 
 /**
@@ -20,6 +20,13 @@ export class MRText extends React.Component{
 
     render(){
         return(<RNText {...this.props} allowFontScaling={false}>{this.props.children}</RNText>)
+    }
+}
+
+export class MRTextInput extends React.Component{
+
+    render(){
+        return(<TextInput {...this.props} allowFontScaling={false} underlineColorAndroid={'transparent'}/>)
     }
 }
 export default connectStyle('Text')(UIText);

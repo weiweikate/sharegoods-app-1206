@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     FlatList,
-    Text,
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
@@ -41,6 +40,7 @@ import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
+import {MRText as Text} from '../../components/ui';
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;

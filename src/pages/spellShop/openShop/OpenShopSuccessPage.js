@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     Image,
     Dimensions,
     StyleSheet,
@@ -16,6 +15,10 @@ import DesignRule from 'DesignRule';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SuccessImg = res.button.tongyon_icon_check_green;
+import {
+    MRText as Text
+} from '../../../components/ui';
+
 
 export default class OpenShopSuccessPage extends BasePage {
 

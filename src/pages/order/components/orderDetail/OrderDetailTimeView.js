@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity,
     NativeModules
 } from 'react-native';
 import {
-    UIText
+    UIText, MRText as Text
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';

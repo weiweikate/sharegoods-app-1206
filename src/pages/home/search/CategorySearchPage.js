@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, SectionList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, SectionList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -11,6 +11,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import ImageLoad from '@mr/image-placeholder'
+import {MRText as Text} from '../../../components/ui';
 
 const icon_search = res.search.icon_search;
 

@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     Image,
     StyleSheet,
     TouchableWithoutFeedback
@@ -11,6 +10,9 @@ import {
 import SwipeOut from 'react-native-swipeout';
 import DesignRule from 'DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
+import {
+    MRText as Text
+} from '../../../../components/ui';
 
 export default class AssistantRow extends Component {
 

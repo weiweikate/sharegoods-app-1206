@@ -5,7 +5,6 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    Text,
     RefreshControl
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -27,6 +26,7 @@ import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import {MRText as Text} from '../../../components/ui';
 
 const {
     toGwc,

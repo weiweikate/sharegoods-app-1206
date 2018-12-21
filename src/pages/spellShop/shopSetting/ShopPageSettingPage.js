@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     Image,
     Dimensions,
     StyleSheet,
@@ -12,7 +11,9 @@ import {
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import res from '../res';
-
+import {
+    MRText as Text
+} from '../../../components/ui';
 const ArrowImg = res.shopSetting.xjt_03;
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
