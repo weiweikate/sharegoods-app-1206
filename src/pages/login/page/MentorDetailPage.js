@@ -119,11 +119,6 @@ export default class MentorDetailPage extends BasePage {
                                     fontSize: 17,
                                     color: DesignRule.white
                                 }}
-                                onPress={
-                                    () => {
-                                        this.$navigateBack();
-                                    }
-                                }
                             />
                         </View>
                     </TouchableOpacity>
@@ -138,16 +133,11 @@ export default class MentorDetailPage extends BasePage {
             code: mentorData.perfectNumberCode
         }).then(res => {
             this.$toastShow('选择成功');
-            // bridge.$toast('选择成功');
             homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
-            // this.$navigateBackToHome();
-            setTimeout(()=>{
-                this.$navigateBack()
-            },5000)
+            this.$navigateBackToHome()
         }).catch(res => {
             this.$toastShow(res.msg)
-            // bridge.$toast(res.msg);
-            // this.$navigateBack()
+
         });
     };
 }
