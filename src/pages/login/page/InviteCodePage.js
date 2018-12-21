@@ -27,6 +27,7 @@ import LoginAPI from '../api/LoginApi';
 // import { NavigationActions } from 'react-navigation';
 import bridge from '../../../utils/bridge';
 import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
+import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
 
 class inviteModel {
     /*0代表验证码登录 1代表密码登录*/
@@ -76,6 +77,7 @@ export default class  extends BasePage {
 
     jump = () => {
         bridge.$toast("注册成功")
+
         this.$navigateBackToHome();
     };
 
@@ -193,6 +195,7 @@ export default class  extends BasePage {
             }).then(res => {
                 bridge.$toast(res.msg);
                 this.$loadingDismiss();
+                homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(res => {
                 this.$loadingDismiss();
