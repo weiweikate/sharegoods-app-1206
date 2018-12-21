@@ -21,8 +21,8 @@ include ':@sensors.data/react-native-sensors-analytics'
 project(':@sensors.data/react-native-sensors-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/@sensors.data/react-native-sensors-analytics/android')
 include ':@mr/request'
 project(':@mr/request').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/request/android')
-include ':@mr/react-native-cookies'
-project(':@mr/react-native-cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-cookies/android')
+include ':@mr/cookies'
+project(':@mr/cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/cookies/android')
 include ':@mr/geolocation'
 project(':@mr/geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/geolocation/android')
 
