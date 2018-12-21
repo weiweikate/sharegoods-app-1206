@@ -7,7 +7,6 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Text,
     Image
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -16,6 +15,7 @@ import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user'
 import DesignRule from 'DesignRule'
+import {MRText as Text} from '../../components/ui';
 
 const { px2dp } = ScreenUtils;
 

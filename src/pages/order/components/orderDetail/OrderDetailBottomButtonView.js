@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity,
     Alert, NativeModules
 } from 'react-native';
@@ -14,6 +13,7 @@ import Toast from '../../../../utils/bridge';
 import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
 import { observer } from 'mobx-react/native';
 const {px2dp} = ScreenUtils;
+import {MRText as Text} from '../../../../components/ui';
 
 @observer
 export default  class OrderDetailBottomButtonView extends Component{

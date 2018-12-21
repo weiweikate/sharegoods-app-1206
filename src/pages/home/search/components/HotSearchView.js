@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import {
     StyleSheet,
-    Text,
     View,
     TouchableOpacity
 } from 'react-native';
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../../../components/ui';
 
 /**
  * 热门搜索view

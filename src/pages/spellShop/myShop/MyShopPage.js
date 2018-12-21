@@ -9,11 +9,14 @@ import {
     ScrollView,
     RefreshControl,
     TouchableOpacity,
-    Text, Alert
+    Alert
 } from 'react-native';
 
 import { observer } from 'mobx-react/native';
 import BasePage from '../../../BasePage';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 import ShopHeader from './components/ShopHeader';
 import ShopHeaderBonus from './components/ShopHeaderBonus';

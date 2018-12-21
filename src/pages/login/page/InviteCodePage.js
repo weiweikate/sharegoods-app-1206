@@ -17,7 +17,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TextInput,
     TouchableOpacity,
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -27,7 +26,7 @@ import UIText from '../../../comm/components/UIText';
 import LoginAPI from '../api/LoginApi';
 // import { NavigationActions } from 'react-navigation';
 import bridge from '../../../utils/bridge';
-import {MRText as Text} from '../../../components/ui'
+import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
 
 class inviteModel {
     /*0代表验证码登录 1代表密码登录*/

@@ -10,7 +10,6 @@ import {
     StyleSheet,
     View,
     Image,
-    Text,
     TouchableOpacity,
     Linking,
     ScrollView
@@ -24,6 +23,7 @@ import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui'
 
 const {
     // top_kefu,

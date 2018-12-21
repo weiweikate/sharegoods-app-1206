@@ -2,7 +2,6 @@
 import React from "react";
 import {
     View,
-    Text,
     Image,
     Dimensions,
     StyleSheet,
@@ -22,6 +21,7 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "DesignRule";
 import res from "../../res";
 import ImageLoad from "@mr/image-placeholder";
+import {MRText as Text} from '../../../../components/ui'
 // 常量
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;

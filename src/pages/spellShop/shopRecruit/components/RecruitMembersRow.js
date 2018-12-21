@@ -6,7 +6,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     Image,
     StyleSheet,
     ScrollView,
@@ -16,6 +15,10 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
 const PeopleImg = res.shopRecruit.dy_07;
+import {
+    MRText as Text
+} from '../../../../components/ui';
+
 
 export default class AssistantRow extends Component {
 

@@ -6,12 +6,12 @@
 import React, { PureComponent } from "react";
 import {
   View,
-  Text,
 
 } from "react-native";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 const {px2dp} = ScreenUtils;
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../../../components/ui'
 
 export  default class CountDownView extends PureComponent {
   constructor(props) {

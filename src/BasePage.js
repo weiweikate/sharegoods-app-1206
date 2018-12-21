@@ -9,11 +9,13 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
     Image,
     TouchableOpacity
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
+import {
+    MRText as Text
+} from './components/ui';
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';

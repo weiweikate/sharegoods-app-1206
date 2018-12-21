@@ -8,13 +8,13 @@ import {
     TouchableOpacity,
     View,
     Image,
-    Text,
     StyleSheet
 } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import ImageLoad from '@mr/image-placeholder';
+import {MRText as Text} from '../../../components/ui'
 
 export default class UserSingleItem extends Component {
     constructor(props) {
