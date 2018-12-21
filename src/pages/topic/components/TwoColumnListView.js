@@ -1,6 +1,5 @@
 import {
     View,
-    Text,
     Image,
     TouchableOpacity,
     StyleSheet,
@@ -13,6 +12,9 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { SbSectiontHeaderView, ActivityOneView } from './SbSectiontHeaderView';
 import PropTypes from 'prop-types';
 import DesignRule from 'DesignRule';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 export default class TwoColumnListView extends Component {
 

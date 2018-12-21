@@ -4,11 +4,11 @@ import {
     NetInfo,
     View,
     TouchableWithoutFeedback,
-    Image,
-    Text
+    Image
 } from 'react-native';
 import res from '../res';
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../components/ui';
 
 class NetStatus {
 

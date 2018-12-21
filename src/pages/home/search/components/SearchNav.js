@@ -5,11 +5,11 @@ import {
     TextInput,
     StyleSheet,
     TouchableOpacity,
-    Text
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
+import {MRText as Text} from '../../../../components/ui';
 
 
 export default class SearchBar extends Component {

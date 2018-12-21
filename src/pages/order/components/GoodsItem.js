@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import {
-    UIText
+    UIText, MRText as Text
 } from "../../../components/ui";
 import UIImage from "@mr/image-placeholder";
 import ScreenUtils from "../../../utils/ScreenUtils";

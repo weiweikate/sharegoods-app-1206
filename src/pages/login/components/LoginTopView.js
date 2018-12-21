@@ -5,7 +5,6 @@ import {
     View,
     TouchableOpacity,
     StyleSheet,
-    TextInput,
     Image
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
@@ -18,6 +17,7 @@ import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import UIText from '../../../components/ui/UIText';
+import {MRTextInput as TextInput} from '../../../components/ui'
 
 const {
     close_eye,

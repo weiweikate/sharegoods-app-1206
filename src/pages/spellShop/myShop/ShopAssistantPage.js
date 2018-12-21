@@ -6,11 +6,13 @@
 import React from 'react';
 import {
     View,
-    Text,
     SectionList,
     StyleSheet, RefreshControl,Alert
 } from "react-native";
 import SearchBar from "../../../components/ui/searchBar/SearchBar";
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 import AssistantRow from "./components/AssistantRow";
 import MasterRow from "./components/MasterRow";

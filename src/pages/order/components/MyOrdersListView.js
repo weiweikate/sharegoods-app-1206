@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, NativeModules, Alert, DeviceEventEmitter, Keyboard ,TouchableWithoutFeedback,
-    StyleSheet,TouchableOpacity,Image,Text} from "react-native";
+    StyleSheet,TouchableOpacity,Image} from "react-native";
 import RefreshList from '../../../components/ui/RefreshList';
 import constants from '../../../constants/constants';
 import StringUtils from '../../../utils/StringUtils';
@@ -14,6 +14,9 @@ import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
+import {
+    MRText as Text
+} from '../../../components/ui';
 const emptyIcon = res.kongbeuye_dingdan;
 
 export default class MyOrdersListView extends Component {

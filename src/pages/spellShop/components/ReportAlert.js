@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     Image,
-    // Modal,
-    TextInput,
     Animated,
     StyleSheet,
     Dimensions,
     TouchableOpacity
 } from 'react-native';
 import Modal from 'CommModal';
+import {
+    MRText as Text, MRTextInput as TextInput
+} from '../../../components/ui';
 
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = ScreenUtils.autoSizeWidth(357);

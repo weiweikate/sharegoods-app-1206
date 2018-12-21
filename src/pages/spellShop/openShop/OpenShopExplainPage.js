@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -16,6 +15,10 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
 import res from '../res';
+import {
+    MRText as Text
+} from '../../../components/ui';
+
 
 const { openShop_yes, openShop_no } = res.openShop;
 

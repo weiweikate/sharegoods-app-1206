@@ -5,7 +5,6 @@ import {
     SectionList,
     // Image,
     FlatList,
-    Text,
     Alert
     // TouchableWithoutFeedback,
     // ImageBackground,
@@ -26,6 +25,7 @@ import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import {MRText as Text} from '../../../components/ui';
 // import CommModal from '../../../comm/components/CommModal';
 import DesignRule from 'DesignRule';
 import { track, trackEvent } from '../../../utils/SensorsTrack';

@@ -6,12 +6,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     Image,
     StyleSheet
 } from 'react-native';
 import DesignRule from 'DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
+import {
+    MRText as Text
+} from '../../../../components/ui';
 
 export default class InfoRow extends Component {
 

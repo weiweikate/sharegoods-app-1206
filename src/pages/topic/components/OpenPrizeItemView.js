@@ -4,7 +4,6 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
-    Text,
     Image
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -19,6 +18,9 @@ import DesignRule from 'DesignRule';
 import res from '../res';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import UIText from '../../../comm/components/UIText';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 const noGoodImg = res.other.noGoodImg;
 const zhuanti_jieshu = res.zhuanti_jieshu;

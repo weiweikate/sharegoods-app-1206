@@ -4,7 +4,6 @@ import {
     ImageBackground,
     TouchableOpacity,
     FlatList,
-    Text,
     Platform,
     Image
 } from 'react-native';
@@ -14,6 +13,7 @@ import DesignRule from 'DesignRule';
 import res from '../../res';
 import Modal from 'CommModal';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import {MRText as Text} from '../../../../components/ui';
 
 const {
     detailShowBg,

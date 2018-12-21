@@ -12,12 +12,11 @@ import {
     ScrollView,
     TouchableOpacity,
     DeviceEventEmitter,
-    TextInput
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
 import {
-    UIText, UIImage, AddPhotos
+    UIText, UIImage, AddPhotos, MRTextInput as TextInput
 } from '../../../components/ui';
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
 import StringUtils from '../../../utils/StringUtils';

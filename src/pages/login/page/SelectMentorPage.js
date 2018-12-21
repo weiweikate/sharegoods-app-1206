@@ -15,7 +15,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity,
     Image,
     ScrollView
@@ -31,6 +30,7 @@ import bridge from '../../../utils/bridge';
 import UIText from '../../../comm/components/UIText';
 import Styles from '../style/SelectMentorPage.style';
 import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
+import {MRText as Text} from '../../../components/ui'
 
 const {
     refresh

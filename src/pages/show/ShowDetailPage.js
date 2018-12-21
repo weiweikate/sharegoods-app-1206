@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, ScrollView, Image, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -14,6 +14,9 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import ImageLoad from '@mr/image-placeholder'
 import BasePage from '../../BasePage'
 import { PageLoadingState } from '../../components/pageDecorator/PageState'
+import {
+    MRText as Text,
+} from '../../components/ui';
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
