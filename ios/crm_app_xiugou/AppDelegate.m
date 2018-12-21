@@ -21,6 +21,7 @@
 #import <React/RCTRootView.h>
 #import "ShareImageMaker.h"
 #import "UIImage+Util.h"
+#import "WelcomeView.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -29,10 +30,20 @@
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
   [self initSensorsAnalyticsWithLaunchOptions:launchOptions];
-  [self addLaunchToWindow];
-  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNotFrist"]) {
+     [self addLaunchToWindow];
+  }else{
+    [self addWelcomeView];
+  }
  
   return YES;
+}
+
+- (void)addWelcomeView
+{
+  WelcomeView * welcomeView = [[WelcomeView alloc]initWithData:@[@"welcome_bg1",@"welcome_bg2",@"welcome_bg3",@"welcome_bg4"]];
+  welcomeView.frame = self.window.bounds;
+  [self.window addSubview:welcomeView];
 }
 - (void)addLaunchToWindow
 {
