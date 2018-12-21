@@ -22,28 +22,27 @@ const UIText = (props) => {
     );
 };
 
-export class MRText extends React.Component {
-    render() {
-        return (
-            <RNText {...this.props}
-                    allowFontScaling={false}
-                    style={[this.props.style, { includeFontPadding: false }]}>
-                {this.props.children}
-            </RNText>
-        );
-    }
-}
+const MRText = (props) => {
+    const {
+        ...attributes
+    } = props;
+    return (
+        <RNText {...attributes}
+                allowFontScaling={false}
+                style={[props.style, { includeFontPadding: false }]}>
+            {props.children}
+        </RNText>
+    );
+};
 
-export class MRTextInput extends React.Component {
-
-    render() {
-        return (
-            <TextInput {...this.props}
-                           allowFontScaling={false}
-                           underlineColorAndroid={'transparent'}
-                           style={[{ padding: 0 }, this.props.style]}/>
-        );
-    }
-}
+const MRTextInput = (props) => {
+    return (
+        <TextInput {...props}
+                   allowFontScaling={false}
+                   underlineColorAndroid={'transparent'}
+                   style={[{ padding: 0 }, props.style]}/>
+    );
+};
 
 export default connectStyle('Text')(UIText);
+export { MRText, MRTextInput }
