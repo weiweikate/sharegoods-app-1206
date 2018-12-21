@@ -95,13 +95,13 @@
 {
   if (self = [super init]) {
     _views = [NSMutableArray new];
-    self.bounds = CGRectMake(0, 0, 10*num + 35*(num - 1), 10);
+    self.bounds = CGRectMake(0, 0, 10*num + 25*(num - 1), 10);
     for (int i = 0; i< num; i++) {
       UIView *view = [UIView new];
       view.layer.cornerRadius = 5;
       view.layer.borderWidth = 1;
       view.layer.borderColor = [UIColor whiteColor].CGColor;
-      view.frame = CGRectMake(45*i, 0, 10, 10);
+      view.frame = CGRectMake(35*i, 0, 10, 10);
       [self addSubview: view];
       [_views addObject:view];
     }
