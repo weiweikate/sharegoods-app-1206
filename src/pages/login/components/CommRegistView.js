@@ -1,6 +1,5 @@
 import {
     View,
-    TextInput,
     StyleSheet,
     TouchableOpacity,
     Image
@@ -18,7 +17,7 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import {MRText as Text} from '../../../components/ui'
+import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
 
 const dismissKeyboard = require('dismissKeyboard');
 

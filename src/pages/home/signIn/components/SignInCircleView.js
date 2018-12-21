@@ -8,13 +8,13 @@ const { px2dp } = ScreenUtils;
 
 import {
     StyleSheet,
-    Text,
     View,
     Image
 } from 'react-native';
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from 'DesignRule';
 import res from  '../../res';
+import {MRText as Text} from '../../../../components/ui';
 const signingInIcon = res.signIn.complete_check;
 
 

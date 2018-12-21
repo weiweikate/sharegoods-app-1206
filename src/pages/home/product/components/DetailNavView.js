@@ -4,13 +4,13 @@ import {
     TouchableOpacity,
     Image,
     View,
-    Text
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import ShopCartStore from '../../../shopCart/model/ShopCartStore';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui';
 
 const detailNavView = res.product.detailNavView;
 

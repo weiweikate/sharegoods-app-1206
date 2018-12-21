@@ -1,8 +1,6 @@
 import React from 'react';
 import {
     View,
-    Text,
-    TextInput,
     StyleSheet,
     TouchableOpacity,
     Image
@@ -16,6 +14,7 @@ import LoginAPI from '../api/LoginApi';
 // import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
 
 const {
     close_eye,

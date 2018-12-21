@@ -4,7 +4,6 @@ import {
     View,
     Image,
     StyleSheet,
-    Text,
     ImageBackground
 } from 'react-native';
 // 图片资源
@@ -19,6 +18,10 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+import {
+    MRText as Text
+} from '../../../../components/ui';
+
 
 
 export default class RecommendRow extends Component {

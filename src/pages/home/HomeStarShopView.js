@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import { View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import ScreenUtil from "../../utils/ScreenUtils";
 
 const { px2dp, onePixel } = ScreenUtil;
@@ -10,6 +10,7 @@ import User from "../../model/user";
 import DesignRule from "DesignRule";
 import ImageLoad from "@mr/image-placeholder";
 import res from "./res";
+import {MRText as Text} from '../../components/ui';
 
 const starImg = res.star;
 

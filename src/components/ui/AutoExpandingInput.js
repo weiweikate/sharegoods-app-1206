@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput } from 'react-native';
+import {MRTextInput as TextInput}from './UIText';
 
 class AutoExpandingInput extends Component {
     constructor(props) {

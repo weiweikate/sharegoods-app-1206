@@ -5,7 +5,6 @@ import {
     SectionList,
     // Image,
     FlatList,
-    Text,
     // TouchableWithoutFeedback,
     TouchableOpacity
     // AsyncStorage,
@@ -28,6 +27,9 @@ import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
+import {
+    MRText as Text
+} from '../../components/ui';
 
 // const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
