@@ -379,7 +379,7 @@ export default class MinePage extends BasePage {
     accountRender = () => {
         return (
             <ImageBackground source={mine_header_bg} style={{
-                marginTop: px2dp(51),
+                marginTop: px2dp(41),
                 marginHorizontal: px2dp(15),
                 borderRadius: 5,
                 overflow: 'hidden'
