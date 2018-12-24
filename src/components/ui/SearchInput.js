@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Text,
     View,
     TextInput,
     Image,
@@ -17,6 +16,7 @@ import {
 import left_arrow from '../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
+import {MRText as Text}from './UIText';
 
 /**
  * 搜索输入框组件

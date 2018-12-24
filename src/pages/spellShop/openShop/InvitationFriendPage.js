@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     ScrollView,
     StyleSheet,
     ImageBackground,
@@ -18,6 +17,10 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import user from '../../../model/user'
 import UIImage from "@mr/image-placeholder";
+import {
+    MRText as Text
+} from '../../../components/ui';
+
 
 const Banner = res.openShop.yqhy_03;
 const Center = res.openShop.yqhy_04;
@@ -35,7 +38,7 @@ export default class InvitationToShopPage extends BasePage {
         super(props);
         this.state = {
             disable: false,
-            codeString: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
+            codeString: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.code || ''}`,
             wxTip: '分享至微信，为您的店铺增添活力'
         };
     }

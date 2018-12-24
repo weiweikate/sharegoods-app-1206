@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableOpacity,
     Image
@@ -11,6 +10,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui';
 
 const xiangqing_btn_gouwuche_nor = res.product.xiangqing_btn_gouwuche_nor;
 const jiarugouwuche_no = res.product.jiarugouwuche_no;

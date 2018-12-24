@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity,
     NativeModules
 } from 'react-native';
 import {
-    UIText
+    UIText, MRText as Text
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -42,7 +41,7 @@ export default class OrderDetailTimeView extends Component {
                     <UIText value={'订单编号：' + orderDetailModel.warehouseOrderDTOList[0].warehouseOrderNo}
                             style={[styles.textGoodsDownStyle,{marginTop:px2dp(10)}]}/>
                     <TouchableOpacity style={styles.clipStyle} onPress={() => this.copyOrderNumToClipboard()}>
-                        <Text style={{ paddingLeft: px2dp(10), paddingRight: px2dp(10) }}>复制</Text>
+                        <Text style={{ paddingLeft: px2dp(10), paddingRight: px2dp(10) }} allowFontScaling={false}>复制</Text>
                     </TouchableOpacity>
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].createTime / 1000)}
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         height: px2dp(22),
         width: px2dp(55),
-        marginTop: px2dp(10),
+        // marginTop: px2dp(10),
         borderRadius:px2dp(2)
     },
     couponsIconStyle: {

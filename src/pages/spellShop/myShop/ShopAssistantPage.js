@@ -6,11 +6,13 @@
 import React from 'react';
 import {
     View,
-    Text,
     SectionList,
     StyleSheet, RefreshControl,Alert
 } from "react-native";
 import SearchBar from "../../../components/ui/searchBar/SearchBar";
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 import AssistantRow from "./components/AssistantRow";
 import MasterRow from "./components/MasterRow";
@@ -84,7 +86,7 @@ export default class AssistantListPage extends BasePage {
 
     loadPageData() {
         const keyword = this.state.searchText || "";
-        SpellShopApi.listByKeyword({ keyword: keyword, storeId: this.params.storeData.id }).then((data) => {
+        SpellShopApi.listByKeyword({ keyword: keyword, storeCode: this.params.storeData.storeNumber }).then((data) => {
             data.data = data.data || {};
             const list = this._transformList(data.data);
             this.setState({
@@ -106,16 +108,16 @@ export default class AssistantListPage extends BasePage {
     }
 
     // 店员详情
-    _clickAssistantDetail = (userId) => {
+    _clickAssistantDetail = (userCode) => {
         const { myStore } = this.params.storeData;
         if (myStore) {
-            this.$navigate("spellShop/myShop/ShopAssistantDetailPage", { userId });
+            this.$navigate("spellShop/myShop/ShopAssistantDetailPage", { userCode });
         }
     };
 
     // 删除具体店员
-    _clickDeleteAssistant = (userId) => {
-        userId &&  Alert.alert('提示', '确定要将此用户移除?',
+    _clickDeleteAssistant = (userCode) => {
+        userCode &&  Alert.alert('提示', '确定要将此用户移除?',
             [
                 {
                     text: '取消', onPress: () => {
@@ -123,7 +125,7 @@ export default class AssistantListPage extends BasePage {
                 },
                 {
                     text: '确定', onPress: () => {
-                        SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
+                        SpellShopApi.storeUserRemove({ otherUserCode: userCode }).then(() => {
                             this.loadPageData();
                         }).catch((error) => {
                             this.$toastShow(error.msg);

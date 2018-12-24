@@ -5,11 +5,10 @@
 import React from 'react';
 import {
     View,
-    Text,
     TouchableOpacity
 } from 'react-native';
 import {
-    UIText
+    UIText, MRText as Text
 } from '../../../components/ui';
 // import GoodsItem from './GoodsItem';
 import GoodsGrayItem from './GoodsGrayItem';
@@ -93,7 +92,7 @@ const GoodsListItem = props => {
                                 operationMenuClick(item);
                             }}>
                                 <Text
-                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle,fontSize:13 }}>{item.operation}</Text>
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle,fontSize:13 }} allowFontScaling={false}>{item.operation}</Text>
                             </TouchableOpacity>;
                         })}
                     </View>

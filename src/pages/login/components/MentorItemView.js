@@ -17,11 +17,10 @@ import React, { Component } from 'react';
 import {
     View,
     TouchableOpacity,
-    Text,
     Animated,
     Image
 } from 'react-native';
-
+import {MRText as Text} from '../../../components/ui'
 // import {
 //   UIText,
 //   UIImage,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, ScrollView, Image, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -14,6 +14,9 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import ImageLoad from '@mr/image-placeholder'
 import BasePage from '../../BasePage'
 import { PageLoadingState } from '../../components/pageDecorator/PageState'
+import {
+    MRText as Text,
+} from '../../components/ui';
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -77,7 +80,7 @@ export default class ShowDetailPage extends BasePage {
     _goToGoodsPage(good) {
         const { navigation } = this.props;
         navigation.push('home/product/ProductDetailPage', {
-            productCode: good.code
+            productCode: good.code,preseat:'秀场详情'
         });
     }
 
@@ -228,8 +231,8 @@ export default class ShowDetailPage extends BasePage {
                                 dec: '分享小程序子标题',
                                 thumImage: 'logo.png',
                                 hdImageURL: detail.img,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/detail/${detail.id}?upuserid=${user.id || ''}`,
-                                miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.id || ''}`
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/detail/${detail.id}?upuserid=${user.code || ''}`,
+                                miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}&inviteId=${user.code || ''}`
                             }}
             />
         </View>;

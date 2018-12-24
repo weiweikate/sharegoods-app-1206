@@ -10,7 +10,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity, ListView, TouchableWithoutFeedback, Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
@@ -22,6 +21,7 @@ import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
 import DesignRule from '../../../../constants/DesignRule';
 import UIImage from '@mr/image-placeholder';
+import {MRText as Text} from '../../../../components/ui'
 // import { NavigationActions } from 'react-navigation';
 
 import RES from '../../res';
@@ -55,10 +55,10 @@ export default class MyCollectPage extends BasePage {
 
     //**********************************ViewPart******************************************
     //删除收藏
-    deleteFromShoppingCartByProductId = (storeId) => {
+    deleteFromShoppingCartByProductId = (storeCode) => {
         if (user.isLogin) {
             this.$loadingShow();
-            MineApi.storeCollectionCancel({ storeId: storeId }).then(res => {
+            MineApi.storeCollectionCancel({ storeCode: storeCode }).then(res => {
                 this.$loadingDismiss();
                 if (res.code === 10000) {
                     this.$toastShow('删除成功');
@@ -71,7 +71,7 @@ export default class MyCollectPage extends BasePage {
                 console.log(err);
             });
         } else {
-            this.$navigate('login/login/LoginPage');
+            this.gotoLoginPage();
         }
     };
     isValidItem = (index) => {
@@ -97,7 +97,7 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeId, 0)}>
+            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeCode, 0)}>
                 <View style={styles.rowContainer}>
                     {
                         item.headUrl ? <UIImage source={{ uri: item.headUrl }} style={styles.img} borderRadius={25}/> :
@@ -105,14 +105,14 @@ export default class MyCollectPage extends BasePage {
                     }
                     <View style={styles.right}>
                         <View style={styles.row}>
-                            <Text numberOfLines={1} style={styles.title}>{item.name || ''}</Text>
+                            <Text numberOfLines={1} style={styles.title} allowFontScaling={false}>{item.name || ''}</Text>
                         </View>
 
-                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}成员</Text>
+                        <Text style={[styles.desc, styles.margin]} allowFontScaling={false}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
                             <Text
-                                style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance ? item.totalTradeBalance : 0}元</Text>
+                                style={[styles.desc, { color: '#f39500' }]} allowFontScaling={false}>交易额:{item.totalTradeBalance ? item.totalTradeBalance : 0}元</Text>
                             <View style={{ flex: 1 }}/>
                             <View style={styles.starContainer}>
                                 {
@@ -138,7 +138,7 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeId, 1)}>
+            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeCode, 1)}>
                 <View style={[styles.rowContainer, { backgroundColor: '#c7c7c7' }]}>
                     <View style={{
                         position: 'absolute',
@@ -161,13 +161,13 @@ export default class MyCollectPage extends BasePage {
                     }
                     <View style={styles.right}>
                         <View style={styles.row}>
-                            <Text numberOfLines={1} style={styles.title}>{item.name || ''}</Text>
+                            <Text numberOfLines={1} style={styles.title} allowFontScaling={false}>{item.name || ''}</Text>
                         </View>
 
-                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}成员</Text>
+                        <Text style={[styles.desc, styles.margin]} allowFontScaling={false}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
-                            <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance}元</Text>
+                            <Text style={[styles.desc, { color: '#f39500' }]} allowFontScaling={false}>交易额:{item.totalTradeBalance}元</Text>
                             <View style={{ flex: 1 }}/>
                             <View style={styles.starContainer}>
                                 {
@@ -193,9 +193,9 @@ export default class MyCollectPage extends BasePage {
         this.getDataFromNetwork();
     };
 
-    go2PruductDetailPage(storeId, index) {
+    go2PruductDetailPage(storeCode, index) {
         if (index !== 1) {
-            this.$navigate('spellShop/MyShop_RecruitPage', { storeId: storeId });
+            this.$navigate('spellShop/MyShop_RecruitPage', { storeCode: storeCode });
         }
 
     }
@@ -219,7 +219,7 @@ export default class MyCollectPage extends BasePage {
                         headUrl: item.headUrl,
                         id: item.id,
                         name: item.name,
-                        storeId: item.storeId,
+                        storeCode: item.storeCode,
                         storeStarId: item.storeStarId,
                         totalTradeBalance: item.totalTradeBalance,
                         userCount: item.userCount,
@@ -262,7 +262,7 @@ export default class MyCollectPage extends BasePage {
                         style={styles.standaloneRowBack}
                         onPress={() => {
                             rowMap[`${secId}${rowId}`].closeRow();
-                            this.deleteFromShoppingCartByProductId(data.storeId);
+                            this.deleteFromShoppingCartByProductId(data.storeCode);
                         }}>
                         <UIText style={{ color: 'white' }} value={'立即\n删除'}/>
                     </TouchableOpacity>

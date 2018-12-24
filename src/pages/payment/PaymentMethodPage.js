@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     ScrollView,
     AppState,
@@ -17,6 +16,7 @@ import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import PasswordView from './PasswordView';
+import {MRText as Text} from '../../components/ui'
 // import { NavigationActions } from 'react-navigation';
 import PayCell from './PaymentCell'
 import PayBottom from './PaymentBottom'

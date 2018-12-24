@@ -2,8 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
-    TextInput,
     Dimensions,
     StyleSheet,
     ScrollView,
@@ -14,6 +12,9 @@ import StringUtils from '../../../utils/StringUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import {
+    MRText as Text, MRTextInput as TextInput
+} from '../../../components/ui';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -35,7 +36,7 @@ export default class AnnouncementPublishPage extends BasePage {
             return;
         }
 
-        SpellShopApi.storeNoticeInsert({ content: this.state.text, storeId: this.params.storeData.id }).then(() => {
+        SpellShopApi.storeNoticeInsert({ content: this.state.text, storeCode: this.params.storeData.storeNumber }).then(() => {
             const { publishSuccess } = this.params;
             this.$toastShow('发布成功');
             publishSuccess && publishSuccess();

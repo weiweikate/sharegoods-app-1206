@@ -16,7 +16,7 @@ import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from '../../../constants/DesignRule';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import SearchNavView from './components/SearchNavView';
-import res from '../res'
+import res from '../res';
 
 export default class SearchPage extends BasePage {
 
@@ -80,6 +80,7 @@ export default class SearchPage extends BasePage {
             this.setState({
                 refreshing: false,
                 netFailedInfo: error,
+                dataList: [{}],
                 loadingState: PageLoadingState.fail
             });
         });
@@ -115,7 +116,7 @@ export default class SearchPage extends BasePage {
     };
 
     _clickShopAtRow = (item) => {
-        this.$navigate('spellShop/MyShop_RecruitPage', { storeId: item.id });
+        this.$navigate('spellShop/MyShop_RecruitPage', { storeCode: item.storeNumber });
     };
 
     // 渲染行

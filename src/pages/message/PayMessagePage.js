@@ -1,6 +1,6 @@
 //支付消息结果页面
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import {
     UIImage
 } from '../../components/ui';
@@ -12,6 +12,7 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 const arrow_right = RES.button.arrow_right_black;
+import {MRText as Text} from '../../components/ui'
 
 const payTypes = [1, 2, 4, 8, 16];
 const payTexts = ['纯平台', '微信(小程序)', '微信(APP)', '支付宝', '银联'];

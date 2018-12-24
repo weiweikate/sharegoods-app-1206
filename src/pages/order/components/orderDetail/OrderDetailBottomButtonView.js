@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity,
     Alert, NativeModules
 } from 'react-native';
@@ -14,6 +13,7 @@ import Toast from '../../../../utils/bridge';
 import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
 import { observer } from 'mobx-react/native';
 const {px2dp} = ScreenUtils;
+import {MRText as Text} from '../../../../components/ui';
 
 @observer
 export default  class OrderDetailBottomButtonView extends Component{
@@ -36,7 +36,7 @@ export default  class OrderDetailBottomButtonView extends Component{
                 <TouchableOpacity key={i} style={[styles.touchableStyle,{borderColor: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd}]} onPress={() => {
                     this.operationMenuClick(nameArr[i]);
                 }}>
-                    <Text style={{ color: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}>{nameArr[i].operation}</Text>
+                    <Text style={{ color: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }} allowFontScaling={false}>{nameArr[i].operation}</Text>
                 </TouchableOpacity>
             );
         }
@@ -179,7 +179,9 @@ export default  class OrderDetailBottomButtonView extends Component{
     };
 }
 const styles = StyleSheet.create({
-    containerStyle:{ height: px2dp(48), flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end',backgroundColor:'white',marginTop:1 },
+    containerStyle:{ height: px2dp(48), flexDirection: 'row', alignItems: 'center',
+        justifyContent: 'flex-end',backgroundColor:'white',marginTop:1,
+       },
     touchableStyle:{
         borderWidth: 1,
         height: px2dp(30),

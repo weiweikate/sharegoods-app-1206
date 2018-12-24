@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     Image,
     StyleSheet,
     TouchableOpacity
@@ -12,6 +11,7 @@ import DateUtils from '../../../utils/DateUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 const {icon_3_09: arrowIcon } = res;
+import {MRText as Text} from '../../../components/ui'
 
 export default class ShopMessageRow extends Component {
 

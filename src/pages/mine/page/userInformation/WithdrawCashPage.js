@@ -2,8 +2,6 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    TextInput as RNTextInput,
-    Text,
     TouchableOpacity, Alert,
     DeviceEventEmitter,
     TouchableWithoutFeedback,
@@ -13,6 +11,10 @@ import BasePage from "../../../../BasePage";
 import {
     UIText, UIImage, UIButton
 } from "../../../../components/ui";
+import {MRText as Text, MRTextInput as RNTextInput} from '../../../../components/ui';
+
+
+
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 // import MineApi from '../../api/MineApi';

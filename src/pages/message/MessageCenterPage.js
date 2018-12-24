@@ -4,12 +4,14 @@
  */
 import React from 'react';
 import {
-    StyleSheet, View, Text, Image, DeviceEventEmitter,
+    StyleSheet, View, Image, DeviceEventEmitter,
     TouchableOpacity, ScrollView
 } from 'react-native';
 import {
     UIText
 } from '../../components/ui';
+import {MRText as Text} from '../../components/ui'
+
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
 // import HomeApi from '../home/api/HomeAPI';

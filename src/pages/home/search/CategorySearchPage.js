@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, SectionList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, SectionList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -11,6 +11,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import ImageLoad from '@mr/image-placeholder'
+import {MRText as Text} from '../../../components/ui';
 
 const icon_search = res.search.icon_search;
 
@@ -197,7 +198,7 @@ export default class CategorySearchPage extends BasePage {
         // banner点击跳转
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
-                productCode: item.linkTypeCode
+                productCode: item.linkTypeCode,preseat:'类目banner'
             });
         } else if (item.linkType === 2) {
             this.$navigate('topic/DownPricePage', {
@@ -212,7 +213,7 @@ export default class CategorySearchPage extends BasePage {
             let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
-                activityType: type
+                activityType: type,preseat:'专题列表页'
             });
         }
     };

@@ -8,6 +8,7 @@ import {
 // import UIImage from '../../../components/ui/UIImage';
 import CommModal from '../../../comm/components/CommModal';
 import DesignRule from '../../../constants/DesignRule';
+import {MRText as Text} from '../../../components/ui'
 // import res from '../res';
 /*
 * usage:
@@ -29,6 +30,7 @@ import DesignRule from '../../../constants/DesignRule';
  )
  }
 * */
+
 export default class CommonTwoChoiceModal extends Component {
 
     constructor(props) {

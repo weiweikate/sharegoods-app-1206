@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     Image,
     Dimensions,
     StyleSheet,
@@ -11,6 +10,9 @@ import {
     TouchableOpacity
 } from 'react-native';
 import UIImage from '@mr/image-placeholder';
+import {
+    MRText as Text
+} from '../../../components/ui';
 //Source
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -67,8 +69,8 @@ export default class ShopAssistantDetailPage extends BasePage {
     }
 
     loadPageData() {
-        const { userId } = this.params;
-        SpellShopApi.findUserDetail({ userId }).then((data) => {
+        const { userCode } = this.params;
+        SpellShopApi.findUserDetail({ userCode }).then((data) => {
             this.setState({
                 userInfo: data.data || {}
             });

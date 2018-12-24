@@ -6,9 +6,7 @@
 import React from 'react';
 import {
     View,
-    Text,
     Image,
-    TextInput,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -23,6 +21,9 @@ import spellStatusModel from '../model/SpellStatusModel';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../../../comm/res';
 import openShopRes from '../res';
+import {
+    MRText as Text, MRTextInput as TextInput
+} from '../../../components/ui';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;
@@ -66,7 +67,7 @@ export default class SetShopNamePage extends BasePage {
     componentDidMount() {
         if (this.params.storeData) {
             this.$loadingShow();
-            SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
+            SpellShopApi.getById({ storeCode: this.params.storeData.storeCode }).then((data) => {
                 let dataTemp = data.data || {};
                 this.setState({
                     storeHeadUrlOrigin: dataTemp.headUrl,

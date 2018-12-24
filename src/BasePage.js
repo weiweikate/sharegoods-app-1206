@@ -9,19 +9,22 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
     Image,
     TouchableOpacity
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
+import {
+    MRText as Text
+} from './components/ui';
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
-import { netState } from '@mr/request'
+import { netState } from '@mr/request';
 import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from './constants/DesignRule';
 import Toast from './utils/bridge';
+import RouterMap from './navigation/RouterMap';
 
 export default class BasePage extends Component {
     constructor(props) {
@@ -29,7 +32,7 @@ export default class BasePage extends Component {
         this.params = this.props.navigation.state.params || {};
         this.viewDidLoad = netState.isConnected;
         // alert(this.viewDidLoad)
-        this.navigateTime = new Date().getTime()
+        this.navigateTime = new Date().getTime();
     }
 
     $navigationBarOptions = {
@@ -101,7 +104,16 @@ export default class BasePage extends Component {
             </View>
         );
     }
-
+    /**
+     * 跳转登录页面
+     */
+    gotoLoginPage=(params={})=>{
+        if (true){
+            this.$navigate(RouterMap.LoginPage,params);
+        } else {
+            this.$navigate(RouterMap.OldUserLoginPage,params);
+        }
+    }
     renderContianer() {
         let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
         return (
@@ -185,12 +197,12 @@ export default class BasePage extends Component {
             if (!routeName) {
                 return;
             }
-            let time = new Date().getTime()
+            let time = new Date().getTime();
             if (time - this.navigateTime < 600) {
                 return;
             }
-            this.navigateTime = time
-            console.log('navigate time ' + this.navigateTime)
+            this.navigateTime = time;
+            console.log('navigate time ' + this.navigateTime);
             params = params || {};
             if (this.props.screenProps) {
                 this.props.screenProps.rootNavigation.navigate(routeName, {

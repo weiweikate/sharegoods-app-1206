@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {
-    StyleSheet, View, Text, DeviceEventEmitter,
+    StyleSheet, View, DeviceEventEmitter,
     ImageBackground, Image
 } from 'react-native';
 
@@ -14,8 +14,11 @@ import UIText from '../../../../components/ui/UIText';
 import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import StringUtils from '../../../../utils/StringUtils';
+import {MRText as Text} from '../../../../components/ui'
+
 const {
-    youhuiquan_bg_zhihui:  usedBg,
+    youhuiquan_bg_zhihui: usedBg,
     youhuiquan_bg_nor: unuesdBg,
     youhuiquan_icon_daijihuo_nor: tobeActive,
     youhuiquan_icon_yishixiao_nor: ActivedIcon,
@@ -91,20 +94,20 @@ export default class CouponsDetailPage extends BasePage {
                             }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     {
-                                        item.type === 3 || item.type === 4 ? null :
+                                        item.type === 3 || item.type === 4 || item.type === 12 ? null :
                                             <View style={{ alignSelf: 'flex-end', marginBottom: 4 }}>
                                                 <Text
                                                     style={{
                                                         fontSize: 14,
                                                         color: DesignRule.textColor_mainTitle,
                                                         marginBottom: 2
-                                                    }}>￥</Text>
+                                                    }} allowFontScaling={false}>￥</Text>
                                             </View>}
                                     <View>
                                         <Text style={{
-                                            fontSize: item.type === 4 ? 20 : 34,
+                                            fontSize: item.type === 4 ? 20 : (item.type === 11 ? 31 : 34),
                                             color: DesignRule.textColor_mainTitle
-                                        }}>{item.value}</Text>
+                                        }} allowFontScaling={false}>{item.value}</Text>
                                     </View>
                                     {
                                         item.type === 3 ?
@@ -114,23 +117,32 @@ export default class CouponsDetailPage extends BasePage {
                                                         fontSize: 14,
                                                         color: DesignRule.textColor_mainTitle,
                                                         marginBottom: 4
-                                                    }}>折</Text>
+                                                    }} allowFontScaling={false}>折</Text>
                                             </View> : null}
                                 </View>
                             </View>
 
                             <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 10 }}>
-                                <Text style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>
-                                    {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
-                                    fontSize: 11,
-                                    color: DesignRule.textColor_instruction
-                                }}/>}
-                                </Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{
+                                        fontSize: 15,
+                                        color: DesignRule.textColor_mainTitle,
+                                        marginRight: 30
+                                    }} allowFontScaling={false}>
+                                        {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
+                                        fontSize: 11,
+                                        color: DesignRule.textColor_instruction
+                                    }}/>}</Text>
+                                    {item.type === 12 ? <UIText value={'x' + item.number} style={{
+                                        fontSize: 15,
+                                        color: DesignRule.textColor_mainTitle
+                                    }}/> : null}
+                                </View>
                                 <Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction,
                                     marginTop: 6
-                                }}>使用有效期：{item.timeStr}</Text>
+                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
                             </View>
                             <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
                             {item.type === 99 ?
@@ -144,19 +156,21 @@ export default class CouponsDetailPage extends BasePage {
                         </View>
 
                         <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
-                            <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }}>{item.limit}</Text>
+                            <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }} allowFontScaling={false}>{item.limit}</Text>
                         </View>
 
                     </ImageBackground>
                 </View>
-                <View style={{ marginTop: 20, alignItems: 'flex-start', marginLeft: 10, flex: 1 }}>
-                    <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}>使用说明:</Text>
-                    <Text style={{
-                        marginTop: 5,
-                        color: DesignRule.textColor_secondTitle,
-                        lineHeight: 25
-                    }}>{item.remarks}</Text>
-                </View>
+                {
+                    StringUtils.isEmpty(item.remarks) ? null :
+                        <View style={{ marginTop: 20, alignItems: 'flex-start', marginLeft: 10, flex: 1 }}>
+                            <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }} allowFontScaling={false}>使用说明:</Text>
+                            <Text style={{
+                                marginTop: 5,
+                                color: DesignRule.textColor_secondTitle,
+                                lineHeight: 25
+                            }} allowFontScaling={false}>{item.remarks}</Text>
+                        </View>}
                 <View
                     style={{
                         width: ScreenUtils.width,

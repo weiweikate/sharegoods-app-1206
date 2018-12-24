@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
     View,
-    TextInput,
     StyleSheet,
     TouchableOpacity,
     Image
@@ -10,6 +9,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
+import {MRTextInput as TextInput} from '../../../../components/ui';
 
 const {
     button: {

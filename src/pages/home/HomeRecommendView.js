@@ -2,7 +2,7 @@
  * 精品推荐
  */
 import React, {Component} from 'react'
-import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
@@ -10,6 +10,7 @@ import { homeModule} from './Modules'
 import DesignRule from '../../constants/DesignRule';
 import { recommendModule } from './HomeRecommendModel'
 import ImageLoad from '@mr/image-placeholder'
+import {MRText as Text} from '../../components/ui';
 
 const RecommendItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <View style={styles.imgView}>
@@ -24,7 +25,8 @@ export default class HomeRecommendView extends Component {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
         const {navigate} = this.props
         let params = homeModule.paramsNavigate(item)
-        navigate && navigate(router,  params)
+        navigate(router, {...params, preseat:'home_recommend'})
+        // navigate && navigate(router,  params)
     }
 
     render() {

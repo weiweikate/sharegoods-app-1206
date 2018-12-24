@@ -4,12 +4,10 @@ import {
     View,
     Image,
     StyleSheet,
-    Text,
     ImageBackground
 } from 'react-native';
 // 图片资源
 import res from '../../res';
-
 const HeaderBarBgImg = res.shopRecruit.bg_02;
 const Shape = res.shopRecruit.Shape;
 const shoushi = res.shopRecruit.shoushi;
@@ -19,6 +17,9 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
+import {
+    MRText as Text
+} from '../../../../components/ui';
 
 
 export default class RecommendRow extends Component {
@@ -50,6 +51,7 @@ export default class RecommendRow extends Component {
 
     render() {
         const { name, showNumber, totalTradeBalance, bonusCount, manager = {} } = this.props.storeData;
+        const { nickname, levelName, regTime } = manager || {};
         let { createTime, headUrl } = this.props.storeData;
         createTime = StringUtils.isNoEmpty(createTime) ? createTime : '';
         headUrl = StringUtils.isNoEmpty(headUrl) ? headUrl : '';
@@ -82,11 +84,11 @@ export default class RecommendRow extends Component {
 
                 <View style={styles.whiteBg}>
                     <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
-                        {this._renderItems(Shape, '店长', manager.nickname || '')}
+                        {this._renderItems(Shape, '店长', nickname || '')}
                         <View style={{ backgroundColor: '#E4E4E4', width: 0.5, height: 41 }}/>
-                        {this._renderItems(shoushi, '会员等级', manager.levelName || '')}
+                        {this._renderItems(shoushi, '会员等级', levelName || '')}
                         <View style={{ backgroundColor: '#E4E4E4', width: 0.5, height: 41 }}/>
-                        {this._renderItems(xiuling, '秀龄', `${Math.floor((new Date().getTime() - manager.regTime) / (24 * 3600 * 1000))}天`)}
+                        {this._renderItems(xiuling, '秀龄', `${Math.floor(regTime ? (new Date().getTime() - regTime) / (24 * 3600 * 1000) : 0)}天`)}
                     </View>
                     <View style={{ backgroundColor: '#E4E4E4', height: 0.5 }}/>
                     <View style={{
@@ -102,7 +104,8 @@ export default class RecommendRow extends Component {
                         <Text style={{
                             fontSize: 12,
                             color: '#666666'
-                        }} allowFontScaling={false}>参与平台分红：<Text style={{ color: '#FE1A54' }}>{`${bonusCount || 0}`}</Text>次</Text>
+                        }} allowFontScaling={false}>参与平台分红：<Text
+                            style={{ color: '#FE1A54' }}>{`${bonusCount || 0}`}</Text>次</Text>
                     </View>
                 </View>
             </ImageBackground>

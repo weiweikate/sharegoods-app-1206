@@ -3,24 +3,36 @@
  */
 
 import React, {Component} from 'react'
-import {View , ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
+import {View , ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { homeModule } from './Modules'
 import { subjectModule } from './HomeSubjectModel'
-import { getShowPrice } from '../topic/model/TopicMudelTool'
 import DesignRule from '../../constants/DesignRule';
+import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTool'
 import ImageLoad from '@mr/image-placeholder'
+import EmptyUtils from '../../utils/EmptyUtils'
+import {MRText as Text} from '../../components/ui';
+const GoodItems = ({img, title, money, press}) => {
 
-const GoodItems = ({img, title, money, press}) => <TouchableWithoutFeedback onPress={()=>{press && press()}}>
+console.log('GoodItems', money, EmptyUtils.isEmpty(money))
+
+return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
     <View style={styles.goodsView} >
     <ImageLoad cacheable={true} style={styles.goodImg} source={{uri:img ? encodeURI(img) : ''}}/>
     <Text style={styles.goodsTitle} numberOfLines={2} allowFontScaling={false}>{title}</Text>
     <View style={{flex: 1}}/>
-    <Text style={styles.money} allowFontScaling={false}>{money} 起</Text>
+    {
+        EmptyUtils.isEmpty(money)
+        ?
+        null
+        :
+        <Text style={styles.money} allowFontScaling={false}>{money} 起</Text>
+    }
     </View>
 </TouchableWithoutFeedback>
+}
 
 const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress={()=>{press && press()}}>
     <View style={styles.backView}>
@@ -42,7 +54,7 @@ const ActivityItem = ({data, press, goodsPress}) => {
         <GoodItems
             key={index}
             title={value.productName}
-            money={price ? price : 0}
+            money={price}
             img={value.specImg ? value.specImg : ''}
             press={()=>{goodsPress && goodsPress(value)}}
             />
@@ -82,17 +94,9 @@ export default class HomeSubjectView extends Component {
     }
     _goodAction(good) {
         const { navigate } = this.props
-        if (good.productType === 99) {
-            navigate('home/product/ProductDetailPage', {
-                productId: good.productId,
-                productCode: good.prodCode
-            });
-        } else {
-            navigate('topic/TopicDetailPage', {
-                activityType: good.productType,
-                activityCode: good.prodCode,
-            })
-        }
+        const pageObj =   getTopicJumpPageParam(good,'首页');
+        console.log('_goodAction', good, pageObj.params)
+        navigate(pageObj.pageRoute,{...pageObj.params})
     }
     render() {
         const { subjectList } = subjectModule
@@ -108,7 +112,7 @@ export default class HomeSubjectView extends Component {
         })
         return <View style={styles.container}>
             <View style={styles.titleView}>
-                <Text style={styles.title}>超值热卖</Text>
+                <Text style={styles.title} allowFontScaling={false}>超值热卖</Text>
             </View>
             {items}
         </View>

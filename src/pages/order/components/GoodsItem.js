@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import {
-    UIText
+    UIText, MRText as Text
 } from "../../../components/ui";
 import UIImage from "@mr/image-placeholder";
 import ScreenUtils from "../../../utils/ScreenUtils";
@@ -37,7 +37,7 @@ const GoodsItem = props => {
                         fontSize: 13,
                         marginLeft: 10,
                         marginRight: 20
-                    }} numberOfLines={2}>{goodsName}</Text>
+                    }} numberOfLines={2} allowFontScaling={false}>{goodsName}</Text>
                 </View>
                 <View style={{ marginTop: 5, marginLeft: 10 }}>
                     <UIText value={`规格: ${category}`}

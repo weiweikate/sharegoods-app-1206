@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Image,
-    Text,
     TouchableOpacity,
     ImageBackground,
 } from 'react-native';
@@ -19,6 +18,7 @@ import CommModal from '../../../../comm/components/CommModal';
 import { observer } from 'mobx-react/native';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui'
 
 const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
 const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
@@ -81,14 +81,14 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             <View style={styles.container}>
                 <ImageBackground style={styles.imageBackgroundStyle}/>
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }}>待提现余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }} allowFontScaling={false}>待提现余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
                             <Text style={{
                                 marginLeft: 25,
                                 fontSize: 25,
                                 color: 'white'
-                            }}>{user.blockedBalance ? user.blockedBalance : `0.00`}</Text>
+                            }} allowFontScaling={false}>{user.blockedBalance ? user.blockedBalance : `0.00`}</Text>
                         </View>
                         <View style={{ marginRight: 20 }}>
                             <TouchableOpacity
@@ -155,33 +155,44 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             borderRadius: 5
 
                         }}>
-                            <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>待提现账户说明</Text>
+                            <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }} allowFontScaling={false}>待提现账户说明</Text>
                         </ImageBackground>
                         <View style={{ marginLeft: ScreenUtils.px2dp(22), marginRight: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15)
-                            }}>什么是待提现账户？</Text>
+                            }} allowFontScaling={false}>什么是待提现账户？</Text>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
-                            }}>{`待提现账户为用户收益明细账户，可通过待提现账户查看收益情况`}</Text>
+                            }} allowFontScaling={false}>{`待提现账户为用户实时收益明细账户。`}</Text>
                         </View>
                         <View style={{ marginLeft: ScreenUtils.px2dp(22), marginRight: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15)
-                            }}>为何不能马上提现？</Text>
+                            }} allowFontScaling={false}>待提现账户现金是否可提现？</Text>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
-                            }}>{`你的推广成功后会获得平台的预计收益，而预计收益会因最终推广结果调整，最终推广成功后，待提现账户会自动提现至您的余额账户。`}</Text>
+                            }} allowFontScaling={false}>{`不可提现，需等到订单无售后问题，转到现金账户之后才可提现。`}</Text>
                         </View>
-
+                        <View style={{ marginLeft: ScreenUtils.px2dp(22), marginRight: ScreenUtils.px2dp(22) }}>
+                            <Text style={{
+                                marginTop: ScreenUtils.px2dp(25),
+                                color: DesignRule.textColor_mainTitle,
+                                fontSize: ScreenUtils.px2dp(15)
+                            }} allowFontScaling={false}>对提现有疑问怎么办？</Text>
+                            <Text style={{
+                                marginTop: ScreenUtils.px2dp(10),
+                                color: DesignRule.textColor_secondTitle,
+                                fontSize: ScreenUtils.px2dp(13)
+                            }} allowFontScaling={false}>{`提现过程中遇到问题，请在【我的】－【帮助与客服】中联系秀购官方客服。`}</Text>
+                        </View>
                     </View>
                     <TouchableOpacity style={{
                         top: 65,
@@ -261,7 +272,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '现金红包', '任务奖励'];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '导师管理费', '品牌分红奖励金', '品牌推广奖励金', '现金红包', '任务奖励金'];
         let use_type_symbol = ['', '+', '-'];
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();
@@ -305,7 +316,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             user.saveUserInfo(data);
         }).catch(err => {
             if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+                this.gotoLoginPage();
             }
         });
         this.getDataFromNetwork();

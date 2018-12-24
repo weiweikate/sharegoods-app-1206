@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     FlatList,
-    Text,
     TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -15,7 +14,7 @@ import HomeAPI from '../api/HomeAPI';
 import Storage from '../../../utils/storage';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
-
+import {MRText as Text} from '../../../components/ui';
 const recentDataKey = 'recentDataKey';
 export default class SearchPage extends BasePage {
 
@@ -105,11 +104,12 @@ export default class SearchPage extends BasePage {
             if (!this.state.recentData.includes(text)) {
                 this.state.recentData.unshift(text);
             } else {
-                //热词的index需要重新赋值
+                //热词的index需要重新赋值 变成recentData中的index
                 if (hotWordId) {
                     index = this.state.recentData.indexOf(text);
                 }
-                if (index && index !== 0) {
+                //操作位置
+                if (index) {
                     this.state.recentData.splice(index, 1);
                     this.state.recentData.unshift(text);
                 }
@@ -121,7 +121,11 @@ export default class SearchPage extends BasePage {
             this.forceUpdate();
         }
 
-        this.$navigate(RouterMap.SearchResultPage, { keywords: text, hotWordId: hotWordId || '' });
+        this.$navigate(RouterMap.SearchResultPage, {
+            keywords: text,
+            hotWordId: hotWordId,
+            isHistory: index !== undefined && !hotWordId
+        });
     };
 
     //components

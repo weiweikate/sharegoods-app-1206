@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -10,6 +9,9 @@ import {
     RefreshControl, Alert
 } from 'react-native';
 
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 import RecruitMembersRow from './components/RecruitMembersRow';
 import RecruitHeaderView from './components/RecruitHeaderView';
@@ -76,7 +78,7 @@ export default class ShopRecruitPage extends BasePage {
             netFailedInfo: {},
             refreshing: false,
 
-            storeId: this.props.storeId,
+            storeCode: this.props.storeCode,
             storeData: {},
             canOpen: false
         };
@@ -123,7 +125,7 @@ export default class ShopRecruitPage extends BasePage {
     };
 
     _loadPageData = () => {
-        SpellShopApi.getById({ id: this.state.storeId }).then((data) => {
+        SpellShopApi.getById({ storeCode: this.state.storeCode }).then((data) => {
             let dataTemp = data.data || {};
             let datalist = dataTemp.storeUserList || [];
             this.setState({
@@ -131,7 +133,7 @@ export default class ShopRecruitPage extends BasePage {
                 refreshing: false,
 
                 storeData: dataTemp,
-                storeId: dataTemp.id,
+                storeCode: dataTemp.storeNumber,
                 canOpen: dataTemp.maxUser && dataTemp.maxUser <= datalist.length
             });
         }).catch((error) => {
@@ -165,7 +167,7 @@ export default class ShopRecruitPage extends BasePage {
                         confirmCallBack: (text) => {
                             SpellShopApi.storeTipOffInsert({
                                 content: text,
-                                storeId: this.state.storeId
+                                storeCode: this.state.storeCode
                             }).then(() => {
                                 this.$toastShow('举报成功');
                             }).catch((error) => {
@@ -234,7 +236,7 @@ export default class ShopRecruitPage extends BasePage {
                 {
                     text: '确定', onPress: () => {
                         this.$loadingShow();
-                        SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
+                        SpellShopApi.addToStore({ storeCode: this.state.storeCode }).then((data) => {
                             if (!this.props.leftNavItemHidden) {
                                 this._loadPageData();
                             }
@@ -254,7 +256,7 @@ export default class ShopRecruitPage extends BasePage {
     //退出店铺
     _quitStore = () => {
         this.$loadingShow();
-        SpellShopApi.quitStore({ storeId: this.state.storeId }).then((data) => {
+        SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
             if (!this.props.leftNavItemHidden) {
                 this._loadPageData();
             }
@@ -379,7 +381,7 @@ export default class ShopRecruitPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.code || ''}`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>

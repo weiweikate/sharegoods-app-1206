@@ -168,6 +168,7 @@ export class Payment {
     //支付宝+平台
     @action ailpayAndBalance = flow(function * (password, ref) {
         try {
+            Toast.showLoading()
             const result = yield PaymentApi.alipayAndBalance({orderNo: this.orderNo, salePswd: password})
             if (result && result.code === 10000) {
                 this.isGoToPay = true
@@ -223,6 +224,7 @@ export class Payment {
         } catch (error) {
             this.payError = error
             this.isGoToPay = false
+            Toast.hiddenLoading()
             ref && ref.show(2, error.msg || error.message)
             console.log(error)
         }

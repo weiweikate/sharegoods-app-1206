@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     Image,
     TouchableOpacity, ImageBackground
 } from 'react-native';
@@ -10,6 +9,9 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import Modal from '../../../comm/components/CommModal';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 const { message_bg } = res;
 
@@ -69,7 +71,7 @@ class ShowMessageModal extends Component {
                             marginLeft: 12,
                             fontSize: 13,
                             color: DesignRule.textColor_mainTitle
-                        }}>{this.props.detail[i].title}</Text>
+                        }} allowFontScaling={false}>{this.props.detail[i].title}</Text>
                     </TouchableOpacity>
                     {i === arrLen - 1 ? null : <View
                         style={{

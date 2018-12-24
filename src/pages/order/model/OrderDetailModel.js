@@ -2,6 +2,7 @@ import { observable, action, computed } from 'mobx'
 import OrderApi from '../api/orderApi'
 import StringUtils from "../../../utils/StringUtils";
 import Toast from "../../../utils/bridge";
+import { PageLoadingState } from "../../../components/pageDecorator/PageState";
 
 export const orderStatus = {
     prePayment: 1,
@@ -89,9 +90,14 @@ class OrderDetailModel {
             orderDetailModel.address = rep.data.address
             this.status = rep.data.warehouseOrderDTOList[0].status
             orderDetailModel.payAmount = rep.data.payAmount
+            orderDetailModel.loading=false
+            orderDetailModel.loadingState=PageLoadingState.success
 
             return rep
         }).catch(err=>{
+                orderDetailModel.loading=false
+                orderDetailModel.netFailedInfo=err
+                orderDetailModel.loadingState=PageLoadingState.fail
             Toast.hiddenLoading();
             Toast.$toast(err.msg);
             console.log(err);

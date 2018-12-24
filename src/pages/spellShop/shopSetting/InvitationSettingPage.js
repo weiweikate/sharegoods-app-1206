@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     Animated,
     Dimensions,
     StyleSheet,
@@ -17,6 +16,9 @@ const SelIcon = res.shopSetting.SelIcon;
 const UnSelIcon = res.shopSetting.UnSelIcon;
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 export default class InvitationSettingPage extends BasePage {
 
@@ -48,7 +50,7 @@ export default class InvitationSettingPage extends BasePage {
 
     _loadPageData = () => {
         //店铺信息
-        SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
+        SpellShopApi.getById({ storeCode: this.params.storeData.storeNumber }).then((data) => {
             let dataTemp = data.data || {};
             this.setState({
                 selIndex: dataTemp.recruitStatus

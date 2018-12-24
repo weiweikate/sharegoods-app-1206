@@ -3,13 +3,14 @@ import {
     NativeModules,
     StyleSheet,
     View,
-    TextInput as RNTextInput,
-    Text
+
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import {
     UIText, UIButton
 } from "../../../../components/ui";
+import {MRText as Text, MRTextInput as RNTextInput} from '../../../../components/ui';
+
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import MineApi from "../../api/MineApi";

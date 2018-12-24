@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-    Text, ScrollView, Image, View
+    ScrollView, Image, View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import res from '../../res';
 import DesignRule from '../../../../constants/DesignRule';
 const Logo = res.other.tongyong_logo_nor;
 import ScreenUtils from '../../../../utils/ScreenUtils'
+import {MRText as Text} from '../../../../components/ui'
 
 export default class AboutUsPage extends BasePage {
 

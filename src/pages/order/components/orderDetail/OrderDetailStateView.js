@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity
 } from "react-native";
 import {
-    UIText, UIImage
+    UIText, UIImage, MRText as Text
 } from "../../../../components/ui";
 import StringUtils from "../../../../utils/StringUtils";
 import DateUtils from "../../../../utils/DateUtils";
@@ -18,6 +17,7 @@ const arrow_right = res.arrow_right;
 const logisticCar = res.car;
 const position = res.dizhi_icon;
 import ScreenUtil from "../../../../utils/ScreenUtils";
+
 
 const { px2dp } = ScreenUtil;
 
@@ -59,11 +59,11 @@ export default class OrderDetailStateView extends Component {
                                 <Text style={{
                                     flex: 1,
                                     fontSize: px2dp(15)
-                                }}>{orderDetailModel.receiver}</Text>
+                                }} allowFontScaling={false}>{orderDetailModel.receiver}</Text>
                                 <Text style={{
                                     fontSize: px2dp(15),
                                     marginRight: px2dp(30)
-                                }}>{orderDetailModel.receiverPhone}</Text>
+                                }} allowFontScaling={false}>{orderDetailModel.receiverPhone}</Text>
                             </View>
                                 <UIText value={"收货地址:" + orderDetailModel.province + orderDetailModel.city + orderDetailModel.area + orderDetailModel.address}
                                         style={styles.DetailAddressStyle}/>

@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Image,
-    Text,
     TouchableOpacity,
     ScrollView
 } from 'react-native';
@@ -12,6 +11,7 @@ import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui'
 const arrow_right =  res.button.arrow_right_black;
 
 /**
@@ -69,8 +69,8 @@ export default class HelperQuestionListPage extends BasePage {
                 width: ScreenUtils.width, height: 80, position: 'absolute', bottom: 0,
                 alignItems: 'center', justifyContent: 'center'
             }}>
-                <Text style={{ fontSize: 13, color: '#999999' }}>联系客服 400-9696-365</Text>
-                <Text style={{ fontSize: 13, color: '#999999' }}>早9:00 - 22:00</Text>
+                <Text style={{ fontSize: 13, color: '#999999' }} allowFontScaling={false}>联系客服 400-9696-365</Text>
+                <Text style={{ fontSize: 13, color: '#999999' }} allowFontScaling={false}>早9:00 - 22:00</Text>
             </View>
         );
     }

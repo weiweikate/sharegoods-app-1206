@@ -15,14 +15,13 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    TextInput,
-    Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {
     UIText,
-    UIImage
-
+    UIImage,
+    MRTextInput as TextInput,
+    MRText as Text,
 } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';

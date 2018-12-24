@@ -3,11 +3,11 @@ import LoginTopView from '../components/LoginTopView';
 import UserModel from '../../../model/user';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableOpacity,
     Image, DeviceEventEmitter
 } from 'react-native';
+import {MRText as Text} from '../../../components/ui'
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
@@ -19,7 +19,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { homeModule } from '../../home/Modules'
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { login, track, trackEvent } from '../../../utils/SensorsTrack';
 
 const {
     share: {
@@ -37,6 +37,10 @@ const {
 export default class LoginPage extends BasePage {
     constructor(props) {
         super(props);
+
+        this.state={
+            showWxLoginBtn:false
+        }
 
     }
     // 禁用某个页面的手势
@@ -59,6 +63,18 @@ export default class LoginPage extends BasePage {
     };
     $isMonitorNetworkStatus() {
         return false;
+    }
+
+    componentDidMount() {
+        LoginAPI.oldUserActivateJudge().then((res)=>{
+            console.log('是还是非-------',res)
+            this.setState({
+                showWxLoginBtn:res.data
+            })
+        }).catch((error)=>{
+
+
+        })
     }
 
     $NavBarLeftPressed = () => {
@@ -87,27 +103,35 @@ export default class LoginPage extends BasePage {
                     forgetPasswordClick={this.forgetPasswordClick}
                     loginClick={(loginType, LoginParam) => this.loginClick(loginType, LoginParam)}
                 />
-                <View style={Styles.otherLoginBgStyle}>
-                    <View style={Styles.lineBgStyle}>
-                        <CommSpaceLine style={{ width: 80 }}/>
-                        <Text style={Styles.otherLoginTextStyle}>
-                            其他登录方式
-                        </Text>
-                        <CommSpaceLine style={{ width: 80 ,marginLeft:5}}/>
-                    </View>
-                    <View style={{
-                        marginTop: 15,
-                        marginLeft: 0,
-                        marginRight: 0,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        alignItems: 'center'
-                    }}>
-                        <TouchableOpacity onPress={this.weChatLoginClick}>
-                            <Image style={{ width: 50, height: 50 }} source={weiXin}/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+
+                {
+
+                    this.state.showWxLoginBtn
+                        ?
+                        <View style={Styles.otherLoginBgStyle}>
+                            <View style={Styles.lineBgStyle}>
+                                <CommSpaceLine style={{ width: 80 }}/>
+                                <Text style={Styles.otherLoginTextStyle}>
+                                    其他登录方式
+                                </Text>
+                                <CommSpaceLine style={{ width: 80 ,marginLeft:5}}/>
+                            </View>
+                            <View style={{
+                                marginTop: 15,
+                                marginLeft: 0,
+                                marginRight: 0,
+                                justifyContent: 'center',
+                                backgroundColor: '#fff',
+                                alignItems: 'center'
+                            }}>
+                                <TouchableOpacity onPress={this.weChatLoginClick}>
+                                    <Image style={{ width: 50, height: 50 }} source={weiXin}/>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        :
+                        <View/>
+                }
             </View>
         );
     }
@@ -142,6 +166,8 @@ export default class LoginPage extends BasePage {
                     homeModule.loadHomeList()
                     bridge.setCookies(res.data);
                     this.$navigateBack();
+                    // 埋点登录成功
+                    login(data.data.code)
                 }
             }).catch((error) => {
                 if (error.code === 34005) {
@@ -186,6 +212,8 @@ export default class LoginPage extends BasePage {
                 homeModule.loadHomeList()
                 bridge.setCookies(data.data);
                 console.log(UserModel)
+                // 埋点登录成功
+                login(data.data.code)
 
                 if (this.params.callback) {
                     let resetAction = NavigationActions.reset({
@@ -233,6 +261,8 @@ export default class LoginPage extends BasePage {
                 homeModule.loadHomeList()
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
+                // 埋点登录成功
+                login(data.data.code)
                 // /**
                 //  * 跳转导师选择页面
                 //  */

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     TouchableOpacity,
     Image, DeviceEventEmitter
 } from 'react-native';
@@ -17,7 +16,8 @@ import DesignRule from '../../../constants/DesignRule';
 import { homeModule } from '../../home/Modules'
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { login, track, trackEvent } from '../../../utils/SensorsTrack';
+import {MRText as Text} from '../../../components/ui'
 
 const {
     red_button_s,
@@ -169,6 +169,8 @@ export default class RegistPage extends BasePage {
             DeviceEventEmitter.emit('homePage_message',null);
             DeviceEventEmitter.emit('contentViewed',null);
             homeModule.loadHomeList()
+            //埋点登录成功
+            login(data.data.code)
             // this.$navigate('login/login/GetRedpacketPage');
             bridge.setCookies(data.data);
             //推送

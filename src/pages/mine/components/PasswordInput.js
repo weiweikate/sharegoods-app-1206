@@ -5,19 +5,18 @@ import PropTypes from 'prop-types';
 import {
     StyleSheet,
     View,
-    TextInput,
     InteractionManager,
     ViewPropTypes
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
-
+import {MRTextInput as TextInput} from '../../../components/ui'
 export default class PasswordInput extends Component {
     static propTypes = {
         style: ViewPropTypes.style,
         inputItemStyle: ViewPropTypes.style,
         iconStyle: ViewPropTypes.style,
-        maxLength: TextInput.propTypes.maxLength.isRequired,
+        // maxLength: TextInput.propTypes.maxLength.isRequired,
         onChange: PropTypes.func,
         onEnd: PropTypes.func,
         autoFocus: PropTypes.bool

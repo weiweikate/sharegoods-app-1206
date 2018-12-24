@@ -1,13 +1,14 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     View,
     ImageBackground,
     TouchableOpacity,
     FlatList,
-    Text,
     Platform,
     Image
-} from "react-native";
+} from 'react-native';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import {MRText as Text} from '../../../../components/ui';
 
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "../../../../constants/DesignRule";
@@ -24,10 +25,10 @@ const {
 const bgHeight = ScreenUtils.autoSizeWidth(410 / 2.0);
 const bgWidth = 286 / 2.0;
 const ImgArr = [
-    { img: message, tittle: "消息", index: 0 },
-    { img: detail_search, tittle: "搜索", index: 1 },
-    { img: share, tittle: "分享", index: 2 },
-    { img: detail_kefu, tittle: "客服", index: 3 }
+    { img: message, tittle: '消息', index: 0 },
+    { img: detail_search, tittle: '搜索', index: 1 },
+    { img: share, tittle: '分享', index: 2 },
+    { img: detail_kefu, tittle: '客服', index: 3 }
 ];
 
 export default class DetailNavShowModal extends Component {
@@ -56,6 +57,10 @@ export default class DetailNavShowModal extends Component {
     };
 
     _onPress = (item) => {
+        /*点击客服埋点*/
+        if (item.index === 3) {
+            track(trackEvent.contact, { origin: '在线', questionType: '商品详情' });
+        }
         this.setState({
             modalVisible: false
         });
@@ -70,16 +75,17 @@ export default class DetailNavShowModal extends Component {
     _renderItem = ({ item }) => {
         return <TouchableOpacity
             style={{
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
                 height: (bgHeight - 20) / ImgArr.length,
                 marginTop: item.index === 0 ? 16 : 0
             }}
             onPress={() => this._onPress(item)}>
             <Image source={item.img} style={{ marginLeft: 23 }}/>
-            <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }} allowFontScaling={false}>{item.tittle}</Text>
+            <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }}
+                  allowFontScaling={false}>{item.tittle}</Text>
             {item.index === 0 && this.state.messageCount > 0 ? <View style={{
-                position: "absolute",
+                position: 'absolute',
                 top: ScreenUtils.autoSizeWidth(9),
                 left: ScreenUtils.autoSizeWidth(31),
                 backgroundColor: DesignRule.mainColor,
@@ -106,18 +112,18 @@ export default class DetailNavShowModal extends Component {
                     left: 0,
                     bottom: 0,
                     right: 0,
-                    position: "absolute"
+                    position: 'absolute'
                 }} onPress={() => {
                     this.setState({
                         modalVisible: false
                     });
                 }} activeOpacity={1}>
                     <ImageBackground
-                        resizeMode={"stretch"}
+                        resizeMode={'stretch'}
                         style={{
-                            top: Platform.OS === "ios" ? ScreenUtils.headerHeight : 44+ScreenUtils.statusBarHeight,
+                            top: Platform.OS === 'ios' ? ScreenUtils.headerHeight : 44 + ScreenUtils.statusBarHeight,
                             right: 12,
-                            position: "absolute", width: bgWidth, height: bgHeight
+                            position: 'absolute', width: bgWidth, height: bgHeight
                         }}
                         source={detailShowBg}>
                         <FlatList data={ImgArr}

@@ -1,8 +1,7 @@
 import { observable, flow, action } from 'mobx';
 import HomeApi from './api/HomeAPI';
 import { homeType }   from './HomeTypes'
-import { AsyncStorage } from 'react-native'
-
+import { get, save } from '@mr/rn-store'
 const kHomeTodayStore = '@home/kHomeTodayStore'
 
 //今日榜单
@@ -11,14 +10,14 @@ class TodayModule {
   @action loadTodayList = flow(function* (isCache) {
       try {
         if (isCache) {
-          const storeRes = yield AsyncStorage.getItem(kHomeTodayStore)
+          const storeRes = yield get(kHomeTodayStore)
           if (storeRes) {
-            this.todayList = JSON.parse(storeRes)
+            this.todayList = storeRes
           }
         }
           const res = yield HomeApi.getTodays({ type: homeType.today });
           this.todayList = res.data;
-          AsyncStorage.setItem(kHomeTodayStore, JSON.stringify(res.data))
+          save(kHomeTodayStore, res.data)
       } catch (error) {
           console.log(error);
       }

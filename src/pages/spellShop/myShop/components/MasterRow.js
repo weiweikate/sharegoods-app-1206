@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
@@ -13,6 +12,9 @@ import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
 import UIImage from "@mr/image-placeholder";
 const ShopMasterIcon = res.myShop.dz_03;
+import {
+    MRText as Text
+} from '../../../../components/ui';
 
 export default class MasterRow extends Component {
 
@@ -28,9 +30,9 @@ export default class MasterRow extends Component {
     };
 
     _clickAssistantDetail = ()=>{
-        const {userId} = this.props.item;
+        const {userCode} = this.props.item;
         const {onPress} = this.props;
-        onPress && userId && onPress(userId);
+        onPress && userCode && onPress(userCode);
     };
 
     render() {

@@ -1,5 +1,5 @@
 import {
-    Text, View, TextInput, StyleSheet, TouchableOpacity, Image
+   View, StyleSheet, TouchableOpacity, Image
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
@@ -10,6 +10,7 @@ import bridge from '../../../../utils/bridge';
 import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
 
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;

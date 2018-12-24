@@ -15,7 +15,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity,
     Image,
     ScrollView
@@ -31,6 +30,7 @@ import bridge from '../../../utils/bridge';
 import UIText from '../../../comm/components/UIText';
 import Styles from '../style/SelectMentorPage.style';
 import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
+import {MRText as Text} from '../../../components/ui'
 
 const {
     refresh
@@ -371,16 +371,14 @@ export default class SelectMentorPage extends BasePage {
         if (this.state.selectIndex <= this.state.mentorData.length - 1) {
             let mentorData = this.state.mentorData[this.state.selectIndex];
             LoginAPI.mentorBind({
-                code: mentorData.code
+                code: mentorData.perfectNumberCode
             }).then(res => {
-                bridge.$toast('绑定成功');
+                bridge.$toast('选择成功');
                 homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(error => {
-                // bridge.$toast(error.msg);
+                this.$toastShow(error.msg)
                 // homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
-                this.$navigateBackToHome();
-                // this.$navigateBackToHome();
             });
         }
 

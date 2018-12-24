@@ -3,12 +3,10 @@ import {
     StyleSheet,
     View,
     Image,
-    TextInput as RNTextInput,
-    Text,
     TouchableOpacity, ScrollView, Alert
 } from 'react-native';
 import {
-    UIText, UIImage, RefreshList
+    UIText, UIImage, RefreshList, MRText as Text, MRTextInput as RNTextInput
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -24,6 +22,7 @@ import { NavigationActions } from 'react-navigation';
 import DesignRule from '../../../constants/DesignRule';
 import userOrderNum from '../../../model/userOrderNum';
 import res from '../res';
+import {track,trackEvent} from '../../../utils/SensorsTrack';
 const position = res.dizhi;
 const arrow_right = res.arrow_right;
 const colorLine = res.addressLine;
@@ -62,8 +61,8 @@ export default class ConfirmOrderPage extends BasePage {
                     <UIImage source={position} style={{ height:ScreenUtils.autoSizeHeight(20) , width: ScreenUtils.autoSizeWidth(20), marginLeft:ScreenUtils.autoSizeWidth(20 ) }} resizeMode={'contain'}/>
                     <View style={{ flex: 1, marginLeft:ScreenUtils.autoSizeWidth(15) , marginRight:ScreenUtils.autoSizeWidth(15)}}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <Text style={[styles.commonTextStyle,{flex:1}]}>收货人：{this.state.viewData.express.receiverName}</Text>
-                            <Text style={styles.commonTextStyle}>{this.state.viewData.express.receiverNum}</Text>
+                            <Text style={[styles.commonTextStyle,{flex:1}]} allowFontScaling={false} >收货人：{this.state.viewData.express.receiverName}</Text>
+                            <Text style={styles.commonTextStyle} allowFontScaling={false}>{this.state.viewData.express.receiverNum}</Text>
                         </View>
                         <UIText
                             value={
@@ -96,7 +95,7 @@ export default class ConfirmOrderPage extends BasePage {
                 {this.state.orderParam && this.state.orderParam.orderType === 3 ?
                     <View style={styles.giftOutStyle}>
                         <View style={styles.giftInnerStyle}>
-                            <Text style={styles.giftTextStyles}>礼包</Text>
+                            <Text style={styles.giftTextStyles} allowFontScaling={false}>礼包</Text>
                         </View>
                     </View>
                     :
@@ -316,11 +315,11 @@ export default class ConfirmOrderPage extends BasePage {
                     bridge.hiddenLoading();
                     bridge.$toast(err.msg);
                     if (err.code === 10009) {
-                        this.$navigate('login/login/LoginPage', {
+                        this.gotoLoginPage({
                             callback: () => {
                                 this.loadPageData();
                             }
-                        });
+                        })
                     }
                 });
                 break;
@@ -490,7 +489,8 @@ export default class ConfirmOrderPage extends BasePage {
                 this.setState({ addressId:json.id, defaultAddress: true });
                 let params = {
                     addressId:json.id,
-                    tokenCoin: this.state.tokenCoin,
+                     tokenCoin: 0,
+                    tokenCoinText: '选择使用1元券',
                     userCouponCode: this.state.userCouponCode
                 };
                 this.loadPageData(params);
@@ -523,6 +523,10 @@ export default class ConfirmOrderPage extends BasePage {
                 OrderApi.SeckillSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
+                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
+                        receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
+                        discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
+                        YiyuanDiscountAmount:this.state.tokenCoin})
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
@@ -548,6 +552,10 @@ export default class ConfirmOrderPage extends BasePage {
                 OrderApi.DepreciateSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
+                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
+                        receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
+                        discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
+                        YiyuanDiscountAmount:this.state.tokenCoin})
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
@@ -588,6 +596,10 @@ export default class ConfirmOrderPage extends BasePage {
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
+                        track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
+                            receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
+                            discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
+                            YiyuanDiscountAmount:this.state.tokenCoin})
                         user.saveUserInfo(data);
                         userOrderNum.getUserOrderNum();
                     }).catch(err => {
@@ -619,6 +631,10 @@ export default class ConfirmOrderPage extends BasePage {
             OrderApi.submitOrder(params).then((response) => {
                 this.$loadingDismiss();
                 let data = response.data;
+                track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
+                    receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
+                    discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
+                    YiyuanDiscountAmount:this.state.tokenCoin})
                 MineApi.getUser().then(res => {
                     this.$loadingDismiss();
                     let data = res.data;
@@ -645,17 +661,17 @@ export default class ConfirmOrderPage extends BasePage {
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {
             this.$navigate('mine/coupons/CouponsPage', {
-                justOne: this.state.viewData.totalAmounts ? this.state.viewData.totalAmounts : 1, callBack: (data) => {
+                justOne: (parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin) )? (parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin) ) : 1, callBack: (data) => {
                     console.log(typeof data);
                     if (parseInt(data) >= 0) {
-                        let params = { tokenCoin: parseInt(data) > 0 &&parseInt(data)<=parseInt(this.state.viewData.totalAmounts)? parseInt(data):0,
+                        let params = { tokenCoin: parseInt(data) > 0 &&parseInt(data)<=(parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin))? parseInt(data):0,
                             userCouponCode: this.state.userCouponCode,
                             addressId:this.state.addressId,
                         };
                         this.setState({
                             addressId:this.state.addressId,
-                            tokenCoin: data,
-                            tokenCoinText: parseInt(data) > 0 &&parseInt(data)<=parseInt(this.state.viewData.totalAmounts)? '-¥' + parseInt(data) : '选择使用1元券'
+                            tokenCoin: parseInt(data) > 0 &&parseInt(data)<=(parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin))? parseInt(data):0,
+                            tokenCoinText: parseInt(data) > 0 &&(parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin))? '-¥' + parseInt(data) : '选择使用1元券'
                         });
                         this.loadPageData(params);
                     }

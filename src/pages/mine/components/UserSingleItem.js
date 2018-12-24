@@ -8,13 +8,13 @@ import {
     TouchableOpacity,
     View,
     Image,
-    Text,
     StyleSheet
 } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import ImageLoad from '@mr/image-placeholder';
+import {MRText as Text} from '../../../components/ui'
 
 export default class UserSingleItem extends Component {
     constructor(props) {
@@ -36,7 +36,7 @@ export default class UserSingleItem extends Component {
             <TouchableOpacity style={itemHeightStyle ? itemHeightStyle : styles.containerStyle} onPress={onPress}>
                 <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
                     <View style={{ justifyContent: 'center', marginLeft: marginLeft }}>
-                        <Text style={leftTextStyle && leftTextStyle}>{leftText}</Text>
+                        <Text style={leftTextStyle && leftTextStyle} allowFontScaling={false}>{leftText}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         {this.renderRightText()}
@@ -60,7 +60,7 @@ export default class UserSingleItem extends Component {
         return (
             <View
                 style={circleStyle ? circleStyle : (isCircle ? styles.rightText_hasCircle : styles.rightText_noCircle)}>
-                <Text style={rightTextStyle && rightTextStyle}>{rightText}</Text>
+                <Text style={rightTextStyle && rightTextStyle} allowFontScaling={false}>{rightText}</Text>
             </View>
         );
     };

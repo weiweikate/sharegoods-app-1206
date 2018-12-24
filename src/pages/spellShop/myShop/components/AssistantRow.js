@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     Image,
     StyleSheet,
     TouchableWithoutFeedback
@@ -11,6 +10,9 @@ import {
 import SwipeOut from 'react-native-swipeout';
 import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
+import {
+    MRText as Text
+} from '../../../../components/ui';
 
 export default class AssistantRow extends Component {
 
@@ -30,15 +32,15 @@ export default class AssistantRow extends Component {
     state = { open: false };
 
     _clickAssistantDetail = () => {
-        const { userId } = this.props.item;
+        const { userCode } = this.props.item;
         const { onPress } = this.props;
-        onPress && onPress(userId);
+        onPress && onPress(userCode);
     };
 
     _onPressDelete = () => {
-        const { userId } = this.props.item;
+        const { userCode } = this.props.item;
         const { onPressDelete } = this.props;
-        onPressDelete && userId && onPressDelete(userId);
+        onPressDelete && userCode && onPressDelete(userCode);
     };
 
 

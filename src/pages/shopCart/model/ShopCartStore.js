@@ -139,7 +139,11 @@ class ShopCartStore {
 
                 //从订单过来的选中
                 this.needSelectGoods.map(selectGood =>{
-                    if (selectGood.productCode === item.productCode && selectGood.skuCode === item.skuCode && item.status !== 0){
+                    if (selectGood.productCode === item.productCode &&
+                        selectGood.skuCode === item.skuCode &&
+                        item.status !== 0 &&
+                        item.stock !== 0
+                    ){
                         item.isSelected = true
                     }
                 })

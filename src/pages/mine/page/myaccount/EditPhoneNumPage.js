@@ -1,5 +1,5 @@
 import {
-    Text, TextInput, View, TouchableOpacity
+     TextInput, View, TouchableOpacity
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
@@ -11,7 +11,7 @@ import bridge from '../../../../utils/bridge';
 import MineAPI from '../../api/MineApi';
 import SMSTool from '../../../../utils/SMSTool';
 import DesignRule from '../../../../constants/DesignRule';
-
+import {MRText as Text} from '../../../../components/ui'
 /**
  * @author chenxiang
  * @date on 2018/9/18

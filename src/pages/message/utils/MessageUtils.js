@@ -28,13 +28,13 @@ const MessageUtils = {
             case 107://秒杀
                 navigation("topic/TopicDetailPage", {
                     activityCode: params,
-                    activityType: 1
+                    activityType: 1,preseat:'消息'
                 });
                 break;
             case 108://降价拍
                 navigation("topic/TopicDetailPage", {
                     activityCode: params,
-                    activityType: 2
+                    activityType: 2,preseat:'消息'
                 });
                 break;
             case 104://订单超时
@@ -76,7 +76,7 @@ const MessageUtils = {
             case 206://申请的店铺已同意
             case 207://申请的店铺拒绝了您
             case 212://招募
-                pagParams = {storeId:params};
+                pagParams = {storeCode:params};
                 navigation("spellShop/MyShop_RecruitPage", pagParams);
                 break;
             default:

@@ -9,14 +9,12 @@
  *
  */
 
-
 'use strict';
 import React from 'react';
 import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Text
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -27,6 +25,7 @@ import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from '../../../../constants/DesignRule';
+import {MRText as Text} from '../../../../components/ui'
 
 const { px2dp } = ScreenUtils;
 type Props = {};
@@ -188,7 +187,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
                                 webJson={{
                                     title: '邀请好友免费领取福利',
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}&upuserid=${user.id || ''}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}&upuserid=${user.code || ''}`,
                                     thumImage: 'logo.png',
                                 }}
                                 miniProgramJson={{
@@ -196,8 +195,8 @@ export default class PromotionDetailPage extends BasePage<Props> {
                                     dec:'属你的惊喜福利活动\n数量有限赶快参与吧～',
                                     thumImage: 'logo.png',
                                     hdImageURL: '',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}&upuserid=${user.id || ''}`,
-                                    miniProgramPath: `/pages/index/index?type=100&id=${this.params.id}&inviteId=${user.id || ''}`
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}&upuserid=${user.code || ''}`,
+                                    miniProgramPath: `/pages/index/index?type=100&id=${this.params.id}&inviteId=${user.code || ''}`
                                 }}
                 />
             </View>

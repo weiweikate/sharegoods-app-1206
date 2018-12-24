@@ -13,7 +13,7 @@ export default class HomeAdView extends Component {
         const router =  homeModule.homeNavigate(value.linkType, value.linkTypeCode)
         const {navigate} = this.props
         const params = homeModule.paramsNavigate(value)
-        navigate(router, params)
+        navigate(router, {...params, preseat:'home_ad'})
     }
 
     _loadingIndicator() {

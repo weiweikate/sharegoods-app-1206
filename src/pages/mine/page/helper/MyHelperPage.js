@@ -10,7 +10,6 @@ import {
     StyleSheet,
     View,
     Image,
-    Text,
     TouchableOpacity,
     Linking,
     ScrollView
@@ -19,11 +18,12 @@ import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import UIImage from "@mr/image-placeholder";
 import ScreenUtils from '../../../../utils/ScreenUtils';
-
+import {track,trackEvent} from '../../../../utils/SensorsTrack';
 import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui'
 
 const {
     // top_kefu,
@@ -68,7 +68,7 @@ export default class MyHelperPage extends BasePage {
                                     fontSize: 11,
                                     color: DesignRule.textColor_secondTitle,
                                     marginTop: 4
-                                }}>{item.name}</Text>
+                                }} allowFontScaling={false}>{item.name}</Text>
                             </TouchableOpacity>
                             <View style={styles.hot2ViewStyle}>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -120,17 +120,17 @@ export default class MyHelperPage extends BasePage {
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(1)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_tuikuan} style={{ width: 37, height: 37 }}/>
-                            <Text style={styles.textFontstyle}>查看售后</Text>
+                            <Text style={styles.textFontstyle} allowFontScaling={false}>查看售后</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(2)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_feedback} style={{ width: 37, height: 37 }}/>
-                            <Text style={styles.textFontstyle}>问题反馈</Text>
+                            <Text style={styles.textFontstyle} allowFontScaling={false}>问题反馈</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(3)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_auto_feedback} style={{ width: 37, height: 37 }}/>
-                            <Text style={styles.textFontstyle}>查看订单</Text>
+                            <Text style={styles.textFontstyle} allowFontScaling={false}>查看订单</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ height: 177, backgroundColor: DesignRule.bgColor }}/>
@@ -155,8 +155,8 @@ export default class MyHelperPage extends BasePage {
                                 fontFamily: 'PingFangSC-Regular',
                                 fontSize: 16,
                                 color: DesignRule.textColor_mainTitle_222
-                            }}>在线客服</Text>
-                            <Text style={styles.text2Style}>9:00-22:00</Text>
+                            }} allowFontScaling={false}>在线客服</Text>
+                            <Text style={styles.text2Style} allowFontScaling={false}>9:00-22:00</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -178,8 +178,8 @@ export default class MyHelperPage extends BasePage {
                                 fontFamily: 'PingFangSC-Regular',
                                 fontSize: 16,
                                 color: DesignRule.textColor_mainTitle_222
-                            }}>客服电话</Text>
-                            <Text style={styles.text2Style}>400-9696-365</Text>
+                            }} allowFontScaling={false}>客服电话</Text>
+                            <Text style={styles.text2Style} allowFontScaling={false}>400-9696-365</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -187,10 +187,12 @@ export default class MyHelperPage extends BasePage {
         );
     };
     jumpQYIMPage = () => {
+        track(trackEvent.contact,{questionType:'在线',origin:'在线'})
         QYChatUtil.qiYUChat();
     };
 
     jump2Telephone() {
+        track(trackEvent.contact,{questionType:'在线',origin:'热线'})
         Linking.openURL('tel:' + '400-9696-365').catch(e => console.log(e));
     }
 
@@ -200,7 +202,7 @@ export default class MyHelperPage extends BasePage {
 
     questionfeedBack(type) {
         if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            this.gotoLoginPage();
             return;
         }
         if (type === 1) {

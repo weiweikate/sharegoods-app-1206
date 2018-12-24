@@ -12,12 +12,11 @@ import {
     ScrollView,
     TouchableOpacity,
     DeviceEventEmitter,
-    TextInput
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
 import {
-    UIText, UIImage, AddPhotos
+    UIText, UIImage, AddPhotos, MRTextInput as TextInput
 } from '../../../components/ui';
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
 import StringUtils from '../../../utils/StringUtils';
@@ -33,6 +32,7 @@ import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
+import { trackEvent, track } from '../../../utils/SensorsTrack';
 
 const { arrow_right } = res;
 
@@ -62,11 +62,11 @@ class AfterSaleServicePage extends BasePage {
 
         };
         this.loadSelectionData = this.loadSelectionData.bind(this);
+        this._getReturnReason = this._getReturnReason.bind(this);
     }
 
     componentDidMount() {
         this.loadPageData();
-        this._getReturnReason();
     }
 
     $isMonitorNetworkStatus() {
@@ -120,21 +120,15 @@ class AfterSaleServicePage extends BasePage {
                                     style={{ color: DesignRule.mainColor, fontSize: 13 }}/>
                             <TextInput value={this.state.applyRefundAmount + ''}
                                        onChangeText={(text) => {
-                                           if (text.indexOf('.') === text.lastIndexOf('.')) {
-                                               if (text.indexOf('.') !== -1 && text.split('.').length > 1) {
-                                                   if (text.split('.')[1].length > 2) {
-                                                       return;
-                                                   }
-                                               }
-                                               text = text === '' ? '0' : text;
-                                               if (parseFloat(text) <= this.state.productData.payAmount) {
-                                                   this.setState({ applyRefundAmount: text + '' });
+                                           let reg = /^[0-9]*[.]?[0-9]{0,2}$/;
+                                           if(reg.test(text)) {
+                                               if (parseFloat(text) <= this.state.productData.payAmount || text === '') {
+                                                   this.setState({ applyRefundAmount: text});
                                                } else {
                                                    this.setState({ applyRefundAmount: this.state.productData.payAmount + '' });
                                                }
                                            }
-                                       }
-                                       }
+                                       }}
                                        style={{
                                            color: DesignRule.mainColor,
                                            fontSize: 13,
@@ -173,21 +167,15 @@ class AfterSaleServicePage extends BasePage {
                                     style={{ color: DesignRule.mainColor, fontSize: 13 }}/>
                             <TextInput value={this.state.applyRefundAmount + ''}
                                        onChangeText={(text) => {
-                                           if (text.indexOf('.') === text.lastIndexOf('.')) {
-                                               if (text.indexOf('.') !== -1 && text.split('.').length > 1) {
-                                                   if (text.split('.')[1].length > 2) {
-                                                       return;
-                                                   }
-                                               }
-                                               text = text === '' ? '0' : text;
-                                               if (parseFloat(text) <= this.state.productData.payAmount) {
-                                                   this.setState({ applyRefundAmount: text + '' });
+                                           let reg = /^[0-9]*[.]?[0-9]{0,2}$/;
+                                           if(reg.test(text)) {
+                                               if (parseFloat(text) <= this.state.productData.payAmount || text === '') {
+                                                   this.setState({ applyRefundAmount: text});
                                                } else {
                                                    this.setState({ applyRefundAmount: this.state.productData.payAmount + '' });
                                                }
                                            }
-                                       }
-                                       }
+                                       }}
                                        style={{ color: DesignRule.mainColor, fontSize: 13, flex: 1, height: 40 }}
                                        keyboardType={'numeric'}
                                        editable={this.state.editable}
@@ -422,9 +410,13 @@ class AfterSaleServicePage extends BasePage {
         );
     };
 
-    _getReturnReason() {
+    _getReturnReason(fah) {//是否发货
+        let pageType = this.params.pageType;
+        if (fah === false){
+            pageType = 3;
+        };
         let that = this;
-        OrderApi.getReturnReason({ code: ['TKLY', 'THTK', 'HHLY'][this.params.pageType] }).then((result) => {
+        OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH','WFH'][pageType] }).then((result) => {
             that.setState({ returnReasons: result.data || [] });
         }).catch((error) => {
 
@@ -462,11 +454,17 @@ class AfterSaleServicePage extends BasePage {
             let payAmount = productData.payAmount || 0;
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
+                that._getReturnReason(false);
+            }else {
+                that._getReturnReason(true);
+            }
+            if (payAmount === 0){
+                editable = false;
             }
             if (that.params.isEdit) {
                 that.setState({ productData, editable });
             } else {
-                that.setState({ productData, editable, applyRefundAmount: payAmount });
+                that.setState({ productData, editable, applyRefundAmount: payAmount+ '' });
             }
         }).catch(error => {
             that.$loadingDismiss();
@@ -529,10 +527,12 @@ class AfterSaleServicePage extends BasePage {
         }
 
 
-        // if (parseFloat(applyRefundAmount) === 0 && pageType !== 2) {
-        //     NativeModules.commModule.toast('售后的金额不能为0');
-        //     return;
-        // }
+        if (applyRefundAmount.length === 0 && pageType !== 2) {
+            NativeModules.commModule.toast('请填写退款的金额');
+            return;
+        }
+
+        let { productName, warehouseOrderNo, payAmount, prodCode } = this.state.productData;
 
         /** 修改申请*/
         if (this.params.isEdit) {
@@ -547,6 +547,22 @@ class AfterSaleServicePage extends BasePage {
                 bridge.$toast(e.msg);
             });
         } else {
+            // applicationIDorderID	申请单号订单ID
+            // commodityID	商品ID
+            // commodityName	商品名称
+            // firstCommodity	商品一级分类
+            // secondCommodity	商品二级分类
+            // commodityAmount	支付商品全额
+            // PartlyReturn	是否部分退款
+            track(trackEvent.applyReturn,
+                {
+                    orderID: warehouseOrderNo,
+                    applicationIDorderID: orderProductNo,
+                    commodityName: productName,
+                    commodityAmount: payAmount,
+                    PartlyReturn: 0,
+                    commodityID: prodCode
+                });
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;
             this.$loadingShow();

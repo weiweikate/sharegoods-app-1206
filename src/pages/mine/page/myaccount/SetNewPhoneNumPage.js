@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -10,7 +10,7 @@ import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
 import DesignRule from '../../../../constants/DesignRule';
-
+import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
 export default class SetNewPhoneNumPage extends BasePage {
 
     // 导航配置

@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     ImageBackground,
-    Text,
     TouchableOpacity,
     Alert
 } from "react-native";
@@ -19,6 +18,7 @@ import Toast from "./../../../../utils/bridge";
 import { observer } from "mobx-react/native";
 import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
+import {MRText as Text} from '../../../../components/ui';
 
 const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
 const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
@@ -33,7 +33,7 @@ export default class MyCashAccountPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            id: user.id,
+            id: user.code,
             phone: "",
             pwd: "",
             thirdType: 1,
@@ -49,14 +49,14 @@ export default class MyCashAccountPage extends BasePage {
         };
         this.currentPage = 0;
     }
-    $NavBarRightPressed = () => {
-        this.$navigate('mine/bankCard/BankCardListPage')
-    };
-    $navigationBarOptions = {
-        title: '现金账户',
-        rightTitleStyle: { color: DesignRule.textColor_mainTitle_222,fontSize:12 },
-        rightNavTitle: '账户设置'
-    };
+    // $NavBarRightPressed = () => {
+    //     this.$navigate('mine/bankCard/BankCardListPage')
+    // };
+    // $navigationBarOptions = {
+    //     title: '现金账户',
+    //     rightTitleStyle: { color: DesignRule.textColor_mainTitle_222,fontSize:12 },
+    //     rightNavTitle: '账户设置'
+    // };
     $NavBarRightPressed = () => {
         this.$navigate("mine/bankCard/BankCardListPage");
     };
@@ -92,17 +92,17 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.container}>
                 <ImageBackground style={styles.imageBackgroundStyle}/>
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 13, color: "white" }}>账户余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 13, color: "white" }} allowFontScaling={false}>账户余额(元)</Text>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <View style={{ height: 44, justifyContent: "space-between", marginTop: 10 }}>
                             <Text style={{
                                 marginLeft: 25,
                                 fontSize: 24,
                                 color: "white"
-                            }}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
+                            }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
                         <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text style={{ fontSize: 15, color: "white" }}>提现</Text>
+                            <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -147,17 +147,17 @@ export default class MyCashAccountPage extends BasePage {
         MineApi.getUserBankInfo().then((data) => {
             if (data.data && data.data.length > 0) {
 
-                // MineApi.isFirstTimeWithdraw().then((data)=>{
-                //     if(data.data){
-                //         this.$navigate("mine/bankCard/WithdrawalAgreementPage");
-                //     }else {
-                //         this.$navigate("mine/userInformation/WithdrawCashPage");
-                //     }
-                // }).catch((error)=>{
-                //     this.$toastShow(error.msg);
-                // })
+                MineApi.isFirstTimeWithdraw().then((data)=>{
+                    if(data.data){
+                        this.$navigate("mine/bankCard/WithdrawalAgreementPage");
+                    }else {
+                        this.$navigate("mine/userInformation/WithdrawCashPage");
+                    }
+                }).catch((error)=>{
+                    this.$toastShow(error.msg);
+                })
 
-                this.$navigate("mine/userInformation/WithdrawCashPage");
+                // this.$navigate("mine/userInformation/WithdrawCashPage");
 
             } else {
                 Alert.alert("未绑定银行卡", "你还没有绑定银行卡", [{
@@ -180,7 +180,7 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ["", "用户收益", "提现支出", "消费支出", "店主分红", "店员分红", "销售提成", "现金红包", "任务奖励","消费退款"];
+        let use_type = ["", "用户收益", "提现支出", "消费支出", "导师管理费", "品牌分红奖励金", "品牌推广奖励金", "现金红包", "任务奖励金","消费退款"];
         let use_type_symbol = ["", "+", "-"];
         let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu,xiaofei];
         Toast.showLoading();
@@ -225,7 +225,7 @@ export default class MyCashAccountPage extends BasePage {
             user.saveUserInfo(data);
         }).catch(err => {
             if (err.code === 10009) {
-                this.$navigate("login/login/LoginPage");
+                this.gotoLoginPage()
             }
         });
         this.getDataFromNetwork();

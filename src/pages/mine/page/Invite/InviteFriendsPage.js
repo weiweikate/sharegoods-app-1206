@@ -14,7 +14,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     Platform,
     TouchableWithoutFeedback,
     ImageBackground,
@@ -24,6 +23,7 @@ import {
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import {UIImage} from '../../../../components/ui'
+import {MRText as Text} from '../../../../components/ui'
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
@@ -32,7 +32,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
-import { trackEvent } from '../../../../utils/SensorsTrack';
+import { trackEvent, track} from '../../../../utils/SensorsTrack';
 
 const {
     button: {
@@ -55,7 +55,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
             path: ''
         };
         this._bind();
-        this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.id || ''}`;
+        this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.code || ''}`;
     }
 
     $navigationBarOptions = {
@@ -84,6 +84,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 
     //截屏
     _saveImg = () => {
+        track(trackEvent.QrcodeShareto, {QrCodeID: this.linkUrl, shareMethod: '保存图片'})
         this.setState({
             disable: true
         }, () => {

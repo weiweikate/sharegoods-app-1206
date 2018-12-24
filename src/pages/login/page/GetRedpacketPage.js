@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableOpacity,
     Image,
@@ -18,6 +17,7 @@ import StringUtils from '../../../utils/StringUtils';
 // import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import {MRText as Text} from '../../../components/ui'
 
 const {
     refresh,
@@ -59,10 +59,10 @@ export default class GetRedpacketPage extends BasePage {
         const { px2dp } = ScreenUtils;
         let view = (
             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontSize: px2dp(24) }}>
+                <Text style={{ color: 'white', fontSize: px2dp(24) }} allowFontScaling={false}>
                     领取成功
                 </Text>
-                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
+                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }} allowFontScaling={false}>
                     可前往我的-优惠券查看
                 </Text>
             </View>
@@ -101,7 +101,7 @@ export default class GetRedpacketPage extends BasePage {
                                 includeFontPadding: false,
                                 fontSize: px2dp(14),
                                 marginTop: 26
-                            }}>
+                            }} allowFontScaling={false}>
 
                                 {/*{ this.state.redPacketData && this.state.redPacketData.phone?this.redPacketData.phone:''}*/}
                                 {StringUtils.formatPhoneNumber(this.state.phone)}
@@ -116,13 +116,13 @@ export default class GetRedpacketPage extends BasePage {
                                 color: 'white',
                                 fontSize: px2dp(60),
                                 marginTop: 20
-                            }}>
+                            }} allowFontScaling={false}>
 
                                 {/*{this.state.redPacketData && this.state.redPacketData.price?this.state.redPacketData.price:''}*/}
                                 {StringUtils.formatMoneyString(this.state.price, false)}
                                 {/*{EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}*/}
                                 <Text
-                                    style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
+                                    style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }} allowFontScaling={false}>
                                     元
                                 </Text>
                             </Text>
@@ -131,7 +131,7 @@ export default class GetRedpacketPage extends BasePage {
                                 color: 'white',
                                 fontSize: px2dp(14),
                                 marginTop: 12
-                            }}>
+                            }} allowFontScaling={false}>
                                 红包抵扣金
                             </Text>
                             {/*{this.state.hasGetCoupon ? null : button}*/}

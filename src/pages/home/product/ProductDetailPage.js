@@ -5,11 +5,9 @@ import {
     SectionList,
     // Image,
     FlatList,
-    Text,
     Alert
     // TouchableWithoutFeedback,
     // ImageBackground,
-    // AsyncStorage
 } from 'react-native';
 
 import BasePage from '../../../BasePage';
@@ -26,8 +24,10 @@ import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import {MRText as Text} from '../../../components/ui';
 // import CommModal from '../../../comm/components/CommModal';
 import DesignRule from '../../../constants/DesignRule';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 // const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
@@ -227,6 +227,16 @@ export default class ProductDetailPage extends BasePage {
                 loadingState: PageLoadingState.success,
                 data: data
             }, () => {
+                /*商品详情埋点*/
+                const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = data || {};
+                track(trackEvent.commodityDetail, {
+                    preseat: this.params.preseat || '',
+                    commodityID: prodCode,
+                    commodityName: name,
+                    firstCommodity: firstCategoryId,
+                    secondCommodity: secCategoryId,
+                    pricePerCommodity: minPrice
+                });
                 this._getQueryByProductId();
                 /*productStatus===3的时候需要刷新*/
                 if (productStatus === 3 && upTime && now) {
@@ -250,7 +260,8 @@ export default class ProductDetailPage extends BasePage {
         if (this.state.activityType === 1 || this.state.activityType === 2) {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: this.state.activityData.activityCode,
-                activityType: this.state.activityType
+                activityType: this.state.activityType,
+                preseat: '商品详情活动信息'
             });
         }
     };
@@ -269,7 +280,7 @@ export default class ProductDetailPage extends BasePage {
                             },
                             {
                                 text: '去登录', onPress: () => {
-                                    this.$navigate('login/login/LoginPage');
+                                    this.gotoLoginPage();
                                 }
                             }
                         ]
@@ -302,9 +313,20 @@ export default class ProductDetailPage extends BasePage {
                 'skuCode': skuCode,
                 'productCode': this.state.data.prodCode
             };
+            /*加入购物车埋点*/
+            const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.state.data || {};
+            track(trackEvent.addToShoppingcart, {
+                shoppingcartEntrance: '详情页面',
+                commodityNumber: amount,
+                commodityID: prodCode,
+                commodityName: name,
+                firstCommodity: firstCategoryId,
+                secondCommodity: secCategoryId,
+                pricePerCommodity: minPrice
+            });
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
-            this.$loadingShow()
+            this.$loadingShow();
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
@@ -514,7 +536,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { minPrice, name, imgUrl, buyLimit, leftBuyNum, shareMoney, productStatus, prodCode } = this.state.data || {};
+        const { minPrice, name, imgUrl, buyLimit, leftBuyNum, shareMoney, productStatus, prodCode, firstCategoryId, secCategoryId } = this.state.data || {};
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -533,7 +555,7 @@ export default class ProductDetailPage extends BasePage {
                                    switch (item.index) {
                                        case 0:
                                            if (!user.isLogin) {
-                                               this.$navigate('login/login/LoginPage');
+                                               this.gotoLoginPage();
                                                return;
                                            }
                                            this.$navigate('message/MessageCenterPage');
@@ -565,17 +587,25 @@ export default class ProductDetailPage extends BasePage {
                               buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
+                            trackParmas={{
+                                commodityID: this.params.activityCode,
+                                commodityName: name,
+                                firstCommodity: firstCategoryId,
+                                secondCommodity: secCategoryId,
+                                pricePerCommodity: minPrice
+                            }}
+                            trackEvent={trackEvent.share}
                             type={'Image'}
                             imageJson={{
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
                                 priceStr: `￥${minPrice}`,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
                             }}
                             webJson={{
                                 title: `${name}`,
                                 dec: '商品详情',
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
                                 thumImage: imgUrl
                             }}
                             miniProgramJson={{
@@ -583,8 +613,8 @@ export default class ProductDetailPage extends BasePage {
                                 dec: '商品详情',
                                 thumImage: 'logo.png',
                                 hdImageURL: imgUrl,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.id || ''}`,
-                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.id || ''}`
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             {/*<ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>*/}

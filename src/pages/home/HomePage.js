@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     FlatList,
-    Text,
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
@@ -41,6 +40,7 @@ import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
+import {MRText as Text} from '../../components/ui';
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -336,7 +336,7 @@ class HomePage extends BasePage {
             return <ShowView navigation={this.props.navigation} isShow={isShow}/>;
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
-                <Text style={styles.title}>为你推荐</Text>
+                <Text style={styles.title} allowFontScaling={false}>为你推荐</Text>
             </View>;
         }
         return <View/>;
@@ -435,6 +435,7 @@ class HomePage extends BasePage {
                     {
                         homeRegisterFirstManager.showRegisterModalUrl ?
                             <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
+                                       resizeMode={'contain'}
                                        style={styles.messageBgStyle}/> : <View style={styles.messageBgStyle}/>
                     }
 

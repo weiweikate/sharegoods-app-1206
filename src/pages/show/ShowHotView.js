@@ -2,11 +2,13 @@
  * 精选热门
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import ShowBannerView from './ShowBannerView';
 import ShowChoiceView from './ShowChoiceView';
-// import ShowHotScrollView from './ShowHotScrollView';
+import {
+    MRText as Text,
+} from '../../components/ui';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';

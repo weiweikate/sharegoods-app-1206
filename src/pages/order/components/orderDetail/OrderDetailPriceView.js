@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
     View,
-    Text,
     Image, StyleSheet, TouchableOpacity
 } from "react-native";
 import { orderDetailAfterServiceModel, orderDetailModel } from "../../model/OrderDetailModel";
@@ -10,7 +9,7 @@ import StringUtils from "../../../../utils/StringUtils";
 import UserSingleItem from "../UserSingleItem";
 import res from "../../res";
 import DesignRule from '../../../../constants/DesignRule';
-
+import {MRText as Text} from '../../../../components/ui';
 const couponIcon = res.coupons_icon;
 
 @observer
@@ -56,7 +55,7 @@ export default class OrderDetailPriceView extends Component {
                                       this.afterSaleServiceClick(orderDetailAfterServiceModel.currentAsList[i], i);
                                   }}>
                     <Text
-                        style={[styles.grayText, { color: orderDetailAfterServiceModel.currentAsList[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]}>{orderDetailAfterServiceModel.currentAsList[i].operation}</Text>
+                        style={[styles.grayText, { color: orderDetailAfterServiceModel.currentAsList[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]} allowFontScaling={false}>{orderDetailAfterServiceModel.currentAsList[i].operation}</Text>
                 </TouchableOpacity>
             );
         }
@@ -74,8 +73,8 @@ export default class OrderDetailPriceView extends Component {
                            return <View style={{ backgroundColor: 'white' }} key={index}>
                                {index === 0 ? <Image source={couponIcon} style={styles.couponsIconStyle}/> : null}
                                <View style={styles.couponsOuterStyle}>
-                                   <Text style={styles.couponsTextStyle}>{item.couponName}</Text>
-                                   <Text style={[styles.couponsTextStyle, { marginRight: 14 }]}>x1</Text>
+                                   <Text style={styles.couponsTextStyle} allowFontScaling={false}>{item.couponName}</Text>
+                                   <Text style={[styles.couponsTextStyle, { marginRight: 14 }]} allowFontScaling={false}>x1</Text>
                                </View>
                                <View style={styles.couponsLineStyle}/>
                            </View>
@@ -89,9 +88,9 @@ export default class OrderDetailPriceView extends Component {
                                rightText={orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].productPrice):StringUtils.formatMoneyString(orderDetailModel.detail.productPrice)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
-               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
+               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].freightAmount):StringUtils.formatMoneyString(orderDetailModel.detail.freightAmount)}
+                               rightText={'-' + (orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount):StringUtils.formatMoneyString(orderDetailModel.detail.tokenCoinAmount))}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
@@ -99,9 +98,9 @@ export default class OrderDetailPriceView extends Component {
                                rightText={'-' + (orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].couponAmount):StringUtils.formatMoneyString(orderDetailModel.detail.couponAmount))}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
-               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
+               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
-                               rightText={'-' + (orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount):StringUtils.formatMoneyString(orderDetailModel.detail.tokenCoinAmount))}
+                               rightText={orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].freightAmount):StringUtils.formatMoneyString(orderDetailModel.detail.freightAmount)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}

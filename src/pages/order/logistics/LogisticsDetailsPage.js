@@ -1,8 +1,8 @@
 
 import React from "react";
-import { NativeModules, StyleSheet, Text, TouchableOpacity, View ,Image} from "react-native";
+import { NativeModules, StyleSheet, TouchableOpacity, View ,Image} from "react-native";
 import BasePage from "../../../BasePage";
-import { RefreshList, UIText } from "../../../components/ui";
+import { RefreshList, UIText, MRText as Text } from "../../../components/ui";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import LogisticsDetailItem from "../components/LogisticsDetailItem";
@@ -172,10 +172,10 @@ class LogisticsDetailsPage extends BasePage {
     loadPageData() {
         console.log(this.params);
         if (StringUtils.isNoEmpty(this.state.expressNo)) {
-            OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo }).then((response) => {
-                console.log(response);
+            OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo}).then((response) => {
+                console.log(response.data.list);
                 let arrData = [];
-                JSON.parse(response.data).result.list.map((item, index) => {
+               response.data.list.map((item, index) => {
                     let time = item.time;
                     arrData.push({
                         time: time.replace(" ", "\n"),
@@ -183,7 +183,7 @@ class LogisticsDetailsPage extends BasePage {
                     });
                 });
                 this.setState({
-                    expressName: JSON.parse(response.data).result.expName,
+                    expressName: response.data.expName,
                     viewData: arrData,
                     loadingState: "success"
                 });

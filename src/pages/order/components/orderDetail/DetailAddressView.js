@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import {
     StyleSheet,
     View,
-    Text,
 } from 'react-native';
 import {
     UIText, UIImage
@@ -11,6 +10,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtil from '../../../../utils/ScreenUtils';
 import { observer } from 'mobx-react/native';
 import { orderDetailModel } from "../../model/OrderDetailModel";
+import {MRText as Text} from '../../../../components/ui';
 const {px2dp} = ScreenUtil;
 import res from '../../res';
 const position = res.dizhi_icon;
@@ -24,8 +24,8 @@ export default class DetailAddressView extends Component{
                 <UIImage source={position} style={{ height: px2dp(20), width:  px2dp(20), marginLeft:  px2dp(20) }} resizeMode={'contain'}/>
                 <View style={{ flex: 1, marginLeft:  px2dp(15), marginRight:  px2dp(20) }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <Text style={[styles.innerTextStyle,{flex:1}]}>收货人:{orderDetailModel.receiver}</Text>
-                        <Text style={[styles.innerTextStyle,{marginLeft: px2dp(5)}]}>{orderDetailModel.receiverPhone}</Text>
+                        <Text style={[styles.innerTextStyle,{flex:1}]} allowFontScaling={false}>收货人:{orderDetailModel.receiver}</Text>
+                        <Text style={[styles.innerTextStyle,{marginLeft: px2dp(5)}]} allowFontScaling={false}>{orderDetailModel.receiverPhone}</Text>
                     </View>
                     <UIText value={
                         '收货地址:' + orderDetailModel.province

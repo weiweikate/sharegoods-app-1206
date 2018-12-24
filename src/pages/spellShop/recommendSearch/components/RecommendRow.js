@@ -6,7 +6,6 @@ import {
     Image,
     StyleSheet,
     TouchableOpacity,
-    Text,
     FlatList,
     TouchableWithoutFeedback
 } from 'react-native';
@@ -15,6 +14,10 @@ import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import ImageLoad from '@mr/image-placeholder';
+import {
+    MRText as Text
+} from '../../../../components/ui';
+
 
 const StarImg = res.recommendSearch.dj_03;
 
@@ -39,7 +42,7 @@ export default class RecommendRow extends Component {
         </TouchableOpacity>);
     };
     _onPress = () => {
-        this.props.RecommendRowOnPress && this.props.RecommendRowOnPress(this.props.RecommendRowItem.id);
+        this.props.RecommendRowOnPress && this.props.RecommendRowOnPress(this.props.RecommendRowItem.storeNumber);
     };
 
     render() {

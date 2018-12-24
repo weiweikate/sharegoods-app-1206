@@ -1,5 +1,5 @@
 import {
-    Image, Text,
+    Image,
     TextInput, TouchableOpacity, View
 } from 'react-native';
 import React from 'react';
@@ -13,6 +13,7 @@ import user from '../../../../model/user';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui'
 const openEyeImage = res.button.open_eye;
 const closeEyeImage = res.button.close_eye;
 

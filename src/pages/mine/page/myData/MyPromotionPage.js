@@ -2,7 +2,6 @@
 import React from "react";
 import {
     View,
-    Text,
     Image,
     Dimensions,
     StyleSheet,
@@ -22,6 +21,7 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import ImageLoad from "@mr/image-placeholder";
+import {MRText as Text} from '../../../../components/ui'
 // 常量
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;
@@ -98,7 +98,7 @@ export default class MyPromotionPage extends BasePage {
                 loadingState: PageLoadingState.fail
             });
             if (err.code === 10009) {
-                this.$navigate("login/login/LoginPage");
+                this.gotoLoginPage()
             }
         });
         MineApi.getNextLevelInfo().then(resp => {
@@ -148,13 +148,13 @@ export default class MyPromotionPage extends BasePage {
                         <Text style={{
                             fontSize: 15,
                             color: "white"
-                        }}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ""}</Text>
+                        }} allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ""}</Text>
                         <ImageBackground style={{
                             justifyContent: "center", alignItems: "center", marginTop: 10,
                             height: 15,
                             width: 35
                         }} source={iconbg}>
-                            <Text style={styles.shopName}>{this.state.levelRemark || " "}</Text>
+                            <Text style={styles.shopName} allowFontScaling={false}>{this.state.levelRemark || " "}</Text>
                         </ImageBackground>
                     </View>
                 </View>
@@ -165,7 +165,7 @@ export default class MyPromotionPage extends BasePage {
                     <Text style={{
                         fontSize: 15,
                         color: DesignRule.textColor_mainTitle
-                    }}>成长值</Text>
+                    }} allowFontScaling={false}>成长值</Text>
                 </View>
 
                 <View style={{ flex: 1, alignItems: "center" }}>
@@ -173,7 +173,7 @@ export default class MyPromotionPage extends BasePage {
                         marginTop: 10,
                         color: "#f00006",
                         fontSize: 10
-                    }}>{this.state.experience || 0}<Text style={{
+                    }} allowFontScaling={false}>{this.state.experience || 0}<Text style={{
                         color: DesignRule.textColor_secondTitle
                     }}>
                         /{this.state.levelExperience}
@@ -202,7 +202,7 @@ export default class MyPromotionPage extends BasePage {
                         marginTop: 10,
                         color: DesignRule.textColor_mainTitle,
                         fontSize: 12
-                    }}>距离晋升还差
+                    }} allowFontScaling={false}>距离晋升还差
                         <Text style={{
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 12
@@ -210,7 +210,7 @@ export default class MyPromotionPage extends BasePage {
                             {(this.state.levelExperience - this.state.experience) > 0 ? `${this.state.levelExperience - this.state.experience}Exp` : "0Exp"}
                         </Text>
                         {(this.state.levelExperience - this.state.experience) > 0 ? null :
-                            <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}>(Exp已满)</Text>
+                            <Text style={{ color: DesignRule.mainColor, fontSize: 11 }} allowFontScaling={false}>(Exp已满)</Text>
                         }
                     </Text>
                 </View>
@@ -285,7 +285,7 @@ export default class MyPromotionPage extends BasePage {
             alignSelf: "center",
             fontSize: 17,
             includeFontPadding: false
-        }}>我的晋升</Text> : null;
+        }} allowFontScaling={false}>我的晋升</Text> : null;
         return (
             <View style={{
                 width: SCREEN_WIDTH, height: ScreenUtils.statusBarHeight + 44,
@@ -398,7 +398,7 @@ export default class MyPromotionPage extends BasePage {
                         backgroundColor: "#fff",
                         height: 48
                     }}>
-                        <Text style={{ fontSize: 14, color: "#000" }}>邀请好友</Text>
+                        <Text style={{ fontSize: 14, color: "#000" }} allowFontScaling={false}>邀请好友</Text>
                     </View>
                 </TouchableWithoutFeedback>
 
@@ -410,7 +410,7 @@ export default class MyPromotionPage extends BasePage {
                         flex: 1,
                         height: 48
                     }}>
-                        <Text style={{ fontSize: 14, color: "#fff" }}>去购物</Text>
+                        <Text style={{ fontSize: 14, color: "#fff" }} allowFontScaling={false}>去购物</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>

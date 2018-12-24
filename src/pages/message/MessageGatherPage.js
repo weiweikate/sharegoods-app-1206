@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {
-     StyleSheet, View, Text,  DeviceEventEmitter,
+     StyleSheet, View,  DeviceEventEmitter,
     TouchableWithoutFeedback
 } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
@@ -20,6 +20,7 @@ import MessageUtils from './utils/MessageUtils'
 import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 const emptyIcon = RES.message_empty;
+import {MRText as Text} from '../../components/ui'
 
 export default class MessageGatherPage extends BasePage {
     constructor(props) {
