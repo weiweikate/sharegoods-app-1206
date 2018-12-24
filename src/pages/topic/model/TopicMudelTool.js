@@ -52,13 +52,18 @@ const jumpPageParams = {
  * @param preseat 埋点所需来源字符串
  */
 function getTopicJumpPageParam(itemData, preseat = '专题列表') {
+
+
     return {
         pageRoute: jumpPageParams[itemData.productType],
         params: {
             productId: itemData.productId,
             productCode: itemData.prodCode,
             preseat: preseat,
-            linkTypeCode: itemData.prodCode
+            linkTypeCode: itemData.prodCode,
+            activityType: itemData.productType,
+            activityCode: itemData.prodCode,
+            productType: itemData.productType
         }
     }
 }
