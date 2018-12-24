@@ -193,6 +193,8 @@ export default class BasePage extends Component {
     };
     // 路由跳转
     $navigate = (routeName, params) => {
+        // navigate(routeName, params);
+        // return;
         try {
             if (!routeName) {
                 return;
@@ -258,6 +260,8 @@ export default class BasePage extends Component {
 
     // 返回
     $navigateBack = (step) => {
+        // navigateBack(step);
+        // return;
         try {
             console.log('step', step);
             let $routes = global.$routes || [];
