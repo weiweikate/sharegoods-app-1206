@@ -874,7 +874,7 @@ export default class MinePage extends BasePage {
     };
 }
 
-const profileWidth=ScreenUtils.width - DesignRule.margin_page * 2;
+const profileWidth=ScreenUtils.width - (DesignRule.margin_page-1.5) * 2;
 const styles = StyleSheet.create({
     container: {
         flex: 1
@@ -926,7 +926,7 @@ const styles = StyleSheet.create({
         height: (profileWidth*140/702),
         width: profileWidth,
         top: ScreenUtils.getImgHeightWithWidth(headerBgSize) - px2dp(31),
-        left: DesignRule.margin_page,
+        left: DesignRule.margin_page-1.5,
         position: 'absolute',
         flexDirection: 'row'
     },
