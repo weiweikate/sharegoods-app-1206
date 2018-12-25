@@ -6,7 +6,7 @@ import {
     TouchableOpacity, ScrollView, Alert
 } from 'react-native';
 import {
-    UIText, UIImage, RefreshList, MRText as Text, MRTextInput as RNTextInput
+    UIText, UIImage, RefreshList, MRText as Text, MRTextInput as RNTextInput,NoMoreClick
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -42,9 +42,9 @@ export default class ConfirmOrderPage extends BasePage {
             tokenCoinText: null,
             couponName: null,
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : [],
-            canUseCou:false
-
+            canUseCou:false,
         };
+        this.canCommit=true
     }
 
     $navigationBarOptions = {
@@ -55,7 +55,7 @@ export default class ConfirmOrderPage extends BasePage {
     //**********************************ViewPart******************************************
     renderAddress = () => {
         return (StringUtils.isNoEmpty(this.state.addressId) ?
-                <TouchableOpacity
+                <NoMoreClick
                     style={styles.addressSelectStyle}
                     onPress={() => this.selectAddress()}>
                     <UIImage source={position} style={{ height:ScreenUtils.autoSizeHeight(20) , width: ScreenUtils.autoSizeWidth(20), marginLeft:ScreenUtils.autoSizeWidth(20 ) }} resizeMode={'contain'}/>
@@ -74,8 +74,8 @@ export default class ConfirmOrderPage extends BasePage {
                             style={styles.receiverAddressStyle}/>
                     </View>
                     <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={'contain'}/>
-                </TouchableOpacity> :
-                <TouchableOpacity
+                </NoMoreClick> :
+                <NoMoreClick
                     style={{ height: ScreenUtils.autoSizeWidth(87), backgroundColor: 'white', flexDirection: 'row', alignItems: 'center' }}
                     onPress={() => this.selectAddress()}>
                     <UIImage source={position} style={{ height:ScreenUtils.autoSizeWidth(20), width:ScreenUtils.autoSizeWidth(20), marginLeft: ScreenUtils.autoSizeWidth(20) }} resizeMode={'contain'}/>
@@ -83,7 +83,7 @@ export default class ConfirmOrderPage extends BasePage {
                         <UIText value={'请添加一个收货人地址'} style={styles.hintStyle}/>
                     </View>
                     <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={'contain'}/>
-                </TouchableOpacity>
+                </NoMoreClick>
         );
     };
     renderSelectImage = () => {
@@ -106,7 +106,7 @@ export default class ConfirmOrderPage extends BasePage {
     renderDetail = () => {
         return (
             <View style={{ backgroundColor: 'white' }}>
-                <TouchableOpacity style={styles.couponsStyle}
+                <NoMoreClick style={styles.couponsStyle}
                                   disabled={!this.state.canUseCou}
                                   onPress={() => this.jumpToCouponsPage()}>
                     <UIText value={'优惠券'} style={styles.blackText}/>
@@ -116,11 +116,11 @@ export default class ConfirmOrderPage extends BasePage {
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
                 {this.renderLine()}
                 {!user.tokenCoin ? null :
                     <View>
-                        <TouchableOpacity style={styles.couponsStyle}
+                        <NoMoreClick style={styles.couponsStyle}
                                           onPress={() => this.jumpToCouponsPage('justOne')}>
                             <UIText value={'1元现金券'} style={styles.blackText}/>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -129,19 +129,19 @@ export default class ConfirmOrderPage extends BasePage {
                                     style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                                 <Image source={arrow_right}/>
                             </View>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                         {this.renderLine()}
                     </View>
                 }
-                <TouchableOpacity style={styles.couponsStyle}>
+                <NoMoreClick style={styles.couponsStyle}>
                     <UIText value={'运费'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText value={`¥${this.state.viewData.totalFreightFee}`}
                                 style={[styles.grayText]}/>
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
                 {this.renderLine()}
-                <TouchableOpacity style={styles.couponsStyle}>
+                <NoMoreClick style={styles.couponsStyle}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText value={'买家留言'} style={styles.blackText}/>
                         <RNTextInput
@@ -153,7 +153,7 @@ export default class ConfirmOrderPage extends BasePage {
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
                 {this.renderLine()}
             </View>
         );
@@ -208,12 +208,13 @@ export default class ConfirmOrderPage extends BasePage {
                             value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
                             style={styles.commitAmountStyle}/>
                     </View>
-                    <TouchableOpacity
+                    <NoMoreClick
                         style={styles.commitTouStyle}
+                        disabled={!this.canCommit}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
                                 style={{ fontSize: ScreenUtils.px2dp(16), color: 'white', paddingLeft:15,paddingRight:15}}/>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                 </View>
                 {this.renderLine()}
             </View>
@@ -509,6 +510,10 @@ export default class ConfirmOrderPage extends BasePage {
             bridge.$toast('请先添加地址');
             return;
         }
+        if(!this.canCommit){
+            return;
+        }
+        this.canCommit=false
         this.$loadingShow();
         if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2) {
             let params = {
@@ -522,6 +527,7 @@ export default class ConfirmOrderPage extends BasePage {
             if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
                 OrderApi.SeckillSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
+                    this.canCommit=true;
                     let data = response.data;
                     track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                         receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
@@ -539,6 +545,7 @@ export default class ConfirmOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
+                    this.canCommit=true;
                     this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
@@ -551,6 +558,7 @@ export default class ConfirmOrderPage extends BasePage {
             } else if (this.state.orderParam && this.state.orderParam.orderType === 2) {
                 OrderApi.DepreciateSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
+                    this.canCommit=true;
                     let data = response.data;
                     track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                         receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
@@ -567,6 +575,7 @@ export default class ConfirmOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
+                    this.canCommit=true;
                     this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
@@ -593,6 +602,7 @@ export default class ConfirmOrderPage extends BasePage {
                 OrderApi.PackageSubmitOrder(params1).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
+                    this.canCommit=true;
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
@@ -608,6 +618,7 @@ export default class ConfirmOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
+                    this.canCommit=true;
                     this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
@@ -631,6 +642,7 @@ export default class ConfirmOrderPage extends BasePage {
             OrderApi.submitOrder(params).then((response) => {
                 this.$loadingDismiss();
                 let data = response.data;
+                this.canCommit=true;
                 track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
                     receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
                     discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
@@ -647,6 +659,7 @@ export default class ConfirmOrderPage extends BasePage {
 
             }).catch(e => {
                 this.$loadingDismiss();
+                this.canCommit=true;
                 this.$toastShow(e.msg);
                 if (e.code === 54001) {
                     this.$toastShow('商品库存不足！');

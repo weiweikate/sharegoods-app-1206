@@ -272,7 +272,7 @@ export default class MyCouponsItems extends Component {
     };
     plusTokenCoin = () => {
         let num = this.state.tokenCoinNum;
-        if (num <= (parseInt(this.props.justOne) - 1)) {
+        if (num <= ( Math.min(parseInt(this.props.justOne), user.tokenCoin) - 1)) {
             this.setState({ tokenCoinNum: (num + 1) });
         }
     };
