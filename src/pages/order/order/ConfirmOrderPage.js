@@ -499,7 +499,6 @@ export default class ConfirmOrderPage extends BasePage {
         });
     };
     commitOrder = () => {
-        this.canCommit=false;
         let baseParams = {
             message: this.state.message,
             tokenCoin: this.state.tokenCoin,
@@ -511,6 +510,10 @@ export default class ConfirmOrderPage extends BasePage {
             bridge.$toast('请先添加地址');
             return;
         }
+        if(!this.canCommit){
+            return;
+        }
+        this.canCommit=false
         this.$loadingShow();
         if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2) {
             let params = {
