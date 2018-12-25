@@ -238,7 +238,7 @@ export default class MyPromotionPage extends BasePage {
                 {/*</View>*/}
                 {/*{this.renderSepLine()}*/}
                 {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
-                                            containerStyle={{ backgroundColor: '#fff', padding: 5 }}
+                                            containerStyle={{ backgroundColor: '#fff' }}
                                             imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                                             baseFontStyle={{
                                                 lineHeight: 25,
@@ -329,7 +329,6 @@ export default class MyPromotionPage extends BasePage {
     renderBodyView = () => {
         return (
             <ScrollView
-                style={{ paddingBottom: 30 }}
                 showsVerticalScrollIndicator={false}
                 onScroll={this._onScroll.bind(this)}
                 refreshControl={<RefreshControl
@@ -396,33 +395,37 @@ export default class MyPromotionPage extends BasePage {
 
     renderFooter() {
         return (
-            <View style={{
-                width: Dimensions.get('window').width, height: 48, position: 'absolute', bottom: 0,
-                alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
-            }}>
-                <TouchableWithoutFeedback onPress={this._onPressInvite}>
-                    <View style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flex: 1,
-                        backgroundColor: '#fff',
-                        height: 48
-                    }}>
-                        <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>邀请好友</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+            <View style={{ flexDirection: 'column', height: 48.5 }}>
+                <View
+                    style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
+                <View style={{
+                    width: Dimensions.get('window').width, height: 48, position: 'absolute', bottom: 0,
+                    alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
+                }}>
+                    <TouchableWithoutFeedback onPress={this._onPressInvite}>
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            backgroundColor: '#fff',
+                            height: 48
+                        }}>
+                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>邀请好友</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
 
-                <TouchableWithoutFeedback onPress={this._onGoShop}>
-                    <View style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: DesignRule.mainColor,
-                        flex: 1,
-                        height: 48
-                    }}>
-                        <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>去购物</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={this._onGoShop}>
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: DesignRule.mainColor,
+                            flex: 1,
+                            height: 48
+                        }}>
+                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>去购物</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
             </View>
         );
     }
