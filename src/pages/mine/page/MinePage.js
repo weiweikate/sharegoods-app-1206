@@ -730,7 +730,7 @@ export default class MinePage extends BasePage {
     renderMenu = () => {
 
         let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect, user.upUserCode ? mine_icon_mentor : null];
-        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏', user.upUserCode ? '导师' : null];
+        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏',user.upUserCode ? '导师' : null];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
