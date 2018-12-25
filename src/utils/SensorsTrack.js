@@ -29,7 +29,8 @@ const trackEvent = {
     receiveDiscountreceiveDiscount: 'receiveDiscountreceiveDiscount',//领取优惠券领取优惠券
     share: 'share',//分享商品
     contact: 'contact',//联系客服
-    QrcodeShareto: 'QrcodeShareto'//分享二维码
+    QrcodeShareto: 'QrcodeShareto',//分享二维码
+    receiveOneyuan: 'receiveOneyuan'//领取一元劵
 };
 
 
