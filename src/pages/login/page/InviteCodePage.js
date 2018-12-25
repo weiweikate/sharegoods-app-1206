@@ -197,8 +197,8 @@ export default class  extends BasePage {
             LoginAPI.mentorBind({
                 code: this.inviteModel.inviteCode
             }).then(res => {
-                bridge.$toast(res.msg);
                 this.$loadingDismiss();
+                bridge.$toast('注册成功');
                 homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(res => {

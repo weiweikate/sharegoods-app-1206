@@ -17,7 +17,7 @@ import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import UIText from '../../../components/ui/UIText';
-import {MRTextInput as TextInput} from '../../../components/ui'
+import { MRTextInput as TextInput } from '../../../components/ui';
 
 const {
     close_eye,
@@ -96,11 +96,10 @@ export default class LoginTopView extends Component {
         this.state = {
             isSecuret: true
         };
-
-
     }
 
     render() {
+        const { showOldLogin } = this.props;
         return (
             <View style={Styles.containViewStyle}>
                 <View style={Styles.switchBgStyle}>
@@ -161,13 +160,27 @@ export default class LoginTopView extends Component {
 
                     </View>
                 </TouchableOpacity>
-                {/*<View style={Styles.oldUserLoginBgStyle}>*/}
-                {/*<TouchableOpacity onPress={this.props.oldUserLoginClick}>*/}
-                {/*<Text style={Styles.oldUserLoginBtn}>*/}
-                {/*老用户激活>>*/}
-                {/*</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*</View>*/}
+                {
+                    showOldLogin?
+                        <View style={Styles.oldUserLoginBgStyle}>
+                            <TouchableOpacity onPress={this.props.oldUserLoginClick}>
+                                {/*<UIText*/}
+                                {/*style={Styles.oldUserLoginBtn}*/}
+                                {/*value={' 老用户激活>>'}*/}
+                                {/*>*/}
+                                {/*</UIText>*/}
+                                <Image
+                                    source={res.oldLoginBanner}
+                                    style={{
+                                        width: ScreenUtils.width - 40,
+                                        height: 100,
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        :null
+                }
+
             </View>
         );
     }
@@ -254,7 +267,6 @@ export default class LoginTopView extends Component {
                             <UIText style={[Styles.codeTextStyle, { width: 90 }]}
                                     value={'忘记密码'}
                             >
-
                             </UIText>
                         </TouchableOpacity>
                     </View>
@@ -374,8 +386,10 @@ const Styles = StyleSheet.create(
             fontSize: 17
         },
         oldUserLoginBgStyle: {
-            marginTop: 10,
-            flexDirection: 'row-reverse'
+            marginTop: 30,
+            // flexDirection: 'row-reverse',
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         oldUserLoginBtn: {
             width: 100,
