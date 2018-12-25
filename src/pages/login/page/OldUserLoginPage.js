@@ -15,6 +15,7 @@ import LoginAPI from '../api/LoginApi';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
+import {track} from '../../../utils/SensorsTrack'
 
 const {
     close_eye,
@@ -66,6 +67,7 @@ export default class OldUserLoginPage extends BasePage {
 
     constructor(props) {
         super(props);
+        track('$AppViewScreen', { '$screen_name': 'OldUserLoginPage','$title':'老用户登录' });
     }
 
     // 导航配置
@@ -83,7 +85,6 @@ export default class OldUserLoginPage extends BasePage {
     /*注册事件*/
     registBtnClick = () => {
         this.$navigate('login/login/RegistPage');
-
     };
 
     $isMonitorNetworkStatus() {
