@@ -28,7 +28,7 @@ import WaveView from 'WaveView';
 import MessageApi from '../../message/api/MessageApi';
 import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
 
 const {
     mine_header_bg,
@@ -292,9 +292,10 @@ export default class MinePage extends BasePage {
             name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
         }
 
-        let icon = (user.headImg && user.headImg.length > 0) ?  <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle}
-                                                                           borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
-                                                                                                                   borderRadius={px2dp(27)}/>
+        let icon = (user.headImg && user.headImg.length > 0) ?
+            <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle}
+                       borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
+                                                           borderRadius={px2dp(27)}/>;
 
         return (
             <ImageBackground style={styles.headerBgStyle} source={mine_header_bg}>
@@ -319,7 +320,7 @@ export default class MinePage extends BasePage {
                                     {name}
                                 </Text>
                                 <UIImage source={res.button.white_go}
-                                         style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12) }}
+                                         style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(6) }}
                                          resizeMode={'stretch'}/>
                             </View>
                         </TouchableWithoutFeedback>
@@ -855,7 +856,7 @@ export default class MinePage extends BasePage {
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {
-            this.gotoLoginPage()
+            this.gotoLoginPage();
             return;
         }
         this.$navigate('order/order/MyOrdersListPage', { index: 0 });
@@ -874,7 +875,7 @@ export default class MinePage extends BasePage {
     };
 }
 
-const profileWidth=ScreenUtils.width - (DesignRule.margin_page-1.5) * 2;
+const profileWidth = ScreenUtils.width - (DesignRule.margin_page - 1.5) * 2;
 const styles = StyleSheet.create({
     container: {
         flex: 1
@@ -923,10 +924,10 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(1)
     },
     makeMoneyMoreBackground: {
-        height: (profileWidth*140/702),
+        height: (profileWidth * 140 / 702),
         width: profileWidth,
         top: ScreenUtils.getImgHeightWithWidth(headerBgSize) - px2dp(31),
-        left: DesignRule.margin_page-1.5,
+        left: DesignRule.margin_page - 1.5,
         position: 'absolute',
         flexDirection: 'row'
     },
