@@ -151,7 +151,7 @@ export default class SignInPage extends BasePage {
 
     //兑换一元优惠券
     exchangeCoupon = () => {
-        track(trackEvent.receiveDiscount,{discountName:'1元抵扣券',discountAmount:1});
+        track(trackEvent.receiveOneyuan,{YiyuanCouponsAmount:1,YiyuanCouponsAmountgetMethod:'exchange'});
         HomeAPI.exchangeTokenCoin().then((data) => {
             this.$toastShow('成功兑换一张1元抵扣券');
             this.reSaveUserInfo();

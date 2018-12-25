@@ -26,7 +26,7 @@ import DesignRule from 'DesignRule';
 import MineApi from '../api/MineApi';
 import res from '../res';
 import Modal from 'CommModal';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
 
 const NoMessage = res.couponsImg.coupons_no_data;
 const usedBg = res.couponsImg.youhuiquan_bg_zhihui;
@@ -301,8 +301,10 @@ export default class MyCouponsItems extends Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }} allowFontScaling={false}>还没有优惠券哦</Text>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }} allowFontScaling={false}>快去商城逛逛吧</Text>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
+                      allowFontScaling={false}>还没有优惠券哦</Text>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
+                      allowFontScaling={false}>快去商城逛逛吧</Text>
                 <TouchableOpacity
                     onPress={() => {
                         this._gotoLookAround();
@@ -387,13 +389,17 @@ export default class MyCouponsItems extends Component {
         let result = null;
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
-                return '限商品：限指定商品可使用';
+                return '限商品：限指定商品可用';
             }
             if (products.length > 1) {
-                return '限商品：限指定商品可使用';
+                return '限商品：限指定商品可用';
             }
             if (products.length === 1) {
-                return `限商品：限${products[0]}可用`;
+                let productStr = products[0];
+                if (productStr.length > 15) {
+                    productStr = productStr.substring(0, 15) + '...';
+                }
+                return `限商品：限${productStr}商品可用`;
             }
         }
         else if ((cat1.length + cat2.length + cat3.length) === 1) {

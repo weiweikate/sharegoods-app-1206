@@ -47,7 +47,7 @@ const trackEvent = {
     Dropout: 'Dropout',//请出拼店
     ReceiveDividents: 'ReceiveDividents',//收到分红
     VIPChange: 'VIPChange',//会员流转
-    QrcodeShareto: 'QrcodeShareto'//分享二维码
+    QrcodeShareto: 'QrcodeShareto',//分享二维码
 };
 
 
