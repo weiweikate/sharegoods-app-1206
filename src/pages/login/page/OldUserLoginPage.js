@@ -152,7 +152,11 @@ export default class OldUserLoginPage extends BasePage {
                     <Text
                         style={
                             [Styles.bottomTimeStyle,
-                                {marginTop:40}
+                                {
+                                    marginTop: 40,
+                                    fontSize: 13,
+                                    color:'#000'
+                                }
                             ]
                         }
                     >
@@ -287,7 +291,7 @@ const Styles = StyleSheet.create(
             textAlign: 'center',
             fontSize: 12,
             color: DesignRule.textColor_secondTitle,
-            marginLeft:20
+            marginLeft: 20
         },
         bottomKeFuTextStyle: {
             width: ScreenUtils.width,
