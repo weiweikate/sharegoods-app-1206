@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     Image,
     Dimensions,
     StyleSheet,
@@ -14,6 +13,9 @@ const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 const StarIcon = res.shopSetting.wjx_03;
 const store_level_1 = res.shopSetting.store_level_1;

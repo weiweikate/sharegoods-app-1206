@@ -5,11 +5,10 @@
 import React from 'react';
 import {
     View,
-    Text,
     TouchableOpacity
 } from 'react-native';
 import {
-    UIText
+    UIText, MRText as Text
 } from '../../../components/ui';
 // import GoodsItem from './GoodsItem';
 import GoodsGrayItem from './GoodsGrayItem';

@@ -5,7 +5,6 @@ import {
     View,
     TouchableOpacity,
     StyleSheet,
-    TextInput,
     Image
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
@@ -18,6 +17,7 @@ import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import UIText from '../../../components/ui/UIText';
+import { MRTextInput as TextInput } from '../../../components/ui';
 
 const {
     close_eye,
@@ -96,11 +96,10 @@ export default class LoginTopView extends Component {
         this.state = {
             isSecuret: true
         };
-
-
     }
 
     render() {
+        const { showOldLogin } = this.props;
         return (
             <View style={Styles.containViewStyle}>
                 <View style={Styles.switchBgStyle}>
@@ -161,13 +160,29 @@ export default class LoginTopView extends Component {
 
                     </View>
                 </TouchableOpacity>
-                {/*<View style={Styles.oldUserLoginBgStyle}>*/}
-                {/*<TouchableOpacity onPress={this.props.oldUserLoginClick}>*/}
-                {/*<Text style={Styles.oldUserLoginBtn}>*/}
-                {/*老用户激活>>*/}
-                {/*</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*</View>*/}
+                {
+                    showOldLogin?
+                        <View style={Styles.oldUserLoginBgStyle}>
+
+
+                            <TouchableOpacity onPress={this.props.oldUserLoginClick}>
+                                {/*<UIText*/}
+                                {/*style={Styles.oldUserLoginBtn}*/}
+                                {/*value={' 老用户激活>>'}*/}
+                                {/*>*/}
+                                {/*</UIText>*/}
+                                {/*<Image*/}
+                                    {/*style={{*/}
+                                        {/*width: ScreenUtils.width - 70,*/}
+                                        {/*height: 100,*/}
+                                        {/*backgroundColor: 'red'*/}
+                                    {/*}}*/}
+                                {/*/>*/}
+                            </TouchableOpacity>
+                        </View>
+                        :null
+                }
+
             </View>
         );
     }
@@ -374,8 +389,10 @@ const Styles = StyleSheet.create(
             fontSize: 17
         },
         oldUserLoginBgStyle: {
-            marginTop: 10,
-            flexDirection: 'row-reverse'
+            marginTop: 30,
+            flexDirection: 'row-reverse',
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         oldUserLoginBtn: {
             width: 100,

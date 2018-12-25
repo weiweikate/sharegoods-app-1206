@@ -14,7 +14,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity,
     Image,
     TouchableWithoutFeedback
@@ -32,6 +31,7 @@ import DateUtils from '../../../utils/DateUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import user from '../../../model/user';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import {MRText as Text} from '../../../components/ui'
 import res from '../res'
 const arrow_bottom =  res.button.arrow_bottom;
 const arrow_top =  res.button.arrow_top;

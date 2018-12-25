@@ -9,11 +9,13 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
     Image,
     TouchableOpacity
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
+import {
+    MRText as Text
+} from './components/ui';
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
@@ -191,6 +193,8 @@ export default class BasePage extends Component {
     };
     // 路由跳转
     $navigate = (routeName, params) => {
+        // navigate(routeName, params);
+        // return;
         try {
             if (!routeName) {
                 return;
@@ -256,6 +260,8 @@ export default class BasePage extends Component {
 
     // 返回
     $navigateBack = (step) => {
+        // navigateBack(step);
+        // return;
         try {
             console.log('step', step);
             let $routes = global.$routes || [];

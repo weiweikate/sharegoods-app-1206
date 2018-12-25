@@ -5,11 +5,11 @@ import {
   View,
   ViewPropTypes,
   RefreshControl,
-  Text
 } from 'react-native'
 
 import PropTypes from 'prop-types'
 import DesignRule from "../../constants/DesignRule";
+import {MRText as Text} from './UIText'
 
 class Item extends React.PureComponent {
   render() {

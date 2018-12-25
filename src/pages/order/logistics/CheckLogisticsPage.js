@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View,Image,ScrollView} from 'react-native';
+import { StyleSheet, TouchableOpacity, View,Image,ScrollView} from 'react-native';
 import BasePage from '../../../BasePage';
-// import { UIImage, UIText } from '../../../components/ui';
+import { MRText as Text} from '../../../components/ui';
 // import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 // import OrderApi from '../api/orderApi';

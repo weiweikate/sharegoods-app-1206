@@ -17,7 +17,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TextInput,
     TouchableOpacity,
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -27,7 +26,8 @@ import UIText from '../../../comm/components/UIText';
 import LoginAPI from '../api/LoginApi';
 // import { NavigationActions } from 'react-navigation';
 import bridge from '../../../utils/bridge';
-import {MRText as Text} from '../../../components/ui'
+import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
+import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
 
 class inviteModel {
     /*0代表验证码登录 1代表密码登录*/
@@ -77,7 +77,12 @@ export default class  extends BasePage {
 
     jump = () => {
         bridge.$toast("注册成功")
-        this.$navigateBackToHome();
+        LoginAPI.givePackage().then(result => {
+            homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
+            this.$navigateBackToHome();
+        }).catch(error => {
+            this.$navigateBackToHome();
+        });
     };
 
     _bind() {
@@ -192,8 +197,9 @@ export default class  extends BasePage {
             LoginAPI.mentorBind({
                 code: this.inviteModel.inviteCode
             }).then(res => {
-                bridge.$toast(res.msg);
                 this.$loadingDismiss();
+                bridge.$toast('注册成功');
+                homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(res => {
                 this.$loadingDismiss();

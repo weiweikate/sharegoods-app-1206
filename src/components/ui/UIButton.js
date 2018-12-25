@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-    Text,
     TouchableOpacity
 } from 'react-native';
 import connectStyle from './connectStyle';
+import {MRText as Text}from './UIText';
 
 const UIButton = props => {
     const {

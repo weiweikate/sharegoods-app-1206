@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
 import DesignRule from 'DesignRule';
 import UIImage from "@mr/image-placeholder";
+import {
+    MRText as Text
+} from '../../../../components/ui';
 
 export default class ShopInfoRow extends Component {
 

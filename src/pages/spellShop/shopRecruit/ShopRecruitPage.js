@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -10,6 +9,9 @@ import {
     RefreshControl, Alert
 } from 'react-native';
 
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 import RecruitMembersRow from './components/RecruitMembersRow';
 import RecruitHeaderView from './components/RecruitHeaderView';

@@ -3,12 +3,10 @@ import {
     StyleSheet,
     View,
     Image,
-    TextInput as RNTextInput,
-    Text,
     TouchableOpacity, ScrollView, Alert
 } from 'react-native';
 import {
-    UIText, UIImage, RefreshList
+    UIText, UIImage, RefreshList, MRText as Text, MRTextInput as RNTextInput
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
