@@ -217,7 +217,8 @@ export default class SearchResultPage extends BasePage {
     };
 
     _onPressAtIndex = (prodCode) => {
-        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,preseat:'搜索结果' });
+        this.$navigate(RouterMap.XpDetailPage)
+        // this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,preseat:'搜索结果' });
     };
 
     //选择规格确认
