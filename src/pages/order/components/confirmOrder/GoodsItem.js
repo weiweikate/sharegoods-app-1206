@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import {
     UIText
-} from "../../../components/ui";
+} from "../../../../components/ui/index";
 import UIImage from "@mr/image-placeholder";
-import ScreenUtils from "../../../utils/ScreenUtils";
+import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "DesignRule";
 
 const GoodsItem = props => {

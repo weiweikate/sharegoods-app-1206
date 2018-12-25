@@ -11,14 +11,12 @@ import BasePage from "../../../BasePage";
 import { RefreshList } from "../../../components/ui";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
-// import { TimeDownUtils } from "../../../utils/TimeDownUtils";
 import GoodsDetailItem from "../components/GoodsDetailItem";
 import SingleSelectionModal from "../components/BottomSingleSelectModal";
 import ShowMessageModal from "../components/ShowMessageModal";
 import Toast from "../../../utils/bridge";
 import GoodsGrayItem from "../components/GoodsGrayItem";
 import OrderApi from "../api/orderApi";
-// import user from "../../../model/user";
 import { PageLoadingState, renderViewByLoadingState } from "../../../components/pageDecorator/PageState";
 import { NavigationActions } from "react-navigation";
 import DesignRule from "DesignRule";
@@ -60,7 +58,6 @@ export default class MyOrdersDetailPage extends BasePage {
             giftBagCoupons: [],
             cancelArr: []
         };
-        // this.timeUtils = new TimeDownUtils();
     }
 
     $navigationBarOptions = {
@@ -501,8 +498,6 @@ export default class MyOrdersDetailPage extends BasePage {
             });
         }
         this.setState({ viewData: dataArr });
-        console.log("viewdata", dataArr);
-
         /*
          * operationMenuCheckList
          * 去支付                 ->  1
