@@ -53,7 +53,7 @@ const {
     mine_level_background,
     mine_icon_mentor,
     mine_user_icon,
-    mine_icon_fans
+    // mine_icon_fans
 } = res.homeBaseImg;
 
 
@@ -742,8 +742,12 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
 
-        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect,this.state.hasFans?mine_icon_fans:null, user.upUserCode ? mine_icon_mentor : null];
-        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏',this.state.hasFans?'我的秀迷':null,user.upUserCode ? '导师' : null];
+        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect
+            // ,this.state.hasFans?mine_icon_fans:null
+            , user.upUserCode ? mine_icon_mentor : null];
+        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏'
+            // , this.state.hasFans?'我的秀迷':null
+            ,user.upUserCode ? '导师' : null];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
@@ -855,12 +859,12 @@ export default class MinePage extends BasePage {
             // case 7:
             //     this.$navigate(RouterMap.WebViewDemo);
             //     break;
+            // case 7:
+            //     if(this.state.hasFans){
+            //         this.$navigate(RouterMap.MyShowFansPage);
+            //     }
+            //     break;
             case 7:
-                if(this.state.hasFans){
-                    this.$navigate(RouterMap.MyShowFansPage);
-                }
-                break;
-            case 8:
                 if (user.upUserCode) {
                     this.$navigate(RouterMap.MyMentorPage);
                 }
