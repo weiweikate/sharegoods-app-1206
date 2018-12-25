@@ -163,21 +163,19 @@ export default class LoginTopView extends Component {
                 {
                     showOldLogin?
                         <View style={Styles.oldUserLoginBgStyle}>
-
-
                             <TouchableOpacity onPress={this.props.oldUserLoginClick}>
                                 {/*<UIText*/}
                                 {/*style={Styles.oldUserLoginBtn}*/}
                                 {/*value={' 老用户激活>>'}*/}
                                 {/*>*/}
                                 {/*</UIText>*/}
-                                {/*<Image*/}
-                                    {/*style={{*/}
-                                        {/*width: ScreenUtils.width - 70,*/}
-                                        {/*height: 100,*/}
-                                        {/*backgroundColor: 'red'*/}
-                                    {/*}}*/}
-                                {/*/>*/}
+                                <Image
+                                    source={res.oldLoginBanner}
+                                    style={{
+                                        width: ScreenUtils.width - 40,
+                                        height: 100,
+                                    }}
+                                />
                             </TouchableOpacity>
                         </View>
                         :null
@@ -269,7 +267,6 @@ export default class LoginTopView extends Component {
                             <UIText style={[Styles.codeTextStyle, { width: 90 }]}
                                     value={'忘记密码'}
                             >
-
                             </UIText>
                         </TouchableOpacity>
                     </View>
@@ -390,7 +387,7 @@ const Styles = StyleSheet.create(
         },
         oldUserLoginBgStyle: {
             marginTop: 30,
-            flexDirection: 'row-reverse',
+            // flexDirection: 'row-reverse',
             alignItems: 'center',
             justifyContent: 'center'
         },
