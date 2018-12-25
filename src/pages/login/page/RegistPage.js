@@ -18,7 +18,6 @@ import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
 import {MRText as Text} from '../../../components/ui'
-import {track} from '../../../utils/SensorsTrack'
 
 const {
     red_button_s,
