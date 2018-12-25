@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import { MRText as Text } from '../../../../../components/ui';
 import DesignRule from '../../../../../constants/DesignRule';
@@ -9,11 +8,10 @@ const { px2dp } = ScreenUtils;
 
 class ListItem extends Component {
     render() {
-        const { tittle, img } = this.props.item || {};
+        const { tittle } = this.props.item || {};
         return (
             <View>
                 <View style={styles.itemView}>
-                    <UIImage style={styles.itemImg} source={img}/>
                     <Text style={styles.itemText} numberOfLines={1}>{tittle || ''}</Text>
                 </View>
             </View>
@@ -21,7 +19,7 @@ class ListItem extends Component {
     }
 }
 
-export class XpDetailSelectListView extends Component {
+export class XpDetailUpSelectListView extends Component {
 
     _renderItem = ({ item }) => {
         return <ListItem item={item}/>;
@@ -40,6 +38,7 @@ export class XpDetailSelectListView extends Component {
                           keyExtractor={this._keyExtractor}
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}/>
+                <View style={styles.lineView}/>
             </View>
         );
     }
@@ -47,21 +46,23 @@ export class XpDetailSelectListView extends Component {
 
 const styles = StyleSheet.create({
     bgView: {
-        marginTop: 10
+        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2,
+        backgroundColor: DesignRule.white
     },
-    /*item*/
     itemView: {
-        width: px2dp(100), marginLeft: 15,
-        borderRadius: 5, borderWidth: 1, borderColor: DesignRule.lineColor_inWhiteBg
-    },
-    itemImg: {
-        width: px2dp(100), height: px2dp(90)
+        justifyContent: 'center',
+        width: px2dp(97), height: px2dp(28), marginLeft: 15, marginVertical: 8,
+        borderRadius: px2dp(14), borderWidth: 1, borderColor: DesignRule.lineColor_inWhiteBg
     },
     itemText: {
-        textAlign: 'center',
-        paddingVertical: 7, paddingHorizontal: 5,
-        fontSize: 12, color: DesignRule.textColor_mainTitle
+        paddingHorizontal: 5,
+        fontSize: 12, color: DesignRule.textColor_instruction,
+        textAlign: 'center'
+    },
+    lineView: {
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: DesignRule.lineColor_inWhiteBg
     }
 });
 
-export default XpDetailSelectListView;
+export default XpDetailUpSelectListView;

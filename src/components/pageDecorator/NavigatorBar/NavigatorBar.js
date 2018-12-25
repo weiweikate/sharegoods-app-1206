@@ -307,8 +307,8 @@ const styles = StyleSheet.create({
         top: ScreenUtils.statusBarHeight,
         right: 0,
         bottom: 0,
-        justifyContent: 'center',
-        paddingHorizontal: 10
+        justifyContent: 'center', alignItems: 'center',
+        width: 44
     },
     button: {
         color: DesignRule.mainColor,

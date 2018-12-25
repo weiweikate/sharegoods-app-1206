@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import { observer } from 'mobx-react';
 import UIImage from '@mr/image-placeholder';
-import ScreenUtils from '../../../../../utils/ScreenUtils';
 import { MRText as Text } from '../../../../../components/ui';
+import { observer } from 'mobx-react';
+import ScreenUtils from '../../../../../utils/ScreenUtils';
 import DesignRule from '../../../../../constants/DesignRule';
-
 
 const { px2dp } = ScreenUtils;
 
@@ -44,7 +43,8 @@ export class XpDetailProductView extends Component {
 const styles = StyleSheet.create({
     /*背景*/
     bgView: {
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 20, marginBottom: 15
     },
     /*图片*/
     headerImg: {

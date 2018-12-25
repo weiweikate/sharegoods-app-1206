@@ -2,7 +2,13 @@ import { observable, action } from 'mobx';
 
 class XpDetailModel {
 
-    @observable img = 'https://image.baidu.com/search/detail?ct=503316480&z=0&ipn=d&word=图片&hs=0&pn=0&spn=0&di=220&pi=0&rn=1&tn=baiduimagedetail&is=0%2C0&ie=utf-8&oe=utf-8&cl=2&lm=-1&cs=2249893882%2C1165836821&os=2203774813%2C3758473366&simid=4236599532%2C754691173&adpicid=0&lpn=0&ln=30&fr=ala&fm=&sme=&cg=&bdtype=0&oriquery=&objurl=http%3A%2F%2Fimg03.tooopen.com%2Fuploadfile%2Fdowns%2Fimages%2F20110714%2Fsy_20110714135215645030.jpg&fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Bp555rjg_z%26e3Bv54AzdH3FetjoAzdH3F80mma8_z%26e3Bip4s&gsm=0&islist=&querylist=';
+    @observable listData = [{ img: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png', tittle: '饿额呵呵呵呵呵呵呵' },
+        { img: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png', tittle: '饿额呵呵呵呵呵呵呵' },
+        { img: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png', tittle: '饿额呵呵呵呵呵呵呵' },
+        { img: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png', tittle: '饿额呵呵呵呵呵呵呵' },
+        { img: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png', tittle: '饿额呵呵呵呵呵呵呵' }];
+
+    @observable img = 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png';
     @observable vip = 'V1价';
     @observable price = '345-345';
     @observable leave = '库存12314';
