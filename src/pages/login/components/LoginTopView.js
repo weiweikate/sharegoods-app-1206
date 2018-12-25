@@ -3,10 +3,8 @@ import { observer } from 'mobx-react';
 import { observable, action, computed } from 'mobx';
 import {
     View,
-    Text,
     TouchableOpacity,
     StyleSheet,
-    TextInput,
     Image
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
@@ -18,10 +16,12 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import UIText from '../../../components/ui/UIText';
+import { MRTextInput as TextInput } from '../../../components/ui';
 
 const {
     close_eye,
-    open_eye,
+    open_eye
 } = res;
 
 const dismissKeyboard = require('dismissKeyboard');
@@ -50,6 +50,7 @@ class LoginTopViewModel {
         }
         this.phoneNumber = phoneNmber;
     }
+
     @action
     savePassword(password) {
         if (!password) {
@@ -58,6 +59,7 @@ class LoginTopViewModel {
         }
         this.password = password;
     }
+
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
@@ -66,6 +68,7 @@ class LoginTopViewModel {
         }
         this.vertifyCode = vertifyCode;
     }
+
     @computed
     get isCanClick() {
         if (this.phoneNumber.length < 11) {
@@ -91,33 +94,33 @@ export default class LoginTopView extends Component {
         super(props);
 
         this.state = {
-            isSecuret :true
-        }
-
-
+            isSecuret: true
+        };
     }
 
     render() {
+        const { showOldLogin } = this.props;
         return (
             <View style={Styles.containViewStyle}>
                 <View style={Styles.switchBgStyle}>
                     <TouchableOpacity onPress={() => {
                         this.switchBtnClick(0);
                     }}>
-                        <Text
+                        <UIText
+                            value={'验证码登录'}
                             style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]}>
-                            验证码登录
-                        </Text>
+                        </UIText>
                         <View
                             style={this.LoginModel.selectIndex ? Styles.btnBottomLineNonStyle : Styles.btnBottomLineStyle}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         this.switchBtnClick(1);
                     }}>
-                        <Text
+                        <UIText
+                            value={'密码登录'}
                             style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: DesignRule.mainColor } : { color: DesignRule.textColor_secondTitle }]}>
-                            密码登录
-                        </Text>
+
+                        </UIText>
                         <View
                             style={this.LoginModel.selectIndex ? Styles.btnBottomLineStyle : Styles.btnBottomLineNonStyle}/>
                     </TouchableOpacity>
@@ -125,8 +128,9 @@ export default class LoginTopView extends Component {
 
                 <View>
                     <TextInput
+                        allowFontScaling={false}
                         style={Styles.phoneNumberInputStyle}
-                        value={   this.LoginModel.phoneNumber}
+                        value={this.LoginModel.phoneNumber}
                         onChangeText={text => this.LoginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
                         underlineColorAndroid='transparent'
@@ -148,19 +152,35 @@ export default class LoginTopView extends Component {
                     <View
                         style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
 
-                        <Text style={Styles.loginBtnTextStyle}>
-                            登录
-                        </Text>
+                        <UIText style={Styles.loginBtnTextStyle}
+                                value={'登录'}
+                        >
+
+                        </UIText>
 
                     </View>
                 </TouchableOpacity>
-                {/*<View style={Styles.oldUserLoginBgStyle}>*/}
-                    {/*<TouchableOpacity onPress={this.props.oldUserLoginClick}>*/}
-                        {/*<Text style={Styles.oldUserLoginBtn}>*/}
-                            {/*老用户激活>>*/}
-                        {/*</Text>*/}
-                    {/*</TouchableOpacity>*/}
-                {/*</View>*/}
+                {
+                    showOldLogin?
+                        <View style={Styles.oldUserLoginBgStyle}>
+                            <TouchableOpacity onPress={this.props.oldUserLoginClick}>
+                                {/*<UIText*/}
+                                {/*style={Styles.oldUserLoginBtn}*/}
+                                {/*value={' 老用户激活>>'}*/}
+                                {/*>*/}
+                                {/*</UIText>*/}
+                                <Image
+                                    source={res.oldLoginBanner}
+                                    style={{
+                                        width: ScreenUtils.width - 40,
+                                        height: 100,
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        :null
+                }
+
             </View>
         );
     }
@@ -174,6 +194,7 @@ export default class LoginTopView extends Component {
             <View>
                 <View style={Styles.textBgViewStyle}>
                     <TextInput
+                        allowFontScaling={false}
                         style={Styles.inputTextStyle}
                         value={this.LoginModel.vertifyCode}
                         onChangeText={text => this.LoginModel.saveVertifyCode(text)}
@@ -188,9 +209,10 @@ export default class LoginTopView extends Component {
                         onPress={this.getVertifyCode}
                         activeOpacity={1}
                     >
-                        <Text style={Styles.codeTextStyle}>
-                            {this.LoginModel.dowTime > 0 ? `${this.LoginModel.dowTime}秒后重新获取` : '获取验证码'}
-                        </Text>
+                        <UIText style={Styles.codeTextStyle}
+                                value={this.LoginModel.dowTime > 0 ? `${this.LoginModel.dowTime}秒后重新获取` : '获取验证码'}
+                        >
+                        </UIText>
                     </TouchableOpacity>
                 </View>
                 <CommSpaceLine style={Styles.lineStyle}/>
@@ -222,6 +244,7 @@ export default class LoginTopView extends Component {
             <View>
                 <View style={Styles.textBgViewStyle}>
                     <TextInput
+                        allowFontScaling={false}
                         style={Styles.inputTextStyle}
                         value={this.LoginModel.password}
                         onChangeText={text => this.LoginModel.savePassword(text)}
@@ -241,9 +264,10 @@ export default class LoginTopView extends Component {
                         </TouchableOpacity>
                         <CommSpaceLine style={{ marginLeft: 10, width: 1, marginTop: 35, height: 20 }}/>
                         <TouchableOpacity onPress={this.props.forgetPasswordClick}>
-                            <Text style={[Styles.codeTextStyle, { width: 90 }]}>
-                                忘记密码
-                            </Text>
+                            <UIText style={[Styles.codeTextStyle, { width: 90 }]}
+                                    value={'忘记密码'}
+                            >
+                            </UIText>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -310,7 +334,7 @@ const Styles = StyleSheet.create(
         btnBottomLineNonStyle: {
             height: 0
         },
-        phoneNumberInputStyle:{
+        phoneNumberInputStyle: {
             marginTop: 30,
             marginLeft: 20,
             width: ScreenUtils.width - 40,
@@ -362,8 +386,10 @@ const Styles = StyleSheet.create(
             fontSize: 17
         },
         oldUserLoginBgStyle: {
-            marginTop: 10,
-            flexDirection: 'row-reverse'
+            marginTop: 30,
+            // flexDirection: 'row-reverse',
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         oldUserLoginBtn: {
             width: 100,

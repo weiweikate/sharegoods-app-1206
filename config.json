@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "pre_release",
+    "envType": "dev",
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
         "dev_mock": {
@@ -102,13 +102,13 @@
             "name": "申xiangyu",
             "host": "http://172.16.10.91:18080/gateway"
         },
-        "开发平台18080": {
+        "开发平台8080": {
             "name": "开发平台18080",
-            "host": "http://192.168.100.20:18080/gateway"
+            "host": "http://192.168.100.22:8080/gateway"
         },
         "开发平台9090": {
             "name": "开发平台9090",
-            "host": "http://192.168.100.20:9090/gateway"
+            "host": "http://192.168.100.22:9090/gateway"
                 },
         "岑登":{
             "name": "岑登",

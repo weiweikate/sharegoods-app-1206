@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -9,6 +9,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import user from '../../../../model/user';
 import MineAPI from '../../api/MineApi';
 import DesignRule from 'DesignRule';
+import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
 
 export default class SetNewPhoneNumPage extends BasePage {
 

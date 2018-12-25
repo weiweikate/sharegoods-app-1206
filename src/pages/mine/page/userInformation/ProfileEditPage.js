@@ -15,15 +15,14 @@ import React from "react";
 import {
     StyleSheet,
     TouchableWithoutFeedback,
-    View,
-    Text,
-    TextInput
+    View
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import DesignRule from "../../../../constants/DesignRule";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import MineAPI from "../../api/MineApi";
 import user from "../../../../model/user";
+import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
 
 const { px2dp } = ScreenUtils;
 export default class ProfileEditPage extends BasePage {

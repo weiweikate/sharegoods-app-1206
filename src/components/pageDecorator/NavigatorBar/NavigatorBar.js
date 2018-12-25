@@ -97,7 +97,7 @@ export default class NavigatorBar extends Component {
             props.rightNavTitle !== this.state.rightNavTitle ||
             props.rightNavItemHidden !== this.state.rightNavItemHidden) {
             this.setState({
-                title: props.title || this.state.title || '',
+                title: this.state.title || props.title || '',
                 hideNavBar: !!props.hideNavBar,
                 rightNavTitle: props.rightNavTitle || this.state.rightNavTitle || '',
                 leftNavItemHidden: !!props.leftNavItemHidden,
@@ -221,7 +221,7 @@ export default class NavigatorBar extends Component {
             return <TouchableOpacity
                 style={styles.right}
                 onPress={this._onRightPressed}>
-                <Text style={[styles.button, this.props.rightTitleStyle]}>{rightNavTitle || ''}</Text>
+                <Text style={[styles.button, this.props.rightTitleStyle]} allowFontScaling={false}>{rightNavTitle || ''}</Text>
             </TouchableOpacity>;
         }
         return null;
@@ -229,7 +229,7 @@ export default class NavigatorBar extends Component {
 
     _renderTitle = () => {
         const { title, titleStyle } = this.state;
-        return (<Text style={[styles.title, titleStyle]} numberOfLines={1}>{title || ' '}</Text>);
+        return (<Text style={[styles.title, titleStyle]} allowFontScaling={false} numberOfLines={1}>{title || ' '}</Text>);
     };
 
     _renderStatusBar = () => {

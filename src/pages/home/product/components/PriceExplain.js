@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import DesignRule from '../../../../constants/DesignRule';
+import {MRText as Text} from '../../../../components/ui';
 
 export class PriceExplain extends Component {
   render() {

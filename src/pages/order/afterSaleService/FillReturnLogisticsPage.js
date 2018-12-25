@@ -7,7 +7,6 @@ import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    TextInput,
     DeviceEventEmitter,
     ScrollView
 } from 'react-native';
@@ -15,7 +14,8 @@ import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
 import {
     UIText,
-    UIImage
+    UIImage,
+    MRTextInput as TextInput
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';

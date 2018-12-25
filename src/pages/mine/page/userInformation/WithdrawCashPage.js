@@ -2,7 +2,6 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    TextInput as RNTextInput,
     TouchableOpacity, Alert,
     DeviceEventEmitter,
     TouchableWithoutFeedback,
@@ -12,7 +11,7 @@ import BasePage from "../../../../BasePage";
 import {
     UIText, UIImage, UIButton
 } from "../../../../components/ui";
-import {MRText as Text} from '../../../../components/ui';
+import {MRText as Text, MRTextInput as RNTextInput} from '../../../../components/ui';
 
 
 

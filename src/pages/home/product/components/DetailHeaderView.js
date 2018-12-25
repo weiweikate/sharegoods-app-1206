@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-    Text,
     View,
     TouchableOpacity,
     Image
@@ -14,6 +13,7 @@ import DesignRule from 'DesignRule';
 import DetailBanner from './DetailBanner';
 import RES from '../../../../comm/res';
 import StringUtils from '../../../../utils/StringUtils';
+import {MRText as Text} from '../../../../components/ui';
 
 const arrow_right = RES.button.arrow_right_black;
 /**

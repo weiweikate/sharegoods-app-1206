@@ -2,8 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
-    TextInput,
     Dimensions,
     StyleSheet,
     ScrollView,
@@ -14,6 +12,9 @@ import StringUtils from '../../../utils/StringUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import {
+    MRText as Text, MRTextInput as TextInput
+} from '../../../components/ui';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Text, Platform } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
 import XGSwiper from '../../../components/ui/XGSwiper';
 import ViewPager from '../../../components/ui/ViewPager';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import VideoView from '../../../components/ui/video/VideoView';
 import ImageLoad from '@mr/image-placeholder';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 export class TopicDetailBanner extends Component {
     constructor(props) {

@@ -1,13 +1,14 @@
 import {
     View,
-    Text,
     Image,
     TouchableOpacity,
     StyleSheet,
     SectionList
 
 } from 'react-native';
-
+import {
+    MRText as Text
+} from '../../../components/ui';
 import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { SbSectiontHeaderView, ActivityOneView } from './SbSectiontHeaderView';

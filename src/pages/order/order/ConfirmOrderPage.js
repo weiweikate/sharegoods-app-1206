@@ -3,12 +3,10 @@ import {
     StyleSheet,
     View,
     Image,
-    TextInput as RNTextInput,
-    Text,
     TouchableOpacity, ScrollView, Alert
 } from 'react-native';
 import {
-    UIText, UIImage, RefreshList,NoMoreClick
+    UIText, UIImage, RefreshList, MRText as Text, MRTextInput as RNTextInput,NoMoreClick
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -44,9 +42,9 @@ export default class ConfirmOrderPage extends BasePage {
             tokenCoinText: null,
             couponName: null,
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : [],
-            canUseCou:false
-
+            canUseCou:false,
         };
+        this.canCommit=true
     }
 
     $navigationBarOptions = {
@@ -212,6 +210,7 @@ export default class ConfirmOrderPage extends BasePage {
                     </View>
                     <NoMoreClick
                         style={styles.commitTouStyle}
+                        disabled={!this.canCommit}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
                                 style={{ fontSize: ScreenUtils.px2dp(16), color: 'white', paddingLeft:15,paddingRight:15}}/>
@@ -500,6 +499,7 @@ export default class ConfirmOrderPage extends BasePage {
         });
     };
     commitOrder = () => {
+        this.canCommit=false;
         let baseParams = {
             message: this.state.message,
             tokenCoin: this.state.tokenCoin,
@@ -524,6 +524,7 @@ export default class ConfirmOrderPage extends BasePage {
             if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
                 OrderApi.SeckillSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
+                    this.canCommit=true;
                     let data = response.data;
                     track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                         receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
@@ -541,6 +542,7 @@ export default class ConfirmOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
+                    this.canCommit=true;
                     this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
@@ -553,6 +555,7 @@ export default class ConfirmOrderPage extends BasePage {
             } else if (this.state.orderParam && this.state.orderParam.orderType === 2) {
                 OrderApi.DepreciateSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
+                    this.canCommit=true;
                     let data = response.data;
                     track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                         receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
@@ -569,6 +572,7 @@ export default class ConfirmOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
+                    this.canCommit=true;
                     this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
@@ -595,6 +599,7 @@ export default class ConfirmOrderPage extends BasePage {
                 OrderApi.PackageSubmitOrder(params1).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
+                    this.canCommit=true;
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
@@ -610,6 +615,7 @@ export default class ConfirmOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
+                    this.canCommit=true;
                     this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
@@ -633,6 +639,7 @@ export default class ConfirmOrderPage extends BasePage {
             OrderApi.submitOrder(params).then((response) => {
                 this.$loadingDismiss();
                 let data = response.data;
+                this.canCommit=true;
                 track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
                     receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
                     discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
@@ -649,6 +656,7 @@ export default class ConfirmOrderPage extends BasePage {
 
             }).catch(e => {
                 this.$loadingDismiss();
+                this.canCommit=true;
                 this.$toastShow(e.msg);
                 if (e.code === 54001) {
                     this.$toastShow('商品库存不足！');

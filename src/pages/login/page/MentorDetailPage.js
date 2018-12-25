@@ -15,7 +15,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -27,7 +26,7 @@ import res from '../../../comm/res';
 // import ImageLoad from '@mr/image-placeholder'
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
-
+import {MRText as Text} from '../../../components/ui'
 
 export default class MentorDetailPage extends BasePage {
     constructor(props) {
@@ -120,11 +119,6 @@ export default class MentorDetailPage extends BasePage {
                                     fontSize: 17,
                                     color: DesignRule.white
                                 }}
-                                onPress={
-                                    () => {
-                                        this.$navigateBack();
-                                    }
-                                }
                             />
                         </View>
                     </TouchableOpacity>
@@ -139,16 +133,11 @@ export default class MentorDetailPage extends BasePage {
             code: mentorData.perfectNumberCode
         }).then(res => {
             this.$toastShow('选择成功');
-            // bridge.$toast('选择成功');
             homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
-            // this.$navigateBackToHome();
-            setTimeout(()=>{
-                this.$navigateBack()
-            },5000)
+            this.$navigateBackToHome()
         }).catch(res => {
             this.$toastShow(res.msg)
-            // bridge.$toast(res.msg);
-            // this.$navigateBack()
+
         });
     };
 }

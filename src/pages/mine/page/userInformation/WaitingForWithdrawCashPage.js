@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Image,
-    Text,
     TouchableOpacity,
     ImageBackground,
 } from 'react-native';
@@ -19,6 +18,7 @@ import CommModal from 'CommModal';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui'
 
 const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
 const storeShare = res.userInfoImg.xiangjzhanghu_icon03;

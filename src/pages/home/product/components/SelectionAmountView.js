@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-    TextInput,
-    Text,
     View,
     TouchableOpacity
 } from 'react-native';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui';
 
 /**
  * 选择数量view

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { width, px2dp } = ScreenUtils;
 const imageHeight = width;
 import ViewPager from '../../components/ui/ViewPager';
 import ImageLoad from '@mr/image-placeholder'
+import {
+    MRText as Text,
+} from '../../components/ui';
 
 const renderPagination = (index, total) => <View style={styles.indexView}>
     <Text style={styles.text} allowFontScaling={false}>{index + 1} / {total}</Text>

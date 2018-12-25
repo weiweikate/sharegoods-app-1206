@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableOpacity,
     Image,
@@ -18,6 +17,7 @@ import StringUtils from '../../../utils/StringUtils';
 // import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import {MRText as Text} from '../../../components/ui'
 
 const {
     refresh,

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
     View,
-    Text,
     Image, StyleSheet, TouchableOpacity
 } from "react-native";
 import { orderDetailAfterServiceModel, orderDetailModel } from "../../model/OrderDetailModel";
@@ -10,6 +9,7 @@ import StringUtils from "../../../../utils/StringUtils";
 import UserSingleItem from "../UserSingleItem";
 import res from "../../res";
 import DesignRule from "DesignRule";
+import {MRText as Text} from '../../../../components/ui';
 
 const couponIcon = res.coupons_icon;
 

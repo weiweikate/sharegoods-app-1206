@@ -4,12 +4,14 @@ import {
     Image,
     ImageBackground,
     TouchableOpacity,
-    Text
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 const topicShow = res.topicShow;
 const topicShowClose = res.topicShowClose;
