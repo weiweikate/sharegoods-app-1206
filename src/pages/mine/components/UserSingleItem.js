@@ -14,7 +14,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import ImageLoad from '@mr/image-placeholder';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
 
 export default class UserSingleItem extends Component {
     constructor(props) {
@@ -56,20 +56,21 @@ export default class UserSingleItem extends Component {
     };
 
     renderRightText = () => {
-        const { circleStyle, isCircle = false, rightTextStyle, rightText } = this.props;
+        const { circleStyle, isCircle = false, rightTextStyle, rightText, isArrow = true } = this.props;
         return (
             <View
-                style={circleStyle ? circleStyle : (isCircle ? styles.rightText_hasCircle : styles.rightText_noCircle)}>
-                <Text style={rightTextStyle && rightTextStyle} allowFontScaling={false}>{rightText}</Text>
+                style={[circleStyle ? circleStyle : (isCircle ? styles.rightText_hasCircle : styles.rightText_noCircle), { marginRight: isArrow ? 6 : 15 }]}>
+                <Text style={rightTextStyle && rightTextStyle}
+                      allowFontScaling={false}>{rightText}</Text>
             </View>
         );
     };
     renderheadImage = () => {
-        const { headImage } = this.props;
+        const { headImage, isArrow = true } = this.props;
         return (
             !headImage ? null :
                 <ImageLoad source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
-                           style={{ width: 30, height: 30, borderRadius: 15, marginRight: 15 }}
+                           style={{ width: 30, height: 30, borderRadius: 15, marginRight: isArrow ? 8 : 15 }}
                            borderRadius={15}/>
         );
     };
@@ -95,11 +96,10 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
         alignItems: 'center',
-        borderColor: DesignRule.lineColor_inColorBg,
-        marginRight: 15
+        borderColor: DesignRule.lineColor_inColorBg
     },
     rightText_noCircle: {
-        justifyContent: 'flex-end', alignItems: 'center', marginRight: 15
+        justifyContent: 'flex-end', alignItems: 'center'
     }
 });
 
