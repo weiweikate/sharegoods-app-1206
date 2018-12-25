@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback, ImageBackground } from "react-native";
 import ScreenUtil from "../../utils/ScreenUtils";
 
 const { px2dp, onePixel } = ScreenUtil;
@@ -23,13 +23,9 @@ const starImg = res.star;
  */
 
 
-const Banner = ({ backImage, title, press }) => <View style={styles.bannerContainer}>
+const Banner = ({ backImage, title, press }) => <TouchableWithoutFeedback onPress={() => press && press()}><View style={styles.bannerContainer}>
     <ImageLoad style={styles.bannerImg} source={backImage} cacheable={true}/>
-    <Text style={styles.bannerTitle}  allowFontScaling={false}>{title}</Text>
-    <TouchableOpacity style={styles.joinBtn} onPress={() => press && press()}>
-        <Text style={styles.join}  allowFontScaling={false}>+ 申请加入</Text>
-    </TouchableOpacity>
-</View>;
+</View></TouchableWithoutFeedback>;
 
 const Line = () => <View style={styles.line}/>;
 
