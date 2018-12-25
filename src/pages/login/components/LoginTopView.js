@@ -175,6 +175,7 @@ export default class LoginTopView extends Component {
                                         width: ScreenUtils.width - 40,
                                         height: 100,
                                     }}
+                                    resizeMode={'contain'}
                                 />
                             </TouchableOpacity>
                         </View>
