@@ -21,7 +21,7 @@ import {
 import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 const { px2dp } = ScreenUtils;
-import UIText from "../../../../comm/components/UIText";
+import UIText from "../../../../components/ui/UIText";
 import res from '../../res';
 const icon = res.button.selected_circle_red;
 import DesignRule from 'DesignRule';
