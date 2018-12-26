@@ -27,7 +27,6 @@ import DesignRule from '../../../constants/DesignRule';
 // import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';
 import res from '../res';
-import Modal from 'CommModal';
 import { MRText as Text } from '../../../components/ui';
 
 const NoMessage = res.couponsImg.coupons_no_data;
