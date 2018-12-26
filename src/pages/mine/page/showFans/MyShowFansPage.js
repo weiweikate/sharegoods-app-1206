@@ -18,16 +18,19 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { MRText as Text } from '../../../../components/ui';
-// import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
+import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder'
-
+import MineAPI from '../../api/MineApi';
 type Props = {};
 export default class MyShowFansPage extends BasePage<Props> {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            activatedNum:null,
+            fansNum:null
+        };
     }
 
     $navigationBarOptions = {
@@ -41,9 +44,19 @@ export default class MyShowFansPage extends BasePage<Props> {
     }
 
     loadPageData() {
+        MineAPI.getShowFansCount().then((data)=>{
+            if(data.data){
+                this.setState({
+                    activatedNum:data.data.showFansCount
+                })
+            }
+        }).catch((error)=>{
+            this.$toastShow(error.msg);
+        })
+
     }
 
-    _listItemRender = () => {
+    _listItemRender = ({item}) => {
         let noActivate = (
             <View style={[styles.typeWrapper,{ borderColor: DesignRule.mainColor,borderWidth:1, backgroundColor: '#fcf5f9'}]}>
                 <Text style={styles.activateTextStyle}>
@@ -51,42 +64,58 @@ export default class MyShowFansPage extends BasePage<Props> {
                 </Text>
             </View>
         )
-        // let activate = (
-        //     <View style={[styles.typeWrapper,{ borderColor: '#e0e1e0', borderWidth:1,backgroundColor: '#f1f1f1'}]}>
-        //         <Text style={styles.noActivateTextStyle}>
-        //             已激活
-        //         </Text>
-        //     </View>
-        // )
+        let activate = (
+            <View style={[styles.typeWrapper,{ borderColor: '#e0e1e0', borderWidth:1,backgroundColor: '#f1f1f1'}]}>
+                <Text style={styles.noActivateTextStyle}>
+                    已激活
+                </Text>
+            </View>
+        )
 
         return(
             <View style={styles.itemWrapper}>
-                <ImageLoad style={styles.fansIcon} cacheable={true} source={{uri: ''}}/>
+                <ImageLoad style={styles.fansIcon} cacheable={true} source={{uri: item.headIma}}/>
                 <Text style={styles.fansNameStyle}>
-                    anglebaby
+                    {item.nickname}
                 </Text>
-                {noActivate}
+                {item.status ? activate:noActivate}
             </View>
         )
     };
 
+    _headerRender=()=>{
+        if(this.state.activatedNum && this.state.fansNum){
+            return(
+                <Text style={styles.headerTextWrapper}>
+                    激活人数：<Text style={{color:DesignRule.textColor_mainTitle_222,fontSize:18}}>{this.state.activatedNum}</Text>/<Text>{this.state.fansNum}</Text>
+                </Text>
+            )
+        }else {
+            return null;
+        }
+    }
+
     _render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.headerTextWrapper}>
-                    激活人数：<Text style={{color:DesignRule.textColor_mainTitle_222,fontSize:18}}>12</Text>/<Text>12</Text>
-                </Text>
 
-                {this._listItemRender()}
-                {/*<RefreshFlatList*/}
-                {/*style={styles.container}*/}
-                {/*url={orderApi.afterSaleList}*/}
-                {/*renderItem={this.renderItem}*/}
-                {/*params={params}*/}
-                {/*totalPageNum={(result)=> {return result.data.isMore ? 10 : 0}}*/}
-                {/*handleRequestResult={(result)=>{return result.data.list}}*/}
-                {/*// ref={(ref) => {this.list = ref}}*/}
-                {/*/>*/}
+                {/*{this._listItemRender()}*/}
+                <RefreshFlatList
+                style={styles.container}
+                url={MineAPI.getShowFansList}
+                renderItem={this._listItemRender}
+                totalPageNum={(result)=> {return result.data.isMore ? 10 : 0}}
+                renderHeader={this._headerRender}
+                onStartRefresh={this.loadPageData}
+                handleRequestResult={(result)=>{
+                    this.setState({
+                        fansNum:result.data.totalNum,
+                    })
+                    return result.data.data
+                }}
+
+                // ref={(ref) => {this.list = ref}}
+                />
             </View>
         );
     }
@@ -106,7 +135,8 @@ const styles = StyleSheet.create({
         marginTop:DesignRule.margin_listGroup,
         alignSelf:'center',
         borderRadius:8,
-        elevation:3
+        elevation:3,
+        marginVertical:3
     },
     fansIcon: {
         height: 40,

@@ -36,6 +36,14 @@ class UserOrderNum {
         this.waitSendNum = data.nonDelivery;
     }
 
+    @action
+    clean() {
+        this.afterSaleServiceNum = 0;
+        this.waitPayNum = 0;
+        this.waitReceiveNum = 0;
+        this.waitSendNum = 0;
+    }
+
     @action getUserOrderNum() {
         return UserApi.getUserOrderNum().then(res => {
             if (res.code === 10000) {
