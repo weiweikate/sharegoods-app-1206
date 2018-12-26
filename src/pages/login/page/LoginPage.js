@@ -20,6 +20,8 @@ import { homeModule } from '../../home/Modules';
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
+import oldUserLoginSingleModel from '../../../model/oldUserLoginModel';
+import RouterMap from '../../../navigation/RouterMap';
 
 const {
     share: {
@@ -183,13 +185,12 @@ export default class LoginPage extends BasePage {
 
     /*老用户登陆*/
     oldUserLoginClick = () => {
-        this.$navigate('login/login/OldUserLoginPage');
+        oldUserLoginSingleModel.JumpToLogin(RouterMap.OldUserLoginPage);
     };
     /*注册*/
     registBtnClick = () => {
         this.$navigate('login/login/RegistPage');
     };
-
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
         this.$loadingShow();
