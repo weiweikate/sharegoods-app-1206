@@ -119,9 +119,9 @@ export default class MyPromotionPage extends BasePage {
 
     renderHeader = () => {
         const progress = this.state.experience / this.state.levelExperience;
-        const marginLeft = 315 / 375 * SCREEN_WIDTH * progress;
-        const headerWidth = 65 / 375 * SCREEN_WIDTH;
-        const radius = marginLeft > 4 ? 0 : 4;
+        const marginLeft = px2dp(315) * progress;
+        const headerWidth = px2dp(65);
+        const radius = marginLeft > 4 ? -0.5 : 4;
 
 
         const storeStar = 3;
@@ -187,13 +187,15 @@ export default class MyPromotionPage extends BasePage {
                         overflow: 'hidden',
                         marginTop: 5,
                         height: 8,
-                        width: px2dp(315)
+                        width: px2dp(315),
+                        borderRadius: 4
                     }}>
                         <View style={{
-                            marginRight: -1,
+                            marginRight: -0.5,
                             marginLeft: marginLeft,
                             height: 8,
-                            borderRadius: 4,
+                            borderBottomRightRadius: 4,
+                            borderTopRightRadius: 4,
                             backgroundColor: DesignRule.lineColor_inGrayBg,
                             borderBottomLeftRadius: radius,
                             borderTopLeftRadius: radius
@@ -226,7 +228,7 @@ export default class MyPromotionPage extends BasePage {
     renderWelfare() {
         // const arr = ['分红增加', '分红增加', '分红增加', '分红增加'];
         return (
-            <View style={{ marginBottom: 50 }}>
+            <View>
                 {/*<View style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>*/}
                 {/*<Text style={{*/}
                 {/*marginLeft: 14,*/}
@@ -234,9 +236,9 @@ export default class MyPromotionPage extends BasePage {
                 {/*color: DesignRule.textColor_mainTitle*/}
                 {/*}}>预计晋升后可获得哪些福利？</Text>*/}
                 {/*</View>*/}
-                {this.renderSepLine()}
+                {/*{this.renderSepLine()}*/}
                 {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
-                                            containerStyle={{ backgroundColor: '#fff', padding: 5 }}
+                                            containerStyle={{ backgroundColor: '#fff' }}
                                             imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                                             baseFontStyle={{
                                                 lineHeight: 25,
@@ -326,16 +328,16 @@ export default class MyPromotionPage extends BasePage {
     // 主题内容
     renderBodyView = () => {
         return (
-            <ScrollView showsVerticalScrollIndicator={false}
-                        onScroll={this._onScroll.bind(this)}
-                        refreshControl={<RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh}
-                            colors={[DesignRule.mainColor]}
-                        />}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                onScroll={this._onScroll.bind(this)}
+                refreshControl={<RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                    colors={[DesignRule.mainColor]}
+                />}>
                 {this.renderHeader()}
                 {this.renderWelfare()}
-                <View style={{ backgroundColor: '#f7f7f7', height: 2 }}/>
             </ScrollView>
         );
     };
@@ -393,33 +395,37 @@ export default class MyPromotionPage extends BasePage {
 
     renderFooter() {
         return (
-            <View style={{
-                width: Dimensions.get('window').width, height: 48, position: 'absolute', bottom: 0,
-                alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
-            }}>
-                <TouchableWithoutFeedback onPress={this._onPressInvite}>
-                    <View style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flex: 1,
-                        backgroundColor: '#fff',
-                        height: 48
-                    }}>
-                        <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>邀请好友</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+            <View style={{ flexDirection: 'column', height: 48.5 }}>
+                <View
+                    style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
+                <View style={{
+                    width: Dimensions.get('window').width, height: 48, position: 'absolute', bottom: 0,
+                    alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
+                }}>
+                    <TouchableWithoutFeedback onPress={this._onPressInvite}>
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            backgroundColor: '#fff',
+                            height: 48
+                        }}>
+                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>邀请好友</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
 
-                <TouchableWithoutFeedback onPress={this._onGoShop}>
-                    <View style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: DesignRule.mainColor,
-                        flex: 1,
-                        height: 48
-                    }}>
-                        <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>去购物</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={this._onGoShop}>
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: DesignRule.mainColor,
+                            flex: 1,
+                            height: 48
+                        }}>
+                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>去购物</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
             </View>
         );
     }

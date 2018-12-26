@@ -173,8 +173,9 @@ export default class LoginTopView extends Component {
                                     source={res.oldLoginBanner}
                                     style={{
                                         width: ScreenUtils.width - 40,
-                                        height: 100,
+                                        height: ScreenUtils.width /750 * 245,
                                     }}
+                                    resizeMode={'contain'}
                                 />
                             </TouchableOpacity>
                         </View>
@@ -312,7 +313,7 @@ const Styles = StyleSheet.create(
             margin: 50,
             marginRight: 20,
             marginLeft: 20,
-            height: 330,
+            // height: 400,
             backgroundColor: '#fff'
         },
         switchBgStyle: {
@@ -389,7 +390,8 @@ const Styles = StyleSheet.create(
             marginTop: 30,
             // flexDirection: 'row-reverse',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            // height:200,
         },
         oldUserLoginBtn: {
             width: 100,

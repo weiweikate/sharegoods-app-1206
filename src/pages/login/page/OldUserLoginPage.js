@@ -93,8 +93,8 @@ export default class OldUserLoginPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
-                <View style={{ backgroundColor: DesignRule.bgColor }}>
+            <View style={{ flex: 1, backgroundColor: '#fff' ,marginTop:-1}}>
+                <View style={{ backgroundColor: '#fff' }}>
                     <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
                         <Image style={{ width: 79, height: 79 }} source={tongyong_logo_nor}/>
                     </View>
