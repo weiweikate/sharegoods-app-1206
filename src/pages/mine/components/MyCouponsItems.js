@@ -483,10 +483,10 @@ export default class MyCouponsItems extends Component {
         if (this.props.fromOrder && status === 0) {
             let arr = [];
             let params = {};
-            if (this.props.orderParam.orderType == 3) {
-                this.parseData(arr);
-                return;
-            }
+            // if (this.props.orderParam.orderType == 3) {
+            //     this.parseData(arr);
+            //     return;
+            // }
             if (this.props.orderParam.orderType == 99) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
@@ -496,7 +496,7 @@ export default class MyCouponsItems extends Component {
                     });
                 });
                 params = { productPriceIds: arr };
-            } else if (this.props.orderParam.orderType == 1 || this.props.orderParam.orderType == 2) {
+            } else if (this.props.orderParam.orderType == 1 || this.props.orderParam.orderType == 2||this.props.orderParam.orderType == 3) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
