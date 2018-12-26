@@ -189,6 +189,9 @@ export default class LoginTopView extends Component {
                         </View>
                         :null
                 }
+                {/*<UIText*/}
+                {/*value={}*/}
+                {/*/>*/}
 
             </View>
         );

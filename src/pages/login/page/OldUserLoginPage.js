@@ -72,7 +72,7 @@ export default class OldUserLoginPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '老用户激活'
+        title: ''
     };
     /*render右上角*/
     // $NavBarRenderRightItem = () => {
@@ -106,7 +106,7 @@ export default class OldUserLoginPage extends BasePage {
                             onChangeText={text => {
                                 this.oldUserLoginModel.savePhoneNumber(text);
                             }}
-                            placeholder='请输入用户名'
+                            placeholder='请用经销商后台账号'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
                         />
@@ -281,7 +281,7 @@ const Styles = StyleSheet.create(
         },
         inputTextStyle: {
             marginLeft: 20,
-            width: 120,
+            width: 140,
             fontSize: 14,
             fontWeight: '400'
         },
