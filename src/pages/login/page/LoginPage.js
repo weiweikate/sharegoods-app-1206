@@ -39,7 +39,8 @@ export default class LoginPage extends BasePage {
         super(props);
 
         this.state = {
-            showWxLoginBtn: false
+            showWxLoginBtn: false,
+            isCanClick:true
         };
     }
 
@@ -77,6 +78,7 @@ export default class LoginPage extends BasePage {
         }).catch((error) => {
 
         });
+        track('$AppViewScreen', { '$screen_name': 'LoginPage','$title':'登录' });
     }
 
     $NavBarLeftPressed = () => {

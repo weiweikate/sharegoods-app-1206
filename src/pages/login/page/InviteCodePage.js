@@ -22,7 +22,7 @@ import {
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
 // import { NavigationActions } from 'react-navigation';
 import bridge from '../../../utils/bridge';

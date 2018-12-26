@@ -76,8 +76,7 @@ export default class SetPasswordPage extends BasePage {
             } else {
                 this.$toast(data.msg);
             }
-            console.warn(data);
-
+            // console.warn(data);
         });
     };
 

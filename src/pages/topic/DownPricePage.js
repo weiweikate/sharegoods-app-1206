@@ -19,6 +19,7 @@ import TopicItemView from './components/TopicItemView';
 import DesignRule from 'DesignRule';
 import ImageLoad from '@mr/image-placeholder';
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
+import { track } from '../../utils/SensorsTrack';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -46,6 +47,7 @@ export default class DownPricePage extends BasePage {
                 this.dataModel.loadTopicData(linkTypeCode);
             }
         );
+        track('$AppViewScreen', { '$screen_name': 'DownPricePage','$title':'专题' });
     }
 
     /**

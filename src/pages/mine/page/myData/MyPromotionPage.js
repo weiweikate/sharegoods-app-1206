@@ -1,5 +1,5 @@
 //我的晋升情况
-import React from "react";
+import React from 'react';
 import {
     View,
     Image,
@@ -9,36 +9,38 @@ import {
     RefreshControl,
     ImageBackground,
     TouchableWithoutFeedback
-} from "react-native";
-import { PageLoadingState, renderViewByLoadingState } from "../../../../components/pageDecorator/PageState";
-import MineApi from "../../api/MineApi";
-import HTML from "react-native-render-html";
+} from 'react-native';
+import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
+import MineApi from '../../api/MineApi';
+import HTML from 'react-native-render-html';
 // 图片资源
-import BasePage from "../../../../BasePage";
-import { UIImage } from "../../../../components/ui";
-import { NavigationActions } from "react-navigation";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "DesignRule";
-import res from "../../res";
-import ImageLoad from "@mr/image-placeholder";
-import {MRText as Text} from '../../../../components/ui'
+import BasePage from '../../../../BasePage';
+import { UIImage } from '../../../../components/ui';
+import { NavigationActions } from 'react-navigation';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+import res from '../../res';
+import ImageLoad from '@mr/image-placeholder';
+import { MRText as Text } from '../../../../components/ui';
 // 常量
-const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;
 const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
 const CCZImg = res.myData.ccz_03;
 const ProgressImg = res.myData.jdt_05;
-import LinearGradient from "react-native-linear-gradient";
+import LinearGradient from 'react-native-linear-gradient';
 
-const headerBgHeight = 182 / 375 * SCREEN_WIDTH + ScreenUtils.statusBarHeight + 30;
-const headerHeight = ScreenUtils.statusBarHeight + 44;
+const { px2dp } = ScreenUtils;
+
+const headerBgHeight = px2dp(182) + ScreenUtils.statusBarHeight + 30;
+const headerHeight = ScreenUtils.headerHeight;
 const offset = headerBgHeight - headerHeight;
 
 export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {
         show: false, // false则隐藏导航
-        title: "我的晋升"
+        title: '我的晋升'
     };
     $getPageStateOptions = () => {
         return {
@@ -54,10 +56,10 @@ export default class MyPromotionPage extends BasePage {
         super(props);
         this.state = {
             loadingState: PageLoadingState.loading,
-            levelName: "",
+            levelName: '',
             experience: 0,
             refreshing: false,
-            nextExperience: "",
+            nextExperience: '',
             loading: true,
             netFailedInfo: null,
             headImg: null,
@@ -98,7 +100,7 @@ export default class MyPromotionPage extends BasePage {
                 loadingState: PageLoadingState.fail
             });
             if (err.code === 10009) {
-                this.gotoLoginPage()
+                this.gotoLoginPage();
             }
         });
         MineApi.getNextLevelInfo().then(resp => {
@@ -111,56 +113,58 @@ export default class MyPromotionPage extends BasePage {
 
 
     _imgLoadFail = (url, error) => {
-        console.warn(url + "\n" + error);
+        console.warn(url + '\n' + error);
     };
 
 
     renderHeader = () => {
         const progress = this.state.experience / this.state.levelExperience;
-        const marginLeft = 315 / 375 * SCREEN_WIDTH * progress;
-        const headerWidth = 65 / 375 * SCREEN_WIDTH;
-        const radius = marginLeft > 4 ? 0 : 4;
+        const marginLeft = px2dp(315) * progress;
+        const headerWidth = px2dp(65);
+        const radius = marginLeft > 4 ? -0.5 : 4;
 
 
         const storeStar = 3;
         const starsArr = [];
-        if (storeStar && typeof storeStar === "number") {
+        if (storeStar && typeof storeStar === 'number') {
             for (let i = 0; i < storeStar; i++) {
                 i <= 2 && starsArr.push(i);
             }
         }
 
-        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 + ScreenUtils.statusBarHeight }}>
+        return <View style={{ height: px2dp(182) + 115 + ScreenUtils.statusBarHeight }}>
 
             <ImageBackground source={HeaderBarBgImg} style={{
-                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH + ScreenUtils.statusBarHeight + 30,
-                flexDirection: "row", paddingTop: ScreenUtils.statusBarHeight
+                width: SCREEN_WIDTH, height: px2dp(182) + ScreenUtils.statusBarHeight + 30,
+                flexDirection: 'row', paddingTop: ScreenUtils.statusBarHeight
             }}>
 
 
-                <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 25, marginBottom: 40 }}>
-                    <ImageLoad style={{ width: headerWidth, height: headerWidth,borderRadius: headerWidth / 2}} borderRadius={headerWidth / 2}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 25, marginBottom: 40 }}>
+                    <ImageLoad style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
+                               borderRadius={headerWidth / 2}
                                source={{ uri: this.state.headImg }}/>
                     <View style={{
-                        justifyContent: "center",
+                        justifyContent: 'center',
                         marginLeft: 10
                     }}>
                         <Text style={{
                             fontSize: 15,
-                            color: "white"
-                        }} allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ""}</Text>
+                            color: 'white'
+                        }} allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ''}</Text>
                         <ImageBackground style={{
-                            justifyContent: "center", alignItems: "center", marginTop: 10,
+                            justifyContent: 'center', alignItems: 'center', marginTop: 10,
                             height: 15,
                             width: 35
                         }} source={iconbg}>
-                            <Text style={styles.shopName} allowFontScaling={false}>{this.state.levelRemark || " "}</Text>
+                            <Text style={styles.shopName}
+                                  allowFontScaling={false}>{this.state.levelRemark || ' '}</Text>
                         </ImageBackground>
                     </View>
                 </View>
             </ImageBackground>
             <View style={styles.whiteBg}>
-                <View style={{ height: 43, marginHorizontal: 0, flexDirection: "row", alignItems: "center" }}>
+                <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
                     <Text style={{
                         fontSize: 15,
@@ -168,10 +172,10 @@ export default class MyPromotionPage extends BasePage {
                     }} allowFontScaling={false}>成长值</Text>
                 </View>
 
-                <View style={{ flex: 1, alignItems: "center" }}>
+                <View style={{ flex: 1, alignItems: 'center' }}>
                     <Text style={{
                         marginTop: 10,
-                        color: "#f00006",
+                        color: '#f00006',
                         fontSize: 10
                     }} allowFontScaling={false}>{this.state.experience || 0}<Text style={{
                         color: DesignRule.textColor_secondTitle
@@ -180,16 +184,18 @@ export default class MyPromotionPage extends BasePage {
                     </Text></Text>
 
                     <ImageBackground source={ProgressImg} style={{
-                        overflow: "hidden",
+                        overflow: 'hidden',
                         marginTop: 5,
                         height: 8,
-                        width: 315 / 375 * SCREEN_WIDTH
+                        width: px2dp(315),
+                        borderRadius: 4
                     }}>
                         <View style={{
-                            marginRight: -1,
+                            marginRight: -0.5,
                             marginLeft: marginLeft,
                             height: 8,
-                            borderRadius: 4,
+                            borderBottomRightRadius: 4,
+                            borderTopRightRadius: 4,
                             backgroundColor: DesignRule.lineColor_inGrayBg,
                             borderBottomLeftRadius: radius,
                             borderTopLeftRadius: radius
@@ -207,10 +213,11 @@ export default class MyPromotionPage extends BasePage {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 12
                         }}>
-                            {(this.state.levelExperience - this.state.experience) > 0 ? `${this.state.levelExperience - this.state.experience}Exp` : "0Exp"}
+                            {(this.state.levelExperience - this.state.experience) > 0 ? `${this.state.levelExperience - this.state.experience}Exp` : '0Exp'}
                         </Text>
                         {(this.state.levelExperience - this.state.experience) > 0 ? null :
-                            <Text style={{ color: DesignRule.mainColor, fontSize: 11 }} allowFontScaling={false}>(Exp已满)</Text>
+                            <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}
+                                  allowFontScaling={false}>(Exp已满)</Text>
                         }
                     </Text>
                 </View>
@@ -221,7 +228,7 @@ export default class MyPromotionPage extends BasePage {
     renderWelfare() {
         // const arr = ['分红增加', '分红增加', '分红增加', '分红增加'];
         return (
-            <View style={{ marginBottom: 50 }}>
+            <View>
                 {/*<View style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>*/}
                 {/*<Text style={{*/}
                 {/*marginLeft: 14,*/}
@@ -229,9 +236,9 @@ export default class MyPromotionPage extends BasePage {
                 {/*color: DesignRule.textColor_mainTitle*/}
                 {/*}}>预计晋升后可获得哪些福利？</Text>*/}
                 {/*</View>*/}
-                {this.renderSepLine()}
+                {/*{this.renderSepLine()}*/}
                 {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
-                                            containerStyle={{ backgroundColor: "#fff", padding: 5 }}
+                                            containerStyle={{ backgroundColor: '#fff' }}
                                             imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                                             baseFontStyle={{
                                                 lineHeight: 25,
@@ -246,7 +253,7 @@ export default class MyPromotionPage extends BasePage {
         return (<View style={{
             height: 2,
             borderWidth: 0.5,
-            borderColor: "#fdfcfc"
+            borderColor: '#fdfcfc'
         }}/>);
     };
 
@@ -282,25 +289,27 @@ export default class MyPromotionPage extends BasePage {
 
         let title = !this.state.changeHeader || this.state.loadingState === PageLoadingState.fail ? <Text style={{
             color: DesignRule.white,
-            alignSelf: "center",
+            alignSelf: 'center',
             fontSize: 17,
             includeFontPadding: false
         }} allowFontScaling={false}>我的晋升</Text> : null;
         return (
             <View style={{
-                width: SCREEN_WIDTH, height: ScreenUtils.statusBarHeight + 44,
+                width: SCREEN_WIDTH,
+                height: ScreenUtils.headerHeight,
                 paddingTop: ScreenUtils.statusBarHeight,
-                position: "absolute", top: 0,
+                position: 'absolute', top: 0,
                 left: 0,
-                flexDirection: "row",
-                alignItems: "center"
+                flexDirection: 'row',
+                alignItems: 'center'
             }}>
 
                 <LinearGradient ref={(ref) => {
                     this.headerBg = ref;
-                }} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={["#FF1C89", "#FF156E"]} style={{
-                    width: SCREEN_WIDTH, height: ScreenUtils.statusBarHeight + 44,
-                    position: "absolute",
+                }} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={['#FF1C89', '#FF156E']} style={{
+                    width: SCREEN_WIDTH,
+                    height: ScreenUtils.headerHeight,
+                    position: 'absolute',
                     left: 0,
                     top: 0,
                     opacity: this.state.loadingState === PageLoadingState.fail ? 1 : 0
@@ -319,16 +328,16 @@ export default class MyPromotionPage extends BasePage {
     // 主题内容
     renderBodyView = () => {
         return (
-            <ScrollView showsVerticalScrollIndicator={false}
-                        onScroll={this._onScroll.bind(this)}
-                        refreshControl={<RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh}
-                            colors={[DesignRule.mainColor]}
-                        />}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                onScroll={this._onScroll.bind(this)}
+                refreshControl={<RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                    colors={[DesignRule.mainColor]}
+                />}>
                 {this.renderHeader()}
                 {this.renderWelfare()}
-                <View style={{ backgroundColor: "#f7f7f7", height: 2 }}/>
             </ScrollView>
         );
     };
@@ -370,7 +379,7 @@ export default class MyPromotionPage extends BasePage {
     }
 
     _onPressInvite = () => {
-        this.$navigate("mine/InviteFriendsPage");
+        this.$navigate('mine/InviteFriendsPage');
     };
 
     // 去购物
@@ -378,7 +387,7 @@ export default class MyPromotionPage extends BasePage {
         let resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-                NavigationActions.navigate({ routeName: "Tab" })//要跳转到的页面名字
+                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
             ]
         });
         this.props.navigation.dispatch(resetAction);
@@ -386,33 +395,37 @@ export default class MyPromotionPage extends BasePage {
 
     renderFooter() {
         return (
-            <View style={{
-                width: Dimensions.get("window").width, height: 48, position: "absolute", bottom: 0,
-                alignItems: "center", justifyContent: "center", flexDirection: "row"
-            }}>
-                <TouchableWithoutFeedback onPress={this._onPressInvite}>
-                    <View style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flex: 1,
-                        backgroundColor: "#fff",
-                        height: 48
-                    }}>
-                        <Text style={{ fontSize: 14, color: "#000" }} allowFontScaling={false}>邀请好友</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+            <View style={{ flexDirection: 'column', height: 48.5 }}>
+                <View
+                    style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
+                <View style={{
+                    width: Dimensions.get('window').width, height: 48, position: 'absolute', bottom: 0,
+                    alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
+                }}>
+                    <TouchableWithoutFeedback onPress={this._onPressInvite}>
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            backgroundColor: '#fff',
+                            height: 48
+                        }}>
+                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>邀请好友</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
 
-                <TouchableWithoutFeedback onPress={this._onGoShop}>
-                    <View style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: "#f00006",
-                        flex: 1,
-                        height: 48
-                    }}>
-                        <Text style={{ fontSize: 14, color: "#fff" }} allowFontScaling={false}>去购物</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={this._onGoShop}>
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: DesignRule.mainColor,
+                            flex: 1,
+                            height: 48
+                        }}>
+                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>去购物</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
             </View>
         );
     }
@@ -429,23 +442,23 @@ const styles = StyleSheet.create({
         marginRight: 10,
         width: 105 / 375 * SCREEN_WIDTH,
         height: 105 / 375 * SCREEN_WIDTH,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     shopName: {
         fontSize: 11,
-        color: "white",
+        color: 'white',
         marginLeft: 10
     },
     //白的面板背景
     whiteBg: {
         width: SCREEN_WIDTH - 22,
         height: 153 / 375 * (SCREEN_WIDTH - 22),
-        position: "absolute",
+        position: 'absolute',
         bottom: 11,
         left: 11,
-        backgroundColor: "white",
-        shadowColor: "rgba(0, 0, 0, 0.1)",
+        backgroundColor: 'white',
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,
             height: 0

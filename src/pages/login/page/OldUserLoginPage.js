@@ -15,6 +15,7 @@ import LoginAPI from '../api/LoginApi';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
+import {track} from '../../../utils/SensorsTrack'
 
 const {
     close_eye,
@@ -66,6 +67,7 @@ export default class OldUserLoginPage extends BasePage {
 
     constructor(props) {
         super(props);
+        track('$AppViewScreen', { '$screen_name': 'OldUserLoginPage','$title':'老用户登录' });
     }
 
     // 导航配置
@@ -83,7 +85,6 @@ export default class OldUserLoginPage extends BasePage {
     /*注册事件*/
     registBtnClick = () => {
         this.$navigate('login/login/RegistPage');
-
     };
 
     $isMonitorNetworkStatus() {
@@ -92,8 +93,8 @@ export default class OldUserLoginPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
-                <View style={{ backgroundColor: DesignRule.bgColor }}>
+            <View style={{ flex: 1, backgroundColor: '#fff' ,marginTop:-1}}>
+                <View style={{ backgroundColor: '#fff' }}>
                     <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
                         <Image style={{ width: 79, height: 79 }} source={tongyong_logo_nor}/>
                     </View>
@@ -105,7 +106,7 @@ export default class OldUserLoginPage extends BasePage {
                             onChangeText={text => {
                                 this.oldUserLoginModel.savePhoneNumber(text);
                             }}
-                            placeholder='请输入用户名'
+                            placeholder='请用经销商后台账号'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
                         />
@@ -152,7 +153,11 @@ export default class OldUserLoginPage extends BasePage {
                     <Text
                         style={
                             [Styles.bottomTimeStyle,
-                                {marginTop:40}
+                                {
+                                    marginTop: 40,
+                                    fontSize: 13,
+                                    color:'#000'
+                                }
                             ]
                         }
                     >
@@ -276,7 +281,7 @@ const Styles = StyleSheet.create(
         },
         inputTextStyle: {
             marginLeft: 20,
-            width: 120,
+            width: 140,
             fontSize: 14,
             fontWeight: '400'
         },
@@ -287,7 +292,7 @@ const Styles = StyleSheet.create(
             textAlign: 'center',
             fontSize: 12,
             color: DesignRule.textColor_secondTitle,
-            marginLeft:20
+            marginLeft: 20
         },
         bottomKeFuTextStyle: {
             width: ScreenUtils.width,
