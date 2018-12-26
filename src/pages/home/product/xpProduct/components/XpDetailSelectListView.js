@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import { MRText as Text } from '../../../../../components/ui';
 import DesignRule from '../../../../../constants/DesignRule';
+import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtils;
 
+@observer
 class ListItem extends Component {
+
     render() {
-        const { tittle, img } = this.props.item || {};
+        const { selectSpuCode } = this.props.xpDetailModel;
+        const { name, imgUrl, spuCode, isSelected } = this.props.item;
+        const ViewBorderColor = isSelected ? DesignRule.mainColor : DesignRule.lineColor_inWhiteBg;
         return (
-            <View>
-                <View style={styles.itemView}>
-                    <UIImage style={styles.itemImg} source={img}/>
-                    <Text style={styles.itemText} numberOfLines={1}>{tittle || ''}</Text>
+            <TouchableWithoutFeedback onPress={() => !isSelected && selectSpuCode(spuCode)}>
+                <View style={[styles.itemView, { borderColor: ViewBorderColor }]}>
+                    <UIImage style={styles.itemImg} source={imgUrl}/>
+                    <Text style={styles.itemText} numberOfLines={1}>{name}</Text>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         );
     }
 }
@@ -24,18 +29,18 @@ class ListItem extends Component {
 export class XpDetailSelectListView extends Component {
 
     _renderItem = ({ item }) => {
-        return <ListItem item={item}/>;
+        return <ListItem item={item} xpDetailModel={this.props.xpDetailModel}/>;
     };
 
     _keyExtractor = (item, index) => {
-        return `${item.id}${index}`;
+        return `${item.spuCode}${index}`;
     };
 
     render() {
-        const { xpDetailModel } = this.props;
+        const { prods } = this.props.xpDetailModel;
         return (
             <View style={styles.bgView}>
-                <FlatList data={xpDetailModel.listData}
+                <FlatList data={prods}
                           renderItem={this._renderItem}
                           keyExtractor={this._keyExtractor}
                           horizontal={true}
@@ -47,12 +52,13 @@ export class XpDetailSelectListView extends Component {
 
 const styles = StyleSheet.create({
     bgView: {
-        marginTop: 10
+        paddingTop: 10,
+        backgroundColor: DesignRule.white
     },
     /*item*/
     itemView: {
         width: px2dp(100), marginLeft: 15,
-        borderRadius: 5, borderWidth: 1, borderColor: DesignRule.lineColor_inWhiteBg
+        borderRadius: 5, borderWidth: 1
     },
     itemImg: {
         width: px2dp(100), height: px2dp(90)

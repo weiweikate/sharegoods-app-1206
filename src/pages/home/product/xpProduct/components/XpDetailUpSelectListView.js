@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import { MRText as Text } from '../../../../../components/ui';
 import DesignRule from '../../../../../constants/DesignRule';
@@ -10,11 +10,11 @@ class ListItem extends Component {
     render() {
         const { tittle } = this.props.item || {};
         return (
-            <View>
+            <TouchableWithoutFeedback>
                 <View style={styles.itemView}>
                     <Text style={styles.itemText} numberOfLines={1}>{tittle || ''}</Text>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         );
     }
 }

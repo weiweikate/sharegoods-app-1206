@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     /*背景*/
     bgView: {
         alignItems: 'center',
-        marginTop: 20, marginBottom: 15
+        paddingTop: 20, paddingBottom: 15,
+        backgroundColor: DesignRule.white
     },
     /*图片*/
     headerImg: {
