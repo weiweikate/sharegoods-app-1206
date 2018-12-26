@@ -30,7 +30,7 @@ export default class ShowBannerView extends Component {
         let params = showBannerModules.paramsNavigate(item);
         const { navigate } = this.props;
         track(trackEvent.bannerClick, {pageType: 'home', bannerLocation: 'home', bannerID: item.id, bannerRank: item.rank, url: item.imgUrl, bannerName: item.linkTypeCode})
-       
+
         navigate(router, {...params, preseat:'秀场_banner'});
     }
 
@@ -42,7 +42,7 @@ export default class ShowBannerView extends Component {
         let params = showBannerModules.paramsNavigate(item);
         const { navigate } = this.props;
 
-        track(trackEvent.bannerClick, {pageType: 'home', bannerLocation: 'home', bannerID: item.id, bannerRank: item.rank, url: item.imgUrl, bannerName: item.linkTypeCode})
+        track(trackEvent.bannerClick, {pageType: '秀场banner', bannerLocation: '秀场精选热门', bannerID: item.id, bannerRank: item.rank, url: item.imgUrl, bannerName: item.linkTypeCode})
         navigate(router, {...params, preseat:'秀场_banner'});
     }
 
