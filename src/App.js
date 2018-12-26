@@ -13,7 +13,8 @@ import {
     Text,
     View,
     Platform,
-    InteractionManager
+    InteractionManager,
+    Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from './navigation/RouterMap';
@@ -31,6 +32,7 @@ import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
 import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
 import LoginAPI from './pages/login/api/LoginApi';
+import OldImag from './home_icon.png';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -124,8 +126,9 @@ export default class App extends Component {
                         global.$routes = currentState.routes;
                     }}/>
                 {
-                    CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
-                        style={{ color: 'white' }}>调试页</Text></DebugButton> : null
+                    CONFIG.showDebugPanel ?
+                        <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
+                            style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
 
                 {
@@ -135,8 +138,26 @@ export default class App extends Component {
                         ?
                         null
                         :
-                        <DebugButton onPress={this.gotoLogin}><Text
-                            style={{ color: 'white' }}>跳转登陆</Text></DebugButton>
+                        <DebugButton
+                            onPress={this.gotoLogin}
+                            style={
+                                styles.oldLoginBtnStyle
+                            }
+                        >
+                            <View
+                                style={{
+                                    width: 150,
+                                    height: 43,
+                                    paddingLeft: 10,
+                                }
+                                }
+                            >
+                                <Image
+                                    source={OldImag}
+                                    resizeMode={'contain'}
+                                />
+                            </View>
+                        </DebugButton>
                 }
             </View>
         );
@@ -169,5 +190,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    oldLoginBtnStyle: {
+        width: 120,
+        height: 43,
+        paddingLeft: 10,
     }
 });
