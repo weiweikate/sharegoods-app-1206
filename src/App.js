@@ -7,6 +7,7 @@
  */
 
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import {
     StyleSheet,
     Text,
@@ -29,6 +30,7 @@ import geolocation from '@mr/geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
 import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
+import LoginAPI from './pages/login/api/LoginApi';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -52,12 +54,13 @@ if (__DEV__) {
     // console.log(`module.exports = ${JSON.stringify(loadedModuleNames.sort())};`);
 }
 
-
+@observer
 export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            load: false
+            load: false,
+            showOldBtn: false
         };
         user.readToken();
     }
@@ -90,8 +93,18 @@ export default class App extends Component {
 
         //热更新 先注释掉
         bridge.removeLaunch();
+
         // hotUpdateUtil.isNeedToCheck();
         // hotUpdateUtil.checkUpdate();
+
+        LoginAPI.oldUserActivateJudge().then((res) => {
+            console.log('是还是非-------', res);
+            this.setState({
+                showOldBtn: res.data
+            });
+        }).catch((error) => {
+
+        });
     }
 
     render() {
@@ -114,10 +127,28 @@ export default class App extends Component {
                     CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
                         style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
+
+                {
+
+
+                    user.isLogin || !this.state.showOldBtn
+                        ?
+                        null
+                        :
+                        <DebugButton onPress={this.gotoLogin}><Text
+                            style={{ color: 'white' }}>跳转登陆</Text></DebugButton>
+                }
             </View>
         );
     }
 
+    gotoLogin = () => {
+        const navigationAction = NavigationActions.navigate({
+            routeName: RouterMap.LoginPage
+            //routeName:'debug/DemoLoginPage'
+        });
+        global.$navigator.dispatch(navigationAction);
+    };
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage
