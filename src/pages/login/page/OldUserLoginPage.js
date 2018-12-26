@@ -72,7 +72,7 @@ export default class OldUserLoginPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: ''
+        title: '老用户激活'
     };
     /*render右上角*/
     // $NavBarRenderRightItem = () => {
