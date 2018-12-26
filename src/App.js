@@ -25,7 +25,7 @@ import CONFIG from '../config';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
-// import hotUpdateUtil from './utils/HotUpdateUtil';
+import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import geolocation from '@mr/geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
@@ -97,7 +97,7 @@ export default class App extends Component {
         bridge.removeLaunch();
 
         // hotUpdateUtil.isNeedToCheck();
-        // hotUpdateUtil.checkUpdate();
+        hotUpdateUtil.checkUpdate();
 
         LoginAPI.oldUserActivateJudge().then((res) => {
             console.log('是还是非-------', res);
@@ -148,7 +148,7 @@ export default class App extends Component {
                                 style={{
                                     width: 150,
                                     height: 43,
-                                    paddingLeft: 10,
+                                    paddingLeft: 10
                                 }
                                 }
                             >
@@ -194,6 +194,6 @@ const styles = StyleSheet.create({
     oldLoginBtnStyle: {
         width: 120,
         height: 43,
-        paddingLeft: 10,
+        paddingLeft: 10
     }
 });
