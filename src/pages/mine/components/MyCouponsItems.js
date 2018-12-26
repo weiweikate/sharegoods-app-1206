@@ -500,7 +500,7 @@ export default class MyCouponsItems extends Component {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
-                        productCode: item.productCode,
+                        productCode: item.productCode||item.prodCode,
                         amount: 1
                     });
                 });
