@@ -110,7 +110,12 @@ class HotUpdateUtil {
             //     this.startUpdate(info);
             // });
             //更新
-            this.startUpdate(info);
+            if (info.expired){
+
+            } else {
+                this.startUpdate(info);
+            }
+
         }).catch(e => {
             throw e;
         });

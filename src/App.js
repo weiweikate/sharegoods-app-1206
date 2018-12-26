@@ -31,8 +31,10 @@ import geolocation from '@mr/geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
 import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
-import LoginAPI from './pages/login/api/LoginApi';
+// import LoginAPI from './pages/login/api/LoginApi';
 import OldImag from './home_icon.png';
+import oldUserLoginSingleModel from './model/oldUserLoginModel';
+// import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -65,6 +67,8 @@ export default class App extends Component {
             showOldBtn: false
         };
         user.readToken();
+        //检测是否老用户登陆
+        oldUserLoginSingleModel.checkIsShowOrNot();
     }
 
     async componentWillMount() {
@@ -92,21 +96,9 @@ export default class App extends Component {
                 });
             }, 200);
         });
-
         //热更新 先注释掉
         bridge.removeLaunch();
-
-        // hotUpdateUtil.isNeedToCheck();
         hotUpdateUtil.checkUpdate();
-
-        LoginAPI.oldUserActivateJudge().then((res) => {
-            console.log('是还是非-------', res);
-            this.setState({
-                showOldBtn: res.data
-            });
-        }).catch((error) => {
-
-        });
     }
 
     render() {
@@ -134,7 +126,7 @@ export default class App extends Component {
                 {
 
 
-                    user.isLogin || !this.state.showOldBtn
+                    user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
                         ?
                         null
                         :
@@ -148,7 +140,7 @@ export default class App extends Component {
                                 style={{
                                     width: 150,
                                     height: 43,
-                                    paddingLeft: 10
+                                    paddingLeft: 10,
                                 }
                                 }
                             >
@@ -164,16 +156,11 @@ export default class App extends Component {
     }
 
     gotoLogin = () => {
-        const navigationAction = NavigationActions.navigate({
-            routeName: RouterMap.LoginPage
-            //routeName:'debug/DemoLoginPage'
-        });
-        global.$navigator.dispatch(navigationAction);
+        oldUserLoginSingleModel.JumpToLogin(RouterMap.LoginPage);
     };
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage
-            //routeName:'debug/DemoLoginPage'
         });
         global.$navigator.dispatch(navigationAction);
     };
@@ -194,6 +181,6 @@ const styles = StyleSheet.create({
     oldLoginBtnStyle: {
         width: 120,
         height: 43,
-        paddingLeft: 10
+        paddingLeft: 10,
     }
 });
