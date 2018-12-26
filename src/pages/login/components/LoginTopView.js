@@ -40,6 +40,8 @@ class LoginTopViewModel {
     isSecuret = true;
     @observable
     dowTime = 0;
+    @observer
+    haveClick = false;
 
 
     @action
@@ -49,6 +51,11 @@ class LoginTopViewModel {
             return;
         }
         this.phoneNumber = phoneNmber;
+    }
+
+    @action
+    saveHaveClick(flag){
+        this.haveClick = flag;
     }
 
     @action
@@ -71,19 +78,20 @@ class LoginTopViewModel {
 
     @computed
     get isCanClick() {
-        if (this.phoneNumber.length < 11) {
+        if (this.phoneNumber.length < 11 && !this.haveClick) {
             return false;
         }
         if (this.selectIndex === 0) {
-            if (this.vertifyCode.length > 0) {
+            if (this.vertifyCode.length > 0 && !this.haveClick) {
                 return true;
             }
         } else {
-            if (this.password.length > 3) {
+            if (this.password.length > 3 && !this.haveClick) {
                 return true;
             }
         }
     }
+
 }
 
 @observer
@@ -181,6 +189,9 @@ export default class LoginTopView extends Component {
                         </View>
                         :null
                 }
+                {/*<UIText*/}
+                {/*value={}*/}
+                {/*/>*/}
 
             </View>
         );
@@ -281,7 +292,6 @@ export default class LoginTopView extends Component {
         if (!this.LoginModel.isCanClick) {
             return;
         }
-
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
             if (this.LoginModel.selectIndex === 0) {
                 this.props.loginClick(0, {
