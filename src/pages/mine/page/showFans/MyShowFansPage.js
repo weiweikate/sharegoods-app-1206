@@ -71,10 +71,10 @@ export default class MyShowFansPage extends BasePage<Props> {
                 </Text>
             </View>
         )
-
+        const uri = {uri: item.headImg};
         return(
             <View style={styles.itemWrapper}>
-                <ImageLoad style={styles.fansIcon} cacheable={true} source={{uri: item.headIma}}/>
+                <ImageLoad style={styles.fansIcon} cacheable={true} source={uri}/>
                 <Text style={styles.fansNameStyle}>
                     {item.nickname}
                 </Text>
@@ -104,7 +104,7 @@ export default class MyShowFansPage extends BasePage<Props> {
                 style={styles.container}
                 url={MineAPI.getShowFansList}
                 renderItem={this._listItemRender}
-                totalPageNum={(result)=> {return result.data.isMore ? 10 : 0}}
+                // totalPageNum={(result)=> {return result.data.isMore ? 10 : 0}}
                 renderHeader={this._headerRender}
                 onStartRefresh={this.loadPageData}
                 handleRequestResult={(result)=>{
