@@ -5,5 +5,11 @@
         <!-- Customize your theme here. -->
         <!--<item name="android:windowBackground">@null</item>-->
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:editTextStyle">@style/AppEditTextStyle</item>
+        <item name="editTextStyle">@style/AppEditTextStyle</item>
+    </style>
+
+    <style name="AppEditTextStyle" parent="@style/Widget.AppCompat.EditText">
+        <item name="backgroundTint">@android:color/transparent</item>
     </style>
 </resources>
