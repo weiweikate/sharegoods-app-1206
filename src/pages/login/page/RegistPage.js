@@ -44,6 +44,7 @@ export default class RegistPage extends BasePage {
         this.state = {
             gouxuan: true
         };
+        track('$AppViewScreen', { '$screen_name': 'RegistPage','$title':'注册' });
     }
 
     $isMonitorNetworkStatus() {

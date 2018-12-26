@@ -27,7 +27,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
 import Styles from '../style/SelectMentorPage.style';
 import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
 import {MRText as Text} from '../../../components/ui'

@@ -7,7 +7,8 @@ import {
     // Platform,
     // Linking,
     TouchableWithoutFeedback,
-    RefreshControl, DeviceEventEmitter, TouchableOpacity
+    RefreshControl, DeviceEventEmitter, TouchableOpacity,
+    Image
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
@@ -28,6 +29,7 @@ import MessageApi from '../../message/api/MessageApi';
 import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
 import {MRText as Text} from '../../../components/ui'
+import LoginAPI from '../../login/api/LoginApi';
 
 const {
     mine_header_bg,
@@ -37,7 +39,6 @@ const {
     mine_wait_send_icon,
     mine_wait_receive_icon,
     mine_after_buy_icon,
-    mine_account_bg,
     mine_icon_invite,
     mine_coupon_icon,
     mine_icon_data,
@@ -50,7 +51,9 @@ const {
     mine_setting_icon_white,
     profile_banner,
     mine_level_background,
-    mine_icon_mentor
+    mine_icon_mentor,
+    mine_user_icon,
+    // mine_icon_fans
 } = res.homeBaseImg;
 
 
@@ -79,7 +82,8 @@ export default class MinePage extends BasePage {
             loadingState: PageLoadingState.success,
             isRefreshing: false,
             changeHeader: true,
-            hasMessage: false
+            hasMessage: false,
+            hasFans:false
         };
     }
 
@@ -112,14 +116,24 @@ export default class MinePage extends BasePage {
             payload => {
                 const { state } = payload;
                 this.loadMessageCount();
+                this._needShowFans();
                 console.log('willFocusSubscriptionMine', state);
                 if (state && state.routeName === 'MinePage') {
                     this.refresh();
                 }
 
             });
+    }
 
+    _needShowFans=()=>{
+        LoginAPI.oldUserActivateJudge().then((res) => {
+            console.log('是还是非-------', res);
+            this.setState({
+                hasFans: res.data
+            });
+        }).catch((error) => {
 
+        });
     }
 
     $isMonitorNetworkStatus() {
@@ -291,12 +305,15 @@ export default class MinePage extends BasePage {
             name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
         }
 
+        let icon = (user.headImg && user.headImg.length > 0) ?  <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle}
+                                                                           borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
+                                                                                                                   borderRadius={px2dp(27)}/>
+
         return (
             <ImageBackground style={styles.headerBgStyle} source={mine_header_bg}>
                 <View style={{ height: px2dp(54), flexDirection: 'row' }}>
                     <TouchableOpacity onPress={this.jumpToUserInformationPage} activeOpacity={1}>
-                        <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle}
-                                   borderRadius={px2dp(27)}/>
+                        {icon}
                     </TouchableOpacity>
                     <View style={{
                         height: px2dp(54),
@@ -315,7 +332,7 @@ export default class MinePage extends BasePage {
                                     {name}
                                 </Text>
                                 <UIImage source={res.button.white_go}
-                                         style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
+                                         style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12) }}
                                          resizeMode={'stretch'}/>
                             </View>
                         </TouchableWithoutFeedback>
@@ -374,8 +391,8 @@ export default class MinePage extends BasePage {
 
     accountRender = () => {
         return (
-            <ImageBackground source={mine_account_bg} style={{
-                marginTop: px2dp(51),
+            <ImageBackground source={mine_header_bg} style={{
+                marginTop: px2dp(41),
                 marginHorizontal: px2dp(15),
                 borderRadius: 5,
                 overflow: 'hidden'
@@ -659,7 +676,7 @@ export default class MinePage extends BasePage {
                 this.$navigate('ShowListPage');
 
             }}>
-                <UIImage style={styles.makeMoneyMoreBackground} source={profile_banner}/>
+                <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
             </TouchableWithoutFeedback>
         );
     };
@@ -725,8 +742,12 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
 
-        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect, mine_icon_discollect, user.upUserCode ? mine_icon_mentor : null];
-        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏', '测试h5的交互', user.upUserCode ? '导师' : null];
+        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect
+            // ,this.state.hasFans?mine_icon_fans:null
+            , user.upUserCode ? mine_icon_mentor : null];
+        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏'
+            // , this.state.hasFans?'我的秀迷':null
+            ,user.upUserCode ? '导师' : null];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
@@ -835,10 +856,15 @@ export default class MinePage extends BasePage {
             //     });
             //     break;
             //邀请评分
+            // case 7:
+            //     this.$navigate(RouterMap.WebViewDemo);
+            //     break;
+            // case 7:
+            //     if(this.state.hasFans){
+            //         this.$navigate(RouterMap.MyShowFansPage);
+            //     }
+            //     break;
             case 7:
-                this.$navigate(RouterMap.WebViewDemo);
-                break;
-            case 8:
                 if (user.upUserCode) {
                     this.$navigate(RouterMap.MyMentorPage);
                 }
@@ -869,6 +895,8 @@ export default class MinePage extends BasePage {
 
     };
 }
+
+const profileWidth=ScreenUtils.width - (DesignRule.margin_page-1.5) * 2;
 const styles = StyleSheet.create({
     container: {
         flex: 1
@@ -917,10 +945,10 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(1)
     },
     makeMoneyMoreBackground: {
-        height: px2dp(62),
-        width: ScreenUtils.width - DesignRule.margin_page * 2,
+        height: (profileWidth*140/702),
+        width: profileWidth,
         top: ScreenUtils.getImgHeightWithWidth(headerBgSize) - px2dp(31),
-        left: DesignRule.margin_page,
+        left: DesignRule.margin_page-1.5,
         position: 'absolute',
         flexDirection: 'row'
     },

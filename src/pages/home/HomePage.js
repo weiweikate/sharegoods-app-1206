@@ -394,7 +394,7 @@ class HomePage extends BasePage {
                             height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
                             dataSource={EmptyUtils.isEmptyArr(this.state.messageData) ? [] : this.state.messageData}
                             loop={false}
-                            onWillChange={(item, index) => {
+                            onDidChange={(item, index) => {
                                 this.setState({
                                     messageIndex: index
                                 });

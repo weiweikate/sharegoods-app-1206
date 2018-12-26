@@ -14,7 +14,8 @@ import LoginAPI from '../api/LoginApi';
 // import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
+import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
+import {track} from '../../../utils/SensorsTrack'
 const {
     close_eye,
     open_eye,
@@ -65,24 +66,24 @@ export default class OldUserLoginPage extends BasePage {
 
     constructor(props) {
         super(props);
+        track('$AppViewScreen', { '$screen_name': 'OldUserLoginPage','$title':'老用户登录' });
     }
 
     // 导航配置
     $navigationBarOptions = {
-        title: '老用户激活'
+        title: ''
     };
     /*render右上角*/
-    $NavBarRenderRightItem = () => {
-        return (
-            <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
-                注册
-            </Text>
-        );
-    };
+    // $NavBarRenderRightItem = () => {
+    //     return (
+    //         <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
+    //             注册
+    //         </Text>
+    //     );
+    // };
     /*注册事件*/
     registBtnClick = () => {
         this.$navigate('login/login/RegistPage');
-
     };
 
     $isMonitorNetworkStatus() {
@@ -91,8 +92,8 @@ export default class OldUserLoginPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
-                <View style={{ backgroundColor: DesignRule.bgColor }}>
+            <View style={{ flex: 1, backgroundColor: '#fff' ,marginTop:-1}}>
+                <View style={{ backgroundColor: '#fff' }}>
                     <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
                         <Image style={{ width: 79, height: 79 }} source={tongyong_logo_nor}/>
                     </View>
@@ -104,7 +105,7 @@ export default class OldUserLoginPage extends BasePage {
                             onChangeText={text => {
                                 this.oldUserLoginModel.savePhoneNumber(text);
                             }}
-                            placeholder='请输入用户名'
+                            placeholder='请用经销商后台账号'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
                         />
@@ -143,22 +144,44 @@ export default class OldUserLoginPage extends BasePage {
                                 paddingTop: 15
 
                             }}>
-                                登录
+                                下一步
                             </Text>
                         </TouchableOpacity>
                     </View>
 
                     <Text
-                        style={{
-                            marginTop: 20,
-                            height: 50,
-                            width: ScreenUtils.width - 40,
-                            textAlign: 'right',
-                            fontSize: 12,
-                            color: DesignRule.textColor_secondTitle
-                        }}
+                        style={
+                            [Styles.bottomTimeStyle,
+                                {
+                                    marginTop: 40,
+                                    fontSize: 13,
+                                    color:'#000'
+                                }
+                            ]
+                        }
                     >
-                        请使用经销商账号登录
+                        朵女郎激活时间: 2018.12.30-2019.1.10
+                    </Text>
+                    <Text
+                        style={
+                            Styles.bottomTimeStyle
+                        }
+                    >
+                        激活后可免费领取1688元礼包及其他朵粉专享福利
+                    </Text>
+                    <Text
+                        style={
+                            Styles.bottomTimeStyle
+                        }
+                    >
+                        逾期激活将取消朵粉所有专享福利
+                    </Text>
+                    <Text
+                        style={
+                            Styles.bottomTimeStyle
+                        }
+                    >
+                        且后期只能以新用户注册
                     </Text>
                 </View>
                 {/*<Image*/}
@@ -171,14 +194,9 @@ export default class OldUserLoginPage extends BasePage {
                 {/*source={loginAndRegistRes.loginBottomImage}*/}
                 {/*resizeMode='cover'/>*/}
                 <Text
-                    style={{
-                        width: ScreenUtils.width,
-                        position: 'absolute',
-                        bottom: 50,
-                        fontSize: 12,
-                        color: DesignRule.textColor_secondTitle,
-                        textAlign: 'center'
-                    }}>
+                    style={
+                        Styles.bottomKeFuTextStyle
+                    }>
                     客服电话:400-969-6365
                 </Text>
             </View>
@@ -217,7 +235,7 @@ export default class OldUserLoginPage extends BasePage {
                 }
             }).catch((data) => {
                 this.$loadingDismiss();
-                this.$toastShow(data.msg)
+                this.$toastShow(data.msg);
             });
         }
         // this.$navigate("login/login/SetPasswordPage");
@@ -259,11 +277,29 @@ const Styles = StyleSheet.create(
         lineStyle: {
             marginTop: 3,
             marginLeft: 10
-        }, inputTextStyle: {
+        },
+        inputTextStyle: {
             marginLeft: 20,
-            width: 120,
+            width: 140,
             fontSize: 14,
             fontWeight: '400'
+        },
+        bottomTimeStyle: {
+            marginTop: 10,
+            height: 20,
+            width: ScreenUtils.width - 40,
+            textAlign: 'center',
+            fontSize: 12,
+            color: DesignRule.textColor_secondTitle,
+            marginLeft: 20
+        },
+        bottomKeFuTextStyle: {
+            width: ScreenUtils.width,
+            position: 'absolute',
+            bottom: 50,
+            fontSize: 12,
+            color: DesignRule.textColor_secondTitle,
+            textAlign: 'center'
         }
     }
 );
