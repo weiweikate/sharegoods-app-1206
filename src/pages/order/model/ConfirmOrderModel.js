@@ -54,7 +54,8 @@ class ConfirmOrderModel {
                  return   this.handleNetData(response.data);
                 }).catch(err => {
                     bridge.hiddenLoading();
-                  return  this.disPoseErr(err);
+                  let error  = this.disPoseErr(err);
+                  throw error
                 });
                 break;
             case 1:
@@ -70,7 +71,7 @@ class ConfirmOrderModel {
                  return   this.handleNetData(response.data);
                 }).catch(err => {
                     bridge.hiddenLoading();
-                  return  this.disPoseErr(err)
+                  throw this.disPoseErr(err)
                 });
                 break;
             case 2:
@@ -86,7 +87,7 @@ class ConfirmOrderModel {
                  return   this.handleNetData(response.data);
                 }).catch(err => {
                     bridge.hiddenLoading();
-                   return this.disPoseErr(err)
+                   throw this.disPoseErr(err)
                 });
                 break;
             case 3:
@@ -107,7 +108,7 @@ class ConfirmOrderModel {
                     }
                 ).catch(err => {
                     bridge.hiddenLoading();
-                   return  this.disPoseErr(err)
+                   throw  this.disPoseErr(err)
                 });
                 break;
 
@@ -120,28 +121,7 @@ class ConfirmOrderModel {
         confirmOrderModel.netFailedInfo=err
         confirmOrderModel.loadingState=PageLoadingState.fail
         return err;
-        // if (err.code === 10009) {
-        //     this.$navigate('login/login/LoginPage', {
-        //         callback: () => {
-        //             this.loadPageData();
-        //         }
-        //     });
-        // } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
-        //     Alert.alert('提示', err.msg, [
-        //         {
-        //             text: '确定', onPress: () => {
-        //                 this.$navigateBack();
-        //             }
-        //         }
-        //         // { text: '否' }
-        //     ]);
-        // } else if (err.code === 54001) {
-        //     bridge.$toast('商品库存不足！');
-        //     this.$navigateBack();
-        // }
-        // else {
-        //     this.$toastShow(err.msg);
-        // }
+
     }
     handleNetData = (data) => {
         confirmOrderModel.loading=false
@@ -225,7 +205,7 @@ class ConfirmOrderModel {
                     return response.data;
                 }).catch(err => {
                     bridge.hiddenLoading();
-                  // this.disPoseErr(err)
+                  throw this.disPoseErr(err)
                 });
                 break;
             case 1:
@@ -240,7 +220,7 @@ class ConfirmOrderModel {
                      return data;
                 }).catch(err => {
                     bridge.hiddenLoading();
-                // this.disPoseErr(err);
+                throw this.disPoseErr(err);
                 });
                 break;
             case 2:
@@ -255,7 +235,7 @@ class ConfirmOrderModel {
                     return data;
                 }).catch(err => {
                     bridge.hiddenLoading();
-               // this.disPoseErr(err)
+               throw this.disPoseErr(err)
                 });
                 break;
             case 3:
@@ -281,7 +261,7 @@ class ConfirmOrderModel {
                     return data;
                 }).catch(err => {
                    bridge.hiddenLoading();
-                 // this.disPoseErr(err)
+                 throw this.disPoseErr(err)
                 });
                 break;
 

@@ -39,7 +39,7 @@ export default class ConfirmPriceView extends Component {
             <View style={{ backgroundColor: "white" }}>
                 <TouchableOpacity style={styles.couponsStyle}
                                   disabled={!confirmOrderModel.canUseCou}
-                                  onPress={() => this.jumpToCouponsPage()}>
+                                  onPress={this.props.jumpToCouponsPage}>
                     <UIText value={"优惠券"} style={styles.blackText}/>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <UIText
@@ -52,7 +52,7 @@ export default class ConfirmPriceView extends Component {
                 {!user.tokenCoin ? null :
                     <View>
                         <TouchableOpacity style={styles.couponsStyle}
-                                          onPress={() => this.jumpToCouponsPage("justOne")}>
+                                          onPress={()=>this.props.jumpToCouponsPage("justOne")}>
                             <UIText value={"1元现金券"} style={styles.blackText}/>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <UIText
@@ -139,5 +139,18 @@ const styles = StyleSheet.create({
         paddingRight: ScreenUtils.autoSizeWidth(15),
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    couponIconStyle: {
+        width: ScreenUtils.autoSizeWidth(15),
+        height: ScreenUtils.autoSizeWidth(12),
+        position: "absolute",
+        left: ScreenUtils.autoSizeWidth(15),
+        top: ScreenUtils.autoSizeWidth(12)
+    },
+    couponsOutStyle: {
+        height: ScreenUtils.autoSizeWidth(34),
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginLeft: ScreenUtils.autoSizeWidth(36)
     },
 });

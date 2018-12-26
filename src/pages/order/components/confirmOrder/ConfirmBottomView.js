@@ -54,12 +54,6 @@ export default class ConfirmBottomView extends Component {
     };
 }
 const styles = StyleSheet.create({
-    couponsLineStyle:{
-        marginLeft: ScreenUtils.autoSizeWidth(36),
-        backgroundColor: DesignRule.bgColor,
-        height: 0.5,
-        width: '100%'
-    },
     commitOutStyle:{ height: ScreenUtils.autoSizeHeight(49), flexDirection: 'row',backgroundColor:DesignRule.white,justifyContent: 'flex-end', alignItems: 'center'},
     commitAmountStyle:{
         fontSize: ScreenUtils.px2dp(15),

@@ -126,5 +126,24 @@ const styles = StyleSheet.create({
         fontSize: ScreenUtils.px2dp(13),
         color: DesignRule.textColor_mainTitle,
         marginTop: ScreenUtils.autoSizeWidth(5)
-    }
+    },
+    giftOutStyle: {
+        marginTop: ScreenUtils.autoSizeWidth(20),
+        backgroundColor: "white",
+        flexDirection: "row",
+        alignItems: "center"
+    },
+    giftInnerStyle: {
+        borderWidth: 1,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        borderColor: DesignRule.mainColor,
+        marginLeft: ScreenUtils.autoSizeWidth(20)
+    },
+    giftTextStyles: {
+        fontSize: ScreenUtils.px2dp(11),
+        color: DesignRule.mainColor,
+        padding: ScreenUtils.autoSizeWidth(3)
+    },
 });
