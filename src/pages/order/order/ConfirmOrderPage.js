@@ -613,7 +613,7 @@ export default class ConfirmOrderPage extends BasePage {
                         discountAmount: 1,
                         ifUseYiYuan: !!this.state.tokenCoin,
                         numberOfYiYuan: this.state.tokenCoin,
-                        YiyuanDiscountAmount: this.state.tokenCoin
+                        yiYuanDiscountAmount: this.state.tokenCoin
                     });
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
@@ -670,7 +670,7 @@ export default class ConfirmOrderPage extends BasePage {
                         discountAmount: 1,
                         ifUseYiYuan: !!this.state.tokenCoin,
                         numberOfYiYuan: this.state.tokenCoin,
-                        YiyuanDiscountAmount: this.state.tokenCoin
+                        yiYuanDiscountAmount: this.state.tokenCoin
                     });
                     user.saveUserInfo(data);
                     userOrderNum.getUserOrderNum();
@@ -718,7 +718,7 @@ export default class ConfirmOrderPage extends BasePage {
                     discountAmount: 1,
                     ifUseYiYuan: !!this.state.tokenCoin,
                     numberOfYiYuan: this.state.tokenCoin,
-                    YiyuanDiscountAmount: this.state.tokenCoin
+                    yiYuanDiscountAmount: this.state.tokenCoin
                 });
                 MineApi.getUser().then(res => {
                     this.$loadingDismiss();
