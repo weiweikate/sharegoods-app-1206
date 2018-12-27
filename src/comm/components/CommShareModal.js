@@ -391,7 +391,7 @@ export default class CommShareModal extends React.Component {
                                            }}/>
                                 </TouchableWithoutFeedback>
                                 {
-                                    isShow ? <UIText value={'登陆以后分享才能获取赏金'}
+                                    isShow ? <UIText value={'登陆以后分享才能获取奖励'}
                                                      style={{
                                                          position: 'absolute',
                                                          left: 0,

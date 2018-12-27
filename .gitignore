@@ -55,5 +55,25 @@ buck-out/
 */fastlane/Preview.html
 */fastlane/screenshots
 
+
 # Bundle artifact
 *.jsbundle
+yarn.lock
+package-lock.json
+/android/.gradle/
+/android/.idea/
+/android/build/
+/android/gradle/
+/android/gradlew
+/android/gradlew.bat
+/android/keystores/
+pgyer/
+tsconfig.json
+/android/app/src/main/assets/index.android.bundle.meta
+/android/app/src/main/assets/index.android.bundle
+/android/app/release/
+
+.update
+/uploadPackage
+build
+/.update

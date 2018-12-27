@@ -16,8 +16,6 @@ import EmptyUtils from '../../utils/EmptyUtils'
 import {MRText as Text} from '../../components/ui';
 const GoodItems = ({img, title, money, press}) => {
 
-console.log('GoodItems', money, EmptyUtils.isEmpty(money))
-
 return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
     <View style={styles.goodsView} >
     <ImageLoad cacheable={true} style={styles.goodImg} source={{uri:img ? encodeURI(img) : ''}}/>

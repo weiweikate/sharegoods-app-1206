@@ -420,7 +420,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
                 arrData.push({
                     status: 0,
-                    name: '1元现金券',
+                    name: '1元抵扣券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',
@@ -542,7 +542,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
                     status: 0,
-                    name: '1元现金券',
+                    name: '1元抵扣券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',

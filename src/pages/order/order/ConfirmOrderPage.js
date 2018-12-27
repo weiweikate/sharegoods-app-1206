@@ -146,10 +146,10 @@ export default class ConfirmOrderPage extends BasePage {
                     <View>
                         <NoMoreClick style={styles.couponsStyle}
                                      onPress={() => this.jumpToCouponsPage('justOne')}>
-                            <UIText value={'1元现金券'} style={styles.blackText}/>
+                            <UIText value={'1元抵扣券'} style={styles.blackText}/>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <UIText
-                                    value={this.state.tokenCoin ? this.state.tokenCoinText : '选择1元现金券'}
+                                    value={this.state.tokenCoin ? this.state.tokenCoinText : '选择1元抵扣券'}
                                     style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                                 <Image source={arrow_right}/>
                             </View>
@@ -559,7 +559,7 @@ export default class ConfirmOrderPage extends BasePage {
                     this.canCommit = true;
                     let data = response.data;
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
                         receiverName: data.userAddress.receiver,
@@ -571,7 +571,8 @@ export default class ConfirmOrderPage extends BasePage {
                         discountAmount: 1,
                         ifUseYiYuan: !!this.state.tokenCoin,
                         numberOfYiYuan: this.state.tokenCoin,
-                        YiyuanDiscountAmount: this.state.tokenCoin
+                        yiYuanCouponsAmount: this.state.tokenCoin,
+                        storeCode:user.storeCode?user.storeCode:''
                     });
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
@@ -601,7 +602,7 @@ export default class ConfirmOrderPage extends BasePage {
                     this.canCommit = true;
                     let data = response.data;
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
                         receiverName: data.userAddress.receiver,
@@ -613,7 +614,8 @@ export default class ConfirmOrderPage extends BasePage {
                         discountAmount: 1,
                         ifUseYiYuan: !!this.state.tokenCoin,
                         numberOfYiYuan: this.state.tokenCoin,
-                        YiyuanDiscountAmount: this.state.tokenCoin
+                        yiYuanCouponsAmount: this.state.tokenCoin,
+                        storeCode:user.storeCode?user.storeCode:''
                     });
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
@@ -658,7 +660,7 @@ export default class ConfirmOrderPage extends BasePage {
                     this.$loadingDismiss();
                     let data = res.data;
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
                         receiverName: data.userAddress.receiver,
@@ -670,7 +672,9 @@ export default class ConfirmOrderPage extends BasePage {
                         discountAmount: 1,
                         ifUseYiYuan: !!this.state.tokenCoin,
                         numberOfYiYuan: this.state.tokenCoin,
-                        YiyuanDiscountAmount: this.state.tokenCoin
+                        yiYuanCouponsAmount: this.state.tokenCoin,
+                        storeCode:user.storeCode?user.storeCode:''
+
                     });
                     user.saveUserInfo(data);
                     userOrderNum.getUserOrderNum();
@@ -706,7 +710,7 @@ export default class ConfirmOrderPage extends BasePage {
                 let data = response.data;
                 this.canCommit = true;
                 track(trackEvent.submitOrder, {
-                    orderID: data.orderNo,
+                    orderId: data.orderNo,
                     orderAmount: data.payAmount,
                     transportationCosts: data.totalFreightFee,
                     receiverName: data.userAddressDTO.receiver,
@@ -718,7 +722,8 @@ export default class ConfirmOrderPage extends BasePage {
                     discountAmount: 1,
                     ifUseYiYuan: !!this.state.tokenCoin,
                     numberOfYiYuan: this.state.tokenCoin,
-                    YiyuanDiscountAmount: this.state.tokenCoin
+                    yiYuanCouponsAmount: this.state.tokenCoin,
+                    storeCode:user.storeCode?user.storeCode:''
                 });
                 MineApi.getUser().then(res => {
                     this.$loadingDismiss();

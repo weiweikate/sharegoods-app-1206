@@ -55,7 +55,7 @@ export default class RefundDetailView extends React.Component {
                 <UIText value={'退款明细'}
                         style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
             </View>
-            {/*<UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回1元现金券'}*/}
+            {/*<UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回1元抵扣券'}*/}
                             {/*leftTextStyle={{*/}
                                 {/*color: DesignRule.textColor_mainTitle,*/}
                                 {/*fontSize: 13*/}

@@ -19,7 +19,6 @@ import {
     ActivityIndicator,
     Text,
     Image,
-    NativeModules,
     RefreshControl
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -242,7 +241,7 @@ export default class RefreshFlatList extends React.Component {
                 onEndRefresh && onEndRefresh();
 
             }
-            NativeModules.commModule.toast(error.msg || '请求失败');
+            // NativeModules.commModule.toast(error.msg || '请求失败');
             that.setState({
                 refreshing: false,
                 loadingMore: false,
@@ -262,6 +261,7 @@ export default class RefreshFlatList extends React.Component {
           renderItem={this.props.renderItem}
           onEndReached={this._onLoadMore.bind(this)}
           onEndReachedThreshold={0.1}
+          ListHeaderComponent={this.props.renderHeader}
           // onRefresh={this._onRefresh.bind(this)}
           // refreshing={this.state.refreshing}
           //onLayout={this.onLayout.bind(this)}

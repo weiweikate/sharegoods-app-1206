@@ -40,7 +40,7 @@ import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
-import {MRText as Text} from '../../components/ui';
+import { MRText as Text } from '../../components/ui';
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -96,6 +96,7 @@ class HomePage extends BasePage {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
+                this.homeFocused = true;
                 const { state } = payload;
                 if (user.token) {
                     this.loadMessageCount();
@@ -115,6 +116,7 @@ class HomePage extends BasePage {
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
+                this.homeFocused = false;
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     this.setState({ isShow: false }, () => {
@@ -128,6 +130,7 @@ class HomePage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                this.homeFocused = true;
                 this.showModal();
             }
         );
@@ -533,6 +536,7 @@ class HomePage extends BasePage {
                 <HomeSearchView navigation={this.$navigate}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
                                 hasMessage={this.state.hasMessage}
+                                pageFocused={this.homeFocused}
                 />
                 <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
                                ref={(ref) => {

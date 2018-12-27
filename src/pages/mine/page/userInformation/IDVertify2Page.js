@@ -21,15 +21,16 @@ import MineApi from "../../api/MineApi";
 import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import {MRText as Text, MRTextInput as RNTextInput} from '../../../../components/ui'
+import apiEnvironment from "../../../../api/ApiEnvironment";
 
 const IDcard_country = res.userInfoImg.IDcard_country;
 const IDcard_persion = res.userInfoImg.IDcard_persion;
 const addressSelect = res.userInfoImg.addressSelect;
 const addressUnselect = res.userInfoImg.addressUnselect;
-const htmlUrl = __DEV__ ?
-    "https://testh5.sharegoodsmall.com/static/protocol/privacy.html"
-    :
-    "https://testh5.sharegoodsmall.com/static/protocol/privacy.html";
+// const htmlUrl = __DEV__ ?
+//     "https://testh5.sharegoodsmall.com/static/protocol/privacy.html"
+//     :
+//     "https://testh5.sharegoodsmall.com/static/protocol/privacy.html";
 export default class IDVertify2Page extends BasePage {
 
     constructor(props) {
@@ -148,7 +149,7 @@ export default class IDVertify2Page extends BasePage {
                                     onPress={() => {
                                         this.$navigate("HtmlPage", {
                                             title: "实名认证协议",
-                                            uri: htmlUrl
+                                            uri: apiEnvironment.getCurrentH5Url()+'/static/protocol/privacy.html'
                                         });
                                     }}/>
                         </TouchableOpacity>

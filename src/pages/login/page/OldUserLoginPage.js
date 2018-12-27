@@ -71,7 +71,7 @@ export default class OldUserLoginPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: ''
+        title: '老用户激活'
     };
     /*render右上角*/
     // $NavBarRenderRightItem = () => {
@@ -94,11 +94,11 @@ export default class OldUserLoginPage extends BasePage {
         return (
             <View style={{ flex: 1, backgroundColor: '#fff' ,marginTop:-1}}>
                 <View style={{ backgroundColor: '#fff' }}>
-                    <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
                         <Image style={{ width: 79, height: 79 }} source={tongyong_logo_nor}/>
                     </View>
 
-                    <View style={{ marginLeft: 20, marginRight: 30, marginTop: 60 }}>
+                    <View style={{ marginLeft: 20, marginRight: 30, marginTop: 40 }}>
                         <TextInput
                             style={Styles.inputTextStyle}
                             value={this.oldUserLoginModel.phoneNumber}
@@ -111,7 +111,7 @@ export default class OldUserLoginPage extends BasePage {
                         />
                         <CommSpaceLine style={Styles.lineStyle}/>
                     </View>
-                    <View style={{ marginLeft: 20, marginRight: 30, marginTop: 40 }}>
+                    <View style={{ marginLeft: 20, marginRight: 30, marginTop: 30 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <TextInput
                                 style={Styles.inputTextStyle}
@@ -153,7 +153,7 @@ export default class OldUserLoginPage extends BasePage {
                         style={
                             [Styles.bottomTimeStyle,
                                 {
-                                    marginTop: 40,
+                                    marginTop: 20,
                                     fontSize: 13,
                                     color:'#000'
                                 }
@@ -270,7 +270,7 @@ const Styles = StyleSheet.create(
         oldUserLoginBtnStyle: {
             marginLeft: 30,
             width: ScreenUtils.width - 60,
-            marginTop: 40,
+            marginTop: 25,
             height: 50,
             borderRadius: 25
         },
@@ -285,7 +285,7 @@ const Styles = StyleSheet.create(
             fontWeight: '400'
         },
         bottomTimeStyle: {
-            marginTop: 10,
+            marginTop: 5,
             height: 20,
             width: ScreenUtils.width - 40,
             textAlign: 'center',
@@ -296,7 +296,7 @@ const Styles = StyleSheet.create(
         bottomKeFuTextStyle: {
             width: ScreenUtils.width,
             position: 'absolute',
-            bottom: 50,
+            bottom: 40,
             fontSize: 12,
             color: DesignRule.textColor_secondTitle,
             textAlign: 'center'

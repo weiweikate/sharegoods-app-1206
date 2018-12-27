@@ -28,7 +28,7 @@ import WaveView from '../../../comm/components/WaveView';
 import MessageApi from '../../message/api/MessageApi';
 import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 
 const {
@@ -53,7 +53,7 @@ const {
     mine_level_background,
     mine_icon_mentor,
     mine_user_icon,
-    // mine_icon_fans
+    mine_icon_fans
 } = res.homeBaseImg;
 
 
@@ -83,7 +83,7 @@ export default class MinePage extends BasePage {
             isRefreshing: false,
             changeHeader: true,
             hasMessage: false,
-            hasFans:false
+            hasFans: false
         };
     }
 
@@ -101,18 +101,19 @@ export default class MinePage extends BasePage {
     };
 
     componentDidMount() {
+
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         // this.refresh();
     }
 
     componentWillUnmount() {
-        this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
     }
 
     componentWillMount() {
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
             payload => {
                 const { state } = payload;
                 this.loadMessageCount();
@@ -125,7 +126,7 @@ export default class MinePage extends BasePage {
             });
     }
 
-    _needShowFans=()=>{
+    _needShowFans = () => {
         LoginAPI.oldUserActivateJudge().then((res) => {
             console.log('是还是非-------', res);
             this.setState({
@@ -134,7 +135,7 @@ export default class MinePage extends BasePage {
         }).catch((error) => {
 
         });
-    }
+    };
 
     $isMonitorNetworkStatus() {
         return false;
@@ -305,9 +306,10 @@ export default class MinePage extends BasePage {
             name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
         }
 
-        let icon = (user.headImg && user.headImg.length > 0) ?  <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle}
-                                                                           borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
-                                                                                                                   borderRadius={px2dp(27)}/>
+        let icon = (user.headImg && user.headImg.length > 0) ?
+            <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle}
+                       borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
+                                                           borderRadius={px2dp(27)}/>;
 
         return (
             <ImageBackground style={styles.headerBgStyle} source={mine_header_bg}>
@@ -673,7 +675,7 @@ export default class MinePage extends BasePage {
     renderMoreMoney = () => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate('ShowListPage');
+                this.$navigate(RouterMap.ShowDetailPage,{fromHome: false, id: 1});
 
             }}>
                 <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
@@ -742,15 +744,85 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
 
-        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect
-            // ,this.state.hasFans?mine_icon_fans:null
-            , user.upUserCode ? mine_icon_mentor : null];
-        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏'
-            // , this.state.hasFans?'我的秀迷':null
-            ,user.upUserCode ? '导师' : null];
+        let invite = {
+            text:'邀请好友',
+            icon:mine_icon_invite,
+            onPress:()=>{
+                this.$navigate(RouterMap.InviteFriendsPage);
+            }
+        }
+        let coupon = {
+            text:'优惠券',
+            icon:mine_coupon_icon,
+            onPress:()=>{
+                this.$navigate(RouterMap.CouponsPage);
+            }
+        }
+        let data = {
+            text:'我的晋升',
+            icon:mine_icon_data,
+            onPress:()=>{
+                this.$navigate(RouterMap.MyPromotionPage);
+            }
+        }
+        let shop = {
+            text:'收藏店铺',
+            icon:mine_icon_favorite_shop,
+            onPress:()=>{
+                this.$navigate(RouterMap.MyCollectPage);
+            }
+        }
+        let service = {
+            text:'帮助与客服',
+            icon:mine_icon_help_service,
+            onPress:()=>{
+                this.$navigate(RouterMap.MyHelperPage);
+            }
+        }
+        let address = {
+            text:'地址',
+            icon:mine_icon_address,
+            onPress:()=>{
+                this.$navigate(RouterMap.AddressManagerPage);
+            }
+        }
+        let collect = {
+            text:'秀场收藏',
+            icon:mine_icon_discollect,
+            onPress:()=>{
+                this.$navigate(RouterMap.ShowConnectPage);
+            }
+        }
+        let fans = {
+            text:'我的秀迷',
+            icon:mine_icon_fans,
+            onPress:()=>{
+                if(this.state.hasFans){
+                    this.$navigate(RouterMap.MyShowFansPage);
+                }
+            }
+        }
 
+        let mentor = {
+            text:'顾问',
+            icon:mine_icon_mentor,
+            onPress:()=>{
+                if (user.upUserCode) {
+                    this.$navigate(RouterMap.MyMentorPage);
+                }
+            }
+        }
+        let menu = [invite,coupon,data,shop,service,address,collect];
+
+        if(this.state.hasFans){
+            menu.push(fans);
+        }
+
+        if(user.upUserCode){
+            menu.push(mentor);
+        }
         let arr = [];
-        for (let i = 0; i < leftImage.length; i++) {
+        for (let i = 0; i < menu.length; i++) {
             arr.push(
                 <NoMoreClick style={{
                     width: '25%',
@@ -758,10 +830,10 @@ export default class MinePage extends BasePage {
                     alignItems: 'center',
                     marginTop: 10,
                     marginBottom: 10
-                }} onPress={() => this.orderMenuJump(i)} key={i}>
-                    <UIImage source={leftImage[i]}
+                }} onPress={ menu[i].onPress} key={i}>
+                    <UIImage source={menu[i].icon}
                              style={{ height: i === 0 ? 19 : 18, width: 20, marginBottom: 10 }}/>
-                    <UIText value={leftText[i]} style={styles.greyText}/>
+                    <UIText value={menu[i].text} style={styles.greyText}/>
                 </NoMoreClick>
             );
         }
@@ -808,76 +880,11 @@ export default class MinePage extends BasePage {
         }
     }
 
-    orderMenuJump = (index) => {
-        // if (!user.isLogin) {
-        //     this.props.navigation.navigate('login/login/LoginPage');
-        //     return;
-        //let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
-        switch (index) {
-            case 0:
-                this.$navigate(RouterMap.InviteFriendsPage);
-                break;
-            case 1:
-                this.$navigate(RouterMap.CouponsPage);
-                break;
-            case 2:
-                this.$navigate(RouterMap.MyPromotionPage);
-                break;
-            case 3:
-                // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
-                this.$navigate(RouterMap.MyCollectPage);
-                break;
-            case 4:
-                // this.props.navigation.navigate('mine/MyCollectPage');
-                this.$navigate(RouterMap.MyHelperPage);
-                break;
-            case 5:
-                this.$navigate(RouterMap.AddressManagerPage);
-                break;
-                // case 6:
-                //     this.props.navigation.navigate(RouterMap.UserPromotionPage);
-                //     break;
-                // case 6:
-                //     this.props.navigation.navigate(RouterMap.ShareTaskListPage);
-                break;
-            case 6:
-                this.$navigate(RouterMap.ShowConnectPage);
-                break;
-            //邀请评分
-            // case 10:
-            //     //
-            //     const appId = "1";
-            //     const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
-            //     Platform.OS === "ios" && Linking.canOpenURL(url).then(() => {
-            //         Linking.openURL(url);
-            //     }).catch(e => {
-            //         console.warn(e);
-            //         // Toast.toast('无法前往AppStore');
-            //     });
-            //     break;
-            //邀请评分
-            // case 7:
-            //     this.$navigate(RouterMap.WebViewDemo);
-            //     break;
-            // case 7:
-            //     if(this.state.hasFans){
-            //         this.$navigate(RouterMap.MyShowFansPage);
-            //     }
-            //     break;
-            case 7:
-                if (user.upUserCode) {
-                    this.$navigate(RouterMap.MyMentorPage);
-                }
-                break;
-            default:
 
-                break;
-        }
-    };
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {
-            this.gotoLoginPage()
+            this.gotoLoginPage();
             return;
         }
         this.$navigate('order/order/MyOrdersListPage', { index: 0 });
@@ -896,7 +903,7 @@ export default class MinePage extends BasePage {
     };
 }
 
-const profileWidth=ScreenUtils.width - (DesignRule.margin_page-1.5) * 2;
+const profileWidth = ScreenUtils.width - (DesignRule.margin_page - 1.5) * 2;
 const styles = StyleSheet.create({
     container: {
         flex: 1
@@ -945,10 +952,10 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(1)
     },
     makeMoneyMoreBackground: {
-        height: (profileWidth*140/702),
+        height: (profileWidth * 140 / 702),
         width: profileWidth,
         top: ScreenUtils.getImgHeightWithWidth(headerBgSize) - px2dp(31),
-        left: DesignRule.margin_page-1.5,
+        left: DesignRule.margin_page - 1.5,
         position: 'absolute',
         flexDirection: 'row'
     },

@@ -20,6 +20,8 @@ import { homeModule } from '../../home/Modules'
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
+import oldUserLoginSingleModel from '../../../model/oldUserLoginModel';
+import RouterMap from '../../../navigation/RouterMap';
 
 const {
     share: {
@@ -40,7 +42,7 @@ export default class LoginPage extends BasePage {
 
         this.state = {
             showWxLoginBtn: false,
-            isCanClick:true
+            isCanClick: true
         };
     }
 
@@ -78,7 +80,8 @@ export default class LoginPage extends BasePage {
         }).catch((error) => {
 
         });
-        track('$AppViewScreen', { '$screen_name': 'LoginPage','$title':'登录' });
+        // track('$AppViewScreen', { '$screen_name': 'LoginPage', '$title': '登录' });
+        oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
 
     $NavBarLeftPressed = () => {
@@ -147,49 +150,53 @@ export default class LoginPage extends BasePage {
     /*微信登陆*/
     weChatLoginClick = () => {
         track(trackEvent.login, { loginMethod: '微信登录用' });
-        bridge.$loginWx((data) => {
-            console.log(data);
-            LoginAPI.appWechatLogin({
-                device: data.device,
-                encryptedData: '',
-                headImg: data.headerImg,
-                iv: '',
-                nickname: data.nickName,
-                openid: data.openid,
-                systemVersion: data.systemVersion,
-                wechatVersion: ''
-            }).then((res) => {
-                if (res.code === 34005) {
-                    this.$navigate('login/login/RegistPage', data);
-                } else if (res.code === 10000) {
-                    UserModel.saveUserInfo(res.data);
-                    UserModel.saveToken(res.data.token);
-                    bridge.$toast('登录成功');
-                    console.log(UserModel);
-                    homeModule.loadHomeList();
-                    bridge.setCookies(res.data);
-                    this.$navigateBack();
-                    // 埋点登录成功
-                    login(data.data.code);
-                }
-            }).catch((error) => {
-                if (error.code === 34005) {
-                    this.$navigate('login/login/RegistPage', data);
-                }
-                bridge.$toast(data.msg);
-            });
+        oldUserLoginSingleModel.isCanLoginWithWx((flag) => {
+            if (flag) {
+                bridge.$loginWx((data) => {
+                    console.log(data);
+                    LoginAPI.appWechatLogin({
+                        device: data.device,
+                        encryptedData: '',
+                        headImg: data.headerImg,
+                        iv: '',
+                        nickname: data.nickName,
+                        openid: data.openid,
+                        systemVersion: data.systemVersion,
+                        wechatVersion: ''
+                    }).then((res) => {
+                        if (res.code === 34005) {
+                            this.$navigate('login/login/RegistPage', data);
+                        } else if (res.code === 10000) {
+                            UserModel.saveUserInfo(res.data);
+                            UserModel.saveToken(res.data.token);
+                            bridge.$toast('登录成功');
+                            console.log(UserModel);
+                            homeModule.loadHomeList();
+                            bridge.setCookies(res.data);
+                            this.$navigateBack();
+                            // 埋点登录成功
+                            login(data.data.code);
+                        }
+                    }).catch((error) => {
+                        if (error.code === 34005) {
+                            this.$navigate('login/login/RegistPage', data);
+                        }
+                        bridge.$toast(data.msg);
+                    });
+                });
+            }
         });
     };
 
     /*老用户登陆*/
     oldUserLoginClick = () => {
-        this.$navigate('login/login/OldUserLoginPage');
+        oldUserLoginSingleModel.JumpToLogin(RouterMap.OldUserLoginPage);
     };
     /*注册*/
     registBtnClick = () => {
-        this.$navigate('login/login/RegistPage');
+        oldUserLoginSingleModel.isCanTopRegist(RouterMap.RegistPage);
+        // this.$navigate('login/login/RegistPage');
     };
-
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
         this.$loadingShow();

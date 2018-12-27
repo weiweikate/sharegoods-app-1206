@@ -50,7 +50,7 @@ Navigator.router.getStateForAction = (action, state) => {
             return null;
         }
     }
-//老用户登陆界面禁止
+    //老用户登陆界面禁止
     if (state && action.type === NavigationActions.NAVIGATE) {
         let length = state.routes.length;
         let currentRoute = state.routes[length - 1];
