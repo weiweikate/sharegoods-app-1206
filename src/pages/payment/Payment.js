@@ -22,7 +22,8 @@ export const paymentType = {
 export let paymentTrack = {
     orderId : '',
     orderAmount: '',
-    paymentMethod: ''
+    paymentMethod: '',
+    storeCode: user.storeCode ? user.storeCode : ''
 }
 
 export class Payment {

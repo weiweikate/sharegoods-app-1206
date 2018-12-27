@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         width: (ScreenUtils.width - DesignRule.margin_page * 2)*1071/1030,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: DesignRule.margin_page,
+        paddingHorizontal: DesignRule.margin_page+5,
         marginTop: 3,
         alignSelf: 'center',
     },
