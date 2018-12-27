@@ -146,11 +146,15 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (pageType === 0 && (status === 1 || status === 5) ||
             pageType === 1 && (status === 1 || status === 5)
         ) {
-            isShow_refuseReasonView = true;
+            if(reject && reject.length > 0){
+                isShow_refuseReasonView = true;
+            }
             /** 只要是被拒绝就显示拒绝理由*/
         } else if (status === 6) {
-            isShow_refuseReasonView = true;
-            refuseReasonViewType = 1;
+            if(reject && reject.length > 0){
+                isShow_refuseReasonView = true;
+                refuseReasonViewType = 1;
+            }
         }
 
         let isShow_shippingAddressView = false;

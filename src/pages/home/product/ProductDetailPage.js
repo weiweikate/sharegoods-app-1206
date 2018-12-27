@@ -231,7 +231,7 @@ export default class ProductDetailPage extends BasePage {
                 /*商品详情埋点*/
                 const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = data || {};
                 track(trackEvent.commodityDetail, {
-                    preseat: this.params.preseat || '',
+                    preSeat: this.params.preseat || '',
                     commodityID: prodCode,
                     commodityName: name,
                     firstCommodity: firstCategoryId,
@@ -317,7 +317,7 @@ export default class ProductDetailPage extends BasePage {
             /*加入购物车埋点*/
             const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.state.data || {};
             track(trackEvent.addToShoppingcart, {
-                shoppingcartEntrance: '详情页面',
+                shoppingCartEntrance: '详情页面',
                 commodityNumber: amount,
                 commodityID: prodCode,
                 commodityName: name,
