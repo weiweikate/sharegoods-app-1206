@@ -27,7 +27,7 @@ export default class HomeUserView extends Component {
                 <View style={{flex: 1}}/>
                 <TouchableOpacity onPress={() => this._goToPromotionPage()}>
                     <ImageBackground style={styles.btnBack} source={res.user_level} resizeMode={'stretch'}>
-                        <Text style={styles.see} allowFontScaling={false}>查看收益</Text>
+                        <Text style={styles.see} allowFontScaling={false}>查看账户</Text>
                         <View style={{width: 8}}/>
                         <Image source={res.arrowRight}/>
                     </ImageBackground>
