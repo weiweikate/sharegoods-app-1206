@@ -9,7 +9,7 @@ const api = {
     queryByProductCode: ['/operator/activity/queryByProductCode',{method:'get'}],
 
     /*经验值专区*/
-    act_exp_detail: ['gateway/operator/act-exp/detail',{method:'get'}],
+    act_exp_detail: ['/operator/act-exp/detail',{method:'get'}],
 
     // 获取产品规格信息
     getProductSpec: ['/product/getProductSpec',{method:'get'}],

@@ -1,11 +1,10 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import HomeAPI from '../../api/HomeAPI';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 
 class XpDetailModel {
-    @observable basePageState = PageLoadingState.loading;
-    @observable productPageState = PageLoadingState.loading;
-
+    @observable basePageState = PageLoadingState.null;
+    @observable basePageError = {};
     /*活动名称*/
     @observable name = '';
     /*banner*/
@@ -47,6 +46,30 @@ class XpDetailModel {
     /*规则列表*/
     @observable rules = [];
 
+
+    /***************普通商品******************/
+    @observable selectedSpuCode = '';
+    @observable productPageState = PageLoadingState.null;
+    @observable productPageError = {};
+
+    @observable pData = {};
+    @observable pImgUrl = '';
+    @observable pVideoUrl = '';
+    @observable pImgFileList = '';
+    @observable pName = '';
+    @observable pSecondName = '';
+    @observable pParamList = [];
+
+    @computed get pHtml() {
+        let contentS = this.pData.content || '';
+        contentS = contentS.split(',') || [];
+        let html = '';
+        contentS.forEach((item) => {
+            html = `${html}<p><img src=${item}></p>`;
+        });
+        return html;
+    }
+
     /******************************【action】******************************************/
 
     @action selectSpuCode = (spuCode) => {
@@ -86,18 +109,28 @@ class XpDetailModel {
         }
     };
 
-    @action actError = () => {
+    @action actError = (error) => {
         this.basePageState = PageLoadingState.fail;
+        this.basePageError = error || {};
     };
 
-    /*商品接口返回*/
+    /***************普通商品******************/
     @action saveProductData = (data) => {
         this.productPageState = PageLoadingState.success;
         data = data || {};
+
+        this.pData = data;
+        this.pImgUrl = data.imgUrl || '';
+        this.pVideoUrl = data.videoUrl || '';
+        this.pImgFileList = data.imgFileList || '';
+        this.pName = data.name || '';
+        this.pSecondName = data.secondName || '';
+        this.pParamList = data.paramList || '';
     };
 
-    @action productError = () => {
+    @action productError = (error) => {
         this.productPageState = PageLoadingState.fail;
+        this.productPageError = error || {};
     };
 
     /******************************【common】******************************************/
@@ -105,7 +138,7 @@ class XpDetailModel {
     request_act_exp_detail = (activityCode) => {
         this.basePageState = PageLoadingState.loading;
         HomeAPI.act_exp_detail({
-            activityCode: activityCode
+            activityCode: 'JF201812240014'
         }).then((data) => {
             this.saveActData(data.data);
         }).catch((error) => {
@@ -113,8 +146,11 @@ class XpDetailModel {
         });
     };
 
+    /*第一加载第一个  选择加载  失败重试*/
     request_getProductDetailByCode = (spuCode) => {
-        this.productPageState = PageLoadingState.loading;
+        action(this.productPageState = PageLoadingState.loading);
+        spuCode = spuCode || this.selectedSpuCode;
+        this.selectedSpuCode = spuCode;
         HomeAPI.getProductDetailByCode({
             productCode: spuCode
         }).then((data) => {

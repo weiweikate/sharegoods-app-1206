@@ -11,6 +11,7 @@ const { px2dp } = ScreenUtils;
 
 export default class XpDetailBottomView extends Component {
     render() {
+        const { bottomViewAction } = this.props;
         return (
             <View style={styles.containerView}>
                 <View style={styles.bgView}>
@@ -19,7 +20,7 @@ export default class XpDetailBottomView extends Component {
                         <Text style={styles.gwcText}>购物车</Text>
                     </TouchableOpacity>
                     <View style={styles.btnView}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('joinCart')}>
                             <LinearGradient style={styles.LinearGradient}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 0 }}
@@ -27,7 +28,7 @@ export default class XpDetailBottomView extends Component {
                                 <Text style={styles.btnText}>加入购物车</Text>
                             </LinearGradient>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('buy')}>
                             <LinearGradient style={styles.LinearGradient}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 0 }}
