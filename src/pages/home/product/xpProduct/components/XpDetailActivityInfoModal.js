@@ -47,35 +47,32 @@ export default class XpDetailActivityInfoModal extends Component {
         </View>;
     };
 
-    _renderItemCoupon = () => {
+    _renderItemCoupon = (item) => {
         return <View>
 
         </View>;
     };
 
-    _renderItemXp = () => {
+    _renderItemXp = (item) => {
+        return <View>
+            <Text style={styles.xpItemText}>{`购买满${item.startPrice || ''}元，经验值翻${item.rate || ''}倍`}</Text>
+        </View>;
+    };
+
+    _renderItemContents = (item) => {
         return <View>
 
         </View>;
     };
 
-    _renderItemContents = () => {
-        return <View>
-
-        </View>;
-    };
-
-    _renderItem = ({ item }) => {
-        switch (item.type) {
+    _renderItem = ({ item, section }) => {
+        switch (section.type) {
             case 'xp':
-                this._renderItemXp();
-                break;
+                return this._renderItemXp(item);
             case 'coupon':
-                this._renderItemCoupon();
-                break;
+                return this._renderItemCoupon(item);
             case 'contents':
-                this._renderItemContents();
-                break;
+                return this._renderItemContents(item);
             default:
                 return null;
         }
@@ -146,11 +143,15 @@ const styles = StyleSheet.create({
 
     itemHeaderView: {
         flexDirection: 'row', alignItems: 'center',
-        paddingTop: 21, paddingBottom: 10, paddingLeft: 15
+        paddingTop: 16, paddingBottom: 5, paddingLeft: 15
     },
     itemHeaderText: {
         marginLeft: 5,
         color: DesignRule.textColor_instruction, fontSize: 13
+    },
+    ItemText: {
+        paddingVertical: 5, paddingLeft: 15,
+        color: DesignRule.textColor_mainTitle, fontSize: 12
     }
 });
 
