@@ -6,5 +6,13 @@
     "android": {
         "appId": 16024,
         "appKey": "kt3grOV63kue4SEViB8b8XBGMPJoCzpm"
+    },
+    "dev_ios": {
+        "appId": 16901,
+        "appKey": "F5y4baSxop8P5R0uN9gwjRT_-_1lsF5J"
+    },
+    "dev_android": {
+        "appId": 16902,
+        "appKey": "-vgpu75lJn6W2t3UQKGq1jCIq25Le_1p"
     }
 }
