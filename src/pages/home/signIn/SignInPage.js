@@ -248,7 +248,7 @@ export default class SignInPage extends BasePage {
                 </Text>
                 <View style={styles.couponTextWrapper}>
                     <Text style={styles.couponNameTextStyle}>
-                        现金抵扣券
+                        抵扣券
                     </Text>
                     <Text style={styles.couponTagTextStyle}>
                         全场通用/无时间限制
@@ -351,7 +351,7 @@ export default class SignInPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => this.$navigate('mine/coupons/CouponsPage')}>
                     <View>
                         <Text style={styles.couponsTextStyle}>
-                            已有{user.tokenCoin ? user.tokenCoin : 0}张现金券>
+                            已有{user.tokenCoin ? user.tokenCoin : 0}张抵扣券>
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>

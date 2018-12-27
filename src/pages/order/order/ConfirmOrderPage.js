@@ -146,10 +146,10 @@ export default class ConfirmOrderPage extends BasePage {
                     <View>
                         <NoMoreClick style={styles.couponsStyle}
                                      onPress={() => this.jumpToCouponsPage('justOne')}>
-                            <UIText value={'1元现金券'} style={styles.blackText}/>
+                            <UIText value={'1元抵扣券'} style={styles.blackText}/>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <UIText
-                                    value={this.state.tokenCoin ? this.state.tokenCoinText : '选择1元现金券'}
+                                    value={this.state.tokenCoin ? this.state.tokenCoinText : '选择1元抵扣券'}
                                     style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                                 <Image source={arrow_right}/>
                             </View>

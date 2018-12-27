@@ -174,7 +174,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15)
-                            }} allowFontScaling={false}>待提现账户现金是否可提现？</Text>
+                            }} allowFontScaling={false}>待提现账户金额是否可提现？</Text>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,

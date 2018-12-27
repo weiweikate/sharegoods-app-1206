@@ -24,8 +24,9 @@ import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
 import { homeModule } from '../../../home/Modules';
 import { logout } from '../../../../utils/SensorsTrack';
-import {MRText as Text} from '../../../../components/ui'
+import { MRText as Text } from '../../../../components/ui';
 import userOrderNum from '../../../../model/userOrderNum';
+import apiEnvironment from '../../../../api/ApiEnvironment';
 
 /**
  * @author luoyongming
@@ -209,7 +210,10 @@ class SettingPage extends BasePage {
             '退出登录',
             '是否确认退出登录',
             [
-                { text: '取消' ,onPress:()=>{}},
+                {
+                    text: '取消', onPress: () => {
+                    }
+                },
                 {
                     text: '确认', onPress: () => {
                         AsyncStorage.removeItem('lastMessageTime').catch(e => {
@@ -230,7 +234,7 @@ class SettingPage extends BasePage {
                         QYChatUtil.qiYULogout();
                         this.$loadingDismiss();
                         // 神策退出登录
-                        logout()
+                        logout();
                     }
                 }
             ]
@@ -238,20 +242,21 @@ class SettingPage extends BasePage {
     };
 
 
-
     //**********************************BusinessPart******************************************
     jumpToAddressManagePage = () => {
         this.$navigate('mine/address/AddressManagerPage');
     };
     jumptToAboutUsPage = () => {
-        this.$navigate('mine/setting/AboutUsPage');
+        this.$navigate('HtmlPage', {
+            uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/about-us.html'
+        });
     };
     // 账户设置
     jumpToAccountSettingPage = () => {
         if (user.isLogin) {
             this.$navigate('mine/setting/AccountSettingPage');
         } else {
-            this.gotoLoginPage()
+            this.gotoLoginPage();
         }
     };
 
