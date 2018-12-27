@@ -26,7 +26,7 @@ import DesignRule from 'DesignRule';
 import MineApi from '../api/MineApi';
 import res from '../res';
 import Modal from 'CommModal';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
 
 const NoMessage = res.couponsImg.coupons_no_data;
 const usedBg = res.couponsImg.youhuiquan_bg_zhihui;
@@ -272,7 +272,7 @@ export default class MyCouponsItems extends Component {
     };
     plusTokenCoin = () => {
         let num = this.state.tokenCoinNum;
-        if (num <= (parseInt(this.props.justOne) - 1)) {
+        if (num <= ( Math.min(parseInt(this.props.justOne), user.tokenCoin) - 1)) {
             this.setState({ tokenCoinNum: (num + 1) });
         }
     };
@@ -301,8 +301,10 @@ export default class MyCouponsItems extends Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }} allowFontScaling={false}>还没有优惠券哦</Text>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }} allowFontScaling={false}>快去商城逛逛吧</Text>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
+                      allowFontScaling={false}>还没有优惠券哦</Text>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
+                      allowFontScaling={false}>快去商城逛逛吧</Text>
                 <TouchableOpacity
                     onPress={() => {
                         this._gotoLookAround();
@@ -387,13 +389,17 @@ export default class MyCouponsItems extends Component {
         let result = null;
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
-                return '限商品：限指定商品可使用';
+                return '限商品：限指定商品可用';
             }
             if (products.length > 1) {
-                return '限商品：限指定商品可使用';
+                return '限商品：限指定商品可用';
             }
             if (products.length === 1) {
-                return `限商品：限${products[0]}可用`;
+                let productStr = products[0];
+                if (productStr.length > 15) {
+                    productStr = productStr.substring(0, 15) + '...';
+                }
+                return `限商品：限${productStr}商品可用`;
             }
         }
         else if ((cat1.length + cat2.length + cat3.length) === 1) {
@@ -413,7 +419,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
                 arrData.push({
                     status: 0,
-                    name: '1元现金券',
+                    name: '1元抵扣券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',
@@ -477,10 +483,10 @@ export default class MyCouponsItems extends Component {
         if (this.props.fromOrder && status === 0) {
             let arr = [];
             let params = {};
-            if (this.props.orderParam.orderType == 3) {
-                this.parseData(arr);
-                return;
-            }
+            // if (this.props.orderParam.orderType == 3) {
+            //     this.parseData(arr);
+            //     return;
+            // }
             if (this.props.orderParam.orderType == 99) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
@@ -490,11 +496,11 @@ export default class MyCouponsItems extends Component {
                     });
                 });
                 params = { productPriceIds: arr };
-            } else if (this.props.orderParam.orderType == 1 || this.props.orderParam.orderType == 2) {
+            } else if (this.props.orderParam.orderType == 1 || this.props.orderParam.orderType == 2||this.props.orderParam.orderType == 3) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
-                        productCode: item.productCode,
+                        productCode: item.productCode||item.prodCode,
                         amount: 1
                     });
                 });
@@ -535,7 +541,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
                     status: 0,
-                    name: '1元现金券',
+                    name: '1元抵扣券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',

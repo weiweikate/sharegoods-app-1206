@@ -560,8 +560,9 @@ class AfterSaleServicePage extends BasePage {
                     applicationIDorderID: orderProductNo,
                     commodityName: productName,
                     commodityAmount: payAmount,
-                    PartlyReturn: 0,
-                    commodityID: prodCode
+                    partlyReturn: payAmount !== applyRefundAmount,
+                    commodityID: prodCode,
+                    applyReturnCause: returnReason,
                 });
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;

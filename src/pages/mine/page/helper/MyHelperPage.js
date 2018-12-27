@@ -16,14 +16,14 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import {track,trackEvent} from '../../../../utils/SensorsTrack';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-import {MRText as Text} from '../../../../components/ui'
+import { MRText as Text } from '../../../../components/ui';
 
 const {
     // top_kefu,
@@ -37,7 +37,7 @@ const {
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
 import OssHelper from '../../../../utils/OssHelper';
-import ImageLoad from '@mr/image-placeholder'
+import ImageLoad from '@mr/image-placeholder';
 
 
 @observer
@@ -56,14 +56,14 @@ export default class MyHelperPage extends BasePage {
 
     renderHotQuestionList = () => {
         return (
-            <View style={{ width: ScreenUtils.width, backgroundColor: 'white',}}>
+            <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
                 {this.state.typeList.map((item, index) => {
                     return (
                         <View key={index} style={styles.hotQuestionStyle}>
                             <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                 <UIImage source={item.imgUrl ? { uri: item.imgUrl } : icon_wenti}
-                                       style={{ width: 37, height: 37 }}/>
+                                         style={{ width: 37, height: 37 }}/>
                                 <Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_secondTitle,
@@ -99,14 +99,14 @@ export default class MyHelperPage extends BasePage {
         );
     };
     renderBodyView = () => {
-        let helperIcon = OssHelper('/app/bangzu_kefu%403x.png');
+        let helperIcon = OssHelper('/app/bangzu_kefu.png');
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ backgroundColor: DesignRule.bgColor }}>
-                        <ImageLoad source={{uri:helperIcon}}
-                               style={{width:ScreenUtils.width,height:ScreenUtils.px2dp(71)}}
-                               resizeMode={'contain'}/>
+                        <ImageLoad source={{ uri: helperIcon }}
+                                   style={{ width: ScreenUtils.width, height: ScreenUtils.px2dp(71) }}
+                                   resizeMode={'contain'}/>
                     </View>
                     {this.renderHotQuestionList()}
                     <View style={{ height: 1, backgroundColor: DesignRule.bgColor, marginTop: -0.5 }}/>
@@ -187,12 +187,12 @@ export default class MyHelperPage extends BasePage {
         );
     };
     jumpQYIMPage = () => {
-        track(trackEvent.contact,{questionType:'在线',origin:'在线'})
+        track(trackEvent.contact, { questionType: '在线', origin: '在线' });
         QYChatUtil.qiYUChat();
     };
 
     jump2Telephone() {
-        track(trackEvent.contact,{questionType:'在线',origin:'热线'})
+        track(trackEvent.contact, { questionType: '在线', origin: '热线' });
         Linking.openURL('tel:' + '400-9696-365').catch(e => console.log(e));
     }
 

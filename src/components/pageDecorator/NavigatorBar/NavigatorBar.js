@@ -97,7 +97,7 @@ export default class NavigatorBar extends Component {
             props.rightNavTitle !== this.state.rightNavTitle ||
             props.rightNavItemHidden !== this.state.rightNavItemHidden) {
             this.setState({
-                title: props.title || this.state.title || '',
+                title: this.state.title || props.title || '',
                 hideNavBar: !!props.hideNavBar,
                 rightNavTitle: props.rightNavTitle || this.state.rightNavTitle || '',
                 leftNavItemHidden: !!props.leftNavItemHidden,

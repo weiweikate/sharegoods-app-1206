@@ -1,6 +1,6 @@
 /**
  *
- * Copyright 2018 杭州飓热科技有限公司   版权所有
+ * Copyright 2018 杭州名融网络有限公司   版权所有
  * Copyright 2018 JuRe Group Holding Ltd. All Rights Reserved
  *
  * @flow
@@ -18,11 +18,12 @@ import {
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
-import {MRText as Text} from '../../../../components/ui'
+import { MRText as Text } from '../../../../components/ui';
 
 const { px2dp } = ScreenUtils;
 import res from '../../res';
-const  icon = res.button.tongyon_icon_check_green;
+
+const icon = res.button.tongyon_icon_check_green;
 
 type Props = {};
 export default class PromotionOrderPage extends BasePage<Props> {
@@ -61,21 +62,21 @@ export default class PromotionOrderPage extends BasePage<Props> {
                     支付成功
                 </Text>
                 <Text style={[styles.grayTextStyle, { marginBottom: px2dp(5) }]}>
-                    系统会在明天0点进行站内推广
+                    系统会在明天0点进行站内分享
                 </Text>
                 <Text style={styles.grayTextStyle}>
-                    每成功获取一个下级将收到站内消息推送
+                    每成功获取一个秀迷将收到站内消息推送
                 </Text>
                 <View style={styles.buttonsWrapper}>
                     <View style={styles.buttonWrapper}>
                         <Text style={styles.buttonTextStyle}>
-                            我的推广
+                            我的分享
                         </Text>
                     </View>
                     <View style={{ width: px2dp(10) }}/>
                     <View style={styles.buttonWrapper}>
                         <Text style={styles.buttonTextStyle}>
-                            站外分享推广
+                            站外分享
                         </Text>
                     </View>
                 </View>

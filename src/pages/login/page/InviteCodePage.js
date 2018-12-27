@@ -22,7 +22,7 @@ import {
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
 // import { NavigationActions } from 'react-navigation';
 import bridge from '../../../utils/bridge';
@@ -173,7 +173,7 @@ export default class  extends BasePage {
                     </View>
                 </TouchableOpacity>
                 <UIText
-                    value={'选择导师'}
+                    value={'选择顾问'}
                     style={{
                         marginTop:20,
                         color: DesignRule.textColor_instruction,
@@ -197,8 +197,8 @@ export default class  extends BasePage {
             LoginAPI.mentorBind({
                 code: this.inviteModel.inviteCode
             }).then(res => {
-                bridge.$toast(res.msg);
                 this.$loadingDismiss();
+                bridge.$toast('注册成功');
                 homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(res => {

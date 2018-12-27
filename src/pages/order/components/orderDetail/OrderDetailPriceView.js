@@ -89,7 +89,7 @@ export default class OrderDetailPriceView extends Component {
                                rightText={orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].productPrice):StringUtils.formatMoneyString(orderDetailModel.detail.productPrice)}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                isLine={false}/>
-               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
+               <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元抵扣券'}
                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
                                rightText={'-' + (orderDetailModel.status>1?StringUtils.formatMoneyString(orderDetailModel.warehouseOrderDTOList[0].tokenCoinAmount):StringUtils.formatMoneyString(orderDetailModel.detail.tokenCoinAmount))}
                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}

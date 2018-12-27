@@ -38,11 +38,9 @@ const MRText = (props) => {
 const MRTextInput = (props) => {
     return (
         <TextInput {...props}
-                   allowFontScaling={false}
-                   underlineColorAndroid={'transparent'}
-                   style={[{ padding: 0 }, props.style]}/>
+                   allowFontScaling={false}/>
     );
 };
 
 export default connectStyle('Text')(UIText);
-export { MRText, MRTextInput }
+export { MRText, MRTextInput };

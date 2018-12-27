@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     Image, DeviceEventEmitter
 } from 'react-native';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
@@ -16,10 +16,12 @@ import { NavigationActions } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
-import { homeModule } from '../../home/Modules'
+import { homeModule } from '../../home/Modules';
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
+import oldUserLoginSingleModel from '../../../model/oldUserLoginModel';
+import RouterMap from '../../../navigation/RouterMap';
 
 const {
     share: {
@@ -38,11 +40,12 @@ export default class LoginPage extends BasePage {
     constructor(props) {
         super(props);
 
-        this.state={
-            showWxLoginBtn:false
-        }
-
+        this.state = {
+            showWxLoginBtn: false,
+            isCanClick: true
+        };
     }
+
     // 禁用某个页面的手势
     static navigationOptions = {
         gesturesEnabled: false
@@ -56,25 +59,29 @@ export default class LoginPage extends BasePage {
     /*render右上角*/
     $NavBarRenderRightItem = () => {
         return (
-            <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
-                注册
-            </Text>
+            this.state.showWxLoginBtn ?
+                null :
+                <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
+                    注册
+                </Text>
         );
     };
+
     $isMonitorNetworkStatus() {
         return false;
     }
 
     componentDidMount() {
-        LoginAPI.oldUserActivateJudge().then((res)=>{
-            console.log('是还是非-------',res)
+        LoginAPI.oldUserActivateJudge().then((res) => {
+            console.log('是还是非-------', res);
             this.setState({
-                showWxLoginBtn:res.data
-            })
-        }).catch((error)=>{
+                showWxLoginBtn: res.data
+            });
+        }).catch((error) => {
 
-
-        })
+        });
+        // track('$AppViewScreen', { '$screen_name': 'LoginPage', '$title': '登录' });
+        oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
 
     $NavBarLeftPressed = () => {
@@ -102,19 +109,20 @@ export default class LoginPage extends BasePage {
                     oldUserLoginClick={this.oldUserLoginClick.bind(this)}
                     forgetPasswordClick={this.forgetPasswordClick}
                     loginClick={(loginType, LoginParam) => this.loginClick(loginType, LoginParam)}
+                    showOldLogin={this.state.showWxLoginBtn}
                 />
-
                 {
-
                     this.state.showWxLoginBtn
                         ?
+                        <View/>
+                        :
                         <View style={Styles.otherLoginBgStyle}>
                             <View style={Styles.lineBgStyle}>
                                 <CommSpaceLine style={{ width: 80 }}/>
                                 <Text style={Styles.otherLoginTextStyle}>
                                     其他登录方式
                                 </Text>
-                                <CommSpaceLine style={{ width: 80 ,marginLeft:5}}/>
+                                <CommSpaceLine style={{ width: 80, marginLeft: 5 }}/>
                             </View>
                             <View style={{
                                 marginTop: 15,
@@ -129,13 +137,11 @@ export default class LoginPage extends BasePage {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        :
-                        <View/>
+
                 }
             </View>
         );
     }
-
 
     /*忘记密码*/
     forgetPasswordClick = () => {
@@ -143,55 +149,59 @@ export default class LoginPage extends BasePage {
     };
     /*微信登陆*/
     weChatLoginClick = () => {
-        track(trackEvent.login,{loginMethod:'微信登录用'})
-        bridge.$loginWx((data) => {
-            console.log(data);
-            LoginAPI.appWechatLogin({
-                device: data.device,
-                encryptedData: '',
-                headImg: data.headerImg,
-                iv: '',
-                nickname: data.nickName,
-                openid: data.openid,
-                systemVersion: data.systemVersion,
-                wechatVersion: ''
-            }).then((res) => {
-                if (res.code === 34005) {
-                    this.$navigate('login/login/RegistPage', data);
-                } else if (res.code === 10000) {
-                    UserModel.saveUserInfo(res.data);
-                    UserModel.saveToken(res.data.token);
-                    bridge.$toast('登录成功');
-                    console.log(UserModel);
-                    homeModule.loadHomeList()
-                    bridge.setCookies(res.data);
-                    this.$navigateBack();
-                    // 埋点登录成功
-                    login(data.data.code)
-                }
-            }).catch((error) => {
-                if (error.code === 34005) {
-                    this.$navigate('login/login/RegistPage', data);
-                }
-                bridge.$toast(data.msg);
-            });
+        track(trackEvent.login, { loginMethod: '微信登录用' });
+        oldUserLoginSingleModel.isCanLoginWithWx((flag) => {
+            if (flag) {
+                bridge.$loginWx((data) => {
+                    console.log(data);
+                    LoginAPI.appWechatLogin({
+                        device: data.device,
+                        encryptedData: '',
+                        headImg: data.headerImg,
+                        iv: '',
+                        nickname: data.nickName,
+                        openid: data.openid,
+                        systemVersion: data.systemVersion,
+                        wechatVersion: ''
+                    }).then((res) => {
+                        if (res.code === 34005) {
+                            this.$navigate('login/login/RegistPage', data);
+                        } else if (res.code === 10000) {
+                            UserModel.saveUserInfo(res.data);
+                            UserModel.saveToken(res.data.token);
+                            bridge.$toast('登录成功');
+                            console.log(UserModel);
+                            homeModule.loadHomeList();
+                            bridge.setCookies(res.data);
+                            this.$navigateBack();
+                            // 埋点登录成功
+                            login(data.data.code);
+                        }
+                    }).catch((error) => {
+                        if (error.code === 34005) {
+                            this.$navigate('login/login/RegistPage', data);
+                        }
+                        bridge.$toast(data.msg);
+                    });
+                });
+            }
         });
     };
 
     /*老用户登陆*/
     oldUserLoginClick = () => {
-        this.$navigate('login/login/OldUserLoginPage')
+        oldUserLoginSingleModel.JumpToLogin(RouterMap.OldUserLoginPage);
     };
     /*注册*/
     registBtnClick = () => {
-        this.$navigate('login/login/RegistPage');
+        oldUserLoginSingleModel.isCanTopRegist(RouterMap.RegistPage);
+        // this.$navigate('login/login/RegistPage');
     };
-
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
         this.$loadingShow();
         if (loginType === 0) {
-            track(trackEvent.login,{loginMethod:'验证码登录'})
+            track(trackEvent.login, { loginMethod: '验证码登录' });
             LoginAPI.codeLogin({
                 authcode: '',
                 code: LoginParam.code,
@@ -206,14 +216,14 @@ export default class LoginPage extends BasePage {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
-                DeviceEventEmitter.emit('homePage_message',null);
-                DeviceEventEmitter.emit('contentViewed',null);
+                DeviceEventEmitter.emit('homePage_message', null);
+                DeviceEventEmitter.emit('contentViewed', null);
                 bridge.$toast('登录成功');
-                homeModule.loadHomeList()
+                homeModule.loadHomeList();
                 bridge.setCookies(data.data);
-                console.log(UserModel)
+                console.log(UserModel);
                 // 埋点登录成功
-                login(data.data.code)
+                login(data.data.code);
 
                 if (this.params.callback) {
                     let resetAction = NavigationActions.reset({
@@ -228,19 +238,21 @@ export default class LoginPage extends BasePage {
                 }
 
                 //推送
-                JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+                JPushUtils.updatePushTags();
+                JPushUtils.updatePushAlias();
                 /**/
             }).catch((data) => {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
                 /*未注册*/
                 if (data.code === 34001) {
-                    this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
+                    //暂且注释掉
+                    // this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
                 }
             });
         } else {
             // this.$loadingShow();
-            track(trackEvent.login,{loginMethod:'密码登录'})
+            track(trackEvent.login, { loginMethod: '密码登录' });
             LoginAPI.passwordLogin({
                 authcode: '22',
                 code: LoginParam.code,
@@ -255,21 +267,21 @@ export default class LoginPage extends BasePage {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
-                DeviceEventEmitter.emit('homePage_message',null);
-                DeviceEventEmitter.emit('contentViewed',null);
+                DeviceEventEmitter.emit('homePage_message', null);
+                DeviceEventEmitter.emit('contentViewed', null);
                 bridge.$toast('登录成功');
-                homeModule.loadHomeList()
+                homeModule.loadHomeList();
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
                 // 埋点登录成功
-                login(data.data.code)
-                // /**
-                //  * 跳转导师选择页面
-                //  */
+                login(data.data.code);
+                /**
+                 * 跳转导师选择页面
+                 */
                 // this.$navigate('login/login/SelectMentorPage');
                 // return;
                 if (this.params.callback) {
-                  this.$navigateBackToHome();
+                    this.$navigateBackToHome();
                 } else {
                     this.$navigateBack();
                 }
@@ -318,7 +330,7 @@ const Styles = StyleSheet.create(
         },
         otherLoginTextStyle: {
             color: DesignRule.textColor_secondTitle,
-            marginLeft:5,
+            marginLeft: 5
         }
     }
 );

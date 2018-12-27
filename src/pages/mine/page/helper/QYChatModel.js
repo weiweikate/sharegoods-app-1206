@@ -14,7 +14,7 @@ export default {
     /**
      * groupId:0,
      * staffId:0,
-     * title:'七鱼金融',
+     * title:'七鱼客服',
      * userId:用户id
      * userIcon:用户头像,
      * phoneNum:用户手机号,

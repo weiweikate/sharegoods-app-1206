@@ -102,7 +102,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                                 // }}
                                 // type={'miniProgram'}
                                 miniProgramJson={{
-                                    title: '邀请好友可获得品牌推广的现金奖励',
+                                    title: '邀请好友可获得品牌推广的奖励',
                                     dec: '',
                                     thumImage: 'logo.png',
                                     hdImageURL: '',

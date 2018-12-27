@@ -6,11 +6,11 @@ import {
     TouchableOpacity, ScrollView, Alert
 } from 'react-native';
 import {
-    UIText, UIImage, RefreshList, MRText as Text, MRTextInput as RNTextInput
+    UIText, UIImage, RefreshList, MRText as Text, MRTextInput as RNTextInput, NoMoreClick
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import bridge from "../../../utils/bridge";
+import bridge from '../../../utils/bridge';
 import GoodsItem from '../components/GoodsItem';
 import user from '../../../model/user';
 // import Toast from '../../../utils/bridge';
@@ -22,7 +22,8 @@ import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import userOrderNum from '../../../model/userOrderNum';
 import res from '../res';
-import {track,trackEvent} from '../../../utils/SensorsTrack';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+
 const position = res.dizhi;
 const arrow_right = res.arrow_right;
 const colorLine = res.addressLine;
@@ -34,17 +35,17 @@ export default class ConfirmOrderPage extends BasePage {
             message: '',
             defaultAddress: false,
             viewData: {
-                express:{}
+                express: {}
             },
             tokenCoin: 0,
-            addressId:null,
+            addressId: null,
             userCouponCode: null,
             tokenCoinText: null,
             couponName: null,
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : [],
-            canUseCou:false
-
+            canUseCou: false
         };
+        this.canCommit = true;
     }
 
     $navigationBarOptions = {
@@ -55,14 +56,24 @@ export default class ConfirmOrderPage extends BasePage {
     //**********************************ViewPart******************************************
     renderAddress = () => {
         return (StringUtils.isNoEmpty(this.state.addressId) ?
-                <TouchableOpacity
+                <NoMoreClick
                     style={styles.addressSelectStyle}
                     onPress={() => this.selectAddress()}>
-                    <UIImage source={position} style={{ height:ScreenUtils.autoSizeHeight(20) , width: ScreenUtils.autoSizeWidth(20), marginLeft:ScreenUtils.autoSizeWidth(20 ) }} resizeMode={'contain'}/>
-                    <View style={{ flex: 1, marginLeft:ScreenUtils.autoSizeWidth(15) , marginRight:ScreenUtils.autoSizeWidth(15)}}>
+                    <UIImage source={position} style={{
+                        height: ScreenUtils.autoSizeHeight(20),
+                        width: ScreenUtils.autoSizeWidth(20),
+                        marginLeft: ScreenUtils.autoSizeWidth(20)
+                    }} resizeMode={'contain'}/>
+                    <View style={{
+                        flex: 1,
+                        marginLeft: ScreenUtils.autoSizeWidth(15),
+                        marginRight: ScreenUtils.autoSizeWidth(15)
+                    }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <Text style={[styles.commonTextStyle,{flex:1}]} allowFontScaling={false} >收货人：{this.state.viewData.express.receiverName}</Text>
-                            <Text style={styles.commonTextStyle} allowFontScaling={false}>{this.state.viewData.express.receiverNum}</Text>
+                            <Text style={[styles.commonTextStyle, { flex: 1 }]}
+                                  allowFontScaling={false}>收货人：{this.state.viewData.express.receiverName}</Text>
+                            <Text style={styles.commonTextStyle}
+                                  allowFontScaling={false}>{this.state.viewData.express.receiverNum}</Text>
                         </View>
                         <UIText
                             value={
@@ -74,22 +85,35 @@ export default class ConfirmOrderPage extends BasePage {
                             style={styles.receiverAddressStyle}/>
                     </View>
                     <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={'contain'}/>
-                </TouchableOpacity> :
-                <TouchableOpacity
-                    style={{ height: ScreenUtils.autoSizeWidth(87), backgroundColor: 'white', flexDirection: 'row', alignItems: 'center' }}
+                </NoMoreClick> :
+                <NoMoreClick
+                    style={{
+                        height: ScreenUtils.autoSizeWidth(87),
+                        backgroundColor: 'white',
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}
                     onPress={() => this.selectAddress()}>
-                    <UIImage source={position} style={{ height:ScreenUtils.autoSizeWidth(20), width:ScreenUtils.autoSizeWidth(20), marginLeft: ScreenUtils.autoSizeWidth(20) }} resizeMode={'contain'}/>
-                    <View style={{ flex: 1, marginLeft: ScreenUtils.autoSizeWidth(15), marginRight: ScreenUtils.autoSizeWidth(20) }}>
+                    <UIImage source={position} style={{
+                        height: ScreenUtils.autoSizeWidth(20),
+                        width: ScreenUtils.autoSizeWidth(20),
+                        marginLeft: ScreenUtils.autoSizeWidth(20)
+                    }} resizeMode={'contain'}/>
+                    <View style={{
+                        flex: 1,
+                        marginLeft: ScreenUtils.autoSizeWidth(15),
+                        marginRight: ScreenUtils.autoSizeWidth(20)
+                    }}>
                         <UIText value={'请添加一个收货人地址'} style={styles.hintStyle}/>
                     </View>
                     <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={'contain'}/>
-                </TouchableOpacity>
+                </NoMoreClick>
         );
     };
     renderSelectImage = () => {
         return (
-            <View style={{backgroundColor:'white'}}>
-                <View style={{marginBottom:ScreenUtils.autoSizeWidth(10)}}>
+            <View style={{ backgroundColor: 'white' }}>
+                <View style={{ marginBottom: ScreenUtils.autoSizeWidth(10) }}>
                     <Image source={colorLine} style={{ height: 3, width: ScreenUtils.width }}/>
                 </View>
                 {this.state.orderParam && this.state.orderParam.orderType === 3 ?
@@ -106,42 +130,42 @@ export default class ConfirmOrderPage extends BasePage {
     renderDetail = () => {
         return (
             <View style={{ backgroundColor: 'white' }}>
-                <TouchableOpacity style={styles.couponsStyle}
-                                  disabled={!this.state.canUseCou}
-                                  onPress={() => this.jumpToCouponsPage()}>
+                <NoMoreClick style={styles.couponsStyle}
+                             disabled={!this.state.canUseCou}
+                             onPress={() => this.jumpToCouponsPage()}>
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={!this.state.canUseCou? '不支持使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
+                            value={!this.state.canUseCou ? '不支持使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
                 {this.renderLine()}
                 {!user.tokenCoin ? null :
                     <View>
-                        <TouchableOpacity style={styles.couponsStyle}
-                                          onPress={() => this.jumpToCouponsPage('justOne')}>
-                            <UIText value={'1元现金券'} style={styles.blackText}/>
+                        <NoMoreClick style={styles.couponsStyle}
+                                     onPress={() => this.jumpToCouponsPage('justOne')}>
+                            <UIText value={'1元抵扣券'} style={styles.blackText}/>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <UIText
-                                    value={this.state.tokenCoin ? this.state.tokenCoinText : '选择1元现金券'}
+                                    value={this.state.tokenCoin ? this.state.tokenCoinText : '选择1元抵扣券'}
                                     style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                                 <Image source={arrow_right}/>
                             </View>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                         {this.renderLine()}
                     </View>
                 }
-                <TouchableOpacity style={styles.couponsStyle}>
+                <NoMoreClick style={styles.couponsStyle}>
                     <UIText value={'运费'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText value={`¥${this.state.viewData.totalFreightFee}`}
                                 style={[styles.grayText]}/>
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
                 {this.renderLine()}
-                <TouchableOpacity style={styles.couponsStyle}>
+                <NoMoreClick style={styles.couponsStyle}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText value={'买家留言'} style={styles.blackText}/>
                         <RNTextInput
@@ -153,7 +177,7 @@ export default class ConfirmOrderPage extends BasePage {
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
                 {this.renderLine()}
             </View>
         );
@@ -197,23 +221,29 @@ export default class ConfirmOrderPage extends BasePage {
         return (
             <View>
                 {this.renderLine()}
-                <View style={styles.commitOutStyle }>
+                <View style={styles.commitOutStyle}>
                     <View
-                        style={{  flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' ,flex:1}}>
+                        style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1 }}>
                         <UIText value={'应付款：'} style={{
                             fontSize: ScreenUtils.px2dp(15),
-                            color: DesignRule.textColor_mainTitle,
+                            color: DesignRule.textColor_mainTitle
                         }}/>
                         <UIText
                             value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
                             style={styles.commitAmountStyle}/>
                     </View>
-                    <TouchableOpacity
+                    <NoMoreClick
                         style={styles.commitTouStyle}
+                        disabled={!this.canCommit}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
-                                style={{ fontSize: ScreenUtils.px2dp(16), color: 'white', paddingLeft:15,paddingRight:15}}/>
-                    </TouchableOpacity>
+                                style={{
+                                    fontSize: ScreenUtils.px2dp(16),
+                                    color: 'white',
+                                    paddingLeft: 15,
+                                    paddingRight: 15
+                                }}/>
+                    </NoMoreClick>
                 </View>
                 {this.renderLine()}
             </View>
@@ -247,7 +277,8 @@ export default class ConfirmOrderPage extends BasePage {
                     salePrice={StringUtils.formatMoneyString(item.salePrice)}
                     category={item.category}
                     goodsNum={'X' + item.goodsNum}
-                    onPress={() => {}}
+                    onPress={() => {
+                    }}
                 />
             </TouchableOpacity>
         );
@@ -263,17 +294,17 @@ export default class ConfirmOrderPage extends BasePage {
     componentDidMount() {
         this.loadPageData();
         let arr = [];
-        let params={};
+        let params = {};
         console.log('loadmore', this.state.orderParam);
-        if(this.params.orderParamVO.orderType==99){
+        if (this.params.orderParamVO.orderType == 99) {
             this.state.orderParam.orderProducts.map((item, index) => {
                 arr.push({
                     priceCode: item.skuCode,
                     productCode: item.productCode,
-                    amount: item.quantity||item.num
+                    amount: item.quantity || item.num
                 });
             });
-            params={productPriceIds: arr}
+            params = { productPriceIds: arr };
             API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
                 let data = resp.data || {};
                 let dataList = data.data || [];
@@ -281,7 +312,7 @@ export default class ConfirmOrderPage extends BasePage {
                     this.setState({ couponName: '暂无优惠券' });
                 }
             }).catch(result => {
-               console.log(result)
+                console.log(result);
             });
         }
         // else{
@@ -302,11 +333,11 @@ export default class ConfirmOrderPage extends BasePage {
         switch (this.state.orderParam.orderType) {
             case 1://秒杀
                 OrderApi.SeckillMakeSureOrder({
-                    activityCode:this.params.orderParamVO.orderProducts[0].code,
-                    channel:2,
-                    num:this.params.orderParamVO.orderProducts[0].num,
-                    source:2,
-                    submitType:1,
+                    activityCode: this.params.orderParamVO.orderProducts[0].code,
+                    channel: 2,
+                    num: this.params.orderParamVO.orderProducts[0].num,
+                    source: 2,
+                    submitType: 1,
                     ...params
                 }).then(response => {
                     bridge.hiddenLoading();
@@ -319,17 +350,17 @@ export default class ConfirmOrderPage extends BasePage {
                             callback: () => {
                                 this.loadPageData();
                             }
-                        })
+                        });
                     }
                 });
                 break;
             case 2://降价拍
                 OrderApi.DepreciateMakeSureOrder({
-                    activityCode:this.params.orderParamVO.orderProducts[0].code,
-                    channel:2,
-                    num:this.params.orderParamVO.orderProducts[0].num,
-                    source:2,
-                    submitType:1,
+                    activityCode: this.params.orderParamVO.orderProducts[0].code,
+                    channel: 2,
+                    num: this.params.orderParamVO.orderProducts[0].num,
+                    source: 2,
+                    submitType: 1,
                     ...params
                 }).then(response => {
                     bridge.hiddenLoading();
@@ -350,8 +381,8 @@ export default class ConfirmOrderPage extends BasePage {
                 OrderApi.makeSureOrder({
                     orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
                     //orderSubType:  1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source:this.params.orderParamVO.source,//1.购物车 2.直接下单
-                    channel:2,//1.小程序 2.APP 3.H5
+                    source: this.params.orderParamVO.source,//1.购物车 2.直接下单
+                    channel: 2,//1.小程序 2.APP 3.H5
                     orderProductList: this.params.orderParamVO.orderProducts,
                     ...params
                 }).then(response => {
@@ -387,14 +418,14 @@ export default class ConfirmOrderPage extends BasePage {
                 break;
             case 3://礼包
                 OrderApi.PackageMakeSureOrder({
-                    activityCode:this.params.orderParamVO.activityCode,
+                    activityCode: this.params.orderParamVO.activityCode,
                     orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
-                    orderSubType: this.params.orderParamVO.orderSubType ,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source:2,//1.购物车 2.直接下单
-                    channel:2,//1.小程序 2.APP 3.H5
-                    orderProductList:this.params.orderParamVO.orderProducts,
-                    submitType:1,
-                    quantity:1,
+                    orderSubType: this.params.orderParamVO.orderSubType,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                    source: 2,//1.购物车 2.直接下单
+                    channel: 2,//1.小程序 2.APP 3.H5
+                    orderProductList: this.params.orderParamVO.orderProducts,
+                    submitType: 1,
+                    quantity: 1,
                     ...params
                 }).then(
                     response => {
@@ -434,7 +465,7 @@ export default class ConfirmOrderPage extends BasePage {
                 // activityId: item.activityId
             });
         });
-        let  addressData = data.userAddressDTO || data.userAddress || {}
+        let addressData = data.userAddressDTO || data.userAddress || {};
         if (addressData.address) {
             viewData.express = {
                 id: addressData.id,
@@ -455,12 +486,12 @@ export default class ConfirmOrderPage extends BasePage {
         viewData.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         viewData.list = arrData;
         viewData.couponList = data.couponList ? data.couponList : null;
-        arrData.map((item)=>{
-            if(item.restrictions & 1 === 1){
-                this.setState({canUseCou:true})
+        arrData.map((item) => {
+            if (item.restrictions & 1 === 1) {
+                this.setState({ canUseCou: true });
             }
         });
-        this.setState({ viewData,addressId:addressData.id });
+        this.setState({ viewData, addressId: addressData.id });
     };
 
     clickItem = (index, item) => {
@@ -486,10 +517,10 @@ export default class ConfirmOrderPage extends BasePage {
             from: 'order',
             callBack: (json) => {
                 console.log(json);
-                this.setState({ addressId:json.id, defaultAddress: true });
+                this.setState({ addressId: json.id, defaultAddress: true });
                 let params = {
-                    addressId:json.id,
-                     tokenCoin: 0,
+                    addressId: json.id,
+                    tokenCoin: 0,
                     tokenCoinText: '选择使用1元券',
                     userCouponCode: this.state.userCouponCode
                 };
@@ -498,18 +529,21 @@ export default class ConfirmOrderPage extends BasePage {
         });
     };
     commitOrder = () => {
+        if (StringUtils.isEmpty(this.state.addressId)) {
+            bridge.$toast('请先添加地址');
+            return;
+        }
+        if (!this.canCommit) {
+            return;
+        }
+        this.canCommit = false;
+        this.$loadingShow();
         let baseParams = {
             message: this.state.message,
             tokenCoin: this.state.tokenCoin,
             userCouponCode: this.state.userCouponCode,
             addressId: this.state.addressId
         };
-
-        if (StringUtils.isEmpty(this.state.addressId)) {
-            bridge.$toast('请先添加地址');
-            return;
-        }
-        this.$loadingShow();
         if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2) {
             let params = {
                 ...baseParams,
@@ -517,16 +551,29 @@ export default class ConfirmOrderPage extends BasePage {
                 channel: 2,
                 num: this.params.orderParamVO.orderProducts[0].num,
                 source: 2,
-                submitType: 2,
+                submitType: 2
             };
             if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
                 OrderApi.SeckillSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
+                    this.canCommit = true;
                     let data = response.data;
-                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
-                        receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
-                        discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
-                        YiyuanDiscountAmount:this.state.tokenCoin})
+                    track(trackEvent.submitOrder, {
+                        orderId: data.orderNo,
+                        orderAmount: data.payAmount,
+                        transportationCosts: data.totalFreightFee,
+                        receiverName: data.userAddress.receiver,
+                        receiverProvince: data.userAddress.province,
+                        receiverCity: data.userAddress.city,
+                        receiverArea: data.userAddress.area,
+                        receiverAddress: data.userAddress.address,
+                        discountName: this.state.tokenCoinText,
+                        discountAmount: 1,
+                        ifUseYiYuan: !!this.state.tokenCoin,
+                        numberOfYiYuan: this.state.tokenCoin,
+                        yiYuanCouponsAmount: this.state.tokenCoin,
+                        storeCode:user.storeCode?user.storeCode:''
+                    });
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
@@ -539,6 +586,7 @@ export default class ConfirmOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
+                    this.canCommit = true;
                     this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
@@ -551,11 +599,24 @@ export default class ConfirmOrderPage extends BasePage {
             } else if (this.state.orderParam && this.state.orderParam.orderType === 2) {
                 OrderApi.DepreciateSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
+                    this.canCommit = true;
                     let data = response.data;
-                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
-                        receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
-                        discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
-                        YiyuanDiscountAmount:this.state.tokenCoin})
+                    track(trackEvent.submitOrder, {
+                        orderId: data.orderNo,
+                        orderAmount: data.payAmount,
+                        transportationCosts: data.totalFreightFee,
+                        receiverName: data.userAddress.receiver,
+                        receiverProvince: data.userAddress.province,
+                        receiverCity: data.userAddress.city,
+                        receiverArea: data.userAddress.area,
+                        receiverAddress: data.userAddress.address,
+                        discountName: this.state.tokenCoinText,
+                        discountAmount: 1,
+                        ifUseYiYuan: !!this.state.tokenCoin,
+                        numberOfYiYuan: this.state.tokenCoin,
+                        yiYuanCouponsAmount: this.state.tokenCoin,
+                        storeCode:user.storeCode?user.storeCode:''
+                    });
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
@@ -567,6 +628,7 @@ export default class ConfirmOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
+                    this.canCommit = true;
                     this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
@@ -578,63 +640,91 @@ export default class ConfirmOrderPage extends BasePage {
                 });
             }
         }
-            else if (this.state.orderParam && this.state.orderParam.orderType === 3) {
-                let params1 = {
-                    ...baseParams,
-                    activityCode:this.params.orderParamVO.activityCode,
-                    orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
-                    orderSubType: this.params.orderParamVO.orderSubType ,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source:2,//1.购物车 2.直接下单
-                    channel:2,//1.小程序 2.APP 3.H5
-                    orderProductList:this.params.orderParamVO.orderProducts,
-                    submitType:2,
-                    quantity:1,
-                };
-                OrderApi.PackageSubmitOrder(params1).then((response) => {
+        else if (this.state.orderParam && this.state.orderParam.orderType === 3) {
+            let params1 = {
+                ...baseParams,
+                activityCode: this.params.orderParamVO.activityCode,
+                orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
+                orderSubType: this.params.orderParamVO.orderSubType,//,1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                source: 2,//1.购物车 2.直接下单
+                channel: 2,//1.小程序 2.APP 3.H5
+                orderProductList: this.params.orderParamVO.orderProducts,
+                submitType: 2,
+                quantity: 1
+            };
+            OrderApi.PackageSubmitOrder(params1).then((response) => {
+                this.$loadingDismiss();
+                let data = response.data;
+                this.canCommit = true;
+                MineApi.getUser().then(res => {
                     this.$loadingDismiss();
-                    let data = response.data;
-                    MineApi.getUser().then(res => {
-                        this.$loadingDismiss();
-                        let data = res.data;
-                        track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
-                            receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
-                            discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
-                            YiyuanDiscountAmount:this.state.tokenCoin})
-                        user.saveUserInfo(data);
-                        userOrderNum.getUserOrderNum();
-                    }).catch(err => {
-                    });
-                    this.replaceRouteName(data);
-                }).catch(e => {
-                    this.$loadingDismiss();
-                    console.log(e);
-                    this.$toastShow(e.msg);
-                    if (e.code === 10009) {
-                        this.$navigate('login/login/LoginPage', {
-                            callback: () => {
-                                this.loadPageData();
-                            }
-                        });
-                    }
-                });
+                    let data = res.data;
+                    track(trackEvent.submitOrder, {
+                        orderId: data.orderNo,
+                        orderAmount: data.payAmount,
+                        transportationCosts: data.totalFreightFee,
+                        receiverName: data.userAddress.receiver,
+                        receiverProvince: data.userAddress.province,
+                        receiverCity: data.userAddress.city,
+                        receiverArea: data.userAddress.area,
+                        receiverAddress: data.userAddress.address,
+                        discountName: this.state.tokenCoinText,
+                        discountAmount: 1,
+                        ifUseYiYuan: !!this.state.tokenCoin,
+                        numberOfYiYuan: this.state.tokenCoin,
+                        yiYuanCouponsAmount: this.state.tokenCoin,
+                        storeCode:user.storeCode?user.storeCode:''
 
-            }
-         else {
+                    });
+                    user.saveUserInfo(data);
+                    userOrderNum.getUserOrderNum();
+                }).catch(err => {
+                });
+                this.replaceRouteName(data);
+            }).catch(e => {
+                this.$loadingDismiss();
+                console.log(e);
+                this.canCommit = true;
+                this.$toastShow(e.msg);
+                if (e.code === 10009) {
+                    this.$navigate('login/login/LoginPage', {
+                        callback: () => {
+                            this.loadPageData();
+                        }
+                    });
+                }
+            });
+
+        }
+        else {
             let params = {
                 ...baseParams,
                 orderProductList: this.state.orderParam.orderProducts,
                 // orderType: this.state.orderParam.orderType,
-                orderType:1,
-                source:this.state.orderParam.source,
-                channel:2,
+                orderType: 1,
+                source: this.state.orderParam.source,
+                channel: 2
             };
             OrderApi.submitOrder(params).then((response) => {
                 this.$loadingDismiss();
                 let data = response.data;
-                track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
-                    receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
-                    discountName:this.state.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.state.tokenCoin,numberOfYiYuan:this.state.tokenCoin,
-                    YiyuanDiscountAmount:this.state.tokenCoin})
+                this.canCommit = true;
+                track(trackEvent.submitOrder, {
+                    orderId: data.orderNo,
+                    orderAmount: data.payAmount,
+                    transportationCosts: data.totalFreightFee,
+                    receiverName: data.userAddressDTO.receiver,
+                    receiverProvince: data.userAddressDTO.province,
+                    receiverCity: data.userAddressDTO.city,
+                    receiverArea: data.userAddressDTO.area,
+                    receiverAddress: data.userAddressDTO.address,
+                    discountName: this.state.tokenCoinText,
+                    discountAmount: 1,
+                    ifUseYiYuan: !!this.state.tokenCoin,
+                    numberOfYiYuan: this.state.tokenCoin,
+                    yiYuanCouponsAmount: this.state.tokenCoin,
+                    storeCode:user.storeCode?user.storeCode:''
+                });
                 MineApi.getUser().then(res => {
                     this.$loadingDismiss();
                     let data = res.data;
@@ -647,6 +737,7 @@ export default class ConfirmOrderPage extends BasePage {
 
             }).catch(e => {
                 this.$loadingDismiss();
+                this.canCommit = true;
                 this.$toastShow(e.msg);
                 if (e.code === 54001) {
                     this.$toastShow('商品库存不足！');
@@ -661,17 +752,19 @@ export default class ConfirmOrderPage extends BasePage {
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {
             this.$navigate('mine/coupons/CouponsPage', {
-                justOne: (parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin) )? (parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin) ) : 1, callBack: (data) => {
+                justOne: (parseInt(this.state.viewData.totalAmounts) + parseInt(this.state.tokenCoin)) ? (parseInt(this.state.viewData.totalAmounts) + parseInt(this.state.tokenCoin)) : 1,
+                callBack: (data) => {
                     console.log(typeof data);
                     if (parseInt(data) >= 0) {
-                        let params = { tokenCoin: parseInt(data) > 0 &&parseInt(data)<=(parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin))? parseInt(data):0,
+                        let params = {
+                            tokenCoin: parseInt(data) > 0 && parseInt(data) <= (parseInt(this.state.viewData.totalAmounts) + parseInt(this.state.tokenCoin)) ? parseInt(data) : 0,
                             userCouponCode: this.state.userCouponCode,
-                            addressId:this.state.addressId,
+                            addressId: this.state.addressId
                         };
                         this.setState({
-                            addressId:this.state.addressId,
-                            tokenCoin: parseInt(data) > 0 &&parseInt(data)<=(parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin))? parseInt(data):0,
-                            tokenCoinText: parseInt(data) > 0 &&(parseInt(this.state.viewData.totalAmounts)+parseInt(this.state.tokenCoin))? '-¥' + parseInt(data) : '选择使用1元券'
+                            addressId: this.state.addressId,
+                            tokenCoin: parseInt(data) > 0 && parseInt(data) <= (parseInt(this.state.viewData.totalAmounts) + parseInt(this.state.tokenCoin)) ? parseInt(data) : 0,
+                            tokenCoinText: parseInt(data) > 0 && (parseInt(this.state.viewData.totalAmounts) + parseInt(this.state.tokenCoin)) ? '-¥' + parseInt(data) : '选择使用1元券'
                         });
                         this.loadPageData(params);
                     }
@@ -681,7 +774,7 @@ export default class ConfirmOrderPage extends BasePage {
             this.$navigate('mine/coupons/CouponsPage', {
                 fromOrder: 1,
                 orderParam: this.state.orderParam, callBack: (data) => {
-                    console.log('CouponsPage',data);
+                    console.log('CouponsPage', data);
                     if (data && data.id) {
                         let params = { userCouponCode: data.code, tokenCoin: 0 };
                         this.setState({
@@ -689,11 +782,11 @@ export default class ConfirmOrderPage extends BasePage {
                             couponName: data.name,
                             tokenCoin: 0,
                             tokenCoinText: '选择使用1元券',
-                            addressId:this.state.addressId
+                            addressId: this.state.addressId
                         });
                         this.loadPageData(params);
                     } else if (data === 'giveUp') {
-                        this.setState({ userCouponCode: null, couponName: null , addressId:this.state.addressId});
+                        this.setState({ userCouponCode: null, couponName: null, addressId: this.state.addressId });
                         this.loadPageData();
                     }
                 }
@@ -715,7 +808,7 @@ export default class ConfirmOrderPage extends BasePage {
             params: {
                 orderNum: data.orderNo,
                 amounts: data.payAmount,
-                pageType: 0,
+                pageType: 0
             }
         });
         this.props.navigation.dispatch(replace);
@@ -728,7 +821,7 @@ const styles = StyleSheet.create({
     }, selectText: {
         fontSize: ScreenUtils.px2dp(16), color: 'white'
     }, blackText: {
-        fontSize:  ScreenUtils.px2dp(13),
+        fontSize: ScreenUtils.px2dp(13),
         lineHeight: ScreenUtils.autoSizeWidth(18),
         color: DesignRule.textColor_mainTitle
     }, grayText: {
@@ -736,7 +829,11 @@ const styles = StyleSheet.create({
         lineHeight: ScreenUtils.autoSizeWidth(18),
         color: DesignRule.textColor_instruction
     }, inputTextStyle: {
-        marginLeft: ScreenUtils.autoSizeWidth(20), height: ScreenUtils.autoSizeWidth(40), flex: 1, backgroundColor: 'white', fontSize: ScreenUtils.px2dp(14),
+        marginLeft: ScreenUtils.autoSizeWidth(20),
+        height: ScreenUtils.autoSizeWidth(40),
+        flex: 1,
+        backgroundColor: 'white',
+        fontSize: ScreenUtils.px2dp(14)
     }, selectView: {
         flex: 1,
         borderRadius: 3,
@@ -763,36 +860,40 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    addressSelectStyle:{
-        minHeight: ScreenUtils.autoSizeWidth(80) ,
+    addressSelectStyle: {
+        minHeight: ScreenUtils.autoSizeWidth(80),
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
         paddingTop: ScreenUtils.autoSizeWidth(10),
         paddingBottom: ScreenUtils.autoSizeWidth(10)
     },
-    commonTextStyle:{
+    commonTextStyle: {
         fontSize: ScreenUtils.px2dp(15),
         color: DesignRule.textColor_mainTitle
     },
-    receiverAddressStyle:{
-        fontSize:ScreenUtils.px2dp(13),
+    receiverAddressStyle: {
+        fontSize: ScreenUtils.px2dp(13),
         color: DesignRule.textColor_mainTitle,
-        marginTop:ScreenUtils.autoSizeWidth(5)
+        marginTop: ScreenUtils.autoSizeWidth(5)
     },
-    hintStyle:{
+    hintStyle: {
         fontSize: ScreenUtils.px2dp(13),
         color: DesignRule.textColor_hint,
         marginLeft: ScreenUtils.autoSizeWidth(15)
     },
-    arrowRightStyle:{ width:ScreenUtils.autoSizeWidth(10),height: ScreenUtils.autoSizeWidth(14), marginRight: ScreenUtils.autoSizeWidth(15) },
-    giftOutStyle:{
+    arrowRightStyle: {
+        width: ScreenUtils.autoSizeWidth(10),
+        height: ScreenUtils.autoSizeWidth(14),
+        marginRight: ScreenUtils.autoSizeWidth(15)
+    },
+    giftOutStyle: {
         marginTop: ScreenUtils.autoSizeWidth(20),
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center'
     },
-    giftInnerStyle:{
+    giftInnerStyle: {
         borderWidth: 1,
         borderRadius: 5,
         alignItems: 'center',
@@ -800,51 +901,57 @@ const styles = StyleSheet.create({
         borderColor: DesignRule.mainColor,
         marginLeft: ScreenUtils.autoSizeWidth(20)
     },
-    giftTextStyles:{
+    giftTextStyles: {
         fontSize: ScreenUtils.px2dp(11),
         color: DesignRule.mainColor,
         padding: ScreenUtils.autoSizeWidth(3)
     },
-    couponIconStyle:{
+    couponIconStyle: {
         width: ScreenUtils.autoSizeWidth(15),
         height: ScreenUtils.autoSizeWidth(12),
         position: 'absolute',
         left: ScreenUtils.autoSizeWidth(15),
         top: ScreenUtils.autoSizeWidth(12)
     },
-    couponsOutStyle:{
+    couponsOutStyle: {
         height: ScreenUtils.autoSizeWidth(34),
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginLeft: ScreenUtils.autoSizeWidth(36)
     },
-    couponsTextStyle:{
+    couponsTextStyle: {
         color: DesignRule.textColor_instruction,
-        fontSize:ScreenUtils.px2dp(13) ,
+        fontSize: ScreenUtils.px2dp(13),
         alignSelf: 'center'
     },
-    couponsNumStyle:{
+    couponsNumStyle: {
         color: DesignRule.textColor_instruction,
-        fontSize: ScreenUtils.px2dp(13) ,
+        fontSize: ScreenUtils.px2dp(13),
         alignSelf: 'center',
         marginRight: ScreenUtils.autoSizeWidth(13.5)
     },
-    couponsLineStyle:{
+    couponsLineStyle: {
         marginLeft: ScreenUtils.autoSizeWidth(36),
         backgroundColor: DesignRule.bgColor,
         height: 0.5,
         width: '100%'
     },
-    commitOutStyle:{ height: ScreenUtils.autoSizeHeight(49), flexDirection: 'row',backgroundColor:DesignRule.white,justifyContent: 'flex-end', alignItems: 'center'},
-    commitAmountStyle:{
+    commitOutStyle: {
+        height: ScreenUtils.autoSizeHeight(49),
+        flexDirection: 'row',
+        backgroundColor: DesignRule.white,
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    commitAmountStyle: {
         fontSize: ScreenUtils.px2dp(15),
         color: DesignRule.mainColor,
         marginRight: ScreenUtils.autoSizeWidth(15)
     },
-    commitTouStyle:{
+    commitTouStyle: {
         backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center',
-        height: ScreenUtils.autoSizeHeight(49),
+        height: ScreenUtils.autoSizeHeight(49)
     }
 });

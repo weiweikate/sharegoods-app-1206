@@ -17,7 +17,7 @@ import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
 import {
     MRText as Text
 } from '../../../components/ui';

@@ -191,6 +191,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red'
+        // backgroundColor: 'red'
     }
 });

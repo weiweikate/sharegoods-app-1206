@@ -6,6 +6,7 @@ const index = {
     red_button_s: require('./red_button_s.png'),
     red_button_u: require('./red_button_u.png'),
     refresh: require('./refresh.png'),
+    oldLoginBanner:require('./login_banner.png'),
     ...res
 };
 export default index;
