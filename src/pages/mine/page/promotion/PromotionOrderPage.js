@@ -24,8 +24,7 @@ import res from '../../res';
 
 const icon = res.button.tongyon_icon_check_green;
 
-type Props = {};
-export default class PromotionOrderPage extends BasePage<Props> {
+export default class PromotionOrderPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {};
