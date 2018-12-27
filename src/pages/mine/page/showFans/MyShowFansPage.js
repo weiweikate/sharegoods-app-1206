@@ -57,7 +57,6 @@ export default class MyShowFansPage extends BasePage<Props> {
                 });
             }
         }).catch((error) => {
-            this.$toastShow(error.msg);
         });
 
     }
