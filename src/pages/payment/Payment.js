@@ -22,7 +22,7 @@ export const paymentType = {
 export let paymentTrack = {
     orderId : '',
     orderAmount: '',
-    payemntMethod: ''
+    paymentMethod: ''
 }
 
 export class Payment {
@@ -89,7 +89,7 @@ export class Payment {
 
     //余额支付
     @action balancePay = flow(function * (password, ref) {
-        paymentTrack.payemntMethod = 'balance'
+        paymentTrack.paymentMethod = 'balance'
         let trackPoint = {...paymentTrack, tracking: 'start'}
         console.log('trackPoint', trackPoint)
         track(trackEvent.payOrder, trackPoint)
@@ -111,7 +111,7 @@ export class Payment {
 
     //支付宝支付
     @action alipay = flow(function * (ref) {
-        paymentTrack.payemntMethod = 'alipay'
+        paymentTrack.paymentMethod = 'alipay'
         track(trackEvent.payOrder, {...paymentTrack, tracking: 'start'})
         try {
             Toast.showLoading()
@@ -140,7 +140,7 @@ export class Payment {
 
     //微信支付
     @action appWXPay = flow(function * (ref) {
-        paymentTrack.payemntMethod = 'wxpay'
+        paymentTrack.paymentMethod = 'wxpay'
         track(trackEvent.payOrder, {...paymentTrack, tracking: 'start'})
 
         try {
@@ -188,7 +188,7 @@ export class Payment {
 
     //支付宝+平台
     @action ailpayAndBalance = flow(function * (password, ref) {
-        paymentTrack.payemntMethod = 'alipayAndBalance'
+        paymentTrack.paymentMethod = 'alipayAndBalance'
         track(trackEvent.payOrder, {...paymentTrack, tracking: 'start'})
         try {
             Toast.showLoading()
@@ -229,7 +229,7 @@ export class Payment {
 
      //微信+平台
      @action wechatAndBalance = flow(function * (password, ref) {
-        paymentTrack.payemntMethod = 'wechatAndBalance'
+        paymentTrack.paymentMethod = 'wechatAndBalance'
         track(trackEvent.payOrder, {...paymentTrack, tracking: 'start'})
         try {
             Toast.showLoading()
