@@ -93,6 +93,7 @@ export default class SetPasswordPage extends BasePage {
             wechatVersion: ''
         }).then((data) => {
             this.$loadingDismiss();
+            this.$toastShow('激活成功');
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
             DeviceEventEmitter.emit('homePage_message', null);
