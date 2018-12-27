@@ -25,6 +25,7 @@ import { getSizeFromat } from '../../../../utils/FileSizeFormate';
 import { homeModule } from '../../../home/Modules';
 import { logout } from '../../../../utils/SensorsTrack';
 import {MRText as Text} from '../../../../components/ui'
+import userOrderNum from '../../../../model/userOrderNum';
 
 /**
  * @author luoyongming
@@ -217,6 +218,7 @@ class SettingPage extends BasePage {
                         // 正常退出，或者登录超时，都去清空数据
                         user.clearUserInfo();
                         user.clearToken();
+                        userOrderNum.clean();
                         bridge.clearCookies();
                         //清空购物车
                         shopCartStore.data = [];

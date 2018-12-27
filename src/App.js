@@ -13,7 +13,8 @@ import {
     Text,
     View,
     Platform,
-    InteractionManager
+    InteractionManager,
+    Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from './navigation/RouterMap';
@@ -24,13 +25,16 @@ import CONFIG from '../config';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
-// import hotUpdateUtil from './utils/HotUpdateUtil';
+import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import geolocation from '@mr/geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
 import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
-import LoginAPI from './pages/login/api/LoginApi';
+// import LoginAPI from './pages/login/api/LoginApi';
+import OldImag from './home_icon.png';
+import oldUserLoginSingleModel from './model/oldUserLoginModel';
+// import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -63,6 +67,8 @@ export default class App extends Component {
             showOldBtn: false
         };
         user.readToken();
+        //检测是否老用户登陆
+        oldUserLoginSingleModel.checkIsShowOrNot();
     }
 
     async componentWillMount() {
@@ -90,21 +96,9 @@ export default class App extends Component {
                 });
             }, 200);
         });
-
         //热更新 先注释掉
         bridge.removeLaunch();
-
-        // hotUpdateUtil.isNeedToCheck();
-        // hotUpdateUtil.checkUpdate();
-
-        LoginAPI.oldUserActivateJudge().then((res) => {
-            console.log('是还是非-------', res);
-            this.setState({
-                showOldBtn: res.data
-            });
-        }).catch((error) => {
-
-        });
+        hotUpdateUtil.checkUpdate();
     }
 
     render() {
@@ -124,35 +118,49 @@ export default class App extends Component {
                         global.$routes = currentState.routes;
                     }}/>
                 {
-                    CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
-                        style={{ color: 'white' }}>调试页</Text></DebugButton> : null
+                    CONFIG.showDebugPanel ?
+                        <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
+                            style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
 
                 {
 
 
-                    user.isLogin || !this.state.showOldBtn
+                    user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
                         ?
                         null
                         :
-                        <DebugButton onPress={this.gotoLogin}><Text
-                            style={{ color: 'white' }}>跳转登陆</Text></DebugButton>
+                        <DebugButton
+                            onPress={this.gotoLogin}
+                            style={
+                                styles.oldLoginBtnStyle
+                            }
+                        >
+                            <View
+                                style={{
+                                    width: 150,
+                                    height: 43,
+                                    paddingLeft: 10,
+                                }
+                                }
+                            >
+                                <Image
+                                    source={OldImag}
+                                    resizeMode={'contain'}
+                                />
+                            </View>
+                        </DebugButton>
                 }
             </View>
         );
     }
 
     gotoLogin = () => {
-        const navigationAction = NavigationActions.navigate({
-            routeName: RouterMap.LoginPage
-            //routeName:'debug/DemoLoginPage'
-        });
-        global.$navigator.dispatch(navigationAction);
+        oldUserLoginSingleModel.JumpToLogin(RouterMap.LoginPage);
     };
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage
-            //routeName:'debug/DemoLoginPage'
         });
         global.$navigator.dispatch(navigationAction);
     };
@@ -169,5 +177,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    oldLoginBtnStyle: {
+        width: 120,
+        height: 43,
+        paddingLeft: 10,
     }
 });
