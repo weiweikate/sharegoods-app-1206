@@ -18,6 +18,7 @@ import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
 import {MRText as Text} from '../../../components/ui'
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 const {
     red_button_s,
@@ -55,11 +56,11 @@ export default class RegistPage extends BasePage {
         // 测试环境:https://testh5.sharegoodsmall.com/static/protocol/service.html
         // 预发布环境：https://uath5.sharegoodsmall.com/static/protocol/service.html
         // 生产布环境：https://h5.sharegoodsmall.com/static/protocol/service.html
-
-        const htmlUrl = __DEV__ ?
-            'https://uath5.sharegoodsmall.com/static/protocol/service.html'
-            :
-            'https://uath5.sharegoodsmall.com/static/protocol/service.html';
+        const htmlUrl = apiEnvironment.getCurrentH5Url()+'/static/protocol/service.html'
+        // const htmlUrl = __DEV__ ?
+        //     'https://uath5.sharegoodsmall.com/static/protocol/service.html'
+        //     :
+        //     'https://uath5.sharegoodsmall.com/static/protocol/service.html';
         return (
             <View style={{
                 flex: 1,

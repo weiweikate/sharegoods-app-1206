@@ -63,7 +63,7 @@ class ShopCartStore {
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
         this.data.slice().map(item => {
-            if (item.isSelected && !isNaN(item.amount) ) {
+            if (item.isSelected && !isNaN(item.amount) && item.status !== 2 ) {
                 // totalSelectNum += item.amount;
                 totalSelectNum += 1;
             }
@@ -75,7 +75,7 @@ class ShopCartStore {
     get getTotalMoney() {
         let totalMoney = 0.00;
         this.data.slice().map(item => {
-            if (item.isSelected && !isNaN(item.amount) ) {
+            if (item.isSelected && !isNaN(item.amount) && item.status !== 2 ) {
                 totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
             }
         });
@@ -150,7 +150,12 @@ class ShopCartStore {
 
                 originArr.map(originGood =>{
                     if (originGood.productCode === item.productCode && item.skuCode === originGood.skuCode){
-                        item.isSelected = originGood.isSelected
+                        if (item.status === 1) {
+                            item.isSelected = originGood.isSelected
+                        }else {
+                            item.isSelected = false;
+                        }
+
                     }
                 })
                 tempArr.push(item);
