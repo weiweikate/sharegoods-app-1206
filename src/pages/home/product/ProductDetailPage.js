@@ -272,7 +272,7 @@ export default class ProductDetailPage extends BasePage {
         switch (type) {
             case 'jlj':
                 if (!user.isLogin) {
-                    Alert.alert('提示', '登录后分享才能赚取赏金',
+                    Alert.alert('提示', '登录后分享才能获取奖励',
                         [
                             {
                                 text: '取消', onPress: () => {
