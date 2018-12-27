@@ -22,6 +22,8 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 Pods/
+*.bundle
+assets/
 
 # Android/IntelliJ
 #
