@@ -48,7 +48,6 @@ const trackEvent = {
     ReceiveDividents: 'ReceiveDividents',//收到分红
     VIPChange: 'VIPChange',//会员流转
     QrcodeShareto: 'QrcodeShareto',//分享二维码
-    receiveshowDou:'receiveshowDou'//秀豆变动
 };
 
 
