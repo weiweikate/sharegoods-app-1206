@@ -804,7 +804,7 @@ export default class MinePage extends BasePage {
         }
 
         let mentor = {
-            text:'导师',
+            text:'顾问',
             icon:mine_icon_mentor,
             onPress:()=>{
                 if (user.upUserCode) {

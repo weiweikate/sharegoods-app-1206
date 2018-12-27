@@ -81,7 +81,7 @@ export default class LoginPage extends BasePage {
 
         });
         // track('$AppViewScreen', { '$screen_name': 'LoginPage', '$title': '登录' });
-        oldUserLoginSingleModel.checkIsShowOrNot();
+        oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
 
     $NavBarLeftPressed = () => {
