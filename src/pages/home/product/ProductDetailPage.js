@@ -25,7 +25,7 @@ import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
-import {MRText as Text} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 // import CommModal from '../../../comm/components/CommModal';
 import DesignRule from 'DesignRule';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
@@ -589,7 +589,7 @@ export default class ProductDetailPage extends BasePage {
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{
-                                commodityID: this.params.activityCode,
+                                commodityID: prodCode,
                                 commodityName: name,
                                 firstCommodity: firstCategoryId,
                                 secondCommodity: secCategoryId,
