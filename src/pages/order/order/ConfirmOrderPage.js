@@ -559,7 +559,7 @@ export default class ConfirmOrderPage extends BasePage {
                     this.canCommit = true;
                     let data = response.data;
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
                         receiverName: data.userAddress.receiver,
@@ -601,7 +601,7 @@ export default class ConfirmOrderPage extends BasePage {
                     this.canCommit = true;
                     let data = response.data;
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
                         receiverName: data.userAddress.receiver,
@@ -658,7 +658,7 @@ export default class ConfirmOrderPage extends BasePage {
                     this.$loadingDismiss();
                     let data = res.data;
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
                         receiverName: data.userAddress.receiver,
@@ -706,7 +706,7 @@ export default class ConfirmOrderPage extends BasePage {
                 let data = response.data;
                 this.canCommit = true;
                 track(trackEvent.submitOrder, {
-                    orderID: data.orderNo,
+                    orderId: data.orderNo,
                     orderAmount: data.payAmount,
                     transportationCosts: data.totalFreightFee,
                     receiverName: data.userAddressDTO.receiver,
