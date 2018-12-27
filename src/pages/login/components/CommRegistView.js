@@ -260,9 +260,14 @@ export default class CommRegistView extends Component {
         }
     };
     loginClick = () => {
-        if (this.registModel.isCanClick) {
-            this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+        if (StringUtils.checkPassword(this.registModel.password)){
+            if (this.registModel.isCanClick) {
+                this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+            }
+        } else {
+            bridge.$toast('密码格式不对');
         }
+
     };
 
 
