@@ -94,7 +94,7 @@ export default class ShopHeaderBonus extends Component {
                                 fontSize: 12,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_secondTitle
-                            }} numberOfLines={2} allowFontScaling={false}>预计本次可得额外品牌分红奖励金<Text
+                            }} numberOfLines={2} allowFontScaling={false}>预计本次可得额外品牌分红奖励<Text
                                 style={{ color: DesignRule.textColor_redWarn }}>{currentUserSettle}</Text>元</Text>
                             <Text style={{
                                 fontSize: 10,
