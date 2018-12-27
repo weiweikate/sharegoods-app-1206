@@ -140,6 +140,7 @@ export default class SignInPage extends BasePage {
 
     //签到
     userSign = () => {
+        track(trackEvent.receiveshowDou,{showDouGet:'scqd',showDouAmount:this.state.signInData[3].canReward});
         HomeAPI.userSign().then((data) => {
             this.$toastShow(`签到成功 +${this.state.signInData[3].canReward}秀豆`);
             this.getSignData();
@@ -151,6 +152,7 @@ export default class SignInPage extends BasePage {
 
     //兑换一元优惠券
     exchangeCoupon = () => {
+        track(trackEvent.receiveshowDou,{showDouDeduct:'exchange',showDouAmount:this.state.signInData[3].canReward});
         track(trackEvent.receiveOneyuan,{YiyuanCouponsAmount:1,YiyuanCouponsGetMethod:'exchange'});
         HomeAPI.exchangeTokenCoin().then((data) => {
             this.$toastShow('成功兑换一张1元抵扣券');
