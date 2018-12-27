@@ -248,6 +248,7 @@ class SettingPage extends BasePage {
     };
     jumptToAboutUsPage = () => {
         this.$navigate('HtmlPage', {
+            title: '关于我们',
             uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/about-us.html'
         });
     };
