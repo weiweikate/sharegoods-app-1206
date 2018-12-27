@@ -93,7 +93,9 @@ class HomeModule {
             linkTypeCode: data.linkTypeCode,
             productCode: data.linkTypeCode,
             productType: productType,
-            storeCode: storeCode
+            storeCode: storeCode,
+            uri: data.uri,
+            id: data.showId
         };
 
     };
