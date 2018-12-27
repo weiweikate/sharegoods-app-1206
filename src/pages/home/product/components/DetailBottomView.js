@@ -87,7 +87,7 @@ export default class DetailBottomView extends Component {
                                 : <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ color: DesignRule.white, fontSize: 25 }} allowFontScaling={false}>赚</Text>
                                     <View style={{ marginLeft: 5 }}>
-                                        <Text style={{ color: DesignRule.white, fontSize: 11 }} allowFontScaling={false}>品牌奖励金</Text>
+                                        <Text style={{ color: DesignRule.white, fontSize: 11 }} allowFontScaling={false}>品牌奖励</Text>
                                         <View style={{
                                             alignItems: 'center',
                                             marginTop: 6
