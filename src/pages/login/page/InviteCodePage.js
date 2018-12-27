@@ -173,7 +173,7 @@ export default class  extends BasePage {
                     </View>
                 </TouchableOpacity>
                 <UIText
-                    value={'选择导师'}
+                    value={'选择顾问'}
                     style={{
                         marginTop:20,
                         color: DesignRule.textColor_instruction,
