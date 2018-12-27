@@ -124,13 +124,14 @@ export default class RegistPage extends BasePage {
             return;
         }
         console.log(this.params);
+        this.params=this.params || {};
         this.$loadingShow();
         track(trackEvent.signUp,{signUpMethod:'App注册'})
         LoginApi.findMemberByPhone({
             code: code,
-            device: this.params.device ? this.params.device : '',
+            device: (this.params &&this.params.device) ? this.params.device : '',
             inviteId: '',//邀请id
-            openid: this.params.openid ? this.params.openid : '',
+            openid:(this.params&& this.params.openid )? this.params.openid : '',
             password: password,
             phone: phone,
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
