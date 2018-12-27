@@ -25,7 +25,7 @@ import CONFIG from '../config';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
-// import hotUpdateUtil from './utils/HotUpdateUtil';
+import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import geolocation from '@mr/geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
@@ -98,7 +98,7 @@ export default class App extends Component {
         });
         //热更新 先注释掉
         bridge.removeLaunch();
-        // hotUpdateUtil.checkUpdate();
+        hotUpdateUtil.checkUpdate();
     }
 
     render() {

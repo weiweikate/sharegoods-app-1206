@@ -19,7 +19,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
