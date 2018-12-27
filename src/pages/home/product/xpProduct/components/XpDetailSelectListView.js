@@ -16,7 +16,7 @@ class ListItem extends Component {
         const { name, imgUrl, spuCode, isSelected } = this.props.item;
         const ViewBorderColor = isSelected ? DesignRule.mainColor : DesignRule.lineColor_inWhiteBg;
         return (
-            <TouchableWithoutFeedback onPress={() => !isSelected && selectSpuCode(spuCode)}>
+            <TouchableWithoutFeedback onPress={() =>  selectSpuCode(spuCode)}>
                 <View style={[styles.itemView, { borderColor: ViewBorderColor }]}>
                     <UIImage style={styles.itemImg} source={imgUrl}/>
                     <Text style={styles.itemText} numberOfLines={1}>{name}</Text>

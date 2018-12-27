@@ -12,16 +12,22 @@ import XpDetailModel from './XpDetailModel';
 import { observer } from 'mobx-react';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../../../comm/res';
-import procductRes from '../../res';
+import productRes from '../../res';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
 import SelectionPage from '../SelectionPage';
 import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import DetailNavShowModal from '../components/DetailNavShowModal';
+import QYChatUtil from '../../../mine/page/helper/QYChatModel';
+import user from '../../../../model/user';
+import RouterMap from '../../../../navigation/RouterMap';
+import apiEnvironment from '../../../../api/ApiEnvironment';
+import CommShareModal from '../../../../comm/components/CommShareModal';
 
 const arrow_right_black = res.button.arrow_right_black;
-const detail_more_down = procductRes.product.detailNavView.detail_more_down;
+const detail_more_down = productRes.product.detailNavView.detail_more_down;
 
 @observer
 export class XpDetailPage extends BasePage {
@@ -30,7 +36,33 @@ export class XpDetailPage extends BasePage {
 
     $navigationBarOptions = {
         title: '经验值专区',
-        rightNavImage: detail_more_down
+        rightNavImage: detail_more_down,
+        rightPressed: this._rightNavAction
+    };
+
+    _rightNavAction = () => {
+        this.DetailNavShowModal.show(this.state.messageCount, (item) => {
+            switch (item.index) {
+                case 0:
+                    if (!user.isLogin) {
+                        this.$navigate(RouterMap.LoginPage);
+                        return;
+                    }
+                    this.$navigate('message/MessageCenterPage');
+                    break;
+                case 1:
+                    this.$navigate('home/search/SearchPage');
+                    break;
+                case 2:
+                    this.shareModal.open();
+                    break;
+                case 3:
+                    setTimeout(() => {
+                        QYChatUtil.qiYUChat();
+                    }, 100);
+                    break;
+            }
+        });
     };
 
     _getBasePageStateOptions = () => {
@@ -77,10 +109,13 @@ export class XpDetailPage extends BasePage {
     /*加入购物车 立即购买*/
     _bottomViewAction = (type) => {
         if (type === 'goGwc') {
-
+            this.$navigate('shopCart/ShopCart', {
+                hiddeLeft: false
+            });
+        } else {
+            this.goType = type;
+            this.SelectionPage.show(this.xpDetailModel.pData, this._selectionViewConfirm);
         }
-        this.goType = type;
-        this.SelectionPage.show(this.xpDetailModel.pData, this._selectionViewConfirm);
     };
 
     /*选择规格确认*/
@@ -141,12 +176,12 @@ export class XpDetailPage extends BasePage {
             <View style={styles.productInfoView}>
                 <View style={styles.infoTextView}>
                     <Text style={styles.pramsText}>商品信息</Text>
-                    {/*图片详情*/}
-                    <HTML html={this.xpDetailModel.pHtml}
-                          imagesMaxWidth={ScreenUtils.width}
-                          imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
-                          containerStyle={{ backgroundColor: '#fff' }}/>
                 </View>
+                {/*图片详情*/}
+                <HTML html={this.xpDetailModel.pHtml}
+                      imagesMaxWidth={ScreenUtils.width}
+                      imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
+                      containerStyle={{ backgroundColor: '#fff' }}/>
             </View>
         </View>;
     };
@@ -171,6 +206,8 @@ export class XpDetailPage extends BasePage {
     };
 
     _render() {
+        const { minPrice, name, imgUrl, prodCode, firstCategoryId, secCategoryId } = this.xpDetailModel.pData;
+
         return (
             <View style={styles.container}>
                 {/*页面状态*/}
@@ -183,6 +220,39 @@ export class XpDetailPage extends BasePage {
                 <XpDetailActivityInfoModal ref={(e) => this.XpDetailActivityInfoModal = e}/>
                 {/*sku选择*/}
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
+                {/*nav更多跳转*/}
+                <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                trackParmas={{
+                                    commodityID: this.params.activityCode,
+                                    commodityName: name,
+                                    firstCommodity: firstCategoryId,
+                                    secondCommodity: secCategoryId,
+                                    pricePerCommodity: minPrice
+                                }}
+                                trackEvent={trackEvent.share}
+                                type={'Image'}
+                                imageJson={{
+                                    imageUrlStr: imgUrl,
+                                    titleStr: `${name}`,
+                                    priceStr: `￥${minPrice}`,
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
+                                }}
+                                webJson={{
+                                    title: `${name}`,
+                                    dec: '商品详情',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    thumImage: imgUrl
+                                }}
+                                miniProgramJson={{
+                                    title: `${name}`,
+                                    dec: '商品详情',
+                                    thumImage: 'logo.png',
+                                    hdImageURL: imgUrl,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
+                                }}/>
             </View>
         );
     }

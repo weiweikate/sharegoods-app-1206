@@ -1,10 +1,13 @@
 import { observable, action, computed } from 'mobx';
 import HomeAPI from '../../api/HomeAPI';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
+import user from '../../../../model/user';
 
 class XpDetailModel {
     @observable basePageState = PageLoadingState.null;
     @observable basePageError = {};
+
+    @observable baseData = '';
     /*活动名称*/
     @observable name = '';
     /*banner*/
@@ -60,6 +63,7 @@ class XpDetailModel {
     @observable pSecondName = '';
     @observable pParamList = [];
 
+
     @computed get pHtml() {
         let contentS = this.pData.content || '';
         contentS = contentS.split(',') || [];
@@ -68,6 +72,25 @@ class XpDetailModel {
             html = `${html}<p><img src=${item}></p>`;
         });
         return html;
+    }
+
+    @computed get pPrice() {
+        let { minPrice, maxPrice } = this.pData;
+        return minPrice !== maxPrice ? `${minPrice || ''}-${maxPrice || ''}` : `${minPrice || ''}`;
+    }
+
+    @computed get skuTotal() {
+        let skuList = this.pData.skuList;
+        let count = 0;
+        skuList.forEach((item) => {
+            count = count + item.sellStock;
+        });
+        return count;
+    }
+
+    @computed get pPriceType() {
+        let priceType = this.pData.priceType;
+        return priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : '原价';
     }
 
     /******************************【action】******************************************/
@@ -102,10 +125,10 @@ class XpDetailModel {
         this.prods = data.prods || [{}];
         this.rules = data.rules || [];
 
-        /*请求第一个数据*/
+        /*请求默认第一个数据*/
         if (this.prods.length > 0) {
             let item = this.prods[0];
-            this.request_getProductDetailByCode(item.spuCode);
+            this.selectSpuCode(item.spuCode);
         }
     };
 
@@ -114,7 +137,6 @@ class XpDetailModel {
         this.basePageError = error || {};
     };
 
-    /***************普通商品******************/
     @action saveProductData = (data) => {
         this.productPageState = PageLoadingState.success;
         data = data || {};
@@ -125,7 +147,7 @@ class XpDetailModel {
         this.pImgFileList = data.imgFileList || '';
         this.pName = data.name || '';
         this.pSecondName = data.secondName || '';
-        this.pParamList = data.paramList || '';
+        this.pParamList = data.paramList || [];
     };
 
     @action productError = (error) => {
@@ -133,9 +155,9 @@ class XpDetailModel {
         this.productPageError = error || {};
     };
 
-    /******************************【common】******************************************/
+    /*********【网络】***********/
 
-    request_act_exp_detail = (activityCode) => {
+    @action request_act_exp_detail = (activityCode) => {
         this.basePageState = PageLoadingState.loading;
         HomeAPI.act_exp_detail({
             activityCode: 'JF201812240014'
@@ -146,13 +168,15 @@ class XpDetailModel {
         });
     };
 
+    /**普通商品**/
+
     /*第一加载第一个  选择加载  失败重试*/
-    request_getProductDetailByCode = (spuCode) => {
-        action(this.productPageState = PageLoadingState.loading);
+    @action request_getProductDetailByCode = (spuCode) => {
+        this.productPageState = PageLoadingState.loading;
         spuCode = spuCode || this.selectedSpuCode;
         this.selectedSpuCode = spuCode;
         HomeAPI.getProductDetailByCode({
-            productCode: spuCode
+            code: 'SPU00000168'
         }).then((data) => {
             this.saveProductData(data.data);
         }).catch((error) => {

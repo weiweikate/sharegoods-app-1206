@@ -5,10 +5,11 @@ import { MRText as Text } from '../../../../../components/ui';
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import DesignRule from '../../../../../constants/DesignRule';
+import user from '../../../../../model/user';
 
 const { px2dp } = ScreenUtils;
 
-@observer
+// @observer
 export class XpDetailProductView extends Component {
 
     _goFullImage = () => {
@@ -17,24 +18,24 @@ export class XpDetailProductView extends Component {
 
     render() {
         const { xpDetailModel } = this.props;
-        const { img, price, vip, leave, tittle, subTittle } = xpDetailModel;
+        const { pImgUrl, pPriceType, pPrice, pName, pSecondName, skuTotal } = xpDetailModel;
         return (
             <View style={styles.bgView}>
                 <TouchableWithoutFeedback onPress={this._goFullImage}>
-                    <UIImage style={styles.headerImg} source={img}/>
+                    <UIImage style={styles.headerImg} source={pImgUrl}/>
                 </TouchableWithoutFeedback>
                 <View style={styles.levelPriceView}>
                     <View style={styles.levelView}>
-                        <Text style={styles.levelText}>{vip}</Text>
+                        <Text style={styles.levelText}>{pPriceType}</Text>
                     </View>
                     <View style={styles.priceView}>
                         <Text style={styles.priceText}>¥<Text
-                            style={styles.priceTextNum}>{price}</Text></Text>
+                            style={styles.priceTextNum}>{pPrice}</Text></Text>
                     </View>
                 </View>
-                <Text style={styles.leaveText}>{leave}</Text>
-                <Text style={styles.tittle} numberofLines={2}>{tittle}</Text>
-                <Text style={styles.subTittle}>{subTittle}</Text>
+                <Text style={styles.leaveText}>{`库存${skuTotal}`}</Text>
+                <Text style={styles.tittle} numberofLines={2}>{pName}</Text>
+                <Text style={styles.subTittle}>{pSecondName}</Text>
             </View>
         );
     }

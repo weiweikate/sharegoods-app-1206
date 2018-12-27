@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { MRText as Text } from '../../../../../components/ui';
 import Modal from 'CommModal';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
@@ -12,13 +12,22 @@ export default class XpDetailParamsModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false
+            modalVisible: false,
+            pParamList: []
         };
     }
 
-    show = () => {
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state.modalVisible !== nextState.modalVisible) {
+            return true;
+        }
+        return false;
+    }
+
+    show = (xpDetailModel) => {
         this.setState({
-            modalVisible: true
+            modalVisible: true,
+            pParamList: xpDetailModel.pParamList
         });
     };
 
@@ -28,7 +37,16 @@ export default class XpDetailParamsModal extends Component {
         });
     };
 
+    _renderItem = ({ item }) => {
+        return <ListItem item={item}/>;
+    };
+
+    _keyExtractor = (item, index) => {
+        return `${item.paramName}${index}`;
+    };
+
     render() {
+        const {} = this.props;
         return (
             <Modal onRequestClose={this._close}
                    visible={this.state.modalVisible}
@@ -36,7 +54,11 @@ export default class XpDetailParamsModal extends Component {
                 <View style={styles.containerView}>
                     <TouchableOpacity style={styles.topCloseBtn} onPress={this._close}/>
                     <View style={styles.bottomView}>
-                        <FlatList/>
+                        <Text style={styles.tittleText}>产品参数</Text>
+                        <FlatList data={this.state.pParamList}
+                                  renderItem={this._renderItem}
+                                  keyExtractor={this._keyExtractor}
+                                  showsHorizontalScrollIndicator={false}/>
                         <TouchableOpacity style={styles.sureBtn} onPress={this._close}>
                             <Text style={styles.sureText}>确定</Text>
                         </TouchableOpacity>
@@ -60,6 +82,12 @@ const styles = StyleSheet.create({
         flex: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10,
         backgroundColor: DesignRule.white
     },
+
+    tittleText: {
+        alignSelf: 'center', marginTop: 15,
+        fontSize: 17, color: DesignRule.textColor_mainTitle
+    },
+
     sureBtn: {
         justifyContent: 'center', alignItems: 'center',
         alignSelf: 'center',
@@ -68,6 +96,50 @@ const styles = StyleSheet.create({
     },
     sureText: {
         color: DesignRule.white, fontSize: 17
+    },
+
+    itemView: {
+        flexDirection: 'row',
+        marginVertical: 14
+    },
+    nameView: {
+        width: ScreenUtils.px2dp(122)
+    },
+    nameText: {
+        marginHorizontal: 15,
+        fontSize: 13, color: DesignRule.textColor_instruction
+    },
+    valueView: {
+        flex: 1
+    },
+    valueText: {
+        fontSize: 13, color: DesignRule.textColor_mainTitle
+    },
+    lineView: {
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: DesignRule.lineColor_inWhiteBg
     }
 });
+
+class ListItem extends Component {
+
+    render() {
+        const { paramName, paramValue } = this.props.item;
+        return (
+            <TouchableWithoutFeedback>
+                <View>
+                    <View style={styles.itemView}>
+                        <View style={styles.nameView}>
+                            <Text style={styles.nameText} numberOfLines={1}>{paramName}</Text>
+                        </View>
+                        <View style={styles.valueView}>
+                            <Text style={styles.valueText} numberOfLines={1}>{paramValue}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.lineView}/>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+    }
+}
 

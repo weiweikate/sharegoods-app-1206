@@ -15,7 +15,7 @@ export default class XpDetailBottomView extends Component {
         return (
             <View style={styles.containerView}>
                 <View style={styles.bgView}>
-                    <TouchableOpacity style={styles.gwcBtn}>
+                    <TouchableOpacity style={styles.gwcBtn} onPress={() => bottomViewAction('goGwc')}>
                         <Image source={gwc}/>
                         <Text style={styles.gwcText}>购物车</Text>
                     </TouchableOpacity>
