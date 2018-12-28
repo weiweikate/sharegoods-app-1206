@@ -12,8 +12,8 @@ ext {
             applicationId    : "com.meeruu.sharegoods",
             minSdkVersion    : 16,
             targetSdkVersion : 27,
-            versionCode      : 105,
-            versionName      : "1.0.5"
+            versionCode      : 1066,
+            versionName      : "1.0.6.6"
     ]
 
     dependencies = [
