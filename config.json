@@ -70,7 +70,8 @@
         },
         "申祥瑀": {
             "name": "延签测试",
-            "host": "http://172.16.10.21:8080/gateway"
+            "host": "http://172.16.10.91:8080/gateway",
+            "h5": "https://uath5.sharegoodsmall.com"
         },
         "杨飞": {
             "name": "杨飞",
