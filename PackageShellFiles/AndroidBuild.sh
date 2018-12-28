@@ -123,5 +123,5 @@ buildApk(){
 #1.先打印编译时的基础信息. 2.再创建文件目录以及安装描述文件 3.打包apk并自动上传包管理平台
 #resetConfigJsonFile
 #echoGitCommitId
-createDir
+#createDir
 buildApk
