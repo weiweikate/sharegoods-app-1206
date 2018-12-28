@@ -70,12 +70,12 @@ echoGitCommitId(){
 #导出apk包到指定的文件路径
 buildApk(){
 
-    currentPath=`pwd`
+    #currentPath=`pwd`
 #    cd ../android #进入ios文件目录
 
 
     #version.properties文件所在的目录
-    path='../android'
+    #path='../android'
     #content=$(cat ${path}/version.properties)
     #echo "读取内容:$content"
     #读取文件的VERSION_CODE对应的value，保存versionCode变量
@@ -102,8 +102,8 @@ buildApk(){
     #chmod -R 777 dev_crm_app2
     #cd $BUILD_TOOL_PATH && ./gradlew assembleinsectRelease
      #cd $BUILD_TOOL_PATH && ./gradlew assembleRelease
-     cd android && ./gradlew assembleRelease
-    openRootPath='../android/app'
+     #cd android && ./gradlew assembleRelease
+    #openRootPath='../android/app'
     #打包完成打开包所在的目录，当然，程序里面的这面绝对路径请替换成你对应的路径，不然程序运行不会成功
 #    explorer $openRootPath'\build\outputs\apk'
 
@@ -111,10 +111,10 @@ buildApk(){
     #mv ${path}/app/build/outputs/apk/debug/app-debug.apk ${exportPath}/${projectName}.app.apk
     #mv ${path}/app/build/outputs/apk/debug/output.json ${exportPath}/${projectName}.output.json
     #还原路径
-    cd ${currentPath}
+    #cd ${currentPath}
 
     # todo 上传至蒲公英
-    sh uploadPackage.sh ${path}/app/build/outputs/apk/release/app-release.apk
+    #sh uploadPackage.sh ${path}/app/build/outputs/apk/release/app-release.apk
     #else
     #echo "error : versionCode未加1"
     #fi
