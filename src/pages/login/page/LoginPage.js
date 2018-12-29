@@ -80,7 +80,6 @@ export default class LoginPage extends BasePage {
         }).catch((error) => {
 
         });
-        // track('$AppViewScreen', { '$screen_name': 'LoginPage', '$title': '登录' });
         oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
 
@@ -137,7 +136,6 @@ export default class LoginPage extends BasePage {
                                 </TouchableOpacity>
                             </View>
                         </View>
-
                 }
             </View>
         );
