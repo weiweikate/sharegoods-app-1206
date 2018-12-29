@@ -194,7 +194,7 @@ export default class TopicDetailPage extends BasePage {
                         /*商品详情埋点*/
                         const { packageCode, name, firstCategoryId, secCategoryId, levelPrice } = this.state.data;
                         track(trackEvent.commodityDetail, {
-                            preseat: this.params.preseat || '',
+                            preSeat: this.params.preseat || '',
                             commodityID: packageCode,
                             commodityName: name,
                             firstCommodity: firstCategoryId,
@@ -284,7 +284,7 @@ export default class TopicDetailPage extends BasePage {
                         /*商品详情埋点*/
                         const { name, firstCategoryId, secCategoryId, minPrice } = data.data || {};
                         track(trackEvent.commodityDetail, {
-                            preseat: this.params.preseat || '',
+                            preSeat: this.params.preseat || '',
                             commodityID: prodCode,
                             commodityName: name,
                             firstCommodity: firstCategoryId,

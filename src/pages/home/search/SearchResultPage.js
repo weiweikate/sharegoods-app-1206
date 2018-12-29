@@ -229,7 +229,7 @@ export default class SearchResultPage extends BasePage {
         };
         /*加入购物车埋点*/
         const {prodCode,name,firstCategoryId,secCategoryId,minPrice} = this.productItem||{};
-        track(trackEvent.addToShoppingcart,{shoppingcartEntrance:'搜索页面',commodityNumber:amount,commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
+        track(trackEvent.addToShoppingcart,{shoppingCartEntrance:'搜索页面',commodityNumber:amount,commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
         shopCartCacheTool.addGoodItem(temp);
     };
 

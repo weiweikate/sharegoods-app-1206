@@ -68,7 +68,7 @@ export default class App extends Component {
         };
         user.readToken();
         //检测是否老用户登陆
-        oldUserLoginSingleModel.checkIsShowOrNot();
+        oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
 
     async componentWillMount() {
@@ -124,8 +124,6 @@ export default class App extends Component {
                 }
 
                 {
-
-
                     user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
                         ?
                         null

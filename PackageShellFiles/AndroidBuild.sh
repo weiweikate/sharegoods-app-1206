@@ -70,54 +70,58 @@ echoGitCommitId(){
 #导出apk包到指定的文件路径
 buildApk(){
 
-    currentPath=`pwd`
+    #currentPath=`pwd`
 #    cd ../android #进入ios文件目录
 
 
     #version.properties文件所在的目录
-    path='../android'
-    content=$(cat ${path}/version.properties)
-    echo "读取内容:$content"
+    #path='../android'
+    #content=$(cat ${path}/version.properties)
+    #echo "读取内容:$content"
     #读取文件的VERSION_CODE对应的value，保存versionCode变量
-    versionCode=`grep VERSION_CODE ${path}version.properties|cut -d'=' -f2`
+    #versionCode=`grep VERSION_CODE ${path}version.properties|cut -d'=' -f2`
     #将versionCode+1，得到累加后的addVersionCode
-    addVersionCode=`expr $versionCode + 1`
-    echo "versionCode====$versionCode"
+    #addVersionCode=`expr $versionCode + 1`
+    #echo "versionCode====$versionCode"
     # 将addVersionCode重新累加赋值给文件的VERSION_CODE
-    sed -i "s#^VERSION_CODE=.*#VERSION_CODE=${addVersionCode}#g"  ${path}version.properties
-    content=$(cat ${path}version.properties)
-    addVersionCode=`grep VERSION_CODE ${path}version.properties|cut -d'=' -f2`
-    echo "替换之后====$content"
-    echo "addVersionCode====$addVersionCode"
+    #sed -i "s#^VERSION_CODE=.*#VERSION_CODE=${addVersionCode}#g"  ${path}version.properties
+    #content=$(cat ${path}version.properties)
+    #addVersionCode=`grep VERSION_CODE ${path}version.properties|cut -d'=' -f2`
+    #echo "替换之后====$content"
+    #echo "addVersionCode====$addVersionCode"
     #判断versionCode是否累加成功， -gt标识大于返回true
-    if [ $addVersionCode -gt $versionCode ]
-    then
+    #if [ $addVersionCode -gt $versionCode ]
+    #then
     # 打包apk
     #gradlew 对应目录
     BUILD_TOOL_PATH='../android'
     echo "开始打包..."
-    chmod -R 777 dev_crm_app2
+    cd ../
+    react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+    rm -rf android/app/src/main/res/drawable-xxxhdpi android/app/src/main/res/drawable-xxhdpi android/app/src/main/res/drawable-xhdpi android/app/src/main/res/drawable-mdpi android/app/src/main/res/drawable-hdpi
+    #chmod -R 777 dev_crm_app2
     #cd $BUILD_TOOL_PATH && ./gradlew assembleinsectRelease
-     cd $BUILD_TOOL_PATH && ./gradlew assembleRelease
-    openRootPath='../android/app'
+     #cd $BUILD_TOOL_PATH && ./gradlew assembleRelease
+     #cd android && ./gradlew assembleRelease
+    #openRootPath='../android/app'
     #打包完成打开包所在的目录，当然，程序里面的这面绝对路径请替换成你对应的路径，不然程序运行不会成功
 #    explorer $openRootPath'\build\outputs\apk'
 
     #移动打包相关文件
-    mv ${path}/app/build/outputs/apk/debug/app-debug.apk ${exportPath}/${projectName}.app.apk
-    mv ${path}/app/build/outputs/apk/debug/output.json ${exportPath}/${projectName}.output.json
+    #mv ${path}/app/build/outputs/apk/debug/app-debug.apk ${exportPath}/${projectName}.app.apk
+    #mv ${path}/app/build/outputs/apk/debug/output.json ${exportPath}/${projectName}.output.json
     #还原路径
-    cd ${currentPath}
+    #cd ${currentPath}
 
     # todo 上传至蒲公英
-#    sh uploadPackage.sh ${exportPath}/${projectName}.app.apk
-    else
-    echo "error : versionCode未加1"
-    fi
+    #sh uploadPackage.sh ${path}/app/build/outputs/apk/release/app-release.apk
+    #else
+    #echo "error : versionCode未加1"
+    #fi
 }
 
 #1.先打印编译时的基础信息. 2.再创建文件目录以及安装描述文件 3.打包apk并自动上传包管理平台
-resetConfigJsonFile
-echoGitCommitId
-createDir
+#resetConfigJsonFile
+#echoGitCommitId
+#createDir
 buildApk

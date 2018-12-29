@@ -9,13 +9,20 @@ class oldUserLoginModel {
     @observable
     isShowOldBtn = false;
 
+    /**
+     * @param isShowToast 是否显示toast
+     */
     @action
-    checkIsShowOrNot = () => {
+    checkIsShowOrNot = (isShowToast) => {
         LoginAPI.oldUserActivateJudge().then((res) => {
             console.log('是还是非-------', res);
             this.isShowOldBtn = res.data;
             // this.isShowOldBtn = true;
         }).catch((error) => {
+            if (isShowToast) {
+                bridge.$toast(error.msg)
+            }
+            this.isShowOldBtn = false;
         });
     };
     @action
@@ -32,6 +39,8 @@ class oldUserLoginModel {
                 bridge.$toast('激活入口已关闭');
             }
         }).catch((error) => {
+            this.isShowOldBtn = false;
+            bridge.$toast(error.msg)
         });
     };
 
@@ -50,7 +59,8 @@ class oldUserLoginModel {
                 bridge.$toast('老用户激活阶段不可注册');
             }
         }).catch((error) => {
-
+            this.isShowOldBtn = false;
+             bridge.$toast(error.msg)
         });
     };
 
@@ -66,10 +76,11 @@ class oldUserLoginModel {
                 bridge.$toast('老用户激活阶段不可注册');
             }
         }).catch((error) => {
-
+            callBack(false);
+            this.isShowOldBtn = false;
+            bridge.$toast(error.msg)
         });
     };
-
 }
 
 const oldUserLoginSingleModel = new oldUserLoginModel();
