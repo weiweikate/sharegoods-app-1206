@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
-import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
 import {MRText as Text} from '../../../../components/ui';
 
