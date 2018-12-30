@@ -45,7 +45,6 @@ export default class SetNewPhoneNumPage extends BasePage {
                     <Text style={styles.itemLeftText}>新手机</Text>
                     <TextInput
                         style={styles.itemRightInput}
-                        underlineColorAndroid={'transparent'}
                         onChangeText={(text) => {
                             const newText = text.replace(/[^\d]+/, '');
                             this.setState({ telText: newText });
@@ -63,8 +62,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                     alignItems: 'center'
                 }}>
                     <UIText value={'验证码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
-                    <TextInput underlineColorAndroid={'transparent'}
-                               style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
+                    <TextInput style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
                                placeholder={'请输入验证码'}
                                placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => {

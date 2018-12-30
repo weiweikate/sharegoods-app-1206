@@ -311,10 +311,9 @@ export default class WithdrawCashPage extends BasePage {
                     <Text style={{ marginLeft: 15, color: DesignRule.textColor_mainTitle, fontSize: 30 }}>{"¥"}</Text>
                     {/*<View style={{height:20,width:1,backgroundColor:'#eeeeee',marginLeft:16}}/>*/}
                     <RNTextInput
-                        style={{ marginLeft: 20, height: 40, flex: 1, backgroundColor: "white", fontSize: 14 }}
+                        style={{ marginLeft: 20, height: 40, flex: 1, fontSize: 14 }}
                         onChangeText={(text) => this.onChangeText(text)}
                         placeholder={""}
-                        underlineColorAndroid={"transparent"}
                         value={this.state.money}
                         keyboardType='numeric'
                     />

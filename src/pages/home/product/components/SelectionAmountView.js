@@ -138,7 +138,6 @@ export default class SelectionAmountView extends Component {
                         <TextInput
                             style={{ width: 92 / 2.0, padding: 0, color: DesignRule.textColor_mainTitle }}
                             textAlign={'center'}
-                            underlineColorAndroid='transparent'
                             onChangeText={this._onChangeText}
                             value={`${this.state.amount}`}
                             onEndEditing={this._onEndEditing}
