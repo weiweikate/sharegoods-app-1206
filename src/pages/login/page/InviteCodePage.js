@@ -132,7 +132,6 @@ export default class  extends BasePage {
                         value={this.inviteModel.inviteCode}
                         onChangeText={text => this.inviteModel.saveInviteCode(text)}
                         placeholder='请输入邀请人授权码'
-                        underlineColorAndroid={'transparent'}
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
                 </View>

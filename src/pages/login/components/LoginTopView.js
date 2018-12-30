@@ -65,7 +65,6 @@ export default class LoginTopView extends Component {
                         value={loginModel.phoneNumber}
                         onChangeText={text => loginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
-                        underlineColorAndroid='transparent'
                         keyboardType='numeric'
                         onEndEditing={() => {
                             if (!StringUtils.checkPhone(loginModel.phoneNumber)) {
@@ -135,7 +134,6 @@ export default class LoginTopView extends Component {
                         value={loginModel.vertifyCode}
                         onChangeText={text =>loginModel.saveVertifyCode(text)}
                         placeholder='请输入验证码'
-                        underlineColorAndroid='transparent'
                         keyboardType='numeric'
                         multiline={false}
                         secureTextEntry={false}
@@ -185,7 +183,6 @@ export default class LoginTopView extends Component {
                         value={loginModel.password}
                         onChangeText={text => loginModel.savePassword(text)}
                         placeholder='请输入密码'
-                        underlineColorAndroid='transparent'
                         multiline={false}
                         secureTextEntry={loginModel.isSecuret}
                         placeholderTextColor={DesignRule.textColor_placeholder}

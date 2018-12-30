@@ -135,7 +135,6 @@ class AddBankCardPage extends BasePage {
                         onChangeText={text => this.setState({ phone: this._formatPhone(text) })}
                         value={this.state.phone}
                         placeholder={"请输入手机号"}
-                        underlineColorAndroid={"transparent"}
                         keyboardType='numeric'
                     />
                 </View>
@@ -153,7 +152,6 @@ class AddBankCardPage extends BasePage {
                         onChangeText={(text) => this.inputCardNum(text)}
                         value={this.state.cardNo}
                         placeholder={"请输入卡号"}
-                        underlineColorAndroid={"transparent"}
                     />
                 </View>
                 {this.renderLine()}
@@ -320,7 +318,7 @@ const styles = StyleSheet.create({
     }, accountStyle2: {
         marginLeft: 21, color: DesignRule.textColor_mainTitle, marginRight: 21
     }, inputTextStyle: {
-        marginLeft: 21, flex: 1, backgroundColor: "white", fontSize: 14
+        marginLeft: 21, flex: 1, fontSize: 14
     }, detailAddress: {
         flex: 1,
         marginLeft: 20,

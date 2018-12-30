@@ -42,7 +42,6 @@ export default class JudgePhoneNumPage extends BasePage {
                     <Text style={styles.itemLeftText}>手机号</Text>
                     <TextInput
                         style={styles.itemRightInput}
-                        underlineColorAndroid={'transparent'}
                         onChangeText={(text) => {
                             const newText = text.replace(/[^\d]+/, '');
                             this.setState({ telText: newText });
@@ -60,8 +59,7 @@ export default class JudgePhoneNumPage extends BasePage {
                 }}>
                     <UIText value={'验证码'}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
-                    <TextInput underlineColorAndroid={'transparent'}
-                               style={{
+                    <TextInput style={{
                                    flex: 1,
                                    padding: 0,
                                    fontSize: 13,
