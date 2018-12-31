@@ -401,7 +401,7 @@ export default class MinePage extends BasePage {
             }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
                     <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.white }}>
-                        我的资产
+                    我的账户
                     </Text>
                 </View>
                 <View
@@ -416,13 +416,13 @@ export default class MinePage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '现金账户', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '余额', () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆账户', () => {
+                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆', () => {
                         this.go2CashDetailPage(2);
                     })}
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0.00', false), '待提现账户', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0.00', false), '待入账', () => {
                         this.go2CashDetailPage(3);
                     })}
 
@@ -745,7 +745,7 @@ export default class MinePage extends BasePage {
     renderMenu = () => {
 
         let invite = {
-            text:'邀请好友',
+            text:'分享好友',
             icon:mine_icon_invite,
             onPress:()=>{
                 this.$navigate(RouterMap.InviteFriendsPage);
@@ -759,7 +759,7 @@ export default class MinePage extends BasePage {
             }
         }
         let data = {
-            text:'我的晋升',
+            text:'我的资料',
             icon:mine_icon_data,
             onPress:()=>{
                 this.$navigate(RouterMap.MyPromotionPage);

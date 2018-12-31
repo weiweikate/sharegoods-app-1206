@@ -25,7 +25,7 @@ class ClassifyModules {
             name: '分享',
             id: 1,
             route: 'topic/DownPricePage',
-            linkTypeCode: 'ZT2018000001'
+            linkTypeCode: 'ZT2018000003'
         }, {
             icon: showImg,
             name: '秀场',
