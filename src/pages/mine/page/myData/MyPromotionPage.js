@@ -410,7 +410,7 @@ export default class MyPromotionPage extends BasePage {
                             backgroundColor: '#fff',
                             height: 48
                         }}>
-                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>邀请好友</Text>
+                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>分享好友</Text>
                         </View>
                     </TouchableWithoutFeedback>
 
@@ -422,7 +422,7 @@ export default class MyPromotionPage extends BasePage {
                             flex: 1,
                             height: 48
                         }}>
-                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>去购物</Text>
+                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>浏览秀购</Text>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>

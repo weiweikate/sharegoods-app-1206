@@ -134,7 +134,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'task'}
                                 miniProgramJson={{
-                                    title: '邀请好友可获得品牌推广的奖励',
+                                    title: '分享好友可获得品牌推广的奖励',
                                     dec: '',
                                     thumImage: 'logo.png',
                                     hdImageURL: '',
