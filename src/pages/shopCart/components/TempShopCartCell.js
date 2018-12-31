@@ -236,7 +236,6 @@ export default class TempShopCartCell extends Component {
                                                 ]
                                             }
                                             value={itemData.amount ? '' + itemData.amount : ''}
-                                            underlineColorAndroid={'transparent'}
                                             onFocus={() => {
                                                 if (itemData.stock === 0 ||
                                                     itemData.status === 0 ||
