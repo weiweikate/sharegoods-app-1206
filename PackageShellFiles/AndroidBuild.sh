@@ -75,23 +75,23 @@ buildApk(){
 
 
     #version.properties文件所在的目录
-    path='../android'
-    content=$(cat ${path}/version.properties)
-    echo "读取内容:$content"
+#    path='../android'
+#    content=$(cat ${path}/version.properties)
+#   echo "读取内容:$content"
     #读取文件的VERSION_CODE对应的value，保存versionCode变量
-    versionCode=`grep VERSION_CODE ${path}version.properties|cut -d'=' -f2`
+ #   versionCode=`grep VERSION_CODE ${path}version.properties|cut -d'=' -f2`
     #将versionCode+1，得到累加后的addVersionCode
-    addVersionCode=`expr $versionCode + 1`
-    echo "versionCode====$versionCode"
+#    addVersionCode=`expr $versionCode + 1`
+ #   echo "versionCode====$versionCode"
     # 将addVersionCode重新累加赋值给文件的VERSION_CODE
-    sed -i "s#^VERSION_CODE=.*#VERSION_CODE=${addVersionCode}#g"  ${path}version.properties
-    content=$(cat ${path}version.properties)
-    addVersionCode=`grep VERSION_CODE ${path}version.properties|cut -d'=' -f2`
-    echo "替换之后====$content"
-    echo "addVersionCode====$addVersionCode"
+  #  sed -i "s#^VERSION_CODE=.*#VERSION_CODE=${addVersionCode}#g"  ${path}version.properties
+  #  content=$(cat ${path}version.properties)
+  #  addVersionCode=`grep VERSION_CODE ${path}version.properties|cut -d'=' -f2`
+  #  echo "替换之后====$content"
+  #  echo "addVersionCode====$addVersionCode"
     #判断versionCode是否累加成功， -gt标识大于返回true
-    if [ $addVersionCode -gt $versionCode ]
-    then
+ #   if [ $addVersionCode -gt $versionCode ]
+ #   then
     # 打包apk
     #gradlew 对应目录
     BUILD_TOOL_PATH='../android'
@@ -111,13 +111,13 @@ buildApk(){
 
     # todo 上传至蒲公英
 #    sh uploadPackage.sh ${exportPath}/${projectName}.app.apk
-    else
-    echo "error : versionCode未加1"
-    fi
+#    else
+#    echo "error : versionCode未加1"
+#   fi
 }
 
 #1.先打印编译时的基础信息. 2.再创建文件目录以及安装描述文件 3.打包apk并自动上传包管理平台
-resetConfigJsonFile
+#resetConfigJsonFile
 echoGitCommitId
 createDir
 buildApk
