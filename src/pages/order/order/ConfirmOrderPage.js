@@ -19,7 +19,7 @@ import OrderApi from './../api/orderApi';
 import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
 import { NavigationActions } from 'react-navigation';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import userOrderNum from '../../../model/userOrderNum';
 import res from '../res';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
@@ -174,7 +174,6 @@ export default class ConfirmOrderPage extends BasePage {
                             placeholder={'选填：填写内容已与卖家协商确认'}
                             placeholderTextColor={DesignRule.textColor_instruction}
                             numberOfLines={1}
-                            underlineColorAndroid={'transparent'}
                         />
                     </View>
                 </NoMoreClick>
@@ -572,7 +571,7 @@ export default class ConfirmOrderPage extends BasePage {
                         ifUseYiYuan: !!this.state.tokenCoin,
                         numberOfYiYuan: this.state.tokenCoin,
                         yiYuanCouponsAmount: this.state.tokenCoin,
-                        storeCode:user.storeCode?user.storeCode:''
+                        storeCode: user.storeCode ? user.storeCode : ''
                     });
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
@@ -615,7 +614,7 @@ export default class ConfirmOrderPage extends BasePage {
                         ifUseYiYuan: !!this.state.tokenCoin,
                         numberOfYiYuan: this.state.tokenCoin,
                         yiYuanCouponsAmount: this.state.tokenCoin,
-                        storeCode:user.storeCode?user.storeCode:''
+                        storeCode: user.storeCode ? user.storeCode : ''
                     });
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
@@ -673,7 +672,7 @@ export default class ConfirmOrderPage extends BasePage {
                         ifUseYiYuan: !!this.state.tokenCoin,
                         numberOfYiYuan: this.state.tokenCoin,
                         yiYuanCouponsAmount: this.state.tokenCoin,
-                        storeCode:user.storeCode?user.storeCode:''
+                        storeCode: user.storeCode ? user.storeCode : ''
 
                     });
                     user.saveUserInfo(data);
@@ -723,7 +722,7 @@ export default class ConfirmOrderPage extends BasePage {
                     ifUseYiYuan: !!this.state.tokenCoin,
                     numberOfYiYuan: this.state.tokenCoin,
                     yiYuanCouponsAmount: this.state.tokenCoin,
-                    storeCode:user.storeCode?user.storeCode:''
+                    storeCode: user.storeCode ? user.storeCode : ''
                 });
                 MineApi.getUser().then(res => {
                     this.$loadingDismiss();
@@ -832,7 +831,6 @@ const styles = StyleSheet.create({
         marginLeft: ScreenUtils.autoSizeWidth(20),
         height: ScreenUtils.autoSizeWidth(40),
         flex: 1,
-        backgroundColor: 'white',
         fontSize: ScreenUtils.px2dp(14)
     }, selectView: {
         flex: 1,

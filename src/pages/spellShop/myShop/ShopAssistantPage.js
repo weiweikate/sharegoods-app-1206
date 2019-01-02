@@ -21,7 +21,7 @@ import BasePage from "../../../BasePage";
 import SpellShopApi from "../api/SpellShopApi";
 // import ConfirmAlert from "../../../components/ui/ConfirmAlert";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 
 const sectionsArr = [
     "master",

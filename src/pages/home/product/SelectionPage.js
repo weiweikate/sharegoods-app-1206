@@ -11,10 +11,9 @@ import SelectionSectionView from './components/SelectionSectionView';
 import SelectionAmountView from './components/SelectionAmountView';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../../comm/components/CommModal';
+import DesignRule from '../../../constants/DesignRule';
 import {MRText as Text} from '../../../components/ui';
-
 
 export default class SelectionPage extends Component {
 

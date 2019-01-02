@@ -272,6 +272,10 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
      * UIManagerModule, and will then cause the children to layout as if they can fill the window.
      */
     static class DialogRootViewGroup extends ReactViewGroup implements RootView {
+        @Override
+        public void handleException(Throwable t) {
+
+        }
 
         private final JSTouchDispatcher mJSTouchDispatcher = new JSTouchDispatcher(this);
 

@@ -21,7 +21,7 @@ import OrderApi from "../api/orderApi";
 // import user from "../../../model/user";
 import { PageLoadingState, renderViewByLoadingState } from "../../../components/pageDecorator/PageState";
 import { NavigationActions } from "react-navigation";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 import MineApi from "../../mine/api/MineApi";
 import res from "../res";
 import OrderDetailStatusView from "../components/orderDetail/OrderDetailStatusView";

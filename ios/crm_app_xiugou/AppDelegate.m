@@ -30,11 +30,12 @@
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
   [self initSensorsAnalyticsWithLaunchOptions:launchOptions];
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNotFrist"]) {
-     [self addLaunchToWindow];
-  }else{
-    [self addWelcomeView];
-  }
+//  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNotFrist"]) {
+//
+//  }else{
+//    [self addWelcomeView];
+//  }
+  [self addLaunchToWindow];
  
   return YES;
 }

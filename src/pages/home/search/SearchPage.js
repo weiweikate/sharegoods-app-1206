@@ -9,13 +9,12 @@ import BasePage from '../../../BasePage';
 import HotSearchView from './components/HotSearchView';
 import RecentSearchView from './components/RecentSearchView';
 import SearchNav from './components/SearchNav';
-import RouterMap from 'RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import Storage from '../../../utils/storage';
 import StringUtils from '../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import {MRText as Text} from '../../../components/ui';
-
 const recentDataKey = 'recentDataKey';
 export default class SearchPage extends BasePage {
 

@@ -27,7 +27,7 @@ import taskApi from '../api/taskApi';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import user from '../../../model/user';
 import res from '../res';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 const banner = res.banner;
 
 type Props = {};
@@ -95,14 +95,14 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'task'}
                                 // webJson={{
-                                //     title: '邀请好友可获得品牌推广的现金奖励',
+                                //     title: '分享好友可获得品牌推广的现金奖励',
                                 //     dec: '',
                                 //     linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`,
                                 //     thumImage: 'logo.png'
                                 // }}
                                 // type={'miniProgram'}
                                 miniProgramJson={{
-                                    title: '邀请好友可获得品牌推广的奖励',
+                                    title: '分享好友可获得品牌推广的奖励',
                                     dec: '',
                                     thumImage: 'logo.png',
                                     hdImageURL: '',

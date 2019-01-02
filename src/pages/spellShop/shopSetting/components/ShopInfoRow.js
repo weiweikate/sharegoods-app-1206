@@ -6,7 +6,7 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import UIImage from "@mr/image-placeholder";
 import {
     MRText as Text

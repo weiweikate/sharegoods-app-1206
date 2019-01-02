@@ -5,11 +5,10 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../../components/ui';
-
 export default class TopicDetailSegmentView extends Component {
 
     static propTypes = {

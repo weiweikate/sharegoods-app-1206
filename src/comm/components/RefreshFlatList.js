@@ -22,7 +22,7 @@ import {
     RefreshControl
 } from 'react-native';
 import PropTypes from 'prop-types';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils'
 import res from '../res';
 

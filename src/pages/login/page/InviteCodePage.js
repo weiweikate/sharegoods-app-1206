@@ -20,7 +20,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
@@ -132,7 +132,6 @@ export default class  extends BasePage {
                         value={this.inviteModel.inviteCode}
                         onChangeText={text => this.inviteModel.saveInviteCode(text)}
                         placeholder='请输入邀请人授权码'
-                        underlineColorAndroid={'transparent'}
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
                 </View>

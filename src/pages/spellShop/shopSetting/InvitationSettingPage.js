@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 const SelIcon = res.shopSetting.SelIcon;
 const UnSelIcon = res.shopSetting.UnSelIcon;

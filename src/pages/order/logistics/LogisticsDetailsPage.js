@@ -7,7 +7,7 @@ import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import LogisticsDetailItem from "../components/LogisticsDetailItem";
 import OrderApi from "../api/orderApi";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 import res from "../res";
 // import UIImage from "@mr/image-placeholder";
 

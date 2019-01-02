@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { formatDate } from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 
 export default class RequestDetailPage extends BasePage {

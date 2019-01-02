@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import ImageLoad from '@mr/image-placeholder';
 import {
@@ -99,7 +99,7 @@ export default class RecommendRow extends Component {
                         <Text style={{
                             marginTop: 8, marginBottom: 11, paddingHorizontal: 15,
                             color: DesignRule.textColor_secondTitle, fontSize: 10
-                        }} allowFontScaling={false}>分红任务完成度<Text style={{ color: DesignRule.mainColor }}>{progress}%</Text></Text>
+                        }} allowFontScaling={false}>奖励任务完成度<Text style={{ color: DesignRule.mainColor }}>{progress}%</Text></Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{

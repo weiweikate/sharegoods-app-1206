@@ -26,8 +26,8 @@ import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
-import DesignRule from 'DesignRule';
-import {MRText as Text} from '../../../../components/ui'
+import DesignRule from '../../../../constants/DesignRule';
+import {MRText as Text} from '../../../../components/ui';
 
 const { px2dp } = ScreenUtils;
 // const url = '/static/protocol/extensionExplain.html'

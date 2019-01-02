@@ -4,7 +4,7 @@ import React from "react";
 import UIText from "../../../../components/ui/UIText";
 import MineAPI from "../../api/MineApi";
 import bridge from "../../../../utils/bridge";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 
 const arrow_right = res.button.arrow_right;

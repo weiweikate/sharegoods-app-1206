@@ -14,11 +14,11 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../../componen
 import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
 // 图片资源
+import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
 import { UIImage } from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import ScreenUtils from '../../../../utils/ScreenUtils'
 import res from '../../res';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../../components/ui';
@@ -410,7 +410,7 @@ export default class MyPromotionPage extends BasePage {
                             backgroundColor: '#fff',
                             height: 48
                         }}>
-                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>邀请好友</Text>
+                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>分享好友</Text>
                         </View>
                     </TouchableWithoutFeedback>
 
@@ -422,7 +422,7 @@ export default class MyPromotionPage extends BasePage {
                             flex: 1,
                             height: 48
                         }}>
-                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>去购物</Text>
+                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>浏览秀购</Text>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>

@@ -1,5 +1,5 @@
 import {
-     TextInput, View, TouchableOpacity
+     View, TouchableOpacity
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
@@ -10,9 +10,8 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import bridge from '../../../../utils/bridge';
 import MineAPI from '../../api/MineApi';
 import SMSTool from '../../../../utils/SMSTool';
-import DesignRule from 'DesignRule';
-import {MRText as Text} from '../../../../components/ui'
-
+import DesignRule from '../../../../constants/DesignRule';
+import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
 /**
  * @author chenxiang
  * @date on 2018/9/18
@@ -54,8 +53,7 @@ export default class EditPhoneNumPage extends BasePage {
                 marginTop: 10
             }}>
                 <UIText value={'验证码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
-                <TextInput underlineColorAndroid={'transparent'}
-                           style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
+                <TextInput style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
                            placeholder={'请输入验证码'} placeholderTextColor={DesignRule.textColor_hint}
                            onChangeText={(text) => {
                                const newText = text.replace(/[^\d]+/, '');

@@ -7,7 +7,7 @@ import { observer } from "mobx-react";
 import { homeModule } from "./Modules";
 import { starShopModule } from "./HomeStarShopModel";
 import User from "../../model/user";
-import DesignRule from "DesignRule";
+import DesignRule from '../../constants/DesignRule';
 import ImageLoad from "@mr/image-placeholder";
 import res from "./res";
 import {MRText as Text} from '../../components/ui';

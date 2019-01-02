@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TextInput,
     Image,
     TouchableWithoutFeedback,
     DeviceEventEmitter,
@@ -11,11 +10,11 @@ import {
 import close_input_img from './searchBar/input_clear.png';
 import search_img from '../../pages/order/res/search_icon.png';
 import {
-    UIText, UIImage
+    UIText, UIImage, MRTextInput as TextInput
 } from '../../components/ui';
 import left_arrow from '../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import {MRText as Text}from './UIText';
 
 /**
@@ -75,7 +74,6 @@ class SearchInput extends Component {
                     />
                     <TextInput style={styles.inputText}
                                keyboardType='web-search'
-                               underlineColorAndroid='transparent'
                                placeholder={this.props.placeHolder}
                                placeholderTextColor='#6C6F74'
                                value={this.state.inputText}

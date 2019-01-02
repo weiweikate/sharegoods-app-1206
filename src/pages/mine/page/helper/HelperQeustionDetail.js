@@ -8,9 +8,8 @@ import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
 import MineApi from '../../api/MineApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text} from '../../../../components/ui'
-
 /**
  * @author chenxiang
  * @date on 2018/9/21

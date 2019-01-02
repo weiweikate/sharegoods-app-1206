@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { paymentType } from './Payment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils

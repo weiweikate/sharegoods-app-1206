@@ -9,7 +9,7 @@ import { observer } from 'mobx-react/native';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 
 const arrow_right = res.button.arrow_right;

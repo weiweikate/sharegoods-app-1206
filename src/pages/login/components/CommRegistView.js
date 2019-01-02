@@ -123,7 +123,6 @@ export default class CommRegistView extends Component {
                                 this.registModel.savePhoneNumber(text);
                             }}
                             placeholder='请输入手机号'
-                            underlineColorAndroid='transparent'
                             keyboardType='numeric'
                             placeholderTextColor={DesignRule.textColor_placeholder}
                         />
@@ -150,7 +149,6 @@ export default class CommRegistView extends Component {
                                         this.registModel.saveVertifyCode(text);
                                     }}
                                     placeholder='请输入验证码'
-                                    underlineColorAndroid={'transparent'}
                                     keyboardType='numeric'
                                     placeholderTextColor={DesignRule.textColor_placeholder}
                                 />
@@ -189,7 +187,6 @@ export default class CommRegistView extends Component {
                                 this.registModel.savePassword(text);
                             }}
                             placeholder='支持数字,字母'
-                            underlineColorAndroid={'transparent'}
                             keyboardType='default'
                             secureTextEntry={this.registModel.isSecuret}
                             placeholderTextColor={DesignRule.textColor_placeholder}

@@ -1,12 +1,13 @@
-import { FlatList, Image, StyleSheet, TouchableOpacity, View, Alert, RefreshControl } from 'react-native';
-import React from 'react';
-import BasePage from '../../../../BasePage';
-import MineAPI from '../../api/MineApi';
-import bridge from '../../../../utils/bridge';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
-import res from '../../res';
-import { MRText as Text } from '../../../../components/ui';
+import { FlatList, Image, StyleSheet, TouchableOpacity, View, Alert, RefreshControl } from "react-native";
+import React from "react";
+import BasePage from "../../../../BasePage";
+import MineAPI from "../../api/MineApi";
+import bridge from "../../../../utils/bridge";
+import ScreenUtils from "../../../../utils/ScreenUtils";
+import DesignRule from '../../../../constants/DesignRule';
+import res from "../../res";
+import {MRText as Text} from '../../../../components/ui'
+
 
 const addrBorderImgN = res.address.dizhi_img_nor;
 const addrBorderImgS = res.address.dizhi_img_sel;

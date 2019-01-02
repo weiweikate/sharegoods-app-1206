@@ -1,8 +1,10 @@
 package com.meeruu.commonlib.utils;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.ConnectivityManager;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
+import android.view.View;
 
 import com.meeruu.commonlib.base.BaseApplication;
 
@@ -117,5 +120,22 @@ public class Utils {
                 || ((TelephonyManager) BaseApplication.appContext.getSystemService(Context.TELEPHONY_SERVICE))
                 .getNetworkOperatorName().toLowerCase().equals("android")
                 || !canResolveIntent;
+    }
+
+    /**
+     * try get host activity from view.
+     * views hosted on floating window like dialog     and toast will sure return null.
+     *
+     * @return host activity; or null if not available
+     */
+    public static Activity getActivityFromView(View view) {
+        Context context = view.getContext();
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return null;
     }
 }

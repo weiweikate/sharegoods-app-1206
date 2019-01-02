@@ -9,7 +9,7 @@ import StringUtils from '../../utils/StringUtils';
 import BasePage from '../../BasePage';
 import DateUtils from '../../utils/DateUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 const arrow_right = RES.button.arrow_right_black;
 import {MRText as Text} from '../../components/ui'

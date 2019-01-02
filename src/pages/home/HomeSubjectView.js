@@ -9,12 +9,11 @@ const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { homeModule } from './Modules'
 import { subjectModule } from './HomeSubjectModel'
+import DesignRule from '../../constants/DesignRule';
 import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTool'
-import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/image-placeholder'
 import EmptyUtils from '../../utils/EmptyUtils'
 import {MRText as Text} from '../../components/ui';
-
 const GoodItems = ({img, title, money, press}) => {
 
 return <TouchableWithoutFeedback onPress={()=>{press && press()}}>

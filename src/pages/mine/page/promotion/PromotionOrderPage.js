@@ -17,16 +17,14 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
-import { MRText as Text } from '../../../../components/ui';
-
+import DesignRule from '../../../../constants/DesignRule';
+import {MRText as Text} from '../../../../components/ui'
 const { px2dp } = ScreenUtils;
 import res from '../../res';
 
 const icon = res.button.tongyon_icon_check_green;
 
-type Props = {};
-export default class PromotionOrderPage extends BasePage<Props> {
+export default class PromotionOrderPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {};

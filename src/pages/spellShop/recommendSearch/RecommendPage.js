@@ -23,7 +23,7 @@ import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
 import geolocation from '@mr/geolocation';

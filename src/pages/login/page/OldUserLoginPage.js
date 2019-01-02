@@ -12,11 +12,10 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import LoginAPI from '../api/LoginApi';
 // import StringUtils from '../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 import {track} from '../../../utils/SensorsTrack'
-
 const {
     close_eye,
     open_eye,
@@ -107,7 +106,6 @@ export default class OldUserLoginPage extends BasePage {
                                 this.oldUserLoginModel.savePhoneNumber(text);
                             }}
                             placeholder='请用经销商后台账号'
-                            underlineColorAndroid={'transparent'}
                             keyboardType='default'
                         />
                         <CommSpaceLine style={Styles.lineStyle}/>
@@ -121,7 +119,6 @@ export default class OldUserLoginPage extends BasePage {
                                     this.oldUserLoginModel.savePassword(text);
                                 }}
                                 placeholder='请输入密码'
-                                underlineColorAndroid={'transparent'}
                                 keyboardType='default'
                                 secureTextEntry={this.oldUserLoginModel.isSecuret}
                             />

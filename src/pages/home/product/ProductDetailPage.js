@@ -8,7 +8,6 @@ import {
     Alert
     // TouchableWithoutFeedback,
     // ImageBackground,
-    // AsyncStorage
 } from 'react-native';
 
 import BasePage from '../../../BasePage';
@@ -27,7 +26,7 @@ import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { MRText as Text } from '../../../components/ui';
 // import CommModal from '../../../comm/components/CommModal';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 // const { px2dp } = ScreenUtils;

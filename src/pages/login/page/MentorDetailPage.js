@@ -18,7 +18,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule'
 import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';

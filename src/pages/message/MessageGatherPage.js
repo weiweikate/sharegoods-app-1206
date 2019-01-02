@@ -15,9 +15,9 @@ import MessageAPI from '../message/api/MessageApi';
 import Toast from '../../utils/bridge';
 import EmptyUtils from "../../utils/EmptyUtils";
 const { px2dp } = ScreenUtils;
-import CommonUtils from 'CommonUtils'
+import CommonUtils from '../../utils/CommonUtils'
 import MessageUtils from './utils/MessageUtils'
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 const emptyIcon = RES.message_empty;
 import {MRText as Text} from '../../components/ui'

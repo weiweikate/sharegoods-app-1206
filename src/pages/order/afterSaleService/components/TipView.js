@@ -15,7 +15,7 @@ import {
     View
 } from 'react-native';
 import {UIText} from  '../../../../components/ui'
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class TipView extends React.Component {
     constructor(props) {

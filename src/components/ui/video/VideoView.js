@@ -14,7 +14,7 @@ import Video from 'react-native-video';
 import icon_video_play from './icon_video_play.png';
 import icon_video_pause from './icon_video_pause.png';
 import icon_control_slider from './icon_control_slider.png';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 // import icon_control_full_screen from './icon_control_full_screen.png';
 // import icon_control_shrink_screen from './icon_control_shrink_screen.png';

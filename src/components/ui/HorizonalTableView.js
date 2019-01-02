@@ -9,9 +9,8 @@ import {
     View
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import {MRText as Text}from './UIText';
-
 const HorizonalTableView = props => {
 
     const {

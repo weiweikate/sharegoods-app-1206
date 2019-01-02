@@ -25,7 +25,7 @@ import {
 
 import ShareTaskAnimation from './ShareTaskAnimation';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 const cancel =  res.button.cancel_white_circle;
 const renwu_icon_quan_nor = res.renwu_icon_quan_nor

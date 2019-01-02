@@ -13,7 +13,7 @@ import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
 // import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 @observer
 export default class DownPricePage extends BasePage {

@@ -7,14 +7,13 @@ import {
     Platform,
     Image
 } from 'react-native';
-
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
-import res from '../../res';
-import Modal from 'CommModal';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
 import {MRText as Text} from '../../../../components/ui';
 
+import ScreenUtils from "../../../../utils/ScreenUtils";
+import DesignRule from "../../../../constants/DesignRule";
+import res from "../../res";
+import Modal from '../../../../comm/components/CommModal';
 const {
     detailShowBg,
     message,

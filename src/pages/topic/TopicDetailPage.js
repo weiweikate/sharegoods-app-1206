@@ -10,7 +10,6 @@ import {
     // AsyncStorage,
     // ImageBackground
 } from 'react-native';
-
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
@@ -26,7 +25,7 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../components/ui';

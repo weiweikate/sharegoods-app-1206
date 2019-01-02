@@ -8,7 +8,7 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, ScrollView } from 'react-native';
 import user from '../../model/user';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 export default class UserInfoPage extends Component {
 
