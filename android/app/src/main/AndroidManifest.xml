@@ -62,6 +62,7 @@
     <uses-feature
         android:name="android.hardware.microphone"
         android:required="false" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".application.SophixStubApplication"
