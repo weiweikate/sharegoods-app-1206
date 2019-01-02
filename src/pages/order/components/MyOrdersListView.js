@@ -11,7 +11,7 @@ import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import userOrderNum from '../../../model/userOrderNum';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
 import {

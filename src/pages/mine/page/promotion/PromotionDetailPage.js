@@ -9,7 +9,6 @@
  *
  */
 
-
 'use strict';
 import React from 'react';
 import {
@@ -25,7 +24,7 @@ import RefreshList from '../../../../components/ui/RefreshList';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import apiEnvironment from '../../../../api/ApiEnvironment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text} from '../../../../components/ui'
 
 const { px2dp } = ScreenUtils;

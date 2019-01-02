@@ -7,7 +7,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
 import UIImage from "@mr/image-placeholder";

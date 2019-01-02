@@ -6,12 +6,12 @@ import {
     TouchableOpacity,
     ScrollView
 } from 'react-native';
-import Modal from 'CommModal';
+import Modal from '../../../comm/components/CommModal';
 import {
     UIText, UIImage, MRText as Text
 } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 import res from '../res';
 const circleSelect = res.button.selected_circle_red;

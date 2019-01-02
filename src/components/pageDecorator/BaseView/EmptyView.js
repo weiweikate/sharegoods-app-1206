@@ -26,7 +26,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import EmptyImage from './source/no_data.png';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 export default class EmptyView extends Component {
 

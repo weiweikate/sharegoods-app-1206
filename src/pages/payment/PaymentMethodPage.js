@@ -14,7 +14,7 @@ import { observer } from 'mobx-react/native';
 import { Payment, paymentType, paymentTrack } from './Payment';
 import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import PasswordView from './PasswordView';
 import {MRText as Text} from '../../components/ui'
 // import { NavigationActions } from 'react-navigation';

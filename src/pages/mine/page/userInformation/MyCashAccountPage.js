@@ -16,7 +16,7 @@ import user from "../../../../model/user";
 import MineApi from "../../api/MineApi";
 import Toast from "./../../../../utils/bridge";
 import { observer } from "mobx-react/native";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import {MRText as Text} from '../../../../components/ui';
 

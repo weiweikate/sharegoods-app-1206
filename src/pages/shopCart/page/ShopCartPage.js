@@ -19,7 +19,7 @@ import {
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 // import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
 // import { renderShopCartCell } from './ShopCartCell';
 

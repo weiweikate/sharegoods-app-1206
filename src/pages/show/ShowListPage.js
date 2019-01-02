@@ -8,7 +8,7 @@ const { px2dp } = ScreenUtils;
 // import ShowHotView from './ShowHotView';
 // import ShowHotFindView from './ShowHotFindView';
 import backIconImg from '../../comm/res/button/icon_header_back.png';
-import DesignRule from 'DesignRule'
+import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
     MRText as Text,

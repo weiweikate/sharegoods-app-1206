@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, Image, TouchableOpacity, View, ActivityIndicato
 import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 const { px2dp, width } = ScreenUtils;
 import HTML from 'react-native-render-html'
 import { ShowDetail } from './Show';

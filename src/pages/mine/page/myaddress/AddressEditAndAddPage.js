@@ -8,7 +8,7 @@ import MineAPI from '../../api/MineApi';
 import UIText from '../../../../components/ui/UIText';
 import bridge from '../../../../utils/bridge';
 import UIImage from '../../../../components/ui/UIImage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
 

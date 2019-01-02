@@ -19,7 +19,7 @@ import OrderApi from './../api/orderApi';
 import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
 import { NavigationActions } from 'react-navigation';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import userOrderNum from '../../../model/userOrderNum';
 import res from '../res';
 import { track, trackEvent } from '../../../utils/SensorsTrack';

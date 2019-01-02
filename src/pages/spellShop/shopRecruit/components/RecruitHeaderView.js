@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 // 图片资源
 import res from '../../res';
-
 const HeaderBarBgImg = res.shopRecruit.bg_02;
 const Shape = res.shopRecruit.Shape;
 const shoushi = res.shopRecruit.shoushi;
@@ -17,11 +16,10 @@ const xiuling = res.shopRecruit.xiuling;
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../../../components/ui';
-
 
 
 export default class RecommendRow extends Component {

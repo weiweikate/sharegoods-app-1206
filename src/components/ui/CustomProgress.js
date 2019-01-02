@@ -6,7 +6,7 @@ import {
     Easing
 } from 'react-native';
 import PropTypes from 'prop-types';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 export default class CustomProgress extends Component {
     static propTypes = {

@@ -22,7 +22,7 @@ import { NavigationActions } from 'react-navigation';
 import { netState } from '@mr/request';
 import res from './comm/res';
 import bridge from './utils/bridge';
-import DesignRule from 'DesignRule';
+import DesignRule from './constants/DesignRule';
 import Toast from './utils/bridge';
 import RouterMap from './navigation/RouterMap';
 

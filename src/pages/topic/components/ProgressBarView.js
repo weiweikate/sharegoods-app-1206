@@ -4,9 +4,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-// import TopicItemView from './TopicItemView';
 import PropTypes from 'prop-types';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../../components/ui';

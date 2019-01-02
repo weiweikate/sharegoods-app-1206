@@ -34,7 +34,7 @@ import spellStatusModel from '../model/SpellStatusModel';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import apiEnvironment from '../../../api/ApiEnvironment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import user from '../../../model/user';

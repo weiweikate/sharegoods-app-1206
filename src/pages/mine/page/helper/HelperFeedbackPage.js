@@ -5,21 +5,20 @@ import {
     Image,
     TouchableOpacity,
     TouchableWithoutFeedback, ScrollView, ImageBackground
-} from 'react-native';
-import BasePage from '../../../../BasePage';
-import UIText from '../../../../components/ui/UIText';
-import UIImage from '../../../../components/ui/UIImage';
-import NoMoreClick from '../../../../components/ui/NoMoreClick';
-import ImageLoad from '@mr/image-placeholder';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import AutoExpandingInput from '../../../../components/ui/AutoExpandingInput';
-import res from '../../res';
-import BusinessUtils from '../../components/BusinessUtils';
-import StringUtils from '../../../../utils/StringUtils';
-import MineApi from '../../api/MineApi';
-import Modal from 'CommModal';
-import { MRText as Text } from '../../../../components/ui';
-
+} from "react-native";
+import BasePage from "../../../../BasePage";
+import UIText from "../../../../components/ui/UIText";
+import UIImage from "../../../../components/ui/UIImage";
+import NoMoreClick from "../../../../components/ui/NoMoreClick";
+import ImageLoad from "@mr/image-placeholder";
+import ScreenUtils from "../../../../utils/ScreenUtils";
+import AutoExpandingInput from "../../../../components/ui/AutoExpandingInput";
+import res from "../../res";
+import BusinessUtils from "../../components/BusinessUtils";
+import StringUtils from "../../../../utils/StringUtils";
+import MineApi from "../../api/MineApi";
+import Modal from '../../../../comm/components/CommModal';
+import {MRText as Text} from '../../../../components/ui'
 const {
     icon_arrow_up,
     icon_arrow_down,
@@ -30,8 +29,8 @@ const {
 } = res.helperAndCustomerService;
 
 const rightIcon = res.button.tongyon_icon_check_green;
-import DesignRule from 'DesignRule';
-import NavigatorBar from '../../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import DesignRule from "../../../../constants/DesignRule";
+import NavigatorBar from "../../../../components/pageDecorator/NavigatorBar/NavigatorBar";
 
 /**
  * @author chenxiang

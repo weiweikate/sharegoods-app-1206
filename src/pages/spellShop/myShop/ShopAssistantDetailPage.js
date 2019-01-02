@@ -19,7 +19,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import SpellShopApi from '../api/SpellShopApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import res from '../res';

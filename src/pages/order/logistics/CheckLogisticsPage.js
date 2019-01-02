@@ -5,7 +5,7 @@ import { MRText as Text} from '../../../components/ui';
 // import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 // import OrderApi from '../api/orderApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import GoodsGrayItem from '../components/GoodsGrayItem'
 

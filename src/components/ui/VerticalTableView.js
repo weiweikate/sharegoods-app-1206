@@ -9,8 +9,8 @@ import {
     View
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
-import {MRText as Text} from './UIText'
+import DesignRule from '../../constants/DesignRule';
+import {MRText as Text} from './UIText';
 
 const VerticalTableView = props => {
 

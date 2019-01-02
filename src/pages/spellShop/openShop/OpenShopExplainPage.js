@@ -10,7 +10,7 @@ import {
 //source
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';

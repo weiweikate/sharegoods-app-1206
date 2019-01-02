@@ -6,7 +6,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
 

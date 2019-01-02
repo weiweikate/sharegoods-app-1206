@@ -8,9 +8,8 @@ import bridge from '../../../../utils/bridge';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import user from '../../../../model/user';
 import MineAPI from '../../api/MineApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
-
 export default class SetNewPhoneNumPage extends BasePage {
 
     // 导航配置

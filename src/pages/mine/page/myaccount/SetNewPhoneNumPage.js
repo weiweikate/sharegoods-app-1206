@@ -9,9 +9,8 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
-
 export default class SetNewPhoneNumPage extends BasePage {
 
     // 导航配置

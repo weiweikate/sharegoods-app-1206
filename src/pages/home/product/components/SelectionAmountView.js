@@ -7,9 +7,8 @@ import {
 } from 'react-native';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui';
-
 /**
  * 选择数量view
  */

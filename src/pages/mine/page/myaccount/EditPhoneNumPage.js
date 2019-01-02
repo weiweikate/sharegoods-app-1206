@@ -10,9 +10,8 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import bridge from '../../../../utils/bridge';
 import MineAPI from '../../api/MineApi';
 import SMSTool from '../../../../utils/SMSTool';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
-
 /**
  * @author chenxiang
  * @date on 2018/9/18

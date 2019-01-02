@@ -2,7 +2,7 @@
  * @author xzm
  * @date 2018/10/23
  */
-import RouterMap from 'RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 
 const MessageUtils = {
 

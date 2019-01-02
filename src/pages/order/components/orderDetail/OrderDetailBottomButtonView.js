@@ -6,7 +6,7 @@ import {
     Alert, NativeModules
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import { orderDetailAfterServiceModel, orderDetailModel ,assistDetailModel} from '../../model/OrderDetailModel';
 import OrderApi from '../../api/orderApi';
 import Toast from '../../../../utils/bridge';

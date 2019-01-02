@@ -29,7 +29,7 @@ import OrderApi from '../api/orderApi';
 import HomeAPI from '../../home/api/HomeAPI';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import { trackEvent, track } from '../../../utils/SensorsTrack';

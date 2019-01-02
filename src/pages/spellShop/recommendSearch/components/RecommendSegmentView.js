@@ -6,11 +6,10 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../../../components/ui';
-
 
 export default class RecommendSegmentView extends Component {
 

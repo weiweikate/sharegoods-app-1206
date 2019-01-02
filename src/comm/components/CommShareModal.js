@@ -61,13 +61,12 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
-import CommModal from 'CommModal';
+import CommModal from './CommModal';
 import res from '../res';
 import bridge from '../../utils/bridge';
+import DesignRule from '../../constants/DesignRule';
 import { track } from '../../utils/SensorsTrack';
-import DesignRule from 'DesignRule';
 import user from '../../model/user';
-
 export default class CommShareModal extends React.Component {
 
     constructor(props) {
