@@ -84,7 +84,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 
     //截屏
     _saveImg = () => {
-        track(trackEvent.QrcodeShareto, {QrCodeID: this.linkUrl, shareMethod: '保存图片'})
+        track(trackEvent.QrcodeShareto, {qrCodeID: this.linkUrl, shareMethod: '保存图片'})
         this.setState({
             disable: true
         }, () => {

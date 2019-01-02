@@ -31,7 +31,7 @@
     hud.contentColor = [UIColor whiteColor];//文字和菊花的颜色
     //hud.bezelView.style = MBProgressHUDBackgroundStyleSolidCo;
     hud.label.font = [UIFont systemFontOfSize:13.0];
-    hud.userInteractionEnabled= NO;
+    hud.userInteractionEnabled= YES;
     
     hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:icon]];  // 设置图片
     hud.bezelView.backgroundColor = [UIColor blackColor];
@@ -105,7 +105,7 @@
     //隐藏时候从父控件中移除
     hud.removeFromSuperViewOnHide = YES;
     // YES代表需要蒙版效果
-    hud.userInteractionEnabled= NO;
+    hud.userInteractionEnabled= YES;
     hud.dimBackground = NO;
     
     return hud;

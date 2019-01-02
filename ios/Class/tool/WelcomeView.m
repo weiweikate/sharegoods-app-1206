@@ -63,7 +63,7 @@
       btn.clipsToBounds = YES;
       [imgView2 addSubview:btn];
       btn.bounds = CGRectMake(0, 0, 120, 35);
-      btn.center = CGPointMake(KScreenWidth / 2.0, KScreenHeight - 17.5 - (kStatusBarHeight == 44 ? 34 : 0) - 70);
+      btn.center = CGPointMake(KScreenWidth / 2.0, KScreenHeight - 17.5 - (kStatusBarHeight == 44 ? 34 : 0) - 60);
     }
   }
   self.scrollView.contentSize = CGSizeMake(KScreenWidth * data.count, KScreenHeight);
@@ -105,7 +105,6 @@
       [self addSubview: view];
       [_views addObject:view];
     }
-  
     self.currentIndex = 0;
   }
   return self;

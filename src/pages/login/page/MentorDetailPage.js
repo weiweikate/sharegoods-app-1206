@@ -18,8 +18,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import DesignRule from '../../../constants/DesignRule';
-import UIText from '../../../comm/components/UIText';
+import DesignRule from '../../../constants/DesignRule'
+import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
@@ -35,7 +35,7 @@ export default class MentorDetailPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '选择导师',
+        title: '选择顾问',
         show: true// false则隐藏导航
     };
 
@@ -114,7 +114,7 @@ export default class MentorDetailPage extends BasePage {
                             style={styles.bottomBtnBgViewStyle}
                         >
                             <UIText
-                                value={'选择该导师'}
+                                value={'选择该顾问'}
                                 style={{
                                     fontSize: 17,
                                     color: DesignRule.white

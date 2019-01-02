@@ -25,7 +25,7 @@ class ClassifyModules {
             name: '分享',
             id: 1,
             route: 'topic/DownPricePage',
-            linkTypeCode: 'ZT2018000019'
+            linkTypeCode: 'ZT2018000001'
         }, {
             icon: showImg,
             name: '秀场',
@@ -47,7 +47,7 @@ class ClassifyModules {
             name: '秒杀',
             id: 1,
             route: 'topic/DownPricePage',
-            linkTypeCode: 'ZT2018000012'
+            linkTypeCode: 'ZT2018000002'
         }];
     };
 }
@@ -93,7 +93,9 @@ class HomeModule {
             linkTypeCode: data.linkTypeCode,
             productCode: data.linkTypeCode,
             productType: productType,
-            storeCode: storeCode
+            storeCode: storeCode,
+            uri: data.uri,
+            id: data.showId
         };
 
     };

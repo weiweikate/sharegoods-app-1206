@@ -139,9 +139,10 @@ export default class SearchPage extends BasePage {
                         fontSize: 13,
                         color: DesignRule.textColor_mainTitle,
                         marginLeft: 16,
-                        paddingVertical: 15
+                        paddingVertical: 15,
+                        paddingRight:16
                     }} allowFontScaling={false}>{item}</Text>
-                    <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
+                    <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
     };

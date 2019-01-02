@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
 import {MRText as Text} from '../../../../components/ui';
 
@@ -83,11 +82,11 @@ export default class DetailBottomView extends Component {
                         onPress={() => this.props.bottomViewAction('jlj')}>
                         {
                             // shareMoney未空显示?  为0显示分享赚
-                            shareMoney === '0.00' ? <Text style={{ fontSize: 17, color: DesignRule.white }}>分享赚</Text>
+                            (shareMoney === '0.00'||shareMoney === '?') ? <Text style={{ fontSize: 17, color: DesignRule.white }}>分享秀一秀</Text>
                                 : <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text style={{ color: DesignRule.white, fontSize: 25 }} allowFontScaling={false}>赚</Text>
+                                    {/*<Text style={{ color: DesignRule.white, fontSize: 25 }} allowFontScaling={false}>赚</Text>*/}
                                     <View style={{ marginLeft: 5 }}>
-                                        <Text style={{ color: DesignRule.white, fontSize: 11 }} allowFontScaling={false}>品牌奖励金</Text>
+                                        <Text style={{ color: DesignRule.white, fontSize: 11 }} allowFontScaling={false}>分享秀一秀</Text>
                                         <View style={{
                                             alignItems: 'center',
                                             marginTop: 6
@@ -96,7 +95,7 @@ export default class DetailBottomView extends Component {
                                                 color: DesignRule.white,
                                                 fontSize: 11
                                             }}
-                                                  numberOfLines={2} allowFontScaling={false}>{StringUtils.isNoEmpty(shareMoney) ? `￥${shareMoney}` : '￥?'}</Text>
+                                                  numberOfLines={2} allowFontScaling={false}>{shareMoney||''}</Text>
                                         </View>
                                     </View>
                                 </View>
