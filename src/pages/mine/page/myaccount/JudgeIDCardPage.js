@@ -41,7 +41,6 @@ export default class SetNewPhoneNumPage extends BasePage {
                     <Text style={styles.itemLeftText}>用户姓名</Text>
                     <TextInput
                         style={styles.itemRightInput}
-                        underlineColorAndroid={'transparent'}
                         onChangeText={(text) => this.setState({ userName: text })}
                         value={this.state.userName}
                         placeholder={'请输入用户姓名'}
@@ -53,7 +52,6 @@ export default class SetNewPhoneNumPage extends BasePage {
                     <Text style={styles.itemLeftText}>证件号码</Text>
                     <TextInput
                         style={styles.itemRightInput}
-                        underlineColorAndroid={'transparent'}
                         onChangeText={(text) => this.setState({ cardNum: text })}
                         value={this.state.cardNum}
                         placeholder={'请输入证件号码'}

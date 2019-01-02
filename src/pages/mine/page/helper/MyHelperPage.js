@@ -100,6 +100,7 @@ export default class MyHelperPage extends BasePage {
     };
     renderBodyView = () => {
         let helperIcon = OssHelper('/app/bangzu_kefu.png');
+        console.log('renderBodyView', helperIcon)
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>

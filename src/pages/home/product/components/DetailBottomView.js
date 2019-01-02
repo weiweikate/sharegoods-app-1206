@@ -9,7 +9,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 
 const xiangqing_btn_gouwuche_nor = res.product.xiangqing_btn_gouwuche_nor;
 const jiarugouwuche_no = res.product.jiarugouwuche_no;
@@ -57,7 +57,8 @@ export default class DetailBottomView extends Component {
                         onPress={() => this.props.bottomViewAction('gwc')} disabled={cantJoin}>
                         <Image style={{ marginBottom: 6 }}
                                source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
-                        <Text style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }} allowFontScaling={false}>加入购物车</Text>
+                        <Text style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
+                              allowFontScaling={false}>加入购物车</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -82,11 +83,13 @@ export default class DetailBottomView extends Component {
                         onPress={() => this.props.bottomViewAction('jlj')}>
                         {
                             // shareMoney未空显示?  为0显示分享赚
-                            (shareMoney === '0.00'||shareMoney === '?') ? <Text style={{ fontSize: 17, color: DesignRule.white }}>分享秀一秀</Text>
+                            (shareMoney === '0.00' || shareMoney === '?') ?
+                                <Text style={{ fontSize: 17, color: DesignRule.white }}>分享秀一秀</Text>
                                 : <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     {/*<Text style={{ color: DesignRule.white, fontSize: 25 }} allowFontScaling={false}>赚</Text>*/}
                                     <View style={{ marginLeft: 5 }}>
-                                        <Text style={{ color: DesignRule.white, fontSize: 11 }} allowFontScaling={false}>分享秀一秀</Text>
+                                        <Text style={{ color: DesignRule.white, fontSize: 11 }}
+                                              allowFontScaling={false}>分享秀一秀</Text>
                                         <View style={{
                                             alignItems: 'center',
                                             marginTop: 6
@@ -95,7 +98,7 @@ export default class DetailBottomView extends Component {
                                                 color: DesignRule.white,
                                                 fontSize: 11
                                             }}
-                                                  numberOfLines={2} allowFontScaling={false}>{shareMoney||''}</Text>
+                                                  numberOfLines={2} allowFontScaling={false}>{shareMoney || ''}</Text>
                                         </View>
                                     </View>
                                 </View>

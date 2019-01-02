@@ -11,7 +11,7 @@ import {
     View,
     ScrollView,
     TouchableOpacity,
-    DeviceEventEmitter,
+    DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
@@ -121,9 +121,9 @@ class AfterSaleServicePage extends BasePage {
                             <TextInput value={this.state.applyRefundAmount + ''}
                                        onChangeText={(text) => {
                                            let reg = /^[0-9]*[.]?[0-9]{0,2}$/;
-                                           if(reg.test(text)) {
+                                           if (reg.test(text)) {
                                                if (parseFloat(text) <= this.state.productData.payAmount || text === '') {
-                                                   this.setState({ applyRefundAmount: text});
+                                                   this.setState({ applyRefundAmount: text });
                                                } else {
                                                    this.setState({ applyRefundAmount: this.state.productData.payAmount + '' });
                                                }
@@ -133,8 +133,7 @@ class AfterSaleServicePage extends BasePage {
                                            color: DesignRule.mainColor,
                                            fontSize: 13,
                                            flex: 1,
-                                           height: 40,
-                                           underlineColorAndroid: 'transparent'
+                                           height: 40
                                        }}
                                        keyboardType={'numeric'}
                                        editable={this.state.editable}
@@ -168,9 +167,9 @@ class AfterSaleServicePage extends BasePage {
                             <TextInput value={this.state.applyRefundAmount + ''}
                                        onChangeText={(text) => {
                                            let reg = /^[0-9]*[.]?[0-9]{0,2}$/;
-                                           if(reg.test(text)) {
+                                           if (reg.test(text)) {
                                                if (parseFloat(text) <= this.state.productData.payAmount || text === '') {
-                                                   this.setState({ applyRefundAmount: text});
+                                                   this.setState({ applyRefundAmount: text });
                                                } else {
                                                    this.setState({ applyRefundAmount: this.state.productData.payAmount + '' });
                                                }
@@ -264,7 +263,6 @@ class AfterSaleServicePage extends BasePage {
                         defaultValue={this.state.remark}
                         placeholder={'填写说明文字...'}
                         maxLength={180}
-                        underlineColorAndroid={'transparent'}
                     />
                     <View style={{
                         alignItems: 'flex-end',
@@ -412,11 +410,12 @@ class AfterSaleServicePage extends BasePage {
 
     _getReturnReason(fah) {//是否发货
         let pageType = this.params.pageType;
-        if (fah === false){
+        if (fah === false) {
             pageType = 3;
-        };
+        }
+        ;
         let that = this;
-        OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH','WFH'][pageType] }).then((result) => {
+        OrderApi.getReturnReason({ code: ['JTK', 'THTK', 'HH', 'WFH'][pageType] }).then((result) => {
             that.setState({ returnReasons: result.data || [] });
         }).catch((error) => {
 
@@ -455,16 +454,16 @@ class AfterSaleServicePage extends BasePage {
             if (status === 2 || status === 1) {  //  状态 1.待付款 2.已付款 3.已发货 4.交易完成 5.交易关闭
                 editable = false;
                 that._getReturnReason(false);
-            }else {
+            } else {
                 that._getReturnReason(true);
             }
-            if (payAmount === 0){
+            if (payAmount === 0) {
                 editable = false;
             }
             if (that.params.isEdit) {
                 that.setState({ productData, editable });
             } else {
-                that.setState({ productData, editable, applyRefundAmount: payAmount+ '' });
+                that.setState({ productData, editable, applyRefundAmount: payAmount + '' });
             }
         }).catch(error => {
             that.$loadingDismiss();
@@ -562,7 +561,7 @@ class AfterSaleServicePage extends BasePage {
                     commodityAmount: payAmount,
                     partlyReturn: payAmount !== applyRefundAmount,
                     commodityID: prodCode,
-                    applyReturnCause: returnReason,
+                    applyReturnCause: returnReason
                 });
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;

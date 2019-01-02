@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    TextInput,
     StyleSheet,
     TouchableOpacity,
     Image
@@ -12,7 +11,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../../../comm/res';
 import {
-    MRText as Text
+    MRText as Text, MRTextInput as TextInput
 } from '../../../../components/ui';
 
 
@@ -79,7 +78,6 @@ export default class SearchNavView extends Component {
                     }]}>
                         <TextInput style={{ marginLeft: 15, padding: 0 }}
                                    keyboardType='web-search'
-                                   underlineColorAndroid='transparent'
                                    placeholder={'可通过搜索店铺/ID进行查找'}
                                    placeholderTextColor={DesignRule.textColor_hint}
                                    value={this.state.inputText}

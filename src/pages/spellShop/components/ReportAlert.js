@@ -18,6 +18,7 @@ const Animated_Duration = 300; //默认的动画持续时间
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res'
 import ScreenUtils from '../../../utils/ScreenUtils';
+
 const KeFuIcon = res.jbtk_03;
 
 export default class ReportAlert extends Component {
@@ -63,7 +64,7 @@ export default class ReportAlert extends Component {
                 //透明度
                 this.state.top,
                 {
-                    toValue:(MAX_SCREEN - this.state.height) / 2 - ScreenUtils.autoSizeHeight(135),
+                    toValue: (MAX_SCREEN - this.state.height) / 2 - ScreenUtils.autoSizeHeight(135),
                     duration: Animated_Duration
                 }
             ),
@@ -161,7 +162,6 @@ export default class ReportAlert extends Component {
                                 <TextInput
                                     autoFocus
                                     multiline
-                                    underlineColorAndroid={'transparent'}
                                     placeholder='请输入其他举报内容'
                                     placeholderTextColor={DesignRule.textColor_hint}
                                     value={this.state.text}
@@ -203,14 +203,13 @@ const styles = StyleSheet.create({
     inputContainer: {
         marginTop: 62,
         flex: 1,
+        borderRadius: 2,
         backgroundColor: DesignRule.lineColor_inColorBg,
         padding: 10
     },
     input: {
         textAlignVertical: 'top',
         width: ScreenUtils.autoSizeWidth(211),
-        borderRadius: 2,
-        backgroundColor: DesignRule.lineColor_inColorBg,
         color: DesignRule.textColor_mainTitle
     },
     btnContainer: {

@@ -47,6 +47,9 @@ public class ReactNativePreLoader {
      */
     public static ReactRootView getReactRootView(Activity activity, String componentName) {
         ReactRootView rootView = CACHE.get(componentName);
+        if (rootView == null) {
+            return null;
+        }
         if (rootView.getContext() instanceof MutableContextWrapper) {
             ((MutableContextWrapper) rootView.getContext()).setBaseContext(
                     activity

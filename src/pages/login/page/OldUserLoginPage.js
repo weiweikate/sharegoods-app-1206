@@ -106,7 +106,6 @@ export default class OldUserLoginPage extends BasePage {
                                 this.oldUserLoginModel.savePhoneNumber(text);
                             }}
                             placeholder='请用经销商后台账号'
-                            underlineColorAndroid={'transparent'}
                             keyboardType='default'
                         />
                         <CommSpaceLine style={Styles.lineStyle}/>
@@ -120,7 +119,6 @@ export default class OldUserLoginPage extends BasePage {
                                     this.oldUserLoginModel.savePassword(text);
                                 }}
                                 placeholder='请输入密码'
-                                underlineColorAndroid={'transparent'}
                                 keyboardType='default'
                                 secureTextEntry={this.oldUserLoginModel.isSecuret}
                             />

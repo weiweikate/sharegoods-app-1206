@@ -74,7 +74,6 @@ export default class PasswordInput extends Component {
                         autoFocus={false}
                         value={this.state.text}
                         keyboardType="numeric"
-                        underlineColorAndroid={'transparent'}
                         onChangeText={
                             (text) => {
                                 this.setState({ text });

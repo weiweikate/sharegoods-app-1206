@@ -7,7 +7,6 @@ import {
     Image,
     ImageBackground,
     StyleSheet,
-    TextInput,
     TouchableOpacity,
     View,
     NativeModules, RefreshControl
@@ -27,7 +26,8 @@ import DesignRule from '../../../constants/DesignRule';
 // import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';
 import res from '../res';
-import { MRText as Text } from '../../../components/ui';
+import Modal from 'CommModal';
+import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 
 const NoMessage = res.couponsImg.coupons_no_data;
 const usedBg = res.couponsImg.youhuiquan_bg_zhihui;
@@ -104,7 +104,7 @@ export default class MyCouponsItems extends Component {
                                         </View>}
                                 <View>
                                     <Text style={{
-                                        fontSize: item.type === 4 ? 20 : (item.type === 11 ? 31 : 34),
+                                        fontSize: item.type === 4 ? 20 : (item.type === 11 ? 27 : 34),
                                         color: DesignRule.textColor_mainTitle
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
@@ -214,27 +214,27 @@ export default class MyCouponsItems extends Component {
                             height: px2dp(24),
                             marginLeft: px2dp(39)
                         }} resizeMode={'contain'} onPress={this.reduceTokenCoin}/>
-                        <TextInput
-                            keyboardType='numeric'
-                            underlineColorAndroid='transparent'
-                            autoFocus={true}
-                            defaultValue={`${(this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}`}
-                            value={this.state.tokenCoinNum}
-                            onChangeText={this._onChangeText}
-                            onFocus={this._onFocus}
-                            style={{
-                                padding: 0,
-                                paddingLeft: 5,
-                                alignItems: 'center',
-                                marginLeft: 5,
-                                marginRight: 5,
-                                borderColor: DesignRule.textColor_placeholder,
-                                backgroundColor: DesignRule.white,
-                                borderWidth: 1,
-                                height: px2dp(24),
-                                width: px2dp(136),
-                                fontSize: px2dp(15)
-                            }}/>
+                        <View style={{
+                            borderWidth: 1, marginLeft: 5,
+                            marginRight: 5, borderColor: DesignRule.textColor_placeholder,
+                            backgroundColor: DesignRule.white
+                        }}>
+                            <TextInput
+                                keyboardType='numeric'
+                                autoFocus={true}
+                                defaultValue={`${(this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}`}
+                                value={this.state.tokenCoinNum}
+                                onChangeText={this._onChangeText}
+                                onFocus={this._onFocus}
+                                style={{
+                                    padding: 0,
+                                    paddingLeft: 5,
+                                    alignItems: 'center',
+                                    height: px2dp(24),
+                                    width: px2dp(136),
+                                    fontSize: px2dp(15)
+                                }}/>
+                        </View>
                         <UIImage source={plusIcon} style={{
                             width: px2dp(24),
                             height: px2dp(24),
@@ -273,7 +273,7 @@ export default class MyCouponsItems extends Component {
     };
     plusTokenCoin = () => {
         let num = this.state.tokenCoinNum;
-        if (num <= ( Math.min(parseInt(this.props.justOne), user.tokenCoin) - 1)) {
+        if (num <= (Math.min(parseInt(this.props.justOne), user.tokenCoin) - 1)) {
             this.setState({ tokenCoinNum: (num + 1) });
         }
     };
@@ -497,11 +497,11 @@ export default class MyCouponsItems extends Component {
                     });
                 });
                 params = { productPriceIds: arr };
-            } else if (this.props.orderParam.orderType == 1 || this.props.orderParam.orderType == 2||this.props.orderParam.orderType == 3) {
+            } else if (this.props.orderParam.orderType == 1 || this.props.orderParam.orderType == 2 || this.props.orderParam.orderType == 3) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
-                        productCode: item.productCode||item.prodCode,
+                        productCode: item.productCode || item.prodCode,
                         amount: 1
                     });
                 });

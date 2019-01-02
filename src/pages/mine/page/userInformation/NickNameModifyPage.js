@@ -30,13 +30,14 @@ export default class NickNameModifyPage extends BasePage {
         return (
             <View style={styles.container}>
                 {this.renderWideLine()}
-                <RNTextInput
-                    style={styles.inputTextStyle}
-                    onChangeText={text => this.setState({ nickName: text })}
-                    placeholder={this.state.nickName}
-                    value={this.state.nickName}
-                    underlineColorAndroid={'transparent'}
-                />
+                <View style={{ backgroundColor: 'white' }}>
+                    <RNTextInput
+                        style={styles.inputTextStyle}
+                        onChangeText={text => this.setState({ nickName: text })}
+                        placeholder={this.state.nickName}
+                        value={this.state.nickName}
+                    />
+                </View>
                 {this.renderWideLine()}
                 <UIButton
                     value={'保存'}
@@ -61,7 +62,7 @@ export default class NickNameModifyPage extends BasePage {
     };
     save = () => {
         let length = this.state.nickName.trim().length;
-        console.log('nickname',this.state.nickName,length);
+        console.log('nickname', this.state.nickName, length);
         if (length < 2 || length > 8) {
             this.$toastShow('昵称长度位2-8位');
             return;
@@ -85,6 +86,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: DesignRule.bgColor
     }, inputTextStyle: {
-        height: 48, backgroundColor: 'white', fontSize: 14, paddingLeft: 14, paddingRight: 14
+        height: 48, fontSize: 14, paddingLeft: 14, paddingRight: 14
     }
 });

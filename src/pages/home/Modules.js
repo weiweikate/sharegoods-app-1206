@@ -25,7 +25,7 @@ class ClassifyModules {
             name: '分享',
             id: 1,
             route: 'topic/DownPricePage',
-            linkTypeCode: 'ZT2018000001'
+            linkTypeCode: 'ZT2018000003'
         }, {
             icon: showImg,
             name: '秀场',
@@ -140,20 +140,21 @@ class HomeModule {
             id: 8,
             type: homeType.subject
         }];
-
         if (this.isFetching === true) {
             return;
         }
-
         try {
             this.isFetching = true;
-            const res = yield HomeApi.getGoodsInHome({ page: this.page });
-            let list = res.data.data;
+            const result = yield HomeApi.getGoodsInHome({ page: this.page });
+            let list = result.data.data;
             console.log('loadhomelist', list);
-            let home = [{
-                id: 9,
-                type: homeType.goodsTitle
-            }];
+            let home = []
+            if (list.length > 0) {
+                home.push({
+                    id: 9,
+                    type: homeType.goodsTitle
+                });
+            }
             let itemData = [];
             for (let i = 0; i < list.length; i++) {
                 if (i % 2 === 1) {
@@ -202,9 +203,9 @@ class HomeModule {
         }
         try {
             this.isFetching = true;
-            const res = yield HomeApi.getGoodsInHome({ page: this.page });
+            const result = yield HomeApi.getGoodsInHome({ page: this.page });
             this.isFetching = false;
-            let list = res.data.data;
+            let list = result.data.data;
             if (list.length <= 0) {
                 this.isEnd = true;
                 return;

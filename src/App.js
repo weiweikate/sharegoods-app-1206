@@ -124,8 +124,6 @@ export default class App extends Component {
                 }
 
                 {
-
-
                     user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
                         ?
                         null

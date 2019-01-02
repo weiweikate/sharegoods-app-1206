@@ -63,7 +63,6 @@ export default class ResultSearchNav extends Component {
                     <View style={styles.inputView}>
                         <TextInput style={{ marginLeft: 24, padding: 0, color: '#212121' }}
                                    keyboardType='web-search'
-                                   underlineColorAndroid='transparent'
                                    placeholder={'请输入关键词搜索'}
                                    placeholderTextColor={DesignRule.textColor_hint}
                                    value={this.state.inputText}

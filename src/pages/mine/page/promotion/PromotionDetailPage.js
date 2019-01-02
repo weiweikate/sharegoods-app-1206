@@ -185,13 +185,13 @@ export default class PromotionDetailPage extends BasePage<Props> {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'promotionShare'}
                                 webJson={{
-                                    title: '邀请好友免费领取福利',
+                                    title: '分享好友免费领取福利',
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}&upuserid=${user.code || ''}`,
                                     thumImage: 'logo.png',
                                 }}
                                 miniProgramJson={{
-                                    title: `邀请好友免费领取福利`,
+                                    title: `分享好友免费领取福利`,
                                     dec:'属你的惊喜福利活动\n数量有限赶快参与吧～',
                                     thumImage: 'logo.png',
                                     hdImageURL: '',

@@ -71,7 +71,6 @@ export default class AnnouncementPublishPage extends BasePage {
                         <View style={styles.textInputContainer}>
                             <TextInput value={this.state.text}
                                        onChangeText={this._onChangeText}
-                                       underlineColorAndroid={'transparent'}
                                        multiline
                                        placeholder={'请输入公告内容......'}
                                        blurOnSubmit={false}

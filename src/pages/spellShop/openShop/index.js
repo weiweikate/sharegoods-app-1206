@@ -14,7 +14,7 @@ export default {
         OpenShopExplainPage,
         //开店成功页面
         OpenShopSuccessPage,
-        //邀请好友
+        //分享好友
         InvitationFriendPage,
         TestPay
     }
