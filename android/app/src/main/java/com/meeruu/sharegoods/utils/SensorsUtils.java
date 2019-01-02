@@ -32,7 +32,7 @@ public class SensorsUtils {
 
     public static void initReleaseMode(Context context, String channel) {
         // 初始化
-        SensorsDataAPI.sharedInstance(context, "http://stat.sharegoodsmall.com/sa?project=default",
+        SensorsDataAPI.sharedInstance(context, "https://stat.sharegoodsmall.com/sa?project=default",
                 SensorsDataAPI.DebugMode.DEBUG_OFF);
         initConfig(context, channel);
     }
