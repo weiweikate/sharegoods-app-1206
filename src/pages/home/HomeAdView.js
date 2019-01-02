@@ -93,18 +93,18 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         width: ScreenUtils.px2dp(153),
-        height: ScreenUtils.px2dp(96)
+        height: ScreenUtils.px2dp(97)
     },
     featureBox2Image: {
         width: ScreenUtils.px2dp(153),
-        height: ScreenUtils.px2dp(96)
+        height: ScreenUtils.px2dp(97)
     },
     featureBox3: {
         position: 'absolute',
         right: 0,
         bottom: 0,
         width: ScreenUtils.px2dp(153),
-        height: ScreenUtils.px2dp(96)
+        height: ScreenUtils.px2dp(97)
     },
 
     // 行样式
