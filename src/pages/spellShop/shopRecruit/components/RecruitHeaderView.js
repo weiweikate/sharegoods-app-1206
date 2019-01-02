@@ -106,7 +106,7 @@ export default class RecommendRow extends Component {
                         <Text style={{
                             fontSize: 12,
                             color: '#666666'
-                        }} allowFontScaling={false}>参与平台分红：<Text
+                        }} allowFontScaling={false}>参与平台奖励：<Text
                             style={{ color: '#FE1A54' }}>{`${bonusCount || 0}`}</Text>次</Text>
                     </View>
                 </View>

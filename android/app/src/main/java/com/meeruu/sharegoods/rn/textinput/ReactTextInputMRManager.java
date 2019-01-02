@@ -1,5 +1,7 @@
 package com.meeruu.sharegoods.rn.textinput;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -15,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import com.facebook.react.bridge.ReactContext;
@@ -47,9 +50,12 @@ import com.facebook.react.views.textinput.ReactTextInputEvent;
 import com.facebook.react.views.textinput.ReactTextInputShadowNode;
 import com.facebook.react.views.textinput.ScrollWatcher;
 import com.facebook.yoga.YogaConstants;
+import com.meeruu.commonlib.utils.Utils;
+
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.Map;
+
 import javax.annotation.Nullable;
 
 /**
@@ -152,7 +158,8 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
     }
 
     @Override
-    public @Nullable Map<String, Integer> getCommandsMap() {
+    public @Nullable
+    Map<String, Integer> getCommandsMap() {
         return MapBuilder.of("focusTextInput", FOCUS_TEXT_INPUT, "blurTextInput", BLUR_TEXT_INPUT);
     }
 
@@ -211,8 +218,8 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
     }
 
     /**
-     /* This code was taken from the method setFontWeight of the class ReactTextShadowNode
-     /* TODO: Factor into a common place they can both use
+     * /* This code was taken from the method setFontWeight of the class ReactTextShadowNode
+     * /* TODO: Factor into a common place they can both use
      */
     @ReactProp(name = ViewProps.FONT_WEIGHT)
     public void setFontWeight(ReactEditText view, @Nullable String fontWeightString) {
@@ -235,8 +242,8 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
     }
 
     /**
-     /* This code was taken from the method setFontStyle of the class ReactTextShadowNode
-     /* TODO: Factor into a common place they can both use
+     * /* This code was taken from the method setFontStyle of the class ReactTextShadowNode
+     * /* TODO: Factor into a common place they can both use
      */
     @ReactProp(name = ViewProps.FONT_STYLE)
     public void setFontStyle(ReactEditText view, @Nullable String fontStyleString) {
@@ -355,7 +362,8 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
         } catch (NoSuchFieldException ex) {
             // Ignore errors to avoid crashing if these private fields don't exist on modified
             // or future android versions.
-        } catch (IllegalAccessException ex) {}
+        } catch (IllegalAccessException ex) {
+        }
     }
 
     @ReactProp(name = "caretHidden", defaultBoolean = false)
@@ -449,7 +457,7 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
 
     @ReactProp(name = "maxLength")
     public void setMaxLength(ReactEditText view, @Nullable Integer maxLength) {
-        InputFilter [] currentFilters = view.getFilters();
+        InputFilter[] currentFilters = view.getFilters();
         InputFilter[] newFilters = EMPTY_FILTERS;
 
         if (maxLength == null) {
@@ -606,8 +614,8 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
             "borderColor", "borderLeftColor", "borderRightColor", "borderTopColor", "borderBottomColor"
     }, customType = "Color")
     public void setBorderColor(ReactEditText view, int index, Integer color) {
-        float rgbComponent = color == null ? YogaConstants.UNDEFINED : (float) ((int)color & 0x00FFFFFF);
-        float alphaComponent = color == null ? YogaConstants.UNDEFINED : (float) ((int)color >>> 24);
+        float rgbComponent = color == null ? YogaConstants.UNDEFINED : (float) ((int) color & 0x00FFFFFF);
+        float alphaComponent = color == null ? YogaConstants.UNDEFINED : (float) ((int) color >>> 24);
         view.setBorderColor(SPACING_TYPES[index], rgbComponent, alphaComponent);
     }
 
@@ -632,7 +640,7 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
     /**
      * This code was taken from the method parseNumericFontWeight of the class ReactTextShadowNode
      * TODO: Factor into a common place they can both use
-     *
+     * <p>
      * Return -1 if the input string is not a valid numeric fontWeight (100, 200, ..., 900), otherwise
      * return the weight.
      */
@@ -782,8 +790,14 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
 
         public ReactContentSizeWatcher(ReactEditText editText) {
             mEditText = editText;
-            ReactContext reactContext = (ReactContext) editText.getContext();
-            mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+            Activity activity = Utils.getActivityFromView(editText);
+            if (activity != null) {
+                Context context = activity.getBaseContext();
+                if (context instanceof ReactContext) {
+                    ReactContext reactContext = (ReactContext) context;
+                    mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+                }
+            }
         }
 
         @Override
@@ -821,8 +835,14 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
 
         public ReactSelectionWatcher(ReactEditText editText) {
             mReactEditText = editText;
-            ReactContext reactContext = (ReactContext) editText.getContext();
-            mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+            Activity activity = Utils.getActivityFromView(editText);
+            if (activity != null) {
+                Context context = activity.getBaseContext();
+                if (context instanceof ReactContext) {
+                    ReactContext reactContext = (ReactContext) context;
+                    mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+                }
+            }
         }
 
         @Override
@@ -853,8 +873,14 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
 
         public ReactScrollWatcher(ReactEditText editText) {
             mReactEditText = editText;
-            ReactContext reactContext = (ReactContext) editText.getContext();
-            mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+            Activity activity = Utils.getActivityFromView(editText);
+            if (activity != null) {
+                Context context = activity.getBaseContext();
+                if (context instanceof ReactContext) {
+                    ReactContext reactContext = (ReactContext) context;
+                    mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+                }
+            }
         }
 
         @Override
@@ -881,7 +907,8 @@ public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, Layo
     }
 
     @Override
-    public @Nullable Map getExportedViewConstants() {
+    public @Nullable
+    Map getExportedViewConstants() {
         return MapBuilder.of(
                 "AutoCapitalizationType",
                 MapBuilder.of(

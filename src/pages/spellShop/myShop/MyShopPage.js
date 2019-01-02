@@ -365,9 +365,9 @@ export default class MyShopPage extends BasePage {
             return (
                 <View>
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
+                    {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}
-                    {this._renderRow(system_charge, '个人已获得分红', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
+                    {this._renderRow(system_charge, '个人已获得奖励', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
 
                     <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
@@ -379,7 +379,7 @@ export default class MyShopPage extends BasePage {
             return (
                 <View>
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
+                    {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
                 </View>
