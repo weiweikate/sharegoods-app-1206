@@ -83,24 +83,24 @@ export default class ShopHeaderBonus extends Component {
                                 fontSize: 12,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_secondTitle
-                            }} allowFontScaling={false}>本次分红任务完成度<Text style={{ color: DesignRule.textColor_redWarn }}>{progress}%</Text></Text>
+                            }} allowFontScaling={false}>本次任务完成度<Text style={{ color: DesignRule.textColor_redWarn }}>{progress}%</Text></Text>
                             <Text style={{
                                 fontSize: 12,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_secondTitle
-                            }} allowFontScaling={false}>距离本次分红还有<Text
+                            }} allowFontScaling={false}>距离本次奖励还有<Text
                                 style={{ color: DesignRule.textColor_redWarn }}>{nextBonusTime || ''}</Text>天</Text>
                             <Text style={{
                                 fontSize: 12,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_secondTitle
-                            }} numberOfLines={2} allowFontScaling={false}>预计本次可得额外品牌分红奖励<Text
+                            }} numberOfLines={2} allowFontScaling={false}>预计本次可得额外品牌奖励<Text
                                 style={{ color: DesignRule.textColor_redWarn }}>{currentUserSettle}</Text>元</Text>
                             <Text style={{
                                 fontSize: 10,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_instruction
-                            }} allowFontScaling={false}>分红任务达到100%，才可以分红</Text>
+                            }} allowFontScaling={false}>任务达到100%，才可以获得奖励</Text>
                         </View>
                     </View>
                 </View>
