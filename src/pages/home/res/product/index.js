@@ -1,5 +1,5 @@
 import detailNavView from './detailNavView';
-
+import xpProduct from './xpProduct'
 const product = {
     detailShowBg: require('./detailShowBg.png'),
     home: require('./home.png'),
@@ -13,6 +13,9 @@ const product = {
     xiangqing_btn_gouwuche_nor: require('./xiangqing_btn_gouwuche_nor.png'),
     detailNavView: {
         ...detailNavView
+    },
+    xpProduct: {
+        ...xpProduct
     }
 };
 export default product;
