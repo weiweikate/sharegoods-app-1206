@@ -135,6 +135,7 @@ export default class App extends Component {
                         ?
                         null
                         : (this.state.curRouteName === RouterMap.LoginPage || this.state.curRouteName === RouterMap.OldUserLoginPage
+                        || this.state.curRouteName === RouterMap.SetPasswordPage
                         ? null :
                         <DebugButton
                             onPress={this.gotoLogin}
