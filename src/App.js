@@ -27,7 +27,7 @@ import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
 import hotUpdateUtil from './utils/HotUpdateUtil';
 
-import geolocation from '@mr/geolocation';
+import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
 import spellStatusModel from './pages/spellShop/model/SpellStatusModel';

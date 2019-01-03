@@ -23,8 +23,8 @@ include ':request'
 project(':request').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/request/android')
 include ':cookies'
 project(':cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/cookies/android')
-include ':geolocation'
-project(':geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/geolocation/android')
+include ':rn-geolocation'
+project(':rn-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-geolocation/android')
 
 include ':app'
 include ':commonlib'
