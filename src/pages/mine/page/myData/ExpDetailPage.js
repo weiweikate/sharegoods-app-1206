@@ -14,11 +14,18 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "DesignRule";
 import AccountItem from '../../components/AccountItem';
 import res from "../../res";
-const ProgressImg = res.myData.jdt_05;
 import user from "../../../../model/user";
-import DataUtils from "../../../../utils/DateUtils";
+// import DataUtils from "../../../../utils/DateUtils";
 import Toast from "../../../../utils/bridge";
-
+ const {
+     ProgressImg,
+     invite_icon,
+     trading_icon,
+     signIn_icon,
+     share_icon,
+     members_icon,
+     activity_icon,
+ } =res.myData;
 export default class ExpDetailPage extends BasePage{
     constructor(props){
         super(props);
@@ -46,6 +53,9 @@ export default class ExpDetailPage extends BasePage{
             }
         };
     };
+    componentDidMount(){
+        this.getDataFromNetwork()
+    }
 
     _render(){
         return(
@@ -63,7 +73,7 @@ export default class ExpDetailPage extends BasePage{
            <View style={styles.headerBg}>
                <View style={{ flex: 1, justifyContent: "center",alignItems:'flex-start',marginLeft:14 }}>
                    <Text style={{
-                       marginTop: 19,
+                       marginTop: 5,
                        color: DesignRule.mainColor,
                        fontSize: 24
                    }} allowFontScaling={false}>{this.state.experience || 0}<Text style={{
@@ -75,7 +85,7 @@ export default class ExpDetailPage extends BasePage{
 
                    <ImageBackground source={ProgressImg} style={{
                        overflow: "hidden",
-                       marginTop: 17,
+                       marginTop: 5,
                        height: 8,
                        width: 315 / 375 * ScreenUtils.width
                    }}>
@@ -128,48 +138,43 @@ export default class ExpDetailPage extends BasePage{
     renderItem = ({ item, index }) => {
         return (
                 <AccountItem
+                    type={item.type}
                     time={item.time}
                     serialNumber={""}
                     capital={item.capital}
                     iconImage={item.iconImage}
-                    clickItem={() => {
-                        this.clickItem(index);
-                    }}
+                    clickItem={() => {}}
                     capitalRed={true}
                 />
         );
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '任务奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励",""];
-        let use_let_img = ['', ];
+        console.log("getDataFromNetwork",this.params.experience)
+        let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励",""];
+        let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,trading_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon ];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
-        MineApi.userScoreQuery({
+        MineApi.expDetail({
             page: this.currentPage,
             size: 10
-
         }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
-            if (response.code === 10000) {
                 let data = response.data;
-                data.data.map((item, index) => {
+                data.map((item, index) => {
                     arrData.push({
-                        type: use_type[item.useType],
-                        time: DataUtils.getFormatDate(item.createTime / 1000),
-                        capital: item.userScore,
-                        iconImage: use_let_img[item.useType],
+                        type: use_type[parseInt(item.sourceCode)],
+                        time: item.createTime,
+                        capital: "+"+item.experience,
+                        iconImage: use_let_img[parseInt(item.sourceCode)],
 
 
                     });
                 });
-                this.setState({ viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true,loadingState:PageLoadingState.success });
-            } else {
-                this.$toastShow(response.msg)
-            }
+                this.setState({ loadingState:PageLoadingState.success ,viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true,});
         }).catch(e => {
             Toast.hiddenLoading();
-            this.setState({ viewData: arrData, isEmpty: true ,loadingState:PageLoadingState.fail,netFailedInfo:e});
+            this.setState({ loadingState:PageLoadingState.fail,netFailedInfo:e,viewData: arrData, isEmpty: true ,});
 
         });
     };
@@ -202,9 +207,8 @@ const styles = StyleSheet.create({
         flex:1
     },
     headerBg: {
-        position: "absolute",
         height: 95,
-        backgroundColor: "#FFFFF",
+        backgroundColor: "#FFFFFF",
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,

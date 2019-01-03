@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -16,6 +15,10 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
 import res from '../res';
+import {
+    MRText as Text
+} from '../../../components/ui';
+
 
 const { openShop_yes, openShop_no } = res.openShop;
 
@@ -95,10 +98,12 @@ export default class OpenShopExplainPage extends BasePage {
     _render() {
 
         const arr = [
-            '开店要求：会员等级到达V4，即可发起拼店，店员人数达到3人可成功开启1星店铺；',
-            '店长权益： 开启拼店，除日常商品推广奖励，还可获得品牌推广奖励，以及店铺管理奖励；',
-            '店长职责：店主作为发起者，需维护好店铺及店铺成员之间的关系，管理好店铺；',
-            '店铺分为3个等级：1星、2星、3星店铺，级别越高，店长分红就越高。'
+            '升级会员等级到V4（达人品鉴官）',
+            '发起拼店',
+            '店员人数达到5人（包括店主）',
+            '成功开启店铺，招募更多店员',
+            '联合店员共同完成分红目标，取得品牌分红奖励',
+            '店铺分为3个等级（普通店、导师店、大咖店），每个级别的店铺权益不同，等级越高，享受的权益越多。'
         ];
 
         return (
@@ -128,20 +133,22 @@ export default class OpenShopExplainPage extends BasePage {
                             }} allowFontScaling={false}>我要开店</Text>
                         </TouchableOpacity>
                     </View>
+
+                    <View style={styles.explainContainer}>
+                        <TouchableOpacity onPress={() => {
+                            this.setState({
+                                isSelected: !this.state.isSelected
+                            });
+                        }}>
+                            <Image source={this.state.isSelected ? openShop_yes : openShop_no}/>
+                        </TouchableOpacity>
+                        <Text style={styles.descText} allowFontScaling={false}>阅读同意</Text>
+                        <TouchableOpacity onPress={this._onPress}>
+                            <Text style={[styles.descText, { color: DesignRule.mainColor }]} allowFontScaling={false}>《拼店管理条例》</Text>
+                        </TouchableOpacity>
+                    </View>
                 </ScrollView>
-                <View style={styles.explainContainer}>
-                    <TouchableOpacity onPress={() => {
-                        this.setState({
-                            isSelected: !this.state.isSelected
-                        });
-                    }}>
-                        <Image source={this.state.isSelected ? openShop_yes : openShop_no}/>
-                    </TouchableOpacity>
-                    <Text style={styles.descText} allowFontScaling={false}>阅读同意</Text>
-                    <TouchableOpacity onPress={this._onPress}>
-                        <Text style={[styles.descText, { color: DesignRule.mainColor }]} allowFontScaling={false}>《拼店管理条例》</Text>
-                    </TouchableOpacity>
-                </View>
+
             </View>
         );
     }
@@ -177,8 +184,8 @@ const styles = StyleSheet.create({
     },
 
     explainContainer: {
+        marginTop:8,
         flexDirection: 'row',
-        marginBottom: ScreenUtils.safeBottom + 20,
         justifyContent: 'center',
         alignItems: 'center'
     },

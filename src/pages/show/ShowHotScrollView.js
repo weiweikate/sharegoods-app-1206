@@ -2,7 +2,7 @@
  * 今日榜单
  */
 import React, {Component} from 'react'
-import { View, ScrollView, StyleSheet, Text, Image, TouchableWithoutFeedback } from 'react-native'
+import { View, ScrollView, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
@@ -13,6 +13,9 @@ const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule';
 import ImageLoad from '@mr/image-placeholder'
 import TimerMixin from 'react-timer-mixin'
+import {
+    MRText as Text,
+} from '../../components/ui';
 
 class HotItem extends Component {
     state = {

@@ -9,11 +9,14 @@ import {
     ScrollView,
     RefreshControl,
     TouchableOpacity,
-    Text, Alert
+    Alert
 } from 'react-native';
 
 import { observer } from 'mobx-react/native';
 import BasePage from '../../../BasePage';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 import ShopHeader from './components/ShopHeader';
 import ShopHeaderBonus from './components/ShopHeaderBonus';
@@ -364,7 +367,7 @@ export default class MyShopPage extends BasePage {
                     <View style={{ height: 10 }}/>
                     {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}
-                    {this._renderRow(system_charge, '个人已获得分红金', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
+                    {this._renderRow(system_charge, '个人已获得分红', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
 
                     <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}

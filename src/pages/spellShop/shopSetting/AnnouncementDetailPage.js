@@ -2,7 +2,6 @@
 import React from "react";
 import {
     View,
-    Text,
     Dimensions,
     StyleSheet,
     ScrollView,
@@ -11,6 +10,9 @@ import {
 import BasePage from "../../../BasePage";
 import DesignRule from "DesignRule";
 import res from "../res";
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 const Banner = res.shopSetting.banner_02;
 

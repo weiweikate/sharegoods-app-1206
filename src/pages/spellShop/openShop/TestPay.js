@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
@@ -10,6 +9,10 @@ import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
 import DesignRule from 'DesignRule';
+import {
+    MRText as Text
+} from '../../../components/ui';
+
 
 export default class OpenShopSuccessPage extends BasePage {
 

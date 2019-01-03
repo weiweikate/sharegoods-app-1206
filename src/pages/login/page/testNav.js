@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
-    View,
-    Text
+    View
 } from 'react-native';
 
 import HttpUtils from '../../../api/network/HttpUtils';
+import {MRText as Text} from '../../../components/ui'
 
 export default class testNav extends Component {
 

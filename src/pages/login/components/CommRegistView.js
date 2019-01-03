@@ -1,13 +1,11 @@
 import {
     View,
-    Text,
-    TextInput,
     StyleSheet,
     TouchableOpacity,
     Image
 
 } from 'react-native';
-
+// import UIText from '../../../components/ui/UIText';
 import React, { Component } from 'react';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
@@ -19,6 +17,7 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -117,13 +116,13 @@ export default class CommRegistView extends Component {
                             手机号
                         </Text>
                         <TextInput
+                            allowFontScaling={false}
                             style={Styles.inputTextStyle}
                             value={this.registModel.phoneNumber}
                             onChangeText={text => {
                                 this.registModel.savePhoneNumber(text);
                             }}
                             placeholder='请输入手机号'
-                            underlineColorAndroid='transparent'
                             keyboardType='numeric'
                             placeholderTextColor={DesignRule.textColor_placeholder}
                         />
@@ -143,13 +142,13 @@ export default class CommRegistView extends Component {
                                     验证码
                                 </Text>
                                 <TextInput
+                                    allowFontScaling={false}
                                     style={Styles.inputTextStyle}
                                     value={this.registModel.vertifyCode}
                                     onChangeText={text => {
                                         this.registModel.saveVertifyCode(text);
                                     }}
                                     placeholder='请输入验证码'
-                                    underlineColorAndroid={'transparent'}
                                     keyboardType='numeric'
                                     placeholderTextColor={DesignRule.textColor_placeholder}
                                 />
@@ -181,13 +180,13 @@ export default class CommRegistView extends Component {
                             新密码
                         </Text>
                         <TextInput
+                            allowFontScaling={false}
                             style={Styles.inputTextStyle}
                             value={this.registModel.password}
                             onChangeText={text => {
                                 this.registModel.savePassword(text);
                             }}
                             placeholder='支持数字,字母'
-                            underlineColorAndroid={'transparent'}
                             keyboardType='default'
                             secureTextEntry={this.registModel.isSecuret}
                             placeholderTextColor={DesignRule.textColor_placeholder}
@@ -258,9 +257,14 @@ export default class CommRegistView extends Component {
         }
     };
     loginClick = () => {
-        if (this.registModel.isCanClick) {
-            this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+        if (StringUtils.checkPassword(this.registModel.password)){
+            if (this.registModel.isCanClick) {
+                this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+            }
+        } else {
+            bridge.$toast('密码格式不对');
         }
+
     };
 
 

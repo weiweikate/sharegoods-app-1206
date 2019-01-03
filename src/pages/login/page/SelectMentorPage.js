@@ -15,7 +15,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity,
     Image,
     ScrollView
@@ -28,9 +27,10 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
 import Styles from '../style/SelectMentorPage.style';
 import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
+import {MRText as Text} from '../../../components/ui'
 
 const {
     refresh
@@ -59,7 +59,7 @@ export default class SelectMentorPage extends BasePage {
         this.$navigateBackToHome();
     };
     $navigationBarOptions = {
-        title: '选择导师',
+        title: '选择顾问',
         show: true// false则隐藏导航
     };
     /*render右上角*/
@@ -260,7 +260,7 @@ export default class SelectMentorPage extends BasePage {
                         fontSize: 13,
                         color: DesignRule.textColor_instruction
                     }}
-                    value={'暂无导师请填写授权码或跳过该步骤~'}
+                    value={'暂无顾问请填写授权码或跳过该步骤~'}
                 />
             </View>
         );
@@ -433,7 +433,7 @@ export default class SelectMentorPage extends BasePage {
                         marginLeft: 15
                     }}
                 >
-                    请选择一个导师
+                    请选择一个顾问
                 </Text>
 
                 <TouchableOpacity>

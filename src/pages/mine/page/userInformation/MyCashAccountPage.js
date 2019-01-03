@@ -101,9 +101,9 @@ export default class MyCashAccountPage extends BasePage {
                                 color: "white"
                             }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
+                            {/*<Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                 </View>
             </View>
@@ -180,7 +180,7 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ["", "用户收益", "提现支出", "消费支出", "导师管理费", "品牌分红奖励金", "品牌推广奖励金", "现金红包", "任务奖励金","消费退款"];
+        let use_type = ["", "用户收益", "提现支出", "消费支出", "导师管理费", "品牌分红奖励", "品牌推广奖励", "现金红包", "任务奖励","消费退款"];
         let use_type_symbol = ["", "+", "-"];
         let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu,xiaofei];
         Toast.showLoading();

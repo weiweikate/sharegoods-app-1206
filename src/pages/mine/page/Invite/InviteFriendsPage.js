@@ -14,7 +14,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     Platform,
     TouchableWithoutFeedback,
     ImageBackground,
@@ -24,6 +23,7 @@ import {
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import {UIImage} from '../../../../components/ui'
+import {MRText as Text} from '../../../../components/ui'
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
@@ -84,7 +84,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 
     //截屏
     _saveImg = () => {
-        track(trackEvent.QrcodeShareto, {QrCodeID: this.linkUrl, shareMethod: '保存图片'})
+        track(trackEvent.QrcodeShareto, {qrCodeID: this.linkUrl, shareMethod: '保存图片'})
         this.setState({
             disable: true
         }, () => {
@@ -184,7 +184,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     }}>
                         <ImageBackground source={button} style={styles.btnContainer}>
                             <Text style={styles.btnText}>
-                                立即邀请
+                                立即分享
                             </Text>
                         </ImageBackground>
                     </TouchableOpacity>
@@ -198,7 +198,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //      QRCodeStr: '分享的链接'
                     //  }}
                                 webJson={{
-                                    title: '邀请好友免费领取福利',
+                                    title: '分享好友免费领取福利',
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
                                     linkUrl: this.linkUrl,
                                     thumImage: 'logo.png'

@@ -19,11 +19,11 @@ const searchImg = res.icon_search;
 const msgBlack = res.message_black;
 const msgWhite = res.message_white;
 
-export default ({ navigation, whiteIcon, hasMessage }) =>
+export default ({ navigation, whiteIcon, hasMessage, pageFocused }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
             {/*改变状态栏字体颜色*/}
-            {whiteIcon ? bridge.setDarkMode() : bridge.setLightMode()}
+            {pageFocused && whiteIcon ? bridge.setDarkMode() : bridge.setLightMode()}
             <Image source={whiteIcon ? logoWhite : logoRed} style={styles.logo}/>
             <TouchableOpacity style={[styles.searchBox, { backgroundColor: whiteIcon ? 'white' : '#E4E5E6' }]}
                               onPress={() => {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image ,Keyboard} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image ,Keyboard} from "react-native";
 // import { UIText, UIImage } from '../../components/ui'
 import PasswordInput from "./PasswordInput";
 import ScreenUtils from "../../../utils/ScreenUtils";
@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import res from "./../../payment/res";
 import Modal from 'CommModal';
 import DesignRule from "../../../constants/DesignRule";
+import {MRText as Text} from '../../../components/ui'
 const closeImg = res.close;
 
 export default class BankTradingModal extends Component {

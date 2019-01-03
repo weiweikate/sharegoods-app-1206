@@ -8,6 +8,7 @@ import {
 // import UIImage from '../../../components/ui/UIImage';
 import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../../components/ui'
 // import res from '../res';
 /*
 * usage:

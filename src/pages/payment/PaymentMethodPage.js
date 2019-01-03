@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     ScrollView,
     AppState,
@@ -12,15 +11,17 @@ import StringUtils from '../../utils/StringUtils';
 import Toast from '../../utils/bridge';
 import user from '../../model/user';
 import { observer } from 'mobx-react/native';
-import { Payment, paymentType } from './Payment';
+import { Payment, paymentType, paymentTrack } from './Payment';
 import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import PasswordView from './PasswordView';
+import {MRText as Text} from '../../components/ui'
 // import { NavigationActions } from 'react-navigation';
 import PayCell from './PaymentCell'
 import PayBottom from './PaymentBottom'
 const { px2dp } = ScreenUtils
+import {track, trackEvent} from '../../utils/SensorsTrack'
 
 @observer
 export default class PaymentMethodPage extends BasePage {
@@ -44,6 +45,8 @@ export default class PaymentMethodPage extends BasePage {
         if (this.isZeroPay()) {
             this.payment.selectedBalace = true;
         }
+        paymentTrack.orderId = this.params.orderNum
+        paymentTrack.orderAmount = this.params.amounts
         this.payment.orderNo = this.params.orderNum
         this.payment.updateUserData()
     }
@@ -86,10 +89,9 @@ export default class PaymentMethodPage extends BasePage {
     _checkOrder() {
         let time = (new Date().getTime()) / 1000
         console.log('checkorder', this.orderTime, time)
+        track(trackEvent.payOrder, {...paymentTrack, tracking: 'checking'})
         if (time - this.orderTime > 10) {
-            // if (this.payment.selectedTypes.type === paymentType.wechat) { 
-            //     this.payment.closeOrder()
-            // }
+            track(trackEvent.payOrder, {...paymentTrack, tracking: 'checkOut'})
             return
         }
         this.payment.checkPayStatus().then(data => {
@@ -101,6 +103,7 @@ export default class PaymentMethodPage extends BasePage {
             }
             this.setState({orderChecking: false})
             if (data === 3){
+                track(trackEvent.payOrder, {...paymentTrack, tracking: 'success'})
                 this.paymentResultView.show(1)
             }
         }).catch(()=> {

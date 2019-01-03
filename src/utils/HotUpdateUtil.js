@@ -17,8 +17,11 @@ import {
 
 import _updateConfig from '../../update.json';
 import Storage from './storage';
-
-const { appKey } = _updateConfig[Platform.OS];
+import config from '../../config'
+const key = config["isDevHotUpdate"]?"dev_"+Platform.OS:Platform.OS;
+console.log('热更新key-----'+key);
+const { appKey } = _updateConfig[key];
+console.log('热更新key-----'+appKey);
 
 class HotUpdateUtil {
     //普通更新的时间差 key
@@ -110,7 +113,12 @@ class HotUpdateUtil {
             //     this.startUpdate(info);
             // });
             //更新
-            this.startUpdate(info);
+            if (info.expired){
+
+            } else {
+                this.startUpdate(info);
+            }
+
         }).catch(e => {
             throw e;
         });

@@ -14,7 +14,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     ImageBackground,
     TouchableWithoutFeedback
 } from 'react-native';
@@ -24,6 +23,7 @@ import bg from './res/promotion_bg.png';
 import MineApi from '../../api/MineApi';
 import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
+import {MRText as Text} from '../../../../components/ui'
 
 
 const { px2dp } = ScreenUtils;

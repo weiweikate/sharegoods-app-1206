@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Text, Platform } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
 import XGSwiper from '../../../../components/ui/XGSwiper';
 import ViewPager from '../../../../components/ui/ViewPager';
 import EmptyUtils from '../../../../utils/EmptyUtils';
@@ -9,6 +9,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import UIImage from '@mr/image-placeholder';
 import DesignRule from '../../../../constants/DesignRule';
 import { formatDate } from '../../../../utils/DateUtils';
+import {MRText as Text} from '../../../../components/ui';
 
 export class DetailBanner extends Component {
     constructor(props) {

@@ -115,11 +115,12 @@
 		C77A347B0E47408BA04324B4 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB6EFB6B04564EBAB951820B /* Feather.ttf */; };
 		CD0F9621219027C800F7C2B0 /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0F95FC219027B400F7C2B0 /* libRCTHotUpdate.a */; };
 		CD11955721870DE1007F602E /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11955421870DB6007F602E /* libRCTVideo.a */; };
-		CD12CE2821ABFAC400EFFC56 /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD12CE2721ABFAAE00EFFC56 /* libReact-Native-Webview-Bridge.a */; };
 		CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */ = {isa = PBXBuildFile; fileRef = CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */; };
 		CD1366CF21BE3FF200754B0E /* STTVTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1366CE21BE3FCB00754B0E /* STTVTableView.framework */; };
 		CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD14EA182183FC9A00480A06 /* XGImageCompression.m */; };
+		CD1AA5FE21D602C9007F045D /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1AA5FD21D602B1007F045D /* libReact-Native-Webview-Bridge.a */; };
 		CD1E51C921C9D96B007103A1 /* BGKeychainTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */; };
+		CD1E52E021CCB8D2007103A1 /* WelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1E52DF21CCB8D1007103A1 /* WelcomeView.m */; };
 		CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */; };
 		CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */; };
 		CDA2F57821744443005FD4B3 /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F57721744443005FD4B3 /* ShareImageMaker.m */; };
@@ -483,19 +484,19 @@
 			remoteGlobalIDString = 641E28441F0EEC8500443AF6;
 			remoteInfo = "RCTVideo-tvOS";
 		};
-		CD12CE2621ABFAAE00EFFC56 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CD12CE2221ABFAAE00EFFC56 /* React-Native-Webview-Bridge.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4114DC4C1C187C3A003CD988;
-			remoteInfo = "React-Native-Webview-Bridge";
-		};
 		CD1366CD21BE3FCB00754B0E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8E87A9901FAB62CC00B9C54E;
 			remoteInfo = STTVTableView;
+		};
+		CD1AA5FC21D602B1007F045D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD1AA5F821D602B1007F045D /* React-Native-Webview-Bridge.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4114DC4C1C187C3A003CD988;
+			remoteInfo = "React-Native-Webview-Bridge";
 		};
 		CD45EE0021C77E1A00846B39 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -553,9 +554,9 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		16FE94CBA5761BE89754585D /* libPods-crm_app_xiugou-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crm_app_xiugou-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1872318121CB96D300513B04 /* RNCookieManagerIOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCookieManagerIOS.xcodeproj; path = "../node_modules/@mr/cookies/ios/RNCookieManagerIOS.xcodeproj"; sourceTree = "<group>"; };
+		1FB2D87EEE2240302A81D30A /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
 		2067021C430F882483438A36 /* libPods-crm_app_xiugou.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crm_app_xiugou.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A6FFEBE58244A4AC56DB5E /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
-		2B5997759449A446E8C1D1CB /* Pods-crm_app_xiugou.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.debug.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.debug.xcconfig"; sourceTree = "<group>"; };
 		2C4C91D58EA7AF8B3CE24FE3 /* libPods-crm_app_xiugouTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crm_app_xiugouTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* crm_app_xiugou-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "crm_app_xiugou-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* crm_app_xiugou-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "crm_app_xiugou-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -731,6 +732,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		819703F9E0F54FA6A75C43D4 /* libRCTHotUpdate.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTHotUpdate.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8B41EB55274C917DABB98AA9 /* Pods-crm_app_xiugou.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.debug.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.debug.xcconfig"; sourceTree = "<group>"; };
 		AB39A891905F4966BC073930 /* libRNGeolocation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGeolocation.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE4716B854E34520B3C18596 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -738,14 +740,16 @@
 		CAB2E4DB260FDFCE4611A647 /* libPods-crm_app_xiugou-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crm_app_xiugou-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD0F95EF219027B400F7C2B0 /* RCTHotUpdate.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTHotUpdate.xcodeproj; path = "../node_modules/react-native-update/ios/RCTHotUpdate.xcodeproj"; sourceTree = "<group>"; };
 		CD11954E21870DB6007F602E /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
-		CD12CE2221ABFAAE00EFFC56 /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/react-native-webview-bridge/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+PD.m"; sourceTree = "<group>"; };
 		CD13656621BA0F4200754B0E /* MBProgressHUD+PD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+PD.h"; sourceTree = "<group>"; };
 		CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = STTVTableView.xcodeproj; path = "../node_modules/@mr/largelist/ios/STTVTableView.xcodeproj"; sourceTree = "<group>"; };
 		CD14EA172183FC9A00480A06 /* XGImageCompression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XGImageCompression.h; sourceTree = "<group>"; };
 		CD14EA182183FC9A00480A06 /* XGImageCompression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XGImageCompression.m; sourceTree = "<group>"; };
+		CD1AA5F821D602B1007F045D /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/@mr/rn-webview-bridge/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		CD1E51C721C9D96B007103A1 /* BGKeychainTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BGKeychainTool.h; sourceTree = "<group>"; };
 		CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BGKeychainTool.m; sourceTree = "<group>"; };
+		CD1E52DE21CCB8D1007103A1 /* WelcomeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WelcomeView.h; sourceTree = "<group>"; };
+		CD1E52DF21CCB8D1007103A1 /* WelcomeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WelcomeView.m; sourceTree = "<group>"; };
 		CD45EE1A21C7885000846B39 /* liblottie-react-native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblottie-react-native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD70E065E4CA4080A9DF5465 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		CDA2F5302171D8D2005FD4B3 /* UIViewController+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Util.h"; sourceTree = "<group>"; };
@@ -768,7 +772,6 @@
 		EB6EFB6B04564EBAB951820B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		EF0420E07D6F40B080CEAA13 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		F5B1AC20114D4E68971B3AB1 /* libRNSensorsAnalyticsModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSensorsAnalyticsModule.a; sourceTree = "<group>"; };
-		F79D51B5CB2B0A8841DF9766 /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
 		F9BBF480BD9C40F1BBCB4697 /* RNSensorsAnalyticsModule.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSensorsAnalyticsModule.xcodeproj; path = "../node_modules/@sensors.data/react-native-sensors-analytics/ios/RNSensorsAnalyticsModule.xcodeproj"; sourceTree = "<group>"; };
 		FBD5EA1410A844119F7CCA6A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		FED5F2163DB441AEAFBF1AB2 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -787,11 +790,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD1AA5FE21D602C9007F045D /* libReact-Native-Webview-Bridge.a in Frameworks */,
 				1872318721CB96E400513B04 /* libRNCookieManagerIOS.a in Frameworks */,
 				CDE9907521C0FA6900F46B45 /* libRNReactNativeRequest.a in Frameworks */,
 				CD1366CF21BE3FF200754B0E /* STTVTableView.framework in Frameworks */,
 				103CEC7421B27221004861B6 /* libRNGeolocation.a in Frameworks */,
-				CD12CE2821ABFAC400EFFC56 /* libReact-Native-Webview-Bridge.a in Frameworks */,
 				10BDD7F8219D6F3E00B56251 /* libRNFetchBlob.a in Frameworks */,
 				101157C8219AB72A001F5E99 /* GLKit.framework in Frameworks */,
 				0386E92E218C59CB00697612 /* libz.tbd in Frameworks */,
@@ -1492,11 +1495,11 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				CD1AA5F821D602B1007F045D /* React-Native-Webview-Bridge.xcodeproj */,
 				1872318121CB96D300513B04 /* RNCookieManagerIOS.xcodeproj */,
 				CDE9903D21C0FA5C00F46B45 /* RNReactNativeRequest.xcodeproj */,
 				CD1366C921BE3FCB00754B0E /* STTVTableView.xcodeproj */,
 				103CEC6E21B271FB004861B6 /* RNGeolocation.xcodeproj */,
-				CD12CE2221ABFAAE00EFFC56 /* React-Native-Webview-Bridge.xcodeproj */,
 				10BDD7C3219D6F3100B56251 /* RNFetchBlob.xcodeproj */,
 				CD0F95EF219027B400F7C2B0 /* RCTHotUpdate.xcodeproj */,
 				03AD6BB1215A05AF0080FA6E /* RNImagePicker.xcodeproj */,
@@ -1539,7 +1542,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				FA27D427516E4834811C0234 /* Resources */,
 				CDE20087217DBA69001146FF /* Recovered References */,
-				D05914340E579BCEA9A85BAC /* Pods */,
+				E975F54A6C04B3C38257B9D5 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -1592,14 +1595,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CD12CE2321ABFAAE00EFFC56 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CD12CE2721ABFAAE00EFFC56 /* libReact-Native-Webview-Bridge.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		CD1366CA21BE3FCB00754B0E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1617,11 +1612,21 @@
 			path = ImageCompression;
 			sourceTree = "<group>";
 		};
+		CD1AA5F921D602B1007F045D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD1AA5FD21D602B1007F045D /* libReact-Native-Webview-Bridge.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		CD1E519221C9D935007103A1 /* tool */ = {
 			isa = PBXGroup;
 			children = (
 				CD1E51C721C9D96B007103A1 /* BGKeychainTool.h */,
 				CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */,
+				CD1E52DE21CCB8D1007103A1 /* WelcomeView.h */,
+				CD1E52DF21CCB8D1007103A1 /* WelcomeView.m */,
 			);
 			path = tool;
 			sourceTree = "<group>";
@@ -1686,11 +1691,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D05914340E579BCEA9A85BAC /* Pods */ = {
+		E975F54A6C04B3C38257B9D5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2B5997759449A446E8C1D1CB /* Pods-crm_app_xiugou.debug.xcconfig */,
-				F79D51B5CB2B0A8841DF9766 /* Pods-crm_app_xiugou.release.xcconfig */,
+				8B41EB55274C917DABB98AA9 /* Pods-crm_app_xiugou.debug.xcconfig */,
+				1FB2D87EEE2240302A81D30A /* Pods-crm_app_xiugou.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1739,12 +1744,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "crm_app_xiugou" */;
 			buildPhases = (
-				627F7E727F398878A48BBBF8 /* [CP] Check Pods Manifest.lock */,
+				C9C049D3F1E7738933E45FB3 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				89C47FB1A401A4F1101EAD0D /* [CP] Copy Pods Resources */,
+				87BD1D50F79D284D48350309 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1894,8 +1899,8 @@
 					ProjectRef = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
 				},
 				{
-					ProductGroup = CD12CE2321ABFAAE00EFFC56 /* Products */;
-					ProjectRef = CD12CE2221ABFAAE00EFFC56 /* React-Native-Webview-Bridge.xcodeproj */;
+					ProductGroup = CD1AA5F921D602B1007F045D /* Products */;
+					ProjectRef = CD1AA5F821D602B1007F045D /* React-Native-Webview-Bridge.xcodeproj */;
 				},
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
@@ -2281,18 +2286,18 @@
 			remoteRef = CD11955521870DB6007F602E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CD12CE2721ABFAAE00EFFC56 /* libReact-Native-Webview-Bridge.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libReact-Native-Webview-Bridge.a";
-			remoteRef = CD12CE2621ABFAAE00EFFC56 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CD1366CE21BE3FCB00754B0E /* STTVTableView.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = STTVTableView.framework;
 			remoteRef = CD1366CD21BE3FCB00754B0E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD1AA5FD21D602B1007F045D /* libReact-Native-Webview-Bridge.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libReact-Native-Webview-Bridge.a";
+			remoteRef = CD1AA5FC21D602B1007F045D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		CD45EE0121C77E1A00846B39 /* libRNSensorsAnalyticsModule.a */ = {
@@ -2390,29 +2395,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		627F7E727F398878A48BBBF8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-crm_app_xiugou-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		89C47FB1A401A4F1101EAD0D /* [CP] Copy Pods Resources */ = {
+		87BD1D50F79D284D48350309 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2446,6 +2429,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C9C049D3F1E7738933E45FB3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-crm_app_xiugou-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2503,6 +2508,7 @@
 				5068362D21379B78001AB175 /* JRServiceManager.m in Sources */,
 				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,
 				033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */,
+				CD1E52E021CCB8D2007103A1 /* WelcomeView.m in Sources */,
 				5068363421379B78001AB175 /* JRPay.m in Sources */,
 				5068363C21379B78001AB175 /* QRCodeModule.m in Sources */,
 				50043A8421C79D5400270DFA /* SCCell.m in Sources */,
@@ -2649,7 +2655,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B5997759449A446E8C1D1CB /* Pods-crm_app_xiugou.debug.xcconfig */;
+			baseConfigurationReference = 8B41EB55274C917DABB98AA9 /* Pods-crm_app_xiugou.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2700,7 +2706,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F79D51B5CB2B0A8841DF9766 /* Pods-crm_app_xiugou.release.xcconfig */;
+			baseConfigurationReference = 1FB2D87EEE2240302A81D30A /* Pods-crm_app_xiugou.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

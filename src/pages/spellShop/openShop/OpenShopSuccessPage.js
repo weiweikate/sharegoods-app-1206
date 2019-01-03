@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     Image,
     Dimensions,
     StyleSheet,
@@ -16,6 +15,10 @@ import DesignRule from 'DesignRule';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SuccessImg = res.button.tongyon_icon_check_green;
+import {
+    MRText as Text
+} from '../../../components/ui';
+
 
 export default class OpenShopSuccessPage extends BasePage {
 
@@ -30,7 +33,7 @@ export default class OpenShopSuccessPage extends BasePage {
     _clickInvite = () => {
         this.$loadingShow();
         SpellShopApi.getById().then((data) => {
-            //邀请好友页面
+            //分享好友页面
             this.$loadingDismiss();
             this.$navigate('spellShop/openShop/InvitationFriendPage', { shareInfo: data.data || {} });
         }).catch((error) => {
@@ -63,7 +66,7 @@ export default class OpenShopSuccessPage extends BasePage {
                             backgroundColor: DesignRule.mainColor
                         }]}>
                             <Text style={[styles.btnText, { color: '#fff' }]} allowFontScaling={false}>
-                                马上邀请好友
+                                马上分享好友
                             </Text>
                         </TouchableOpacity>
                     </View>

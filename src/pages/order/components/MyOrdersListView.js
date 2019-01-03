@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, NativeModules, Alert, DeviceEventEmitter, Keyboard ,TouchableWithoutFeedback,
-    StyleSheet,TouchableOpacity,Image,Text} from "react-native";
+    StyleSheet,TouchableOpacity,Image} from "react-native";
 import RefreshList from '../../../components/ui/RefreshList';
 import constants from '../../../constants/constants';
 import StringUtils from '../../../utils/StringUtils';
@@ -14,6 +14,10 @@ import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
+import {
+    MRText as Text
+} from '../../../components/ui';
+import user from "../../../model/user";
 const emptyIcon = res.kongbeuye_dingdan;
 
 export default class MyOrdersListView extends Component {
@@ -32,7 +36,8 @@ export default class MyOrdersListView extends Component {
             index: -1,
             CONFIG: [],
             isError:false,
-            errMsgText:'发生错误'
+            errMsgText:'发生错误',
+            allData:[]
         };
         this.currentPage = 1;
         this.noMoreData = false;
@@ -125,8 +130,11 @@ export default class MyOrdersListView extends Component {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 NativeModules.commModule.toast('订单已取消');
-                                track(trackEvent.cancelPayOrder,{orderID:this.state.viewData[this.state.index].orderNo,orderAmount:this.state.viewData[this.state.index].orderAmount
-                                });
+                                track(trackEvent.cancelPayOrder,{orderID:this.state.allData[this.state.index].orderNo,orderAmount:this.state.allData[this.state.index].orderAmount
+                                    ,actualPaymentAmount:this.state.allData[this.state.index].payAmount,paymentMethod:null,ifUseOneYuan:this.state.allData[this.state.index].tokenCoinAmount>0?true:false,
+                                    ifUseCoupons:this.state.allData[this.state.index].couponAmount>0?true:false,couponsName:'',couponsAmount:this.state.allData[this.state.index].couponAmount,
+                                    numberOfOneYuan:this.state.allData[this.state.index].tokenCoinAmount,oneYuanCouponsAmount:this.state.allData[this.state.index].tokenCoinAmount,transportationCosts:this.state.allData[this.state.index].freightAmount,
+                                    deliveryMethod:'', storeCode:user.storeCode?user.storeCode:''});
                                 index = -1;
                                 this.onRefresh();
                             } else {
@@ -286,6 +294,7 @@ export default class MyOrdersListView extends Component {
         }
         OrderApi.queryPage({ ...params, status: status }).then((response) => {
             Toast.hiddenLoading();
+            this.setState({allData:response.data?response.data.data:[]})
             this.getList(response.data);
             console.log(response);
             this.setState({ isEmpty: response.data.totalNum === 0 ,isError:false,});
@@ -314,6 +323,7 @@ export default class MyOrdersListView extends Component {
             }).then((response) => {
                 Toast.hiddenLoading();
                 this.isFirst = false;
+                this.setState({allData:response.data?response.data.data:[]})
                 this.getList(response.data);
                 this.setState({ isEmpty: response.data.totalNum === 0 ,isError:false});
             }).catch(e => {

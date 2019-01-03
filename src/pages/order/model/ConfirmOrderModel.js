@@ -3,10 +3,12 @@ import OrderApi from '../api/orderApi'
 import StringUtils from "../../../utils/StringUtils";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
 import bridge from "../../../utils/bridge";
+import user from '../../../model/user'
 import API from '../../../api';
 import { track, trackEvent } from "../../../utils/SensorsTrack";
+// import RouterMap, { navigate } from "../../../navigation/RouterMap";
 
-class ConfirmOrderModel {
+ class ConfirmOrderModel {
     @observable
     orderProductList=[]
     @observable
@@ -37,6 +39,26 @@ class ConfirmOrderModel {
     addressId=null
     @observable
     orderParamVO={}
+    @observable
+    isError=false
+
+   @action clearData(){
+       this.orderProductList=[]
+       this.payAmount='0'
+       this.totalFreightFee='0'
+       this.userAddressDTO=null
+       this.orderNo=null
+       this.tokenCoin=0
+       this.addressData={}
+       this.userCouponCode=null
+       this.tokenCoinText=null
+       this.couponName= null
+       this.canUseCou=false
+       this.couponList=[]
+       this.message=""
+       this.addressId=null
+       this.orderParamVO={}
+   }
 
   @action  makeSureProduct(orderParamVO,params={}){
         this.orderParamVO=orderParamVO;
@@ -117,15 +139,25 @@ class ConfirmOrderModel {
   }
 
     disPoseErr=(err)=>{
-        confirmOrderModel.loading=false
-        confirmOrderModel.netFailedInfo=err
-        confirmOrderModel.loadingState=PageLoadingState.fail
+          this.isError=true;
+        if((err.code === 10003 && err.msg.indexOf("不在限制的购买时间") !== -1)||err.code === 54001){
+            // navigate(RouterMap.LoginPage)
+            this.loading=false
+            this.netFailedInfo=null
+            this.loadingState=PageLoadingState.success
+        }else{
+            this.loading=false
+            this.netFailedInfo=err
+            this.loadingState=PageLoadingState.fail
+        }
+
         return err;
 
     }
     handleNetData = (data) => {
-        confirmOrderModel.loading=false
-        confirmOrderModel.loadingState=PageLoadingState.success
+        this.isError=false
+        this.loading=false
+        this.loadingState=PageLoadingState.success
         this.orderProductList=data.orderProductList;
         this.addressData = data.userAddressDTO || data.userAddress || {}
         this.addressId=this.addressData.id
@@ -200,8 +232,8 @@ class ConfirmOrderModel {
                     track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
                         receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
                         discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
-                        YiyuanDiscountAmount:this.tokenCoin})
-                     // this.replaceRouteName(data);
+                        yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
+                     this.isError=false
                     return response.data;
                 }).catch(err => {
                     bridge.hiddenLoading();
@@ -215,8 +247,8 @@ class ConfirmOrderModel {
                     track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                         receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
                         discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
-                        YiyuanDiscountAmount:this.tokenCoin})
-                    // this.replaceRouteName(data);
+                        yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
+                    this.isError=false
                      return data;
                 }).catch(err => {
                     bridge.hiddenLoading();
@@ -224,14 +256,14 @@ class ConfirmOrderModel {
                 });
                 break;
             case 2:
-                OrderApi.DepreciateSubmitOrder(baseParams).then((response) => {
+              return  OrderApi.DepreciateSubmitOrder(baseParams).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
                     track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                         receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
                         discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
-                        YiyuanDiscountAmount:this.tokenCoin})
-                    // this.replaceRouteName(data);
+                        yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
+                   this.isError=false
                     return data;
                 }).catch(err => {
                     bridge.hiddenLoading();
@@ -250,14 +282,14 @@ class ConfirmOrderModel {
                     submitType:2,
                     quantity:1,
                 };
-                OrderApi.PackageSubmitOrder(params).then((response) => {
+              return  OrderApi.PackageSubmitOrder(params).then((response) => {
                     bridge.hiddenLoading()
                     let data = response.data;
                         track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                             receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
                             discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
-                            YiyuanDiscountAmount:this.tokenCoin})
-                    // this.replaceRouteName(data);
+                            yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
+                    this.isError=false
                     return data;
                 }).catch(err => {
                    bridge.hiddenLoading();
@@ -267,26 +299,6 @@ class ConfirmOrderModel {
 
         }
     }
-
-    // replaceRouteName(data) {
-    //     // this.$navigate('payment/PaymentMethodPage',
-    //     //     {
-    //     //         orderNum: data.orderNo,
-    //     //         amounts: data.payAmount,
-    //     //         pageType: 0,
-    //     //        }
-    //     // )
-    //     let replace = NavigationActions.replace({
-    //         key: this.props.navigation.state.key,
-    //         routeName: 'payment/PaymentMethodPage',
-    //         params: {
-    //             orderNum: data.orderNo,
-    //             amounts: data.payAmount,
-    //             pageType: 0,
-    //         }
-    //     });
-    //     this.props.navigation.dispatch(replace);
-    // }
 
 
 }

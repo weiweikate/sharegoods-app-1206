@@ -2,7 +2,7 @@
  * 今日榜单
  */
 import React, {Component} from 'react'
-import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
@@ -10,6 +10,7 @@ import { homeModule } from './Modules'
 import { todayModule } from './HomeTodayModel'
 import DesignRule from 'DesignRule';
 import ImageLoad from '@mr/image-placeholder'
+import {MRText as Text} from '../../components/ui';
 
 const TodayItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <ImageLoad cacheable={true} style={styles.img} source={{uri: item.imgUrl}}/>

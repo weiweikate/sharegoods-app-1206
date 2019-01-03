@@ -1,8 +1,9 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../../../components/ui'
 
 export default class EditPayPwdPage extends BasePage {
 

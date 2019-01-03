@@ -4,12 +4,12 @@ import React, {
 import {
     StyleSheet,
     View,
-    TextInput,
     TouchableHighlight,
     InteractionManager
 } from 'react-native';
 import PropTypes from 'prop-types';
 import DesignRule from 'DesignRule';
+import {MRTextInput as TextInput}from './UIText';
 
 /**
  * 交易密码框
@@ -19,7 +19,7 @@ export default class PasswordInput extends Component {
         style: PropTypes.style,
         inputItemStyle: PropTypes.style,
         iconStyle: PropTypes.style,
-        maxLength: TextInput.propTypes.maxLength.isRequired,
+        // maxLength: TextInput.propTypes.maxLength.isRequired,
         onChange: PropTypes.func,
         onEnd: PropTypes.func,
         autoFocus: PropTypes.bool

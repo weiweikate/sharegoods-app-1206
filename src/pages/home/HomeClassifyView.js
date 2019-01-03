@@ -7,7 +7,6 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Text,
     Image
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -16,6 +15,7 @@ import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user'
 import DesignRule from 'DesignRule'
+import {MRText as Text} from '../../components/ui';
 
 const { px2dp } = ScreenUtils;
 
@@ -49,7 +49,7 @@ export default class HomeClassifyView extends Component {
         if (data.img && data.name !== '全部分类') {
             navigate('home/search/SearchResultPage', { keywords: data.name })
         } else {
-            navigate(data.route, {fromHome: true, id: 10, linkTypeCode: data.linkTypeCode})
+            navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode})
         }
     }
 

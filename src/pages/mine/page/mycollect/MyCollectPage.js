@@ -10,7 +10,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity, ListView, TouchableWithoutFeedback, Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
@@ -22,7 +21,9 @@ import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 import UIImage from '@mr/image-placeholder';
+import {MRText as Text} from '../../../../components/ui'
 // import { NavigationActions } from 'react-navigation';
+import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 
 import RES from '../../res';
 
@@ -39,7 +40,8 @@ export default class MyCollectPage extends BasePage {
             selectAll: false,
             isEmpty: true,
             totalPrice: 0,
-            selectGoodsNum: 0
+            selectGoodsNum: 0,
+            loadingState: PageLoadingState.loading
         };
         this.currentPage = 1;
     }
@@ -48,7 +50,23 @@ export default class MyCollectPage extends BasePage {
         title: '收藏店铺',
         show: true // false则隐藏导航
     };
-
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this._reload
+            }
+        };
+    };
+    // 重新加载
+    _reload = () => {
+        this.setState({
+            loading: true,
+            netFailedInfo: null,
+            loadingState: PageLoadingState.loading
+        }, this.getDataFromNetwork);
+    };
     $isMonitorNetworkStatus() {
         return true;
     }
@@ -205,9 +223,9 @@ export default class MyCollectPage extends BasePage {
     }
 
     getDataFromNetwork = () => {
-        this.$loadingShow();
+        // this.$loadingShow();
         MineApi.queryCollection({ page: this.currentPage, size: 20 }).then(res => {
-            this.$loadingDismiss();
+            // this.$loadingDismiss();
             let arr = this.currentPage === 1 ? [] : this.state.viewData;
             console.log(res);
             if (res.code === 10000) {
@@ -229,11 +247,16 @@ export default class MyCollectPage extends BasePage {
                 });
                 console.log(arr);
                 this.setState({
-                    viewData: arr
+                    viewData: arr,
+                    loadingState: PageLoadingState.success,
                 });
             }
         }).catch(err => {
-            this.$loadingDismiss();
+            // this.$loadingDismiss();
+            this.setState({
+                loadingState: PageLoadingState.fail,
+                tFailedInfo: err,
+            })
             if (err.code === 10009) {
                 this.$navigate('login/login/LoginPage');
             }
@@ -243,9 +266,16 @@ export default class MyCollectPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {this.state.viewData && this.state.viewData.length > 0 ? this._renderListView() : this._renderEmptyView()}
+                {renderViewByLoadingState(this.$getPageStateOptions(), this._renderContent)}
             </View>
         );
+    }
+    _renderContent=()=>{
+        return(
+            <View style={{ flex: 1}}>
+                {this.state.viewData && this.state.viewData.length > 0 ? this._renderListView() : this._renderEmptyView()}
+            </View>
+        )
     }
 
     _renderListView = () => {

@@ -3,7 +3,7 @@
  */
 
 import React, {Component} from 'react'
-import {View , ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
+import {View , ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
@@ -13,10 +13,9 @@ import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTo
 import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/image-placeholder'
 import EmptyUtils from '../../utils/EmptyUtils'
+import {MRText as Text} from '../../components/ui';
 
 const GoodItems = ({img, title, money, press}) => {
-
-console.log('GoodItems', money, EmptyUtils.isEmpty(money))
 
 return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
     <View style={styles.goodsView} >
@@ -32,7 +31,7 @@ return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
     }
     </View>
 </TouchableWithoutFeedback>
-} 
+}
 
 const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress={()=>{press && press()}}>
     <View style={styles.backView}>
@@ -112,7 +111,7 @@ export default class HomeSubjectView extends Component {
         })
         return <View style={styles.container}>
             <View style={styles.titleView}>
-                <Text style={styles.title}>超值热卖</Text>
+                <Text style={styles.title} allowFontScaling={false}>超值热卖</Text>
             </View>
             {items}
         </View>

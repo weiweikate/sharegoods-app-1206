@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -9,6 +9,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import user from '../../../../model/user';
 import MineAPI from '../../api/MineApi';
 import DesignRule from 'DesignRule';
+import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
 
 export default class SetNewPhoneNumPage extends BasePage {
 
@@ -41,7 +42,6 @@ export default class SetNewPhoneNumPage extends BasePage {
                     <Text style={styles.itemLeftText}>用户姓名</Text>
                     <TextInput
                         style={styles.itemRightInput}
-                        underlineColorAndroid={'transparent'}
                         onChangeText={(text) => this.setState({ userName: text })}
                         value={this.state.userName}
                         placeholder={'请输入用户姓名'}
@@ -53,7 +53,6 @@ export default class SetNewPhoneNumPage extends BasePage {
                     <Text style={styles.itemLeftText}>证件号码</Text>
                     <TextInput
                         style={styles.itemRightInput}
-                        underlineColorAndroid={'transparent'}
                         onChangeText={(text) => this.setState({ cardNum: text })}
                         value={this.state.cardNum}
                         placeholder={'请输入证件号码'}

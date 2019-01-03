@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     TouchableWithoutFeedback,
-    Text,
     ScrollView
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -14,6 +13,7 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../../components/ui';
 
 
 export default class SelectionPage extends Component {

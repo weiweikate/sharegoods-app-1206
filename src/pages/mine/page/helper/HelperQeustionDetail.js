@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     TouchableOpacity,
     ScrollView
 } from 'react-native';
@@ -10,6 +9,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../../../components/ui'
 
 /**
  * @author chenxiang

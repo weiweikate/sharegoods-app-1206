@@ -23,7 +23,7 @@ import java.util.List;
 public class SensorsUtils {
 
     public static void initDebugMode(Context context, String channel) {
-        SensorsDataAPI.sharedInstance(context, "https://stat.sharegoodsmall.com/debug?project=default",
+        SensorsDataAPI.sharedInstance(context, "https://stat.sharegoodsmall.com/sa?project=production",
                 SensorsDataAPI.DebugMode.DEBUG_OFF);
         //开启调试日志（ true 表示开启调试日志）
         SensorsDataAPI.sharedInstance().enableLog(false);

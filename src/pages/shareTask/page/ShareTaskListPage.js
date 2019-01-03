@@ -14,7 +14,6 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity,
     Image,
     TouchableWithoutFeedback
@@ -32,6 +31,7 @@ import DateUtils from '../../../utils/DateUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import user from '../../../model/user';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import {MRText as Text} from '../../../components/ui'
 import res from '../res'
 const arrow_bottom =  res.button.arrow_bottom;
 const arrow_top =  res.button.arrow_top;
@@ -134,7 +134,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'task'}
                                 miniProgramJson={{
-                                    title: '邀请好友可获得品牌推广的现金奖励',
+                                    title: '分享好友可获得品牌推广的奖励',
                                     dec: '',
                                     thumImage: 'logo.png',
                                     hdImageURL: '',

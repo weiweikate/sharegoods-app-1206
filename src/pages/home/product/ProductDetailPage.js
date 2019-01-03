@@ -5,7 +5,6 @@ import {
     SectionList,
     // Image,
     FlatList,
-    Text,
     Alert
     // TouchableWithoutFeedback,
     // ImageBackground,
@@ -26,6 +25,7 @@ import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import { MRText as Text } from '../../../components/ui';
 // import CommModal from '../../../comm/components/CommModal';
 import DesignRule from 'DesignRule';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
@@ -231,7 +231,7 @@ export default class ProductDetailPage extends BasePage {
                 /*商品详情埋点*/
                 const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = data || {};
                 track(trackEvent.commodityDetail, {
-                    preseat: this.params.preseat || '',
+                    preSeat: this.params.preseat || '',
                     commodityID: prodCode,
                     commodityName: name,
                     firstCommodity: firstCategoryId,
@@ -272,7 +272,7 @@ export default class ProductDetailPage extends BasePage {
         switch (type) {
             case 'jlj':
                 if (!user.isLogin) {
-                    Alert.alert('提示', '登录后分享才能赚取赏金',
+                    Alert.alert('提示', '登录后分享才能获取奖励',
                         [
                             {
                                 text: '取消', onPress: () => {
@@ -317,7 +317,7 @@ export default class ProductDetailPage extends BasePage {
             /*加入购物车埋点*/
             const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.state.data || {};
             track(trackEvent.addToShoppingcart, {
-                shoppingcartEntrance: '详情页面',
+                shoppingCartEntrance: '详情页面',
                 commodityNumber: amount,
                 commodityID: prodCode,
                 commodityName: name,
@@ -589,7 +589,7 @@ export default class ProductDetailPage extends BasePage {
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{
-                                commodityID: this.params.activityCode,
+                                commodityID: prodCode,
                                 commodityName: name,
                                 firstCommodity: firstCategoryId,
                                 secondCommodity: secCategoryId,

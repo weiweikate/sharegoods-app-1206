@@ -5,7 +5,7 @@ import {
     View,
     Image,
     TextInput as RNTextInput,
-    TouchableOpacity
+    TouchableOpacity,KeyboardAvoidingView
 } from "react-native";
 import {
     UIText
@@ -23,8 +23,8 @@ export default class ConfirmPriceView extends Component {
     render() {
         return(
             <View>
-                {this.renderPriceView()}
                 {this.renderCouponsPackage()}
+                {this.renderPriceView()}
             </View>
         )
     }
@@ -36,7 +36,9 @@ export default class ConfirmPriceView extends Component {
     };
     renderPriceView = () => {
         return (
-            <View style={{ backgroundColor: "white" }}>
+             <KeyboardAvoidingView
+                behavior="padding"
+             style={{ backgroundColor: "white" }}>
                 <TouchableOpacity style={styles.couponsStyle}
                                   disabled={!confirmOrderModel.canUseCou}
                                   onPress={this.props.jumpToCouponsPage}>
@@ -86,7 +88,7 @@ export default class ConfirmPriceView extends Component {
                     </View>
                 </TouchableOpacity>
                 {this.renderLine()}
-            </View>
+             </KeyboardAvoidingView>
         );
     };
     renderCouponsPackage = () => {
@@ -153,4 +155,16 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginLeft: ScreenUtils.autoSizeWidth(36)
     },
+    couponsTextStyle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: ScreenUtils.px2dp(13),
+        alignSelf: 'center'
+    },
+    couponsNumStyle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: ScreenUtils.px2dp(13),
+        alignSelf: 'center',
+        marginRight: ScreenUtils.autoSizeWidth(13.5)
+    },
+
 });

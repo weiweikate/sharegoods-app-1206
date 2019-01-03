@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Text,
     View,
     StyleSheet,
     TouchableOpacity,
@@ -14,6 +13,9 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
 import UIImage from '@mr/image-placeholder';
+import {
+    MRText as Text
+} from '../../../../components/ui';
 
 const PeopleImg = res.myShop.dy_07;
 const ArrowImg = res.myShop.xjt_03;

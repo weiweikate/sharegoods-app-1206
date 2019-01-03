@@ -4,7 +4,6 @@ import {
     StyleSheet,
     View,
     ImageBackground,
-    Text,
     TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
@@ -18,6 +17,7 @@ import Toast from '../../../../utils/bridge' ;
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui'
 
 const singInImg = res.userInfoImg.qdaojianli_icon;
 const taskImg = res.userInfoImg.rwujianli_icon;
@@ -94,7 +94,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
                         this.$navigate('home/signIn/SignInPage');
                     }}>
-                        <Text style={{ fontSize: 15, color: 'white' }}>兑换1元现金券</Text>
+                        <Text style={{ fontSize: 15, color: 'white' }}>兑换1元抵扣券</Text>
                     </TouchableOpacity>
                 </View>
             </View>

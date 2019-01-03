@@ -8,12 +8,12 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     Image,
-    Text
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
 import UIImage from '@mr/image-placeholder';
+import {MRText as Text} from '../../../../components/ui';
 
 const gwc = res.search.gwc;
 

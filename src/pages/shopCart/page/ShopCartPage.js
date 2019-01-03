@@ -29,6 +29,7 @@ import ShopCartEmptyView from '../components/ShopCartEmptyView';
 // import ShopCartHeaderView from '../components/ListHeaderView';
 // const CartListView = requireNativeComponent('ShopCartListView');
 import ShopCartCell from '../components/ShopCartCell';
+// import { track } from '../../../utils/SensorsTrack';
 // import TempShopCartCell from '../components/TempShopCartCell';
 // import  NavHeaderView from '../components/ShopCartNavHeaderView'
 // import HeaderView from '../../order/afterSaleService/components/HeaderView';
@@ -88,7 +89,6 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     }
-
     // _renderNavHeaderView=()=>{
     //     return(
     //         <View
@@ -102,7 +102,6 @@ export default class ShopCartPage extends BasePage {
     //     )
     //
     // }
-
     _renderEmptyView = () => {
         return (
             <ShopCartEmptyView btnClickAction={() => {

@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {
-    StyleSheet, View, Text, DeviceEventEmitter,
+    StyleSheet, View, DeviceEventEmitter,
     ImageBackground, Image
 } from 'react-native';
 
@@ -15,6 +15,7 @@ import user from '../../../../model/user';
 import DesignRule from 'DesignRule';
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
+import {MRText as Text} from '../../../../components/ui'
 
 const {
     youhuiquan_bg_zhihui: usedBg,

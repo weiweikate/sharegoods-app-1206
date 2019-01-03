@@ -2,7 +2,7 @@
  * 热门发现
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
@@ -10,6 +10,9 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils'
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
+import {
+    MRText as Text,
+} from '../../components/ui';
 
 const imgWidth = px2dp(168);
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import {  View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
 import Modal from 'CommModal';
@@ -7,6 +7,7 @@ const { px2dp } = ScreenUtil;
 import { NavigationActions } from 'react-navigation';
 const successImg = res.button.tongyon_icon_check_green;
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../components/ui'
 import res from './res';
 const failImg = res.fail;
 export const PaymentResult = {

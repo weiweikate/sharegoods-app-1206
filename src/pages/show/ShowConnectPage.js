@@ -2,12 +2,15 @@
  * 发现收藏
  */
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
+import {
+    MRText as Text,
+} from '../../components/ui';
 
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';

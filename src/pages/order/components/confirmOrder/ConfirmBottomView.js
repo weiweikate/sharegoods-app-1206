@@ -2,14 +2,12 @@ import React ,{Component}from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
 } from 'react-native';
 import {
-    UIText,
+    UIText,NoMoreClick
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-// import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import { confirmOrderModel } from "../../model/ConfirmOrderModel";
 
@@ -30,7 +28,7 @@ export default class ConfirmBottomView extends Component {
                             value={StringUtils.formatMoneyString(confirmOrderModel.payAmount)}
                             style={styles.commitAmountStyle}/>
                     </View>
-                    <TouchableOpacity
+                    <NoMoreClick
                         style={styles.commitTouStyle}
                         onPress={this.props.commitOrder}>
                         <UIText value={'提交订单'}
@@ -40,7 +38,7 @@ export default class ConfirmBottomView extends Component {
                                     paddingLeft: 15,
                                     paddingRight: 15
                                 }}/>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                 </View>
                 {this.renderLine()}
             </View>

@@ -5,7 +5,6 @@ import {
     SectionList,
     // Image,
     FlatList,
-    Text,
     // TouchableWithoutFeedback,
     TouchableOpacity
     // AsyncStorage,
@@ -28,6 +27,9 @@ import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
+import {
+    MRText as Text
+} from '../../components/ui';
 
 // const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
@@ -192,7 +194,7 @@ export default class TopicDetailPage extends BasePage {
                         /*商品详情埋点*/
                         const { packageCode, name, firstCategoryId, secCategoryId, levelPrice } = this.state.data;
                         track(trackEvent.commodityDetail, {
-                            preseat: this.params.preseat || '',
+                            preSeat: this.params.preseat || '',
                             commodityID: packageCode,
                             commodityName: name,
                             firstCommodity: firstCategoryId,
@@ -282,7 +284,7 @@ export default class TopicDetailPage extends BasePage {
                         /*商品详情埋点*/
                         const { name, firstCategoryId, secCategoryId, minPrice } = data.data || {};
                         track(trackEvent.commodityDetail, {
-                            preseat: this.params.preseat || '',
+                            preSeat: this.params.preseat || '',
                             commodityID: prodCode,
                             commodityName: name,
                             firstCommodity: firstCategoryId,
@@ -411,7 +413,7 @@ export default class TopicDetailPage extends BasePage {
                                       activityData={this.state.activityData}
                                       navigation={this.props.navigation}
                                       showDetailModal={() => {
-                                          this.TopicDetailShowModal.show('降价拍规则', null, null, `降价拍活动规则说明：\n降价拍活动开启后，每到规定时间都降低销售价；\n什么时候降价？每个活动，每个商品的降价时间都是不固定的；\n参与降价拍的商品是有限的，而且每个商品的购买都是有限制的；\n降价拍活动时间？每个活动的时间都是规定的，直到商品拍卖结束为止；\n关于购买限制？每个用户购买成功后都会扣除购买机会，即时退款也无法增加购买次数；`);
+                                          this.TopicDetailShowModal.show('降价拍玩法规则', null, null, `1、参与降价拍的商品，活动开始之后，商品价格由高到低依次递减，直到竞买人应价，商品库存有限，活动时间有限，先拍先得。\n2、一个降价拍商品，每人只能抢购一件，下单之后不可立马取消订单，直到该商品结束降价拍活动，才开放退货退款入口。\n3、降价拍商品不与其它优惠同享。`);
                                       }}/>;
     };
 
@@ -717,7 +719,7 @@ export default class TopicDetailPage extends BasePage {
                     }} onPress={() => this._bottomAction(colorType)} disabled={!(colorType === 1 || colorType === 2)}>
                         <Text style={{
                             color: 'white',
-                            fontSize: 14
+                            fontSize: 14,textAlign:'center'
                         }} allowFontScaling={false}>{bottomTittle}</Text>
                     </TouchableOpacity>
                 </View>

@@ -15,15 +15,13 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    TouchableHighlight,
-    TextInput,
-    Text
+    TouchableHighlight
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {
     UIText,
-    UIImage
-
+    UIImage,
+    MRTextInput as TextInput
 } from '../../../components/ui';
 import DesignRule from 'DesignRule';
 import shopCartStore from '../model/ShopCartStore';
@@ -81,7 +79,7 @@ export default class ShopCartCell extends Component {
                                 if (tempValues[rowId].status === 0 ||
                                     tempValues[rowId].status === 2 ||
                                     tempValues[rowId].status === 3 ||
-                                    tempValues[rowId].stock  === 0) {
+                                    tempValues[rowId].stock === 0) {
                                     bridge.$toast('此商品不可结算');
                                     tempValues[rowId].isSelected = false;
                                 } else {
@@ -224,6 +222,7 @@ export default class ShopCartCell extends Component {
                                         borderRightWidth: 0
                                     }]}>
                                         <TextInput
+                                            allowFontScaling={false}
                                             style={
                                                 [styles.TextInputStyle,
                                                     (itemData.stock === 0 ||
@@ -235,7 +234,6 @@ export default class ShopCartCell extends Component {
                                                 ]
                                             }
                                             value={itemData.amount ? '' + itemData.amount : ''}
-                                            underlineColorAndroid={'transparent'}
                                             onFocus={() => {
                                                 if (itemData.stock === 0 ||
                                                     itemData.status === 0 ||
@@ -318,17 +316,19 @@ export default class ShopCartCell extends Component {
                                     ]
                                 }
                             >
-                                <Text style={{
+                                <UIText style={{
                                     flex: 1,
                                     color: 'white',
                                     fontSize: 11
-                                }}>
-                                    {
-                                        itemData.activityType === 1 ?
-                                            (getSkillIsBegin(itemData) === 0 ? '秒杀活动未开始,暂不可购买~' : '该商品正在进行秒杀活动,快去看看~') :
-                                            '该商品正在进行降价拍活动,快去看看~'
-                                    }
-                                </Text>
+                                }}
+                                        value={
+                                            itemData.activityType === 1 ?
+                                                (getSkillIsBegin(itemData) === 0 ? '秒杀活动未开始,暂不可购买~' : '该商品正在进行秒杀活动,快去看看~') :
+                                                '该商品正在进行降价拍活动,快去看看~'
+                                        }
+                                >
+
+                                </UIText>
                             </View>
                             : null
                     }

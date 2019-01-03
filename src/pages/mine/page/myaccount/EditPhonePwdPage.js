@@ -1,6 +1,6 @@
 import {
-    Image, Text,
-    TextInput, TouchableOpacity, View
+    Image,
+    TouchableOpacity, View
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
@@ -13,6 +13,7 @@ import user from '../../../../model/user';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
 const openEyeImage = res.button.open_eye;
 const closeEyeImage = res.button.close_eye;
 
@@ -45,8 +46,7 @@ export default class EditPhonePwdPage extends BasePage {
                 alignItems: 'center'
             }}>
                 <UIText value={'旧密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
-                <TextInput underlineColorAndroid={'transparent'}
-                           style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
+                <TextInput style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
                            placeholder={'请输入旧密码'} placeholderTextColor={DesignRule.textColor_hint}
                            onChangeText={(text) => this.setState({ oldPwd: text })}
                            value={this.state.oldPwd}
@@ -71,8 +71,7 @@ export default class EditPhonePwdPage extends BasePage {
                     alignItems: 'center'
                 }}>
                     <UIText value={'新密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
-                    <TextInput underlineColorAndroid={'transparent'}
-                               style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
+                    <TextInput style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
                                placeholder={'请输入新密码'} placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => this.setState({ newPwd: text })}
                                value={this.state.newPwd}
@@ -96,8 +95,7 @@ export default class EditPhonePwdPage extends BasePage {
                     alignItems: 'center'
                 }}>
                     <UIText value={'新密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
-                    <TextInput underlineColorAndroid={'transparent'}
-                               style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
+                    <TextInput style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
                                placeholder={'请再次输入新密码'} placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => this.setState({ newPwdAgain: text })}
                                value={this.state.newPwdAgain}

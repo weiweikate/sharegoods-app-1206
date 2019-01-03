@@ -16,7 +16,6 @@ import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Text,
     TouchableOpacity,
     DeviceEventEmitter
 } from 'react-native';
@@ -28,6 +27,7 @@ import EmptyUtils from '../../../../utils/EmptyUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
+import {MRText as Text} from '../../../../components/ui'
 
 const { px2dp } = ScreenUtils;
 // const url = '/static/protocol/extensionExplain.html'

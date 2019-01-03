@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import ScreenUtil from '../../utils/ScreenUtils';
 const { px2dp } = ScreenUtil
 import user from '../../model/user'
 import { observer } from 'mobx-react'
 import res from './res'
+import {MRText as Text} from '../../components/ui';
 
 @observer
 export default class HomeUserView extends Component {
@@ -26,7 +27,7 @@ export default class HomeUserView extends Component {
                 <View style={{flex: 1}}/>
                 <TouchableOpacity onPress={() => this._goToPromotionPage()}>
                     <ImageBackground style={styles.btnBack} source={res.user_level} resizeMode={'stretch'}>
-                        <Text style={styles.see} allowFontScaling={false}>查看收益</Text>
+                        <Text style={styles.see} allowFontScaling={false}>查看账户</Text>
                         <View style={{width: 8}}/>
                         <Image source={res.arrowRight}/>
                     </ImageBackground>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, ImageBackground } from 'react-native';
+import {View, StyleSheet, Image, ImageBackground } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import LottieView from 'lottie-react-native';
@@ -7,6 +7,10 @@ import LottieView from 'lottie-react-native';
 const { px2dp } = ScreenUtils;
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
+import {
+    MRText as Text
+} from '../../../../components/ui';
+
 
 const CCZImg = res.myShop.ccz_03;
 const { shop_box_0, shop_box_25, shop_box_75, shop_box_100 } = res.myShop;
@@ -90,7 +94,7 @@ export default class ShopHeaderBonus extends Component {
                                 fontSize: 12,
                                 marginTop: px2dp(5),
                                 color: DesignRule.textColor_secondTitle
-                            }} numberOfLines={2} allowFontScaling={false}>预计本次可得额外品牌分红奖励金<Text
+                            }} numberOfLines={2} allowFontScaling={false}>预计本次可得额外品牌分红奖励<Text
                                 style={{ color: DesignRule.textColor_redWarn }}>{currentUserSettle}</Text>元</Text>
                             <Text style={{
                                 fontSize: 10,

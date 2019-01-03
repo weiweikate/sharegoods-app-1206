@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     NativeModules,
     TouchableOpacity,
     ScrollView
 } from 'react-native';
 import Modal from 'CommModal';
 import {
-    UIText, UIImage
+    UIText, UIImage, MRText as Text
 } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';

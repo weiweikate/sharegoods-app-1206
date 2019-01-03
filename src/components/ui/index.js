@@ -1,5 +1,5 @@
 import UIImage from './UIImage';
-import UIText,{MRText} from "./UIText";
+import UIText, { MRText, MRTextInput } from './UIText';
 import AutoExpandingInput from "./AutoExpandingInput";
 import SearchBar from "./searchBar/SearchBar";
 import TabView from "./TableView";
@@ -28,5 +28,6 @@ export {
     NoMoreClick,
     PasswordInput,
     UIButton,
-    MRText
+    MRText,
+    MRTextInput
 };

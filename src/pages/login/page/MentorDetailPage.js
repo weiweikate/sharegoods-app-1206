@@ -15,19 +15,18 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
 // import ImageLoad from '@mr/image-placeholder'
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
-
+import {MRText as Text} from '../../../components/ui'
 
 export default class MentorDetailPage extends BasePage {
     constructor(props) {
@@ -36,7 +35,7 @@ export default class MentorDetailPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '选择导师',
+        title: '选择顾问',
         show: true// false则隐藏导航
     };
 
@@ -115,16 +114,11 @@ export default class MentorDetailPage extends BasePage {
                             style={styles.bottomBtnBgViewStyle}
                         >
                             <UIText
-                                value={'选择该导师'}
+                                value={'选择该顾问'}
                                 style={{
                                     fontSize: 17,
                                     color: DesignRule.white
                                 }}
-                                onPress={
-                                    () => {
-                                        this.$navigateBack();
-                                    }
-                                }
                             />
                         </View>
                     </TouchableOpacity>
@@ -139,16 +133,11 @@ export default class MentorDetailPage extends BasePage {
             code: mentorData.perfectNumberCode
         }).then(res => {
             this.$toastShow('选择成功');
-            // bridge.$toast('选择成功');
             homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
-            // this.$navigateBackToHome();
-            setTimeout(()=>{
-                this.$navigateBack()
-            },5000)
+            this.$navigateBackToHome()
         }).catch(res => {
             this.$toastShow(res.msg)
-            // bridge.$toast(res.msg);
-            // this.$navigateBack()
+
         });
     };
 }

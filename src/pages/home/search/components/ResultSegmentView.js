@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableWithoutFeedback,
     Image
 } from 'react-native';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui';
 
 const upDown = res.search.updown;
 

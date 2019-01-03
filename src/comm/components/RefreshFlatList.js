@@ -19,7 +19,6 @@ import {
     ActivityIndicator,
     Text,
     Image,
-    NativeModules,
     RefreshControl
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -110,7 +109,7 @@ export default class RefreshFlatList extends React.Component {
                     <Text style={{
                         marginTop: 10,
                         color: DesignRule.textColor_secondTitle
-                    }}>{this.props.defaultEmptyText}</Text>
+                    }} allowFontScaling={false}>{this.props.defaultEmptyText}</Text>
                 </View>
             );
         }
@@ -242,7 +241,7 @@ export default class RefreshFlatList extends React.Component {
                 onEndRefresh && onEndRefresh();
 
             }
-            NativeModules.commModule.toast(error.msg || '请求失败');
+            // NativeModules.commModule.toast(error.msg || '请求失败');
             that.setState({
                 refreshing: false,
                 loadingMore: false,
@@ -262,6 +261,7 @@ export default class RefreshFlatList extends React.Component {
           renderItem={this.props.renderItem}
           onEndReached={this._onLoadMore.bind(this)}
           onEndReachedThreshold={0.1}
+          ListHeaderComponent={this.props.renderHeader}
           // onRefresh={this._onRefresh.bind(this)}
           // refreshing={this.state.refreshing}
           //onLayout={this.onLayout.bind(this)}
@@ -312,7 +312,7 @@ class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
     renderIdleMore() {
         return (
             <View style={styles.footer}>
-                <Text style={styles.footerText}>上拉加载更多数据</Text>
+                <Text style={styles.footerText} allowFontScaling={false}>上拉加载更多数据</Text>
             </View>
         );
 
@@ -321,7 +321,7 @@ class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
     renderLoadingMore() {
         return (
             <View style={styles.footer}>
-                <Text style={styles.footerText}>正在加载中...</Text>
+                <Text style={styles.footerText} allowFontScaling={false}>正在加载中...</Text>
                 <ActivityIndicator style={{ marginLeft: 20 }} size='small'/>
             </View>
         );
@@ -330,7 +330,7 @@ class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
     renderLoadCompleted() {
         return (
             <View style={styles.footer}>
-                <Text style={styles.footerText}>我也是有底线的~</Text>
+                <Text style={styles.footerText} allowFontScaling={false}>我也是有底线的~</Text>
             </View>
         );
     }

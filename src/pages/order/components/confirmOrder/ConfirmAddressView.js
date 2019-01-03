@@ -24,6 +24,8 @@ const colorLine = res.addressLine;
 @observer
 export default class ConfirmAddressView extends Component {
 
+
+
     render() {
         return (
             <View>
@@ -34,6 +36,7 @@ export default class ConfirmAddressView extends Component {
     }
 
     renderAddress = () => {
+        console.log('renderAddress',)
         return (StringUtils.isNoEmpty(confirmOrderModel.addressId) ?
                 <TouchableOpacity
                     style={styles.addressSelectStyle}

@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     Image,
     Dimensions,
     StyleSheet,
@@ -15,6 +14,10 @@ import DesignRule from 'DesignRule';
 import res from '../../res';
 const DeleteIcon = res.shopSetting.del_icon;
 const DashLine = res.shopSetting.xt_03;
+import {
+    MRText as Text
+} from '../../../../components/ui';
+
 
 export default class AnnouncementRow extends Component {
 

@@ -300,7 +300,7 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
 
-    getDateData(diff) {
+    getDateData(closeTime) {
         const timeLeft = {
             years: 0,
             days: 0,
@@ -309,6 +309,9 @@ export default class MyOrdersDetailPage extends BasePage {
             sec: 0,
             millisec: 0
         };
+
+       let  diff=closeTime-Date.parse(new Date())/1000;
+        // console.log("getDateData",closeTime,diff)
         if (diff <= 0) {
             // this.sec = 0
             this.stop(); // 倒计时为0的时候, 将计时器清除
@@ -342,9 +345,11 @@ export default class MyOrdersDetailPage extends BasePage {
             orderDetailAfterServiceModel.moreDetail = "";
             return;
         }
+        let closeTime=autoConfirmTime+Date.parse(new Date())/1000;
         this.interval = setInterval(() => {
-            autoConfirmTime--;
-            let time = this.getDateData(autoConfirmTime);
+            // autoConfirmTime--;
+
+            let time = this.getDateData(closeTime);
             if (time.sec >= 0) {
                 if (orderDetailModel.status === 1) {
                     orderDetailAfterServiceModel.moreDetail = time.hours + ":" + time.min + ":" + time.sec + "后自动取消订单";
