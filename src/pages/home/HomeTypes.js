@@ -10,7 +10,8 @@ export const homeType = {
   classify: 'classify',
   goodsTitle: 'goodsTitle',
   user: 'user',
-  show: 'show'            //秀场
+  show: 11,            //秀场
+  web: 10
 }
 
 
@@ -20,7 +21,9 @@ const homeLinkType = {
   down: 3,
   spike: 4,
   package: 5,
-  store: 8
+  store: 8,
+  web: 10,
+  show: 11
 };
 
 export const homeRoute = {
@@ -29,5 +32,7 @@ export const homeRoute = {
   [homeLinkType.down]: 'topic/TopicDetailPage',
   [homeLinkType.spike]: 'topic/TopicDetailPage',
   [homeLinkType.package]: 'topic/TopicDetailPage',
-  [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
+  [homeLinkType.store]: 'spellShop/MyShop_RecruitPage',
+  [homeLinkType.web]: 'HtmlPage',
+  [homeLinkType.show]: 'show/ShowDetailPage'
 };

@@ -6,9 +6,7 @@
 import React from 'react';
 import {
     View,
-    Text,
     Image,
-    TextInput,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -20,9 +18,12 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../../../comm/res';
 import openShopRes from '../res';
+import {
+    MRText as Text, MRTextInput as TextInput
+} from '../../../components/ui';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;
@@ -228,7 +229,6 @@ export default class SetShopNamePage extends BasePage {
                                            textName: text
                                        });
                                    }}
-                                   underlineColorAndroid={'transparent'}
                                    placeholder={'请输入店铺名称'}
                                    blurOnSubmit={false}
                                    style={[styles.textInput, { marginRight: 32 }]}/>
@@ -238,7 +238,6 @@ export default class SetShopNamePage extends BasePage {
                     <View style={styles.textContainer}>
                         <Text style={styles.textTitle} allowFontScaling={false}>拼店区域</Text>
                         <TextInput value={this.state.textArea}
-                                   underlineColorAndroid={'transparent'}
                                    placeholder={'请选择店铺位置'}
                                    blurOnSubmit={false}
                                    style={styles.textInput}
@@ -252,7 +251,6 @@ export default class SetShopNamePage extends BasePage {
                         <Text style={styles.profileTittle} allowFontScaling={false}>店铺简介</Text>
                         <TextInput value={this.state.textProfile}
                                    onChangeText={this._onChangeText}
-                                   underlineColorAndroid={'transparent'}
                                    multiline
                                    placeholder={'可以简单介绍下你拼店的目标方向'}
                                    blurOnSubmit={false}

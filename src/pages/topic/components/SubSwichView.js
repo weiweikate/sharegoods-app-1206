@@ -8,7 +8,7 @@ import {
 import UIText from '../../../components/ui/UIText';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 export default class SubSwichView extends Component {
 

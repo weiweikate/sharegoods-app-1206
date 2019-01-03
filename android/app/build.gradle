@@ -74,6 +74,9 @@ android {
         maven {
             url "http://maven.aliyun.com/nexus/content/repositories/releases"
         }
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
@@ -100,7 +103,7 @@ dependencies {
         exclude(module: 'alicloud-android-utdid')
         exclude(module: 'alicloud-android-ut')
     }
-    api files('libs/alipaySdk-20180601.jar')
+    api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api project(':react-native-update')
     api project(':react-native-video')
     api project(':react-native-autoheight-webview')
@@ -110,11 +113,11 @@ dependencies {
     api project(':react-native-linear-gradient')
     api project(':react-native-fetch-blob')
     api project(':rn_deviceinfo')
-    api project(':react-native-webview-bridge')
-    api project(':@sensors.data/react-native-sensors-analytics')
-    api project(':@mr/request')
-    api project(':@mr/react-native-cookies')
-    api project(':@mr/geolocation')
+    api project(':rn-webview-bridge')
+    api project(':react-native-sensors-analytics')
+    api project(':request')
+    api project(':cookies')
+    api project(':geolocation')
     api project(':commonlib')
     api project(':qiyu_service')
     api project(':qrcode')

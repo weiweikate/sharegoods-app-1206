@@ -27,7 +27,7 @@ import ShareTaskHomeAlert from './ShareTaskHomeAlert';
 import res from '../res';
 import taskApi from '../api/taskApi';
 import { NavigationActions } from 'react-navigation';
-import RouterMap from 'RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 const task_icon = res.task_icon;
 
 export default class ShareTaskIcon extends React.Component {

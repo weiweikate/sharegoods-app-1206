@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, TouchableWithoutFeedback, Image, StyleSheet } from 'react-native';
+import { View, TouchableWithoutFeedback, Image, StyleSheet } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
@@ -11,9 +11,12 @@ import res from './res';
 
 const seeImg = res.button.see_white;
 const maskImg = res.other.show_mask;
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder';
 import TimerMixin from 'react-timer-mixin';
+import {
+    MRText as Text,
+} from '../../components/ui';
 
 export default class ShowHotItem extends Component {
     state = {

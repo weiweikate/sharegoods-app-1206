@@ -18,13 +18,15 @@ import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
 import { homeModule } from '../../../home/Modules';
 import { logout } from '../../../../utils/SensorsTrack';
-import {MRText as Text} from '../../../../components/ui'
+import { MRText as Text } from '../../../../components/ui';
+import userOrderNum from '../../../../model/userOrderNum';
+import apiEnvironment from '../../../../api/ApiEnvironment';
 
 /**
  * @author luoyongming
@@ -208,7 +210,10 @@ class SettingPage extends BasePage {
             '退出登录',
             '是否确认退出登录',
             [
-                { text: '取消' ,onPress:()=>{}},
+                {
+                    text: '取消', onPress: () => {
+                    }
+                },
                 {
                     text: '确认', onPress: () => {
                         AsyncStorage.removeItem('lastMessageTime').catch(e => {
@@ -217,6 +222,7 @@ class SettingPage extends BasePage {
                         // 正常退出，或者登录超时，都去清空数据
                         user.clearUserInfo();
                         user.clearToken();
+                        userOrderNum.clean();
                         bridge.clearCookies();
                         //清空购物车
                         shopCartStore.data = [];
@@ -228,7 +234,7 @@ class SettingPage extends BasePage {
                         QYChatUtil.qiYULogout();
                         this.$loadingDismiss();
                         // 神策退出登录
-                        logout()
+                        logout();
                     }
                 }
             ]
@@ -236,20 +242,22 @@ class SettingPage extends BasePage {
     };
 
 
-
     //**********************************BusinessPart******************************************
     jumpToAddressManagePage = () => {
         this.$navigate('mine/address/AddressManagerPage');
     };
     jumptToAboutUsPage = () => {
-        this.$navigate('mine/setting/AboutUsPage');
+        this.$navigate('HtmlPage', {
+            title: '关于我们',
+            uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/about-us.html'
+        });
     };
     // 账户设置
     jumpToAccountSettingPage = () => {
         if (user.isLogin) {
             this.$navigate('mine/setting/AccountSettingPage');
         } else {
-            this.gotoLoginPage()
+            this.gotoLoginPage();
         }
     };
 

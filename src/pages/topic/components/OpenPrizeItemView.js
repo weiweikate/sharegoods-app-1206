@@ -4,7 +4,6 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
-    Text,
     Image
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -15,10 +14,13 @@ import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
 import { getShowPrice } from '../model/TopicMudelTool';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 const noGoodImg = res.other.noGoodImg;
 const zhuanti_jieshu = res.zhuanti_jieshu;

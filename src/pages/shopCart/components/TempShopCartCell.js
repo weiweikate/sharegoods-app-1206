@@ -15,16 +15,15 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    TextInput,
-    Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {
     UIText,
-    UIImage
-
+    UIImage,
+    MRTextInput as TextInput,
+    MRText as Text,
 } from '../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';
 import { activityString, getSelectImage, statueImage } from '../model/ShopCartMacro';
 import bridge from '../../../utils/bridge';
@@ -237,7 +236,6 @@ export default class TempShopCartCell extends Component {
                                                 ]
                                             }
                                             value={itemData.amount ? '' + itemData.amount : ''}
-                                            underlineColorAndroid={'transparent'}
                                             onFocus={() => {
                                                 if (itemData.stock === 0 ||
                                                     itemData.status === 0 ||

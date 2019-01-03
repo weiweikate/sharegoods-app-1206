@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 
 import {
     StyleSheet,
-    Text,
     View,
     TouchableOpacity,
     TouchableWithoutFeedback
 } from 'react-native';
-import DesignRule from 'DesignRule';
-
+import DesignRule from '../../../../constants/DesignRule';
+import {MRText as Text} from '../../../../components/ui';
 /**
  * section规格 view
  */

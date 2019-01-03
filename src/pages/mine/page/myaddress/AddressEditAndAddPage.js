@@ -1,5 +1,5 @@
 import {
-    Text, View, TextInput, StyleSheet, TouchableOpacity, Image
+   View, StyleSheet, TouchableOpacity, Image
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
@@ -8,8 +8,9 @@ import MineAPI from '../../api/MineApi';
 import UIText from '../../../../components/ui/UIText';
 import bridge from '../../../../utils/bridge';
 import UIImage from '../../../../components/ui/UIImage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
 
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
@@ -127,7 +128,6 @@ export default class AddressEditAndAddPage extends BasePage {
                 <Text style={styles.itemLeftText}>收货人</Text>
                 <TextInput
                     style={styles.itemRightInput}
-                    underlineColorAndroid={'transparent'}
                     onChangeText={(text) => this.setState({ receiverText: text })}
                     value={this.state.receiverText}
                 />
@@ -137,7 +137,6 @@ export default class AddressEditAndAddPage extends BasePage {
                 <Text style={styles.itemLeftText}>联系电话</Text>
                 <TextInput
                     style={styles.itemRightInput} keyboardType={'numeric'}
-                    underlineColorAndroid={'transparent'}
                     onChangeText={(text) => this.setState({ telText: text })}
                     value={this.state.telText}
                 />
@@ -156,7 +155,6 @@ export default class AddressEditAndAddPage extends BasePage {
                     placeholderTextColor={DesignRule.textColor_instruction}
                     maxLength={90}
                     multiline={true}
-                    underlineColorAndroid={'transparent'}
                     onChangeText={(text) => this.setState({ addrText: text })}
                     value={this.state.addrText}
                 />

@@ -102,7 +102,13 @@ const api = {
     //查询导师
     findLeader:['/user/findLeader',{method:'get'}],
     //是否第一次提现
-    isFirstTimeWithdraw:['/user/withdraw/firstTimeWithdraw',{method:'get'}]
+    isFirstTimeWithdraw:['/user/withdraw/firstTimeWithdraw',{method:'get'}],
+    //获取秀迷列表
+    getShowFansList:['/user/list',{method:'post'}],
+    //获取秀迷数量及激活数量
+    getShowFansCount:['/user/count',{method:'post'}],
+
+
 
 
 };

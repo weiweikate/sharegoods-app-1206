@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text as RNText } from 'react-native';
+import { Text as RNText, TextInput } from 'react-native';
 import connectStyle from './connectStyle';
 
 /**
@@ -13,13 +13,34 @@ const UIText = (props) => {
         value,
         ...attributes
     } = props;
-    return (<RNText {...attributes} allowFontScaling={false}>{value}</RNText>);
+    return (
+        <RNText {...attributes}
+                allowFontScaling={false}
+                style={[props.style, { includeFontPadding: false }]}>
+            {value}
+        </RNText>
+    );
 };
 
-export class MRText extends React.Component{
+const MRText = (props) => {
+    const {
+        ...attributes
+    } = props;
+    return (
+        <RNText {...attributes}
+                allowFontScaling={false}
+                style={[props.style, { includeFontPadding: false }]}>
+            {props.children}
+        </RNText>
+    );
+};
 
-    render(){
-        return(<RNText {...this.props} allowFontScaling={false}>{this.props.children}</RNText>)
-    }
-}
+const MRTextInput = (props) => {
+    return (
+        <TextInput {...props}
+                   allowFontScaling={false}/>
+    );
+};
+
 export default connectStyle('Text')(UIText);
+export { MRText, MRTextInput };

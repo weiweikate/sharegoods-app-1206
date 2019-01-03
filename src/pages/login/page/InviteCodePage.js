@@ -17,17 +17,17 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TextInput,
     TouchableOpacity,
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import UIText from '../../../comm/components/UIText';
+import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
 // import { NavigationActions } from 'react-navigation';
 import bridge from '../../../utils/bridge';
-import {MRText as Text} from '../../../components/ui'
+import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
+import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
 
 class inviteModel {
     /*0代表验证码登录 1代表密码登录*/
@@ -77,7 +77,12 @@ export default class  extends BasePage {
 
     jump = () => {
         bridge.$toast("注册成功")
-        this.$navigateBackToHome();
+        LoginAPI.givePackage().then(result => {
+            homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
+            this.$navigateBackToHome();
+        }).catch(error => {
+            this.$navigateBackToHome();
+        });
     };
 
     _bind() {
@@ -127,7 +132,6 @@ export default class  extends BasePage {
                         value={this.inviteModel.inviteCode}
                         onChangeText={text => this.inviteModel.saveInviteCode(text)}
                         placeholder='请输入邀请人授权码'
-                        underlineColorAndroid={'transparent'}
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
                 </View>
@@ -168,7 +172,7 @@ export default class  extends BasePage {
                     </View>
                 </TouchableOpacity>
                 <UIText
-                    value={'选择导师'}
+                    value={'选择顾问'}
                     style={{
                         marginTop:20,
                         color: DesignRule.textColor_instruction,
@@ -192,8 +196,9 @@ export default class  extends BasePage {
             LoginAPI.mentorBind({
                 code: this.inviteModel.inviteCode
             }).then(res => {
-                bridge.$toast(res.msg);
                 this.$loadingDismiss();
+                bridge.$toast('注册成功');
+                homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(res => {
                 this.$loadingDismiss();

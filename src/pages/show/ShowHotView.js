@@ -2,15 +2,17 @@
  * 精选热门
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import ShowBannerView from './ShowBannerView';
 import ShowChoiceView from './ShowChoiceView';
-// import ShowHotScrollView from './ShowHotScrollView';
+import {
+    MRText as Text,
+} from '../../components/ui';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
@@ -22,8 +24,8 @@ export default class ShowHotView extends Component {
 
     state = {
         isEnd: false,
-        isFetching: false
-
+        isFetching: false,
+        hasRecommend: false
     };
 
     constructor(props) {
@@ -73,7 +75,11 @@ export default class ShowHotView extends Component {
         this.waterfall && this.waterfall.clear();
         this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
             this.firstLoad = false;
-            this.setState({ isFetching: false });
+            let hasRecommend = false
+            if (data && data.length > 0) {
+                hasRecommend = true
+            }
+            this.setState({ isFetching: false , hasRecommend: hasRecommend});
             this.waterfall && this.waterfall.addItems(data || []);
         });
     }
@@ -114,17 +120,28 @@ export default class ShowHotView extends Component {
         />;
     };
     renderHeader = () => {
+        const {hasRecommend} = this.state
         return <View><ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
             <ShowChoiceView navigate={this.props.navigate}/>
             {/* <ShowHotScrollView navigation={this.props.navigation}/> */}
-            <View style={styles.titleView}>
-                <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
-            </View>
+            {
+                hasRecommend
+                ?
+                <View style={styles.titleView}>
+                    <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
+                </View>
+                :
+                null
+            }
         </View>;
     };
     _keyExtractor = (data) => data.id + '';
 
     _renderInfinite() {
+        const {hasRecommend} = this.state
+        if (!hasRecommend) {
+            return <View/>
+        }
         return <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
             {this.state.isEnd ? <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.state.isFetching ?
                 <Text style={styles.text} allowFontScaling={false}>加载中...</Text> : <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -8,8 +8,11 @@ const { px2dp } = ScreenUtils;
 // import ShowHotView from './ShowHotView';
 // import ShowHotFindView from './ShowHotFindView';
 import backIconImg from '../../comm/res/button/icon_header_back.png';
-import DesignRule from 'DesignRule'
+import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
+import {
+    MRText as Text,
+} from '../../components/ui';
 
 @observer
 export default class ShowListPage extends BasePage {

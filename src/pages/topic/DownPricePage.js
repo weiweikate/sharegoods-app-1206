@@ -13,12 +13,12 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
 import TotalTopicDataModel from './model/SubTopicModel';
-
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
-import DesignRule from 'DesignRule';
-import ImageLoad from '@mr/image-placeholder';
+import DesignRule from '../../constants/DesignRule';
+import ImageLoad from '@mr/image-placeholder'
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
+import { track } from '../../utils/SensorsTrack';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -46,6 +46,7 @@ export default class DownPricePage extends BasePage {
                 this.dataModel.loadTopicData(linkTypeCode);
             }
         );
+        track('$AppViewScreen', { '$screen_name': 'DownPricePage','$title':'专题' });
     }
 
     /**

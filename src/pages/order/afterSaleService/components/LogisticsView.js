@@ -22,7 +22,7 @@ import {
     UIText,
     UIImage
 } from '../../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import res from '../../res';
 

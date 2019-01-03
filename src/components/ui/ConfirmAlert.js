@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../comm/components/CommModal';
+import DesignRule from '../../constants/DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils';
+import {MRText as Text}from './UIText';
 
 
 // const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);

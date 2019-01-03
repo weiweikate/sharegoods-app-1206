@@ -1,6 +1,7 @@
 {
-    "showDebugPanel": true,
-    "envType": "pre_release",
+    "showDebugPanel":true,
+    "envType": "qa",
+    "isDevHotUpdate":false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
         "dev_mock": {
@@ -69,7 +70,8 @@
         },
         "申祥瑀": {
             "name": "延签测试",
-            "host": "http://172.16.10.21:8080/gateway"
+            "host": "http://172.16.10.91:8080/gateway",
+            "h5": "https://uath5.sharegoodsmall.com"
         },
         "杨飞": {
             "name": "杨飞",
@@ -81,18 +83,18 @@
             "host": "http://172.16.10.58:18080/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
-        "高建伟":{
-            "name":"高建伟",
-            "host":"http://172.16.10.89:18080/gateway",
+        "高建伟": {
+            "name": "高建伟",
+            "host": "http://172.16.10.89:18080/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "龚日红": {
             "name": "龚日红",
             "host": "http://172.16.10.61:9090/gateway"
         },
-        "支付":{
-            "name":"黄佳欢",
-            "host":"http://172.16.10.69:9090/gateway"
+        "支付": {
+            "name": "黄佳欢",
+            "host": "http://172.16.10.69:9090/gateway"
         },
         "李俊": {
             "name": "李俊",
@@ -102,15 +104,15 @@
             "name": "申xiangyu",
             "host": "http://172.16.10.91:18080/gateway"
         },
-        "开发平台18080": {
-            "name": "开发平台18080",
-            "host": "http://192.168.100.20:18080/gateway"
+        "开发平台1080": {
+            "name": "开发平台1080",
+            "host": "http://192.168.100.22:1080/gateway"
         },
         "开发平台9090": {
             "name": "开发平台9090",
-            "host": "http://192.168.100.20:9090/gateway"
-                },
-        "岑登":{
+            "host": "http://192.168.100.22:9090/gateway"
+        },
+        "岑登": {
             "name": "岑登",
             "host": "http://172.16.10.74:18080/gateway"
         }

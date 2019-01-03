@@ -1,6 +1,5 @@
 import {
     View,
-    TextInput,
     StyleSheet,
     TouchableOpacity,
     Image
@@ -18,7 +17,7 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import {MRText as Text} from '../../../components/ui'
+import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -124,7 +123,6 @@ export default class CommRegistView extends Component {
                                 this.registModel.savePhoneNumber(text);
                             }}
                             placeholder='请输入手机号'
-                            underlineColorAndroid='transparent'
                             keyboardType='numeric'
                             placeholderTextColor={DesignRule.textColor_placeholder}
                         />
@@ -151,7 +149,6 @@ export default class CommRegistView extends Component {
                                         this.registModel.saveVertifyCode(text);
                                     }}
                                     placeholder='请输入验证码'
-                                    underlineColorAndroid={'transparent'}
                                     keyboardType='numeric'
                                     placeholderTextColor={DesignRule.textColor_placeholder}
                                 />
@@ -190,7 +187,6 @@ export default class CommRegistView extends Component {
                                 this.registModel.savePassword(text);
                             }}
                             placeholder='支持数字,字母'
-                            underlineColorAndroid={'transparent'}
                             keyboardType='default'
                             secureTextEntry={this.registModel.isSecuret}
                             placeholderTextColor={DesignRule.textColor_placeholder}
@@ -261,9 +257,14 @@ export default class CommRegistView extends Component {
         }
     };
     loginClick = () => {
-        if (this.registModel.isCanClick) {
-            this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+        if (StringUtils.checkPassword(this.registModel.password)){
+            if (this.registModel.isCanClick) {
+                this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+            }
+        } else {
+            bridge.$toast('密码格式不对');
         }
+
     };
 
 

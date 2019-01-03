@@ -2,15 +2,15 @@ import React,{Component} from 'react';
 import {
     StyleSheet,
     View,
-    Text,
 } from 'react-native';
 import {
     UIText, UIImage
 } from '../../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import ScreenUtil from '../../../../utils/ScreenUtils';
 import { observer } from 'mobx-react/native';
 import { orderDetailModel } from "../../model/OrderDetailModel";
+import {MRText as Text} from '../../../../components/ui';
 const {px2dp} = ScreenUtil;
 import res from '../../res';
 const position = res.dizhi_icon;

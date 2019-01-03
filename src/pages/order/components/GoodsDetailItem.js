@@ -1,14 +1,15 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
 // import GoodsItem from './GoodsItem';
 import GoodsGrayItem from './GoodsGrayItem';
-import DesignRule from 'DesignRule';
-
+import DesignRule from '../../../constants/DesignRule';
+import {
+    MRText as Text
+} from '../../../components/ui';
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const GoodsDetailItem = props => {
     const {

@@ -7,7 +7,7 @@ import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class SetOrEditPayPwdPage extends BasePage {
 

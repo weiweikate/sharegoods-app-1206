@@ -5,13 +5,11 @@ import {
     SectionList,
     // Image,
     FlatList,
-    Text,
     // TouchableWithoutFeedback,
     TouchableOpacity
     // AsyncStorage,
     // ImageBackground
 } from 'react-native';
-
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
@@ -27,7 +25,10 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
+import {
+    MRText as Text
+} from '../../components/ui';
 
 // const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
@@ -192,7 +193,7 @@ export default class TopicDetailPage extends BasePage {
                         /*商品详情埋点*/
                         const { packageCode, name, firstCategoryId, secCategoryId, levelPrice } = this.state.data;
                         track(trackEvent.commodityDetail, {
-                            preseat: this.params.preseat || '',
+                            preSeat: this.params.preseat || '',
                             commodityID: packageCode,
                             commodityName: name,
                             firstCommodity: firstCategoryId,
@@ -282,7 +283,7 @@ export default class TopicDetailPage extends BasePage {
                         /*商品详情埋点*/
                         const { name, firstCategoryId, secCategoryId, minPrice } = data.data || {};
                         track(trackEvent.commodityDetail, {
-                            preseat: this.params.preseat || '',
+                            preSeat: this.params.preseat || '',
                             commodityID: prodCode,
                             commodityName: name,
                             firstCommodity: firstCategoryId,

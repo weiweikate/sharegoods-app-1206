@@ -189,3 +189,18 @@ emptyProps
 
 #### Android相关
 * react-native三方库模块gradle文件配置请在android工程目录下找对应的gradle引入即可,例如：apply from: '../../../android/rn-vector-icons.gradle'
+
+### 关于多渠道打包
+  * 构建基准包：运行 assembleRelease task 构建基准包
+  * 打包工具：walle gradle接入方式（也可采用命令行的方式）
+  * 打包命令：上传360或爱加密等进行加固，获取未签名包
+  
+    1.对齐优化：./zipalign -v 4 app-release.encrypted.apk app-release.encrypted_zipalign.apk
+        
+    2.apksigner V2签名：./apksigner sign --ks xxd.jks --out app-release.encrypted_signed.apk  app-release.encrypted_zipalign.apk
+        
+    3.检查是否签名成功：java -jar CheckAndroidV2Signature.jar app-release.encrypted_signed.apk
+        
+    4.批量写入渠道：java -jar walle-cli-all.jar batch -f channel app-release.encrypted_signed.apk /Users/louis/tool/1.0.7
+        
+    5.单个写入渠道：java -jar walle-cli-all.jar put -c wandoujia app-release.encrypted_signed.apk

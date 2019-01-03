@@ -22,6 +22,7 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
+import com.meeruu.sharegoods.ui.activity.GuideActivity;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -157,7 +158,12 @@ public class MainActivity extends BaseActivity {
 
     //跳转到首页
     private void goIndex() {
-        startActivity(new Intent(MainActivity.this, MainRNActivity.class));
+        boolean hasGuide = (boolean) SPCacheUtils.get("hasGuide", false);
+        if (hasGuide) {
+            startActivity(new Intent(MainActivity.this, MainRNActivity.class));
+        } else {
+            startActivity(new Intent(MainActivity.this, GuideActivity.class));
+        }
     }
 
     @Override

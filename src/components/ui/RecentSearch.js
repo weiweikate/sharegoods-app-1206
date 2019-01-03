@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Text,
     View,
     Image,
     DeviceEventEmitter,
@@ -10,6 +9,7 @@ import {
 } from 'react-native';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from "../../constants/DesignRule";
+import {MRText as Text}from './UIText';
 
 /**
  * 最近搜索view

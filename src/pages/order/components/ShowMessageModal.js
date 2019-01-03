@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     Image,
     TouchableOpacity, ImageBackground
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../../comm/components/CommModal';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 const { message_bg } = res;
 

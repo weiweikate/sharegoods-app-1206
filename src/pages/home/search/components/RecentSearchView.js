@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import {
     StyleSheet,
-    Text,
     View,
     Image,
     TouchableOpacity
 } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import {MRText as Text} from '../../../../components/ui';
 
 const deleteImg = res.search.search_delete;
 

@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     FlatList,
-    Text,
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
@@ -28,19 +27,20 @@ import HomeGoodsView from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import ShowView from '../show/ShowView';
 import LinearGradient from 'react-native-linear-gradient';
-import Modal from 'CommModal';
+import Modal from '../../comm/components/CommModal';
 import XQSwiper from '../../components/ui/XGSwiper';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModal from './VersionUpdateModal';
 import StringUtils from '../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import TimerMixin from 'react-timer-mixin';
 import res from './res';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
+import { MRText as Text } from '../../components/ui';
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -96,6 +96,7 @@ class HomePage extends BasePage {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
+                this.homeFocused = true;
                 const { state } = payload;
                 if (user.token) {
                     this.loadMessageCount();
@@ -115,6 +116,7 @@ class HomePage extends BasePage {
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
+                this.homeFocused = false;
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     this.setState({ isShow: false }, () => {
@@ -128,6 +130,7 @@ class HomePage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                this.homeFocused = true;
                 this.showModal();
             }
         );
@@ -394,7 +397,7 @@ class HomePage extends BasePage {
                             height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
                             dataSource={EmptyUtils.isEmptyArr(this.state.messageData) ? [] : this.state.messageData}
                             loop={false}
-                            onWillChange={(item, index) => {
+                            onDidChange={(item, index) => {
                                 this.setState({
                                     messageIndex: index
                                 });
@@ -533,6 +536,7 @@ class HomePage extends BasePage {
                 <HomeSearchView navigation={this.$navigate}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
                                 hasMessage={this.state.hasMessage}
+                                pageFocused={this.homeFocused}
                 />
                 <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
                                ref={(ref) => {

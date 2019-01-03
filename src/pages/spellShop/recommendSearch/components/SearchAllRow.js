@@ -5,13 +5,16 @@ import {
     View,
     Image,
     StyleSheet,
-    Text,
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import UIImage from '@mr/image-placeholder';
+import {
+    MRText as Text
+} from '../../../../components/ui';
+
 
 const StarImg = res.recommendSearch.dj_03;
 

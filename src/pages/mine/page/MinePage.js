@@ -7,7 +7,8 @@ import {
     // Platform,
     // Linking,
     TouchableWithoutFeedback,
-    RefreshControl, DeviceEventEmitter, TouchableOpacity
+    RefreshControl, DeviceEventEmitter, TouchableOpacity,
+    Image
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
@@ -19,15 +20,16 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react/native';
 import userOrderNum from '../../../model/userOrderNum';
-import RouterMap from 'RouterMap';
-import DesignRule from 'DesignRule';
+import RouterMap from '../../../navigation/RouterMap';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import EmptyUtils from '../../../utils/EmptyUtils';
-import WaveView from 'WaveView';
+import WaveView from '../../../comm/components/WaveView';
 import MessageApi from '../../message/api/MessageApi';
 import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
+import LoginAPI from '../../login/api/LoginApi';
 
 const {
     mine_header_bg,
@@ -37,7 +39,6 @@ const {
     mine_wait_send_icon,
     mine_wait_receive_icon,
     mine_after_buy_icon,
-    mine_account_bg,
     mine_icon_invite,
     mine_coupon_icon,
     mine_icon_data,
@@ -50,7 +51,9 @@ const {
     mine_setting_icon_white,
     profile_banner,
     mine_level_background,
-    mine_icon_mentor
+    mine_icon_mentor,
+    mine_user_icon,
+    mine_icon_fans
 } = res.homeBaseImg;
 
 
@@ -79,7 +82,8 @@ export default class MinePage extends BasePage {
             loadingState: PageLoadingState.success,
             isRefreshing: false,
             changeHeader: true,
-            hasMessage: false
+            hasMessage: false,
+            hasFans: false
         };
     }
 
@@ -97,30 +101,41 @@ export default class MinePage extends BasePage {
     };
 
     componentDidMount() {
+
         this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         // this.refresh();
     }
 
     componentWillUnmount() {
-        this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
     }
 
     componentWillMount() {
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
             payload => {
                 const { state } = payload;
                 this.loadMessageCount();
+                this._needShowFans();
                 console.log('willFocusSubscriptionMine', state);
                 if (state && state.routeName === 'MinePage') {
                     this.refresh();
                 }
 
             });
-
-
     }
+
+    _needShowFans = () => {
+        LoginAPI.oldUserActivateJudge().then((res) => {
+            console.log('是还是非-------', res);
+            this.setState({
+                hasFans: res.data
+            });
+        }).catch((error) => {
+
+        });
+    };
 
     $isMonitorNetworkStatus() {
         return false;
@@ -291,12 +306,16 @@ export default class MinePage extends BasePage {
             name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
         }
 
+        let icon = (user.headImg && user.headImg.length > 0) ?
+            <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle}
+                       borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
+                                                           borderRadius={px2dp(27)}/>;
+
         return (
             <ImageBackground style={styles.headerBgStyle} source={mine_header_bg}>
                 <View style={{ height: px2dp(54), flexDirection: 'row' }}>
                     <TouchableOpacity onPress={this.jumpToUserInformationPage} activeOpacity={1}>
-                        <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle}
-                                   borderRadius={px2dp(27)}/>
+                        {icon}
                     </TouchableOpacity>
                     <View style={{
                         height: px2dp(54),
@@ -315,7 +334,7 @@ export default class MinePage extends BasePage {
                                     {name}
                                 </Text>
                                 <UIImage source={res.button.white_go}
-                                         style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
+                                         style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(12) }}
                                          resizeMode={'stretch'}/>
                             </View>
                         </TouchableWithoutFeedback>
@@ -374,15 +393,15 @@ export default class MinePage extends BasePage {
 
     accountRender = () => {
         return (
-            <ImageBackground source={mine_account_bg} style={{
-                marginTop: px2dp(51),
+            <ImageBackground source={mine_header_bg} style={{
+                marginTop: px2dp(41),
                 marginHorizontal: px2dp(15),
                 borderRadius: 5,
                 overflow: 'hidden'
             }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
                     <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.white }}>
-                        我的资产
+                    我的账户
                     </Text>
                 </View>
                 <View
@@ -397,13 +416,13 @@ export default class MinePage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '现金账户', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '余额', () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆账户', () => {
+                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆', () => {
                         this.go2CashDetailPage(2);
                     })}
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0.00', false), '待提现账户', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0.00', false), '待入账', () => {
                         this.go2CashDetailPage(3);
                     })}
 
@@ -656,10 +675,10 @@ export default class MinePage extends BasePage {
     renderMoreMoney = () => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate('ShowListPage');
+                this.$navigate(RouterMap.ShowDetailPage,{fromHome: false, id: 1});
 
             }}>
-                <UIImage style={styles.makeMoneyMoreBackground} source={profile_banner}/>
+                <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
             </TouchableWithoutFeedback>
         );
     };
@@ -725,11 +744,85 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
 
-        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_discollect, mine_icon_discollect, user.upUserCode ? mine_icon_mentor : null];
-        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '秀场收藏', '测试h5的交互', user.upUserCode ? '导师' : null];
+        let invite = {
+            text:'分享好友',
+            icon:mine_icon_invite,
+            onPress:()=>{
+                this.$navigate(RouterMap.InviteFriendsPage);
+            }
+        }
+        let coupon = {
+            text:'优惠券',
+            icon:mine_coupon_icon,
+            onPress:()=>{
+                this.$navigate(RouterMap.CouponsPage);
+            }
+        }
+        let data = {
+            text:'我的资料',
+            icon:mine_icon_data,
+            onPress:()=>{
+                this.$navigate(RouterMap.MyPromotionPage);
+            }
+        }
+        let shop = {
+            text:'收藏店铺',
+            icon:mine_icon_favorite_shop,
+            onPress:()=>{
+                this.$navigate(RouterMap.MyCollectPage);
+            }
+        }
+        let service = {
+            text:'帮助与客服',
+            icon:mine_icon_help_service,
+            onPress:()=>{
+                this.$navigate(RouterMap.MyHelperPage);
+            }
+        }
+        let address = {
+            text:'地址',
+            icon:mine_icon_address,
+            onPress:()=>{
+                this.$navigate(RouterMap.AddressManagerPage);
+            }
+        }
+        let collect = {
+            text:'秀场收藏',
+            icon:mine_icon_discollect,
+            onPress:()=>{
+                this.$navigate(RouterMap.ShowConnectPage);
+            }
+        }
+        let fans = {
+            text:'我的秀迷',
+            icon:mine_icon_fans,
+            onPress:()=>{
+                if(this.state.hasFans){
+                    this.$navigate(RouterMap.MyShowFansPage);
+                }
+            }
+        }
 
+        let mentor = {
+            text:'顾问',
+            icon:mine_icon_mentor,
+            onPress:()=>{
+                if (user.upUserCode) {
+                    this.$navigate(RouterMap.MyMentorPage);
+                }
+            }
+        }
+        let menu = [invite,coupon,data,shop,service,address,collect];
+
+        if(this.state.hasFans){
+            menu.push(fans);
+        }
+
+        if(user.upUserCode){
+            menu.push(mentor);
+        }
         let arr = [];
-        for (let i = 0; i < leftImage.length; i++) {
+        for (let i = 0; i < menu.length; i++) {
             arr.push(
                 <NoMoreClick style={{
                     width: '25%',
@@ -737,10 +830,10 @@ export default class MinePage extends BasePage {
                     alignItems: 'center',
                     marginTop: 10,
                     marginBottom: 10
-                }} onPress={() => this.orderMenuJump(i)} key={i}>
-                    <UIImage source={leftImage[i]}
+                }} onPress={ menu[i].onPress} key={i}>
+                    <UIImage source={menu[i].icon}
                              style={{ height: i === 0 ? 19 : 18, width: 20, marginBottom: 10 }}/>
-                    <UIText value={leftText[i]} style={styles.greyText}/>
+                    <UIText value={menu[i].text} style={styles.greyText}/>
                 </NoMoreClick>
             );
         }
@@ -787,71 +880,11 @@ export default class MinePage extends BasePage {
         }
     }
 
-    orderMenuJump = (index) => {
-        // if (!user.isLogin) {
-        //     this.props.navigation.navigate('login/login/LoginPage');
-        //     return;
-        //let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
-        switch (index) {
-            case 0:
-                this.$navigate(RouterMap.InviteFriendsPage);
-                break;
-            case 1:
-                this.$navigate(RouterMap.CouponsPage);
-                break;
-            case 2:
-                this.$navigate(RouterMap.MyPromotionPage);
-                break;
-            case 3:
-                // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
-                this.$navigate(RouterMap.MyCollectPage);
-                break;
-            case 4:
-                // this.props.navigation.navigate('mine/MyCollectPage');
-                this.$navigate(RouterMap.MyHelperPage);
-                break;
-            case 5:
-                this.$navigate(RouterMap.AddressManagerPage);
-                break;
-                // case 6:
-                //     this.props.navigation.navigate(RouterMap.UserPromotionPage);
-                //     break;
-                // case 6:
-                //     this.props.navigation.navigate(RouterMap.ShareTaskListPage);
-                break;
-            case 6:
-                this.$navigate(RouterMap.ShowConnectPage);
-                break;
-            //邀请评分
-            // case 10:
-            //     //
-            //     const appId = "1";
-            //     const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
-            //     Platform.OS === "ios" && Linking.canOpenURL(url).then(() => {
-            //         Linking.openURL(url);
-            //     }).catch(e => {
-            //         console.warn(e);
-            //         // Toast.toast('无法前往AppStore');
-            //     });
-            //     break;
-            //邀请评分
-            case 7:
-                this.$navigate(RouterMap.WebViewDemo);
-                break;
-            case 8:
-                if (user.upUserCode) {
-                    this.$navigate(RouterMap.MyMentorPage);
-                }
-                break;
-            default:
 
-                break;
-        }
-    };
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {
-            this.gotoLoginPage()
+            this.gotoLoginPage();
             return;
         }
         this.$navigate('order/order/MyOrdersListPage', { index: 0 });
@@ -869,6 +902,8 @@ export default class MinePage extends BasePage {
 
     };
 }
+
+const profileWidth = ScreenUtils.width - (DesignRule.margin_page - 1.5) * 2;
 const styles = StyleSheet.create({
     container: {
         flex: 1
@@ -917,10 +952,10 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(1)
     },
     makeMoneyMoreBackground: {
-        height: px2dp(62),
-        width: ScreenUtils.width - DesignRule.margin_page * 2,
+        height: (profileWidth * 140 / 702),
+        width: profileWidth,
         top: ScreenUtils.getImgHeightWithWidth(headerBgSize) - px2dp(31),
-        left: DesignRule.margin_page,
+        left: DesignRule.margin_page - 1.5,
         position: 'absolute',
         flexDirection: 'row'
     },

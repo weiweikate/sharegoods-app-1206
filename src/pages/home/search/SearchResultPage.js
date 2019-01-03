@@ -5,7 +5,6 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    Text,
     RefreshControl
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -13,7 +12,7 @@ import ResultSearchNav from './components/ResultSearchNav';
 import ResultSegmentView from './components/ResultSegmentView';
 import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
-import RouterMap from 'RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
 import SelectionPage from '../product/SelectionPage';
@@ -24,9 +23,10 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import {MRText as Text} from '../../../components/ui';
 
 const {
     toGwc,
@@ -229,7 +229,7 @@ export default class SearchResultPage extends BasePage {
         };
         /*加入购物车埋点*/
         const {prodCode,name,firstCategoryId,secCategoryId,minPrice} = this.productItem||{};
-        track(trackEvent.addToShoppingcart,{shoppingcartEntrance:'搜索页面',commodityNumber:amount,commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
+        track(trackEvent.addToShoppingcart,{shoppingCartEntrance:'搜索页面',commodityNumber:amount,commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
         shopCartCacheTool.addGoodItem(temp);
     };
 

@@ -18,6 +18,7 @@ import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
 import {MRText as Text} from '../../../components/ui'
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 const {
     red_button_s,
@@ -44,6 +45,7 @@ export default class RegistPage extends BasePage {
         this.state = {
             gouxuan: true
         };
+        // track('$AppViewScreen', { '$screen_name': 'RegistPage','$title':'注册' });
     }
 
     $isMonitorNetworkStatus() {
@@ -54,11 +56,11 @@ export default class RegistPage extends BasePage {
         // 测试环境:https://testh5.sharegoodsmall.com/static/protocol/service.html
         // 预发布环境：https://uath5.sharegoodsmall.com/static/protocol/service.html
         // 生产布环境：https://h5.sharegoodsmall.com/static/protocol/service.html
-
-        const htmlUrl = __DEV__ ?
-            'https://uath5.sharegoodsmall.com/static/protocol/service.html'
-            :
-            'https://uath5.sharegoodsmall.com/static/protocol/service.html';
+        const htmlUrl = apiEnvironment.getCurrentH5Url()+'/static/protocol/service.html'
+        // const htmlUrl = __DEV__ ?
+        //     'https://uath5.sharegoodsmall.com/static/protocol/service.html'
+        //     :
+        //     'https://uath5.sharegoodsmall.com/static/protocol/service.html';
         return (
             <View style={{
                 flex: 1,
@@ -67,7 +69,7 @@ export default class RegistPage extends BasePage {
                 <CommRegistView
                     // config={viewType:0}
                     viewType={0}
-                    phone={this.params.phone ? this.params.phone : ''}
+                    phone={''}
                     loginClick={(phone, code, password) => this.clickNext(phone, code, password)}
                     ref={'topView'}
                 />
@@ -122,13 +124,14 @@ export default class RegistPage extends BasePage {
             return;
         }
         console.log(this.params);
+        this.params=this.params || {};
         this.$loadingShow();
         track(trackEvent.signUp,{signUpMethod:'App注册'})
         LoginApi.findMemberByPhone({
             code: code,
-            device: this.params.device ? this.params.device : '',
+            device: (this.params &&this.params.device) ? this.params.device : '',
             inviteId: '',//邀请id
-            openid: this.params.openid ? this.params.openid : '',
+            openid:(this.params&& this.params.openid )? this.params.openid : '',
             password: password,
             phone: phone,
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',

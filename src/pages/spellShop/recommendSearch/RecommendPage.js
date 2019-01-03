@@ -23,11 +23,12 @@ import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
 import geolocation from '@mr/geolocation';
 import Storage from '../../../utils/storage';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
@@ -250,6 +251,14 @@ export default class RecommendPage extends BasePage {
 
     // 点击轮播图广告
     _clickItem = (item) => {
+        track(trackEvent.bannerClick, {
+            pageType: '拼店banner',
+            bannerLocation: '拼店',
+            bannerID: item.id,
+            bannerRank: item.rank,
+            url: item.imgUrl,
+            bannerName: item.linkTypeCode
+        });
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
                 productCode: item.linkTypeCode, preseat: '拼店推荐banner'

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import {
     // StyleSheet,
-    Text,
     View,
     TouchableOpacity,
     Image
@@ -13,8 +12,11 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import StringUtils from '../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import TopicDetailBanner from './TopicDetailBanner';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 // const { px2dp } = ScreenUtils;
 import res from '../res';

@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -10,6 +9,9 @@ import {
     RefreshControl, Alert
 } from 'react-native';
 
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 import RecruitMembersRow from './components/RecruitMembersRow';
 import RecruitHeaderView from './components/RecruitHeaderView';
@@ -25,7 +27,7 @@ import spellStatusModel from '../model/SpellStatusModel';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import resCommon from '../../../comm/res';
 import user from '../../../model/user';

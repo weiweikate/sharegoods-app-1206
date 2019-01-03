@@ -9,11 +9,14 @@ import {
     ScrollView,
     RefreshControl,
     TouchableOpacity,
-    Text, Alert
+    Alert
 } from 'react-native';
 
 import { observer } from 'mobx-react/native';
 import BasePage from '../../../BasePage';
+import {
+    MRText as Text
+} from '../../../components/ui';
 
 import ShopHeader from './components/ShopHeader';
 import ShopHeaderBonus from './components/ShopHeaderBonus';
@@ -31,7 +34,7 @@ import spellStatusModel from '../model/SpellStatusModel';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import apiEnvironment from '../../../api/ApiEnvironment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import user from '../../../model/user';
@@ -362,9 +365,9 @@ export default class MyShopPage extends BasePage {
             return (
                 <View>
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
+                    {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}
-                    {this._renderRow(system_charge, '个人已获得分红金', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
+                    {this._renderRow(system_charge, '个人已获得奖励', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
 
                     <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
@@ -376,7 +379,7 @@ export default class MyShopPage extends BasePage {
             return (
                 <View>
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
+                    {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
                 </View>

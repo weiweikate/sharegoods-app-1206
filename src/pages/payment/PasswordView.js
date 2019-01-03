@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native'
-// import { UIText, UIImage } from '../../components/ui'
+import { StyleSheet, View, TouchableOpacity, Image} from 'react-native'
 import PasswordInput from '../mine/components/PasswordInput'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
 import PropTypes from 'prop-types';
 import res from './res';
 const closeImg = res.close;
-import Modal from 'CommModal';
+import Modal from '../../comm/components/CommModal';
+import {MRText as Text} from '../../components/ui'
 export default class PasswordView extends Component {
     static propTypes = {
         finishedAction: PropTypes.func,

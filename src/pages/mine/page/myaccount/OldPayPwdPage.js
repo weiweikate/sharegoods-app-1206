@@ -6,7 +6,7 @@ import UIText from '../../../../components/ui/UIText';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 
 export default class OldPayPwdPage extends BasePage {
 

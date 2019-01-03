@@ -1,13 +1,13 @@
 
 import React from "react";
-import { NativeModules, StyleSheet, Text, TouchableOpacity, View ,Image} from "react-native";
+import { NativeModules, StyleSheet, TouchableOpacity, View ,Image} from "react-native";
 import BasePage from "../../../BasePage";
-import { RefreshList, UIText } from "../../../components/ui";
+import { RefreshList, UIText, MRText as Text } from "../../../components/ui";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import LogisticsDetailItem from "../components/LogisticsDetailItem";
 import OrderApi from "../api/orderApi";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 import res from "../res";
 // import UIImage from "@mr/image-placeholder";
 

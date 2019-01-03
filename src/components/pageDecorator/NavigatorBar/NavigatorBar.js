@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import BackIcon from '../../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -97,7 +97,7 @@ export default class NavigatorBar extends Component {
             props.rightNavTitle !== this.state.rightNavTitle ||
             props.rightNavItemHidden !== this.state.rightNavItemHidden) {
             this.setState({
-                title: props.title || this.state.title || '',
+                title: this.state.title || props.title || '',
                 hideNavBar: !!props.hideNavBar,
                 rightNavTitle: props.rightNavTitle || this.state.rightNavTitle || '',
                 leftNavItemHidden: !!props.leftNavItemHidden,

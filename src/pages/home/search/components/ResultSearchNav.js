@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import {
     View,
-    TextInput,
     StyleSheet,
     TouchableOpacity,
     Image
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
+import {MRTextInput as TextInput} from '../../../../components/ui';
 
 const {
     button: {
@@ -63,7 +63,6 @@ export default class ResultSearchNav extends Component {
                     <View style={styles.inputView}>
                         <TextInput style={{ marginLeft: 24, padding: 0, color: '#212121' }}
                                    keyboardType='web-search'
-                                   underlineColorAndroid='transparent'
                                    placeholder={'请输入关键词搜索'}
                                    placeholderTextColor={DesignRule.textColor_hint}
                                    value={this.state.inputText}

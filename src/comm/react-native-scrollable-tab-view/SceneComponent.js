@@ -5,7 +5,7 @@ const {View } = ReactNative;
 const StaticContainer = require('./StaticContainer');
 
 const SceneComponent = (Props) => {
-  const {shouldUpdated, ...props, } = Props;
+  const {shouldUpdated, ...props} = Props;
   return <View {...props}>
       <StaticContainer shouldUpdate={shouldUpdated}>
         {props.children}

@@ -3,20 +3,18 @@
  */
 
 import React, {Component} from 'react'
-import {View , ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
+import {View , ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { homeModule } from './Modules'
 import { subjectModule } from './HomeSubjectModel'
+import DesignRule from '../../constants/DesignRule';
 import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTool'
-import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/image-placeholder'
 import EmptyUtils from '../../utils/EmptyUtils'
-
+import {MRText as Text} from '../../components/ui';
 const GoodItems = ({img, title, money, press}) => {
-
-console.log('GoodItems', money, EmptyUtils.isEmpty(money))
 
 return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
     <View style={styles.goodsView} >
@@ -32,7 +30,7 @@ return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
     }
     </View>
 </TouchableWithoutFeedback>
-} 
+}
 
 const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress={()=>{press && press()}}>
     <View style={styles.backView}>

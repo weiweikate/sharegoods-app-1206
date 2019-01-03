@@ -9,7 +9,7 @@ import {
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import {MRText as Text} from '../../../../components/ui'
 const arrow_right =  res.button.arrow_right_black;

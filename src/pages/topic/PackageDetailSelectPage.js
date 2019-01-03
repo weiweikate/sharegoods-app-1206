@@ -3,17 +3,19 @@ import {
     View,
     StyleSheet,
     TouchableWithoutFeedback,
-    Text,
     ScrollView,
     TouchableOpacity, Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../comm/components/CommModal';
+import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import UIImage from '@mr/image-placeholder';
+import {
+    MRText as Text
+} from '../../components/ui';
 
 const icon_close = res.button.close_gray_circle;
 

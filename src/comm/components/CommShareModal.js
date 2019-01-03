@@ -61,13 +61,12 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
-import CommModal from 'CommModal';
+import CommModal from './CommModal';
 import res from '../res';
 import bridge from '../../utils/bridge';
+import DesignRule from '../../constants/DesignRule';
 import { track } from '../../utils/SensorsTrack';
-import DesignRule from 'DesignRule';
 import user from '../../model/user';
-
 export default class CommShareModal extends React.Component {
 
     constructor(props) {
@@ -146,8 +145,8 @@ export default class CommShareModal extends React.Component {
             params.linkUrl = linkUrl;
             params.thumImage = thumImage;
 
-            // params.userName = userName || 'gh_a7c8f565ea2e';//gh_aa91c3ea0f6c
-            params.userName = userName || 'gh_aa91c3ea0f6c';
+            // params.userName = userName || uat 'gh_a7c8f565ea2e';// 测试 gh_aa91c3ea0f6c
+            params.userName = userName || 'gh_a7c8f565ea2e';
             params.miniProgramPath = miniProgramPath;
             params.hdImageURL = hdImageURL;
         }
@@ -392,7 +391,7 @@ export default class CommShareModal extends React.Component {
                                            }}/>
                                 </TouchableWithoutFeedback>
                                 {
-                                    isShow ? <UIText value={'登陆以后分享才能获取赏金'}
+                                    isShow ? <UIText value={'登陆以后分享才能获取奖励'}
                                                      style={{
                                                          position: 'absolute',
                                                          left: 0,

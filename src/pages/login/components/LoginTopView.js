@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { observable, action, computed } from 'mobx';
 import {
     View,
     TouchableOpacity,
     StyleSheet,
-    TextInput,
     Image
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
@@ -18,89 +16,22 @@ import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import UIText from '../../../components/ui/UIText';
-
+import { MRTextInput as TextInput } from '../../../components/ui';
+import loginModel from '../model/LoginModel';
 const {
     close_eye,
     open_eye
 } = res;
-
 const dismissKeyboard = require('dismissKeyboard');
-
-class LoginTopViewModel {
-    /*0代表验证码登录 1代表密码登录*/
-    @observable
-    selectIndex = 0;
-    @observable
-    phoneNumber = '';
-    @observable
-    vertifyCode = '';
-    @observable
-    password = '';
-    @observable
-    isSecuret = true;
-    @observable
-    dowTime = 0;
-
-
-    @action
-    savePhoneNumber(phoneNmber) {
-        if (!phoneNmber || phoneNmber.length === 0) {
-            this.phoneNumber = '';
-            return;
-        }
-        this.phoneNumber = phoneNmber;
-    }
-
-    @action
-    savePassword(password) {
-        if (!password) {
-            this.password = '';
-            return;
-        }
-        this.password = password;
-    }
-
-    @action
-    saveVertifyCode(vertifyCode) {
-        if (!vertifyCode) {
-            this.vertifyCode = '';
-            return;
-        }
-        this.vertifyCode = vertifyCode;
-    }
-
-    @computed
-    get isCanClick() {
-        if (this.phoneNumber.length < 11) {
-            return false;
-        }
-        if (this.selectIndex === 0) {
-            if (this.vertifyCode.length > 0) {
-                return true;
-            }
-        } else {
-            if (this.password.length > 3) {
-                return true;
-            }
-        }
-    }
-}
 
 @observer
 export default class LoginTopView extends Component {
-    LoginModel = new LoginTopViewModel();
-
+    LoginModel = loginModel
     constructor(props) {
         super(props);
-
-        this.state = {
-            isSecuret: true
-        };
-
-
     }
-
     render() {
+        const { showOldLogin } = this.props;
         return (
             <View style={Styles.containViewStyle}>
                 <View style={Styles.switchBgStyle}>
@@ -109,21 +40,21 @@ export default class LoginTopView extends Component {
                     }}>
                         <UIText
                             value={'验证码登录'}
-                            style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]}>
+                            style={[Styles.switchBtnStyle,loginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]}>
                         </UIText>
                         <View
-                            style={this.LoginModel.selectIndex ? Styles.btnBottomLineNonStyle : Styles.btnBottomLineStyle}/>
+                            style={loginModel.selectIndex ? Styles.btnBottomLineNonStyle : Styles.btnBottomLineStyle}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         this.switchBtnClick(1);
                     }}>
                         <UIText
                             value={'密码登录'}
-                            style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: DesignRule.mainColor } : { color: DesignRule.textColor_secondTitle }]}>
+                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.mainColor } : { color: DesignRule.textColor_secondTitle }]}>
 
                         </UIText>
                         <View
-                            style={this.LoginModel.selectIndex ? Styles.btnBottomLineStyle : Styles.btnBottomLineNonStyle}/>
+                            style={loginModel.selectIndex ? Styles.btnBottomLineStyle : Styles.btnBottomLineNonStyle}/>
                     </TouchableOpacity>
                 </View>
 
@@ -131,13 +62,12 @@ export default class LoginTopView extends Component {
                     <TextInput
                         allowFontScaling={false}
                         style={Styles.phoneNumberInputStyle}
-                        value={this.LoginModel.phoneNumber}
-                        onChangeText={text => this.LoginModel.savePhoneNumber(text)}
+                        value={loginModel.phoneNumber}
+                        onChangeText={text => loginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
-                        underlineColorAndroid='transparent'
                         keyboardType='numeric'
                         onEndEditing={() => {
-                            if (!StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
+                            if (!StringUtils.checkPhone(loginModel.phoneNumber)) {
                                 bridge.$toast('手机号格式不对');
                             }
                         }}
@@ -145,13 +75,13 @@ export default class LoginTopView extends Component {
                     />
                     <CommSpaceLine style={Styles.lineStyle}/>
                 </View>
-                {this.LoginModel.selectIndex ? this.renderPasswordLogin() : this.renderCodeLogin()}
+                {loginModel.selectIndex ? this.renderPasswordLogin() : this.renderCodeLogin()}
                 <TouchableOpacity
                     onPress={this.clickLoginBtn}
-                    activeOpacity={this.LoginModel.isCanClick ? 0.6 : 1}
+                    activeOpacity={loginModel.isCanClick ? 0.6 : 1}
                 >
                     <View
-                        style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
+                        style={[Styles.loginBtnStyle, loginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
 
                         <UIText style={Styles.loginBtnTextStyle}
                                 value={'登录'}
@@ -161,20 +91,38 @@ export default class LoginTopView extends Component {
 
                     </View>
                 </TouchableOpacity>
-                {/*<View style={Styles.oldUserLoginBgStyle}>*/}
-                {/*<TouchableOpacity onPress={this.props.oldUserLoginClick}>*/}
-                {/*<Text style={Styles.oldUserLoginBtn}>*/}
-                {/*老用户激活>>*/}
-                {/*</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*</View>*/}
+                {
+                    showOldLogin?
+                        <View style={Styles.oldUserLoginBgStyle}>
+                            <TouchableOpacity onPress={this.props.oldUserLoginClick}>
+                                {/*<UIText*/}
+                                {/*style={Styles.oldUserLoginBtn}*/}
+                                {/*value={' 老用户激活>>'}*/}
+                                {/*>*/}
+                                {/*</UIText>*/}
+                                <Image
+                                    source={res.oldLoginBanner}
+                                    style={{
+                                        width: ScreenUtils.width - 40,
+                                        height: ScreenUtils.width /750 * 245,
+                                    }}
+                                    resizeMode={'contain'}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        :null
+                }
+                {/*<UIText*/}
+                {/*value={}*/}
+                {/*/>*/}
+
             </View>
         );
     }
 
     switchBtnClick = (index) => {
         // dismissKeyboard();
-        this.LoginModel.selectIndex = index;
+        loginModel.selectIndex = index;
     };
     renderCodeLogin = () => {
         return (
@@ -183,10 +131,9 @@ export default class LoginTopView extends Component {
                     <TextInput
                         allowFontScaling={false}
                         style={Styles.inputTextStyle}
-                        value={this.LoginModel.vertifyCode}
-                        onChangeText={text => this.LoginModel.saveVertifyCode(text)}
+                        value={loginModel.vertifyCode}
+                        onChangeText={text =>loginModel.saveVertifyCode(text)}
                         placeholder='请输入验证码'
-                        underlineColorAndroid='transparent'
                         keyboardType='numeric'
                         multiline={false}
                         secureTextEntry={false}
@@ -197,7 +144,7 @@ export default class LoginTopView extends Component {
                         activeOpacity={1}
                     >
                         <UIText style={Styles.codeTextStyle}
-                                value={this.LoginModel.dowTime > 0 ? `${this.LoginModel.dowTime}秒后重新获取` : '获取验证码'}
+                                value={loginModel.dowTime > 0 ? `${loginModel.dowTime}秒后重新获取` : '获取验证码'}
                         >
                         </UIText>
                     </TouchableOpacity>
@@ -207,7 +154,7 @@ export default class LoginTopView extends Component {
         );
     };
     getVertifyCode = () => {
-        if (this.LoginModel.dowTime > 0) {
+        if (loginModel.dowTime > 0) {
             return;
         }
         if (!netStatusTool.isConnected) {
@@ -215,13 +162,13 @@ export default class LoginTopView extends Component {
             return;
         }
 
-        if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
-            this.LoginModel.dowTime = 60;
+        if (StringUtils.checkPhone(loginModel.phoneNumber)) {
+            loginModel.dowTime = 60;
             bridge.$toast('验证码发送成功,注意查收');
             (new TimeDownUtils()).startDown((time) => {
-                this.LoginModel.dowTime = time;
+                loginModel.dowTime = time;
             });
-            SMSTool.sendVerificationCode(0, this.LoginModel.phoneNumber);
+            SMSTool.sendVerificationCode(0, loginModel.phoneNumber);
         } else {
             bridge.$toast('手机格式不对');
         }
@@ -233,28 +180,26 @@ export default class LoginTopView extends Component {
                     <TextInput
                         allowFontScaling={false}
                         style={Styles.inputTextStyle}
-                        value={this.LoginModel.password}
-                        onChangeText={text => this.LoginModel.savePassword(text)}
+                        value={loginModel.password}
+                        onChangeText={text => loginModel.savePassword(text)}
                         placeholder='请输入密码'
-                        underlineColorAndroid='transparent'
                         multiline={false}
-                        secureTextEntry={this.LoginModel.isSecuret}
+                        secureTextEntry={loginModel.isSecuret}
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => {
                             dismissKeyboard();
-                            this.LoginModel.isSecuret = !this.LoginModel.isSecuret;
+                            loginModel.isSecuret = !loginModel.isSecuret;
                         }}>
                             <Image style={Styles.seePasswordImageStyle}
-                                   source={this.LoginModel.isSecuret ? close_eye : open_eye}/>
+                                   source={loginModel.isSecuret ? close_eye : open_eye}/>
                         </TouchableOpacity>
                         <CommSpaceLine style={{ marginLeft: 10, width: 1, marginTop: 35, height: 20 }}/>
                         <TouchableOpacity onPress={this.props.forgetPasswordClick}>
                             <UIText style={[Styles.codeTextStyle, { width: 90 }]}
                                     value={'忘记密码'}
                             >
-
                             </UIText>
                         </TouchableOpacity>
                     </View>
@@ -265,23 +210,22 @@ export default class LoginTopView extends Component {
     };
 
     clickLoginBtn = () => {
-        if (!this.LoginModel.isCanClick) {
+        if (!loginModel.isCanClick) {
             return;
         }
-
-        if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
-            if (this.LoginModel.selectIndex === 0) {
+        if (StringUtils.checkPhone(loginModel.phoneNumber)) {
+            if (loginModel.selectIndex === 0) {
                 this.props.loginClick(0, {
-                    phoneNumber: this.LoginModel.phoneNumber,
-                    code: this.LoginModel.vertifyCode,
-                    password: this.LoginModel.password
+                    phoneNumber: loginModel.phoneNumber,
+                    code: loginModel.vertifyCode,
+                    password: loginModel.password
                 });
             } else {
-                if (StringUtils.checkPassword(this.LoginModel.password)) {
+                if (StringUtils.checkPassword(loginModel.password)) {
                     this.props.loginClick(1, {
-                        phoneNumber: this.LoginModel.phoneNumber,
-                        code: this.LoginModel.vertifyCode,
-                        password: this.LoginModel.password
+                        phoneNumber: loginModel.phoneNumber,
+                        code: loginModel.vertifyCode,
+                        password: loginModel.password
                     });
                 } else {
                     bridge.$toast('密码格式不对');
@@ -300,7 +244,7 @@ const Styles = StyleSheet.create(
             margin: 50,
             marginRight: 20,
             marginLeft: 20,
-            height: 330,
+            // height: 400,
             backgroundColor: '#fff'
         },
         switchBgStyle: {
@@ -374,8 +318,11 @@ const Styles = StyleSheet.create(
             fontSize: 17
         },
         oldUserLoginBgStyle: {
-            marginTop: 10,
-            flexDirection: 'row-reverse'
+            marginTop: 30,
+            // flexDirection: 'row-reverse',
+            alignItems: 'center',
+            justifyContent: 'center',
+            // height:200,
         },
         oldUserLoginBtn: {
             width: 100,

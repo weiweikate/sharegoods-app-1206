@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View} from 'react-native';
 import PropTypes from 'prop-types';
 import MRBannerView from './MRBannerView';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import {MRText as Text}from '../UIText';
 
 export default class MRBannerViewMode extends Component {
 

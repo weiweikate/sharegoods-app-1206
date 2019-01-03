@@ -168,6 +168,9 @@ SINGLETON_FOR_CLASS(JRShareManager)
 -(void)getUserInfoForPlatform:(UMSocialPlatformType)platformType withCallBackBlock:(loginFinshBlock)finshBlock{
  
   [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
+    if(error){
+      return;
+    }
     UMSocialUserInfoResponse * res = result;
     NSDictionary *dicData = @{
                               @"openid":res.openid?res.openid:[NSNull null],

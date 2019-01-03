@@ -1,15 +1,17 @@
 
 import React, {Component} from 'react'
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import MarqueeLabelVertical from '../../components/ui/MarqueeLabelVertical'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { HomeShowModules, tagName } from './Show';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
+import {
+    MRText as Text,
+} from '../../components/ui';
 import res from './res'
 const homeShowImg = res.other.home_show;
-
 const TagView = ({ text }) => <View style={styles.tagView}>
     <Text style={styles.tag} allowFontScaling={false}>{text}</Text>
 </View>;

@@ -14,9 +14,9 @@ import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
-import CommModal from 'CommModal';
+import CommModal from '../../../../comm/components/CommModal';
 import { observer } from 'mobx-react/native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import {MRText as Text} from '../../../../components/ui'
 
@@ -174,7 +174,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15)
-                            }} allowFontScaling={false}>待提现账户现金是否可提现？</Text>
+                            }} allowFontScaling={false}>待提现账户金额是否可提现？</Text>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,
@@ -272,7 +272,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '导师管理费', '品牌分红奖励金', '品牌推广奖励金', '现金红包', '任务奖励金'];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '导师管理费', '品牌分红奖励', '品牌推广奖励', '现金红包', '任务奖励'];
         let use_type_symbol = ['', '+', '-'];
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();
