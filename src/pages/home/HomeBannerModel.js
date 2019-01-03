@@ -28,6 +28,14 @@ export class BannerModules {
         }
           const res = yield HomeApi.getSwipers({ type: homeType.swiper });
           this.bannerList = res.data;
+
+          const expItems = {
+            linkType:6,
+            linkTypeCode:"JF201901030054",
+            imgUrl:"https://testcdn.sharegoodsmall.com/sharegoods/b38e932c8bad4528903606075ff0b932.png"
+          }
+
+          this.bannerList.push(expItems)
           if (this.bannerList.length > 0) {
             this.isShowHeader = false
           } else {
