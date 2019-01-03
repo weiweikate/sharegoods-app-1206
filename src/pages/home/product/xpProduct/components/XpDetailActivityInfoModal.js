@@ -9,7 +9,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import { MRText as Text } from '../../../../../components/ui';
-import Modal from 'CommModal';
+import CommModal from '../../../../../comm/components/CommModal';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import DesignRule from '../../../../../constants/DesignRule';
 import res from '../../../res';
@@ -129,7 +129,7 @@ export default class XpDetailActivityInfoModal extends Component {
             { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
 
         return (
-            <Modal onRequestClose={this._close}
+            <CommModal onRequestClose={this._close}
                    visible={this.state.modalVisible}
                    transparent={true}>
                 <View style={styles.containerView}>
@@ -146,7 +146,7 @@ export default class XpDetailActivityInfoModal extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </Modal>
+            </CommModal>
         );
     }
 }

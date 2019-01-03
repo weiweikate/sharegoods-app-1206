@@ -5,6 +5,8 @@ import { MRText as Text } from '../../../../../components/ui';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import DesignRule from '../../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
+import { formatDate } from '../../../../../utils/DateUtils';
+import StringUtils from '../../../../../utils/StringUtils';
 
 const { px2dp } = ScreenUtils;
 
@@ -17,11 +19,18 @@ export class XpDetailProductView extends Component {
 
     render() {
         const { xpDetailModel } = this.props;
-        const { pImgUrl, pPriceType, pPrice, pName, pSecondName, skuTotal } = xpDetailModel;
+        const { pImgUrl, pPriceType, pPrice, pName, pSecondName, skuTotal, pProductStatus, pUpTime } = xpDetailModel;
+        let imgText = `${StringUtils.isNoEmpty(pUpTime) ? formatDate(pUpTime, 'MM月dd号HH:mm') : ''}开售`;
         return (
             <View style={styles.bgView}>
                 <TouchableWithoutFeedback onPress={this._goFullImage}>
-                    <UIImage style={styles.headerImg} source={{ uri: pImgUrl }}/>
+                    <View>
+                        <UIImage style={styles.headerImg} source={{ uri: pImgUrl }}/>
+                        {pProductStatus === 3 ?
+                            <View style={styles.ImgAbView}>
+                                <Text style={styles.ImgAbText}>{imgText}</Text>
+                            </View> : null}
+                    </View>
                 </TouchableWithoutFeedback>
                 <View style={styles.levelPriceView}>
                     <View style={styles.levelView}>
@@ -92,6 +101,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 10,
         fontSize: 11, color: DesignRule.textColor_instruction
+    },
+
+    ImgAbView: {
+        position: 'absolute',
+        bottom: 0, left: 0, right: 0, height: 22,
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    ImgAbText: {
+        color: DesignRule.white,
+        fontSize: 13
     }
 });
 

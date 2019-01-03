@@ -50,13 +50,16 @@ class XpDetailModel {
     @observable productPageState = PageLoadingState.null;
     @observable productPageError = {};
 
-    @observable pData = {};
+    @observable pData = {};//selectionPage
+    //0删除 1正常  2下架  3当前时间不能买
+    @observable pProductStatus = '';
     @observable pImgUrl = '';
     @observable pVideoUrl = '';
     @observable pImgFileList = '';
     @observable pName = '';
     @observable pSecondName = '';
     @observable pParamList = [];
+    @observable pUpTime = '';
 
 
     @computed get pHtml() {
@@ -86,6 +89,20 @@ class XpDetailModel {
     @computed get pPriceType() {
         let priceType = this.pData.priceType;
         return priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : '原价';
+    }
+
+    @computed get pCantBuy() {
+        let { buyLimit, leftBuyNum } = this.pData;
+        //不能买
+        return this.pProductStatus !== 1 || (buyLimit !== -1 && leftBuyNum === 0) || this.skuTotal === 0;
+    }
+
+    @computed get pBuyText() {
+        let { buyLimit, leftBuyNum } = this.pData;
+        let isLimit = buyLimit !== -1 && leftBuyNum === 0;
+        //能买
+        let canBuy = this.pProductStatus === 1 && this.skuTotal !== 0 && !isLimit;
+        return canBuy ? '立即购买' : (isLimit ? '您已购买过该商品' : '暂不可购买');
     }
 
     /******************************【action】******************************************/
@@ -139,12 +156,14 @@ class XpDetailModel {
         data = data || {};
 
         this.pData = data;
+        this.pProductStatus = data.productStatus || '';
         this.pImgUrl = data.imgUrl || '';
         this.pVideoUrl = data.videoUrl || '';
-        this.pImgFileList = data.imgFileList || '';
+        this.pImgFileList = data.imgFileList || [];
         this.pName = data.name || '';
         this.pSecondName = data.secondName || '';
         this.pParamList = data.paramList || [];
+        this.pUpTime = data.upTime || '';
     };
 
     @action productError = (error) => {
@@ -157,6 +176,7 @@ class XpDetailModel {
     request_act_exp_detail = (activityCode) => {
         this.basePageState = PageLoadingState.loading;
         HomeAPI.act_exp_detail({
+            //测试 JF201812270017
             activityCode: 'JF201812270017'
         }).then((data) => {
             this.saveActData(data.data);

@@ -6,14 +6,17 @@ import ScreenUtils from '../../../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
 import res from '../../../res';
 import ShopCartStore from '../../../../shopCart/model/ShopCartStore';
+import { observer } from 'mobx-react';
 
 const gwc = res.product.detailNavView.detail_car_down;
 const { px2dp } = ScreenUtils;
 
+@observer
 export default class XpDetailBottomView extends Component {
     render() {
-        const { bottomViewAction } = this.props;
+        const { bottomViewAction, xpDetailModel } = this.props;
         const shopNumber = ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber;
+        const { pCantBuy, pBuyText } = xpDetailModel;
         return (
             <View style={styles.containerView}>
                 <View style={styles.bgView}>
@@ -34,12 +37,13 @@ export default class XpDetailBottomView extends Component {
                                 <Text style={styles.btnText}>加入购物车</Text>
                             </LinearGradient>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('buy')}>
+                        <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('buy')}
+                                          disabled={pCantBuy}>
                             <LinearGradient style={styles.LinearGradient}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 0 }}
-                                            colors={['#FF0088', '#FF0050']}>
-                                <Text style={styles.btnText}>立即购买</Text>
+                                            colors={pCantBuy ? ['#cccccc', '#cccccc'] : ['#FF0088', '#FF0050']}>
+                                <Text style={styles.btnText}>{pBuyText}</Text>
                             </LinearGradient>
                         </TouchableOpacity>
                     </View>

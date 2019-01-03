@@ -210,7 +210,7 @@ export class XpDetailPage extends BasePage {
 
             {/*购买,购物车*/}
             {pageStateDic.loadingState === PageLoadingState.success &&
-            <XpDetailBottomView bottomViewAction={this._bottomViewAction}/>}
+            <XpDetailBottomView bottomViewAction={this._bottomViewAction} xpDetailModel={this.xpDetailModel}/>}
 
             {/*上拉显示的选择框*/}
             <XpDetailUpSelectListView xpDetailModel={this.xpDetailModel}/>

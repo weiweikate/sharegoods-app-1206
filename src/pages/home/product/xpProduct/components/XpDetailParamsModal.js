@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { MRText as Text } from '../../../../../components/ui';
-import Modal from 'CommModal';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import DesignRule from '../../../../../constants/DesignRule';
+import CommModal from '../../../../../comm/components/CommModal';
 
 const { px2dp } = ScreenUtils;
 
@@ -48,7 +48,7 @@ export default class XpDetailParamsModal extends Component {
     render() {
         const {} = this.props;
         return (
-            <Modal onRequestClose={this._close}
+            <CommModal onRequestClose={this._close}
                    visible={this.state.modalVisible}
                    transparent={true}>
                 <View style={styles.containerView}>
@@ -64,7 +64,7 @@ export default class XpDetailParamsModal extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </Modal>
+            </CommModal>
         );
     }
 }
