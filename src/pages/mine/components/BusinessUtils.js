@@ -4,6 +4,7 @@ import ImagePicker from 'react-native-image-picker';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import Toast from './../../../utils/bridge';
 import { request } from '@mr/request';
+// import ImagePicker from '@mr/rn-image-crop-picker'
 
 let lastShowImagePickTime = null;
 

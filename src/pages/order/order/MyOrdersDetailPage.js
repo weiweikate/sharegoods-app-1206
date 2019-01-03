@@ -607,8 +607,8 @@ export default class MyOrdersDetailPage extends BasePage {
         console.log(menu);
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
         let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
-        if (products.orderSubType === 3) {
-            NativeModules.commModule.toast("该商品属于升级礼包产品，不存在售后功能");
+        if (products.orderSubType === 3 && orderDetailModel.status === 2) {
+            NativeModules.commModule.toast("该商品属于升级礼包产品，不能退款");
             return;
         } else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime
             && !(innerStatus < 6 && innerStatus >= 1)) {
