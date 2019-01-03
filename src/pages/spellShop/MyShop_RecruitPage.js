@@ -20,7 +20,7 @@ import NoAccessPage from './NoAccessPage';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar';
 import user from '../../model/user';
 import Storage from '../../utils/storage';
-import geolocation from '@mr/geolocation';
+import geolocation from '@mr/rn-geolocation';
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 

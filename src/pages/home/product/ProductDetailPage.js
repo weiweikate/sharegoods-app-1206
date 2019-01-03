@@ -203,15 +203,17 @@ export default class ProductDetailPage extends BasePage {
 
     //消息数据
     _getMessageCount = () => {
-        MessageApi.getNewNoticeMessageCount().then(result => {
-            if (!EmptyUtils.isEmpty(result.data)) {
-                const { shopMessageCount, noticeCount, messageCount } = result.data;
-                this.setState({
-                    messageCount: shopMessageCount + noticeCount + messageCount
-                });
-            }
-        }).catch((error) => {
-        });
+        if(user.token){
+            MessageApi.getNewNoticeMessageCount().then(result => {
+                if (!EmptyUtils.isEmpty(result.data)) {
+                    const { shopMessageCount, noticeCount, messageCount } = result.data;
+                    this.setState({
+                        messageCount: shopMessageCount + noticeCount + messageCount
+                    });
+                }
+            }).catch((error) => {
+            });
+        }
     };
 
     _savaData = (data) => {
