@@ -19,7 +19,7 @@
         "src/**/*.js": "eslint"
     },
     "dependencies": {
-        "@mr/geolocation": "0.1.6",
+        "@mr/rn-geolocation": "0.1.7",
         "@mr/image-placeholder": "0.1.15",
         "@mr/largelist": "^1.0.1",
         "@mr/cookies": "0.0.6",
