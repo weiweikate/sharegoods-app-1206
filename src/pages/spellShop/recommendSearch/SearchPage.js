@@ -100,7 +100,7 @@ export default class SearchPage extends BasePage {
                 this.onEndReached = false;
                 let dataTemp = data.data || {};
                 this.setState({
-                    noMore: dataTemp.data.length < this.state.pageSize,
+                    noMore: (dataTemp.data||[]).length < this.state.pageSize,
                     loadingMore: false,
                     loadingMoreError: null,
                     dataList: this.state.dataList.concat(dataTemp.data || [])//data.data.data
