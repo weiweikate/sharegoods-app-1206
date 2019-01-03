@@ -720,8 +720,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             fail.invoke("图片生成失败");
         }
-
-
         result.recycle();
         qrBitmap.recycle();
     }
@@ -797,7 +795,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Bitmap bmp = dView.getDrawingCache();
         long date = System.currentTimeMillis();
         String storePath = getDiskCachePath() + File.separator + date + "screenshotImage.png";
-
 
         File file = new File(storePath);
         if (bmp != null) {
