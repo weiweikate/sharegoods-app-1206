@@ -237,6 +237,10 @@ export default class PaymentMethodPage extends BasePage {
         }
     };
 
+    _repay() {
+        this.payment.payError = ''
+    }
+
     _render() {
         const { paymentList, availableBalance, balancePayment, selectedBalace, selectedTypes } = this.payment;
         let items = [];
@@ -275,6 +279,7 @@ export default class PaymentMethodPage extends BasePage {
                 }}
                 navigation={this.props.navigation}
                 payment={this.payment}
+                repay={()=> this._repay()}
             />
             {
                 this.state.orderChecking
