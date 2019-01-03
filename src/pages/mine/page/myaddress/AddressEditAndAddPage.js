@@ -33,6 +33,9 @@ export default class AddressEditAndAddPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
+        if (this.isLoadding === true){
+            return;
+        }
         if (StringUtils.isEmpty(this.state.receiverText)) {
             bridge.$toast('请输入收货人');
             return;
@@ -60,6 +63,7 @@ export default class AddressEditAndAddPage extends BasePage {
             return;
         }
         const { refreshing, id, from } = this.params;
+        this.isLoadding = true;
         if (from === 'edit') {
             //编辑地址
             MineAPI.addOrEditAddr({
@@ -72,10 +76,12 @@ export default class AddressEditAndAddPage extends BasePage {
                 areaCode: this.state.areaCode,
                 defaultStatus: this.state.isDefault ? '1' : '2'
             }).then((data) => {
+                this.isLoadding = false;
                 bridge.$toast('修改成功');
                 refreshing && refreshing();
                 this.$navigateBack();
             }).catch((data) => {
+                this.isLoadding = false;
                 bridge.$toast(data.msg);
             });
         } else if (from === 'add') {
@@ -89,10 +95,12 @@ export default class AddressEditAndAddPage extends BasePage {
                 areaCode: this.state.areaCode,
                 defaultStatus: this.state.isDefault ? '1' : '2'
             }).then((data) => {
+                this.isLoadding = false;
                 bridge.$toast('添加成功');
                 refreshing && refreshing();
                 this.$navigateBack();
             }).catch((data) => {
+                this.isLoadding = false;
                 bridge.$toast(data.msg);
             });
         }
@@ -120,6 +128,8 @@ export default class AddressEditAndAddPage extends BasePage {
             isDefault: isDefault || false,
             from
         };
+        //用于标记是否在上传中，防止重复上传
+        this.isLoadding = false;
     }
 
     _render() {
