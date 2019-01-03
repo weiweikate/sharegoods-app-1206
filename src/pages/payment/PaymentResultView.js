@@ -56,6 +56,7 @@ export default class PaymentResultView extends Component {
 
     dismiss() {
         this.setState({ modalVisible: false, message: '' });
+        this.props.repay()
     }
 
     render() {
