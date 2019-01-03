@@ -2,6 +2,8 @@ import { observable, action, computed } from 'mobx';
 import HomeAPI from '../../api/HomeAPI';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 import user from '../../../../model/user';
+import EmptyUtils from '../../../../utils/EmptyUtils';
+import MessageApi from '../../../message/api/MessageApi';
 
 class XpDetailModel {
     @observable showUpSelectList = false;
@@ -42,6 +44,8 @@ class XpDetailModel {
     * value 面值
     * */
     @observable coupon = {};
+
+    @observable messageCount = 0;
 
 
     /***************普通商品******************/
@@ -196,6 +200,17 @@ class XpDetailModel {
             this.saveProductData(data.data);
         }).catch((error) => {
             this.productError(error);
+        });
+    };
+
+    /**消息数量**/
+    getMessageCount = () => {
+        MessageApi.getNewNoticeMessageCount().then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
+                const { shopMessageCount, noticeCount, messageCount } = result.data;
+                this.messageCount = shopMessageCount + noticeCount + messageCount;
+            }
+        }).catch((error) => {
         });
     };
 }

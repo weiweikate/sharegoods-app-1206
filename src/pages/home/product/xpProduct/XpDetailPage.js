@@ -35,12 +35,18 @@ export class XpDetailPage extends BasePage {
     xpDetailModel = new XpDetailModel();
 
     $navigationBarOptions = {
-        title: '经验值专区',
-        rightNavImage: detail_more_down
+        title: '经验值专区'
     };
 
-    $NavBarRightPressed = () => {
-        this.DetailNavShowModal.show(0, (item) => {
+    $NavBarRenderRightItem = () => {
+        return <TouchableOpacity style={styles.rightNavBtn} onPress={this._rightPressed}>
+            <Image source={detail_more_down}/>
+            {this.xpDetailModel.messageCount === 0 ? null : <View style={styles.rightNavMessage}/>}
+        </TouchableOpacity>;
+    };
+
+    _rightPressed = () => {
+        this.DetailNavShowModal.show(this.xpDetailModel.messageCount, (item) => {
             switch (item.index) {
                 case 0:
                     if (!user.isLogin) {
@@ -88,6 +94,7 @@ export class XpDetailPage extends BasePage {
 
     componentDidMount() {
         this._request_act_exp_detail();
+        this.xpDetailModel.getMessageCount();
     }
 
     _request_act_exp_detail = () => {
@@ -159,7 +166,6 @@ export class XpDetailPage extends BasePage {
 
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        console.log(Y)
         if (Y < 100) {
             this.xpDetailModel.showUpSelectList = false;
         } else {
@@ -273,6 +279,15 @@ export class XpDetailPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+
+    rightNavBtn: {
+        justifyContent: 'center', alignItems: 'center',
+        width: 44
+    },
+    rightNavMessage: {
+        position: 'absolute', top: 0, right: 8, height: 8, width: 8, borderRadius: 4,
+        backgroundColor: DesignRule.mainColor
     },
 
     productPramsView: {
