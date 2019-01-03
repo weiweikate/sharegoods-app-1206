@@ -94,8 +94,8 @@ export default class MessageGatherPage extends BasePage {
                 <View style={{ flexDirection: 'row', marginTop:px2dp(15)}}>
                     <Text style={{ marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.title}</Text>
                 </View>
-                <View style={{ backgroundColor: 'white',marginVertical:px2dp(15) }}>
-                    <Text style={{ marginLeft: 15, fontSize: 13,color:DesignRule.textColor_secondTitle }}>{item.content}</Text>
+                <View style={{ backgroundColor: 'white',marginTop:px2dp(10),marginBottom:px2dp(15) }}>
+                    <Text style={{ marginLeft: 15, fontSize: 13,color:DesignRule.textColor_secondTitle ,lineHeight:23}}>{item.content}</Text>
                 </View>
                 {item.messageType === 200 ? btn : null}
             </View>

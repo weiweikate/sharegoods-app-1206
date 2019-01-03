@@ -26,7 +26,7 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import DesignRule from '../../../constants/DesignRule';
 import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
-import geolocation from '@mr/geolocation';
+import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 
