@@ -25,12 +25,11 @@
 #define KUmSocialAppkey  @"5b73de76f43e4807ff000024"  //友盟key
 
 #ifdef DEBUG
-#define SA_SERVER_URL @"https://stat.sharegoodsmall.com/sa?project=production"
-#define SA_DEBUG_MODE SensorsAnalyticsDebugAndTrack
-#else
-#define SA_SERVER_URL @"https://stat.sharegoodsmall.com/sa?project=default"
-//#define SA_SERVER_URL @"https://stat.sharegoodsmall.com/debug?project=default"
 #define SA_DEBUG_MODE SensorsAnalyticsDebugOff
+#define SA_SERVER_URL @"https://stat.sharegoodsmall.com/sa?project=default"
+#else
+#define SA_DEBUG_MODE SensorsAnalyticsDebugOff
+#define SA_SERVER_URL @"https://stat.sharegoodsmall.com/sa?project=production"
 #endif
 
 #endif /* JRNotiOrKey_h */
