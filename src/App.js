@@ -118,9 +118,9 @@ export default class App extends Component {
                         global.$navigator = e;
                     }}
                     onNavigationStateChange={(prevState, currentState) => {
-                        let curRouteName = getCurrentRouteName(currentState);
+                        this.curRouteName = getCurrentRouteName(currentState);
                         // 拦截当前router的名称
-                        console.log(curRouteName);
+                        console.log(this.curRouteName);
                         global.$routes = currentState.routes;
                     }}/>
                 {
@@ -130,7 +130,7 @@ export default class App extends Component {
                 }
 
                 {
-                    user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
+                    user.isLogin || !oldUserLoginSingleModel.isShowOldBtn || this.curRouteName === 'login/login/LoginPage'
                         ?
                         null
                         :
