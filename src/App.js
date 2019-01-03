@@ -119,6 +119,7 @@ export default class App extends Component {
                     }}
                     onNavigationStateChange={(prevState, currentState) => {
                         let curRouteName = getCurrentRouteName(currentState);
+                        this.setState({ curRouteName });
                         // 拦截当前router的名称
                         console.log(curRouteName);
                         global.$routes = currentState.routes;
@@ -133,7 +134,8 @@ export default class App extends Component {
                     user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
                         ?
                         null
-                        :
+                        : (this.state.curRouteName === RouterMap.LoginPage || this.state.curRouteName === RouterMap.OldUserLoginPage
+                        ? null :
                         <DebugButton
                             onPress={this.gotoLogin}
                             style={
@@ -153,7 +155,7 @@ export default class App extends Component {
                                     resizeMode={'contain'}
                                 />
                             </View>
-                        </DebugButton>
+                        </DebugButton>)
                 }
             </View>
         );
