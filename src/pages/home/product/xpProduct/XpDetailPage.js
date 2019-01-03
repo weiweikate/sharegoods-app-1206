@@ -131,7 +131,9 @@ export class XpDetailPage extends BasePage {
             let temp = {
                 'amount': amount,
                 'skuCode': skuCode,
-                'productCode': this.xpDetailModel.selectedSpuCode
+                'productCode': this.xpDetailModel.selectedSpuCode,
+                activityCode: this.params.activityCode,
+                activityType: this.params.activityType
             };
             shopCartCacheTool.addGoodItem(temp);
 
