@@ -26,7 +26,7 @@
 
 #ifdef DEBUG
 #define SA_SERVER_URL @"https://stat.sharegoodsmall.com/sa?project=production"
-#define SA_DEBUG_MODE SensorsAnalyticsDebugAndTrack
+#define SA_DEBUG_MODE SensorsAnalyticsDebugOff
 #else
 #define SA_SERVER_URL @"https://stat.sharegoodsmall.com/sa?project=default"
 //#define SA_SERVER_URL @"https://stat.sharegoodsmall.com/debug?project=default"
