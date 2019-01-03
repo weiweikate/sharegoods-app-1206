@@ -36,12 +36,11 @@ export class XpDetailPage extends BasePage {
 
     $navigationBarOptions = {
         title: '经验值专区',
-        rightNavImage: detail_more_down,
-        rightPressed: this._rightNavAction
+        rightNavImage: detail_more_down
     };
 
-    _rightNavAction = () => {
-        this.DetailNavShowModal.show(this.state.messageCount, (item) => {
+    $NavBarRightPressed = () => {
+        this.DetailNavShowModal.show(0, (item) => {
             switch (item.index) {
                 case 0:
                     if (!user.isLogin) {
@@ -114,7 +113,7 @@ export class XpDetailPage extends BasePage {
             });
         } else {
             this.goType = type;
-            this.SelectionPage.show(this.xpDetailModel.pData, this._selectionViewConfirm);
+            this.SelectionPage.show(this.xpDetailModel.pData, this._selectionViewConfirm, { needUpdate: true });
         }
     };
 
@@ -158,6 +157,16 @@ export class XpDetailPage extends BasePage {
         }
     };
 
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        console.log(Y)
+        if (Y < 100) {
+            this.xpDetailModel.showUpSelectList = false;
+        } else {
+            this.xpDetailModel.showUpSelectList = true;
+        }
+    };
+
     _renderProduct = () => {
         return <View>
             {/*商品信息*/}
@@ -189,11 +198,14 @@ export class XpDetailPage extends BasePage {
     _renderBaseView = () => {
         let pageStateDic = this._getProductStateOptions();
         return <View style={styles.container}>
-            <ScrollView>
+            <ScrollView onScroll={this._onScroll} scrollEventThrottle={10}>
                 {/*选择框*/}
                 <XpDetailSelectListView xpDetailModel={this.xpDetailModel}/>
                 {/*页面状态*/}
-                {renderViewByLoadingState(pageStateDic, this._renderProduct)}
+                {pageStateDic.loadingState === PageLoadingState.success ? this._renderProduct() :
+                    <View style={{ height: ScreenUtils.autoSizeHeight(500) }}>
+                        {renderViewByLoadingState(pageStateDic, this._renderProduct)}
+                    </View>}
             </ScrollView>
 
             {/*购买,购物车*/}
@@ -225,7 +237,7 @@ export class XpDetailPage extends BasePage {
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{
-                                    commodityID: this.params.activityCode,
+                                    commodityID: prodCode,
                                     commodityName: name,
                                     firstCommodity: firstCategoryId,
                                     secondCommodity: secCategoryId,

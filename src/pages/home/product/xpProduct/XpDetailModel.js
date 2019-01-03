@@ -4,34 +4,20 @@ import { PageLoadingState } from '../../../../components/pageDecorator/PageState
 import user from '../../../../model/user';
 
 class XpDetailModel {
+    @observable showUpSelectList = false;
+
     @observable basePageState = PageLoadingState.null;
     @observable basePageError = {};
 
     @observable baseData = '';
-    /*活动名称*/
-    @observable name = '';
-    /*banner*/
-    @observable bannerUrl = '';
-    /*优惠券id*/
-    @observable couponId = '';
     /*起始金额，送优惠券*/
     @observable startPrice = '';
     /*送优惠券数量*/
     @observable startCount = '';
     /*赠送最大数量*/
     @observable maxCount = '';
-    /*活动开始时间*/
-    @observable startTime = '';
-    /*活动结束时间*/
-    @observable endTime = '';
-    /*创建人*/
-    @observable createAdmin = '';
     /*说明*/
     @observable contents = '';
-    /*创建时间*/
-    @observable createTime = '';
-    /*修改时间*/
-    @observable updateTime = '';
 
     /*
     * spuCode  产品code
@@ -49,8 +35,17 @@ class XpDetailModel {
     /*规则列表*/
     @observable rules = [];
 
+    /*
+    * name 名称
+    * remarks 备注
+    * effectiveDays 有效期
+    * value 面值
+    * */
+    @observable coupon = {};
+
 
     /***************普通商品******************/
+    @observable selectedSpuIndex = 0;
     @observable selectedSpuCode = '';
     @observable productPageState = PageLoadingState.null;
     @observable productPageError = {};
@@ -96,34 +91,36 @@ class XpDetailModel {
     /******************************【action】******************************************/
 
     @action selectSpuCode = (spuCode) => {
-        this.prods.forEach((item) => {
+        this.prods.forEach((item, index) => {
             if (item.spuCode === spuCode) {
                 item.isSelected = true;
-                this.request_getProductDetailByCode(item.spuCode);
+                this.selectedSpuCode = spuCode;
+                this.selectedSpuIndex = index;
             } else {
                 item.isSelected = false;
             }
         });
+        this.request_getProductDetailByCode();
     };
 
     /*经验详情接口返回*/
     @action saveActData = (data) => {
         this.basePageState = PageLoadingState.success;
         data = data || {};
-        this.name = data.name || '';
-        this.bannerUrl = data.bannerUrl || '';
-        this.couponId = data.couponId || '';
         this.startPrice = data.startPrice || '';
         this.startCount = data.startCount || '';
         this.maxCount = data.maxCount || '';
-        this.startTime = data.startTime || '';
-        this.endTime = data.endTime || '';
-        this.createAdmin = data.createAdmin || '';
         this.contents = data.contents || '';
-        this.createTime = data.createTime || '';
-        this.updateTime = data.updateTime || '';
-        this.prods = data.prods || [{}];
+
+        /*原始数据未被观察前添加可观察key*/
+        data.prods = data.prods || [];
+        data.prods.forEach((item) => {
+            item.isSelected = false;
+        });
+        this.prods = data.prods;
+
         this.rules = data.rules || [];
+        this.coupon = (data.coupon || {}).coupon || {};
 
         /*请求默认第一个数据*/
         if (this.prods.length > 0) {
@@ -157,10 +154,10 @@ class XpDetailModel {
 
     /*********【网络】***********/
 
-    @action request_act_exp_detail = (activityCode) => {
+    request_act_exp_detail = (activityCode) => {
         this.basePageState = PageLoadingState.loading;
         HomeAPI.act_exp_detail({
-            activityCode: 'JF201812240014'
+            activityCode: 'JF201812270017'
         }).then((data) => {
             this.saveActData(data.data);
         }).catch((error) => {
@@ -171,12 +168,10 @@ class XpDetailModel {
     /**普通商品**/
 
     /*第一加载第一个  选择加载  失败重试*/
-    @action request_getProductDetailByCode = (spuCode) => {
+    request_getProductDetailByCode = () => {
         this.productPageState = PageLoadingState.loading;
-        spuCode = spuCode || this.selectedSpuCode;
-        this.selectedSpuCode = spuCode;
         HomeAPI.getProductDetailByCode({
-            code: 'SPU00000168'
+            code: this.selectedSpuCode
         }).then((data) => {
             this.saveProductData(data.data);
         }).catch((error) => {

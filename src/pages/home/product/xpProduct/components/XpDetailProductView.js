@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../../../components/ui';
-import { observer } from 'mobx-react';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import DesignRule from '../../../../../constants/DesignRule';
-import user from '../../../../../model/user';
+import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtils;
 
-// @observer
+@observer
 export class XpDetailProductView extends Component {
 
     _goFullImage = () => {
@@ -22,7 +21,7 @@ export class XpDetailProductView extends Component {
         return (
             <View style={styles.bgView}>
                 <TouchableWithoutFeedback onPress={this._goFullImage}>
-                    <UIImage style={styles.headerImg} source={pImgUrl}/>
+                    <UIImage style={styles.headerImg} source={{ uri: pImgUrl }}/>
                 </TouchableWithoutFeedback>
                 <View style={styles.levelPriceView}>
                     <View style={styles.levelView}>
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
     /*背景*/
     bgView: {
         alignItems: 'center',
-        paddingTop: 20, paddingBottom: 15,
+        paddingBottom: 15,
         backgroundColor: DesignRule.white
     },
     /*图片*/

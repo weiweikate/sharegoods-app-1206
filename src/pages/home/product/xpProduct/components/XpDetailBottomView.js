@@ -5,6 +5,7 @@ import DesignRule from '../../../../../constants/DesignRule';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
 import res from '../../../res';
+import ShopCartStore from '../../../../shopCart/model/ShopCartStore';
 
 const gwc = res.product.detailNavView.detail_car_down;
 const { px2dp } = ScreenUtils;
@@ -12,12 +13,17 @@ const { px2dp } = ScreenUtils;
 export default class XpDetailBottomView extends Component {
     render() {
         const { bottomViewAction } = this.props;
+        const shopNumber = ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber;
         return (
             <View style={styles.containerView}>
                 <View style={styles.bgView}>
                     <TouchableOpacity style={styles.gwcBtn} onPress={() => bottomViewAction('goGwc')}>
                         <Image source={gwc}/>
                         <Text style={styles.gwcText}>购物车</Text>
+                        {shopNumber === 0 ? null :
+                            <View style={styles.numbView}>
+                                <Text style={styles.numbText}>{shopNumber}</Text>
+                            </View>}
                     </TouchableOpacity>
                     <View style={styles.btnView}>
                         <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('joinCart')}>
@@ -73,5 +79,16 @@ const styles = StyleSheet.create({
     },
     btnText: {
         fontSize: 13, color: DesignRule.white
+    },
+
+    numbView: {
+        justifyContent: 'center', alignItems: 'center',
+        position: 'absolute', top: 0, right: 16,
+        height: 12, width: 12, borderRadius: 6,
+        backgroundColor: DesignRule.mainColor
+    },
+    numbText: {
+        color: 'white',
+        fontSize: 8
     }
 });
