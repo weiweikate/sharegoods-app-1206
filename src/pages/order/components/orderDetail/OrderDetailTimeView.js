@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
     NativeModules
 } from 'react-native';
 import {
-    UIText, MRText as Text
+    UIText, MRText as Text,NoMoreClick
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -40,9 +39,9 @@ export default class OrderDetailTimeView extends Component {
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                     <UIText value={'订单编号：' + orderDetailModel.warehouseOrderDTOList[0].warehouseOrderNo}
                             style={[styles.textGoodsDownStyle,{marginTop:px2dp(10)}]}/>
-                    <TouchableOpacity style={styles.clipStyle} onPress={() => this.copyOrderNumToClipboard()}>
+                    <NoMoreClick style={styles.clipStyle} onPress={() => this.copyOrderNumToClipboard()}>
                         <Text style={{ paddingLeft: px2dp(10), paddingRight: px2dp(10) }} allowFontScaling={false}>复制</Text>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].createTime / 1000)}
                         style={styles.textGoodsDownStyle}/>

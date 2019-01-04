@@ -51,12 +51,14 @@ export default class PaymentResultView extends Component {
             result: result,
             message: message
         });
+        this.props.payment.isShowResult = true
         this.props.payment.paySuccessFul = result === PaymentResult.sucess
     }
 
     dismiss() {
         this.setState({ modalVisible: false, message: '' });
         this.props.repay()
+        this.props.payment.isShowResult = false
     }
 
     render() {
@@ -65,6 +67,7 @@ export default class PaymentResultView extends Component {
         console.log('PaymentResultView message', message);
         return (
             <Modal
+                focusable={false}
                 style={styles.container}
                 transparent={true}
                 animationType="fade"

@@ -19,14 +19,15 @@ public class QiyuFileDownloadActivity extends FileDownloadActivity {
         if (result == 3) {
             // 6.0以上沉浸式
             StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
+            handleTop();
         } else if (result == 4) {
             // 其它半透明效果
             StatusBarUtils.setColor(this, getResources().getColor(statusColor));
         } else {
             // miui、flyme沉浸式
             StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
+            handleTop();
         }
-        handleTop();
     }
 
     private void handleTop() {
