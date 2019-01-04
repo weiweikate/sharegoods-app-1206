@@ -41,7 +41,7 @@ const MessageUtils = {
             case 110://订单发货
                 pagParams = JSON.parse(params);
                 navigation('order/order/MyOrdersDetailPage', {
-                    orderNo: pagParams.orderNum,
+                    orderNo: pagParams.orderNo,
                 });
                 break;
             case 120://售后服务(退款申请)
