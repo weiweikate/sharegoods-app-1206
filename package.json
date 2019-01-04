@@ -19,7 +19,7 @@
         "src/**/*.js": "eslint"
     },
     "dependencies": {
-        "@mr/geolocation": "0.1.6",
+        "@mr/rn-geolocation": "0.1.7",
         "@mr/image-placeholder": "0.1.15",
         "@mr/largelist": "^1.0.1",
         "@mr/cookies": "0.0.6",
@@ -27,6 +27,7 @@
         "@mr/rn-webview-bridge": "0.0.5",
         "@mr/request": "0.1.0",
         "@mr/rn-store": "1.0.4",
+        "@mr/rn-image-crop-picker": "0.0.1",
         "@sensors.data/react-native-sensors-analytics": "^1.0.0",
         "axios": "0.18.0",
         "jsrsasign": "8.0.12",

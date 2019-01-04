@@ -60,7 +60,7 @@ export default class SelectionHeaderView extends Component {
                             color: DesignRule.mainColor,
                             fontSize: 16,
                             marginTop: 14
-                        }} allowFontScaling={false}>{`￥${price}`}</Text>
+                        }} allowFontScaling={false}>{`￥${price||''}`}</Text>
                         <Text
                             style={{
                                 color: DesignRule.textColor_mainTitle,

@@ -62,7 +62,7 @@
         },
         "dev_yxm": {
             "name": "杨小猛",
-            "host": "http://172.16.10.38:8180/gateway"
+            "host": "http://172.16.10.38:9090/gateway"
         },
         "dev_zb": {
             "name": "张波",

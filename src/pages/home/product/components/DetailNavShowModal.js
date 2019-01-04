@@ -87,7 +87,7 @@ export default class DetailNavShowModal extends Component {
             {item.index === 0 && this.state.messageCount > 0 ? <View style={{
                 position: 'absolute',
                 top: ScreenUtils.autoSizeWidth(9),
-                left: ScreenUtils.autoSizeWidth(31),
+                left: ScreenUtils.autoSizeWidth(35),
                 backgroundColor: DesignRule.mainColor,
                 borderRadius: 4
             }}>

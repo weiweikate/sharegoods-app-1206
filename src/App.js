@@ -27,14 +27,14 @@ import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
 import hotUpdateUtil from './utils/HotUpdateUtil';
 
-import geolocation from '@mr/geolocation';
+import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
 import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
 // import LoginAPI from './pages/login/api/LoginApi';
 import OldImag from './home_icon.png';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
-import { login } from './utils/SensorsTrack';
+import { login, logout } from './utils/SensorsTrack';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
@@ -69,7 +69,8 @@ export default class App extends Component {
         };
         user.readToken();
         if (user.isLogin) {
-            // 启动时埋点关联登录用户
+            // 启动时埋点关联登录用户,先取消关联，再重新关联
+            logout();
             login(user.code);
         }
         //检测是否老用户登陆
@@ -118,6 +119,7 @@ export default class App extends Component {
                     }}
                     onNavigationStateChange={(prevState, currentState) => {
                         let curRouteName = getCurrentRouteName(currentState);
+                        this.setState({ curRouteName });
                         // 拦截当前router的名称
                         console.log(curRouteName);
                         global.$routes = currentState.routes;
@@ -132,7 +134,9 @@ export default class App extends Component {
                     user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
                         ?
                         null
-                        :
+                        : (this.state.curRouteName === RouterMap.LoginPage || this.state.curRouteName === RouterMap.OldUserLoginPage
+                        || this.state.curRouteName === RouterMap.SetPasswordPage
+                        ? null :
                         <DebugButton
                             onPress={this.gotoLogin}
                             style={
@@ -152,7 +156,7 @@ export default class App extends Component {
                                     resizeMode={'contain'}
                                 />
                             </View>
-                        </DebugButton>
+                        </DebugButton>)
                 }
             </View>
         );

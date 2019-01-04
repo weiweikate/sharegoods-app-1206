@@ -214,15 +214,17 @@ export default class TopicDetailPage extends BasePage {
 
     //消息数据
     _getMessageCount = () => {
-        MessageAPI.getNewNoticeMessageCount().then(result => {
-            if (!EmptyUtils.isEmpty(result.data)) {
-                const { shopMessageCount, noticeCount, messageCount } = result.data;
-                this.setState({
-                    messageCount: shopMessageCount + noticeCount + messageCount
-                });
-            }
-        }).catch((error) => {
-        });
+        if(user.token){
+            MessageAPI.getNewNoticeMessageCount().then(result => {
+                if (!EmptyUtils.isEmpty(result.data)) {
+                    const { shopMessageCount, noticeCount, messageCount } = result.data;
+                    this.setState({
+                        messageCount: shopMessageCount + noticeCount + messageCount
+                    });
+                }
+            }).catch((error) => {
+            });
+        }
     };
 
 
