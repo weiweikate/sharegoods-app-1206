@@ -145,7 +145,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     _renderContent = () => {
         return (
-            <View style={{marginBottom:ScreenUtils.safeBottom}}>
+            <View style={{marginBottom:ScreenUtils.safeBottom,flex:1}}>
             <ScrollView>
             <RefreshList
                 ListHeaderComponent={this.renderHeader}
@@ -627,7 +627,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
             case 1:
                 this.$navigate("order/afterSaleService/AfterSaleServiceHomePage", {
-                    pageData: products
+                    pageData: {...products,orderSubType:orderDetailModel.orderSubType}
                 });
                 break;
             case 2:
