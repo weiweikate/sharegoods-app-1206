@@ -14,7 +14,7 @@ import res from "../res";
 const logisticsTop = res.logisticsTop;
 const logisticsBottom = res.logisticsBottom;
 const copy = res.copy;
-const logisticsIcon = res.dizhi;
+// const logisticsIcon = res.dizhi;
 const Nowuliu = res.kongbeiye_wulian;
 
 // import {PageLoadingState} from 'PageState';
