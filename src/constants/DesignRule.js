@@ -50,6 +50,7 @@ const colors = {
         color_90:'#909090',//90颜色
         yellow_FF7: '#FF7E00',//深黄色
         deliveryIncludeBlue: '#0186f5',//深蓝色
+        imgBg_color:'#efefef'
     }
 ;
 
