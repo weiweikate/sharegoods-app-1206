@@ -69,15 +69,18 @@ export default class MyShop_RecruitPage extends BasePage {
                         }).catch((error) => {
                                 spellStatusModel.permissionsErr = error.code;
                                 if (spellStatusModel.permissionsErr === 'permissionsErr' || spellStatusModel.permissionsErr === '12') {
+                                    spellStatusModel.hasAlertErr = true;
                                     Alert.alert('提示', '定位服务未开启，请进入系统－设置－定位服务中打开开关，允许秀购使用定位服务',
                                         [
                                             {
                                                 text: '取消', onPress: () => {
                                                     this.$navigateBackToHome();
+                                                    spellStatusModel.hasAlertErr = false;
                                                 }
                                             },
                                             {
                                                 text: '去设置', onPress: () => {
+                                                    spellStatusModel.hasAlertErr = false;
                                                     if (ScreenUtils.isIOS) {
                                                         Linking.openURL('app-settings:');
                                                     } else {
