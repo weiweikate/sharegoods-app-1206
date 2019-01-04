@@ -33,6 +33,7 @@ export default class EditPhonePwdPage extends BasePage {
             isAgainSecuret: true,
             newPwdAgain: ''
         };
+        this.isLoadding = false;
     }
 
     _render() {
@@ -131,6 +132,9 @@ export default class EditPhonePwdPage extends BasePage {
     }
 
     _done = () => {
+        if ( this.isLoadding === true){
+            return;
+        }
         // 密码修改成功，请重新登录
         if (StringUtils.isEmpty(this.state.oldPwd)) {
             bridge.$toast('旧密码不能为空');
@@ -148,6 +152,7 @@ export default class EditPhonePwdPage extends BasePage {
             bridge.$toast('请确保两次输入的新密码一致');
             return;
         }
+        this.isLoadding == true;
         MineAPI.changePhonePwd({
             oldPassword: this.state.oldPwd,
             newPassword: this.state.newPwd
@@ -162,8 +167,10 @@ export default class EditPhonePwdPage extends BasePage {
                     this.$navigateResetLogin();
                     bridge.$toast('密码修改成功，请重新登录');
                 }
+                this.isLoadding == false;
             }).catch(err => {
                 bridge.$toast(err.msg);
+                this.isLoadding == false;
                 if (err.code === 10009) {
                     user.clearUserInfo();
                     shopCartStore.data = [];
@@ -173,6 +180,7 @@ export default class EditPhonePwdPage extends BasePage {
                 }
             });
         }).catch((data) => {
+            this.isLoadding == false;
             bridge.$toast(data.msg);
         });
     };

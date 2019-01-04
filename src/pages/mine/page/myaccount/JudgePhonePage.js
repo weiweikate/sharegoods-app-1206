@@ -22,6 +22,7 @@ export default class JudgePhoneNumPage extends BasePage {
             vertifyCodeTime: 0
         };
         this.$navigationBarOptions.title = this.params.title;
+        this.isLoadding = false;
     }
 
     _render() {
@@ -118,6 +119,10 @@ export default class JudgePhoneNumPage extends BasePage {
     };
 
     _toNext = () => {
+        if (this.isLoadding === true)
+        {
+            return;
+        }
         let tel = this.state.telText;
         let code = this.state.code;
         if (StringUtils.isEmpty(tel)) {
@@ -130,10 +135,12 @@ export default class JudgePhoneNumPage extends BasePage {
         }
         if (StringUtils.checkPhone(tel)) {
             // 验证
+            this.isLoadding = true;
             MineAPI.judgeCode({
                 verificationCode: this.state.code,
                 phone: this.state.telText
             }).then((data) => {
+                this.isLoadding = false;
                 if (user.hadSalePassword) {
                     if (user.idcard) {
                         this.$navigate('mine/account/JudgeIDCardPage');
@@ -155,8 +162,10 @@ export default class JudgePhoneNumPage extends BasePage {
                 }
             }).catch((data) => {
                 bridge.$toast(data.msg);
+                this.isLoadding = false;
             });
         } else {
+            this.isLoadding = false;
             bridge.$toast('手机格式不对');
             return;
         }
