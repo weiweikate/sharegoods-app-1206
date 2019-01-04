@@ -8,10 +8,11 @@
  */
 
 #import <UIKit/UIKit.h>
-
+#import "AdView.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
-@property (nonatomic, weak)UIImageView *launchImgView;
+@property (nonatomic, weak)AdView * adView;
+@property (nonatomic, assign) BOOL isLoadJS;// js 已经加载完成
 - (void)removeLaunch;
 @end
