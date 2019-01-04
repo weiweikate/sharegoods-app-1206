@@ -2,7 +2,7 @@ const api = {
     // 获取秀场
    showQuery: ['/discover/query', {method: 'get'}],
    // 发现详情
-   showDetail: ['/discover/getById', {method: 'get'}],
+   showDetail: ['/gateway/discover/getById', {method: 'get'}],
    // 发现详情
    showDetailCode: ['/discover/getByCode', {method: 'get'}],
    // 点赞
