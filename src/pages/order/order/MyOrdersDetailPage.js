@@ -627,7 +627,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
             case 1:
                 this.$navigate("order/afterSaleService/AfterSaleServiceHomePage", {
-                    pageData: products
+                    pageData: {...products,orderSubType:orderDetailModel.orderSubType}
                 });
                 break;
             case 2:

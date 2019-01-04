@@ -451,6 +451,9 @@ export default class MyCouponsItems extends Component {
                     this.handleList(dataList, arrData);
                     this.setState({ viewData: arrData });
                 });
+            }else{
+                this.handleList(dataList, arrData);
+                this.setState({ viewData: arrData });
             }
         } else {//more
             this.handleList(dataList, arrData);
