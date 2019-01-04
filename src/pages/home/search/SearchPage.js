@@ -136,12 +136,13 @@ export default class SearchPage extends BasePage {
             }}>
                 <View>
                     <Text style={{
+                        flex:1,
                         fontSize: 13,
                         color: DesignRule.textColor_mainTitle,
                         marginLeft: 16,
                         paddingVertical: 15,
                         paddingRight:16
-                    }} allowFontScaling={false}>{item}</Text>
+                    }} allowFontScaling={false} numberOfLines={1}>{item}</Text>
                     <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);

@@ -111,9 +111,9 @@ export default class OldUserLoginPage extends BasePage {
                         <CommSpaceLine style={Styles.lineStyle}/>
                     </View>
                     <View style={{ marginLeft: 20, marginRight: 30, marginTop: 30 }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <View style={{flexDirection: 'row', alignItems: 'center' }}>
                             <TextInput
-                                style={Styles.inputTextStyle}
+                                style={[Styles.inputTextStyle,{ flex: 1}]}
                                 value={this.oldUserLoginModel.password}
                                 onChangeText={text => {
                                     this.oldUserLoginModel.savePassword(text);
@@ -125,7 +125,7 @@ export default class OldUserLoginPage extends BasePage {
                             <TouchableOpacity onPress={() => {
                                 this.oldUserLoginModel.isSecuret = !this.oldUserLoginModel.isSecuret;
                             }}>
-                                <Image style={Styles.seePasswordImageStyle}
+                                <Image style={{ marginLeft: 10}}
                                        source={this.oldUserLoginModel.isSecuret ? close_eye : open_eye}/>
                             </TouchableOpacity>
                         </View>
@@ -277,8 +277,8 @@ const Styles = StyleSheet.create(
             marginLeft: 10
         },
         inputTextStyle: {
+            height:40,
             marginLeft: 20,
-            width: 140,
             fontSize: 14,
             fontWeight: '400'
         },
