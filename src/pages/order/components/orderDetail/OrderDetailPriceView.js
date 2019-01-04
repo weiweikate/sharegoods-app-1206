@@ -76,16 +76,12 @@ export default class OrderDetailPriceView extends Component {
             NativeModules.commModule.toast("该商品售后已过期");
             return;
         }
-
-
         switch (menu.id) {
             case 0:
                 navigate(RouterMap.AfterSaleServicePage, {
                     pageType: 0,
                     orderProductNo: products.orderProductNo
                 } );
-
-
                 break;
             case 1:
                 navigate(RouterMap.AfterSaleServiceHomePage,{
