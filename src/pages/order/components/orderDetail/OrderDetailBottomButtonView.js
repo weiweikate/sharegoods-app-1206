@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Alert, NativeModules
+    Alert, NativeModules,
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -178,7 +178,8 @@ export default  class OrderDetailBottomButtonView extends Component{
     };
 }
 const styles = StyleSheet.create({
-    containerStyle:{ height: px2dp(48), flexDirection: 'row', alignItems: 'center',
+    containerStyle:{
+        height: px2dp(48), flexDirection: 'row', alignItems: 'center',
         justifyContent: 'flex-end',backgroundColor:'white',marginTop:1,
        },
     touchableStyle:{

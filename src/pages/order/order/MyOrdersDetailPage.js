@@ -145,7 +145,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     _renderContent = () => {
         return (
-            <View style={{marginBottom:ScreenUtils.safeBottom}}>
+            <View style={{marginBottom:ScreenUtils.safeBottom,flex:1}}>
             <ScrollView>
             <RefreshList
                 ListHeaderComponent={this.renderHeader}
