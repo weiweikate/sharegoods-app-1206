@@ -433,12 +433,12 @@ export default class WithdrawCashPage extends BasePage {
     };
     commit = () => {
         if (parseFloat(this.state.money) > parseFloat(user.availableBalance)) {
-            this.$toastShow("超出金额限制");
+            this.$toastShow("提现金额不能超出可提现金额");
             return;
         }
 
         if(this.state.minCount && (parseFloat(this.state.money) < parseFloat(this.state.minCount))){
-            this.$toastShow("超出金额设置");
+            this.$toastShow(`提现金额不能低于${parseFloat(this.state.minCount)}`);
             return;
         }
 

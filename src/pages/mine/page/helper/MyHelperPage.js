@@ -10,7 +10,6 @@ import {
     StyleSheet,
     View,
     Image,
-    TouchableOpacity,
     Linking,
     ScrollView
 } from 'react-native';
@@ -23,7 +22,7 @@ import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import { MRText as Text } from '../../../../components/ui';
+import { MRText as Text ,NoMoreClick} from '../../../../components/ui';
 
 const {
     // top_kefu,
@@ -60,7 +59,7 @@ export default class MyHelperPage extends BasePage {
                 {this.state.typeList.map((item, index) => {
                     return (
                         <View key={index} style={styles.hotQuestionStyle}>
-                            <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
+                            <NoMoreClick activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                 <UIImage source={item.imgUrl ? { uri: item.imgUrl } : icon_wenti}
                                          style={{ width: 37, height: 37 }}/>
@@ -69,7 +68,7 @@ export default class MyHelperPage extends BasePage {
                                     color: DesignRule.textColor_secondTitle,
                                     marginTop: 4
                                 }} allowFontScaling={false}>{item.name}</Text>
-                            </TouchableOpacity>
+                            </NoMoreClick>
                             <View style={styles.hot2ViewStyle}>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
                                     <UIText onPress={() => this.gotoquestionDetail(item.list[0].id)}
@@ -118,21 +117,21 @@ export default class MyHelperPage extends BasePage {
                         marginTop: 10,
                         backgroundColor: 'white'
                     }}>
-                        <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(1)}
+                        <NoMoreClick activeOpacity={0.6} onPress={() => this.questionfeedBack(1)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_tuikuan} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle} allowFontScaling={false}>查看售后</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(2)}
+                        </NoMoreClick>
+                        <NoMoreClick activeOpacity={0.6} onPress={() => this.questionfeedBack(2)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_feedback} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle} allowFontScaling={false}>问题反馈</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(3)}
+                        </NoMoreClick>
+                        <NoMoreClick activeOpacity={0.6} onPress={() => this.questionfeedBack(3)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_auto_feedback} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle} allowFontScaling={false}>查看订单</Text>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                     </View>
                     <View style={{ height: 177, backgroundColor: DesignRule.bgColor }}/>
                 </ScrollView>
@@ -141,7 +140,7 @@ export default class MyHelperPage extends BasePage {
                     height: 80, position: 'absolute', bottom: 0, alignItems: 'center', zIndex: 21
                 }}>
 
-                    <TouchableOpacity style={{
+                    <NoMoreClick style={{
                         width: 58,
                         height: 54,
                         alignItems: 'center',
@@ -159,11 +158,11 @@ export default class MyHelperPage extends BasePage {
                             }} allowFontScaling={false}>在线客服</Text>
                             <Text style={styles.text2Style} allowFontScaling={false}>9:00-22:00</Text>
                         </View>
-                    </TouchableOpacity>
+                    </NoMoreClick>
 
                     <View style={{ width: 1, height: '50%', backgroundColor: DesignRule.lineColor_inColorBg }}/>
 
-                    <TouchableOpacity
+                    <NoMoreClick
                         style={{
                             width: 58,
                             height: 54,
@@ -182,7 +181,7 @@ export default class MyHelperPage extends BasePage {
                             }} allowFontScaling={false}>客服电话</Text>
                             <Text style={styles.text2Style} allowFontScaling={false}>400-9696-365</Text>
                         </View>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                 </View>
             </View>
         );

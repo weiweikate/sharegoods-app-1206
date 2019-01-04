@@ -2,13 +2,12 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    TouchableWithoutFeedback,
     NativeModules,
     InteractionManager,
     DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { HotSearch, RecentSearch } from './../../../components/ui';
+import { HotSearch, RecentSearch,NoMoreClick } from './../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import Storage from '../../../utils/storage';
 import SearchNav from '../../home/search/components/SearchNav';
@@ -94,7 +93,7 @@ class SearchPage extends BasePage {
     _render() {
         // console.log("从上个页面传过来的inputText=" + this.params.inputText)
         return (
-            <TouchableWithoutFeedback onPress={() => dismissKeyboard()}>
+            <NoMoreClick onPress={() => dismissKeyboard()}>
                 <View style={styles.container}>
                     <SearchNav placeholder={'请输入关键词搜索'} onSubmitEditing={(inputText) => {
                         this.setState({ inputText: inputText }), this.startSearch(inputText);
@@ -121,7 +120,7 @@ class SearchPage extends BasePage {
                     {this.renderRecentSearch()}
                     {this.renderHotSearch()}
                 </View>
-            </TouchableWithoutFeedback>
+            </NoMoreClick>
         );
     }
 
