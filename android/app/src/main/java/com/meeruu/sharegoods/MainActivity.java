@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity {
     private boolean needGo = false;
     private boolean isFirst = true;
     private boolean hasGo = false;
+    private boolean canSkip = false;
     private String adId;
     private String title;
     private String adUrl;
@@ -208,9 +209,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void doClick(View v) {
         if (v.getId() == R.id.tv_go) {
-            hasGo = true;
-            //跳过
-            goIndex();
+            if (canSkip) {
+                hasGo = true;
+                //跳过
+                goIndex();
+            }
+
         }
     }
 
@@ -228,11 +232,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 tvGo.setText(String.format(getString(R.string.ad_loop), millisUntilFinished / 1000));
+                canSkip = false;
             }
 
             @Override
             public void onFinish() {
                 tvGo.setText(String.format(getString(R.string.ad_loop), 0));
+                canSkip = true;
             }
         };
         countDownTimer.start();
