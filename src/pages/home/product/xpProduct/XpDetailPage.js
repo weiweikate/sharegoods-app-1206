@@ -94,7 +94,9 @@ export class XpDetailPage extends BasePage {
 
     componentDidMount() {
         this._request_act_exp_detail();
-        this.xpDetailModel.getMessageCount();
+        if (user.isLogin){
+            this.xpDetailModel.getMessageCount();
+        }
     }
 
     _request_act_exp_detail = () => {

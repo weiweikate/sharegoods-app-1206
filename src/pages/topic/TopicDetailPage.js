@@ -122,7 +122,9 @@ export default class TopicDetailPage extends BasePage {
                 console.log('willFocus', state);
                 if (state && state.routeName === 'topic/TopicDetailPage') {
                     this._getActivityData();
-                    this._getMessageCount();
+                    if (user.isLogin) {
+                        this._getMessageCount();
+                    }
                 }
             }
         );

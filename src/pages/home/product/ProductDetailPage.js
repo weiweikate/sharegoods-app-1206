@@ -103,7 +103,9 @@ export default class ProductDetailPage extends BasePage {
                 console.log('willFocus', state);
                 if (state && state.routeName === 'home/product/ProductDetailPage') {
                     this._getProductDetail();
-                    this._getMessageCount();
+                    if (user.isLogin){
+                        this._getMessageCount();
+                    }
                 }
             }
         );
