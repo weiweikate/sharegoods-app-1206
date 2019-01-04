@@ -27,6 +27,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             code: '',
             vertifyCodeTime: 0
         };
+        this.isLoadding = false;
     }
 
     _render() {
@@ -118,6 +119,9 @@ export default class SetNewPhoneNumPage extends BasePage {
     };
 
     _toNext = () => {
+        if (this.isLoadding === true) {
+            return;
+        }
         let tel = this.state.telText;
         let code = this.state.code;
         const { oldNum, oldCode } = this.props.navigation.state.params;
@@ -136,15 +140,18 @@ export default class SetNewPhoneNumPage extends BasePage {
         }
         if (StringUtils.checkPhone(tel)) {
             // 验证
+            this.isLoadding = true;
             MineAPI.updatePhone({
                 verificationCode: this.state.code,
                 oldVerificationCode: oldCode,
                 phone: this.state.telText
             }).then((data) => {
+                this.isLoadding = false;
                 user.changePhone(tel);
                 bridge.$toast('绑定成功');
                 this.$navigateBack(-2);
             }).catch((data) => {
+                this.isLoadding = false;
                 bridge.$toast(data.msg);
             });
         } else {
