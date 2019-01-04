@@ -62,6 +62,10 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
         }
     }
 
+    @ReactProp(name = "focusable")
+    public void setFocusable(PopModal view, Boolean focus) {
+       view.setFocus(focus);
+    }
     @Override
     public void onActivityCreate(Activity activity) {
     }

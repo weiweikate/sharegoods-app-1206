@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     private DialogRootViewGroup mHostView;
     private Rect rect;
     EventDispatcher eventDispatcher;
+    private boolean focus = true;
     private @Nullable
     PopupWindow popupWindow;
     public static WeakReference<ReactContext> mContext;
@@ -196,7 +198,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             int h = mHostView.getResources().getDisplayMetrics().heightPixels - rect.bottom;
             popupWindow.setHeight(h);
         }
-        popupWindow.setFocusable(true);
+        popupWindow.setFocusable(this.focus);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         popupWindow.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
@@ -209,6 +211,13 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         fitPopupWindowOverStatusBar(popupWindow, true);
         if (currentActivity != null || !currentActivity.isFinishing()) {
             popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+        }
+    }
+
+    public void setFocus(boolean focus){
+        this.focus = focus;
+        if(popupWindow != null){
+            popupWindow.setFocusable(true);
         }
     }
 
