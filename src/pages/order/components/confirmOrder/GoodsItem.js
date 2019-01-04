@@ -2,10 +2,10 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import {
     UIText, MRText as Text
-} from "../../../components/ui";
+} from "../../../../components/ui";
 import UIImage from "@mr/image-placeholder";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import DesignRule from '../../../constants/DesignRule';
+import ScreenUtils from "../../../../utils/ScreenUtils";
+import DesignRule from "../../../../constants/DesignRule";
 
 const GoodsItem = props => {
     const {
