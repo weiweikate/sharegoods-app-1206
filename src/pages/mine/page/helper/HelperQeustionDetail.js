@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     View,
-    TouchableOpacity,
     ScrollView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
@@ -9,7 +8,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
 import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
-import {MRText as Text} from '../../../../components/ui'
+import {MRText as Text,NoMoreClick} from '../../../../components/ui'
 /**
  * @author chenxiang
  * @date on 2018/9/21
@@ -64,7 +63,7 @@ export default class HelperQuestionDetail extends BasePage {
                     flexDirection: 'row',
                     paddingHorizontal: 33
                 }}>
-                    <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackNoUse()} style={{
+                    <NoMoreClick activeOpacity={0.6} onPress={() => this.feedbackNoUse()} style={{
                         width: 140,
                         height: 48,
                         borderRadius: 5,
@@ -78,8 +77,8 @@ export default class HelperQuestionDetail extends BasePage {
                             fontSize: 16,
                             color: this.state.type === null || this.state.type === 1 ? DesignRule.mainColor : 'white'
                         }} allowFontScaling={false}>{`没啥帮助?  (${this.state.noHelpNum > 9999 ? '9999+' : this.state.noHelpNum})`}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackGoodUse()} style={{
+                    </NoMoreClick>
+                    <NoMoreClick activeOpacity={0.6} onPress={() => this.feedbackGoodUse()} style={{
                         width: 140,
                         height: 48,
                         borderRadius: 5,
@@ -93,7 +92,7 @@ export default class HelperQuestionDetail extends BasePage {
                             fontSize: 16,
                             color: this.state.type === null || this.state.type === 0 ? DesignRule.mainColor : 'white'
                         }} allowFontScaling={false}>{`有用  (${this.state.useHelpNum > 9999 ? '9999+' : this.state.useHelpNum})`}</Text>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                 </View>
             </View>
         );

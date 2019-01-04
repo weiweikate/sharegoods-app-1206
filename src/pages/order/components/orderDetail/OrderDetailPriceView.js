@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
     View,
-    Image, StyleSheet, TouchableOpacity
+    Image, StyleSheet,
 } from "react-native";
 import { orderDetailAfterServiceModel, orderDetailModel } from "../../model/OrderDetailModel";
 import { observer } from "mobx-react/native";
@@ -9,7 +9,7 @@ import StringUtils from "../../../../utils/StringUtils";
 import UserSingleItem from "../UserSingleItem";
 import res from "../../res";
 import DesignRule from '../../../../constants/DesignRule';
-import {MRText as Text} from '../../../../components/ui';
+import {MRText as Text,NoMoreClick} from '../../../../components/ui';
 const couponIcon = res.coupons_icon;
 
 @observer
@@ -49,14 +49,14 @@ export default class OrderDetailPriceView extends Component {
         let itemArr = [];
         for (let i = 0; i < orderDetailAfterServiceModel.currentAsList.length; i++) {
             itemArr.push(
-                <TouchableOpacity key={i}
+                <NoMoreClick key={i}
                                   style={[styles.grayView, { borderColor: orderDetailAfterServiceModel.currentAsList[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
                                   onPress={() => {
                                       this.afterSaleServiceClick(orderDetailAfterServiceModel.currentAsList[i], i);
                                   }}>
                     <Text
                         style={[styles.grayText, { color: orderDetailAfterServiceModel.currentAsList[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]} allowFontScaling={false}>{orderDetailAfterServiceModel.currentAsList[i].operation}</Text>
-                </TouchableOpacity>
+                </NoMoreClick>
             );
         }
         return itemArr;
