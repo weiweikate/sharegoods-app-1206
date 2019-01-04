@@ -76,8 +76,28 @@ export default class ShopCartPage extends BasePage {
 
                 ]
             },
-            { title: 'Title2', key: 2, data: ['item3', 'item4'] },
-            { title: 'Title3', key: 3, data: ['item5', 'item6'] }
+            {
+                title: 'Title2', key: 2, data: [
+                    {
+                        item: 'item1',
+                        key: 1
+                    },
+                    {
+                        item: 'item2',
+                        key: 2
+                    }]
+            },
+            {
+                title: 'Title3', key: 3, data: [
+                    {
+                        item: 'item1',
+                        key: 1
+                    },
+                    {
+                        item: 'item2',
+                        key: 2
+                    }]
+            }
         ];
     }
 
@@ -148,7 +168,8 @@ export default class ShopCartPage extends BasePage {
                         width: ScreenUtils.width
                     }}
                     // useFlatList={true}
-                    sections={shopCartStore.cartData}
+                    // sections={shopCartStore.cartData}
+                    sections={this.dataArr}
                     useSectionList={true}
                     // dataSource={tempArr}
                     disableRightSwipe={true}
@@ -166,15 +187,15 @@ export default class ShopCartPage extends BasePage {
                     //     // data.title === 'Title1' ? null :
                     //     this._renderRowHiddenComponent(data, secId, rowId, rowMap)
                     // )}
-                    renderHiddenItem={(data, secId, rowId, rowMap) => (
+                    renderHiddenItem={(data, rowMap) => (
                         // data.title === 'Title1' ? null :
-                        this._renderRowHiddenComponent(data, secId, rowId, rowMap)
+                        this._renderRowHiddenComponent(data, rowMap)
                     )}
                     renderHeaderView={(sectionData) => {
-                        return(
+                        return (
                             <SectionHeaderView
                                 sectionData={sectionData.section}
-                                gotoCollectBills={(sectionData)=>{
+                                gotoCollectBills={(sectionData) => {
                                     this._gotoCollectBills(sectionData);
                                 }}
                             />
@@ -203,10 +224,10 @@ export default class ShopCartPage extends BasePage {
         );
     };
 
-    _gotoCollectBills=(sectionData)=>{
+    _gotoCollectBills = (sectionData) => {
 
 
-    }
+    };
     /**
      * 渲染每行的隐藏组件
      * @param data
@@ -216,13 +237,18 @@ export default class ShopCartPage extends BasePage {
      * @return {*}
      * @private
      */
-    _renderRowHiddenComponent = (data, secId, rowId, rowMap) => {
+    _renderRowHiddenComponent = (data, rowMap) => {
         return (
             <TouchableOpacity
                 style={styles.standaloneRowBack}
                 onPress={() => {
-                    rowMap[`${secId}${rowId}`].closeRow();
-                    this._deleteFromShoppingCartByProductId(data.skuCode);
+                    // rowMap[`${secId}${rowId}`].closeRow();
+                    rowMap[data.index].closeRow();
+                    console.log( rowMap[data.index]);
+                    // console.log(rowMap)
+                    console.log(data);
+
+                    this._deleteFromShoppingCartByProductId(data);
                 }}>
                 <View
                     style={
@@ -401,8 +427,10 @@ export default class ShopCartPage extends BasePage {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
     /*删除操作*/
-    _deleteFromShoppingCartByProductId = (skuCode) => {
-        shopCartCacheTool.deleteShopCartGoods(skuCode);
+    _deleteFromShoppingCartByProductId = (itemData) => {
+        console.log('删除前');
+        console.log(itemData);
+        // shopCartCacheTool.deleteShopCartGoods(skuCode);
     };
 }
 

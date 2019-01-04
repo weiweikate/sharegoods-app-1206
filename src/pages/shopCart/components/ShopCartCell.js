@@ -72,6 +72,7 @@ export default class ShopCartCell extends Component {
             <View>
                 <TouchableHighlight
                     onPress={() => {
+                        rowMap;
                         cellClickAction(itemData);
                     }}
                     style={styles.itemContainer}>

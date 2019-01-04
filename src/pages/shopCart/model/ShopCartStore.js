@@ -11,7 +11,7 @@ import shopCartCacheTool from './ShopCartCacheTool';
 
 class ShopCartStore {
 
-    needSelectGoods = []
+    needSelectGoods = [];
     @observable
     isRefresh = false;
     @observable
@@ -57,7 +57,7 @@ class ShopCartStore {
     }
 
     @computed
-    get getTotalGoodsNumber(){
+    get getTotalGoodsNumber() {
         return this.data.slice().length;
     }
 
@@ -66,13 +66,13 @@ class ShopCartStore {
         let totalSelectNum = 0;
         this.data.slice().map(items => {
             items.data.map(
-                (item)=>{
-                    if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2 ) {
+                (item) => {
+                    if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2) {
                         // totalSelectNum += item.amount;
                         totalSelectNum += 1;
                     }
                 }
-            )
+            );
         });
         return totalSelectNum;
     }
@@ -81,16 +81,16 @@ class ShopCartStore {
     get getTotalMoney() {
         let totalMoney = 0.00;
         this.data.slice().map(items => {
-            items.data.map(item=>{
-                if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2 ) {
+            items.data.map(item => {
+                if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2) {
                     totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
                 }
-            })
+            });
         });
 
         this.calculationAwardRules();
 
-        return   Math.round(totalMoney * 100)/100;
+        return Math.round(totalMoney * 100) / 100;
     }
 
     @computed
@@ -111,22 +111,23 @@ class ShopCartStore {
         let isHaveNormalGood = false;
         let flag = true;
         this.data.map(items => {
-            items.data.map(item=>{
-                if (item.productStatus === 1){
+            items.data.map(item => {
+                if (item.productStatus === 1) {
                     isHaveNormalGood = true;
                     if (!item.isSelected) {
                         flag = false;
                     }
                 }
-            })
+            });
         });
 
-        if (isHaveNormalGood && flag){
+        if (isHaveNormalGood && flag) {
             return true;
         } else {
             return false;
         }
     }
+
     /**
      * 组装打包购物车数据
      */
@@ -135,18 +136,18 @@ class ShopCartStore {
         let originArr = this.data.slice();
         let originData = response;
         // let originData = testData;
-        console.log('------'+response);
+        console.log('------' + response);
         let tempAllData = [];
         //有效商品
         let effectiveArr = originData.shoppingCartGoodsVOS;
         if (effectiveArr && effectiveArr instanceof Array && effectiveArr.length > 0) {
-            effectiveArr.map((itemObj,index)=>{
+            effectiveArr.map((itemObj, index) => {
                 //增加两个字段
                 itemObj.type = itemObj.activityType;//当前分组类型
                 itemObj.middleTitle = '1111';
                 itemObj.key = index;
                 itemObj.data = itemObj.products;
-                itemObj.data.map((goodItem,goodItemIndex) =>{
+                itemObj.data.map((goodItem, goodItemIndex) => {
                     goodItem.isSelected = false;
                     goodItem.key = goodItemIndex;
                     //从订单过来的选中
@@ -160,8 +161,8 @@ class ShopCartStore {
                         }
                     });
                     //刷新来的选中
-                    originArr.map(items=>{
-                        items.data.map(itemGood=>{
+                    originArr.map(items => {
+                        items.data.map(itemGood => {
                             if (itemGood.productCode === goodItem.productCode && goodItem.skuCode === itemGood.skuCode) {
                                 if (goodItem.productStatus === 1) {
                                     goodItem.isSelected = itemGood.isSelected;
@@ -170,36 +171,36 @@ class ShopCartStore {
                                 }
 
                             }
-                        })
-                    })
+                        });
+                    });
                 });
                 itemObj.sectionIndex = index;
                 tempAllData.push(itemObj);
-            })
+            });
         }
-        console.log(tempAllData)
+        console.log(tempAllData);
         //失效商品
         let InvalidArr = originData.shoppingCartFailedGoodsVOS;
         if (InvalidArr && InvalidArr instanceof Array && InvalidArr.length > 0) {
-          let invalidObj = {};
-          invalidObj.type = -1;            //当前分组为失效商品
-          invalidObj.middleTitle = '1111'
-          invalidObj.key = tempAllData.length;
-          invalidObj.data = InvalidArr[0].products;
-          invalidObj.data.map((goodItem,goodItemIndex)=>{
-              goodItem.isSelected = false;
-              goodItem.key = goodItemIndex;
+            let invalidObj = {};
+            invalidObj.type = -1;            //当前分组为失效商品
+            invalidObj.middleTitle = '1111';
+            invalidObj.key = tempAllData.length;
+            invalidObj.data = InvalidArr[0].products;
+            invalidObj.data.map((goodItem, goodItemIndex) => {
+                goodItem.isSelected = false;
+                goodItem.key = goodItemIndex;
 
 
-          })
-          invalidObj.sectionIndex = tempAllData.length;
-          tempAllData.push(invalidObj);
+            });
+            invalidObj.sectionIndex = tempAllData.length;
+            tempAllData.push(invalidObj);
         }
         console.log(tempAllData);
         this.data = tempAllData;
         console.log(this.data);
         //清空以往的选择
-        this.needSelectGoods = []
+        this.needSelectGoods = [];
         return;
         // if (response && response instanceof Array && response.length > 0) {
         //     let tempArr = [];
@@ -247,60 +248,60 @@ class ShopCartStore {
      * 计算奖励规则
      * @constructor
      */
-    calculationAwardRules=()=>{
-        this.data.slice().map((items,itemsIndex)=>{
+    calculationAwardRules = () => {
+        this.data.slice().map((items, itemsIndex) => {
 
             let totalSelectMoney = 0.00;
-            items.data.map((itemGood,itemGoodIndex)=>{
+            items.data.map((itemGood, itemGoodIndex) => {
                 if (itemGood.isSelected) {
                     totalSelectMoney += itemGood.price * itemGood.amount;
                 }
             });
-            if (totalSelectMoney>200){
+            if (totalSelectMoney > 200) {
                 items.middleTitle = '2222';
             }
-        })
-    }
+        });
+    };
 
 
     /**
      * 判断是否可以结算
      */
-    judgeIsCanSettlement=(callBack)=>{
+    judgeIsCanSettlement = (callBack) => {
         let [...selectArr] = shopCartStore.startSettlement();
-        if (selectArr.length <= 0){
+        if (selectArr.length <= 0) {
             bridge.$toast('请先选择结算商品~');
-            callBack(false,[]);
+            callBack(false, []);
             return;
         }
-        let isCanSettlement = true
-        let haveNaNGood = false
-        let  tempArr = [];
+        let isCanSettlement = true;
+        let haveNaNGood = false;
+        let tempArr = [];
         selectArr.map(good => {
             if (good.amount > good.stock) {
-                isCanSettlement = false
+                isCanSettlement = false;
             }
-            if (good.amount > 0 && !isNaN(good.amount)){
+            if (good.amount > 0 && !isNaN(good.amount)) {
                 tempArr.push(good);
             }
-            if (isNaN(good.amount)){
-                haveNaNGood = true
-                isCanSettlement = false
+            if (isNaN(good.amount)) {
+                haveNaNGood = true;
+                isCanSettlement = false;
             }
-        })
+        });
 
-        if (haveNaNGood){
-            bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~')
+        if (haveNaNGood) {
+            bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~');
             return;
         }
         if (!isCanSettlement) {
-            bridge.$toast('商品库存不足请确认~')
+            bridge.$toast('商品库存不足请确认~');
             return;
         }
-        if (isCanSettlement && !haveNaNGood){
-            callBack(isCanSettlement,tempArr)
+        if (isCanSettlement && !haveNaNGood) {
+            callBack(isCanSettlement, tempArr);
         }
-    }
+    };
     /**
      * 获取结算选中商品
      * @returns {any[]}
@@ -311,11 +312,11 @@ class ShopCartStore {
         let selectItemSet = new Set();
         let [...allItems] = this.data.slice();
         allItems.map((items) => {
-            items.data.map(itemGood=>{
+            items.data.map(itemGood => {
                 if (itemGood.isSelected) {
                     selectItemSet.add(itemGood);
                 }
-            })
+            });
         });
         return Array.from(selectItemSet);
     };
@@ -326,19 +327,19 @@ class ShopCartStore {
         let [...tempArr] = this.data.slice();
         if (isSelectAll) {
             tempArr.map(items => {
-                items.data.map(item=>{
-                    if (item.productStatus === 0 || item.productStatus === 2  || item.productStatus === 3) {
+                items.data.map(item => {
+                    if (item.productStatus === 0 || item.productStatus === 2 || item.productStatus === 3) {
                         item.isSelected = false;
                     } else {
                         item.isSelected = true;
                     }
-                })
+                });
             });
         } else {
             tempArr.map(items => {
-                items.data.map(item=>{
+                items.data.map(item => {
                     item.isSelected = false;
-                })
+                });
             });
         }
         this.data = tempArr;
@@ -346,9 +347,9 @@ class ShopCartStore {
     /*更新线上购物车商品*/
     updateCartItem = (itemData, rowId) => {
         ShopCartAPI.updateItem(
-                {...itemData}
+            { ...itemData }
         ).then((res) => {
-            this.needSelectGoods.push(itemData)
+            this.needSelectGoods.push(itemData);
             // this.getShopCartListData()
             this.packingShopCartGoodsData(res.data);
         }).catch(error => {
@@ -402,36 +403,43 @@ class ShopCartStore {
             this.setRefresh(false);
         });
     };
+
     /*加入购物车*/
     addItemToShopCart(item) {
         if (item) {
-                //加入单个商品
-                bridge.showLoading();
-                ShopCartAPI.addItem(
-                    {
-                    'amount': item.amount,
-                    'productCode': item.productCode,
-                    'skuCode': item.skuCode,
-                    'timestamp': item.timestamp
-                }).then((res) => {
-                    bridge.hiddenLoading();
-                    bridge.$toast('加入购物车成功');
-                    this.getShopCartListData();
-                }).catch((error) => {
-                    bridge.$toast(error.msg || '加入购物车失败');
-                    if (error.code === 10009) {
-                        user.clearUserInfo();
-                        user.clearToken();
-                        //清空购物车
-                        this.data = [];
-                        MineApi.signOut();
-                        QYChatUtil.qiYULogout();
-                        shopCartCacheTool.addGoodItem(item)
-                    }else {
-                        bridge.$toast(error.msg)
-                    }
-                    bridge.hiddenLoading();
-                });
+            //加入单个商品
+            bridge.showLoading();
+            ShopCartAPI.addItem(
+                {
+                    shoppingCartParamList: [
+                        { ...item }
+                    ]
+                }
+                //     {
+                //     'amount': item.amount,
+                //     'productCode': item.productCode,
+                //     'skuCode': item.skuCode,
+                //     'timestamp': item.timestamp
+                // }
+            ).then((res) => {
+                bridge.hiddenLoading();
+                bridge.$toast('加入购物车成功');
+                this.getShopCartListData();
+            }).catch((error) => {
+                bridge.$toast(error.msg || '加入购物车失败');
+                if (error.code === 10009) {
+                    user.clearUserInfo();
+                    user.clearToken();
+                    //清空购物车
+                    this.data = [];
+                    MineApi.signOut();
+                    QYChatUtil.qiYULogout();
+                    shopCartCacheTool.addGoodItem(item);
+                } else {
+                    bridge.$toast(error.msg);
+                }
+                bridge.hiddenLoading();
+            });
         } else {
             bridge.$toast('添加商品不能为空');
         }
@@ -444,17 +452,17 @@ class ShopCartStore {
     addOneMoreList(oneMoreList) {
         if (oneMoreList instanceof Array && oneMoreList.length > 0) {
 
-            this.needSelectGoods = oneMoreList
+            this.needSelectGoods = oneMoreList;
 
-         ShopCartAPI.oneMoreOrder({
-             cacheList:oneMoreList
-         }).then(result => {
-            //添加完成再次拉取
-            //  this.getShopCartListData()
-             this.packingShopCartGoodsData(result.data);
-         }).catch(reason => {
-             bridge.$toast(reason.msg)
-         })
+            ShopCartAPI.oneMoreOrder({
+                cacheList: oneMoreList
+            }).then(result => {
+                //添加完成再次拉取
+                //  this.getShopCartListData()
+                this.packingShopCartGoodsData(result.data);
+            }).catch(reason => {
+                bridge.$toast(reason.msg);
+            });
         }
     }
 

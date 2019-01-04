@@ -310,10 +310,11 @@ export default class ProductDetailPage extends BasePage {
     _selectionViewConfirm = (amount, skuCode) => {
         let orderProducts = [];
         if (this.state.goType === 'gwc') {
+            //hyf更改
             let temp = {
                 'amount': amount,
                 'skuCode': skuCode,
-                'productCode': this.state.data.prodCode
+                'spuCode': this.state.data.prodCode
             };
             /*加入购物车埋点*/
             const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.state.data || {};
