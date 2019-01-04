@@ -10,7 +10,7 @@
 #import "UIImage+Util.h"
 #import "AppDelegate.h"
 #define ImageStr @"https://cdn.sharegoodsmall.com/sharegoods/resource/sg/images/ad_index/sgad.png"
-#define Nums 5
+#define Nums 3
 @interface TimerView: UIView
 @property(nonatomic, assign)NSInteger num;
 -(instancetype)initWithNum:(NSInteger)num;
@@ -26,13 +26,13 @@
 {
   if (self = [super init]) {
     self.num = num;
-    self.shapeLayer2 = [CAShapeLayer new];
-    _shapeLayer2.lineWidth = 3;
-    _shapeLayer2.strokeColor = [[UIColor colorWithHexString:@"aaaaaa"]colorWithAlphaComponent:0.5] .CGColor;
-    _shapeLayer2.fillColor = [UIColor clearColor].CGColor;
-    _shapeLayer2.strokeStart = 0;
-    _shapeLayer2.strokeEnd = 1;
-    [self.layer addSublayer:_shapeLayer2];
+//    self.shapeLayer2 = [CAShapeLayer new];
+//    _shapeLayer2.lineWidth = 3;
+//    _shapeLayer2.strokeColor = [[UIColor colorWithHexString:@"aaaaaa"]colorWithAlphaComponent:0.5] .CGColor;
+//    _shapeLayer2.fillColor = [UIColor clearColor].CGColor;
+//    _shapeLayer2.strokeStart = 0;
+//    _shapeLayer2.strokeEnd = 1;
+//    [self.layer addSublayer:_shapeLayer2];
     
     self.shapeLayer = [CAShapeLayer new];
 //    _shapeLayer.lineWidth = 3;
@@ -45,8 +45,13 @@
     self.label = [UILabel new];
     [self addSubview:self.label];
     self.label.textAlignment = 1;
+    self.label.layer.cornerRadius = 15;
+    self.label.textColor = [UIColor whiteColor];
     self.label.font = [UIFont systemFontOfSize:10];
-    self.label.text = [NSString stringWithFormat:@"%lds",num];
+    self.label.backgroundColor = [[UIColor colorWithHexString:@"000000"]colorWithAlphaComponent:0.2];
+//    self.label.layer.borderWidth = 2;
+    self.label.clipsToBounds = YES;
+    self.label.text = [NSString stringWithFormat:@"跳过%lds",num];
 
   }
   return self;
@@ -67,7 +72,7 @@
 - (void)handleTimer:(NSTimer *)timer
 {
   self.num --;
-    self.label.text = [NSString stringWithFormat:@"%lds",self.num];
+    self.label.text = [NSString stringWithFormat:@"跳过%lds",self.num];
   if (self.num > 0) {
   }else{
     [timer invalidate];
@@ -82,14 +87,14 @@
 - (void)layoutSubviews
 {
   [super layoutSubviews];
-  self.shapeLayer.frame = self.bounds;
-  self.shapeLayer2.frame = self.bounds;
+//  self.shapeLayer.frame = self.bounds;
+//  self.shapeLayer2.frame = self.bounds;
   self.label.frame = self.bounds;;
-  UIBezierPath *path = [UIBezierPath new];
-  //  [path moveToPoint:CGPointMake(self.width/2.0, 2)];
-  [path addArcWithCenter:CGPointMake(self.width/2.0, self.height/2.0) radius:self.width/2.0-2 startAngle:M_PI_2*3 endAngle:M_PI_2*3+0.0001  clockwise:NO];
-  _shapeLayer.path = path.CGPath;
-  self.shapeLayer2.path = path.CGPath;
+//  UIBezierPath *path = [UIBezierPath new];
+//  //  [path moveToPoint:CGPointMake(self.width/2.0, 2)];
+//  [path addArcWithCenter:CGPointMake(self.width/2.0, self.height/2.0) radius:self.width/2.0-2 startAngle:M_PI_2*3 endAngle:M_PI_2*3+0.0001  clockwise:NO];
+//  _shapeLayer.path = path.CGPath;
+//  self.shapeLayer2.path = path.CGPath;
 }
 @end
 @interface AdView()
@@ -196,8 +201,9 @@
   _adImgView.frame = CGRectMake(0, 0, self.width, imageHeight);
   _logoImgView.bounds = CGRectMake(0, 0, 200/2, 150/2);
   _logoImgView.center = CGPointMake(self.width/2.0, (self.height+imageHeight)/2.0);
-  _timerView.bounds = CGRectMake(0, 0, 30, 30);
-  _timerView.center = CGPointMake(self.width - 15 - 10, kStatusBarHeight + 15);
+  _adImgView.subviews.firstObject.frame = CGRectMake(self.width - 30, imageHeight - 20, 30, 20);
+  _timerView.bounds = CGRectMake(0, 0, 60, 30);
+  _timerView.center = CGPointMake(self.width - 30 - 15, kStatusBarHeight + 15);
   
 }
 
@@ -206,6 +212,13 @@
   if (!_adImgView) {
     _adImgView = [UIImageView new];
     [self addSubview:_adImgView];
+    UILabel *label = [UILabel new];
+    label.textAlignment = 1;
+    label.font = [UIFont systemFontOfSize:10];
+    label.textColor = [UIColor whiteColor];
+    label.backgroundColor = [[UIColor colorWithHexString:@"000000"] colorWithAlphaComponent:0.3];
+    label.text = @"广告";
+    [_adImgView addSubview:label];
   }
   return _adImgView;
 }
@@ -230,8 +243,15 @@
       weakself.isPlayAd=YES;
       [weakself removeFromWindow];
     };
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(skip)];
+    [_timerView addGestureRecognizer:tap];
     [self addSubview:_timerView];
   }
   return _timerView;
+}
+
+- (void)skip
+{
+  self.isPlayAd = YES;
 }
 @end
