@@ -1,6 +1,6 @@
 {
-    "showDebugPanel":true,
-    "envType": "qa",
+    "showDebugPanel":false,
+    "envType": "pre_release",
     "isDevHotUpdate":false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -62,7 +62,7 @@
         },
         "dev_yxm": {
             "name": "杨小猛",
-            "host": "http://172.16.10.38:8180/gateway"
+            "host": "http://172.16.10.38:9090/gateway"
         },
         "dev_zb": {
             "name": "张波",
@@ -80,7 +80,7 @@
         },
         "顾嘉豪": {
             "name": "顾嘉豪",
-            "host": "http://172.16.10.58:8903/gateway",
+            "host": "http://172.16.10.58:18080/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "高建伟": {

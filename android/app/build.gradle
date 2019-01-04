@@ -117,7 +117,7 @@ dependencies {
     api project(':react-native-sensors-analytics')
     api project(':request')
     api project(':cookies')
-    api project(':geolocation')
+    api project(':rn-geolocation')
     api project(':commonlib')
     api project(':qiyu_service')
     api project(':qrcode')
