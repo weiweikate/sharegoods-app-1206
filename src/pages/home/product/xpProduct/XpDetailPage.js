@@ -25,6 +25,7 @@ import user from '../../../../model/user';
 import RouterMap from '../../../../navigation/RouterMap';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import CommShareModal from '../../../../comm/components/CommShareModal';
+import BigImagesModal from '../BigImagesModal';
 
 const arrow_right_black = res.button.arrow_right_black;
 const detail_more_down = productRes.product.detailNavView.detail_more_down;
@@ -94,7 +95,7 @@ export class XpDetailPage extends BasePage {
 
     componentDidMount() {
         this._request_act_exp_detail();
-        if (user.isLogin){
+        if (user.isLogin) {
             this.xpDetailModel.getMessageCount();
         }
     }
@@ -244,6 +245,8 @@ export class XpDetailPage extends BasePage {
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 {/*nav更多跳转*/}
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+                {/*查看大图*/}
+                <BigImagesModal ref={(ref) => this.BigImagesModal = ref}/>
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{
