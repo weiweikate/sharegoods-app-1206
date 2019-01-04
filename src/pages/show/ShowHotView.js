@@ -96,7 +96,7 @@ export default class ShowHotView extends Component {
 
     _gotoDetail(data) {
         const { navigate } = this.props;
-        navigate('show/ShowDetailPage', { id: data.id });
+        navigate('show/ShowDetailPage', { id: data.id, code: data.code });
     }
 
     renderItem = (data) => {
