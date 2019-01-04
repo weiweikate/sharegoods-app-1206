@@ -25,11 +25,12 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import MineApi from '../../mine/api/MineApi';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import apiEnvironment from "../../../api/ApiEnvironment";
+import apiEnvironment from '../../../api/ApiEnvironment';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 // import {track,trackEvent}from '../../../utils/SensorsTrack'
 
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
+
 const {
     sign_in_bg: signInImageBg,
     showbean_icon: showBeanIcon,
@@ -40,6 +41,8 @@ const {
 export default class SignInPage extends BasePage {
     constructor(props) {
         super(props);
+        this.signinRequesting = false;
+        this.exchangeing = false
         this.state = {
             loadingState: PageLoadingState.loading,
             signInData: null,
@@ -52,7 +55,7 @@ export default class SignInPage extends BasePage {
         show: true// false则隐藏导航
     };
 
-    $isMonitorNetworkStatus(){
+    $isMonitorNetworkStatus() {
         return true;
     }
 
@@ -140,24 +143,39 @@ export default class SignInPage extends BasePage {
 
     //签到
     userSign = () => {
-        track(trackEvent.receiveshowDou,{showDouGet:'scqd',showDouAmount:this.state.signInData[3].canReward});
+        if(this.signinRequesting){
+            return;
+        }
+        this.signinRequesting = true;
+        track(trackEvent.receiveshowDou, { showDouGet: 'scqd', showDouAmount: this.state.signInData[3].canReward });
         HomeAPI.userSign().then((data) => {
+            this.signinRequesting = false;
             this.$toastShow(`签到成功 +${this.state.signInData[3].canReward}秀豆`);
             this.getSignData();
             this.reSaveUserInfo();
         }).catch((error) => {
+            this.signinRequesting = false;
             this.$toastShow(error.msg);
         });
     };
 
     //兑换一元优惠券
     exchangeCoupon = () => {
-        track(trackEvent.receiveshowDou,{showDouDeduct:'exchange',showDouAmount:this.state.signInData[3].canReward});
-        track(trackEvent.receiveOneyuan,{yiYuanCouponsAmount:1,yiYuanCouponsGetMethod:'exchange'});
+        if(this.exchangeing){
+            return;
+        }
+        this.exchangeing = true;
+        track(trackEvent.receiveshowDou, {
+            showDouDeduct: 'exchange',
+            showDouAmount: this.state.signInData[3].canReward
+        });
+        track(trackEvent.receiveOneyuan, { yiYuanCouponsAmount: 1, yiYuanCouponsGetMethod: 'exchange' });
         HomeAPI.exchangeTokenCoin().then((data) => {
+            this.exchangeing = false;
             this.$toastShow('成功兑换一张1元抵扣券');
             this.reSaveUserInfo();
         }).catch((error) => {
+            this.exchangeing = false;
             this.$toastShow(error.msg);
         });
     };
@@ -173,12 +191,16 @@ export default class SignInPage extends BasePage {
         }
 
         return (
-            <View style={styles.signInButtonWrapper}>
-                <Image style={styles.showBeanIconStyle} resizeMode={'stretch'} source={showBeanIcon}/>
-                <Text style={[styles.showBeanTextStyle, { fontSize: fontSize }]}>
-                    {user.userScore ? user.userScore : 0}
-                </Text>
-            </View>
+            <TouchableWithoutFeedback onPress={()=>{
+                this.$toastShow('今天已签到！');
+            }}>
+                <View style={styles.signInButtonWrapper}>
+                    <Image style={styles.showBeanIconStyle} resizeMode={'stretch'} source={showBeanIcon}/>
+                    <Text style={[styles.showBeanTextStyle, { fontSize: fontSize }]}>
+                        {user.userScore ? user.userScore : 0}
+                    </Text>
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
 
