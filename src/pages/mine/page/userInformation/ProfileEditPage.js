@@ -28,6 +28,7 @@ const { px2dp } = ScreenUtils;
 export default class ProfileEditPage extends BasePage {
     constructor(props) {
         super(props);
+        this.commiting = false;
         this.state = {
             textNum: user.profile ? user.profile.length : 0,
             profile: user.profile
@@ -53,15 +54,21 @@ export default class ProfileEditPage extends BasePage {
 
 
     _commitProfile = () => {
+        if(this.commiting){
+            return;
+        }
+        this.commiting = true;
         MineAPI.updateUserById({ type: 6, profile: this.state.profile }).then((resp) => {
             this.$toastShow('编辑成功!');
             this.$navigateBack();
             MineAPI.getUser().then(res => {
+                this.commiting = false;
                 let data = res.data;
                 user.saveUserInfo(data);
             }).catch(err => {
             });
         }).catch((error) => {
+            this.commiting = false;
             this.$toastShow(error.msg);
         });
     };
