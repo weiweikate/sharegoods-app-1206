@@ -59,7 +59,6 @@ class OrderDetailModel {
                 })
             })
         })
-        console.log('dataArr',dataArr);
         return dataArr
     }
 

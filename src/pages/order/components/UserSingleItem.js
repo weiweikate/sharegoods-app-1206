@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    TouchableOpacity,
     View,
     Image,
     StyleSheet
@@ -11,7 +10,7 @@ import res from '../res';
 import ImageLoad from '@mr/image-placeholder'
 const {right_arrow} = res;
 import {
-    MRText as Text
+    MRText as Text,NoMoreClick
 } from '../../../components/ui';
 
 const UserSingleItem = props => {
@@ -82,7 +81,7 @@ const UserSingleItem = props => {
     };
 
     return (
-        <TouchableOpacity style={[styles.containerStyle, itemHeightStyle]} onPress={onPress}>
+        <NoMoreClick style={[styles.containerStyle, itemHeightStyle]} onPress={onPress}>
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
                 <View style={{ justifyContent: 'center', marginLeft: marginLeft }}>
                     <Text style={leftTextStyle && leftTextStyle} allowFontScaling={false}>{leftText}</Text>
@@ -93,7 +92,7 @@ const UserSingleItem = props => {
                 </View>
             </View>
             {this.renderLine()}
-        </TouchableOpacity>
+        </NoMoreClick>
     );
 
 };

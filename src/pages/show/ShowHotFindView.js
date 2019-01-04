@@ -84,7 +84,7 @@ export default class ShowHotView extends Component {
         const { navigate } = this.props;
         data.click = data.click + 1
         // this.recommendModules.recommendList.replace
-        navigate && navigate('show/ShowDetailPage', { id: data.id });
+        navigate && navigate('show/ShowDetailPage', { id: data.id, code: data.code });
     }
 
     renderItem = (data) => {

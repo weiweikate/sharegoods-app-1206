@@ -5,10 +5,9 @@
 import React from 'react';
 import {
     View,
-    TouchableOpacity
 } from 'react-native';
 import {
-    UIText, MRText as Text
+    UIText, MRText as Text,NoMoreClick
 } from '../../../components/ui';
 // import GoodsItem from './GoodsItem';
 import GoodsGrayItem from './GoodsGrayItem';
@@ -79,7 +78,7 @@ const GoodsListItem = props => {
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         {nameArr.map((item, i) => {
-                            return <TouchableOpacity key={i} style={{
+                            return <NoMoreClick key={i} style={{
                                 borderWidth: 1,
                                 borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
                                 height: 30,
@@ -93,7 +92,7 @@ const GoodsListItem = props => {
                             }}>
                                 <Text
                                     style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle,fontSize:13 }} allowFontScaling={false}>{item.operation}</Text>
-                            </TouchableOpacity>;
+                            </NoMoreClick>;
                         })}
                     </View>
                 </View>
@@ -101,7 +100,7 @@ const GoodsListItem = props => {
         } else {
             return <View style={{ flexDirection: 'row' }}>
                 {nameArr.map((item, i) => {
-                        return <TouchableOpacity key={i} style={{
+                        return <NoMoreClick key={i} style={{
                             borderWidth: 1,
                             borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
                             height: 30,
@@ -115,7 +114,7 @@ const GoodsListItem = props => {
                         }}>
                             <Text
                                 style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle ,fontSize:13}}>{item.operation}</Text>
-                        </TouchableOpacity>;
+                        </NoMoreClick>;
 
                     }
                 )}
@@ -234,7 +233,7 @@ const GoodsListItem = props => {
     };
     return (
         <View>
-            <TouchableOpacity onPress={clickItem}>
+            <NoMoreClick onPress={clickItem}>
                 <View />
                 {this.renderOrderNum()}
                 {this.renderGoodsList()}
@@ -242,7 +241,7 @@ const GoodsListItem = props => {
                 {/*{this.renderLine()}*/}
                 {/*{this.renderTime()}*/}
                 {this.renderLine()}
-            </TouchableOpacity>
+            </NoMoreClick>
             {constants.viewOrderStatus[orderStatus].menuData.length === 0 ? null :
                 <View style={{
                     flexDirection: 'row',
