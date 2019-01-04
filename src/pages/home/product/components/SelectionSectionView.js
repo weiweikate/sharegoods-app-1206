@@ -51,7 +51,7 @@ export default class SelectionSectionView extends Component {
                         }}>
                         <Text
                             style={[styles.btnText, { color: canSelected ? (isSelected ? DesignRule.white : DesignRule.textColor_secondTitle) : DesignRule.color_ddd }]}
-                            allowFontScaling={false}>{this.props.listData[index].specValue}</Text>
+                            allowFontScaling={false} numberOfLines = {1}>{this.props.listData[index].specValue}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -107,11 +107,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 10,
         marginRight: 10,
+        height: 30,
         borderRadius: 3
     },
     btnText: {
         paddingHorizontal: 12,
-        paddingVertical: 8,
         fontSize: 13
     }
 });

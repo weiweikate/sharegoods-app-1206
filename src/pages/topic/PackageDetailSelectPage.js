@@ -106,7 +106,8 @@ export default class TopicDetailSelectPage extends Component {
                             this._clickItemAction(obj, indexOfTop);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? DesignRule.textColor_secondTitle : DesignRule.color_ddd }]} allowFontScaling={false}>{data[index].specValues}</Text>
+                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? DesignRule.textColor_secondTitle : DesignRule.color_ddd }]}
+                            allowFontScaling={false} numberOfLines={1}>{data[index].specValues}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -328,11 +329,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 10,
         marginRight: 10,
+        height: 30,
         borderRadius: 3
     },
     btnText: {
         paddingHorizontal: 12,
-        paddingVertical: 8,
         fontSize: 13
     }
 });

@@ -64,7 +64,8 @@ export default class TopicDetailSelectPage extends Component {
                                 <TouchableOpacity
                                     style={[styles.btn, { backgroundColor: DesignRule.mainColor }]}>
                                     <Text
-                                        style={[styles.btnText, { color: 'white' }]} allowFontScaling={false}>{obj.paramValue}</Text>
+                                        style={[styles.btnText, { color: 'white' }]} allowFontScaling={false}
+                                        numberOfLines={1}>{obj.paramValue}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -97,7 +98,7 @@ export default class TopicDetailSelectPage extends Component {
         });
 
         return (
-            <Modal animationType="none"  visible={this.state.isShow}>
+            <Modal animationType="none" visible={this.state.isShow}>
                 <View style={styles.container}>
                     <TouchableWithoutFeedback onPress={this._close}>
                         <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
@@ -244,11 +245,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 10,
         marginRight: 10,
+        height: 30,
         borderRadius: 3
     },
     btnText: {
         paddingHorizontal: 12,
-        paddingVertical: 8,
         fontSize: 13
     }
 });
