@@ -244,11 +244,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 10,
         marginRight: 10,
-        height: 30,
         borderRadius: 3
     },
     btnText: {
         paddingHorizontal: 12,
+        paddingVertical: 8,
         fontSize: 13
     }
 });
