@@ -18,6 +18,7 @@ import res from '../res';
 import UIText from '../../../components/ui/UIText';
 import { MRTextInput as TextInput } from '../../../components/ui';
 import loginModel from '../model/LoginModel';
+
 const {
     close_eye,
     open_eye
@@ -26,10 +27,12 @@ const dismissKeyboard = require('dismissKeyboard');
 
 @observer
 export default class LoginTopView extends Component {
-    LoginModel = loginModel
+    LoginModel = loginModel;
+
     constructor(props) {
         super(props);
     }
+
     render() {
         const { showOldLogin } = this.props;
         return (
@@ -40,7 +43,7 @@ export default class LoginTopView extends Component {
                     }}>
                         <UIText
                             value={'验证码登录'}
-                            style={[Styles.switchBtnStyle,loginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]}>
+                            style={[Styles.switchBtnStyle, loginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]}>
                         </UIText>
                         <View
                             style={loginModel.selectIndex ? Styles.btnBottomLineNonStyle : Styles.btnBottomLineStyle}/>
@@ -92,7 +95,7 @@ export default class LoginTopView extends Component {
                     </View>
                 </TouchableOpacity>
                 {
-                    showOldLogin?
+                    showOldLogin ?
                         <View style={Styles.oldUserLoginBgStyle}>
                             <TouchableOpacity onPress={this.props.oldUserLoginClick}>
                                 {/*<UIText*/}
@@ -104,13 +107,13 @@ export default class LoginTopView extends Component {
                                     source={res.oldLoginBanner}
                                     style={{
                                         width: ScreenUtils.width - 40,
-                                        height: ScreenUtils.width /750 * 245,
+                                        height: ScreenUtils.width / 750 * 245
                                     }}
                                     resizeMode={'contain'}
                                 />
                             </TouchableOpacity>
                         </View>
-                        :null
+                        : null
                 }
                 {/*<UIText*/}
                 {/*value={}*/}
@@ -132,7 +135,7 @@ export default class LoginTopView extends Component {
                         allowFontScaling={false}
                         style={Styles.inputTextStyle}
                         value={loginModel.vertifyCode}
-                        onChangeText={text =>loginModel.saveVertifyCode(text)}
+                        onChangeText={text => loginModel.saveVertifyCode(text)}
                         placeholder='请输入验证码'
                         keyboardType='numeric'
                         multiline={false}
@@ -197,7 +200,7 @@ export default class LoginTopView extends Component {
                         </TouchableOpacity>
                         <CommSpaceLine style={{ marginLeft: 10, width: 1, marginTop: 35, height: 20 }}/>
                         <TouchableOpacity onPress={this.props.forgetPasswordClick}>
-                            <UIText style={[Styles.codeTextStyle, { width: 90 }]}
+                            <UIText style={Styles.codeTextStyle}
                                     value={'忘记密码'}
                             >
                             </UIText>
@@ -275,9 +278,9 @@ const Styles = StyleSheet.create(
             fontWeight: '400'
         },
         inputTextStyle: {
+            flex: 1,
             marginTop: 30,
             marginLeft: 20,
-            width: 120,
             height: 40,
             fontSize: 14,
             fontWeight: '400'
@@ -293,9 +296,10 @@ const Styles = StyleSheet.create(
         },
         codeTextStyle: {
             textAlign: 'center',
-            width: 120,
             color: DesignRule.mainColor,
             marginTop: 40,
+            marginRight: 20,
+            marginLeft: 10,
             fontSize: 13
         },
         loginBtnStyle: {
@@ -321,7 +325,7 @@ const Styles = StyleSheet.create(
             marginTop: 30,
             // flexDirection: 'row-reverse',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'center'
             // height:200,
         },
         oldUserLoginBtn: {

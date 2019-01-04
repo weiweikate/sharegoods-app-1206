@@ -175,7 +175,7 @@ class HomePage extends BasePage {
     };
 
     loadMessageCount = () => {
-        if(user.token){
+        if (user.token) {
             MessageApi.getNewNoticeMessageCount().then(result => {
                 if (!EmptyUtils.isEmpty(result.data)) {
                     this.setState({
