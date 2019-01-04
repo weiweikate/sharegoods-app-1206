@@ -105,6 +105,10 @@ export class XpDetailPage extends BasePage {
         this.xpDetailModel.request_act_exp_detail(activityCode);
     };
 
+    _imgBtnAction = ()=>{
+        this.BigImagesModal.show();
+    }
+
     /*活动信息*/
     _activityAction = () => {
         this.XpDetailActivityInfoModal.show(this.xpDetailModel);
@@ -181,7 +185,7 @@ export class XpDetailPage extends BasePage {
     _renderProduct = () => {
         return <View>
             {/*商品信息*/}
-            <XpDetailProductView xpDetailModel={this.xpDetailModel}/>
+            <XpDetailProductView xpDetailModel={this.xpDetailModel} imgBtnAction={this._imgBtnAction}/>
             <View style={styles.productPramsView}>
                 <TouchableOpacity style={styles.pramsBtn} onPress={this._activityAction}>
                     <Text style={styles.pramsText}>活动规则</Text>
