@@ -10,7 +10,7 @@
 #import "UIImage+Util.h"
 #import "AppDelegate.h"
 #define ImageStr @"https://cdn.sharegoodsmall.com/sharegoods/resource/sg/images/ad_index/sgad.png"
-#define Nums 5
+#define Nums 3
 @interface TimerView: UIView
 @property(nonatomic, assign)NSInteger num;
 -(instancetype)initWithNum:(NSInteger)num;
