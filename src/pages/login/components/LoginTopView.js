@@ -70,8 +70,12 @@ export default class LoginTopView extends Component {
                         placeholder='请输入手机号'
                         keyboardType='numeric'
                         onEndEditing={() => {
-                            if (!StringUtils.checkPhone(loginModel.phoneNumber)) {
-                                bridge.$toast('手机号格式不对');
+                            if (StringUtils.isEmpty(loginModel.phoneNumber.trim())) {
+                                bridge.$toast('请输入手机号');
+                            } else {
+                                if (!StringUtils.checkPhone(loginModel.phoneNumber)) {
+                                    bridge.$toast('手机号格式不对');
+                                }
                             }
                         }}
                         placeholderTextColor={DesignRule.textColor_placeholder}
@@ -164,7 +168,10 @@ export default class LoginTopView extends Component {
             bridge.$toast('请检查网络是否连接');
             return;
         }
-
+        if (StringUtils.isEmpty(loginModel.phoneNumber.trim())) {
+            bridge.$toast('请输入手机号');
+            return;
+        }
         if (StringUtils.checkPhone(loginModel.phoneNumber)) {
             loginModel.dowTime = 60;
             bridge.$toast('验证码发送成功,注意查收');
