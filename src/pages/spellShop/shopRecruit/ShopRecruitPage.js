@@ -32,6 +32,7 @@ import res from '../res';
 import resCommon from '../../../comm/res';
 import user from '../../../model/user';
 import LinearGradient from 'react-native-linear-gradient';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 const NavLeft = resCommon.button.white_back;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -299,9 +300,9 @@ export default class ShopRecruitPage extends BasePage {
                         <Text style={{ fontSize: 16, color: DesignRule.mainColor }} allowFontScaling={false}>{'取消开启'}</Text>
                     </TouchableOpacity>
                     {
-                        this.state.canOpen ? <TouchableOpacity onPress={this._openStore} style={styles.open}>
+                        this.state.canOpen ? <NoMoreClick onPress={this._openStore} style={styles.open}>
                             <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{'开启店铺'}</Text>
-                        </TouchableOpacity> : null
+                        </NoMoreClick> : null
                     }
                 </View>
             );
