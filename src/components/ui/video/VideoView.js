@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#efefef'
+        backgroundColor: DesignRule.imgBg_color
     },
     playButton: {
         width: 50,
