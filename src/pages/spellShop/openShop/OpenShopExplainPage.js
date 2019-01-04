@@ -5,7 +5,8 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    Image
+    Image,
+    Alert
 } from 'react-native';
 //source
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -43,12 +44,25 @@ export default class OpenShopExplainPage extends BasePage {
             this.$toastShow('请阅读同意《拼店管理条例》');
             return;
         }
-        SpellShopApi.depositTest().then(() => {
-            spellStatusModel.getUser(2);
-            this.$navigate('spellShop/shopSetting/SetShopNamePage');
-        }).catch((error) => {
-            this.$toastShow(error.msg);
-        });
+
+        Alert.alert('提示', `请您确认是否创建拼店，创建拼店后则进入店铺招募同时无法加入其他拼店，需关闭招募店铺才可以加入其他拼店`,
+            [
+                {
+                    text: '确认开店', onPress: () => {
+                        SpellShopApi.depositTest().then(() => {
+                            spellStatusModel.getUser(2);
+                            this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                        }).catch((error) => {
+                            this.$toastShow(error.msg);
+                        });
+                    }
+                },
+                {
+                    text: '取消开店', onPress: () => {
+                    }
+                }
+            ]
+        );
     };
 
     _renderRow = (title, index, maxIndex) => {
@@ -144,7 +158,8 @@ export default class OpenShopExplainPage extends BasePage {
                         </TouchableOpacity>
                         <Text style={styles.descText} allowFontScaling={false}>阅读同意</Text>
                         <TouchableOpacity onPress={this._onPress}>
-                            <Text style={[styles.descText, { color: DesignRule.mainColor }]} allowFontScaling={false}>《拼店管理条例》</Text>
+                            <Text style={[styles.descText, { color: DesignRule.mainColor }]}
+                                  allowFontScaling={false}>《拼店管理条例》</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -184,7 +199,7 @@ const styles = StyleSheet.create({
     },
 
     explainContainer: {
-        marginTop:8,
+        marginTop: 8,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'

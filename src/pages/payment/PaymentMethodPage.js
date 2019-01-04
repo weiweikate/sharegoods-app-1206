@@ -4,7 +4,8 @@ import {
     StyleSheet,
     ScrollView,
     AppState,
-    ActivityIndicator
+    ActivityIndicator,
+    BackHandler
 } from 'react-native';
 import BasePage from '../../BasePage';
 import StringUtils from '../../utils/StringUtils';
@@ -37,6 +38,10 @@ export default class PaymentMethodPage extends BasePage {
         orderChecking: false
     }
 
+    handleBackPress = () => {
+        return this.payment.isShowResult;
+    }
+
     constructor(props) {
         super(props);
         this.payment = new Payment();
@@ -61,10 +66,12 @@ export default class PaymentMethodPage extends BasePage {
     };
 
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
         AppState.addEventListener('change', this._handleAppStateChange);
     }
 
     componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
         AppState.removeEventListener('change', this._handleAppStateChange);
     }
 

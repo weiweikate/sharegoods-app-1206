@@ -16,7 +16,7 @@ import HTML from 'react-native-render-html';
 // 图片资源
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
-import { UIImage ,NoMoreClick} from '../../../../components/ui';
+import { UIImage } from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils'
 import res from '../../res';
@@ -28,7 +28,7 @@ const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;
 const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
 const CCZImg = res.myData.ccz_03;
 const ProgressImg = res.myData.jdt_05;
-const arrowRightImg= res.myData.black_right_arrow
+// const arrowRightImg= res.myData.black_right_arrow
 import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp } = ScreenUtils;
@@ -148,14 +148,14 @@ export default class MyPromotionPage extends BasePage {
                                 fontSize: 15,
                                 color: 'white'
                             }} allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ''}</Text>
-                            <NoMoreClick style={{backgroundColor:'white',width:65,height:19,borderRadius:9,alignItems:'center',justifyContent:'center',flexDirection:'row'}}
-                                         onPress={()=>this.$navigate('mine/ExpDetailPage',{
-                                             experience:this.state.experience,
-                                             levelExperience:this.state.levelExperience
-                                         })}>
-                                <Text style={{fontSize:10,color:"#000000",marginRight:4}}>经验明细</Text>
-                                <Image source={arrowRightImg}/>
-                            </NoMoreClick>
+                            {/*<NoMoreClick style={{backgroundColor:'white',width:65,height:19,borderRadius:9,alignItems:'center',justifyContent:'center',flexDirection:'row'}}*/}
+                                         {/*onPress={()=>this.$navigate('mine/ExpDetailPage',{*/}
+                                             {/*experience:this.state.experience,*/}
+                                             {/*levelExperience:this.state.levelExperience*/}
+                                         {/*})}>*/}
+                                {/*<Text style={{fontSize:10,color:"#000000",marginRight:4}}>经验明细</Text>*/}
+                                {/*<Image source={arrowRightImg}/>*/}
+                            {/*</NoMoreClick>*/}
                         </View>
 
                         <ImageBackground style={{

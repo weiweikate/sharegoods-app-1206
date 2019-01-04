@@ -33,6 +33,7 @@ export default class EditPhoneNumPage extends BasePage {
             code: '',
             vertifyCodeTime: 0
         };
+        this.isLoadding = false;
     }
 
     _render() {
@@ -105,20 +106,26 @@ export default class EditPhoneNumPage extends BasePage {
     };
 
     _toNext = (oldNum) => {
+        if (this.isLoadding === true) {
+            return;
+        }
         // 调用接口验证验证码是否正确，正确next
         if (StringUtils.isEmpty(this.state.code)) {
             bridge.$toast('验证码不能为空');
             return;
         }
+        this.isLoadding = true;
         MineAPI.judgeCode({
             verificationCode: this.state.code,
             phone: oldNum
         }).then((data) => {
+            this.isLoadding = false;
             this.$navigate('mine/account/SetNewPhoneNumPage', {
                 oldNum: oldNum,
                 oldCode: this.state.code
             });
         }).catch((data) => {
+            this.isLoadding = false;
             bridge.$toast(data.msg);
         });
     };

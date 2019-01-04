@@ -10,7 +10,6 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
@@ -24,6 +23,7 @@ import openShopRes from '../res';
 import {
     MRText as Text, MRTextInput as TextInput
 } from '../../../components/ui';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;
@@ -261,11 +261,11 @@ export default class SetShopNamePage extends BasePage {
                 </ScrollView>
                 {/*开店*/}
                 {
-                    this.params.storeData ? null : <TouchableWithoutFeedback onPress={this._complete}>
+                    this.params.storeData ? null : <NoMoreClick onPress={this._complete}>
                         <View style={styles.btnRow}>
                             <Text style={styles.btnTitle} allowFontScaling={false}>开店</Text>
                         </View>
-                    </TouchableWithoutFeedback>
+                    </NoMoreClick>
                 }
             </View>
         );

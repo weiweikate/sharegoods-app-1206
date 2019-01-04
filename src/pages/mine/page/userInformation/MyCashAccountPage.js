@@ -32,6 +32,7 @@ const renwu = res.userInfoImg.xiangjzhanghu_icon03_16;
 export default class MyCashAccountPage extends BasePage {
     constructor(props) {
         super(props);
+        this.getUserBankInfoing = false;
         this.state = {
             id: user.code,
             phone: "",
@@ -144,7 +145,13 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     jumpToWithdrawCashPage = () => {
+        if(this.getUserBankInfoing){
+            return;
+        }
+        this.getUserBankInfoing = true;
+
         MineApi.getUserBankInfo().then((data) => {
+            this.getUserBankInfoing = false;
             if (data.data && data.data.length > 0) {
 
                 MineApi.isFirstTimeWithdraw().then((data)=>{
@@ -173,6 +180,7 @@ export default class MyCashAccountPage extends BasePage {
                 }]);
             }
         }).catch((err) => {
+            this.getUserBankInfoing = false;
             this.$toastShow(err.msg);
         });
     };

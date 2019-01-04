@@ -76,7 +76,7 @@
             android:screenOrientation="portrait"
             android:targetActivity="com.meeruu.qiyu.activity.QiyuServiceMessageActivity"
             android:theme="@style/ysf_window_theme"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity
             android:name="com.meeruu.qiyu.activity.QiyuServiceMessageActivity"
@@ -84,7 +84,7 @@
             android:icon="@drawable/ysf_action_bar_icon_transparent"
             android:screenOrientation="portrait"
             android:theme="@style/ysf_window_theme"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity-alias
             android:name="com.qiyukf.nim.uikit.session.activity.WatchMessagePictureActivity"

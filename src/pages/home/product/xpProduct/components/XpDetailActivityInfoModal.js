@@ -130,8 +130,8 @@ export default class XpDetailActivityInfoModal extends Component {
 
         return (
             <CommModal onRequestClose={this._close}
-                   visible={this.state.modalVisible}
-                   transparent={true}>
+                       visible={this.state.modalVisible}
+                       transparent={true}>
                 <View style={styles.containerView}>
                     <TouchableOpacity style={styles.topCloseBtn} onPress={this._close}/>
                     <View style={styles.bottomView}>
