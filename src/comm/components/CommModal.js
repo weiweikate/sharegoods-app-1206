@@ -91,7 +91,7 @@ export default class CommModal extends PureComponent {
         }
         return (
             <NativeModalAndroid
-                focusable={this.props.focusable && true}
+                focusable={this.props.focusable === false ? false : true}
                 style={{ width: 0, height: 0 }}//避免显示空白
                 ref={(modalAndroid) => {
                     this.modalAndroid = modalAndroid;
