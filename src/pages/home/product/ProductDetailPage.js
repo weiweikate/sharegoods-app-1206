@@ -203,15 +203,17 @@ export default class ProductDetailPage extends BasePage {
 
     //消息数据
     _getMessageCount = () => {
-        MessageApi.getNewNoticeMessageCount().then(result => {
-            if (!EmptyUtils.isEmpty(result.data)) {
-                const { shopMessageCount, noticeCount, messageCount } = result.data;
-                this.setState({
-                    messageCount: shopMessageCount + noticeCount + messageCount
-                });
-            }
-        }).catch((error) => {
-        });
+        if(user.token){
+            MessageApi.getNewNoticeMessageCount().then(result => {
+                if (!EmptyUtils.isEmpty(result.data)) {
+                    const { shopMessageCount, noticeCount, messageCount } = result.data;
+                    this.setState({
+                        messageCount: shopMessageCount + noticeCount + messageCount
+                    });
+                }
+            }).catch((error) => {
+            });
+        }
     };
 
     _savaData = (data) => {
@@ -527,7 +529,7 @@ export default class ProductDetailPage extends BasePage {
         return (
             <View style={styles.container}>
                 {dic.loadingState === PageLoadingState.fail ?
-                    <NavigatorBar title={productStatus === 0 ? '暂无商品' : ''} leftPressed={() => {
+                    <NavigatorBar title={productStatus === 0 ? '暂无商品' : '商品详情'} leftPressed={() => {
                         this.$navigateBack();
                     }}/> : null}
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderContent)}

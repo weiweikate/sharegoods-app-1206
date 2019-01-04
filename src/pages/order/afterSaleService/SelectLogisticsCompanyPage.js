@@ -13,7 +13,6 @@ import BasePage from '../../../BasePage';
 import {
     UIText
 } from '../../../components/ui';
-import UIImage from '@mr/image-placeholder';
 import OrderApi from '../api/orderApi';
 import DesignRule from '../../../constants/DesignRule';
 
@@ -100,9 +99,6 @@ export default class SelectLogisticsCompanyPage extends BasePage {
                 this._onPressItem(item, index, section);
             }}>
                 <View style={styles.item_container}>
-                    <UIImage source={{ url: 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg' }}
-                             style={styles.item_image}
-                    />
                     <UIText value={item.name}
                             style={styles.item_title}
                     />
@@ -138,11 +134,6 @@ const styles = StyleSheet.create({
             flexDirection: 'row',
             height: 60,
             alignItems: 'center'
-        },
-        item_image: {
-            height: 33,
-            width: 33,
-            marginLeft: 17
         },
         item_title: {
             color: DesignRule.textColor_mainTitle,

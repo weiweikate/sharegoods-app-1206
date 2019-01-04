@@ -25,6 +25,7 @@ import user from '../../../../model/user';
 import RouterMap from '../../../../navigation/RouterMap';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import CommShareModal from '../../../../comm/components/CommShareModal';
+import BigImagesModal from '../BigImagesModal';
 
 const arrow_right_black = res.button.arrow_right_black;
 const detail_more_down = productRes.product.detailNavView.detail_more_down;
@@ -94,13 +95,19 @@ export class XpDetailPage extends BasePage {
 
     componentDidMount() {
         this._request_act_exp_detail();
-        this.xpDetailModel.getMessageCount();
+        if (user.isLogin) {
+            this.xpDetailModel.getMessageCount();
+        }
     }
 
     _request_act_exp_detail = () => {
         const { activityCode } = this.params;
         this.xpDetailModel.request_act_exp_detail(activityCode);
     };
+
+    _imgBtnAction = ()=>{
+        this.BigImagesModal.show();
+    }
 
     /*活动信息*/
     _activityAction = () => {
@@ -160,7 +167,7 @@ export class XpDetailPage extends BasePage {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: orderProducts,
-                    source: 2
+                    source: 3
                 }
             });
         }
@@ -178,7 +185,7 @@ export class XpDetailPage extends BasePage {
     _renderProduct = () => {
         return <View>
             {/*商品信息*/}
-            <XpDetailProductView xpDetailModel={this.xpDetailModel}/>
+            <XpDetailProductView xpDetailModel={this.xpDetailModel} imgBtnAction={this._imgBtnAction}/>
             <View style={styles.productPramsView}>
                 <TouchableOpacity style={styles.pramsBtn} onPress={this._activityAction}>
                     <Text style={styles.pramsText}>活动规则</Text>
@@ -242,6 +249,8 @@ export class XpDetailPage extends BasePage {
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 {/*nav更多跳转*/}
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+                {/*查看大图*/}
+                <BigImagesModal ref={(ref) => this.BigImagesModal = ref}/>
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{

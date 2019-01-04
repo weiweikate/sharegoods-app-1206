@@ -107,7 +107,7 @@ class HomePage extends BasePage {
                 }
                 console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
-                    this.shareTaskIcon.queryTask();
+                    // this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
             }
@@ -175,17 +175,19 @@ class HomePage extends BasePage {
     };
 
     loadMessageCount = () => {
-        MessageApi.getNewNoticeMessageCount().then(result => {
-            if (!EmptyUtils.isEmpty(result.data)) {
+        if(user.token){
+            MessageApi.getNewNoticeMessageCount().then(result => {
+                if (!EmptyUtils.isEmpty(result.data)) {
+                    this.setState({
+                        hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                    });
+                }
+            }).catch((error) => {
                 this.setState({
-                    hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                    hasMessage: false
                 });
-            }
-        }).catch((error) => {
-            this.setState({
-                hasMessage: false
             });
-        });
+        }
     };
 
     showModal = () => {

@@ -66,7 +66,7 @@ export default class XpDetailActivityInfoModal extends Component {
     };
 
     _renderItemCoupon = (item) => {
-        const { name, remarks, effectiveDays, value } = item.coupon;
+        const { name, remarks, effectiveDays, value } = item.coupon||{};
         return <TouchableWithoutFeedback>
             <View>
                 <Text style={styles.itemText}>{`每满${item.startPrice}元，赠送${item.startCount}张优惠券`}</Text>
@@ -130,8 +130,8 @@ export default class XpDetailActivityInfoModal extends Component {
 
         return (
             <CommModal onRequestClose={this._close}
-                   visible={this.state.modalVisible}
-                   transparent={true}>
+                       visible={this.state.modalVisible}
+                       transparent={true}>
                 <View style={styles.containerView}>
                     <TouchableOpacity style={styles.topCloseBtn} onPress={this._close}/>
                     <View style={styles.bottomView}>

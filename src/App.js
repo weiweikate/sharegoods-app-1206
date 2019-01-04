@@ -27,7 +27,7 @@ import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
 import hotUpdateUtil from './utils/HotUpdateUtil';
 
-import geolocation from '@mr/geolocation';
+import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
 import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
@@ -119,6 +119,7 @@ export default class App extends Component {
                     }}
                     onNavigationStateChange={(prevState, currentState) => {
                         let curRouteName = getCurrentRouteName(currentState);
+                        this.setState({ curRouteName });
                         // 拦截当前router的名称
                         console.log(curRouteName);
                         global.$routes = currentState.routes;
@@ -133,7 +134,9 @@ export default class App extends Component {
                     user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
                         ?
                         null
-                        :
+                        : (this.state.curRouteName === RouterMap.LoginPage || this.state.curRouteName === RouterMap.OldUserLoginPage
+                        || this.state.curRouteName === RouterMap.SetPasswordPage
+                        ? null :
                         <DebugButton
                             onPress={this.gotoLogin}
                             style={
@@ -153,7 +156,7 @@ export default class App extends Component {
                                     resizeMode={'contain'}
                                 />
                             </View>
-                        </DebugButton>
+                        </DebugButton>)
                 }
             </View>
         );

@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Image,
-    TouchableOpacity,
     ScrollView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
@@ -11,7 +10,7 @@ import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text} from '../../../../components/ui'
+import {MRText as Text,NoMoreClick} from '../../../../components/ui'
 const arrow_right =  res.button.arrow_right_black;
 
 /**
@@ -41,7 +40,7 @@ export default class HelperQuestionListPage extends BasePage {
             for (let i = 0; i < this.params.list.length; i++) {
                 arr.push(
                     <View key={i} style={{ width: ScreenUtils.width, height: 48 }}>
-                        <TouchableOpacity style={styles.containerStyles}
+                        <NoMoreClick style={styles.containerStyles}
                                           onPress={() => this.orderMenuJump(this.params.list[i].id)}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <UIText value={this.params.list[i].title}
@@ -50,7 +49,7 @@ export default class HelperQuestionListPage extends BasePage {
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Image source={arrow_right} style={{ height: 10 }} resizeMode={'contain'}/>
                             </View>
-                        </TouchableOpacity>
+                        </NoMoreClick>
 
                         <View style={{ backgroundColor: DesignRule.lineColor_inColorBg, height: 0.5, marginLeft: 21 }}/>
 

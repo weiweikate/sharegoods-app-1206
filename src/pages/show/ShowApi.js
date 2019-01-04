@@ -3,6 +3,8 @@ const api = {
    showQuery: ['/discover/query', {method: 'get'}],
    // 发现详情
    showDetail: ['/discover/getById', {method: 'get'}],
+   // 发现详情
+   showDetailCode: ['/discover/getByCode', {method: 'get'}],
    // 点赞
    showGood: '/discover/count/save',
    // 取消点赞:

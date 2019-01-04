@@ -165,7 +165,7 @@ export default class OldUserLoginPage extends BasePage {
                             Styles.bottomTimeStyle
                         }
                     >
-                        激活后可免费领取1688元礼包及其他朵粉专享福利
+                        激活后可免费领取惊喜大礼包及其他朵粉专享福利
                     </Text>
                     <Text
                         style={
@@ -233,7 +233,7 @@ export default class OldUserLoginPage extends BasePage {
                 }
             }).catch((data) => {
                 this.$loadingDismiss();
-                this.$toastShow(data.msg);
+                this.$toast(data.msg);
             });
         }
         // this.$navigate("login/login/SetPasswordPage");

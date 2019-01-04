@@ -26,7 +26,7 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import DesignRule from '../../../constants/DesignRule';
 import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
-import geolocation from '@mr/geolocation';
+import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 
@@ -105,6 +105,9 @@ export default class RecommendPage extends BasePage {
                         SpellStatusModel.permissionsErr = error.code;
                         if (SpellStatusModel.permissionsErr === 'permissionsErr' || SpellStatusModel.permissionsErr === '12') {
                             setTimeout(() => {
+                                if (SpellStatusModel.hasAlertErr) {
+                                    return;
+                                }
                                 Alert.alert('提示', '定位服务未开启，请进入系统－设置－定位服务中打开开关，允许秀购使用定位服务',
                                     [
                                         {

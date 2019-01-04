@@ -7,7 +7,7 @@ import {
     Alert
 } from "react-native";
 import BasePage from "../../../../BasePage";
-import { RefreshList } from "../../../../components/ui";
+import { RefreshList ,NoMoreClick} from "../../../../components/ui";
 import AccountItem from "../../components/CashAccountItem";
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
@@ -32,6 +32,7 @@ const renwu = res.userInfoImg.xiangjzhanghu_icon03_16;
 export default class MyCashAccountPage extends BasePage {
     constructor(props) {
         super(props);
+        this.getUserBankInfoing = false;
         this.state = {
             id: user.code,
             phone: "",
@@ -101,9 +102,9 @@ export default class MyCashAccountPage extends BasePage {
                                 color: "white"
                             }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
+                        <NoMoreClick style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
                             <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                     </View>
                 </View>
             </View>
@@ -144,7 +145,13 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     jumpToWithdrawCashPage = () => {
+        if(this.getUserBankInfoing){
+            return;
+        }
+        this.getUserBankInfoing = true;
+
         MineApi.getUserBankInfo().then((data) => {
+            this.getUserBankInfoing = false;
             if (data.data && data.data.length > 0) {
 
                 MineApi.isFirstTimeWithdraw().then((data)=>{
@@ -173,6 +180,7 @@ export default class MyCashAccountPage extends BasePage {
                 }]);
             }
         }).catch((err) => {
+            this.getUserBankInfoing = false;
             this.$toastShow(err.msg);
         });
     };
