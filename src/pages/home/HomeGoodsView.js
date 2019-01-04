@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtils
 import { homeModule } from './Modules'
-import DesignRule from 'DesignRule'
+import DesignRule from '../../constants/DesignRule';
 import UIImage from "@mr/image-placeholder";
 import {MRText as Text} from '../../components/ui';
 

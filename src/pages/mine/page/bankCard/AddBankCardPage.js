@@ -16,7 +16,7 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 import MineApi from "../../api/MineApi";
 import Toast from "../../../../utils/bridge";
 import user from "../../../../model/user";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import { observer } from "mobx-react/native";
 let lastcommit = null;
 @observer

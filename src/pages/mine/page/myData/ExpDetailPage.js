@@ -11,7 +11,7 @@ import MineApi from "../../api/MineApi";
 import BasePage from "../../../../BasePage";
 import { RefreshList} from "../../../../components/ui";
 import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "DesignRule";
+import DesignRule from "../../../../constants/DesignRule";
 import AccountItem from '../../components/AccountItem';
 import res from "../../res";
 import user from "../../../../model/user";

@@ -16,7 +16,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 const GoodsListItem = props => {
     const {

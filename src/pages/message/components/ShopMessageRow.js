@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DateUtils from '../../../utils/DateUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 const {icon_3_09: arrowIcon } = res;
 import {MRText as Text} from '../../../components/ui'

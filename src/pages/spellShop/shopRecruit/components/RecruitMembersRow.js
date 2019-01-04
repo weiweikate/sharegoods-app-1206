@@ -12,7 +12,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 const PeopleImg = res.shopRecruit.dy_07;
 import {

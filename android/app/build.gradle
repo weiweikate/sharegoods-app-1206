@@ -74,6 +74,9 @@ android {
         maven {
             url "http://maven.aliyun.com/nexus/content/repositories/releases"
         }
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
@@ -100,7 +103,7 @@ dependencies {
         exclude(module: 'alicloud-android-utdid')
         exclude(module: 'alicloud-android-ut')
     }
-    api files('libs/alipaySdk-20180601.jar')
+    api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api project(':react-native-update')
     api project(':react-native-video')
     api project(':react-native-autoheight-webview')

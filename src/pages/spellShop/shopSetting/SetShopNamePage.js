@@ -18,7 +18,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../../../comm/res';
 import openShopRes from '../res';
 import {

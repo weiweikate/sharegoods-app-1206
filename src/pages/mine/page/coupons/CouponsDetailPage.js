@@ -12,7 +12,7 @@ import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import UIText from '../../../../components/ui/UIText';
 import user from '../../../../model/user';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
 import {MRText as Text} from '../../../../components/ui'

@@ -22,7 +22,7 @@ import {
     UIText,
 } from "../../../components/ui";
 import UIImage from "@mr/image-placeholder";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 
 export default class GoodsGrayItem extends React.Component {
 

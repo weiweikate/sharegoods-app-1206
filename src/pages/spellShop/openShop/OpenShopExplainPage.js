@@ -10,7 +10,7 @@ import {
 //source
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
@@ -102,7 +102,7 @@ export default class OpenShopExplainPage extends BasePage {
             '发起拼店',
             '店员人数达到5人（包括店主）',
             '成功开启店铺，招募更多店员',
-            '联合店员共同完成分红目标，取得品牌分红奖励',
+            '联合店员共同完成目标，取得品牌奖励',
             '店铺分为3个等级（普通店、导师店、大咖店），每个级别的店铺权益不同，等级越高，享受的权益越多。'
         ];
 

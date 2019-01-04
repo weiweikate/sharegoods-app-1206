@@ -5,7 +5,7 @@ import {
 } from "../../../../components/ui";
 import UIImage from "@mr/image-placeholder";
 import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "DesignRule";
+import DesignRule from "../../../../constants/DesignRule";
 
 const GoodsItem = props => {
     const {

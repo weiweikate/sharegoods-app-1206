@@ -19,7 +19,7 @@ import { SwipeListView } from '../../../../components/ui/react-native-swipe-list
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import UIImage from '@mr/image-placeholder';
 import {MRText as Text} from '../../../../components/ui'
 // import { NavigationActions } from 'react-navigation';

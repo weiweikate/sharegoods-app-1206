@@ -15,8 +15,8 @@ import LoginAPI from '../api/LoginApi';
 import { NavigationActions } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
-import { homeModule } from '../../home/Modules';
+import DesignRule from '../../../constants/DesignRule';
+import { homeModule } from '../../home/Modules'
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';

@@ -12,7 +12,7 @@ import { confirmOrderModel } from "../model/ConfirmOrderModel";
 import { observer } from "mobx-react/native";
 import BasePage from "../../../BasePage";
 import { NavigationActions } from "react-navigation";
-import DesignRule from "DesignRule";
+import DesignRule from "../../../constants/DesignRule";
 import ConfirmAddressView from "../components/confirmOrder/ConfirmAddressView";
 import ConfirmPriceView from "../components/confirmOrder/ConfirmPriceView";
 import ConfirmBottomView from "../components/confirmOrder/ConfirmBottomView";

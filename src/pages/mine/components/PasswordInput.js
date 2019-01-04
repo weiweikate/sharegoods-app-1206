@@ -9,9 +9,8 @@ import {
     ViewPropTypes
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import {MRTextInput as TextInput} from '../../../components/ui'
-
 export default class PasswordInput extends Component {
     static propTypes = {
         style: ViewPropTypes.style,

@@ -9,7 +9,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ProductActivityView from './ProductActivityView';
 import user from '../../../../model/user';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import DetailBanner from './DetailBanner';
 import RES from '../../../../comm/res';
 import StringUtils from '../../../../utils/StringUtils';

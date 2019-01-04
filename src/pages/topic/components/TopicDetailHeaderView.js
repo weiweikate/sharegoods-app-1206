@@ -12,7 +12,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import StringUtils from '../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import TopicDetailBanner from './TopicDetailBanner';
 import {
     MRText as Text

@@ -12,6 +12,9 @@ import {
     NativeModules, RefreshControl
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
+import { UIImage, UIText } from "../../../components/ui";
+// import { NavigationActions } from 'react-navigation';
+import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
 import API from '../../../api';
@@ -19,12 +22,10 @@ import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
 import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
-import { UIImage, UIText } from '../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 // import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';
 import res from '../res';
-import Modal from 'CommModal';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 
 const NoMessage = res.couponsImg.coupons_no_data;

@@ -7,7 +7,7 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { homeModule} from './Modules'
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import { recommendModule } from './HomeRecommendModel'
 import ImageLoad from '@mr/image-placeholder'
 import {MRText as Text} from '../../components/ui';

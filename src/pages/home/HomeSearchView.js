@@ -8,7 +8,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 import UIText from '../../components/ui/UIText';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import User from '../../model/user';
 import res from './res';
 import bridge from '../../utils/bridge';

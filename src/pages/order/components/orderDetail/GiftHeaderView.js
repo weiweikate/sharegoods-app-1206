@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native';
 import {  orderDetailModel } from '../../model/OrderDetailModel';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react/native';
 import ScreenUtil from '../../../../utils/ScreenUtils';
 const {px2dp} = ScreenUtil;

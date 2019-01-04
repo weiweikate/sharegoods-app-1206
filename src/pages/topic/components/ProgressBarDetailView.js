@@ -2,8 +2,9 @@
  * Created by xiangchen on 2018/8/7.
  */
 import React, { Component } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import DesignRule from '../../../constants/DesignRule';
 import { View, StyleSheet } from 'react-native';
-import DesignRule from 'DesignRule';
 import {
     MRText as Text
 } from '../../../components/ui';

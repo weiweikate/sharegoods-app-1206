@@ -5,13 +5,12 @@ import {
 } from 'react-native';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import { formatDate } from '../../../utils/DateUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../../components/ui';
 
 export default class MyShop_RecruitPage extends Component {
-
     static propTypes = {
         activityData: PropTypes.object.isRequired,
         activityType: PropTypes.object.isRequired

@@ -17,11 +17,10 @@ import { RefreshList } from '../../components/ui';
 import Toast from '../../utils/bridge';
 import EmptyUtils from '../../utils/EmptyUtils';
 import MessageAPI from './api/MessageApi';
-
 const { px2dp } = ScreenUtils;
-import CommonUtils from 'CommonUtils';
-import MessageUtils from './utils/MessageUtils';
-import DesignRule from 'DesignRule';
+import CommonUtils from '../../utils/CommonUtils'
+import MessageUtils from './utils/MessageUtils'
+import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 
 const emptyIcon = RES.message_empty;

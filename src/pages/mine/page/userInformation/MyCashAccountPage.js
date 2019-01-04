@@ -16,7 +16,7 @@ import user from "../../../../model/user";
 import MineApi from "../../api/MineApi";
 import Toast from "./../../../../utils/bridge";
 import { observer } from "mobx-react/native";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import {MRText as Text} from '../../../../components/ui';
 
@@ -101,9 +101,9 @@ export default class MyCashAccountPage extends BasePage {
                                 color: "white"
                             }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        {/*<TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
-                            {/*<Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>*/}
-                        {/*</TouchableOpacity>*/}
+                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
+                            <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

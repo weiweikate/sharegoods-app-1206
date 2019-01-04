@@ -14,7 +14,7 @@ import { observer } from 'mobx-react/native';
 import { Payment, paymentType, paymentTrack } from './Payment';
 import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import PasswordView from './PasswordView';
 import {MRText as Text} from '../../components/ui'
 // import { NavigationActions } from 'react-navigation';
@@ -237,6 +237,10 @@ export default class PaymentMethodPage extends BasePage {
         }
     };
 
+    _repay() {
+        this.payment.payError = ''
+    }
+
     _render() {
         const { paymentList, availableBalance, balancePayment, selectedBalace, selectedTypes } = this.payment;
         let items = [];
@@ -275,6 +279,7 @@ export default class PaymentMethodPage extends BasePage {
                 }}
                 navigation={this.props.navigation}
                 payment={this.payment}
+                repay={()=> this._repay()}
             />
             {
                 this.state.orderChecking

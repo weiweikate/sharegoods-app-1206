@@ -34,6 +34,7 @@ import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
 // import LoginAPI from './pages/login/api/LoginApi';
 import OldImag from './home_icon.png';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
+import { login, logout } from './utils/SensorsTrack';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
@@ -67,6 +68,11 @@ export default class App extends Component {
             showOldBtn: false
         };
         user.readToken();
+        if (user.isLogin) {
+            // 启动时埋点关联登录用户,先取消关联，再重新关联
+            logout();
+            login(user.code);
+        }
         //检测是否老用户登陆
         oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
@@ -138,7 +144,7 @@ export default class App extends Component {
                                 style={{
                                     width: 150,
                                     height: 43,
-                                    paddingLeft: 10,
+                                    paddingLeft: 10
                                 }
                                 }
                             >
@@ -179,6 +185,6 @@ const styles = StyleSheet.create({
     oldLoginBtnStyle: {
         width: 120,
         height: 43,
-        paddingLeft: 10,
+        paddingLeft: 10
     }
 });

@@ -16,7 +16,7 @@ const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
 import res from './res';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import Toast from '../../utils/bridge';
 
 const imgWidth = px2dp(168);

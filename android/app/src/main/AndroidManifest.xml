@@ -62,14 +62,21 @@
     <uses-feature
         android:name="android.hardware.microphone"
         android:required="false" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
 
     <application
         android:name=".application.SophixStubApplication"
-        android:largeHeap="true"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -252,19 +259,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateHidden" />
         <activity
-            android:name="com.alipay.sdk.app.H5PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name="com.alipay.sdk.app.H5AuthActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-
-        <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
             android:noHistory="true">
@@ -309,6 +303,6 @@
         <!--&lt;!&ndash;高德地图定位&ndash;&gt;-->
         <!--<meta-data android:name="com.amap.api.v2.apikey" android:value="4a3ff7c2164aaf7d67a98fb9b88ae0e6">-->
         <!--</meta-data>-->
-        <service android:name="com.amap.api.location.APSService"/>
+        <service android:name="com.amap.api.location.APSService" />
     </application>
 </manifest>

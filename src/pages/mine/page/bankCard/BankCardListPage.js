@@ -19,7 +19,7 @@ import {
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import MineApi from "../../api/MineApi";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import BankTradingModal from "./../../components/BankTradingModal";
 import { observer } from "mobx-react/native";

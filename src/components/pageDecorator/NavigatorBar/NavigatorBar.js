@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import BackIcon from '../../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 

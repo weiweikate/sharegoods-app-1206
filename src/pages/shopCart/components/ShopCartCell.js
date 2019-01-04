@@ -23,7 +23,7 @@ import {
     UIImage,
     MRTextInput as TextInput
 } from '../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';
 import { activityString, getSelectImage, statueImage } from '../model/ShopCartMacro';
 import bridge from '../../../utils/bridge';

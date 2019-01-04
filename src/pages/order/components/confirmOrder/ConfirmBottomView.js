@@ -8,7 +8,7 @@ import {
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from "../../../../constants/DesignRule";
 import { confirmOrderModel } from "../../model/ConfirmOrderModel";
 
 export default class ConfirmBottomView extends Component {

@@ -6,7 +6,7 @@ import {
     Image
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
 import {MRTextInput as TextInput} from '../../../../components/ui';
