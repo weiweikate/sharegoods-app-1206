@@ -5,10 +5,10 @@ import {
     View,
     Image,
     TextInput as RNTextInput,
-    TouchableOpacity,KeyboardAvoidingView
+    KeyboardAvoidingView
 } from "react-native";
 import {
-    UIText
+    UIText,NoMoreClick
 } from "../../../../components/ui";
 import DesignRule from "../../../../constants/DesignRule";
 import { observer } from "mobx-react/native";
@@ -39,7 +39,7 @@ export default class ConfirmPriceView extends Component {
              <KeyboardAvoidingView
                 behavior="padding"
              style={{ backgroundColor: "white" }}>
-                <TouchableOpacity style={styles.couponsStyle}
+                <NoMoreClick style={styles.couponsStyle}
                                   disabled={!confirmOrderModel.canUseCou}
                                   onPress={this.props.jumpToCouponsPage}>
                     <UIText value={"优惠券"} style={styles.blackText}/>
@@ -49,11 +49,11 @@ export default class ConfirmPriceView extends Component {
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
                 {this.renderLine()}
                 {!user.tokenCoin ? null :
                     <View>
-                        <TouchableOpacity style={styles.couponsStyle}
+                        <NoMoreClick style={styles.couponsStyle}
                                           onPress={()=>this.props.jumpToCouponsPage("justOne")}>
                             <UIText value={"1元现金券"} style={styles.blackText}/>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -62,19 +62,19 @@ export default class ConfirmPriceView extends Component {
                                     style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                                 <Image source={arrow_right}/>
                             </View>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                         {this.renderLine()}
                     </View>
                 }
-                <TouchableOpacity style={styles.couponsStyle}>
+                <NoMoreClick style={styles.couponsStyle}>
                     <UIText value={"运费"} style={styles.blackText}/>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <UIText value={`¥${confirmOrderModel.totalFreightFee}`}
                                 style={[styles.grayText]}/>
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
                 {this.renderLine()}
-                <TouchableOpacity style={styles.couponsStyle}>
+                <NoMoreClick style={styles.couponsStyle}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <UIText value={"买家留言"} style={styles.blackText}/>
                         <RNTextInput
@@ -86,7 +86,7 @@ export default class ConfirmPriceView extends Component {
                             underlineColorAndroid={"transparent"}
                         />
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
                 {this.renderLine()}
              </KeyboardAvoidingView>
         );

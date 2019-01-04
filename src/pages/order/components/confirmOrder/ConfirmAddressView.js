@@ -4,10 +4,9 @@ import {
     View,
     Image,
     Text,
-    TouchableOpacity
 } from "react-native";
 import {
-    UIText, UIImage
+    UIText, UIImage,NoMoreClick
 } from "../../../../components/ui";
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
@@ -38,7 +37,7 @@ export default class ConfirmAddressView extends Component {
     renderAddress = () => {
         console.log('renderAddress',)
         return (StringUtils.isNoEmpty(confirmOrderModel.addressId) ?
-                <TouchableOpacity
+                <NoMoreClick
                     style={styles.addressSelectStyle}
                     onPress={this.props.selectAddress}>
                     <UIImage source={position} style={{
@@ -67,8 +66,8 @@ export default class ConfirmAddressView extends Component {
                             style={styles.receiverAddressStyle}/>
                     </View>
                     <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={"contain"}/>
-                </TouchableOpacity> :
-                <TouchableOpacity
+                </NoMoreClick> :
+                <NoMoreClick
                     style={{
                         height: ScreenUtils.autoSizeWidth(87),
                         backgroundColor: "white",
@@ -89,7 +88,7 @@ export default class ConfirmAddressView extends Component {
                         <UIText value={"请添加一个收货人地址"} style={styles.hintStyle}/>
                     </View>
                     <Image source={arrow_right} style={styles.arrowRightStyle} resizeMode={"contain"}/>
-                </TouchableOpacity>
+                </NoMoreClick>
         );
     };
     renderSelectImage = () => {

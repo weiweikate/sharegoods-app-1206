@@ -160,7 +160,7 @@ export class XpDetailPage extends BasePage {
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: orderProducts,
-                    source: 2
+                    source: 3
                 }
             });
         }

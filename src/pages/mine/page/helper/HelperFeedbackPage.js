@@ -3,8 +3,7 @@ import {
     StyleSheet,
     View,
     Image,
-    TouchableOpacity,
-    TouchableWithoutFeedback, ScrollView, ImageBackground
+     ScrollView, ImageBackground
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import UIText from "../../../../components/ui/UIText";
@@ -171,7 +170,7 @@ export default class HelperFeedbackPage extends BasePage {
                                 marginTop: 3
                             }}/>
                         </View>
-                        <TouchableOpacity onPress={() => {
+                        <NoMoreClick onPress={() => {
                             this.setState({ isShowFinishModal: false }), this.props.navigation.goBack();
                         }} style={{ width: '100%' }}>
                             <View style={{
@@ -187,7 +186,7 @@ export default class HelperFeedbackPage extends BasePage {
                                         color: DesignRule.textColor_mainTitle
                                     }} allowFontScaling={false}>确定</Text>
                             </View>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                     </View>
                 </View>
             </Modal>
@@ -225,9 +224,9 @@ export default class HelperFeedbackPage extends BasePage {
         return (
             <View style={{ marginLeft: 8 }} key={index}>
                 <ImageLoad style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
-                <TouchableOpacity style={styles.delete_btn} onPress={() => this.deletePic(index)}>
+                <NoMoreClick style={styles.delete_btn} onPress={() => this.deletePic(index)}>
                     <UIImage style={{ width: 24, height: 24 }} source={icon_delete}/>
-                </TouchableOpacity>
+                </NoMoreClick>
 
             </View>);
     };
@@ -251,7 +250,7 @@ export default class HelperFeedbackPage extends BasePage {
                 }}
                 style={{ flex: 1 }}
                 ref="modal">
-                <TouchableWithoutFeedback onPress={() => {
+                <NoMoreClick onPress={() => {
                     this.setState({ showModal: false });
                 }}>
                     <View>
@@ -276,7 +275,7 @@ export default class HelperFeedbackPage extends BasePage {
                             <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
                                 {this.state.CONFIG.map((item, i) => {
                                     return (
-                                        <TouchableOpacity key={i} style={{
+                                        <NoMoreClick key={i} style={{
                                             height: 48,
                                             justifyContent: 'space-between',
                                             flexDirection: 'row',
@@ -294,14 +293,14 @@ export default class HelperFeedbackPage extends BasePage {
                                                 height: 12,
                                                 marginRight: 19
                                             }}/> : <View style={{ width: 17, height: 12, marginRight: 19 }}/>}
-                                        </TouchableOpacity>
+                                        </NoMoreClick>
                                     );
                                 })
                                 }
                             </View>
                         </View>
                     </View>
-                </TouchableWithoutFeedback>
+                </NoMoreClick>
             </Modal>
         );
     }
@@ -321,7 +320,7 @@ export default class HelperFeedbackPage extends BasePage {
                 {this.renderModals()}
                 {this.renderFinishModal()}
                 <ScrollView>
-                    <TouchableOpacity style={{
+                    <NoMoreClick style={{
                         flexDirection: 'row',
                         width: ScreenUtils.width,
                         height: 44,
@@ -336,7 +335,7 @@ export default class HelperFeedbackPage extends BasePage {
                             color: DesignRule.textColor_mainTitle
                         }} allowFontScaling={false}>{this.state.course}</Text>
                         <UIImage source={icon_arrow_down} style={{ width: 10, height: 7, marginRight: 16 }}/>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                     <View style={styles.containerView1}>
                         <Text style={{
                             marginLeft: 16,

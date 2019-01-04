@@ -58,6 +58,8 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
        this.message=""
        this.addressId=null
        this.orderParamVO={}
+       this.netFailedInfo = null;
+       this.loadingState = PageLoadingState.loading;
    }
 
   @action  makeSureProduct(orderParamVO,params={}){
@@ -72,10 +74,10 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                     orderProductList: orderParamVO.orderProducts,
                     ...params
                 }).then(response => {
-                    bridge.hiddenLoading();
+                    // bridge.hiddenLoading();
                  return   this.handleNetData(response.data);
                 }).catch(err => {
-                    bridge.hiddenLoading();
+                    // bridge.hiddenLoading();
                   let error  = this.disPoseErr(err);
                   throw error
                 });
@@ -89,10 +91,10 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                     submitType:1,
                     ...params
                 }).then(response => {
-                    bridge.hiddenLoading();
+                    // bridge.hiddenLoading();
                  return   this.handleNetData(response.data);
                 }).catch(err => {
-                    bridge.hiddenLoading();
+                    // bridge.hiddenLoading();
                   throw this.disPoseErr(err)
                 });
                 break;
@@ -105,10 +107,10 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                     submitType:1,
                     ...params
                 }).then(response => {
-                    bridge.hiddenLoading();
+                    // bridge.hiddenLoading();
                  return   this.handleNetData(response.data);
                 }).catch(err => {
-                    bridge.hiddenLoading();
+                    // bridge.hiddenLoading();
                    throw this.disPoseErr(err)
                 });
                 break;
@@ -125,11 +127,11 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                     ...params
                 }).then(
                     response => {
-                        bridge.hiddenLoading();
+                        // bridge.hiddenLoading();
                     return    this.handleNetData(response.data);
                     }
                 ).catch(err => {
-                    bridge.hiddenLoading();
+                    // bridge.hiddenLoading();
                    throw  this.disPoseErr(err)
                 });
                 break;

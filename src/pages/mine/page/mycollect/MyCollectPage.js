@@ -10,7 +10,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity, ListView, TouchableWithoutFeedback, Image
+     ListView,  Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -21,7 +21,7 @@ import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
 import DesignRule from '../../../../constants/DesignRule';
 import UIImage from '@mr/image-placeholder';
-import {MRText as Text} from '../../../../components/ui'
+import {MRText as Text,NoMoreClick} from '../../../../components/ui'
 // import { NavigationActions } from 'react-navigation';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 
@@ -115,7 +115,7 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeCode, 0)}>
+            <NoMoreClick onPress={() => this.go2PruductDetailPage(item.storeCode, 0)}>
                 <View style={styles.rowContainer}>
                     {
                         item.headUrl ? <UIImage source={{ uri: item.headUrl }} style={styles.img} borderRadius={25}/> :
@@ -143,7 +143,7 @@ export default class MyCollectPage extends BasePage {
                         </View>
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </NoMoreClick>
         );
     };
     renderInvalidItem = ({ item, index }) => {
@@ -156,7 +156,7 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeCode, 1)}>
+            <NoMoreClick onPress={() => this.go2PruductDetailPage(item.storeCode, 1)}>
                 <View style={[styles.rowContainer, { backgroundColor: '#c7c7c7' }]}>
                     <View style={{
                         position: 'absolute',
@@ -198,7 +198,7 @@ export default class MyCollectPage extends BasePage {
                         </View>
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </NoMoreClick>
         );
     };
 
@@ -288,14 +288,14 @@ export default class MyCollectPage extends BasePage {
                     this.renderItem(rowData, rowId)
                 )}
                 renderHiddenRow={(data, secId, rowId, rowMap) => (
-                    <TouchableOpacity
+                    <NoMoreClick
                         style={styles.standaloneRowBack}
                         onPress={() => {
                             rowMap[`${secId}${rowId}`].closeRow();
                             this.deleteFromShoppingCartByProductId(data.storeCode);
                         }}>
                         <UIText style={{ color: 'white' }} value={'立即\n删除'}/>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                 )}
                 rightOpenValue={-75}
             />
@@ -351,7 +351,7 @@ export default class MyCollectPage extends BasePage {
                     快去商城逛逛吧~
                 </Text>
 
-                <TouchableOpacity
+                <NoMoreClick
                     onPress={
                         () => {
                             this.gotoLookAround();
@@ -379,7 +379,7 @@ export default class MyCollectPage extends BasePage {
                             去逛逛
                         </Text>
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
             </View>
         );
     };

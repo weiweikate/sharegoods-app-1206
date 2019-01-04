@@ -24,9 +24,10 @@ export default class ConfirmOrderPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            viewData: []
+            viewData: [],
         };
         this.canCommit = true;
+        confirmOrderModel.clearData();
     }
 
     $navigationBarOptions = {
@@ -85,11 +86,13 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
+
         this.loadPageData();
     }
 
     async loadPageData(params) {
-        bridge.showLoading();
+        // bridge.showLoading();
+        bridge.hiddenLoading();
         try {
             let data = await  confirmOrderModel.makeSureProduct(this.params.orderParamVO, params);
             this.setState({ viewData: data.orderProductList });
@@ -136,7 +139,7 @@ export default class ConfirmOrderPage extends BasePage {
                 let params = {
                     addressId: json.id,
                     tokenCoin: 0,
-                    userCouponCode: this.state.userCouponCode
+                    userCouponCode: confirmOrderModel.userCouponCode
                 };
                 confirmOrderModel.tokenCoinText="选择使用1元券",
                     confirmOrderModel.tokenCoin=0

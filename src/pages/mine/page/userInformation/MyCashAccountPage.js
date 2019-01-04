@@ -7,7 +7,7 @@ import {
     Alert
 } from "react-native";
 import BasePage from "../../../../BasePage";
-import { RefreshList } from "../../../../components/ui";
+import { RefreshList ,NoMoreClick} from "../../../../components/ui";
 import AccountItem from "../../components/CashAccountItem";
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
@@ -101,9 +101,9 @@ export default class MyCashAccountPage extends BasePage {
                                 color: "white"
                             }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
+                        <NoMoreClick style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
                             <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                     </View>
                 </View>
             </View>
