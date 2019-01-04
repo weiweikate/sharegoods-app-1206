@@ -174,6 +174,8 @@ class ShopCartCacheTool {
 
     /*获取购物车数据 总入口*/
     getShopCartGoodsListData() {
+        shopCartStore.getShopCartListData();
+        return;
         if (user.isLogin) {
             //用户登录状态
             shopCartStore.getShopCartListData();

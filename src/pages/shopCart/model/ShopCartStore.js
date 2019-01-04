@@ -6,6 +6,8 @@ import user from '../../../model/user';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import shopCartCacheTool from './ShopCartCacheTool';
 
+// import testData from './testData';
+
 
 class ShopCartStore {
 
@@ -62,11 +64,15 @@ class ShopCartStore {
     @computed
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
-        this.data.slice().map(item => {
-            if (item.isSelected && !isNaN(item.amount) && item.status !== 2 ) {
-                // totalSelectNum += item.amount;
-                totalSelectNum += 1;
-            }
+        this.data.slice().map(items => {
+            items.data.map(
+                (item)=>{
+                    if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2 ) {
+                        // totalSelectNum += item.amount;
+                        totalSelectNum += 1;
+                    }
+                }
+            )
         });
         return totalSelectNum;
     }
@@ -74,11 +80,16 @@ class ShopCartStore {
     @computed
     get getTotalMoney() {
         let totalMoney = 0.00;
-        this.data.slice().map(item => {
-            if (item.isSelected && !isNaN(item.amount) && item.status !== 2 ) {
-                totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
-            }
+        this.data.slice().map(items => {
+            items.data.map(item=>{
+                if (item.isSelected && !isNaN(item.amount) && item.productStatus !== 2 ) {
+                    totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
+                }
+            })
         });
+
+        this.calculationAwardRules();
+
         return   Math.round(totalMoney * 100)/100;
     }
 
@@ -99,16 +110,15 @@ class ShopCartStore {
         //是否存在正常商品
         let isHaveNormalGood = false;
         let flag = true;
-        this.data.map(item => {
-            if (item.status === 1){
-                isHaveNormalGood = true;
-                if (!item.isSelected) {
-                    flag = false;
+        this.data.map(items => {
+            items.data.map(item=>{
+                if (item.productStatus === 1){
+                    isHaveNormalGood = true;
+                    if (!item.isSelected) {
+                        flag = false;
+                    }
                 }
-            }
-            // if (item.status === 1 && !item.isSelected) {
-            //     flag = false;
-            // }
+            })
         });
 
         if (isHaveNormalGood && flag){
@@ -116,58 +126,142 @@ class ShopCartStore {
         } else {
             return false;
         }
-        // return flag;
     }
-
     /**
      * 组装打包购物车数据
      */
     @action
     packingShopCartGoodsData = (response) => {
         let originArr = this.data.slice();
-
-        if (response && response instanceof Array && response.length > 0) {
-            let tempArr = [];
-            response.forEach(item => {
-                item.isSelected = false;
-                let [...valueArr] = item.specValues || [];
-                let tempString = '';
-                valueArr.map((string) => {
-                    tempString = tempString + `${string} `;
-                });
-                item.specString = tempString;
-
-                //从订单过来的选中
-                this.needSelectGoods.map(selectGood =>{
-                    if (selectGood.productCode === item.productCode &&
-                        selectGood.skuCode === item.skuCode &&
-                        item.status !== 0 &&
-                        item.stock !== 0
-                    ){
-                        item.isSelected = true
-                    }
-                })
-
-                originArr.map(originGood =>{
-                    if (originGood.productCode === item.productCode && item.skuCode === originGood.skuCode){
-                        if (item.status === 1) {
-                            item.isSelected = originGood.isSelected
-                        }else {
-                            item.isSelected = false;
+        let originData = response;
+        // let originData = testData;
+        console.log('------'+response);
+        let tempAllData = [];
+        //有效商品
+        let effectiveArr = originData.shoppingCartGoodsVOS;
+        if (effectiveArr && effectiveArr instanceof Array && effectiveArr.length > 0) {
+            effectiveArr.map((itemObj,index)=>{
+                //增加两个字段
+                itemObj.type = itemObj.activityType;//当前分组类型
+                itemObj.middleTitle = '1111';
+                itemObj.key = index;
+                itemObj.data = itemObj.products;
+                itemObj.data.map((goodItem,goodItemIndex) =>{
+                    goodItem.isSelected = false;
+                    goodItem.key = goodItemIndex;
+                    //从订单过来的选中
+                    this.needSelectGoods.map(selectGood => {
+                        if (selectGood.productCode === goodItem.productCode &&
+                            selectGood.skuCode === goodItem.skuCode &&
+                            goodItem.productStatus !== 0 &&
+                            goodItem.sellStock !== 0
+                        ) {
+                            goodItem.isSelected = true;
                         }
+                    });
+                    //刷新来的选中
+                    originArr.map(items=>{
+                        items.data.map(itemGood=>{
+                            if (itemGood.productCode === goodItem.productCode && goodItem.skuCode === itemGood.skuCode) {
+                                if (goodItem.productStatus === 1) {
+                                    goodItem.isSelected = itemGood.isSelected;
+                                } else {
+                                    goodItem.isSelected = false;
+                                }
 
-                    }
-                })
-                tempArr.push(item);
-            });
-            //将需要选中的数组清空
-            this.needSelectGoods = []
-            this.data = tempArr;
-        } else {
-            this.data = [];
-            //组装元数据错误
+                            }
+                        })
+                    })
+                });
+                itemObj.sectionIndex = index;
+                tempAllData.push(itemObj);
+            })
         }
+        console.log(tempAllData)
+        //失效商品
+        let InvalidArr = originData.shoppingCartFailedGoodsVOS;
+        if (InvalidArr && InvalidArr instanceof Array && InvalidArr.length > 0) {
+          let invalidObj = {};
+          invalidObj.type = -1;            //当前分组为失效商品
+          invalidObj.middleTitle = '1111'
+          invalidObj.key = tempAllData.length;
+          invalidObj.data = InvalidArr[0].products;
+          invalidObj.data.map((goodItem,goodItemIndex)=>{
+              goodItem.isSelected = false;
+              goodItem.key = goodItemIndex;
+
+
+          })
+          invalidObj.sectionIndex = tempAllData.length;
+          tempAllData.push(invalidObj);
+        }
+        console.log(tempAllData);
+        this.data = tempAllData;
+        console.log(this.data);
+        //清空以往的选择
+        this.needSelectGoods = []
+        return;
+        // if (response && response instanceof Array && response.length > 0) {
+        //     let tempArr = [];
+        //     response.forEach(item => {
+        //         item.isSelected = false;
+        //         let [...valueArr] = item.specValues || [];
+        //         let tempString = '';
+        //         valueArr.map((string) => {
+        //             tempString = tempString + `${string} `;
+        //         });
+        //         item.specString = tempString;
+        //
+        //         //从订单过来的选中
+        //         this.needSelectGoods.map(selectGood =>{
+        //             if (selectGood.productCode === item.productCode &&
+        //                 selectGood.skuCode === item.skuCode &&
+        //                 item.productStatus !== 0 &&
+        //                 item.stock !== 0
+        //             ){
+        //                 item.isSelected = true
+        //             }
+        //         })
+        //
+        //         originArr.map(originGood =>{
+        //             if (originGood.productCode === item.productCode && item.skuCode === originGood.skuCode){
+        //                 if (item.productStatus === 1) {
+        //                     item.isSelected = originGood.isSelected
+        //                 }else {
+        //                     item.isSelected = false;
+        //                 }
+        //
+        //             }
+        //         })
+        //         tempArr.push(item);
+        //     });
+        //     //将需要选中的数组清空
+        //     this.needSelectGoods = []
+        //     this.data = tempArr;
+        // } else {
+        //     this.data = [];
+        //     //组装元数据错误
+        // }
     };
+    /**
+     * 计算奖励规则
+     * @constructor
+     */
+    calculationAwardRules=()=>{
+        this.data.slice().map((items,itemsIndex)=>{
+
+            let totalSelectMoney = 0.00;
+            items.data.map((itemGood,itemGoodIndex)=>{
+                if (itemGood.isSelected) {
+                    totalSelectMoney += itemGood.price * itemGood.amount;
+                }
+            });
+            if (totalSelectMoney>200){
+                items.middleTitle = '2222';
+            }
+        })
+    }
+
 
     /**
      * 判断是否可以结算
@@ -179,7 +273,6 @@ class ShopCartStore {
             callBack(false,[]);
             return;
         }
-
         let isCanSettlement = true
         let haveNaNGood = false
         let  tempArr = [];
@@ -217,10 +310,12 @@ class ShopCartStore {
     startSettlement = () => {
         let selectItemSet = new Set();
         let [...allItems] = this.data.slice();
-        allItems.map((good) => {
-            if (good.isSelected) {
-                selectItemSet.add(good);
-            }
+        allItems.map((items) => {
+            items.data.map(itemGood=>{
+                if (itemGood.isSelected) {
+                    selectItemSet.add(itemGood);
+                }
+            })
         });
         return Array.from(selectItemSet);
     };
@@ -228,24 +323,30 @@ class ShopCartStore {
      以下为购物车数据操作相关方法
      */
     isSelectAllItem = (isSelectAll) => {
+        let [...tempArr] = this.data.slice();
         if (isSelectAll) {
-            this.data.slice().map(item => {
-                if (item.status === 0 || item.status === 2  || item.status === 3) {
-                    item.isSelected = false;
-                } else {
-                    item.isSelected = true;
-                }
+            tempArr.map(items => {
+                items.data.map(item=>{
+                    if (item.productStatus === 0 || item.productStatus === 2  || item.productStatus === 3) {
+                        item.isSelected = false;
+                    } else {
+                        item.isSelected = true;
+                    }
+                })
             });
         } else {
-            this.data.slice().map(item => {
-                item.isSelected = false;
+            tempArr.map(items => {
+                items.data.map(item=>{
+                    item.isSelected = false;
+                })
             });
         }
+        this.data = tempArr;
     };
     /*更新线上购物车商品*/
     updateCartItem = (itemData, rowId) => {
         ShopCartAPI.updateItem(
-            itemData
+                {...itemData}
         ).then((res) => {
             this.needSelectGoods.push(itemData)
             // this.getShopCartListData()
@@ -288,6 +389,8 @@ class ShopCartStore {
 
     /*请求购物车商品*/
     getShopCartListData = () => {
+        // this.packingShopCartGoodsData([]);
+        // return;
         ShopCartAPI.list().then(result => {
             this.setRefresh(false);
             bridge.hiddenLoading();
@@ -304,7 +407,8 @@ class ShopCartStore {
         if (item) {
                 //加入单个商品
                 bridge.showLoading();
-                ShopCartAPI.addItem({
+                ShopCartAPI.addItem(
+                    {
                     'amount': item.amount,
                     'productCode': item.productCode,
                     'skuCode': item.skuCode,

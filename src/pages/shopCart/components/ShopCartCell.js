@@ -56,19 +56,26 @@ export default class ShopCartCell extends Component {
     }
 
     render() {
-        const { itemData, rowMap, rowId, cellClickAction } = this.props;
+        const { itemData, rowMap, rowId, cellClickAction,sectionData } = this.props;
 
+        return (
+            <View>
+                {
+                    this._renderCellView(itemData, rowMap, rowId, cellClickAction,sectionData)
+                }
+            </View>
+        );
+    }
+
+    _renderCellView = (itemData, rowMap, rowId, cellClickAction,sectionData) => {
         return (
             <View>
                 <TouchableHighlight
                     onPress={() => {
-                        rowMap;
                         cellClickAction(itemData);
                     }}
                     style={styles.itemContainer}>
-                    <View style={styles.standaloneRowFront
-
-                    }>
+                    <View style={styles.standaloneRowFront}>
                         <UIImage
                             source={getSelectImage(itemData)}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
@@ -76,14 +83,14 @@ export default class ShopCartCell extends Component {
 
                                 let [...tempValues] = shopCartStore.data;
 
-                                if (tempValues[rowId].status === 0 ||
-                                    tempValues[rowId].status === 2 ||
-                                    tempValues[rowId].status === 3 ||
-                                    tempValues[rowId].stock === 0) {
+                                if ((tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 0 ||
+                                    (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 2 ||
+                                    (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 3 ||
+                                    (tempValues[sectionData.sectionIndex].data)[rowId].sellStock === 0) {
                                     bridge.$toast('此商品不可结算');
                                     tempValues[rowId].isSelected = false;
                                 } else {
-                                    tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
+                                    (tempValues[sectionData.sectionIndex].data)[rowId].isSelected = !(tempValues[sectionData.sectionIndex].data)[rowId].isSelected;
                                 }
                                 shopCartStore.data = tempValues;
                             }}
@@ -124,11 +131,11 @@ export default class ShopCartCell extends Component {
                                 : null
                         }
                         {
-                            itemData.status === 1
+                            itemData.productStatus === 1
                                 ?
                                 null
                                 : <UIImage
-                                    source={statueImage[itemData.status]}
+                                    source={statueImage[itemData.productStatus]}
                                     style={{
                                         // backgroundColor:DesignRule.mainColor,
                                         position: 'absolute',
@@ -165,7 +172,8 @@ export default class ShopCartCell extends Component {
                                 />
 
                                 <UIText
-                                    value={itemData.specString ? itemData.specString : ''}
+                                    // value={itemData.specString ? itemData.specString : ''}
+                                    value={itemData.specTitle?itemData.specTitle:''}
                                     numberOfLines={2}
                                     style={{
                                         fontSize: 13,
@@ -173,7 +181,7 @@ export default class ShopCartCell extends Component {
                                     }}/>
 
                                 {
-                                    itemData.amount > itemData.stock
+                                    itemData.amount > itemData.sellStock
                                         ?
                                         <UIText
                                             value={'库存不足'}
@@ -206,9 +214,9 @@ export default class ShopCartCell extends Component {
                                             value={'-'}
                                             style={
                                                 [styles.addOrReduceBtnStyle,
-                                                    (itemData.stock === 0 ||
-                                                        itemData.status === 0 ||
-                                                        itemData.status === 2) ?
+                                                    (itemData.sellStock === 0 ||
+                                                        itemData.productStatus === 0 ||
+                                                        itemData.productStatus === 2) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -225,9 +233,9 @@ export default class ShopCartCell extends Component {
                                             allowFontScaling={false}
                                             style={
                                                 [styles.TextInputStyle,
-                                                    (itemData.stock === 0 ||
-                                                        itemData.status === 0 ||
-                                                        itemData.status === 2) ?
+                                                    (itemData.sellStock === 0 ||
+                                                        itemData.productStatus === 0 ||
+                                                        itemData.productStatus === 2) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -235,21 +243,21 @@ export default class ShopCartCell extends Component {
                                             }
                                             value={itemData.amount ? '' + itemData.amount : ''}
                                             onFocus={() => {
-                                                if (itemData.stock === 0 ||
-                                                    itemData.status === 0 ||
-                                                    itemData.status === 2) {
+                                                if (itemData.sellStock === 0 ||
+                                                    itemData.productStatus === 0 ||
+                                                    itemData.productStatus === 2) {
                                                     dismissKeyboard();
                                                 }
                                             }}
                                             onChangeText={text => {
-                                                if (itemData.status === 0 ||
-                                                    itemData.status === 2) {
+                                                if (itemData.productStatus === 0 ||
+                                                    itemData.productStatus === 2) {
                                                     bridge.$toast('此商品不可编辑');
                                                 } else {
                                                     console.log('输入后的值' + text);
                                                     itemData.amount = parseInt(text);
                                                     let [...tempArr] = shopCartStore.data.slice();
-                                                    tempArr[rowId] = itemData;
+                                                    (tempArr[sectionData.sectionIndex].data)[rowId] = itemData;
                                                     shopCartStore.data = tempArr;
                                                 }
                                             }}
@@ -268,9 +276,9 @@ export default class ShopCartCell extends Component {
                                             style={
                                                 [styles.addOrReduceBtnStyle,
 
-                                                    (itemData.stock === 0 ||
-                                                        itemData.status === 0 ||
-                                                        itemData.status === 2)
+                                                    (itemData.sellStock === 0 ||
+                                                        itemData.productStatus === 0 ||
+                                                        itemData.productStatus === 2)
                                                         ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
@@ -338,14 +346,14 @@ export default class ShopCartCell extends Component {
                 </View>
             </View>
         );
-    }
+    };
 
     onNumberTextChange = (itemData, text, rowId) => {
-        if (itemData.status === 0 || itemData.status === 2) {
+        if (itemData.productStatus === 0 || itemData.productStatus === 2) {
             bridge.$toast('此商品已失效');
             return;
         }
-        if (itemData.stock === 0) {
+        if (itemData.sellStock === 0) {
             bridge.$toast('此商品库存为零不可编辑');
             return;
         }
@@ -353,9 +361,9 @@ export default class ShopCartCell extends Component {
             itemData.amount = 1;
             // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
-        if (itemData.amount >= itemData.stock) {
+        if (itemData.amount >= itemData.sellStock) {
             bridge.$toast('已达商品库存最大数');
-            itemData.amount = itemData.stock;
+            itemData.amount = itemData.sellStock;
             // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount <= 0) {
@@ -372,10 +380,10 @@ export default class ShopCartCell extends Component {
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
-        if (itemData.status === 0 || itemData.status === 2) {
+        if (itemData.productStatus === 0 || itemData.productStatus === 2) {
             return;
         }
-        if (itemData.stock === 0) {
+        if (itemData.sellStock === 0) {
             bridge.$toast('此商品库存为零不可编辑');
             return;
         }
@@ -388,14 +396,14 @@ export default class ShopCartCell extends Component {
     };
     /*加号按钮操作*/
     _addProductNum = (itemData, rowId) => {
-        if (itemData.status === 0 || itemData.status === 2) {
+        if (itemData.productStatus === 0 || itemData.productStatus === 2) {
             return;
         }
-        if (itemData.stock === 0) {
+        if (itemData.sellStock === 0) {
             bridge.$toast('此商品库存为零不可编辑');
             return;
         }
-        if (itemData.amount >= itemData.stock) {
+        if (itemData.amount >= itemData.sellStock) {
             bridge.$toast('已达商品库存最大数');
         } else {
             itemData.amount++;
@@ -411,7 +419,9 @@ ShopCartCell.propTypes = {
     //rowid 行数
     rowId: PropTypes.number.isRequired,
     //cell 点击回调函数
-    cellClickAction: PropTypes.func
+    cellClickAction: PropTypes.func,
+    //section
+    sectionData:PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({
