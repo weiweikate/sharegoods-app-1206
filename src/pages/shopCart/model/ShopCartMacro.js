@@ -31,9 +31,9 @@ const statueImage = {
 };
 
 const getSelectImage =(itemData)=>{
-    if (itemData.status === 0 || itemData.status === 2 || itemData.status === 3||itemData.stock===0){
+    if (itemData.productStatus === 0 || itemData.productStatus === 2 || itemData.productStatus === 3||itemData.sellStock===0){
         return res.button.unAbleSelected_circle;
-    } else if (itemData.status === 1){
+    } else if (itemData.productStatus === 1){
         return itemData.isSelected?  res.button.selected_circle_red : res.button.unselected_circle;
     }
 }
