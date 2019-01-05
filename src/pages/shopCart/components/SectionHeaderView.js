@@ -9,6 +9,7 @@
  *
  */
 
+
 'use strict';
 
 import React, { Component } from 'react';
@@ -23,6 +24,7 @@ import {
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
+import shopCartCacheTool from '../model/ShopCartCacheTool';
 
 export default class SectionHeaderView extends Component {
 
@@ -154,14 +156,22 @@ export default class SectionHeaderView extends Component {
             </View>
         );
     };
-
-
+    /**
+     * 清除当前组失效商品
+     */
     clearAllInvaildGood = () => {
-
-
-
+        const { sectionData } = this.props;
+        let  deleteSkuCodes = [];
+        sectionData.data.map(item=>{
+            deleteSkuCodes.push({
+                'skuCode':item.skuCode
+            })
+        })
+        shopCartCacheTool.deleteShopCartGoods(deleteSkuCodes);
     };
-
+    /**
+     * 去凑单
+     */
     collectBills = () => {
         const { sectionData } = this.props;
         this.props&&this.props.gotoCollectBills&&this.props.gotoCollectBills(sectionData);

@@ -314,7 +314,7 @@ export default class ProductDetailPage extends BasePage {
             let temp = {
                 'amount': amount,
                 'skuCode': skuCode,
-                'spuCode': this.state.data.prodCode
+                'productCode': this.state.data.prodCode
             };
             /*加入购物车埋点*/
             const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.state.data || {};

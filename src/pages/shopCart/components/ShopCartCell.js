@@ -81,19 +81,7 @@ export default class ShopCartCell extends Component {
                             source={getSelectImage(itemData)}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
-
-                                let [...tempValues] = shopCartStore.data;
-
-                                if ((tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 0 ||
-                                    (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 2 ||
-                                    (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 3 ||
-                                    (tempValues[sectionData.sectionIndex].data)[rowId].sellStock === 0) {
-                                    bridge.$toast('此商品不可结算');
-                                    tempValues[rowId].isSelected = false;
-                                } else {
-                                    (tempValues[sectionData.sectionIndex].data)[rowId].isSelected = !(tempValues[sectionData.sectionIndex].data)[rowId].isSelected;
-                                }
-                                shopCartStore.data = tempValues;
+                                this._selectImageClick(sectionData,rowId);
                             }}
                         />
                         <UIImage
@@ -348,6 +336,21 @@ export default class ShopCartCell extends Component {
             </View>
         );
     };
+
+    _selectImageClick=(sectionData,rowId)=>{
+        let [...tempValues] = shopCartStore.data;
+        if ((tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 0 ||
+            (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 2 ||
+            (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 3 ||
+            (tempValues[sectionData.sectionIndex].data)[rowId].sellStock === 0) {
+            bridge.$toast('此商品不可结算');
+            (tempValues[sectionData.sectionIndex].data)[rowId].isSelected = false;
+        } else {
+            (tempValues[sectionData.sectionIndex].data)[rowId].isSelected = !(tempValues[sectionData.sectionIndex].data)[rowId].isSelected;
+        }
+        shopCartStore.data = tempValues;
+
+    }
 
     onNumberTextChange = (itemData, text, rowId) => {
         if (itemData.productStatus === 0 || itemData.productStatus === 2) {

@@ -178,7 +178,6 @@ class ShopCartStore {
                 tempAllData.push(itemObj);
             });
         }
-        console.log(tempAllData);
         //失效商品
         let InvalidArr = originData.shoppingCartFailedGoodsVOS;
         if (InvalidArr && InvalidArr instanceof Array && InvalidArr.length > 0) {
@@ -199,6 +198,8 @@ class ShopCartStore {
         console.log(tempAllData);
         this.data = tempAllData;
         console.log(this.data);
+        //计算规则
+        this.calculationAwardRules();
         //清空以往的选择
         this.needSelectGoods = [];
         return;
@@ -250,20 +251,65 @@ class ShopCartStore {
      */
     calculationAwardRules = () => {
         this.data.slice().map((items, itemsIndex) => {
-
-            let totalSelectMoney = 0.00;
-            items.data.map((itemGood, itemGoodIndex) => {
-                if (itemGood.isSelected) {
-                    totalSelectMoney += itemGood.price * itemGood.amount;
+            //检验专区分组计算
+            if (items.type === 8) {
+                //所选商品总金额
+                let totalSelectMoney = 0;
+                let middleTitleTip = '';
+                items.data.map((itemGood, itemGoodIndex) => {
+                    if (itemGood.isSelected) {
+                        totalSelectMoney += itemGood.price * itemGood.amount;
+                    }
+                });
+                if (items.rules instanceof Array && items.rules.length > 0) {
+                    if (totalSelectMoney === 0) {
+                        middleTitleTip = '满' + items.rules[0].startPrice + '元减,经验值翻' + items.rules[0].rate + '倍,送' + items.startCount + '张优惠券';
+                        items.middleTitle = middleTitleTip;
+                    } else {
+                        let rulesArr = items.rules;
+                        let achieveRuleIndex = 0;
+                        // let achievePrice = rulesArr[achieveRuleIndex].startPrice;
+                        rulesArr.map((ruleItem, ruleIndex) => {
+                            if (totalSelectMoney > ruleItem.startPrice) {
+                                // achievePrice = ruleItem.startPrice;
+                                achieveRuleIndex = ruleIndex;
+                            }
+                        });
+                        middleTitleTip = '满' + items.rules[achieveRuleIndex].startPrice + '元减,经验值翻' + items.rules[achieveRuleIndex].rate + '倍,';
+                        //计算优惠券
+                        let totalYouHuiJuan = items.rules[achieveRuleIndex].startPrice / items.startPrice;
+                        if (totalYouHuiJuan > items.maxCount) {
+                            totalYouHuiJuan = items.maxCount;
+                        }
+                        middleTitleTip = middleTitleTip + '送' + totalYouHuiJuan + '张优惠券';
+                        if (totalSelectMoney - items.rules[achieveRuleIndex].startPrice < 0) {
+                            middleTitleTip = middleTitleTip + '差' + (items.rules[achieveRuleIndex].startPrice - totalSelectMoney).toFixed(1) + '元';
+                        }
+                        items.middleTitle = middleTitleTip;
+                    }
+                } else {
+                    items.middleTitle = '暂无规则';
                 }
-            });
-            if (totalSelectMoney > 200) {
-                items.middleTitle = '2222';
             }
         });
     };
 
-
+    // hyfSub(arg1,arg2){
+    //     let r1,r2,m,n;
+    //     try {
+    //         r1 = arg1.toString().split(".")[1].length;
+    //     }catch (e) {
+    //         r1 = 0;
+    //     }
+    //     try {
+    //         r2 = arg2.toString().split(".")[1].length;
+    //     }catch (e) {
+    //         r2 = 0;
+    //     }
+    //     m = Math.pow(10,Math.max(r1,r2));
+    //     n=(r1>=r2)?r1:r2;
+    //     return Number(((arg1 * m - arg2 * m)/m).toFixed(n));
+    // }
     /**
      * 判断是否可以结算
      */
@@ -369,7 +415,7 @@ class ShopCartStore {
         if (localValue && (localValue instanceof Array && localValue.length > 0)) {
             let params =
                 {
-                    'cacheList': localValue
+                    shoppingCartParamList: localValue
                 };
             //存在本地缓存
             // this.setRefresh(true);
@@ -405,9 +451,16 @@ class ShopCartStore {
     };
 
     /*加入购物车*/
+    //     {
+    //     'amount': item.amount,
+    //     'productCode': item.productCode,
+    //     'skuCode': item.skuCode,
+    //     'timestamp': item.timestamp
+    // }
     addItemToShopCart(item) {
         if (item) {
             //加入单个商品
+            item.spuCode = item.productCode;
             bridge.showLoading();
             ShopCartAPI.addItem(
                 {
@@ -415,12 +468,6 @@ class ShopCartStore {
                         { ...item }
                     ]
                 }
-                //     {
-                //     'amount': item.amount,
-                //     'productCode': item.productCode,
-                //     'skuCode': item.skuCode,
-                //     'timestamp': item.timestamp
-                // }
             ).then((res) => {
                 bridge.hiddenLoading();
                 bridge.$toast('加入购物车成功');
@@ -454,23 +501,46 @@ class ShopCartStore {
 
             this.needSelectGoods = oneMoreList;
 
-            ShopCartAPI.oneMoreOrder({
-                cacheList: oneMoreList
-            }).then(result => {
-                //添加完成再次拉取
-                //  this.getShopCartListData()
-                this.packingShopCartGoodsData(result.data);
-            }).catch(reason => {
-                bridge.$toast(reason.msg);
+            ShopCartAPI.addItem(
+                {
+                    shoppingCartParamList: oneMoreList
+                }
+            ).then((res) => {
+                bridge.hiddenLoading();
+                // bridge.$toast('加入购物车成功');
+                this.getShopCartListData();
+            }).catch((error) => {
+                bridge.$toast(error.msg || '加入购物车失败');
+                if (error.code === 10009) {
+                    // user.clearUserInfo();
+                    // user.clearToken();
+                    // //清空购物车
+                    // this.data = [];
+                    // MineApi.signOut();
+                    // QYChatUtil.qiYULogout();
+                } else {
+                    bridge.$toast(error.msg);
+                }
+                bridge.hiddenLoading();
             });
+
+            // ShopCartAPI.oneMoreOrder({
+            //     cacheList: oneMoreList
+            // }).then(result => {
+            //     //添加完成再次拉取
+            //     //  this.getShopCartListData()
+            //     this.packingShopCartGoodsData(result.data);
+            // }).catch(reason => {
+            //     bridge.$toast(reason.msg);
+            // });
         }
     }
 
     /*删除购物车商品*/
-    deleteItemWithIndex(skuCode) {
-        if (skuCode) {
+    deleteItemWithIndex(skuCodes) {
+        if (skuCodes) {
             ShopCartAPI.deleteItem({
-                'skuCode': skuCode
+                'skuCodes': skuCodes
             }).then(res => {
                 bridge.$toast('删除成功');
                 this.packingShopCartGoodsData(res.data);

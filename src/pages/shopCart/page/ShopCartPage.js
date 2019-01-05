@@ -31,6 +31,7 @@ import ShopCartEmptyView from '../components/ShopCartEmptyView';
 // const CartListView = requireNativeComponent('ShopCartListView');
 import ShopCartCell from '../components/ShopCartCell';
 import SectionHeaderView from '../components/SectionHeaderView';
+import RouterMap from '../../../navigation/RouterMap';
 // import ShopCartSectionHeaderView from '../components/ShopCartSectionHeaderView';
 // import { track } from '../../../utils/SensorsTrack';
 // import TempShopCartCell from '../components/TempShopCartCell';
@@ -67,11 +68,11 @@ export default class ShopCartPage extends BasePage {
                 title: 'Title1', key: 1, data: [
                     {
                         item: 'item1',
-                        key: 1
+                        key: 11
                     },
                     {
                         item: 'item2',
-                        key: 2
+                        key: 12
                     }
 
                 ]
@@ -80,22 +81,22 @@ export default class ShopCartPage extends BasePage {
                 title: 'Title2', key: 2, data: [
                     {
                         item: 'item1',
-                        key: 1
+                        key: 21
                     },
                     {
                         item: 'item2',
-                        key: 2
+                        key: 22
                     }]
             },
             {
                 title: 'Title3', key: 3, data: [
                     {
                         item: 'item1',
-                        key: 1
+                        key: 31
                     },
                     {
                         item: 'item2',
-                        key: 2
+                        key: 32
                     }]
             }
         ];
@@ -167,31 +168,19 @@ export default class ShopCartPage extends BasePage {
                     style={{
                         width: ScreenUtils.width
                     }}
-                    // useFlatList={true}
-                    // sections={shopCartStore.cartData}
-                    sections={this.dataArr}
+                    sections={shopCartStore.cartData}
                     useSectionList={true}
-                    // dataSource={tempArr}
                     disableRightSwipe={true}
-
-                    // scrollEnabled={false}
-                    // renderRow={(rowData, secId, rowId, rowMap) => (
-                    //     this._renderValidItem(rowData, rowId, rowMap)
-                    // )}
-
                     // sections={this.dataArr}
                     renderItem={(rowData, rowMap) => (
                         this._renderValidItem(rowData, rowMap)
                     )}
-                    // renderHiddenRow={(data, secId, rowId, rowMap) => (
-                    //     // data.title === 'Title1' ? null :
-                    //     this._renderRowHiddenComponent(data, secId, rowId, rowMap)
-                    // )}
                     renderHiddenItem={(data, rowMap) => (
-                        // data.title === 'Title1' ? null :
                         this._renderRowHiddenComponent(data, rowMap)
                     )}
                     renderHeaderView={(sectionData) => {
+                        console.log('section_header');
+                        console.log(sectionData.section);
                         return (
                             <SectionHeaderView
                                 sectionData={sectionData.section}
@@ -201,9 +190,7 @@ export default class ShopCartPage extends BasePage {
                             />
                         );
                     }}
-
                     listViewRef={(listView) => this.contentList = listView}
-
                     rightOpenValue={-75}
                     swipeRefreshControl={
                         <RefreshControl
@@ -224,9 +211,17 @@ export default class ShopCartPage extends BasePage {
         );
     };
 
+    /**
+     * 去凑单
+     * @param sectionData
+     * @private
+     */
     _gotoCollectBills = (sectionData) => {
-
-
+        this.$navigate(RouterMap.XpDetailPage,{
+            activityCode:sectionData.activityCode
+            // activityCode:'JF201901030055'
+        })
+        // console.log(sectionData);
     };
     /**
      * 渲染每行的隐藏组件
@@ -242,12 +237,7 @@ export default class ShopCartPage extends BasePage {
             <TouchableOpacity
                 style={styles.standaloneRowBack}
                 onPress={() => {
-                    // rowMap[`${secId}${rowId}`].closeRow();
-                    rowMap[data.index].closeRow();
-                    console.log( rowMap[data.index]);
-                    // console.log(rowMap)
-                    console.log(data);
-
+                    rowMap[data.item.key].closeRow();
                     this._deleteFromShoppingCartByProductId(data);
                 }}>
                 <View
@@ -264,11 +254,6 @@ export default class ShopCartPage extends BasePage {
                 >
                     <UIText style={styles.backUITextWhite} value='删除'/>
                 </View>
-                {/*<View*/}
-                {/*style={{*/}
-                {/*width:40*/}
-                {/*}}*/}
-                {/*/>*/}
             </TouchableOpacity>
         );
     };
@@ -430,7 +415,10 @@ export default class ShopCartPage extends BasePage {
     _deleteFromShoppingCartByProductId = (itemData) => {
         console.log('删除前');
         console.log(itemData);
-        // shopCartCacheTool.deleteShopCartGoods(skuCode);
+        let delteCode = [
+            { 'skuCode': itemData.item.skuCode }
+        ];
+        shopCartCacheTool.deleteShopCartGoods(delteCode);
     };
 }
 
