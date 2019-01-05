@@ -102,9 +102,10 @@ export default class App extends Component {
                 });
             }, 200);
         });
-        //热更新 先注释掉
-        bridge.removeLaunch();
+        //热更新
         hotUpdateUtil.checkUpdate();
+        // 移除启动页
+        bridge.removeLaunch();
     }
 
     render() {

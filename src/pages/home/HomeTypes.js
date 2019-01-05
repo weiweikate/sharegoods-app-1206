@@ -21,6 +21,7 @@ const homeLinkType = {
   down: 3,
   spike: 4,
   package: 5,
+  exp: 6, //经验值
   store: 8,
   web: 10,
   show: 11
@@ -34,5 +35,6 @@ export const homeRoute = {
   [homeLinkType.package]: 'topic/TopicDetailPage',
   [homeLinkType.store]: 'spellShop/MyShop_RecruitPage',
   [homeLinkType.web]: 'HtmlPage',
-  [homeLinkType.show]: 'show/ShowDetailPage'
+  [homeLinkType.show]: 'show/ShowDetailPage',
+  [homeLinkType.exp]: 'home/product/xpProduct/XpDetailPage'
 };

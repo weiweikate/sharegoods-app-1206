@@ -96,6 +96,7 @@ class AfterSaleServiceHomePage extends BasePage {
     };
     renderSelect = () => {
         let orderSubType = this.params.pageData.orderSubType;
+        console.log('renderSelect',this.params.pageData);
         let image = [refund, return_goods, exchange];
         let title = ['退款', '退货退款', '换货'];
         let content = ['未收到货（包含未签收）', '已收到货，需要退换已收到的货物', '需要更换货'];
@@ -103,8 +104,10 @@ class AfterSaleServiceHomePage extends BasePage {
         // let status = [4, 16, 8];
         // let productData = this.params.pageData || {}
         let arr = [];
-        let i = orderSubType === 3 ? 2 : 0;//升级礼包
-        for (i ; i < image.length; i++) {
+        for (let i = 0; i < image.length; i++) {
+            if (orderSubType === 3 && i < 2) {
+                continue;//升级礼包
+            }
             // if ((productData.restrictions & status[i]) !== status[i]) {
                 arr.push(
                     <TouchableOpacity style={{

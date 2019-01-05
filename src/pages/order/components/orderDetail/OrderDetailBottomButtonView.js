@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
-    Alert, NativeModules
+    Alert, NativeModules,
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -13,7 +12,7 @@ import Toast from '../../../../utils/bridge';
 import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
 import { observer } from 'mobx-react/native';
 const {px2dp} = ScreenUtils;
-import {MRText as Text} from '../../../../components/ui';
+import {MRText as Text,NoMoreClick} from '../../../../components/ui';
 
 @observer
 export default  class OrderDetailBottomButtonView extends Component{
@@ -33,11 +32,11 @@ export default  class OrderDetailBottomButtonView extends Component{
         let itemArr = [];
         for (let i = 0; i < nameArr.length; i++) {
             itemArr.push(
-                <TouchableOpacity key={i} style={[styles.touchableStyle,{borderColor: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd}]} onPress={() => {
+                <NoMoreClick key={i} style={[styles.touchableStyle,{borderColor: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd}]} onPress={() => {
                     this.operationMenuClick(nameArr[i]);
                 }}>
                     <Text style={{ color: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }} allowFontScaling={false}>{nameArr[i].operation}</Text>
-                </TouchableOpacity>
+                </NoMoreClick>
             );
         }
         return itemArr;
@@ -179,7 +178,8 @@ export default  class OrderDetailBottomButtonView extends Component{
     };
 }
 const styles = StyleSheet.create({
-    containerStyle:{ height: px2dp(48), flexDirection: 'row', alignItems: 'center',
+    containerStyle:{
+        height: px2dp(48), flexDirection: 'row', alignItems: 'center',
         justifyContent: 'flex-end',backgroundColor:'white',marginTop:1,
        },
     touchableStyle:{

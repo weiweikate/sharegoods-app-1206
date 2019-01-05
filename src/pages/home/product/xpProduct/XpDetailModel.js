@@ -181,7 +181,7 @@ class XpDetailModel {
         this.basePageState = PageLoadingState.loading;
         HomeAPI.act_exp_detail({
             //测试 JF201812270017
-            activityCode: 'JF201812270017'
+            code: activityCode
         }).then((data) => {
             this.saveActData(data.data);
         }).catch((error) => {

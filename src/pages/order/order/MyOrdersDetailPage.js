@@ -11,14 +11,12 @@ import BasePage from "../../../BasePage";
 import { RefreshList } from "../../../components/ui";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
-// import { TimeDownUtils } from "../../../utils/TimeDownUtils";
 import GoodsDetailItem from "../components/GoodsDetailItem";
 import SingleSelectionModal from "../components/BottomSingleSelectModal";
 import ShowMessageModal from "../components/ShowMessageModal";
 import Toast from "../../../utils/bridge";
 import GoodsGrayItem from "../components/GoodsGrayItem";
 import OrderApi from "../api/orderApi";
-// import user from "../../../model/user";
 import { PageLoadingState, renderViewByLoadingState } from "../../../components/pageDecorator/PageState";
 import { NavigationActions } from "react-navigation";
 import DesignRule from '../../../constants/DesignRule';
@@ -60,7 +58,6 @@ export default class MyOrdersDetailPage extends BasePage {
             giftBagCoupons: [],
             cancelArr: []
         };
-        // this.timeUtils = new TimeDownUtils();
     }
 
     $navigationBarOptions = {
@@ -148,7 +145,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     _renderContent = () => {
         return (
-            <View style={{marginBottom:ScreenUtils.safeBottom}}>
+            <View style={{marginBottom:ScreenUtils.safeBottom,flex:1}}>
             <ScrollView>
             <RefreshList
                 ListHeaderComponent={this.renderHeader}
@@ -303,7 +300,7 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
 
-    getDateData(diff) {
+    getDateData(closeTime) {
         const timeLeft = {
             years: 0,
             days: 0,
@@ -312,6 +309,9 @@ export default class MyOrdersDetailPage extends BasePage {
             sec: 0,
             millisec: 0
         };
+
+       let  diff=closeTime-Date.parse(new Date())/1000;
+        // console.log("getDateData",closeTime,diff)
         if (diff <= 0) {
             // this.sec = 0
             this.stop(); // 倒计时为0的时候, 将计时器清除
@@ -345,9 +345,11 @@ export default class MyOrdersDetailPage extends BasePage {
             orderDetailAfterServiceModel.moreDetail = "";
             return;
         }
+        let closeTime=autoConfirmTime+Date.parse(new Date())/1000;
         this.interval = setInterval(() => {
-            autoConfirmTime--;
-            let time = this.getDateData(autoConfirmTime);
+            // autoConfirmTime--;
+
+            let time = this.getDateData(closeTime);
             if (time.sec >= 0) {
                 if (orderDetailModel.status === 1) {
                     orderDetailAfterServiceModel.moreDetail = time.hours + ":" + time.min + ":" + time.sec + "后自动取消订单";
@@ -501,8 +503,6 @@ export default class MyOrdersDetailPage extends BasePage {
             });
         }
         this.setState({ viewData: dataArr });
-        console.log("viewdata", dataArr);
-
         /*
          * operationMenuCheckList
          * 去支付                 ->  1
@@ -607,7 +607,7 @@ export default class MyOrdersDetailPage extends BasePage {
         console.log(menu);
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
         let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
-        if (products.orderSubType === 3 && orderDetailModel.status === 2) {
+        if (orderDetailModel.orderSubType=== 3 && orderDetailModel.status === 2) {
             NativeModules.commModule.toast("该商品属于升级礼包产品，不能退款");
             return;
         } else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime
@@ -627,7 +627,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
             case 1:
                 this.$navigate("order/afterSaleService/AfterSaleServiceHomePage", {
-                    pageData: products
+                    pageData: {...products,orderSubType:orderDetailModel.orderSubType}
                 });
                 break;
             case 2:

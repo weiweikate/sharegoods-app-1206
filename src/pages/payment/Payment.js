@@ -38,6 +38,7 @@ export class Payment {
     @observable isGoToPay = false
     @observable orderNo = ''
     @observable amount = 0
+    @observable isShowResult = false
     @observable payError = ''
     @observable paymentList = [
         {

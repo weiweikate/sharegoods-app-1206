@@ -8,7 +8,8 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
+
 /**
  * section规格 view
  */
@@ -49,7 +50,8 @@ export default class SelectionSectionView extends Component {
                             this._clickItemAction(index);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: canSelected ? (isSelected ? DesignRule.white : DesignRule.textColor_secondTitle) : DesignRule.color_ddd }]} allowFontScaling={false}>{this.props.listData[index].specValue}</Text>
+                            style={[styles.btnText, { color: canSelected ? (isSelected ? DesignRule.white : DesignRule.textColor_secondTitle) : DesignRule.color_ddd }]}
+                            allowFontScaling={false} numberOfLines = {1}>{this.props.listData[index].specValue}</Text>
                     </TouchableOpacity>
                 </View>
             );
