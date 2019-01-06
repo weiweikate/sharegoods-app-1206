@@ -17,7 +17,7 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
+import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -124,6 +124,7 @@ export default class CommRegistView extends Component {
                             }}
                             placeholder='请输入手机号'
                             keyboardType='numeric'
+                            maxLength={11}
                             placeholderTextColor={DesignRule.textColor_placeholder}
                         />
 
@@ -185,7 +186,7 @@ export default class CommRegistView extends Component {
                         onChangeText={text => {
                             this.registModel.savePassword(text);
                         }}
-                        placeholder='支持数字,字母'
+                        placeholder='需数字、字母组合'
                         keyboardType='default'
                         secureTextEntry={this.registModel.isSecuret}
                         placeholderTextColor={DesignRule.textColor_placeholder}
@@ -202,7 +203,6 @@ export default class CommRegistView extends Component {
                 <TouchableOpacity
                     onPress={this.loginClick}
                     activeOpacity={this.registModel.isCanClick ? 0.6 : 1}
-
                 >
                     <View style={
                         [{
@@ -257,14 +257,15 @@ export default class CommRegistView extends Component {
         }
     };
     loginClick = () => {
-        if (StringUtils.checkPassword(this.registModel.password)) {
-            if (this.registModel.isCanClick) {
-                this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+        if (!StringUtils.isEmpty(this.registModel.password.trim())) {
+            if (StringUtils.checkPassword(this.registModel.password)) {
+                if (this.registModel.isCanClick) {
+                    this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+                }
+            } else {
+                bridge.$toast('密码格式不对');
             }
-        } else {
-            bridge.$toast('密码格式不对');
         }
-
     };
 
 

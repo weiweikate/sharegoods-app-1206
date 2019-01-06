@@ -11,7 +11,7 @@ import {
     NativeModules, RefreshControl
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
-import { UIImage, UIText ,NoMoreClick} from "../../../components/ui";
+import { UIImage, UIText, NoMoreClick } from '../../../components/ui';
 // import { NavigationActions } from 'react-navigation';
 import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -76,7 +76,7 @@ export default class MyCouponsItems extends Component {
         let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 1 ? usedRIcon : ActivedIcon));
         return (
             <NoMoreClick style={{ backgroundColor: DesignRule.bgColor }}
-                              onPress={() => this.clickItem(index, item)}>
+                         onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
@@ -244,12 +244,12 @@ export default class MyCouponsItems extends Component {
                 <View style={{ width: '100%', height: 0.5, backgroundColor: 'grey' }}/>
                 <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
                     <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                                      onPress={this.quitTokenCoin}>
+                                 onPress={this.quitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </NoMoreClick>
                     <View style={{ height: '100%', width: 0.5, backgroundColor: 'grey' }}/>
                     <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                                      onPress={this.commitTokenCoin}>
+                                 onPress={this.commitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>确定</Text>
                     </NoMoreClick>
                 </View>
@@ -330,6 +330,10 @@ export default class MyCouponsItems extends Component {
         );
     };
 
+    _footer = () => {
+        return (<View style={{ height: 50 }}/>);
+    };
+
     _gotoLookAround = () => {
         this.props.nav.popToTop();
         this.props.nav.navigate('HomePage');
@@ -345,6 +349,7 @@ export default class MyCouponsItems extends Component {
                     renderItem={this.renderItem}
                     onEndReachedThreshold={10}
                     onEndReached={() => this.onLoadMore()}
+                    ListFooterComponent={this._footer}
                     ListEmptyComponent={this._renderEmptyView}
                     showsVerticalScrollIndicator={false}
                     initialNumToRender={5}
@@ -426,7 +431,7 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            if(!this.props.fromOrder){
+            if (!this.props.fromOrder) {
                 API.queryCoupons({
                     status: this.state.pageStatus
                 }).then(result => {
@@ -451,7 +456,7 @@ export default class MyCouponsItems extends Component {
                     this.handleList(dataList, arrData);
                     this.setState({ viewData: arrData });
                 });
-            }else{
+            } else {
                 this.handleList(dataList, arrData);
                 this.setState({ viewData: arrData });
             }

@@ -60,7 +60,7 @@ export default class SearchBar extends Component {
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.contentView}>
                     <View style={styles.inputView}>
-                        <TextInput style={{ marginLeft: 24, padding: 0 }}
+                        <TextInput style={{ marginLeft: 16, padding: 0, paddingRight: 16 }}
                                    keyboardType='web-search'
                                    placeholder={this.props.placeholder}
                                    placeholderTextColor={DesignRule.textColor_hint}

@@ -435,6 +435,7 @@ export default class MyShopPage extends BasePage {
                                      backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
                                      borderRadius: 5,
                                      marginTop: 30,
+                                     marginBottom: 30,
                                      alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
                                  }}>
             <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{btnText}</Text>
@@ -443,7 +444,7 @@ export default class MyShopPage extends BasePage {
 
     renderSepLine = () => {
         return (<View style={{
-            height: StyleSheet.hairlineWidth,backgroundColor:DesignRule.lineColor_inWhiteBg
+            height: StyleSheet.hairlineWidth, backgroundColor: DesignRule.lineColor_inWhiteBg
         }}/>);
     };
     // 主题内容
