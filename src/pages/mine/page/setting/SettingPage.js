@@ -27,6 +27,7 @@ import { logout } from '../../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../../components/ui';
 import userOrderNum from '../../../../model/userOrderNum';
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import loginModel from '../../../login/model/LoginModel';
 
 /**
  * @author luoyongming
@@ -224,6 +225,7 @@ class SettingPage extends BasePage {
                         user.clearToken();
                         userOrderNum.clean();
                         bridge.clearCookies();
+                        loginModel.clearPassword();
                         //清空购物车
                         shopCartStore.data = [];
                         this.$navigateBackToHome();

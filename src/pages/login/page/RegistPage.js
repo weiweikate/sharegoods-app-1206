@@ -13,16 +13,16 @@ import bridge from '../../../utils/bridge';
 import UserModel from '../../../model/user';
 import DeviceInfo from 'react-native-device-info';
 import DesignRule from '../../../constants/DesignRule';
-import { homeModule } from '../../home/Modules'
+import { homeModule } from '../../home/Modules';
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
 import apiEnvironment from '../../../api/ApiEnvironment';
 
 const {
     red_button_s,
-    red_button_u,
+    red_button_u
 } = res;
 
 /**
@@ -34,14 +34,11 @@ const {
  */
 @observer
 export default class RegistPage extends BasePage {
-    // 导航配置
-    $navigationBarOptions = {
-        title: '注册'
-    };
 
     constructor(props) {
         super(props);
-        this.params = this.props.navigation.state.params;
+        this.params = this.props.navigation.state.params || {};
+        this.$navigationBarOptions.title = this.params.title || '注册';
         this.state = {
             gouxuan: true
         };
@@ -56,7 +53,7 @@ export default class RegistPage extends BasePage {
         // 测试环境:https://testh5.sharegoodsmall.com/static/protocol/service.html
         // 预发布环境：https://uath5.sharegoodsmall.com/static/protocol/service.html
         // 生产布环境：https://h5.sharegoodsmall.com/static/protocol/service.html
-        const htmlUrl = apiEnvironment.getCurrentH5Url()+'/static/protocol/service.html'
+        const htmlUrl = apiEnvironment.getCurrentH5Url() + '/static/protocol/service.html';
         // const htmlUrl = __DEV__ ?
         //     'https://uath5.sharegoodsmall.com/static/protocol/service.html'
         //     :
@@ -124,14 +121,14 @@ export default class RegistPage extends BasePage {
             return;
         }
         console.log(this.params);
-        this.params=this.params || {};
+        this.params = this.params || {};
         this.$loadingShow();
-        track(trackEvent.signUp,{signUpMethod:'App注册'})
+        track(trackEvent.signUp, { signUpMethod: 'App注册' });
         LoginApi.findMemberByPhone({
             code: code,
-            device: (this.params &&this.params.device) ? this.params.device : '',
+            device: (this.params && this.params.device) ? this.params.device : '',
             inviteId: '',//邀请id
-            openid:(this.params&& this.params.openid )? this.params.openid : '',
+            openid: (this.params && this.params.openid) ? this.params.openid : '',
             password: password,
             phone: phone,
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
@@ -141,8 +138,9 @@ export default class RegistPage extends BasePage {
         }).then((data) => {
             if (data.code === 10000) {
                 //推送
-                JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
-                this.toLogin(phone,code,password,data.give)
+                JPushUtils.updatePushTags();
+                JPushUtils.updatePushAlias();
+                this.toLogin(phone, code, password, data.give);
             } else {
                 bridge.$toast(data.msg);
             }
@@ -154,7 +152,7 @@ export default class RegistPage extends BasePage {
         });
 
     };
-    toLogin = (phone, code, password,isGive) => {
+    toLogin = (phone, code, password, isGive) => {
         LoginApi.passwordLogin({
             authcode: '22',
             code: '',
@@ -169,19 +167,20 @@ export default class RegistPage extends BasePage {
             this.$loadingDismiss();
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
-            DeviceEventEmitter.emit('homePage_message',null);
-            DeviceEventEmitter.emit('contentViewed',null);
-            homeModule.loadHomeList()
+            DeviceEventEmitter.emit('homePage_message', null);
+            DeviceEventEmitter.emit('contentViewed', null);
+            homeModule.loadHomeList();
             //埋点登录成功
-            login(data.data.code)
+            login(data.data.code);
             // this.$navigate('login/login/GetRedpacketPage');
             bridge.setCookies(data.data);
             //推送
-            JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+            JPushUtils.updatePushTags();
+            JPushUtils.updatePushAlias();
             /**
              * 跳转导师选择页面
              */
-            this.$navigate('login/login/SelectMentorPage',{isHaveRedPocket:isGive});
+            this.$navigate('login/login/SelectMentorPage', { isHaveRedPocket: isGive });
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);

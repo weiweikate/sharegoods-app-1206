@@ -44,6 +44,7 @@
     <color name="ysf_black_333333">#333333</color>
     <color name="ysf_black_80000000">#80000000</color>
     <color name="ysf_black_30000000">#30000000</color>
+    <color name="ysf_grey_b1b1b1">#b1b1b1</color>
 
     <!-- title bar -->
     <color name="ysf_title_bar_title_color">@color/ysf_black</color>
