@@ -14,7 +14,11 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import cRes from '../../../../comm/res';
+import UIImage from '@mr/image-placeholder';
+
 const PeopleImg = res.shopRecruit.dy_07;
+const arrowImg = cRes.button.arrow_right_black;
 import {
     MRText as Text
 } from '../../../../components/ui';
@@ -28,13 +32,14 @@ export default class AssistantRow extends Component {
     };
 
     render() {
+        const { myStore } = this.props.storeData || {};
         let storeUserList = this.props.storeData.storeUserList || [];
         return (<View style={styles.row}>
             <TouchableOpacity activeOpacity={1} onPress={this.props.clickAllMembers} style={styles.topRow}>
                 <Image style={styles.topIcon} source={PeopleImg}/>
                 <Text style={styles.topTitle} allowFontScaling={false}>{'店铺成员'}</Text>
                 <Text style={styles.topDescText} allowFontScaling={false}>{`${storeUserList.length || 0}人`}</Text>
-                {/*<Image style={styles.topArrow} source={ArrowImg}/>*/}
+                {myStore ? <Image style={styles.topArrow} source={arrowImg}/> : null}
             </TouchableOpacity>
             <View style={styles.dash}/>
             <ScrollView bounces={false} showsHorizontalScrollIndicator={false}>
@@ -50,10 +55,10 @@ export default class AssistantRow extends Component {
                                 marginTop: (index >= 5) ? 0 : 9,
                                 marginBottom: (index >= 5) ? 24 : 20
                             }} key={index}>
-                                {headImg ? <Image source={{ uri: headImg }}
-                                                  style={styles.headerImg}/> :
-                                    <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
-                                <Text numberOfLines={1} style={styles.name} allowFontScaling={false}>{nickName || ''}</Text>
+                                <UIImage source={{ uri: headImg }} borderRadius={20}
+                                         style={styles.headerImg}/>
+                                <Text numberOfLines={1} style={styles.name}
+                                      allowFontScaling={false}>{nickName || ''}</Text>
                             </View>);
                         })
                     }

@@ -6,10 +6,12 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alipay.sdk.app.PayTask;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.WXPayBean;
 import com.meeruu.sharegoods.event.AppPayEvent;
@@ -17,6 +19,9 @@ import com.meeruu.sharegoods.utils.aipay.PayResult;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AppPayModule extends ReactContextBaseJavaModule {
 
@@ -131,6 +136,16 @@ public class AppPayModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void appWXPay(final String params1, final Promise promise) {
         wxPayPromise = promise;
+        if(!api.isWXAppInstalled()){
+            //未安装的处理
+            Map map = new HashMap();
+            map.put("code",4);
+            map.put("sdkCode",4);
+            map.put("msg","请安装微信后完成支付");
+            String json = JSON.toJSONString(map);
+            wxPayPromise.resolve(json);
+            return;
+        }
         //通过WXAPIFactory工厂，获取IWXAPI的实例
 //        iwxapi = WXAPIFactory.createWXAPI(mContext, App_ID, true);
         final WXPayBean params = JSON.parseObject(params1, WXPayBean.class);

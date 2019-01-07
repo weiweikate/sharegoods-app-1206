@@ -71,7 +71,8 @@ export default class AssistantRow extends Component {
     };
 
     render() {
-        if (!this.props.isYourStore) {
+        //不是自己的店铺或者店铺招募中不支持 删除0-关闭 1-正常 2-已缴纳保证金 3-招募中
+        if (!this.props.isYourStore || this.props.storeData.status === 3) {
             return this.renderContent(styles.container);
         }
         const swipeOutButtons = [

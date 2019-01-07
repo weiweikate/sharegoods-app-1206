@@ -50,7 +50,15 @@ export default class ShowConnectPage extends BasePage {
     }
 
     componentDidMount() {
-        this._refreshData();
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'show/ShowConnectPage') {
+                    this._refreshData();
+                }
+            }
+        )
     }
 
     _refreshData() {
