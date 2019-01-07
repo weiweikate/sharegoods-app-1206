@@ -24,4 +24,21 @@ public class QiyuWatchMsgPicActivity extends WatchMessagePictureActivity {
             StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int result = StatusBarUtils.setLightMode(this);
+        int statusColor = android.R.color.white;
+        if (result == 3) {
+            // 6.0以上沉浸式
+            StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
+        } else if (result == 4) {
+            // 其它半透明效果
+            StatusBarUtils.setColor(this, getResources().getColor(statusColor));
+        } else {
+            // miui、flyme沉浸式
+            StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
+        }
+    }
 }
