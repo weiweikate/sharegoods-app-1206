@@ -132,7 +132,6 @@ class ShopCartStore {
         let originArr = this.data.slice();
         let originData = response;
         // let originData = testData;
-        console.log('------' + response);
         let tempAllData = [];
         // this.data = tempAllData;
         //有效商品
@@ -195,9 +194,7 @@ class ShopCartStore {
             invalidObj.sectionIndex = tempAllData.length;
             tempAllData.push(invalidObj);
         }
-        console.log(tempAllData);
         this.data = tempAllData;
-        console.log(this.data);
         //计算规则
         this.calculationAwardRules();
         //清空以往的选择
