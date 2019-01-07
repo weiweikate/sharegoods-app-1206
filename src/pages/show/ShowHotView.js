@@ -76,12 +76,15 @@ export default class ShowHotView extends Component {
         this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
             this.firstLoad = false;
             let hasRecommend = false
+            console.log('loadRecommendList', data)
             if (data && data.length > 0) {
                 hasRecommend = true
             }
             this.setState({ isFetching: false , hasRecommend: hasRecommend});
             this.waterfall && this.waterfall.addItems(data || []);
-        });
+        }).catch(() => {
+            this.setState({ isFetching: false , hasRecommend: false});
+        })
     }
 
     refreshing(done) {
@@ -96,7 +99,7 @@ export default class ShowHotView extends Component {
 
     _gotoDetail(data) {
         const { navigate } = this.props;
-        navigate('show/ShowDetailPage', { id: data.id });
+        navigate('show/ShowDetailPage', { id: data.id, code: data.code });
     }
 
     renderItem = (data) => {

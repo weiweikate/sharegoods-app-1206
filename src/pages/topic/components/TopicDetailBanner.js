@@ -64,7 +64,7 @@ export class TopicDetailBanner extends Component {
                 }}>
                     <View>
                         <ImageLoad source={{ uri: originalImg }}
-                                   style={{ height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }}
+                                   style={styles.bannerView}
                                    resizeMode="cover"
                         />
                     </View>
@@ -127,7 +127,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 10,
         paddingHorizontal: 8
-    }
+    },
+    bannerView: { height: ScreenUtils.autoSizeWidth(375), width: ScreenUtils.width }
 });
 
 

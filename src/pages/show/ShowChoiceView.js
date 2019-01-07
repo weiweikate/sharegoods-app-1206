@@ -80,7 +80,7 @@ export default class ShowChoiceView extends Component {
 
     _onChoiceAction(item) {
         const { navigate } = this.props
-        navigate('show/ShowDetailPage', {id: item.id})
+        navigate('show/ShowDetailPage', {id: item.id, code: item.code})
     }
 
     render() {

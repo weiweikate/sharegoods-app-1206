@@ -17,6 +17,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
+import UIImage from '@mr/image-placeholder'
 import {
     MRText as Text
 } from '../../../../components/ui';
@@ -64,7 +65,7 @@ export default class RecommendRow extends Component {
                     flexDirection: 'row',
                     marginLeft: ScreenUtils.autoSizeWidth(57)
                 }}>
-                    <Image source={{ uri: headUrl }} style={styles.shopIcon}/>
+                    <UIImage source={{ uri: headUrl }} borderRadius={30} style={styles.shopIcon}/>
                     <View style={{ justifyContent: 'center' }}>
                         <Text style={styles.shopName} allowFontScaling={false}>{name || ''}</Text>
                         <Text style={styles.shopId} allowFontScaling={false}>ID：{showNumber || ''}</Text>

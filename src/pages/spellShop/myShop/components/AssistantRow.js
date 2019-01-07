@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Image,
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
@@ -13,6 +12,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import {
     MRText as Text
 } from '../../../../components/ui';
+import UIImage from '@mr/image-placeholder';
 
 export default class AssistantRow extends Component {
 
@@ -56,21 +56,23 @@ export default class AssistantRow extends Component {
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={sty}>
                 {
-                    headImg ? <Image source={{ uri: headImg }} style={styles.headerImg}/> :
+                    headImg ? <UIImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/> :
                         <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
                 }
                 <View style={styles.right}>
                     <Text style={styles.name} allowFontScaling={false}>{nickName || ' '}</Text>
                     <Text style={styles.level} allowFontScaling={false}>{levelName || ' '}</Text>
                     <Text
-                        style={styles.desc} allowFontScaling={false}>贡献度：{tradeBalance === 0 ? 0 : ((contribution / tradeBalance) * 100).toFixed(2)}%</Text>
+                        style={styles.desc}
+                        allowFontScaling={false}>贡献度：{tradeBalance === 0 ? 0 : ((contribution / tradeBalance) * 100).toFixed(2)}%</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>);
     };
 
     render() {
-        if (!this.props.isYourStore) {
+        //不是自己的店铺或者店铺招募中不支持 删除0-关闭 1-正常 2-已缴纳保证金 3-招募中
+        if (!this.props.isYourStore || this.props.storeData.status === 3) {
             return this.renderContent(styles.container);
         }
         const swipeOutButtons = [

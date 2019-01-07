@@ -1,5 +1,5 @@
-import React from "react";
-import user from "../../../../model/user";
+import React from 'react';
+import user from '../../../../model/user';
 
 import {
     StyleSheet,
@@ -11,20 +11,20 @@ import {
     RefreshControl,
     Alert,
     DeviceEventEmitter
-} from "react-native";
-import BasePage from "../../../../BasePage";
+} from 'react-native';
+import BasePage from '../../../../BasePage';
 import {
     UIText
-} from "../../../../components/ui";
-import StringUtils from "../../../../utils/StringUtils";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import MineApi from "../../api/MineApi";
+} from '../../../../components/ui';
+import StringUtils from '../../../../utils/StringUtils';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
-import res from "../../res";
-import BankTradingModal from "./../../components/BankTradingModal";
-import { observer } from "mobx-react/native";
-import EmptyUtils from "../../../../utils/EmptyUtils";
-import SwipeListView from "../../../../components/ui/react-native-swipe-list-view/components/SwipeListView";
+import res from '../../res';
+import BankTradingModal from './../../components/BankTradingModal';
+import { observer } from 'mobx-react/native';
+import EmptyUtils from '../../../../utils/EmptyUtils';
+import SwipeListView from '../../../../components/ui/react-native-swipe-list-view/components/SwipeListView';
 
 const {
     bankCard1,
@@ -46,7 +46,7 @@ export default class BankCardListPage extends BasePage {
             viewData: [],
             isShowUnbindCardModal: false,
             isShowBindModal: false,
-            isRefreshing: false,
+            isRefreshing: false
             // bindErr:'',
             // unBindErr:''
         };
@@ -56,7 +56,7 @@ export default class BankCardListPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: "银行卡",
+        title: '银行卡',
         show: true,
         headerStyle: {
             backgroundColor: DesignRule.textColor_mainTitle
@@ -66,13 +66,13 @@ export default class BankCardListPage extends BasePage {
             width: 9, height: 15
         },
         titleStyle: {
-            color: "white"
+            color: 'white'
         }
 
 
     };
 
-    $isMonitorNetworkStatus(){
+    $isMonitorNetworkStatus() {
         return true;
     }
 
@@ -83,14 +83,17 @@ export default class BankCardListPage extends BasePage {
 
     _getBankInfo = () => {
         MineApi.getUserBankInfo().then((data) => {
-                this.setState({
-                    viewData: data.data,
-                    isRefreshing: false
-                });
-                this.$loadingDismiss();
-
-            }
-        );
+            this.setState({
+                viewData: data.data,
+                isRefreshing: false
+            });
+            this.$loadingDismiss();
+        }).catch((error) => {
+            this.setState({
+                isRefreshing: false
+            });
+            this.$loadingDismiss();
+        });
     };
 
     //**********************************ViewPart******************************************
@@ -107,18 +110,24 @@ export default class BankCardListPage extends BasePage {
                                 tintColor={DesignRule.textColor_instruction}
                                 titleColor={DesignRule.textColor_instruction}
                             />}>
-                <View style={{ alignItems: "center" }}>
+                <View style={{ alignItems: 'center' }}>
                     {this.renderList()}
                     <TouchableOpacity
                         disabled={(this.state.viewData && this.state.viewData.length === 5)}
                         style={[styles.addBankCardView, { marginTop: this.state.viewData.length === 0 ? 76 : 47 }]}
                         onPress={() => this.addBankCard()}>
-                        <ImageBackground source={(this.state.viewData && this.state.viewData.length === 5) ? add_bank_disable : add_bank_button} style={{
-                            height: 48, width: 290, justifyContent: "center",
-                            alignItems: "center"
-                        }} resizeMode={"stretch"}>
-                            <UIText value={(this.state.viewData && this.state.viewData.length === 5) ? '+  最多添加5张银行卡' : "+  点击添加银行卡"}
-                                    style={{ fontSize: 16, color: (this.state.viewData && this.state.viewData.length === 5) ? '#8f8f8f' : "white" }}/>
+                        <ImageBackground
+                            source={(this.state.viewData && this.state.viewData.length === 5) ? add_bank_disable : add_bank_button}
+                            style={{
+                                height: 48, width: 290, justifyContent: 'center',
+                                alignItems: 'center'
+                            }} resizeMode={'stretch'}>
+                            <UIText
+                                value={(this.state.viewData && this.state.viewData.length === 5) ? '+  最多添加5张银行卡' : '+  点击添加银行卡'}
+                                style={{
+                                    fontSize: 16,
+                                    color: (this.state.viewData && this.state.viewData.length === 5) ? '#8f8f8f' : 'white'
+                                }}/>
                         </ImageBackground>
                     </TouchableOpacity>
                 </View>
@@ -137,41 +146,41 @@ export default class BankCardListPage extends BasePage {
                     }}
                     finishedAction={(password) => this.bindCardFinish(password)}
                     visible={this.state.isShowBindModal}
-                    instructions={"忘记支付密码"}
-                    title={"输入平台密码"}
-                    message={"绑定银行卡"}
+                    instructions={'忘记支付密码'}
+                    title={'输入平台密码'}
+                    message={'绑定银行卡'}
                 />
             </ScrollView>
 
         );
     };
 
-    _renderValidItem=(rowData, rowId, rowMap)=>{
+    _renderValidItem = (rowData, rowId, rowMap) => {
         return (
-            <View style={{ height: 110, flexDirection: "row", marginTop: 10 ,width:ScreenUtils.width}}>
+            <View style={{ height: 110, flexDirection: 'row', marginTop: 10, width: ScreenUtils.width }}>
                 {/*<View style={styles.standaloneRowBack}>*/}
-                    {/*<TouchableOpacity style={styles.deleteStyle} onPress={() => this.deleteBankCard(rowId)}>*/}
-                        {/*<Text style={{ color: "white" }}>删除</Text>*/}
-                    {/*</TouchableOpacity>*/}
+                {/*<TouchableOpacity style={styles.deleteStyle} onPress={() => this.deleteBankCard(rowId)}>*/}
+                {/*<Text style={{ color: "white" }}>删除</Text>*/}
+                {/*</TouchableOpacity>*/}
                 {/*</View>*/}
                 <TouchableWithoutFeedback onPress={() => this.callBack(this.state.viewData[rowId])}>
                     <ImageBackground style={styles.bankCardView}
                                      source={bankCardList[rowId]}
-                                     resizeMode={"stretch"}>
+                                     resizeMode={'stretch'}>
                         <UIText value={rowData.bankName}
-                                style={{ fontSize: 18, color: "white" }}/>
+                                style={{ fontSize: 18, color: 'white' }}/>
                         <UIText value={rowData.cardType}
-                                style={{ fontSize: 13, color: "white" }}/>
+                                style={{ fontSize: 13, color: 'white' }}/>
                         <UIText value={StringUtils.formatBankCardNum(rowData.cardNo)} style={{
                             fontSize: 18,
-                            color: "white",
+                            color: 'white',
                             marginTop: 15
                         }}/>
                     </ImageBackground>
                 </TouchableWithoutFeedback>
             </View>
-        )
-    }
+        );
+    };
 
     renderList = () => {
         // let arr = [];
@@ -220,16 +229,25 @@ export default class BankCardListPage extends BasePage {
                     style={styles.standaloneRowBack}
                     onPress={() => {
                         rowMap[`${secId}${rowId}`].closeRow();
-                        this.deleteBankCard(data)
+                        this.deleteBankCard(data);
                     }}>
-                    <View style={{backgroundColor:DesignRule.mainColor,width:60,height:109,marginTop:10,justifyContent:'center',alignItems:'center',borderRadius:11}}>
-                    <UIText style={{color:DesignRule.white,fontSize:DesignRule.fontSize_mediumBtnText}} value='删除'/>
+                    <View style={{
+                        backgroundColor: DesignRule.mainColor,
+                        width: 60,
+                        height: 109,
+                        marginTop: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 11
+                    }}>
+                        <UIText style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_mediumBtnText }}
+                                value='删除'/>
                     </View>
                 </TouchableOpacity>
             )}
             listViewRef={(listView) => this.contentList = listView}
             rightOpenValue={-75}
-        />)
+        />);
 
     };
     renderLine = () => {
@@ -252,10 +270,10 @@ export default class BankCardListPage extends BasePage {
                 closeAction={() => this.setState({ isShowUnbindCardModal: false })}
                 visible={this.state.isShowUnbindCardModal}
                 finishedAction={(password) => this.deleteFinishedPwd(password)}
-                title={"请输入交易密码"}
-                message={"删除银行卡"}
+                title={'请输入交易密码'}
+                message={'删除银行卡'}
                 // errMsg={this.state.unBindErr}
-                instructions={"忘记支付密码"}
+                instructions={'忘记支付密码'}
             />
         );
     };
@@ -268,7 +286,7 @@ export default class BankCardListPage extends BasePage {
         MineApi.deleteUserBank({ id: id, password: password }).then((data) => {
             this.$loadingShow();
             this._getBankInfo();
-            DeviceEventEmitter.emit("unbindBank", id);
+            DeviceEventEmitter.emit('unbindBank', id);
         }).catch((error) => {
             // this.setState({unBindErr:error.msg});
             this.$toastShow(error.msg);
@@ -285,11 +303,11 @@ export default class BankCardListPage extends BasePage {
 
     bindCardFinish = (password) => {
         this.setState({
-            isShowBindModal: false,
+            isShowBindModal: false
         });
 
         MineApi.judgeSalesPassword({ newPassword: password, type: 6 }).then((data) => {
-            this.$navigate("mine/bankCard/AddBankCardPage", { callBack: () => this.loadPageData() });
+            this.$navigate('mine/bankCard/AddBankCardPage', { callBack: () => this.loadPageData() });
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
@@ -318,39 +336,39 @@ export default class BankCardListPage extends BasePage {
             isShowUnbindCardModal: false
 
         });
-        this.$navigate("mine/account/JudgePhonePage", { title: "设置交易密码" });
+        this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
     };
 
     deleteBankCard = (data) => {
         this.selectBankCard = data;
         this.setState({
-            isShowUnbindCardModal: true,
+            isShowUnbindCardModal: true
             // unBindErr:'',
             // bindErr:''
-    });
+        });
         this.unbindModal && this.unbindModal.open();
     };
     addBankCard = () => {
 
         if (EmptyUtils.isEmpty(user.realname)) {
-            Alert.alert("未实名认证", "你还没有实名认证", [{
-                text: "稍后认证", onPress: () => {
+            Alert.alert('未实名认证', '你还没有实名认证', [{
+                text: '稍后认证', onPress: () => {
                 }
             }, {
-                text: "马上就去", onPress: () => {
-                    this.$navigate("mine/userInformation/IDVertify2Page");
+                text: '马上就去', onPress: () => {
+                    this.$navigate('mine/userInformation/IDVertify2Page');
                 }
             }]);
             return;
         }
 
         if (!user.hadSalePassword) {
-            Alert.alert("未设置密码", "你还没有设置初始密码", [{
-                text: "稍后设置", onPress: () => {
+            Alert.alert('未设置密码', '你还没有设置初始密码', [{
+                text: '稍后设置', onPress: () => {
                 }
             }, {
-                text: "马上就去", onPress: () => {
-                    this.$navigate("mine/account/JudgePhonePage", { title: "设置交易密码" });
+                text: '马上就去', onPress: () => {
+                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
                 }
             }]);
             return;
@@ -381,23 +399,23 @@ const styles = StyleSheet.create({
         paddingTop: 17,
         paddingLeft: 68
     }, backTextWhite: {
-        color: "white",
+        color: 'white',
         marginRight: 20,
         borderRadius: 10,
         width: 60
     }, standaloneRowFront: {
-        alignItems: "center",
-        backgroundColor: "white",
-        justifyContent: "center",
+        alignItems: 'center',
+        backgroundColor: 'white',
+        justifyContent: 'center',
         height: 130,
         width: ScreenUtils.width,
-        flexDirection: "row",
+        flexDirection: 'row',
         marginRight: 16
     }, standaloneRowBack: {
-        alignItems: "center",
+        alignItems: 'center',
         flex: 1,
-        flexDirection: "row",
-        justifyContent: "flex-end",
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         marginLeft: 15,
         marginRight: 15
     }, deleteStyle: {
@@ -405,13 +423,13 @@ const styles = StyleSheet.create({
         height: 110,
         borderRadius: 10,
         backgroundColor: DesignRule.mainColor,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     }, addBankCardView: {
 
         marginBottom: 40,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 
