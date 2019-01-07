@@ -4,7 +4,7 @@ import {
     View,
     ImageBackground,
     TouchableOpacity,
-    Alert
+    Alert,
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import { RefreshList ,NoMoreClick} from "../../../../components/ui";
@@ -76,6 +76,7 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
                 <RefreshList
+                    emptyNoRefresh={true}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
