@@ -316,11 +316,22 @@ export class ShowRecommendModules {
         });
     };
 
-    batchCancelConnected = (selectedIds) => ShowApi.showCollectCancel({
+    @action batchCancelConnected = (selectedIds) => {
+        Toast.showLoading()
+        return ShowApi.showCollectCancel({
         articleId: '',
         type: 1,
         articleIds: selectedIds
-    });
+        }).then(data => {
+            Toast.hiddenLoading()
+            return Promise.resolve(data)
+        }).catch(error => {
+            Toast.hiddenLoading()
+            console.log('showCollectCancel',error)
+            Toast.$toast('服务器连接异常');
+            throw error
+        })
+    };
 }
 
 export class ShowDetail {
