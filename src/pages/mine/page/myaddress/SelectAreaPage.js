@@ -40,11 +40,15 @@ export default class SelectAreaPage extends BasePage {
     };
 
     getArea = () => {
+        this.$loadingShow();
         MineAPI.getAreaList({ fatherCode: this.state.fatherCode }).then((response) => {
+            this.$loadingDismiss();
             this.setState({
                 datas: response.data || []
             });
         }).catch(data => {
+            this.$loadingDismiss();
+            this.$toastShow(data.msg || '请求失败');
             bridge.$toast(data.msg);
         });
     };
