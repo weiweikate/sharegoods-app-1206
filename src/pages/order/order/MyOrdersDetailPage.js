@@ -119,6 +119,11 @@ export default class MyOrdersDetailPage extends BasePage {
 
     }
 
+    // 重新加载
+    _reload = () => {
+        this.loadPageData();
+    };
+
     getCancelOrder() {
         let arrs = [];
         MineApi.queryDictionaryTypeList({ code: "QXDD" }).then(res => {

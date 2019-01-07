@@ -12,12 +12,15 @@ import Modal from '../../../comm/components/CommModal';
 import {
     MRText as Text, MRTextInput as TextInput
 } from '../../../components/ui';
+
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = ScreenUtils.autoSizeWidth(357);
 const Animated_Duration = 300; //默认的动画持续时间
 import DesignRule from '../../../constants/DesignRule';
-import res from '../res'
+import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import StringUtils from '../../../utils/StringUtils';
+import bridge from '../../../utils/bridge';
 
 const KeFuIcon = res.jbtk_03;
 
@@ -111,7 +114,8 @@ export default class ReportAlert extends Component {
     };
 
     _clickOk = () => {
-        if (!this.state.text) {
+        if (StringUtils.isEmpty(this.state.text)) {
+            bridge.$toast('请输入内容')
             return;
         }
         this._closeAnimated(() => {

@@ -69,6 +69,7 @@ export default class LoginTopView extends Component {
                         onChangeText={text => loginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
                         keyboardType='numeric'
+                        maxLength={11}
                         onEndEditing={() => {
                             if (StringUtils.isEmpty(loginModel.phoneNumber.trim())) {
                                 bridge.$toast('请输入手机号');
