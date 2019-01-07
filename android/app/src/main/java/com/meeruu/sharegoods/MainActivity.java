@@ -1,6 +1,8 @@
 package com.meeruu.sharegoods;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -11,11 +13,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableImage;
 import com.meeruu.commonlib.base.BaseActivity;
 import com.meeruu.commonlib.handler.WeakHandler;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
@@ -28,6 +35,8 @@ import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import javax.annotation.Nullable;
+
 /**
  * @author louis
  * @desc 启动页
@@ -36,17 +45,19 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class MainActivity extends BaseActivity {
 
-    private ImageView ivAdv;
+    private SimpleDraweeView ivAdv;
     private TextView tvGo;
 
     private WeakHandler mHandler;
     private boolean needGo = false;
     private boolean isFirst = true;
     private boolean hasGo = false;
+    private boolean canSkip = false;
     private String adId;
     private String title;
     private String adUrl;
     private CountDownTimer countDownTimer = null;
+    private static final String ADURL = "https://cdn.sharegoodsmall.com/sharegoods/resource/sg/images/ad_index/sgad.png";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +76,13 @@ public class MainActivity extends BaseActivity {
         }
         if (isFirst) {
             isFirst = false;
-            String imgUrl = (String) SPCacheUtils.get("adImg", "");
-            if (!TextUtils.isEmpty(imgUrl)) {
-                //有广告时延迟时间增加
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
-            } else {
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
-            }
+//            String imgUrl = (String) SPCacheUtils.get("adImg", "");
+//            if (!TextUtils.isEmpty(imgUrl)) {
+//                //有广告时延迟时间增加
+//                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
+//            } else {
+//                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+//            }
         } else {
             if (needGo && hasBasePer) {
                 goIndex();
@@ -86,9 +97,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void releaseRes() {
-        if (mHandler != null) {
-            mHandler = null;
-        }
         if (countDownTimer != null) {
             countDownTimer.onFinish();
             countDownTimer = null;
@@ -97,20 +105,41 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewAndData() {
-        String imgUrl = (String) SPCacheUtils.get("adImg", "");
-        if (!TextUtils.isEmpty(imgUrl)) {
-            ((ViewStub) findViewById(R.id.vs_adv)).inflate();
-            ivAdv = findViewById(R.id.iv_adv);
-            tvGo = findViewById(R.id.tv_go);
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
-            params.width = ScreenUtils.getScreenWidth();
-            params.height = (ScreenUtils.getScreenWidth() * 7) / 5;
-            ivAdv.setLayoutParams(params);
-//            DisplayImageUtils.formatImgUrlNoHolder(this, imgUrl, ivAdv);
+        final Uri uri = Uri.parse(ADURL);
+        ImageLoadUtils.downloadImage(uri, new BaseBitmapDataSubscriber() {
 
-            initAdvEvent();
-            startTimer();
-        }
+            @Override
+            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+            }
+
+            @Override
+            protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                if (bitmap == null) {
+                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+                    return;
+                }
+                Message msg = Message.obtain();
+                msg.obj = bitmap;
+                msg.what = ParameterUtils.TIMER_START;
+                mHandler.sendMessage(msg);
+            }
+
+        });
+//        String imgUrl = (String) SPCacheUtils.get("adImg", "");
+//        if (!TextUtils.isEmpty(imgUrl)) {
+//            ((ViewStub) findViewById(R.id.vs_adv)).inflate();
+//            ivAdv = findViewById(R.id.iv_adv);
+//            tvGo = findViewById(R.id.tv_go);
+//            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
+//            params.width = ScreenUtils.getScreenWidth();
+//            params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
+//            ivAdv.setLayoutParams(params);
+////            DisplayImageUtils.formatImgUrlNoHolder(this, imgUrl, ivAdv);
+//
+//            initAdvEvent();
+//            startTimer();
+//        }
         /**在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
@@ -133,6 +162,21 @@ public class MainActivity extends BaseActivity {
                         if (hasBasePer && !hasGo) {
                             goIndex();
                         }
+                        break;
+                    case ParameterUtils.TIMER_START:
+                        //有广告时延迟时间增加
+                        mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
+                        ((ViewStub) findViewById(R.id.vs_adv)).inflate();
+                        ivAdv = findViewById(R.id.iv_adv);
+                        tvGo = findViewById(R.id.tv_go);
+                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
+                        params.width = ScreenUtils.getScreenWidth();
+                        params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
+                        ivAdv.setLayoutParams(params);
+                        ivAdv.setImageBitmap((Bitmap) msg.obj);
+
+                        initAdvEvent();
+                        startTimer();
                         break;
                     default:
                         break;
@@ -169,9 +213,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void doClick(View v) {
         if (v.getId() == R.id.tv_go) {
-            hasGo = true;
-            //跳过
-            goIndex();
+            if (canSkip) {
+                hasGo = true;
+                //跳过
+                goIndex();
+            }
+
         }
     }
 
@@ -189,11 +236,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 tvGo.setText(String.format(getString(R.string.ad_loop), millisUntilFinished / 1000));
+                canSkip = false;
             }
 
             @Override
             public void onFinish() {
                 tvGo.setText(String.format(getString(R.string.ad_loop), 0));
+                canSkip = true;
             }
         };
         countDownTimer.start();

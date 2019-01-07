@@ -68,7 +68,7 @@ export default class HomeBannerView extends Component {
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
         const { navigate } = this.props;
-        console.log('_onPressRow', data)
+        console.log('_onPressRow', data, params, router)
         track(trackEvent.bannerClick, {pageType: 'home', bannerLocation: 'home', bannerID: data.id, bannerRank: data.rank, url: data.imgUrl, bannerName: data.linkTypeCode})
         navigate(router, {...params, preseat:'home_banner'})
     };

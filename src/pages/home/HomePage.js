@@ -113,7 +113,7 @@ class HomePage extends BasePage {
             }
         );
 
-        this.didBlurSubscription = this.props.navigation.addListener(
+        this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
                 this.homeFocused = false;
@@ -137,7 +137,7 @@ class HomePage extends BasePage {
     }
 
     componentWillUnmount() {
-        this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
@@ -175,7 +175,7 @@ class HomePage extends BasePage {
     };
 
     loadMessageCount = () => {
-        if(user.token){
+        if (user.token) {
             MessageApi.getNewNoticeMessageCount().then(result => {
                 if (!EmptyUtils.isEmpty(result.data)) {
                     this.setState({

@@ -58,11 +58,19 @@ export default class ShowDetailPage extends BasePage {
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
-                    this.showDetailModule.loadDetail(this.params.id).then(() => {
-                        this.setState({
-                            loadingState: PageLoadingState.success
+                    if (this.params.code) {
+                        this.showDetailModule.showDetailCode(this.params.code).then(() => {
+                            this.setState({
+                                loadingState: PageLoadingState.success
+                            })
                         })
-                    })
+                    } else {
+                        this.showDetailModule.loadDetail(this.params.id).then(() => {
+                            this.setState({
+                                loadingState: PageLoadingState.success
+                            })
+                        })
+                    }
                 }
             }
         )

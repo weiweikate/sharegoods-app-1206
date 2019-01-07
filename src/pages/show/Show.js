@@ -337,6 +337,16 @@ export class ShowDetail {
         }
     });
 
+    @action showDetailCode = flow(function* (code) {
+        try {
+            const result = yield ShowApi.showDetailCode({ code: code });
+            this.detail = result.data;
+            return result.data;
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
     @action showGoodAction = flow(function* () {
         try {
             this.isGoodActioning = true;

@@ -134,7 +134,7 @@ export default class ShowConnectPage extends BasePage {
     }
 
     _gotoDetail(data) {
-        this.$navigate('show/ShowDetailPage', { id: data.id });
+        this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
     }
 
     _selectedAction(data) {

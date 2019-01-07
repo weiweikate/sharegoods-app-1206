@@ -1,5 +1,5 @@
-
 import { observable, action, computed } from 'mobx';
+
 class LoginModel {
     @observable
     selectIndex = 0;
@@ -15,6 +15,7 @@ class LoginModel {
     dowTime = 0;
     @observable
     haveClick = false;
+
     @action
     savePhoneNumber(phoneNmber) {
         if (!phoneNmber || phoneNmber.length === 0) {
@@ -23,10 +24,12 @@ class LoginModel {
         }
         this.phoneNumber = phoneNmber;
     }
+
     @action
-    saveHaveClick(flag){
+    saveHaveClick(flag) {
         this.haveClick = flag;
     }
+
     @action
     savePassword(password) {
         if (!password) {
@@ -35,6 +38,12 @@ class LoginModel {
         }
         this.password = password;
     }
+
+    @action
+    clearPassword() {
+        this.password = '';
+    }
+
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
@@ -43,6 +52,7 @@ class LoginModel {
         }
         this.vertifyCode = vertifyCode;
     }
+
     @computed
     get isCanClick() {
         if (this.phoneNumber.length < 11 && !this.haveClick) {
@@ -60,5 +70,5 @@ class LoginModel {
     }
 }
 
-const loginModel = new  LoginModel()
+const loginModel = new LoginModel();
 export default loginModel;

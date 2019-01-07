@@ -6,13 +6,22 @@ import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 import android.view.ViewTreeObserver;
 
+import com.facebook.common.executors.CallerThreadExecutor;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.base.BaseApplication;
 
@@ -112,6 +121,30 @@ public class ImageLoadUtils {
                         .build();
         view.setHierarchy(hierarchy);
         view.setImageURI(uri);
+    }
+
+    public static void loadImage(Uri uri, SimpleDraweeView view, int radius, ControllerListener listener) {
+        roundParams.setCornersRadius(radius);
+        GenericDraweeHierarchy hierarchy =
+                new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
+                        .setFadeDuration(300)
+                        .setRoundingParams(roundParams)
+                        .setPlaceholderImage(R.drawable.bg_app_img)
+                        .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                        .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                        .build();
+        view.setHierarchy(hierarchy);
+        view.setController(Fresco.newDraweeControllerBuilder().setUri(uri).setControllerListener(listener).build());
+    }
+
+    public static void downloadImage(Uri uri, BaseBitmapDataSubscriber subscriber) {
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(uri)
+                .setProgressiveRenderingEnabled(true)//渐进渲染
+                .build();
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, BaseApplication.appContext);
+        dataSource.subscribe(subscriber, CallerThreadExecutor.getInstance());
     }
 
     /**
