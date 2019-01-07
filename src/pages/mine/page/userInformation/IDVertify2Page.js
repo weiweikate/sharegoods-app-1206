@@ -159,25 +159,34 @@ export default class IDVertify2Page extends BasePage {
     };
     renderBackIdCard = () => {
         let imageWidth = (ScreenUtils.width - 45) / 2;
-        return (StringUtils.isEmpty(this.state.backIdCard) ?
-            <UIImage source={IDcard_country} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
+        if (StringUtils.isEmpty(this.state.backIdCard) ) {
+          return  <UIImage source={IDcard_country} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
                 this.getIDcard_country();
-            }}/> :
-            <ImageLoad source={{ uri: this.state.backIdCard }} style={{ height: imageWidth, width: imageWidth }}
-                       onPress={() => {
-                           this.getIDcard_country();
-                       }}/>);
+            }}/>
+        }else {
+            return(
+                <TouchableOpacity onPress={() => {
+                    this.getIDcard_country();
+                }}>
+                    <ImageLoad source={{ uri: this.state.backIdCard }} style={{ height: imageWidth, width: imageWidth }}/>
+                </TouchableOpacity>)
+        }
     };
     renderFrontIdCard = () => {
         let imageWidth = (ScreenUtils.width - 45) / 2;
-        return (StringUtils.isEmpty(this.state.frontIdCard) ?
-            <UIImage source={IDcard_persion} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
+        if (StringUtils.isEmpty(this.state.frontIdCard))
+        {
+            return  <UIImage source={IDcard_persion} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
                 this.getIDcard_persion();
-            }}/> :
-            <ImageLoad source={{ uri: this.state.frontIdCard }} style={{ height: imageWidth, width: imageWidth }}
-                       onPress={() => {
-                           this.getIDcard_persion();
-                       }}/>);
+            }}/>
+        }else {
+            return(
+                <TouchableOpacity onPress={() => {
+                    this.getIDcard_persion();
+                }}>
+                    <ImageLoad source={{ uri: this.state.frontIdCard }} style={{ height: imageWidth, width: imageWidth }}/>
+                </TouchableOpacity>)
+        }
     };
     renderHintInformation = () => {
         return (

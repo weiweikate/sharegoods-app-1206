@@ -29,10 +29,10 @@ export default class RequestDetailPage extends BasePage {
                 style={{flex: 1}}
                 source={{uri: this.state.uri}}
                 navigateAppPage={(r, p) => {this.$navigate(r, p)}}
-                onNavigationStateChange={event => {this.$NavigationBarResetTitle(this.state.title || event.title)}}
+                onNavigationStateChange={event => { if (this.state.title || event.title) this.$NavigationBarResetTitle(this.state.title || event.title)}}
                 // onLoadStart={() => this._onLoadStart()}
                 // onLoadEnd={() => this._onLoadEnd()}
-                // onError={e => this._onError(e)}
+                onError={e => {this.$NavigationBarResetTitle('加载失败')}}
                 // postMessage={msg => this._postMessage(msg)}
             />
         )

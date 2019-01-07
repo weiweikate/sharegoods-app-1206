@@ -30,8 +30,8 @@
        userName //"小程序username，如 gh_3ac2059ac66f";
        miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
        }
-      trackParmas={}埋点
-      trackEvent= ''
+ trackParmas={}埋点
+ trackEvent= ''
  gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
  */
 
@@ -50,7 +50,8 @@ import {
     TouchableOpacity,
     Clipboard,
     NativeModules,
-    Linking
+    Linking,
+    ActivityIndicator
 } from 'react-native';
 
 import {
@@ -405,6 +406,17 @@ export default class CommShareModal extends React.Component {
                                                      }}/>
                                         : null
 
+                                }
+                                {
+                                    this.state.path === ''? <ActivityIndicator
+                                        color="#aaaaaa"
+                                        style={{
+                                            position: 'absolute',
+                                            width: 10,
+                                            height: 10,
+                                            top: imageHeight/2.0 - 5,
+                                            left: imageWidth/2.0 -5
+                                        }}/>: null
                                 }
                             </Animated.View> : null
                     }

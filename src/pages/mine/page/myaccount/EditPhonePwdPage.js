@@ -1,6 +1,6 @@
 import {
     Image,
-    TouchableOpacity, View
+    TouchableOpacity, View, ScrollView
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
@@ -37,7 +37,7 @@ export default class EditPhonePwdPage extends BasePage {
     }
 
     _render() {
-        return <View style={{ flex: 1 }}>
+        return <ScrollView style={{ flex: 1 }}>
             <UIText value={'请输入旧密码'} style={{ fontSize: 13, color: DesignRule.textColor_hint, marginLeft: 20, marginTop: 15 }}/>
             <View style={{
                 flexDirection: 'row',
@@ -128,7 +128,7 @@ export default class EditPhonePwdPage extends BasePage {
             }} onPress={() => this._done()}>
                 <Text style={{ fontSize: 17, color: 'white' }}>完成</Text>
             </TouchableOpacity>
-        </View>;
+        </ScrollView>;
     }
 
     _done = () => {

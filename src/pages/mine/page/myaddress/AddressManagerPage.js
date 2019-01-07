@@ -178,8 +178,9 @@ export default class AddressManagerPage extends BasePage {
     _onItemClick = (item) => {
         // 地址列表点击
         if (this.params.from === 'order') {
-            this.params.callBack && this.params.callBack(item);
             this.$navigateBack();
+            let callBack = this.params.callBack;
+            setTimeout(()=>{callBack && callBack({...item})}, 0);//延迟是为了，解决在《确认订单》页面，选择地址，会卡顿的问题
         }
     };
 
