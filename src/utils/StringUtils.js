@@ -3,7 +3,7 @@ import EmptyUtils from './EmptyUtils';
 
 const isEmpty = (param) => {
     let input = param + '';
-    return input === '' || input === 'undefined' || input === 'null' || input === '[]' || input === ' ';
+    return input.trim() === '' || input === 'undefined' || input === 'null' || input === '[]' || input === ' ';
 };
 export const isNoEmpty = (input) => {
     return !isEmpty(input);
@@ -32,7 +32,7 @@ const formatMoneyString = (num, needSymbol = true) => {
     return temp;
 };
 const checkPhone = (str) => {
-    let myreg = /^[1][0-9][0-9]{9}$/;
+    let myreg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
     if (!myreg.test(str)) {
         return false;
     } else {

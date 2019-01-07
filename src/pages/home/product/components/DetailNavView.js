@@ -11,6 +11,7 @@ import { observer } from 'mobx-react';
 import ShopCartStore from '../../../shopCart/model/ShopCartStore';
 import res from '../../res';
 import {MRText as Text} from '../../../../components/ui';
+import UIImage from '@mr/image-placeholder';
 
 const detailNavView = res.product.detailNavView;
 
@@ -60,7 +61,7 @@ export default class DetailNavView extends Component {
                 </View>
                 {/*图片*/}
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    {this.state.scale ? <Image source={{ uri: this.props.source }} style={{
+                    {this.state.scale ? <UIImage source={{ uri: this.props.source }} style={{
                         width: 38,
                         height: 38,
                         borderColor: DesignRule.color_ddd,

@@ -207,7 +207,7 @@ export default class SelectMentorPage extends BasePage {
                         }
                     }
                     style={{
-                        marginTop: 150
+                        marginTop: 120
                     }}
                 >
                     <View

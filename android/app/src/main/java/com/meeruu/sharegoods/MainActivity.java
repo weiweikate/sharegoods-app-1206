@@ -97,9 +97,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void releaseRes() {
-        if (mHandler != null) {
-            mHandler = null;
-        }
         if (countDownTimer != null) {
             countDownTimer.onFinish();
             countDownTimer = null;
@@ -118,19 +115,14 @@ public class MainActivity extends BaseActivity {
 
             @Override
             protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                //有广告时延迟时间增加
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
-                ((ViewStub) findViewById(R.id.vs_adv)).inflate();
-                ivAdv = findViewById(R.id.iv_adv);
-                tvGo = findViewById(R.id.tv_go);
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
-                params.width = ScreenUtils.getScreenWidth();
-                params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
-                ivAdv.setLayoutParams(params);
-                ivAdv.setImageBitmap(bitmap);
-
-                initAdvEvent();
-                mHandler.sendEmptyMessage(ParameterUtils.TIMER_START);
+                if (bitmap == null) {
+                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+                    return;
+                }
+                Message msg = Message.obtain();
+                msg.obj = bitmap;
+                msg.what = ParameterUtils.TIMER_START;
+                mHandler.sendMessage(msg);
             }
 
         });
@@ -172,6 +164,18 @@ public class MainActivity extends BaseActivity {
                         }
                         break;
                     case ParameterUtils.TIMER_START:
+                        //有广告时延迟时间增加
+                        mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
+                        ((ViewStub) findViewById(R.id.vs_adv)).inflate();
+                        ivAdv = findViewById(R.id.iv_adv);
+                        tvGo = findViewById(R.id.tv_go);
+                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
+                        params.width = ScreenUtils.getScreenWidth();
+                        params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
+                        ivAdv.setLayoutParams(params);
+                        ivAdv.setImageBitmap((Bitmap) msg.obj);
+
+                        initAdvEvent();
                         startTimer();
                         break;
                     default:
