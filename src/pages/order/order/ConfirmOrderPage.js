@@ -2,7 +2,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ScrollView, Alert,Keyboard
+    ScrollView, Alert,
 } from "react-native";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
@@ -77,8 +77,8 @@ export default class ConfirmOrderPage extends BasePage {
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
-        this.keyboardDidShowListener.remove();
-        this.keyboardDidHideListener.remove();
+        // this.keyboardDidShowListener.remove();
+        // this.keyboardDidHideListener.remove();
     }
 
     _render() {
@@ -91,8 +91,9 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        this.keyboardDidShowListener=Keyboard.addListener('keyboardWillShow', ()=>this._keyboardDidShow());
-        this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', ()=>this._keyboardDidHide());
+        // this.keyboardDidShowListener=Keyboard.addListener('keyboardDidChangeFrame', this._keyboardDidShow.bind(this));
+        // this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+        // this.keyboardDidHideListener=Keyboard.addListener('keyboardDidHide', ()=>{this._keyboardDidHide()});
         this.loadPageData();
     }
     _keyboardDidShow=(event)=>{
