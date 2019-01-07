@@ -2,21 +2,21 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ScrollView, Alert
-} from 'react-native';
-import StringUtils from '../../../utils/StringUtils';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import bridge from '../../../utils/bridge';
-import GoodsItem from '../components/confirmOrder/GoodsItem';
-import { confirmOrderModel } from '../model/ConfirmOrderModel';
-import { observer } from 'mobx-react/native';
-import BasePage from '../../../BasePage';
-import { NavigationActions } from 'react-navigation';
-import DesignRule from '../../../constants/DesignRule';
-import ConfirmAddressView from '../components/confirmOrder/ConfirmAddressView';
-import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
-import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
-import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+    ScrollView, Alert,Keyboard
+} from "react-native";
+import StringUtils from "../../../utils/StringUtils";
+import ScreenUtils from "../../../utils/ScreenUtils";
+import bridge from "../../../utils/bridge";
+import GoodsItem from "../components/confirmOrder/GoodsItem";
+import { confirmOrderModel } from "../model/ConfirmOrderModel";
+import { observer } from "mobx-react/native";
+import BasePage from "../../../BasePage";
+import { NavigationActions } from "react-navigation";
+import DesignRule from "../../../constants/DesignRule";
+import ConfirmAddressView from "../components/confirmOrder/ConfirmAddressView";
+import ConfirmPriceView from "../components/confirmOrder/ConfirmPriceView";
+import ConfirmBottomView from "../components/confirmOrder/ConfirmBottomView";
+import { PageLoadingState, renderViewByLoadingState } from "../../../components/pageDecorator/PageState";
 
 
 @observer
@@ -52,11 +52,12 @@ export default class ConfirmOrderPage extends BasePage {
     //**********************************ViewPart******************************************
     _renderContent = () => {
         return (
-            <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: ScreenUtils.safeBottom }}>
-                <ScrollView>
+            <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: ScreenUtils.safeBottom }}>
+                <ScrollView ref={ref=>this.orderScrol=ref}>
                     <ConfirmAddressView selectAddress={() => this.selectAddress()}/>
                     {this.state.viewData.map((item, index) => {
                         return <GoodsItem
+                            key={index}
                             uri={item.specImg}
                             goodsName={item.productName}
                             salePrice={StringUtils.formatMoneyString(item.unitPrice)}
@@ -76,6 +77,8 @@ export default class ConfirmOrderPage extends BasePage {
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
     }
 
     _render() {
@@ -88,8 +91,23 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-
+        this.keyboardDidShowListener=Keyboard.addListener('keyboardWillShow', ()=>this._keyboardDidShow());
+        this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', ()=>this._keyboardDidHide());
         this.loadPageData();
+    }
+    _keyboardDidShow=(event)=>{
+        alert("_keyboardDidShow")
+        this.setState({KeyboardShown: true});
+        this.orderScrol.scrollToEnd();
+        confirmOrderModel.TnHeight=event.endCoordinates.height
+        console.log(event.endCoordinates.height);
+    }
+
+    _keyboardDidHide=()=>{
+        alert("_keyboardDidHide");
+        this.setState({KeyboardShown: false});
+        confirmOrderModel.TnHeight=0
+        this.orderScrol.scrollToTop();
     }
 
     async loadPageData(params) {
@@ -105,7 +123,7 @@ export default class ConfirmOrderPage extends BasePage {
             if (err.code === 10009) {
                 this.$navigate('login/login/LoginPage', {
                     callback: () => {
-                        this.loadPageData();
+                        this.loadPageData(params);
                     }
                 });
             } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
@@ -122,7 +140,7 @@ export default class ConfirmOrderPage extends BasePage {
                 this.$navigateBack();
             }
             else {
-                this.$toastShow(err.msg);
+                bridge.$toastShow(err.msg);
             }
         }
 
@@ -151,7 +169,7 @@ export default class ConfirmOrderPage extends BasePage {
         });
     };
     commitOrder = async () => {
-        if (!this.canCommit || confirmOrderModel.isError) {
+        if(!this.canCommit){
             return;
         }
         this.canCommit = false;

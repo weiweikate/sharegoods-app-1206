@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    Alert, NativeModules,
+    Alert,
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -58,7 +58,7 @@ export default  class OrderDetailBottomButtonView extends Component{
                 if(assistDetailModel.cancelArr.length > 0){
                     assistDetailModel.setIsShowSingleSelctionModal(true);
                 }else{
-                    NativeModules.commModule.toast('无取消类型！');
+                    Toast.$toast('无取消类型！');
                 }
 
                 break;
@@ -78,11 +78,11 @@ export default  class OrderDetailBottomButtonView extends Component{
                 break;
             case 5:
                 if(!orderDetailModel.warehouseOrderDTOList[0].expList){
-                    NativeModules.commModule.toast('当前物流信息不存在！');
+                    Toast.$toast('当前物流信息不存在！');
                     return;
                 }
                  if(orderDetailModel.warehouseOrderDTOList[0].expList.length === 0){
-                    NativeModules.commModule.toast('当前物流信息不存在！');
+                     Toast.$toast('当前物流信息不存在！');
                 }
                 if(orderDetailModel.warehouseOrderDTOList[0].expList.length === 1&&orderDetailModel.warehouseOrderDTOList[0].unSendProductInfoList.length === 0){
                     this.props.nav("order/logistics/LogisticsDetailsPage", {
@@ -106,11 +106,11 @@ export default  class OrderDetailBottomButtonView extends Component{
                                 Toast.showLoading();
                                 OrderApi.confirmReceipt({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                     Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('确认收货成功');
+                                    Toast.$toast('确认收货成功');
                                     this.props.loadPageData();
                                 }).catch(e => {
                                     Toast.hiddenLoading();
-                                    this.$toastShow(e.msg);
+                                    Toast.$toast(e.msg);
                                 });
                             }}
 
@@ -129,12 +129,12 @@ export default  class OrderDetailBottomButtonView extends Component{
                                 Toast.showLoading();
                                 OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                     Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('订单已删除');
+                                    Toast.$toast('订单已删除');
                                     this.props.goBack();
                                     this.props.callBack();
                                 }).catch(e => {
                                     Toast.hiddenLoading();
-                                    NativeModules.commModule.toast(e.msg);
+                                    Toast.$toast(e.msg);
                                 });
 
                         }}
@@ -144,7 +144,7 @@ export default  class OrderDetailBottomButtonView extends Component{
             case 8:
                 let cartData = [];
                 orderDetailModel.warehouseOrderDTOList[0].products.map((item, index) => {
-                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.quantity });
+                    cartData.push({ spuCode: item.prodCode, skuCode: item.skuCode, amount: item.quantity });
                 });
                     shopCartCacheTool.addGoodItem(cartData);
                     this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
@@ -162,12 +162,12 @@ export default  class OrderDetailBottomButtonView extends Component{
                                 Toast.showLoading();
                                 OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                     Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('订单已删除');
+                                    Toast.$toast('订单已删除');
                                     this.props.goBack();
                                     this.props.callBack();
                                 }).catch(e => {
                                     Toast.hiddenLoading();
-                                    NativeModules.commModule.toast(e.msg);
+                                    Toast.$toast(e.msg);
                                 });
 
                         }}
