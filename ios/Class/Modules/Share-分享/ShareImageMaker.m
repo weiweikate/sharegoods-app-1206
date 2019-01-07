@@ -40,7 +40,11 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     
   } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
      dispatch_async(dispatch_get_main_queue(), ^{
-    NSString *path = [weakSelf ceratShareImageWithProductImage:image titleStr:model.titleStr priceStr:model.priceStr QRCodeStr:model.QRCodeStr];
+       UIImage * image2 = image;
+       if (error) {//如果加载网络图片失败，就用默认图
+         image2 = [UIImage imageNamed:@""];
+       }
+    NSString *path = [weakSelf ceratShareImageWithProductImage:image2 titleStr:model.titleStr priceStr:model.priceStr QRCodeStr:model.QRCodeStr];
     if (path == nil || path.length == 0) {
       completion(nil, @"ShareImageMaker：保存图片到本地失败");
     }else{
