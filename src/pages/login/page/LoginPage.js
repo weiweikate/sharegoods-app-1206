@@ -244,11 +244,6 @@ export default class LoginPage extends BasePage {
             }).catch((data) => {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
-                /*未注册*/
-                if (data.code === 34001) {
-                    //暂且注释掉
-                    // this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
-                }
             });
         } else {
             // this.$loadingShow();
@@ -290,9 +285,6 @@ export default class LoginPage extends BasePage {
                 console.log(data);
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
-                if (data.code === 34001) {
-                    this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
-                }
             });
         }
     };

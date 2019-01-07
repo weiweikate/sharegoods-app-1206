@@ -175,7 +175,7 @@ export default class MyPromotionPage extends BasePage {
                     <Text style={{
                         fontSize: 15,
                         color: DesignRule.textColor_mainTitle
-                    }} allowFontScaling={false}>成长值</Text>
+                    }} allowFontScaling={false}>经验值</Text>
                 </View>
 
                 <View style={{ flex: 1, alignItems: 'center' }}>

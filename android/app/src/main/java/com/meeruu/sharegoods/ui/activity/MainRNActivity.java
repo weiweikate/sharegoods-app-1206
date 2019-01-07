@@ -130,7 +130,9 @@ public class MainRNActivity extends ReactActivity {
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -158,7 +160,6 @@ public class MainRNActivity extends ReactActivity {
     protected void onStop() {
         super.onStop();
         isDestroy = false;
-        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -179,6 +180,9 @@ public class MainRNActivity extends ReactActivity {
         }
         if (myHandler != null) {
             myHandler = null;
+        }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 
@@ -308,30 +312,20 @@ public class MainRNActivity extends ReactActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoadingEvent(LoadingDialogEvent event) {
+        if (null == mLoadingDialog) {
+            mLoadingDialog = new LoadingDialog(this, R.style.LoadingDialog);
+        }
         if (event.isShow()) {
-            if (null == mLoadingDialog) {
-                mLoadingDialog = new LoadingDialog(this, R.style.LoadingDialog);
-                mLoadingDialog.setCancelable(false);
-            }
-
             if (!TextUtils.isEmpty(event.getMsg())) {
                 mLoadingDialog.setMessage(event.getMsg());
             }
-
-
-            if (isShowLoadingDialog) {
-                return;
-            } else {
-                if (!this.isFinishing()) {
-                    isShowLoadingDialog = true;
-                    mLoadingDialog.show();
-                }
+            if (!isShowLoadingDialog && !this.isFinishing()) {
+                mLoadingDialog.show();
             }
+            isShowLoadingDialog = true;
         } else {
-            if (null != mLoadingDialog && isShowLoadingDialog) {
-                isShowLoadingDialog = false;
-                mLoadingDialog.dismiss();
-            }
+            isShowLoadingDialog = false;
+            mLoadingDialog.dismiss();
         }
     }
 

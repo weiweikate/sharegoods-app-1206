@@ -41,15 +41,10 @@ const getSelectImage =(itemData)=>{
 const getTipString = (itemData)=>{
     let tipString = '';
    if (itemData.amount > itemData.sellStock) {
-       tipString = tipString + '库存不足';
+       tipString = tipString + '库存不足\n';
    }
 
    if(itemData.shoppingCartActivity &&itemData.shoppingCartActivity.length>0 && itemData.shoppingCartActivity[0].activityType === 1){
-       //秒杀活动商品
-       // if (itemData.shoppingCartActivity
-       //     &&itemData.shoppingCartActivity.experience
-       //     &&itemData.shoppingCartActivity.experience.beginTime
-       // ){
            if (itemData.nowTime < itemData.shoppingCartActivity[0].seckill.beginTime) {
                tipString += '秒杀活动未开始,暂不可购买~';
            }else if (
