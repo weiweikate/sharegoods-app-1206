@@ -124,7 +124,6 @@ public class MainActivity extends BaseActivity {
                 msg.what = ParameterUtils.TIMER_START;
                 mHandler.sendMessage(msg);
             }
-
         });
 //        String imgUrl = (String) SPCacheUtils.get("adImg", "");
 //        if (!TextUtils.isEmpty(imgUrl)) {
