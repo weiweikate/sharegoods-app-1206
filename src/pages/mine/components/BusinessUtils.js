@@ -57,7 +57,7 @@ export default {
                 console.log('User tapped custom button: ', response.customButton);
                 return;
             } else {
-                // Toast.showLoading('图片上传中，请稍后');
+                Toast.showLoading('正在上传');
                 // this.$toastShow('图片上传中，请稍后');
                 NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
                     let datas = {
@@ -84,7 +84,7 @@ export default {
                             callBack({ ok: false, msg: '上传图片失败' });
                         }
                     }).catch(error => {
-                        // Toast.hiddenLoading();
+                        Toast.hiddenLoading();
                         console.log(error);
                         Toast.hiddenLoading();
                         callBack({ ok: false, msg: '上传图片失败' });

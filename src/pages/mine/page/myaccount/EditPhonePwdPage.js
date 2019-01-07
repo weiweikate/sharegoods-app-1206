@@ -1,6 +1,6 @@
 import {
     Image,
-    TouchableOpacity, View
+    TouchableOpacity, View, ScrollView, Keyboard
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
@@ -17,7 +17,6 @@ import { MRText as Text, MRTextInput as TextInput } from '../../../../components
 
 const openEyeImage = res.button.open_eye;
 const closeEyeImage = res.button.close_eye;
-const dismissKeyboard = require('dismissKeyboard');
 
 export default class EditPhonePwdPage extends BasePage {
 
@@ -39,7 +38,7 @@ export default class EditPhonePwdPage extends BasePage {
     }
 
     _render() {
-        return <View style={{ flex: 1 }}>
+        return <ScrollView style={{ flex: 1 }}>
             <UIText value={'请输入旧密码'}
                     style={{ fontSize: 13, color: DesignRule.textColor_hint, marginLeft: 20, marginTop: 15 }}/>
             <View style={{
@@ -58,7 +57,7 @@ export default class EditPhonePwdPage extends BasePage {
                     keyboardType={'default'}
                     secureTextEntry={this.state.isOldSecuret}/>
                 <TouchableOpacity onPress={() => {
-                    dismissKeyboard();
+                    Keyboard.dismiss();
                     this.setState({
                         isOldSecuret: !this.state.isOldSecuret
                     });
@@ -92,7 +91,7 @@ export default class EditPhonePwdPage extends BasePage {
                                keyboardType={'default'}
                                secureTextEntry={this.state.isNewSecuret}/>
                     <TouchableOpacity onPress={() => {
-                        dismissKeyboard();
+                        Keyboard.dismiss();
                         this.setState({
                             isNewSecuret: !this.state.isNewSecuret
                         });
@@ -129,7 +128,7 @@ export default class EditPhonePwdPage extends BasePage {
                                keyboardType={'default'}
                                secureTextEntry={this.state.isAgainSecuret}/>
                     <TouchableOpacity onPress={() => {
-                        dismissKeyboard();
+                        Keyboard.dismiss();
                         this.setState({
                             isAgainSecuret: !this.state.isAgainSecuret
                         });
@@ -155,7 +154,7 @@ export default class EditPhonePwdPage extends BasePage {
             }} onPress={() => this._done()}>
                 <Text style={{ fontSize: 17, color: 'white' }}>完成</Text>
             </TouchableOpacity>
-        </View>;
+        </ScrollView>;
     }
 
     _done = () => {
