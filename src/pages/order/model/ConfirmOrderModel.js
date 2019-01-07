@@ -230,16 +230,16 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
             bridge.$toast('请先添加地址');
             return;
         }
-        if(orderParamVO.type<3){
-            baseParams = {
-                ...baseParams,
-                activityCode: orderParamVO.orderProducts[0].code,
-                channel: 2,
-                num: orderParamVO.orderProducts[0].num,
-                source: 2,
-                submitType: 2,
-            };
-        }
+        // if(orderParamVO.type<3){
+        //     baseParams = {
+        //         ...baseParams,
+        //         activityCode: orderParamVO.orderProducts[0].code,
+        //         channel: 2,
+        //         num: orderParamVO.orderProducts[0].num,
+        //         source: 2,
+        //         submitType: 2,
+        //     };
+        // }
         switch(orderParamVO.orderType){
             case 99:
                 let paramsnor = {
@@ -262,6 +262,29 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                 }).catch(err => {
                     bridge.hiddenLoading();
                   throw this.disPoseErr(err)
+                });
+                break;
+            case 98:
+                let paramsnor2 = {
+                    ...baseParams,
+                    orderProductList: orderParamVO.orderProducts,
+                    orderSubType: 5,
+                    orderType:2,
+                    source:orderParamVO.source,
+                    channel:2,
+                };
+                return    OrderApi.submitOrder(paramsnor2).then((response) => {
+                    bridge.hiddenLoading();
+                    let data = response.data;
+                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
+                        receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
+                        discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
+                        yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
+                    this.isError=false
+                    return response.data;
+                }).catch(err => {
+                    bridge.hiddenLoading();
+                    throw this.disPoseErr(err)
                 });
                 break;
             case 1:

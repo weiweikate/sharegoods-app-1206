@@ -91,12 +91,12 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        this.keyboardDidShowListener=Keyboard.addListener('keyboardWillShow', this._keyboardDidShow);
-        this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', this._keyboardDidHide);
+        this.keyboardDidShowListener=Keyboard.addListener('keyboardWillShow', ()=>this._keyboardDidShow());
+        this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', ()=>this._keyboardDidHide());
         this.loadPageData();
     }
     _keyboardDidShow=(event)=>{
-        // alert("_keyboardDidShow")
+        alert("_keyboardDidShow")
         this.setState({KeyboardShown: true});
         this.orderScrol.scrollToEnd();
         confirmOrderModel.TnHeight=event.endCoordinates.height
@@ -104,7 +104,7 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     _keyboardDidHide=()=>{
-        // alert("_keyboardDidHide");
+        alert("_keyboardDidHide");
         this.setState({KeyboardShown: false});
         confirmOrderModel.TnHeight=0
         this.orderScrol.scrollToTop();
