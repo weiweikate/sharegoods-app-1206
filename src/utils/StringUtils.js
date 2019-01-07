@@ -208,6 +208,11 @@ function trim(s) {
     return rtrim(ltrim(s));
 }
 
+//去左右空格
+function checkEmoji(s) {
+    let reg = /(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/g;
+    return reg.test(s);
+}
 
 //手机号中间4位用*代替
 function encryptPhone(s) {
@@ -273,6 +278,7 @@ export default {
     clipboardSetString,
     clipboardGetString,
     trim,
+    checkEmoji,
     encryptPhone,
     formatPhoneNumber,
     parsingRoute

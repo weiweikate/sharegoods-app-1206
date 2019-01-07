@@ -16,36 +16,41 @@ export default class XpDetailBottomView extends Component {
     render() {
         const { bottomViewAction, xpDetailModel } = this.props;
         const shopNumber = ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber;
-        const { pCantBuy, pBuyText } = xpDetailModel;
+        const { pCantBuy, pBuyText, skuTotal } = xpDetailModel;
         return (
-            <View style={styles.containerView}>
-                <View style={styles.bgView}>
-                    <TouchableOpacity style={styles.gwcBtn} onPress={() => bottomViewAction('goGwc')}>
-                        <Image source={gwc}/>
-                        <Text style={styles.gwcText}>购物车</Text>
-                        {shopNumber === 0 ? null :
-                            <View style={styles.numbView}>
-                                <Text style={styles.numbText}>{shopNumber}</Text>
-                            </View>}
-                    </TouchableOpacity>
-                    <View style={styles.btnView}>
-                        <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('joinCart')}>
-                            <LinearGradient style={styles.LinearGradient}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 0 }}
-                                            colors={['#FBBB50', '#FBBB50']}>
-                                <Text style={styles.btnText}>加入购物车</Text>
-                            </LinearGradient>
+            <View>
+                {skuTotal === 0 ? <View style={styles.messageContainer}>
+                    <Text style={styles.noCount}>暂无库存</Text>
+                </View> : null}
+                <View style={styles.containerView}>
+                    <View style={styles.bgView}>
+                        <TouchableOpacity style={styles.gwcBtn} onPress={() => bottomViewAction('goGwc')}>
+                            <Image source={gwc}/>
+                            <Text style={styles.gwcText}>购物车</Text>
+                            {shopNumber === 0 ? null :
+                                <View style={styles.numbView}>
+                                    <Text style={styles.numbText}>{shopNumber}</Text>
+                                </View>}
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('buy')}
-                                          disabled={pCantBuy}>
-                            <LinearGradient style={styles.LinearGradient}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 0 }}
-                                            colors={pCantBuy ? ['#cccccc', '#cccccc'] : ['#FF0088', '#FF0050']}>
-                                <Text style={styles.btnText}>{pBuyText}</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
+                        <View style={styles.btnView}>
+                            <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('joinCart')}>
+                                <LinearGradient style={styles.LinearGradient}
+                                                start={{ x: 0, y: 0 }}
+                                                end={{ x: 1, y: 0 }}
+                                                colors={['#FBBB50', '#FBBB50']}>
+                                    <Text style={styles.btnText}>加入购物车</Text>
+                                </LinearGradient>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.btn} onPress={() => bottomViewAction('buy')}
+                                              disabled={pCantBuy}>
+                                <LinearGradient style={styles.LinearGradient}
+                                                start={{ x: 0, y: 0 }}
+                                                end={{ x: 1, y: 0 }}
+                                                colors={pCantBuy ? ['#cccccc', '#cccccc'] : ['#FF0088', '#FF0050']}>
+                                    <Text style={styles.btnText}>{pBuyText}</Text>
+                                </LinearGradient>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -54,6 +59,14 @@ export default class XpDetailBottomView extends Component {
 }
 
 const styles = StyleSheet.create({
+    messageContainer: {
+        justifyContent: 'center', alignItems: 'center',
+        height: 20, backgroundColor: 'rgba(0,0,0,0.2)'
+    },
+    noCount: {
+        fontSize: 12, color: DesignRule.white
+    },
+
     containerView: {
         height: ScreenUtils.safeBottom + 49,
         backgroundColor: DesignRule.white
