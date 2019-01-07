@@ -208,7 +208,8 @@ export class ShowRecommendModules {
                 return Promise.reject('获取列表错误')
             }
         }).catch(error => {
-            return Promise.reject(error)
+            Toast.$toast(error.msg || '获取列表错误');
+            throw error
         })
     }
 
@@ -239,7 +240,8 @@ export class ShowRecommendModules {
                 return Promise.reject('获取列表错误');
             }
         }).catch(error => {
-            return Promise.reject(error);
+            Toast.$toast(error.msg || '获取列表错误');
+            throw error
         });
     };
 
@@ -277,6 +279,7 @@ export class ShowRecommendModules {
                 return Promise.reject('获取列表错误');
             }
         }).catch(error => {
+            Toast.$toast(error.msg || '获取列表错误');
             return Promise.reject(error);
         });
     };
@@ -312,6 +315,7 @@ export class ShowRecommendModules {
                 return Promise.reject('获取列表错误');
             }
         }).catch(error => {
+            Toast.$toast(error.msg || '获取列表错误');
             return Promise.reject(error);
         });
     };
@@ -328,7 +332,7 @@ export class ShowRecommendModules {
         }).catch(error => {
             Toast.hiddenLoading()
             console.log('showCollectCancel',error)
-            Toast.$toast('服务器连接异常');
+            Toast.$toast(error.msg || '服务器连接异常');
             throw error
         })
     };
@@ -345,6 +349,7 @@ export class ShowDetail {
             return result.data;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     });
 
@@ -355,6 +360,7 @@ export class ShowDetail {
             return result.data;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     });
 
