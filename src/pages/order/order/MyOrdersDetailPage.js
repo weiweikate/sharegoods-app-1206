@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    NativeModules,
+    // NativeModules,
     StyleSheet,
     View,
     TouchableOpacity,
@@ -15,7 +15,7 @@ import GoodsDetailItem from "../components/GoodsDetailItem";
 import SingleSelectionModal from "../components/BottomSingleSelectModal";
 import ShowMessageModal from "../components/ShowMessageModal";
 import Toast from "../../../utils/bridge";
-import GoodsGrayItem from "../components/GoodsGrayItem";
+// import GoodsGrayItem from "../components/GoodsGrayItem";
 import OrderApi from "../api/orderApi";
 import { PageLoadingState, renderViewByLoadingState } from "../../../components/pageDecorator/PageState";
 import { NavigationActions } from "react-navigation";
@@ -154,7 +154,7 @@ export default class MyOrdersDetailPage extends BasePage {
             <ScrollView>
             <RefreshList
                 ListHeaderComponent={this.renderHeader}
-                ListFooterComponent={this.renderFootder}
+                ListFooterComponent={this.renderFooter}
                 data={this.state.viewData}
                 renderItem={this.renderItem}
                 onRefresh={this.onRefresh}
@@ -167,7 +167,7 @@ export default class MyOrdersDetailPage extends BasePage {
             <OrderDetailBottomButtonView
         goBack={() => this.$navigateBack()}
         nav={this.$navigate}
-        callBack={this.params.callBack && this.params.callBack()}
+        callBack={this.params.callBack && (()=>this.params.callBack())}
         loadPageData={() => this.loadPageData()}/>
             </View>
         );
@@ -182,19 +182,19 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
     renderItem = ({ item, index }) => {
-        if (orderDetailModel.orderSubType === 3) {
-            return (
-                <GoodsGrayItem
-                    uri={item.uri}
-                    goodsName={item.goodsName}
-                    category={item.category}
-                    salePrice={"￥" + StringUtils.formatMoneyString(item.salePrice, false)}
-                    goodsNum={item.goodsNum}
-                    onPress={() => this.clickItem(index, item)}
-                    style={{ backgroundColor: "white" }}
-                />
-            );
-        } else {
+        // if (orderDetailModel.orderSubType === 3) {
+        //     return (
+        //         <GoodsGrayItem
+        //             uri={item.uri}
+        //             goodsName={item.goodsName}
+        //             category={item.category}
+        //             salePrice={"￥" + StringUtils.formatMoneyString(item.salePrice, false)}
+        //             goodsNum={item.goodsNum}
+        //             onPress={() => this.clickItem(index, item)}
+        //             style={{ backgroundColor: "white" }}
+        //         />
+        //     );
+        // } else {
             return (
                 <GoodsDetailItem
                     uri={item.uri}
@@ -210,7 +210,7 @@ export default class MyOrdersDetailPage extends BasePage {
                     afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, index)}
                 />
             );
-        }
+        // }
 
     };
     renderHeader = () => {
@@ -222,7 +222,7 @@ export default class MyOrdersDetailPage extends BasePage {
             </View>
         );
     };
-    renderFootder = () => {
+    renderFooter = () => {
         return (
             <View>
                 <OrderDetailPriceView
@@ -279,13 +279,10 @@ export default class MyOrdersDetailPage extends BasePage {
                             cancelType: 2,
                             platformRemarks: null
                         }).then((response) => {
-                            Toast.hiddenLoading();
-                            NativeModules.commModule.toast("订单已取消");
-                            this.$navigateBack();
-                            this.params.callBack && this.params.callBack();
+                            this.goTobackNav()
                         }).catch(e => {
                             Toast.hiddenLoading();
-                            NativeModules.commModule.toast(e.msg);
+                            Toast.$toast(e.msg);
                         });
                     }}
                 />
@@ -293,6 +290,11 @@ export default class MyOrdersDetailPage extends BasePage {
 
         );
     };
+    goTobackNav=()=>{
+        Toast.hiddenLoading();
+        this.params.callBack && this.params.callBack()
+        this.$navigateBack();
+    }
 
     renderLine = () => {
         return (
@@ -463,7 +465,6 @@ export default class MyOrdersDetailPage extends BasePage {
         let dataArr = [];
         let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(orderDetailModel.warehouseOrderDTOList[0].status)];
         if (orderDetailModel.warehouseOrderDTOList[0].status === 1) {
-            // this.startCutDownTime(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
             this.settimer(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
             orderDetailAfterServiceModel.menu = [{
                 id: 1,
@@ -564,7 +565,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         isRed: true
                     }
                 ],
-                    pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime : orderDetailModel.warehouseOrderDTOList[0].finishTime;
+                    pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime : orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime;
                 break;
             case 5:
                 this.stop();
@@ -613,11 +614,14 @@ export default class MyOrdersDetailPage extends BasePage {
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
         let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
         if (orderDetailModel.orderSubType=== 3 && orderDetailModel.status === 2) {
-            NativeModules.commModule.toast("该商品属于升级礼包产品，不能退款");
+            Toast.$toast("该商品属于升级礼包产品，不能退款");
             return;
+        }else if(orderDetailModel.orderSubType=== 5 && orderDetailModel.status === 2){
+            Toast.$toast("该商品属于经验值专区商品，不能退款");
+            return
         } else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime
             && !(innerStatus < 6 && innerStatus >= 1)) {
-            NativeModules.commModule.toast("该商品售后已过期");
+            Toast.$toast("该商品售后已过期");
             return;
         }
 

@@ -41,6 +41,8 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
     orderParamVO={}
     @observable
     isError=false
+     @observable
+     TnHeight=0
 
    @action clearData(){
        this.orderProductList=[]
@@ -60,15 +62,17 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
        this.orderParamVO={}
        this.netFailedInfo = null;
        this.loadingState = PageLoadingState.loading;
+       this.isError=false
+       this.TnHeight=0
    }
 
   @action  makeSureProduct(orderParamVO,params={}){
         this.orderParamVO=orderParamVO;
         switch(orderParamVO.orderType){
-            case 99:
+            case 99://普通商品
              return   OrderApi.makeSureOrder({
                     orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
-                    //orderSubType:  1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                   // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source:orderParamVO.source,//1.购物车 2.直接下单
                     channel:2,//1.小程序 2.APP 3.H5
                     orderProductList: orderParamVO.orderProducts,
@@ -82,6 +86,24 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                   throw error
                 });
                 break;
+            case 98:
+                return   OrderApi.makeSureOrder({
+                    orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
+                     orderSubType:  5,//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                    source:orderParamVO.source,//1.购物车 2.直接下单
+                    channel:2,//1.小程序 2.APP 3.H5
+                    orderProductList: orderParamVO.orderProducts,
+                    ...params
+                }).then(response => {
+                    // bridge.hiddenLoading();
+                    return   this.handleNetData(response.data);
+                }).catch(err => {
+                    // bridge.hiddenLoading();
+                    let error  = this.disPoseErr(err);
+                    throw error
+                });
+                break;
+
             case 1:
              return   OrderApi.SeckillMakeSureOrder({
                     activityCode:orderParamVO.orderProducts[0].code,
@@ -208,16 +230,16 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
             bridge.$toast('请先添加地址');
             return;
         }
-        if(orderParamVO.type<3){
-            baseParams = {
-                ...baseParams,
-                activityCode: orderParamVO.orderProducts[0].code,
-                channel: 2,
-                num: orderParamVO.orderProducts[0].num,
-                source: 2,
-                submitType: 2,
-            };
-        }
+        // if(orderParamVO.type<3){
+        //     baseParams = {
+        //         ...baseParams,
+        //         activityCode: orderParamVO.orderProducts[0].code,
+        //         channel: 2,
+        //         num: orderParamVO.orderProducts[0].num,
+        //         source: 2,
+        //         submitType: 2,
+        //     };
+        // }
         switch(orderParamVO.orderType){
             case 99:
                 let paramsnor = {
@@ -242,8 +264,39 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                   throw this.disPoseErr(err)
                 });
                 break;
+            case 98:
+                let paramsnor2 = {
+                    ...baseParams,
+                    orderProductList: orderParamVO.orderProducts,
+                    orderSubType: 5,
+                    orderType:2,
+                    source:orderParamVO.source,
+                    channel:2,
+                };
+                return    OrderApi.submitOrder(paramsnor2).then((response) => {
+                    bridge.hiddenLoading();
+                    let data = response.data;
+                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
+                        receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
+                        discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
+                        yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
+                    this.isError=false
+                    return response.data;
+                }).catch(err => {
+                    bridge.hiddenLoading();
+                    throw this.disPoseErr(err)
+                });
+                break;
             case 1:
-               return  OrderApi.SeckillSubmitOrder(baseParams).then((response) => {
+                let needParams={
+                    ...baseParams,
+                    activityCode: orderParamVO.orderProducts[0].code,
+                    channel: 2,
+                    num: orderParamVO.orderProducts[0].num,
+                    source: 2,
+                    submitType: 2,
+                }
+               return  OrderApi.SeckillSubmitOrder(needParams).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
                     track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
@@ -258,7 +311,15 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                 });
                 break;
             case 2:
-              return  OrderApi.DepreciateSubmitOrder(baseParams).then((response) => {
+                let needParams2={
+                    ...baseParams,
+                    activityCode: orderParamVO.orderProducts[0].code,
+                    channel: 2,
+                    num: orderParamVO.orderProducts[0].num,
+                    source: 2,
+                    submitType: 2,
+                }
+              return  OrderApi.DepreciateSubmitOrder(needParams2).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
                     track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
