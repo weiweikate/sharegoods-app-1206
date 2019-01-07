@@ -32,6 +32,7 @@ import ShopCartEmptyView from '../components/ShopCartEmptyView';
 import ShopCartCell from '../components/ShopCartCell';
 import SectionHeaderView from '../components/SectionHeaderView';
 import RouterMap from '../../../navigation/RouterMap';
+import user from '../../../model/user';
 // import ShopCartSectionHeaderView from '../components/ShopCartSectionHeaderView';
 // import { track } from '../../../utils/SensorsTrack';
 // import TempShopCartCell from '../components/TempShopCartCell';
@@ -348,6 +349,10 @@ export default class ShopCartPage extends BasePage {
      */
     _toBuyImmediately = () => {
         dismissKeyboard();
+        if (!user.isLogin) {
+            this.$navigate(RouterMap.LoginPage);
+            return;
+        }
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0) {
             this.$toastShow('请先选择结算商品~');
