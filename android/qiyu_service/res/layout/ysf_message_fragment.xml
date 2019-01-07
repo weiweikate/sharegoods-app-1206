@@ -23,6 +23,14 @@
             android:textSize="@dimen/ysf_text_size_14"
             android:visibility="gone" />
 
+        <LinearLayout
+            android:id="@+id/ll_message_fragment_ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"/>
+
         <FrameLayout
             android:id="@+id/message_activity_list_view_container"
             android:layout_width="match_parent"
@@ -45,15 +53,14 @@
                 android:fadingEdge="none"
                 android:focusable="false"
                 android:listSelector="@android:color/transparent"
-                android:scrollbars="none" />
-
+                android:scrollbars="vertical" />
             <ListView
                 android:id="@+id/ysf_quick_reply_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:divider="@color/ysf_grey_d9d9d9"
-                android:scrollbars="none"
+                android:scrollbars="vertical"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -101,8 +108,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="-15dp"
                         android:layout_marginBottom="-5dp"
+                        android:layout_marginTop="-15dp"
                         android:text="2"
                         android:textColor="@android:color/white"
                         android:textSize="80dp"

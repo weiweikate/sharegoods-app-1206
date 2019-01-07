@@ -301,7 +301,7 @@ export default class MinePage extends BasePage {
         let name = '';
 
         if (EmptyUtils.isEmpty(user.nickname)) {
-            name = user.phone ? user.phone : '未登陆';
+            name = user.phone ? user.phone : '未登录';
         } else {
             name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
         }

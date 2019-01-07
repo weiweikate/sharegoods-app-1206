@@ -147,10 +147,10 @@ export default class ShopRecruitPage extends BasePage {
     };
 
     _clickAllMembers = () => {
-        //招募中先不跳
-        // if (this.state.storeData.userStatus === 1) {
-        //     this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
-        // }
+        //自己只能查看列表
+        if (this.state.storeData.myStore) {
+            this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
+        }
     };
     _clickSettingItem = () => {
         let arr = ['分享店铺'];
@@ -297,7 +297,8 @@ export default class ShopRecruitPage extends BasePage {
                                           borderRadius: this.state.canOpen ? 5 : ScreenUtils.autoSizeWidth(345) / 2,
                                           width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(345)
                                       }]}>
-                        <Text style={{ fontSize: 16, color: DesignRule.mainColor }} allowFontScaling={false}>{'取消开启'}</Text>
+                        <Text style={{ fontSize: 16, color: DesignRule.mainColor }}
+                              allowFontScaling={false}>{'取消开启'}</Text>
                     </TouchableOpacity>
                     {
                         this.state.canOpen ? <NoMoreClick onPress={this._openStore} style={styles.open}>
@@ -320,7 +321,8 @@ export default class ShopRecruitPage extends BasePage {
                                               borderRadius: ScreenUtils.autoSizeWidth(345) / 2,
                                               width: ScreenUtils.autoSizeWidth(345)
                                           }]}>
-                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }} allowFontScaling={false}>{'退出拼店'}</Text>
+                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }}
+                                  allowFontScaling={false}>{'退出拼店'}</Text>
                         </TouchableOpacity>
                         : <TouchableOpacity onPress={this._joinStore}
                                             style={[styles.OutStore]}>

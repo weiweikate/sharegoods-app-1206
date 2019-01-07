@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.qiyukf.unicorn">
     <!-- 加入应用需要的权限 -->
     <!-- 网络相关 -->
@@ -11,7 +12,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission
+        android:name="android.permission.CHANGE_CONFIGURATION"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <!-- 读写文件 -->
@@ -200,10 +203,38 @@
             android:screenOrientation="portrait"
             android:targetActivity="com.meeruu.qiyu.activity.QiyuLeaveMessageDetailActivity"
             android:theme="@style/ysf_window_theme" />
+
         <activity
             android:name="com.meeruu.qiyu.activity.QiyuLeaveMessageDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/ysf_activity_leave_message_detail"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme" />
+        <activity-alias
+            android:name="com.qiyukf.nim.uikit.session.activity.CaptureVideoActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:targetActivity="com.meeruu.qiyu.activity.QiyuCaptureVideoActivity"
+            android:theme="@style/ysf_window_theme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name="com.meeruu.qiyu.activity.QiyuCaptureVideoActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/ysf_window_theme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity-alias
+            android:name="com.qiyukf.nim.uikit.session.activity.WatchVideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_video_play"
+            android:screenOrientation="portrait"
+            android:targetActivity="com.meeruu.qiyu.activity.QiyuWatchVideoActivity"
+            android:theme="@style/ysf_window_theme" />
+        <activity
+            android:name="com.meeruu.qiyu.activity.QiyuWatchVideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/ysf_video_play"
             android:screenOrientation="portrait"
             android:theme="@style/ysf_window_theme" />
     </application>

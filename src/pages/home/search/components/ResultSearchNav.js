@@ -30,6 +30,9 @@ export default class ResultSearchNav extends Component {
     }
 
     onChangeText = (text) => {
+        if (text.length > 60) {
+            text = text.substring(0, 60);
+        }
         this.setState({
             inputText: text
         }, () => {

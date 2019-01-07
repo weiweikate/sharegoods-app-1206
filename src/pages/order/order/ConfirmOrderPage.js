@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     View,
@@ -24,14 +24,14 @@ export default class ConfirmOrderPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            viewData: [],
+            viewData: []
         };
         this.canCommit = true;
         confirmOrderModel.clearData();
     }
 
     $navigationBarOptions = {
-        title: "确认订单",
+        title: '确认订单',
         show: true // false则隐藏导航
     };
     $getPageStateOptions = () => {
@@ -62,8 +62,9 @@ export default class ConfirmOrderPage extends BasePage {
                             goodsName={item.productName}
                             salePrice={StringUtils.formatMoneyString(item.unitPrice)}
                             category={item.specValues}
-                            goodsNum={"x" + item.quantity}
-                            onPress={()=>{}}
+                            goodsNum={'x' + item.quantity}
+                            onPress={() => {
+                            }}
                         />;
                     })}
                     <ConfirmPriceView jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}/>
@@ -73,7 +74,8 @@ export default class ConfirmOrderPage extends BasePage {
         );
 
     };
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         confirmOrderModel.clearData();
         this.keyboardDidShowListener.remove();
         this.keyboardDidHideListener.remove();
@@ -112,29 +114,29 @@ export default class ConfirmOrderPage extends BasePage {
         // bridge.showLoading();
         bridge.hiddenLoading();
         try {
-            let data = await  confirmOrderModel.makeSureProduct(this.params.orderParamVO, params);
+            let data = await confirmOrderModel.makeSureProduct(this.params.orderParamVO, params);
             this.setState({ viewData: data.orderProductList });
         } catch (err) {
-               if(confirmOrderModel.isError){
-               this.setState({viewData: []})
+            if (confirmOrderModel.isError) {
+                this.setState({ viewData: [] });
             }
             if (err.code === 10009) {
-                this.$navigate("login/login/LoginPage", {
+                this.$navigate('login/login/LoginPage', {
                     callback: () => {
                         this.loadPageData(params);
                     }
                 });
-            } else if (err.code === 10003 && err.msg.indexOf("不在限制的购买时间") !== -1) {
-                Alert.alert("提示", err.msg, [
+            } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
+                Alert.alert('提示', err.msg, [
                     {
-                        text: "确定", onPress: () => {
+                        text: '确定', onPress: () => {
                             this.$navigateBack();
                         }
                     }
                     // { text: '否' }
                 ]);
             } else if (err.code === 54001) {
-                bridge.$toast("商品库存不足！");
+                bridge.$toast('商品库存不足！');
                 this.$navigateBack();
             }
             else {
@@ -146,11 +148,11 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     selectAddress = () => {//地址重新选择
-        if(confirmOrderModel.isError){
+        if (confirmOrderModel.isError) {
             return;
         }
-        this.$navigate("mine/address/AddressManagerPage", {
-            from: "order",
+        this.$navigate('mine/address/AddressManagerPage', {
+            from: 'order',
             callBack: (json) => {
                 console.log(json);
 
@@ -159,8 +161,8 @@ export default class ConfirmOrderPage extends BasePage {
                     tokenCoin: 0,
                     userCouponCode: confirmOrderModel.userCouponCode
                 };
-                confirmOrderModel.tokenCoinText="选择使用1元券",
-                    confirmOrderModel.tokenCoin=0
+                confirmOrderModel.tokenCoinText = '选择使用1元券',
+                    confirmOrderModel.tokenCoin = 0;
                 confirmOrderModel.addressId = json.id;
                 this.loadPageData(params);
             }
@@ -170,46 +172,46 @@ export default class ConfirmOrderPage extends BasePage {
         if(!this.canCommit){
             return;
         }
-        this.canCommit=false;
+        this.canCommit = false;
         bridge.showLoading();
         try {
             let data = await confirmOrderModel.submitProduct(this.params.orderParamVO);
-            this.canCommit=true;
+            this.canCommit = true;
             this.replaceRouteName(data);
         } catch (err) {
-            this.canCommit=true
+            this.canCommit = true;
             if (err.code === 10009) {
-                this.$navigate("login/login/LoginPage", {
+                this.$navigate('login/login/LoginPage', {
                     callback: () => {
                         this.loadPageData;
                     }
                 });
-            } else if (err.code === 10003 && err.msg.indexOf("不在限制的购买时间") !== -1) {
-                Alert.alert("提示", err.msg, [
+            } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
+                Alert.alert('提示', err.msg, [
                     {
-                        text: "确定", onPress: () => {
+                        text: '确定', onPress: () => {
                             this.$navigateBack();
                         }
                     }
                     // { text: '否' }
                 ]);
             } else if (err.code === 54001) {
-                bridge.$toast("商品库存不足！");
+                bridge.$toast('商品库存不足！');
                 this.$navigateBack();
             }
             else {
-                bridge.$toastShow(err.msg);
+                bridge.$toast(err.msg);
             }
         }
 
     };
     //选择优惠券
     jumpToCouponsPage = (params) => {
-        if(confirmOrderModel.isError){
+        if (confirmOrderModel.isError) {
             return;
         }
-        if (params === "justOne") {
-            this.$navigate("mine/coupons/CouponsPage", {
+        if (params === 'justOne') {
+            this.$navigate('mine/coupons/CouponsPage', {
                 justOne: (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) : 1,
                 callBack: (data) => {
                     console.log(typeof data);
@@ -220,29 +222,37 @@ export default class ConfirmOrderPage extends BasePage {
                             addressId: confirmOrderModel.addressId
                         };
                         confirmOrderModel.tokenCoin = parseInt(data) > 0 && parseInt(data) <= (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? parseInt(data) : 0,
-                            confirmOrderModel.tokenCoinText = parseInt(data) > 0 && (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? "-¥" + parseInt(data) : "选择使用1元券";
+                            confirmOrderModel.tokenCoinText = parseInt(data) > 0 && (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? '-¥' + parseInt(data) : '选择使用1元券';
                         this.loadPageData(params);
                     }
                 }
             });
         } else {
-            this.$navigate("mine/coupons/CouponsPage", {
+            this.$navigate('mine/coupons/CouponsPage', {
                 fromOrder: 1,
                 orderParam: confirmOrderModel.orderParamVO, callBack: (data) => {
-                    console.log("CouponsPage", data);
+                    console.log('CouponsPage', data);
                     if (data && data.id) {
-                        let params = { userCouponCode: data.code, tokenCoin: 0,addressId: confirmOrderModel.addressId};
+                        let params = {
+                            userCouponCode: data.code,
+                            tokenCoin: 0,
+                            addressId: confirmOrderModel.addressId
+                        };
                         confirmOrderModel.userCouponCode = data.code,
                             confirmOrderModel.couponName = data.name,
                             confirmOrderModel.tokenCoin = 0,
-                            confirmOrderModel.tokenCoinText = "选择使用1元券",
+                            confirmOrderModel.tokenCoinText = '选择使用1元券',
                             this.loadPageData(params);
-                    } else if (data === "giveUp") {
+                    } else if (data === 'giveUp') {
                         confirmOrderModel.userCouponCode = null,
                             confirmOrderModel.couponName = null,
                             confirmOrderModel.tokenCoin = 0,
-                            confirmOrderModel.tokenCoinText = "选择使用1元券",
-                        this.loadPageData({userCouponCode: null, tokenCoin: 0,addressId: confirmOrderModel.addressId});
+                            confirmOrderModel.tokenCoinText = '选择使用1元券',
+                            this.loadPageData({
+                                userCouponCode: null,
+                                tokenCoin: 0,
+                                addressId: confirmOrderModel.addressId
+                            });
                     }
                 }
             });
@@ -252,7 +262,7 @@ export default class ConfirmOrderPage extends BasePage {
     replaceRouteName(data) {
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
-            routeName: "payment/PaymentMethodPage",
+            routeName: 'payment/PaymentMethodPage',
             params: {
                 orderNum: data.orderNo,
                 amounts: data.payAmount,

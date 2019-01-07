@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     },
     /*item*/
     itemView: {
+        width:itemWidth,
         marginLeft: 15, borderRadius: 5, borderWidth: 1, overflow: 'hidden'
     },
     itemImg: {

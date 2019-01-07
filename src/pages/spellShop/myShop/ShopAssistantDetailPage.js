@@ -213,7 +213,8 @@ const styles = StyleSheet.create({
     },
     headImg: {
         width: 68,
-        height: 68
+        height: 68,
+        borderRadius:34
     },
     shopInContainer: {
         height: 105 / 375 * SCREEN_WIDTH,

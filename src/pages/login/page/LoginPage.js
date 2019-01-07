@@ -16,7 +16,7 @@ import { NavigationActions } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
-import { homeModule } from '../../home/Modules'
+import { homeModule } from '../../home/Modules';
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
@@ -163,6 +163,7 @@ export default class LoginPage extends BasePage {
                         wechatVersion: ''
                     }).then((res) => {
                         if (res.code === 34005) {
+                            data.title = '绑定手机号';
                             this.$navigate('login/login/RegistPage', data);
                         } else if (res.code === 10000) {
                             UserModel.saveUserInfo(res.data);
@@ -177,6 +178,7 @@ export default class LoginPage extends BasePage {
                         }
                     }).catch((error) => {
                         if (error.code === 34005) {
+                            data.title = '绑定手机号';
                             this.$navigate('login/login/RegistPage', data);
                         }
                         bridge.$toast(data.msg);

@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 44
-        versionName '4.4.0'
+        versionCode 50
+        versionName '4.8.0'
     }
 
     sourceSets {
@@ -37,5 +37,5 @@ dependencies {
         exclude group: 'com.android.support'
     }
     api project(path: ':commonlib')
-    api files('libs/qiyu-sdk-4.6.0.jar')
+    api files('libs/qiyu-sdk-4.8.0.jar')
 }

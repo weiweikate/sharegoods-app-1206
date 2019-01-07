@@ -29,17 +29,13 @@ export default class SearchBar extends Component {
 
 
     onChangeText = (text) => {
-        if (text !== '') {
-            this.setState({
-                isShowInputClear: true,
-                inputText: text
-            });
-        } else {
-            this.setState({
-                isShowInputClear: false,
-                inputText: text
-            });
+        if (text.length > 60) {
+            text = text.substring(0, 60);
         }
+
+        this.setState({
+            inputText: text
+        });
 
         text = StringUtils.trim(text);
         if (this.props.onChangeText) {
@@ -60,7 +56,7 @@ export default class SearchBar extends Component {
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.contentView}>
                     <View style={styles.inputView}>
-                        <TextInput style={{ marginLeft: 24, padding: 0 }}
+                        <TextInput style={{ marginLeft: 16, padding: 0, paddingRight: 16 }}
                                    keyboardType='web-search'
                                    placeholder={this.props.placeholder}
                                    placeholderTextColor={DesignRule.textColor_hint}

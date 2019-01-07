@@ -34,6 +34,11 @@ export default class SelectAreaPage extends BasePage {
         this.getArea();
     }
 
+    // 重新加载
+    _reload = () => {
+        this.getArea();
+    };
+
     getArea = () => {
         MineAPI.getAreaList({ fatherCode: this.state.fatherCode }).then((response) => {
             this.setState({

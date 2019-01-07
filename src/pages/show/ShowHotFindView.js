@@ -21,7 +21,8 @@ export default class ShowHotView extends Component {
 
     state = {
         isEnd: false,
-        isFetching: false
+        isFetching: false,
+        errorMsg: ''
     }
 
     constructor(props) {
@@ -40,7 +41,7 @@ export default class ShowHotView extends Component {
             return
         }
         setTimeout(() => {
-            this.setState({ isFetching: true})
+            this.setState({ isFetching: true, errorMsg: ''})
             this.recommendModules.getMoreRecommendList().then(data => {
                 console.log('infiniting'.data);
                 if (data && data.length !== 0) {
@@ -49,6 +50,8 @@ export default class ShowHotView extends Component {
                 } else {
                     this.setState({ isFetching: false, isEnd: true})
                 }
+            }).catch((error) => {
+                this.setState({errorMsg: '获取列表错误', isFetching: false})
             });
             done();
         }, 1000);
@@ -66,7 +69,7 @@ export default class ShowHotView extends Component {
 
     refreshing(done) {
         let currentDate = new Date()
-        this.setState({ isEnd: false, isFetching: true})
+        this.setState({ isEnd: false, isFetching: true, errorMsg: ''})
         this.recommendModules.isEnd = false
         setTimeout(() => {
             this.waterfall && this.waterfall.clear();
@@ -75,6 +78,8 @@ export default class ShowHotView extends Component {
             this.recommendModules.fetchRecommendList({}, currentDate, 1).then(data => {
                 this.setState({ isFetching: false})
                 this.waterfall.addItems(data)
+            }).catch((error) => {
+                this.setState({errorMsg: '获取列表错误', isFetching: false})
             });
             done && done();
         }, 1000);
@@ -84,7 +89,7 @@ export default class ShowHotView extends Component {
         const { navigate } = this.props;
         data.click = data.click + 1
         // this.recommendModules.recommendList.replace
-        navigate && navigate('show/ShowDetailPage', { id: data.id });
+        navigate && navigate('show/ShowDetailPage', { id: data.id, code: data.code });
     }
 
     renderItem = (data) => {
@@ -109,7 +114,21 @@ export default class ShowHotView extends Component {
 
     _renderInfinite() {
         return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.state.isEnd ? <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.state.isFetching ? <Text style={styles.text} allowFontScaling={false}>加载中...</Text> : <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}
+            {
+                this.state.errorMsg
+                ?
+                <Text style={styles.text} allowFontScaling={false}>{this.state.errorMsg}</Text>
+                :
+                    this.state.isEnd
+                    ?
+                    <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
+                    :
+                    this.state.isFetching
+                    ?
+                    <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
+                    :
+                    <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
+            }
         </View>
     }
 

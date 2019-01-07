@@ -3,7 +3,7 @@ import EmptyUtils from './EmptyUtils';
 
 const isEmpty = (param) => {
     let input = param + '';
-    return input === '' || input === 'undefined' || input === 'null' || input === '[]' || input === ' ';
+    return input.trim() === '' || input === 'undefined' || input === 'null' || input === '[]' || input === ' ';
 };
 export const isNoEmpty = (input) => {
     return !isEmpty(input);
@@ -32,7 +32,7 @@ const formatMoneyString = (num, needSymbol = true) => {
     return temp;
 };
 const checkPhone = (str) => {
-    let myreg = /^[1][0-9][0-9]{9}$/;
+    let myreg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
     if (!myreg.test(str)) {
         return false;
     } else {
@@ -208,6 +208,11 @@ function trim(s) {
     return rtrim(ltrim(s));
 }
 
+//去左右空格
+function checkEmoji(s) {
+    let reg = /(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/g;
+    return reg.test(s);
+}
 
 //手机号中间4位用*代替
 function encryptPhone(s) {
@@ -273,6 +278,7 @@ export default {
     clipboardSetString,
     clipboardGetString,
     trim,
+    checkEmoji,
     encryptPhone,
     formatPhoneNumber,
     parsingRoute
