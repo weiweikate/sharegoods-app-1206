@@ -8,6 +8,7 @@
  * Created by huchao on 2018/12/13.
  *
  */
+
 'use strict';
 
 import React, { Component } from 'react';
@@ -25,7 +26,7 @@ import {
 } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';
-import { activityString, getSelectImage, statueImage } from '../model/ShopCartMacro';
+import { activityString, getSelectImage, getTipString, statueImage } from '../model/ShopCartMacro';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
@@ -39,7 +40,9 @@ const dismissKeyboard = require('dismissKeyboard');
  * return 0 未开始 1进行中 2已结束
  */
 const getSkillIsBegin = (itemData) => {
-    if ((new Date().getTime()) < itemData.activityBeginTime) {
+
+
+    if (itemData.nowTime < itemData.activityBeginTime) {
         return 0;
     } else if (
         (new Date().getTime()) > itemData.activityBeginTime &&
@@ -170,17 +173,18 @@ export default class ShopCartCell extends Component {
                                     }}/>
 
                                 {
-                                    itemData.amount > itemData.sellStock
-                                        ?
+
+                                    // itemData.amount > itemData.sellStock
+                                    //     ?
                                         <UIText
-                                            value={'库存不足'}
+                                            value={getTipString(itemData)}
                                             numberOfLines={2}
                                             style={{
                                                 fontSize: 11,
                                                 color: DesignRule.mainColor
                                             }}/>
-                                        :
-                                        null
+                                        // :
+                                        // null
                                 }
 
                             </View>

@@ -160,6 +160,8 @@ export default class SectionHeaderView extends Component {
      * 清除当前组失效商品
      */
     clearAllInvaildGood = () => {
+
+
         const { sectionData } = this.props;
         let  deleteSkuCodes = [];
         sectionData.data.map(item=>{

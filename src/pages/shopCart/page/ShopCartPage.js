@@ -357,7 +357,7 @@ export default class ShopCartPage extends BasePage {
         let haveNaNGood = false;
         let tempArr = [];
         selectArr.map(good => {
-            if (good.amount > good.stock) {
+            if (good.amount > good.sellStock) {
                 isCanSettlement = false;
             }
             if (good.amount > 0 && !isNaN(good.amount)) {
@@ -384,7 +384,7 @@ export default class ShopCartPage extends BasePage {
                 buyGoodsArr.push({
                     skuCode: goods.skuCode,
                     quantity: goods.amount,
-                    productCode: goods.productCode
+                    productCode: goods.spuCode
                 });
             });
             this.$navigate('order/order/ConfirOrderPage', {
@@ -404,7 +404,7 @@ export default class ShopCartPage extends BasePage {
         //跳转产品详情
         this.$navigate('home/product/ProductDetailPage', {
             productId: itemData.productId,
-            productCode: itemData.productCode,
+            productCode: itemData.spuCode,
             preseat: '购物车'
         });
     };

@@ -38,4 +38,35 @@ const getSelectImage =(itemData)=>{
     }
 }
 
-export {activityCode,activityString,statueImage,getSelectImage}
+const getTipString = (itemData)=>{
+    let tipString = '';
+   if (itemData.amount > itemData.sellStock) {
+       tipString = tipString + '库存不足';
+   }
+
+   if(itemData.activityType && itemData.activityType === 1){
+       //秒杀活动商品
+       if (itemData.shoppingCartActivity
+           &&itemData.shoppingCartActivity.experience
+           &&itemData.shoppingCartActivity.experience.beginTime
+       ){
+           if (itemData.nowTime < itemData.shoppingCartActivity.experience.beginTime) {
+               tipString += '秒杀活动未开始,暂不可购买~';
+           }else if (
+               itemData.shoppingCartActivity.experience.beginTime < itemData.nowTime &&
+               itemData.shoppingCartActivity.experience.endTime > itemData.nowTime
+           ) {
+               tipString += '该商品正在进行秒杀活动,快去看看~';
+           }else {
+
+           }
+       }
+   }
+   if (itemData.activityType && itemData.activityType === 2){
+       tipString += '该商品正在进行降价拍活动,快去看看~';
+   }
+
+   return tipString;
+}
+
+export {activityCode,activityString,statueImage,getSelectImage,getTipString}

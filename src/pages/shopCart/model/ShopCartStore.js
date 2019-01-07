@@ -7,10 +7,7 @@ import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import shopCartCacheTool from './ShopCartCacheTool';
 
 // import testData from './testData';
-
-
 class ShopCartStore {
-
     needSelectGoods = [];
     @observable
     isRefresh = false;
@@ -127,7 +124,6 @@ class ShopCartStore {
             return false;
         }
     }
-
     /**
      * 组装打包购物车数据
      */
@@ -138,7 +134,12 @@ class ShopCartStore {
         // let originData = testData;
         console.log('------' + response);
         let tempAllData = [];
+        // this.data = tempAllData;
         //有效商品
+        if (response === null){
+            this.data = [];
+            return;
+        }
         let effectiveArr = originData.shoppingCartGoodsVOS;
         if (effectiveArr && effectiveArr instanceof Array && effectiveArr.length > 0) {
             effectiveArr.map((itemObj, index) => {
@@ -149,7 +150,8 @@ class ShopCartStore {
                 itemObj.data = itemObj.products;
                 itemObj.data.map((goodItem, goodItemIndex) => {
                     goodItem.isSelected = false;
-                    goodItem.key = goodItemIndex;
+                    goodItem.key = ''+index+goodItemIndex;
+                    goodItem.nowTime = itemObj.nowTime;//系统当前时间戳
                     //从订单过来的选中
                     this.needSelectGoods.map(selectGood => {
                         if (selectGood.productCode === goodItem.productCode &&
@@ -188,9 +190,7 @@ class ShopCartStore {
             invalidObj.data = InvalidArr[0].products;
             invalidObj.data.map((goodItem, goodItemIndex) => {
                 goodItem.isSelected = false;
-                goodItem.key = goodItemIndex;
-
-
+                goodItem.key = ''+tempAllData.length + goodItemIndex;
             });
             invalidObj.sectionIndex = tempAllData.length;
             tempAllData.push(invalidObj);
@@ -263,7 +263,7 @@ class ShopCartStore {
                 });
                 if (items.rules instanceof Array && items.rules.length > 0) {
                     if (totalSelectMoney === 0) {
-                        middleTitleTip = '满' + items.rules[0].startPrice + '元减,经验值翻' + items.rules[0].rate + '倍,送' + items.startCount + '张优惠券';
+                        middleTitleTip = '购买满' + items.rules[0].startPrice + '元减,经验值翻' + items.rules[0].rate + '倍,送' + items.startCount + '张优惠券';
                         items.middleTitle = middleTitleTip;
                     } else {
                         let rulesArr = items.rules;
@@ -275,7 +275,7 @@ class ShopCartStore {
                                 achieveRuleIndex = ruleIndex;
                             }
                         });
-                        middleTitleTip = '满' + items.rules[achieveRuleIndex].startPrice + '元减,经验值翻' + items.rules[achieveRuleIndex].rate + '倍,';
+                        middleTitleTip = '购买满' + items.rules[achieveRuleIndex].startPrice + '元减,经验值翻' + items.rules[achieveRuleIndex].rate + '倍,';
                         //计算优惠券
                         let totalYouHuiJuan = items.rules[achieveRuleIndex].startPrice / items.startPrice;
                         if (totalYouHuiJuan > items.maxCount) {
@@ -283,12 +283,12 @@ class ShopCartStore {
                         }
                         middleTitleTip = middleTitleTip + '送' + totalYouHuiJuan + '张优惠券';
                         if (totalSelectMoney - items.rules[achieveRuleIndex].startPrice < 0) {
-                            middleTitleTip = middleTitleTip + '差' + (items.rules[achieveRuleIndex].startPrice - totalSelectMoney).toFixed(1) + '元';
+                            middleTitleTip = middleTitleTip + '还差' + (items.rules[achieveRuleIndex].startPrice - totalSelectMoney).toFixed(1) + '元';
                         }
                         items.middleTitle = middleTitleTip;
                     }
                 } else {
-                    items.middleTitle = '暂无规则';
+                    items.middleTitle = '';
                 }
             }
         });
