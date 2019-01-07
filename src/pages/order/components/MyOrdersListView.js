@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, NativeModules, Alert, DeviceEventEmitter, Keyboard ,TouchableWithoutFeedback,
+import { View,  Alert, DeviceEventEmitter, Keyboard ,TouchableWithoutFeedback,
     StyleSheet,TouchableOpacity,Image} from "react-native";
 import RefreshList from '../../../components/ui/RefreshList';
 import constants from '../../../constants/constants';
@@ -129,7 +129,7 @@ export default class MyOrdersListView extends Component {
                         }).then((response) => {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
-                                NativeModules.commModule.toast('订单已取消');
+                                Toast.$toast('订单已取消');
                                 track(trackEvent.cancelPayOrder,{orderID:this.state.allData[this.state.index].orderNo,orderAmount:this.state.allData[this.state.index].orderAmount
                                     ,actualPaymentAmount:this.state.allData[this.state.index].payAmount,paymentMethod:null,ifUseOneYuan:this.state.allData[this.state.index].tokenCoinAmount>0?true:false,
                                     ifUseCoupons:this.state.allData[this.state.index].couponAmount>0?true:false,couponsName:'',couponsAmount:this.state.allData[this.state.index].couponAmount,
@@ -138,11 +138,11 @@ export default class MyOrdersListView extends Component {
                                 index = -1;
                                 this.onRefresh();
                             } else {
-                                NativeModules.commModule.toast(response.msg);
+                                Toast.$toast(response.msg);
                             }
                         }).catch(e => {
                             Toast.hiddenLoading();
-                            NativeModules.commModule.toast(e.msg);
+                            Toast.$toast(e.msg);
                         });
                     }}
                 />
@@ -301,7 +301,7 @@ export default class MyOrdersListView extends Component {
             this.isFirst = false;
         }).catch(e => {
             Toast.hiddenLoading();
-            NativeModules.commModule.toast(e.msg);
+            Toast.$toast(e.msg);
             if (e.code === 10009) {
                 this.props.nav('login/login/LoginPage');
             }
@@ -329,7 +329,7 @@ export default class MyOrdersListView extends Component {
             }).catch(e => {
                 Toast.hiddenLoading();
                 this.setState({isError:true,errMsgText:e.msg||'未知错误'})
-                NativeModules.commModule.toast(e.msg);
+                Toast.$toast(e.msg);
             });
 
             return;
@@ -365,7 +365,7 @@ export default class MyOrdersListView extends Component {
         } else {
             this.props.nav('order/order/MyOrdersDetailPage', {
                 orderNo: this.state.viewData[index].orderNo,
-                callBack: () => this.onRefresh
+                callBack: this.onRefresh
             });
         }
     };
@@ -390,7 +390,7 @@ export default class MyOrdersListView extends Component {
                     this.setState({ isShowSingleSelctionModal: true });
                     this.cancelModal && this.cancelModal.open();
                 } else {
-                    NativeModules.commModule.toast('无取消理由');
+                    Toast.$toast('无取消理由');
                 }
 
                 break;
@@ -416,7 +416,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 5:
                 if (this.state.viewData[index].expList.length === 0) {
-                    NativeModules.commModule.toast('当前物流信息不存在！');
+                    Toast.$toast('当前物流信息不存在');
                 }
                 else if (this.state.viewData[index].expList.length === 1&&this.state.viewData[index].unSendProductInfoList.length==0) {
                     this.props.nav('order/logistics/LogisticsDetailsPage', {
@@ -441,11 +441,11 @@ export default class MyOrdersListView extends Component {
                             Toast.showLoading();
                             OrderApi.confirmReceipt({ orderNo: this.state.viewData[index].orderNo }).then((response) => {
                                 Toast.hiddenLoading();
-                                NativeModules.commModule.toast('确认收货成功');
+                                Toast.$toast('确认收货成功');
                                 this.onRefresh();
                             }).catch(e => {
                                 Toast.hiddenLoading();
-                                NativeModules.commModule.toast(e.msg);
+                                Toast.$toast(e.msg);
                             });
                         }
                     }
@@ -464,11 +464,11 @@ export default class MyOrdersListView extends Component {
                             Toast.showLoading();
                             OrderApi.deleteOrder({ orderNo: this.state.viewData[index].orderNo }).then((response) => {
                                 Toast.hiddenLoading();
-                                NativeModules.commModule.toast('订单已删除！');
+                                Toast.$toast('订单已删除！');
                                 this.onRefresh();
                             }).catch(e => {
                                 Toast.hiddenLoading();
-                                NativeModules.commModule.toast(e.msg);
+                                Toast.$toast(e.msg);
                             });
                         }
                     }
@@ -478,7 +478,7 @@ export default class MyOrdersListView extends Component {
             case 8:
                 let cartData = [];
                 this.state.viewData[index].orderProduct.map((item, index) => {
-                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
+                    cartData.push({ spuCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
                 });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
@@ -495,11 +495,11 @@ export default class MyOrdersListView extends Component {
                             Toast.showLoading();
                             OrderApi.deleteOrder({ orderNo: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
-                                NativeModules.commModule.toast('订单已删除！');
+                                Toast.$toast('订单已删除！');
                                 this.onRefresh();
                             }).catch(e => {
                                 Toast.hiddenLoading();
-                                NativeModules.commModule.toast(e.msg);
+                                Toast.$toast(e.msg);
                             });
                         }
                     }

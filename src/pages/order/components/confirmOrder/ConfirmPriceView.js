@@ -5,7 +5,6 @@ import {
     View,
     Image,
     TextInput as RNTextInput,
-    KeyboardAvoidingView
 } from "react-native";
 import {
     UIText,NoMoreClick
@@ -23,7 +22,7 @@ export default class ConfirmPriceView extends Component {
     render() {
         return(
             <View>
-                {this.renderCouponsPackage()}
+                {/*{this.renderCouponsPackage()}*/}
                 {this.renderPriceView()}
             </View>
         )
@@ -36,8 +35,7 @@ export default class ConfirmPriceView extends Component {
     };
     renderPriceView = () => {
         return (
-             <KeyboardAvoidingView
-                behavior="padding"
+             <View
              style={{ backgroundColor: "white" }}>
                 <NoMoreClick style={styles.couponsStyle}
                                   disabled={!confirmOrderModel.canUseCou}
@@ -87,8 +85,9 @@ export default class ConfirmPriceView extends Component {
                         />
                     </View>
                 </NoMoreClick>
+                 <View style={{height:confirmOrderModel.TnHeight||0.1,backgroundColor:'white'}}/>
                 {this.renderLine()}
-             </KeyboardAvoidingView>
+             </View>
         );
     };
     renderCouponsPackage = () => {
