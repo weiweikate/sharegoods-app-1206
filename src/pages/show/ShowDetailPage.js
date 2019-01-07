@@ -48,7 +48,9 @@ export default class ShowDetailPage extends BasePage {
         }
 
     }
-
+    $isMonitorNetworkStatus() {
+        return true;
+    }
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',

@@ -98,7 +98,7 @@ export default class RefreshList extends Component {
     renderEmpty = () => {
         return (
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
-                              onPress={() => this.props.onRefresh()}>
+                              onPress={() =>!this.props.emptyNoRefresh && this.props.onRefresh()}>
                 <Image style={{ height: 110, width: 110 }} source={this.state.emptyIcon} resizeMode={'contain'}/>
                 <Text
                     style={{ marginTop: 20, fontSize: 14, color: DesignRule.textColor_instruction }}>{this.state.emptyTip}</Text>
