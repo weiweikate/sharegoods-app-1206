@@ -183,17 +183,23 @@ export default class ShopRecruitPage extends BasePage {
 
     //关闭店铺
     _closeStore = () => {
-        this.$loadingShow();
-        SpellShopApi.closeStore({ status: 0 }).then((data) => {
-            if (!this.props.leftNavItemHidden) {
-                this.$navigateBack();
+        Alert.alert('提示', '确定取消招募成员?', [{
+            text: '取消'
+        }, {
+            text: '确定', onPress: () => {
+                this.$loadingShow();
+                SpellShopApi.closeStore({ status: 0 }).then((data) => {
+                    if (!this.props.leftNavItemHidden) {
+                        this.$navigateBack();
+                    }
+                    spellStatusModel.getUser(2);
+                    this.$loadingDismiss();
+                }).catch((error) => {
+                    this.$loadingDismiss();
+                    this.$toastShow(error.msg);
+                });
             }
-            spellStatusModel.getUser(2);
-            this.$loadingDismiss();
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
-        });
+        }]);
     };
 
     //开启店铺
@@ -256,17 +262,23 @@ export default class ShopRecruitPage extends BasePage {
 
     //退出店铺
     _quitStore = () => {
-        this.$loadingShow();
-        SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
-            if (!this.props.leftNavItemHidden) {
-                this._loadPageData();
+        Alert.alert('提示', '确定要退出么?', [{
+            text: '取消'
+        }, {
+            text: '退出', onPress: () => {
+                this.$loadingShow();
+                SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
+                    if (!this.props.leftNavItemHidden) {
+                        this._loadPageData();
+                    }
+                    spellStatusModel.getUser(2);
+                    this.$loadingDismiss();
+                }).catch((error) => {
+                    this.$loadingDismiss();
+                    this.$toastShow(error.msg);
+                });
             }
-            spellStatusModel.getUser(2);
-            this.$loadingDismiss();
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
-        });
+        }]);
     };
 
     // 渲染头
