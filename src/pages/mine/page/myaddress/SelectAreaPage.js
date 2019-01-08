@@ -1,12 +1,12 @@
 import BasePage from '../../../../BasePage';
-import { FlatList, Image, RefreshControl, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import React from 'react';
 import UIText from '../../../../components/ui/UIText';
 import MineAPI from '../../api/MineApi';
-import bridge from '../../../../utils/bridge';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
+import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 
 const arrow_right = res.button.arrow_right;
 export default class SelectAreaPage extends BasePage {
@@ -20,7 +20,6 @@ export default class SelectAreaPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            datas: [],
             tag: props.navigation.state.params.tag,
             fatherCode: props.navigation.state.params.fatherCode
         };
@@ -32,46 +31,19 @@ export default class SelectAreaPage extends BasePage {
     }
 
     componentDidMount() {
-        // 拿数据
-        this.getArea();
+
     }
-
-    // 重新加载
-    _reload = () => {
-        this.getArea();
-    };
-
-    getArea = () => {
-        this.$loadingShow();
-        MineAPI.getAreaList({ fatherCode: this.state.fatherCode }).then((response) => {
-            this.$loadingDismiss();
-            this.setState({
-                datas: response.data || []
-            });
-        }).catch(data => {
-            this.$loadingDismiss();
-            this.$toastShow(data.msg || '请求失败');
-            bridge.$toast(data.msg);
-        });
-    };
 
     _render() {
         return (
-            <View style={{ flex: 1 }}>
-                <FlatList
-                    ref={(flatList) => this._flatList = flatList}
-                    ItemSeparatorComponent={this._separator}
-                    renderItem={this._renderItem}
-                    extraData={this.state}
-                    keyExtractor={(item) => item.id + ''}
-                    showsVerticalScrollIndicator={false}
-                    initialNumToRender={15}
-                    data={this.state.datas}
-                    refreshControl={<RefreshControl refreshing={false}
-                                                    onRefresh={this.refreshing}
-                                                    colors={[DesignRule.mainColor]}/>}
-                />
-            </View>
+            <RefreshFlatList
+                ItemSeparatorComponent={this._separator}
+                renderItem={this._renderItem}
+                isSupportLoadingMore={false}
+                url={MineAPI.getAreaList}
+                params={{ fatherCode: this.state.fatherCode }}
+                handleRequestResult={(response)=> response.data || []}
+            />
         );
     }
 
