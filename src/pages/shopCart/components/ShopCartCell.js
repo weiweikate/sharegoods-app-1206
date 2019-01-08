@@ -26,7 +26,7 @@ import {
 } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';
-import { activityString, getSelectImage, getTipString, statueImage } from '../model/ShopCartMacro';
+import { getSelectImage, getTipString, statueImage } from '../model/ShopCartMacro';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
@@ -59,18 +59,18 @@ export default class ShopCartCell extends Component {
     }
 
     render() {
-        const { itemData, rowMap, rowId, cellClickAction,sectionData } = this.props;
+        const { itemData, rowMap, rowId, cellClickAction, sectionData } = this.props;
 
         return (
             <View>
                 {
-                    this._renderCellView(itemData, rowMap, rowId, cellClickAction,sectionData)
+                    this._renderCellView(itemData, rowMap, rowId, cellClickAction, sectionData)
                 }
             </View>
         );
     }
 
-    _renderCellView = (itemData, rowMap, rowId, cellClickAction,sectionData) => {
+    _renderCellView = (itemData, rowMap, rowId, cellClickAction, sectionData) => {
         return (
             <View>
                 <TouchableHighlight
@@ -84,7 +84,7 @@ export default class ShopCartCell extends Component {
                             source={getSelectImage(itemData)}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
-                                this._selectImageClick(sectionData,rowId);
+                                this._selectImageClick(sectionData, rowId);
                             }}
                         />
                         <UIImage
@@ -92,7 +92,9 @@ export default class ShopCartCell extends Component {
                             style={[styles.validProductImg]}
                         />
                         {
-                            activityString[itemData.activityType]
+                            // activityString[itemData.activityType]
+                            getTipString(itemData).needIconText
+
                                 ?
                                 <View
                                     style={{
@@ -110,7 +112,8 @@ export default class ShopCartCell extends Component {
                                 >
                                     <UIText
                                         value={
-                                            activityString[itemData.activityType]
+                                            // activityString[itemData.activityType]
+                                            getTipString(itemData).iconText
                                         }
                                         style={
                                             {
@@ -129,7 +132,6 @@ export default class ShopCartCell extends Component {
                                 : <UIImage
                                     source={statueImage[itemData.productStatus]}
                                     style={{
-                                        // backgroundColor:DesignRule.mainColor,
                                         position: 'absolute',
                                         marginLeft: 55,
                                         width: 60,
@@ -145,7 +147,8 @@ export default class ShopCartCell extends Component {
                                         itemData.productName
                                             ?
                                             (
-                                                activityString[itemData.activityType]
+                                                // activityString[itemData.activityType]
+                                                getTipString(itemData).needIconText
                                                     ?
                                                     '    ' + itemData.productName
                                                     :
@@ -164,8 +167,9 @@ export default class ShopCartCell extends Component {
                                 />
 
                                 <UIText
-                                    // value={itemData.specString ? itemData.specString : ''}
-                                    value={itemData.specTitle?itemData.specTitle:''}
+                                    value={
+                                        itemData.specTitle && '规格: ' + itemData.specTitle.replace(new RegExp('@', 'g'), '-')
+                                    }
                                     numberOfLines={2}
                                     style={{
                                         fontSize: 13,
@@ -173,18 +177,13 @@ export default class ShopCartCell extends Component {
                                     }}/>
 
                                 {
-
-                                    // itemData.amount > itemData.sellStock
-                                    //     ?
-                                        <UIText
-                                            value={getTipString(itemData)}
-                                            numberOfLines={2}
-                                            style={{
-                                                fontSize: 11,
-                                                color: DesignRule.mainColor
-                                            }}/>
-                                        // :
-                                        // null
+                                    <UIText
+                                        value={getTipString(itemData).tipString}
+                                        numberOfLines={2}
+                                        style={{
+                                            fontSize: 11,
+                                            color: DesignRule.mainColor
+                                        }}/>
                                 }
 
                             </View>
@@ -341,7 +340,7 @@ export default class ShopCartCell extends Component {
         );
     };
 
-    _selectImageClick=(sectionData,rowId)=>{
+    _selectImageClick = (sectionData, rowId) => {
         let [...tempValues] = shopCartStore.data;
         if ((tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 0 ||
             (tempValues[sectionData.sectionIndex].data)[rowId].productStatus === 2 ||
@@ -354,7 +353,7 @@ export default class ShopCartCell extends Component {
         }
         shopCartStore.data = tempValues;
 
-    }
+    };
 
     onNumberTextChange = (itemData, text, rowId) => {
         if (itemData.productStatus === 0 || itemData.productStatus === 2) {
@@ -429,7 +428,7 @@ ShopCartCell.propTypes = {
     //cell 点击回调函数
     cellClickAction: PropTypes.func,
     //section
-    sectionData:PropTypes.object.isRequired,
+    sectionData: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({

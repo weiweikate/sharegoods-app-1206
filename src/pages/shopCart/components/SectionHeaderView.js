@@ -16,7 +16,8 @@ import React, { Component } from 'react';
 
 import {
     View,
-    StyleSheet
+    StyleSheet,
+    Alert
 } from 'react-native';
 import {
     UIText,
@@ -161,15 +162,26 @@ export default class SectionHeaderView extends Component {
      */
     clearAllInvaildGood = () => {
 
+        Alert.alert(
+            '是否清空失效商品',
+            '',
+            [
+                {text: '确定', onPress: () =>
+                    {
+                        const { sectionData } = this.props;
+                        let  deleteSkuCodes = [];
+                        sectionData.data.map(item=>{
+                            deleteSkuCodes.push({
+                                'skuCode':item.skuCode
+                            })
+                        })
+                        shopCartCacheTool.deleteShopCartGoods(deleteSkuCodes);
 
-        const { sectionData } = this.props;
-        let  deleteSkuCodes = [];
-        sectionData.data.map(item=>{
-            deleteSkuCodes.push({
-                'skuCode':item.skuCode
-            })
-        })
-        shopCartCacheTool.deleteShopCartGoods(deleteSkuCodes);
+                    }, style: 'cancel'},
+                {text: '取消', onPress: () => {}},
+            ],
+            { cancelable: false }
+        )
     };
     /**
      * 去凑单
