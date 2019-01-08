@@ -145,7 +145,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: DesignRule.textColor_instruction,
         marginTop: 28,
-        textAlign : 'center'
+        textAlign: 'center',
+        marginHorizontal: 15
     },
     btn: {
         width: 115,
