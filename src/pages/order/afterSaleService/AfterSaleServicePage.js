@@ -96,7 +96,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.productData.orderProductNo}
+                <UIText value={'订单编号：' + this.state.productData.warehouseOrderNo}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
