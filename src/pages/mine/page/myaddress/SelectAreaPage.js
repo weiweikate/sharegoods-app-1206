@@ -42,7 +42,7 @@ export default class SelectAreaPage extends BasePage {
                 isSupportLoadingMore={false}
                 url={MineAPI.getAreaList}
                 params={{ fatherCode: this.state.fatherCode }}
-                handleRequestResult={(response)=> response.data || []}
+                handleRequestResult={(response) => response.data || []}
             />
         );
     }
