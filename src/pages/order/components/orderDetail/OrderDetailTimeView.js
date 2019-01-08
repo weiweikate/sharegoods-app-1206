@@ -57,7 +57,7 @@ export default class OrderDetailTimeView extends Component {
                 {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].deliverTime)&&orderDetailModel.status<5 ?
                     <UIText value={'发货时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].deliverTime / 1000)}
                             style={styles.textOrderDownStyle}/>:null}
-                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime)&&orderDetailModel.status<5 ?
+                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].finishTime)&&orderDetailModel.status<5 ?
                     <UIText
                         value={'完成时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime ? orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000)}
                         style={styles.textOrderDownStyle}/>:null}

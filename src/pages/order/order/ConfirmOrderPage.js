@@ -2,7 +2,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ScrollView, Alert,Keyboard
+    ScrollView, Alert
 } from "react-native";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
@@ -53,7 +53,7 @@ export default class ConfirmOrderPage extends BasePage {
     _renderContent = () => {
         return (
             <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: ScreenUtils.safeBottom }}>
-                <ScrollView ref={ref=>this.orderScrol=ref}>
+                <ScrollView ref={(ref)=>this.orderScroll=ref} style={{flex:1}}>
                     <ConfirmAddressView selectAddress={() => this.selectAddress()}/>
                     {this.state.viewData.map((item, index) => {
                         return <GoodsItem
@@ -67,7 +67,8 @@ export default class ConfirmOrderPage extends BasePage {
                             }}
                         />;
                     })}
-                    <ConfirmPriceView jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}/>
+                    <ConfirmPriceView jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
+                                      />
                 </ScrollView>
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
             </View>
@@ -77,8 +78,8 @@ export default class ConfirmOrderPage extends BasePage {
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
-        this.keyboardDidShowListener.remove();
-        this.keyboardDidHideListener.remove();
+        // this.keyboardDidShowListener.remove();
+        // this.keyboardDidHideListener.remove();
     }
 
     _render() {
@@ -92,19 +93,8 @@ export default class ConfirmOrderPage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
-        this.keyboardDidShowListener=Keyboard.addListener('keyboardWillShow', (event)=>this._keyboardDidShow(event));
-        this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', (event)=>this._keyboardDidHide(event));
-    }
-    _keyboardDidShow(event){
-        console.log(11111);
-        // this.orderScrol.scrollToEnd();
-        // confirmOrderModel.TnHeight=216
-    }
-
-    _keyboardDidHide(event){
-        console.log("_keyboardDidHide");
-        // this.orderScrol.scrollTo({x:0,y:0});
-        // confirmOrderModel.TnHeight=0
+        // this.keyboardDidShowListener=Keyboard.addListener('keyboardWillChangeFrame', (event)=>this._keyboardDidShow(event));
+        // this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', (event)=>this._keyboardDidHide(event));
     }
 
     async loadPageData(params) {
@@ -150,6 +140,7 @@ export default class ConfirmOrderPage extends BasePage {
         }
         this.$navigate('mine/address/AddressManagerPage', {
             from: 'order',
+            currentId:confirmOrderModel.addressId,
             callBack: (json) => {
                 console.log(json);
 
@@ -170,6 +161,7 @@ export default class ConfirmOrderPage extends BasePage {
             return;
         }
         this.canCommit = false;
+        confirmOrderModel.isError=true;
         bridge.showLoading();
         try {
             let data = await confirmOrderModel.submitProduct(this.params.orderParamVO);
