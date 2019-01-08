@@ -37,6 +37,8 @@ export default class RequestDetailPage extends BasePage {
                     onNavigationStateChange={event => {
                         this.$NavigationBarResetTitle(this.state.title || event.title);
                     }}
+                    onError={e => {this.$NavigationBarResetTitle('加载失败')}}
+
                     // onLoadStart={() => this._onLoadStart()}
                     // onLoadEnd={() => this._onLoadEnd()}
                     // onError={e => this._onError(e)}

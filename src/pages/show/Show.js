@@ -208,7 +208,8 @@ export class ShowRecommendModules {
                 return Promise.reject('获取列表错误')
             }
         }).catch(error => {
-            return Promise.reject(error)
+            Toast.$toast(error.msg || '获取列表错误');
+            throw error
         })
     }
 
@@ -239,7 +240,8 @@ export class ShowRecommendModules {
                 return Promise.reject('获取列表错误');
             }
         }).catch(error => {
-            return Promise.reject(error);
+            Toast.$toast(error.msg || '获取列表错误');
+            throw error
         });
     };
 
@@ -277,6 +279,7 @@ export class ShowRecommendModules {
                 return Promise.reject('获取列表错误');
             }
         }).catch(error => {
+            Toast.$toast(error.msg || '获取列表错误');
             return Promise.reject(error);
         });
     };
@@ -312,15 +315,27 @@ export class ShowRecommendModules {
                 return Promise.reject('获取列表错误');
             }
         }).catch(error => {
+            Toast.$toast(error.msg || '获取列表错误');
             return Promise.reject(error);
         });
     };
 
-    batchCancelConnected = (selectedIds) => ShowApi.showCollectCancel({
+    @action batchCancelConnected = (selectedIds) => {
+        Toast.showLoading()
+        return ShowApi.showCollectCancel({
         articleId: '',
         type: 1,
         articleIds: selectedIds
-    });
+        }).then(data => {
+            Toast.hiddenLoading()
+            return Promise.resolve(data)
+        }).catch(error => {
+            Toast.hiddenLoading()
+            console.log('showCollectCancel',error)
+            Toast.$toast(error.msg || '服务器连接异常');
+            throw error
+        })
+    };
 }
 
 export class ShowDetail {
@@ -334,6 +349,7 @@ export class ShowDetail {
             return result.data;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     });
 
@@ -344,6 +360,7 @@ export class ShowDetail {
             return result.data;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     });
 

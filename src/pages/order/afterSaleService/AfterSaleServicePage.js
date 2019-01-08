@@ -521,7 +521,7 @@ class AfterSaleServicePage extends BasePage {
             return;
         }
         if (StringUtils.isEmpty(returnReason)) {
-            NativeModules.commModule.toast('请选择售后原因');
+            NativeModules.commModule.toast('请选择'+ ['退款', '退货', '换货'][pageType] +  '原因');
             return;
         }
 

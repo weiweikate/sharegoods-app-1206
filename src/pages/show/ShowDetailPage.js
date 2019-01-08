@@ -17,6 +17,8 @@ import { PageLoadingState } from '../../components/pageDecorator/PageState'
 import {
     MRText as Text,
 } from '../../components/ui';
+import Toast from '../../utils/bridge'
+import { NetFailedView } from '../../components/pageDecorator/BaseView'
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -32,12 +34,6 @@ const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} on
 @observer
 export default class ShowDetailPage extends BasePage {
 
-    $getPageStateOptions = () => {
-        return {
-            loadingState: this.state.loadingState
-        };
-    };
-
     $navigationBarOptions = {
         title: '',
         show: false
@@ -47,7 +43,8 @@ export default class ShowDetailPage extends BasePage {
         this.params = this.props.navigation.state.params || {}
         this.showDetailModule = new ShowDetail()
         this.state = {
-            loadingState: PageLoadingState.loading,
+            pageState: PageLoadingState.loading,
+            errorMsg: ''
         }
 
     }
@@ -63,14 +60,32 @@ export default class ShowDetailPage extends BasePage {
                     if (this.params.code) {
                         this.showDetailModule.showDetailCode(this.params.code).then(() => {
                             this.setState({
-                                loadingState: PageLoadingState.success
+                                pageState: PageLoadingState.success
                             })
+                        }).catch(error => {
+                            this.setState({
+                                pageState: PageLoadingState.fail,
+                                errorMsg: error.msg || '获取详情失败'
+                            })
+                            this._whiteNavRef.setNativeProps({
+                                opacity:1
+                            });
+                            Toast.$toast(error.msg || '获取详情失败')
                         })
                     } else {
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             this.setState({
-                                loadingState: PageLoadingState.success
+                                pageState: PageLoadingState.success
                             })
+                        }).catch(error => {
+                            this.setState({
+                                pageState: PageLoadingState.fail,
+                                errorMsg: error.msg || '获取详情失败'
+                            })
+                            this._whiteNavRef.setNativeProps({
+                                opacity:1
+                            });
+                            Toast.$toast(error.msg || '获取详情失败')
                         })
                     }
                 }
@@ -83,6 +98,7 @@ export default class ShowDetailPage extends BasePage {
     }
 
     _goBack() {
+        console.log('_goBack')
         const { navigation } = this.props;
         navigation.goBack(null);
     }
@@ -135,11 +151,37 @@ export default class ShowDetailPage extends BasePage {
         })
     }
 
+    _renderNormalTitle() {
+        return <View style={styles.whiteNav} ref={(ref)=> {this._whiteNavRef = ref}} opacity={0}>
+        <View style={styles.navTitle}>
+            <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
+                <Image source={res.back}/>
+            </TouchableOpacity>
+            <View style={styles.titleView}>
+                <Text style={styles.title}>秀场</Text>
+            </View>
+            <TouchableOpacity style={styles.shareView} onPress={() => {
+                this._goToShare();
+            }}>
+                <Image source={res.more}/>
+            </TouchableOpacity>
+        </View>
+    </View>
+    }
+
     _render() {
+
+        const { pageState } = this.state;
+        console.log('PageLoadingState', pageState)
+        if (pageState === PageLoadingState.fail) {
+            return <View style={styles.container}><NetFailedView netFailedInfo={{msg: this.state.errorMsg}}/>{this._renderNormalTitle()}</View>
+        }
+
         const { detail, isCollecting } = this.showDetailModule;
         if (!detail) {
             return <View style={styles.loading}/>;
         }
+        
         let content = `<div>${detail.content}</div>`;
         let products = detail.products;
         let number = detail.click
@@ -206,21 +248,7 @@ export default class ShowDetailPage extends BasePage {
                     <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.whiteNav} ref={(ref)=> {this._whiteNavRef = ref}} opacity={0}>
-                <View style={styles.navTitle}>
-                    <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                        <Image source={res.back}/>
-                    </TouchableOpacity>
-                    <View style={styles.titleView}>
-                        <Text style={styles.title}>秀场</Text>
-                    </View>
-                    <TouchableOpacity style={styles.shareView} onPress={() => {
-                        this._goToShare();
-                    }}>
-                        <Image source={res.more}/>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            {this._renderNormalTitle()}
             <View style={styles.nav} ref={(ref)=> {this._blackNavRef = ref}}>
                 <View style={styles.navTitle}>
                     <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>

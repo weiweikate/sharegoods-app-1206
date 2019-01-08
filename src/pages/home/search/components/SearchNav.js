@@ -29,17 +29,13 @@ export default class SearchBar extends Component {
 
 
     onChangeText = (text) => {
-        if (text !== '') {
-            this.setState({
-                isShowInputClear: true,
-                inputText: text
-            });
-        } else {
-            this.setState({
-                isShowInputClear: false,
-                inputText: text
-            });
+        if (text.length > 60) {
+            text = text.substring(0, 60);
         }
+
+        this.setState({
+            inputText: text
+        });
 
         text = StringUtils.trim(text);
         if (this.props.onChangeText) {
