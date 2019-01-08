@@ -2,7 +2,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ScrollView, Alert,Keyboard
+    ScrollView, Alert
 } from "react-native";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
@@ -91,23 +91,23 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        this.keyboardDidShowListener=Keyboard.addListener('keyboardWillShow', ()=>this._keyboardDidShow());
-        this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', ()=>this._keyboardDidHide());
+        // this.keyboardDidShowListener=Keyboard.addListener('keyboardWillShow', (event)=>this._keyboardDidShow(event));
+        // this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', (event)=>this._keyboardDidHide(event));
         this.loadPageData();
     }
     _keyboardDidShow=(event)=>{
         alert("_keyboardDidShow")
-        this.setState({KeyboardShown: true});
+        // this.setState({KeyboardShown: true});
         this.orderScrol.scrollToEnd();
-        confirmOrderModel.TnHeight=event.endCoordinates.height
-        console.log(event.endCoordinates.height);
+        // confirmOrderModel.TnHeight=event.endCoordinates.height
+        // console.log(event.endCoordinates.height);
     }
 
     _keyboardDidHide=()=>{
         alert("_keyboardDidHide");
-        this.setState({KeyboardShown: false});
+        // this.setState({KeyboardShown: false});
         confirmOrderModel.TnHeight=0
-        this.orderScrol.scrollToTop();
+        // this.orderScrol.scrollToTop();
     }
 
     async loadPageData(params) {
@@ -153,6 +153,7 @@ export default class ConfirmOrderPage extends BasePage {
         }
         this.$navigate('mine/address/AddressManagerPage', {
             from: 'order',
+            currentAddressId:confirmOrderModel.addressId,
             callBack: (json) => {
                 console.log(json);
 
