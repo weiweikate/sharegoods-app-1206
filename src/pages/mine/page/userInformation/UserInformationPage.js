@@ -120,11 +120,11 @@ export default class UserInformationPage extends BasePage {
     takePhoto = () => {
         BusinessUtils.getImagePicker(callback => {
             this.$loadingShow();
-            MineApi.updateUserById({ headImg: callback.imageUrl, type: 1 }).then((response) => {
+            MineApi.updateUserById({ headImg: callback.imageUrl[0], type: 1 }).then((response) => {
                 console.log(response);
                 this.$loadingDismiss();
                 if (response.code === 10000) {
-                    user.headImg = callback.imageUrl;
+                    user.headImg = callback.imageUrl[0];
                     this.$toastShow('头像修改成功');
                 }
             }).catch(err => {
@@ -134,7 +134,7 @@ export default class UserInformationPage extends BasePage {
                     this.gotoLoginPage();
                 }
             });
-        });
+        },1,true);
     };
     jumpToIDVertify2Page = () => {
         if (!user.realname) {

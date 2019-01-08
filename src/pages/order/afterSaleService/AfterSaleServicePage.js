@@ -589,9 +589,9 @@ class AfterSaleServicePage extends BasePage {
             return;
         }
         BusinessUtils.getImagePicker(callback => {
-            imageArr.push(callback.imageThumbUrl);
+            imageArr = imageArr.concat(callback.imageThumbUrl);
             this.setState({ imageArr: imageArr });
-        });
+        }, 3 - imageArr.length, false);
     };
     deletePic = (index) => {
         let imageArr = [];
