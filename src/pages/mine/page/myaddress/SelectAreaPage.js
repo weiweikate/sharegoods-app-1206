@@ -33,7 +33,7 @@ export default class SelectAreaPage extends BasePage {
 
     componentDidMount() {
         // 拿数据
-        this.getArea();
+        this._reload();
     }
 
     // 重新加载
@@ -68,7 +68,7 @@ export default class SelectAreaPage extends BasePage {
                     initialNumToRender={15}
                     data={this.state.datas}
                     refreshControl={<RefreshControl refreshing={false}
-                                                    onRefresh={this.refreshing}
+                                                    onRefresh={this._reload}
                                                     colors={[DesignRule.mainColor]}/>}
                 />
             </View>
