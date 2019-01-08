@@ -1,4 +1,4 @@
-import { Linking, NativeModules, Platform } from 'react-native';
+import { Linking, NativeModules, Platform} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
@@ -95,6 +95,17 @@ export default {
             }
         });
     },
+    // getImagePicker: (callBack, num = 1, crop = false) => {
+    //     ActionSheetIOS.showActionSheetWithOptions({
+    //             options: ['取消', '拍照', '从相册选择'],
+    //             title: '请选择方式',
+    //             cancelButtonIndex: 0,
+    //         },
+    //         (buttonIndex) => {
+    //             if (buttonIndex === 1) { /* 当接收到的索引为1，即点击了删除按钮时，执行对应操作 */ }
+    //             if (buttonIndex === 2) { /* 当接收到的索引为1，即点击了删除按钮时，执行对应操作 */ }
+    //         });
+    // },
     callPhone: (phoneNum) => {
         Linking.openURL('tel:' + phoneNum);
     }

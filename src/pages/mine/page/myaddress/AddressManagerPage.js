@@ -63,15 +63,27 @@ export default class AddressManagerPage extends BasePage {
     refreshing() {
         MineAPI.queryAddrList({}).then((response) => {
             if (response.data) {
+                let ids = [];
+                let selectIndex = -1;
                 for (let i = 0, len = response.data.length; i < len; i++) {
                     if (response.data[i].defaultStatus === 1) {
                         this.setState({
                             selectIndex: i
                         });
+                        selectIndex = i;
+                    }
+                    ids.push(response.data[i].id)
+                }
+                let currentAddressId = this.params.currentAddressId || -1
+                if (currentAddressId && ids.indexOf(currentAddressId) === -1){//当前选择地址被删除了
+                    if (selectIndex === -1) {
+                        this.params.callBack &&  this.params.callBack({});
+                    }else {
+                        this.params.callBack &&  this.params.callBack(response.data[selectIndex]);
                     }
                 }
-            } else {
-
+            } else {//没有地址时候返回data： null
+                this.params.callBack &&  this.params.callBack({});
             }
             this.setState({
                 datas: response.data || []
