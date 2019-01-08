@@ -121,7 +121,7 @@ class ShopCartCacheTool {
             }
         } else {
             //为商品添加时间戳
-            goodsItem.timestamp = (new Date().getTime());
+            // goodsItem.timestamp = (new Date().getTime());
             if (user.isLogin) {
                 //将数据添加到后台服务器
                 shopCartStore.addItemToShopCart(goodsItem);

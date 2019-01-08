@@ -105,8 +105,8 @@ class AfterSaleServiceHomePage extends BasePage {
         // let productData = this.params.pageData || {}
         let arr = [];
         for (let i = 0; i < image.length; i++) {
-            if (orderSubType === 3 && i < 2) {
-                continue;//升级礼包
+            if ((orderSubType === 3 || orderSubType === 5) && i < 2) {
+                continue;//升级礼包     //经验值专区的商品
             }
             // if ((productData.restrictions & status[i]) !== status[i]) {
                 arr.push(

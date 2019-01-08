@@ -47,12 +47,10 @@ const jumpPageParams = {
 
 };
 /**
- *
  * @param itemDta 数据源
  * @param preseat 埋点所需来源字符串
  */
 function getTopicJumpPageParam(itemData, preseat = '专题列表') {
-
 
     return {
         pageRoute: jumpPageParams[itemData.productType],
@@ -79,6 +77,5 @@ function getShowPrice(itemData) {
         '¥' + itemData[typeName[itemData.productType]];
     return showPrice;
 }
-
 
 export { getShowPrice,getTopicJumpPageParam };

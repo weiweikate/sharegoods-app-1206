@@ -102,7 +102,7 @@ export default class MyCouponsItems extends Component {
                                         </View>}
                                 <View>
                                     <Text style={{
-                                        fontSize: item.type === 4 ? 20 : (item.type === 11 ? 27 : 34),
+                                        fontSize: item.type === 4 ? 20 : (item.value && item.value.length === 3 ? 26 : 33),
                                         color: DesignRule.textColor_mainTitle
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
@@ -124,7 +124,7 @@ export default class MyCouponsItems extends Component {
                                 <Text style={{
                                     fontSize: 15,
                                     color: DesignRule.textColor_mainTitle,
-                                    marginRight: 30
+                                    marginRight: 10
                                 }} allowFontScaling={false}>
                                     {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
                                     fontSize: 11,
@@ -141,7 +141,7 @@ export default class MyCouponsItems extends Component {
                                 marginTop: 6
                             }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
                         </View>
-                        <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
+                        <Image style={{ marginTop: -6 }} source={BGR}/>
                         {item.type === 99 ?
                             <UIText value={'x' + user.tokenCoin}
                                     style={{

@@ -220,9 +220,7 @@ export default class ShopCartPage extends BasePage {
     _gotoCollectBills = (sectionData) => {
         this.$navigate(RouterMap.XpDetailPage,{
             activityCode:sectionData.activityCode
-            // activityCode:'JF201901030055'
         })
-        // console.log(sectionData);
     };
     /**
      * 渲染每行的隐藏组件
@@ -402,8 +400,15 @@ export default class ShopCartPage extends BasePage {
         }
     };
     _jumpToProductDetailPage = (itemData) => {
-        if (itemData.status === 0) {
+
+        if (itemData.productStatus === 0) {
             //失效商品不可进入详情
+            return;
+        }
+        if (itemData.sectionType === 8){
+            this.$navigate(RouterMap.XpDetailPage,{
+                activityCode:itemData.activityCode
+            })
             return;
         }
         //跳转产品详情

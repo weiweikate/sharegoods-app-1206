@@ -109,7 +109,8 @@ class ShopCartStore {
         let flag = true;
         this.data.map(items => {
             items.data.map(item => {
-                if (item.productStatus === 1) {
+                //看是否存在正常商品
+                if (item.productStatus === 1 && item.sellStock > 0) {
                     isHaveNormalGood = true;
                     if (!item.isSelected) {
                         flag = false;
@@ -148,9 +149,11 @@ class ShopCartStore {
                 itemObj.key = index;
                 itemObj.data = itemObj.products;
                 itemObj.data.map((goodItem, goodItemIndex) => {
+                    goodItem.sectionType = itemObj.activityType;//当前组所属类型 8 经验值 null是其他
                     goodItem.isSelected = false;
                     goodItem.key = ''+index+goodItemIndex;
                     goodItem.nowTime = itemObj.nowTime;//系统当前时间戳
+                    // goodItem.activityCode = itemObj.activityCode;
                     //从订单过来的选中
                     this.needSelectGoods.map(selectGood => {
                         if (selectGood.productCode === goodItem.productCode &&
@@ -495,9 +498,7 @@ class ShopCartStore {
 
     addOneMoreList(oneMoreList) {
         if (oneMoreList instanceof Array && oneMoreList.length > 0) {
-
             this.needSelectGoods = oneMoreList;
-
             ShopCartAPI.addItem(
                 {
                     shoppingCartParamList: oneMoreList

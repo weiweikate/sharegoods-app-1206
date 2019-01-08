@@ -150,6 +150,7 @@ export default class ConfirmOrderPage extends BasePage {
         }
         this.$navigate('mine/address/AddressManagerPage', {
             from: 'order',
+            currentAddressId:confirmOrderModel.addressId,
             callBack: (json) => {
                 console.log(json);
 
