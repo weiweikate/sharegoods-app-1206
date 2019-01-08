@@ -15,7 +15,7 @@ import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
-import {MRText as Text} from '../../../../components/ui'
+import { MRText as Text } from '../../../../components/ui';
 
 const {
     youhuiquan_bg_zhihui: usedBg,
@@ -105,7 +105,7 @@ export default class CouponsDetailPage extends BasePage {
                                             </View>}
                                     <View>
                                         <Text style={{
-                                            fontSize: item.type === 4 ? 20 : (item.type === 11 ? 31 : 34),
+                                            fontSize: item.type === 4 ? 20 : (item.value && item.value.length === 3 ? 26 : 33),
                                             color: DesignRule.textColor_mainTitle
                                         }} allowFontScaling={false}>{item.value}</Text>
                                     </View>
@@ -127,7 +127,7 @@ export default class CouponsDetailPage extends BasePage {
                                     <Text style={{
                                         fontSize: 15,
                                         color: DesignRule.textColor_mainTitle,
-                                        marginRight: 30
+                                        marginRight: 10
                                     }} allowFontScaling={false}>
                                         {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
                                         fontSize: 11,
@@ -144,7 +144,7 @@ export default class CouponsDetailPage extends BasePage {
                                     marginTop: 6
                                 }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
                             </View>
-                            <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
+                            <Image style={{ marginTop: -6 }} source={BGR}/>
                             {item.type === 99 ?
                                 <UIText value={'x' + user.tokenCoin}
                                         style={{
@@ -156,7 +156,8 @@ export default class CouponsDetailPage extends BasePage {
                         </View>
 
                         <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
-                            <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }} allowFontScaling={false}>{item.limit}</Text>
+                            <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }}
+                                  allowFontScaling={false}>{item.limit}</Text>
                         </View>
 
                     </ImageBackground>
@@ -164,7 +165,8 @@ export default class CouponsDetailPage extends BasePage {
                 {
                     StringUtils.isEmpty(item.remarks) ? null :
                         <View style={{ marginTop: 20, alignItems: 'flex-start', marginLeft: 10, flex: 1 }}>
-                            <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }} allowFontScaling={false}>使用说明:</Text>
+                            <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}
+                                  allowFontScaling={false}>使用说明:</Text>
                             <Text style={{
                                 marginTop: 5,
                                 color: DesignRule.textColor_secondTitle,
