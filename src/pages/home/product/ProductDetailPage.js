@@ -203,7 +203,7 @@ export default class ProductDetailPage extends BasePage {
 
     //消息数据
     _getMessageCount = () => {
-        if(user.token){
+        if (user.token) {
             MessageApi.getNewNoticeMessageCount().then(result => {
                 if (!EmptyUtils.isEmpty(result.data)) {
                     const { shopMessageCount, noticeCount, messageCount } = result.data;

@@ -11,6 +11,6 @@ export default {
         MyOrdersListPage,
         OrderSearchResultPage,
         ConfirOrderPage,
-        SearchPage
+        SearchPage,
     }
 };
