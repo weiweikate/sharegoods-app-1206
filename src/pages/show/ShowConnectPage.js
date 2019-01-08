@@ -9,7 +9,7 @@ import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 import {
-    MRText as Text,
+    MRText as Text
 } from '../../components/ui';
 
 const { px2dp } = ScreenUtils;
@@ -58,16 +58,16 @@ export default class ShowConnectPage extends BasePage {
                     this._refreshData();
                 }
             }
-        )
+        );
     }
 
     _refreshData() {
         this.waterfall && this.waterfall.clear();
         this.recommendModules.loadCollect().then(data => {
             this.setState({ firstLoad: false });
-            this.waterfall.index = 1;
+            this.waterfall && (this.waterfall.index = 1);
             if (data && data.length > 0) {
-                this.waterfall.addItems(data);
+                this.waterfall && this.waterfall.addItems(data);
             } else {
                 // this.waterfall.addItems([]);
                 this.setState({ isEmpty: true });
@@ -124,7 +124,7 @@ export default class ShowConnectPage extends BasePage {
     infiniting(done) {
         setTimeout(() => {
             this.recommendModules.getMoreCollect().then(data => {
-                this.waterfall.addItems(data);
+                this.waterfall && this.waterfall.addItems(data);
                 if (data.length > 0) {
                     this.setState({ allSelected: false });
                 }

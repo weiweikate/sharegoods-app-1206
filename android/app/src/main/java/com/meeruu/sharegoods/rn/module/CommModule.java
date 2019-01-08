@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -186,22 +187,17 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void hideLoadingDialog() {
-        loadingDialog(false);
-    }
-
-    public void loadingDialog(boolean isShow) {
-        LoadingDialogEvent event = new LoadingDialogEvent();
-        event.setShow(isShow);
-        EventBus.getDefault().post(event);
+        loadingDialog(false, "");
     }
 
     public void loadingDialog(boolean isShow, String msg) {
         LoadingDialogEvent event = new LoadingDialogEvent();
         event.setShow(isShow);
-        event.setMsg(msg);
+        if (!TextUtils.isEmpty(msg)) {
+            event.setMsg(msg);
+        }
         EventBus.getDefault().post(event);
     }
-
 
     /**
      * RCTDeviceEventEmitter方式
