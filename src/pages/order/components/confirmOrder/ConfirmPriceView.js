@@ -4,7 +4,7 @@ import {
     StyleSheet,
     View,
     Image,
-    TextInput as RNTextInput,Platform
+    TextInput as RNTextInput
 } from "react-native";
 import {
     UIText,NoMoreClick
@@ -82,34 +82,17 @@ export default class ConfirmPriceView extends Component {
                             placeholder={"选填：填写内容已与卖家协商确认"}
                             placeholderTextColor={DesignRule.textColor_instruction}
                             numberOfLines={1}
-                            onFocus={this._onFocus}
-                            onBlur={this._onBlur}
+                            onFocus={this.props._onFocus}
+                            onBlur={this.props._onBlur}
                             underlineColorAndroid={"transparent"}
                         />
                     </View>
                 </NoMoreClick>
                  {this.renderLine()}
-                 <View style={{height:confirmOrderModel.TnHeight||0.1,backgroundColor:'white'}}/>
-                {this.renderLine()}
+
              </View>
         );
     };
-    _onFocus=()=>{
-        // console.log("_onFocus",confirmOrderModel.orderScroll,this.orderScroll)
-        // this.refs.orderScrol.scrollToTop({animated: true});
-        if(Platform.OS === 'android'){
-            confirmOrderModel.TnHeight=218
-
-        }
-
-    }
-    _onBlur=()=>{
-        // this.refs.orderScrol.scrollTo({x:0,y:0});
-        if(Platform.OS === 'android'){
-            // confirmOrderModel.orderScroll.scrollTo({x:0,y:0});
-            confirmOrderModel.TnHeight=0
-        }
-    }
     renderCouponsPackage = () => {
         return (
             <View style={{ borderTopColor: DesignRule.lineColor_inWhiteBg, borderTopWidth: 0.5 }}>

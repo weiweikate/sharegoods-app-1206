@@ -2,7 +2,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ScrollView, Alert
+    ScrollView, Alert, Platform
 } from "react-native";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
@@ -68,18 +68,27 @@ export default class ConfirmOrderPage extends BasePage {
                         />;
                     })}
                     <ConfirmPriceView jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
-                                      />
+                                      _onFocus={()=>this._onFocus()}  _onBlur={()=>this._onBlur()}/>
                 </ScrollView>
+                <View style={{height:confirmOrderModel.TnHeight||0.1,backgroundColor:'white'}}/>
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
             </View>
         );
 
     };
+    _onFocus(){
+        if(Platform.OS === 'android'){
+            confirmOrderModel.TnHeight=220
+        }
+    }
+    _onBlur(){
+        if(Platform.OS === 'android'){
+            confirmOrderModel.TnHeight=0
+        }
+    }
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
-        // this.keyboardDidShowListener.remove();
-        // this.keyboardDidHideListener.remove();
     }
 
     _render() {
