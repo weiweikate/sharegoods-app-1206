@@ -11,7 +11,11 @@ class XpDetailModel {
     @observable basePageState = PageLoadingState.null;
     @observable basePageError = {};
 
-    @observable baseData = '';
+    /**
+     * 状态（0：删除1：未开始 2：进行中3：已结束）
+     */
+    @observable status;
+
     /*起始金额，送优惠券*/
     @observable startPrice = '';
     /*送优惠券数量*/
@@ -128,6 +132,7 @@ class XpDetailModel {
     @action saveActData = (data) => {
         this.basePageState = PageLoadingState.success;
         data = data || {};
+        this.status = data.status;
         this.startPrice = data.startPrice || '';
         this.startCount = data.startCount || '';
         this.maxCount = data.maxCount || '';
@@ -143,8 +148,8 @@ class XpDetailModel {
         this.rules = data.rules || [];
         this.coupon = (data.coupon || {}).coupon || {};
 
-        /*请求默认第一个数据*/
-        if (this.prods.length > 0) {
+        /*请求默认第一个数据&&在售*/
+        if (this.prods.length > 0 && this.status === 2) {
             let item = this.prods[0];
             this.selectSpuCode(item.spuCode);
         }
@@ -195,6 +200,7 @@ class XpDetailModel {
     request_getProductDetailByCode = () => {
         this.productPageState = PageLoadingState.loading;
         HomeAPI.getProductDetailByCode({
+            // code:'SPU00000375',
             code: this.selectedSpuCode
         }).then((data) => {
             this.saveProductData(data.data);
