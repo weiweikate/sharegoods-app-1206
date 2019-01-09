@@ -199,6 +199,7 @@ export class TimeDownUtils {
         this.downTime = 0;
         clearInterval(this.interval);
     }
+
     /***格式化***/
     leadingZeros(num, length = null) {
         let length_ = length;

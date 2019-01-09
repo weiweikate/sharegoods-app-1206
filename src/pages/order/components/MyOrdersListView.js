@@ -10,7 +10,7 @@ import {track,trackEvent} from '../../../utils/SensorsTrack';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import userOrderNum from '../../../model/userOrderNum';
+// import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
@@ -311,7 +311,7 @@ export default class MyOrdersListView extends Component {
 
     getDataFromNetwork = () => {
         console.log('orderlistrefresh');
-        userOrderNum.getUserOrderNum();
+        // userOrderNum.getUserOrderNum();
         Toast.showLoading();
         if (this.props.orderNum) {
             OrderApi.queryPage({
@@ -339,10 +339,13 @@ export default class MyOrdersListView extends Component {
 
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectTab < 8) {
-            console.log(nextProps.selectTab + '==================================');
-
+        if(nextProps.selectTab!=this.state.pageStatus){
+            this.getDataFromNetwork();
         }
+        // if (nextProps.selectTab < 8) {
+        //     console.log(nextProps.selectTab + '==================================');
+        //
+        // }
     }
 
     onRefresh = () => {
