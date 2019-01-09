@@ -132,6 +132,7 @@ export class Payment {
                 return ''
             }
         } catch(error) {
+            Toast.hiddenLoading();
             this.payError = error
             this.isGoToPay = false
             track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: error.msg || error.message})
