@@ -113,9 +113,7 @@ export default class ConfirmOrderPage extends BasePage {
             let data = await confirmOrderModel.makeSureProduct(this.params.orderParamVO, params);
             this.setState({ viewData: data.orderProductList });
         } catch (err) {
-            if (confirmOrderModel.isError) {
                 this.setState({ viewData: [] });
-            }
             if (err.code === 10009) {
                 this.$navigate('login/login/LoginPage', {
                     callback: () => {
@@ -144,6 +142,7 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     selectAddress = () => {//地址重新选择
+        console.log(confirmOrderModel.isError);
         if (confirmOrderModel.isError) {
             return;
         }

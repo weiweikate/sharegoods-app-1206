@@ -229,6 +229,7 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
         if (StringUtils.isEmpty(this.addressId)) {
             bridge.$toast('请先添加地址');
             bridge.hiddenLoading();
+            this.isError=false
             return;
         }
         // if(orderParamVO.type<3){
@@ -254,7 +255,7 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
               return    OrderApi.submitOrder(paramsnor).then((response) => {
                     bridge.hiddenLoading();
                   let data = response.data;
-                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
+                    track(trackEvent.submitOrder,{orderId:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
                         receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
                         discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
                         yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
@@ -277,7 +278,7 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                 return    OrderApi.submitOrder(paramsnor2).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
-                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
+                    track(trackEvent.submitOrder,{orderId:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddressDTO.receiver,
                         receiverProvince:data.userAddressDTO.province,receiverCity:data.userAddressDTO.city,receiverArea:data.userAddressDTO.area,receiverAddress:data.userAddressDTO.address,
                         discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
                         yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
@@ -300,7 +301,7 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
                return  OrderApi.SeckillSubmitOrder(needParams).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
-                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
+                    track(trackEvent.submitOrder,{orderId:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                         receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
                         discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
                         yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
@@ -323,7 +324,7 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
               return  OrderApi.DepreciateSubmitOrder(needParams2).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
-                    track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
+                    track(trackEvent.submitOrder,{orderId:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                         receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
                         discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
                         yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
@@ -349,7 +350,7 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
               return  OrderApi.PackageSubmitOrder(params).then((response) => {
                     bridge.hiddenLoading()
                     let data = response.data;
-                        track(trackEvent.submitOrder,{orderID:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
+                        track(trackEvent.submitOrder,{orderId:data.orderNo,orderAmount:data.payAmount,transportationCosts:data.totalFreightFee,receiverName:data.userAddress.receiver,
                             receiverProvince:data.userAddress.province,receiverCity:data.userAddress.city,receiverArea:data.userAddress.area,receiverAddress:data.userAddress.address,
                             discountName:this.tokenCoinText,discountAmount:1,ifUseYiYuan:!!this.tokenCoin,numberOfYiYuan:this.tokenCoin,
                             yiYuanDiscountAmount:this.tokenCoin,storeCode:user.storeCode?user.storeCode:''})
