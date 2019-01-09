@@ -51,6 +51,7 @@ export default class ReportAlert extends Component {
     }
 
     show = ({ confirmCallBack, title, height }) => {
+        this.state.text = '';
         this.setState({
             height: height || PANNELHEIGHT,
             title: title || this.state.title,
@@ -115,7 +116,7 @@ export default class ReportAlert extends Component {
 
     _clickOk = () => {
         if (StringUtils.isEmpty(this.state.text)) {
-            bridge.$toast('请输入内容')
+            bridge.$toast('请输入内容');
             return;
         }
         this._closeAnimated(() => {
