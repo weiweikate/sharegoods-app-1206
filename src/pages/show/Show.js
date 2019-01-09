@@ -53,7 +53,10 @@ const homeLinkType = {
     down: 3,
     spike: 4,
     package: 5,
-    store: 8
+    exp: 6, //经验值
+    store: 8,
+    web: 10,
+    show: 11
 };
 
 const bannerRoute = {
@@ -62,7 +65,10 @@ const bannerRoute = {
     [homeLinkType.down]: 'topic/TopicDetailPage',
     [homeLinkType.spike]: 'topic/TopicDetailPage',
     [homeLinkType.package]: 'topic/TopicDetailPage',
-    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
+    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage',
+    [homeLinkType.web]: 'HtmlPage',
+    [homeLinkType.show]: 'show/ShowDetailPage',
+    [homeLinkType.exp]: 'home/product/xpProduct/XpDetailPage'
 };
 
 export const showTypes = {
@@ -117,7 +123,10 @@ class ShowBannerModules {
             linkTypeCode: data.linkTypeCode,
             productCode: data.linkTypeCode,
             productType: productType,
-            storeCode: storeCode
+            storeCode: storeCode,
+            uri: data.linkTypeCode,
+            id: data.showId,
+            code: data.linkTypeCode,
         };
 
     };
