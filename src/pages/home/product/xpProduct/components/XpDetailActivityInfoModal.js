@@ -136,16 +136,22 @@ export default class XpDetailActivityInfoModal extends Component {
     render() {
         const { rules, startPrice, startCount, maxCount, coupon, contents } = this.state.xpDetailModel;
 
-        let sectionListData = [
-            { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
-            {
-                headerTittle: '优惠券',
-                headerImg: xp_detail_coupon,
-                type: 'coupon',
-                data: [{ startPrice, startCount, maxCount, coupon }]
-            },
-            { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
-
+        let sectionListData;
+        if ((coupon || {}).id) {
+            sectionListData = [
+                { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
+                {
+                    headerTittle: '优惠券',
+                    headerImg: xp_detail_coupon,
+                    type: 'coupon',
+                    data: [{ startPrice, startCount, maxCount, coupon }]
+                },
+                { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
+        } else {
+            sectionListData = [
+                { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
+                { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
+        }
 
         return (
             <CommModal onRequestClose={this._close}

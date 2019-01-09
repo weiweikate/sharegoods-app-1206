@@ -28,6 +28,7 @@ import CommShareModal from '../../../../comm/components/CommShareModal';
 
 const arrow_right_black = res.button.arrow_right_black;
 const detail_more_down = productRes.product.detailNavView.detail_more_down;
+const xp_detail_icon = productRes.product.xpProduct.xp_detail_icon;
 
 @observer
 export class XpDetailPage extends BasePage {
@@ -67,7 +68,7 @@ export class XpDetailPage extends BasePage {
                     }, 100);
                     break;
             }
-        });
+        }, true);
     };
 
     _getBasePageStateOptions = () => {
@@ -219,25 +220,34 @@ export class XpDetailPage extends BasePage {
     };
 
     _renderBaseView = () => {
-        let pageStateDic = this._getProductStateOptions();
-        return <View style={styles.container}>
-            <ScrollView onScroll={this._onScroll} scrollEventThrottle={10}>
-                {/*选择框*/}
-                <XpDetailSelectListView xpDetailModel={this.xpDetailModel}/>
-                {/*页面状态*/}
-                {pageStateDic.loadingState === PageLoadingState.success ? this._renderProduct() :
-                    <View style={{ height: ScreenUtils.autoSizeHeight(500) }}>
-                        {renderViewByLoadingState(pageStateDic, this._renderProduct)}
-                    </View>}
-            </ScrollView>
+        const { status, prods } = this.xpDetailModel;
+        if (status !== 2 || prods.length === 0) {
+            let textShow = status === 1 ? '活动尚未开始，尽请期待~' : (status === 3 ? '活动已结束，下次再来哦~' : '商品已走丢，暂无活动商品~');
+            return <View style={styles.statusNoAccessView}>
+                <Image source={xp_detail_icon}/>
+                <Text style={styles.statusNoAccessText}>{textShow}</Text>
+            </View>;
+        } else {
+            let pageStateDic = this._getProductStateOptions();
+            return <View style={styles.container}>
+                <ScrollView onScroll={this._onScroll} scrollEventThrottle={10}>
+                    {/*选择框*/}
+                    <XpDetailSelectListView xpDetailModel={this.xpDetailModel}/>
+                    {/*页面状态*/}
+                    {pageStateDic.loadingState === PageLoadingState.success ? this._renderProduct() :
+                        <View style={{ height: ScreenUtils.autoSizeHeight(500) }}>
+                            {renderViewByLoadingState(pageStateDic, this._renderProduct)}
+                        </View>}
+                </ScrollView>
 
-            {/*购买,购物车*/}
-            {pageStateDic.loadingState === PageLoadingState.success &&
-            <XpDetailBottomView bottomViewAction={this._bottomViewAction} xpDetailModel={this.xpDetailModel}/>}
+                {/*购买,购物车*/}
+                {pageStateDic.loadingState === PageLoadingState.success &&
+                <XpDetailBottomView bottomViewAction={this._bottomViewAction} xpDetailModel={this.xpDetailModel}/>}
 
-            {/*上拉显示的选择框*/}
-            <XpDetailUpSelectListView xpDetailModel={this.xpDetailModel}/>
-        </View>;
+                {/*上拉显示的选择框*/}
+                <XpDetailUpSelectListView xpDetailModel={this.xpDetailModel}/>
+            </View>;
+        }
     };
 
     _render() {
@@ -297,6 +307,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+
+    statusNoAccessView: { alignItems: 'center', alignSelf: 'center', marginTop: ScreenUtils.px2dp(130) },
+
+    statusNoAccessText: { fontSize: 13, color: DesignRule.textColor_instruction, marginTop: 8 },
 
     rightNavBtn: {
         justifyContent: 'center', alignItems: 'center',
