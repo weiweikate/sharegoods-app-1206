@@ -100,17 +100,13 @@ class XpDetailModel {
     }
 
     @computed get pCantBuy() {
-        let { buyLimit, leftBuyNum } = this.pData;
-        //不能买
-        return this.pProductStatus !== 1 || (buyLimit !== -1 && leftBuyNum === 0) || this.skuTotal === 0;
+        return this.pProductStatus !== 1 || this.skuTotal === 0;
     }
 
     @computed get pBuyText() {
-        let { buyLimit, leftBuyNum } = this.pData;
-        let isLimit = buyLimit !== -1 && leftBuyNum === 0;
         //能买
-        let canBuy = this.pProductStatus === 1 && this.skuTotal !== 0 && !isLimit;
-        return canBuy ? '立即购买' : (isLimit ? '您已购买过该商品' : '暂不可购买');
+        let canBuy = this.pProductStatus === 1 && this.skuTotal !== 0;
+        return canBuy ? '立即购买' : '暂不可购买';
     }
 
     /******************************【action】******************************************/
