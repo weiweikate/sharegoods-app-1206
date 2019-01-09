@@ -347,6 +347,7 @@ export default class ShopCartPage extends BasePage {
      */
     _toBuyImmediately = () => {
         dismissKeyboard();
+
         if (!user.isLogin) {
             this.$navigate(RouterMap.LoginPage);
             return;

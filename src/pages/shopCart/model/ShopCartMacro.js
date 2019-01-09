@@ -62,6 +62,20 @@ const getSelectImage = (itemData) => {
     }
 };
 
+
+function add0(m){return m<10?'0'+m:m }
+const formatTime =(updateTime)=>
+{
+//shijianchuo是整数，否则要parseInt转换
+    let time = new Date(updateTime);
+    // let y = time.getFullYear();
+    let m = time.getMonth()+1;
+    let d = time.getDate();
+    // let h = time.getHours();
+    // let mm = time.getMinutes();
+    // let s = time.getSeconds();
+    return add0(m)+'月-'+add0(d)+'日 开售';
+}
 /**
  * 获取购物车列表商品状态提示语
  * @param itemData
@@ -81,6 +95,12 @@ const getTipString = (itemData) => {
         // tipString = tipString + '库存不足\n';
         returnObj.tipString = tipString + '库存不足\n';
     }
+    //暂未开售
+    if (itemData.productStatus === 3){
+        returnObj.tipString += tipString + formatTime(itemData.updateTime);
+        return  returnObj;
+    }
+
 
     if (itemData.shoppingCartActivity === null) {
         return returnObj;
@@ -88,6 +108,7 @@ const getTipString = (itemData) => {
     }
     if (itemData.shoppingCartActivity.length > 0) {
         itemData.shoppingCartActivity.map((activityItem, activityIndex) => {
+
             //秒杀活动
             if (activityItem.activityType === 1 && activityItem.seckill) {
                 if (itemData.nowTime < activityItem.seckill.beginTime) {
