@@ -13,7 +13,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import DetailBanner from './DetailBanner';
 import RES from '../../../../comm/res';
 import StringUtils from '../../../../utils/StringUtils';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 
 const arrow_right = RES.button.arrow_right_black;
 /**
@@ -38,7 +38,7 @@ export default class DetailHeaderView extends Component {
     }
 
     updateTime(activityData, activityType, callBack) {
-        this.ProductActivityView.saveActivityViewData(activityData, activityType, callBack);
+        this.ProductActivityView && this.ProductActivityView.saveActivityViewData(activityData, activityType, callBack);
     }
 
     render() {
@@ -46,13 +46,15 @@ export default class DetailHeaderView extends Component {
         //priceType 3会员价  2拼店价
         const {
             freight, monthSaleCount, originalPrice, priceType,
-            minPrice, maxPrice, groupPrice, name, secondName, afterSaleServiceDays
+            minPrice, maxPrice, groupPrice, name, secondName, restrictions, productStatus
         } = this.props.data || {};
+
         let priceSuper = minPrice !== maxPrice ? `￥${minPrice || ''}-￥${maxPrice || ''}` : `￥${minPrice || ''}`;
         return (
             <View>
                 <DetailBanner data={this.props.data} navigation={this.props.navigation}/>
-                {activityType === 1 || activityType === 2 ?
+                {/*有活动&&商品不是未开售*/}
+                {(activityType === 1 || activityType === 2) && productStatus !== 3 ?
                     <ProductActivityView activityType={activityType}
                                          ref={(e) => {
                                              this.ProductActivityView = e;
@@ -81,7 +83,8 @@ export default class DetailHeaderView extends Component {
                                         <Text style={{
                                             color: DesignRule.textColor_redWarn,
                                             fontSize: 10, paddingHorizontal: 6, paddingVertical: 2
-                                        }} allowFontScaling={false}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : '原价'}</Text>
+                                        }}
+                                              allowFontScaling={false}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : '原价'}</Text>
                                     </View>
                                     <Text style={{
                                         color: DesignRule.textColor_redWarn,
@@ -138,12 +141,14 @@ export default class DetailHeaderView extends Component {
                         marginVertical: 13,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }} allowFontScaling={false}>服务</Text>
+                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}
+                              allowFontScaling={false}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,
                             fontSize: 12
-                        }} allowFontScaling={false}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays || ''}天无理由退换`}`}</Text>
+                        }}
+                              allowFontScaling={false}>{`正品保证·急速发货  ${restrictions && 4 ? `7天退换` : ``}`}</Text>
                     </View>
                 </View>
             </View>

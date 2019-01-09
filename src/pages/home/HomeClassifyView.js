@@ -6,8 +6,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
-    Image
+    TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
@@ -17,12 +16,13 @@ import user from '../../model/user'
 import DesignRule from '../../constants/DesignRule';
 import {MRText as Text} from '../../components/ui';
 const { px2dp } = ScreenUtils;
+import ImageLoad from '@mr/image-placeholder'
 
 const Item = ({ data, onPress }) => {
-    const {icon, img} = data
-    let source = icon ? icon : {uri: img}
+    const {iconUri} = data
+    let source = {uri: iconUri + '?ts=' + new Date().getTime()}
     return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
-        <Image style={styles.icon} source={source}/>
+        <ImageLoad style={styles.icon} source={source}/>
         <View style={styles.space}/>
         <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
     </TouchableOpacity>

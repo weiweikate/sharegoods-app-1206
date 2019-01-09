@@ -124,7 +124,7 @@ export class DetailBanner extends Component {
                         <Text style={{
                             color: DesignRule.white,
                             fontSize: 13
-                        }} allowFontScaling={false}>{`${upTime ? formatDate(upTime, 'MM月dd号HH:mm') : ''}开始售卖`}</Text>
+                        }} allowFontScaling={false}>{`${upTime ? formatDate(upTime, 'yyyy-MM-dd HH:mm') : ''}开售`}</Text>
                     </View> : null}
                     {Platform.OS === 'ios' ? this._renderStyle() : null}
                 </View>
