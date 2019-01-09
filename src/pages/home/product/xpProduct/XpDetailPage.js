@@ -25,7 +25,6 @@ import user from '../../../../model/user';
 import RouterMap from '../../../../navigation/RouterMap';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import CommShareModal from '../../../../comm/components/CommShareModal';
-import BigImagesModal from '../BigImagesModal';
 
 const arrow_right_black = res.button.arrow_right_black;
 const detail_more_down = productRes.product.detailNavView.detail_more_down;
@@ -105,9 +104,9 @@ export class XpDetailPage extends BasePage {
         this.xpDetailModel.request_act_exp_detail(activityCode);
     };
 
-    _imgBtnAction = ()=>{
-        this.BigImagesModal.show();
-    }
+    _imgBtnAction = () => {
+        this.$navigate(RouterMap.BigImagesPage, { pData: this.xpDetailModel.pData });
+    };
 
     /*活动信息*/
     _activityAction = () => {
@@ -126,6 +125,10 @@ export class XpDetailPage extends BasePage {
                 hiddeLeft: false
             });
         } else {
+            if (!user.isLogin) {
+                this.$navigate(RouterMap.LoginPage);
+                return;
+            }
             this.goType = type;
             this.SelectionPage.show(this.xpDetailModel.pData, this._selectionViewConfirm, { needUpdate: true });
         }
@@ -183,6 +186,7 @@ export class XpDetailPage extends BasePage {
     };
 
     _renderProduct = () => {
+        const { pParamList } = this.xpDetailModel;
         return <View>
             {/*商品信息*/}
             <XpDetailProductView xpDetailModel={this.xpDetailModel} imgBtnAction={this._imgBtnAction}/>
@@ -191,11 +195,15 @@ export class XpDetailPage extends BasePage {
                     <Text style={styles.pramsText}>活动规则</Text>
                     <Image style={styles.arrowImg} source={arrow_right_black}/>
                 </TouchableOpacity>
-                <View style={styles.lineView}/>
-                <TouchableOpacity style={styles.pramsBtn} onPress={this._paramsAction}>
-                    <Text style={styles.pramsText}>参数信息</Text>
-                    <Image style={styles.arrowImg} source={arrow_right_black}/>
-                </TouchableOpacity>
+                {
+                    pParamList.length !== 0 ? <View>
+                        <View style={styles.lineView}/>
+                        <TouchableOpacity style={styles.pramsBtn} onPress={this._paramsAction}>
+                            <Text style={styles.pramsText}>参数信息</Text>
+                            <Image style={styles.arrowImg} source={arrow_right_black}/>
+                        </TouchableOpacity>
+                    </View> : null
+                }
             </View>
             <View style={styles.productInfoView}>
                 <View style={styles.infoTextView}>
@@ -249,8 +257,6 @@ export class XpDetailPage extends BasePage {
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 {/*nav更多跳转*/}
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
-                {/*查看大图*/}
-                <BigImagesModal ref={(ref) => this.BigImagesModal = ref}/>
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{

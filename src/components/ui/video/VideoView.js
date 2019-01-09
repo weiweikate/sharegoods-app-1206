@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: DesignRule.textColor_mainTitle
+        backgroundColor: 'rgba(0,0,0,1)'
     },
     playButton: {
         width: 50,

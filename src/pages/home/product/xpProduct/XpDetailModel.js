@@ -195,6 +195,7 @@ class XpDetailModel {
     request_getProductDetailByCode = () => {
         this.productPageState = PageLoadingState.loading;
         HomeAPI.getProductDetailByCode({
+            // code:'SPU00000375',
             code: this.selectedSpuCode
         }).then((data) => {
             this.saveProductData(data.data);

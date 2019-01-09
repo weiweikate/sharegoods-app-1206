@@ -307,7 +307,7 @@ export default class ShopRecruitPage extends BasePage {
                     <TouchableOpacity onPress={this._closeStore}
                                       style={[styles.unOpen, {
                                           borderRadius: this.state.canOpen ? 5 : ScreenUtils.autoSizeWidth(345) / 2,
-                                          width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(345)
+                                          width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(260)
                                       }]}>
                         <Text style={{ fontSize: 16, color: DesignRule.mainColor }}
                               allowFontScaling={false}>{'取消开启'}</Text>
@@ -330,8 +330,8 @@ export default class ShopRecruitPage extends BasePage {
                     userStatus === 1 ?
                         <TouchableOpacity onPress={this._quitStore}
                                           style={[styles.unOpen, {
-                                              borderRadius: ScreenUtils.autoSizeWidth(345) / 2,
-                                              width: ScreenUtils.autoSizeWidth(345)
+                                              borderRadius: 24,
+                                              width: ScreenUtils.autoSizeWidth(260)
                                           }]}>
                             <Text style={{ fontSize: 16, color: DesignRule.mainColor }}
                                   allowFontScaling={false}>{'退出拼店'}</Text>
@@ -448,10 +448,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     OutStore: {
-        width: ScreenUtils.autoSizeWidth(345),
+        width: ScreenUtils.autoSizeWidth(260),
         height: 48,
         backgroundColor: DesignRule.mainColor,
-        borderRadius: ScreenUtils.autoSizeWidth(345) / 2,
+        borderRadius: 24,
         justifyContent: 'center',
         alignItems: 'center'
     },
