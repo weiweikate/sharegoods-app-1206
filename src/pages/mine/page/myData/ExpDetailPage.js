@@ -18,7 +18,7 @@ import user from "../../../../model/user";
 // import DataUtils from "../../../../utils/DateUtils";
 import Toast from "../../../../utils/bridge";
  const {
-     ProgressImg,
+     jdt_05,
      invite_icon,
      trading_icon,
      signIn_icon,
@@ -66,8 +66,8 @@ export default class ExpDetailPage extends BasePage{
     }
     renderHeader=()=>{
         const progress = this.state.experience / this.state.levelExperience;
-        const marginLeft = 315 / 375 * ScreenUtils.width * progress;
-        const radius = marginLeft > 4 ? 0 : 4;
+        const marginLeft =  ScreenUtils.px2dp(315) * progress;
+        const radius = marginLeft > 4 ? -0.5 : 4;
 
         return(
            <View style={styles.headerBg}>
@@ -83,14 +83,14 @@ export default class ExpDetailPage extends BasePage{
                        /{this.state.levelExperience}
                    </Text></Text>
 
-                   <ImageBackground source={ProgressImg} style={{
+                   <ImageBackground source={jdt_05} style={{
                        overflow: "hidden",
                        marginTop: 5,
                        height: 8,
-                       width: 315 / 375 * ScreenUtils.width
+                       width: ScreenUtils.px2dp(315)
                    }}>
                        <View style={{
-                           marginRight: -1,
+                           marginRight: -0.5,
                            marginLeft: marginLeft,
                            height: 8,
                            borderRadius: 4,
@@ -151,7 +151,7 @@ export default class ExpDetailPage extends BasePage{
     getDataFromNetwork = () => {
         console.log("getDataFromNetwork",this.params.experience)
         let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励",""];
-        let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,trading_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon ];
+        let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,share_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon ];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
         MineApi.expDetail({

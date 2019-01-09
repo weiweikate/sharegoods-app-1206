@@ -174,12 +174,12 @@ export default class LoginTopView extends Component {
             return;
         }
         if (StringUtils.checkPhone(loginModel.phoneNumber)) {
+            SMSTool.sendVerificationCode(0, loginModel.phoneNumber);
             loginModel.dowTime = 60;
             bridge.$toast('验证码发送成功,注意查收');
             (new TimeDownUtils()).startDown((time) => {
                 loginModel.dowTime = time;
             });
-            SMSTool.sendVerificationCode(0, loginModel.phoneNumber);
         } else {
             bridge.$toast('手机格式不对');
         }
@@ -239,7 +239,7 @@ export default class LoginTopView extends Component {
                         password: loginModel.password
                     });
                 } else {
-                    bridge.$toast('密码格式不对');
+                    bridge.$toast('需数字、字母组合');
                 }
             }
         } else {
