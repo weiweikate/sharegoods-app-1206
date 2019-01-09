@@ -230,6 +230,7 @@ class ConfirmOrderModel {
         if (StringUtils.isEmpty(this.addressId)) {
             bridge.$toast('请先添加地址');
             bridge.hiddenLoading();
+            this.isError=false
             return;
         }
         // if(orderParamVO.type<3){

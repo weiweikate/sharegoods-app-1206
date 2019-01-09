@@ -66,23 +66,23 @@ export default class XpDetailActivityInfoModal extends Component {
     };
 
     _renderItemCoupon = (item) => {
-        const { remarks, effectiveDays, value, type } = item.coupon || {};
-        let name;
+        const { name, remarks, effectiveDays, value, type } = item.coupon || {};
+        let nameType;
         switch (type) {
             case 1:
-                name = '满减券';
+                nameType = '满减券';
                 break;
             case 2:
-                name = '抵价券';
+                nameType = '抵价券';
                 break;
             case 3:
-                name = '折扣券';
+                nameType = '折扣券';
                 break;
             case 4:
-                name = '抵扣券';
+                nameType = '抵扣券';
                 break;
             default:
-                name = '';
+                nameType = '';
                 break;
         }
         return <TouchableWithoutFeedback>
@@ -96,7 +96,12 @@ export default class XpDetailActivityInfoModal extends Component {
                             <Text style={styles.bgTopValueRText}>{value || ''}</Text>
                         </View>
                         <View style={styles.bgBottomNameView}>
-                            <Text style={styles.bgBottomNameText}>{name || ''}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={styles.bgBottomNameText}>{name || ''}</Text>
+                                <View style={styles.bgTopRightView}>
+                                    <Text style={styles.bgTopRightText}>{nameType || ''}</Text>
+                                </View>
+                            </View>
                             <Text style={styles.bgBottomRemarkText}>{remarks || ''}</Text>
                         </View>
                     </View>
@@ -183,7 +188,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width
     },
     topCloseBtn: {
-        height: px2dp(271)
+        height: px2dp(175)
     },
     bottomView: {
         flex: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10,
@@ -216,7 +221,7 @@ const styles = StyleSheet.create({
         marginVertical: 5, width: px2dp(345), height: 109
     },
 
-    /*value*/
+    /*优惠券*/
     bgTopView: {
         flexDirection: 'row', alignItems: 'center',
         flex: 1
@@ -232,7 +237,6 @@ const styles = StyleSheet.create({
         fontSize: 34
     },
 
-    /*name remark*/
     bgBottomNameView: {
         paddingHorizontal: 15
     },
@@ -241,12 +245,25 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle, fontSize: 13
     },
 
+    bgTopRightView: {
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: DesignRule.mainColor,
+        marginLeft: 5
+    },
+
+    bgTopRightText: {
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        color: DesignRule.mainColor,
+        fontSize: 10
+    },
+
     bgBottomRemarkText: {
         marginTop: 5,
         color: DesignRule.textColor_secondTitle, fontSize: 11
     },
 
-    /*领取*/
     bgBottomView: {
         height: 33, justifyContent: 'center'
     },

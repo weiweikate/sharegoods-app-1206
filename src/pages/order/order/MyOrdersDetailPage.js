@@ -204,7 +204,7 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View>
                 {this.renderState()}
-                {orderDetailModel.status > 1 ? <DetailAddressView/> : null}
+                {orderDetailModel.status > 1 &&orderDetailModel.status<5? <DetailAddressView/> : null}
                 <GiftHeaderView/>
             </View>
         );

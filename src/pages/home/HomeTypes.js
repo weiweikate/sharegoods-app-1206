@@ -15,7 +15,7 @@ export const homeType = {
 }
 
 
-const homeLinkType = {
+export const homeLinkType = {
   good: 1,
   subject: 2,
   down: 3,
