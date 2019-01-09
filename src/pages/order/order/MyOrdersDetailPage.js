@@ -21,6 +21,7 @@ import { PageLoadingState, renderViewByLoadingState } from "../../../components/
 import { NavigationActions } from "react-navigation";
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from "../../mine/api/MineApi";
+import { getDateData, leadingZeros } from '../components/orderDetail/OrderCutDown';
 import res from "../res";
 import OrderDetailStatusView from "../components/orderDetail/OrderDetailStatusView";
 import OrderDetailStateView from "../components/orderDetail/OrderDetailStateView";
@@ -182,19 +183,6 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
     renderItem = ({ item, index }) => {
-        // if (orderDetailModel.orderSubType === 3) {
-        //     return (
-        //         <GoodsGrayItem
-        //             uri={item.uri}
-        //             goodsName={item.goodsName}
-        //             category={item.category}
-        //             salePrice={"￥" + StringUtils.formatMoneyString(item.salePrice, false)}
-        //             goodsNum={item.goodsNum}
-        //             onPress={() => this.clickItem(index, item)}
-        //             style={{ backgroundColor: "white" }}
-        //         />
-        //     );
-        // } else {
             return (
                 <GoodsDetailItem
                     uri={item.uri}
@@ -210,7 +198,6 @@ export default class MyOrdersDetailPage extends BasePage {
                     afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, index)}
                 />
             );
-        // }
 
     };
     renderHeader = () => {
@@ -307,44 +294,6 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
 
-    getDateData(closeTime) {
-        const timeLeft = {
-            years: 0,
-            days: 0,
-            hours: 0,
-            min: 0,
-            sec: 0,
-            millisec: 0
-        };
-
-       let  diff=closeTime-Date.parse(new Date())/1000;
-        // console.log("getDateData",closeTime,diff)
-        if (diff <= 0) {
-            // this.sec = 0
-            this.stop(); // 倒计时为0的时候, 将计时器清除
-            return { sec: -1 };
-        }
-
-        if (diff >= (365.25 * 86400)) {
-            timeLeft.years = Math.floor(diff / (365.25 * 86400));
-            diff -= timeLeft.years * 365.25 * 86400;
-        }
-        if (diff >= 86400) {
-            timeLeft.days = Math.floor(diff / 86400);
-            diff -= timeLeft.days * 86400;
-        }
-        if (diff >= 3600) {
-            timeLeft.hours = Math.floor(diff / 3600);
-            diff -= timeLeft.hours * 3600;
-        }
-        if (diff >= 60) {
-            timeLeft.min = Math.floor(diff / 60);
-            diff -= timeLeft.min * 60;
-        }
-        this.sec = diff;
-        timeLeft.sec = diff;
-        return timeLeft;
-    }
 
     settimer(overtimeClosedTime) {
         let autoConfirmTime = Math.round((overtimeClosedTime - orderDetailModel.warehouseOrderDTOList[0].nowTime) / 1000);
@@ -354,14 +303,12 @@ export default class MyOrdersDetailPage extends BasePage {
         }
         let closeTime=autoConfirmTime+Date.parse(new Date())/1000;
         this.interval = setInterval(() => {
-            // autoConfirmTime--;
-
-            let time = this.getDateData(closeTime);
+            let time = getDateData(closeTime);
             if (time.sec >= 0) {
                 if (orderDetailModel.status === 1) {
-                    orderDetailAfterServiceModel.moreDetail = time.hours + ":" + time.min + ":" + time.sec + "后自动取消订单";
+                    orderDetailAfterServiceModel.moreDetail = leadingZeros(time.hours) + ":" + leadingZeros(time.min) + ":" + leadingZeros(time.sec) + "后自动取消订单";
                 } else if (orderDetailModel.status === 3) {
-                    orderDetailAfterServiceModel.moreDetail = time.days + "天" + time.hours + ":" + time.min + ":" + time.sec + "后自动确认收货";
+                    orderDetailAfterServiceModel.moreDetail = time.days + "天" + leadingZeros(time.hours) + ":" + leadingZeros(time.min) + ":" + leadingZeros(time.sec) + "后自动确认收货";
                 }
             } else {
                 orderDetailAfterServiceModel.moreDetail = "";
@@ -465,6 +412,7 @@ export default class MyOrdersDetailPage extends BasePage {
         let dataArr = [];
         let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(orderDetailModel.warehouseOrderDTOList[0].status)];
         if (orderDetailModel.warehouseOrderDTOList[0].status === 1) {
+            this.stop();
             this.settimer(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
             orderDetailAfterServiceModel.menu = [{
                 id: 1,
@@ -523,7 +471,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 orderDetailAfterServiceModel.menu = [];
                 break;
             case 3:
-                // this.startCutDownTime2(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime);
+                this.stop();
                 this.settimer(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime);
                 orderDetailAfterServiceModel.menu = [
                     {
@@ -613,10 +561,10 @@ export default class MyOrdersDetailPage extends BasePage {
         console.log(menu);
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
         let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
-        if (orderDetailModel.orderSubType=== 3 && orderDetailModel.status === 2) {
+        if (products.activityCodes[0].orderType=== 3 && orderDetailModel.status === 2) {
             Toast.$toast("该商品属于升级礼包产品，不能退款");
             return;
-        }else if(orderDetailModel.orderSubType=== 5 && orderDetailModel.status === 2){
+        }else if(products.activityCodes[0].orderType=== 5 && orderDetailModel.status === 2){
             Toast.$toast("该商品属于经验值专区商品，不能退款");
             return
         } else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime
