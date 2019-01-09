@@ -57,22 +57,22 @@ export default class ShowDetailPage extends BasePage {
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
-                    if (this.params.code) {
-                        this.showDetailModule.showDetailCode(this.params.code).then(() => {
-                            this.setState({
-                                pageState: PageLoadingState.success
-                            })
-                        }).catch(error => {
-                            this.setState({
-                                pageState: PageLoadingState.fail,
-                                errorMsg: error.msg || '获取详情失败'
-                            })
-                            this._whiteNavRef.setNativeProps({
-                                opacity:1
-                            });
-                            Toast.$toast(error.msg || '获取详情失败')
-                        })
-                    } else {
+                    // if (this.params.code) {
+                    //     this.showDetailModule.showDetailCode(this.params.code).then(() => {
+                    //         this.setState({
+                    //             pageState: PageLoadingState.success
+                    //         })
+                    //     }).catch(error => {
+                    //         this.setState({
+                    //             pageState: PageLoadingState.fail,
+                    //             errorMsg: error.msg || '获取详情失败'
+                    //         })
+                    //         this._whiteNavRef.setNativeProps({
+                    //             opacity:1
+                    //         });
+                    //         Toast.$toast(error.msg || '获取详情失败')
+                    //     })
+                    // } else {
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             this.setState({
                                 pageState: PageLoadingState.success
@@ -87,7 +87,7 @@ export default class ShowDetailPage extends BasePage {
                             });
                             Toast.$toast(error.msg || '获取详情失败')
                         })
-                    }
+                    // }
                 }
             }
         )
@@ -181,7 +181,7 @@ export default class ShowDetailPage extends BasePage {
         if (!detail) {
             return <View style={styles.loading}/>;
         }
-        
+
         let content = `<div>${detail.content}</div>`;
         let products = detail.products;
         let number = detail.click

@@ -68,11 +68,12 @@ export default class VersionUpdateModal extends React.Component {
 
     render() {
         return (<CommModal
+            focusable={false}
             animationType='fade'
             ref={(ref) => {
                 this.modal = ref;
             }}
-            onRequestClose={()=>{
+            onRequestClose={() => {
                 this.props.onRequestClose && this.props.onRequestClose();
             }}
             visible={this.props.showUpdate}>
