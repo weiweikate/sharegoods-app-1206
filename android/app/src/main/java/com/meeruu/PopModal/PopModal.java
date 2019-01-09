@@ -1,6 +1,7 @@
 package com.meeruu.PopModal;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -31,6 +32,7 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -158,6 +160,30 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         return popupWindow;
     }
 
+    public static boolean isAppOnForeground(Context context) {
+
+        ActivityManager activityManager = (ActivityManager) context.getApplicationContext()
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = context.getApplicationContext().getPackageName();
+        /**
+         * 获取Android设备中所有正在运行的App
+         */
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
+                .getRunningAppProcesses();
+        if (appProcesses == null)
+            return false;
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            // The name of the process that this object is associated with.
+            if (appProcess.processName.equals(packageName)
+                    && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * showOrUpdate will display the Dialog.  It is called by the manager once all properties are set
      * because we need to know all of them before creating the Dialog.  It is also smart during
@@ -183,6 +209,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
+                if(!isAppOnForeground(getContext())){
+                    return;
+                }
                 eventDispatcher.dispatchEvent(
                         new PopModalDismissEvent(
                                 PopModal.this.getId()));
