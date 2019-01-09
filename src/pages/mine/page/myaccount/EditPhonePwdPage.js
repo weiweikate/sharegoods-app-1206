@@ -178,6 +178,10 @@ export default class EditPhonePwdPage extends BasePage {
             bridge.$toast('请确保两次输入的新密码一致');
             return;
         }
+        if (!StringUtils.checkPassword(this.state.newPwdAgain)) {
+            bridge.$toast('新密码需数字、字母组合');
+            return;
+        }
         this.isLoadding == true;
         MineAPI.changePhonePwd({
             oldPassword: this.state.oldPwd,

@@ -263,7 +263,7 @@ export default class CommRegistView extends Component {
                     this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
                 }
             } else {
-                bridge.$toast('密码格式不对');
+                bridge.$toast('密码需数字、字母组合');
             }
         }
     };

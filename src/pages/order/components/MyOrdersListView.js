@@ -131,9 +131,9 @@ export default class MyOrdersListView extends Component {
                             if (response.code === 10000) {
                                 Toast.$toast('订单已取消');
                                 track(trackEvent.cancelPayOrder,{orderID:this.state.allData[this.state.index].orderNo,orderAmount:this.state.allData[this.state.index].orderAmount
-                                    ,actualPaymentAmount:this.state.allData[this.state.index].payAmount,paymentMethod:null,ifUseOneYuan:this.state.allData[this.state.index].tokenCoinAmount>0?true:false,
+                                    ,actualPaymentAmount:this.state.allData[this.state.index].payAmount,paymentMethod:null,ifUseYiYuan:this.state.allData[this.state.index].tokenCoinAmount>0?true:false,
                                     ifUseCoupons:this.state.allData[this.state.index].couponAmount>0?true:false,couponsName:'',couponsAmount:this.state.allData[this.state.index].couponAmount,
-                                    numberOfOneYuan:this.state.allData[this.state.index].tokenCoinAmount,oneYuanCouponsAmount:this.state.allData[this.state.index].tokenCoinAmount,transportationCosts:this.state.allData[this.state.index].freightAmount,
+                                    yiYuanCouponsAmount:this.state.allData[this.state.index].tokenCoinAmount,transportationCosts:this.state.allData[this.state.index].freightAmount,
                                     deliveryMethod:'', storeCode:user.storeCode?user.storeCode:''});
                                 index = -1;
                                 this.onRefresh();

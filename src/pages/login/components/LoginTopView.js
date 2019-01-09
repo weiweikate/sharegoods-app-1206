@@ -239,7 +239,7 @@ export default class LoginTopView extends Component {
                         password: loginModel.password
                     });
                 } else {
-                    bridge.$toast('密码格式不对');
+                    bridge.$toast('需数字、字母组合');
                 }
             }
         } else {
