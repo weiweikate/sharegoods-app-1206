@@ -276,7 +276,7 @@ class SettingPage extends BasePage {
                         },
                         {
                             text: '确定', onPress: () => {
-                                this.toUpdate();
+                                this.toUpdate(resp.data);
                             }
                         }
                     ]
@@ -289,7 +289,7 @@ class SettingPage extends BasePage {
         });
     };
 
-    toUpdate = () => {
+    toUpdate = (data) => {
         this.setState({
             showUpdate: false
         });
@@ -298,7 +298,7 @@ class SettingPage extends BasePage {
             Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
         } else {
             // 更新app
-            NativeModules.commModule.updateable(JSON.stringify(this.state.updateData), false, null);
+            NativeModules.commModule.updateable(JSON.stringify(data), false, null);
         }
     };
 }

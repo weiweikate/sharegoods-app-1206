@@ -4,7 +4,7 @@ import {
     View,
     ImageBackground,
     TouchableOpacity,
-    Alert
+    Alert,
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import { RefreshList ,NoMoreClick} from "../../../../components/ui";
@@ -27,6 +27,7 @@ const shouyi = res.userInfoImg.xiangjzhanghu_icon03_10;
 const xiaofei = res.userInfoImg.xiangjzhanghu_icon03_12;
 const salesCommissions = res.userInfoImg.xiangjzhanghu_icon03_08;
 const renwu = res.userInfoImg.xiangjzhanghu_icon03_16;
+const tuikuan = res.userInfoImg.tuikuan_icon;
 
 @observer
 export default class MyCashAccountPage extends BasePage {
@@ -76,6 +77,7 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
                 <RefreshList
+                    emptyNoRefresh={true}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
@@ -188,9 +190,9 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ["", "用户收益", "提现支出", "消费支出", "导师管理费", "品牌分红奖励", "品牌推广奖励", "现金红包", "任务奖励","消费退款"];
+        let use_type = ["", "用户收益", "提现支出", "消费支出", "导师管理费", "品牌分红奖励", "品牌推广奖励", "现金红包", "任务奖励","消费退款","提现退回"];
         let use_type_symbol = ["", "+", "-"];
-        let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu,xiaofei];
+        let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu,xiaofei,tuikuan];
         Toast.showLoading();
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: 1 }).then((response) => {

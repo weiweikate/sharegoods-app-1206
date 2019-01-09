@@ -4,8 +4,7 @@ import {
     StyleSheet,
     View,
     Image,
-    TextInput as RNTextInput,
-    KeyboardAvoidingView
+    TextInput as RNTextInput,Platform
 } from "react-native";
 import {
     UIText,NoMoreClick
@@ -23,7 +22,7 @@ export default class ConfirmPriceView extends Component {
     render() {
         return(
             <View>
-                {this.renderCouponsPackage()}
+                {/*{this.renderCouponsPackage()}*/}
                 {this.renderPriceView()}
             </View>
         )
@@ -36,8 +35,7 @@ export default class ConfirmPriceView extends Component {
     };
     renderPriceView = () => {
         return (
-             <KeyboardAvoidingView
-                behavior="padding"
+             <View
              style={{ backgroundColor: "white" }}>
                 <NoMoreClick style={styles.couponsStyle}
                                   disabled={!confirmOrderModel.canUseCou}
@@ -54,6 +52,7 @@ export default class ConfirmPriceView extends Component {
                 {!user.tokenCoin ? null :
                     <View>
                         <NoMoreClick style={styles.couponsStyle}
+                                     disabled={parseInt(confirmOrderModel.payAmount)<1}
                                           onPress={()=>this.props.jumpToCouponsPage("justOne")}>
                             <UIText value={"1元现金券"} style={styles.blackText}/>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -83,14 +82,34 @@ export default class ConfirmPriceView extends Component {
                             placeholder={"选填：填写内容已与卖家协商确认"}
                             placeholderTextColor={DesignRule.textColor_instruction}
                             numberOfLines={1}
+                            onFocus={this._onFocus}
+                            onBlur={this._onBlur}
                             underlineColorAndroid={"transparent"}
                         />
                     </View>
                 </NoMoreClick>
+                 {this.renderLine()}
+                 <View style={{height:confirmOrderModel.TnHeight||0.1,backgroundColor:'white'}}/>
                 {this.renderLine()}
-             </KeyboardAvoidingView>
+             </View>
         );
     };
+    _onFocus=()=>{
+        // console.log("_onFocus",confirmOrderModel.orderScroll,this.orderScroll)
+        // this.refs.orderScrol.scrollToTop({animated: true});
+        if(Platform.OS === 'android'){
+            confirmOrderModel.TnHeight=218
+
+        }
+
+    }
+    _onBlur=()=>{
+        // this.refs.orderScrol.scrollTo({x:0,y:0});
+        if(Platform.OS === 'android'){
+            // confirmOrderModel.orderScroll.scrollTo({x:0,y:0});
+            confirmOrderModel.TnHeight=0
+        }
+    }
     renderCouponsPackage = () => {
         return (
             <View style={{ borderTopColor: DesignRule.lineColor_inWhiteBg, borderTopWidth: 0.5 }}>

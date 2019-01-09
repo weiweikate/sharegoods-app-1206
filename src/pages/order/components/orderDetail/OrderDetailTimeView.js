@@ -59,7 +59,7 @@ export default class OrderDetailTimeView extends Component {
                             style={styles.textOrderDownStyle}/>:null}
                 {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].finishTime)&&orderDetailModel.status<5 ?
                     <UIText
-                        value={'完成时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].finishTime ? orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].deliverTime / 1000)}
+                        value={'完成时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime ? orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000)}
                         style={styles.textOrderDownStyle}/>:null}
             </View>
         );

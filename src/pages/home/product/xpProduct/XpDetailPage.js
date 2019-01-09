@@ -169,7 +169,7 @@ export class XpDetailPage extends BasePage {
             });
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
-                    orderType: 99,
+                    orderType: 98,
                     orderProducts: orderProducts,
                     source: 3
                 }

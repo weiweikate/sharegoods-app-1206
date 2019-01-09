@@ -55,12 +55,16 @@ export default class PasswordInput extends Component {
                 activeOpacity={1}
                 underlayColor='transparent'>
                 <View style={[styles.container, this.props.style]}>
+                    {
+                        this._getInputItem()
+                    }
                     <TextInput
-                        style={{ height: 45, zIndex: 99, position: 'absolute', width: 45 * 6, opacity: 0 }}
+                        style={{ height: 45, zIndex: 99, position: 'absolute', width: 57 * 6, opacity: 0 }}
                         ref='textInput'
                         maxLength={this.props.maxLength}
                         autoFocus={false}
                         keyboardType="numeric"
+                        value={this.state.text}
                         onChangeText={
                             (text) => {
                                 const newText = text.replace(/[^\d]+/, '');
@@ -72,9 +76,6 @@ export default class PasswordInput extends Component {
                             }
                         }
                     />
-                    {
-                        this._getInputItem()
-                    }
                 </View>
             </TouchableHighlight>
         );

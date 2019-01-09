@@ -215,7 +215,7 @@ export default class TopicDetailPage extends BasePage {
 
     //消息数据
     _getMessageCount = () => {
-        if(user.token){
+        if (user.token) {
             MessageAPI.getNewNoticeMessageCount().then(result => {
                 if (!EmptyUtils.isEmpty(result.data)) {
                     const { shopMessageCount, noticeCount, messageCount } = result.data;
@@ -721,7 +721,7 @@ export default class TopicDetailPage extends BasePage {
                     }} onPress={() => this._bottomAction(colorType)} disabled={!(colorType === 1 || colorType === 2)}>
                         <Text style={{
                             color: 'white',
-                            fontSize: 14,textAlign:'center'
+                            fontSize: 14, textAlign: 'center'
                         }} allowFontScaling={false}>{bottomTittle}</Text>
                     </TouchableOpacity>
                 </View>

@@ -23,6 +23,7 @@ public class LoadingDialog extends Dialog {
         setContentView(R.layout.loading_dialog);
         tvMsg = findViewById(R.id.id_tv_loadingmsg);
         setCanceledOnTouchOutside(false);
+        setCancelable(false);
     }
 
     public static LoadingDialog createDialog(Context context) {

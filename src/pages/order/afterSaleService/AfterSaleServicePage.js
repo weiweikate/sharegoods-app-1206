@@ -96,7 +96,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.productData.orderProductNo}
+                <UIText value={'订单编号：' + this.state.productData.warehouseOrderNo}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -521,7 +521,7 @@ class AfterSaleServicePage extends BasePage {
             return;
         }
         if (StringUtils.isEmpty(returnReason)) {
-            NativeModules.commModule.toast('请选择售后原因');
+            NativeModules.commModule.toast('请选择'+ ['退款', '退货', '换货'][pageType] +  '原因');
             return;
         }
 

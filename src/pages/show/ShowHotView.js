@@ -7,7 +7,7 @@ import Waterfall from '../../components/ui/WaterFall';
 import ShowBannerView from './ShowBannerView';
 import ShowChoiceView from './ShowChoiceView';
 import {
-    MRText as Text,
+    MRText as Text
 } from '../../components/ui';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
@@ -50,7 +50,7 @@ export default class ShowHotView extends Component {
             this.setState({ isFetching: true });
             this.recommendModules.getMoreRecommendList({ generalize: tag.Recommend }).then(data => {
                 if (data && data.length !== 0) {
-                    this.waterfall.addItems(data);
+                    this.waterfall && this.waterfall.addItems(data);
                     this.setState({ isFetching: false });
                 } else {
                     this.setState({ isFetching: false, isEnd: true });
@@ -70,17 +70,20 @@ export default class ShowHotView extends Component {
 
     loadData() {
         this.setState({ isEnd: false, isFetching: true });
-        this.waterfall.scrollToTop();
-        this.waterfall.index = 1;
+        this.waterfall && this.waterfall.scrollToTop();
+        this.waterfall && (this.waterfall.index = 1);
         this.waterfall && this.waterfall.clear();
         this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
             this.firstLoad = false;
-            let hasRecommend = false
+            let hasRecommend = false;
+            console.log('loadRecommendList', data);
             if (data && data.length > 0) {
-                hasRecommend = true
+                hasRecommend = true;
             }
-            this.setState({ isFetching: false , hasRecommend: hasRecommend});
+            this.setState({ isFetching: false, hasRecommend: hasRecommend });
             this.waterfall && this.waterfall.addItems(data || []);
+        }).catch(() => {
+            this.setState({ isFetching: false, hasRecommend: false });
         });
     }
 
@@ -88,7 +91,7 @@ export default class ShowHotView extends Component {
         setTimeout(() => {
             this.waterfall && this.waterfall.clear();
             this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
-                this.waterfall.addItems(data || []);
+                this.waterfall && this.waterfall.addItems(data || []);
             });
             done();
         }, 1000);
@@ -120,31 +123,33 @@ export default class ShowHotView extends Component {
         />;
     };
     renderHeader = () => {
-        const {hasRecommend} = this.state
+        const { hasRecommend } = this.state;
         return <View><ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
             <ShowChoiceView navigate={this.props.navigate}/>
             {/* <ShowHotScrollView navigation={this.props.navigation}/> */}
             {
                 hasRecommend
-                ?
-                <View style={styles.titleView}>
-                    <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
-                </View>
-                :
-                null
+                    ?
+                    <View style={styles.titleView}>
+                        <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
+                    </View>
+                    :
+                    null
             }
         </View>;
     };
     _keyExtractor = (data) => data.id + '';
 
     _renderInfinite() {
-        const {hasRecommend} = this.state
+        const { hasRecommend } = this.state;
         if (!hasRecommend) {
-            return <View/>
+            return <View/>;
         }
         return <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
-            {this.state.isEnd ? <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.state.isFetching ?
-                <Text style={styles.text} allowFontScaling={false}>加载中...</Text> : <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}
+            {this.state.isEnd ?
+                <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.state.isFetching ?
+                    <Text style={styles.text} allowFontScaling={false}>加载中...</Text> :
+                    <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}
         </View>;
     }
 
