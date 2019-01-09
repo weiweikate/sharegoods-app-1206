@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -209,12 +210,19 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                if(!isAppOnForeground(getContext())){
-                    return;
-                }
-                eventDispatcher.dispatchEvent(
-                        new PopModalDismissEvent(
-                                PopModal.this.getId()));
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!isAppOnForeground(getContext())){
+                            return;
+                        }
+                        eventDispatcher.dispatchEvent(
+                                new PopModalDismissEvent(
+                                        PopModal.this.getId()));
+                    }
+                }, 200);
+
             }
         });
 
