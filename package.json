@@ -24,7 +24,7 @@
         "@mr/largelist": "^1.0.1",
         "@mr/cookies": "0.0.6",
         "@mr/webview": "0.2.9",
-        "@mr/rn-webview-bridge": "0.0.5",
+        "@mr/rn-webview-bridge": "0.0.6",
         "@mr/request": "0.1.0",
         "@mr/rn-store": "1.0.4",
         "@mr/rn-image-crop-picker": "0.0.1",
