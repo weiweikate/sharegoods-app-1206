@@ -34,6 +34,7 @@
 //  }else{
 //    [self addWelcomeView];
 //  }
+  [self configureUserAgent];
   //添加广告页
   AdView *adView = [AdView new];
   [adView addToWindow];
@@ -51,6 +52,15 @@
 - (void)removeLaunch
 {
   self.adView.isLoadJS = YES;
+}
+
+- (void)configureUserAgent {
+  NSString *orgAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+  NSString *appendAgent = @"xiugou";
+  NSString *userAgent = [NSString stringWithFormat:@"%@ %@", orgAgent, appendAgent];
+  NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:userAgent, @"UserAgent", nil];
+  [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+
 }
 
 @end
