@@ -110,7 +110,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   
   CIImage *outImage = [filter outputImage];
   
-  return [self createNonInterpolatedUIImageFormCIImage:outImage withSize:50];
+  return [self createNonInterpolatedUIImageFormCIImage:outImage withSize:200];
 }
 
 /**
