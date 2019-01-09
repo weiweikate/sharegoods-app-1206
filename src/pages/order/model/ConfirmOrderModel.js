@@ -163,7 +163,7 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
   }
 
     disPoseErr=(err)=>{
-          this.isError=true;
+          this.isError=false;
         if((err.code === 10003 && err.msg.indexOf("不在限制的购买时间") !== -1)||err.code === 54001){
             // navigate(RouterMap.LoginPage)
             this.loading=false
@@ -228,6 +228,7 @@ import { track, trackEvent } from "../../../utils/SensorsTrack";
         };
         if (StringUtils.isEmpty(this.addressId)) {
             bridge.$toast('请先添加地址');
+            bridge.hiddenLoading();
             return;
         }
         // if(orderParamVO.type<3){
