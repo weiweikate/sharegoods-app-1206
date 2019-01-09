@@ -5,6 +5,7 @@ import RouterMap from './RouterMap';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import Analytics from '../utils/AnalyticsUtil';
 import { trackViewScreen } from '../utils/SensorsTrack';
+import bridge from '../utils/bridge';
 
 const Navigator = StackNavigator(Router,
     {
@@ -28,9 +29,17 @@ const defaultStateAction = Navigator.router.getStateForAction;
 Navigator.router.getStateForAction = (action, state) => {
     if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
         console.log('退出RN页面');
-        // Android物理回退键到桌面
-        if (Platform.OS === 'android') {
-            NativeModules.commModule.nativeTaskToBack();
+        const currentPage = getCurrentRouteName(state);
+        if (currentPage === 'HomePage') {
+            // Android物理回退键到桌面
+            if (Platform.OS === 'android') {
+                if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+                    NativeModules.commModule.nativeTaskToBack();
+                } else {
+                    bridge.$toast('再按一次返回键退出应用');
+                }
+                this.lastBackPressed = Date.now();
+            }
         }
         const routes = [...state.routes];
         return {
