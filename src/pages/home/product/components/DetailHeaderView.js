@@ -46,7 +46,7 @@ export default class DetailHeaderView extends Component {
         //priceType 3会员价  2拼店价
         const {
             freight, monthSaleCount, originalPrice, priceType,
-            minPrice, maxPrice, groupPrice, name, secondName, afterSaleServiceDays, productStatus
+            minPrice, maxPrice, groupPrice, name, secondName, restrictions, productStatus
         } = this.props.data || {};
 
         let priceSuper = minPrice !== maxPrice ? `￥${minPrice || ''}-￥${maxPrice || ''}` : `￥${minPrice || ''}`;
@@ -148,7 +148,7 @@ export default class DetailHeaderView extends Component {
                             color: DesignRule.textColor_secondTitle,
                             fontSize: 12
                         }}
-                              allowFontScaling={false}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays || ''}天无理由退换`}`}</Text>
+                              allowFontScaling={false}>{`正品保证·急速发货  ${restrictions && 4 ? `7天退换` : ``}`}</Text>
                     </View>
                 </View>
             </View>
