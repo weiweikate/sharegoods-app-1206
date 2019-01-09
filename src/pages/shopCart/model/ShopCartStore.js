@@ -427,6 +427,8 @@ class ShopCartStore {
             }).catch(error => {
                 this.setRefresh(false);
                 bridge.$toast(error.msg);
+                //同步成功删除本地数据
+                shopCartCacheTool.deleteAllLocalData();
                 this.data = [];
             });
         } else {
