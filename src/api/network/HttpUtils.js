@@ -75,6 +75,13 @@ export default class HttpUtils {
 
     platform = '';
 
+    static sign(params) {
+        return new Promise((resolve, reject) => {
+            const signParam = RSA.sign(params)
+            resolve(signParam)
+        })
+    }
+
     static get(uri, isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
@@ -94,7 +101,7 @@ export default class HttpUtils {
 
         let signParam = {};
         if (isRSA) {
-            signParam = RSA.sign(params);
+            signParam = HttpUtils.sign(params);
         }
         let timeLineStart = +new Date();
 
@@ -159,7 +166,7 @@ export default class HttpUtils {
 
         let signParam = {};
         if (isRSA) {
-            signParam = RSA.sign();
+            signParam = HttpUtils.sign();
         }
         data = {
             ...data

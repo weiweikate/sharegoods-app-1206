@@ -203,7 +203,7 @@ export default class TopicDetailPage extends BasePage {
 
                         if (this.state.data.type === 2 && !this.isNoFirstShow) {//1普通礼包  2升级礼包  展示一次
                             this.isNoFirstShow = true
-                            this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退换货，如有产品质量问题，可联系客服进行申诉`);
+                            this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退款，如有产品质量问题，可联系客服进行申诉`);
                         }
                     });
                 }
