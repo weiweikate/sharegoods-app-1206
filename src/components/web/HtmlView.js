@@ -27,7 +27,7 @@ export default class RequestDetailPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ height:ScreenUtils.height - ScreenUtils.headerHeight-ScreenUtils.statusBarHeight, overflow: 'hidden' }}>
+            <View style={{ height:ScreenUtils.height - ScreenUtils.headerHeight, overflow: 'hidden' }}>
                 <WebViewBridge
                     style={{ flex: 1 }}
                     source={{ uri: this.state.uri }}
