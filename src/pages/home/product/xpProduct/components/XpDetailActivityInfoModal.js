@@ -66,7 +66,25 @@ export default class XpDetailActivityInfoModal extends Component {
     };
 
     _renderItemCoupon = (item) => {
-        const { name, remarks, effectiveDays, value } = item.coupon||{};
+        const { remarks, effectiveDays, value, type } = item.coupon || {};
+        let name;
+        switch (type) {
+            case 1:
+                name = '满减券';
+                break;
+            case 2:
+                name = '抵价券';
+                break;
+            case 3:
+                name = '折扣券';
+                break;
+            case 4:
+                name = '抵扣券';
+                break;
+            default:
+                name = '';
+                break;
+        }
         return <TouchableWithoutFeedback>
             <View>
                 <Text style={styles.itemText}>{`每满${item.startPrice}元，赠送${item.startCount}张优惠券`}</Text>
@@ -118,15 +136,22 @@ export default class XpDetailActivityInfoModal extends Component {
     render() {
         const { rules, startPrice, startCount, maxCount, coupon, contents } = this.state.xpDetailModel;
 
-        const sectionListData = [
-            { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
-            {
-                headerTittle: '优惠券',
-                headerImg: xp_detail_coupon,
-                type: 'coupon',
-                data: [{ startPrice, startCount, maxCount, coupon }]
-            },
-            { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
+        let sectionListData;
+        if ((coupon || {}).id) {
+            sectionListData = [
+                { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
+                {
+                    headerTittle: '优惠券',
+                    headerImg: xp_detail_coupon,
+                    type: 'coupon',
+                    data: [{ startPrice, startCount, maxCount, coupon }]
+                },
+                { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
+        } else {
+            sectionListData = [
+                { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
+                { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
+        }
 
         return (
             <CommModal onRequestClose={this._close}

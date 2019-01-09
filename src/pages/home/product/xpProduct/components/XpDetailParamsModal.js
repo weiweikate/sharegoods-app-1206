@@ -46,7 +46,6 @@ export default class XpDetailParamsModal extends Component {
     };
 
     render() {
-        const {} = this.props;
         return (
             <CommModal onRequestClose={this._close}
                    visible={this.state.modalVisible}
