@@ -259,17 +259,25 @@ export default class MyShopPage extends BasePage {
                         });
                     }, 500);
                 } else if (index === 2) {
-                    this.$loadingShow();
-                    SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
-                        if (!this.props.leftNavItemHidden) {
-                            this._loadPageData();
-                        }
-                        spellStatusModel.getUser(2);
-                        this.$loadingDismiss();
-                    }).catch((error) => {
-                        this.$loadingDismiss();
-                        this.$toastShow(error.msg);
-                    });
+                    setTimeout(() => {
+                        Alert.alert('提示', '确定要退出么?', [{
+                            text: '取消'
+                        }, {
+                            text: '退出', onPress: () => {
+                                this.$loadingShow();
+                                SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
+                                    if (!this.props.leftNavItemHidden) {
+                                        this._loadPageData();
+                                    }
+                                    spellStatusModel.getUser(2);
+                                    this.$loadingDismiss();
+                                }).catch((error) => {
+                                    this.$loadingDismiss();
+                                    this.$toastShow(error.msg);
+                                });
+                            }
+                        }]);
+                    }, 500);
                 }
             });
         }
