@@ -16,7 +16,7 @@ import AccountItem from '../../components/AccountItem';
 import res from "../../res";
 import user from "../../../../model/user";
 // import DataUtils from "../../../../utils/DateUtils";
-import Toast from "../../../../utils/bridge";
+// import Toast from "../../../../utils/bridge";
  const {
      jdt_05,
      invite_icon,
@@ -150,18 +150,16 @@ export default class ExpDetailPage extends BasePage{
     };
     getDataFromNetwork = () => {
         console.log("getDataFromNetwork",this.params.experience)
-        let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励",""];
-        let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,share_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon ];
+        let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励","其他","其他"];
+        let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,share_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon,activity_icon,activity_icon ];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
-        Toast.showLoading();
         MineApi.expDetail({
             page: this.currentPage,
             size: 10
         }).then((response) => {
-            Toast.hiddenLoading();
             console.log(response);
                 let data = response.data;
-                data.map((item, index) => {
+                data.data.map((item, index) => {
                     arrData.push({
                         type: use_type[parseInt(item.sourceCode)],
                         time: item.createTime,
@@ -173,7 +171,6 @@ export default class ExpDetailPage extends BasePage{
                 });
                 this.setState({ loadingState:PageLoadingState.success ,viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true,});
         }).catch(e => {
-            Toast.hiddenLoading();
             this.setState({ loadingState:PageLoadingState.fail,netFailedInfo:e,viewData: arrData, isEmpty: true ,});
 
         });
