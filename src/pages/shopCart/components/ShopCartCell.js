@@ -251,7 +251,10 @@ export default class ShopCartCell extends Component {
                                                     if (goodNumber === 0){
                                                         bridge.$toast('不支持0件商品');
                                                         itemData.amount = 1;
-                                                    } else {
+                                                    } else if ((goodNumber > 200)) {
+                                                        bridge.$toast('单件商品最多购买200件');
+                                                        itemData.amount = 200;
+                                                    }else {
                                                         itemData.amount = goodNumber;
                                                     }
                                                     let [...tempArr] = shopCartStore.data.slice();

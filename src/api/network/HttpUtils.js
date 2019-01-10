@@ -101,7 +101,8 @@ export default class HttpUtils {
 
         let signParam = {};
         if (isRSA) {
-            signParam = HttpUtils.sign(params);
+            // signParam = HttpUtils.sign(params);
+            signParam = RSA.sign();
         }
         let timeLineStart = +new Date();
 
@@ -166,7 +167,10 @@ export default class HttpUtils {
 
         let signParam = {};
         if (isRSA) {
-            signParam = HttpUtils.sign();
+            //  HttpUtils.sign().then(result => {
+            //      signParam = result;
+            // });
+            signParam = RSA.sign()
         }
         data = {
             ...data
