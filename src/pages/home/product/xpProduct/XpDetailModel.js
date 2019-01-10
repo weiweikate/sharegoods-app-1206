@@ -11,7 +11,11 @@ class XpDetailModel {
     @observable basePageState = PageLoadingState.null;
     @observable basePageError = {};
 
-    @observable baseData = '';
+    /**
+     * 状态（0：删除1：未开始 2：进行中3：已结束）
+     */
+    @observable status;
+
     /*起始金额，送优惠券*/
     @observable startPrice = '';
     /*送优惠券数量*/
@@ -96,17 +100,13 @@ class XpDetailModel {
     }
 
     @computed get pCantBuy() {
-        let { buyLimit, leftBuyNum } = this.pData;
-        //不能买
-        return this.pProductStatus !== 1 || (buyLimit !== -1 && leftBuyNum === 0) || this.skuTotal === 0;
+        return this.pProductStatus !== 1 || this.skuTotal === 0;
     }
 
     @computed get pBuyText() {
-        let { buyLimit, leftBuyNum } = this.pData;
-        let isLimit = buyLimit !== -1 && leftBuyNum === 0;
         //能买
-        let canBuy = this.pProductStatus === 1 && this.skuTotal !== 0 && !isLimit;
-        return canBuy ? '立即购买' : (isLimit ? '您已购买过该商品' : '暂不可购买');
+        let canBuy = this.pProductStatus === 1 && this.skuTotal !== 0;
+        return canBuy ? '立即购买' : '暂不可购买';
     }
 
     /******************************【action】******************************************/
@@ -125,9 +125,10 @@ class XpDetailModel {
     };
 
     /*经验详情接口返回*/
-    @action saveActData = (data) => {
+    @action saveActData = (data, productCode) => {
         this.basePageState = PageLoadingState.success;
         data = data || {};
+        this.status = data.status;
         this.startPrice = data.startPrice || '';
         this.startCount = data.startCount || '';
         this.maxCount = data.maxCount || '';
@@ -143,9 +144,19 @@ class XpDetailModel {
         this.rules = data.rules || [];
         this.coupon = (data.coupon || {}).coupon || {};
 
-        /*请求默认第一个数据*/
-        if (this.prods.length > 0) {
-            let item = this.prods[0];
+        /*在售*/
+        if (this.prods.length > 0 && this.status === 2) {
+            //默认第一个数据
+            let selectedIndex = 0;
+            if (productCode) {
+                //有选择的点击找出index
+                this.prods.forEach((item, index) => {
+                    if (item.spuCode === productCode) {
+                        selectedIndex = index;
+                    }
+                });
+            }
+            let item = this.prods[selectedIndex];
             this.selectSpuCode(item.spuCode);
         }
     };
@@ -177,13 +188,13 @@ class XpDetailModel {
 
     /*********【网络】***********/
 
-    request_act_exp_detail = (activityCode) => {
+    request_act_exp_detail = (activityCode, productCode) => {
         this.basePageState = PageLoadingState.loading;
         HomeAPI.act_exp_detail({
             //测试 JF201812270017
             code: activityCode
         }).then((data) => {
-            this.saveActData(data.data);
+            this.saveActData(data.data, productCode);
         }).catch((error) => {
             this.actError(error);
         });
@@ -195,6 +206,7 @@ class XpDetailModel {
     request_getProductDetailByCode = () => {
         this.productPageState = PageLoadingState.loading;
         HomeAPI.getProductDetailByCode({
+            // code:'SPU00000375',
             code: this.selectedSpuCode
         }).then((data) => {
             this.saveProductData(data.data);

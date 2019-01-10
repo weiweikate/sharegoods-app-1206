@@ -8,12 +8,13 @@ import {
     Image
 } from 'react-native';
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "../../../../constants/DesignRule";
-import res from "../../res";
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from '../../../../constants/DesignRule';
+import res from '../../res';
 import Modal from '../../../../comm/components/CommModal';
+
 const {
     detailShowBg,
     message,
@@ -24,12 +25,6 @@ const {
 
 const bgHeight = ScreenUtils.autoSizeWidth(410 / 2.0);
 const bgWidth = 286 / 2.0;
-const ImgArr = [
-    { img: message, tittle: '消息', index: 0 },
-    { img: detail_search, tittle: '搜索', index: 1 },
-    { img: share, tittle: '分享', index: 2 },
-    { img: detail_kefu, tittle: '客服', index: 3 }
-];
 
 export default class DetailNavShowModal extends Component {
 
@@ -38,15 +33,17 @@ export default class DetailNavShowModal extends Component {
         this.state = {
             modalVisible: false, //是否显示
             confirmCallBack: null,
-            messageCount: 0
+            messageCount: 0,
+            hiddenShare: false
         };
     }
 
-    show = (messageCount, confirmCallBack) => {
+    show = (messageCount, confirmCallBack, hidden) => {
         this.setState({
             messageCount: messageCount,
             modalVisible: true,
-            confirmCallBack: confirmCallBack
+            confirmCallBack: confirmCallBack,
+            hiddenShare: hidden
         });
     };
 
@@ -72,12 +69,31 @@ export default class DetailNavShowModal extends Component {
             style={{ height: 0.5, marginLeft: 6, marginRight: 6, backgroundColor: DesignRule.lineColor_inWhiteBg }}/>;
     };
 
+    getImgArr = () => {
+        let imgArr;
+        if (this.state.hiddenShare) {
+            imgArr = [
+                { img: message, tittle: '消息', index: 0 },
+                { img: detail_search, tittle: '搜索', index: 1 },
+                { img: detail_kefu, tittle: '客服', index: 3 }
+            ];
+        } else {
+            imgArr = [
+                { img: message, tittle: '消息', index: 0 },
+                { img: detail_search, tittle: '搜索', index: 1 },
+                { img: share, tittle: '分享', index: 2 },
+                { img: detail_kefu, tittle: '客服', index: 3 }
+            ];
+        }
+        return imgArr;
+    };
+
     _renderItem = ({ item }) => {
         return <TouchableOpacity
             style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                height: (bgHeight - 20) / ImgArr.length,
+                height: (bgHeight - 20) / this.getImgArr().length,
                 marginTop: item.index === 0 ? 16 : 0
             }}
             onPress={() => this._onPress(item)}>
@@ -126,7 +142,7 @@ export default class DetailNavShowModal extends Component {
                             position: 'absolute', width: bgWidth, height: bgHeight
                         }}
                         source={detailShowBg}>
-                        <FlatList data={ImgArr}
+                        <FlatList data={this.getImgArr()}
                                   keyExtractor={(item, index) => `${index}`}
                                   renderItem={this._renderItem}
                                   ItemSeparatorComponent={this._separator}

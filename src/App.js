@@ -14,7 +14,7 @@ import {
     View,
     Platform,
     InteractionManager,
-    Image
+    // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from './navigation/RouterMap';
@@ -32,7 +32,7 @@ import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
 import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
 // import LoginAPI from './pages/login/api/LoginApi';
-import OldImag from './home_icon.png';
+// import OldImag from './home_icon.png';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
@@ -131,34 +131,35 @@ export default class App extends Component {
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
 
-                {
-                    user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
-                        ?
-                        null
-                        : (this.state.curRouteName === RouterMap.LoginPage || this.state.curRouteName === RouterMap.OldUserLoginPage
-                        || this.state.curRouteName === RouterMap.SetPasswordPage
-                        ? null :
-                        <DebugButton
-                            onPress={this.gotoLogin}
-                            style={
-                                styles.oldLoginBtnStyle
-                            }
-                        >
-                            <View
-                                style={{
-                                    width: 150,
-                                    height: 43,
-                                    paddingLeft: 10
-                                }
-                                }
-                            >
-                                <Image
-                                    source={OldImag}
-                                    resizeMode={'contain'}
-                                />
-                            </View>
-                        </DebugButton>)
-                }
+                {/*去掉不再使用*/}
+                {/*{*/}
+                    {/*user.isLogin || !oldUserLoginSingleModel.isShowOldBtn*/}
+                        {/*?*/}
+                        {/*null*/}
+                        {/*: (this.state.curRouteName === RouterMap.LoginPage || this.state.curRouteName === RouterMap.OldUserLoginPage*/}
+                        {/*|| this.state.curRouteName === RouterMap.SetPasswordPage*/}
+                        {/*? null :*/}
+                        {/*<DebugButton*/}
+                            {/*onPress={this.gotoLogin}*/}
+                            {/*style={*/}
+                                {/*styles.oldLoginBtnStyle*/}
+                            {/*}*/}
+                        {/*>*/}
+                            {/*<View*/}
+                                {/*style={{*/}
+                                    {/*width: 150,*/}
+                                    {/*height: 43,*/}
+                                    {/*paddingLeft: 10*/}
+                                {/*}*/}
+                                {/*}*/}
+                            {/*>*/}
+                                {/*<Image*/}
+                                    {/*source={OldImag}*/}
+                                    {/*resizeMode={'contain'}*/}
+                                {/*/>*/}
+                            {/*</View>*/}
+                        {/*</DebugButton>)*/}
+                {/*}*/}
             </View>
         );
     }

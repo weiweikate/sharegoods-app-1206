@@ -56,7 +56,7 @@ export default class VideoView extends Component {
 
     _render = () => {
         if (this.state.showVideoCover) {
-            return <View style={{ flex: 1 }}>
+            return <View style={{ flex: 1,backgroundColor:DesignRule.imgBg_color }}>
                 <Image style={{ flex: 1, width: this.state.width }}
                        source={{ uri: this.state.videoCover }}
                        resizeMode={'cover'}/>
@@ -332,7 +332,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: DesignRule.imgBg_color
     },
     playButton: {
         width: 50,
