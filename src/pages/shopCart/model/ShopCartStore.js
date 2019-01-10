@@ -264,7 +264,7 @@ class ShopCartStore {
                 });
                 if (items.rules instanceof Array && items.rules.length > 0) {
                     if (totalSelectMoney === 0) {
-                        middleTitleTip = '购买满' + items.rules[0].startPrice + '元减,经验值翻' + items.rules[0].rate + '倍,送' + items.startCount + '张优惠券';
+                        middleTitleTip = '购买满' + items.rules[0].startPrice + '元,经验值翻' + items.rules[0].rate + '倍,送' + items.startCount + '张优惠券';
                         items.middleTitle = middleTitleTip;
                     } else {
                         let rulesArr = items.rules;

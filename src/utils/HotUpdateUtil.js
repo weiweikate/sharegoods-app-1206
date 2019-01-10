@@ -1,6 +1,6 @@
 import {
     Platform,
-    Alert,
+    // Alert,
     // Linking
 } from 'react-native';
 import {
@@ -72,8 +72,8 @@ class HotUpdateUtil {
             //重新启动更新,不再有提示
             switchVersionLater(hash);
         }).catch(err => {
-            Alert.alert('提示', '更新失败.' + err);
-            console.log('失败提示' + info);
+            // Alert.alert('提示', '更新失败.' + err);
+            // console.log('失败提示' + info);
             // this.saveErrorVersion(info);
         });
     };

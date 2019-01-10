@@ -86,7 +86,7 @@ export default class HttpUtils {
                 resolve({})
             })
         }
-        
+
     }
 
     static get(uri, isRSA, params) {
@@ -107,9 +107,10 @@ export default class HttpUtils {
          */
 
         let signParam = {};
-        // if (isRSA) {
-        //     signParam = HttpUtils.sign(params);
-        // }
+        if (isRSA) {
+            // signParam = HttpUtils.sign(params);
+            signParam = RSA.sign();
+        }
         let timeLineStart = +new Date();
 
         if (!this.platform) {
@@ -176,7 +177,10 @@ export default class HttpUtils {
 
         let signParam = {};
         if (isRSA) {
-            signParam = HttpUtils.sign();
+            //  HttpUtils.sign().then(result => {
+            //      signParam = result;
+            // });
+            signParam = RSA.sign()
         }
         data = {
             ...data
