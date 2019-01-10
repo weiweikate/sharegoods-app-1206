@@ -66,7 +66,7 @@ export default class XpDetailActivityInfoModal extends Component {
     };
 
     _renderItemCoupon = (item) => {
-        const { name, remarks, effectiveDays, value, type } = item.coupon || {};
+        const { name, remarks, effectiveDays, value, type, useConditions } = item.coupon || {};
         let nameType;
         switch (type) {
             case 1:
@@ -102,7 +102,7 @@ export default class XpDetailActivityInfoModal extends Component {
                                     <Text style={styles.bgTopRightText}>{nameType || ''}</Text>
                                 </View>
                             </View>
-                            <Text style={styles.bgBottomRemarkText}>{remarks || ''}</Text>
+                            <Text style={styles.bgBottomRemarkText}>{`满${useConditions || ''}可用`}</Text>
                         </View>
                     </View>
                     <View style={styles.bgBottomView}>
