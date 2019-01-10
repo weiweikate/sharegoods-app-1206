@@ -255,6 +255,7 @@ export default class RefreshFlatList extends React.Component {
     render() {
     return (
       <FlatList
+          {...this.props}
           data={this.state.data}
           ListEmptyComponent={this._renderEmpty.bind(this)}
           ListFooterComponent={this._renderFooter.bind(this)}
