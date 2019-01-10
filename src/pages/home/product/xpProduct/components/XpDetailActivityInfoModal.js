@@ -66,7 +66,7 @@ export default class XpDetailActivityInfoModal extends Component {
     };
 
     _renderItemCoupon = (item) => {
-        const { name, remarks, effectiveDays, value, type, useConditions } = item.coupon || {};
+        const { name, effectiveDays, value, type, useConditions } = item.coupon || {};
         let nameType;
         switch (type) {
             case 1:
