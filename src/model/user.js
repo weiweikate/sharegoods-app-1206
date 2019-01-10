@@ -154,6 +154,9 @@ class User {
     @observable
     profile = null;
 
+    @observable
+    upCode = null;
+
     //用户靓号
     @observable
     perfectNumberCode = null;
@@ -264,6 +267,7 @@ class User {
         this.levelFloor = info.levelFloor;//用户上个等级的顶部
         this.levelCeil = info.levelCeil; //升级需要的经验值
         this.profile = info.profile;
+        this.upCode = info.upCode;
         //用户靓号
         this.perfectNumberCode = info.perfectNumberCode;
         if (saveToDisk) {
@@ -374,6 +378,7 @@ class User {
         this.levelCeil = null;
         this.levelFloor = null;
         this.profile = null; //简介
+        this.upCode = null;
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
         // AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
