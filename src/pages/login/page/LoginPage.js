@@ -59,11 +59,11 @@ export default class LoginPage extends BasePage {
     /*render右上角*/
     $NavBarRenderRightItem = () => {
         return (
-            this.state.showWxLoginBtn ?
-                null :
+            oldUserLoginSingleModel.isShowReg ?
                 <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
                     注册
                 </Text>
+                :  null
         );
     };
 
@@ -111,10 +111,8 @@ export default class LoginPage extends BasePage {
                     showOldLogin={this.state.showWxLoginBtn}
                 />
                 {
-                    this.state.showWxLoginBtn
+                    oldUserLoginSingleModel.isShowReg
                         ?
-                        <View/>
-                        :
                         <View style={Styles.otherLoginBgStyle}>
                             <View style={Styles.lineBgStyle}>
                                 <CommSpaceLine style={{ width: 80 }}/>
@@ -136,6 +134,8 @@ export default class LoginPage extends BasePage {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        :
+                        <View/>
                 }
             </View>
         );

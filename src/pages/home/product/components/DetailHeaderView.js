@@ -148,7 +148,7 @@ export default class DetailHeaderView extends Component {
                             color: DesignRule.textColor_secondTitle,
                             fontSize: 12
                         }}
-                              allowFontScaling={false}>{`正品保证·急速发货  ${restrictions && 4 ? `7天退换` : ``}`}</Text>
+                              allowFontScaling={false}>{`正品保证·急速发货  ${(restrictions & 4) === 4 ? `7天退换` : ``}`}</Text>
                     </View>
                 </View>
             </View>

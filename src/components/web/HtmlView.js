@@ -15,9 +15,15 @@ export default class RequestDetailPage extends BasePage {
         super(props);
         const params = this.props.navigation.state.params || {};
         const { uri, title } = params;
+        let realUri = '';
+        if(uri && uri.indexOf('?') > 0){
+            realUri = uri + '&ts='+new Date().getTime();
+        }else {
+            realUri = uri + '?ts='+new Date().getTime();
+        }
         this.state = {
             title: title,
-            uri: uri
+            uri: realUri
         };
     }
 
