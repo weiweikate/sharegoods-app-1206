@@ -37,7 +37,7 @@ class ApiEnvironment {
     }
 
     getCurrentH5Url() {
-        return ApiConfig[this.envType].wxA;
+        return ApiConfig[this.envType].h5;
     }
 
     // 获取当前oss域名
