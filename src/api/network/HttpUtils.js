@@ -117,10 +117,7 @@ export default class HttpUtils {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
 
-        return HttpUtils.sign(params, isRSA).then(sign => {
-            signParam = sign
-            return user.getToken()
-        }).then(token => {
+        return user.getToken().then(token => {
             let config = {
                 headers: {
                     ...signParam,
@@ -191,10 +188,7 @@ export default class HttpUtils {
         }
 
         let timeLineStart = +new Date();
-        return HttpUtils.sign({}, isRSA).then(sign => {
-            signParam = sign
-            return user.getToken()
-        }).then(token => {
+        return user.getToken().then(token => {
             config.headers = {
                 ...signParam,
                 'Security-Policy': 'SIGNATURE',//区分app和h5
