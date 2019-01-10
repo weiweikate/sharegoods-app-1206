@@ -160,9 +160,9 @@ export default class ActivityView extends Component {
                 two = `${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
                 if (isTomorrow(beginTime)) {
-                    four = `明天 ${formatDate(beginTime, 'HH:mm')}开拍`;
+                    four = `明天 ${formatDate(beginTime, 'HH:mm')}开抢`;
                 }else if (isToday(beginTime)){
-                    four = `今天 ${formatDate(beginTime, 'HH:mm')}开拍`;
+                    four = `今天 ${formatDate(beginTime, 'HH:mm')}开抢`;
                 } else {
                     four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开抢`;
                 }
