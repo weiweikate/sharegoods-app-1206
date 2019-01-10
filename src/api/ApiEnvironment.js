@@ -32,8 +32,12 @@ class ApiEnvironment {
     }
 
     // 获取当前H5主机地址host
+    getCurrentWxAppletKey() {
+        return ApiConfig[this.envType].wxAppletKey;
+    }
+
     getCurrentH5Url() {
-        return ApiConfig[this.envType].h5;
+        return ApiConfig[this.envType].wxA;
     }
 
     // 获取当前oss域名
