@@ -6,7 +6,8 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
@@ -18,14 +19,28 @@ import {MRText as Text} from '../../components/ui';
 const { px2dp } = ScreenUtils;
 import ImageLoad from '@mr/image-placeholder'
 
-const Item = ({ data, onPress }) => {
-    const {iconUri} = data
-    let source = {uri: iconUri + '?ts=' + new Date().getTime()}
-    return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
-        <ImageLoad style={styles.icon} source={source}/>
-        <View style={styles.space}/>
-        <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
-    </TouchableOpacity>
+class Item extends Component {
+    state = {
+        loadingError: false
+    }
+    
+    render() {
+        const { onPress , data } = this.props
+        const {iconUri, icon} = this.props.data
+        const { loadingError } = this.state
+        let source = {uri: iconUri + '?ts=' + new Date().getTime()}
+        return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
+        {
+            loadingError
+            ?
+            <Image source={icon}/>
+            :
+            <ImageLoad style={styles.icon} source={source} onError={()=>{ console.log('loadingError'); this.setState({loadingError: true})}}/>
+        }
+            <View style={styles.space}/>
+            <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
+        </TouchableOpacity>
+    }
 }
 
 /**
