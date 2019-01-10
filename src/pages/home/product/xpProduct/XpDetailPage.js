@@ -25,10 +25,10 @@ import user from '../../../../model/user';
 import RouterMap from '../../../../navigation/RouterMap';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import CommShareModal from '../../../../comm/components/CommShareModal';
-import BigImagesModal from '../BigImagesModal';
 
 const arrow_right_black = res.button.arrow_right_black;
 const detail_more_down = productRes.product.detailNavView.detail_more_down;
+const xp_detail_icon = productRes.product.xpProduct.xp_detail_icon;
 
 @observer
 export class XpDetailPage extends BasePage {
@@ -68,7 +68,7 @@ export class XpDetailPage extends BasePage {
                     }, 100);
                     break;
             }
-        });
+        }, true);
     };
 
     _getBasePageStateOptions = () => {
@@ -101,13 +101,13 @@ export class XpDetailPage extends BasePage {
     }
 
     _request_act_exp_detail = () => {
-        const { activityCode } = this.params;
-        this.xpDetailModel.request_act_exp_detail(activityCode);
+        const { activityCode, productCode } = this.params;
+        this.xpDetailModel.request_act_exp_detail(activityCode, productCode);
     };
 
-    _imgBtnAction = ()=>{
-        this.BigImagesModal.show();
-    }
+    _imgBtnAction = () => {
+        this.$navigate(RouterMap.BigImagesPage, { pData: this.xpDetailModel.pData });
+    };
 
     /*活动信息*/
     _activityAction = () => {
@@ -126,6 +126,10 @@ export class XpDetailPage extends BasePage {
                 hiddeLeft: false
             });
         } else {
+            if (!user.isLogin) {
+                this.$navigate(RouterMap.LoginPage);
+                return;
+            }
             this.goType = type;
             this.SelectionPage.show(this.xpDetailModel.pData, this._selectionViewConfirm, { needUpdate: true });
         }
@@ -183,6 +187,7 @@ export class XpDetailPage extends BasePage {
     };
 
     _renderProduct = () => {
+        const { pParamList } = this.xpDetailModel;
         return <View>
             {/*商品信息*/}
             <XpDetailProductView xpDetailModel={this.xpDetailModel} imgBtnAction={this._imgBtnAction}/>
@@ -191,11 +196,15 @@ export class XpDetailPage extends BasePage {
                     <Text style={styles.pramsText}>活动规则</Text>
                     <Image style={styles.arrowImg} source={arrow_right_black}/>
                 </TouchableOpacity>
-                <View style={styles.lineView}/>
-                <TouchableOpacity style={styles.pramsBtn} onPress={this._paramsAction}>
-                    <Text style={styles.pramsText}>参数信息</Text>
-                    <Image style={styles.arrowImg} source={arrow_right_black}/>
-                </TouchableOpacity>
+                {
+                    pParamList.length !== 0 ? <View>
+                        <View style={styles.lineView}/>
+                        <TouchableOpacity style={styles.pramsBtn} onPress={this._paramsAction}>
+                            <Text style={styles.pramsText}>参数信息</Text>
+                            <Image style={styles.arrowImg} source={arrow_right_black}/>
+                        </TouchableOpacity>
+                    </View> : null
+                }
             </View>
             <View style={styles.productInfoView}>
                 <View style={styles.infoTextView}>
@@ -211,25 +220,34 @@ export class XpDetailPage extends BasePage {
     };
 
     _renderBaseView = () => {
-        let pageStateDic = this._getProductStateOptions();
-        return <View style={styles.container}>
-            <ScrollView onScroll={this._onScroll} scrollEventThrottle={10}>
-                {/*选择框*/}
-                <XpDetailSelectListView xpDetailModel={this.xpDetailModel}/>
-                {/*页面状态*/}
-                {pageStateDic.loadingState === PageLoadingState.success ? this._renderProduct() :
-                    <View style={{ height: ScreenUtils.autoSizeHeight(500) }}>
-                        {renderViewByLoadingState(pageStateDic, this._renderProduct)}
-                    </View>}
-            </ScrollView>
+        const { status, prods } = this.xpDetailModel;
+        if (status !== 2 || prods.length === 0) {
+            let textShow = status === 1 ? '活动尚未开始，尽请期待~' : (status === 3 ? '活动已结束，下次再来哦~' : '商品已走丢，暂无活动商品~');
+            return <View style={styles.statusNoAccessView}>
+                <Image source={xp_detail_icon}/>
+                <Text style={styles.statusNoAccessText}>{textShow}</Text>
+            </View>;
+        } else {
+            let pageStateDic = this._getProductStateOptions();
+            return <View style={styles.container}>
+                <ScrollView onScroll={this._onScroll} scrollEventThrottle={10}>
+                    {/*选择框*/}
+                    <XpDetailSelectListView xpDetailModel={this.xpDetailModel}/>
+                    {/*页面状态*/}
+                    {pageStateDic.loadingState === PageLoadingState.success ? this._renderProduct() :
+                        <View style={{ height: ScreenUtils.autoSizeHeight(500) }}>
+                            {renderViewByLoadingState(pageStateDic, this._renderProduct)}
+                        </View>}
+                </ScrollView>
 
-            {/*购买,购物车*/}
-            {pageStateDic.loadingState === PageLoadingState.success &&
-            <XpDetailBottomView bottomViewAction={this._bottomViewAction} xpDetailModel={this.xpDetailModel}/>}
+                {/*购买,购物车*/}
+                {pageStateDic.loadingState === PageLoadingState.success &&
+                <XpDetailBottomView bottomViewAction={this._bottomViewAction} xpDetailModel={this.xpDetailModel}/>}
 
-            {/*上拉显示的选择框*/}
-            <XpDetailUpSelectListView xpDetailModel={this.xpDetailModel}/>
-        </View>;
+                {/*上拉显示的选择框*/}
+                <XpDetailUpSelectListView xpDetailModel={this.xpDetailModel}/>
+            </View>;
+        }
     };
 
     _render() {
@@ -249,8 +267,6 @@ export class XpDetailPage extends BasePage {
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 {/*nav更多跳转*/}
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
-                {/*查看大图*/}
-                <BigImagesModal ref={(ref) => this.BigImagesModal = ref}/>
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{
@@ -291,6 +307,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+
+    statusNoAccessView: { alignItems: 'center', alignSelf: 'center', marginTop: ScreenUtils.px2dp(130) },
+
+    statusNoAccessText: { fontSize: 13, color: DesignRule.textColor_instruction, marginTop: 8 },
 
     rightNavBtn: {
         justifyContent: 'center', alignItems: 'center',

@@ -80,7 +80,7 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     _handleAppStateChange = (state) => {
-        console.log('_handleAppStateChange AppState', state);
+        console.log('_handleAppStateChange AppState', state, this.state.orderChecking);
         const { selectedTypes } = this.payment;
         if (this.state.orderChecking === true) {
             return
@@ -176,7 +176,19 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     _alipay() {
-        this.payment.alipay(this.paymentResultView);
+        this.payment.alipay(this.paymentResultView).then(() => {
+            console.log('alipay back this.state.orderChecking', this.state.orderChecking)
+            if (this.state.orderChecking === true) {
+                return
+            }
+            const { selectedTypes, isGoToPay, orderNo } = this.payment;
+            if (orderNo && selectedTypes && isGoToPay === true) {
+                this.setState({orderChecking: true})
+                this.orderTime = (new Date().getTime()) / 1000
+                this.payment.isGoToPay = false
+                this._checkOrder()
+            }
+        });
     }
 
     _wechat() {

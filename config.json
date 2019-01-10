@@ -11,25 +11,29 @@
         "dev": {
             "name": "开发",
             "host": "http://devapi.sharegoodsmall.com/gateway",
-            "oss": "https://devcdn.sharegoodsmall.com"
+            "oss": "https://devcdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c" //"gh_a7c8f565ea2e" uat
         },
         "qa": {
             "name": "测试",
             "host": "https://testapi.sharegoodsmall.com/gateway",
             "h5": "https://testh5.sharegoodsmall.com",
-            "oss": "https://testcdn.sharegoodsmall.com"
+            "oss": "https://testcdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
         },
         "pre_release": {
             "name": "UAT",
             "host": "https://uatapi.sharegoodsmall.com/gateway",
             "h5": "https://uath5.sharegoodsmall.com",
-            "oss": "https://uatcdn.sharegoodsmall.com"
+            "oss": "https://uatcdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
         },
         "online": {
             "name": "生产",
             "host": "https://api.sharegoodsmall.com/gateway",
             "h5": "https://h5.sharegoodsmall.com",
-            "oss": "https://cdn.sharegoodsmall.com"
+            "oss": "https://cdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_e0c6b86659cc"
         },
         "吴承骏": {
             "name": "吴承骏",

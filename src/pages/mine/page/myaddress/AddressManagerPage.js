@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, TouchableOpacity, View, Alert, RefreshControl } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View, Alert } from "react-native";
 import React from "react";
 import BasePage from "../../../../BasePage";
 import MineAPI from "../../api/MineApi";
@@ -7,6 +7,7 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import {MRText as Text} from '../../../../components/ui'
+import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 
 
 const addrBorderImgN = res.address.dizhi_img_nor;
@@ -57,42 +58,11 @@ export default class AddressManagerPage extends BasePage {
 
     componentDidMount() {
         // 拿数据
-        this.refreshing();
+        // this.refreshing();
     }
-
-    refreshing() {
-        MineAPI.queryAddrList({}).then((response) => {
-            if (response.data) {
-                let ids = [];
-                let selectIndex = -1;
-                for (let i = 0, len = response.data.length; i < len; i++) {
-                    if (response.data[i].defaultStatus === 1) {
-                        this.setState({
-                            selectIndex: i
-                        });
-                        selectIndex = i;
-                    }
-                    ids.push(response.data[i].id)
-                }
-                let currentAddressId = this.params.currentAddressId || -1
-                if (currentAddressId && ids.indexOf(currentAddressId) === -1){//当前选择地址被删除了
-                    if (selectIndex === -1) {
-                        this.params.callBack &&  this.params.callBack({});
-                    }else {
-                        this.params.callBack &&  this.params.callBack(response.data[selectIndex]);
-                    }
-                }
-            } else {//没有地址时候返回data： null
-                this.params.callBack &&  this.params.callBack({});
-            }
-            this.setState({
-                datas: response.data || []
-            });
-        }).catch((data) => {
-            bridge.$toast(data.msg);
-        });
+    refreshing(){
+        this.list && this.list._onRefresh();
     }
-
     // 空布局
     _renderEmptyView = () => {
         return (
@@ -106,20 +76,42 @@ export default class AddressManagerPage extends BasePage {
 
     _render() {
         return (
-            <FlatList
+            <RefreshFlatList
+                ref={(ref) => {this.list = ref}}
+                isSupportLoadingMore={false}
+                url={MineAPI.queryAddrList}
+                params={{}}
                 ListHeaderComponent={this._header}
                 ListFooterComponent={this._footer}
-                ItemSeparatorComponent={this._separator}
-                ListEmptyComponent={this._renderEmptyView}
                 renderItem={this._renderItem}
-                extraData={this.state}
-                keyExtractor={(item) => item.id + ''}
-                showsVerticalScrollIndicator={false}
-                initialNumToRender={5}
-                data={this.state.datas}
-                refreshControl={<RefreshControl refreshing={false}
-                                                onRefresh={this.refreshing}
-                                                colors={[DesignRule.mainColor]}/>}
+                renderEmpty={this._renderEmptyView}
+                ItemSeparatorComponent={this._separator}
+                handleRequestResult={(response) => {
+                    if (response.data) {
+                        let ids = [];
+                        let selectIndex = -1;
+                        for (let i = 0, len = response.data.length; i < len; i++) {
+                            if (response.data[i].defaultStatus === 1) {
+                                this.setState({
+                                    selectIndex: i
+                                });
+                                selectIndex = i;
+                            }
+                            ids.push(response.data[i].id)
+                        }
+                        let currentAddressId = this.params.currentAddressId || -1
+                        if (currentAddressId && ids.indexOf(currentAddressId) === -1){//当前选择地址被删除了
+                            if (selectIndex === -1) {
+                                this.params.callBack &&  this.params.callBack({});
+                            }else {
+                                this.params.callBack &&  this.params.callBack(response.data[selectIndex]);
+                            }
+                        }
+                    } else {//没有地址时候返回data： null
+                        this.params.callBack &&  this.params.callBack({});
+                    }
+                    return response.data || [];
+                }}
             />
         );
     }

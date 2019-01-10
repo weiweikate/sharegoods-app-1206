@@ -13,21 +13,15 @@ const { px2dp } = ScreenUtils;
 @observer
 export class XpDetailProductView extends Component {
 
-    _goFullImage = () => {
-
-    };
-
     render() {
         const { xpDetailModel, imgBtnAction } = this.props;
         const { pImgUrl, pPriceType, pPrice, pName, pSecondName, skuTotal, pProductStatus, pUpTime } = xpDetailModel;
         let imgText = `${StringUtils.isNoEmpty(pUpTime) ? formatDate(pUpTime, 'MM月dd号HH:mm') : ''}开售`;
         return (
             <View style={styles.bgView}>
-                <TouchableWithoutFeedback onPress={this._goFullImage}>
+                <TouchableWithoutFeedback onPress={imgBtnAction}>
                     <View>
-                        <TouchableWithoutFeedback onPress={imgBtnAction}>
-                            <UIImage style={styles.headerImg} source={{ uri: pImgUrl }}/>
-                        </TouchableWithoutFeedback>
+                        <UIImage style={styles.headerImg} source={{ uri: pImgUrl }}/>
                         {pProductStatus === 3 ?
                             <View style={styles.ImgAbView}>
                                 <Text style={styles.ImgAbText}>{imgText}</Text>

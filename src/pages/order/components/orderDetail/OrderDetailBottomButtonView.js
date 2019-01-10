@@ -152,7 +152,7 @@ export default class OrderDetailBottomButtonView extends Component {
             case 8:
                 let cartData = [];
                 orderDetailModel.warehouseOrderDTOList[0].products.map((item, index) => {
-                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.quantity });
+                    cartData.push({ spuCode: item.prodCode,productCode: item.prodCode, skuCode: item.skuCode, amount: item.quantity });
                 });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
