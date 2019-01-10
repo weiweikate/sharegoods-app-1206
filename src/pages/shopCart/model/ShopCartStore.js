@@ -301,7 +301,7 @@ class ShopCartStore {
                                 achieveRuleIndex = ruleIndex;
                             }
                         });
-                        middleTitleTip = '购买满' + items.rules[achieveRuleIndex].startPrice + '元减,经验值翻' + items.rules[achieveRuleIndex].rate + '倍,';
+                        middleTitleTip = '购买满' + items.rules[achieveRuleIndex].startPrice + '元,经验值翻' + items.rules[achieveRuleIndex].rate + '倍,';
                         //计算优惠券
                         let totalYouHuiJuan = items.rules[achieveRuleIndex].startPrice / items.startPrice;
                         if (totalYouHuiJuan > items.maxCount) {
