@@ -196,7 +196,8 @@ class ConfirmOrderModel {
         });
         if (this.canUseCou) {
             let arr = [];
-            if (this.orderParamVO.orderType == 99) {
+            let params={};
+            if (this.orderParamVO.orderType == 99||this.orderParamVO.orderType == 98) {
                 this.orderParamVO.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -204,17 +205,31 @@ class ConfirmOrderModel {
                         amount: item.quantity || item.num
                     });
                 });
-                let params = { productPriceIds: arr };
-                API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
-                    let data = resp.data || {};
-                    let dataList = data.data || [];
-                    if (dataList.length === 0) {
-                        this.couponName = '暂无优惠券';
-                    }
-                }).catch(result => {
-                    console.log(result);
-                });
+                 params = { productPriceIds: arr };
             }
+            else if (this.orderParamVO.orderType == 1 || this.orderParamVO.orderType == 2 || this.orderParamVO.orderType == 3) {
+                this.orderParamVO.orderProducts.map((item, index) => {
+                    arr.push({
+                        priceCode: item.skuCode,
+                        productCode: item.productCode || item.prodCode,
+                        amount: 1
+                    });
+                });
+                params = {
+                    productPriceIds: arr,
+                    activityCode: this.orderParamVO.activityCode,
+                    activityType: this.orderParamVO.orderType
+                };
+            }
+            API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
+                let data = resp.data || {};
+                let dataList = data.data || [];
+                if (dataList.length === 0) {
+                    this.couponName = '暂无优惠券';
+                }
+            }).catch(result => {
+                console.log(result);
+            });
         }
 
         return data;

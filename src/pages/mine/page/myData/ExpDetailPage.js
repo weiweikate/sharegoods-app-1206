@@ -144,7 +144,7 @@ export default class ExpDetailPage extends BasePage{
                     capital={item.capital}
                     iconImage={item.iconImage}
                     clickItem={() => {}}
-                    capitalRed={true}
+                    capitalRed={item.capitalRed}
                 />
         );
     };
@@ -165,7 +165,7 @@ export default class ExpDetailPage extends BasePage{
                         time: item.createTime,
                         capital: "+"+item.experience,
                         iconImage: use_let_img[parseInt(item.sourceCode)],
-
+                        capitalRed:parseInt(item.sourceType)===1
 
                     });
                 });
