@@ -158,6 +158,16 @@ class ShopCartStore {
                     goodItem.isSelected = false;
                     goodItem.key = ''+index+goodItemIndex;
                     goodItem.nowTime = itemObj.nowTime;//系统当前时间戳
+
+                    let tempSpecContent = '规格:';
+                    goodItem.specifies.map((specify,specifyIndex)=>{
+                        if (specifyIndex === 0){
+                            tempSpecContent  += specify.paramValue;
+                        } else {
+                            tempSpecContent += '-'+specify.paramValue;
+                        }
+                    })
+                    goodItem.specifyContent = tempSpecContent;
                     // goodItem.activityCode = itemObj.activityCode;
                     //从订单过来的选中
                     this.needSelectGoods.map(selectGood => {
@@ -199,6 +209,16 @@ class ShopCartStore {
             invalidObj.data.map((goodItem, goodItemIndex) => {
                 goodItem.isSelected = false;
                 goodItem.key = ''+tempAllData.length + goodItemIndex;
+
+                let tempSpecContent = '规格:';
+                goodItem.specifies.map((specify,specifyIndex)=>{
+                    if (specifyIndex === 0){
+                        tempSpecContent  += specify.paramValue;
+                    } else {
+                        tempSpecContent += '-'+specify.paramValue;
+                    }
+                })
+                goodItem.specifyContent = tempSpecContent;
             });
             invalidObj.sectionIndex = tempAllData.length;
             tempAllData.push(invalidObj);
@@ -455,6 +475,7 @@ class ShopCartStore {
             bridge.hiddenLoading();
             bridge.$toast(error.msg);
             this.setRefresh(false);
+            this.data = [];
         });
     };
 
