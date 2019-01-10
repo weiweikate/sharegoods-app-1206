@@ -1,12 +1,16 @@
 package com.meeruu.commonlib.utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 
 import com.meeruu.commonlib.base.BaseApplication;
+
+import java.util.List;
 
 /**
  * 跟App相关的辅助类
@@ -89,4 +93,45 @@ public class AppUtils {
         }
         return null;
     }
+
+    /**
+     * 判断APP是否在前台
+     * @param context
+     * @return
+     */
+    public static boolean isAppOnForeground(Context context) {
+
+        ActivityManager activityManager = (ActivityManager) context.getApplicationContext()
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = context.getApplicationContext().getPackageName();
+        /**
+         * 获取Android设备中所有正在运行的App
+         */
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
+                .getRunningAppProcesses();
+        if (appProcesses == null)
+            return false;
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            // The name of the process that this object is associated with.
+            if (appProcess.processName.equals(packageName)
+                    && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /*
+     * 根据包名启动APP
+     */
+    public static void startAPP(Context context, String appPackageName){
+        try{
+            Intent intent = context.getPackageManager().getLaunchIntentForPackage(appPackageName);
+            context.startActivity(intent);
+        }catch(Exception e){
+        }
+    }
+
 }
