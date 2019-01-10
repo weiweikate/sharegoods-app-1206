@@ -1,9 +1,9 @@
 import React from 'react';
 import BasePage from '../../BasePage';
 import WebViewBridge from '@mr/webview';
-import { View, TouchableOpacity, Image} from 'react-native';
+import { View} from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import res from '../../comm/res';
+// import res from '../../comm/res';
 
 export default class RequestDetailPage extends BasePage {
 
@@ -33,33 +33,33 @@ export default class RequestDetailPage extends BasePage {
         this.$NavigationBarResetTitle(this.state.title || '加载中...');
     }
 
-    $NavigationBarDefaultLeftPressed = () => {
-        if (!this.canGoBack) {
-            // this.webView.goBack();
-            this.$navigateBack();
-        } else {
-            this.webView.goBack();
-        }
-    };
+    // $NavigationBarDefaultLeftPressed = () => {
+    //     if (!this.canGoBack) {
+    //         // this.webView.goBack();
+    //         this.$navigateBack();
+    //     } else {
+    //         this.webView.goBack();
+    //     }
+    // };
 
 
-    $renderSecondLeftItem() {
-        return (
-            <TouchableOpacity
-                style={{
-                    height: 44,
-                    width: 44,
-                    left: 50,
-                    top: ScreenUtils.statusBarHeight,
-                    position: 'absolute',
-                    justifyContent: 'center',
-                }}
-                onPress={this.$navigateBack.bind(this)}
-            >
-                <Image source={res.button.del_web} style ={{height: 22, width: 22}}/>
-            </TouchableOpacity>
-        );
-    }
+    // $renderSecondLeftItem() {
+    //     return (
+    //         <TouchableOpacity
+    //             style={{
+    //                 height: 44,
+    //                 width: 44,
+    //                 left: 50,
+    //                 top: ScreenUtils.statusBarHeight,
+    //                 position: 'absolute',
+    //                 justifyContent: 'center',
+    //             }}
+    //             onPress={this.$navigateBack.bind(this)}
+    //         >
+    //             <Image source={res.button.del_web} style ={{height: 22, width: 22}}/>
+    //         </TouchableOpacity>
+    //     );
+    // }
 
     _render() {
         return (
