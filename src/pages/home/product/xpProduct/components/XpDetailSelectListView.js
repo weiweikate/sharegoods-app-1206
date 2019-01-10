@@ -54,8 +54,8 @@ export class XpDetailSelectListView extends Component {
 
     autoScroll = autorun(
         () => {
-            this._scrollToIndex(this.props.xpDetailModel.selectedSpuIndex);
-            setTimeout(() => this._scrollToIndex(this.props.xpDetailModel.selectedSpuIndex), 100);
+            const { selectedSpuIndex } = this.props.xpDetailModel;
+            setTimeout(() => this._scrollToIndex(selectedSpuIndex), 100);
         }
     );
 
