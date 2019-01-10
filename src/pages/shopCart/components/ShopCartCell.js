@@ -247,10 +247,17 @@ export default class ShopCartCell extends Component {
                                                     bridge.$toast('此商品不可编辑');
                                                 } else {
                                                     console.log('输入后的值' + text);
-                                                    itemData.amount = parseInt(text);
+                                                    let goodNumber = parseInt(text);
+                                                    if (goodNumber === 0){
+                                                        bridge.$toast('不支持0件商品');
+                                                        itemData.amount = 1;
+                                                    } else {
+                                                        itemData.amount = goodNumber;
+                                                    }
                                                     let [...tempArr] = shopCartStore.data.slice();
                                                     (tempArr[sectionData.sectionIndex].data)[rowId] = itemData;
                                                     shopCartStore.data = tempArr;
+
                                                 }
                                             }}
                                             onEndEditing={text => this.onNumberTextChange(itemData, text, rowId)}

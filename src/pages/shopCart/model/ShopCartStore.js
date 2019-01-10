@@ -168,7 +168,8 @@ class ShopCartStore {
                     originArr.map(items => {
                         items.data.map(itemGood => {
                             if (itemGood.productCode === goodItem.productCode && goodItem.skuCode === itemGood.skuCode) {
-                                if (goodItem.productStatus === 1) {
+                               //判断库存
+                                if (goodItem.productStatus === 1 && goodItem.sellStock > 0) {
                                     goodItem.isSelected = itemGood.isSelected;
                                 } else {
                                     goodItem.isSelected = false;
@@ -374,7 +375,7 @@ class ShopCartStore {
         if (isSelectAll) {
             tempArr.map(items => {
                 items.data.map(item => {
-                    if (item.productStatus === 0 || item.productStatus === 2 || item.productStatus === 3) {
+                    if (item.productStatus === 0 || item.productStatus === 2 || item.productStatus === 3 || item.sellStock <= 0) {
                         item.isSelected = false;
                     } else {
                         item.isSelected = true;
