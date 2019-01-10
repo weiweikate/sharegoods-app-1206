@@ -152,11 +152,11 @@ class ShopCartCacheTool {
                             }
                         });
                         if (!isHave) {
-                            localValue.push(goodsItem);
+                            localValue.insert(0,goodsItem);
                         }
                     } else {
                         localValue = [];
-                        localValue.push(goodsItem);
+                        localValue.insert(0,goodsItem);
                     }
                     Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                         bridge.$toast('加入购物车成功');
