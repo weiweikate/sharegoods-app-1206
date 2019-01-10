@@ -296,7 +296,7 @@ class ShopCartStore {
                         let achieveRuleIndex = 0;
                         // let achievePrice = rulesArr[achieveRuleIndex].startPrice;
                         rulesArr.map((ruleItem, ruleIndex) => {
-                            if (totalSelectMoney > ruleItem.startPrice) {
+                            if (totalSelectMoney >= ruleItem.startPrice) {
                                 // achievePrice = ruleItem.startPrice;
                                 achieveRuleIndex = ruleIndex;
                             }
