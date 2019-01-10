@@ -237,7 +237,7 @@ export default class MyCouponsItems extends Component {
                             width: px2dp(24),
                             height: px2dp(24),
                             marginRight: px2dp(39)
-                        }} onPress={this.plusTokenCoin}/>
+                        }} onPress={this.plusTokenCoin} resizeMode={'contain'}/>
                     </View>
                 </View>
 
@@ -495,7 +495,7 @@ export default class MyCouponsItems extends Component {
             //     this.parseData(arr);
             //     return;
             // }
-            if (this.props.orderParam.orderType == 99) {
+            if (this.props.orderParam.orderType == 99||this.props.orderParam.orderType == 98) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,

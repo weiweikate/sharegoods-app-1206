@@ -27,20 +27,20 @@ export default class DetailBottomView extends Component {
 
     render() {
         //productStatus  1正常  2下架  3当前时间不能买
-        let { shareMoney, productStatus, buyLimit, leftBuyNum } = this.props;
+        let { shareMoney, productStatus } = this.props;
         //是否下架
         let isDown = productStatus === 2;//是否下架  样式
 
-        //限购
-        let isLimit = buyLimit !== -1 && leftBuyNum === 0;
+        // //限购(暂时去掉)
+        // let isLimit = buyLimit !== -1 && leftBuyNum === 0;
 
         //不能加入购物车
         let cantJoin = productStatus === 2;
 
-        //不能买 不正常||限购
-        let cantBuy = productStatus !== 1 || isLimit;
+        //不能买 不正常   ||限购(暂时去掉)
+        let cantBuy = productStatus !== 1;
         //立即购买文案
-        let buyText = productStatus === 3 ? '暂不可购买' : (isLimit ? '您已经购买过该商品' : '立即购买');
+        let buyText = productStatus === 3 ? '暂不可购买' : '立即购买';
         return (
             <View style={{ height: 49 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
                 {isDown ? <View style={{

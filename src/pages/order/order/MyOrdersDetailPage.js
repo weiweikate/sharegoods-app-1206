@@ -204,7 +204,7 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View>
                 {this.renderState()}
-                {orderDetailModel.status > 1 ? <DetailAddressView/> : null}
+                {orderDetailModel.status > 1 &&orderDetailModel.status<5? <DetailAddressView/> : null}
                 <GiftHeaderView/>
             </View>
         );
@@ -558,13 +558,13 @@ export default class MyOrdersDetailPage extends BasePage {
         }
     };
     afterSaleServiceClick = (menu, index) => {
-        console.log(menu);
+        console.log(menu,index);
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
         let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
-        if (products.activityCodes[0].orderType=== 3 && orderDetailModel.status === 2) {
+        if (!StringUtils.isEmpty(products.activityCodes)&&products.activityCodes[0].orderType === 3 && orderDetailModel.status === 2) {
             Toast.$toast("该商品属于升级礼包产品，不能退款");
             return;
-        }else if(products.activityCodes[0].orderType=== 5 && orderDetailModel.status === 2){
+        }else if(!StringUtils.isEmpty(products.activityCodes)&&products.activityCodes[0].orderType === 5 && orderDetailModel.status === 2){//products.activityCodes[0].orderType=== 5
             Toast.$toast("该商品属于经验值专区商品，不能退款");
             return
         } else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime
@@ -584,7 +584,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
             case 1:
                 this.$navigate("order/afterSaleService/AfterSaleServiceHomePage", {
-                    pageData: {...products,orderSubType:orderDetailModel.orderSubType}
+                    pageData: {...products,orderSubType:StringUtils.isEmpty(products.activityCodes)?-1:products.activityCodes[0].orderType}
+                    //-1代表普通商品
                 });
                 break;
             case 2:

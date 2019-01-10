@@ -146,41 +146,40 @@ export default class OldUserLoginPage extends BasePage {
                             </Text>
                         </TouchableOpacity>
                     </View>
-
-                    <Text
-                        style={
-                            [Styles.bottomTimeStyle,
-                                {
-                                    marginTop: 20,
-                                    fontSize: 13,
-                                    color:'#000'
-                                }
-                            ]
-                        }
-                    >
-                        朵女郎激活时间: 2018.12.30-2019.1.10
-                    </Text>
-                    <Text
-                        style={
-                            Styles.bottomTimeStyle
-                        }
-                    >
-                        激活后可免费领取惊喜大礼包及其他朵粉专享福利
-                    </Text>
-                    <Text
-                        style={
-                            Styles.bottomTimeStyle
-                        }
-                    >
-                        逾期激活将取消朵粉所有专享福利
-                    </Text>
-                    <Text
-                        style={
-                            Styles.bottomTimeStyle
-                        }
-                    >
-                        且后期只能以新用户注册
-                    </Text>
+                    {/*<Text*/}
+                        {/*style={*/}
+                            {/*[Styles.bottomTimeStyle,*/}
+                                {/*{*/}
+                                    {/*marginTop: 20,*/}
+                                    {/*fontSize: 13,*/}
+                                    {/*color:'#000'*/}
+                                {/*}*/}
+                            {/*]*/}
+                        {/*}*/}
+                    {/*>*/}
+                        {/*朵女郎激活时间: 2018.12.30-2019.1.10*/}
+                    {/*</Text>*/}
+                    {/*<Text*/}
+                        {/*style={*/}
+                            {/*Styles.bottomTimeStyle*/}
+                        {/*}*/}
+                    {/*>*/}
+                        {/*激活后可免费领取惊喜大礼包及其他朵粉专享福利*/}
+                    {/*</Text>*/}
+                    {/*<Text*/}
+                        {/*style={*/}
+                            {/*Styles.bottomTimeStyle*/}
+                        {/*}*/}
+                    {/*>*/}
+                        {/*逾期激活将取消朵粉所有专享福利*/}
+                    {/*</Text>*/}
+                    {/*<Text*/}
+                        {/*style={*/}
+                            {/*Styles.bottomTimeStyle*/}
+                        {/*}*/}
+                    {/*>*/}
+                        {/*且后期只能以新用户注册*/}
+                    {/*</Text>*/}
                 </View>
                 {/*<Image*/}
                 {/*style={{*/}

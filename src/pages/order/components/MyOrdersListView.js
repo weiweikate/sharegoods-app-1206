@@ -481,7 +481,7 @@ export default class MyOrdersListView extends Component {
             case 8:
                 let cartData = [];
                 this.state.viewData[index].orderProduct.map((item, index) => {
-                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
+                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num, spuCode: item.prodCode, });
                 });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });

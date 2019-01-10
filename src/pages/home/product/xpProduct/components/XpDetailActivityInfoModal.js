@@ -66,7 +66,25 @@ export default class XpDetailActivityInfoModal extends Component {
     };
 
     _renderItemCoupon = (item) => {
-        const { name, remarks, effectiveDays, value } = item.coupon||{};
+        const { name, effectiveDays, value, type, useConditions } = item.coupon || {};
+        let nameType;
+        switch (type) {
+            case 1:
+                nameType = '满减券';
+                break;
+            case 2:
+                nameType = '抵价券';
+                break;
+            case 3:
+                nameType = '折扣券';
+                break;
+            case 4:
+                nameType = '抵扣券';
+                break;
+            default:
+                nameType = '';
+                break;
+        }
         return <TouchableWithoutFeedback>
             <View>
                 <Text style={styles.itemText}>{`每满${item.startPrice}元，赠送${item.startCount}张优惠券`}</Text>
@@ -78,8 +96,13 @@ export default class XpDetailActivityInfoModal extends Component {
                             <Text style={styles.bgTopValueRText}>{value || ''}</Text>
                         </View>
                         <View style={styles.bgBottomNameView}>
-                            <Text style={styles.bgBottomNameText}>{name || ''}</Text>
-                            <Text style={styles.bgBottomRemarkText}>{remarks || ''}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={styles.bgBottomNameText}>{name || ''}</Text>
+                                <View style={styles.bgTopRightView}>
+                                    <Text style={styles.bgTopRightText}>{nameType || ''}</Text>
+                                </View>
+                            </View>
+                            <Text style={styles.bgBottomRemarkText}>{`满${useConditions || ''}可用`}</Text>
                         </View>
                     </View>
                     <View style={styles.bgBottomView}>
@@ -118,15 +141,22 @@ export default class XpDetailActivityInfoModal extends Component {
     render() {
         const { rules, startPrice, startCount, maxCount, coupon, contents } = this.state.xpDetailModel;
 
-        const sectionListData = [
-            { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
-            {
-                headerTittle: '优惠券',
-                headerImg: xp_detail_coupon,
-                type: 'coupon',
-                data: [{ startPrice, startCount, maxCount, coupon }]
-            },
-            { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
+        let sectionListData;
+        if ((coupon || {}).id) {
+            sectionListData = [
+                { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
+                {
+                    headerTittle: '优惠券',
+                    headerImg: xp_detail_coupon,
+                    type: 'coupon',
+                    data: [{ startPrice, startCount, maxCount, coupon }]
+                },
+                { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
+        } else {
+            sectionListData = [
+                { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
+                { headerTittle: '活动说明', headerImg: xp_detail_contents, type: 'contents', data: [{ contents }] }];
+        }
 
         return (
             <CommModal onRequestClose={this._close}
@@ -158,7 +188,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width
     },
     topCloseBtn: {
-        height: px2dp(271)
+        height: px2dp(175)
     },
     bottomView: {
         flex: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10,
@@ -191,7 +221,7 @@ const styles = StyleSheet.create({
         marginVertical: 5, width: px2dp(345), height: 109
     },
 
-    /*value*/
+    /*优惠券*/
     bgTopView: {
         flexDirection: 'row', alignItems: 'center',
         flex: 1
@@ -207,7 +237,6 @@ const styles = StyleSheet.create({
         fontSize: 34
     },
 
-    /*name remark*/
     bgBottomNameView: {
         paddingHorizontal: 15
     },
@@ -216,12 +245,25 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle, fontSize: 13
     },
 
+    bgTopRightView: {
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: DesignRule.mainColor,
+        marginLeft: 5
+    },
+
+    bgTopRightText: {
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        color: DesignRule.mainColor,
+        fontSize: 10
+    },
+
     bgBottomRemarkText: {
         marginTop: 5,
         color: DesignRule.textColor_secondTitle, fontSize: 11
     },
 
-    /*领取*/
     bgBottomView: {
         height: 33, justifyContent: 'center'
     },
