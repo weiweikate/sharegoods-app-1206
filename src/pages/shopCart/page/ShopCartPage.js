@@ -135,6 +135,8 @@ export default class ShopCartPage extends BasePage {
 
     handleBackPress=()=>{
         this.$navigate('HomePage');
+        return true;
+
     }
 
     _render() {
