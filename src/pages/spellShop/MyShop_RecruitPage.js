@@ -154,6 +154,7 @@ export default class MyShop_RecruitPage extends BasePage {
 
     handleBackPress=()=>{
         this.$navigate('HomePage');
+        return true;
     }
 
     _loadPageData = () => {
