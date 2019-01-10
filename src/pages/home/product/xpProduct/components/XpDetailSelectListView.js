@@ -54,7 +54,7 @@ export class XpDetailSelectListView extends Component {
 
     autoScroll = autorun(
         () => {
-            this._scrollToIndex(this.props.xpDetailModel.selectedSpuIndex);
+            setTimeout(() => this._scrollToIndex(this.props.xpDetailModel.selectedSpuIndex), 100);
         }
     );
 
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     /*item*/
     itemView: {
-        width:itemWidth,
+        width: itemWidth,
         marginLeft: 15, borderRadius: 5, borderWidth: 1, overflow: 'hidden'
     },
     itemImg: {

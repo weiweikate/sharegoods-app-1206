@@ -151,7 +151,7 @@ class XpDetailModel {
             if (productCode) {
                 //有选择的点击找出index
                 this.prods.forEach((item, index) => {
-                    if (item.productCode === productCode) {
+                    if (item.spuCode === productCode) {
                         selectedIndex = index;
                     }
                 });
