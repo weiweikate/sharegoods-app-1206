@@ -55,7 +55,12 @@ class ShopCartStore {
 
     @computed
     get getTotalGoodsNumber() {
-        return this.data.slice().length;
+        let goodNumber
+        this.data.slice().map(items=>{
+            goodNumber+=items.data.length;
+        });
+        return goodNumber;
+
     }
 
     @computed
