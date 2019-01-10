@@ -150,7 +150,7 @@ export default class ShopAssistantDetailPage extends BasePage {
                         <View style={styles.shopInContainer}>
                             {this._renderDescRow(NameIcon, `名称：${userInfo.nickName || ''}`)}
                             {this._renderDescRow(StarIcon, `级别：${userInfo.levelName || ''}`)}
-                            {this._renderDescRow(CodeIcon, `授权号：${userInfo.code || ''}`)}
+                            {this._renderDescRow(CodeIcon, `会员号：${userInfo.code || ''}`)}
                             {this._renderDescRow(PhoneIcon, `手机号：${userInfo.phone || ''}`, null)}
                         </View>
                     </View>
