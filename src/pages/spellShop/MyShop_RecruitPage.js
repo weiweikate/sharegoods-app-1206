@@ -4,7 +4,7 @@ import {
     StyleSheet,
     AppState,
     Linking,
-    PermissionsAndroid, Alert, NetInfo
+    PermissionsAndroid, Alert, NetInfo, BackHandler
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -54,12 +54,17 @@ export default class MyShop_RecruitPage extends BasePage {
 
     componentWillMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
-
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
                 const { state } = payload;
-
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 NetInfo.isConnected.fetch().done((isConnected) => {
                     // 有网络
                     if (isConnected) {
@@ -144,6 +149,12 @@ export default class MyShop_RecruitPage extends BasePage {
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+    }
+
+    handleBackPress=()=>{
+        this.$navigate('HomePage');
+        return true;
     }
 
     _loadPageData = () => {

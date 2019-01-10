@@ -8,7 +8,7 @@ import {
     // Linking,
     TouchableWithoutFeedback,
     RefreshControl, DeviceEventEmitter, TouchableOpacity,
-    Image
+    Image, BackHandler
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
@@ -108,10 +108,17 @@ export default class MinePage extends BasePage {
 
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
         this.listener && this.listener.remove();
     }
 
     componentWillMount() {
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -122,8 +129,14 @@ export default class MinePage extends BasePage {
                 if (state && state.routeName === 'MinePage') {
                     this.refresh();
                 }
-
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             });
+    }
+
+    handleBackPress=()=>{
+        this.$navigate('HomePage');
+        return true;
+
     }
 
     _needShowFans = () => {
