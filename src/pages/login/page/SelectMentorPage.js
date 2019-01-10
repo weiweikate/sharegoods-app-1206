@@ -173,7 +173,7 @@ export default class SelectMentorPage extends BasePage {
 
                             }}
                         >
-                            填写授权码
+                            填写会员号
                         </Text>
                     </View>
                 </View>
@@ -260,7 +260,7 @@ export default class SelectMentorPage extends BasePage {
                         fontSize: 13,
                         color: DesignRule.textColor_instruction
                     }}
-                    value={'暂无顾问请填写授权码或跳过该步骤~'}
+                    value={'暂无顾问填写会员号或跳过该步骤~'}
                 />
             </View>
         );

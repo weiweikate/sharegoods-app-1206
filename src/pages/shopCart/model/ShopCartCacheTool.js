@@ -131,7 +131,7 @@ class ShopCartCacheTool {
                     //为商品添加spuCode
                     goodsItem.spuCode = goodsItem.productCode;
                     let [...localValue] = res;
-                    if (localValue && (localValue instanceof Array)) {
+                    if (localValue && (localValue instanceof Array) && localValue.length > 0) {
                         //检测购物车数量是否已够80
                         if (localValue.length >= 80) {
                             bridge.$toast('本地购物车商品类型已达80种上限');
@@ -152,14 +152,14 @@ class ShopCartCacheTool {
                             }
                         });
                         if (!isHave) {
-                            localValue.insert(0,goodsItem);
+                            localValue.unshift(goodsItem);
                         }
                     } else {
                         localValue = [];
-                        localValue.insert(0,goodsItem);
+                        localValue.push(goodsItem);
                     }
                     Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
-                        bridge.$toast('加入购物车成功');
+                        // bridge.$toast('加入购物车成功');
                         //存入成功后,从后台拉取详细信息
                         shopCartStore.getShopCartListWithNoLogin(localValue);
                         // Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
