@@ -7,14 +7,14 @@ import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import LogisticsDetailItem from "../components/LogisticsDetailItem";
 import OrderApi from "../api/orderApi";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../constants/DesignRule';
 import res from "../res";
 // import UIImage from "@mr/image-placeholder";
 
 const logisticsTop = res.logisticsTop;
 const logisticsBottom = res.logisticsBottom;
 const copy = res.copy;
-const logisticsIcon = res.dizhi;
+// const logisticsIcon = res.dizhi;
 const Nowuliu = res.kongbeiye_wulian;
 
 // import {PageLoadingState} from 'PageState';
@@ -70,17 +70,18 @@ class LogisticsDetailsPage extends BasePage {
                         marginRight: 10
                     }}/>
                 </View>
-                <View style={{ flexDirection: "row", paddingLeft: 15, height: 60, paddingTop: 5 }}>
-                    <Image source={logisticsIcon} style={{ width: 20, height: 23, marginLeft: 10, marginTop: 15 }} resizeMode={'contain'}/>
-                    <Text style={{
-                        fontSize: 13,
-                        color: DesignRule.textColor_mainTitle_222,
-                        marginTop: 15,
-                        marginLeft: 15
-                    }}>本数据由</Text>
-                    <Text style={{ fontSize: 13, color: DesignRule.deliveryIncludeBlue, marginTop: 15 }}>百世汇通</Text>
-                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle_222, marginTop: 15 }}>提供</Text>
-                </View>
+                <View style={{height: 20}}/>
+                {/*<View style={{ flexDirection: "row", paddingLeft: 15, height: 60, paddingTop: 5 }}>*/}
+                    {/*<Image source={logisticsIcon} style={{ width: 20, height: 23, marginLeft: 10, marginTop: 15 }} resizeMode={'contain'}/>*/}
+                    {/*<Text style={{*/}
+                        {/*fontSize: 13,*/}
+                        {/*color: DesignRule.textColor_mainTitle_222,*/}
+                        {/*marginTop: 15,*/}
+                        {/*marginLeft: 15*/}
+                    {/*}}>本数据由</Text>*/}
+                    {/*<Text style={{ fontSize: 13, color: DesignRule.deliveryIncludeBlue, marginTop: 15 }}>百世汇通</Text>*/}
+                    {/*<Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle_222, marginTop: 15 }}>提供</Text>*/}
+                {/*</View>*/}
 
             </View>
         );

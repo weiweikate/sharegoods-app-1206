@@ -9,9 +9,12 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
-import DesignRule from 'DesignRule';
-import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
+import DesignRule from '../../../../constants/DesignRule';
+import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
+import judgePhoneModel from '../../model/JudgePhoneModel';
+import { observer } from 'mobx-react';
 
+@observer
 export default class JudgePhoneNumPage extends BasePage {
 
     // 构造
@@ -19,10 +22,10 @@ export default class JudgePhoneNumPage extends BasePage {
         super(props);
         this.state = {
             telText: user.phone,
-            code: '',
-            vertifyCodeTime: 0
+            code: ''
         };
         this.$navigationBarOptions.title = this.params.title;
+        this.isLoadding = false;
     }
 
     _render() {
@@ -42,7 +45,6 @@ export default class JudgePhoneNumPage extends BasePage {
                     <Text style={styles.itemLeftText}>手机号</Text>
                     <TextInput
                         style={styles.itemRightInput}
-                        underlineColorAndroid={'transparent'}
                         onChangeText={(text) => {
                             const newText = text.replace(/[^\d]+/, '');
                             this.setState({ telText: newText });
@@ -60,14 +62,13 @@ export default class JudgePhoneNumPage extends BasePage {
                 }}>
                     <UIText value={'验证码'}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
-                    <TextInput underlineColorAndroid={'transparent'}
-                               style={{
-                                   flex: 1,
-                                   padding: 0,
-                                   fontSize: 13,
-                                   color: DesignRule.textColor_mainTitle,
-                                   marginLeft: 20
-                               }}
+                    <TextInput style={{
+                        flex: 1,
+                        padding: 0,
+                        fontSize: 13,
+                        color: DesignRule.textColor_mainTitle,
+                        marginLeft: 20
+                    }}
                                placeholder={'请输入验证码'}
                                placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => {
@@ -77,8 +78,9 @@ export default class JudgePhoneNumPage extends BasePage {
                                value={this.state.code}
                                keyboardType={'phone-pad'}/>
                     <TouchableOpacity onPress={() => this._onGetCode(this.state.telText)}
-                                      disabled={this.state.vertifyCodeTime > 0 ? true : false}>
-                        <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
+                                      disabled={judgePhoneModel.dowTime > 0 ? true : false}
+                                      activeOpacity={1}>
+                        <UIText value={judgePhoneModel.dowTime > 0 ? `${judgePhoneModel.dowTime}秒后重新获取` : '获取验证码'}
                                 style={{ color: '#D85674', fontSize: 13, marginRight: 15 }}/>
                     </TouchableOpacity>
                 </View>
@@ -101,26 +103,33 @@ export default class JudgePhoneNumPage extends BasePage {
     }
 
     _onGetCode = (tel) => {
+        if (judgePhoneModel.dowTime > 0) {
+            return;
+        }
+        if (StringUtils.isEmpty(this.state.telText.trim())) {
+            bridge.$toast('请输入手机号');
+            return;
+        }
         //获取验证码
         if (StringUtils.checkPhone(tel)) {
-            if (this.state.vertifyCodeTime <= 0) {
-                SMSTool.sendVerificationCode(this.params.title === '设置交易密码' ? SMSTool.SMSType.SetSaleType : SMSTool.SMSType.ForgetSaleType, tel).then((data) => {
-                    (new TimeDownUtils()).startDown((time) => {
-                        this.setState({
-                            vertifyCodeTime: time
-                        });
-                    });
-                    bridge.$toast('验证码已发送请注意查收');
-                }).catch((data) => {
-                    bridge.$toast(data.msg);
-                });
-            }
+            judgePhoneModel.dowTime = 60;
+            bridge.$toast('验证码已发送请注意查收');
+            (new TimeDownUtils()).startDown((time) => {
+                judgePhoneModel.dowTime = time;
+            });
+            SMSTool.sendVerificationCode(this.params.title === '设置交易密码' ? SMSTool.SMSType.SetSaleType : SMSTool.SMSType.ForgetSaleType, tel).then((data) => {
+            }).catch((data) => {
+                bridge.$toast(data.msg);
+            });
         } else {
             bridge.$toast('手机格式不对');
         }
     };
 
     _toNext = () => {
+        if (this.isLoadding === true) {
+            return;
+        }
         let tel = this.state.telText;
         let code = this.state.code;
         if (StringUtils.isEmpty(tel)) {
@@ -133,10 +142,12 @@ export default class JudgePhoneNumPage extends BasePage {
         }
         if (StringUtils.checkPhone(tel)) {
             // 验证
+            this.isLoadding = true;
             MineAPI.judgeCode({
                 verificationCode: this.state.code,
                 phone: this.state.telText
             }).then((data) => {
+                this.isLoadding = false;
                 if (user.hadSalePassword) {
                     if (user.idcard) {
                         this.$navigate('mine/account/JudgeIDCardPage');
@@ -158,8 +169,10 @@ export default class JudgePhoneNumPage extends BasePage {
                 }
             }).catch((data) => {
                 bridge.$toast(data.msg);
+                this.isLoadding = false;
             });
         } else {
+            this.isLoadding = false;
             bridge.$toast('手机格式不对');
             return;
         }

@@ -30,8 +30,8 @@
        userName //"小程序username，如 gh_3ac2059ac66f";
        miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
        }
-      trackParmas={}埋点
-      trackEvent= ''
+ trackParmas={}埋点
+ trackEvent= ''
  gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
  */
 
@@ -50,7 +50,8 @@ import {
     TouchableOpacity,
     Clipboard,
     NativeModules,
-    Linking
+    Linking,
+    ActivityIndicator
 } from 'react-native';
 
 import {
@@ -61,12 +62,14 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
-import CommModal from 'CommModal';
+import CommModal from './CommModal';
 import res from '../res';
 import bridge from '../../utils/bridge';
+import DesignRule from '../../constants/DesignRule';
 import { track } from '../../utils/SensorsTrack';
-import DesignRule from 'DesignRule';
 import user from '../../model/user';
+import { getSource } from '@mr/image-placeholder/oos';
+import apiEnvironment from '../../api/ApiEnvironment';
 
 export default class CommShareModal extends React.Component {
 
@@ -145,16 +148,15 @@ export default class CommShareModal extends React.Component {
             params.dec = dec;
             params.linkUrl = linkUrl;
             params.thumImage = thumImage;
-
             // params.userName = userName || uat 'gh_a7c8f565ea2e';// 测试 gh_aa91c3ea0f6c
-            params.userName = userName || 'gh_a7c8f565ea2e';
+            params.userName = userName || apiEnvironment.getCurrentWxAppletKey();
             params.miniProgramPath = miniProgramPath;
             params.hdImageURL = hdImageURL;
         }
         if (this.props.trackEvent) {
             let p = this.props.trackParmas || {};
             let shareMethod = ['微信好友', '朋友圈', 'QQ好友', 'QQ空间', '微博'][platformType];
-            track(this.props.trackEvent, {shareMethod, ...p});
+            track(this.props.trackEvent, { shareMethod, ...p });
         }
         bridge.share(params, () => {
 
@@ -165,14 +167,14 @@ export default class CommShareModal extends React.Component {
 
     saveImage(path) {
         if (this.props.trackEvent) {
-            track(this.props.trackEvent, {shareMethod: '保存图片',...this.props.trackParmas});
+            track(this.props.trackEvent, { shareMethod: '保存图片', ...this.props.trackParmas });
         }
         bridge.saveImage(path);
     }
 
     copyUrl() {
         if (this.props.trackEvent) {
-            track(this.props.trackEvent, {shareMethod: '复制链接',...this.props.trackParmas});
+            track(this.props.trackEvent, { shareMethod: '复制链接', ...this.props.trackParmas });
         }
         Clipboard.setString(this.props.webJson.linkUrl);
         NativeModules.commModule.toast('复制链接成功');
@@ -184,13 +186,21 @@ export default class CommShareModal extends React.Component {
         if (this.state.path.length === 0 && shareType === 0) {
             if (this.props.type === 'promotionShare') {
                 bridge.createPromotionShareImage(this.props.webJson.linkUrl, (path) => {
-                    this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
-                    this.startAnimated();
+                    this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
+                        setTimeout(() => {
+                            this.startAnimated();
+                        }, 350);
+                    });
                 });
             } else {
+                let url = this.props.imageJson && this.props.imageJson.imageUrlStr;
+                this.props.imageJson && (this.props.imageJson.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
                 bridge.creatShareImage(this.props.imageJson, (path) => {
-                    this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
-                    this.startAnimated();
+                    this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
+                        setTimeout(() => {
+                            this.startAnimated();
+                        }, 350);
+                    });
                 });
             }
         } else {//已经有图片就直接展示
@@ -242,6 +252,14 @@ export default class CommShareModal extends React.Component {
                 this.share(4);
             }
         });
+
+        this.imageHeight = autoSizeWidth(325);
+        this.imageWidth = autoSizeWidth(250);
+        if (this.props.type === 'promotionShare') {
+            this.imageHeight = autoSizeWidth(348);
+            this.imageWidth = autoSizeWidth(279);
+        }
+
         if (this.props.type === 'Image' || this.props.type === 'promotionShare') {
             if (this.state.shareType === 2 || this.state.shareType === 1) {
                 array.push({
@@ -272,12 +290,6 @@ export default class CommShareModal extends React.Component {
             }];
         }
 
-        let imageHeight = autoSizeWidth(650 / 2);
-        let imageWidth = autoSizeWidth(250);
-        if (this.props.type === 'promotionShare') {
-            imageHeight = autoSizeWidth(348);
-            imageWidth = autoSizeWidth(279);
-        }
         return (
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
@@ -365,11 +377,11 @@ export default class CommShareModal extends React.Component {
                     {
                         this.state.shareType === 0 ?
                             <Animated.View style={{
-                                height: imageHeight,
-                                width: imageWidth,
+                                height: this.imageHeight,
+                                width: this.imageWidth,
                                 position: 'absolute',
-                                top: ScreenUtils.height - autoSizeWidth(255) - imageHeight - ScreenUtils.safeBottom,
-                                left: (autoSizeWidth(375) - imageWidth) / 2,
+                                top: ScreenUtils.height - autoSizeWidth(255) - this.imageHeight - ScreenUtils.safeBottom,
+                                left: (autoSizeWidth(375) - this.imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: DesignRule.textColor_placeholder,
                                 shadowOpacity: 0.3,
@@ -386,8 +398,8 @@ export default class CommShareModal extends React.Component {
                                 }}>
                                     <Image source={{ uri: this.state.path }}
                                            style={{
-                                               height: imageHeight,
-                                               width: imageWidth,
+                                               height: this.imageHeight,
+                                               width: this.imageWidth,
                                                backgroundColor: 'white'
                                            }}/>
                                 </TouchableWithoutFeedback>
@@ -398,7 +410,7 @@ export default class CommShareModal extends React.Component {
                                                          left: 0,
                                                          right: 0,
                                                          height: 20,
-                                                         top: imageWidth - 20,
+                                                         top: this.imageWidth - 20,
                                                          backgroundColor: 'rgba(0,0,0,0.3)',
                                                          fontSize: 12,
                                                          textAlign: 'center',
@@ -406,6 +418,17 @@ export default class CommShareModal extends React.Component {
                                                      }}/>
                                         : null
 
+                                }
+                                {
+                                    this.state.path === '' ? <ActivityIndicator
+                                        color="#aaaaaa"
+                                        style={{
+                                            position: 'absolute',
+                                            width: 10,
+                                            height: 10,
+                                            top: this.imageHeight / 2.0 - 5,
+                                            left: this.imageWidth / 2.0 - 5
+                                        }}/> : null
                                 }
                             </Animated.View> : null
                     }

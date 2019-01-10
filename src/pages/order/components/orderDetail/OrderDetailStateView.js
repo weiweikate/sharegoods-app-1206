@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import {
     StyleSheet,
     View,
-    TouchableOpacity
 } from "react-native";
 import {
-    UIText, UIImage, MRText as Text
+    UIText, UIImage, MRText as Text,NoMoreClick
 } from "../../../../components/ui";
 import StringUtils from "../../../../utils/StringUtils";
 import DateUtils from "../../../../utils/DateUtils";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import {  orderDetailAfterServiceModel, orderDetailModel } from "../../model/OrderDetailModel";
 import { observer } from 'mobx-react/native';
@@ -43,7 +42,7 @@ export default class OrderDetailStateView extends Component {
 
     }
     render() {
-        if (orderDetailModel.status === 1) {
+        if (orderDetailModel.status === 1||orderDetailModel.status===5) {
             return (
                 <View style={styles.topOrderDetail}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -73,7 +72,7 @@ export default class OrderDetailStateView extends Component {
             );
         } else {
             return (
-                <TouchableOpacity style={styles.topOrderDetail} onPress={() => this.go2Logistics()
+                <NoMoreClick style={styles.topOrderDetail} onPress={() => this.go2Logistics()
                 } disabled={!orderDetailModel.expList.length} activeOpacity={1}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <UIImage source={logisticCar}
@@ -103,7 +102,7 @@ export default class OrderDetailStateView extends Component {
 
                     </View>
 
-                </TouchableOpacity>
+                </NoMoreClick>
             );
         }
 

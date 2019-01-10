@@ -20,11 +20,11 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ShareTaskResultAlert from '../components/ShareTaskResultAlert';
-import RefreshLargeList from 'RefreshLargeList';
+import RefreshLargeList from '../../../comm/components/RefreshLargeList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import taskApi from '../api/taskApi';
-import DesignRule from 'DesignRule';
-import RouterMap from 'RouterMap';
+import DesignRule from '../../../constants/DesignRule';
+import RouterMap from '../../../navigation/RouterMap';
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import TimerMixin from 'react-timer-mixin';
 import DateUtils from '../../../utils/DateUtils';
@@ -134,7 +134,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'task'}
                                 miniProgramJson={{
-                                    title: '邀请好友可获得品牌推广的奖励',
+                                    title: '分享好友可获得品牌推广的奖励',
                                     dec: '',
                                     thumImage: 'logo.png',
                                     hdImageURL: '',

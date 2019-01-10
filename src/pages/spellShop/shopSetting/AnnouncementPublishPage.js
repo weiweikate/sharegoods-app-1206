@@ -5,16 +5,16 @@ import {
     Dimensions,
     StyleSheet,
     ScrollView,
-    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 import SpellShopApi from '../api/SpellShopApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import {
     MRText as Text, MRTextInput as TextInput
 } from '../../../components/ui';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -71,7 +71,6 @@ export default class AnnouncementPublishPage extends BasePage {
                         <View style={styles.textInputContainer}>
                             <TextInput value={this.state.text}
                                        onChangeText={this._onChangeText}
-                                       underlineColorAndroid={'transparent'}
                                        multiline
                                        placeholder={'请输入公告内容......'}
                                        blurOnSubmit={false}
@@ -94,9 +93,9 @@ export default class AnnouncementPublishPage extends BasePage {
     }
 
     renderBtn = (onPress, style, titleStyle, title) => {
-        return (<TouchableOpacity onPress={onPress} style={style}>
+        return (<NoMoreClick onPress={onPress} style={style}>
             <Text style={titleStyle} allowFontScaling={false}>{title}</Text>
-        </TouchableOpacity>);
+        </NoMoreClick>);
     };
 
 }

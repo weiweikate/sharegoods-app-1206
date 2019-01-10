@@ -19,7 +19,7 @@ import GoodsItem from '../components/GoodsGrayItem';
 // import DateUtils from '../../../utils/DateUtils';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import OrderApi from '../api/orderApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import AfterSaleDetailModel from './AfterSaleDetailModel';
 import {
     CustomerServiceView,

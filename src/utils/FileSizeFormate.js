@@ -2,8 +2,8 @@ const getSizeFromat = function(size) {
 
 
     let kiloByte = size / 1024;
-    if (kiloByte < 1) {
-        return size + 'Byte';
+    if (kiloByte === 0) {
+        return '0KB';
     }
 
     let megaByte = kiloByte / 1024;

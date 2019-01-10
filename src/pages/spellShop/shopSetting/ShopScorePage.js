@@ -11,7 +11,7 @@ import {
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import {
     MRText as Text

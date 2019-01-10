@@ -8,6 +8,9 @@ const api = {
     // 获取产品获取活动信息 蒋大为
     queryByProductCode: ['/operator/activity/queryByProductCode',{method:'get'}],
 
+    /*经验值专区*/
+    act_exp_detail: ['/operator/act-exp/detail',{method:'get'}],
+
     // 获取产品规格信息
     getProductSpec: ['/product/getProductSpec',{method:'get'}],
 

@@ -9,9 +9,8 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
-
 export default class SetNewPhoneNumPage extends BasePage {
 
     // 导航配置
@@ -28,6 +27,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             code: '',
             vertifyCodeTime: 0
         };
+        this.isLoadding = false;
     }
 
     _render() {
@@ -45,7 +45,6 @@ export default class SetNewPhoneNumPage extends BasePage {
                     <Text style={styles.itemLeftText}>新手机</Text>
                     <TextInput
                         style={styles.itemRightInput}
-                        underlineColorAndroid={'transparent'}
                         onChangeText={(text) => {
                             const newText = text.replace(/[^\d]+/, '');
                             this.setState({ telText: newText });
@@ -63,8 +62,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                     alignItems: 'center'
                 }}>
                     <UIText value={'验证码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
-                    <TextInput underlineColorAndroid={'transparent'}
-                               style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
+                    <TextInput style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
                                placeholder={'请输入验证码'}
                                placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => {
@@ -121,6 +119,9 @@ export default class SetNewPhoneNumPage extends BasePage {
     };
 
     _toNext = () => {
+        if (this.isLoadding === true) {
+            return;
+        }
         let tel = this.state.telText;
         let code = this.state.code;
         const { oldNum, oldCode } = this.props.navigation.state.params;
@@ -139,15 +140,18 @@ export default class SetNewPhoneNumPage extends BasePage {
         }
         if (StringUtils.checkPhone(tel)) {
             // 验证
+            this.isLoadding = true;
             MineAPI.updatePhone({
                 verificationCode: this.state.code,
                 oldVerificationCode: oldCode,
                 phone: this.state.telText
             }).then((data) => {
+                this.isLoadding = false;
                 user.changePhone(tel);
                 bridge.$toast('绑定成功');
                 this.$navigateBack(-2);
             }).catch((data) => {
+                this.isLoadding = false;
                 bridge.$toast(data.msg);
             });
         } else {

@@ -1,9 +1,10 @@
-import { Linking, NativeModules, Platform } from 'react-native';
+import { Linking, NativeModules, Platform} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
 import Toast from './../../../utils/bridge';
 import { request } from '@mr/request';
+// import ImagePicker from '@mr/rn-image-crop-picker'
 
 let lastShowImagePickTime = null;
 
@@ -56,7 +57,7 @@ export default {
                 console.log('User tapped custom button: ', response.customButton);
                 return;
             } else {
-                // Toast.showLoading('图片上传中，请稍后');
+                Toast.showLoading('正在上传');
                 // this.$toastShow('图片上传中，请稍后');
                 NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
                     let datas = {
@@ -83,7 +84,7 @@ export default {
                             callBack({ ok: false, msg: '上传图片失败' });
                         }
                     }).catch(error => {
-                        // Toast.hiddenLoading();
+                        Toast.hiddenLoading();
                         console.log(error);
                         Toast.hiddenLoading();
                         callBack({ ok: false, msg: '上传图片失败' });
@@ -94,6 +95,17 @@ export default {
             }
         });
     },
+    // getImagePicker: (callBack, num = 1, crop = false) => {
+    //     ActionSheetIOS.showActionSheetWithOptions({
+    //             options: ['取消', '拍照', '从相册选择'],
+    //             title: '请选择方式',
+    //             cancelButtonIndex: 0,
+    //         },
+    //         (buttonIndex) => {
+    //             if (buttonIndex === 1) { /* 当接收到的索引为1，即点击了删除按钮时，执行对应操作 */ }
+    //             if (buttonIndex === 2) { /* 当接收到的索引为1，即点击了删除按钮时，执行对应操作 */ }
+    //         });
+    // },
     callPhone: (phoneNum) => {
         Linking.openURL('tel:' + phoneNum);
     }

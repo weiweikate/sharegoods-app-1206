@@ -42,6 +42,7 @@ public class ParameterUtils {
     public static final int NETWORK_ELSE_CACHED = 20; //先查询网络数据，如果没有，再查询本地缓
     public static final int REQUEST_CODE_INSTALL = 38;
     public static final int REQUEST_CODE_MANAGE_APP_SOURCE = 39;
+    public static final int TIMER_START = 40;
     /**
      * 一般图片url宽高
      */

@@ -14,7 +14,7 @@ import Video from 'react-native-video';
 import icon_video_play from './icon_video_play.png';
 import icon_video_pause from './icon_video_pause.png';
 import icon_control_slider from './icon_control_slider.png';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 // import icon_control_full_screen from './icon_control_full_screen.png';
 // import icon_control_shrink_screen from './icon_control_shrink_screen.png';
@@ -56,7 +56,7 @@ export default class VideoView extends Component {
 
     _render = () => {
         if (this.state.showVideoCover) {
-            return <View style={{ flex: 1 }}>
+            return <View style={{ flex: 1,backgroundColor:DesignRule.imgBg_color }}>
                 <Image style={{ flex: 1, width: this.state.width }}
                        source={{ uri: this.state.videoCover }}
                        resizeMode={'cover'}/>
@@ -332,7 +332,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: DesignRule.textColor_mainTitle
     },
     playButton: {
         width: 50,

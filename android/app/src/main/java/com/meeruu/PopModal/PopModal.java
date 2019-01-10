@@ -1,12 +1,15 @@
 package com.meeruu.PopModal;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import com.meeruu.commonlib.utils.ScreenUtils;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -39,6 +43,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     private DialogRootViewGroup mHostView;
     private Rect rect;
     EventDispatcher eventDispatcher;
+    private boolean focus = true;
     private @Nullable
     PopupWindow popupWindow;
     public static WeakReference<ReactContext> mContext;
@@ -156,6 +161,30 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         return popupWindow;
     }
 
+    public static boolean isAppOnForeground(Context context) {
+
+        ActivityManager activityManager = (ActivityManager) context.getApplicationContext()
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = context.getApplicationContext().getPackageName();
+        /**
+         * 获取Android设备中所有正在运行的App
+         */
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
+                .getRunningAppProcesses();
+        if (appProcesses == null)
+            return false;
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            // The name of the process that this object is associated with.
+            if (appProcess.processName.equals(packageName)
+                    && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * showOrUpdate will display the Dialog.  It is called by the manager once all properties are set
      * because we need to know all of them before creating the Dialog.  It is also smart during
@@ -181,9 +210,19 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                eventDispatcher.dispatchEvent(
-                        new PopModalDismissEvent(
-                                PopModal.this.getId()));
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!isAppOnForeground(getContext())){
+                            return;
+                        }
+                        eventDispatcher.dispatchEvent(
+                                new PopModalDismissEvent(
+                                        PopModal.this.getId()));
+                    }
+                }, 200);
+
             }
         });
 
@@ -196,7 +235,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             int h = mHostView.getResources().getDisplayMetrics().heightPixels - rect.bottom;
             popupWindow.setHeight(h);
         }
-        popupWindow.setFocusable(true);
+        popupWindow.setFocusable(this.focus);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         popupWindow.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
@@ -209,6 +248,13 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         fitPopupWindowOverStatusBar(popupWindow, true);
         if (currentActivity != null || !currentActivity.isFinishing()) {
             popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+        }
+    }
+
+    public void setFocus(boolean focus){
+        this.focus = focus;
+        if(popupWindow != null){
+            popupWindow.setFocusable(true);
         }
     }
 
@@ -272,6 +318,10 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
      * UIManagerModule, and will then cause the children to layout as if they can fill the window.
      */
     static class DialogRootViewGroup extends ReactViewGroup implements RootView {
+        @Override
+        public void handleException(Throwable t) {
+
+        }
 
         private final JSTouchDispatcher mJSTouchDispatcher = new JSTouchDispatcher(this);
 

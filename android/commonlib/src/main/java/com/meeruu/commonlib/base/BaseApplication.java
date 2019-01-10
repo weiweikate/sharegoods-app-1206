@@ -65,6 +65,12 @@ public class BaseApplication extends MultiDexApplication {
             Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
+            // 友盟统计
+            UApp.init(this, ParameterUtils.UM_KEY, channel);
+            // 初始化分享
+            UShare.init(this, ParameterUtils.UM_KEY);
+            // 初始化极光
+            JPushInterface.init(this);
             if (Utils.isApkInDebug()) {
                 // jpush debug
                 JPushInterface.setDebugMode(true);
@@ -73,12 +79,7 @@ public class BaseApplication extends MultiDexApplication {
                 // 禁止极光捕获crash
                 JPushInterface.stopCrashHandler(this);
             } else {
-                // 友盟统计
-                UApp.init(this, ParameterUtils.UM_KEY, channel);
-                // 初始化分享
-                UShare.init(this, ParameterUtils.UM_KEY);
-                // 初始化极光
-                JPushInterface.init(this);
+                JPushInterface.setDebugMode(false);
                 JPushInterface.initCrashHandler(this);
                 JPushInterface.setChannel(this, channel);
             }

@@ -34,7 +34,7 @@ import spellStatusModel from '../model/SpellStatusModel';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import apiEnvironment from '../../../api/ApiEnvironment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import user from '../../../model/user';
@@ -259,17 +259,25 @@ export default class MyShopPage extends BasePage {
                         });
                     }, 500);
                 } else if (index === 2) {
-                    this.$loadingShow();
-                    SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
-                        if (!this.props.leftNavItemHidden) {
-                            this._loadPageData();
-                        }
-                        spellStatusModel.getUser(2);
-                        this.$loadingDismiss();
-                    }).catch((error) => {
-                        this.$loadingDismiss();
-                        this.$toastShow(error.msg);
-                    });
+                    setTimeout(() => {
+                        Alert.alert('提示', '确定要退出么?', [{
+                            text: '取消'
+                        }, {
+                            text: '退出', onPress: () => {
+                                this.$loadingShow();
+                                SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
+                                    if (!this.props.leftNavItemHidden) {
+                                        this._loadPageData();
+                                    }
+                                    spellStatusModel.getUser(2);
+                                    this.$loadingDismiss();
+                                }).catch((error) => {
+                                    this.$loadingDismiss();
+                                    this.$toastShow(error.msg);
+                                });
+                            }
+                        }]);
+                    }, 500);
                 }
             });
         }
@@ -365,9 +373,9 @@ export default class MyShopPage extends BasePage {
             return (
                 <View>
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
+                    {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}
-                    {this._renderRow(system_charge, '个人已获得分红', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
+                    {this._renderRow(system_charge, '个人已获得奖励', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
 
                     <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
@@ -379,7 +387,7 @@ export default class MyShopPage extends BasePage {
             return (
                 <View>
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
+                    {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     <View style={{ height: 10 }}/>
                     {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
                 </View>
@@ -435,6 +443,7 @@ export default class MyShopPage extends BasePage {
                                      backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
                                      borderRadius: 5,
                                      marginTop: 30,
+                                     marginBottom: 30,
                                      alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
                                  }}>
             <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{btnText}</Text>
@@ -443,7 +452,7 @@ export default class MyShopPage extends BasePage {
 
     renderSepLine = () => {
         return (<View style={{
-            height: StyleSheet.hairlineWidth,backgroundColor:DesignRule.lineColor_inWhiteBg
+            height: StyleSheet.hairlineWidth, backgroundColor: DesignRule.lineColor_inWhiteBg
         }}/>);
     };
     // 主题内容

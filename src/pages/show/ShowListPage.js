@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -8,7 +8,7 @@ const { px2dp } = ScreenUtils;
 // import ShowHotView from './ShowHotView';
 // import ShowHotFindView from './ShowHotFindView';
 import backIconImg from '../../comm/res/button/icon_header_back.png';
-import DesignRule from 'DesignRule'
+import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
     MRText as Text,
@@ -31,6 +31,12 @@ export default class ShowListPage extends BasePage {
         needsExpensive: false
     };
 
+    handleBackPress=()=>{
+        this.$navigate('HomePage');
+        return true;
+    }
+
+
     componentWillMount() {
         this.setState({ left: this.params.fromHome });
         this.willFocusSubscription = this.props.navigation.addListener(
@@ -49,6 +55,8 @@ export default class ShowListPage extends BasePage {
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+
                 this.pageFocused = false;
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
@@ -62,6 +70,7 @@ export default class ShowListPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.setState({
                     pageFocused: true
                 });
@@ -69,6 +78,7 @@ export default class ShowListPage extends BasePage {
         );
         this.setState({needsExpensive: true})
     }
+
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();

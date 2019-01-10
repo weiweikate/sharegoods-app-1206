@@ -7,12 +7,13 @@ import {
     Image,
     ImageBackground,
     StyleSheet,
-    TextInput,
-    TouchableOpacity,
     View,
     NativeModules, RefreshControl
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
+import { UIImage, UIText, NoMoreClick } from '../../../components/ui';
+// import { NavigationActions } from 'react-navigation';
+import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
 import API from '../../../api';
@@ -20,13 +21,11 @@ import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
 import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
-import { UIImage, UIText } from '../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 // import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';
 import res from '../res';
-import Modal from 'CommModal';
-import { MRText as Text } from '../../../components/ui';
+import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 
 const NoMessage = res.couponsImg.coupons_no_data;
 const usedBg = res.couponsImg.youhuiquan_bg_zhihui;
@@ -76,8 +75,8 @@ export default class MyCouponsItems extends Component {
         let BG = item.status === 0 && !item.levelimit ? unuesdBg : usedBg;
         let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 1 ? usedRIcon : ActivedIcon));
         return (
-            <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor }}
-                              onPress={() => this.clickItem(index, item)}>
+            <NoMoreClick style={{ backgroundColor: DesignRule.bgColor }}
+                         onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
@@ -103,7 +102,7 @@ export default class MyCouponsItems extends Component {
                                         </View>}
                                 <View>
                                     <Text style={{
-                                        fontSize: item.type === 4 ? 20 : (item.type === 11 ? 31 : 34),
+                                        fontSize: item.type === 4 ? 20 : (item.value && item.value.length === 3 ? 26 : 33),
                                         color: DesignRule.textColor_mainTitle
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
@@ -125,7 +124,7 @@ export default class MyCouponsItems extends Component {
                                 <Text style={{
                                     fontSize: 15,
                                     color: DesignRule.textColor_mainTitle,
-                                    marginRight: 30
+                                    marginRight: 10
                                 }} allowFontScaling={false}>
                                     {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
                                     fontSize: 11,
@@ -142,7 +141,7 @@ export default class MyCouponsItems extends Component {
                                 marginTop: 6
                             }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
                         </View>
-                        <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
+                        <Image style={{ marginTop: -6 }} source={BGR}/>
                         {item.type === 99 ?
                             <UIText value={'x' + user.tokenCoin}
                                     style={{
@@ -157,7 +156,7 @@ export default class MyCouponsItems extends Component {
                         <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction }} value={item.limit}/>
                     </View>
                 </ImageBackground>
-            </TouchableOpacity>
+            </NoMoreClick>
         );
     };
     onRequestClose = () => {
@@ -213,46 +212,46 @@ export default class MyCouponsItems extends Component {
                             height: px2dp(24),
                             marginLeft: px2dp(39)
                         }} resizeMode={'contain'} onPress={this.reduceTokenCoin}/>
-                        <TextInput
-                            keyboardType='numeric'
-                            underlineColorAndroid='transparent'
-                            autoFocus={true}
-                            defaultValue={`${(this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}`}
-                            value={this.state.tokenCoinNum}
-                            onChangeText={this._onChangeText}
-                            onFocus={this._onFocus}
-                            style={{
-                                padding: 0,
-                                paddingLeft: 5,
-                                alignItems: 'center',
-                                marginLeft: 5,
-                                marginRight: 5,
-                                borderColor: DesignRule.textColor_placeholder,
-                                backgroundColor: DesignRule.white,
-                                borderWidth: 1,
-                                height: px2dp(24),
-                                width: px2dp(136),
-                                fontSize: px2dp(15)
-                            }}/>
+                        <View style={{
+                            borderWidth: 1, marginLeft: 5,
+                            marginRight: 5, borderColor: DesignRule.textColor_placeholder,
+                            backgroundColor: DesignRule.white
+                        }}>
+                            <TextInput
+                                keyboardType='numeric'
+                                autoFocus={true}
+                                defaultValue={`${(this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}`}
+                                value={this.state.tokenCoinNum}
+                                onChangeText={this._onChangeText}
+                                onFocus={this._onFocus}
+                                style={{
+                                    padding: 0,
+                                    paddingLeft: 5,
+                                    alignItems: 'center',
+                                    height: px2dp(24),
+                                    width: px2dp(136),
+                                    fontSize: px2dp(15)
+                                }}/>
+                        </View>
                         <UIImage source={plusIcon} style={{
                             width: px2dp(24),
                             height: px2dp(24),
                             marginRight: px2dp(39)
-                        }} onPress={this.plusTokenCoin}/>
+                        }} onPress={this.plusTokenCoin} resizeMode={'contain'}/>
                     </View>
                 </View>
 
                 <View style={{ width: '100%', height: 0.5, backgroundColor: 'grey' }}/>
                 <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                                      onPress={this.quitTokenCoin}>
+                    <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+                                 onPress={this.quitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                     <View style={{ height: '100%', width: 0.5, backgroundColor: 'grey' }}/>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                                      onPress={this.commitTokenCoin}>
+                    <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+                                 onPress={this.commitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>确定</Text>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                 </View>
 
             </View>
@@ -272,7 +271,7 @@ export default class MyCouponsItems extends Component {
     };
     plusTokenCoin = () => {
         let num = this.state.tokenCoinNum;
-        if (num <= ( Math.min(parseInt(this.props.justOne), user.tokenCoin) - 1)) {
+        if (num <= (Math.min(parseInt(this.props.justOne), user.tokenCoin) - 1)) {
             this.setState({ tokenCoinNum: (num + 1) });
         }
     };
@@ -305,7 +304,7 @@ export default class MyCouponsItems extends Component {
                       allowFontScaling={false}>还没有优惠券哦</Text>
                 <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
                       allowFontScaling={false}>快去商城逛逛吧</Text>
-                <TouchableOpacity
+                <NoMoreClick
                     onPress={() => {
                         this._gotoLookAround();
                     }}>
@@ -326,9 +325,13 @@ export default class MyCouponsItems extends Component {
                             去逛逛
                         </Text>
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
             </View>
         );
+    };
+
+    _footer = () => {
+        return (<View style={{ height: 50 }}/>);
     };
 
     _gotoLookAround = () => {
@@ -346,6 +349,7 @@ export default class MyCouponsItems extends Component {
                     renderItem={this.renderItem}
                     onEndReachedThreshold={10}
                     onEndReached={() => this.onLoadMore()}
+                    ListFooterComponent={this._footer}
                     ListEmptyComponent={this._renderEmptyView}
                     showsVerticalScrollIndicator={false}
                     initialNumToRender={5}
@@ -359,7 +363,7 @@ export default class MyCouponsItems extends Component {
                         position: 'absolute',
                         bottom: 0, height: 48, borderTopColor: DesignRule.bgColor, borderTopWidth: 1
                     }}>
-                        <TouchableOpacity style={{
+                        <NoMoreClick style={{
                             width: ScreenUtils.width,
                             height: 48,
                             backgroundColor: 'white',
@@ -370,7 +374,7 @@ export default class MyCouponsItems extends Component {
                                 fontSize: 14,
                                 color: DesignRule.textColor_secondTitle
                             }} allowFontScaling={false}>放弃使用优惠券</Text>
-                        </TouchableOpacity></View> : null}
+                        </NoMoreClick></View> : null}
 
             </View>
         );
@@ -413,7 +417,6 @@ export default class MyCouponsItems extends Component {
         }
     };
     parseData = (dataList) => {
-
         let arrData = [];
         if (this.currentPage === 1) {//refresh
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
@@ -428,30 +431,35 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            API.queryCoupons({
-                status: this.state.pageStatus
-            }).then(result => {
-                let data = result.data || [];
-                data.forEach((item) => {
-                    arrData.push({
-                        status: item.status,
-                        name: item.name,
-                        timeStr: '敬请期待',
-                        value: item.type === 11 ? item.value : '拼店',
-                        limit: item.type === 11 ? '兑换券：靓号兑换券' : '全场券：全场通用券',
-                        remarks: item.remarks,
-                        type: item.type, //以type=99表示1元券
-                        levelimit: false,
-                        number: item.number
+            if (!this.props.fromOrder) {
+                API.queryCoupons({
+                    status: this.state.pageStatus
+                }).then(result => {
+                    let data = result.data || [];
+                    data.forEach((item) => {
+                        arrData.push({
+                            status: item.status,
+                            name: item.name,
+                            timeStr: '敬请期待',
+                            value: item.type === 11 ? item.value : '拼店',
+                            limit: item.type === 11 ? '兑换券：靓号兑换券' : '全场券：全场通用券',
+                            remarks: item.remarks,
+                            type: item.type, //以type=99表示1元券
+                            levelimit: false,
+                            number: item.number
+                        });
                     });
+                    this.handleList(dataList, arrData);
+                    this.setState({ viewData: arrData });
+                }).catch(err => {
+                    console.log(err);
+                    this.handleList(dataList, arrData);
+                    this.setState({ viewData: arrData });
                 });
+            } else {
                 this.handleList(dataList, arrData);
                 this.setState({ viewData: arrData });
-            }).catch(err => {
-                console.log(err);
-                this.handleList(dataList, arrData);
-                this.setState({ viewData: arrData });
-            });
+            }
         } else {//more
             this.handleList(dataList, arrData);
             this.setState({ viewData: this.state.viewData.concat(arrData) });
@@ -487,7 +495,7 @@ export default class MyCouponsItems extends Component {
             //     this.parseData(arr);
             //     return;
             // }
-            if (this.props.orderParam.orderType == 99) {
+            if (this.props.orderParam.orderType == 99||this.props.orderParam.orderType == 98) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -496,11 +504,11 @@ export default class MyCouponsItems extends Component {
                     });
                 });
                 params = { productPriceIds: arr };
-            } else if (this.props.orderParam.orderType == 1 || this.props.orderParam.orderType == 2||this.props.orderParam.orderType == 3) {
+            } else if (this.props.orderParam.orderType == 1 || this.props.orderParam.orderType == 2 || this.props.orderParam.orderType == 3) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
-                        productCode: item.productCode||item.prodCode,
+                        productCode: item.productCode || item.prodCode,
                         amount: 1
                     });
                 });

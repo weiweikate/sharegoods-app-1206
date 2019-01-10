@@ -35,7 +35,7 @@ import NetNotConnectImage from './source/net_error.png'; //用于断网，超时
 import ServerErrorImage from './source/net_error.png'; //用于其他网络请求展示
 const BugErrorCode = -20000;       //异常错误，请稍后再试 js bug error
 // const NetUnKnowErrorCode = -20001; //未知错误,请稍后再试 (网络错误，但是没有错误码)
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 export default class NetFailedView extends Component {
 
@@ -145,7 +145,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: DesignRule.textColor_instruction,
         marginTop: 28,
-        textAlign : 'center'
+        textAlign: 'center',
+        marginHorizontal: 15
     },
     btn: {
         width: 115,

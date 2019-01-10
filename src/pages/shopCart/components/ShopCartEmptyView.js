@@ -22,7 +22,7 @@ import {
 import {
     UIText
 } from '../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import PropTypes from 'prop-types'
 

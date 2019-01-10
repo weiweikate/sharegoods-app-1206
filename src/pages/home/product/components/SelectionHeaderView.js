@@ -6,7 +6,7 @@ import {
     TouchableOpacity, StyleSheet
 } from 'react-native';
 import StringUtils from '../../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import UIImage from '@mr/image-placeholder';
 import {MRText as Text} from '../../../../components/ui';
@@ -60,7 +60,7 @@ export default class SelectionHeaderView extends Component {
                             color: DesignRule.mainColor,
                             fontSize: 16,
                             marginTop: 14
-                        }} allowFontScaling={false}>{`￥${price}`}</Text>
+                        }} allowFontScaling={false}>{`￥${price||''}`}</Text>
                         <Text
                             style={{
                                 color: DesignRule.textColor_mainTitle,

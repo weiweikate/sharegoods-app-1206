@@ -8,7 +8,7 @@ import MoreClickComponet from '../../../components/ui/NoMoreClick';
 import {
     UIText, UIImage
 } from '../../../components/ui';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 const questionImage_gray =  res.userInfoImg.questionImage_gray;
 
@@ -67,7 +67,7 @@ const AccountItem = props => {
                 </View>
             </MoreClickComponet>
             <View style={{ flex: 1, height: 1, backgroundColor: 'white' }}>
-                <View style={{ flex: 1, height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 15 }}/>
+                <View style={{ flex: 1, height: 0.5, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 15 }}/>
             </View>
         </View>
     );

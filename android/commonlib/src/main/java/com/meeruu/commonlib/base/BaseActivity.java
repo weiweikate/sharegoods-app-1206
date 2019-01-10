@@ -96,8 +96,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
-        initViewAndData();
         initEvent();
+        initViewAndData();
     }
 
     protected void setChangeStatusTrans(boolean changeStatusTrans) {

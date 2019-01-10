@@ -4,12 +4,11 @@ import {
     TouchableOpacity,
     ScrollView
 } from 'react-native';
-
 import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
+import DesignRule from '../../../constants/DesignRule';
 import UIText from '../../../components/ui/UIText';
-import DesignRule from 'DesignRule';
 
 export default class SbOpenPrizeHeader extends Component {
 

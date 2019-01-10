@@ -8,7 +8,7 @@ const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { homeModule } from './Modules'
 import { todayModule } from './HomeTodayModel'
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder'
 import {MRText as Text} from '../../components/ui';
 

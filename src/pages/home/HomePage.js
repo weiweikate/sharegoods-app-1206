@@ -6,7 +6,7 @@ import {
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
-    RefreshControl
+    RefreshControl, BackHandler
 } from 'react-native';
 import ImageLoad from '@mr/image-placeholder';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -27,13 +27,13 @@ import HomeGoodsView from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import ShowView from '../show/ShowView';
 import LinearGradient from 'react-native-linear-gradient';
-import Modal from 'CommModal';
+import Modal from '../../comm/components/CommModal';
 import XQSwiper from '../../components/ui/XGSwiper';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModal from './VersionUpdateModal';
 import StringUtils from '../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import TimerMixin from 'react-timer-mixin';
 import res from './res';
 import homeModalManager from './model/HomeModalManager';
@@ -107,13 +107,13 @@ class HomePage extends BasePage {
                 }
                 console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
-                    this.shareTaskIcon.queryTask();
+                    // this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
             }
         );
 
-        this.didBlurSubscription = this.props.navigation.addListener(
+        this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
                 this.homeFocused = false;
@@ -124,6 +124,7 @@ class HomePage extends BasePage {
                         bridge.setLightMode();
                     });
                 }
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
 
@@ -132,12 +133,13 @@ class HomePage extends BasePage {
             payload => {
                 this.homeFocused = true;
                 this.showModal();
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
     }
 
     componentWillUnmount() {
-        this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
@@ -157,6 +159,10 @@ class HomePage extends BasePage {
 
     }
 
+    handleBackPress = () => {
+        return this.state.forceUpdate;
+    };
+
     _homeModaldata = () => {
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
@@ -175,17 +181,19 @@ class HomePage extends BasePage {
     };
 
     loadMessageCount = () => {
-        MessageApi.getNewNoticeMessageCount().then(result => {
-            if (!EmptyUtils.isEmpty(result.data)) {
+        if (user.token) {
+            MessageApi.getNewNoticeMessageCount().then(result => {
+                if (!EmptyUtils.isEmpty(result.data)) {
+                    this.setState({
+                        hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                    });
+                }
+            }).catch((error) => {
                 this.setState({
-                    hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                    hasMessage: false
                 });
-            }
-        }).catch((error) => {
-            this.setState({
-                hasMessage: false
             });
-        });
+        }
     };
 
     showModal = () => {
@@ -431,15 +439,24 @@ class HomePage extends BasePage {
                         });
                         this.registerModal.close();
                         homeRegisterFirstManager.setShowRegisterModalUrl(null);
-
                     }}>
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
                     {
                         homeRegisterFirstManager.showRegisterModalUrl ?
-                            <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
-                                       resizeMode={'contain'}
-                                       style={styles.messageBgStyle}/> : <View style={styles.messageBgStyle}/>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.setState({
+                                    showRegister: false
+                                });
+                                this.registerModal.close();
+                                homeRegisterFirstManager.setShowRegisterModalUrl(null);
+                                this.$toastShow('领取成功');
+                            }}>
+                                <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
+                                           resizeMode={'contain'}
+                                           style={styles.messageBgStyle}/>
+                            </TouchableWithoutFeedback>
+                            : <View style={styles.messageBgStyle}/>
                     }
 
 

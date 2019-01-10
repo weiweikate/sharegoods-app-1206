@@ -20,7 +20,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
@@ -62,7 +62,7 @@ export default class  extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '授权码录入',
+        title: '填写会员号',
         show: true// false则隐藏导航
     };
 
@@ -104,7 +104,7 @@ export default class  extends BasePage {
 
             ]}>
                 <UIText
-                    value={'授权码录入'}
+                    value={'填写会员号'}
                     style={{
                         marginTop: 20,
                         width: ScreenUtils.width - 50
@@ -131,8 +131,7 @@ export default class  extends BasePage {
                         style={styles.inputTextStyle}
                         value={this.inviteModel.inviteCode}
                         onChangeText={text => this.inviteModel.saveInviteCode(text)}
-                        placeholder='请输入邀请人授权码'
-                        underlineColorAndroid={'transparent'}
+                        placeholder='请输入邀请人会员号'
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
                 </View>

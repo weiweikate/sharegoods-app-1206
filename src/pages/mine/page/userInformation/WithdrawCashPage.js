@@ -20,7 +20,7 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 // import MineApi from '../../api/MineApi';
 import user from "../../../../model/user";
 import { observer } from "mobx-react/native";
-import DesignRule from "DesignRule";
+import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import MineAPI from "../../api/MineApi";
 import BankTradingModal from "./../../components/BankTradingModal";
@@ -311,10 +311,9 @@ export default class WithdrawCashPage extends BasePage {
                     <Text style={{ marginLeft: 15, color: DesignRule.textColor_mainTitle, fontSize: 30 }}>{"¥"}</Text>
                     {/*<View style={{height:20,width:1,backgroundColor:'#eeeeee',marginLeft:16}}/>*/}
                     <RNTextInput
-                        style={{ marginLeft: 20, height: 40, flex: 1, backgroundColor: "white", fontSize: 14 }}
+                        style={{ marginLeft: 20, height: 40, flex: 1, fontSize: 14 }}
                         onChangeText={(text) => this.onChangeText(text)}
                         placeholder={""}
-                        underlineColorAndroid={"transparent"}
                         value={this.state.money}
                         keyboardType='numeric'
                     />
@@ -434,12 +433,12 @@ export default class WithdrawCashPage extends BasePage {
     };
     commit = () => {
         if (parseFloat(this.state.money) > parseFloat(user.availableBalance)) {
-            this.$toastShow("超出金额限制");
+            this.$toastShow("提现金额不能超出可提现金额");
             return;
         }
 
         if(this.state.minCount && (parseFloat(this.state.money) < parseFloat(this.state.minCount))){
-            this.$toastShow("超出金额设置");
+            this.$toastShow(`提现金额不能低于${parseFloat(this.state.minCount)}`);
             return;
         }
 

@@ -7,7 +7,7 @@ import ScreenUtils from "../../../utils/ScreenUtils";
 const { px2dp } = ScreenUtils;
 import PropTypes from "prop-types";
 import res from "./../../payment/res";
-import Modal from 'CommModal';
+import Modal from '../../../comm/components/CommModal';
 import DesignRule from "../../../constants/DesignRule";
 import {MRText as Text} from '../../../components/ui'
 const closeImg = res.close;

@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native';
 import {  orderDetailModel } from '../../model/OrderDetailModel';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react/native';
 import ScreenUtil from '../../../../utils/ScreenUtils';
 const {px2dp} = ScreenUtil;
@@ -16,7 +16,7 @@ export default class GiftHeaderView extends Component{
     render(){
         return (
             <View style={{marginTop:  px2dp(10)}}>
-                {orderDetailModel.orderSubType >= 3 ?
+                {orderDetailModel.orderSubType >= 3&& orderDetailModel.orderSubType < 5?
                     <View style={styles.containerStyles}>
                         <View style={styles.leftStyles}>
                             <Text style={styles.giftTextStyles} allowFontScaling={false}>礼包</Text>

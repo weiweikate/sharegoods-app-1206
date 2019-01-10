@@ -6,8 +6,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 // import UIImage from '../../../components/ui/UIImage';
-import CommModal from 'CommModal';
-import DesignRule from 'DesignRule';
+import CommModal from '../../../comm/components/CommModal';
+import DesignRule from '../../../constants/DesignRule';
 import {MRText as Text} from '../../../components/ui'
 // import res from '../res';
 /*
@@ -30,6 +30,7 @@ import {MRText as Text} from '../../../components/ui'
  )
  }
 * */
+
 export default class CommonTwoChoiceModal extends Component {
 
     constructor(props) {

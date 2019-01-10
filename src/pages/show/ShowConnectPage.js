@@ -9,14 +9,14 @@ import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 import {
-    MRText as Text,
+    MRText as Text
 } from '../../components/ui';
 
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
 import res from './res';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import Toast from '../../utils/bridge';
 
 const imgWidth = px2dp(168);
@@ -50,16 +50,24 @@ export default class ShowConnectPage extends BasePage {
     }
 
     componentDidMount() {
-        this._refreshData();
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                if (state && state.routeName === 'show/ShowConnectPage') {
+                    this._refreshData();
+                }
+            }
+        );
     }
 
     _refreshData() {
         this.waterfall && this.waterfall.clear();
         this.recommendModules.loadCollect().then(data => {
             this.setState({ firstLoad: false });
-            this.waterfall.index = 1;
+            this.waterfall && (this.waterfall.index = 1);
             if (data && data.length > 0) {
-                this.waterfall.addItems(data);
+                this.waterfall && this.waterfall.addItems(data);
             } else {
                 // this.waterfall.addItems([]);
                 this.setState({ isEmpty: true });
@@ -116,7 +124,7 @@ export default class ShowConnectPage extends BasePage {
     infiniting(done) {
         setTimeout(() => {
             this.recommendModules.getMoreCollect().then(data => {
-                this.waterfall.addItems(data);
+                this.waterfall && this.waterfall.addItems(data);
                 if (data.length > 0) {
                     this.setState({ allSelected: false });
                 }
@@ -134,7 +142,7 @@ export default class ShowConnectPage extends BasePage {
     }
 
     _gotoDetail(data) {
-        this.$navigate('show/ShowDetailPage', { id: data.id });
+        this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
     }
 
     _selectedAction(data) {

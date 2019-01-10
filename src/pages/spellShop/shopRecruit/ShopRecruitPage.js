@@ -27,11 +27,12 @@ import spellStatusModel from '../model/SpellStatusModel';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import resCommon from '../../../comm/res';
 import user from '../../../model/user';
 import LinearGradient from 'react-native-linear-gradient';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 const NavLeft = resCommon.button.white_back;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -146,10 +147,10 @@ export default class ShopRecruitPage extends BasePage {
     };
 
     _clickAllMembers = () => {
-        //招募中先不跳
-        // if (this.state.storeData.userStatus === 1) {
-        //     this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
-        // }
+        //自己只能查看列表
+        if (this.state.storeData.myStore) {
+            this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
+        }
     };
     _clickSettingItem = () => {
         let arr = ['分享店铺'];
@@ -182,17 +183,23 @@ export default class ShopRecruitPage extends BasePage {
 
     //关闭店铺
     _closeStore = () => {
-        this.$loadingShow();
-        SpellShopApi.closeStore({ status: 0 }).then((data) => {
-            if (!this.props.leftNavItemHidden) {
-                this.$navigateBack();
+        Alert.alert('提示', '确定取消招募成员?', [{
+            text: '取消'
+        }, {
+            text: '确定', onPress: () => {
+                this.$loadingShow();
+                SpellShopApi.closeStore({ status: 0 }).then((data) => {
+                    if (!this.props.leftNavItemHidden) {
+                        this.$navigateBack();
+                    }
+                    spellStatusModel.getUser(2);
+                    this.$loadingDismiss();
+                }).catch((error) => {
+                    this.$loadingDismiss();
+                    this.$toastShow(error.msg);
+                });
             }
-            spellStatusModel.getUser(2);
-            this.$loadingDismiss();
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
-        });
+        }]);
     };
 
     //开启店铺
@@ -255,17 +262,23 @@ export default class ShopRecruitPage extends BasePage {
 
     //退出店铺
     _quitStore = () => {
-        this.$loadingShow();
-        SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
-            if (!this.props.leftNavItemHidden) {
-                this._loadPageData();
+        Alert.alert('提示', '确定要退出么?', [{
+            text: '取消'
+        }, {
+            text: '退出', onPress: () => {
+                this.$loadingShow();
+                SpellShopApi.quitStore({ storeCode: this.state.storeCode }).then((data) => {
+                    if (!this.props.leftNavItemHidden) {
+                        this._loadPageData();
+                    }
+                    spellStatusModel.getUser(2);
+                    this.$loadingDismiss();
+                }).catch((error) => {
+                    this.$loadingDismiss();
+                    this.$toastShow(error.msg);
+                });
             }
-            spellStatusModel.getUser(2);
-            this.$loadingDismiss();
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
-        });
+        }]);
     };
 
     // 渲染头
@@ -294,14 +307,15 @@ export default class ShopRecruitPage extends BasePage {
                     <TouchableOpacity onPress={this._closeStore}
                                       style={[styles.unOpen, {
                                           borderRadius: this.state.canOpen ? 5 : ScreenUtils.autoSizeWidth(345) / 2,
-                                          width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(345)
+                                          width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(260)
                                       }]}>
-                        <Text style={{ fontSize: 16, color: DesignRule.mainColor }} allowFontScaling={false}>{'取消开启'}</Text>
+                        <Text style={{ fontSize: 16, color: DesignRule.mainColor }}
+                              allowFontScaling={false}>{'取消开启'}</Text>
                     </TouchableOpacity>
                     {
-                        this.state.canOpen ? <TouchableOpacity onPress={this._openStore} style={styles.open}>
+                        this.state.canOpen ? <NoMoreClick onPress={this._openStore} style={styles.open}>
                             <Text style={{ fontSize: 16, color: 'white' }} allowFontScaling={false}>{'开启店铺'}</Text>
-                        </TouchableOpacity> : null
+                        </NoMoreClick> : null
                     }
                 </View>
             );
@@ -316,10 +330,11 @@ export default class ShopRecruitPage extends BasePage {
                     userStatus === 1 ?
                         <TouchableOpacity onPress={this._quitStore}
                                           style={[styles.unOpen, {
-                                              borderRadius: ScreenUtils.autoSizeWidth(345) / 2,
-                                              width: ScreenUtils.autoSizeWidth(345)
+                                              borderRadius: 24,
+                                              width: ScreenUtils.autoSizeWidth(260)
                                           }]}>
-                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }} allowFontScaling={false}>{'退出拼店'}</Text>
+                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }}
+                                  allowFontScaling={false}>{'退出拼店'}</Text>
                         </TouchableOpacity>
                         : <TouchableOpacity onPress={this._joinStore}
                                             style={[styles.OutStore]}>
@@ -433,10 +448,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     OutStore: {
-        width: ScreenUtils.autoSizeWidth(345),
+        width: ScreenUtils.autoSizeWidth(260),
         height: 48,
         backgroundColor: DesignRule.mainColor,
-        borderRadius: ScreenUtils.autoSizeWidth(345) / 2,
+        borderRadius: 24,
         justifyContent: 'center',
         alignItems: 'center'
     },

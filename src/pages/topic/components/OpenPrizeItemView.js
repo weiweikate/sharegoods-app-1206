@@ -14,10 +14,10 @@ import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
 import { getShowPrice } from '../model/TopicMudelTool';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
-import UIText from '../../../components/ui/UIText';
+// import UIText from '../../../components/ui/UIText';
 import {
     MRText as Text
 } from '../../../components/ui';
@@ -104,11 +104,13 @@ export default class OpenPrizeItemView extends Component {
                                 :
                                 null
                         }
-                        <UIText
+                        <Text
                             style={ItemStyles.itemBottomTextStyle}
-                            number={2}
-                            value= {itemData.productName}
-                            />
+                            numberOfLines={2}
+                            // value=
+                            >
+                            {itemData.productName}
+                        </Text>
                         {/*<Text*/}
                             {/*style={ItemStyles.itemBottomTextStyle}*/}
                             {/*number={2}*/}
@@ -304,11 +306,13 @@ const ItemStyles = StyleSheet.create({
     },
 
     itemBottomTextStyle: {
-        padding: 10,
+        paddingTop: 5,
+        paddingLeft:10,
+        paddingRight:10,
         color: DesignRule.textColor_mainTitle,
         width: mainWidth / 2 - 16,
-        height: 37,
-        fontSize: 12
+        height: 40,
+        fontSize: 12,
     },
     itemFolloweTextStyle: {
         color: DesignRule.bgColor_blue,

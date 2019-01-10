@@ -8,7 +8,6 @@ import {
     Alert
     // TouchableWithoutFeedback,
     // ImageBackground,
-    // AsyncStorage
 } from 'react-native';
 
 import BasePage from '../../../BasePage';
@@ -27,7 +26,7 @@ import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { MRText as Text } from '../../../components/ui';
 // import CommModal from '../../../comm/components/CommModal';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 // const { px2dp } = ScreenUtils;
@@ -81,7 +80,7 @@ export default class ProductDetailPage extends BasePage {
 
     _getPageStateOptions = () => {
         const { productStatus } = this.state.data;
-        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
+        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态) 3未开售
         return {
             loadingState: this.state.loadingState,
             netFailedProps: {
@@ -204,20 +203,22 @@ export default class ProductDetailPage extends BasePage {
 
     //消息数据
     _getMessageCount = () => {
-        MessageApi.getNewNoticeMessageCount().then(result => {
-            if (!EmptyUtils.isEmpty(result.data)) {
-                const { shopMessageCount, noticeCount, messageCount } = result.data;
-                this.setState({
-                    messageCount: shopMessageCount + noticeCount + messageCount
-                });
-            }
-        }).catch((error) => {
-        });
+        if (user.token) {
+            MessageApi.getNewNoticeMessageCount().then(result => {
+                if (!EmptyUtils.isEmpty(result.data)) {
+                    const { shopMessageCount, noticeCount, messageCount } = result.data;
+                    this.setState({
+                        messageCount: shopMessageCount + noticeCount + messageCount
+                    });
+                }
+            }).catch((error) => {
+            });
+        }
     };
 
     _savaData = (data) => {
         let { productStatus, upTime, now } = data;
-        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)3
+        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态) 3未开售
         if (productStatus === 0) {
             this.setState({
                 loadingState: PageLoadingState.fail,
@@ -309,6 +310,7 @@ export default class ProductDetailPage extends BasePage {
     _selectionViewConfirm = (amount, skuCode) => {
         let orderProducts = [];
         if (this.state.goType === 'gwc') {
+            //hyf更改
             let temp = {
                 'amount': amount,
                 'skuCode': skuCode,
@@ -528,7 +530,7 @@ export default class ProductDetailPage extends BasePage {
         return (
             <View style={styles.container}>
                 {dic.loadingState === PageLoadingState.fail ?
-                    <NavigatorBar title={productStatus === 0 ? '暂无商品' : ''} leftPressed={() => {
+                    <NavigatorBar title={productStatus === 0 ? '暂无商品' : '商品详情'} leftPressed={() => {
                         this.$navigateBack();
                     }}/> : null}
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderContent)}

@@ -6,8 +6,8 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import CommModal from 'CommModal';
-import DesignRule from 'DesignRule';
+import CommModal from '../../../comm/components/CommModal';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import {
     MRText as Text

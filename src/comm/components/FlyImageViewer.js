@@ -18,9 +18,9 @@ import {
 } from 'react-native';
 //import * as typings from './image-viewer.type'
 // import {TransmitTransparently} from 'nt-transmit-transparently'
-import ImageZoom from 'FlyImageZoom';
+import ImageZoom from './FlyImageZoom';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder'
 import {MRText as Text} from '../../components/ui';
 

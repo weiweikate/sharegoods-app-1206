@@ -19,7 +19,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import SpellShopApi from '../api/SpellShopApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
 import res from '../res';
@@ -150,14 +150,14 @@ export default class ShopAssistantDetailPage extends BasePage {
                         <View style={styles.shopInContainer}>
                             {this._renderDescRow(NameIcon, `名称：${userInfo.nickName || ''}`)}
                             {this._renderDescRow(StarIcon, `级别：${userInfo.levelName || ''}`)}
-                            {this._renderDescRow(CodeIcon, `授权号：${userInfo.code || ''}`)}
+                            {this._renderDescRow(CodeIcon, `会员号：${userInfo.code || ''}`)}
                             {this._renderDescRow(PhoneIcon, `手机号：${userInfo.phone || ''}`, null)}
                         </View>
                     </View>
                 </ImageBackground>
                 {this._renderRow(QbIcon, '加入店铺时间', updateTime && DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
                 {this.renderSepLine()}
-                {this._renderRow(MoneyIcon, '共获得分红总额', `${((dealerTotalBonus || 0) - (dealerThisTimeBonus || 0))}元`)}
+                {this._renderRow(MoneyIcon, '共获得奖励总额', `${((dealerTotalBonus || 0) - (dealerThisTimeBonus || 0))}元`)}
                 {this.renderSepLine()}
                 {this._renderRow(detail_zongti, '总体贡献度', this._totalContribution())}
                 {this.renderSepLine()}
@@ -213,7 +213,8 @@ const styles = StyleSheet.create({
     },
     headImg: {
         width: 68,
-        height: 68
+        height: 68,
+        borderRadius:34
     },
     shopInContainer: {
         height: 105 / 375 * SCREEN_WIDTH,

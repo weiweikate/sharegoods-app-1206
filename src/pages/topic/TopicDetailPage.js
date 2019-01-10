@@ -10,7 +10,6 @@ import {
     // AsyncStorage,
     // ImageBackground
 } from 'react-native';
-
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
@@ -26,7 +25,7 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../components/ui';
@@ -202,8 +201,9 @@ export default class TopicDetailPage extends BasePage {
                             pricePerCommodity: levelPrice
                         });
 
-                        if (this.state.data.type === 2) {//1普通礼包  2升级礼包
-                            this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退换货，如有产品质量问题，可联系客服进行申诉`);
+                        if (this.state.data.type === 2 && !this.isNoFirstShow) {//1普通礼包  2升级礼包  展示一次
+                            this.isNoFirstShow = true
+                            this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退款，如有产品质量问题，可联系客服进行申诉`);
                         }
                     });
                 }
@@ -215,15 +215,17 @@ export default class TopicDetailPage extends BasePage {
 
     //消息数据
     _getMessageCount = () => {
-        MessageAPI.getNewNoticeMessageCount().then(result => {
-            if (!EmptyUtils.isEmpty(result.data)) {
-                const { shopMessageCount, noticeCount, messageCount } = result.data;
-                this.setState({
-                    messageCount: shopMessageCount + noticeCount + messageCount
-                });
-            }
-        }).catch((error) => {
-        });
+        if (user.token) {
+            MessageAPI.getNewNoticeMessageCount().then(result => {
+                if (!EmptyUtils.isEmpty(result.data)) {
+                    const { shopMessageCount, noticeCount, messageCount } = result.data;
+                    this.setState({
+                        messageCount: shopMessageCount + noticeCount + messageCount
+                    });
+                }
+            }).catch((error) => {
+            });
+        }
     };
 
 
@@ -575,7 +577,7 @@ export default class TopicDetailPage extends BasePage {
         return (
             <View style={styles.container}>
                 {dic.loadingState === PageLoadingState.fail ?
-                    <NavigatorBar title={superStatus === 0 ? '暂无商品' : ''} leftPressed={() => {
+                    <NavigatorBar title={superStatus === 0 ? '暂无商品' : '商品详情'} leftPressed={() => {
                         this.$navigateBack();
                     }}/> : null}
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderContainer)}
@@ -719,7 +721,7 @@ export default class TopicDetailPage extends BasePage {
                     }} onPress={() => this._bottomAction(colorType)} disabled={!(colorType === 1 || colorType === 2)}>
                         <Text style={{
                             color: 'white',
-                            fontSize: 14,textAlign:'center'
+                            fontSize: 14, textAlign: 'center'
                         }} allowFontScaling={false}>{bottomTittle}</Text>
                     </TouchableOpacity>
                 </View>

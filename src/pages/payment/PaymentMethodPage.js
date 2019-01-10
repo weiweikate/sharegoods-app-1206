@@ -4,7 +4,8 @@ import {
     StyleSheet,
     ScrollView,
     AppState,
-    ActivityIndicator
+    ActivityIndicator,
+    BackHandler
 } from 'react-native';
 import BasePage from '../../BasePage';
 import StringUtils from '../../utils/StringUtils';
@@ -14,7 +15,7 @@ import { observer } from 'mobx-react/native';
 import { Payment, paymentType, paymentTrack } from './Payment';
 import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import PasswordView from './PasswordView';
 import {MRText as Text} from '../../components/ui'
 // import { NavigationActions } from 'react-navigation';
@@ -35,6 +36,10 @@ export default class PaymentMethodPage extends BasePage {
         isShowPaymentModal: false,
         password: '',
         orderChecking: false
+    }
+
+    handleBackPress = () => {
+        return this.payment.isShowResult;
     }
 
     constructor(props) {
@@ -61,10 +66,12 @@ export default class PaymentMethodPage extends BasePage {
     };
 
     componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
         AppState.addEventListener('change', this._handleAppStateChange);
     }
 
     componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
         AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
@@ -73,7 +80,7 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     _handleAppStateChange = (state) => {
-        console.log('_handleAppStateChange AppState', state);
+        console.log('_handleAppStateChange AppState', state, this.state.orderChecking);
         const { selectedTypes } = this.payment;
         if (this.state.orderChecking === true) {
             return
@@ -169,7 +176,19 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     _alipay() {
-        this.payment.alipay(this.paymentResultView);
+        this.payment.alipay(this.paymentResultView).then(() => {
+            console.log('alipay back this.state.orderChecking', this.state.orderChecking)
+            if (this.state.orderChecking === true) {
+                return
+            }
+            const { selectedTypes, isGoToPay, orderNo } = this.payment;
+            if (orderNo && selectedTypes && isGoToPay === true) {
+                this.setState({orderChecking: true})
+                this.orderTime = (new Date().getTime()) / 1000
+                this.payment.isGoToPay = false
+                this._checkOrder()
+            }
+        });
     }
 
     _wechat() {
@@ -237,6 +256,10 @@ export default class PaymentMethodPage extends BasePage {
         }
     };
 
+    _repay() {
+        this.payment.payError = ''
+    }
+
     _render() {
         const { paymentList, availableBalance, balancePayment, selectedBalace, selectedTypes } = this.payment;
         let items = [];
@@ -275,6 +298,7 @@ export default class PaymentMethodPage extends BasePage {
                 }}
                 navigation={this.props.navigation}
                 payment={this.payment}
+                repay={()=> this._repay()}
             />
             {
                 this.state.orderChecking

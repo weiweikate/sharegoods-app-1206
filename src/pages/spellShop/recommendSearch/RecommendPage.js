@@ -23,12 +23,13 @@ import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
-import geolocation from '@mr/geolocation';
+import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import {homeLinkType} from '../../home/HomeTypes'
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
@@ -105,6 +106,9 @@ export default class RecommendPage extends BasePage {
                         SpellStatusModel.permissionsErr = error.code;
                         if (SpellStatusModel.permissionsErr === 'permissionsErr' || SpellStatusModel.permissionsErr === '12') {
                             setTimeout(() => {
+                                if (SpellStatusModel.hasAlertErr) {
+                                    return;
+                                }
                                 Alert.alert('提示', '定位服务未开启，请进入系统－设置－定位服务中打开开关，允许秀购使用定位服务',
                                     [
                                         {
@@ -259,15 +263,15 @@ export default class RecommendPage extends BasePage {
             url: item.imgUrl,
             bannerName: item.linkTypeCode
         });
-        if (item.linkType === 1) {
+        if (item.linkType === homeLinkType.good) {
             this.$navigate('home/product/ProductDetailPage', {
                 productCode: item.linkTypeCode, preseat: '拼店推荐banner'
             });
-        } else if (item.linkType === 2) {
+        } else if (item.linkType === homeLinkType.subject) {
             this.$navigate('topic/DownPricePage', {
                 linkTypeCode: item.linkTypeCode
             });
-        } else if (item.linkType === 6) {
+        } else if (item.linkType === homeLinkType.web) {
             this.$navigate('HtmlPage', {
                 title: '详情',
                 uri: item.linkTypeCode

@@ -2,7 +2,7 @@
  * @author xzm
  * @date 2018/10/23
  */
-import RouterMap from 'RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 
 const MessageUtils = {
 
@@ -41,8 +41,7 @@ const MessageUtils = {
             case 110://订单发货
                 pagParams = JSON.parse(params);
                 navigation('order/order/MyOrdersDetailPage', {
-                    orderNum: pagParams.orderNum,
-                    orderId:pagParams.orderId
+                    orderNo: pagParams.orderNo,
                 });
                 break;
             case 120://售后服务(退款申请)

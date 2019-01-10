@@ -12,11 +12,10 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import LoginAPI from '../api/LoginApi';
 // import StringUtils from '../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
 import {track} from '../../../utils/SensorsTrack'
-
 const {
     close_eye,
     open_eye,
@@ -107,28 +106,26 @@ export default class OldUserLoginPage extends BasePage {
                                 this.oldUserLoginModel.savePhoneNumber(text);
                             }}
                             placeholder='请用经销商后台账号'
-                            underlineColorAndroid={'transparent'}
                             keyboardType='default'
                         />
                         <CommSpaceLine style={Styles.lineStyle}/>
                     </View>
                     <View style={{ marginLeft: 20, marginRight: 30, marginTop: 30 }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <View style={{flexDirection: 'row', alignItems: 'center' }}>
                             <TextInput
-                                style={Styles.inputTextStyle}
+                                style={[Styles.inputTextStyle,{ flex: 1}]}
                                 value={this.oldUserLoginModel.password}
                                 onChangeText={text => {
                                     this.oldUserLoginModel.savePassword(text);
                                 }}
                                 placeholder='请输入密码'
-                                underlineColorAndroid={'transparent'}
                                 keyboardType='default'
                                 secureTextEntry={this.oldUserLoginModel.isSecuret}
                             />
                             <TouchableOpacity onPress={() => {
                                 this.oldUserLoginModel.isSecuret = !this.oldUserLoginModel.isSecuret;
                             }}>
-                                <Image style={Styles.seePasswordImageStyle}
+                                <Image style={{ marginLeft: 10}}
                                        source={this.oldUserLoginModel.isSecuret ? close_eye : open_eye}/>
                             </TouchableOpacity>
                         </View>
@@ -149,41 +146,40 @@ export default class OldUserLoginPage extends BasePage {
                             </Text>
                         </TouchableOpacity>
                     </View>
-
-                    <Text
-                        style={
-                            [Styles.bottomTimeStyle,
-                                {
-                                    marginTop: 20,
-                                    fontSize: 13,
-                                    color:'#000'
-                                }
-                            ]
-                        }
-                    >
-                        朵女郎激活时间: 2018.12.30-2019.1.10
-                    </Text>
-                    <Text
-                        style={
-                            Styles.bottomTimeStyle
-                        }
-                    >
-                        激活后可免费领取1688元礼包及其他朵粉专享福利
-                    </Text>
-                    <Text
-                        style={
-                            Styles.bottomTimeStyle
-                        }
-                    >
-                        逾期激活将取消朵粉所有专享福利
-                    </Text>
-                    <Text
-                        style={
-                            Styles.bottomTimeStyle
-                        }
-                    >
-                        且后期只能以新用户注册
-                    </Text>
+                    {/*<Text*/}
+                        {/*style={*/}
+                            {/*[Styles.bottomTimeStyle,*/}
+                                {/*{*/}
+                                    {/*marginTop: 20,*/}
+                                    {/*fontSize: 13,*/}
+                                    {/*color:'#000'*/}
+                                {/*}*/}
+                            {/*]*/}
+                        {/*}*/}
+                    {/*>*/}
+                        {/*朵女郎激活时间: 2018.12.30-2019.1.10*/}
+                    {/*</Text>*/}
+                    {/*<Text*/}
+                        {/*style={*/}
+                            {/*Styles.bottomTimeStyle*/}
+                        {/*}*/}
+                    {/*>*/}
+                        {/*激活后可免费领取惊喜大礼包及其他朵粉专享福利*/}
+                    {/*</Text>*/}
+                    {/*<Text*/}
+                        {/*style={*/}
+                            {/*Styles.bottomTimeStyle*/}
+                        {/*}*/}
+                    {/*>*/}
+                        {/*逾期激活将取消朵粉所有专享福利*/}
+                    {/*</Text>*/}
+                    {/*<Text*/}
+                        {/*style={*/}
+                            {/*Styles.bottomTimeStyle*/}
+                        {/*}*/}
+                    {/*>*/}
+                        {/*且后期只能以新用户注册*/}
+                    {/*</Text>*/}
                 </View>
                 {/*<Image*/}
                 {/*style={{*/}
@@ -236,7 +232,7 @@ export default class OldUserLoginPage extends BasePage {
                 }
             }).catch((data) => {
                 this.$loadingDismiss();
-                this.$toastShow(data.msg);
+                this.$toast(data.msg);
             });
         }
         // this.$navigate("login/login/SetPasswordPage");
@@ -280,8 +276,8 @@ const Styles = StyleSheet.create(
             marginLeft: 10
         },
         inputTextStyle: {
+            height:40,
             marginLeft: 20,
-            width: 140,
             fontSize: 14,
             fontWeight: '400'
         },

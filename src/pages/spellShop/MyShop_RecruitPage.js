@@ -4,7 +4,7 @@ import {
     StyleSheet,
     AppState,
     Linking,
-    PermissionsAndroid, Alert, NetInfo
+    PermissionsAndroid, Alert, NetInfo, BackHandler
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -20,9 +20,8 @@ import NoAccessPage from './NoAccessPage';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar';
 import user from '../../model/user';
 import Storage from '../../utils/storage';
-import geolocation from '@mr/geolocation';
+import geolocation from '@mr/rn-geolocation';
 import ScreenUtils from '../../utils/ScreenUtils';
-import StringUtils from '../../utils/StringUtils';
 
 @observer
 export default class MyShop_RecruitPage extends BasePage {
@@ -55,62 +54,65 @@ export default class MyShop_RecruitPage extends BasePage {
 
     componentWillMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
-
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
                 const { state } = payload;
-
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 NetInfo.isConnected.fetch().done((isConnected) => {
                     // 有网络
                     if (isConnected) {
-                        Storage.get('storage_MrLocation', {}).then((value) => {
-                                // 无缓存，请求定位
-                                if (StringUtils.isEmpty(value.latitude)) {
-                                    // 请求定位
-                                    geolocation.getLastLocation().then(result => {
-                                        Storage.set('storage_MrLocation', result);
-                                    }).catch((error) => {
-                                            spellStatusModel.permissionsErr = error.code;
-                                            if (spellStatusModel.permissionsErr === 'permissionsErr' || spellStatusModel.permissionsErr === '12') {
-                                                Alert.alert('提示', '定位服务未开启，请进入系统－设置－定位服务中打开开关，允许秀购使用定位服务',
-                                                    [
-                                                        {
-                                                            text: '取消', onPress: () => {
-                                                                this.$navigateBackToHome();
-                                                            }
-                                                        },
-                                                        {
-                                                            text: '去设置', onPress: () => {
-                                                                if (ScreenUtils.isIOS) {
-                                                                    Linking.openURL('app-settings:');
-                                                                } else {
-                                                                    if (spellStatusModel.permissionsErr === '12') {
-                                                                        geolocation.goLocationSetting();
-                                                                    } else {
-                                                                        PermissionsAndroid.request(
-                                                                            PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-                                                                            {
-                                                                                message:
-                                                                                    '定位服务未开启，请进入系统－设置－应用－应用管理－权限管理中打开开关，并且允许秀购使用定位服务',
-                                                                                buttonNegative: '取消',
-                                                                                buttonPositive: '确定'
-                                                                            }
-                                                                        );
-                                                                    }
+                        // 请求定位
+                        geolocation.getLastLocation().then(result => {
+                            Storage.set('storage_MrLocation', result);
+                        }).catch((error) => {
+                                spellStatusModel.permissionsErr = error.code;
+                                if (spellStatusModel.permissionsErr === 'permissionsErr' || spellStatusModel.permissionsErr === '12') {
+                                    spellStatusModel.hasAlertErr = true;
+                                    Alert.alert('提示', '定位服务未开启，请进入系统－设置－定位服务中打开开关，允许秀购使用定位服务',
+                                        [
+                                            {
+                                                text: '取消', onPress: () => {
+                                                    this.$navigateBackToHome();
+                                                    spellStatusModel.hasAlertErr = false;
+                                                }
+                                            },
+                                            {
+                                                text: '去设置', onPress: () => {
+                                                    spellStatusModel.hasAlertErr = false;
+                                                    if (ScreenUtils.isIOS) {
+                                                        Linking.openURL('app-settings:');
+                                                    } else {
+                                                        if (spellStatusModel.permissionsErr === '12') {
+                                                            geolocation.goLocationSetting();
+                                                        } else {
+                                                            PermissionsAndroid.request(
+                                                                PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+                                                                {
+                                                                    message:
+                                                                        '定位服务未开启，请进入系统－设置－应用－应用管理－权限管理中打开开关，并且允许秀购使用定位服务',
+                                                                    buttonNegative: '取消',
+                                                                    buttonPositive: '确定'
                                                                 }
-                                                                this.$navigateBackToHome();
-                                                            }
+                                                            );
                                                         }
-                                                    ],
-                                                    { cancelable: false }
-                                                );
+                                                    }
+                                                    this.$navigateBackToHome();
+                                                }
                                             }
-                                        }
+                                        ],
+                                        { cancelable: false }
                                     );
                                 }
                             }
                         );
+
                     } else {
                         this.$toastShow('网络异常，请检查网络连接');
                     }
@@ -123,7 +125,6 @@ export default class MyShop_RecruitPage extends BasePage {
                     spellStatusModel.getUser(0).then().catch((error) => {
                     });
                 }
-
             }
         );
     }
@@ -148,6 +149,12 @@ export default class MyShop_RecruitPage extends BasePage {
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+    }
+
+    handleBackPress=()=>{
+        this.$navigate('HomePage');
+        return true;
     }
 
     _loadPageData = () => {

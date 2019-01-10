@@ -10,24 +10,25 @@
  */
 
 
-"use strict";
-import React from "react";
+'use strict';
+import React from 'react';
 import {
     StyleSheet,
     TouchableWithoutFeedback,
     View
-} from "react-native";
-import BasePage from "../../../../BasePage";
-import DesignRule from "../../../../constants/DesignRule";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import MineAPI from "../../api/MineApi";
-import user from "../../../../model/user";
-import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
+} from 'react-native';
+import BasePage from '../../../../BasePage';
+import DesignRule from '../../../../constants/DesignRule';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import MineAPI from '../../api/MineApi';
+import user from '../../../../model/user';
+import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
 
 const { px2dp } = ScreenUtils;
 export default class ProfileEditPage extends BasePage {
     constructor(props) {
         super(props);
+        this.commiting = false;
         this.state = {
             textNum: user.profile ? user.profile.length : 0,
             profile: user.profile
@@ -35,34 +36,39 @@ export default class ProfileEditPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: "编辑简介",
+        title: '编辑简介',
         show: true// false则隐藏导航
     };
 
-    $NavBarRenderRightItem=()=> {
+    $NavBarRenderRightItem = () => {
         return (
-            <TouchableWithoutFeedback onPress={() => {this._commitProfile()}}>
+            <TouchableWithoutFeedback onPress={() => {
+                this._commitProfile();
+            }}>
                 <Text style={styles.navRightItemStyle}>
                     完成
                 </Text>
             </TouchableWithoutFeedback>
         );
-    }
-
-
-
+    };
 
 
     _commitProfile = () => {
+        if(this.commiting){
+            return;
+        }
+        this.commiting = true;
         MineAPI.updateUserById({ type: 6, profile: this.state.profile }).then((resp) => {
-            this.$toastShow("编辑成功!");
+            this.$toastShow('编辑成功!');
             this.$navigateBack();
+            this.commiting = false;
             MineAPI.getUser().then(res => {
                 let data = res.data;
                 user.saveUserInfo(data);
             }).catch(err => {
             });
         }).catch((error) => {
+            this.commiting = false;
             this.$toastShow(error.msg);
         });
     };
@@ -73,12 +79,13 @@ export default class ProfileEditPage extends BasePage {
                 <Text style={styles.tipTextStyle}>
                     请填写您的介绍
                 </Text>
-                <View>
+                <View style={{
+                    backgroundColor: DesignRule.white
+                }}>
                     <TextInput style={styles.textInputStyle}
                                maxLength={90}
                                multiline={true}
                                value={this.state.profile}
-                               underlineColorAndroid={"transparent"}
                                onChangeText={(text) => {
                                    if (text) {
                                        this.setState({
@@ -120,14 +127,13 @@ const styles = StyleSheet.create({
         marginLeft: DesignRule.margin_page
     },
     textInputStyle: {
-        backgroundColor: DesignRule.white,
         height: px2dp(133),
         width: ScreenUtils.width,
         padding: DesignRule.margin_page,
-        textAlignVertical: "top"
+        textAlignVertical: 'top'
     },
     textLimitStyle: {
-        position: "absolute",
+        position: 'absolute',
         bottom: DesignRule.margin_page,
         right: DesignRule.margin_page
     }

@@ -20,7 +20,6 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "ShareImageMaker.h"
-#import "UIImage+Util.h"
 #import "WelcomeView.h"
 @implementation AppDelegate
 
@@ -30,12 +29,16 @@
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
   [self initSensorsAnalyticsWithLaunchOptions:launchOptions];
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNotFrist"]) {
-     [self addLaunchToWindow];
-  }else{
-    [self addWelcomeView];
-  }
- 
+//  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNotFrist"]) {
+//
+//  }else{
+//    [self addWelcomeView];
+//  }
+  [self configureUserAgent];
+  //添加广告页
+  AdView *adView = [AdView new];
+  [adView addToWindow];
+  self.adView = adView;
   return YES;
 }
 
@@ -45,25 +48,19 @@
   welcomeView.frame = self.window.bounds;
   [self.window addSubview:welcomeView];
 }
-- (void)addLaunchToWindow
-{
-  UIImageView *imgView = [UIImageView new];
-  imgView.image = [UIImage getLaunchImage];
-  imgView.center = self.window.center;
-  imgView.bounds = self.window.bounds;
-  [self.window addSubview:imgView];
-  self.launchImgView = imgView;
-}
+
 - (void)removeLaunch
 {
-  //跳转指定页可以在这里写,启动时候
-//   [[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"meeruu://path/DebugPanelPage"]];
-  [UIView animateWithDuration:1.5 animations:^{
-    self.launchImgView.alpha = 0;
-    self.launchImgView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
-  } completion:^(BOOL finished) {
-    [self.launchImgView removeFromSuperview];
-  }];
+  self.adView.isLoadJS = YES;
+}
+
+- (void)configureUserAgent {
+  NSString *orgAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+  NSString *appendAgent = @"xiugou";
+  NSString *userAgent = [NSString stringWithFormat:@"%@ %@", orgAgent, appendAgent];
+  NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:userAgent, @"UserAgent", nil];
+  [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+
 }
 
 @end

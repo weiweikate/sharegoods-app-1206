@@ -10,7 +10,7 @@ import { showHotModules } from './Show'
 import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder'
 import TimerMixin from 'react-timer-mixin'
 import {
@@ -68,7 +68,7 @@ export default class ShowHotScrollView extends Component {
 
     _hotItemAction(item) {
         const { navigation } = this.props
-        navigation.navigate('show/ShowDetailPage', {id: item.id})
+        navigation.navigate('show/ShowDetailPage', {id: item.id, code: item.code})
     }
 
     render() {

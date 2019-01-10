@@ -20,7 +20,7 @@ import {
     ScrollView
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import MentorItemView from '../components/MentorItemView';
 // import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -173,7 +173,7 @@ export default class SelectMentorPage extends BasePage {
 
                             }}
                         >
-                            填写授权码
+                            填写会员号
                         </Text>
                     </View>
                 </View>
@@ -207,7 +207,7 @@ export default class SelectMentorPage extends BasePage {
                         }
                     }
                     style={{
-                        marginTop: 150
+                        marginTop: 120
                     }}
                 >
                     <View
@@ -260,7 +260,7 @@ export default class SelectMentorPage extends BasePage {
                         fontSize: 13,
                         color: DesignRule.textColor_instruction
                     }}
-                    value={'暂无顾问请填写授权码或跳过该步骤~'}
+                    value={'暂无顾问填写会员号或跳过该步骤~'}
                 />
             </View>
         );

@@ -8,9 +8,8 @@ import {
     InteractionManager
 } from 'react-native';
 import PropTypes from 'prop-types';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import {MRTextInput as TextInput}from './UIText';
-
 /**
  * 交易密码框
  */
@@ -56,15 +55,25 @@ export default class PasswordInput extends Component {
                 activeOpacity={1}
                 underlayColor='transparent'>
                 <View style={[styles.container, this.props.style]}>
+                    {
+                        this._getInputItem()
+                    }
                     <TextInput
-                        style={{ height: 45, zIndex: 99, position: 'absolute', width: 45 * 6, opacity: 0 }}
+                        style={{ height: 45, zIndex: 99, position: 'absolute', width: 57 * 6, opacity: 0 }}
                         ref='textInput'
                         maxLength={this.props.maxLength}
                         autoFocus={false}
+                        caretHidden={true}
                         keyboardType="numeric"
+                        value={this.state.text}
+                        contextMenuHidden={true}
+                        selectionColor={'transparent'}
                         onChangeText={
                             (text) => {
-                                const newText = text.replace(/[^\d]+/, '');
+                                let newText = text.replace(/[^\d]+/, '');
+                                if (this.state.text.length - newText.length > 1){
+                                    newText = this.state.text.slice(0, -1);
+                                }
                                 this.setState({ text: newText });
                                 this.props.onChange(newText);
                                 if (newText.length === this.props.maxLength) {
@@ -73,9 +82,6 @@ export default class PasswordInput extends Component {
                             }
                         }
                     />
-                    {
-                        this._getInputItem()
-                    }
                 </View>
             </TouchableHighlight>
         );

@@ -14,19 +14,33 @@ import { observer } from 'mobx-react';
 import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user'
-import DesignRule from 'DesignRule'
+import DesignRule from '../../constants/DesignRule';
 import {MRText as Text} from '../../components/ui';
-
 const { px2dp } = ScreenUtils;
+import ImageLoad from '@mr/image-placeholder'
 
-const Item = ({ data, onPress }) => {
-    const {icon, img} = data
-    let source = icon ? icon : {uri: img}
-    return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
-        <Image style={styles.icon} source={source}/>
-        <View style={styles.space}/>
-        <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
-    </TouchableOpacity>
+class Item extends Component {
+    state = {
+        loadingError: false
+    }
+    
+    render() {
+        const { onPress , data } = this.props
+        const {iconUri, icon} = this.props.data
+        const { loadingError } = this.state
+        let source = {uri: iconUri + '?ts=' + new Date().getTime()}
+        return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
+        {
+            loadingError
+            ?
+            <Image source={icon}/>
+            :
+            <ImageLoad style={styles.icon} source={source} onError={()=>{ console.log('loadingError'); this.setState({loadingError: true})}}/>
+        }
+            <View style={styles.space}/>
+            <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
+        </TouchableOpacity>
+    }
 }
 
 /**
@@ -46,11 +60,8 @@ export default class HomeClassifyView extends Component {
             navigate('login/login/LoginPage')
             return
         }
-        if (data.img && data.name !== '全部分类') {
-            navigate('home/search/SearchResultPage', { keywords: data.name })
-        } else {
-            navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode})
-        }
+
+        navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode, code: data.linkTypeCode})
     }
 
     renderItems = () => {

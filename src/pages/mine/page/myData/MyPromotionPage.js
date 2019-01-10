@@ -14,11 +14,13 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../../componen
 import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
 // 图片资源
+import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
-import { UIImage } from '../../../../components/ui';
+import { UIImage,
+    // NoMoreClick
+} from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import ScreenUtils from '../../../../utils/ScreenUtils'
 import res from '../../res';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../../components/ui';
@@ -28,6 +30,7 @@ const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;
 const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
 const CCZImg = res.myData.ccz_03;
 const ProgressImg = res.myData.jdt_05;
+// const arrowRightImg= res.myData.black_right_arrow
 import LinearGradient from 'react-native-linear-gradient';
 
 const { px2dp } = ScreenUtils;
@@ -111,12 +114,6 @@ export default class MyPromotionPage extends BasePage {
         });
     };
 
-
-    _imgLoadFail = (url, error) => {
-        console.warn(url + '\n' + error);
-    };
-
-
     renderHeader = () => {
         const progress = this.state.experience / this.state.levelExperience;
         const marginLeft = px2dp(315) * progress;
@@ -148,10 +145,25 @@ export default class MyPromotionPage extends BasePage {
                         justifyContent: 'center',
                         marginLeft: 10
                     }}>
-                        <Text style={{
-                            fontSize: 15,
-                            color: 'white'
-                        }} allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ''}</Text>
+                        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:ScreenUtils.width-130}}>
+                            <Text style={{
+                                fontSize: 15,
+                                color: 'white'
+                            }} allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ''}</Text>
+                            {/*{parseInt(this.state.experience)<1?null*/}
+                                {/*:*/}
+                                {/*<NoMoreClick style={{backgroundColor:'white',width:65,height:19,borderRadius:9,alignItems:'center',justifyContent:'center',flexDirection:'row'}}*/}
+                                             {/*onPress={()=>this.$navigate('mine/ExpDetailPage',{*/}
+                                                 {/*experience:this.state.experience,*/}
+                                                 {/*levelExperience:this.state.levelExperience*/}
+                                             {/*})}>*/}
+                                    {/*<Text style={{fontSize:10,color:"#000000",marginRight:4}}>经验明细</Text>*/}
+                                    {/*<Image source={arrowRightImg}/>*/}
+                                {/*</NoMoreClick>*/}
+                            {/*}*/}
+
+                        </View>
+
                         <ImageBackground style={{
                             justifyContent: 'center', alignItems: 'center', marginTop: 10,
                             height: 15,
@@ -169,7 +181,7 @@ export default class MyPromotionPage extends BasePage {
                     <Text style={{
                         fontSize: 15,
                         color: DesignRule.textColor_mainTitle
-                    }} allowFontScaling={false}>成长值</Text>
+                    }} allowFontScaling={false}>经验值</Text>
                 </View>
 
                 <View style={{ flex: 1, alignItems: 'center' }}>
@@ -213,7 +225,7 @@ export default class MyPromotionPage extends BasePage {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 12
                         }}>
-                            {(this.state.levelExperience - this.state.experience) > 0 ? `${this.state.levelExperience - this.state.experience}Exp` : '0Exp'}
+                            {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience))}Exp` : '0Exp'}
                         </Text>
                         {(this.state.levelExperience - this.state.experience) > 0 ? null :
                             <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}
@@ -410,7 +422,7 @@ export default class MyPromotionPage extends BasePage {
                             backgroundColor: '#fff',
                             height: 48
                         }}>
-                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>邀请好友</Text>
+                            <Text style={{ fontSize: 14, color: '#000' }} allowFontScaling={false}>分享好友</Text>
                         </View>
                     </TouchableWithoutFeedback>
 
@@ -422,7 +434,7 @@ export default class MyPromotionPage extends BasePage {
                             flex: 1,
                             height: 48
                         }}>
-                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>去购物</Text>
+                            <Text style={{ fontSize: 14, color: '#fff' }} allowFontScaling={false}>浏览秀购</Text>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>

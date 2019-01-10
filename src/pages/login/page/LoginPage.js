@@ -15,7 +15,7 @@ import LoginAPI from '../api/LoginApi';
 import { NavigationActions } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import { homeModule } from '../../home/Modules';
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
@@ -59,11 +59,11 @@ export default class LoginPage extends BasePage {
     /*render右上角*/
     $NavBarRenderRightItem = () => {
         return (
-            this.state.showWxLoginBtn ?
-                null :
+            oldUserLoginSingleModel.isShowReg ?
                 <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
                     注册
                 </Text>
+                :  null
         );
     };
 
@@ -80,7 +80,6 @@ export default class LoginPage extends BasePage {
         }).catch((error) => {
 
         });
-        // track('$AppViewScreen', { '$screen_name': 'LoginPage', '$title': '登录' });
         oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
 
@@ -112,10 +111,8 @@ export default class LoginPage extends BasePage {
                     showOldLogin={this.state.showWxLoginBtn}
                 />
                 {
-                    this.state.showWxLoginBtn
+                    oldUserLoginSingleModel.isShowReg
                         ?
-                        <View/>
-                        :
                         <View style={Styles.otherLoginBgStyle}>
                             <View style={Styles.lineBgStyle}>
                                 <CommSpaceLine style={{ width: 80 }}/>
@@ -137,7 +134,8 @@ export default class LoginPage extends BasePage {
                                 </TouchableOpacity>
                             </View>
                         </View>
-
+                        :
+                        <View/>
                 }
             </View>
         );
@@ -165,6 +163,7 @@ export default class LoginPage extends BasePage {
                         wechatVersion: ''
                     }).then((res) => {
                         if (res.code === 34005) {
+                            data.title = '绑定手机号';
                             this.$navigate('login/login/RegistPage', data);
                         } else if (res.code === 10000) {
                             UserModel.saveUserInfo(res.data);
@@ -179,6 +178,7 @@ export default class LoginPage extends BasePage {
                         }
                     }).catch((error) => {
                         if (error.code === 34005) {
+                            data.title = '绑定手机号';
                             this.$navigate('login/login/RegistPage', data);
                         }
                         bridge.$toast(data.msg);
@@ -244,11 +244,6 @@ export default class LoginPage extends BasePage {
             }).catch((data) => {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
-                /*未注册*/
-                if (data.code === 34001) {
-                    //暂且注释掉
-                    // this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
-                }
             });
         } else {
             // this.$loadingShow();
@@ -290,9 +285,6 @@ export default class LoginPage extends BasePage {
                 console.log(data);
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
-                if (data.code === 34001) {
-                    this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
-                }
             });
         }
     };

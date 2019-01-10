@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIText from '../../components/ui/UIText';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 
 export default class VersionUpdateModal extends React.Component {
 
@@ -68,11 +68,12 @@ export default class VersionUpdateModal extends React.Component {
 
     render() {
         return (<CommModal
+            focusable={false}
             animationType='fade'
             ref={(ref) => {
                 this.modal = ref;
             }}
-            onRequestClose={()=>{
+            onRequestClose={() => {
                 this.props.onRequestClose && this.props.onRequestClose();
             }}
             visible={this.props.showUpdate}>
@@ -152,7 +153,8 @@ export default class VersionUpdateModal extends React.Component {
     toUpdate = () => {
         if (Platform.OS === 'ios') {
             // 前往appstore
-            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
+            // Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
+            Linking.openURL(this.props.updateData.url);
         } else {
 
             if (this.props.updateData.forceUpdate === 1) {

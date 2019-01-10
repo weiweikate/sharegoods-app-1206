@@ -3,18 +3,19 @@ import {
     View,
     StyleSheet,
     FlatList,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Keyboard
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import HotSearchView from './components/HotSearchView';
 import RecentSearchView from './components/RecentSearchView';
 import SearchNav from './components/SearchNav';
-import RouterMap from 'RouterMap';
+import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import Storage from '../../../utils/storage';
 import StringUtils from '../../../utils/StringUtils';
-import DesignRule from 'DesignRule';
-import {MRText as Text} from '../../../components/ui';
+import DesignRule from '../../../constants/DesignRule';
+import { MRText as Text } from '../../../components/ui';
 
 const recentDataKey = 'recentDataKey';
 export default class SearchPage extends BasePage {
@@ -34,6 +35,19 @@ export default class SearchPage extends BasePage {
             //热门搜索
             hotData: []
         };
+    }
+
+    componentWillMount() {
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                Keyboard.dismiss();
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
     componentDidMount() {
@@ -137,12 +151,13 @@ export default class SearchPage extends BasePage {
             }}>
                 <View>
                     <Text style={{
+                        flex: 1,
                         fontSize: 13,
                         color: DesignRule.textColor_mainTitle,
                         marginLeft: 16,
                         paddingVertical: 15,
-                        paddingRight:16
-                    }} allowFontScaling={false}>{item}</Text>
+                        paddingRight: 16
+                    }} allowFontScaling={false} numberOfLines={1}>{item}</Text>
                     <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);

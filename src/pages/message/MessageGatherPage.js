@@ -15,9 +15,9 @@ import MessageAPI from '../message/api/MessageApi';
 import Toast from '../../utils/bridge';
 import EmptyUtils from "../../utils/EmptyUtils";
 const { px2dp } = ScreenUtils;
-import CommonUtils from 'CommonUtils'
+import CommonUtils from '../../utils/CommonUtils'
 import MessageUtils from './utils/MessageUtils'
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 const emptyIcon = RES.message_empty;
 import {MRText as Text} from '../../components/ui'
@@ -94,8 +94,8 @@ export default class MessageGatherPage extends BasePage {
                 <View style={{ flexDirection: 'row', marginTop:px2dp(15)}}>
                     <Text style={{ marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.title}</Text>
                 </View>
-                <View style={{ backgroundColor: 'white',marginVertical:px2dp(15) }}>
-                    <Text style={{ marginLeft: 15, fontSize: 13,color:DesignRule.textColor_secondTitle }}>{item.content}</Text>
+                <View style={{ backgroundColor: 'white',marginTop:px2dp(10),marginBottom:px2dp(15) }}>
+                    <Text style={{ marginLeft: 15, fontSize: 13,color:DesignRule.textColor_secondTitle ,lineHeight:23}}>{item.content}</Text>
                 </View>
                 {item.messageType === 200 ? btn : null}
             </View>

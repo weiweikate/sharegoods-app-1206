@@ -37,6 +37,11 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
     }
 
     @Override
+    public int getPriority() {
+        return 0;
+    }
+
+    @Override
     public LayoutShadowNode createShadowNodeInstance() {
         return new ModalHostShadowNode();
     }
@@ -57,6 +62,10 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
         }
     }
 
+    @ReactProp(name = "focusable")
+    public void setFocusable(PopModal view, Boolean focus) {
+       view.setFocus(focus);
+    }
     @Override
     public void onActivityCreate(Activity activity) {
     }

@@ -38,6 +38,7 @@ export class Payment {
     @observable isGoToPay = false
     @observable orderNo = ''
     @observable amount = 0
+    @observable isShowResult = false
     @observable payError = ''
     @observable paymentList = [
         {
@@ -131,6 +132,7 @@ export class Payment {
                 return ''
             }
         } catch(error) {
+            Toast.hiddenLoading();
             this.payError = error
             this.isGoToPay = false
             track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: error.msg || error.message})

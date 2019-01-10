@@ -7,35 +7,36 @@ import React from 'react';
 import {
     View,
     SectionList,
-    StyleSheet, RefreshControl,Alert
-} from "react-native";
-import SearchBar from "../../../components/ui/searchBar/SearchBar";
+    StyleSheet, RefreshControl, Alert
+} from 'react-native';
+import SearchBar from '../../../components/ui/searchBar/SearchBar';
 import {
     MRText as Text
 } from '../../../components/ui';
 
-import AssistantRow from "./components/AssistantRow";
-import MasterRow from "./components/MasterRow";
+import AssistantRow from './components/AssistantRow';
+import MasterRow from './components/MasterRow';
 
-import BasePage from "../../../BasePage";
-import SpellShopApi from "../api/SpellShopApi";
+import BasePage from '../../../BasePage';
+import SpellShopApi from '../api/SpellShopApi';
 // import ConfirmAlert from "../../../components/ui/ConfirmAlert";
-import { PageLoadingState } from "../../../components/pageDecorator/PageState";
-import DesignRule from "DesignRule";
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import DesignRule from '../../../constants/DesignRule';
 
 const sectionsArr = [
-    "master",
-    "A", "B", "C", "D", "E", "F", "G",
-    "H", "I", "J", "K", "L", "M", "N",
-    "O", "P", "Q", "R", "S", "T", "U",
-    "V", "W", "X", "Y", "Z", "*"
+    'master',
+    'A', 'B', 'C', 'D', 'E', 'F', 'G',
+    'H', 'I', 'J', 'K', 'L', 'M', 'N',
+    'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+    'V', 'W', 'X', 'Y', 'Z', '*'
 ];
 
 export default class AssistantListPage extends BasePage {
 
     $navigationBarOptions = {
-        title: "店员管理"
+        title: '店员管理'
     };
+
     //contribution/tradeBalance本月收入
     constructor(props) {
         super(props);
@@ -85,7 +86,7 @@ export default class AssistantListPage extends BasePage {
     };
 
     loadPageData() {
-        const keyword = this.state.searchText || "";
+        const keyword = this.state.searchText || '';
         SpellShopApi.listByKeyword({ keyword: keyword, storeCode: this.params.storeData.storeNumber }).then((data) => {
             data.data = data.data || {};
             const list = this._transformList(data.data);
@@ -109,15 +110,16 @@ export default class AssistantListPage extends BasePage {
 
     // 店员详情
     _clickAssistantDetail = (userCode) => {
-        const { myStore } = this.params.storeData;
-        if (myStore) {
-            this.$navigate("spellShop/myShop/ShopAssistantDetailPage", { userCode });
+        const { myStore, status } = this.params.storeData;
+        //0-关闭 1-正常 2-已缴纳保证金 3-招募中
+        if (myStore && status !== 3) {
+            this.$navigate('spellShop/myShop/ShopAssistantDetailPage', { userCode });
         }
     };
 
     // 删除具体店员
     _clickDeleteAssistant = (userCode) => {
-        userCode &&  Alert.alert('提示', '确定要将此用户移除?',
+        userCode && Alert.alert('提示', '确定要将此用户移除?',
             [
                 {
                     text: '取消', onPress: () => {
@@ -159,6 +161,7 @@ export default class AssistantListPage extends BasePage {
         } else {//1店员
             return (<AssistantRow item={item}
                                   isYourStore={this.params.storeData.myStore}
+                                  storeData={this.params.storeData}
                                   onPress={this._clickAssistantDetail}
                                   onPressDelete={this._clickDeleteAssistant} tradeBalance={tradeBalance}/>);
         }
@@ -171,10 +174,10 @@ export default class AssistantListPage extends BasePage {
 
     _renderSectionHeader = ({ section }) => {
         const { title, data } = section || {};
-        if (title === "master" || !title || !data || !data.length) {
+        if (title === 'master' || !title || !data || !data.length) {
             return null;
         }
-        return (<View style={{ height: 20, justifyContent: "center", alignItems: "center", marginTop: 11 }}>
+        return (<View style={{ height: 20, justifyContent: 'center', alignItems: 'center', marginTop: 11 }}>
             <Text style={{
                 fontSize: 13,
                 color: DesignRule.textColor_instruction
@@ -184,7 +187,7 @@ export default class AssistantListPage extends BasePage {
 
     _renderHeaderComponent = () => {
         return <View style={styles.headerBg}>
-            <SearchBar placeholder={"搜索用户名"}
+            <SearchBar placeholder={'搜索用户名'}
                        style={{ marginBottom: 10 }}
                        onChangeText={this._onChangeText}
                        title={this.state.searchText}/>

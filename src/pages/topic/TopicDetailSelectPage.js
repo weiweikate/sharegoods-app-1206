@@ -8,8 +8,8 @@ import {
     Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../comm/components/CommModal';
+import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import ImageLoad from '@mr/image-placeholder';
 import {
@@ -64,7 +64,8 @@ export default class TopicDetailSelectPage extends Component {
                                 <TouchableOpacity
                                     style={[styles.btn, { backgroundColor: DesignRule.mainColor }]}>
                                     <Text
-                                        style={[styles.btnText, { color: 'white' }]} allowFontScaling={false}>{obj.paramValue}</Text>
+                                        style={[styles.btnText, { color: 'white' }]} allowFontScaling={false}
+                                        numberOfLines={1}>{obj.paramValue}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -97,7 +98,7 @@ export default class TopicDetailSelectPage extends Component {
         });
 
         return (
-            <Modal animationType="none"  visible={this.state.isShow}>
+            <Modal animationType="none" visible={this.state.isShow}>
                 <View style={styles.container}>
                     <TouchableWithoutFeedback onPress={this._close}>
                         <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>

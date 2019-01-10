@@ -8,11 +8,10 @@ import {
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../../components/ui';
-
 
 export default class OpenShopSuccessPage extends BasePage {
 

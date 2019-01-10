@@ -14,12 +14,12 @@ import {
     View,
     Platform,
     InteractionManager,
-    Image
+    // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from './navigation/RouterMap';
 import user from '../src/model/user';
-import DebugButton from './components/debug/DebugButton';
+// import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 // import CONFIG from '../config';
 import { netStatus } from './comm/components/NoNetHighComponent';
@@ -27,13 +27,14 @@ import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
 import hotUpdateUtil from './utils/HotUpdateUtil';
 
-import geolocation from '@mr/geolocation';
+import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
 import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
 // import LoginAPI from './pages/login/api/LoginApi';
-import OldImag from './home_icon.png';
+// import OldImag from './home_icon.png';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
+import { login, logout } from './utils/SensorsTrack';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
@@ -67,6 +68,11 @@ export default class App extends Component {
             showOldBtn: false
         };
         user.readToken();
+        if (user.isLogin) {
+            // 启动时埋点关联登录用户,先取消关联，再重新关联
+            logout();
+            login(user.code);
+        }
         //检测是否老用户登陆
         oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
@@ -96,9 +102,10 @@ export default class App extends Component {
                 });
             }, 200);
         });
-        //热更新 先注释掉
-        bridge.removeLaunch();
+        //热更新
         hotUpdateUtil.checkUpdate();
+        // 移除启动页
+        bridge.removeLaunch();
     }
 
     render() {
@@ -113,6 +120,7 @@ export default class App extends Component {
                     }}
                     onNavigationStateChange={(prevState, currentState) => {
                         let curRouteName = getCurrentRouteName(currentState);
+                        this.setState({ curRouteName });
                         // 拦截当前router的名称
                         console.log(curRouteName);
                         global.$routes = currentState.routes;
@@ -123,32 +131,35 @@ export default class App extends Component {
                             {/*style={{ color: 'white' }}>调试页</Text></DebugButton> : null*/}
                 {/*}*/}
 
-                {
-                    user.isLogin || !oldUserLoginSingleModel.isShowOldBtn
-                        ?
-                        null
-                        :
-                        <DebugButton
-                            onPress={this.gotoLogin}
-                            style={
-                                styles.oldLoginBtnStyle
-                            }
-                        >
-                            <View
-                                style={{
-                                    width: 150,
-                                    height: 43,
-                                    paddingLeft: 10,
-                                }
-                                }
-                            >
-                                <Image
-                                    source={OldImag}
-                                    resizeMode={'contain'}
-                                />
-                            </View>
-                        </DebugButton>
-                }
+                {/*去掉不再使用*/}
+                {/*{*/}
+                    {/*user.isLogin || !oldUserLoginSingleModel.isShowOldBtn*/}
+                        {/*?*/}
+                        {/*null*/}
+                        {/*: (this.state.curRouteName === RouterMap.LoginPage || this.state.curRouteName === RouterMap.OldUserLoginPage*/}
+                        {/*|| this.state.curRouteName === RouterMap.SetPasswordPage*/}
+                        {/*? null :*/}
+                        {/*<DebugButton*/}
+                            {/*onPress={this.gotoLogin}*/}
+                            {/*style={*/}
+                                {/*styles.oldLoginBtnStyle*/}
+                            {/*}*/}
+                        {/*>*/}
+                            {/*<View*/}
+                                {/*style={{*/}
+                                    {/*width: 150,*/}
+                                    {/*height: 43,*/}
+                                    {/*paddingLeft: 10*/}
+                                {/*}*/}
+                                {/*}*/}
+                            {/*>*/}
+                                {/*<Image*/}
+                                    {/*source={OldImag}*/}
+                                    {/*resizeMode={'contain'}*/}
+                                {/*/>*/}
+                            {/*</View>*/}
+                        {/*</DebugButton>)*/}
+                {/*}*/}
             </View>
         );
     }
@@ -179,6 +190,6 @@ const styles = StyleSheet.create({
     oldLoginBtnStyle: {
         width: 120,
         height: 43,
-        paddingLeft: 10,
+        paddingLeft: 10
     }
 });

@@ -8,7 +8,7 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native';
-import Modal from 'CommModal';
+import Modal from '../../../comm/components/CommModal';
 import {
     MRText as Text, MRTextInput as TextInput
 } from '../../../components/ui';
@@ -16,9 +16,12 @@ import {
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = ScreenUtils.autoSizeWidth(357);
 const Animated_Duration = 300; //默认的动画持续时间
-import DesignRule from 'DesignRule';
-import res from '../res'
+import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import StringUtils from '../../../utils/StringUtils';
+import bridge from '../../../utils/bridge';
+
 const KeFuIcon = res.jbtk_03;
 
 export default class ReportAlert extends Component {
@@ -48,6 +51,7 @@ export default class ReportAlert extends Component {
     }
 
     show = ({ confirmCallBack, title, height }) => {
+        this.state.text = '';
         this.setState({
             height: height || PANNELHEIGHT,
             title: title || this.state.title,
@@ -64,7 +68,7 @@ export default class ReportAlert extends Component {
                 //透明度
                 this.state.top,
                 {
-                    toValue:(MAX_SCREEN - this.state.height) / 2 - ScreenUtils.autoSizeHeight(135),
+                    toValue: (MAX_SCREEN - this.state.height) / 2 - ScreenUtils.autoSizeHeight(135),
                     duration: Animated_Duration
                 }
             ),
@@ -111,7 +115,8 @@ export default class ReportAlert extends Component {
     };
 
     _clickOk = () => {
-        if (!this.state.text) {
+        if (StringUtils.isEmpty(this.state.text)) {
+            bridge.$toast('请输入内容');
             return;
         }
         this._closeAnimated(() => {
@@ -162,7 +167,6 @@ export default class ReportAlert extends Component {
                                 <TextInput
                                     autoFocus
                                     multiline
-                                    underlineColorAndroid={'transparent'}
                                     placeholder='请输入其他举报内容'
                                     placeholderTextColor={DesignRule.textColor_hint}
                                     value={this.state.text}
@@ -204,14 +208,13 @@ const styles = StyleSheet.create({
     inputContainer: {
         marginTop: 62,
         flex: 1,
+        borderRadius: 2,
         backgroundColor: DesignRule.lineColor_inColorBg,
         padding: 10
     },
     input: {
         textAlignVertical: 'top',
         width: ScreenUtils.autoSizeWidth(211),
-        borderRadius: 2,
-        backgroundColor: DesignRule.lineColor_inColorBg,
         color: DesignRule.textColor_mainTitle
     },
     btnContainer: {

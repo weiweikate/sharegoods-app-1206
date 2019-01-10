@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    TextInput,
     StyleSheet,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
 
 
 export default class SearchBar extends Component {
@@ -30,26 +29,22 @@ export default class SearchBar extends Component {
 
 
     onChangeText = (text) => {
-        if (text !== '') {
-            this.setState({
-                isShowInputClear: true,
-                inputText: text
-            });
-        } else {
-            this.setState({
-                isShowInputClear: false,
-                inputText: text
-            });
+        if (text.length > 60) {
+            text = text.substring(0, 60);
         }
 
-        text = StringUtils.trim(text)
+        this.setState({
+            inputText: text
+        });
+
+        text = StringUtils.trim(text);
         if (this.props.onChangeText) {
             this.props.onChangeText(text);
         }
     };
 
     onSubmitEditing = (text) => {
-        text = StringUtils.trim(text)
+        text = StringUtils.trim(text);
         //把输入框中的文字传给父组件
         if (this.props.onSubmitEditing) {
             this.props.onSubmitEditing(text);
@@ -61,9 +56,8 @@ export default class SearchBar extends Component {
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.contentView}>
                     <View style={styles.inputView}>
-                        <TextInput style={{ marginLeft: 24, padding: 0 }}
+                        <TextInput style={{ marginLeft: 16, padding: 0, paddingRight: 16 }}
                                    keyboardType='web-search'
-                                   underlineColorAndroid='transparent'
                                    placeholder={this.props.placeholder}
                                    placeholderTextColor={DesignRule.textColor_hint}
                                    value={this.state.inputText}
@@ -72,7 +66,8 @@ export default class SearchBar extends Component {
 
                     </View>
                     <TouchableOpacity onPress={this.props.cancel}>
-                        <Text style={{ paddingRight: 15, color: DesignRule.textColor_instruction }} allowFontScaling={false}>取消</Text>
+                        <Text style={{ paddingRight: 15, color: DesignRule.textColor_instruction }}
+                              allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>
                 </View>
             </View>);

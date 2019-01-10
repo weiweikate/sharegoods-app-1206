@@ -9,7 +9,7 @@ import StringUtils from '../../utils/StringUtils';
 import BasePage from '../../BasePage';
 import DateUtils from '../../utils/DateUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 const arrow_right = RES.button.arrow_right_black;
 import {MRText as Text} from '../../components/ui'
@@ -109,7 +109,7 @@ export default class PayMessagePage extends BasePage {
                     <Text style={{
                         fontSize: 24,
                         color: DesignRule.textColor_mainTitle
-                    }}>+{StringUtils.formatMoneyString(this.params.refundPrice, false)}</Text>
+                    }}>+{StringUtils.formatMoneyString(this.params.refundAmounts, false)}</Text>
                     <View style={{ backgroundColor: '#FF7E00', borderRadius: 3 }}>
                         <Text style={{ color: 'white', margin: 1, fontSize: 11 }}>退款成功</Text>
                     </View>

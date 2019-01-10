@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import {
     View,
     Image,
-    TextInput,
     StyleSheet
 } from "react-native";
 import SearchIcon from "./ss_03.png";
+import { MRTextInput as TextInput} from '../../../components/ui';
 
 export default class SearchBar extends Component {
 
@@ -19,7 +19,6 @@ export default class SearchBar extends Component {
         return (<View style={[styles.container, this.props.style]}>
             <Image style={styles.icon} source={SearchIcon}/>
             <TextInput value={this.props.title}
-                       underlineColorAndroid={"transparent"}
                        onChangeText={this.props.onChangeText}
                        placeholder={this.props.placeholder}
                        style={styles.desc}/>

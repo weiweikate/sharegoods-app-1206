@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
     NativeModules
 } from 'react-native';
 import {
-    UIText, MRText as Text
+    UIText, MRText as Text,NoMoreClick
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {  orderDetailModel } from '../../model/OrderDetailModel';
 import { observer } from 'mobx-react/native';
 const {px2dp} = ScreenUtils;
@@ -40,9 +39,9 @@ export default class OrderDetailTimeView extends Component {
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                     <UIText value={'订单编号：' + orderDetailModel.warehouseOrderDTOList[0].warehouseOrderNo}
                             style={[styles.textGoodsDownStyle,{marginTop:px2dp(10)}]}/>
-                    <TouchableOpacity style={styles.clipStyle} onPress={() => this.copyOrderNumToClipboard()}>
+                    <NoMoreClick style={styles.clipStyle} onPress={() => this.copyOrderNumToClipboard()}>
                         <Text style={{ paddingLeft: px2dp(10), paddingRight: px2dp(10) }} allowFontScaling={false}>复制</Text>
-                    </TouchableOpacity>
+                    </NoMoreClick>
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].createTime / 1000)}
                         style={styles.textGoodsDownStyle}/>
@@ -52,15 +51,15 @@ export default class OrderDetailTimeView extends Component {
                 {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].cancelTime) && orderDetailModel.status === 5 ?
                     <UIText value={'关闭时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].cancelTime / 1000)}
                             style={styles.textGoodsDownStyle}/> : null}
-                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].outTradeNo)&&orderDetailModel.status<5  ?
-                    <UIText value={'交易订单号：' + orderDetailModel.warehouseOrderDTOList[0].outTradeNo}
-                            style={styles.textOrderDownStyle}/> : null}
+                {/*{StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].outTradeNo)&&orderDetailModel.status<5  ?*/}
+                    {/*<UIText value={'交易订单号：' + orderDetailModel.warehouseOrderDTOList[0].outTradeNo}*/}
+                            {/*style={styles.textOrderDownStyle}/> : null}*/}
                 {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].deliverTime)&&orderDetailModel.status<5 ?
                     <UIText value={'发货时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].deliverTime / 1000)}
                             style={styles.textOrderDownStyle}/>:null}
                 {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].finishTime)&&orderDetailModel.status<5 ?
                     <UIText
-                        value={'完成时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].finishTime ? orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].deliverTime / 1000)}
+                        value={'完成时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime ? orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000)}
                         style={styles.textOrderDownStyle}/>:null}
             </View>
         );

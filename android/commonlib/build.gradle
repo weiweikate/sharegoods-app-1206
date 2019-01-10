@@ -27,7 +27,6 @@ dependencies {
     api rootProject.ext.dependencies.multidex
     api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.sensors
-
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
@@ -37,9 +36,9 @@ dependencies {
     api files('libs/jpush-android-3.1.7.jar')
     api files('libs/umeng-analytics-7.5.4.jar')
     api files('libs/umeng-common-1.5.4.jar')
-    api files('libs/umeng-share-core-6.9.3.jar')
-    api files('libs/umeng-share-QQ-simplify-6.9.3.jar')
-    api files('libs/umeng-share-sina-simplify-6.9.3.jar')
-    api files('libs/umeng-share-wechat-simplify-6.9.3.jar')
-    api files('libs/umeng-sharetool-6.9.3.jar')
+    api files('libs/umeng-share-wechat-simplify-6.9.4.jar')
+    api files('libs/umeng-share-sina-simplify-6.9.4.jar')
+    api files('libs/umeng-share-QQ-simplify-6.9.4.jar')
+    api files('libs/umeng-share-core-6.9.4.jar')
+    api files('libs/umeng-sharetool-6.9.4.jar')
 }

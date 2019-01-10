@@ -75,6 +75,20 @@ export default class HttpUtils {
 
     platform = '';
 
+    static sign(params, isRSA) {
+        if (isRSA) {
+            return new Promise((resolve, reject) => {
+                const signParam = RSA.sign(params)
+                resolve(signParam)
+            })
+        } else {
+            return new Promise((resolve, reject) => {
+                resolve({})
+            })
+        }
+
+    }
+
     static get(uri, isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
@@ -94,7 +108,8 @@ export default class HttpUtils {
 
         let signParam = {};
         if (isRSA) {
-            signParam = RSA.sign(params);
+            // signParam = HttpUtils.sign(params);
+            signParam = RSA.sign();
         }
         let timeLineStart = +new Date();
 
@@ -102,7 +117,10 @@ export default class HttpUtils {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
 
-        return user.getToken().then(token => {
+        return HttpUtils.sign(params, isRSA).then(sign => {
+            signParam = sign
+            return user.getToken()
+        }).then(token => {
             let config = {
                 headers: {
                     ...signParam,
@@ -159,7 +177,10 @@ export default class HttpUtils {
 
         let signParam = {};
         if (isRSA) {
-            signParam = RSA.sign();
+            //  HttpUtils.sign().then(result => {
+            //      signParam = result;
+            // });
+            signParam = RSA.sign()
         }
         data = {
             ...data
@@ -170,7 +191,10 @@ export default class HttpUtils {
         }
 
         let timeLineStart = +new Date();
-        return user.getToken().then(token => {
+        return HttpUtils.sign({}, isRSA).then(sign => {
+            signParam = sign
+            return user.getToken()
+        }).then(token => {
             config.headers = {
                 ...signParam,
                 'Security-Policy': 'SIGNATURE',//区分app和h5

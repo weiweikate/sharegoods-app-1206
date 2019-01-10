@@ -20,6 +20,8 @@ class SpellStatusModel {
 
     @observable permissionsErr = '';//有无定位
 
+    @observable hasAlertErr = false;//有无定位弹框
+
     /******************************【computed】******************************************/
 
     @computed//可以去开店

@@ -23,6 +23,7 @@ export default class SetPasswordPage extends BasePage {
     $navigationBarOptions = {
         title: '设置账号及密码'
     };
+
     _render() {
         return (
             <View style={{ flex: 1 }}>
@@ -43,9 +44,11 @@ export default class SetPasswordPage extends BasePage {
 
         );
     }
+
     $isMonitorNetworkStatus() {
         return false;
     }
+
     //点击下一步
     clickNext = (phone, code, password) => {
         console.warn(this.params);
@@ -71,12 +74,11 @@ export default class SetPasswordPage extends BasePage {
             this.toLogin(phone, code, password, data.give);
         }).catch(data => {
             this.$loadingDismiss();
+            let msg = data.msg;
             if (data.code === 34007) {
-                bridge.$toast('该手机号已经注册,请更换新的手机号');
-            } else {
-                this.$toast(data.msg);
+                msg = '该手机号已经注册,请更换新的手机号';
             }
-            // console.warn(data);
+            bridge.$toast(msg);
         });
     };
 
@@ -102,7 +104,7 @@ export default class SetPasswordPage extends BasePage {
             // this.$navigate('login/login/GetRedpacketPage');
             bridge.setCookies(data.data);
             //埋点登录成功
-            login(data.data.code)
+            login(data.data.code);
             //推送
             JPushUtils.updatePushTags();
             JPushUtils.updatePushAlias();

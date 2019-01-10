@@ -1,11 +1,9 @@
-
 import React from 'react';
+import DesignRule from '../../constants/DesignRule';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import DesignRule from 'DesignRule';
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
 import {MRText as Text} from '../../components/ui'
-
 export default ({shouldPayMoney, onPress}) => <View style={styles.container}>
 <View style={styles.line}/>
 <View style={styles.row}>

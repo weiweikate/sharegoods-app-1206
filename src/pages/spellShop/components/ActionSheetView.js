@@ -10,10 +10,10 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../../comm/components/CommModal';
+import DesignRule from '../../../constants/DesignRule';
 import {
-    MRText as Text,
+    MRText as Text
 } from '../../../components/ui';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -86,8 +86,9 @@ export default class ActionSheetView extends Component {
                 duration: Animated_Duration * 2 / 3
             }
         ).start(() => {
-            callBack && callBack();
-            this.setState({ modalVisible: false });
+            this.setState({ modalVisible: false }, () => {
+                callBack && callBack();
+            });
         });
     };
 
@@ -189,7 +190,7 @@ export default class ActionSheetView extends Component {
             this._closeAnimated(this.state.cancelCallBack);
         };
         return (
-            <Modal onRequestClose={clickHidden}  visible={this.state.modalVisible}>
+            <Modal onRequestClose={clickHidden} visible={this.state.modalVisible}>
                 <TouchableWithoutFeedback disabled={!this.state.modalVisible} onPress={clickHidden}>
                     <View style={[styles.container, { backgroundColor: 'transparent' }]}>
 

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import {MRTextInput as TextInput}from './UIText';
+import { MRTextInput as TextInput } from './UIText';
 
 class AutoExpandingInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
             height: 0,
-            defaultValue: props.defaultValue,
+            defaultValue: props.defaultValue
         };
     }
 
@@ -20,11 +20,10 @@ class AutoExpandingInput extends Component {
                        multiline={true}
                        onChange={this.onChange}
                        onContentSizeChange={this.onContentSizeChange.bind(this)}
-                       style={[this.props.style,{height: Math.max(80, this.state.height)}]}
+                       style={[this.props.style, { height: Math.max(80, this.state.height) }]}
                        defaultValue={this.state.defaultValue}
-                       underlineColorAndroid={'transparent'}
                        scrollEnabled={false}
-                       //showsVerticalScrollIndicator={false}
+                //showsVerticalScrollIndicator={false}
             />
         );
     }

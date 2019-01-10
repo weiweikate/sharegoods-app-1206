@@ -9,8 +9,8 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
-import Modal from 'CommModal';
-import DesignRule from 'DesignRule';
+import Modal from '../../comm/components/CommModal';
+import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import UIImage from '@mr/image-placeholder';
 import {
@@ -106,7 +106,8 @@ export default class TopicDetailSelectPage extends Component {
                             this._clickItemAction(obj, indexOfTop);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? DesignRule.textColor_secondTitle : DesignRule.color_ddd }]} allowFontScaling={false}>{data[index].specValues}</Text>
+                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? DesignRule.textColor_secondTitle : DesignRule.color_ddd }]}
+                            allowFontScaling={false} numberOfLines={1}>{data[index].specValues}</Text>
                     </TouchableOpacity>
                 </View>
             );

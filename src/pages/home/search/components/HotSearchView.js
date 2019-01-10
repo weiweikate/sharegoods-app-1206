@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     StyleSheet,
     View,
     TouchableOpacity
 } from 'react-native';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import {MRText as Text} from '../../../../components/ui';
 
 /**

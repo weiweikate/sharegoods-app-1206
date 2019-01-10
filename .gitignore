@@ -21,8 +21,9 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
-*.mobileprovision
 Pods/
+*.bundle
+assets/
 
 # Android/IntelliJ
 #
@@ -54,13 +55,15 @@ buck-out/
 */fastlane/Preview.html
 */fastlane/screenshots
 
+
+# Bundle artifact
+*.jsbundle
 yarn.lock
 package-lock.json
 /android/.gradle/
 /android/.idea/
 /android/build/
 /android/gradle/
-/android/gradlew
 /android/gradlew.bat
 /android/keystores/
 pgyer/

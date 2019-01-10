@@ -22,7 +22,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 
 const {
@@ -83,8 +83,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                     <View style={styles.item_container}>
                         <UIText style={styles.item_title}
                                 value={'物流单号'}/>
-                        <TextInput underlineColorAndroid={'transparent'}
-                                   placeholder={'请填写物流单号'}
+                        <TextInput placeholder={'请填写物流单号'}
                                    style={styles.item_detail}
                                    onChangeText={(text) => {
                                        let reg = /^[0-9a-zA-Z]*$/;

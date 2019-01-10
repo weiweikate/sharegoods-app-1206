@@ -4,14 +4,13 @@ import {
     View,
 } from 'react-native';
 import { isNoEmpty } from '../../../utils/StringUtils';
-import { formatDate } from '../../../utils/DateUtils';
-import DesignRule from 'DesignRule';
+import { formatDate, isToday, isTomorrow } from '../../../utils/DateUtils';
+import DesignRule from '../../../constants/DesignRule';
 import {
     MRText as Text
 } from '../../../components/ui';
 
 export default class MyShop_RecruitPage extends Component {
-
     static propTypes = {
         activityData: PropTypes.object.isRequired,
         activityType: PropTypes.object.isRequired
@@ -139,7 +138,13 @@ export default class MyShop_RecruitPage extends Component {
                 price = startPrice;
                 two = `起拍价|${reseCount}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime)}`;
-                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
+                if (isTomorrow(beginTime)) {
+                    four = `明天 ${formatDate(beginTime, 'HH:mm')}开拍`;
+                }else if (isToday(beginTime)){
+                    four = `今天 ${formatDate(beginTime, 'HH:mm')}开拍`;
+                } else {
+                    four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
+                }
             } else {
                 price = markdownPrice;
                 two = `当前价`;
@@ -153,7 +158,13 @@ export default class MyShop_RecruitPage extends Component {
             if (begin) {
                 two = `秒杀价|${isNoEmpty(reseCount) ? reseCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开抢`;
+                if (isTomorrow(beginTime)) {
+                    four = `明天 ${formatDate(beginTime, 'HH:mm')}开抢`;
+                }else if (isToday(beginTime)){
+                    four = `今天 ${formatDate(beginTime, 'HH:mm')}开抢`;
+                } else {
+                    four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开抢`;
+                }
             } else {
                 two = `${totalNumber - surplusNumber !== 0 ? `已抢${totalNumber - surplusNumber}件` : '秒杀价'}`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;

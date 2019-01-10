@@ -10,7 +10,7 @@ import { showChoiceModules } from './Show'
 import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
-import DesignRule from 'DesignRule'
+import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder'
 import TimerMixin from 'react-timer-mixin'
 import {
@@ -80,7 +80,7 @@ export default class ShowChoiceView extends Component {
 
     _onChoiceAction(item) {
         const { navigate } = this.props
-        navigate('show/ShowDetailPage', {id: item.id})
+        navigate('show/ShowDetailPage', {id: item.id, code: item.code})
     }
 
     render() {

@@ -7,7 +7,8 @@ import {
     Image,
     TouchableOpacity,
     ListView,
-    RefreshControl
+    RefreshControl, BackHandler
+    // ScrollView
     // requireNativeComponent
 } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
@@ -19,7 +20,7 @@ import {
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 // import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
 // import { renderShopCartCell } from './ShopCartCell';
 
@@ -29,6 +30,10 @@ import ShopCartEmptyView from '../components/ShopCartEmptyView';
 // import ShopCartHeaderView from '../components/ListHeaderView';
 // const CartListView = requireNativeComponent('ShopCartListView');
 import ShopCartCell from '../components/ShopCartCell';
+import SectionHeaderView from '../components/SectionHeaderView';
+import RouterMap from '../../../navigation/RouterMap';
+import user from '../../../model/user';
+// import ShopCartSectionHeaderView from '../components/ShopCartSectionHeaderView';
 // import { track } from '../../../utils/SensorsTrack';
 // import TempShopCartCell from '../components/TempShopCartCell';
 // import  NavHeaderView from '../components/ShopCartNavHeaderView'
@@ -39,7 +44,7 @@ export default class ShopCartPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
         title: '购物车',
-        leftNavItemHidden: true,
+        leftNavItemHidden: true
         // show:false
     };
 
@@ -55,9 +60,47 @@ export default class ShopCartPage extends BasePage {
         }
         this.$navigationBarOptions.leftNavItemHidden = hiddeLeft;
         this.state = {
-            showNav:false
+            showNav: false
 
         };
+
+        this.dataArr = [
+            {
+                title: 'Title1', key: 1, data: [
+                    {
+                        item: 'item1',
+                        key: 11
+                    },
+                    {
+                        item: 'item2',
+                        key: 12
+                    }
+
+                ]
+            },
+            {
+                title: 'Title2', key: 2, data: [
+                    {
+                        item: 'item1',
+                        key: 21
+                    },
+                    {
+                        item: 'item2',
+                        key: 22
+                    }]
+            },
+            {
+                title: 'Title3', key: 3, data: [
+                    {
+                        item: 'item1',
+                        key: 31
+                    },
+                    {
+                        item: 'item2',
+                        key: 32
+                    }]
+            }
+        ];
     }
 
     componentDidMount() {
@@ -65,8 +108,15 @@ export default class ShopCartPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
+            }
+        );
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
         this.didBlurSubscription = this.props.navigation.addListener(
@@ -80,28 +130,26 @@ export default class ShopCartPage extends BasePage {
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
     }
+
+    handleBackPress=()=>{
+        this.$navigate('HomePage');
+        return true;
+
+    }
+
     _render() {
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
+                {/*{shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}*/}
+                {/*{shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}*/}
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
             </View>
         );
     }
-    // _renderNavHeaderView=()=>{
-    //     return(
-    //         <View
-    //         style={{
-    //             position:'absolute',
-    //             zIndex:10
-    //         }}
-    //         >
-    //             <NavHeaderView/>
-    //         </View>
-    //     )
-    //
-    // }
+
     _renderEmptyView = () => {
         return (
             <ShopCartEmptyView btnClickAction={() => {
@@ -116,32 +164,47 @@ export default class ShopCartPage extends BasePage {
         if (!this.pageFocus) {
             return;
         }
-        const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
+        // const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
+        // const tempArr = this.ds.cloneWithRows(this.dataArr);
         const { statusBarHeight } = ScreenUtils;
         return (
 
             <View
                 style={{
-                    width:ScreenUtils.width,
-                    justifyContent:'center',
-                    alignItems:'center',
-                    flex:1
+                    width: ScreenUtils.width,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: 1
                 }}>
                 {/*{this.state.showNav?this._renderNavHeaderView():null}*/}
+
                 <SwipeListView
                     extraData={this.state}
                     style={{
-                        width: ScreenUtils.width,
+                        width: ScreenUtils.width
                     }}
-                    dataSource={tempArr}
+                    sections={shopCartStore.cartData}
+                    useSectionList={true}
                     disableRightSwipe={true}
-                    renderRow={(rowData, secId, rowId, rowMap) => (
-                        this._renderValidItem(rowData, rowId, rowMap)
+                    // sections={this.dataArr}
+                    renderItem={(rowData, rowMap) => (
+                        this._renderValidItem(rowData, rowMap)
                     )}
-                    renderHiddenRow={(data, secId, rowId, rowMap) => (
-                        this._renderRowHiddenComponent(data, secId, rowId, rowMap)
+                    renderHiddenItem={(data, rowMap) => (
+                        this._renderRowHiddenComponent(data, rowMap)
                     )}
-
+                    renderHeaderView={(sectionData) => {
+                        console.log('section_header');
+                        console.log(sectionData.section);
+                        return (
+                            <SectionHeaderView
+                                sectionData={sectionData.section}
+                                gotoCollectBills={(sectionData) => {
+                                    this._gotoCollectBills(sectionData);
+                                }}
+                            />
+                        );
+                    }}
                     listViewRef={(listView) => this.contentList = listView}
                     rightOpenValue={-75}
                     swipeRefreshControl={
@@ -158,31 +221,20 @@ export default class ShopCartPage extends BasePage {
                             titleColor={DesignRule.textColor_instruction}
                         />
                     }
-                    // onScroll={(event) => {
-                    //     console.log(event.nativeEvent.contentOffset.y);
-                    //     const offSetY = event.nativeEvent.contentOffset.y;
-                    //     if (offSetY > 100){
-                    //         this.setState(
-                    //             {
-                    //                 showNav:true
-                    //             }
-                    //         )
-                    //     } else {
-                    //         this.setState(
-                    //             {
-                    //                 showNav:false
-                    //             }
-                    //         )
-                    //     }
-                    // }}
-                    // listHeaderView={() => {
-                    //     return (
-                    //       <ShopCartHeaderView/>
-                    //     );
-                    // }}
                 />
             </View>
         );
+    };
+
+    /**
+     * 去凑单
+     * @param sectionData
+     * @private
+     */
+    _gotoCollectBills = (sectionData) => {
+        this.$navigate(RouterMap.XpDetailPage,{
+            activityCode:sectionData.activityCode
+        })
     };
     /**
      * 渲染每行的隐藏组件
@@ -193,13 +245,13 @@ export default class ShopCartPage extends BasePage {
      * @return {*}
      * @private
      */
-    _renderRowHiddenComponent = (data, secId, rowId, rowMap) => {
+    _renderRowHiddenComponent = (data, rowMap) => {
         return (
             <TouchableOpacity
                 style={styles.standaloneRowBack}
                 onPress={() => {
-                    rowMap[`${secId}${rowId}`].closeRow();
-                    this._deleteFromShoppingCartByProductId(data.skuCode);
+                    rowMap[data.item.key].closeRow();
+                    this._deleteFromShoppingCartByProductId(data);
                 }}>
                 <View
                     style={
@@ -209,17 +261,12 @@ export default class ShopCartPage extends BasePage {
                             width: 75,
                             marginTop: -20,
                             justifyContent: 'center',
-                            alignItems: 'center',
+                            alignItems: 'center'
                         }
                     }
                 >
                     <UIText style={styles.backUITextWhite} value='删除'/>
                 </View>
-                {/*<View*/}
-                {/*style={{*/}
-                    {/*width:40*/}
-                {/*}}*/}
-                {/*/>*/}
             </TouchableOpacity>
         );
     };
@@ -240,7 +287,7 @@ export default class ShopCartPage extends BasePage {
                     height: 49,
                     width: ScreenUtils.width,
                     backgroundColor: 'white',
-                    zIndex:20
+                    zIndex: 20
                 },
                     (!hiddeLeft && ScreenUtils.tabBarHeight > 49)
                         ?
@@ -287,15 +334,16 @@ export default class ShopCartPage extends BasePage {
         );
     };
 
-    _renderValidItem = (itemData, rowId, rowMap) => {
+    _renderValidItem = (itemData, rowMap) => {
         return (
-            <ShopCartCell itemData={itemData}
-                              rowMap={rowMap}
-                              rowId={rowId}
-                              cellClickAction={
-                                  (itemData) => {
-                                      this._jumpToProductDetailPage(itemData);
-                                  }}/>
+            <ShopCartCell itemData={itemData.item}
+                          rowMap={rowMap}
+                          rowId={itemData.index}
+                          sectionData={itemData.section}
+                          cellClickAction={
+                              (itemData) => {
+                                  this._jumpToProductDetailPage(itemData);
+                              }}/>
         );
     };
     /**
@@ -313,6 +361,11 @@ export default class ShopCartPage extends BasePage {
      */
     _toBuyImmediately = () => {
         dismissKeyboard();
+
+        if (!user.isLogin) {
+            this.$navigate(RouterMap.LoginPage);
+            return;
+        }
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0) {
             this.$toastShow('请先选择结算商品~');
@@ -322,7 +375,7 @@ export default class ShopCartPage extends BasePage {
         let haveNaNGood = false;
         let tempArr = [];
         selectArr.map(good => {
-            if (good.amount > good.stock) {
+            if (good.amount > good.sellStock) {
                 isCanSettlement = false;
             }
             if (good.amount > 0 && !isNaN(good.amount)) {
@@ -349,7 +402,7 @@ export default class ShopCartPage extends BasePage {
                 buyGoodsArr.push({
                     skuCode: goods.skuCode,
                     quantity: goods.amount,
-                    productCode: goods.productCode
+                    productCode: goods.spuCode
                 });
             });
             this.$navigate('order/order/ConfirOrderPage', {
@@ -362,23 +415,35 @@ export default class ShopCartPage extends BasePage {
         }
     };
     _jumpToProductDetailPage = (itemData) => {
-        if (itemData.status === 0) {
+
+        if (itemData.productStatus === 0) {
             //失效商品不可进入详情
+            return;
+        }
+        if (itemData.sectionType === 8){
+            this.$navigate(RouterMap.XpDetailPage,{
+                activityCode:itemData.activityCode
+            })
             return;
         }
         //跳转产品详情
         this.$navigate('home/product/ProductDetailPage', {
             productId: itemData.productId,
-            productCode: itemData.productCode,
-            preseat:'购物车'
+            productCode: itemData.spuCode,
+            preseat: '购物车'
         });
     };
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
     /*删除操作*/
-    _deleteFromShoppingCartByProductId = (skuCode) => {
-        shopCartCacheTool.deleteShopCartGoods(skuCode);
+    _deleteFromShoppingCartByProductId = (itemData) => {
+        console.log('删除前');
+        console.log(itemData);
+        let delteCode = [
+            { 'skuCode': itemData.item.skuCode }
+        ];
+        shopCartCacheTool.deleteShopCartGoods(delteCode);
     };
 }
 

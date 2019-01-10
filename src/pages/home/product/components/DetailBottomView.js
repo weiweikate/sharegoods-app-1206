@@ -7,10 +7,9 @@ import {
     Image
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from 'DesignRule';
-import StringUtils from '../../../../utils/StringUtils';
+import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 
 const xiangqing_btn_gouwuche_nor = res.product.xiangqing_btn_gouwuche_nor;
 const jiarugouwuche_no = res.product.jiarugouwuche_no;
@@ -28,20 +27,20 @@ export default class DetailBottomView extends Component {
 
     render() {
         //productStatus  1正常  2下架  3当前时间不能买
-        let { shareMoney, productStatus, buyLimit, leftBuyNum } = this.props;
+        let { shareMoney, productStatus } = this.props;
         //是否下架
         let isDown = productStatus === 2;//是否下架  样式
 
-        //限购
-        let isLimit = buyLimit !== -1 && leftBuyNum === 0;
+        // //限购(暂时去掉)
+        // let isLimit = buyLimit !== -1 && leftBuyNum === 0;
 
         //不能加入购物车
         let cantJoin = productStatus === 2;
 
-        //不能买 不正常||限购
-        let cantBuy = productStatus !== 1 || isLimit;
+        //不能买 不正常   ||限购(暂时去掉)
+        let cantBuy = productStatus !== 1;
         //立即购买文案
-        let buyText = productStatus === 3 ? '暂不可购买' : (isLimit ? '您已经购买过该商品' : '立即购买');
+        let buyText = productStatus === 3 ? '暂不可购买' : '立即购买';
         return (
             <View style={{ height: 49 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
                 {isDown ? <View style={{
@@ -58,7 +57,8 @@ export default class DetailBottomView extends Component {
                         onPress={() => this.props.bottomViewAction('gwc')} disabled={cantJoin}>
                         <Image style={{ marginBottom: 6 }}
                                source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
-                        <Text style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }} allowFontScaling={false}>加入购物车</Text>
+                        <Text style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
+                              allowFontScaling={false}>加入购物车</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -83,11 +83,13 @@ export default class DetailBottomView extends Component {
                         onPress={() => this.props.bottomViewAction('jlj')}>
                         {
                             // shareMoney未空显示?  为0显示分享赚
-                            (shareMoney === '0.00'||shareMoney === '?') ? <Text style={{ fontSize: 17, color: DesignRule.white }}>分享秀一秀</Text>
+                            (shareMoney === '0.00' || shareMoney === '?') ?
+                                <Text style={{ fontSize: 17, color: DesignRule.white }}>分享秀一秀</Text>
                                 : <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     {/*<Text style={{ color: DesignRule.white, fontSize: 25 }} allowFontScaling={false}>赚</Text>*/}
                                     <View style={{ marginLeft: 5 }}>
-                                        <Text style={{ color: DesignRule.white, fontSize: 11 }} allowFontScaling={false}>分享秀一秀</Text>
+                                        <Text style={{ color: DesignRule.white, fontSize: 11 }}
+                                              allowFontScaling={false}>分享秀一秀</Text>
                                         <View style={{
                                             alignItems: 'center',
                                             marginTop: 6
@@ -96,7 +98,7 @@ export default class DetailBottomView extends Component {
                                                 color: DesignRule.white,
                                                 fontSize: 11
                                             }}
-                                                  numberOfLines={2} allowFontScaling={false}>{shareMoney||''}</Text>
+                                                  numberOfLines={2} allowFontScaling={false}>{shareMoney || ''}</Text>
                                         </View>
                                     </View>
                                 </View>

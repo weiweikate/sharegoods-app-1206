@@ -8,7 +8,7 @@ import {
     // Linking,
     TouchableWithoutFeedback,
     RefreshControl, DeviceEventEmitter, TouchableOpacity,
-    Image
+    Image, BackHandler
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
@@ -20,11 +20,11 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react/native';
 import userOrderNum from '../../../model/userOrderNum';
-import RouterMap from 'RouterMap';
-import DesignRule from 'DesignRule';
+import RouterMap from '../../../navigation/RouterMap';
+import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import EmptyUtils from '../../../utils/EmptyUtils';
-import WaveView from 'WaveView';
+import WaveView from '../../../comm/components/WaveView';
 import MessageApi from '../../message/api/MessageApi';
 import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
@@ -108,10 +108,17 @@ export default class MinePage extends BasePage {
 
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
         this.listener && this.listener.remove();
     }
 
     componentWillMount() {
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -122,15 +129,21 @@ export default class MinePage extends BasePage {
                 if (state && state.routeName === 'MinePage') {
                     this.refresh();
                 }
-
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             });
+    }
+
+    handleBackPress=()=>{
+        this.$navigate('HomePage');
+        return true;
+
     }
 
     _needShowFans = () => {
         LoginAPI.oldUserActivateJudge().then((res) => {
             console.log('是还是非-------', res);
             this.setState({
-                hasFans: res.data
+                hasFans: res.data && user.upCode
             });
         }).catch((error) => {
 
@@ -294,14 +307,14 @@ export default class MinePage extends BasePage {
     renderUserHead = () => {
         let accreditID = !EmptyUtils.isEmpty(user.code) ? (
             <Text style={{ fontSize: 11, color: DesignRule.white, includeFontPadding: false, marginTop: 5 }}>
-                {`授权ID: ${user.code}`}
+                {`会员号: ${user.code}`}
             </Text>
         ) : null;
 
         let name = '';
 
         if (EmptyUtils.isEmpty(user.nickname)) {
-            name = user.phone ? user.phone : '未登陆';
+            name = user.phone ? user.phone : '未登录';
         } else {
             name = user.nickname.length > 6 ? user.nickname.substring(0, 6) + '...' : user.nickname;
         }
@@ -401,7 +414,7 @@ export default class MinePage extends BasePage {
             }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
                     <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.white }}>
-                        我的资产
+                    我的账户
                     </Text>
                 </View>
                 <View
@@ -416,13 +429,13 @@ export default class MinePage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '现金账户', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '余额', () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆账户', () => {
+                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆', () => {
                         this.go2CashDetailPage(2);
                     })}
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0.00', false), '待提现账户', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0.00', false), '待入账', () => {
                         this.go2CashDetailPage(3);
                     })}
 
@@ -745,7 +758,7 @@ export default class MinePage extends BasePage {
     renderMenu = () => {
 
         let invite = {
-            text:'邀请好友',
+            text:'分享好友',
             icon:mine_icon_invite,
             onPress:()=>{
                 this.$navigate(RouterMap.InviteFriendsPage);
@@ -759,7 +772,7 @@ export default class MinePage extends BasePage {
             }
         }
         let data = {
-            text:'我的晋升',
+            text:'我的资料',
             icon:mine_icon_data,
             onPress:()=>{
                 this.$navigate(RouterMap.MyPromotionPage);

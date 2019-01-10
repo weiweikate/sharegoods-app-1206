@@ -13,7 +13,7 @@ import SearchAllRow from './components/SearchAllRow';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import SearchNavView from './components/SearchNavView';
 import res from '../res';
@@ -100,7 +100,7 @@ export default class SearchPage extends BasePage {
                 this.onEndReached = false;
                 let dataTemp = data.data || {};
                 this.setState({
-                    noMore: dataTemp.data.length < this.state.pageSize,
+                    noMore: (dataTemp.data||[]).length < this.state.pageSize,
                     loadingMore: false,
                     loadingMoreError: null,
                     dataList: this.state.dataList.concat(dataTemp.data || [])//data.data.data

@@ -8,13 +8,13 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { homeModule } from './Modules'
+import { homeLinkType, homeRoute } from './HomeTypes'
 import { subjectModule } from './HomeSubjectModel'
+import DesignRule from '../../constants/DesignRule';
 import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTool'
-import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/image-placeholder'
 import EmptyUtils from '../../utils/EmptyUtils'
 import {MRText as Text} from '../../components/ui';
-
 const GoodItems = ({img, title, money, press}) => {
 
 return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
@@ -91,11 +91,20 @@ export default class HomeSubjectView extends Component {
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
         navigate(router,  params)
     }
-    _goodAction(good) {
+    _goodAction(good, item) {
         const { navigate } = this.props
-        const pageObj =   getTopicJumpPageParam(good,'首页');
-        console.log('_goodAction', good, pageObj.params)
-        navigate(pageObj.pageRoute,{...pageObj.params})
+        if (item.linkType === homeLinkType.exp) {
+            if (good.endTime >= good.currTime) {
+                const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
+                navigate(router,  {activityCode: item.linkTypeCode, productCode: good.prodCode})
+            } else {
+                const router = homeRoute[homeLinkType.good]
+                navigate(router,  { productCode: good.prodCode})
+            }
+        } else {
+            const pageObj = getTopicJumpPageParam(good,'首页')
+            navigate(pageObj.pageRoute,{...pageObj.params})
+        }   
     }
     render() {
         const { subjectList } = subjectModule
@@ -107,7 +116,7 @@ export default class HomeSubjectView extends Component {
         }
         let items = []
         subjectList.map((item, index) => {
-            items.push(<ActivityItem data={item} key={index} press={()=>this._subjectActions(item)} goodsPress={(good)=>{this._goodAction(good)}}/>)
+            items.push(<ActivityItem data={item} key={index} press={()=>this._subjectActions(item)} goodsPress={(good)=>{this._goodAction(good, item)}}/>)
         })
         return <View style={styles.container}>
             <View style={styles.titleView}>

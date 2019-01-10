@@ -18,7 +18,7 @@ import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
-import DesignRule from 'DesignRule';
+import DesignRule from '../../../../constants/DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
@@ -27,6 +27,7 @@ import { logout } from '../../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../../components/ui';
 import userOrderNum from '../../../../model/userOrderNum';
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import loginModel from '../../../login/model/LoginModel';
 
 /**
  * @author luoyongming
@@ -224,6 +225,7 @@ class SettingPage extends BasePage {
                         user.clearToken();
                         userOrderNum.clean();
                         bridge.clearCookies();
+                        loginModel.clearPassword();
                         //清空购物车
                         shopCartStore.data = [];
                         this.$navigateBackToHome();
@@ -274,7 +276,7 @@ class SettingPage extends BasePage {
                         },
                         {
                             text: '确定', onPress: () => {
-                                this.toUpdate();
+                                this.toUpdate(resp.data);
                             }
                         }
                     ]
@@ -287,16 +289,17 @@ class SettingPage extends BasePage {
         });
     };
 
-    toUpdate = () => {
+    toUpdate = (data) => {
         this.setState({
             showUpdate: false
         });
         if (Platform.OS === 'ios') {
             // 前往appstore
-            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
+            // Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
+            Linking.openURL(data.url);
         } else {
             // 更新app
-            NativeModules.commModule.updateable(JSON.stringify(this.state.updateData), false, null);
+            NativeModules.commModule.updateable(JSON.stringify(data), false, null);
         }
     };
 }
