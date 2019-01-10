@@ -28,12 +28,13 @@ import ImagePicker from '@mr/rn-image-crop-picker'
                     }
                 });
         }else {
+
             Alert.alert(
                 '请选择方式',
                 null,
                 [
                     {text: '取消', onPress: () => console.log('取消'),style: 'cancel'},
-                    {text: '拍照', onPress: () => Utiles.pickMultiple(num,callBack )},
+                    {text: '拍照', onPress: () => Utiles.pickSingleWithCamera(cropping, callBack)},
                     {text: '从相册选择', onPress: () => Utiles.pickSingle(cropping, false ,callBack)},
 
                 ],
@@ -77,7 +78,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
             console.log(e);
         })
     },
-     pickMultiple(num, callBack) {
+     pickMultiple:(num, callBack) =>{
          ImagePicker.openPicker({
              multiple: true,
              waitAnimationEnd: false,
