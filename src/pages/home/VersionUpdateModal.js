@@ -153,7 +153,8 @@ export default class VersionUpdateModal extends React.Component {
     toUpdate = () => {
         if (Platform.OS === 'ios') {
             // 前往appstore
-            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
+            // Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
+            Linking.openURL(this.props.updateData.url);
         } else {
 
             if (this.props.updateData.forceUpdate === 1) {
