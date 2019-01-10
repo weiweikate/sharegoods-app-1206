@@ -33,6 +33,7 @@ export default class ShowListPage extends BasePage {
 
     handleBackPress=()=>{
         this.$navigate('HomePage');
+        return true;
     }
 
 

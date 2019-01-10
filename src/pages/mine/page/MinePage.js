@@ -135,6 +135,8 @@ export default class MinePage extends BasePage {
 
     handleBackPress=()=>{
         this.$navigate('HomePage');
+        return true;
+
     }
 
     _needShowFans = () => {
