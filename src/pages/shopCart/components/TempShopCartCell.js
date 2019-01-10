@@ -14,14 +14,14 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {
     UIText,
     UIImage,
     MRTextInput as TextInput,
-    MRText as Text,
+    // MRText as Text
 } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import shopCartStore from '../model/ShopCartStore';
@@ -54,14 +54,15 @@ export default class TempShopCartCell extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
-        const { itemData, rowMap, rowId ,cellClickAction} = this.props;
+        const { itemData, rowMap, rowId, cellClickAction } = this.props;
         return (
             <View
-            style={{
-                justifyContent:'center',
-                alignItems:'center'
-            }}
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
             >
                 <TouchableOpacity
                     onPress={() => {
@@ -175,6 +176,30 @@ export default class TempShopCartCell extends Component {
                                         color: DesignRule.textColor_instruction
                                     }}/>
 
+                                {/*商品是否在进行降价拍和秒杀*/}
+
+                                {
+                                    (
+                                        (itemData.activityType === 1 || itemData.activityType === 2) &&
+                                        getSkillIsBegin(itemData) === 1 || getSkillIsBegin(itemData) === 0
+                                    )
+                                        ?
+                                        <UIText
+                                            value={
+                                                itemData.activityType === 1 ?
+                                                    (getSkillIsBegin(itemData) === 0 ? '秒杀活动未开始,暂不可购买~' : '该商品正在进行秒杀活动,快去看看~') :
+                                                    '该商品正在进行降价拍活动,快去看看~'
+                                            }
+                                            numberOfLines={2}
+                                            style={{
+                                                fontSize: 11,
+                                                color: DesignRule.mainColor
+                                            }}/>
+                                        :
+                                        null
+                                }
+
+                                {/*库存相关显示*/}
                                 {
                                     itemData.amount > itemData.stock
                                         ?
@@ -294,44 +319,44 @@ export default class TempShopCartCell extends Component {
                         backgroundColor: DesignRule.bgColor
                     }}
                 >
-                    {
-                        (
-                            (itemData.activityType === 1 || itemData.activityType === 2) &&
-                            getSkillIsBegin(itemData) === 1 || getSkillIsBegin(itemData) === 0
-                        )
-                            ?
-                            <View
-                                style={
-                                    [{
-                                        height: 15,
-                                        width: ScreenUtils.width,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: DesignRule.mainColor
+                    {/*{*/}
+                        {/*(*/}
+                            {/*(itemData.activityType === 1 || itemData.activityType === 2) &&*/}
+                            {/*getSkillIsBegin(itemData) === 1 || getSkillIsBegin(itemData) === 0*/}
+                        {/*)*/}
+                            {/*?*/}
+                            {/*<View*/}
+                                {/*style={*/}
+                                    {/*[{*/}
+                                        {/*height: 15,*/}
+                                        {/*width: ScreenUtils.width,*/}
+                                        {/*justifyContent: 'center',*/}
+                                        {/*alignItems: 'center',*/}
+                                        {/*backgroundColor: DesignRule.mainColor*/}
 
-                                    },
-                                        getSkillIsBegin(itemData) === 0
-                                            ?
-                                            { opacity: 0.5 }
-                                            :
-                                            { opacity: 1 }
-                                    ]
-                                }
-                            >
-                                <Text style={{
-                                    flex: 1,
-                                    color: 'white',
-                                    fontSize: 11
-                                }}>
-                                    {
-                                        itemData.activityType === 1 ?
-                                            (getSkillIsBegin(itemData) === 0 ? '秒杀活动未开始,暂不可购买~' : '该商品正在进行秒杀活动,快去看看~') :
-                                            '该商品正在进行降价拍活动,快去看看~'
-                                    }
-                                </Text>
-                            </View>
-                            : null
-                    }
+                                    {/*},*/}
+                                        {/*getSkillIsBegin(itemData) === 0*/}
+                                            {/*?*/}
+                                            {/*{ opacity: 0.5 }*/}
+                                            {/*:*/}
+                                            {/*{ opacity: 1 }*/}
+                                    {/*]*/}
+                                {/*}*/}
+                            {/*>*/}
+                                {/*<Text style={{*/}
+                                    {/*flex: 1,*/}
+                                    {/*color: 'white',*/}
+                                    {/*fontSize: 11*/}
+                                {/*}}>*/}
+                                    {/*{*/}
+                                        {/*itemData.activityType === 1 ?*/}
+                                            {/*(getSkillIsBegin(itemData) === 0 ? '秒杀活动未开始,暂不可购买~' : '该商品正在进行秒杀活动,快去看看~') :*/}
+                                            {/*'该商品正在进行降价拍活动,快去看看~'*/}
+                                    {/*}*/}
+                                {/*</Text>*/}
+                            {/*</View>*/}
+                            {/*: null*/}
+                    {/*}*/}
                     <View
                         style={{ height: 10, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}
                     />
@@ -411,7 +436,7 @@ TempShopCartCell.propTypes = {
     //rowid 行数
     rowId: PropTypes.number.isRequired,
     //cell 点击回调函数
-    cellClickAction:PropTypes.func,
+    cellClickAction: PropTypes.func
 };
 
 const styles = StyleSheet.create({
@@ -449,8 +474,8 @@ const styles = StyleSheet.create({
         // width: ScreenUtils.width,
         flexDirection: 'row',
         marginRight: 16,
-        borderRadius:15,
-        marginLeft:15,
+        borderRadius: 15,
+        marginLeft: 15
     },
     rectangle: {
         height: 30,

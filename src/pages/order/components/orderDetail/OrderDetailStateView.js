@@ -42,7 +42,7 @@ export default class OrderDetailStateView extends Component {
 
     }
     render() {
-        if (orderDetailModel.status === 1) {
+        if (orderDetailModel.status === 1||orderDetailModel.status===5) {
             return (
                 <View style={styles.topOrderDetail}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>

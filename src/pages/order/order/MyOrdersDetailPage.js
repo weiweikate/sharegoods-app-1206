@@ -204,7 +204,7 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View>
                 {this.renderState()}
-                {orderDetailModel.status > 1 ? <DetailAddressView/> : null}
+                {orderDetailModel.status > 1 &&orderDetailModel.status<5? <DetailAddressView/> : null}
                 <GiftHeaderView/>
             </View>
         );
@@ -561,10 +561,10 @@ export default class MyOrdersDetailPage extends BasePage {
         console.log(menu);
         let products = orderDetailModel.warehouseOrderDTOList[0].products[index];
         let innerStatus = (products.orderCustomerServiceInfoDTO && products.orderCustomerServiceInfoDTO.status) || null;
-        if (products.activityCodes[0].orderType=== 3 && orderDetailModel.status === 2) {
+        if (orderDetailModel.orderSubType === 3 && orderDetailModel.status === 2) {
             Toast.$toast("该商品属于升级礼包产品，不能退款");
             return;
-        }else if(products.activityCodes[0].orderType=== 5 && orderDetailModel.status === 2){
+        }else if(orderDetailModel.orderSubType === 5 && orderDetailModel.status === 2){//products.activityCodes[0].orderType=== 5
             Toast.$toast("该商品属于经验值专区商品，不能退款");
             return
         } else if (orderDetailModel.status > 3 && products.afterSaleTime < orderDetailModel.warehouseOrderDTOList[0].nowTime && orderDetailModel.warehouseOrderDTOList[0].nowTime

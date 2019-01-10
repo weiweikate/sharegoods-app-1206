@@ -152,7 +152,8 @@ class SwipeListView extends Component {
 					stopRightSwipe={item.stopRightSwipe || this.props.stopRightSwipe}
 					recalculateHiddenLayout={this.props.recalculateHiddenLayout}
 					style={this.props.swipeRowStyle}
-					preview={shouldPreviewRow}
+					// preview={shouldPreviewRow}
+                    preview={false}
 					previewDuration={this.props.previewDuration}
 					previewOpenDelay={this.props.previewOpenDelay}
 					previewOpenValue={this.props.previewOpenValue}
@@ -226,8 +227,11 @@ class SwipeListView extends Component {
 					{...this.listViewProps}
 					ref={ c => this.setRefs(c) }
 					onScroll={ e => this.onScroll(e) }
-					renderItem={(rowData) => this.renderItem(rowData, this._rows)}
+					// renderItem={(rowData) => this.renderItem(rowData, this._rows)}
+                    renderItem={(rowData) => this.renderItem(rowData,this._rows)}
                     refreshControl={this.props.swipeRefreshControl || null}
+                    renderSectionHeader={this.props.renderHeaderView||null}
+                    stickySectionHeadersEnabled={this.props.stickyHeadersEnabled||false}
 				/>
 			);
 		}
@@ -412,6 +416,10 @@ SwipeListView.propTypes = {
     swipeRefreshControl:PropTypes.element,
 
     listHeaderView:PropTypes.func,
+
+    renderHeaderView:PropTypes.func,
+
+    stickyHeadersEnabled:PropTypes.bool
 
 }
 

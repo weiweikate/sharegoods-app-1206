@@ -52,10 +52,10 @@ export default class TopicDetailHeaderView extends Component {
     render() {
         const { activityType } = this.props;
         let bannerImgList, tittle, secondNameS, freightValue, monthSale;
-        let nowPrice, oldPrice, levelTypeName, afterSaleServiceDaysTT;
+        let nowPrice, oldPrice, levelTypeName, restrictionsTT;
 
         if (activityType === 3) {
-            const { imgFileList, name, levelPrice, originalPrice, freightTemplatePrice, saleNum, userLevelTypeName, aferServiceDays, videoUrl, imgUrl } = this.props.data || {};
+            const { imgFileList, name, levelPrice, originalPrice, freightTemplatePrice, saleNum, userLevelTypeName, videoUrl, imgUrl } = this.props.data || {};
             //有视频第一个添加为视频
             let productImgListTemp = [...(imgFileList || [])];
             if (StringUtils.isNoEmpty(videoUrl)) {
@@ -71,9 +71,8 @@ export default class TopicDetailHeaderView extends Component {
             freightValue = freightTemplatePrice;
             monthSale = saleNum;
             levelTypeName = userLevelTypeName;
-            afterSaleServiceDaysTT = aferServiceDays;
         } else {
-            const { imgFileList, freight, monthSaleCount, name, secondName, afterSaleServiceDays, videoUrl, imgUrl } = this.props.data || {};
+            const { imgFileList, freight, monthSaleCount, name, secondName, restrictions, videoUrl, imgUrl } = this.props.data || {};
 
             //有视频第一个添加为视频
             let productImgListTemp = [...(imgFileList || [])];
@@ -89,7 +88,7 @@ export default class TopicDetailHeaderView extends Component {
             secondNameS = secondName;
             freightValue = freight;
             monthSale = monthSaleCount;
-            afterSaleServiceDaysTT = afterSaleServiceDays;
+            restrictionsTT = restrictions;
         }
         return (
             <View>
@@ -111,7 +110,8 @@ export default class TopicDetailHeaderView extends Component {
                         }}>{secondNameS}</Text> : null}
                         {activityType === 3 ?
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                                <Text style={{ color: DesignRule.mainColor, fontSize: 18 }} allowFontScaling={false}>{`￥${nowPrice}起`}</Text>
+                                <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}
+                                      allowFontScaling={false}>{`￥${nowPrice}起`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
                                     color: DesignRule.textColor_instruction,
@@ -129,7 +129,8 @@ export default class TopicDetailHeaderView extends Component {
                             <Text style={{
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11
-                            }} allowFontScaling={false}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
+                            }}
+                                  allowFontScaling={false}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11,
@@ -163,12 +164,14 @@ export default class TopicDetailHeaderView extends Component {
                         marginVertical: 16,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }} allowFontScaling={false}>服务</Text>
+                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}
+                              allowFontScaling={false}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,
                             fontSize: 12
-                        }} allowFontScaling={false}>{`正品保证·急速发货 ${activityType === 3 ? '' : (afterSaleServiceDaysTT === 0 ? `无售后服务` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT || ''}天无理由退换`)}`}</Text>
+                        }}
+                              allowFontScaling={false}>{`正品保证·急速发货  ${(restrictionsTT & 4) === 4 ? `7天退换` : ``}`}</Text>
                     </View>
                 </View>
             </View>

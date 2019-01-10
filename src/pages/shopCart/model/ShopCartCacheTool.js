@@ -40,15 +40,18 @@ class ShopCartCacheTool {
             if (localValue && (localValue instanceof Array && localValue.length > 0)) {
                 // bridge.showLoading('正在同步本地购物车数据');
                 //存在本地缓存
-                ShopCartAPI.loginArrange(
-                    {
-                        'cacheList': localValue
-                    }
+                // {
+                //     'cacheList': localValue
+                // }
+                ShopCartAPI.addItem(
+                {
+                    shoppingCartParamList: localValue
+                }
                 ).then(res => {
                     bridge.hiddenLoading();
                     //同步完数据组装
-                    // shopCartStore.packingShopCartGoodsData(res.data);
-                    shopCartStore.getShopCartListData();
+                    shopCartStore.packingShopCartGoodsData(res.data);
+                    // shopCartStore.getShopCartListData();
                     //同步成功删除本地数据
                     this.deleteAllLocalData();
                 }).catch(error => {
@@ -70,19 +73,21 @@ class ShopCartCacheTool {
      * 删除购物车数据
      */
 
-    deleteShopCartGoods(skuCode) {
+    deleteShopCartGoods(skuCodes) {
         if (user.isLogin) {
             //登陆状态 直接后台删除
-            shopCartStore.deleteItemWithIndex(skuCode);
+            shopCartStore.deleteItemWithIndex(skuCodes);
         } else {
             //从本地拿出数据删除掉
             Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
                 let [...localValue] = res;
                 if (localValue && (localValue instanceof Array)) {
                     localValue.map((itemData) => {
-                        if (itemData.skuCode === skuCode) {
-                            localValue.splice(localValue.indexOf(itemData), 1);
-                        }
+                        skuCodes.map(skuCode=>{
+                           if(skuCode.skuCode === itemData.skuCode) {
+                               localValue.splice(localValue.indexOf(itemData), 1);
+                           }
+                        })
                     });
                 }
                 //再存入本地
@@ -116,13 +121,15 @@ class ShopCartCacheTool {
             }
         } else {
             //为商品添加时间戳
-            goodsItem.timestamp = (new Date().getTime());
+            // goodsItem.timestamp = (new Date().getTime());
             if (user.isLogin) {
                 //将数据添加到后台服务器
                 shopCartStore.addItemToShopCart(goodsItem);
             } else {
                 //缓存本地
                 Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+                    //为商品添加spuCode
+                    goodsItem.spuCode = goodsItem.productCode;
                     let [...localValue] = res;
                     if (localValue && (localValue instanceof Array)) {
                         //检测购物车数量是否已够80
@@ -134,7 +141,6 @@ class ShopCartCacheTool {
                         localValue.map((localItem, indexPath) => {
                             if (localItem.skuCode === goodsItem.skuCode &&
                                 localItem.productCode === goodsItem.productCode) {
-
                                 let newAmount = localItem.amount + goodsItem.amount;
                                 if (newAmount > 200) {
                                     goodsItem.amount = 200;
@@ -171,9 +177,10 @@ class ShopCartCacheTool {
         }
 
     }
-
     /*获取购物车数据 总入口*/
     getShopCartGoodsListData() {
+        // shopCartStore.getShopCartListData();
+        // return;
         if (user.isLogin) {
             //用户登录状态
             shopCartStore.getShopCartListData();
@@ -205,22 +212,25 @@ class ShopCartCacheTool {
         if (user.isLogin) {
             shopCartStore.updateCartItem(itemData, rowId);
         } else {
-
             /*未登录状态登录状态更新本地*/
             Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
                 let [...localValue] = res;
-                localValue.map((localItemGood, indexPath) => {
-                    if (localItemGood.productCode === itemData.productCode &&
-                        localItemGood.skuCode === itemData.skuCode) {
-                        localValue[indexPath] = itemData;
-                    }
-                });
+                if (localValue instanceof Array && localValue.length > 0) {
+                    localValue.map((localItemGood, indexPath) => {
+                        if (localItemGood.spuCode === itemData.spuCode &&
+                            localItemGood.skuCode === itemData.skuCode) {
+                            localValue[indexPath] = itemData;
+                        }
+                    });
+                }
                 //重新缓存
                 Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                     //重新拉去数据
-                    let [...tempArr] = shopCartStore.data.slice();
-                    tempArr[rowId] = itemData;
-                    shopCartStore.data = tempArr;
+                    // let [...tempArr] = shopCartStore.data.slice();
+                    // tempArr[rowId] = itemData;
+                    // shopCartStore.data = tempArr;
+                    // this.getShopCartGoodsListData()
+                    shopCartStore.getShopCartListWithNoLogin(localValue);
                 }).catch(() => {
                     console.warn('缓存本地购物车数据异常');
                 });

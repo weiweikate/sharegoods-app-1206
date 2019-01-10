@@ -80,7 +80,7 @@ export default class ProductDetailPage extends BasePage {
 
     _getPageStateOptions = () => {
         const { productStatus } = this.state.data;
-        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
+        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态) 3未开售
         return {
             loadingState: this.state.loadingState,
             netFailedProps: {
@@ -218,7 +218,7 @@ export default class ProductDetailPage extends BasePage {
 
     _savaData = (data) => {
         let { productStatus, upTime, now } = data;
-        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)3
+        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态) 3未开售
         if (productStatus === 0) {
             this.setState({
                 loadingState: PageLoadingState.fail,
@@ -310,6 +310,7 @@ export default class ProductDetailPage extends BasePage {
     _selectionViewConfirm = (amount, skuCode) => {
         let orderProducts = [];
         if (this.state.goType === 'gwc') {
+            //hyf更改
             let temp = {
                 'amount': amount,
                 'skuCode': skuCode,

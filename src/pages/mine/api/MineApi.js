@@ -108,7 +108,7 @@ const api = {
     //获取秀迷数量及激活数量
     getShowFansCount:['/user/count',{method:'post'}],
     //我的数据Exp明细
-    expDetail:['/user/detail',{method:'get'}]
+    expDetail:['/user/detail',{method:'post'}]
 
 
 
