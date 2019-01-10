@@ -46,6 +46,7 @@ class ClassifyModules {
             iconUri: OssHelper('/app/school%403x.png'),
             name: '必看',
             id: 1,
+            linkTypeCode: 'FX181226000001',
             route: 'show/ShowDetailPage'
         }, {
             icon: spikeImg,
