@@ -1,4 +1,4 @@
-import { Linking, ActionSheetIOS} from 'react-native';
+import { Linking, ActionSheetIOS, Platform, Alert} from 'react-native';
 // import ImagePicker from 'react-native-image-picker';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
@@ -12,20 +12,32 @@ import ImagePicker from '@mr/rn-image-crop-picker'
      * @param callBack {ok: 是否上传成功，imageThumbUrl}
      */    //NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
     getImagePicker: (callBack, num = 1, cropping = false) => {
-        ActionSheetIOS.showActionSheetWithOptions({
-                options: ['取消', '拍照', '从相册选择'],
-                title: '请选择方式',
-                cancelButtonIndex: 0,
-            },
-            (buttonIndex) => {
-                if (buttonIndex === 1) {Utiles.pickSingleWithCamera(cropping, callBack)}
-                if (buttonIndex === 2) {
-                    if (num > 1){
-                        Utiles.pickMultiple(num,callBack )
-                    } else {
-                        Utiles.pickSingle(cropping, false ,callBack)}
+        if (Platform.OS === 'ios'){
+            ActionSheetIOS.showActionSheetWithOptions({
+                    options: ['取消', '拍照', '从相册选择'],
+                    title: '请选择方式',
+                    cancelButtonIndex: 0,
+                },
+                (buttonIndex) => {
+                    if (buttonIndex === 1) {Utiles.pickSingleWithCamera(cropping, callBack)}
+                    if (buttonIndex === 2) {
+                        if (num > 1){
+                            Utiles.pickMultiple(num,callBack )
+                        } else {
+                            Utiles.pickSingle(cropping, false ,callBack)}
                     }
-            });
+                });
+        }else {
+            Alert.alert(
+                '\'请选择方式\'',
+                [
+                    {text: '取消', onPress: () => console.log('取消'),style: 'cancel'},
+                    {text: '拍照', onPress: () => Utiles.pickMultiple(num,callBack ), style: 'cancel'},
+                    {text: '从相册选择', onPress: () => Utiles.pickSingle(cropping, false ,callBack)},
+                ],
+                { cancelable: false }
+            )
+        }
     },
     pickSingleWithCamera(cropping, callBack) {
         ImagePicker.openCamera({
