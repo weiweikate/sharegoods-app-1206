@@ -17,9 +17,15 @@ export default class RequestDetailPage extends BasePage {
         const params = this.props.navigation.state.params || {};
         const { uri, title } = params;
         this.canGoBack = false;
+        let realUri = '';
+        if(uri && uri.indexOf('?') > 0){
+            realUri = uri + '&ts='+new Date().getTime();
+        }else {
+            realUri = uri + '?ts='+new Date().getTime();
+        }
         this.state = {
             title: title,
-            uri: uri
+            uri: realUri
         };
     }
 
@@ -57,10 +63,7 @@ export default class RequestDetailPage extends BasePage {
 
     _render() {
         return (
-            <View style={{
-                height: ScreenUtils.height - ScreenUtils.headerHeight - ScreenUtils.statusBarHeight,
-                overflow: 'hidden'
-            }}>
+            <View style={{ height:ScreenUtils.height - ScreenUtils.headerHeight, overflow: 'hidden' }}>
                 <WebViewBridge
                     style={{ flex: 1 }}
                     ref={(ref) => {

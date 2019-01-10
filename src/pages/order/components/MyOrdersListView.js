@@ -10,7 +10,7 @@ import {track,trackEvent} from '../../../utils/SensorsTrack';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import userOrderNum from '../../../model/userOrderNum';
+// import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
@@ -131,9 +131,9 @@ export default class MyOrdersListView extends Component {
                             if (response.code === 10000) {
                                 Toast.$toast('订单已取消');
                                 track(trackEvent.cancelPayOrder,{orderID:this.state.allData[this.state.index].orderNo,orderAmount:this.state.allData[this.state.index].orderAmount
-                                    ,actualPaymentAmount:this.state.allData[this.state.index].payAmount,paymentMethod:null,ifUseOneYuan:this.state.allData[this.state.index].tokenCoinAmount>0?true:false,
+                                    ,actualPaymentAmount:this.state.allData[this.state.index].payAmount,paymentMethod:null,ifUseYiYuan:this.state.allData[this.state.index].tokenCoinAmount>0?true:false,
                                     ifUseCoupons:this.state.allData[this.state.index].couponAmount>0?true:false,couponsName:'',couponsAmount:this.state.allData[this.state.index].couponAmount,
-                                    numberOfOneYuan:this.state.allData[this.state.index].tokenCoinAmount,oneYuanCouponsAmount:this.state.allData[this.state.index].tokenCoinAmount,transportationCosts:this.state.allData[this.state.index].freightAmount,
+                                    yiYuanCouponsAmount:this.state.allData[this.state.index].tokenCoinAmount,transportationCosts:this.state.allData[this.state.index].freightAmount,
                                     deliveryMethod:'', storeCode:user.storeCode?user.storeCode:''});
                                 index = -1;
                                 this.onRefresh();
@@ -311,7 +311,7 @@ export default class MyOrdersListView extends Component {
 
     getDataFromNetwork = () => {
         console.log('orderlistrefresh');
-        userOrderNum.getUserOrderNum();
+        // userOrderNum.getUserOrderNum();
         Toast.showLoading();
         if (this.props.orderNum) {
             OrderApi.queryPage({
@@ -339,10 +339,13 @@ export default class MyOrdersListView extends Component {
 
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectTab < 8) {
-            console.log(nextProps.selectTab + '==================================');
-
+        if(nextProps.selectTab!=this.state.pageStatus){
+            this.getDataFromNetwork();
         }
+        // if (nextProps.selectTab < 8) {
+        //     console.log(nextProps.selectTab + '==================================');
+        //
+        // }
     }
 
     onRefresh = () => {
@@ -478,7 +481,7 @@ export default class MyOrdersListView extends Component {
             case 8:
                 let cartData = [];
                 this.state.viewData[index].orderProduct.map((item, index) => {
-                    cartData.push({ spuCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
+                    cartData.push({ productCode: item.prodCode, skuCode: item.skuCode, amount: item.num });
                 });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
