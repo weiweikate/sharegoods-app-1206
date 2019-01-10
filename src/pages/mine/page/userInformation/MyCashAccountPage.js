@@ -77,7 +77,6 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
                 <RefreshList
-                    emptyNoRefresh={true}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
@@ -190,7 +189,7 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ["", "用户收益", "提现支出", "消费支出", "导师管理费", "品牌分红奖励", "品牌推广奖励", "现金红包", "任务奖励","消费退款","提现退回"];
+        let use_type = ["", "用户收益", "提现支出", "消费支出", "顾问管理费", "品牌分红奖励", "品牌推广奖励", "现金红包", "任务奖励","消费退款","提现退回"];
         let use_type_symbol = ["", "+", "-"];
         let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu,xiaofei,tuikuan];
         Toast.showLoading();

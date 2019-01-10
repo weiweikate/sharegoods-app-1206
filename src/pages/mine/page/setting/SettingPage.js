@@ -295,7 +295,8 @@ class SettingPage extends BasePage {
         });
         if (Platform.OS === 'ios') {
             // 前往appstore
-            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
+            // Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
+            Linking.openURL(data.url);
         } else {
             // 更新app
             NativeModules.commModule.updateable(JSON.stringify(data), false, null);
