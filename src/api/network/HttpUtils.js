@@ -204,8 +204,7 @@ export default class HttpUtils {
             fetchHistory.insertData(history);
 
             return response.data;
-        })
-            .catch(response => {
+        }).catch(response => {
                 let history = createHistory(response, timeLineStart);
 
                 fetchHistory.insertData(history);

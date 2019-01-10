@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import {
     StyleSheet,
-    // Text,
+    Text,
     View,
     Platform,
     InteractionManager,
@@ -19,9 +19,9 @@ import {
 import { NavigationActions } from 'react-navigation';
 import RouterMap from './navigation/RouterMap';
 import user from '../src/model/user';
-// import DebugButton from './components/debug/DebugButton';
+import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
-// import CONFIG from '../config';
+import CONFIG from '../config';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
@@ -125,11 +125,11 @@ export default class App extends Component {
                         console.log(curRouteName);
                         global.$routes = currentState.routes;
                     }}/>
-                {/*{*/}
-                    {/*CONFIG.showDebugPanel ?*/}
-                        {/*<DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text*/}
-                            {/*style={{ color: 'white' }}>调试页</Text></DebugButton> : null*/}
-                {/*}*/}
+                {
+                    CONFIG.showDebugPanel ?
+                        <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
+                            style={{ color: 'white' }}>调试页</Text></DebugButton> : null
+                }
 
                 {/*去掉不再使用*/}
                 {/*{*/}
