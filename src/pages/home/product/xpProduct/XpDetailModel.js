@@ -144,11 +144,12 @@ class XpDetailModel {
         this.rules = data.rules || [];
         this.coupon = (data.coupon || {}).coupon || {};
 
-        /*请求默认第一个数据&&在售*/
+        /*在售*/
         if (this.prods.length > 0 && this.status === 2) {
-            //有选择的点击找出index
+            //默认第一个数据
             let selectedIndex = 0;
             if (productCode) {
+                //有选择的点击找出index
                 this.prods.forEach((item, index) => {
                     if (item.productCode === productCode) {
                         selectedIndex = index;
