@@ -294,7 +294,7 @@ export default class MinePage extends BasePage {
     renderUserHead = () => {
         let accreditID = !EmptyUtils.isEmpty(user.code) ? (
             <Text style={{ fontSize: 11, color: DesignRule.white, includeFontPadding: false, marginTop: 5 }}>
-                {`授权ID: ${user.code}`}
+                {`会员号: ${user.code}`}
             </Text>
         ) : null;
 
