@@ -236,18 +236,18 @@ class ConfirmOrderModel {
     };
 
     @action submitProduct(orderParamVO) {
-        let baseParams = {
-            message: this.message,
-            tokenCoin: this.tokenCoin,
-            userCouponCode: this.userCouponCode,
-            addressId: this.addressId
-        };
         if (StringUtils.isEmpty(this.addressId)) {
             bridge.$toast('请先添加地址');
             bridge.hiddenLoading();
             this.isError=false
             return;
         }
+        let baseParams = {
+            message: this.message,
+            tokenCoin: this.tokenCoin,
+            userCouponCode: this.userCouponCode,
+            addressId: this.addressId
+        };
         // if(orderParamVO.type<3){
         //     baseParams = {
         //         ...baseParams,
