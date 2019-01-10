@@ -29,7 +29,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
                 });
         }else {
             Alert.alert(
-                '\'请选择方式\'',
+                '请选择方式',
                 [
                     {text: '取消', onPress: () => console.log('取消'),style: 'cancel'},
                     {text: '拍照', onPress: () => Utiles.pickMultiple(num,callBack ), style: 'cancel'},
