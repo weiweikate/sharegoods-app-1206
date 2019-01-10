@@ -237,7 +237,7 @@ export default class MyCouponsItems extends Component {
                             width: px2dp(24),
                             height: px2dp(24),
                             marginRight: px2dp(39)
-                        }} onPress={this.plusTokenCoin}/>
+                        }} onPress={this.plusTokenCoin} resizeMode={'contain'}/>
                     </View>
                 </View>
 
