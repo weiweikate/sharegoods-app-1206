@@ -107,7 +107,12 @@ export default class LoginPage extends BasePage {
                 <LoginTopView
                     oldUserLoginClick={this.oldUserLoginClick.bind(this)}
                     forgetPasswordClick={this.forgetPasswordClick}
-                    loginClick={(loginType, LoginParam) => this.loginClick(loginType, LoginParam)}
+                    loginClick={(loginType, LoginParam) => {
+                        this.$loadingShow();
+                        setTimeout(()=>{
+                            this.loginClick(loginType, LoginParam)
+                        },200)
+                    }}
                     showOldLogin={this.state.showWxLoginBtn}
                 />
                 {
@@ -199,7 +204,6 @@ export default class LoginPage extends BasePage {
     };
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
-        this.$loadingShow();
         if (loginType === 0) {
             track(trackEvent.login, { loginMethod: '验证码登录' });
             LoginAPI.codeLogin({
