@@ -18,6 +18,7 @@ import res from '../res';
 import UIText from '../../../components/ui/UIText';
 import { MRTextInput as TextInput } from '../../../components/ui';
 import loginModel from '../model/LoginModel';
+import oldUserLoginSingleModel from '../../../model/oldUserLoginModel';
 
 const {
     close_eye,
@@ -34,7 +35,7 @@ export default class LoginTopView extends Component {
     }
 
     render() {
-        const { showOldLogin } = this.props;
+        // const {  } = this.props;
         return (
             <View style={Styles.containViewStyle}>
                 <View style={Styles.switchBgStyle}>
@@ -100,14 +101,9 @@ export default class LoginTopView extends Component {
                     </View>
                 </TouchableOpacity>
                 {
-                    showOldLogin ?
+                    oldUserLoginSingleModel.isShowOldBtn ?
                         <View style={Styles.oldUserLoginBgStyle}>
                             <TouchableOpacity onPress={this.props.oldUserLoginClick}>
-                                {/*<UIText*/}
-                                {/*style={Styles.oldUserLoginBtn}*/}
-                                {/*value={' 老用户激活>>'}*/}
-                                {/*>*/}
-                                {/*</UIText>*/}
                                 <Image
                                     source={res.oldLoginBanner}
                                     style={{
@@ -120,10 +116,6 @@ export default class LoginTopView extends Component {
                         </View>
                         : null
                 }
-                {/*<UIText*/}
-                {/*value={}*/}
-                {/*/>*/}
-
             </View>
         );
     }
