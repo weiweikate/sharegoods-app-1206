@@ -19,6 +19,7 @@ const button = {
     arrow_right_black: require('./arrow_right_black.png'),// 向右黑色色箭头
     open_eye: require('./open_eye.png'),// 灰色眼睛
     close_eye: require('./close_eye.png'),//灰色喝上4眼睛
-    white_go: require('./white_go.png')//白色向右箭头
+    white_go: require('./white_go.png'),//白色向右箭头
+    del_web: require('./del_web.png')
 };
 export default button;

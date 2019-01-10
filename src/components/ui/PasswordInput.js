@@ -63,11 +63,17 @@ export default class PasswordInput extends Component {
                         ref='textInput'
                         maxLength={this.props.maxLength}
                         autoFocus={false}
+                        caretHidden={true}
                         keyboardType="numeric"
                         value={this.state.text}
+                        contextMenuHidden={true}
+                        selectionColor={'transparent'}
                         onChangeText={
                             (text) => {
-                                const newText = text.replace(/[^\d]+/, '');
+                                let newText = text.replace(/[^\d]+/, '');
+                                if (this.state.text.length - newText.length > 1){
+                                    newText = this.state.text.slice(0, -1);
+                                }
                                 this.setState({ text: newText });
                                 this.props.onChange(newText);
                                 if (newText.length === this.props.maxLength) {

@@ -125,7 +125,7 @@ class XpDetailModel {
     };
 
     /*经验详情接口返回*/
-    @action saveActData = (data) => {
+    @action saveActData = (data, productCode) => {
         this.basePageState = PageLoadingState.success;
         data = data || {};
         this.status = data.status;
@@ -144,9 +144,19 @@ class XpDetailModel {
         this.rules = data.rules || [];
         this.coupon = (data.coupon || {}).coupon || {};
 
-        /*请求默认第一个数据&&在售*/
+        /*在售*/
         if (this.prods.length > 0 && this.status === 2) {
-            let item = this.prods[0];
+            //默认第一个数据
+            let selectedIndex = 0;
+            if (productCode) {
+                //有选择的点击找出index
+                this.prods.forEach((item, index) => {
+                    if (item.spuCode === productCode) {
+                        selectedIndex = index;
+                    }
+                });
+            }
+            let item = this.prods[selectedIndex];
             this.selectSpuCode(item.spuCode);
         }
     };
@@ -178,13 +188,13 @@ class XpDetailModel {
 
     /*********【网络】***********/
 
-    request_act_exp_detail = (activityCode) => {
+    request_act_exp_detail = (activityCode, productCode) => {
         this.basePageState = PageLoadingState.loading;
         HomeAPI.act_exp_detail({
             //测试 JF201812270017
             code: activityCode
         }).then((data) => {
-            this.saveActData(data.data);
+            this.saveActData(data.data, productCode);
         }).catch((error) => {
             this.actError(error);
         });
