@@ -495,7 +495,7 @@ export default class MyCouponsItems extends Component {
             //     this.parseData(arr);
             //     return;
             // }
-            if (this.props.orderParam.orderType == 99) {
+            if (this.props.orderParam.orderType == 99||this.props.orderParam.orderType == 98) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
