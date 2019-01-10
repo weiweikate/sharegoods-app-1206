@@ -176,7 +176,18 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     _alipay() {
-        this.payment.alipay(this.paymentResultView);
+        this.payment.alipay(this.paymentResultView).then(() => {
+            if (this.state.orderChecking === true) {
+                return
+            }
+            const { selectedTypes, isGoToPay, orderNo } = this.payment;
+            if (orderNo && selectedTypes && isGoToPay === true) {
+                this.setState({orderChecking: true})
+                this.orderTime = (new Date().getTime()) / 1000
+                this.payment.isGoToPay = false
+                this._checkOrder()
+            }
+        });
     }
 
     _wechat() {
