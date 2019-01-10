@@ -77,7 +77,6 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
                 <RefreshList
-                    emptyNoRefresh={true}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
