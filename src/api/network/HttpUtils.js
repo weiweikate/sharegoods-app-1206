@@ -75,11 +75,18 @@ export default class HttpUtils {
 
     platform = '';
 
-    static sign(params) {
-        return new Promise((resolve, reject) => {
-            const signParam = RSA.sign(params)
-            resolve(signParam)
-        })
+    static sign(params, isRSA) {
+        if (isRSA) {
+            return new Promise((resolve, reject) => {
+                const signParam = RSA.sign(params)
+                resolve(signParam)
+            })
+        } else {
+            return new Promise((resolve, reject) => {
+                resolve({})
+            })
+        }
+        
     }
 
     static get(uri, isRSA, params) {
@@ -100,16 +107,19 @@ export default class HttpUtils {
          */
 
         let signParam = {};
-        if (isRSA) {
-            signParam = HttpUtils.sign(params);
-        }
+        // if (isRSA) {
+        //     signParam = HttpUtils.sign(params);
+        // }
         let timeLineStart = +new Date();
 
         if (!this.platform) {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
 
-        return user.getToken().then(token => {
+        return HttpUtils.sign(params, isRSA).then(sign => {
+            signParam = sign
+            return user.getToken()
+        }).then(token => {
             let config = {
                 headers: {
                     ...signParam,
@@ -177,7 +187,10 @@ export default class HttpUtils {
         }
 
         let timeLineStart = +new Date();
-        return user.getToken().then(token => {
+        return HttpUtils.sign({}, isRSA).then(sign => {
+            signParam = sign
+            return user.getToken()
+        }).then(token => {
             config.headers = {
                 ...signParam,
                 'Security-Policy': 'SIGNATURE',//区分app和h5
