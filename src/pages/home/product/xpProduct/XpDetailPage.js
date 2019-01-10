@@ -101,8 +101,8 @@ export class XpDetailPage extends BasePage {
     }
 
     _request_act_exp_detail = () => {
-        const { activityCode } = this.params;
-        this.xpDetailModel.request_act_exp_detail(activityCode);
+        const { activityCode, productCode } = this.params;
+        this.xpDetailModel.request_act_exp_detail(activityCode, productCode);
     };
 
     _imgBtnAction = () => {
