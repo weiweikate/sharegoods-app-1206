@@ -97,7 +97,7 @@ const getTipString = (itemData) => {
     }
     //暂未开售
     if (itemData.productStatus === 3){
-        returnObj.tipString += tipString + formatTime(itemData.updateTime);
+        returnObj.tipString += tipString + formatTime(itemData.upTime);
         return  returnObj;
     }
 
