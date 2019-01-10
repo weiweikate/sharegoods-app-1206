@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.meeruu.commonlib.utils.AppUtils;
+import com.request.BuildConfig;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +24,7 @@ import cn.jpush.android.api.JPushInterface;
 public class MRJPushReceiver extends BroadcastReceiver {
 
     private static final String TAG = "JPush";
+    private static final String PACKAGENAME = "com.meeruu.sharegoods";
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -72,7 +76,9 @@ public class MRJPushReceiver extends BroadcastReceiver {
 
     //用户点击了通知
     private void notifyOpened(final Context context, JSONObject objExtra) {
-
+        if(!AppUtils.isAppOnForeground(context)){
+            AppUtils.startAPP(context, PACKAGENAME);
+        }
     }
 
 }

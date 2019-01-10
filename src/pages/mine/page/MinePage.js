@@ -130,7 +130,7 @@ export default class MinePage extends BasePage {
         LoginAPI.oldUserActivateJudge().then((res) => {
             console.log('是还是非-------', res);
             this.setState({
-                hasFans: res.data
+                hasFans: res.data && user.upCode
             });
         }).catch((error) => {
 
