@@ -52,7 +52,11 @@ export default class ShowHotView extends Component {
                     this.setState({ isFetching: false, isEnd: true });
                 }
             }).catch((error) => {
-                this.setState({ errorMsg: '获取列表错误', isFetching: false });
+                if (error !== -1) {
+                    this.setState({ errorMsg: '获取列表错误', isFetching: false });
+                } else {
+                    this.setState({ isFetching: false });
+                }
             });
             done();
         }, 1000);
@@ -80,7 +84,11 @@ export default class ShowHotView extends Component {
                 this.setState({ isFetching: false });
                 this.waterfall.addItems(data);
             }).catch((error) => {
-                this.setState({ errorMsg: '获取列表错误', isFetching: false });
+                if (error !== -1) {
+                    this.setState({ errorMsg: '获取列表错误', isFetching: false });
+                } else {
+                    this.setState({ isFetching: false });
+                }
             });
             done && done();
         }, 1000);

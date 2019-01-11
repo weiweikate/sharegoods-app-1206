@@ -168,7 +168,7 @@ export default class ShopCartCell extends Component {
 
                                 <UIText
                                     value={
-                                        itemData.specTitle && '规格: ' + itemData.specTitle.replace(new RegExp('@', 'g'), '-')
+                                        itemData.specifyContent ? itemData.specifyContent:''
                                     }
                                     numberOfLines={2}
                                     style={{

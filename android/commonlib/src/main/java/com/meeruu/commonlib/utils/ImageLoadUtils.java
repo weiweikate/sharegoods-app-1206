@@ -140,6 +140,7 @@ public class ImageLoadUtils {
     public static void downloadImage(Uri uri, BaseBitmapDataSubscriber subscriber) {
         ImageRequest imageRequest = ImageRequestBuilder
                 .newBuilderWithSource(uri)
+                .disableDiskCache()
                 .setProgressiveRenderingEnabled(true)//渐进渲染
                 .build();
         ImagePipeline imagePipeline = Fresco.getImagePipeline();

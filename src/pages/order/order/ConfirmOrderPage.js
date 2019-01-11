@@ -166,11 +166,11 @@ export default class ConfirmOrderPage extends BasePage {
     };
     commitOrder = async () => {
         if(!this.canCommit){
+            bridge.hiddenLoading()
             return;
         }
         this.canCommit = false;
         confirmOrderModel.isError=true;
-        bridge.showLoading();
         try {
             let data = await confirmOrderModel.submitProduct(this.params.orderParamVO);
             this.canCommit = true;

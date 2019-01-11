@@ -59,7 +59,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
   shareObject.webpageUrl = shareModel.linkUrl;
   shareObject.userName = shareModel.userName;
   shareObject.path = shareModel.miniProgramPath;
-  shareObject.miniProgramType = UShareWXMiniProgramTypePreview;
+  shareObject.miniProgramType = UShareWXMiniProgramTypeRelease;
   message.shareObject = shareObject;
   shareObject.hdImageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"]];
   if (shareModel.hdImageURL) {
