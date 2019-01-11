@@ -227,7 +227,7 @@ class HomeModule {
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id: 'goods' + good.linkTypeCode
+                        id: 'goods' + good.linkTypeCode + i
                     });
                     itemData = [];
                 } else {
@@ -241,7 +241,7 @@ class HomeModule {
                     id: 'goods'
                 });
             }
-            this.homeList = [...this.homeList, ...home];
+            this.homeList = this.homeList.concat(home);
             this.page++;
             this.isFetching = false;
             this.isEnd = false;
