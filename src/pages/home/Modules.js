@@ -210,6 +210,7 @@ class HomeModule {
             return;
         }
         try {
+            const timeStamp = new Date().getTime()
             this.isFetching = true;
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             this.isFetching = false;
@@ -227,7 +228,7 @@ class HomeModule {
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id: 'goods' + good.linkTypeCode + i
+                        id: 'goods' + good.linkTypeCode + i + timeStamp
                     });
                     itemData = [];
                 } else {
