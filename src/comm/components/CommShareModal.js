@@ -150,6 +150,7 @@ export default class CommShareModal extends React.Component {
             params.thumImage = thumImage;
             // params.userName = userName || uat 'gh_a7c8f565ea2e';// 测试 gh_aa91c3ea0f6c
             params.userName = userName || apiEnvironment.getCurrentWxAppletKey();
+            params.miniProgramType = apiEnvironment.getMiniProgramType();
             params.miniProgramPath = miniProgramPath;
             params.hdImageURL = hdImageURL;
         }
