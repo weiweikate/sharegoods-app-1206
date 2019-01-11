@@ -17,7 +17,7 @@ export const TabNav = TabNavigator(
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarLabel: '主页',
+                tabBarLabel: '首页',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
@@ -124,7 +124,7 @@ export const TabNav = TabNavigator(
             style: {
                 backgroundColor: '#fff',
                 paddingBottom: ScreenUtils.safeBottomMax + 1,
-                height: 50 + ScreenUtils.safeBottomMax,
+                height: 50,
                 borderTopWidth: 0.2,
                 paddingTop: 1,
                 borderTopColor: '#ccc'

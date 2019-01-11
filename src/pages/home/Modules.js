@@ -210,6 +210,7 @@ class HomeModule {
             return;
         }
         try {
+            const timeStamp = new Date().getTime()
             this.isFetching = true;
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             this.isFetching = false;
@@ -227,7 +228,7 @@ class HomeModule {
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id: 'goods' + good.linkTypeCode
+                        id: 'goods' + good.linkTypeCode + i + timeStamp
                     });
                     itemData = [];
                 } else {
@@ -241,7 +242,7 @@ class HomeModule {
                     id: 'goods'
                 });
             }
-            this.homeList = [...this.homeList, ...home];
+            this.homeList = this.homeList.concat(home);
             this.page++;
             this.isFetching = false;
             this.isEnd = false;

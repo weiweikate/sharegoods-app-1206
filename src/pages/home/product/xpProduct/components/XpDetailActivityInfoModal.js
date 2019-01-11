@@ -65,36 +65,58 @@ export default class XpDetailActivityInfoModal extends Component {
         </TouchableWithoutFeedback>;
     };
 
+    _renderCouponText = (item) => {
+        const { value, type } = item.coupon || {};
+        if (type === 4) {
+            return <View style={styles.bgTopValueView}>
+                <Text style={styles.bgTopValueLText}>{`商品\n抵扣`}</Text>
+            </View>;
+        } else if (type === 3) {
+            return <View style={styles.bgTopValueView}>
+                <Text style={styles.bgTopValueRText}>{(value / 10) || ''}</Text>
+                <Text style={styles.bgTopValueLText}>折</Text>
+            </View>;
+        } else {
+            return <View style={styles.bgTopValueView}>
+                <Text style={styles.bgTopValueLText}>¥</Text>
+                <Text style={styles.bgTopValueRText}>{value || ''}</Text>
+            </View>;
+        }
+    };
+
     _renderItemCoupon = (item) => {
-        const { name, effectiveDays, value, type, useConditions } = item.coupon || {};
-        let nameType;
+        const { name, type, useConditions } = item.coupon || {};
+        let nameType, valueType;
+        //1: 满减 2:抵价 3:折扣 4:抵扣',
         switch (type) {
             case 1:
                 nameType = '满减券';
+                valueType = useConditions > 0 ? `满${useConditions || ''}可用` : `无金额门槛`;
                 break;
             case 2:
                 nameType = '抵价券';
+                valueType = `无金额门槛`;
                 break;
             case 3:
                 nameType = '折扣券';
+                valueType = useConditions > 0 ? `满${useConditions || ''}可用` : `无金额门槛`;
                 break;
             case 4:
                 nameType = '抵扣券';
+                valueType = `限指定商品可用`;
                 break;
             default:
                 nameType = '';
+                valueType = '';
                 break;
         }
         return <TouchableWithoutFeedback>
             <View>
                 <Text style={styles.itemText}>{`每满${item.startPrice}元，赠送${item.startCount}张优惠券`}</Text>
                 <Text style={styles.itemText}>{`单笔订单最多可领${item.maxCount}张优惠券`}</Text>
-                <ImageBackground source={xp_detail_coupon_bg} style={styles.itemCouponBgImg}>
+                <ImageBackground source={xp_detail_coupon_bg} style={styles.itemCouponBgImg} resizeMode='stretch'>
                     <View style={styles.bgTopView}>
-                        <View style={styles.bgTopValueView}>
-                            <Text style={styles.bgTopValueLText}>¥</Text>
-                            <Text style={styles.bgTopValueRText}>{value || ''}</Text>
-                        </View>
+                        {this._renderCouponText(item)}
                         <View style={styles.bgBottomNameView}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={styles.bgBottomNameText}>{name || ''}</Text>
@@ -102,11 +124,8 @@ export default class XpDetailActivityInfoModal extends Component {
                                     <Text style={styles.bgTopRightText}>{nameType || ''}</Text>
                                 </View>
                             </View>
-                            <Text style={styles.bgBottomRemarkText}>{`满${useConditions || ''}可用`}</Text>
+                            <Text style={styles.bgBottomRemarkText}>{valueType}</Text>
                         </View>
-                    </View>
-                    <View style={styles.bgBottomView}>
-                        <Text style={styles.bgBottomText}>{`领取后${effectiveDays || ''}天内可用`}</Text>
                     </View>
                 </ImageBackground>
             </View>
@@ -218,7 +237,7 @@ const styles = StyleSheet.create({
     /*图片*/
     itemCouponBgImg: {
         alignSelf: 'center',
-        marginVertical: 5, width: px2dp(345), height: 109
+        marginVertical: 5, width: px2dp(345), height: 90
     },
 
     /*优惠券*/
@@ -234,7 +253,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle, fontSize: 14, marginTop: 10
     },
     bgTopValueRText: {
-        fontSize: 34
+        fontSize: 34, color: DesignRule.textColor_mainTitle
     },
 
     bgBottomNameView: {
@@ -262,14 +281,6 @@ const styles = StyleSheet.create({
     bgBottomRemarkText: {
         marginTop: 5,
         color: DesignRule.textColor_secondTitle, fontSize: 11
-    },
-
-    bgBottomView: {
-        height: 33, justifyContent: 'center'
-    },
-    bgBottomText: {
-        paddingHorizontal: 15,
-        color: DesignRule.textColor_mainTitle, fontSize: 12
     },
 
     sureBtn: {
