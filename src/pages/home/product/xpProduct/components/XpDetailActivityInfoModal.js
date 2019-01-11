@@ -73,7 +73,7 @@ export default class XpDetailActivityInfoModal extends Component {
             </View>;
         } else if (type === 3) {
             return <View style={styles.bgTopValueView}>
-                <Text style={styles.bgTopValueRText}>{value || ''}</Text>
+                <Text style={styles.bgTopValueRText}>{(value / 10) || ''}</Text>
                 <Text style={styles.bgTopValueLText}>折</Text>
             </View>;
         } else {
@@ -86,23 +86,28 @@ export default class XpDetailActivityInfoModal extends Component {
 
     _renderItemCoupon = (item) => {
         const { name, type, useConditions } = item.coupon || {};
-        let nameType;
+        let nameType, valueType;
         //1: 满减 2:抵价 3:折扣 4:抵扣',
         switch (type) {
             case 1:
                 nameType = '满减券';
+                valueType = useConditions > 0 ? `满${useConditions || ''}可用` : `无金额门槛`;
                 break;
             case 2:
                 nameType = '抵价券';
+                valueType = `无金额门槛`;
                 break;
             case 3:
                 nameType = '折扣券';
+                valueType = useConditions > 0 ? `满${useConditions || ''}可用` : `无金额门槛`;
                 break;
             case 4:
                 nameType = '抵扣券';
+                valueType = `限指定商品可用`;
                 break;
             default:
                 nameType = '';
+                valueType = '';
                 break;
         }
         return <TouchableWithoutFeedback>
@@ -119,11 +124,7 @@ export default class XpDetailActivityInfoModal extends Component {
                                     <Text style={styles.bgTopRightText}>{nameType || ''}</Text>
                                 </View>
                             </View>
-                            {useConditions > 0
-                                ?
-                                <Text style={styles.bgBottomRemarkText}>{`满${useConditions || ''}可用`}</Text>
-                                : <Text style={styles.bgBottomRemarkText}>{`无金额门槛`}</Text>}
-
+                            <Text style={styles.bgBottomRemarkText}>{valueType}</Text>
                         </View>
                     </View>
                 </ImageBackground>
