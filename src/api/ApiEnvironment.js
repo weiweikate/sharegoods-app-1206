@@ -40,6 +40,10 @@ class ApiEnvironment {
         return ApiConfig[this.envType].h5;
     }
 
+    getMiniProgramType(){
+        return ApiConfig[this.envType].miniProgramType === 0 ? 0 : 2;
+    }
+
     // 获取当前oss域名
     getCurrentOssHost() {
         return ApiConfig[this.envType].oss;

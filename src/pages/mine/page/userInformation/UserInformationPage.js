@@ -82,7 +82,7 @@ export default class UserInformationPage extends BasePage {
                 <UserSingleItem leftText={'会员等级'} rightText={user.levelRemark}
                                 rightTextStyle={[styles.grayText, { color: 'white' }]}
                                 leftTextStyle={styles.blackText} isArrow={false} circleStyle={{
-                    borderRadius: 10,
+                    borderRadius: 15,
                     backgroundColor: '#ff7e00',
                     paddingLeft: 10,
                     paddingRight: 10,
@@ -185,9 +185,9 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: 'white'
     }, hasVertifyID: {
-        borderRadius: 10, backgroundColor: '#0186f5', paddingLeft: 10, paddingRight: 10
+        borderRadius: 15, backgroundColor: '#0186f5', paddingLeft: 10, paddingRight: 10
     }, notVertifyID: {
-        borderRadius: 10,
+        borderRadius: 15,
         backgroundColor: DesignRule.lineColor_inGrayBg,
         paddingLeft: 10,
         paddingRight: 10

@@ -1,6 +1,6 @@
 {
-    "showDebugPanel": true,
-    "envType": "qa",
+    "showDebugPanel": false,
+    "envType": "online",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -33,7 +33,8 @@
             "host": "https://api.sharegoodsmall.com/gateway",
             "h5": "https://h5.sharegoodsmall.com",
             "oss": "https://cdn.sharegoodsmall.com",
-            "wxAppletKey": "gh_e0c6b86659cc"
+            "wxAppletKey": "gh_e0c6b86659cc",
+            "miniProgramType": 0
         },
         "吴承骏": {
             "name": "吴承骏",

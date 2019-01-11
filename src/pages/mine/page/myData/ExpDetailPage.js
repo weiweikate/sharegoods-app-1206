@@ -93,7 +93,8 @@ export default class ExpDetailPage extends BasePage{
                            marginRight: -0.5,
                            marginLeft: marginLeft,
                            height: 8,
-                           borderRadius: 4,
+                           borderBottomRightRadius: 4,
+                           borderTopRightRadius: 4,
                            backgroundColor: DesignRule.lineColor_inGrayBg,
                            borderBottomLeftRadius: radius,
                            borderTopLeftRadius: radius
@@ -109,7 +110,7 @@ export default class ExpDetailPage extends BasePage{
                            color: DesignRule.textColor_instruction,
                            fontSize: 13
                        }}>
-                           {(this.state.levelExperience - this.state.experience) > 0 ? `${this.state.levelExperience - this.state.experience}Exp` : "0Exp"}
+                           {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience))}Exp` : '0Exp'}
                        </Text>
                        {(this.state.levelExperience - this.state.experience) > 0 ? null :
                            <Text style={{ color: DesignRule.mainColor, fontSize: 11 }} allowFontScaling={false}>(Exp已满)</Text>

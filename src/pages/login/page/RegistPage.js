@@ -67,7 +67,10 @@ export default class RegistPage extends BasePage {
                     // config={viewType:0}
                     viewType={0}
                     phone={''}
-                    loginClick={(phone, code, password) => this.clickNext(phone, code, password)}
+                    loginClick={(phone, code, password) => {
+                        this.$loadingShow();
+                        setTimeout(()=>{this.clickNext(phone, code, password)},200)
+                    }}
                     ref={'topView'}
                 />
                 <View style={{
@@ -117,12 +120,12 @@ export default class RegistPage extends BasePage {
     //点击下一步
     clickNext = (phone, code, password) => {
         if (!this.state.gouxuan) {
+            this.$loadingDismiss();
             bridge.$toast('请先勾选用户协议');
             return;
         }
         console.log(this.params);
         this.params = this.params || {};
-        this.$loadingShow();
         track(trackEvent.signUp, { signUpMethod: 'App注册' });
         LoginApi.findMemberByPhone({
             code: code,
