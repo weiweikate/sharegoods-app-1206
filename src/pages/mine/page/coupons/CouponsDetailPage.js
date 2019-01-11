@@ -105,7 +105,7 @@ export default class CouponsDetailPage extends BasePage {
                                             </View>}
                                     <View>
                                         <Text style={{
-                                            fontSize: item.type === 4 ? 20 : (item.value && item.value.length === 3 ? 26 : 33),
+                                            fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
                                             color: DesignRule.textColor_mainTitle
                                         }} allowFontScaling={false}>{item.value}</Text>
                                     </View>
@@ -164,13 +164,14 @@ export default class CouponsDetailPage extends BasePage {
                 </View>
                 {
                     StringUtils.isEmpty(item.remarks) ? null :
-                        <View style={{ marginTop: 20, alignItems: 'flex-start', marginLeft: 10, flex: 1 }}>
+                        <View style={{ marginTop: 20,  marginLeft: 10}}>
                             <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}
                                   allowFontScaling={false}>使用说明:</Text>
                             <Text style={{
                                 marginTop: 5,
                                 color: DesignRule.textColor_secondTitle,
-                                lineHeight: 25
+                                lineHeight: 25,
+
                             }} allowFontScaling={false}>{item.remarks}</Text>
                         </View>}
                 <View

@@ -7,7 +7,7 @@ import {
     Alert,
 } from "react-native";
 import BasePage from "../../../../BasePage";
-import { RefreshList ,NoMoreClick} from "../../../../components/ui";
+import { RefreshList } from "../../../../components/ui";
 import AccountItem from "../../components/CashAccountItem";
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
@@ -64,8 +64,8 @@ export default class MyCashAccountPage extends BasePage {
     };
     $navigationBarOptions = {
         title: "现金账户",
-        rightTitleStyle: { color: DesignRule.textColor_mainTitle_222, fontSize: 12 },
-        rightNavTitle: "账户设置"
+        // rightTitleStyle: { color: DesignRule.textColor_mainTitle_222, fontSize: 12 },
+        // rightNavTitle: "账户设置"
     };
 
     $isMonitorNetworkStatus(){
@@ -103,9 +103,9 @@ export default class MyCashAccountPage extends BasePage {
                                 color: "white"
                             }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        <NoMoreClick style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
-                        </NoMoreClick>
+                        {/*<NoMoreClick style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
+                            {/*<Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>*/}
+                        {/*</NoMoreClick>*/}
                     </View>
                 </View>
             </View>
