@@ -33,7 +33,8 @@
             "host": "https://api.sharegoodsmall.com/gateway",
             "h5": "https://h5.sharegoodsmall.com",
             "oss": "https://cdn.sharegoodsmall.com",
-            "wxAppletKey": "gh_e0c6b86659cc"
+            "wxAppletKey": "gh_e0c6b86659cc",
+            "miniProgramType": 0
         },
         "吴承骏": {
             "name": "吴承骏",
