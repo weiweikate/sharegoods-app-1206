@@ -215,8 +215,8 @@ public class VersionUpdateService extends Service {
     }
 
     public void downloadApk(final int flag) {
-        File apkfile_file = SDCardUtils.getFileDirPath("MR/file");
-        String fileName = AppUtils.getAppName() + "_" + lastVersion + ".apk";
+        final File apkfile_file = SDCardUtils.getFileDirPath("MR/file");
+        final String fileName = AppUtils.getAppName() + "_" + lastVersion + ".apk";
         RequestManager.getInstance().downLoadFile(app.getDownLoadUrl(),
                 apkfile_file.getAbsolutePath() + File.separator + fileName,
                 new ReqProgressCallBack<File>() {
@@ -243,6 +243,10 @@ public class VersionUpdateService extends Service {
                         message.obj = msg;
                         message.what = ParameterUtils.MSG_WHAT_ERR;
                         mHandler.sendMessage(message);
+                        File file = new File(apkfile_file.getAbsolutePath() + File.separator + fileName);
+                        if(file.exists()){
+                            file.delete();
+                        }
                     }
 
                     @Override

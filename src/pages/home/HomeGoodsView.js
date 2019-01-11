@@ -55,7 +55,7 @@ export default class GoodsCell extends Component {
 
 let styles = StyleSheet.create({
     container: {
-        height: px2dp(267),
+        height: px2dp(257),
         width: px2dp(172),
         backgroundColor: '#fff',
         borderRadius: px2dp(5),
@@ -64,7 +64,7 @@ let styles = StyleSheet.create({
         overflow: 'hidden'
     },
     uncontainer: {
-        height: px2dp(267),
+        height: px2dp(257),
         width: px2dp(172)
     },
     image: {
@@ -85,7 +85,7 @@ let styles = StyleSheet.create({
     dis: {
         color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(12),
-        marginTop: px2dp(20),
+        marginTop: px2dp(10),
         marginLeft: px2dp(7),
         marginRight: px2dp(7)
     },
@@ -102,7 +102,7 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(7)
     },
     cell: {
-        height: px2dp(273),
+        height: px2dp(263),
         flexDirection: 'row',
         marginRight: px2dp(15),
         marginLeft: px2dp(15),

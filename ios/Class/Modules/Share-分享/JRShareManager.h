@@ -34,6 +34,7 @@ shareImage:分享的大图(本地URL)图片分享使用
 @property(nonatomic, copy)NSString *userName;
 @property(nonatomic, copy)NSString *miniProgramPath;
 @property(nonatomic, copy)NSString *hdImageURL;
+@property(nonatomic, assign)NSInteger miniProgramType;
 
 
 @end
