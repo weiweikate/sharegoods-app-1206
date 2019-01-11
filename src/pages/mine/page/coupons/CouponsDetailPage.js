@@ -164,7 +164,7 @@ export default class CouponsDetailPage extends BasePage {
                 </View>
                 {
                     StringUtils.isEmpty(item.remarks) ? null :
-                        <View style={{ marginTop: 20, alignItems: 'flex-start', marginLeft: 10, flex: 1 }}>
+                        <View style={{ marginTop: 20, marginLeft: 10,  }}>
                             <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}
                                   allowFontScaling={false}>使用说明:</Text>
                             <Text style={{

@@ -54,9 +54,10 @@ export default class HelperFeedbackPage extends BasePage {
             selectIndex: -1,
             typeKey: -1,
             imageArr: [],
-            touchable: false,
+
             picNum: 0
         };
+        this.touchable=false
 
     }
 
@@ -100,6 +101,10 @@ export default class HelperFeedbackPage extends BasePage {
     };
 
     feedback2server() {
+        if(this.touchable){
+            return;
+        }
+        this.touchable=true;
         let smallImagarr = [];
         let orignImagarr = [];
 
@@ -117,15 +122,14 @@ export default class HelperFeedbackPage extends BasePage {
             this.$toastShow('反馈内容请大于10个字!');
             return;
         }
-        this.setState({ touchable: true });
         MineApi.addFeedback({
             content: this.state.detailContent, typeKey: this.state.typeKey || 1, smallImg: smallImgs,
             originalImg: orignImgs
         }).then(res => {
-            this.setState({ isShowFinishModal: true, touchable: false });
+            this.setState({ isShowFinishModal: true });
             this.finishModal && this.finishModal.open();
         }).catch(err => {
-            this.setState({ touchable: false });
+            this.touchable=false;
             this.$toastShow(err.msg);
         });
     }
@@ -372,7 +376,7 @@ export default class HelperFeedbackPage extends BasePage {
                         })}
                         {this.renderAddItem()}
                     </View>
-                    <NoMoreClick activeOpacity={0.9} disabled={this.state.touchable}
+                    <NoMoreClick activeOpacity={0.9} disabled={this.touchable}
                                  style={{ alignItems: 'center', justifyContent: 'center', marginTop: 50 }}
                                  onPress={() => this.feedback2server()}>
                         <View
