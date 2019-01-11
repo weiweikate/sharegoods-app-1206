@@ -282,6 +282,10 @@ export default class RecommendPage extends BasePage {
                 activityCode: item.linkTypeCode,
                 activityType: type, preseat: '拼店推荐banner'
             });
+        } else if (item.linkType === homeLinkType.show) {
+            this.$navigate('show/ShowDetailPage', {
+                code: item.linkTypeCode,
+            });
         }
     };
 
