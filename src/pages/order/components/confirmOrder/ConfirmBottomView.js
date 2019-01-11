@@ -1,15 +1,16 @@
-import React ,{Component}from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
-    View,
+    View
 } from 'react-native';
 import {
-    UIText,NoMoreClick
+    UIText, NoMoreClick
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import DesignRule from "../../../../constants/DesignRule";
-import { confirmOrderModel } from "../../model/ConfirmOrderModel";
+import DesignRule from '../../../../constants/DesignRule';
+import { confirmOrderModel } from '../../model/ConfirmOrderModel';
+import bridge from '../../../../utils/bridge';
 
 export default class ConfirmBottomView extends Component {
 
@@ -22,7 +23,7 @@ export default class ConfirmBottomView extends Component {
                         style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', flex: 1 }}>
                         <UIText value={'应付款：'} style={{
                             fontSize: ScreenUtils.px2dp(15),
-                            color: DesignRule.textColor_mainTitle,
+                            color: DesignRule.textColor_mainTitle
                         }}/>
                         <UIText
                             value={StringUtils.formatMoneyString(confirmOrderModel.payAmount)}
@@ -30,7 +31,12 @@ export default class ConfirmBottomView extends Component {
                     </View>
                     <NoMoreClick
                         style={styles.commitTouStyle}
-                        onPress={this.props.commitOrder}>
+                        onPress={() => {
+                            bridge.showLoading();
+                            setTimeout(() => {
+                                this.props.commitOrder();
+                            }, 200);
+                        }}>
                         <UIText value={'提交订单'}
                                 style={{
                                     fontSize: ScreenUtils.px2dp(16),
@@ -52,16 +58,22 @@ export default class ConfirmBottomView extends Component {
     };
 }
 const styles = StyleSheet.create({
-    commitOutStyle:{ height: ScreenUtils.autoSizeHeight(49), flexDirection: 'row',backgroundColor:DesignRule.white,justifyContent: 'flex-end', alignItems: 'center'},
-    commitAmountStyle:{
+    commitOutStyle: {
+        height: ScreenUtils.autoSizeHeight(49),
+        flexDirection: 'row',
+        backgroundColor: DesignRule.white,
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    commitAmountStyle: {
         fontSize: ScreenUtils.px2dp(15),
         color: DesignRule.mainColor,
         marginRight: ScreenUtils.autoSizeWidth(15)
     },
-    commitTouStyle:{
+    commitTouStyle: {
         backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center',
-        height: ScreenUtils.autoSizeHeight(49),
+        height: ScreenUtils.autoSizeHeight(49)
     }
-})
+});

@@ -16,7 +16,9 @@ import HTML from 'react-native-render-html';
 // 图片资源
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
-import { UIImage,NoMoreClick } from '../../../../components/ui';
+import { UIImage,
+    NoMoreClick
+} from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils'
 import res from '../../res';
@@ -223,7 +225,7 @@ export default class MyPromotionPage extends BasePage {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 12
                         }}>
-                            {(this.state.levelExperience - this.state.experience) > 0 ? `${this.state.levelExperience - this.state.experience}Exp` : '0Exp'}
+                            {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience))}Exp` : '0Exp'}
                         </Text>
                         {(this.state.levelExperience - this.state.experience) > 0 ? null :
                             <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}

@@ -53,6 +53,7 @@ public class MainActivity extends BaseActivity {
     private boolean isFirst = true;
     private boolean hasGo = false;
     private boolean canSkip = false;
+    private boolean hasAdResp = false;
     private String adId;
     private String title;
     private String adUrl;
@@ -106,15 +107,25 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initViewAndData() {
         final Uri uri = Uri.parse(ADURL);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!hasAdResp) {
+                    mHandler.sendEmptyMessage(ParameterUtils.EMPTY_WHAT);
+                }
+            }
+        }, 3000);
         ImageLoadUtils.downloadImage(uri, new BaseBitmapDataSubscriber() {
 
             @Override
             protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                hasAdResp = true;
                 mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
             }
 
             @Override
             protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                hasAdResp = true;
                 if (bitmap == null) {
                     mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
                     return;

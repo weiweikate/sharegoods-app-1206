@@ -7,7 +7,7 @@ import {
     Image,
     TouchableOpacity,
     ListView,
-    RefreshControl
+    RefreshControl, BackHandler
     // ScrollView
     // requireNativeComponent
 } from 'react-native';
@@ -108,8 +108,15 @@ export default class ShopCartPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
                 this.pageFocus = true;
                 shopCartCacheTool.getShopCartGoodsListData();
+            }
+        );
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
         this.didBlurSubscription = this.props.navigation.addListener(
@@ -123,6 +130,13 @@ export default class ShopCartPage extends BasePage {
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
         this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+    }
+
+    handleBackPress=()=>{
+        this.$navigate('HomePage');
+        return true;
+
     }
 
     _render() {

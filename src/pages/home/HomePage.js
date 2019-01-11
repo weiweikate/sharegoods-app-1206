@@ -439,15 +439,24 @@ class HomePage extends BasePage {
                         });
                         this.registerModal.close();
                         homeRegisterFirstManager.setShowRegisterModalUrl(null);
-
                     }}>
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
                     {
                         homeRegisterFirstManager.showRegisterModalUrl ?
-                            <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
-                                       resizeMode={'contain'}
-                                       style={styles.messageBgStyle}/> : <View style={styles.messageBgStyle}/>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.setState({
+                                    showRegister: false
+                                });
+                                this.registerModal.close();
+                                homeRegisterFirstManager.setShowRegisterModalUrl(null);
+                                this.$toastShow('领取成功');
+                            }}>
+                                <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
+                                           resizeMode={'contain'}
+                                           style={styles.messageBgStyle}/>
+                            </TouchableWithoutFeedback>
+                            : <View style={styles.messageBgStyle}/>
                     }
 
 

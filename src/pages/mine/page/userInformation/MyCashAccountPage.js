@@ -7,7 +7,7 @@ import {
     Alert,
 } from "react-native";
 import BasePage from "../../../../BasePage";
-import { RefreshList ,NoMoreClick} from "../../../../components/ui";
+import { RefreshList } from "../../../../components/ui";
 import AccountItem from "../../components/CashAccountItem";
 import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
@@ -64,8 +64,8 @@ export default class MyCashAccountPage extends BasePage {
     };
     $navigationBarOptions = {
         title: "现金账户",
-        rightTitleStyle: { color: DesignRule.textColor_mainTitle_222, fontSize: 12 },
-        rightNavTitle: "账户设置"
+        // rightTitleStyle: { color: DesignRule.textColor_mainTitle_222, fontSize: 12 },
+        // rightNavTitle: "账户设置"
     };
 
     $isMonitorNetworkStatus(){
@@ -77,7 +77,6 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
                 <RefreshList
-                    emptyNoRefresh={true}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
@@ -104,9 +103,9 @@ export default class MyCashAccountPage extends BasePage {
                                 color: "white"
                             }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        <NoMoreClick style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
-                        </NoMoreClick>
+                        {/*<NoMoreClick style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
+                            {/*<Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>*/}
+                        {/*</NoMoreClick>*/}
                     </View>
                 </View>
             </View>
@@ -190,7 +189,7 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ["", "用户收益", "提现支出", "消费支出", "导师管理费", "品牌分红奖励", "品牌推广奖励", "现金红包", "任务奖励","消费退款","提现退回"];
+        let use_type = ["", "用户收益", "提现支出", "消费支出", "顾问管理费", "品牌分红奖励", "品牌推广奖励", "现金红包", "任务奖励","消费退款","提现退回"];
         let use_type_symbol = ["", "+", "-"];
         let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu,xiaofei,tuikuan];
         Toast.showLoading();
