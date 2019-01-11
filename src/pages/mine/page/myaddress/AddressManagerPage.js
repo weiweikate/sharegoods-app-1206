@@ -82,7 +82,7 @@ export default class AddressManagerPage extends BasePage {
                 url={MineAPI.queryAddrList}
                 params={{}}
                 renderHeader={this._header}
-                ListFooterComponent={this._footer}
+                renderFooter={this._footer}
                 renderItem={this._renderItem}
                 renderEmpty={this._renderEmptyView}
                 ItemSeparatorComponent={this._separator}
