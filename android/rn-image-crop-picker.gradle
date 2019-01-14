@@ -21,8 +21,9 @@ dependencies {
     // From node_modules
     api 'com.github.yalantis:ucrop:2.2.2-native'
     api 'id.zelory:compressor:2.1.0'
-//    api rootProject.ext.dependencies.support
-
+    api rootProject.ext.dependencies.support
     // From node_modules
-    api(rootProject.ext.dependencies.rn) 
+    api(rootProject.ext.dependencies.rn) {
+        exclude group: 'com.android.support'
+    }
 }
