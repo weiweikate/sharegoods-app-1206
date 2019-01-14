@@ -103,7 +103,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
              uri = uri || '';
              let array = uri.split('.');
              array.reverse();
-             let fileType = array[i].toLowerCase();
+             let fileType = array[0].toLowerCase();
              let videoType = ['avi', 'wmv', 'mpeg', 'mp4', 'mov', 'mkv', 'flv', 'f4v', 'm4v', 'rmvb', 'rm', '3gp'];
              if (fileType === 'gif') {
                  Toast.$toast('不支持上传动态图');
