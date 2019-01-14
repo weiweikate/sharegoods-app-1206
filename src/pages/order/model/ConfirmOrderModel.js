@@ -248,16 +248,6 @@ class ConfirmOrderModel {
             userCouponCode: this.userCouponCode,
             addressId: this.addressId
         };
-        // if(orderParamVO.type<3){
-        //     baseParams = {
-        //         ...baseParams,
-        //         activityCode: orderParamVO.orderProducts[0].code,
-        //         channel: 2,
-        //         num: orderParamVO.orderProducts[0].num,
-        //         source: 2,
-        //         submitType: 2,
-        //     };
-        // }
         switch (orderParamVO.orderType) {
             case 99:
                 let paramsnor = {
