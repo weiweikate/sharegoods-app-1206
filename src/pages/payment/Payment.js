@@ -127,7 +127,7 @@ export class Payment {
                 }
                 return resultStr;
             } else {
-                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', msg: result.msg})
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
                 Toast.$toast(result.msg)
                 return ''
             }
@@ -135,7 +135,7 @@ export class Payment {
             Toast.hiddenLoading();
             this.payError = error
             this.isGoToPay = false
-            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', msg: error.msg || error.message})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             ref && ref.show(2, error.msg || error.message)
             return error
         }
@@ -174,13 +174,13 @@ export class Payment {
                 }
                 return resultStr
             } else {
-                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', msg: result.msg})
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
                 Toast.$toast(result.msg);
                 return
             }
 
         } catch (error) {
-            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', msg: error.msg || error.message})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             Toast.hiddenLoading()
             this.payError = error
             this.isGoToPay = false
@@ -205,13 +205,13 @@ export class Payment {
                 Toast.hiddenLoading();
                 return resultStr;
             } else {
-                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', msg: result.msg})
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
                 Toast.hiddenLoading()
                 Toast.$toast(result.msg)
                 return ''
             }
         } catch (error) {
-            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', msg: error.msg || error.message})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             Toast.hiddenLoading()
             this.payError = error
             this.isGoToPay = false
@@ -247,12 +247,12 @@ export class Payment {
                 }
                 return resultStr
             } else {
-                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', msg: result.msg})
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
                 Toast.$toast(result.msg);
                 return
             }
         } catch (error) {
-            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', msg: error.msg || error.message})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             this.payError = error
             this.isGoToPay = false
             Toast.hiddenLoading()
