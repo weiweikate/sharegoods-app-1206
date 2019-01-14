@@ -13,6 +13,7 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIText from '../../components/ui/UIText';
 import DesignRule from '../../constants/DesignRule';
+import StringUtils from '../../utils/StringUtils';
 
 export default class VersionUpdateModal extends React.Component {
 
@@ -153,8 +154,11 @@ export default class VersionUpdateModal extends React.Component {
     toUpdate = () => {
         if (Platform.OS === 'ios') {
             // 前往appstore
-            // Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
-            Linking.openURL(this.props.updateData.url);
+            if (StringUtils.isEmpty(this.props.updateData.url)) {
+                Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
+            } else {
+                Linking.openURL(this.props.updateData.url);
+            }
         } else {
 
             if (this.props.updateData.forceUpdate === 1) {
