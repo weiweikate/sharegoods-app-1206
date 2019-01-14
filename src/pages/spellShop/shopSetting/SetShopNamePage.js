@@ -166,7 +166,7 @@ export default class SetShopNamePage extends BasePage {
             // } else {
             //     this.$toastShow(response.msg);
             // }
-        });
+        },1, true);
     };
 
     /*选择区域*/
