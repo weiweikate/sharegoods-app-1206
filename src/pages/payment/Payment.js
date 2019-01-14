@@ -23,7 +23,7 @@ export let paymentTrack = {
     orderId : '',
     orderAmount: '',
     paymentMethod: '',
-    storeCode: user.storeCode ? user.storeCode : ''
+    pinId: user.storeCode ? user.storeCode : ''
 }
 
 export class Payment {
@@ -92,19 +92,19 @@ export class Payment {
     //余额支付
     @action balancePay = flow(function * (password, ref) {
         paymentTrack.paymentMethod = 'balance'
-        let trackPoint = {...paymentTrack, tracking: 'start'}
+        let trackPoint = {...paymentTrack, paymentProgress: 'start'}
         console.log('trackPoint', trackPoint)
         track(trackEvent.payOrder, trackPoint)
         try {
             Toast.showLoading()
             const result = yield PaymentApi.balance({orderNo: this.orderNo, salePswd: password})
-            track(trackEvent.payOrder, {...paymentTrack, tracking: 'success'})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'success'})
             this.updateUserData()
             Toast.hiddenLoading()
             return result
         } catch (error) {
             Toast.hiddenLoading();
-            track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: error.msg})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', errorCause: error.msg})
             console.log('PaymentResultView',error)
             ref && ref.show(2, error.msg)
             return error
@@ -114,7 +114,7 @@ export class Payment {
     //支付宝支付
     @action alipay = flow(function * (ref) {
         paymentTrack.paymentMethod = 'alipay'
-        track(trackEvent.payOrder, {...paymentTrack, tracking: 'start'})
+        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
         try {
             Toast.showLoading()
             const result = yield PaymentApi.alipay({orderNo: this.orderNo})
@@ -127,7 +127,7 @@ export class Payment {
                 }
                 return resultStr;
             } else {
-                track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: result.msg})
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
                 Toast.$toast(result.msg)
                 return ''
             }
@@ -135,7 +135,7 @@ export class Payment {
             Toast.hiddenLoading();
             this.payError = error
             this.isGoToPay = false
-            track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: error.msg || error.message})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             ref && ref.show(2, error.msg || error.message)
             return error
         }
@@ -144,7 +144,7 @@ export class Payment {
     //微信支付
     @action appWXPay = flow(function * (ref) {
         paymentTrack.paymentMethod = 'wxpay'
-        track(trackEvent.payOrder, {...paymentTrack, tracking: 'start'})
+        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
 
         try {
             Toast.showLoading()
@@ -174,13 +174,13 @@ export class Payment {
                 }
                 return resultStr
             } else {
-                track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: result.msg})
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
                 Toast.$toast(result.msg);
                 return
             }
 
         } catch (error) {
-            track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: error.msg || error.message})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             Toast.hiddenLoading()
             this.payError = error
             this.isGoToPay = false
@@ -192,7 +192,7 @@ export class Payment {
     //支付宝+平台
     @action ailpayAndBalance = flow(function * (password, ref) {
         paymentTrack.paymentMethod = 'alipayAndBalance'
-        track(trackEvent.payOrder, {...paymentTrack, tracking: 'start'})
+        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
         try {
             Toast.showLoading()
             const result = yield PaymentApi.alipayAndBalance({orderNo: this.orderNo, salePswd: password})
@@ -205,13 +205,13 @@ export class Payment {
                 Toast.hiddenLoading();
                 return resultStr;
             } else {
-                track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: result.msg})
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
                 Toast.hiddenLoading()
                 Toast.$toast(result.msg)
                 return ''
             }
         } catch (error) {
-            track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: error.msg || error.message})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             Toast.hiddenLoading()
             this.payError = error
             this.isGoToPay = false
@@ -233,7 +233,7 @@ export class Payment {
      //微信+平台
      @action wechatAndBalance = flow(function * (password, ref) {
         paymentTrack.paymentMethod = 'wechatAndBalance'
-        track(trackEvent.payOrder, {...paymentTrack, tracking: 'start'})
+        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
         try {
             Toast.showLoading()
             const result = yield PaymentApi.wechatAndBalance({orderNo: this.orderNo, salePswd: password})
@@ -247,12 +247,12 @@ export class Payment {
                 }
                 return resultStr
             } else {
-                track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: result.msg})
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
                 Toast.$toast(result.msg);
                 return
             }
         } catch (error) {
-            track(trackEvent.payOrder, {...paymentTrack, tracking: 'error', msg: error.msg || error.message})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             this.payError = error
             this.isGoToPay = false
             Toast.hiddenLoading()
