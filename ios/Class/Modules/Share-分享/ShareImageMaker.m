@@ -59,23 +59,23 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                                      priceStr:(NSString *)priceStr
                                     QRCodeStr:(NSString *)QRCodeStr
 {
-  
-  CGRect rect = CGRectMake(0.0f, 0.0f, 250, 325);
-  UIGraphicsBeginImageContext(CGSizeMake(250, 325));
+  CGFloat i = 3;
+  CGRect rect = CGRectMake(0.0f, 0.0f, 250*i, 325*i);
+  UIGraphicsBeginImageContext(CGSizeMake(250*i, 325*i));
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
   CGContextFillRect(context, rect);
   // 绘制图片
-  [productImage drawInRect:CGRectMake(0, 0, 250, 250)];
+  [productImage drawInRect:CGRectMake(0, 0, 250*i, 250*i)];
     // 绘制图片
-  [titleStr drawInRect:CGRectMake(7.5, 258, 133, 40) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13], NSForegroundColorAttributeName: [UIColor blackColor]}];
+  [titleStr drawInRect:CGRectMake(7.5*i, 258*i, 133*i, 40*i) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor blackColor]}];
     // 绘制图片
-  NSMutableAttributedString *priceAttrStr = [[NSMutableAttributedString alloc]initWithString:priceStr attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16], NSForegroundColorAttributeName: [UIColor redColor]}];
-  [priceAttrStr drawAtPoint:CGPointMake(7.5, 300)];
-  [priceAttrStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, 1)];
+  NSMutableAttributedString *priceAttrStr = [[NSMutableAttributedString alloc]initWithString:priceStr attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16*i], NSForegroundColorAttributeName: [UIColor redColor]}];
+  [priceAttrStr drawAtPoint:CGPointMake(7.5*i, 300*i)];
+  [priceAttrStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12*i]} range:NSMakeRange(0, 1)];
   
   UIImage *QRCodeImage = [self QRCodeWithStr:QRCodeStr];
-  [QRCodeImage drawInRect:CGRectMake(180, 265, 55, 55)];
+  [QRCodeImage drawInRect:CGRectMake(180*i, 265*i, 55*i, 55*i)];
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   NSDate * date =[NSDate new];
@@ -110,7 +110,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   
   CIImage *outImage = [filter outputImage];
   
-  return [self createNonInterpolatedUIImageFormCIImage:outImage withSize:200];
+  return [self createNonInterpolatedUIImageFormCIImage:outImage withSize:250];
 }
 
 /**

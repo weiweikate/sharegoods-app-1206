@@ -95,7 +95,7 @@ export default class HelperFeedbackPage extends BasePage {
     choosePicker = () => {
         let imageArr = this.state.imageArr;
         BusinessUtils.getImagePicker(callback => {
-            imageArr.push({ imageUrl: callback.imageUrl, imageThumbUrl: callback.imageThumbUrl });
+            imageArr.push({ imageUrl: callback.imageUrl[0], imageThumbUrl: callback.imageThumbUrl[0]});
             this.setState({ imageArr: imageArr });
         });
     };
