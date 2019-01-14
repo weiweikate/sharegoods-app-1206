@@ -9,6 +9,7 @@ import setting from './setting';
 import myData from './myData';
 import userInfoImg from './userInfoImg';
 import collectShop from './collectShop';
+import mentor from './mentor';
 const index = {
     collectShop: {
         ...collectShop
@@ -39,6 +40,9 @@ const index = {
     },
     userInfoImg: {
         ...userInfoImg,
+    },
+    mentor:{
+        ...mentor
     },
     ...res
 };
