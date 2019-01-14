@@ -53,6 +53,9 @@ import ImagePicker from '@mr/rn-image-crop-picker'
             width: 300,
             height: 300,
             includeExif: true,
+            cropperCancelText: '取消',
+            cropperChooseText: '选取',
+            loadingLabelText: '处理中...'
         }).then(image => {
             // console.log('received image', image);
             // this.setState({
@@ -73,6 +76,9 @@ import ImagePicker from '@mr/rn-image-crop-picker'
             compressImageQuality: 0.5,
             compressVideoPreset: 'MediumQuality',
             includeExif: true,
+            cropperCancelText: '取消',
+            cropperChooseText: '选取',
+            loadingLabelText: '处理中...'
         }).then(image => {
             // console.log('received image', image);
             // this.setState({
@@ -91,7 +97,8 @@ import ImagePicker from '@mr/rn-image-crop-picker'
              includeExif: true,
              forceJpg: true,
              maxFiles: num,
-             mediaType: 'photo'
+             mediaType: 'photo',
+             loadingLabelText: '处理中...'
          }).then(images => {
              Utiles.upload(images.map(item => item.path), callBack)
          }).catch(e => alert(e));
