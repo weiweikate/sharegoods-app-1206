@@ -162,6 +162,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
                 // callBack({ ok: false, msg: '上传图片失败' });
                 console.log(error);
                 console.warn('图片上传失败' + error.toString());
+                Toast.$toast('图片上传失败');
             });
      },
     callPhone: (phoneNum) => {

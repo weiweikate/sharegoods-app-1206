@@ -825,6 +825,14 @@ export default class MinePage extends BasePage {
                 }
             }
         }
+
+        let  mentorSet = {
+            text:'顾问',
+            icon:mine_icon_mentor,
+            onPress:()=>{
+                this.$navigate(RouterMap.SetMentorPage);
+            }
+        }
         let menu = [invite,coupon,data,shop,service,address,collect];
 
         if(this.state.hasFans){
@@ -833,6 +841,8 @@ export default class MinePage extends BasePage {
 
         if(user.upUserCode){
             menu.push(mentor);
+        }else {
+            menu.push(mentorSet);
         }
         let arr = [];
         for (let i = 0; i < menu.length; i++) {
