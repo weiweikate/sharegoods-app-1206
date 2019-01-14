@@ -35,7 +35,12 @@ import ImagePicker from '@mr/rn-image-crop-picker'
                 [
                     {text: '取消', onPress: () => console.log('取消'),style: 'cancel'},
                     {text: '拍照', onPress: () => Utiles.pickSingleWithCamera(cropping, callBack)},
-                    {text: '从相册选择', onPress: () => Utiles.pickSingle(cropping, false ,callBack)},
+                    {text: '从相册选择', onPress: () =>{
+                            if (num > 1){
+                                Utiles.pickMultiple(num,callBack )
+                            } else {
+                                Utiles.pickSingle(cropping, false ,callBack)}
+                        }},
 
                 ],
                 { cancelable: false }
@@ -54,6 +59,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
             //     image: {uri: image.path, width: image.width, height: image.height},
             //     images: null
             // });
+            Utiles.upload([image.path], callBack)
         }).catch(e => {});
     },
     pickSingle(cropit, circular=false, callBack) {
@@ -120,7 +126,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
              for (let i = 0; i< paths.length; i++){
                  let datas = {
                      type: 'image/png',
-                     uri: paths[0],
+                     uri: paths[i],
                      name: new Date().getTime() + i + 'c.png'
                  };
                  let formData = new FormData();
