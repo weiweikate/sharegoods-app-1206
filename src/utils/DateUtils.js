@@ -43,12 +43,20 @@ export function formatDate(date, fmt) {
  * @param date Date()
  * @returns  true/false 是否是今天
  */
-const isToday = (date = new Date()) => {
+export const isToday = (date) => {
+    if (!date) {
+        return false;
+    }
+    date = new Date(date);
     return (new Date().toDateString() === date.toDateString());
 };
 
 
-const isTomorrow = (date = new Date()) => {
+export const isTomorrow = (date) => {
+    if (!date) {
+        return false;
+    }
+    date = new Date(date);
     let currentDate = new Date();
     let today1 = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).getTime();//'今天凌晨'
     let today = new Date(today1 + 24 * 3600 * 1000).getTime();
@@ -87,6 +95,6 @@ export default {
     formatDate,
     isToday,
     isTomorrow,
-    getFormatDate,
+    getFormatDate
 };
 

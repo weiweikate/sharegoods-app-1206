@@ -16,13 +16,14 @@ const downPriceParam = {
     [statues.handOver]: 'markdownPrice'
 };
 
-// 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 99.普通产品
+// 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 6 经验值专区 99.普通产品
 const productTypes = {
     skill: 1,
     down: 2,
     giftPackage: 3,
     helpFree: 4,
     newTopic: 5,
+    experienceValue:6,
     normalProduct: 99
 };
 
@@ -33,7 +34,8 @@ const typeName = {
     [productTypes.giftPackage]: 'originalPrice',
     [productTypes.helpFree]: 'originalPrice',
     [productTypes.newTopic]: 'originalPrice',
-    [productTypes.normalProduct]: 'originalPrice'
+    [productTypes.normalProduct]: 'originalPrice',
+    [productTypes.experienceValue]:'originalPrice'
 };
 
 const jumpPageParams = {
@@ -47,12 +49,10 @@ const jumpPageParams = {
 
 };
 /**
- *
  * @param itemDta 数据源
  * @param preseat 埋点所需来源字符串
  */
 function getTopicJumpPageParam(itemData, preseat = '专题列表') {
-
 
     return {
         pageRoute: jumpPageParams[itemData.productType],
@@ -79,6 +79,5 @@ function getShowPrice(itemData) {
         '¥' + itemData[typeName[itemData.productType]];
     return showPrice;
 }
-
 
 export { getShowPrice,getTopicJumpPageParam };

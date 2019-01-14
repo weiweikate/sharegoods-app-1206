@@ -6,7 +6,7 @@ import {
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
-    RefreshControl
+    RefreshControl, BackHandler
 } from 'react-native';
 import ImageLoad from '@mr/image-placeholder';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -124,6 +124,7 @@ class HomePage extends BasePage {
                         bridge.setLightMode();
                     });
                 }
+                BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
 
@@ -132,6 +133,7 @@ class HomePage extends BasePage {
             payload => {
                 this.homeFocused = true;
                 this.showModal();
+                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
     }
@@ -156,6 +158,10 @@ class HomePage extends BasePage {
         this.listenerLogout && this.listenerLogout.remove();
 
     }
+
+    handleBackPress = () => {
+        return this.state.forceUpdate;
+    };
 
     _homeModaldata = () => {
         InteractionManager.runAfterInteractions(() => {
@@ -433,15 +439,24 @@ class HomePage extends BasePage {
                         });
                         this.registerModal.close();
                         homeRegisterFirstManager.setShowRegisterModalUrl(null);
-
                     }}>
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
                     {
                         homeRegisterFirstManager.showRegisterModalUrl ?
-                            <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
-                                       resizeMode={'contain'}
-                                       style={styles.messageBgStyle}/> : <View style={styles.messageBgStyle}/>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.setState({
+                                    showRegister: false
+                                });
+                                this.registerModal.close();
+                                homeRegisterFirstManager.setShowRegisterModalUrl(null);
+                                this.$toastShow('领取成功');
+                            }}>
+                                <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
+                                           resizeMode={'contain'}
+                                           style={styles.messageBgStyle}/>
+                            </TouchableWithoutFeedback>
+                            : <View style={styles.messageBgStyle}/>
                     }
 
 

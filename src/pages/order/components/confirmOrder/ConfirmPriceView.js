@@ -4,7 +4,7 @@ import {
     StyleSheet,
     View,
     Image,
-    TextInput as RNTextInput,
+    TextInput as RNTextInput
 } from "react-native";
 import {
     UIText,NoMoreClick
@@ -52,6 +52,7 @@ export default class ConfirmPriceView extends Component {
                 {!user.tokenCoin ? null :
                     <View>
                         <NoMoreClick style={styles.couponsStyle}
+                                     disabled={parseInt(confirmOrderModel.payAmount)<1}
                                           onPress={()=>this.props.jumpToCouponsPage("justOne")}>
                             <UIText value={"1元现金券"} style={styles.blackText}/>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -81,12 +82,14 @@ export default class ConfirmPriceView extends Component {
                             placeholder={"选填：填写内容已与卖家协商确认"}
                             placeholderTextColor={DesignRule.textColor_instruction}
                             numberOfLines={1}
+                            onFocus={this.props._onFocus}
+                            onBlur={this.props._onBlur}
                             underlineColorAndroid={"transparent"}
                         />
                     </View>
                 </NoMoreClick>
-                 <View style={{height:confirmOrderModel.TnHeight||0.1,backgroundColor:'white'}}/>
-                {this.renderLine()}
+                 {this.renderLine()}
+
              </View>
         );
     };

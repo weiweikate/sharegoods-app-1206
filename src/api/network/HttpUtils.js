@@ -75,6 +75,20 @@ export default class HttpUtils {
 
     platform = '';
 
+    static sign(params, isRSA) {
+        if (isRSA) {
+            return new Promise((resolve, reject) => {
+                const signParam = RSA.sign(params)
+                resolve(signParam)
+            })
+        } else {
+            return new Promise((resolve, reject) => {
+                resolve({})
+            })
+        }
+
+    }
+
     static get(uri, isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
@@ -94,7 +108,8 @@ export default class HttpUtils {
 
         let signParam = {};
         if (isRSA) {
-            signParam = RSA.sign(params);
+            // signParam = HttpUtils.sign(params);
+            signParam = RSA.sign();
         }
         let timeLineStart = +new Date();
 
@@ -159,7 +174,10 @@ export default class HttpUtils {
 
         let signParam = {};
         if (isRSA) {
-            signParam = RSA.sign();
+            //  HttpUtils.sign().then(result => {
+            //      signParam = result;
+            // });
+            signParam = RSA.sign()
         }
         data = {
             ...data
@@ -186,8 +204,7 @@ export default class HttpUtils {
             fetchHistory.insertData(history);
 
             return response.data;
-        })
-            .catch(response => {
+        }).catch(response => {
                 let history = createHistory(response, timeLineStart);
 
                 fetchHistory.insertData(history);

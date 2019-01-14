@@ -2,7 +2,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ScrollView, Alert,Keyboard
+    ScrollView, Alert, Platform
 } from "react-native";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
@@ -53,7 +53,7 @@ export default class ConfirmOrderPage extends BasePage {
     _renderContent = () => {
         return (
             <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: ScreenUtils.safeBottom }}>
-                <ScrollView ref={ref=>this.orderScrol=ref}>
+                <ScrollView ref={(ref)=>this.orderScroll=ref} style={{flex:1}}>
                     <ConfirmAddressView selectAddress={() => this.selectAddress()}/>
                     {this.state.viewData.map((item, index) => {
                         return <GoodsItem
@@ -67,18 +67,28 @@ export default class ConfirmOrderPage extends BasePage {
                             }}
                         />;
                     })}
-                    <ConfirmPriceView jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}/>
+                    <ConfirmPriceView jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
+                                      _onFocus={()=>this._onFocus()}  _onBlur={()=>this._onBlur()}/>
                 </ScrollView>
+                <View style={{height:confirmOrderModel.TnHeight||0.1,backgroundColor:'white'}}/>
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
             </View>
         );
 
     };
+    _onFocus(){
+        if(Platform.OS === 'android'){
+            confirmOrderModel.TnHeight=220
+        }
+    }
+    _onBlur(){
+        if(Platform.OS === 'android'){
+            confirmOrderModel.TnHeight=0
+        }
+    }
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
-        this.keyboardDidShowListener.remove();
-        this.keyboardDidHideListener.remove();
     }
 
     _render() {
@@ -92,19 +102,8 @@ export default class ConfirmOrderPage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
-        this.keyboardDidShowListener=Keyboard.addListener('keyboardWillShow', (event)=>this._keyboardDidShow(event));
-        this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', (event)=>this._keyboardDidHide(event));
-    }
-    _keyboardDidShow(event){
-        console.log(11111);
-        // this.orderScrol.scrollToEnd();
-        // confirmOrderModel.TnHeight=216
-    }
-
-    _keyboardDidHide(event){
-        console.log("_keyboardDidHide");
-        // this.orderScrol.scrollTo({x:0,y:0});
-        // confirmOrderModel.TnHeight=0
+        // this.keyboardDidShowListener=Keyboard.addListener('keyboardWillChangeFrame', (event)=>this._keyboardDidShow(event));
+        // this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', (event)=>this._keyboardDidHide(event));
     }
 
     async loadPageData(params) {
@@ -114,9 +113,7 @@ export default class ConfirmOrderPage extends BasePage {
             let data = await confirmOrderModel.makeSureProduct(this.params.orderParamVO, params);
             this.setState({ viewData: data.orderProductList });
         } catch (err) {
-            if (confirmOrderModel.isError) {
                 this.setState({ viewData: [] });
-            }
             if (err.code === 10009) {
                 this.$navigate('login/login/LoginPage', {
                     callback: () => {
@@ -145,12 +142,13 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     selectAddress = () => {//地址重新选择
+        console.log(confirmOrderModel.isError);
         if (confirmOrderModel.isError) {
             return;
         }
         this.$navigate('mine/address/AddressManagerPage', {
             from: 'order',
-            currentAddressId:confirmOrderModel.addressId,
+            currentId:confirmOrderModel.addressId,
             callBack: (json) => {
                 console.log(json);
 
@@ -168,10 +166,11 @@ export default class ConfirmOrderPage extends BasePage {
     };
     commitOrder = async () => {
         if(!this.canCommit){
+            bridge.hiddenLoading()
             return;
         }
         this.canCommit = false;
-        bridge.showLoading();
+        confirmOrderModel.isError=true;
         try {
             let data = await confirmOrderModel.submitProduct(this.params.orderParamVO);
             this.canCommit = true;

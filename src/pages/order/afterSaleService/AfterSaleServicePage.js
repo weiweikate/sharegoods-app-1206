@@ -96,7 +96,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.productData.orderProductNo}
+                <UIText value={'订单编号：' + this.state.productData.warehouseOrderNo}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -520,8 +520,9 @@ class AfterSaleServicePage extends BasePage {
             NativeModules.commModule.toast('输入的说明文字超出了180个');
             return;
         }
+        let text = ['退款', '退货', '换货'][pageType];
         if (StringUtils.isEmpty(returnReason)) {
-            NativeModules.commModule.toast('请选择'+ ['退款', '退货', '换货'][pageType] +  '原因');
+            NativeModules.commModule.toast('请选择'+ text +  '原因');
             return;
         }
 
@@ -530,7 +531,10 @@ class AfterSaleServicePage extends BasePage {
             NativeModules.commModule.toast('请填写退款的金额');
             return;
         }
-
+        if (this.state.editable && parseFloat(applyRefundAmount) <= 0 && pageType !== 2){
+            NativeModules.commModule.toast('请填写退款金额大于0');
+            return;
+        }
         let { productName, warehouseOrderNo, payAmount, prodCode } = this.state.productData;
 
         /** 修改申请*/

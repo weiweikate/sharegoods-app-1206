@@ -181,7 +181,7 @@ export default class ShowDetailPage extends BasePage {
         if (!detail) {
             return <View style={styles.loading}/>;
         }
-        
+
         let content = `<div>${detail.content}</div>`;
         let products = detail.products;
         let number = detail.click

@@ -29,6 +29,7 @@ import res from '../res';
 import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import {homeLinkType} from '../../home/HomeTypes'
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
@@ -262,15 +263,15 @@ export default class RecommendPage extends BasePage {
             url: item.imgUrl,
             bannerName: item.linkTypeCode
         });
-        if (item.linkType === 1) {
+        if (item.linkType === homeLinkType.good) {
             this.$navigate('home/product/ProductDetailPage', {
                 productCode: item.linkTypeCode, preseat: '拼店推荐banner'
             });
-        } else if (item.linkType === 2) {
+        } else if (item.linkType === homeLinkType.subject) {
             this.$navigate('topic/DownPricePage', {
                 linkTypeCode: item.linkTypeCode
             });
-        } else if (item.linkType === 6) {
+        } else if (item.linkType === homeLinkType.web) {
             this.$navigate('HtmlPage', {
                 title: '详情',
                 uri: item.linkTypeCode
@@ -280,6 +281,10 @@ export default class RecommendPage extends BasePage {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
                 activityType: type, preseat: '拼店推荐banner'
+            });
+        } else if (item.linkType === homeLinkType.show) {
+            this.$navigate('show/ShowDetailPage', {
+                code: item.linkTypeCode,
             });
         }
     };

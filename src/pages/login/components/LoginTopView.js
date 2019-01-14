@@ -18,6 +18,7 @@ import res from '../res';
 import UIText from '../../../components/ui/UIText';
 import { MRTextInput as TextInput } from '../../../components/ui';
 import loginModel from '../model/LoginModel';
+import oldUserLoginSingleModel from '../../../model/oldUserLoginModel';
 
 const {
     close_eye,
@@ -34,7 +35,7 @@ export default class LoginTopView extends Component {
     }
 
     render() {
-        const { showOldLogin } = this.props;
+        // const {  } = this.props;
         return (
             <View style={Styles.containViewStyle}>
                 <View style={Styles.switchBgStyle}>
@@ -100,14 +101,9 @@ export default class LoginTopView extends Component {
                     </View>
                 </TouchableOpacity>
                 {
-                    showOldLogin ?
+                    oldUserLoginSingleModel.isShowOldBtn ?
                         <View style={Styles.oldUserLoginBgStyle}>
                             <TouchableOpacity onPress={this.props.oldUserLoginClick}>
-                                {/*<UIText*/}
-                                {/*style={Styles.oldUserLoginBtn}*/}
-                                {/*value={' 老用户激活>>'}*/}
-                                {/*>*/}
-                                {/*</UIText>*/}
                                 <Image
                                     source={res.oldLoginBanner}
                                     style={{
@@ -120,10 +116,6 @@ export default class LoginTopView extends Component {
                         </View>
                         : null
                 }
-                {/*<UIText*/}
-                {/*value={}*/}
-                {/*/>*/}
-
             </View>
         );
     }
@@ -174,12 +166,12 @@ export default class LoginTopView extends Component {
             return;
         }
         if (StringUtils.checkPhone(loginModel.phoneNumber)) {
+            SMSTool.sendVerificationCode(0, loginModel.phoneNumber);
             loginModel.dowTime = 60;
             bridge.$toast('验证码发送成功,注意查收');
             (new TimeDownUtils()).startDown((time) => {
                 loginModel.dowTime = time;
             });
-            SMSTool.sendVerificationCode(0, loginModel.phoneNumber);
         } else {
             bridge.$toast('手机格式不对');
         }
@@ -239,7 +231,7 @@ export default class LoginTopView extends Component {
                         password: loginModel.password
                     });
                 } else {
-                    bridge.$toast('密码格式不对');
+                    bridge.$toast('需数字、字母组合');
                 }
             }
         } else {

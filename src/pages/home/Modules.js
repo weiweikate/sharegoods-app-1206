@@ -7,6 +7,7 @@ import { starShopModule } from './HomeStarShopModel';
 import { todayModule } from './HomeTodayModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
+import OssHelper from '../../utils/OssHelper';
 import res from './res';
 
 const {
@@ -22,28 +23,34 @@ class ClassifyModules {
     @action loadClassifyList = () => {
         this.classifyList = [{
             icon: shareImg,
+            iconUri: OssHelper('/app/share%403x.png'),
             name: '分享',
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000003'
         }, {
             icon: showImg,
+            iconUri: OssHelper('/app/show%403x.png'),
             name: '秀场',
             id: 1,
             route: 'show/ShowListPage'
         }, {
             icon: signinImg,
+            iconUri: OssHelper('/app/signin%403x.png'),
             name: '签到',
             id: 1,
             route: 'home/signIn/SignInPage',
             needLogin: 1
         }, {
             icon: schoolImg,
+            iconUri: OssHelper('/app/school%403x.png'),
             name: '必看',
             id: 1,
+            linkTypeCode: 'FX181226000001',
             route: 'show/ShowDetailPage'
         }, {
             icon: spikeImg,
+            iconUri: OssHelper('/app/spike%403x.png'),
             name: '秒杀',
             id: 1,
             route: 'topic/DownPricePage',
@@ -203,6 +210,7 @@ class HomeModule {
             return;
         }
         try {
+            const timeStamp = new Date().getTime()
             this.isFetching = true;
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             this.isFetching = false;
@@ -220,7 +228,7 @@ class HomeModule {
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id: 'goods' + good.linkTypeCode
+                        id: 'goods' + good.linkTypeCode + i + timeStamp
                     });
                     itemData = [];
                 } else {
@@ -234,7 +242,7 @@ class HomeModule {
                     id: 'goods'
                 });
             }
-            this.homeList = [...this.homeList, ...home];
+            this.homeList = this.homeList.concat(home);
             this.page++;
             this.isFetching = false;
             this.isEnd = false;

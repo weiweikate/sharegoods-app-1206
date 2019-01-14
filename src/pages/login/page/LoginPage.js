@@ -59,11 +59,11 @@ export default class LoginPage extends BasePage {
     /*render右上角*/
     $NavBarRenderRightItem = () => {
         return (
-            this.state.showWxLoginBtn ?
-                null :
+            oldUserLoginSingleModel.isShowReg ?
                 <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
                     注册
                 </Text>
+                :  null
         );
     };
 
@@ -107,14 +107,17 @@ export default class LoginPage extends BasePage {
                 <LoginTopView
                     oldUserLoginClick={this.oldUserLoginClick.bind(this)}
                     forgetPasswordClick={this.forgetPasswordClick}
-                    loginClick={(loginType, LoginParam) => this.loginClick(loginType, LoginParam)}
+                    loginClick={(loginType, LoginParam) => {
+                        this.$loadingShow();
+                        setTimeout(()=>{
+                            this.loginClick(loginType, LoginParam)
+                        },200)
+                    }}
                     showOldLogin={this.state.showWxLoginBtn}
                 />
                 {
-                    this.state.showWxLoginBtn
+                    oldUserLoginSingleModel.isShowReg
                         ?
-                        <View/>
-                        :
                         <View style={Styles.otherLoginBgStyle}>
                             <View style={Styles.lineBgStyle}>
                                 <CommSpaceLine style={{ width: 80 }}/>
@@ -136,6 +139,8 @@ export default class LoginPage extends BasePage {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        :
+                        <View/>
                 }
             </View>
         );
@@ -199,7 +204,6 @@ export default class LoginPage extends BasePage {
     };
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
-        this.$loadingShow();
         if (loginType === 0) {
             track(trackEvent.login, { loginMethod: '验证码登录' });
             LoginAPI.codeLogin({

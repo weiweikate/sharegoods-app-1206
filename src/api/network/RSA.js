@@ -40,6 +40,9 @@ const RSA = {
         result.sort();
 
         try {
+
+            // new Promise((resolve) => {
+            // })
             let sig = new jsrsasign.crypto.Signature({ 'alg': 'SHA256withRSA' });
             // initialize for signature generation
             sig.init(may_key);

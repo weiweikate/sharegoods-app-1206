@@ -8,7 +8,7 @@ import TwoColumnListView from './components/TwoColumnListView';
 
 export default class TopicPage extends BasePage {
 
-
+    TopicPage
     constructor(props) {
         super(props);
         this.props.columnNumber = this.params.columnNumber;
