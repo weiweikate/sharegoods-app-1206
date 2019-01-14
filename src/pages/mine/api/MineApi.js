@@ -108,7 +108,11 @@ const api = {
     //获取秀迷数量及激活数量
     getShowFansCount:['/user/count',{method:'post'}],
     //我的数据Exp明细
-    expDetail:['/user/detail',{method:'post'}]
+    expDetail:['/user/detail',{method:'post'}],
+    //查询顾问
+    findTutor:['/user/findTutor',{method:'get'}],
+    //绑定顾问
+    bindTutor:['/user/bindTutor',{method:'get'}]
 
 
 
