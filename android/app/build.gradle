@@ -109,7 +109,6 @@ dependencies {
     api project(':react-native-autoheight-webview')
     api project(':react-native-vector-icons')
     api project(':react-native-svg')
-    api project(':react-native-image-picker')
     api project(':react-native-linear-gradient')
     api project(':react-native-fetch-blob')
     api project(':rn-image-crop-picker')
