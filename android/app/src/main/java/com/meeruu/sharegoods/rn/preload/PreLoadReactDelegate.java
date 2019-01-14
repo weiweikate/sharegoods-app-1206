@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
+import android.view.ViewGroup;
 
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.ReactActivityDelegate;
@@ -85,7 +86,11 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
                         mMainComponentName,
                         getLaunchOptions());
             }
-            // 3.将RootView设置到Activity布局
+            // 将mReactRootView设置到Activity布局
+            ViewGroup parent = (ViewGroup) mReactRootView.getParent();
+            if (parent != null) {
+                parent.removeView(mReactRootView);
+            }
             getPlainActivity().setContentView(mReactRootView);
         }
         mDoubleTapReloadRecognizer = new DoubleTapReloadRecognizer();
@@ -103,7 +108,6 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
                     getPlainActivity(),
                     (DefaultHardwareBackBtnHandler) getPlainActivity());
         }
-
         if (mPermissionsCallback != null) {
             mPermissionsCallback.invoke();
             mPermissionsCallback = null;
@@ -129,6 +133,16 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
         }
     }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (getReactNativeHost().hasInstance()
+                && getReactNativeHost().getUseDeveloperSupport()
+                && keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
+            event.startTracking();
+            return true;
+        }
+        return false;
+    }
+
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (getReactNativeHost().hasInstance() && getReactNativeHost().getUseDeveloperSupport()) {
             if (keyCode == KeyEvent.KEYCODE_MENU) {
@@ -141,6 +155,16 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
                 getReactNativeHost().getReactInstanceManager().getDevSupportManager().handleReloadJS();
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        if (getReactNativeHost().hasInstance()
+                && getReactNativeHost().getUseDeveloperSupport()
+                && keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
+            getReactNativeHost().getReactInstanceManager().showDevOptionsDialog();
+            return true;
         }
         return false;
     }
