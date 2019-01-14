@@ -27,7 +27,7 @@
         "@mr/rn-webview-bridge": "0.0.5",
         "@mr/request": "0.2.0",
         "@mr/rn-store": "1.0.4",
-        "@mr/rn-image-crop-picker": "0.0.3",
+        "@mr/rn-image-crop-picker": "0.0.4",
         "@sensors.data/react-native-sensors-analytics": "^1.0.0",
         "axios": "0.18.0",
         "jsrsasign": "8.0.12",
