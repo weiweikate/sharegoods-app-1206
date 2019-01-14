@@ -15,6 +15,7 @@ import promotion from './page/promotion';
 import MyMentorPage from './page/mentor/MyMentorPage';
 import MyShowFansPage from './page/showFans/MyShowFansPage';
 import ExpDetailPage from './page/myData/ExpDetailPage';
+import SetMentorPage from './page/mentor/SetMentorPage';
 
 export default {
     moduleName: 'mine',    //模块名称
@@ -35,6 +36,7 @@ export default {
         promotion,
         MyMentorPage,
         MyShowFansPage,
-        ExpDetailPage
+        ExpDetailPage,
+        SetMentorPage
     }
 };
