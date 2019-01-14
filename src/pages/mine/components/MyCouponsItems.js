@@ -17,12 +17,11 @@ import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
 import API from '../../../api';
-import UI from '../../../utils/bridge';
+import bridge from '../../../utils/bridge';
 import { observer } from 'mobx-react';
 import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
 import DesignRule from '../../../constants/DesignRule';
-// import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';
 import res from '../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
@@ -369,7 +368,9 @@ export default class MyCouponsItems extends Component {
                             backgroundColor: 'white',
                             borderStyle: 'solid'
                             , alignItems: 'center', justifyContent: 'center'
-                        }} activeOpacity={0.5} onPress={this.props.giveupUse}>
+                        }} activeOpacity={0.5} onPress={()=>{
+                            // bridge.showLoading();
+                            setTimeout(this.props.giveupUse,10)}}>
                             <Text style={{
                                 fontSize: 14,
                                 color: DesignRule.textColor_secondTitle
@@ -542,7 +543,7 @@ export default class MyCouponsItems extends Component {
                     isFirstLoad: false
                 });
                 this.isLoadMore = false;
-                UI.$toast(result.msg);
+                bridge.$toast(result.msg);
             });
         } else if (this.props.justOne && status === 0) {
             let arrData = [];
@@ -587,7 +588,7 @@ export default class MyCouponsItems extends Component {
                     isFirstLoad: false
                 });
                 this.isLoadMore = false;
-                UI.$toast(result.msg);
+                bridge.$toast(result.msg);
             });
         }
     };
@@ -637,7 +638,9 @@ export default class MyCouponsItems extends Component {
         //     return;
         // }
         if (this.props.fromOrder) {
-            this.props.useCoupons(item);
+            bridge.showLoading();
+            setTimeout(()=>{this.props.useCoupons(item)}, 200);
+            // this.props.useCoupons(item);
         } else if (this.props.justOne) {
             this.setState({ showDialogModal: true });
         } else {
