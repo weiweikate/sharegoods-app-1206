@@ -12,7 +12,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.horcrux.svg.SvgPackage;
-import com.imagepicker.ImagePickerPackage;
 import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
@@ -137,7 +136,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new VectorIconsPackage(),
                     new UpdatePackage(),
                     new SvgPackage(),
-                    new ImagePickerPackage(),
                     new RNDeviceInfo(),
                     new AutoHeightWebViewPackage(),
                     new RNGeolocationPackage(),

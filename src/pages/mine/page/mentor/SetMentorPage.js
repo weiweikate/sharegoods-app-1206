@@ -16,6 +16,8 @@ import DesignRule from '../../../../constants/DesignRule';
 import { MRText as Text, MRTextInput  as TextInput } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
+import StringUtils from '../../../../utils/StringUtils';
+import user from '../../../../model/user';
 
 
 const {
@@ -55,6 +57,12 @@ export default class SetMentorPage extends BasePage {
 
 
     _searchWithCode = () => {
+        if(this.state.nowSearch && StringUtils.isEmpty(this.state.nowSearch.trim())){
+            this.$toastShow('请输入顾问的会员号！')
+            return;
+        }
+
+
         this.setState({
             searchCode: this.state.nowSearch
         });
@@ -71,6 +79,7 @@ export default class SetMentorPage extends BasePage {
             })
 
         }).catch((error) => {
+            // this.$toastShow(error.msg);
             this.setState({
                 hasError:true,
                 canSet:false,
@@ -96,6 +105,8 @@ export default class SetMentorPage extends BasePage {
 
     _saveUser=()=>{
         MineAPI.getUser().then(res => {
+            let data = res.data;
+            user.saveUserInfo(data);
             this.$navigateBack();
         }).catch(err => {
         });

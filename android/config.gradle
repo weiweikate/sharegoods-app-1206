@@ -12,7 +12,7 @@ ext {
             applicationId    : "com.meeruu.sharegoods",
             minSdkVersion    : 16,
             targetSdkVersion : 27,
-            versionCode      : 107,
+            versionCode      : 1072,
             versionName      : "1.0.7.2"
     ]
 
