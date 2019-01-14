@@ -156,17 +156,17 @@ export default class SetShopNamePage extends BasePage {
     //点击头像
     _clickHeader = () => {
         BusinessUtils.getImagePicker((response) => {
-            if (response && typeof response === 'object' && response.ok) {
+            // if (response && typeof response === 'object' && response.ok) {
                 const { imageUrl } = response;
                 if (imageUrl) {
                     this.setState({
-                        storeHeadUrlOrigin: imageUrl
+                        storeHeadUrlOrigin: imageUrl[0]
                     });
                 }
-            } else {
-                this.$toastShow(response.msg);
-            }
-        });
+            // } else {
+            //     this.$toastShow(response.msg);
+            // }
+        },1, true);
     };
 
     /*选择区域*/
