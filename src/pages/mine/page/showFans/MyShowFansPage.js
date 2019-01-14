@@ -62,24 +62,24 @@ export default class MyShowFansPage extends BasePage<Props> {
     }
 
     _listItemRender = ({ item }) => {
-        let noActivate = (
-            <View style={[styles.typeWrapper, {
-                borderColor: DesignRule.mainColor,
-                borderWidth: 1,
-                backgroundColor: '#fcf5f9'
-            }]}>
-                <Text style={styles.activateTextStyle}>
-                    未激活
-                </Text>
-            </View>
-        );
-        let activate = (
-            <View style={[styles.typeWrapper, { borderColor: '#e0e1e0', borderWidth: 1, backgroundColor: '#f1f1f1' }]}>
-                <Text style={styles.noActivateTextStyle}>
-                    已激活
-                </Text>
-            </View>
-        );
+        // let noActivate = (
+        //     <View style={[styles.typeWrapper, {
+        //         borderColor: DesignRule.mainColor,
+        //         borderWidth: 1,
+        //         backgroundColor: '#fcf5f9'
+        //     }]}>
+        //         <Text style={styles.activateTextStyle}>
+        //             未激活
+        //         </Text>
+        //     </View>
+        // );
+        // let activate = (
+        //     <View style={[styles.typeWrapper, { borderColor: '#e0e1e0', borderWidth: 1, backgroundColor: '#f1f1f1' }]}>
+        //         <Text style={styles.noActivateTextStyle}>
+        //             已激活
+        //         </Text>
+        //     </View>
+        // );
         const uri = { uri: item.headImg };
         return (
             <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
@@ -89,7 +89,7 @@ export default class MyShowFansPage extends BasePage<Props> {
                 <Text style={styles.fansNameStyle}>
                     {item.nickname}
                 </Text>
-                {item.status ? activate : noActivate}
+                {/*{item.status ? activate : noActivate}*/}
             </ImageBackground>
         );
     };
@@ -98,8 +98,7 @@ export default class MyShowFansPage extends BasePage<Props> {
         if (this.state.activatedNum && this.state.fansNum) {
             return (
                 <Text style={styles.headerTextWrapper}>
-                    激活人数：<Text
-                    style={{ color: DesignRule.textColor_mainTitle_222, fontSize: 18 }}>{this.state.activatedNum}</Text>/<Text>{this.state.fansNum}</Text>
+                   <Text>{this.state.fansNum}</Text>
                 </Text>
             );
         } else {
