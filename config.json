@@ -1,6 +1,6 @@
 {
     "showDebugPanel": false,
-    "envType": "pre_release",
+    "envType": "garyTest",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -31,6 +31,14 @@
         "online": {
             "name": "生产",
             "host": "https://api.sharegoodsmall.com/gateway",
+            "h5": "https://h5.sharegoodsmall.com",
+            "oss": "https://cdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_e0c6b86659cc",
+            "miniProgramType": 0
+        },
+        "garyTest": {
+            "name": "灰度测试",
+            "host": "https://47.110.199.35/gateway",
             "h5": "https://h5.sharegoodsmall.com",
             "oss": "https://cdn.sharegoodsmall.com",
             "wxAppletKey": "gh_e0c6b86659cc",
