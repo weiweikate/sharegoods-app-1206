@@ -236,12 +236,12 @@ export default class IDVertify2Page extends BasePage {
     //**********************************BusinessPart******************************************
     getIDcard_persion = () => {
         BusinessUtils.getImagePicker(callback => {
-            this.setState({ frontIdCard: callback.imageUrl });
+            this.setState({ frontIdCard: callback.imageUrl[0] });
         });
     };
     getIDcard_country = () => {
         BusinessUtils.getImagePicker(callback => {
-            this.setState({ backIdCard: callback.imageUrl });
+            this.setState({ backIdCard: callback.imageUrl[0] });
         });
     };
 

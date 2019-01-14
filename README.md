@@ -197,7 +197,7 @@ emptyProps
   
     1.对齐优化：./zipalign -v 4 app-release.encrypted.apk app-release.encrypted_zipalign.apk
         
-    2.apksigner V2签名：./apksigner sign --ks xxd.jks --out app-release.encrypted_signed.apk  app-release.encrypted_zipalign.apk
+    2.apksigner V2签名：./apksigner sign --ks sharegoods.jks --out app-release.encrypted_signed.apk  app-release.encrypted_zipalign.apk
         
     3.检查是否签名成功：java -jar CheckAndroidV2Signature.jar app-release.encrypted_signed.apk
         
