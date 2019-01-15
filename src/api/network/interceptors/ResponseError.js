@@ -23,7 +23,8 @@ export default function configureResponseError(error) {
                 break;
 
             case 404:
-                result.msg = `method:${error.response.config.method} 请求地址出错: ${error.response.config.url}`;
+                // result.msg = `method:${error.response.config.method} 请求地址出错: ${error.response.config.url}`;
+                result.msg = '请求出错';
                 result.status = status;
                 result.code = -1;
                 break;

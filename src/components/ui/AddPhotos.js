@@ -64,17 +64,17 @@ class AddPhotos extends Component {
 
 const styles = StyleSheet.create({
     add_photo: {
-        height: ScreenUtils.autoSizeWidth(107),
-        width: ScreenUtils.autoSizeWidth(107),
+        height: ScreenUtils.autoSizeWidth(106),
+        width: ScreenUtils.autoSizeWidth(106),
     },
     photo_item: {
-        height: ScreenUtils.autoSizeWidth(107),
-        width: ScreenUtils.autoSizeWidth(107),
+        height: ScreenUtils.autoSizeWidth(106),
+        width: ScreenUtils.autoSizeWidth(106),
         borderRadius: 3
     },
     delete_btn: {
         position: 'absolute',
-        left: ScreenUtils.autoSizeWidth(107) - 24
+        left: ScreenUtils.autoSizeWidth(106) - 24
     }
 });
 
