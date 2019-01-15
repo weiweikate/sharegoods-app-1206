@@ -303,7 +303,16 @@ class ShopCartStore {
                         });
                         middleTitleTip = '购买满' + items.rules[achieveRuleIndex].startPrice + '元,经验值翻' + items.rules[achieveRuleIndex].rate + '倍,';
                         //计算优惠券
-                        let totalYouHuiJuan = items.rules[achieveRuleIndex].startPrice / items.startPrice;
+                        // let totalYouHuiJuan = items.rules[achieveRuleIndex].startPrice / items.startPrice;
+                        let totalYouHuiJuan = items.startCount;
+                        if (totalSelectMoney < items.startPrice){
+                            totalYouHuiJuan = items.startCount;
+                        } else {
+                            totalYouHuiJuan =  parseInt(totalSelectMoney / items.startPrice) * items.startCount;
+                        }
+
+                        // let totalYouHuiJuan = items.rules[achieveRuleIndex].startPrice / items.startPrice;
+                        
                         if (totalYouHuiJuan > items.maxCount) {
                             totalYouHuiJuan = items.maxCount;
                         }
