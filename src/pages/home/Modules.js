@@ -23,39 +23,53 @@ class ClassifyModules {
     @action loadClassifyList = () => {
         this.classifyList = [{
             icon: shareImg,
-            iconUri: OssHelper('/app/share%403x.png'),
+            img: OssHelper('/app/share%403x.png'),
             name: '分享',
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000003'
         }, {
             icon: showImg,
-            iconUri: OssHelper('/app/show%403x.png'),
+            img: OssHelper('/app/show%403x.png'),
             name: '秀场',
             id: 1,
             route: 'show/ShowListPage'
         }, {
             icon: signinImg,
-            iconUri: OssHelper('/app/signin%403x.png'),
+            img: OssHelper('/app/signin%403x.png'),
             name: '签到',
             id: 1,
             route: 'home/signIn/SignInPage',
             needLogin: 1
         }, {
             icon: schoolImg,
-            iconUri: OssHelper('/app/school%403x.png'),
+            img: OssHelper('/app/school%403x.png'),
             name: '必看',
             id: 1,
             linkTypeCode: 'FX181226000001',
             route: 'show/ShowDetailPage'
         }, {
             icon: spikeImg,
-            iconUri: OssHelper('/app/spike%403x.png'),
+            img: OssHelper('/app/spike%403x.png'),
             name: '秒杀',
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000002'
         }];
+
+        HomeApi.classify().then( resData => {
+            if (resData.code === 10000 && resData.data) {
+                let classifys = resData.data
+                classifys.map((data) => {
+                    if (data.name === '全部分类') {
+                        data.route = 'home/search/CategorySearchPage'
+                    } else {
+                        data.route = 'home/search/SearchResultPage'
+                    }
+                })
+                this.classifyList =  this.classifyList.concat(classifys)
+            }
+        })
     };
 }
 
