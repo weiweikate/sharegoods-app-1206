@@ -12,7 +12,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.horcrux.svg.SvgPackage;
-import com.imagepicker.ImagePickerPackage;
 import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
@@ -33,6 +32,7 @@ import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
 import com.reactlibrary.RNGeolocationPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.request.MRNetStatePackage;
 import com.sensorsdata.analytics.RNSensorsAnalyticsPackage;
 import com.squareup.leakcanary.LeakCanary;
@@ -136,7 +136,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new VectorIconsPackage(),
                     new UpdatePackage(),
                     new SvgPackage(),
-                    new ImagePickerPackage(),
                     new RNDeviceInfo(),
                     new AutoHeightWebViewPackage(),
                     new RNGeolocationPackage(),
@@ -146,7 +145,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new WebViewBridgePackage(),
                     new LottiePackage(),
                     new MRNetStatePackage(),
-                    new RNSensorsAnalyticsPackage()
+                    new RNSensorsAnalyticsPackage(),
+                    new PickerPackage()
             );
         }
 

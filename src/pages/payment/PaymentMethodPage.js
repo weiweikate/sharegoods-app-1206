@@ -96,9 +96,9 @@ export default class PaymentMethodPage extends BasePage {
     _checkOrder() {
         let time = (new Date().getTime()) / 1000
         console.log('checkorder', this.orderTime, time)
-        track(trackEvent.payOrder, {...paymentTrack, tracking: 'checking'})
+        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'checking'})
         if (time - this.orderTime > 10) {
-            track(trackEvent.payOrder, {...paymentTrack, tracking: 'checkOut'})
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'checkOut'})
             return
         }
         this.payment.checkPayStatus().then(data => {
@@ -110,7 +110,7 @@ export default class PaymentMethodPage extends BasePage {
             }
             this.setState({orderChecking: false})
             if (data === 3){
-                track(trackEvent.payOrder, {...paymentTrack, tracking: 'success'})
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'success'})
                 this.paymentResultView.show(1)
             }
         }).catch(()=> {

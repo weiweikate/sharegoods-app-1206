@@ -13,13 +13,14 @@ import ImageLoad from "@mr/image-placeholder";
 
 const { px2dp } = ScreenUtils;
 import res from "../../../spellShop/res";
+import homeRes from "../../res"
 import DesignRule from "../../../../constants/DesignRule";
 import MineAPI from "../../api/MineApi";
 import {MRText as Text} from '../../../../components/ui'
 
 const HeaderBarBgImg = res.myShop.txbg_03;
 const white_back = res.button.white_back;
-
+const mine_user_icon = homeRes.homeBaseImg.mine_user_icon;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 
 export default class MyMentorPage extends BasePage {
@@ -118,7 +119,7 @@ export default class MyMentorPage extends BasePage {
 
     _headerRender = () => {
         let image = this.state.headImg ?
-            <ImageLoad source={{ uri: this.state.headImg }} style={styles.headerIconStyle}/> : null;
+            <ImageLoad source={{ uri: this.state.headImg }} style={styles.headerIconStyle}/> : <Image source={mine_user_icon} style={styles.headerIconStyle}/> ;
 
         return (
             <ImageBackground source={HeaderBarBgImg} style={styles.headerWrapper}>

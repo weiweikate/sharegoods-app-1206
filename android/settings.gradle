@@ -13,8 +13,6 @@ include ':react-native-update'
 project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
 include ':react-native-svg'
 project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
-include ':react-native-image-picker'
-project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-picker/android')
 include ':react-native-autoheight-webview'
 project(':react-native-autoheight-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-autoheight-webview/android')
 include ':react-native-sensors-analytics'
@@ -25,6 +23,8 @@ include ':cookies'
 project(':cookies').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/cookies/android')
 include ':rn-geolocation'
 project(':rn-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-geolocation/android')
+include ':rn-image-crop-picker'
+project(':rn-image-crop-picker').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-image-crop-picker/android')
 
 include ':app'
 include ':commonlib'
