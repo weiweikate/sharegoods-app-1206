@@ -1,6 +1,3 @@
-/**
- * Created by xiangchen on 2018/7/23.
- */
 import React, { Component } from 'react';
 import {
     FlatList,
@@ -8,7 +5,7 @@ import {
     ImageBackground,
     StyleSheet,
     View,
-    NativeModules, RefreshControl,ActivityIndicator
+    NativeModules, RefreshControl
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
 import { UIImage, UIText, NoMoreClick } from '../../../components/ui';
@@ -52,9 +49,8 @@ export default class MyCouponsItems extends Component {
             explainList: [],
             showDialogModal: false,
             tokenCoinNum: this.props.justOne,
-
+            isFirstLoad: true
         };
-        this.isFirstLoad=true
         this.currentPage = 0;
         this.isLoadMore = false;
         this.isEnd = false;
@@ -297,48 +293,37 @@ export default class MyCouponsItems extends Component {
     _keyExtractor = (item, index) => index;
     // 空布局
     _renderEmptyView = () => {
-        if(this.state.firstLoad){
-            return(
-                <View style={styles.footer_container}>
-                    <ActivityIndicator size="small" color="#888888"/>
-                    <Text style={styles.footer_text}>拼命加载中…</Text>
-                </View>
-                )
-
-        }else{
-            return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
-                    <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
-                          allowFontScaling={false}>还没有优惠券哦</Text>
-                    <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
-                          allowFontScaling={false}>快去商城逛逛吧</Text>
-                    <NoMoreClick
-                        onPress={() => {
-                            this._gotoLookAround();
-                        }}>
-                        <View style={{
-                            marginTop: 22,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderColor: DesignRule.mainColor,
-                            borderWidth: 1,
-                            borderRadius: 18,
-                            width: 115,
-                            height: 36
-                        }}>
-                            <Text style={{
-                                color: DesignRule.mainColor,
-                                fontSize: 15
-                            }} allowFontScaling={false}>
-                                去逛逛
-                            </Text>
-                        </View>
-                    </NoMoreClick>
-                </View>
-            );
-        }
-
+        return (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
+                      allowFontScaling={false}>还没有优惠券哦</Text>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
+                      allowFontScaling={false}>快去商城逛逛吧</Text>
+                <NoMoreClick
+                    onPress={() => {
+                        this._gotoLookAround();
+                    }}>
+                    <View style={{
+                        marginTop: 22,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderColor: DesignRule.mainColor,
+                        borderWidth: 1,
+                        borderRadius: 18,
+                        width: 115,
+                        height: 36
+                    }}>
+                        <Text style={{
+                            color: DesignRule.mainColor,
+                            fontSize: 15
+                        }} allowFontScaling={false}>
+                            去逛逛
+                        </Text>
+                    </View>
+                </NoMoreClick>
+            </View>
+        );
     };
 
     _footer = () => {
@@ -537,7 +522,9 @@ export default class MyCouponsItems extends Component {
                 page: this.currentPage, pageSize: 10,
                 ...params
             }).then(res => {
-                    this.isFirstLoad=false
+                this.setState({
+                    isFirstLoad: false
+                });
                 let data = res.data || {};
                 let dataList = data.data || [];
                 console.log('dataList');
@@ -549,7 +536,9 @@ export default class MyCouponsItems extends Component {
                 }
 
             }).catch(result => {
-                    this.isFirstLoad=false
+                this.setState({
+                    isFirstLoad: false
+                });
                 this.isLoadMore = false;
                 bridge.$toast(result.msg);
             });
@@ -575,7 +564,9 @@ export default class MyCouponsItems extends Component {
                 status,
                 pageSize: 10
             }).then(result => {
-                    this.isFirstLoad=false
+                this.setState({
+                    isFirstLoad: false
+                });
                 let data = result.data || {};
                 let dataList = data.data || [];
                 this.isLoadMore = false;
@@ -590,7 +581,9 @@ export default class MyCouponsItems extends Component {
                 // }
 
             }).catch(result => {
-                    this.isFirstLoad=false
+                this.setState({
+                    isFirstLoad: false
+                });
                 this.isLoadMore = false;
                 bridge.$toast(result.msg);
             });
@@ -627,7 +620,7 @@ export default class MyCouponsItems extends Component {
 
     onLoadMore = () => {
         console.log('onLoadMore', this.isEnd);
-        if (!this.isLoadMore && !this.isEnd && !this.isFirstLoad) {
+        if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
             this.getDataFromNetwork();
         }
