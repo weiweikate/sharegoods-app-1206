@@ -8,11 +8,11 @@ import ViewPager from '../../../components/ui/ViewPager';
 import UIText from '../../../components/ui/UIText';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
-import res from '../res';
+import res from '../../order/res';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui';
 
-const icon_search = res.search.icon_search;
+const icon_search = res.search;
 
 
 const itemImgW = (ScreenUtils.width - 110 - 2 * 10.5 - 2 * 30) / 3;
@@ -96,7 +96,7 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} onPress={() => this.go2SearchPage()}>
                         <Image source={icon_search}
-                               style={{ width: 22, height: 21, marginLeft: 20, backgroundColor: 'red'}}/>
+                               style={{ width: 22, height: 21, marginLeft: 20}}/>
                         <View style={styles.inputText}/>
                     </TouchableOpacity>
                 </View>
