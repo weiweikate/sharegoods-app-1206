@@ -326,7 +326,6 @@ export default class TopicDetailPage extends BasePage {
 
     //选择规格确认 秒杀 降价拍
     _selectionViewConfirm = (amount, skuCode) => {
-        this.$loadingShow();
         let orderProducts = [];
         orderProducts.push({
             skuCode: skuCode,
@@ -345,7 +344,6 @@ export default class TopicDetailPage extends BasePage {
 
     //选择规格确认 礼包
     _selectionViewPakageConfirm = (amount, selectData) => {
-        this.$loadingShow();
         let priceList = [];
         selectData.forEach((item) => {
             priceList.push({

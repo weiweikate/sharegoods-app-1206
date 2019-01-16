@@ -329,7 +329,6 @@ export default class ProductDetailPage extends BasePage {
             });
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
-            this.$loadingShow();
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
