@@ -90,7 +90,7 @@ export default class HomeBannerView extends Component {
             {
                 Platform.OS === 'ios'
                     ?
-                    <MRBannerViewMode imgUrlArray={items} bannerHeight={bannerHeight} modeStyle={1}
+                    <MRBannerViewMode imgUrlArray={items} bannerHeight={bannerHeight} modeStyle={1} autoInterval={5}
                                       onDidSelectItemAtIndex={(index) => {
                                           this._onPressRow(index);
                                       }}/>
