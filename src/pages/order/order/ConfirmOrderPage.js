@@ -103,7 +103,9 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
-        this.loadPageData();
+        setTimeout(() => {
+            this.loadPageData();
+        }, 100);
         // this.keyboardDidShowListener=Keyboard.addListener('keyboardWillChangeFrame', (event)=>this._keyboardDidShow(event));
         // this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', (event)=>this._keyboardDidHide(event));
     }
@@ -141,8 +143,6 @@ export default class ConfirmOrderPage extends BasePage {
                 bridge.$toastShow(err.msg);
             }
         }
-
-
     }
 
     selectAddress = () => {//地址重新选择
