@@ -1,6 +1,3 @@
-/**
- * Created by xiangchen on 2018/7/23.
- */
 import React, { Component } from 'react';
 import {
     FlatList,
@@ -8,7 +5,7 @@ import {
     ImageBackground,
     StyleSheet,
     View,
-    NativeModules, RefreshControl
+    NativeModules, RefreshControl,ActivityIndicator
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
 import { UIImage, UIText, NoMoreClick } from '../../../components/ui';
@@ -296,37 +293,47 @@ export default class MyCouponsItems extends Component {
     _keyExtractor = (item, index) => index;
     // 空布局
     _renderEmptyView = () => {
-        return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
-                      allowFontScaling={false}>还没有优惠券哦</Text>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
-                      allowFontScaling={false}>快去商城逛逛吧</Text>
-                <NoMoreClick
-                    onPress={() => {
-                        this._gotoLookAround();
-                    }}>
-                    <View style={{
-                        marginTop: 22,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderColor: DesignRule.mainColor,
-                        borderWidth: 1,
-                        borderRadius: 18,
-                        width: 115,
-                        height: 36
-                    }}>
-                        <Text style={{
-                            color: DesignRule.mainColor,
-                            fontSize: 15
-                        }} allowFontScaling={false}>
-                            去逛逛
-                        </Text>
-                    </View>
-                </NoMoreClick>
-            </View>
-        );
+        if(this.state.isFirstLoad){
+            return(
+                <View style={styles.footer_container}>
+                    <ActivityIndicator size="small" color="#888888"/>
+                    <Text style={styles.footer_text}>拼命加载中…</Text>
+                </View>
+            )
+        }else{
+            return (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                    <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
+                          allowFontScaling={false}>还没有优惠券哦</Text>
+                    <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
+                          allowFontScaling={false}>快去商城逛逛吧</Text>
+                    <NoMoreClick
+                        onPress={() => {
+                            this._gotoLookAround();
+                        }}>
+                        <View style={{
+                            marginTop: 22,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderColor: DesignRule.mainColor,
+                            borderWidth: 1,
+                            borderRadius: 18,
+                            width: 115,
+                            height: 36
+                        }}>
+                            <Text style={{
+                                color: DesignRule.mainColor,
+                                fontSize: 15
+                            }} allowFontScaling={false}>
+                                去逛逛
+                            </Text>
+                        </View>
+                    </NoMoreClick>
+                </View>
+            );
+        }
+
     };
 
     _footer = () => {
