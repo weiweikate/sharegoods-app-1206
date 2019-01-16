@@ -6,12 +6,11 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import bridge from '../../../utils/bridge';
 import ViewPager from '../../../components/ui/ViewPager';
 import UIText from '../../../components/ui/UIText';
-import UIImage from '../../../components/ui/UIImage';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import ImageLoad from '@mr/image-placeholder'
-import {MRText as Text} from '../../../components/ui';
+import ImageLoad from '@mr/image-placeholder';
+import { MRText as Text } from '../../../components/ui';
 
 const icon_search = res.search.icon_search;
 
@@ -77,8 +76,9 @@ export default class CategorySearchPage extends BasePage {
             <TouchableOpacity onPress={() => {
                 this.clickBanner(item);
             }}>
-                <UIImage
+                <ImageLoad
                     source={{ uri: item.img }}
+                    borderRadius={5}
                     style={{ width: bannerW, height: 118, borderRadius: 5, marginLeft: 10, marginRight: 10 }}
                 />
             </TouchableOpacity>
@@ -198,7 +198,7 @@ export default class CategorySearchPage extends BasePage {
         // banner点击跳转
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
-                productCode: item.linkTypeCode,preseat:'类目banner'
+                productCode: item.linkTypeCode, preseat: '类目banner'
             });
         } else if (item.linkType === 2) {
             this.$navigate('topic/DownPricePage', {
@@ -213,7 +213,7 @@ export default class CategorySearchPage extends BasePage {
             let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
-                activityType: type,preseat:'专题列表页'
+                activityType: type, preseat: '专题列表页'
             });
         }
     };
@@ -283,13 +283,12 @@ export default class CategorySearchPage extends BasePage {
                 marginLeft: (item.index % 3 === 1 || item.index % 3 === 2) ? 15 : 10,
                 alignItems: 'center'
             }}>
-                <ImageLoad imageUri={item.item.img}
-                              style={{
-                                  height: itemImgW,
-                                  width: itemImgW
-                              }}
-                              resizeMode={'contain'}
-                              onClickAction={() => this.go2ResultPage(item.item.id, item.item.name)}/>
+                <ImageLoad source={item.item.img}
+                           style={{
+                               height: itemImgW,
+                               width: itemImgW
+                           }}
+                           onClickAction={() => this.go2ResultPage(item.item.id, item.item.name)}/>
                 <UIText value={item.item.name}
                         style={{
                             textAlign: 'center',

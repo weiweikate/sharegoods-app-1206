@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -13,8 +12,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -222,7 +219,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 //小程序页面路径
                 umMin.setUserName(params.getString("userName"));
                 // 小程序原始id,在微信平台查询
-                new ShareAction(mContext.getCurrentActivity()).withMedia(umMin).setPlatform(platform).setCallback(umShareListener).share();
+                new ShareAction(getCurrentActivity()).withMedia(umMin).setPlatform(platform).setCallback(umShareListener).share();
 
         }
     }
@@ -370,15 +367,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         drawShopInviteFriendsImage(mContext, map, success, fail);
     }
 
-//    headerImg: `${shareInfo.headUrl}`,
+    //    headerImg: `${shareInfo.headUrl}`,
 //    shopName: `${shareInfo.name}`,
 //    shopId: `ID: ${shareInfo.showNumber}`,
 //    shopPerson: `店主: ${manager.nickname || ''}`,
 //    codeString: this.state.codeString,
 //    wxTip: this.state.wxTip
-    public static void drawShopInviteFriendsImage(final Context context, final ReadableMap map, final Callback success, final Callback fail){
-
-
+    public static void drawShopInviteFriendsImage(final Context context, final ReadableMap map, final Callback success, final Callback fail) {
 
 
         Fresco.initialize(context);
@@ -394,7 +389,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onNewResultImpl(Bitmap bitmap) {
-                drawShopInviteFriendsImageWithHeader(context, map,bitmap, success, fail);
+                drawShopInviteFriendsImageWithHeader(context, map, bitmap, success, fail);
             }
 
             @Override
@@ -404,12 +399,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }, CallerThreadExecutor.getInstance());
 
 
-
-
     }
 
 
-    public static void drawShopInviteFriendsImageWithHeader(final Context context, final ReadableMap map,final Bitmap headerBitmap, final Callback success, final Callback fail){
+    public static void drawShopInviteFriendsImageWithHeader(final Context context, final ReadableMap map, final Bitmap headerBitmap, final Callback success, final Callback fail) {
         Bitmap result = Bitmap.createBitmap(375, 667, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -423,7 +416,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         float scaleHeight = ((float) newHeight) / height;
 
 
-        Bitmap whiteBitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.yqhy_03);
+        Bitmap whiteBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy_03);
 
         int whiteWidth = whiteBitmap.getWidth();
         int whiteHeight = whiteBitmap.getHeight();
@@ -437,7 +430,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-        canvas.drawBitmap(bitmap,  0,0,paint);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
 
         Matrix whiteMatrix = new Matrix();
         whiteMatrix.postScale(scaleWidthWhite, scaleHeightWhite);
@@ -451,13 +444,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         int newHeaderLength = 68;
         float scaleWidthHeader = ((float) newHeaderLength) / headerW;
         float scaleHeightHeader = ((float) newHeaderLength) / headerH;
-        float scaleHeader = Math.max(scaleHeightHeader,scaleWidthHeader);
+        float scaleHeader = Math.max(scaleHeightHeader, scaleWidthHeader);
         Matrix headerMatrix = new Matrix();
         headerMatrix.postScale(scaleHeader, scaleHeader);
 
 
         Bitmap header = Bitmap.createBitmap(headerBitmap, 0, 0, headerW, headerH, headerMatrix, true);
-        header = createCircleImage(header,newHeaderLength);
+        header = createCircleImage(header, newHeaderLength);
         canvas.drawBitmap(header, 70, 195, paint);
 
 
@@ -489,12 +482,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.setTextSize(13);
         bounds = new Rect();
         paint.getTextBounds(wxTip, 0, wxTip.length(), bounds);
-        canvas.drawText(wxTip, (375-bounds.width())/2, 470, paint);
+        canvas.drawText(wxTip, (375 - bounds.width()) / 2, 470, paint);
 
 
         String path = saveImageToCache(context, result, "inviteShop.png");
 
-        path = "file://"+path;
+        path = "file://" + path;
         Uri uri = Uri.parse(path);
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
@@ -517,8 +510,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
      * @param min
      * @return
      */
-    private static Bitmap createCircleImage(Bitmap source, int min)
-    {
+    private static Bitmap createCircleImage(Bitmap source, int min) {
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
         Bitmap target = Bitmap.createBitmap(min, min, Bitmap.Config.ARGB_8888);
@@ -543,9 +535,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
 
-
-
-    public static void drawInviteFriendsImage(final Context context, final String url, final Callback success, final Callback fail){
+    public static void drawInviteFriendsImage(final Context context, final String url, final Callback success, final Callback fail) {
         Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -562,11 +552,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-        canvas.drawBitmap(newbitmap,  0,0,paint);
+        canvas.drawBitmap(newbitmap, 0, 0, paint);
         canvas.drawBitmap(qrBitmap, 225, 620, paint);
         String path = saveImageToCache(context, result, "inviteFriends.png");
 
-        path = "file://"+path;
+        path = "file://" + path;
         Uri uri = Uri.parse(path);
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
@@ -789,7 +779,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
      */
     private void screenshot(Callback success, Callback fail) {
         // 获取屏幕
-        View dView = mContext.getCurrentActivity().getWindow().getDecorView();
+        View dView = getCurrentActivity().getWindow().getDecorView();
         dView.setDrawingCacheEnabled(true);
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
