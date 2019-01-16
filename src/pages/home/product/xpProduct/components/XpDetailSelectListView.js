@@ -44,6 +44,10 @@ export class XpDetailSelectListView extends Component {
         return { length: itemWidth + 16, offset: (itemWidth + 16) * index, index: index };
     };
 
+    _ListFooterComponent = () => {
+        return <View style={{ width: 15, height: 1 }}/>;
+    };
+
     _scrollToIndex = (index) => {
         this.flatList && this.flatList.scrollToIndex({
             viewPosition: 0.5,
@@ -69,6 +73,7 @@ export class XpDetailSelectListView extends Component {
                           keyExtractor={this._keyExtractor}
                           getItemLayout={this._getItemLayout}
                           horizontal={true}
+                          ListFooterComponent={this._ListFooterComponent}
                           showsHorizontalScrollIndicator={false}/>
             </View>
         );
