@@ -54,7 +54,6 @@ export default class MyCouponsItems extends Component {
         this.currentPage = 0;
         this.isLoadMore = false;
         this.isEnd = false;
-        // setTimeout(() => this.onRefresh(), 10);
     }
 
     componentDidMount() {
@@ -194,7 +193,8 @@ export default class MyCouponsItems extends Component {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
-                        <Text style={{ fontSize: px2dp(17), color: 'black' }} allowFontScaling={false}>请选择券数</Text>
+                        <Text style={{ fontSize: px2dp(17), color: DesignRule.textColor_mainTitle }}
+                              allowFontScaling={false}>请选择券数</Text>
                     </View>
 
                     <View style={{
@@ -226,7 +226,8 @@ export default class MyCouponsItems extends Component {
                                     alignItems: 'center',
                                     height: px2dp(24),
                                     width: px2dp(136),
-                                    fontSize: px2dp(15)
+                                    fontSize: px2dp(15),
+                                    color: DesignRule.textColor_mainTitle
                                 }}/>
                         </View>
                         <UIImage source={plusIcon} style={{
@@ -237,13 +238,13 @@ export default class MyCouponsItems extends Component {
                     </View>
                 </View>
 
-                <View style={{ width: '100%', height: 0.5, backgroundColor: 'grey' }}/>
+                <View style={{ width: '100%', height: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
                 <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
                     <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                  onPress={this.quitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </NoMoreClick>
-                    <View style={{ height: '100%', width: 0.5, backgroundColor: 'grey' }}/>
+                    <View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
                     <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                  onPress={this.commitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>确定</Text>
@@ -377,7 +378,6 @@ export default class MyCouponsItems extends Component {
                             borderStyle: 'solid'
                             , alignItems: 'center', justifyContent: 'center'
                         }} activeOpacity={0.5} onPress={() => {
-                            // bridge.showLoading();
                             setTimeout(this.props.giveupUse, 10);
                         }}>
                             <Text style={{
