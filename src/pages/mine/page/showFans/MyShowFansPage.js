@@ -34,7 +34,6 @@ export default class MyShowFansPage extends BasePage<Props> {
     constructor(props) {
         super(props);
         this.state = {
-            activatedNum: null,
             fansNum: null
         };
     }
@@ -45,21 +44,21 @@ export default class MyShowFansPage extends BasePage<Props> {
     };
 
 
-    componentDidMount() {
-        this.loadPageData();
-    }
-
-    loadPageData() {
-        MineAPI.getShowFansCount().then((data) => {
-            if (data.data) {
-                this.setState({
-                    activatedNum: data.data.showFansCount
-                });
-            }
-        }).catch((error) => {
-        });
-
-    }
+    // componentDidMount() {
+    //     this.loadPageData();
+    // }
+    //
+    // loadPageData() {
+    //     MineAPI.getShowFansCount().then((data) => {
+    //         if (data.data) {
+    //             this.setState({
+    //                 activatedNum: data.data.showFansCount
+    //             });
+    //         }
+    //     }).catch((error) => {
+    //     });
+    //
+    // }
 
     _listItemRender = ({ item }) => {
         // let noActivate = (
@@ -95,10 +94,10 @@ export default class MyShowFansPage extends BasePage<Props> {
     };
 
     _headerRender = () => {
-        if (this.state.activatedNum && this.state.fansNum) {
+        if (this.state.fansNum) {
             return (
                 <Text style={styles.headerTextWrapper}>
-                   <Text>{this.state.fansNum}</Text>
+                    {`秀迷人数： ${this.state.fansNum}人`}
                 </Text>
             );
         } else {
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     },
     headerTextWrapper: {
         marginLeft: DesignRule.margin_page,
-        marginTop: 12
+        marginTop: 15
     }
 
 });
