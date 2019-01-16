@@ -107,23 +107,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
     _render() {
         return (
             <View style={styles.container}>
-                <Image source={bg}
-                       style={{ width: ScreenUtils.width, height: ScreenUtils.height, position: 'absolute' }}/>
-                <View style={{ flex: 1 }}/>
-                <UIImage source={wenan}
-                         style={{
-                             width: autoSizeWidth(174),
-                             height: autoSizeWidth(70),
-                             marginBottom: 30,
-                             alignSelf: 'flex-start',
-                             marginLeft: 50
-                         }}/>
-                <UIImage source={hongbao}
-                         style={{
-                             width: autoSizeWidth(350),
-                             height: autoSizeWidth(490) + ScreenUtils.safeBottom
-
-                         }}/>
+                <Image source={bg} style={{top: ScreenUtils.statusBarHeight+44,left: 0, width: DesignRule.autoSizeWidth(375), height: DesignRule.autoSizeWidth(375/1125*1539), resizeMode: 'stretch'}}/>
                 <TouchableWithoutFeedback onPress={() => {
                     this.$navigateBack();
                 }}>
@@ -145,13 +129,13 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 </TouchableWithoutFeedback>
                 <View style={{
                     backgroundColor: 'white',
-                    width: autoSizeWidth(180),
-                    height: autoSizeWidth(180),
-                    bottom: autoSizeWidth(200),
-                    left: autoSizeWidth(85 + 12.5),
+                    width: autoSizeWidth(160),
+                    height: autoSizeWidth(160),
+                    top: autoSizeWidth(260) +  ScreenUtils.statusBarHeight+44,
+                    left: autoSizeWidth(95 + 12.5),
                     position: 'absolute',
-                    shadowColor: DesignRule.mainColor,
-                    shadowOpacity: 0.3,
+                    // shadowColor: DesignRule.mainColor,
+                    // shadowOpacity: 0.3,
                     justifyContent:'center',
                     alignItems:'center',
                 }}>
@@ -166,9 +150,9 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     position: 'absolute',
                     left: 0,
                     width: ScreenUtils.width,
-                    bottom: 35 + ScreenUtils.safeBottom,
+                    bottom: 15 + ScreenUtils.safeBottom,
                     alignItems: 'center',
-                    paddingHorizontal: 40
+                    paddingHorizontal: DesignRule.autoSizeWidth(30)
                 }}>
                     <TouchableOpacity onPress={this._saveImg} disabled={this.state.disable}>
                         <ImageBackground source={button} style={styles.btnContainer} onPress={this._saveImg}>
@@ -221,7 +205,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        backgroundColor: '#ff0050'
     },
     btnContainer: {
         borderRadius: autoSizeWidth(25),
@@ -233,6 +217,6 @@ const styles = StyleSheet.create({
     },
     btnText: {
         fontSize: DesignRule.fontSize_mediumBtnText,
-        color: 'white'
+        color: '#ff0050'
     }
 });
