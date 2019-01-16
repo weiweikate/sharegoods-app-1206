@@ -40,9 +40,7 @@ const {
     },
     invite: {
         bg,
-        button,
-        hongbao,
-        wenan
+        button
     }
 } = res;
 
