@@ -202,7 +202,7 @@ export default class TopicDetailPage extends BasePage {
                         });
 
                         if (this.state.data.type === 2 && !this.isNoFirstShow) {//1普通礼包  2升级礼包  展示一次
-                            this.isNoFirstShow = true
+                            this.isNoFirstShow = true;
                             this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退款，如有产品质量问题，可联系客服进行申诉`);
                         }
                     });
@@ -636,7 +636,7 @@ export default class TopicDetailPage extends BasePage {
             colorType = 0;
         }
 
-        let productPrice, productName, productImgUrl, firstCategoryId, secCategoryId;
+        let productPrice, productName, productImgUrl, firstCategoryId, secCategoryId, originalPrice, groupPrice;
         if (this.state.activityType === 3) {
             const { name, levelPrice, imgUrl } = this.state.data || {};
             productPrice = levelPrice;
@@ -650,6 +650,8 @@ export default class TopicDetailPage extends BasePage {
         }
         firstCategoryId = (this.state.data || {}).firstCategoryId;
         secCategoryId = (this.state.data || {}).secCategoryId;
+        originalPrice = (this.state.data || {}).originalPrice;
+        groupPrice = (this.state.data || {}).groupPrice;
 
         return (
             <View style={styles.container}>
@@ -745,7 +747,9 @@ export default class TopicDetailPage extends BasePage {
                                 imageJson={{
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
-                                    priceStr: `￥${productPrice}`,
+                                    priceStr: `￥${originalPrice}`,
+                                    retailPrice: `￥${productPrice}`,
+                                    spellPrice: `￥${groupPrice}`,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`
                                 }}
                                 webJson={{
