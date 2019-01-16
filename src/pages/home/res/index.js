@@ -20,6 +20,7 @@ const resHome = {
     show: require('./show.png'),
     signin: require('./signin.png'),
     spike: require('./spike.png'),
+    icon_search: require('./icon_search.png'),
     signIn: {
         ...signIn
     },
