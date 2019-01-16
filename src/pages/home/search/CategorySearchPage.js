@@ -96,7 +96,7 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} onPress={() => this.go2SearchPage()}>
                         <Image source={icon_search}
-                               style={{ width: 22, height: 21, marginLeft: 20}}/>
+                               style={{ width: 22, height: 21, marginLeft: 15}}/>
                         <View style={styles.inputText}/>
                     </TouchableOpacity>
                 </View>
