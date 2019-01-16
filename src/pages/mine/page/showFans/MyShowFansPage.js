@@ -172,7 +172,9 @@ const styles = StyleSheet.create({
     },
     headerTextWrapper: {
         marginLeft: DesignRule.margin_page,
-        marginTop: 15
+        marginTop: 15,
+        fontSize: DesignRule.fontSize_threeTitle,
+        color:DesignRule.textColor_secondTitle
     }
 
 });
