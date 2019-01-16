@@ -10,8 +10,8 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-     ListView,  Image
-} from 'react-native';
+    ListView, Image,
+} from "react-native";
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -115,7 +115,8 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <NoMoreClick onPress={() => this.go2PruductDetailPage(item.storeCode, 0)}>
+            <NoMoreClick onPress={() => this.go2PruductDetailPage(item.storeCode, 0)}
+                         activeOpacity={1}>
                 <View style={styles.rowContainer}>
                     {
                         item.headUrl ? <UIImage source={{ uri: item.headUrl }} style={styles.img} borderRadius={25}/> :
@@ -143,6 +144,7 @@ export default class MyCollectPage extends BasePage {
                         </View>
                     </View>
                 </View>
+                <View style={{height:0.5,backgroundColor:DesignRule.lineColor_inColorBg}}/>
             </NoMoreClick>
         );
     };
@@ -217,9 +219,26 @@ export default class MyCollectPage extends BasePage {
         }
 
     }
-
-    componentDidMount() {
-        this.getDataFromNetwork();
+    componentWillMount() {
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                // BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+            }
+        );
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocusSubscriptionMine', state);
+                if (state && state.routeName === 'mine/MyCollectPage') {
+                    this.getDataFromNetwork();
+                }
+            });
+    }
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
     getDataFromNetwork = () => {
