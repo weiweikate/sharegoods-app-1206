@@ -15,6 +15,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -652,12 +653,21 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String title = shareImageBean.getTitleStr();
         String price = shareImageBean.getPriceStr();
         String info = shareImageBean.getQRCodeStr();
+        String retailPrice = shareImageBean.getRetail();
+        String spellPrice = shareImageBean.getSpell();
 
         int titleSize = 26;
-        int priceSize = 24;
-        int titleCount = (int) ((500 * 0.57) / titleSize);
+        int titleCount = (int) ((440) / titleSize);
+        boolean isTwoLine;
+        if (title.length() <= titleCount) {
+            isTwoLine = false;
+        }else {
+            isTwoLine = true;
+        }
 //        height: autoSizeWidth(650 / 2), width: autoSizeWidth(250)
-        Bitmap result = Bitmap.createBitmap(500, (int) (660), Bitmap.Config.ARGB_8888);
+
+        //680 708
+        Bitmap result = isTwoLine ? Bitmap.createBitmap(500, (int) (708), Bitmap.Config.ARGB_8888) : Bitmap.createBitmap(500, (int) (680), Bitmap.Config.ARGB_8888) ;
 
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -668,11 +678,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         //在图片下边画一个白色矩形块用来放文字，防止文字是透明背景，在有些情况下保存到本地后看不出来
 
         paint.setColor(Color.WHITE);
-        canvas.drawRect(0, 500, 500, 660, paint);
-        paint.setColor(Color.BLACK);
+        if(isTwoLine){
+            canvas.drawRect(0, 500, 500, 708, paint);
+
+        }else {
+            canvas.drawRect(0, 500, 500, 680, paint);
+        }
 
         //绘制文字
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.parseColor("#666666"));
         paint.setTextSize(titleSize);
         Rect bounds = new Rect();
         if (title.length() <= titleCount) {
@@ -680,18 +694,18 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, s.length(), bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 12, 500 + 30, paint);
+            canvas.drawText(s, 30, 500 + 30, paint);
         }
         if (title.length() <= titleCount * 2 && title.length() > titleCount) {
             String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 12, 500 + 30, paint);
+            canvas.drawText(s, 30, 500 + 30, paint);
 
             s = title.substring(titleCount, title.length());
 
-            canvas.drawText(s, 12, 500 + 30 + titleSize + 8 + bounds.height() / 2, paint);
+            canvas.drawText(s, 30, 500 + 30 + titleSize + bounds.height() / 2, paint);
         }
 
         if (title.length() > titleCount * 2) {
@@ -699,21 +713,60 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 12, 500 + 30, paint);
+            canvas.drawText(s, 30, 500 + 30, paint);
 
-            s = title.substring(titleCount, titleCount * 2 - 3) + "...";
+            s = title.substring(titleCount, titleCount * 2 - 2) + "...";
 
-            canvas.drawText(s, 12, 500 + 30 + titleSize + 8 + bounds.height() / 2, paint);
+            canvas.drawText(s, 30, 500 + 30 + titleSize  + bounds.height() / 2, paint);
         }
 
-        paint.setColor(Color.RED);
-        paint.setTextSize(priceSize);
-        Rect boundsPrice = new Rect();
-        paint.getTextBounds(price, 0, price.length(), boundsPrice);
-        canvas.drawText(price, 12, 610, paint);
 
-        Bitmap qrBitmap = createQRImage(info, 120, 120);
-        canvas.drawBitmap(qrBitmap, 360, 520, paint);
+        String marketStr = "市场价：";
+        paint.setColor(Color.parseColor("#333333"));
+        paint.setTextSize(20);
+        Rect market = new Rect();
+        paint.getTextBounds(marketStr, 0, marketStr.length(), market);
+        canvas.drawText(marketStr, 30, isTwoLine ?610 : 585, paint);
+
+        paint.setStrikeThruText(true);
+        paint.setTextSize(20);
+        canvas.drawText(price, market.right+30, isTwoLine ?610 : 585, paint);
+
+
+        String retailStr = "零售价：";
+        paint.setColor(Color.parseColor("#333333"));
+        paint.setStrikeThruText(false);
+
+        paint.setTextSize(22);
+        Rect retail = new Rect();
+        paint.getTextBounds(retailStr, 0, retailStr.length(), retail);
+        canvas.drawText(retailStr, 30, isTwoLine ?640 : 615, paint);
+
+        paint.setTextSize(22);
+        paint.setColor(Color.parseColor("#F00050"));
+        canvas.drawText(retailPrice, retail.right+30, isTwoLine ?640 : 615, paint);
+
+
+        String spellStr = "拼店价：";
+        paint.setColor(Color.parseColor("#333333"));
+        paint.setStrikeThruText(false);
+
+        paint.setTextSize(22);
+        Rect spell = new Rect();
+        paint.getTextBounds(spellStr, 0, spellStr.length(), spell);
+        canvas.drawText(spellStr, 30, isTwoLine ?670 : 645, paint);
+
+        paint.setTextSize(22);
+        paint.setColor(Color.parseColor("#F00050"));
+        canvas.drawText(spellPrice, spell.right+30, isTwoLine ?670 : 645, paint);
+
+        Bitmap qrBitmap = createQRImage(info, 100, 100);
+        if(isTwoLine){
+            canvas.drawBitmap(qrBitmap, 370, 590, paint);
+        }else {
+            canvas.drawBitmap(qrBitmap, 370, 565, paint);
+        }
+
         String path = saveImageToCache(context, result, "shareImage.png");
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
@@ -732,22 +785,34 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             return null;
         }
 
+        if (map.hasKey("QRCodeStr")) {
+            shareImageBean.setQRCodeStr(map.getString("QRCodeStr"));
+        } else {
+            return null;
+        }
+
         if (map.hasKey("titleStr")) {
             shareImageBean.setTitleStr(map.getString("titleStr"));
         } else {
-            return null;
+            shareImageBean.setTitleStr("");
         }
 
         if (map.hasKey("priceStr")) {
             shareImageBean.setPriceStr(map.getString("priceStr"));
         } else {
-            return null;
+            shareImageBean.setPriceStr("");
         }
 
-        if (map.hasKey("QRCodeStr")) {
-            shareImageBean.setQRCodeStr(map.getString("QRCodeStr"));
-        } else {
-            return null;
+        if (map.hasKey("retailPrice")) {
+            shareImageBean.setRetail(map.getString("retailPrice"));
+        }else {
+            shareImageBean.setRetail("");
+        }
+
+        if (map.hasKey("spellPrice")) {
+            shareImageBean.setSpell(map.getString("spellPrice"));
+        }else {
+            shareImageBean.setSpell("");
         }
         return shareImageBean;
     }
