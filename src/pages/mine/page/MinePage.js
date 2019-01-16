@@ -140,10 +140,9 @@ export default class MinePage extends BasePage {
     }
 
     _needShowFans = () => {
-        LoginAPI.oldUserActivateJudge().then((res) => {
-            console.log('是还是非-------', res);
+        LoginAPI.queryShowFansStatus().then((res) => {
             this.setState({
-                hasFans: res.data.oldSwitch && user.upCode
+                hasFans: res.data
             });
         }).catch((error) => {
 

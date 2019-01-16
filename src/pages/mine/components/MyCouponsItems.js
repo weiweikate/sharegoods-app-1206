@@ -458,15 +458,15 @@ export default class MyCouponsItems extends Component {
                         });
                     });
                     this.handleList(dataList, arrData);
-                    this.setState({ viewData: arrData });
+                    this.setState({ viewData: arrData , isFirstLoad: false});
                 }).catch(err => {
                     console.log(err);
                     this.handleList(dataList, arrData);
-                    this.setState({ viewData: arrData });
+                    this.setState({ viewData: arrData, isFirstLoad: false });
                 });
             } else {
                 this.handleList(dataList, arrData);
-                this.setState({ viewData: arrData });
+                this.setState({ viewData: arrData ,isFirstLoad: false});
             }
         } else {//more
             this.handleList(dataList, arrData);
@@ -532,9 +532,9 @@ export default class MyCouponsItems extends Component {
                 page: this.currentPage, pageSize: 10,
                 ...params
             }).then(res => {
-                this.setState({
-                    isFirstLoad: false
-                });
+                // this.setState({
+                //     isFirstLoad: false
+                // });
                 let data = res.data || {};
                 let dataList = data.data || [];
                 console.log('dataList');
@@ -547,7 +547,7 @@ export default class MyCouponsItems extends Component {
 
             }).catch(result => {
                 this.setState({
-                    isFirstLoad: false
+                    isFirstLoad: false,viewData:[]
                 });
                 this.isLoadMore = false;
                 bridge.$toast(result.msg);
@@ -574,9 +574,9 @@ export default class MyCouponsItems extends Component {
                 status,
                 pageSize: 10
             }).then(result => {
-                this.setState({
-                    isFirstLoad: false
-                });
+                // this.setState({
+                //     isFirstLoad: false
+                // });
                 let data = result.data || {};
                 let dataList = data.data || [];
                 this.isLoadMore = false;
@@ -592,7 +592,7 @@ export default class MyCouponsItems extends Component {
 
             }).catch(result => {
                 this.setState({
-                    isFirstLoad: false
+                    isFirstLoad: false,viewData:[]
                 });
                 this.isLoadMore = false;
                 bridge.$toast(result.msg);

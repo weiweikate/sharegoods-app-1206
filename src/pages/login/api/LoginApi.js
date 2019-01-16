@@ -29,6 +29,8 @@ const api = {
     givePackage:['/user/userSign/givePackage',{method:'get'}],
     //老用户激活日期校验
     oldUserActivateJudge:['/user/userSign/oldUserActivateJudge',{method:'get'}],
+    //是否有秀迷
+    queryShowFansStatus:['/user/queryShowFansStatus',{method:'post'}],
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';
