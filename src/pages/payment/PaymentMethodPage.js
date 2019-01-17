@@ -5,7 +5,7 @@ import {
     ScrollView,
     AppState,
     ActivityIndicator,
-    BackHandler
+    BackHandler,Keyboard,
 } from 'react-native';
 import BasePage from '../../BasePage';
 import StringUtils from '../../utils/StringUtils';
@@ -23,6 +23,7 @@ import PayCell from './PaymentCell'
 import PayBottom from './PaymentBottom'
 const { px2dp } = ScreenUtils
 import {track, trackEvent} from '../../utils/SensorsTrack'
+// const dismissKeyboard = require('dismissKeyboard');
 
 @observer
 export default class PaymentMethodPage extends BasePage {
@@ -39,6 +40,7 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     handleBackPress = () => {
+
         return this.payment.isShowResult;
     }
 
@@ -288,7 +290,7 @@ export default class PaymentMethodPage extends BasePage {
             <PayBottom onPress={() => this.commitOrder()} shouldPayMoney={this.payment.amounts}/>
             <PasswordView
                 forgetAction={() => this.forgetTransactionPassword()}
-                closeAction={() => this.setState({ isShowPaymentModal: false })}
+                closeAction={() => {this.setState({ isShowPaymentModal: false }),Keyboard.dismiss()}}
                 visible={this.state.isShowPaymentModal}
                 finishedAction={(password) => this.finishedPwd(password)}
             />
