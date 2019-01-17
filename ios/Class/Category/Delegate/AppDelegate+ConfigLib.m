@@ -28,12 +28,12 @@
 
 @implementation AppDelegate (ConfigLib)
 -(void)JR_ConfigLib:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-  [self configUM];
-  [self configQYLib];
-  [self IQKeyboardManager];
-}
-
+  {
+    [self configUM];
+    [self configQYLib];
+    [self IQKeyboardManager];
+  }
+  
 - (void)IQKeyboardManager{
   IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
   // 控制整个功能是否启用
@@ -43,8 +43,8 @@
   // 启用手势触摸:控制点击背景是否收起键盘。
   manager.shouldResignOnTouchOutside = YES;
 }
-
-
+  
+  
 -(void)configUM{
   [UMConfigure initWithAppkey:KUmSocialAppkey channel:nil];
   [[UMSocialManager defaultManager] openLog:YES];
@@ -71,25 +71,25 @@
   [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"秀购"];
 }
 #pragma mark - delegate
-//支持目前所有iOS系统
+  //支持目前所有iOS系统
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
-{
-  BOOL result=NO;
-   result = [[UMSocialManager defaultManager] handleOpenURL:url];
-  if (!result) {
-     [[JRPay sharedPay] handleOpenUrl:url];
+  {
+    BOOL result=NO;
+    result = [[UMSocialManager defaultManager] handleOpenURL:url];
+    if (!result) {
+      [[JRPay sharedPay] handleOpenUrl:url];
+    }
+    result = [RCTLinkingManager application:application openURL:url
+                          sourceApplication:nil annotation:nil];
+    return YES;
   }
-  result = [RCTLinkingManager application:application openURL:url
-                        sourceApplication:nil annotation:nil];
-  return YES;
-}
-
+  
 - (void)initSensorsAnalyticsWithLaunchOptions:(NSDictionary *)launchOptions {
   
   // 初始化 SDK
   SensorsAnalyticsSDK * sdkInstance = [SensorsAnalyticsSDK sharedInstanceWithServerURL:SA_SERVER_URL
-                                  andLaunchOptions:launchOptions
-                                      andDebugMode:SA_DEBUG_MODE];
+                                                                      andLaunchOptions:launchOptions
+                                                                          andDebugMode:SA_DEBUG_MODE];
   
   // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
   [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
@@ -109,8 +109,11 @@
   // 忽略单个页面
   [sdkInstance ignoreAutoTrackViewControllers:@[[JRBaseVC class]]];
   [sdkInstance identify: uuid];
+  [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppEnd |
+                               SensorsAnalyticsEventTypeAppStart |
+                               SensorsAnalyticsEventTypeAppViewScreen];
   
 }
-
-
-@end
+  
+  
+  @end
