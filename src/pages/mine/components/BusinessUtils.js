@@ -101,7 +101,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
              loadingLabelText: '处理中...'
          }).then(images => {
              Utiles.upload(images.map(item => item.path), callBack)
-         }).catch(e => alert(e));
+         }).catch(e => {});
      },
      upload(paths, callBack) {
         for (let i = 0; i < paths.length; i ++)
