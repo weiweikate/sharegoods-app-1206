@@ -4,6 +4,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.meeruu.MRLoadingView.MRLoadingViewManager;
 import com.meeruu.PopModal.PopModalManager;
 import com.meeruu.WaveView.WaveViewManager;
 import com.meeruu.commonlib.umeng.AnalyticsModule;
@@ -61,6 +62,7 @@ public class RNMRPackage implements ReactPackage {
         return Arrays.<ViewManager>asList(
                 new PopModalManager(),
                 new WaveViewManager(),
+                new MRLoadingViewManager(),
                 new MRBannerViewManager());
     }
 
