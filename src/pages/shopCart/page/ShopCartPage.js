@@ -133,11 +133,11 @@ export default class ShopCartPage extends BasePage {
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
-    handleBackPress=()=>{
+    handleBackPress = () => {
         this.$navigate('HomePage');
         return true;
 
-    }
+    };
 
     _render() {
         return (
@@ -232,9 +232,9 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _gotoCollectBills = (sectionData) => {
-        this.$navigate(RouterMap.XpDetailPage,{
-            activityCode:sectionData.activityCode
-        })
+        this.$navigate(RouterMap.XpDetailPage, {
+            activityCode: sectionData.activityCode
+        });
     };
     /**
      * 渲染每行的隐藏组件
@@ -361,7 +361,6 @@ export default class ShopCartPage extends BasePage {
      */
     _toBuyImmediately = () => {
         dismissKeyboard();
-
         if (!user.isLogin) {
             this.$navigate(RouterMap.LoginPage);
             return;
@@ -396,7 +395,6 @@ export default class ShopCartPage extends BasePage {
             return;
         }
         if (isCanSettlement && !haveNaNGood) {
-            this.$loadingShow();
             let buyGoodsArr = [];
             tempArr.map((goods) => {
                 buyGoodsArr.push({
@@ -420,10 +418,10 @@ export default class ShopCartPage extends BasePage {
             //失效商品不可进入详情
             return;
         }
-        if (itemData.sectionType === 8){
-            this.$navigate(RouterMap.XpDetailPage,{
-                activityCode:itemData.activityCode
-            })
+        if (itemData.sectionType === 8) {
+            this.$navigate(RouterMap.XpDetailPage, {
+                activityCode: itemData.activityCode
+            });
             return;
         }
         //跳转产品详情

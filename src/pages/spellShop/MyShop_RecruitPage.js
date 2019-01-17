@@ -64,7 +64,9 @@ export default class MyShop_RecruitPage extends BasePage {
             'willFocus',
             payload => {
                 const { state } = payload;
-                BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+                if(!state.params){//二级页面不返回首页
+                    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+                }
                 NetInfo.isConnected.fetch().done((isConnected) => {
                     // 有网络
                     if (isConnected) {

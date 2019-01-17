@@ -64,6 +64,8 @@ export default {
          imageUrlStr: 'http//：xxxx.png',
             titleStr: '商品标题',
             priceStr: '¥100.00',
+           retailPrice: '¥90.00',
+           spellPrice: '¥80.00',
            QRCodeStr: '分享的链接',
  }
      * @param onSuccess(path)

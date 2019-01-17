@@ -20,16 +20,6 @@ android {
     }
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        url "$projectDir/../Example/node_modules/react-native/android"
-    }
-    maven {
-        url "$projectDir/../../react-native/android"
-    }
-}
-
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api rootProject.ext.dependencies.support
@@ -37,4 +27,5 @@ dependencies {
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
+    implementation rootProject.ext.dependencies.sensors
 }

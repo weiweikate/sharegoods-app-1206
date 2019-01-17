@@ -5,6 +5,24 @@ public class ShareImageBean {
     public String titleStr;
     public String priceStr;
     public String QRCodeStr;
+    public String retail;
+    public String spell;
+
+    public String getRetail() {
+        return retail;
+    }
+
+    public void setRetail(String retail) {
+        this.retail = retail;
+    }
+
+    public String getSpell() {
+        return spell;
+    }
+
+    public void setSpell(String spell) {
+        this.spell = spell;
+    }
 
     public String getImageUrlStr() {
         return imageUrlStr;

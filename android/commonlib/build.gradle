@@ -26,6 +26,7 @@ dependencies {
     api rootProject.ext.dependencies.walle
     api rootProject.ext.dependencies.multidex
     api rootProject.ext.dependencies.recyclerview
+    api rootProject.ext.dependencies.okhttp
     api rootProject.ext.dependencies.sensors
     // From node_modules
     api(rootProject.ext.dependencies.rn) {

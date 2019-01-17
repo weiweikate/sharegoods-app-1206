@@ -21,7 +21,7 @@ const {
 class ClassifyModules {
     @observable classifyList = [];
     @action loadClassifyList = () => {
-        this.classifyList = [{
+        let classifys = [{
             icon: shareImg,
             img: OssHelper('/app/share%403x.png'),
             name: '分享',
@@ -59,15 +59,15 @@ class ClassifyModules {
 
         HomeApi.classify().then( resData => {
             if (resData.code === 10000 && resData.data) {
-                let classifys = resData.data
-                classifys.map((data) => {
+                let resClassifys = resData.data
+                resClassifys.map((data) => {
                     if (data.name === '全部分类') {
                         data.route = 'home/search/CategorySearchPage'
                     } else {
                         data.route = 'home/search/SearchResultPage'
                     }
                 })
-                this.classifyList =  this.classifyList.concat(classifys)
+                this.classifyList =  classifys.concat(resClassifys)
             }
         })
     };
