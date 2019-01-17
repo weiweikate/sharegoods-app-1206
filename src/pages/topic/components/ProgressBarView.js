@@ -26,7 +26,8 @@ export default class ProgressBarView extends Component {
             [statues.deleteStatue]: null,
             [statues.noBegin]: this._noBeginTextRender,
             [statues.isBeginning]: this._renderProgress,
-            [statues.haveSoldOut]: this._renderHaveSoltOut,
+            [statues.haveSoldOut]: this._renderHaveSoltOut, //将抢光视图去掉
+            // [statues.haveSoldOut]: null,
             [statues.timeOver]: this._renderHaveSoltOut,
             [statues.handOver]: this._renderHaveSoltOut
         };
@@ -100,7 +101,7 @@ export default class ProgressBarView extends Component {
         );
     };
     _renderHaveSoltOut = () => {
-        const { itemData } = this.props;
+        // const { itemData } = this.props;
         return (
             <Text
                 style={[Styles.normalTextStyle,
@@ -108,9 +109,14 @@ export default class ProgressBarView extends Component {
                 ]}
                 number={1}
             >
-                {'抢光了' + (parseInt(itemData.totalNumber) - parseInt(itemData.surplusNumber)) + '件'}
+                {/*{'抢光了' + (parseInt(itemData.totalNumber) - parseInt(itemData.surplusNumber)) + '件'}*/}
             </Text>
         );
+        // return(
+        //     <View
+        //     style={Styles.normalTextStyle}
+        //     />
+        // )
 
     };
 }
@@ -120,7 +126,7 @@ const Styles = StyleSheet.create({
         fontSize: 11,
         marginTop: 5,
         marginLeft: 0,
-        marginRight: 10
+        marginRight: 10,
     }
 });
 

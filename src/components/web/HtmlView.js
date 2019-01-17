@@ -3,6 +3,7 @@ import BasePage from '../../BasePage';
 import WebViewBridge from '@mr/webview';
 import { View} from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
+import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
 
 export default class RequestDetailPage extends BasePage {
@@ -25,8 +26,16 @@ export default class RequestDetailPage extends BasePage {
         }
         this.state = {
             title: title,
-            uri: realUri
+            uri: realUri,
+            shareParmas: {},
         };
+
+        // this.webJson = {};
+        // this.imageJson={};
+        // this.miniProgramJson={};
+        // this.type = 'nomal';
+        // this.trackParmas=null;
+        // this.trackEvent= null;
     }
 
     componentDidMount() {
@@ -60,6 +69,13 @@ export default class RequestDetailPage extends BasePage {
     //         </TouchableOpacity>
     //     );
     // }
+    _postMessage = (msg) => {
+        if (msg.action === 'share'){
+            // this.webJson = msg.shareParmas;
+            this.setState({shareParmas: msg.shareParmas});
+            this.shareModal.open();
+        }
+    }
 
     _render() {
         return (
@@ -86,7 +102,11 @@ export default class RequestDetailPage extends BasePage {
                     onLoadEnd={(event) => {
                         this.canGoBack = event.canGoBack;
                     }}
-                    // postMessage={msg => this._postMessage(msg)}
+                     postMessage={msg => this._postMessage(msg)}
+                />
+                <CommShareModal
+                    ref={(ref) => this.shareModal = ref}
+                    {...this.state.shareParmas}
                 />
             </View>
         );

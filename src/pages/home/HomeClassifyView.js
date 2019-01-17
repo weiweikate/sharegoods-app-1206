@@ -60,7 +60,7 @@ export default class HomeClassifyView extends Component {
             navigate('login/login/LoginPage')
             return
         }
-        navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode,  code: data.linkTypeCode})
+        navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode,  code: data.linkTypeCode,name:data.name})
     }
 
     renderItems = () => {
