@@ -70,7 +70,7 @@ public class SensorsUtils {
             // $AppViewScreen，目前只有rn页面，不需要自动采集原生页面
             eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_VIEW_SCREEN);
             // $AppClick
-            eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_CLICK);
+//            eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_CLICK);
             SensorsDataAPI.sharedInstance().enableAutoTrack(eventTypeList);
         } catch (Exception e) {
             e.printStackTrace();
