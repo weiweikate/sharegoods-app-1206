@@ -1,8 +1,7 @@
 import React from 'react';
 import {
     StyleSheet,
-    View,
-    ScrollView, Alert, Platform
+    View, FlatList
 } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -18,15 +17,10 @@ import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
 import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 
-
 @observer
 export default class ConfirmOrderPage extends BasePage {
     constructor(props) {
         super(props);
-        this.state = {
-            viewData: []
-        };
-        this.canCommit = true;
         confirmOrderModel.clearData();
     }
 
@@ -53,41 +47,34 @@ export default class ConfirmOrderPage extends BasePage {
     _renderContent = () => {
         return (
             <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: ScreenUtils.safeBottom }}>
-                <ScrollView ref={(ref) => this.orderScroll = ref} style={{ flex: 1 }}>
-                    <ConfirmAddressView selectAddress={() => this.selectAddress()}/>
-                    {this.state.viewData.map((item, index) => {
-                        return <GoodsItem
-                            key={index}
-                            uri={item.specImg}
-                            goodsName={item.productName}
-                            salePrice={StringUtils.formatMoneyString(item.unitPrice)}
-                            category={item.specValues}
-                            goodsNum={'x' + item.quantity}
-                            onPress={() => {
-                            }}
-                        />;
-                    })}
-                    <ConfirmPriceView jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
-                                      _onFocus={() => this._onFocus()} _onBlur={() => this._onBlur()}/>
-                </ScrollView>
-                <View style={{ height: confirmOrderModel.TnHeight || 0.1, backgroundColor: 'white' }}/>
+                <FlatList
+                    style={{ flex: 1 }}
+                    data={confirmOrderModel.orderProductList}
+                    ListHeaderComponent={<ConfirmAddressView selectAddress={() => this.selectAddress()}/>}
+                    ListFooterComponent={<ConfirmPriceView
+                        jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}/>}
+                    onRefresh={this.loadPageData()}
+                    refreshing={false}
+                    renderItem={this._renderItem}
+                />
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
             </View>
         );
-
     };
 
-    _onFocus() {
-        if (Platform.OS === 'android') {
-            confirmOrderModel.TnHeight = 220;
-        }
-    }
-
-    _onBlur() {
-        if (Platform.OS === 'android') {
-            confirmOrderModel.TnHeight = 0;
-        }
-    }
+    _renderItem = (item) => {
+        alert(item.item.toString());
+        return (<GoodsItem
+            key={item.index}
+            uri={item.item.specImg}
+            goodsName={item.item.productName}
+            salePrice={StringUtils.formatMoneyString(item.item.unitPrice)}
+            category={item.item.specValues}
+            goodsNum={'x' + item.item.quantity}
+            onPress={() => {
+            }}
+        />);
+    };
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
@@ -110,46 +97,14 @@ export default class ConfirmOrderPage extends BasePage {
         // this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', (event)=>this._keyboardDidHide(event));
     }
 
-    async loadPageData(params) {
-        // bridge.showLoading();
+    loadPageData = (params) => {
         bridge.hiddenLoading();
-        try {
-            let data = await confirmOrderModel.makeSureProduct(this.params.orderParamVO, params);
-            this.setState({ viewData: data.orderProductList });
-        } catch (err) {
-            this.setState({ viewData: [] });
-            if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage', {
-                    callback: () => {
-                        setTimeout(() => {
-                            this.loadPageData(params);
-                        }, 100);
-                    }
-                });
-            } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
-                Alert.alert('提示', err.msg, [
-                    {
-                        text: '确定', onPress: () => {
-                            this.$navigateBack();
-                        }
-                    }
-                    // { text: '否' }
-                ]);
-            } else if (err.code === 54001) {
-                bridge.$toast('商品库存不足！');
-                this.$navigateBack();
-            }
-            else {
-                bridge.$toastShow(err.msg);
-            }
-        }
-    }
+        // 获取订单数据
+        confirmOrderModel.makeSureProduct(this.params.orderParamVO, params);
+    };
 
-    selectAddress = () => {//地址重新选择
-        console.log(confirmOrderModel.isError);
-        if (confirmOrderModel.isError) {
-            return;
-        }
+    selectAddress = () => {
+        // 地址重新选择
         this.$navigate('mine/address/AddressManagerPage', {
             from: 'order',
             currentId: confirmOrderModel.addressId,
@@ -170,51 +125,19 @@ export default class ConfirmOrderPage extends BasePage {
             }
         });
     };
-    commitOrder = async () => {
-        if (!this.canCommit) {
+
+    // 提交订单
+    commitOrder = () => {
+        if (!confirmOrderModel.canCommit) {
             bridge.hiddenLoading();
             return;
         }
-        this.canCommit = false;
-        confirmOrderModel.isError = true;
-        try {
-            let data = await confirmOrderModel.submitProduct(this.params.orderParamVO);
-            this.canCommit = true;
-            this.replaceRouteName(data);
-        } catch (err) {
-            this.canCommit = true;
-            if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage', {
-                    callback: () => {
-                        setTimeout(() => {
-                            this.loadPageData();
-                        }, 100);
-                    }
-                });
-            } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
-                Alert.alert('提示', err.msg, [
-                    {
-                        text: '确定', onPress: () => {
-                            this.$navigateBack();
-                        }
-                    }
-                    // { text: '否' }
-                ]);
-            } else if (err.code === 54001) {
-                bridge.$toast('商品库存不足！');
-                this.$navigateBack();
-            }
-            else {
-                bridge.$toast(err.msg);
-            }
-        }
-
+        confirmOrderModel.canCommit = false;
+        confirmOrderModel.submitProduct(this.params.orderParamVO);
     };
+
     //选择优惠券
     jumpToCouponsPage = (params) => {
-        if (confirmOrderModel.isError) {
-            return;
-        }
         if (params === 'justOne') {
             this.$navigate('mine/coupons/CouponsPage', {
                 justOne: (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) : 1,

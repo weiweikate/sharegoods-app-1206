@@ -1,12 +1,12 @@
-import { Image, StyleSheet, TouchableOpacity, View, Alert } from "react-native";
-import React from "react";
-import BasePage from "../../../../BasePage";
-import MineAPI from "../../api/MineApi";
-import bridge from "../../../../utils/bridge";
-import ScreenUtils from "../../../../utils/ScreenUtils";
+import { Image, StyleSheet, TouchableOpacity, View, Alert } from 'react-native';
+import React from 'react';
+import BasePage from '../../../../BasePage';
+import MineAPI from '../../api/MineApi';
+import bridge from '../../../../utils/bridge';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-import res from "../../res";
-import {MRText as Text} from '../../../../components/ui'
+import res from '../../res';
+import { MRText as Text } from '../../../../components/ui';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 
 
@@ -60,9 +60,11 @@ export default class AddressManagerPage extends BasePage {
         // 拿数据
         // this.refreshing();
     }
-    refreshing(){
+
+    refreshing() {
         this.list && this.list._onRefresh();
     }
+
     // 空布局
     _renderEmptyView = () => {
         return (
@@ -77,7 +79,9 @@ export default class AddressManagerPage extends BasePage {
     _render() {
         return (
             <RefreshFlatList
-                ref={(ref) => {this.list = ref}}
+                ref={(ref) => {
+                    this.list = ref;
+                }}
                 isSupportLoadingMore={false}
                 url={MineAPI.queryAddrList}
                 params={{}}
@@ -97,18 +101,18 @@ export default class AddressManagerPage extends BasePage {
                                 });
                                 selectIndex = i;
                             }
-                            ids.push(response.data[i].id)
+                            ids.push(response.data[i].id);
                         }
-                        let currentAddressId = this.params.currentAddressId || -1
-                        if (currentAddressId && ids.indexOf(currentAddressId) === -1){//当前选择地址被删除了
+                        let currentAddressId = this.params.currentAddressId || -1;
+                        if (currentAddressId && ids.indexOf(currentAddressId) === -1) {//当前选择地址被删除了
                             if (selectIndex === -1) {
-                                this.params.callBack &&  this.params.callBack({});
-                            }else {
-                                this.params.callBack &&  this.params.callBack(response.data[selectIndex]);
+                                this.params.callBack && this.params.callBack({});
+                            } else {
+                                this.params.callBack && this.params.callBack(response.data[selectIndex]);
                             }
                         }
                     } else {//没有地址时候返回data： null
-                        this.params.callBack &&  this.params.callBack({});
+                        this.params.callBack && this.params.callBack({});
                     }
                     return response.data || [];
                 }}
@@ -182,9 +186,9 @@ export default class AddressManagerPage extends BasePage {
     _onItemClick = (item) => {
         // 地址列表点击
         if (this.params.from === 'order') {
-            this.$navigateBack();
             let callBack = this.params.callBack;
-            setTimeout(()=>{callBack && callBack({...item})}, 0);//延迟是为了，解决在《确认订单》页面，选择地址，会卡顿的问题
+            callBack && callBack({ ...item });
+            this.$navigateBack();
         }
     };
 
