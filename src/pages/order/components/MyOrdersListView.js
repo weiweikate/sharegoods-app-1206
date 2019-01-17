@@ -42,6 +42,7 @@ export default class MyOrdersListView extends Component {
         this.currentPage = 1;
         this.noMoreData = false;
         this.isFirst = true;
+        this.isRefresh=false;
     }
 
     renderItem = ({ item, index }) => {
@@ -312,7 +313,10 @@ export default class MyOrdersListView extends Component {
     getDataFromNetwork = () => {
         console.log('orderlistrefresh');
         // userOrderNum.getUserOrderNum();
-        Toast.showLoading();
+        if(!this.isRefresh){
+            Toast.showLoading();
+        }
+        this.isRefresh=false;
         if (this.props.orderNum) {
             OrderApi.queryPage({
                 keywords: this.props.orderNum,
@@ -351,6 +355,7 @@ export default class MyOrdersListView extends Component {
     onRefresh = () => {
         console.log('onRefresh', this.currentPage);
         this.currentPage = 1;
+        this.isRefresh=true;
         this.getDataFromNetwork();
     };
 

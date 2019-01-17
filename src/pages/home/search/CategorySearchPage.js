@@ -11,6 +11,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../../order/res';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui';
+import { homeLinkType } from '../HomeTypes';
 
 const icon_search = res.search;
 
@@ -199,24 +200,28 @@ export default class CategorySearchPage extends BasePage {
 
     clickBanner = (item) => {
         // banner点击跳转
-        if (item.linkType === 1) {
+        if (item.linkType === homeLinkType.good) {
             this.$navigate('home/product/ProductDetailPage', {
                 productCode: item.linkTypeCode, preseat: '类目banner'
             });
-        } else if (item.linkType === 2) {
+        } else if (item.linkType === homeLinkType.subject) {
             this.$navigate('topic/DownPricePage', {
                 linkTypeCode: item.linkTypeCode
             });
-        } else if (item.linkType === 6) {
+        } else if (item.linkType === homeLinkType.web) {
             this.$navigate('HtmlPage', {
-                title: '',
+                title: '详情',
                 uri: item.linkTypeCode
             });
         } else if (item.linkType === 3 || item.linkType === 4 || item.linkType === 5) {
             let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
-                activityType: type, preseat: '专题列表页'
+                activityType: type, preseat: '类目banner'
+            });
+        } else if (item.linkType === homeLinkType.show) {
+            this.$navigate('show/ShowDetailPage', {
+                code: item.linkTypeCode,
             });
         }
     };
@@ -289,12 +294,13 @@ export default class CategorySearchPage extends BasePage {
                 marginLeft: (item.index % 3 === 1 || item.index % 3 === 2) ? 15 : 10,
                 alignItems: 'center'
             }}>
-                <ImageLoad source={{ uri: item.item.img }}
-                           style={{
-                               height: itemImgW,
-                               width: itemImgW
-                           }}
-                           onClickAction={() => this.go2ResultPage(item.item.id, item.item.name)}/>
+                <TouchableOpacity onPress = {() => this.go2ResultPage(item.item.id, item.item.name)}>
+                    <ImageLoad source={{ uri: item.item.img }}
+                               style={{
+                                   height: itemImgW,
+                                   width: itemImgW
+                               }}/>
+                </TouchableOpacity>
                 <UIText value={item.item.name}
                         style={{
                             textAlign: 'center',
