@@ -15,10 +15,11 @@ import {
     Easing, Animated
 } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
-import res from '../../../comm/res';
+// import res from '../../../comm/res';
 import UIImage from "@mr/image-placeholder";
+import MRLoadingView from '../../../comm/components/MRLoadingView';
 
-const { loading_bar } = res.other;
+// const { loading_bar } = res.other;
 
 export default class LoadingView extends Component {
 
@@ -47,18 +48,10 @@ export default class LoadingView extends Component {
         if (source) {
             return (<UIImage style={imgStyle} source={source}/>);
         } else {
-            return(<View style={{width:70,height:70,borderRadius:5,backgroundColor:'rgba(0,0,0,0.6)',justifyContent:'center',alignItems:'center'}}>
-                <Animated.Image style={{
-                    width: 54,
-                    height: 54,
-                    transform: [{
-                        rotateZ: this.state.rotateValue.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: ['0deg', '360deg']
-                        })
-                    }]
-                }} source={loading_bar}/>
-            </View>);
+            return(
+                <View style={{overflow: 'hidden', borderRadius:5}}>
+                    <MRLoadingView style={{width:70,height:70,backgroundColor:'rgba(0,0,0,0.6)',justifyContent:'center',alignItems:'center'}} />
+                </View>);
         }
     };
 

@@ -6,8 +6,7 @@ import bridge from '../../../utils/bridge';
 import user from '../../../model/user';
 import API from '../../../api';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-
-// import RouterMap, { navigate } from "../../../navigation/RouterMap";
+import { Alert } from 'react-native';
 
 class ConfirmOrderModel {
     @observable
@@ -41,9 +40,9 @@ class ConfirmOrderModel {
     @observable
     orderParamVO = {};
     @observable
-    isError = false;
+    canCommit = true;
     @observable
-    TnHeight = 0;
+    loadingState = PageLoadingState.success;
 
     @action clearData() {
         this.orderProductList = [];
@@ -62,16 +61,15 @@ class ConfirmOrderModel {
         this.addressId = null;
         this.orderParamVO = {};
         this.netFailedInfo = null;
-        this.loadingState = PageLoadingState.loading;
-        this.isError = false;
-        this.TnHeight = 0;
+        this.loadingState = PageLoadingState.success;
+        this.canCommit = true;
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
         this.orderParamVO = orderParamVO;
         switch (orderParamVO.orderType) {
             case 99://普通商品
-                return OrderApi.makeSureOrder({
+                OrderApi.makeSureOrder({
                     orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
                     // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source: orderParamVO.source,//1.购物车 2.直接下单
@@ -79,16 +77,13 @@ class ConfirmOrderModel {
                     orderProductList: orderParamVO.orderProducts,
                     ...params
                 }).then(response => {
-                    // bridge.hiddenLoading();
-                    return this.handleNetData(response.data);
+                    this.handleNetData(response.data);
                 }).catch(err => {
-                    // bridge.hiddenLoading();
-                    let error = this.disPoseErr(err);
-                    throw error;
+                    this.disPoseErr(err, orderParamVO, params);
                 });
                 break;
             case 98:
-                return OrderApi.makeSureOrder({
+                OrderApi.makeSureOrder({
                     orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
                     orderSubType: 5,//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source: orderParamVO.source,//1.购物车 2.直接下单
@@ -96,17 +91,14 @@ class ConfirmOrderModel {
                     orderProductList: orderParamVO.orderProducts,
                     ...params
                 }).then(response => {
-                    // bridge.hiddenLoading();
-                    return this.handleNetData(response.data);
+                    this.handleNetData(response.data);
                 }).catch(err => {
-                    // bridge.hiddenLoading();
-                    let error = this.disPoseErr(err);
-                    throw error;
+                    this.disPoseErr(err, orderParamVO, params);
                 });
                 break;
 
             case 1:
-                return OrderApi.SeckillMakeSureOrder({
+                OrderApi.SeckillMakeSureOrder({
                     activityCode: orderParamVO.orderProducts[0].code,
                     channel: 2,
                     num: orderParamVO.orderProducts[0].num,
@@ -114,11 +106,9 @@ class ConfirmOrderModel {
                     submitType: 1,
                     ...params
                 }).then(response => {
-                    // bridge.hiddenLoading();
-                    return this.handleNetData(response.data);
+                    this.handleNetData(response.data);
                 }).catch(err => {
-                    // bridge.hiddenLoading();
-                    throw this.disPoseErr(err);
+                    this.disPoseErr(err, orderParamVO, params);
                 });
                 break;
             case 2:
@@ -130,11 +120,9 @@ class ConfirmOrderModel {
                     submitType: 1,
                     ...params
                 }).then(response => {
-                    // bridge.hiddenLoading();
-                    return this.handleNetData(response.data);
+                    this.handleNetData(response.data);
                 }).catch(err => {
-                    // bridge.hiddenLoading();
-                    throw this.disPoseErr(err);
+                    this.disPoseErr(err, orderParamVO, params);
                 });
                 break;
             case 3:
@@ -150,38 +138,53 @@ class ConfirmOrderModel {
                     ...params
                 }).then(
                     response => {
-                        // bridge.hiddenLoading();
-                        return this.handleNetData(response.data);
+                        this.handleNetData(response.data);
                     }
                 ).catch(err => {
-                    // bridge.hiddenLoading();
-                    throw  this.disPoseErr(err);
+                    this.disPoseErr(err, orderParamVO, params);
                 });
+                break;
+            default:
                 break;
 
         }
 
     }
 
-    disPoseErr = (err) => {
-        this.isError = false;
-        if ((err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) || err.code === 54001) {
-            // navigate(RouterMap.LoginPage)
-            this.loading = false;
+    disPoseErr = (err, orderParamVO, params) => {
+        bridge.hiddenLoading();
+        if (err.code === 10009) {
+            this.$navigate('login/login/LoginPage', {
+                callback: () => {
+                    setTimeout(() => {
+                        this.makeSureProduct(orderParamVO, params);
+                    }, 100);
+                }
+            });
+        } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             this.netFailedInfo = null;
             this.loadingState = PageLoadingState.success;
+            Alert.alert('提示', err.msg, [
+                {
+                    text: '确定', onPress: () => {
+                        this.$navigateBack();
+                    }
+                }
+            ]);
+        } else if (err.code === 54001) {
+            this.netFailedInfo = null;
+            this.loadingState = PageLoadingState.success;
+            bridge.$toast('商品库存不足！');
+            this.$navigateBack();
         } else {
-            this.loading = false;
             this.netFailedInfo = err;
             this.loadingState = PageLoadingState.fail;
+            bridge.$toastShow(err.msg);
         }
-
-        return err;
-
     };
+
     handleNetData = (data) => {
-        this.isError = false;
-        this.loading = false;
+        bridge.hiddenLoading();
         this.loadingState = PageLoadingState.success;
         this.orderProductList = data.orderProductList;
         this.addressData = data.userAddressDTO || data.userAddress || {};
@@ -190,14 +193,14 @@ class ConfirmOrderModel {
         this.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         this.couponList = data.couponList ? data.couponList : null;
         this.orderProductList.map((item) => {
-            if (item.restrictions & 1 === 1) {
+            if ((item.restrictions & 1) === 1) {
                 this.canUseCou = true;
             }
         });
         if (this.canUseCou) {
             let arr = [];
-            let params={};
-            if (this.orderParamVO.orderType == 99||this.orderParamVO.orderType == 98) {
+            let params = {};
+            if (this.orderParamVO.orderType == 99 || this.orderParamVO.orderType == 98) {
                 this.orderParamVO.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -205,9 +208,8 @@ class ConfirmOrderModel {
                         amount: item.quantity || item.num
                     });
                 });
-                 params = { productPriceIds: arr };
-            }
-            else if (this.orderParamVO.orderType == 1 || this.orderParamVO.orderType == 2 || this.orderParamVO.orderType == 3) {
+                params = { productPriceIds: arr };
+            } else if (this.orderParamVO.orderType == 1 || this.orderParamVO.orderType == 2 || this.orderParamVO.orderType == 3) {
                 this.orderParamVO.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -231,15 +233,13 @@ class ConfirmOrderModel {
                 console.log(result);
             });
         }
-
         return data;
     };
 
-    @action submitProduct(orderParamVO) {
+    @action submitProduct(orderParamVO, { callback }) {
         if (StringUtils.isEmpty(this.addressId)) {
             bridge.$toast('请先添加地址');
             bridge.hiddenLoading();
-            this.isError=false
             return;
         }
         let baseParams = {
@@ -258,7 +258,7 @@ class ConfirmOrderModel {
                     source: orderParamVO.source,
                     channel: 2
                 };
-                return OrderApi.submitOrder(paramsnor).then((response) => {
+                OrderApi.submitOrder(paramsnor).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
                     track(trackEvent.submitOrder, {
@@ -276,11 +276,12 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.isError = false;
-                    return response.data;
+                    this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
+                    this.canCommit = true;
                     bridge.hiddenLoading();
-                    throw this.disPoseErr(err);
+                    this.disPoseErr(err, orderParamVO, {});
                 });
                 break;
             case 98:
@@ -292,7 +293,7 @@ class ConfirmOrderModel {
                     source: orderParamVO.source,
                     channel: 2
                 };
-                return OrderApi.submitOrder(paramsnor2).then((response) => {
+                OrderApi.submitOrder(paramsnor2).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
                     track(trackEvent.submitOrder, {
@@ -310,11 +311,12 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.isError = false;
-                    return response.data;
+                    this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
+                    this.canCommit = true;
                     bridge.hiddenLoading();
-                    throw this.disPoseErr(err);
+                    this.disPoseErr(err, orderParamVO, {});
                 });
                 break;
             case 1:
@@ -326,7 +328,7 @@ class ConfirmOrderModel {
                     source: 2,
                     submitType: 2
                 };
-                return OrderApi.SeckillSubmitOrder(needParams).then((response) => {
+                OrderApi.SeckillSubmitOrder(needParams).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
                     track(trackEvent.submitOrder, {
@@ -344,11 +346,12 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.isError = false;
-                    return data;
+                    this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
+                    this.canCommit = true;
                     bridge.hiddenLoading();
-                    throw this.disPoseErr(err);
+                    this.disPoseErr(err, orderParamVO, {});
                 });
                 break;
             case 2:
@@ -360,7 +363,7 @@ class ConfirmOrderModel {
                     source: 2,
                     submitType: 2
                 };
-                return OrderApi.DepreciateSubmitOrder(needParams2).then((response) => {
+                OrderApi.DepreciateSubmitOrder(needParams2).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
                     track(trackEvent.submitOrder, {
@@ -378,11 +381,12 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.isError = false;
-                    return data;
+                    this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
+                    this.canCommit = true;
                     bridge.hiddenLoading();
-                    throw this.disPoseErr(err);
+                    this.disPoseErr(err, orderParamVO, {});
                 });
                 break;
             case 3:
@@ -397,7 +401,7 @@ class ConfirmOrderModel {
                     submitType: 2,
                     quantity: 1
                 };
-                return OrderApi.PackageSubmitOrder(params).then((response) => {
+                OrderApi.PackageSubmitOrder(params).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
                     track(trackEvent.submitOrder, {
@@ -415,18 +419,18 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.isError = false;
-                    return data;
+                    this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
+                    this.canCommit = true;
                     bridge.hiddenLoading();
-                    throw this.disPoseErr(err);
+                    this.disPoseErr(err, orderParamVO, {});
                 });
                 break;
-
+            default:
+                break;
         }
     }
-
-
 }
 
 export const confirmOrderModel = new ConfirmOrderModel();

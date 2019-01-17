@@ -110,7 +110,7 @@ export default class SearchResultPage extends BasePage {
             if (!StringUtils.isEmpty(this.params.hotWordId)) {
                 param.hotWordId = this.params.hotWordId;
             }
-            param.keyword = this.params.keywords || '';
+            param.keyword = this.state.textInput;
         }
         return param;
     };
@@ -263,7 +263,6 @@ export default class SearchResultPage extends BasePage {
         this.params.isHistory = false;
         this.params.categoryId = undefined;
         this.params.hotWordId = undefined;
-        this.params.keywords = text;
         this.setState({ onFocus: false, textInput: text }, () => {
             this._productList(true);
         });
@@ -383,7 +382,7 @@ export default class SearchResultPage extends BasePage {
                                      this.$navigateBack();
                                  }}
                                  isHorizontal={this.state.isHorizontal}
-                                 defaultValue={this.params.keywords || this.params.name}
+                                 defaultValue={this.state.textInput}
                                  onFocus={() => {
                                      this.setState({ onFocus: true });
                                  }}
