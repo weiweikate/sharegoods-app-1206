@@ -6,6 +6,7 @@ import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
 import TimerMixin from 'react-timer-mixin';
 import { setCookieToken, setCookies, clearCookies } from '@mr/webview';
+import apiEnvironment from '../api/ApiEnvironment';
 
 export default {
     $toast(msg) {
@@ -176,11 +177,20 @@ export default {
     setCookies: (data) => {
         // setCookieToken(data.token,'172.16.10.117');
         // setCookies("userData", {id: data.id},'172.16.10.117');
-        setCookieToken(data.token, 'devh5.sharegoodsmall.com');
-        setCookies('userData', { userCode: data.code }, 'devh5.sharegoodsmall.com');
+        let host = apiEnvironment.getCurrentHostUrl();
+        host = host.replace(/(http)s?(:\/\/)/g, "");
+        host = host.replace(/\/\w*/g, "")
+        setCookieToken(data.token, host);
+        setCookies('userData', { userCode: data.code }, host);
     },
     clearCookies: () => {
         clearCookies();
+        let data ={userData: {}, token: ''};
+        let host = apiEnvironment.getCurrentHostUrl();
+        host = host.replace(/(http)s?(:\/\/)/g, "");
+        host = host.replace(/\/\w*/g, "")
+        setCookieToken(data.token, host);
+        setCookies('userData', { userCode: data.code }, host);
     },
 
     //背景风格
