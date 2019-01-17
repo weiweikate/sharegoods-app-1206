@@ -17,13 +17,14 @@ import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import PasswordView from './PasswordView';
-import {MRText as Text} from '../../components/ui'
+import { MRText as Text } from '../../components/ui';
 // import { NavigationActions } from 'react-navigation';
-import PayCell from './PaymentCell'
-import PayBottom from './PaymentBottom'
-const { px2dp } = ScreenUtils
-import {track, trackEvent} from '../../utils/SensorsTrack'
-// const dismissKeyboard = require('dismissKeyboard');
+
+import PayCell from './PaymentCell';
+import PayBottom from './PaymentBottom';
+
+const { px2dp } = ScreenUtils;
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 @observer
 export default class PaymentMethodPage extends BasePage {
@@ -37,25 +38,25 @@ export default class PaymentMethodPage extends BasePage {
         isShowPaymentModal: false,
         password: '',
         orderChecking: false
-    }
+    };
 
     handleBackPress = () => {
 
         return this.payment.isShowResult;
-    }
+    };
 
     constructor(props) {
         super(props);
         this.payment = new Payment();
-        this.payment.isGoToPay = false
-        this.payment.amounts = this.params.amounts ? this.params.amounts : 0
+        this.payment.isGoToPay = false;
+        this.payment.amounts = this.params.amounts ? this.params.amounts : 0;
         if (this.isZeroPay()) {
             this.payment.selectedBalace = true;
         }
-        paymentTrack.orderId = this.params.orderNum
-        paymentTrack.orderAmount = this.params.amounts
-        this.payment.orderNo = this.params.orderNum
-        this.payment.updateUserData()
+        paymentTrack.orderId = this.params.orderNum;
+        paymentTrack.orderAmount = this.params.amounts;
+        this.payment.orderNo = this.params.orderNum;
+        this.payment.updateUserData();
     }
 
     $NavBarLeftPressed = () => {
@@ -78,46 +79,46 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     isZeroPay() {
-        return parseFloat(this.payment.amounts).toFixed(2) === '0.00'
+        return parseFloat(this.payment.amounts).toFixed(2) === '0.00';
     }
 
     _handleAppStateChange = (state) => {
         console.log('_handleAppStateChange AppState', state, this.state.orderChecking);
         const { selectedTypes } = this.payment;
         if (this.state.orderChecking === true) {
-            return
+            return;
         }
         if (state === 'active' && this.payment.orderNo && selectedTypes && this.payment.isGoToPay === true) {
-            this.setState({orderChecking: true})
-            this.orderTime = (new Date().getTime()) / 1000
-            this.payment.isGoToPay = false
-            this._checkOrder()
+            this.setState({ orderChecking: true });
+            this.orderTime = (new Date().getTime()) / 1000;
+            this.payment.isGoToPay = false;
+            this._checkOrder();
         }
-    }
+    };
 
     _checkOrder() {
-        let time = (new Date().getTime()) / 1000
-        console.log('checkorder', this.orderTime, time)
-        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'checking'})
+        let time = (new Date().getTime()) / 1000;
+        console.log('checkorder', this.orderTime, time);
+        track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checking' });
         if (time - this.orderTime > 10) {
-            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'checkOut'})
-            return
+            track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checkOut' });
+            return;
         }
         this.payment.checkPayStatus().then(data => {
             if (data === 1) {
                 setTimeout(() => {
-                    this._checkOrder()
-                }, 1000)
-                return
+                    this._checkOrder();
+                }, 1000);
+                return;
             }
-            this.setState({orderChecking: false})
-            if (data === 3){
-                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'success'})
-                this.paymentResultView.show(1)
+            this.setState({ orderChecking: false });
+            if (data === 3) {
+                track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
+                this.paymentResultView.show(1);
             }
-        }).catch(()=> {
-            this.setState({orderChecking: false})
-        })
+        }).catch(() => {
+            this.setState({ orderChecking: false });
+        });
     }
 
     _selectedPayType(value) {
@@ -131,9 +132,9 @@ export default class PaymentMethodPage extends BasePage {
 
     _selectedBalancePay() {
         if (this.isZeroPay()) {
-            return
+            return;
         }
-        if (this.payment.selectedTypes &&  this.payment.availableBalance * 100 > this.payment.amounts * 100) {
+        if (this.payment.selectedTypes && this.payment.availableBalance * 100 > this.payment.amounts * 100) {
             this.payment.clearPaymentType();
         }
         this.payment.selectBalancePayment();
@@ -158,7 +159,7 @@ export default class PaymentMethodPage extends BasePage {
             this.setState({ password: '' });
             console.log('checkRes', result);
             this._showPayresult(result);
-            return
+            return;
         }
 
         if (user.hadSalePassword) {
@@ -179,16 +180,16 @@ export default class PaymentMethodPage extends BasePage {
 
     _alipay() {
         this.payment.alipay(this.paymentResultView).then(() => {
-            console.log('alipay back this.state.orderChecking', this.state.orderChecking)
+            console.log('alipay back this.state.orderChecking', this.state.orderChecking);
             if (this.state.orderChecking === true) {
-                return
+                return;
             }
             const { selectedTypes, isGoToPay, orderNo } = this.payment;
             if (orderNo && selectedTypes && isGoToPay === true) {
-                this.setState({orderChecking: true})
-                this.orderTime = (new Date().getTime()) / 1000
-                this.payment.isGoToPay = false
-                this._checkOrder()
+                this.setState({ orderChecking: true });
+                this.orderTime = (new Date().getTime()) / 1000;
+                this.payment.isGoToPay = false;
+                this._checkOrder();
             }
         });
     }
@@ -205,12 +206,12 @@ export default class PaymentMethodPage extends BasePage {
                 return;
             }
             if (selectedTypes.type === paymentType.alipay) {
-                this.payment.ailpayAndBalance(this.state.password, this.paymentResultView)
+                this.payment.ailpayAndBalance(this.state.password, this.paymentResultView);
             }
             if (selectedTypes.type === paymentType.wechat) {
-                this.payment.wechatAndBalance(this.state.password, this.paymentResultView)
+                this.payment.wechatAndBalance(this.state.password, this.paymentResultView);
             }
-            this.setState({password: ''})
+            this.setState({ password: '' });
         }
         else {
             this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
@@ -259,7 +260,7 @@ export default class PaymentMethodPage extends BasePage {
     };
 
     _repay() {
-        this.payment.payError = ''
+        this.payment.payError = '';
     }
 
     _render() {
@@ -278,15 +279,15 @@ export default class PaymentMethodPage extends BasePage {
         });
 
         return <View style={styles.container}>
-        <ScrollView style={styles.container}>
-            <PayCell
-                disabled={this.params.outTradeNo}
-                data={balancePayment}
-                isSelected={selectedBalace || this.isZeroPay()} balance={availableBalance}
-                press={() => this._selectedBalancePay(balancePayment)}
-            />
-            {items}
-        </ScrollView>
+            <ScrollView style={styles.container}>
+                <PayCell
+                    disabled={this.params.outTradeNo}
+                    data={balancePayment}
+                    isSelected={selectedBalace || this.isZeroPay()} balance={availableBalance}
+                    press={() => this._selectedBalancePay(balancePayment)}
+                />
+                {items}
+            </ScrollView>
             <PayBottom onPress={() => this.commitOrder()} shouldPayMoney={this.payment.amounts}/>
             <PasswordView
                 forgetAction={() => this.forgetTransactionPassword()}
@@ -300,20 +301,20 @@ export default class PaymentMethodPage extends BasePage {
                 }}
                 navigation={this.props.navigation}
                 payment={this.payment}
-                repay={()=> this._repay()}
+                repay={() => this._repay()}
             />
             {
                 this.state.orderChecking
-                ?
-                <View style={styles.loadingView}>
-                    <View style={styles.loading}>
-                        <ActivityIndicator size='large' color='#fff'/>
-                        <View style={styles.loadingSpace}/>
-                        <Text style={styles.loadingText}>支付结果等待中...</Text>
+                    ?
+                    <View style={styles.loadingView}>
+                        <View style={styles.loading}>
+                            <ActivityIndicator size='large' color='#fff'/>
+                            <View style={styles.loadingSpace}/>
+                            <Text style={styles.loadingText}>支付结果等待中...</Text>
+                        </View>
                     </View>
-                </View>
-                :
-                null
+                    :
+                    null
             }
         </View>;
     }
@@ -348,7 +349,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: px2dp(140),
         height: px2dp(140),
-        borderRadius: px2dp(10),
+        borderRadius: px2dp(10)
     },
     loadingText: {
         color: '#fff',
