@@ -353,7 +353,7 @@ export default class MyCouponsItems extends Component {
                     data={this.state.viewData}
                     keyExtractor={this._keyExtractor}
                     renderItem={this.renderItem}
-                    onEndReachedThreshold={10}
+                    onEndReachedThreshold={0.1}
                     onEndReached={() => this.onLoadMore()}
                     ListFooterComponent={this._footer}
                     ListEmptyComponent={this._renderEmptyView}
