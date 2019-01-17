@@ -12,6 +12,8 @@
 @property(nonatomic, copy)NSString * imageUrlStr;
 @property(nonatomic, copy)NSString * titleStr;
 @property(nonatomic, copy)NSString * priceStr;
+@property(nonatomic, copy)NSString * retailPrice;
+@property(nonatomic, copy)NSString * spellPrice;
 @property(nonatomic, copy)NSString * QRCodeStr;
 @end
 typedef  void(^ShareImageMakercompletionBlock)(NSString * pathStr, NSString *errorStr);

@@ -15,8 +15,8 @@ import bridge from '../../../utils/bridge';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import user from '../../../model/user'
-import UIImage from "@mr/image-placeholder";
+import user from '../../../model/user';
+import UIImage from '@mr/image-placeholder';
 import {
     MRText as Text
 } from '../../../components/ui';
@@ -97,7 +97,9 @@ export default class InvitationToShopPage extends BasePage {
         const shareInfo = this.params.shareInfo || {};
         const { manager = {} } = shareInfo;
         const imgWidth = ScreenUtils.width;
-        const imgHeight = ScreenUtils.height - ScreenUtils.headerHeight;
+        let imgHeight = ScreenUtils.height - ScreenUtils.headerHeight;
+        let minHeight = ScreenUtils.autoSizeHeight(171) + ScreenUtils.autoSizeWidth(35 + 8 + 380) + 8;
+        imgHeight = imgHeight < minHeight ? minHeight : imgHeight;
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -120,9 +122,12 @@ export default class InvitationToShopPage extends BasePage {
                                                 <View style={styles.topImg}/>
                                         }
                                         <View style={{ justifyContent: 'space-between' }}>
-                                            <Text style={styles.text} allowFontScaling={false}>{shareInfo.name || ''}</Text>
-                                            <Text style={styles.text} allowFontScaling={false}>店铺ID：{shareInfo.showNumber || ''}</Text>
-                                            <Text style={styles.text} allowFontScaling={false}>店主：{manager.nickname || ''}</Text>
+                                            <Text style={styles.text}
+                                                  allowFontScaling={false}>{shareInfo.name || ''}</Text>
+                                            <Text style={styles.text}
+                                                  allowFontScaling={false}>店铺ID：{shareInfo.showNumber || ''}</Text>
+                                            <Text style={styles.text}
+                                                  allowFontScaling={false}>店主：{manager.nickname || ''}</Text>
                                         </View>
                                     </View>
                                 </View>

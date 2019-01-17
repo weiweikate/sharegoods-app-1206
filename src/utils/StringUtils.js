@@ -31,6 +31,24 @@ const formatMoneyString = (num, needSymbol = true) => {
     }
     return temp;
 };
+const formatDecimal = (num, needSymbol = true) => {
+    let temp = (isNoEmpty(num) ? num : 0) + '';
+    if (temp.indexOf('.') === -1) {
+        temp += '.00';
+    } else{
+        temp=num.toFixed(2);
+    }
+    //截取
+    // if ((temp.indexOf('.') + 3) < temp.length) {
+    //     temp = temp.substr(0, temp.indexOf('.') + 3);
+    // }
+    //添加
+    // if ((temp.indexOf('.') + 2 === temp.length)) {
+    //     temp += '0';
+    // }
+
+    return temp;
+};
 const checkPhone = (str) => {
     let myreg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
     if (!myreg.test(str)) {
@@ -281,7 +299,8 @@ export default {
     checkEmoji,
     encryptPhone,
     formatPhoneNumber,
-    parsingRoute
+    parsingRoute,
+    formatDecimal
 };
 
 

@@ -1,6 +1,3 @@
-/**
- * Created by xiangchen on 2018/7/23.
- */
 import React, { Component } from 'react';
 import {
     FlatList,
@@ -8,7 +5,7 @@ import {
     ImageBackground,
     StyleSheet,
     View,
-    NativeModules, RefreshControl
+    NativeModules, RefreshControl, ActivityIndicator
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
 import { UIImage, UIText, NoMoreClick } from '../../../components/ui';
@@ -57,7 +54,6 @@ export default class MyCouponsItems extends Component {
         this.currentPage = 0;
         this.isLoadMore = false;
         this.isEnd = false;
-        // setTimeout(() => this.onRefresh(), 10);
     }
 
     componentDidMount() {
@@ -185,23 +181,24 @@ export default class MyCouponsItems extends Component {
                 marginLeft: px2dp(44),
                 height: px2dp(165),
                 backgroundColor: '#FCFCFC',
-                borderRadius: 8,
+                borderRadius: 12,
                 justifyContent: 'flex-end',
-                alignItems: 'center'
+                alignItems: 'center',
+                opacity: 0.8
             }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <View style={{
-                        marginTop: px2dp(20),
                         width: px2dp(123),
                         height: px2dp(24),
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>
-                        <Text style={{ fontSize: px2dp(17), color: 'black' }} allowFontScaling={false}>请选择券数</Text>
+                        <Text style={{ fontSize: px2dp(17), color: DesignRule.textColor_mainTitle }}
+                              allowFontScaling={false}>请选择券数</Text>
                     </View>
 
                     <View style={{
-                        marginTop: px2dp(24),
+                        marginTop: px2dp(18),
                         flexDirection: 'row',
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -212,7 +209,7 @@ export default class MyCouponsItems extends Component {
                             marginLeft: px2dp(39)
                         }} resizeMode={'contain'} onPress={this.reduceTokenCoin}/>
                         <View style={{
-                            borderWidth: 1, marginLeft: 5,
+                            borderWidth: 0.5, marginLeft: 5,
                             marginRight: 5, borderColor: DesignRule.textColor_placeholder,
                             backgroundColor: DesignRule.white
                         }}>
@@ -229,7 +226,8 @@ export default class MyCouponsItems extends Component {
                                     alignItems: 'center',
                                     height: px2dp(24),
                                     width: px2dp(136),
-                                    fontSize: px2dp(15)
+                                    fontSize: px2dp(15),
+                                    color: DesignRule.textColor_mainTitle
                                 }}/>
                         </View>
                         <UIImage source={plusIcon} style={{
@@ -240,13 +238,13 @@ export default class MyCouponsItems extends Component {
                     </View>
                 </View>
 
-                <View style={{ width: '100%', height: 0.5, backgroundColor: 'grey' }}/>
+                <View style={{ width: '100%', height: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
                 <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
                     <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                  onPress={this.quitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </NoMoreClick>
-                    <View style={{ height: '100%', width: 0.5, backgroundColor: 'grey' }}/>
+                    <View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
                     <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                  onPress={this.commitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>确定</Text>
@@ -261,6 +259,7 @@ export default class MyCouponsItems extends Component {
     };
     commitTokenCoin = () => {
         this.props.useCoupons(this.state.tokenCoinNum);
+        this.setState({ showDialogModal: false });
     };
     reduceTokenCoin = () => {
         let num = this.state.tokenCoinNum;
@@ -296,37 +295,47 @@ export default class MyCouponsItems extends Component {
     _keyExtractor = (item, index) => index;
     // 空布局
     _renderEmptyView = () => {
-        return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
-                      allowFontScaling={false}>还没有优惠券哦</Text>
-                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
-                      allowFontScaling={false}>快去商城逛逛吧</Text>
-                <NoMoreClick
-                    onPress={() => {
-                        this._gotoLookAround();
-                    }}>
-                    <View style={{
-                        marginTop: 22,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderColor: DesignRule.mainColor,
-                        borderWidth: 1,
-                        borderRadius: 18,
-                        width: 115,
-                        height: 36
-                    }}>
-                        <Text style={{
-                            color: DesignRule.mainColor,
-                            fontSize: 15
-                        }} allowFontScaling={false}>
-                            去逛逛
-                        </Text>
-                    </View>
-                </NoMoreClick>
-            </View>
-        );
+        if (this.state.isFirstLoad) {
+            return (
+                <View style={styles.footer_container}>
+                    <ActivityIndicator size="small" color="#888888"/>
+                    <Text style={styles.footer_text}>拼命加载中…</Text>
+                </View>
+            );
+        } else {
+            return (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                    <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
+                          allowFontScaling={false}>还没有优惠券哦</Text>
+                    <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
+                          allowFontScaling={false}>快去商城逛逛吧</Text>
+                    <NoMoreClick
+                        onPress={() => {
+                            this._gotoLookAround();
+                        }}>
+                        <View style={{
+                            marginTop: 22,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderColor: DesignRule.mainColor,
+                            borderWidth: 1,
+                            borderRadius: 18,
+                            width: 115,
+                            height: 36
+                        }}>
+                            <Text style={{
+                                color: DesignRule.mainColor,
+                                fontSize: 15
+                            }} allowFontScaling={false}>
+                                去逛逛
+                            </Text>
+                        </View>
+                    </NoMoreClick>
+                </View>
+            );
+        }
+
     };
 
     _footer = () => {
@@ -346,7 +355,7 @@ export default class MyCouponsItems extends Component {
                     data={this.state.viewData}
                     keyExtractor={this._keyExtractor}
                     renderItem={this.renderItem}
-                    onEndReachedThreshold={10}
+                    onEndReachedThreshold={0.1}
                     onEndReached={() => this.onLoadMore()}
                     ListFooterComponent={this._footer}
                     ListEmptyComponent={this._renderEmptyView}
@@ -368,9 +377,9 @@ export default class MyCouponsItems extends Component {
                             backgroundColor: 'white',
                             borderStyle: 'solid'
                             , alignItems: 'center', justifyContent: 'center'
-                        }} activeOpacity={0.5} onPress={()=>{
-                            // bridge.showLoading();
-                            setTimeout(this.props.giveupUse,10)}}>
+                        }} activeOpacity={0.5} onPress={() => {
+                            setTimeout(this.props.giveupUse, 10);
+                        }}>
                             <Text style={{
                                 fontSize: 14,
                                 color: DesignRule.textColor_secondTitle
@@ -451,15 +460,15 @@ export default class MyCouponsItems extends Component {
                         });
                     });
                     this.handleList(dataList, arrData);
-                    this.setState({ viewData: arrData });
+                    this.setState({ viewData: arrData, isFirstLoad: false });
                 }).catch(err => {
                     console.log(err);
                     this.handleList(dataList, arrData);
-                    this.setState({ viewData: arrData });
+                    this.setState({ viewData: arrData, isFirstLoad: false });
                 });
             } else {
                 this.handleList(dataList, arrData);
-                this.setState({ viewData: arrData });
+                this.setState({ viewData: arrData, isFirstLoad: false });
             }
         } else {//more
             this.handleList(dataList, arrData);
@@ -496,7 +505,7 @@ export default class MyCouponsItems extends Component {
             //     this.parseData(arr);
             //     return;
             // }
-            if (this.props.orderParam.orderType == 99||this.props.orderParam.orderType == 98) {
+            if (this.props.orderParam.orderType == 99 || this.props.orderParam.orderType == 98) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -525,9 +534,9 @@ export default class MyCouponsItems extends Component {
                 page: this.currentPage, pageSize: 10,
                 ...params
             }).then(res => {
-                this.setState({
-                    isFirstLoad: false
-                });
+                // this.setState({
+                //     isFirstLoad: false
+                // });
                 let data = res.data || {};
                 let dataList = data.data || [];
                 console.log('dataList');
@@ -540,7 +549,7 @@ export default class MyCouponsItems extends Component {
 
             }).catch(result => {
                 this.setState({
-                    isFirstLoad: false
+                    isFirstLoad: false, viewData: []
                 });
                 this.isLoadMore = false;
                 bridge.$toast(result.msg);
@@ -567,9 +576,9 @@ export default class MyCouponsItems extends Component {
                 status,
                 pageSize: 10
             }).then(result => {
-                this.setState({
-                    isFirstLoad: false
-                });
+                // this.setState({
+                //     isFirstLoad: false
+                // });
                 let data = result.data || {};
                 let dataList = data.data || [];
                 this.isLoadMore = false;
@@ -585,7 +594,7 @@ export default class MyCouponsItems extends Component {
 
             }).catch(result => {
                 this.setState({
-                    isFirstLoad: false
+                    isFirstLoad: false, viewData: []
                 });
                 this.isLoadMore = false;
                 bridge.$toast(result.msg);
@@ -639,8 +648,7 @@ export default class MyCouponsItems extends Component {
         // }
         if (this.props.fromOrder) {
             bridge.showLoading();
-            setTimeout(()=>{this.props.useCoupons(item)}, 200);
-            // this.props.useCoupons(item);
+            this.props.useCoupons(item);
         } else if (this.props.justOne) {
             this.setState({ showDialogModal: true });
         } else {

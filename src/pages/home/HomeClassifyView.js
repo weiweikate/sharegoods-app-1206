@@ -26,9 +26,9 @@ class Item extends Component {
     
     render() {
         const { onPress , data } = this.props
-        const {iconUri, icon} = this.props.data
+        const {img, icon} = this.props.data
         const { loadingError } = this.state
-        let source = {uri: iconUri + '?ts=' + new Date().getTime()}
+        let source = {uri: img + '?ts=' + new Date().getTime()}
         return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
         {
             loadingError
@@ -60,8 +60,7 @@ export default class HomeClassifyView extends Component {
             navigate('login/login/LoginPage')
             return
         }
-
-        navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode, code: data.linkTypeCode})
+        navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode,  code: data.linkTypeCode,name:data.name})
     }
 
     renderItems = () => {
