@@ -186,6 +186,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         switch (shareType) {
             case 0:
                 UMImage image = fixThumImage(params.getString("shareImage"));
+
                 new ShareAction(getCurrentActivity()).setPlatform(platform)//传入平台
                         .withMedia(image).setCallback(umShareListener)//回调监听器
                         .share();
