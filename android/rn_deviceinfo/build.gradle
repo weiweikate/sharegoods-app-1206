@@ -24,10 +24,5 @@ repositories {
 
 dependencies {
     //noinspection GradleDynamicVersion
-    api rootProject.ext.dependencies.support
-    // From node_modules
-    api(rootProject.ext.dependencies.rn) {
-        exclude group: 'com.android.support'
-    }
     api project(path: ':commonlib')
 }

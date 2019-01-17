@@ -161,7 +161,6 @@ export class XpDetailPage extends BasePage {
             });
         } else if (this.goType === 'buy') {
             //订单延签卡  加个菊花
-            this.$loadingShow();
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,

@@ -551,11 +551,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.invite_friends_bg);
-        Bitmap qrBitmap = createQRImage(url, 310, 310);
+        Bitmap qrBitmap = createQRImage(url, 320, 320);
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int newWidth = 750;
-        int newHeight = 1333;
+        int newHeight = 1334;
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
 
@@ -564,7 +564,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         canvas.drawBitmap(newbitmap,  0,0,paint);
-        canvas.drawBitmap(qrBitmap, 225, 620, paint);
+        canvas.drawBitmap(qrBitmap, 215, 710, paint);
         String path = saveImageToCache(context, result, "inviteFriends.png");
 
         path = "file://"+path;
