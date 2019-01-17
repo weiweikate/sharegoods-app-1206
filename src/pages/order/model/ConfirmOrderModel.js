@@ -42,7 +42,7 @@ class ConfirmOrderModel {
     @observable
     canCommit = true;
     @observable
-    loadingState = PageLoadingState.loading;
+    loadingState = PageLoadingState.success;
 
     @action clearData() {
         this.orderProductList = [];
@@ -61,7 +61,7 @@ class ConfirmOrderModel {
         this.addressId = null;
         this.orderParamVO = {};
         this.netFailedInfo = null;
-        this.loadingState = PageLoadingState.loading;
+        this.loadingState = PageLoadingState.success;
         this.canCommit = true;
     }
 
@@ -144,12 +144,15 @@ class ConfirmOrderModel {
                     this.disPoseErr(err, orderParamVO, params);
                 });
                 break;
+            default:
+                break;
 
         }
 
     }
 
     disPoseErr = (err, orderParamVO, params) => {
+        bridge.hiddenLoading();
         if (err.code === 10009) {
             this.$navigate('login/login/LoginPage', {
                 callback: () => {
@@ -181,6 +184,7 @@ class ConfirmOrderModel {
     };
 
     handleNetData = (data) => {
+        bridge.hiddenLoading();
         this.loadingState = PageLoadingState.success;
         this.orderProductList = data.orderProductList;
         this.addressData = data.userAddressDTO || data.userAddress || {};
@@ -189,7 +193,7 @@ class ConfirmOrderModel {
         this.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         this.couponList = data.couponList ? data.couponList : null;
         this.orderProductList.map((item) => {
-            if (item.restrictions & 1 === 1) {
+            if ((item.restrictions & 1) === 1) {
                 this.canUseCou = true;
             }
         });
@@ -232,7 +236,7 @@ class ConfirmOrderModel {
         return data;
     };
 
-    @action submitProduct(orderParamVO) {
+    @action submitProduct(orderParamVO, { callback }) {
         if (StringUtils.isEmpty(this.addressId)) {
             bridge.$toast('请先添加地址');
             bridge.hiddenLoading();
@@ -273,6 +277,7 @@ class ConfirmOrderModel {
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
                     this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -307,6 +312,7 @@ class ConfirmOrderModel {
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
                     this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -341,6 +347,7 @@ class ConfirmOrderModel {
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
                     this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -375,6 +382,7 @@ class ConfirmOrderModel {
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
                     this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -412,11 +420,14 @@ class ConfirmOrderModel {
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
                     this.canCommit = true;
+                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
                     this.disPoseErr(err, orderParamVO, {});
                 });
+                break;
+            default:
                 break;
         }
     }

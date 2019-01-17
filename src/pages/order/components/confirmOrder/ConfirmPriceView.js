@@ -17,13 +17,13 @@ import user from '../../../../model/user';
 
 const arrow_right = res.arrow_right;
 const couponIcon = res.coupons_icon;
+
 @observer
 export default class ConfirmPriceView extends Component {
 
     render() {
         return (
             <View style={{ marginBottom: 250 }}>
-                this.renderLine()
                 {/*{this.renderCouponsPackage()}*/}
                 {this.renderPriceView()}
             </View>
@@ -37,8 +37,7 @@ export default class ConfirmPriceView extends Component {
     };
     renderPriceView = () => {
         return (
-            <View
-                style={{ backgroundColor: 'white' }}>
+            <View style={{ backgroundColor: 'white' }}>
                 <NoMoreClick style={styles.couponsStyle}
                              disabled={!confirmOrderModel.canUseCou}
                              onPress={this.props.jumpToCouponsPage}>

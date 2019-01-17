@@ -11,7 +11,9 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import { confirmOrderModel } from '../../model/ConfirmOrderModel';
 import bridge from '../../../../utils/bridge';
+import { observer } from 'mobx-react/native';
 
+@observer
 export default class ConfirmBottomView extends Component {
 
     render() {

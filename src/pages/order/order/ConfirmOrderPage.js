@@ -15,7 +15,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ConfirmAddressView from '../components/confirmOrder/ConfirmAddressView';
 import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
 import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
-import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 
 @observer
 export default class ConfirmOrderPage extends BasePage {
@@ -28,6 +28,7 @@ export default class ConfirmOrderPage extends BasePage {
         title: '确认订单',
         show: true // false则隐藏导航
     };
+
     $getPageStateOptions = () => {
         return {
             loadingState: confirmOrderModel.loadingState,
@@ -40,21 +41,25 @@ export default class ConfirmOrderPage extends BasePage {
 
     _reload = () => {
         confirmOrderModel.netFailedInfo = null;
-        confirmOrderModel.loadingState = PageLoadingState.loading;
+        bridge.showLoading('加载中...');
         this.loadPageData();
     };
+
     //**********************************ViewPart******************************************
     _renderContent = () => {
         return (
             <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: ScreenUtils.safeBottom }}>
                 <FlatList
                     style={{ flex: 1 }}
+                    showsVerticalScrollIndicator={false}
                     data={confirmOrderModel.orderProductList}
-                    ListHeaderComponent={<ConfirmAddressView selectAddress={() => this.selectAddress()}/>}
-                    ListFooterComponent={<ConfirmPriceView
-                        jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}/>}
-                    onRefresh={this.loadPageData()}
-                    refreshing={false}
+                    ListHeaderComponent={() => {
+                        return (<ConfirmAddressView selectAddress={() => this.selectAddress()}/>);
+                    }}
+                    ListFooterComponent={() => {
+                        return (<ConfirmPriceView
+                            jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}/>);
+                    }}
                     renderItem={this._renderItem}
                 />
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
@@ -63,7 +68,6 @@ export default class ConfirmOrderPage extends BasePage {
     };
 
     _renderItem = (item) => {
-        alert(item.item.toString());
         return (<GoodsItem
             key={item.index}
             uri={item.item.specImg}
@@ -90,6 +94,7 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     componentDidMount() {
+        bridge.showLoading('加载中...');
         setTimeout(() => {
             this.loadPageData();
         }, 100);
@@ -98,19 +103,16 @@ export default class ConfirmOrderPage extends BasePage {
     }
 
     loadPageData = (params) => {
-        bridge.hiddenLoading();
         // 获取订单数据
         confirmOrderModel.makeSureProduct(this.params.orderParamVO, params);
     };
 
+    // 地址重新选择
     selectAddress = () => {
-        // 地址重新选择
         this.$navigate('mine/address/AddressManagerPage', {
             from: 'order',
             currentId: confirmOrderModel.addressId,
             callBack: (json) => {
-                console.log(json);
-
                 let params = {
                     addressId: json.id,
                     tokenCoin: 0,
@@ -133,10 +135,23 @@ export default class ConfirmOrderPage extends BasePage {
             return;
         }
         confirmOrderModel.canCommit = false;
-        confirmOrderModel.submitProduct(this.params.orderParamVO);
+        confirmOrderModel.submitProduct(this.params.orderParamVO, {
+            callback: (data) => {
+                let replace = NavigationActions.replace({
+                    key: this.props.navigation.state.key,
+                    routeName: 'payment/PaymentMethodPage',
+                    params: {
+                        orderNum: data.orderNo,
+                        amounts: data.payAmount,
+                        pageType: 0
+                    }
+                });
+                this.props.navigation.dispatch(replace);
+            }
+        });
     };
 
-    //选择优惠券
+    // 选择优惠券
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {
             this.$navigate('mine/coupons/CouponsPage', {
@@ -192,19 +207,6 @@ export default class ConfirmOrderPage extends BasePage {
             });
         }
     };
-
-    replaceRouteName(data) {
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
-            routeName: 'payment/PaymentMethodPage',
-            params: {
-                orderNum: data.orderNo,
-                amounts: data.payAmount,
-                pageType: 0
-            }
-        });
-        this.props.navigation.dispatch(replace);
-    }
 }
 
 const styles = StyleSheet.create({
