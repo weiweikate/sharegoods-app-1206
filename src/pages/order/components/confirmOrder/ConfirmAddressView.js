@@ -47,10 +47,11 @@ export default class ConfirmAddressView extends Component {
                     }} resizeMode={'contain'}/>
                     <View style={{
                         flex: 1,
+                        justifyContent: 'center',
                         marginLeft: ScreenUtils.autoSizeWidth(15),
                         marginRight: ScreenUtils.autoSizeWidth(15)
                     }}>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row' }}>
                             <Text style={[styles.commonTextStyle, { flex: 1 }]}
                                   allowFontScaling={false}>收货人：{confirmOrderModel.addressData.receiver}</Text>
                             <Text style={styles.commonTextStyle}

@@ -4,10 +4,11 @@ import {
     StyleSheet,
     View,
     Image,
-    TextInput as RNTextInput
+    TouchableOpacity,
+    TextInput as RNTextInput,Keyboard
 } from 'react-native';
 import {
-    UIText, NoMoreClick
+    UIText
 } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react/native';
@@ -24,6 +25,7 @@ export default class ConfirmPriceView extends Component {
     render() {
         return (
             <View style={{ marginBottom: 250 }}>
+                {this.renderLine()}
                 {/*{this.renderCouponsPackage()}*/}
                 {this.renderPriceView()}
             </View>
@@ -32,15 +34,16 @@ export default class ConfirmPriceView extends Component {
 
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg }}/>
         );
     };
     renderPriceView = () => {
         return (
             <View style={{ backgroundColor: 'white' }}>
-                <NoMoreClick style={styles.couponsStyle}
-                             disabled={!confirmOrderModel.canUseCou}
-                             onPress={this.props.jumpToCouponsPage}>
+                <TouchableOpacity style={styles.couponsStyle}
+                                  activeOpacity={0.5}
+                                  disabled={!confirmOrderModel.canUseCou}
+                                  onPress={this.props.jumpToCouponsPage}>
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
@@ -48,13 +51,14 @@ export default class ConfirmPriceView extends Component {
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
-                </NoMoreClick>
+                </TouchableOpacity>
                 {this.renderLine()}
                 {!user.tokenCoin ? null :
                     <View>
-                        <NoMoreClick style={styles.couponsStyle}
-                                     disabled={parseInt(confirmOrderModel.payAmount) < 1}
-                                     onPress={() => this.props.jumpToCouponsPage('justOne')}>
+                        <TouchableOpacity style={styles.couponsStyle}
+                                          activeOpacity={0.5}
+                                          disabled={parseInt(confirmOrderModel.payAmount) < 1}
+                                          onPress={() => this.props.jumpToCouponsPage('justOne')}>
                             <UIText value={'1元现金券'} style={styles.blackText}/>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <UIText
@@ -62,31 +66,36 @@ export default class ConfirmPriceView extends Component {
                                     style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                                 <Image source={arrow_right}/>
                             </View>
-                        </NoMoreClick>
+                        </TouchableOpacity>
                         {this.renderLine()}
                     </View>
                 }
-                <NoMoreClick style={styles.couponsStyle}>
+                <View style={styles.couponsStyle}>
                     <UIText value={'运费'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText value={`¥${confirmOrderModel.totalFreightFee}`}
                                 style={[styles.grayText]}/>
                     </View>
-                </NoMoreClick>
+                </View>
                 {this.renderLine()}
-                <NoMoreClick style={styles.couponsStyle}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={'买家留言'} style={styles.blackText}/>
-                        <RNTextInput
-                            style={styles.inputTextStyle}
-                            onChangeText={text => confirmOrderModel.message = text}
-                            placeholder={'选填：填写内容已与卖家协商确认'}
-                            placeholderTextColor={DesignRule.textColor_instruction}
-                            numberOfLines={1}
-                            underlineColorAndroid={'transparent'}
-                        />
-                    </View>
-                </NoMoreClick>
+                <TouchableOpacity style={styles.couponsStyle} onPress={() => {
+                    if (this.input.isFocused()) {
+                        this.input.blur();
+                        Keyboard.dismiss()
+                    }
+                }}>
+                    <UIText value={'买家留言'} style={styles.blackText}/>
+                    <RNTextInput
+                        ref={(e) => this.input = e}
+                        style={styles.inputTextStyle}
+                        onChangeText={text => confirmOrderModel.message = text}
+                        placeholder={'选填：填写内容已与卖家协商确认'}
+                        placeholderTextColor={DesignRule.textColor_instruction}
+                        numberOfLines={1}
+                        underlineColorAndroid={'transparent'}
+                        onFocus={this.props.inputFocus}
+                    />
+                </TouchableOpacity>
                 {this.renderLine()}
 
             </View>

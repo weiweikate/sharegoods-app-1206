@@ -35,8 +35,8 @@ export default class CategorySearchPage extends BasePage {
         title: '商品分类'
     };
 
-    async componentDidMount() {
-        this.$loadingShow();
+    componentDidMount() {
+        this.$loadingShow('加载中...');
         // 分类列表
         HomeAPI.findNameList().then((response) => {
             this.$loadingDismiss();
@@ -97,7 +97,7 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} onPress={() => this.go2SearchPage()}>
                         <Image source={icon_search}
-                               style={{ width: 22, height: 21, marginLeft: 15}}/>
+                               style={{ width: 22, height: 21, marginLeft: 15 }}/>
                         <View style={styles.inputText}/>
                     </TouchableOpacity>
                 </View>
@@ -221,7 +221,7 @@ export default class CategorySearchPage extends BasePage {
             });
         } else if (item.linkType === homeLinkType.show) {
             this.$navigate('show/ShowDetailPage', {
-                code: item.linkTypeCode,
+                code: item.linkTypeCode
             });
         }
     };
@@ -294,7 +294,7 @@ export default class CategorySearchPage extends BasePage {
                 marginLeft: (item.index % 3 === 1 || item.index % 3 === 2) ? 15 : 10,
                 alignItems: 'center'
             }}>
-                <TouchableOpacity onPress = {() => this.go2ResultPage(item.item.id, item.item.name)}>
+                <TouchableOpacity onPress={() => this.go2ResultPage(item.item.id, item.item.name)}>
                     <ImageLoad source={{ uri: item.item.img }}
                                style={{
                                    height: itemImgW,

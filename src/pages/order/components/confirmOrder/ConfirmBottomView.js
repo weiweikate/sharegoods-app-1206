@@ -34,7 +34,7 @@ export default class ConfirmBottomView extends Component {
                     <NoMoreClick
                         style={styles.commitTouStyle}
                         onPress={() => {
-                            bridge.showLoading();
+                            bridge.showLoading('提交中...');
                             setTimeout(() => {
                                 this.props.commitOrder();
                             }, 200);
