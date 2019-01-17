@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     StyleSheet,
-    View, FlatList, Keyboard
+    View, FlatList
 } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -22,7 +22,6 @@ export default class ConfirmOrderPage extends BasePage {
     constructor(props) {
         super(props);
         confirmOrderModel.clearData();
-        this.keyboardDidHideListener = null;
     }
 
     $navigationBarOptions = {
@@ -85,21 +84,7 @@ export default class ConfirmOrderPage extends BasePage {
         />);
     };
 
-    componentWillMount() {
-        //监听键盘弹出事件
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide',
-            this.keyboardDidHideHandler.bind(this));
-    }
-
-    //键盘弹出事件响应
-    keyboardDidHideHandler = (event) => {
-        alert('消失');
-    };
-
     componentWillUnmount() {
-        if (this.keyboardDidHideListener != null) {
-            this.keyboardDidHideListener.remove();
-        }
         confirmOrderModel.clearData();
     }
 
