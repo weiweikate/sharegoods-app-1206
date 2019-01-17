@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     StyleSheet,
-    View, FlatList
+    View, FlatList, Keyboard
 } from 'react-native';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -22,6 +22,7 @@ export default class ConfirmOrderPage extends BasePage {
     constructor(props) {
         super(props);
         confirmOrderModel.clearData();
+        this.keyboardDidHideListener = null;
     }
 
     $navigationBarOptions = {
@@ -50,6 +51,7 @@ export default class ConfirmOrderPage extends BasePage {
         return (
             <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: ScreenUtils.safeBottom }}>
                 <FlatList
+                    ref={(e) => this.listView = e}
                     style={{ flex: 1 }}
                     showsVerticalScrollIndicator={false}
                     data={confirmOrderModel.orderProductList}
@@ -58,7 +60,10 @@ export default class ConfirmOrderPage extends BasePage {
                     }}
                     ListFooterComponent={() => {
                         return (<ConfirmPriceView
-                            jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}/>);
+                            jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
+                            inputFocus={() => {
+                                this.listView.scrollToEnd();
+                            }}/>);
                     }}
                     renderItem={this._renderItem}
                 />
@@ -80,7 +85,21 @@ export default class ConfirmOrderPage extends BasePage {
         />);
     };
 
+    componentWillMount() {
+        //监听键盘弹出事件
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide',
+            this.keyboardDidHideHandler.bind(this));
+    }
+
+    //键盘弹出事件响应
+    keyboardDidHideHandler = (event) => {
+        alert('消失');
+    };
+
     componentWillUnmount() {
+        if (this.keyboardDidHideListener != null) {
+            this.keyboardDidHideListener.remove();
+        }
         confirmOrderModel.clearData();
     }
 
@@ -98,8 +117,6 @@ export default class ConfirmOrderPage extends BasePage {
         setTimeout(() => {
             this.loadPageData();
         }, 100);
-        // this.keyboardDidShowListener=Keyboard.addListener('keyboardWillChangeFrame', (event)=>this._keyboardDidShow(event));
-        // this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', (event)=>this._keyboardDidHide(event));
     }
 
     loadPageData = (params) => {
