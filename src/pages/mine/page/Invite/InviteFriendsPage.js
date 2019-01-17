@@ -9,6 +9,7 @@
  *
  */
 
+
 'use strict';
 import React from 'react';
 import {
@@ -82,11 +83,15 @@ export default class InviteFriendsPage extends BasePage<Props> {
 
     //截屏
     _saveImg = () => {
+        let logo = 'logo.png';
+        if (user && user.headImg && user.headImg.length >4){
+            logo = user.headImg;
+        }
         track(trackEvent.QrcodeShareto, {qrCodeID: this.linkUrl, shareMethod: '保存图片'})
         this.setState({
             disable: true
         }, () => {
-            bridge.saveInviteFriendsImage(this.linkUrl, () => {
+            bridge.saveInviteFriendsImage(this.linkUrl,logo, () => {
                 this.$toastShow('保存成功');
                 this.__timer__ = setTimeout(() => {
                     this.setState({
@@ -142,6 +147,18 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                  width: autoSizeWidth(160),
                                  height: autoSizeWidth(160)
                              }}/>
+                    {
+                        user && user.headImg && user.headImg.length >4 ?
+                            <View style={styles.logo}>
+                                <UIImage source={{ uri: user.headImg }}
+                                         style={{height: autoSizeWidth(40), width: autoSizeWidth(40)}}/>
+                            </View>:
+                            <View style={styles.logo}>
+                                <UIImage source={res.other.tongyong_logo_nor}
+                                         style={{height: autoSizeWidth(40), width: autoSizeWidth(40)}} />
+                            </View>
+                    }
+
                 </View>
                 <View style={{
                     flexDirection: 'row',
@@ -216,5 +233,14 @@ const styles = StyleSheet.create({
     btnText: {
         fontSize: DesignRule.fontSize_mediumBtnText,
         color: '#ff0050'
+    },
+    logo: {
+        width: autoSizeWidth(40),
+        height: autoSizeWidth(40),
+        top: autoSizeWidth(60),
+        left: autoSizeWidth(60),
+        position: 'absolute',
+        borderRadius: autoSizeWidth(20),
+        overflow: 'hidden'
     }
 });

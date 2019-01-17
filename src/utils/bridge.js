@@ -117,9 +117,9 @@ export default {
     }) {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
     },
-    saveInviteFriendsImage(QRString, onSuccess, onError = (errorStr) => {
+    saveInviteFriendsImage(QRString, logoStr,onSuccess, onError = (errorStr) => {
     }) {
-        NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString, onSuccess, onError);
+        NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString, logoStr, onSuccess, onError);
     },
 
     //{headerImg,shopName,shopId,shopPerson,codeString,wxTip}
