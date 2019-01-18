@@ -77,7 +77,7 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}
                                 onPress={() => this.jumpToNickNameModifyPage()}/>
                 {this.renderWideLine()}
-                <UserSingleItem leftText={user.perfectNumberCode ? '靓号' : '会员号'} rightText={user.perfectNumberCode ? user.perfectNumberCode : user.code} rightTextStyle={styles.grayText}
+                <UserSingleItem leftText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? '靓号' : '会员号'} rightText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? user.perfectNumberCode : user.code} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={false}/>
                 <UserSingleItem leftText={'会员等级'} rightText={user.levelRemark}
                                 rightTextStyle={[styles.grayText, { color: 'white' }]}
