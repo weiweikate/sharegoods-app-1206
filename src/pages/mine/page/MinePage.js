@@ -306,7 +306,7 @@ export default class MinePage extends BasePage {
     renderUserHead = () => {
         let accreditID = !EmptyUtils.isEmpty(user.code) ? (
             <Text style={{ fontSize: 11, color: DesignRule.white, includeFontPadding: false, marginTop: 5 }}>
-                {user.perfectNumberCode ? `靓号：${user.perfectNumberCode}` : `会员号: ${user.code}`}
+                {user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? `靓号：${user.perfectNumberCode}` : `会员号: ${user.code}`}
             </Text>
         ) : null;
 
