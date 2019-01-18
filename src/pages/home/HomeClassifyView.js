@@ -23,7 +23,7 @@ class Item extends Component {
     state = {
         loadingError: false
     }
-    
+
     render() {
         const { onPress , data } = this.props
         const {img, icon} = this.props.data
@@ -60,7 +60,7 @@ export default class HomeClassifyView extends Component {
             navigate('login/login/LoginPage')
             return
         }
-        navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode,  code: data.linkTypeCode,name:data.name})
+        navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode,  code: data.linkTypeCode,name:data.name,categoryId:data.id})
     }
 
     renderItems = () => {
