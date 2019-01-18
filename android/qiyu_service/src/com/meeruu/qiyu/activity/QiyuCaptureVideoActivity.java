@@ -2,9 +2,8 @@ package com.meeruu.qiyu.activity;
 
 import android.os.Bundle;
 
-import com.meeruu.commonlib.utils.StatusBarUtils;
+import com.meeruu.qiyu.StatusBarUtils;
 import com.qiyukf.nim.uikit.session.activity.CaptureVideoActivity;
-import com.qiyukf.nim.uikit.session.activity.WatchMessagePictureActivity;
 
 public class QiyuCaptureVideoActivity extends CaptureVideoActivity {
 

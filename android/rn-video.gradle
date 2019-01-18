@@ -24,15 +24,14 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api rootProject.ext.dependencies.support
-    // From node_modules
+//    // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
-    implementation(rootProject.ext.dependencies.exoplayer) {
-        exclude group: 'com.android.support'
-    }
-    implementation(rootProject.ext.dependencies.exoplayerOkhttp) {
+
+    implementation rootProject.ext.dependencies.exoplayer
+    api(rootProject.ext.dependencies.exopOKhttp) {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
-    implementation rootProject.ext.dependencies.okhttp
+    api rootProject.ext.dependencies.okhttp
 }

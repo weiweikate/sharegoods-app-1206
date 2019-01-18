@@ -12,26 +12,26 @@ ext {
             applicationId    : "com.meeruu.sharegoods",
             minSdkVersion    : 16,
             targetSdkVersion : 27,
-            versionCode      : 1092,
-            versionName      : "1.0.9.2"
+            versionCode      : 108,
+            versionName      : "1.0.8"
     ]
 
     dependencies = [
             //此处是27.+，需要在rn中做排除
-            support        : 'com.android.support:appcompat-v7:27.1.1',
-            recyclerview   : 'com.android.support:recyclerview-v7:27.1.1',
-            rn             : 'com.facebook.react:react-native:+',
-            design         : 'com.android.support:design:27.1.1',
-            eventbus       : 'org.greenrobot:eventbus:3.0.0',
-            zxing          : 'com.google.zxing:core:3.3.3',
-            wechat         : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.6',
-            walle          : 'com.meituan.android.walle:library:1.1.6',
-            sophix         : 'com.aliyun.ams:alicloud-android-hotfix:3.2.7',
-            fastjson       : 'com.alibaba:fastjson:1.1.68.android',
-            exoplayer      : 'com.google.android.exoplayer:exoplayer:2.9.3',
-            exoplayerOkhttp: 'com.google.android.exoplayer:extension-okhttp:2.9.3',
-            okhttp         : 'com.squareup.okhttp3:okhttp:3.11.0',
-            multidex       : 'com.android.support:multidex:1.0.3',
-            sensors        : 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.0.1'
+            support     : 'com.android.support:appcompat-v7:27.1.1',
+            recyclerview: 'com.android.support:recyclerview-v7:27.1.1',
+            rn          : 'com.facebook.react:react-native:+',
+            design      : 'com.android.support:design:27.1.1',
+            eventbus    : 'org.greenrobot:eventbus:3.0.0',
+            zxing       : 'com.google.zxing:core:3.3.3',
+            wechat      : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.6',
+            walle       : 'com.meituan.android.walle:library:1.1.6',
+            sophix      : 'com.aliyun.ams:alicloud-android-hotfix:3.2.7',
+            fastjson    : 'com.alibaba:fastjson:1.1.68.android',
+            exoplayer   : 'com.google.android.exoplayer:exoplayer:2.7.3',
+            exopOKhttp  : 'com.google.android.exoplayer:extension-okhttp:2.7.3',
+            multidex    : 'com.android.support:multidex:1.0.3',
+            sensors     : 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.0.0',
+            okhttp      : 'com.squareup.okhttp3:okhttp:3.11.0'
     ]
 }
