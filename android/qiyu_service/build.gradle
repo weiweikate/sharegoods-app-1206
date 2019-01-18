@@ -33,6 +33,6 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], exclude: ['android-support-v4.jar'], dir: 'libs')
-    api project(path: ':commonlib')
+    api rootProject.ext.dependencies.support
     api files('libs/qiyu-sdk-4.8.0.jar')
 }

@@ -1,4 +1,4 @@
-package com.meeruu.qiyu.imService;
+package com.meeruu.sharegoods.rn.kefu;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

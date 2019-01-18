@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.meeruu.commonlib.utils.ScreenUtils;
-import com.meeruu.commonlib.utils.SoftKeyboardFixerForFullscreen;
-import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.qiyukf.unicorn.R;
+import com.meeruu.qiyu.ScreenUtils;
+import com.meeruu.qiyu.SoftKeyboardFixerForFullscreen;
+import com.meeruu.qiyu.StatusBarUtils;
 import com.qiyukf.unicorn.ui.activity.ServiceMessageActivity;
 
 public class QiyuServiceMessageActivity extends ServiceMessageActivity {
@@ -34,10 +34,10 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
 
     private void handleTop() {
         View titleBar = findViewById(R.id.ysf_title_bar);
-        if (titleBar.getPaddingTop() != ScreenUtils.getStatusHeight()) {
-            titleBar.setPadding(0, ScreenUtils.getStatusHeight(), 0, 0);
+        if (titleBar.getPaddingTop() != ScreenUtils.getStatusHeight(this)) {
+            titleBar.setPadding(0, ScreenUtils.getStatusHeight(this), 0, 0);
             LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) titleBar.getLayoutParams();
-            param.height += ScreenUtils.getStatusHeight();
+            param.height += ScreenUtils.getStatusHeight(this);
             titleBar.setLayoutParams(param);
         }
     }
