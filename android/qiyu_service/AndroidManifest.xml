@@ -61,17 +61,6 @@
         <!-- 云信进程间通信receiver -->
         <service android:name="com.qiyukf.nimlib.service.WakeupService" />
 
-        <!--如果使用eclipse集成，需要将${applicationId}替换为你的应用包名-->
-        <provider
-            android:name="com.qiyukf.nim.uikit.provider.UnicornProvider"
-            android:authorities="com.meeruu.sharegoods.unicorn.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/ysf_provider" />
-        </provider>
-
         <activity-alias
             android:name="com.qiyukf.unicorn.ui.activity.ServiceMessageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
