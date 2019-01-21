@@ -26,6 +26,8 @@ export default class ProgressBarView extends Component {
             [statues.deleteStatue]: null,
             [statues.noBegin]: this._noBeginTextRender,
             [statues.isBeginning]: this._renderProgress,
+            //进度条去掉
+            // [statues.isBeginning]: null,
             [statues.haveSoldOut]: this._renderHaveSoltOut, //将抢光视图去掉
             // [statues.haveSoldOut]: null,
             [statues.timeOver]: this._renderHaveSoltOut,
@@ -47,39 +49,39 @@ export default class ProgressBarView extends Component {
 
     _renderProgress = () => {
         // const { progressValue, haveRobNum } = this.props;
-        const { progressValue } = this.props;
+        // const { progressValue } = this.props;
         return (
             <View style={{
                 width: ScreenUtils.width / 2 - 40,
                 height: 12,
                 borderRadius: 6,
-                backgroundColor: 'rgba(230, 0, 18, 0.3)'
-                , justifyContent: 'space-between',
+                // backgroundColor: 'rgba(230, 0, 18, 0.3)'
+                justifyContent: 'space-between',
                 flexDirection: 'row',
                 alignItems: 'center',
                 marginTop: 5
             }}>
-                <View style={{
-                    width: progressValue * (ScreenUtils.width / 2 - 40),
-                    height: 12,
-                    borderRadius: 6,
-                    backgroundColor: DesignRule.mainColor,
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    position: 'absolute'
-                }}/>
-                <Text style={{ fontSize: 11, marginLeft: 5, color: 'white' }}>
-                    {/*{'已抢' + haveRobNum + '件'}*/}
-                </Text>
-                <Text style={{
-                    fontSize: 11,
-                    marginRight: 5,
-                    color: 'white'
-                }}>
+                {/*<View style={{*/}
+                    {/*width: progressValue * (ScreenUtils.width / 2 - 40),*/}
+                    {/*height: 12,*/}
+                    {/*borderRadius: 6,*/}
+                    {/*backgroundColor: DesignRule.mainColor,*/}
+                    {/*alignItems: 'flex-start',*/}
+                    {/*justifyContent: 'center',*/}
+                    {/*position: 'absolute'*/}
+                {/*}}/>*/}
+                {/*<Text style={{ fontSize: 11, marginLeft: 5, color: 'white' }}>*/}
+                    {/*/!*{'已抢' + haveRobNum + '件'}*!/*/}
+                {/*</Text>*/}
+                {/*<Text style={{*/}
+                    {/*fontSize: 11,*/}
+                    {/*marginRight: 5,*/}
+                    {/*color: 'white'*/}
+                {/*}}>*/}
 
-                    {(progressValue * 100).toFixed(0) + '%'}
+                    {/*{(progressValue * 100).toFixed(0) + '%'}*/}
 
-                </Text>
+                {/*</Text>*/}
 
             </View>
         );
