@@ -11,9 +11,15 @@ const Goods = ({goods, press}) => <TouchableWithoutFeedback onPress={()=> press 
     <View style={styles.container}>
     <View style={styles.image}>
         <UIImage style={styles.image} source={{uri: goods.imgUrl ? goods.imgUrl : ''}}/>
-        <View style={styles.titleView}>
-            <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
-        </View>
+        {
+            goods.title
+            ?
+            <View style={styles.titleView}>
+                <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+            </View>
+            :
+            null
+        }
     </View>
     <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
     <View style={{flex: 1}}/>
