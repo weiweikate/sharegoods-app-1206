@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.meeruu.commonlib.utils.ScreenUtils;
-import com.meeruu.commonlib.utils.StatusBarUtils;
+import com.meeruu.qiyu.ScreenUtils;
+import com.meeruu.qiyu.StatusBarUtils;
 import com.qiyukf.unicorn.R;
 import com.qiyukf.unicorn.ui.activity.CardPopupActivity;
 
@@ -32,9 +32,9 @@ public class QiyuCardPopupActivity extends CardPopupActivity {
 
     private void handleTop() {
         View titleBar = findViewById(R.id.ysf_title_bar);
-        titleBar.setPadding(0, ScreenUtils.getStatusHeight(), 0, 0);
+        titleBar.setPadding(0, ScreenUtils.getStatusHeight(this), 0, 0);
         LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) titleBar.getLayoutParams();
-        param.height += ScreenUtils.getStatusHeight();
+        param.height += ScreenUtils.getStatusHeight(this);
         titleBar.setLayoutParams(param);
     }
 

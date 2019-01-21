@@ -1,55 +1,61 @@
-import React, {Component} from 'react'
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import ScreenUtils from '../../utils/ScreenUtils'
-const { px2dp, onePixel } = ScreenUtils
-import { homeModule } from './Modules'
-import DesignRule from '../../constants/DesignRule';
-import UIImage from "@mr/image-placeholder";
-import {MRText as Text} from '../../components/ui';
+import React, { Component } from 'react';
+import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils';
 
-const Goods = ({goods, press}) => <TouchableWithoutFeedback onPress={()=> press && press()}>
+const { px2dp, onePixel } = ScreenUtils;
+import { homeModule } from './Modules';
+import DesignRule from '../../constants/DesignRule';
+import UIImage from '@mr/image-placeholder';
+import { MRText as Text } from '../../components/ui';
+import StringUtils from '../../utils/StringUtils';
+
+const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
-    <View style={styles.image}>
-        <UIImage style={styles.image} source={{uri: goods.imgUrl ? goods.imgUrl : ''}}/>
-        <View style={styles.titleView}>
-            <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+        <View style={styles.image}>
+            <UIImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
+            {
+                StringUtils.isEmpty(goods.title) ? null :
+                    <View style={styles.titleView}>
+                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+                    </View>
+            }
         </View>
+        <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
+        <View style={{ flex: 1 }}/>
+        <Text style={styles.money} allowFontScaling={false}>¥ {goods.price} 起</Text>
     </View>
-    <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
-    <View style={{flex: 1}}/>
-    <Text style={styles.money} allowFontScaling={false}>¥ {goods.price} 起</Text>
-    </View>
-</TouchableWithoutFeedback>
+</TouchableWithoutFeedback>;
 
 export default class GoodsCell extends Component {
     _goodsAction(data) {
-        let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode)
-        const { navigate } = this.props
-        let params = homeModule.paramsNavigate(data)
-        navigate(route,  params)
+        let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        const { navigate } = this.props;
+        let params = homeModule.paramsNavigate(data);
+        navigate(route, params);
     }
+
     render() {
-        const {data} = this.props
+        const { data } = this.props;
         if (!data) {
-            return <View/>
+            return <View/>;
         }
         return <View style={styles.cell}>
-        {
-            data[0]
-            ?
-            <Goods goods={data[0]} press={()=> this._goodsAction(data[0])}/>
-            :
-            null
-        }
-        <View style={styles.space}/>
-        {
-            data[1]
-            ?
-            <Goods goods={data[1]} press={()=> this._goodsAction(data[1])}/>
-            :
-            <View style={styles.uncontainer}/>
-        }
-        </View>
+            {
+                data[0]
+                    ?
+                    <Goods goods={data[0]} press={() => this._goodsAction(data[0])}/>
+                    :
+                    null
+            }
+            <View style={styles.space}/>
+            {
+                data[1]
+                    ?
+                    <Goods goods={data[1]} press={() => this._goodsAction(data[1])}/>
+                    :
+                    <View style={styles.uncontainer}/>
+            }
+        </View>;
     }
 }
 
@@ -112,4 +118,4 @@ let styles = StyleSheet.create({
     space: {
         width: px2dp(5)
     }
-})
+});

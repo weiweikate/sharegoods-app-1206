@@ -13,33 +13,37 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
-import user from '../../model/user'
+import user from '../../model/user';
 import DesignRule from '../../constants/DesignRule';
-import {MRText as Text} from '../../components/ui';
+import { MRText as Text } from '../../components/ui';
+
 const { px2dp } = ScreenUtils;
-import ImageLoad from '@mr/image-placeholder'
+import ImageLoad from '@mr/image-placeholder';
 
 class Item extends Component {
     state = {
         loadingError: false
-    }
-    
+    };
+
     render() {
-        const { onPress , data } = this.props
-        const {img, icon} = this.props.data
-        const { loadingError } = this.state
-        let source = {uri: img + '?ts=' + new Date().getTime()}
+        const { onPress, data } = this.props;
+        const { img, icon } = this.props.data;
+        const { loadingError } = this.state;
+        let source = { uri: img };
         return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
-        {
-            loadingError
-            ?
-            <Image source={icon}/>
-            :
-            <ImageLoad style={styles.icon} source={source} onError={()=>{ console.log('loadingError'); this.setState({loadingError: true})}}/>
-        }
+            {
+                loadingError
+                    ?
+                    <Image source={icon}/>
+                    :
+                    <ImageLoad style={styles.icon} source={source} onError={() => {
+                        console.log('loadingError');
+                        this.setState({ loadingError: true });
+                    }}/>
+            }
             <View style={styles.space}/>
             <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>;
     }
 }
 
@@ -55,13 +59,20 @@ class Item extends Component {
 export default class HomeClassifyView extends Component {
 
     _onItemPress = (data) => {
-        const { navigate } = this.props
+        const { navigate } = this.props;
         if (data.needLogin && !user.isLogin) {
-            navigate('login/login/LoginPage')
-            return
+            navigate('login/login/LoginPage');
+            return;
         }
-        navigate(data.route, {fromHome: true, id: 1, linkTypeCode: data.linkTypeCode,  code: data.linkTypeCode,name:data.name})
-    }
+        navigate(data.route, {
+            fromHome: true,
+            id: 1,
+            linkTypeCode: data.linkTypeCode,
+            code: data.linkTypeCode,
+            name: data.name,
+            categoryId: data.id
+        });
+    };
 
     renderItems = () => {
         const { classifyList } = classifyModules;
