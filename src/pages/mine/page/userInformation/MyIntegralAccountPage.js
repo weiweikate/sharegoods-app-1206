@@ -94,7 +94,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
                         this.$navigate('home/signIn/SignInPage');
                     }}>
-                        <Text style={{ fontSize: 15, color: 'white' }}>兑换1元抵扣券</Text>
+                        <Text style={{ fontSize: 15, color: 'white' }}>兑换1元现金券</Text>
                     </TouchableOpacity>
                 </View>
             </View>
