@@ -223,9 +223,10 @@ export default class TopicDetailSelectPage extends Component {
                                 {this._addSelectionSectionView()}
                                 <View style={[{
                                     flexDirection: 'row',
-                                    height: 60,
+                                    height: 30,
                                     justifyContent: 'space-between',
-                                    alignItems: 'center'
+                                    alignItems: 'center',
+                                    paddingVertical:30,
                                 }]}>
                                     <Text style={{
                                         color: DesignRule.textColor_secondTitle,
