@@ -46,7 +46,8 @@ export default class ProgressBarView extends Component {
     }
 
     _renderProgress = () => {
-        const { progressValue, haveRobNum } = this.props;
+        // const { progressValue, haveRobNum } = this.props;
+        const { progressValue } = this.props;
         return (
             <View style={{
                 width: ScreenUtils.width / 2 - 40,
@@ -68,7 +69,7 @@ export default class ProgressBarView extends Component {
                     position: 'absolute'
                 }}/>
                 <Text style={{ fontSize: 11, marginLeft: 5, color: 'white' }}>
-                    {'已抢' + haveRobNum + '件'}
+                    {/*{'已抢' + haveRobNum + '件'}*/}
                 </Text>
                 <Text style={{
                     fontSize: 11,
