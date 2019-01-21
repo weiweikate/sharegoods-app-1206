@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import {
     View, ScrollView,
     Image,
-    RefreshControl, ImageBackground
+    RefreshControl, ImageBackground,
+    StyleSheet
 } from 'react-native';
 import SpellStatusModel from './model/SpellStatusModel';
 import ScreenUtils from '../../utils/ScreenUtils';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import DesignRule from '../../constants/DesignRule';
 import res from './res';
+import OssHelper from '../../utils/OssHelper';
 
 const {
     pindianzhaojilingbgd,
@@ -16,7 +18,12 @@ const {
 } = res;
 
 export default class NoAccessPage extends Component {
+    state = {
+        imgError: false
+    };
+
     render() {
+        const { imgError } = this.state;
         const imgWidth = ScreenUtils.width;
         const imgHeight = ScreenUtils.height - ScreenUtils.headerHeight - (this.props.leftNavItemHidden ? ScreenUtils.tabBarHeight : 0);
         return (
@@ -33,21 +40,26 @@ export default class NoAccessPage extends Component {
                                                             refreshing={SpellStatusModel.refreshing}
                                                             colors={[DesignRule.mainColor]}
                                                             onRefresh={() => {
-                                                                SpellStatusModel.getUser(1).then().catch((error)=>{
-
+                                                                SpellStatusModel.getUser(1).then().catch((error) => {
                                                                 });
                                                             }}/>}>
                     <View style={{ flex: 1 }}>
-                        <ImageBackground style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: imgWidth,
-                            height: imgHeight
-                        }} source={pindianzhaojilingbgd}>
-                            <Image style={{
-                                width: ScreenUtils.autoSizeWidth(imgWidth),
-                                height: ScreenUtils.autoSizeWidth(imgHeight)
-                            }} source={pindianzhaojiling} resizeMode='stretch'/>
+                        <ImageBackground style={[styles.bgImg, { width: imgWidth, height: imgHeight }]}
+                                         source={imgError ? pindianzhaojilingbgd : { uri: OssHelper('/app/pindianzhaojilingbgd.png') }}
+                                         onError = {()=>{
+                                             this.setState({
+                                                 imgError: true
+                                             })
+                                         }}
+                                         resizeMode='stretch'>
+                            <Image style={{ width: imgWidth, height: imgHeight }}
+                                   source={imgError ? pindianzhaojiling : { uri: OssHelper('/app/pindianzhaojiling.png') }}
+                                   onError = {()=>{
+                                       this.setState({
+                                           imgError: true
+                                       })
+                                   }}
+                                   resizeMode='contain'/>
                         </ImageBackground>
                     </View>
                 </ScrollView>
@@ -55,3 +67,9 @@ export default class NoAccessPage extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    bgImg: {
+        justifyContent: 'center', alignItems: 'center'
+    }
+});

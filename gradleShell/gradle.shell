@@ -1,0 +1,6 @@
+
+#!/bin/bash
+echo "正在配置gradle"
+
+#echo 'Hello World !' > ../node_modules/@mr/rn-geolocation/android/build.gradle
+ cat json.txt | awk -F "[firstName]" '/firstName/{print$0}'

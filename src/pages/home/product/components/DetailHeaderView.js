@@ -84,7 +84,7 @@ export default class DetailHeaderView extends Component {
                                             color: DesignRule.textColor_redWarn,
                                             fontSize: 10, paddingHorizontal: 6, paddingVertical: 2
                                         }}
-                                              allowFontScaling={false}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : '原价'}</Text>
+                                              allowFontScaling={false}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : 'V0价'}</Text>
                                     </View>
                                     <Text style={{
                                         color: DesignRule.textColor_redWarn,

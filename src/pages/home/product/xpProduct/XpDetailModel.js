@@ -96,7 +96,7 @@ class XpDetailModel {
 
     @computed get pPriceType() {
         let priceType = this.pData.priceType;
-        return priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : '原价';
+        return priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : 'V0价';
     }
 
     @computed get pCantBuy() {
