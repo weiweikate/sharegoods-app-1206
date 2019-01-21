@@ -258,14 +258,23 @@ export default class ShopCartPage extends BasePage {
                         {
                             backgroundColor: DesignRule.mainColor,
                             height: 140,
-                            width: 75,
+                            width: ScreenUtils.width,
                             marginTop: -20,
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            alignItems: 'flex-end'
                         }
                     }
                 >
-                    <UIText style={styles.backUITextWhite} value='删除'/>
+                    <View
+                    style={{
+                        width:75,
+                        justifyContent:'center',
+                        alignItems:'center'
+                    }}
+                    >
+                        <UIText style={styles.backUITextWhite} value='删除'/>
+                    </View>
+
                 </View>
             </TouchableOpacity>
         );
@@ -451,7 +460,8 @@ const styles = StyleSheet.create({
         // backgroundColor: DesignRule.bgColor,
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+
     },
     backUITextWhite: {
         marginRight: 0,
