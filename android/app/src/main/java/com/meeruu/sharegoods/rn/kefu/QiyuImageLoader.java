@@ -1,4 +1,4 @@
-package com.meeruu.qiyu.imService;
+package com.meeruu.sharegoods.rn.kefu;
 
 import android.content.Context;
 import android.graphics.Bitmap;

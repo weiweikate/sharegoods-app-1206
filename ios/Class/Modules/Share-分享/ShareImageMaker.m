@@ -140,6 +140,47 @@
   return [self createNonInterpolatedUIImageFormCIImage:outImage withSize:250];
 }
   
+- (void)QRCodeWithStr:(NSString *)str imageStr:(NSString *)logoStr com:(void(^)(UIImage * image))com{
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    [filter setDefaults];
+    //存放的信息
+    NSString *info = str;
+    //把信息转化为NSData
+    NSData *infoData = [info dataUsingEncoding:NSUTF8StringEncoding];
+    //滤镜对象kvc存值
+    [filter setValue:infoData forKeyPath:@"inputMessage"];
+    
+    CIImage *outImage = [filter outputImage];
+    
+   UIImage * qrImage = [self createNonInterpolatedUIImageFormCIImage:outImage withSize:250];
+  if ([logoStr hasPrefix:@"http"]) {
+    [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:logoStr] options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+      
+    } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if (image) {
+          [self QRCode:qrImage image:image com:com];
+        }else{
+           [self QRCode:qrImage image:[UIImage imageNamed:@"logo.png"] com:com];
+        }
+      });
+    }];
+  }else{
+    [self QRCode:qrImage image:[UIImage imageNamed:logoStr] com:com];
+  }
+}
+  
+  - (void)QRCode:(UIImage *)str image:(UIImage *)image com:(void(^)(UIImage * image))com{
+    CGRect rect = CGRectMake(0.0f, 0.0f, 250 , 250);
+    UIGraphicsBeginImageContext(CGSizeMake(250, 250));
+    [str drawInRect:rect];
+    image = [self creatRoundImagwwwe: image];
+    [image drawInRect:CGRectMake(85, 85, 80, 80)];
+    UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    com(image2);
+  }
+  
   /**
    处理绘制的二维码模糊的问题
    */
@@ -210,30 +251,32 @@
 }
   
 - (void)saveInviteFriendsImage:(NSString*)QRString
+                         logoImage:(NSString*)logoImage
                     completion:(completionBlock) completion
   {
     UIImage *bgImage = [UIImage imageNamed:@"Invite_fiends_bg"];
-    UIImage *QRCodeImage =  [self QRCodeWithStr:QRString];
-    UIGraphicsBeginImageContext(CGSizeMake(750, 1334));
-    [bgImage drawInRect:CGRectMake(0, 0, 750, 1334)];
-    // 绘制图片
-    [QRCodeImage drawInRect:CGRectMake(215, 715, 320, 320)];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    if(image){
-      __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
-      [lib writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
-        NSLog(@"assetURL = %@, error = %@", assetURL, error);
-        lib = nil;
-        if (!error) {
-          completion(YES);
-        }else{
-          completion(NO);
-        }
-      }];
-    } else{
-      completion(NO);
-    }
+    [self QRCodeWithStr:QRString imageStr:logoImage com:^(UIImage *QRCodeImage) {
+      UIGraphicsBeginImageContext(CGSizeMake(750, 1334));
+      [bgImage drawInRect:CGRectMake(0, 0, 750, 1334)];
+      // 绘制图片
+      [QRCodeImage drawInRect:CGRectMake(215, 715, 320, 320)];
+      UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+      UIGraphicsEndImageContext();
+      if(image){
+        __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+        [lib writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+          NSLog(@"assetURL = %@, error = %@", assetURL, error);
+          lib = nil;
+          if (!error) {
+            completion(YES);
+          }else{
+            completion(NO);
+          }
+        }];
+      } else{
+        completion(NO);
+      }
+    }];
     
   }
   
@@ -321,6 +364,18 @@
     
 //    当你是把获得的高度来布局控件的View的高度的时候.size转化为ceilf(size.height)。
     return  ceilf(size.height);
+  }
+  
+  -(UIImage *)creatRoundImagwwwe:(UIImage *)image{
+    CGRect rect = CGRectMake(0.0f, 0.0f, 80 , 80);
+    UIGraphicsBeginImageContext(CGSizeMake(80, 80));
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextAddEllipseInRect(ctx, rect);
+    CGContextClip(ctx);
+    [image drawInRect:rect];
+    UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image2;
   }
   
   @end

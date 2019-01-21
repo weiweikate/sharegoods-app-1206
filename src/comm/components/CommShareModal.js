@@ -82,8 +82,8 @@ export default class CommShareModal extends React.Component {
             modalVisible: false,
             shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
-            scale: new Animated.Value(0.5),
-            y: new Animated.Value(autoSizeWidth(300))
+            scale: new Animated.Value(1),
+            y: new Animated.Value(autoSizeWidth(0))
         };
     }
 
@@ -92,18 +92,17 @@ export default class CommShareModal extends React.Component {
         if (user.isLogin) {
             user.userShare();
         }
-
         this.setState({ modalVisible: true, shareType: this.defaultShareType });
         this.modal && this.modal.open();
-        this.state.y.setValue(autoSizeWidth(340));
-        Animated.spring(
-            // Animate value over time
-            this.state.y, // The value to drive
-            {
-                toValue: 0,
-                duration: 500
-            }
-        ).start();
+        // this.state.y.setValue(autoSizeWidth(340));
+        // Animated.spring(
+        //     // Animate value over time
+        //     this.state.y, // The value to drive
+        //     {
+        //         toValue: 0,
+        //         duration: 500
+        //     }
+        // ).start();
         this.showImage();
     }
 
@@ -219,15 +218,15 @@ export default class CommShareModal extends React.Component {
     }
 
     startAnimated() {
-        this.state.scale.setValue(0.5);
-        Animated.spring(
-            // Animate value over time
-            this.state.scale, // The value to drive
-            {
-                toValue: 1,
-                duration: 500
-            }
-        ).start();
+        // this.state.scale.setValue(0.5);
+        // Animated.spring(
+        //     // Animate value over time
+        //     this.state.scale, // The value to drive
+        //     {
+        //         toValue: 1,
+        //         duration: 500
+        //     }
+        // ).start();
     }
 
     render() {

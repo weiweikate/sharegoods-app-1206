@@ -15,8 +15,15 @@ android {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
     }
-    lintOptions {
-        abortOnError false
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "$projectDir/../Example/node_modules/react-native/android"
+    }
+    maven {
+        url "$projectDir/../../react-native/android"
     }
 }
 

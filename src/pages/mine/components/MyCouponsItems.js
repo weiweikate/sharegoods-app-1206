@@ -163,7 +163,6 @@ export default class MyCouponsItems extends Component {
             <Modal
                 animationType='fade'
                 transparent={true}
-
                 onRequestClose={() => this.onRequestClose()}
                 visible={this.state.showDialogModal}>
                 <View style={styles.modalStyle}>
@@ -258,6 +257,7 @@ export default class MyCouponsItems extends Component {
         this.setState({ showDialogModal: false });
     };
     commitTokenCoin = () => {
+        bridge.showLoading();
         this.props.useCoupons(this.state.tokenCoinNum);
         this.setState({ showDialogModal: false });
     };
@@ -355,7 +355,7 @@ export default class MyCouponsItems extends Component {
                     data={this.state.viewData}
                     keyExtractor={this._keyExtractor}
                     renderItem={this.renderItem}
-                    onEndReachedThreshold={10}
+                    onEndReachedThreshold={0.1}
                     onEndReached={() => this.onLoadMore()}
                     ListFooterComponent={this._footer}
                     ListEmptyComponent={this._renderEmptyView}
@@ -378,7 +378,7 @@ export default class MyCouponsItems extends Component {
                             borderStyle: 'solid'
                             , alignItems: 'center', justifyContent: 'center'
                         }} activeOpacity={0.5} onPress={() => {
-                            setTimeout(this.props.giveupUse, 10);
+                            this.props.giveupUse();
                         }}>
                             <Text style={{
                                 fontSize: 14,

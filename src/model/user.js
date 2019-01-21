@@ -3,6 +3,7 @@ import { action, computed, observable, autorun } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 //import apiEnvironment from '../api/ApiEnvironment';
 import UserApi from './userApi';
+import bridge from '../utils/bridge';
 // import bridge from '../utils/bridge';
 // import JPushUtils from '../utils/JPushUtils';
 
@@ -178,7 +179,10 @@ class User {
             if (infoStr && typeof infoStr === 'string') {
                 const info = JSON.parse(infoStr);
                 console.log('readUserInfoFromDisk', info);
+                bridge.setCookies(info);
                 this.saveUserInfo(info, false);
+            }else {
+                bridge.clearCookies();
             }
         }).catch(err => {
             console.warn('Error: user.readUserInfoFromDisk()\n' + err.toString());

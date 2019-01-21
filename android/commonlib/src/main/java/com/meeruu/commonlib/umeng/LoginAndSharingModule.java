@@ -186,6 +186,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         switch (shareType) {
             case 0:
                 UMImage image = fixThumImage(params.getString("shareImage"));
+
                 new ShareAction(getCurrentActivity()).setPlatform(platform)//传入平台
                         .withMedia(image).setCallback(umShareListener)//回调监听器
                         .share();
@@ -362,8 +363,42 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void saveInviteFriendsImage(String url, Callback success, Callback fail) {
-        drawInviteFriendsImage(mContext, url, success, fail);
+    public void saveInviteFriendsImage(String url,String headImg, Callback success, Callback fail) {
+
+        if(TextUtils.isEmpty(headImg) || "logo.png".equals(headImg)){
+            Bitmap bitmap = getDefaultIcon(mContext);
+            drawInviteFriendsImage(mContext,bitmap, url, success, fail);
+        }else {
+            downloadHeaderImg(mContext,headImg,url,success,fail);
+        }
+
+    }
+
+    private static void downloadHeaderImg(final Context context,final String headImg,final String url,final Callback success,final Callback fail){
+        Fresco.initialize(context);
+
+
+        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(headImg)).setProgressiveRenderingEnabled(true).build();
+
+
+        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, context);
+
+        dataSource.subscribe(new BaseBitmapDataSubscriber() {
+
+            @Override
+            public void onNewResultImpl(Bitmap bitmap) {
+                drawInviteFriendsImage(context,bitmap, url, success, fail);
+            }
+
+            @Override
+            public void onFailureImpl(DataSource dataSource) {
+                Bitmap bitmap = getDefaultIcon(context);
+                drawInviteFriendsImage(context,bitmap, url, success, fail);
+
+            }
+        }, CallerThreadExecutor.getInstance());
+
+
     }
 
     @ReactMethod
@@ -403,12 +438,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 fail.invoke("店主图片下载失败");
             }
         }, CallerThreadExecutor.getInstance());
-
-
-
-
     }
 
+
+    private static Bitmap getDefaultIcon(Context context){
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round);
+        return bitmap;
+    }
 
     public static void drawShopInviteFriendsImageWithHeader(final Context context, final ReadableMap map,final Bitmap headerBitmap, final Callback success, final Callback fail){
         Bitmap result = Bitmap.createBitmap(375, 667, Bitmap.Config.ARGB_8888);
@@ -546,7 +582,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
 
-    public static void drawInviteFriendsImage(final Context context, final String url, final Callback success, final Callback fail){
+    public static void drawInviteFriendsImage(final Context context,Bitmap icon, final String url, final Callback success, final Callback fail){
         Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -565,6 +601,30 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         canvas.drawBitmap(newbitmap,  0,0,paint);
         canvas.drawBitmap(qrBitmap, 215, 710, paint);
+
+
+        int iconW = icon.getWidth();
+        int iconH = icon.getHeight();
+        // 设置想要的大小
+        int newIconLenght = 80;
+        // 计算缩放比例
+        float iconWidthScale = ((float) newIconLenght) / iconW;
+        float iconHeightScale = ((float) newIconLenght) / iconH;
+        // 取得想要缩放的matrix参数
+        Matrix matrixIcon = new Matrix();
+        matrixIcon.postScale(iconWidthScale, iconHeightScale);
+        // 得到新的图片
+        Bitmap newIcon = Bitmap.createBitmap(icon, 0, 0, iconW, iconH, matrixIcon,
+                true);
+
+        Bitmap roundIcon = createCircleBitmap(newIcon);
+
+
+
+
+        canvas.drawBitmap(roundIcon,335,830,paint);
+
+
         String path = saveImageToCache(context, result, "inviteFriends.png");
 
         path = "file://"+path;
@@ -578,9 +638,34 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         bitmap.recycle();
         qrBitmap.recycle();
         newbitmap.recycle();
+        icon.recycle();
 
         success.invoke();
     }
+
+    private static Bitmap createCircleBitmap(Bitmap resource)
+    {
+        //获取图片的宽度
+        int width = resource.getWidth();
+        Paint paint = new Paint();
+        //设置抗锯齿
+        paint.setAntiAlias(true);
+
+        //创建一个与原bitmap一样宽度的正方形bitmap
+        Bitmap circleBitmap = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
+        //以该bitmap为低创建一块画布
+        Canvas canvas = new Canvas(circleBitmap);
+        //以（width/2, width/2）为圆心，width/2为半径画一个圆
+        canvas.drawCircle(width/2, width/2, width/2, paint);
+
+        //设置画笔为取交集模式
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        //裁剪图片
+        canvas.drawBitmap(resource, 0, 0, paint);
+
+        return circleBitmap;
+    }
+
 
     public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail) {
         String info = url;
