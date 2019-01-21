@@ -12,6 +12,7 @@
             "name": "开发",
             "host": "http://devapi.sharegoodsmall.com/gateway",
             "oss": "https://devcdn.sharegoodsmall.com",
+            "h5": "https://devh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c" //"gh_a7c8f565ea2e" uat
         },
         "qa": {

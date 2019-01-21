@@ -172,7 +172,7 @@ export default class SignInPage extends BasePage {
         track(trackEvent.receiveOneyuan, { yiYuanCouponsAmount: 1, yiYuanCouponsGetMethod: 'exchange' });
         HomeAPI.exchangeTokenCoin().then((data) => {
             this.exchangeing = false;
-            this.$toastShow('成功兑换一张1元抵扣券');
+            this.$toastShow('成功兑换一张1元现金券');
             this.reSaveUserInfo();
         }).catch((error) => {
             this.exchangeing = false;
@@ -265,12 +265,15 @@ export default class SignInPage extends BasePage {
     _couponRender() {
         return (
             <ImageBackground source={couponBackground} style={styles.couponBgStyle}>
-                <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(36), marginLeft: px2dp(30) }}>
-                    1<Text style={{ color: DesignRule.mainColor, fontSize: px2dp(14) }}>元</Text>
+                <View style={{flexDirection:'row',alignItems:'flex-end'}}>
+                <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(36), marginLeft: px2dp(30),includeFontPadding:false ,textAlignVertical:'bottom'}}>
+                    1
                 </Text>
+                    <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(14),marginBottom:8 }}>元</Text>
+                </View>
                 <View style={styles.couponTextWrapper}>
                     <Text style={styles.couponNameTextStyle}>
-                        抵扣券
+                        现金券
                     </Text>
                     <Text style={styles.couponTagTextStyle}>
                         全场通用/无时间限制
@@ -373,7 +376,7 @@ export default class SignInPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => this.$navigate('mine/coupons/CouponsPage')}>
                     <View>
                         <Text style={styles.couponsTextStyle}>
-                            已有{user.tokenCoin ? user.tokenCoin : 0}张抵扣券>
+                            已有{user.tokenCoin ? user.tokenCoin : 0}张现金券>
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>

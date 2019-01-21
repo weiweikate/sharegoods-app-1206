@@ -1,5 +1,5 @@
 import {
-   View, StyleSheet, TouchableOpacity, Image
+    View, StyleSheet, TouchableOpacity, Image
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
@@ -10,7 +10,7 @@ import bridge from '../../../../utils/bridge';
 import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text, MRTextInput as TextInput} from '../../../../components/ui'
+import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
 
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
@@ -33,7 +33,7 @@ export default class AddressEditAndAddPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        if (this.isLoadding === true){
+        if (this.isLoadding === true) {
             return;
         }
         if (StringUtils.isEmpty(this.state.receiverText)) {
@@ -45,11 +45,12 @@ export default class AddressEditAndAddPage extends BasePage {
                 return;
             }
         }
-        if (StringUtils.isEmpty(this.state.telText)) {
+        let telStr = this.state.telText.trim();
+        if (StringUtils.isEmpty(telStr)) {
             bridge.$toast('请输入手机号');
             return;
         } else {
-            if (!StringUtils.checkPhone(this.state.telText)) {
+            if (!StringUtils.checkPhone(telStr)) {
                 bridge.$toast('手机号格式不对');
                 return;
             }
@@ -70,7 +71,7 @@ export default class AddressEditAndAddPage extends BasePage {
                 id: id,
                 address: this.state.addrText,
                 receiver: this.state.receiverText,
-                receiverPhone: this.state.telText,
+                receiverPhone: telStr,
                 provinceCode: this.state.provinceCode,
                 cityCode: this.state.cityCode,
                 areaCode: this.state.areaCode,
@@ -89,7 +90,7 @@ export default class AddressEditAndAddPage extends BasePage {
             MineAPI.addOrEditAddr({
                 address: this.state.addrText,
                 receiver: this.state.receiverText,
-                receiverPhone: this.state.telText,
+                receiverPhone: telStr,
                 provinceCode: this.state.provinceCode,
                 cityCode: this.state.cityCode,
                 areaCode: this.state.areaCode,
@@ -153,8 +154,8 @@ export default class AddressEditAndAddPage extends BasePage {
             </View>
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <TouchableOpacity style={styles.horizontalItem} onPress={() => this._getCityPicker()}>
-                <Text style={[styles.itemLeftText, ]}>所在地区</Text>
-                <Text style={{flex:1}}>{this.state.areaText}</Text>
+                <Text style={[styles.itemLeftText]}>所在地区</Text>
+                <Text style={{ flex: 1 }}>{this.state.areaText}</Text>
                 <Image source={arrow_right} style={{ width: 9, height: 15, marginLeft: 4 }} resizeMode={'contain'}/>
             </TouchableOpacity>
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>

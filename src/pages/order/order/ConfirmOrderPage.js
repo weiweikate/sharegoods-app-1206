@@ -50,6 +50,7 @@ export default class ConfirmOrderPage extends BasePage {
         return (
             <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: ScreenUtils.safeBottom }}>
                 <FlatList
+                    ref={(e) => this.listView = e}
                     style={{ flex: 1 }}
                     showsVerticalScrollIndicator={false}
                     data={confirmOrderModel.orderProductList}
@@ -58,7 +59,10 @@ export default class ConfirmOrderPage extends BasePage {
                     }}
                     ListFooterComponent={() => {
                         return (<ConfirmPriceView
-                            jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}/>);
+                            jumpToCouponsPage={(params) => this.jumpToCouponsPage(params)}
+                            inputFocus={() => {
+                                this.listView.scrollToEnd();
+                            }}/>);
                     }}
                     renderItem={this._renderItem}
                 />
@@ -98,8 +102,6 @@ export default class ConfirmOrderPage extends BasePage {
         setTimeout(() => {
             this.loadPageData();
         }, 100);
-        // this.keyboardDidShowListener=Keyboard.addListener('keyboardWillChangeFrame', (event)=>this._keyboardDidShow(event));
-        // this.keyboardDidHideListener=Keyboard.addListener('keyboardWillHide', (event)=>this._keyboardDidHide(event));
     }
 
     loadPageData = (params) => {
