@@ -731,6 +731,15 @@ export default class MinePage extends BasePage {
                 this.$navigate(RouterMap.SetMentorPage);
             }
         }
+
+        // let  demo = {
+        //     text:'测试网页',
+        //     icon:mine_icon_mentor,
+        //     onPress:()=>{
+        //         this.$navigate('HtmlPage' ,{uri: 'http://172.16.10.131:9528/demo'});
+        //     }
+        // }
+
         let menu = [invite,coupon,data,shop,service,address,collect];
 
         if(this.state.hasFans){
