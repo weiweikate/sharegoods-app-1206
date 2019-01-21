@@ -186,6 +186,7 @@ export default class AddressManagerPage extends BasePage {
     _onItemClick = (item) => {
         // 地址列表点击
         if (this.params.from === 'order') {
+            bridge.showLoading();
             let callBack = this.params.callBack;
             callBack && callBack({ ...item });
             this.$navigateBack();

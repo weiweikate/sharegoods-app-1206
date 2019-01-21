@@ -9,7 +9,7 @@ import com.meeruu.PopModal.PopModalManager;
 import com.meeruu.WaveView.WaveViewManager;
 import com.meeruu.commonlib.umeng.AnalyticsModule;
 import com.meeruu.commonlib.umeng.LoginAndSharingModule;
-import com.meeruu.qiyu.imService.QYChatModule;
+import com.meeruu.sharegoods.rn.kefu.QYChatModule;
 import com.meeruu.sharegoods.rn.module.AppPayModule;
 import com.meeruu.sharegoods.rn.module.CommModule;
 import com.meeruu.sharegoods.rn.module.QRCodeModule;

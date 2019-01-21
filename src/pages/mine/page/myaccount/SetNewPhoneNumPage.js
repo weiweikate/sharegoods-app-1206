@@ -122,7 +122,7 @@ export default class SetNewPhoneNumPage extends BasePage {
         if (this.isLoadding === true) {
             return;
         }
-        let tel = this.state.telText;
+        let tel = this.state.telText.trim();
         let code = this.state.code;
         const { oldNum, oldCode } = this.props.navigation.state.params;
         if (StringUtils.isEmpty(tel)) {
@@ -144,7 +144,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             MineAPI.updatePhone({
                 verificationCode: this.state.code,
                 oldVerificationCode: oldCode,
-                phone: this.state.telText
+                phone: tel
             }).then((data) => {
                 this.isLoadding = false;
                 user.changePhone(tel);

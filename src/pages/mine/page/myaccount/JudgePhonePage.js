@@ -130,7 +130,7 @@ export default class JudgePhoneNumPage extends BasePage {
         if (this.isLoadding === true) {
             return;
         }
-        let tel = this.state.telText;
+        let tel = this.state.telText.trim();
         let code = this.state.code;
         if (StringUtils.isEmpty(tel)) {
             bridge.$toast('请输入手机号');
@@ -145,7 +145,7 @@ export default class JudgePhoneNumPage extends BasePage {
             this.isLoadding = true;
             MineAPI.judgeCode({
                 verificationCode: this.state.code,
-                phone: this.state.telText
+                phone: tel
             }).then((data) => {
                 this.isLoadding = false;
                 if (user.hadSalePassword) {
