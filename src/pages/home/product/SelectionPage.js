@@ -260,7 +260,7 @@ export default class SelectionPage extends Component {
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
-                                <SelectionAmountView style={{ marginTop: 30 }}
+                                <SelectionAmountView style={{ paddingVertical: 30}}
                                                      amountClickAction={this._amountClickAction}
                                                      maxCount={this.state.maxStock} afterAmount={afterAmount}
                                                      type={type}/>
