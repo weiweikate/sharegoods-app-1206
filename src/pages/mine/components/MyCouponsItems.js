@@ -423,7 +423,7 @@ export default class MyCouponsItems extends Component {
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
             return `限品类：限指定品类商品可用`;
         } else {
-            return '全品类：全场通用券';
+            return '全品类：全场通用券（特殊商品除外）';
         }
     };
     parseData = (dataList) => {
@@ -432,7 +432,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
                 arrData.push({
                     status: 0,
-                    name: '1元抵扣券',
+                    name: '1元现金券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',
@@ -452,7 +452,7 @@ export default class MyCouponsItems extends Component {
                             name: item.name,
                             timeStr: '敬请期待',
                             value: item.type === 11 ? item.value : '拼店',
-                            limit: item.type === 11 ? '兑换券：靓号兑换券' : '全场券：全场通用券',
+                            limit: item.type === 11 ? '兑换券：靓号代金券' : '全场券：全场通用券（特殊商品除外）',
                             remarks: item.remarks,
                             type: item.type, //以type=99表示1元券
                             levelimit: false,
@@ -559,7 +559,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
                     status: 0,
-                    name: '1元抵扣券',
+                    name: '1元现金券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',

@@ -261,7 +261,8 @@ const styles = StyleSheet.create({
     textInputStyle: {
         color: '#333333',
         fontSize: DesignRule.fontSize_threeTitle,
-        marginHorizontal: 7
+        marginHorizontal: 7,
+        flex:1
     },
     resultWrapper: {
         height: 17,

@@ -83,7 +83,7 @@ export default class DetailBottomView extends Component {
                         onPress={() => this.props.bottomViewAction('jlj')}>
                         {
                             // shareMoney未空显示?  为0显示分享赚
-                            (shareMoney === '0.00' || shareMoney === '?') ?
+                            (parseFloat(shareMoney) === 0 || shareMoney === '?') ?
                                 <Text style={{ fontSize: 17, color: DesignRule.white }}>分享秀一秀</Text>
                                 : <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     {/*<Text style={{ color: DesignRule.white, fontSize: 25 }} allowFontScaling={false}>赚</Text>*/}
