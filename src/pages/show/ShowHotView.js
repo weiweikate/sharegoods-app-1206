@@ -17,7 +17,7 @@ import DesignRule from '../../constants/DesignRule';
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 
-const imgWidth = px2dp(168);
+const imgWidth = (ScreenUtils.width - px2dp(40)) / 2;
 
 @observer
 export default class ShowHotView extends Component {
