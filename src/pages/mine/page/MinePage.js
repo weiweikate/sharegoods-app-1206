@@ -53,7 +53,8 @@ const {
     mine_level_background,
     mine_icon_mentor,
     mine_user_icon,
-    mine_icon_fans
+    mine_icon_fans,
+    mine_icon_message
 } = res.homeBaseImg;
 
 
@@ -82,7 +83,7 @@ export default class MinePage extends BasePage {
             loadingState: PageLoadingState.success,
             isRefreshing: false,
             changeHeader: true,
-            hasMessage: false,
+            hasMessageNum: 0,
             hasFans: false
         };
     }
@@ -133,11 +134,11 @@ export default class MinePage extends BasePage {
             });
     }
 
-    handleBackPress=()=>{
+    handleBackPress = () => {
         this.$navigate('HomePage');
         return true;
 
-    }
+    };
 
     _needShowFans = () => {
         LoginAPI.queryShowFansStatus().then((res) => {
@@ -157,12 +158,12 @@ export default class MinePage extends BasePage {
         MessageApi.getNewNoticeMessageCount().then(result => {
             if (!EmptyUtils.isEmpty(result.data)) {
                 this.setState({
-                    hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                    hasMessageNum: result.data.shopMessageCount + result.data.noticeCount + result.data.messageCount
                 });
             }
         }).catch((error) => {
             this.setState({
-                hasMessage: false
+                hasMessageNum: 0
             });
         });
     };
@@ -286,7 +287,7 @@ export default class MinePage extends BasePage {
                             <UIImage source={this.state.changeHeader ? mine_message_icon_white : mine_message_icon_gray}
                                      style={{ height: px2dp(21), width: px2dp(21) }}
                                      onPress={() => this.jumpToServicePage()}/>
-                            {this.state.hasMessage ? <View style={{
+                            {this.state.hasMessageNum ? <View style={{
                                 width: 10,
                                 height: 10,
                                 backgroundColor: this.state.changeHeader ? DesignRule.white : DesignRule.mainColor,
@@ -413,7 +414,7 @@ export default class MinePage extends BasePage {
             }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
                     <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.white }}>
-                    我的账户
+                        我的账户
                     </Text>
                 </View>
                 <View
@@ -441,8 +442,6 @@ export default class MinePage extends BasePage {
             </ImageBackground>
         );
     };
-
-
 
 
     getAdjustsFontSize = (text) => {
@@ -586,7 +585,7 @@ export default class MinePage extends BasePage {
     renderMoreMoney = () => {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.$navigate(RouterMap.ShowDetailPage,{fromHome: false, id: 1});
+                this.$navigate(RouterMap.ShowDetailPage, { fromHome: false, id: 1 });
 
             }}>
                 <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
@@ -656,90 +655,100 @@ export default class MinePage extends BasePage {
     renderMenu = () => {
 
         let invite = {
-            text:'分享好友',
-            icon:mine_icon_invite,
-            onPress:()=>{
+            text: '分享好友',
+            icon: mine_icon_invite,
+            onPress: () => {
                 this.$navigate(RouterMap.InviteFriendsPage);
             }
-        }
+        };
         let coupon = {
-            text:'优惠券',
-            icon:mine_coupon_icon,
-            onPress:()=>{
+            text: '优惠券',
+            icon: mine_coupon_icon,
+            onPress: () => {
                 this.$navigate(RouterMap.CouponsPage);
             }
-        }
+        };
         let data = {
-            text:'我的资料',
-            icon:mine_icon_data,
-            onPress:()=>{
+            text: '我的资料',
+            icon: mine_icon_data,
+            onPress: () => {
                 this.$navigate(RouterMap.MyPromotionPage);
             }
-        }
+        };
         let shop = {
-            text:'收藏店铺',
-            icon:mine_icon_favorite_shop,
-            onPress:()=>{
+            text: '收藏店铺',
+            icon: mine_icon_favorite_shop,
+            onPress: () => {
                 this.$navigate(RouterMap.MyCollectPage);
             }
-        }
+        };
         let service = {
-            text:'帮助与客服',
-            icon:mine_icon_help_service,
-            onPress:()=>{
+            text: '帮助与客服',
+            icon: mine_icon_help_service,
+            onPress: () => {
                 this.$navigate(RouterMap.MyHelperPage);
             }
-        }
+        };
         let address = {
-            text:'地址',
-            icon:mine_icon_address,
-            onPress:()=>{
+            text: '地址',
+            icon: mine_icon_address,
+            onPress: () => {
                 this.$navigate(RouterMap.AddressManagerPage);
             }
-        }
+        };
         let collect = {
-            text:'秀场收藏',
-            icon:mine_icon_discollect,
-            onPress:()=>{
+            text: '秀场收藏',
+            icon: mine_icon_discollect,
+            onPress: () => {
                 this.$navigate(RouterMap.ShowConnectPage);
             }
-        }
+        };
         let fans = {
-            text:'我的秀迷',
-            icon:mine_icon_fans,
-            onPress:()=>{
-                if(this.state.hasFans){
+            text: '我的秀迷',
+            icon: mine_icon_fans,
+            onPress: () => {
+                if (this.state.hasFans) {
                     this.$navigate(RouterMap.MyShowFansPage);
                 }
             }
-        }
+        };
 
         let mentor = {
-            text:'顾问',
-            icon:mine_icon_mentor,
-            onPress:()=>{
+            text: '顾问',
+            icon: mine_icon_mentor,
+            onPress: () => {
                 if (user.upUserCode) {
                     this.$navigate(RouterMap.MyMentorPage);
                 }
             }
-        }
+        };
 
-        let  mentorSet = {
-            text:'顾问',
-            icon:mine_icon_mentor,
-            onPress:()=>{
+        let mentorSet = {
+            text: '顾问',
+            icon: mine_icon_mentor,
+            onPress: () => {
                 this.$navigate(RouterMap.SetMentorPage);
             }
-        }
-        let menu = [invite,coupon,data,shop,service,address,collect];
+        };
 
-        if(this.state.hasFans){
+        let message = {
+            text: '消息',
+            icon: mine_icon_message,
+            num: this.state.hasMessageNum,
+            onPress: () => {
+                this.$navigate(RouterMap.MessageCenterPage);
+            }
+        };
+
+        let menu = [invite, message,coupon, data, shop, service, address, collect];
+
+        if (this.state.hasFans) {
             menu.push(fans);
         }
 
-        if(user.upUserCode){
+        if (user.upUserCode) {
             menu.push(mentor);
-        }else {
+        } else {
             menu.push(mentorSet);
         }
         let arr = [];
@@ -751,10 +760,27 @@ export default class MinePage extends BasePage {
                     alignItems: 'center',
                     marginTop: 10,
                     marginBottom: 10
-                }} onPress={ menu[i].onPress} key={i}>
-                    <UIImage source={menu[i].icon}
-                             style={{ height: i === 0 ? 19 : 18, width: 20, marginBottom: 10 }}/>
+                }} onPress={menu[i].onPress} key={i}>
+                    <View style={{ padding: 10 }}>
+                        <UIImage source={menu[i].icon}
+                                 resizeMode={'contain'}
+                                 style={{ width: 20, marginBottom: 10 }}/>
+                        {menu[i].num ? <View style={{
+                            width: 16,
+                            height: 16,
+                            borderRadius: 8,
+                            backgroundColor: DesignRule.mainColor,
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                            alignItems:'center',
+                            justifyContent:'center'
+                        }}>
+                            <Text style={{color:DesignRule.white,fontSize:9,includeFontPadding:false}}>{menu[i].num > 99 ? 99 : menu[i].num}</Text>
+                        </View> : null}
+                    </View>
                     <UIText value={menu[i].text} style={styles.greyText}/>
+
                 </NoMoreClick>
             );
         }
@@ -800,7 +826,6 @@ export default class MinePage extends BasePage {
                 break;
         }
     }
-
 
 
     jumpToAllOrder = () => {
