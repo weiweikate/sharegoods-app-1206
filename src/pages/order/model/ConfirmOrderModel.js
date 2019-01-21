@@ -153,6 +153,7 @@ class ConfirmOrderModel {
 
     disPoseErr = (err, orderParamVO, params) => {
         bridge.hiddenLoading();
+        this.canCommit = true;
         if (err.code === 10009) {
             this.$navigate('login/login/LoginPage', {
                 callback: () => {
@@ -185,6 +186,7 @@ class ConfirmOrderModel {
 
     handleNetData = (data) => {
         bridge.hiddenLoading();
+        this.canCommit = true;
         this.loadingState = PageLoadingState.success;
         this.orderProductList = data.orderProductList;
         this.addressData = data.userAddressDTO || data.userAddress || {};
