@@ -16,8 +16,9 @@ const userInfoImg = {
     xiangjzhanghu_icon03_14: require('./xiangjzhanghu_icon03_14.png'),
     xiangjzhanghu_icon03_16: require('./xiangjzhanghu_icon03_16.png'),
     xiudozhanghu_icon_xjaingquan: require('./xiudozhanghu_icon_xjaingquan.png'),
+    xiudozhanghu_icon_zengsong: require('./xiudozhanghu_icon_zengsong.png'),
     bank_card_icon: require('./bank_card_icon.png'),
-    tuikuan_icon:require('./me_zhanghu_tk_icon.png')
+    tuikuan_icon:require('./me_zhanghu_tk_icon.png'),
 
 };
 export default userInfoImg;
