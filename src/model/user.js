@@ -435,6 +435,9 @@ class User {
     userShare() {
         UserApi.userShare();
     }
+    luckyDraw() {
+        UserApi.luckyDraw();
+    }
 }
 
 const user = new User();
