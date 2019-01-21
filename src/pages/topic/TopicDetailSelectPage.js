@@ -142,7 +142,7 @@ export default class TopicDetailSelectPage extends Component {
                                     height: 30,
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
-                                    paddingVertical: 30
+                                    marginVertical: 30
                                 }]}>
                                     <Text style={{
                                         color: DesignRule.textColor_secondTitle,

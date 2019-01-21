@@ -165,6 +165,7 @@ export default class CommShareModal extends React.Component {
      **/
     share(platformType) {
         this.close();
+        let that = this;
         let params = { shareType: this.state.shareType, platformType: platformType };
         if (this.state.shareType === 0) {//图片分享
             params.shareImage = this.state.path;
@@ -192,7 +193,9 @@ export default class CommShareModal extends React.Component {
             track(this.props.trackEvent, { shareMethod, ...p });
         }
         bridge.share(params, () => {
-
+            if (user.isLogin && that.props.luckyDraw === true) {
+                user.luckyDraw();
+            }
         }, (errorStr) => {
 
         });

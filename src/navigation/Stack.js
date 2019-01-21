@@ -95,6 +95,9 @@ addSubModule(shareTask);
 console.log('Router', Object.keys(Router));
 console.log(Router);
 console.log('Path',Object.values(Router))
+Object.values(Router).map(value=>{
+    console.log(  value.path)
+})
 
 console.log('PageKey',Object.keys(PageKey))
 export { PageKey };
