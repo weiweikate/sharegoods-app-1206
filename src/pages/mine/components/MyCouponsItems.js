@@ -485,7 +485,7 @@ export default class MyCouponsItems extends Component {
                 status: item.status,
                 name: item.name,
                 timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.expireTime),
-                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
+                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : item.value),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,

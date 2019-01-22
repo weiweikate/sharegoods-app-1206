@@ -189,6 +189,7 @@ emptyProps
 
 #### Android相关
 * react-native三方库模块gradle文件配置请在android工程目录下找对应的gradle引入即可,例如：apply from: '../../../android/rn-vector-icons.gradle'
+* npm run gradle 可以自动配置android gradle
 
 ### 关于多渠道打包
   * 构建基准包：运行 assembleRelease task 构建基准包

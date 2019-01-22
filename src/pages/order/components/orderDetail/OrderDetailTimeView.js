@@ -61,6 +61,7 @@ export default class OrderDetailTimeView extends Component {
                     <UIText
                         value={'完成时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime ? orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime / 1000 : orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000)}
                         style={styles.textOrderDownStyle}/>:null}
+                {this.renderWideLine()}
             </View>
         );
     }

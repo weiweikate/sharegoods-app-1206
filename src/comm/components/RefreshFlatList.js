@@ -23,7 +23,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import DesignRule from '../../constants/DesignRule';
-import ScreenUtils from '../../utils/ScreenUtils'
+import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../res';
 
 export default class RefreshFlatList extends React.Component {
@@ -56,7 +56,7 @@ export default class RefreshFlatList extends React.Component {
         onStartRefresh: PropTypes.func,
         onEndRefresh: PropTypes.func,
         onStartLoadMore: PropTypes.func,
-        onEndLoadMore: PropTypes.func,
+        onEndLoadMore: PropTypes.func
     };
 
     static defaultProps = {
@@ -73,31 +73,31 @@ export default class RefreshFlatList extends React.Component {
         defaultData: []
     };
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this._bind();
+        this._bind();
 
-      this.state = {
-          refreshing: false,
-          loadingMore: false,
-          footerStatus: 'idle',
-          data: [],
-          height: ScreenUtils.height - ScreenUtils.headerHeight
-      };
-      this.page = props.defaultPage;
-      this.allLoadCompleted = false;
-  }
+        this.state = {
+            refreshing: false,
+            loadingMore: false,
+            footerStatus: 'idle',
+            data: [],
+            height: ScreenUtils.height - ScreenUtils.headerHeight
+        };
+        this.page = props.defaultPage;
+        this.allLoadCompleted = false;
+    }
 
-  _bind() {
+    _bind() {
 
-  }
+    }
 
-  componentDidMount() {
-      this._onRefresh();
-  }
+    componentDidMount() {
+        this._onRefresh();
+    }
 
-  _renderEmpty() {
+    _renderEmpty() {
         if (this.props.renderEmpty) {
             return this.props.renderEmpty();
         } else {
@@ -129,7 +129,8 @@ export default class RefreshFlatList extends React.Component {
             if (renderLoadMoreComponent) {
                 footer = renderLoadMoreComponent(this.state.footerStatus);
             } else {
-                loadMoreComponent = <DefaultLoadMoreComponent status={this.state.footerStatus}  defaultEmptyText={this.props.defaultEmptyText}/>;
+                loadMoreComponent = <DefaultLoadMoreComponent status={this.state.footerStatus}
+                                                              defaultEmptyText={this.props.defaultEmptyText}/>;
             }
         }
 
@@ -138,7 +139,7 @@ export default class RefreshFlatList extends React.Component {
         }
 
         return (
-            <View style={{height: 70}}>
+            <View style={{ height: 70 }}>
                 {loadMoreComponent}
                 {footer}
             </View>
@@ -211,7 +212,7 @@ export default class RefreshFlatList extends React.Component {
             }
             let length = netData.length;
             if (this.props.totalPageNum) {
-                length = this.props.totalPageNum(result)
+                length = this.props.totalPageNum(result);
             }
             if (length < pageSize) {
                 allLoadCompleted = true;
@@ -219,7 +220,7 @@ export default class RefreshFlatList extends React.Component {
             }
             let data = this.state.data;
             if (isRefresh === false) {
-                data = data.concat(netData)
+                data = data.concat(netData);
                 onEndLoadMore && onEndLoadMore();
             } else {
                 data = netData;
@@ -227,13 +228,13 @@ export default class RefreshFlatList extends React.Component {
 
             }
 
-                that.allLoadCompleted = allLoadCompleted;
-                that.setState({
-                    refreshing: false,
-                    loadingMore: false,
-                    footerStatus,
-                    data
-                });
+            that.allLoadCompleted = allLoadCompleted;
+            that.setState({
+                refreshing: false,
+                loadingMore: false,
+                footerStatus,
+                data
+            });
         })).catch((error) => {
             if (isRefresh === false) {
                 onEndLoadMore && onEndLoadMore();
@@ -253,30 +254,29 @@ export default class RefreshFlatList extends React.Component {
 
 
     render() {
-    return (
-      <FlatList
-          {...this.props}
-          data={this.state.data}
-          ListEmptyComponent={this._renderEmpty.bind(this)}
-          ListFooterComponent={this._renderFooter.bind(this)}
-          renderItem={this.props.renderItem}
-          onEndReached={this._onLoadMore.bind(this)}
-          onEndReachedThreshold={0.1}
-          ListHeaderComponent={this.props.renderHeader}
-          // onRefresh={this._onRefresh.bind(this)}
-          // refreshing={this.state.refreshing}
-          //onLayout={this.onLayout.bind(this)}
-          refreshControl={
-              <RefreshControl
-                  refreshing={this.state.refreshing}
-                  onRefresh={this._onRefresh.bind(this)}
-                  colors={[DesignRule.mainColor]}
-                  tintColor={DesignRule.mainColor}
-              />
-          }
-      />
-    );
-  }
+        return (
+            <FlatList
+                {...this.props}
+                data={this.state.data}
+                ListEmptyComponent={this._renderEmpty.bind(this)}
+                ListFooterComponent={this._renderFooter.bind(this)}
+                renderItem={this.props.renderItem}
+                onEndReached={this._onLoadMore.bind(this)}
+                onEndReachedThreshold={0.1}
+                ListHeaderComponent={this.props.renderHeader}
+                // onRefresh={this._onRefresh.bind(this)}
+                // refreshing={this.state.refreshing}
+                //onLayout={this.onLayout.bind(this)}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                        colors={[DesignRule.mainColor]}
+                    />
+                }
+            />
+        );
+    }
 }
 
 export class BaseLoadMoreComponent extends React.Component {
@@ -313,7 +313,7 @@ class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
     renderIdleMore() {
         return (
             <View style={styles.footer}>
-                <Text style={styles.footerText} allowFontScaling={false}>上拉加载更多数据</Text>
+                <Text style={styles.footerText} allowFontScaling={false}>上拉加载更多</Text>
             </View>
         );
 
