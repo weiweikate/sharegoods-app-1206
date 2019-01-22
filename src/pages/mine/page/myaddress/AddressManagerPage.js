@@ -56,11 +56,6 @@ export default class AddressManagerPage extends BasePage {
         };
     }
 
-    componentDidMount() {
-        // 拿数据
-        // this.refreshing();
-    }
-
     refreshing() {
         this.list && this.list._onRefresh();
     }
