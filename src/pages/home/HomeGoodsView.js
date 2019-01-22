@@ -14,10 +14,13 @@ const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => pre
         <View style={styles.image}>
             <UIImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
             {
-                StringUtils.isEmpty(goods.title) ? null :
-                    <View style={styles.titleView}>
-                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
-                    </View>
+                StringUtils.isEmpty(goods.title)
+                ?
+                null
+                :
+                <View style={styles.titleView}>
+                    <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+                </View>
             }
         </View>
         <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>

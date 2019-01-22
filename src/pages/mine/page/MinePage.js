@@ -761,7 +761,7 @@ export default class MinePage extends BasePage {
                     marginTop: 10,
                     marginBottom: 10
                 }} onPress={menu[i].onPress} key={i}>
-                    <View style={{ paddingTop: 10,paddingLeft:10,paddingRight:10, paddingBottom: 0}}>
+                    <View style={{ paddingTop: 7,paddingLeft:8,paddingRight:8, paddingBottom: 0}}>
                         <UIImage source={menu[i].icon}
                                  resizeMode={'contain'}
                                  style={{ width: 20, marginBottom: 8 }}/>
