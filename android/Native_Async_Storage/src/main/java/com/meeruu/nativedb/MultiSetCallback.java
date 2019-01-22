@@ -1,6 +1,6 @@
 package com.meeruu.nativedb;
 
-public interface MultiSetResult {
+public interface MultiSetCallback {
     void onSuccess();
     void onFail(String type);
 }

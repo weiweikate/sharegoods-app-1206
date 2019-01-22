@@ -2,7 +2,7 @@ package com.meeruu.nativedb;
 
 import java.util.List;
 
-public interface MultiGetResult {
+public interface MultiGetCallback {
     void onSuccess(List data);
     void onFail(String type);
 }
