@@ -551,7 +551,7 @@ class HomePage extends BasePage {
                     keyExtractor={this._keyExtractor.bind(this)}
                     onScroll={this._onScroll.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={0.2}
+                    onEndReachedThreshold={0.5}
                     showsVerticalScrollIndicator={false}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
                     ListFooterComponent={<Footer isFetching={homeModule.isFetching} errorMsg={homeModule.errorMsg} isEnd={homeModule.isEnd}/>}
