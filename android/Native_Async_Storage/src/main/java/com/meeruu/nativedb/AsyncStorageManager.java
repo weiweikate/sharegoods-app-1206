@@ -1,5 +1,6 @@
 package com.meeruu.nativedb;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import com.facebook.react.modules.storage.AsyncLocalStorageUtil;
@@ -13,13 +14,28 @@ import java.util.List;
 import static com.facebook.react.modules.storage.ReactDatabaseSupplier.TABLE_CATALYST;
 
 
-public class AsyncStorageUtils {
+public class AsyncStorageManager {
     static final String KEY_COLUMN = "key";
     static final String VALUE_COLUMN = "value";
+    static final String TABLE_CATALYST = "catalystLocalStorage";
     private static final int MAX_SQL_KEYS = 999;
     private ReactDatabaseSupplier mReactDatabaseSupplier;
 
-    public static void multiGet(List<String> keys, MultiGetCallback callback){
+    private AsyncStorageManager(){}
+
+    private static class AsyncStorageManagerHolder{
+        private final static AsyncStorageManager instance = new AsyncStorageManager();
+    }
+
+    public static AsyncStorageManager getInstance(){
+        return AsyncStorageManagerHolder.instance;
+    }
+
+    public void init(Context context){
+        mReactDatabaseSupplier = ReactDatabaseSupplier.getInstance(context);
+    }
+
+    public void multiGet(List<String> keys, MultiGetCallback callback){
         if(keys == null){
             callback.onFail(StorageErrorType.KEYERROR);
             return;
