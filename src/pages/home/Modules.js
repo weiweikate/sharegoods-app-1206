@@ -230,9 +230,8 @@ class HomeModule {
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             this.isFetching = false;
             let list = result.data.data;
-            if (list.length <= 0) {
+            if (list.length < 10) {
                 this.isEnd = true;
-                return;
             }
             let itemData = [];
             let home = [];
@@ -259,8 +258,8 @@ class HomeModule {
             }
             this.homeList = this.homeList.concat(home);
             this.page++;
-            this.isFetching = false;
-            this.isEnd = false;
+            // this.isFetching = false;
+            // this.isEnd = false;
         } catch (error) {
             this.errorMsg = error.msg
             console.log(error);
