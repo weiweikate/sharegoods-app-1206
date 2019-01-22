@@ -30,7 +30,6 @@ import hotUpdateUtil from './utils/HotUpdateUtil';
 import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
-import spellStatusModel from './pages/spellShop/model/SpellStatusModel';
 // import LoginAPI from './pages/login/api/LoginApi';
 // import OldImag from './home_icon.png';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
@@ -97,8 +96,6 @@ export default class App extends Component {
                 }).then(result => {
                     Storage.set('storage_MrLocation', result);
                 }).catch((error) => {
-                    error = error || {};
-                    spellStatusModel.permissionsErr = error.code;
                 });
             }, 200);
         });
