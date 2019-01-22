@@ -13,7 +13,7 @@
         "bulid_path":  "../node_modules/@mr/rn-image-crop-picker/android/build.gradle"
     },
     "@mr/cookies": {
-        "content": "apply from: '../../../../android/rn-request.gradle'",
+        "content": "apply from: '../../../../android/rn-cookies.gradle'",
         "bulid_path":  "../node_modules/@mr/cookies/android/build.gradle"
     },
     "@mr/webview-bridge": {
@@ -25,11 +25,11 @@
         "bulid_path":   "../node_modules/react-native-autoheight-webview/android/build.gradle"
     },
     "fetch-blob": {
-        "content": "apply from: '../../../android/rn-gradient.gradle'",
+        "content": "apply from: '../../../android/rn-fetch-blob.gradle'",
         "bulid_path": "../node_modules/react-native-fetch-blob/android/build.gradle"
     },
     "linear-gradien": {
-        "content": "apply from: '../../../../android/rn-geolocation.gradle'",
+        "content": "apply from: '../../../android/rn-gradient.gradle'",
         "bulid_path": "../node_modules/react-native-linear-gradient/android/build.gradle"
     },
     "svg": {
@@ -45,7 +45,7 @@
         "bulid_path": "../node_modules/react-native-vector-icons/android/build.gradle"
     },
     "video": {
-        "content": "apply from: apply from: '../../../android/rn-video.gradle'",
-        "bulid_path":   "../node_modules/react-native-video/android/build.gradle"
+        "content": "apply from: '../../../android/rn-video.gradle'",
+        "bulid_path":   "../node_modules/react-native-video/android-exoplayer/build.gradle"
     }
 }

@@ -15,7 +15,7 @@ import {
     MRText as Text
 } from '../../components/ui';
 
-const imgWidth = px2dp(168);
+const imgWidth = (ScreenUtils.width - px2dp(40)) / 2;
 
 @observer
 export default class ShowHotView extends Component {

@@ -256,7 +256,7 @@ export default class ShopCartPage extends BasePage {
                 <View
                     style={
                         {
-                            backgroundColor: DesignRule.mainColor,
+                            backgroundColor: 'white',
                             height: 140,
                             width: ScreenUtils.width,
                             marginTop: -20,
@@ -269,7 +269,9 @@ export default class ShopCartPage extends BasePage {
                     style={{
                         width:75,
                         justifyContent:'center',
-                        alignItems:'center'
+                        alignItems:'center',
+                        backgroundColor:DesignRule.mainColor,
+                        height:140,
                     }}
                     >
                         <UIText style={styles.backUITextWhite} value='删除'/>
