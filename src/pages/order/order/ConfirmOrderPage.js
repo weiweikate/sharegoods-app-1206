@@ -93,7 +93,6 @@ export default class ConfirmOrderPage extends BasePage {
             <View style={styles.container}>
                 {renderViewByLoadingState(this.$getPageStateOptions(), this._renderContent)}
             </View>
-
         );
     }
 
