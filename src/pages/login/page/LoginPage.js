@@ -63,7 +63,7 @@ export default class LoginPage extends BasePage {
                 <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
                     注册
                 </Text>
-                :  null
+                : null
         );
     };
 
@@ -109,9 +109,9 @@ export default class LoginPage extends BasePage {
                     forgetPasswordClick={this.forgetPasswordClick}
                     loginClick={(loginType, LoginParam) => {
                         this.$loadingShow();
-                        setTimeout(()=>{
-                            this.loginClick(loginType, LoginParam)
-                        },200)
+                        setTimeout(() => {
+                            this.loginClick(loginType, LoginParam);
+                        }, 0);
                     }}
                     showOldLogin={this.state.showWxLoginBtn}
                 />
@@ -288,7 +288,6 @@ export default class LoginPage extends BasePage {
                 }
 
             }).catch((data) => {
-                console.log(data);
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
             });

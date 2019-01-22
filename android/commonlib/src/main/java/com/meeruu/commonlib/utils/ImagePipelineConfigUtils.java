@@ -84,7 +84,8 @@ public class ImagePipelineConfigUtils {
                 .setSmallImageDiskCacheConfig(diskSmallCacheConfig)
                 .setMainDiskCacheConfig(diskCacheConfig)
                 .setMemoryTrimmableRegistry(NoOpMemoryTrimmableRegistry.getInstance())
-                .setResizeAndRotateEnabledForNetwork(true);
+                .setResizeAndRotateEnabledForNetwork(true)
+                .setDownsampleEnabled(true);
 
         // 就是这段代码，用于清理缓存
         NoOpMemoryTrimmableRegistry.getInstance().registerMemoryTrimmable(new MemoryTrimmable() {
@@ -96,7 +97,7 @@ public class ImagePipelineConfigUtils {
                 if (MemoryTrimType.OnCloseToDalvikHeapLimit.getSuggestedTrimRatio() == suggestedTrimRatio
                         || MemoryTrimType.OnSystemLowMemoryWhileAppInBackground.getSuggestedTrimRatio() == suggestedTrimRatio
                         || MemoryTrimType.OnSystemLowMemoryWhileAppInForeground.getSuggestedTrimRatio() == suggestedTrimRatio
-                        ) {
+                ) {
                     ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
                 }
             }
