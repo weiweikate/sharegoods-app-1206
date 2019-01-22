@@ -650,6 +650,7 @@ export default class TopicDetailPage extends BasePage {
         secCategoryId = (this.state.data || {}).secCategoryId;
         originalPrice = (this.state.data || {}).originalPrice;
         groupPrice = (this.state.data || {}).groupPrice;
+        let v0Price = (this.state.data || {}).v0Price;
 
         return (
             <View style={styles.container}>
@@ -746,7 +747,7 @@ export default class TopicDetailPage extends BasePage {
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
                                     priceStr: `￥${originalPrice}`,
-                                    retailPrice: `￥${productPrice}`,
+                                    retailPrice: `￥${v0Price}`,
                                     spellPrice: `￥${groupPrice}`,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`
                                 }}

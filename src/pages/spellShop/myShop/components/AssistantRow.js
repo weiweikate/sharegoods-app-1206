@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 14,
+        paddingBottom: 3,
         color: DesignRule.textColor_secondTitle
     },
     level: {
