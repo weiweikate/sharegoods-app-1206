@@ -1,9 +1,9 @@
 import jsrsasign from 'jsrsasign';
 import rsa_config from './rsa_config';
 // 创建RSAKey对象
-import {
-    NativeModules
-} from 'react-native';
+// import {
+//     NativeModules
+// } from 'react-native';
 
 let may_key = '-----BEGIN PRIVATE KEY-----' + rsa_config.rsa_key + '-----END PRIVATE KEY-----';
 
@@ -40,7 +40,6 @@ const RSA = {
         result.sort();
 
         try {
-
             // new Promise((resolve) => {
             // })
             let sig = new jsrsasign.crypto.Signature({ 'alg': 'SHA256withRSA' });
@@ -52,17 +51,18 @@ const RSA = {
             //测试
             console.log('-----');
             // console.log(s)
-            console.log(jsrsasign.hex2b64(s));
-            const signString  =  await NativeModules.commModule.signWith(result.join('&'));
-            console.log('原生加签');
-            console.log(signString);
-            return {
-                nonce,
-                timestamp,
-                client,
-                version,
-                sign:signString
-            };
+            //原生加签
+            // console.log(jsrsasign.hex2b64(s));
+            // const signString  =  await NativeModules.commModule.signWith(result.join('&'));
+            // console.log('原生加签');
+            // console.log(signString);
+            // return {
+            //     nonce,
+            //     timestamp,
+            //     client,
+            //     version,
+            //     sign:signString
+            // };
 
                 // NativeModules.commModule.signWith(result.join('&'), (jsonDic) => {
                 // console.log('------原生加签');
@@ -78,13 +78,13 @@ const RSA = {
 
             // );
             //js延签
-            // return {
-            //     nonce,
-            //     timestamp,
-            //     client,
-            //     version,
-            //     sign: jsrsasign.hex2b64(s)
-            // };
+            return {
+                nonce,
+                timestamp,
+                client,
+                version,
+                sign: jsrsasign.hex2b64(s)
+            };
         } catch (e) {
             console.log('签名失败---参数---' + params);
         }
