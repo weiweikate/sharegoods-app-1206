@@ -45,7 +45,7 @@ export default class HomeRecommendView extends Component {
                             <Text style={styles.title} allowFontScaling={false}>精品推荐</Text>
                         </View>
                         <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-                            <View style={{ width: px2dp(5) }}/>
+                            <View style={{ width: px2dp(4) }}/>
                             {items}
                             <View style={styles.space}/>
                         </ScrollView>

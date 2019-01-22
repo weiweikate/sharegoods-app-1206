@@ -67,29 +67,24 @@ function createHistory(response, requestStamp) {
         requestBody,
         responseJson
     };
-    console.log('history', history);
     return history;
 }
 
 export default class HttpUtils {
-
     platform = '';
-
     static sign(params, isRSA) {
         if (isRSA) {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const signParam = RSA.sign(params)
                 resolve(signParam)
             })
         } else {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 resolve({})
             })
         }
-
     }
-
-    static get(uri, isRSA, params) {
+    static async  get(uri, isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
         if (params) {
@@ -99,24 +94,18 @@ export default class HttpUtils {
                 url = url + '?' + Qs.stringify(params);
             }
         }
-        // url = decodeURIComponent(url);
-
         /**
          * @type {*|{nonce, timestamp, client, version, sign}}
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
-
         let signParam = {};
-        if (isRSA) {
-            // signParam = HttpUtils.sign(params);
-            signParam = RSA.sign();
-        }
+        console.log(new Date().getTime())
+        signParam = await HttpUtils.sign(params,isRSA);
+        console.log(new Date().getTime())
         let timeLineStart = +new Date();
-
         if (!this.platform) {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
-
         return user.getToken().then(token => {
             let config = {
                 headers: {
@@ -144,41 +133,15 @@ export default class HttpUtils {
         });
     }
 
-    // static upload(uri,isRSA,data,config){
-    //     let host = apiEnvironment.getCurrentHostUrl();
-    //     let url = uri.indexOf('http') > -1 ? uri : (host + uri);
-    //     let signParam = {}
-    //     if (isRSA){
-    //         signParam = RSA.sign()
-    //     }
-    //
-    //   return fetch(`${url}/common/upload/oss`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'multipart/form-data',
-    //             'Accept': 'application/json',
-    //             ...singParams
-    //         },
-    //         body: data
-    //     }).then(resq => resq.json())
-    //
-    // }
-
-    static post(uri, isRSA, data, config) {
+    static async post(uri, isRSA, data, config) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
         /**
          * @type {*|{nonce, timestamp, client, version, sign}}
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
-
         let signParam = {};
-        if (isRSA) {
-            //  HttpUtils.sign().then(result => {
-            //      signParam = result;
-            // });
-            signParam = RSA.sign()
-        }
+        signParam = await HttpUtils.sign(signParam,isRSA);
         data = {
             ...data
         };
@@ -186,7 +149,6 @@ export default class HttpUtils {
         if (!this.platform) {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
         }
-
         let timeLineStart = +new Date();
         return user.getToken().then(token => {
             config.headers = {
