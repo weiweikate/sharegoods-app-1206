@@ -82,7 +82,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
             topicBannerProductDTOList && topicBannerProductDTOList.length > 0
                 ?
                 <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-                    <View style={styles.space}/>
+                    <View style={{ width: px2dp(4) }}/>
                     {goodsItem}
                     {
                         topicBannerProductDTOList.length >= 8 ? <MoreItem press={() => {
@@ -186,6 +186,7 @@ let styles = StyleSheet.create({
     },
     goodsView: {
         marginTop: px2dp(5),
+        marginLeft: px2dp(10),
         width: px2dp(100),
         height: px2dp(170)
     },
