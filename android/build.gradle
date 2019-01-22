@@ -13,20 +13,24 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.0'
         //添加神策分析 android-gradle-plugin 依赖
-        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:2.2.3'
+        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.0.1'
     }
 }
 
 allprojects {
     repositories {
-mavenCentral()
-google()
+        mavenCentral()
+        google()
 
-//添加 Sensors Analytics maven 库地址
-maven { url 'https://dl.bintray.com/zouyuhan/maven' }
-maven { url 'https://jitpack.io' }
-jcenter()
-}
+        //添加 Sensors Analytics maven 库地址
+        maven { url 'https://dl.bintray.com/zouyuhan/maven' }
+        maven { url 'https://jitpack.io' }
+        jcenter()
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
+    }
 }
 
 task clean(type: Delete) {

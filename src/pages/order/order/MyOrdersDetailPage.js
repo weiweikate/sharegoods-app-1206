@@ -152,7 +152,7 @@ export default class MyOrdersDetailPage extends BasePage {
     _renderContent = () => {
         return (
             <View style={{marginBottom:ScreenUtils.safeBottom,flex:1}}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
             <RefreshList
                 ListHeaderComponent={this.renderHeader}
                 ListFooterComponent={this.renderFooter}
