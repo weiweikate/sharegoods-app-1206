@@ -69,7 +69,7 @@ export default class XpDetailActivityInfoModal extends Component {
         const { value, type } = item.coupon || {};
         if (type === 4) {
             return <View style={styles.bgTopValueView}>
-                <Text style={styles.bgTopValueLText}>{`商品\n抵扣`}</Text>
+                <Text style={styles.bgTopValueLText}>{`商品\n兑换`}</Text>
             </View>;
         } else if (type === 3) {
             return <View style={styles.bgTopValueView}>
