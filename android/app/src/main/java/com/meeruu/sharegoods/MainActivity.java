@@ -27,6 +27,9 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.Utils;
+import com.meeruu.nativedb.AsyncStorageManager;
+import com.meeruu.nativedb.MultiGetCallback;
+import com.meeruu.nativedb.MultiSetCallback;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.activity.GuideActivity;
@@ -34,6 +37,9 @@ import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -67,6 +73,30 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
         Log.d("is_phone", !Utils.isEmulator() + "");
+
+//        AsyncStorageManager.getInstance().getItem("ApiEnvironment", new MultiGetCallback() {
+//            @Override
+//            public void onSuccess(Object data) {
+//                Log.e("mrdata",data.toString());
+//            }
+//
+//            @Override
+//            public void onFail(String type) {
+//                Log.e("error",type);
+//            }
+//        });
+//
+//        AsyncStorageManager.getInstance().setItem("ApiEnvironment", "pre_release", new MultiSetCallback() {
+//            @Override
+//            public void onSuccess() {
+//                int a= 1;
+//            }
+//
+//            @Override
+//            public void onFail(String type) {
+//                Log.e("error",type);
+//            }
+//        });
     }
 
     @Override
