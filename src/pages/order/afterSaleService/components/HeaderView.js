@@ -50,9 +50,13 @@ export default class HeaderView extends React.Component {
 
 
     render() {
-        let { status, pageType, headerTitle, timeString} = this.props;
+        let { status, pageType, headerTitle, timeString, detailTitle} = this.props;
+
         let titleCommpent = () => {
             return <UIText value={headerTitle} style={styles.header_title}/>;
+        };
+        let detialCommpent = () => {
+            return <UIText value={detailTitle} style={styles.header_detail}/>;
         };
         let timerCommpent = () => {
         };
@@ -77,6 +81,7 @@ export default class HeaderView extends React.Component {
                     {/*{imageCommpent()}*/}
                     <View style={{ marginLeft: 15 }}>
                         {titleCommpent()}
+                        {detialCommpent()}
                         {timerCommpent()}
                     </View>
                 </View>

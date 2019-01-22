@@ -42,7 +42,9 @@ export default class ConfirmOrderPage extends BasePage {
     _reload = () => {
         confirmOrderModel.netFailedInfo = null;
         bridge.showLoading('加载中...');
-        this.loadPageData();
+        setTimeout(() => {
+            this.loadPageData();
+        }, 0);
     };
 
     //**********************************ViewPart******************************************
@@ -93,7 +95,6 @@ export default class ConfirmOrderPage extends BasePage {
             <View style={styles.container}>
                 {renderViewByLoadingState(this.$getPageStateOptions(), this._renderContent)}
             </View>
-
         );
     }
 
@@ -101,7 +102,7 @@ export default class ConfirmOrderPage extends BasePage {
         bridge.showLoading('加载中...');
         setTimeout(() => {
             this.loadPageData();
-        }, 100);
+        }, 0);
     }
 
     loadPageData = (params) => {
@@ -125,7 +126,7 @@ export default class ConfirmOrderPage extends BasePage {
                 confirmOrderModel.addressId = json.id;
                 setTimeout(() => {
                     this.loadPageData(params);
-                }, 100);
+                }, 0);
             }
         });
     };
@@ -170,7 +171,7 @@ export default class ConfirmOrderPage extends BasePage {
                             confirmOrderModel.tokenCoinText = parseInt(data) > 0 && (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? '-¥' + parseInt(data) : '选择使用1元券';
                         setTimeout(() => {
                             this.loadPageData(params);
-                        }, 100);
+                        }, 0);
                     }
                 }
             });
@@ -191,7 +192,7 @@ export default class ConfirmOrderPage extends BasePage {
                         confirmOrderModel.tokenCoinText = '选择使用1元券';
                         setTimeout(() => {
                             this.loadPageData(params);
-                        }, 100);
+                        }, 0);
                     } else if (data === 'giveUp') {
                         confirmOrderModel.userCouponCode = null;
                         confirmOrderModel.couponName = null;
@@ -203,7 +204,7 @@ export default class ConfirmOrderPage extends BasePage {
                                 tokenCoin: 0,
                                 addressId: confirmOrderModel.addressId
                             });
-                        }, 100);
+                        }, 0);
                     }
                 }
             });

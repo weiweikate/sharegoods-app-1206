@@ -63,7 +63,7 @@ export default class LoginPage extends BasePage {
                 <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
                     注册
                 </Text>
-                :  null
+                : null
         );
     };
 
@@ -109,9 +109,9 @@ export default class LoginPage extends BasePage {
                     forgetPasswordClick={this.forgetPasswordClick}
                     loginClick={(loginType, LoginParam) => {
                         this.$loadingShow();
-                        setTimeout(()=>{
-                            this.loginClick(loginType, LoginParam)
-                        },200)
+                        setTimeout(() => {
+                            this.loginClick(loginType, LoginParam);
+                        }, 0);
                     }}
                     showOldLogin={this.state.showWxLoginBtn}
                 />
@@ -251,6 +251,7 @@ export default class LoginPage extends BasePage {
             });
         } else {
             // this.$loadingShow();
+            console.log('请求开始'+ new Date().getTime());
             track(trackEvent.login, { loginMethod: '密码登录' });
             LoginAPI.passwordLogin({
                 authcode: '22',
@@ -263,6 +264,7 @@ export default class LoginPage extends BasePage {
                 wechatCode: '11',
                 wechatVersion: '11'
             }).then((data) => {
+                console.log('请求结束'+ new Date().getTime());
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
@@ -286,7 +288,6 @@ export default class LoginPage extends BasePage {
                 }
 
             }).catch((data) => {
-                console.log(data);
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
             });
