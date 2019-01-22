@@ -20,7 +20,7 @@ function randomString(len) {
 }
 
 const RSA = {
-     sign(params = {}) {
+    sign(params = {}) {
         // 'Security-Policy': 'SIGNATURE'
         let result = [];
         let nonce = randomString(16);
@@ -38,7 +38,6 @@ const RSA = {
             result.push(key + '=' + map[key]);
         }
         result.sort();
-
         try {
 
             // new Promise((resolve) => {
