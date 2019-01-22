@@ -77,6 +77,7 @@ export default class HttpUtils {
             return new Promise((resolve) => {
                 const signParam = RSA.sign(params)
                 resolve(signParam)
+                console.log(new Date().getTime())
             })
         } else {
             return new Promise((resolve) => {
@@ -101,7 +102,7 @@ export default class HttpUtils {
         let signParam = {};
         console.log(new Date().getTime())
         signParam = await HttpUtils.sign(params,isRSA);
-        console.log(new Date().getTime())
+
         let timeLineStart = +new Date();
         if (!this.platform) {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
@@ -121,14 +122,11 @@ export default class HttpUtils {
         }).then(response => {
             let data = response.data;
             let history = createHistory(response, timeLineStart);
-
             fetchHistory.insertData(history);
             return data;
         }).catch(response => {
             let history = createHistory(response, timeLineStart);
-
             fetchHistory.insertData(history);
-
             return response.data;
         });
     }
