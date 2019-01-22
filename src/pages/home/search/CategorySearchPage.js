@@ -232,6 +232,7 @@ export default class CategorySearchPage extends BasePage {
         });
         // 点击分类
         if (this.state.leftIndex !== index) {
+            bridge.showLoading('加载中...');
             // 先隐藏，后显示，起到刷新作用
             this.setState({
                 bannerData: [],
@@ -242,6 +243,7 @@ export default class CategorySearchPage extends BasePage {
                     if (index === 0) {
                         // 热门分类
                         HomeAPI.findHotList().then((response) => {
+                            bridge.hiddenLoading();
                             let datas = response.data || {};
                             this.setState({
                                 sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
@@ -253,11 +255,13 @@ export default class CategorySearchPage extends BasePage {
                                 swiperShow: true
                             });
                         }).catch((data) => {
+                            bridge.hiddenLoading();
                             bridge.$toast(data.msg);
                         });
                     } else {
                         // 分级
                         HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
+                            bridge.hiddenLoading();
                             let datas = response.data || {};
                             let arr = [];
                             for (let i = 0, len = datas.productCategoryList.length; i < len; i++) {
@@ -277,6 +281,7 @@ export default class CategorySearchPage extends BasePage {
                                 swiperShow: true
                             });
                         }).catch((data) => {
+                            bridge.hiddenLoading();
                             bridge.$toast(data.msg);
                         });
                     }
