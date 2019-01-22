@@ -59,6 +59,24 @@ const bannerHeight = px2dp(220);
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
+const Footer = ({errorMsg, isEnd, isFetching}) => <View style={styles.footer}>
+{
+    errorMsg
+        ?
+        <Text style={styles.text} allowFontScaling={false}>{this.state.errorMsg}</Text>
+        :
+        isEnd
+            ?
+            <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
+            :
+            isFetching
+                ?
+                <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
+                :
+                <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
+}
+</View>;
+
 @observer
 class HomePage extends BasePage {
 
@@ -521,26 +539,6 @@ class HomePage extends BasePage {
         return !bannerModule.isShowHeader ? null : <View style={{ height: headerHeight }}/>;
     }
 
-    _onFooterComponent () {
-        return <View style={styles.footer}>
-        {
-            homeModule.errorMsg
-                ?
-                <Text style={styles.text} allowFontScaling={false}>{this.state.errorMsg}</Text>
-                :
-                homeModule.isEnd
-                    ?
-                    <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
-                    :
-                    homeModule.isFetching
-                        ?
-                        <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
-                        :
-                        <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
-        }
-    </View>;
-    }
-
     render() {
         const { homeList } = homeModule;
 
@@ -556,7 +554,7 @@ class HomePage extends BasePage {
                     onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
-                    ListFooterComponent={this._onFooterComponent.bind(this)}
+                    ListFooterComponent={<Footer isFetching={homeModule.isFetching} errorMsg={homeModule.errorMsg} isEnd={homeModule.isEnd}/>}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}
@@ -570,7 +568,6 @@ class HomePage extends BasePage {
                                     height: this.headerH + 14,
                                     opacity: bannerModule.opacity === 1 ? 0 : 0.4
                                 }]}/>
-
                 <HomeSearchView navigation={this.$navigate}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
                                 hasMessage={this.state.hasMessage}
