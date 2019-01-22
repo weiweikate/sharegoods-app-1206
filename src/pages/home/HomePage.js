@@ -541,7 +541,6 @@ class HomePage extends BasePage {
 
     render() {
         const { homeList } = homeModule;
-
         return (
             <View style={styles.container}>
                 {this._renderTableHeader()}
