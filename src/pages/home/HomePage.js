@@ -521,6 +521,26 @@ class HomePage extends BasePage {
         return !bannerModule.isShowHeader ? null : <View style={{ height: headerHeight }}/>;
     }
 
+    _onFooterComponent () {
+        return <View style={styles.footer}>
+        {
+            homeModule.errorMsg
+                ?
+                <Text style={styles.text} allowFontScaling={false}>{this.state.errorMsg}</Text>
+                :
+                homeModule.isEnd
+                    ?
+                    <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
+                    :
+                    homeModule.isFetching
+                        ?
+                        <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
+                        :
+                        <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
+        }
+    </View>;
+    }
+
     render() {
         const { homeList } = homeModule;
 
@@ -536,6 +556,7 @@ class HomePage extends BasePage {
                     onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
+                    ListFooterComponent={this._onFooterComponent.bind(this)}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}
@@ -645,6 +666,15 @@ const styles = StyleSheet.create({
         width: px2dp(10),
         height: px2dp(10),
         borderRadius: px2dp(5)
+    },
+    footer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 50
+    },
+    text: {
+        color: '#999',
+        fontSize: px2dp(11)
     }
 });
 

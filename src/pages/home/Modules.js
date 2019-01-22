@@ -84,6 +84,7 @@ class HomeModule {
     isEnd = false;
     page = 1;
     firstLoad = true;
+    errorMsg = ''
 
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
@@ -261,6 +262,7 @@ class HomeModule {
             this.isFetching = false;
             this.isEnd = false;
         } catch (error) {
+            this.errorMsg = error.msg
             console.log(error);
         }
     });
