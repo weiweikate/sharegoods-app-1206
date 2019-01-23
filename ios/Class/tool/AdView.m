@@ -305,6 +305,7 @@ completion:(YYWebImageCompletionBlock)completion
 {
   if (!_bgView) {
     _bgView = [UIImageView new];
+    _bgView.contentMode = UIViewContentModeScaleAspectFill;
      [self addSubview:_bgView];
   }
   return _bgView;
