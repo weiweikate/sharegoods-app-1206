@@ -289,7 +289,8 @@ class ShopCartStore {
                 });
                 if (items.rules instanceof Array && items.rules.length > 0) {
                     if (totalSelectMoney === 0) {
-                        middleTitleTip = '购买满' + items.rules[0].startPrice + '元,经验值翻' + items.rules[0].rate + '倍,送' + (isNaN(parseInt(items.startCount))?0:items.startCount)  + '张优惠券';
+                        middleTitleTip = '购买满' + items.rules[0].startPrice + '元,经验值翻' + items.rules[0].rate + '倍' ;
+                            // + (isNaN(parseInt(items.startCount))?0:items.startCount)  + '张优惠券';
                         items.middleTitle = middleTitleTip;
                     } else {
                         let rulesArr = items.rules;
@@ -316,9 +317,9 @@ class ShopCartStore {
                         if (totalYouHuiJuan > items.maxCount) {
                             totalYouHuiJuan = items.maxCount;
                         }
-                        middleTitleTip = middleTitleTip + '送' + (isNaN(parseInt(totalYouHuiJuan))?0:totalYouHuiJuan)  + '张优惠券';
+                        // middleTitleTip = middleTitleTip + '送' + (isNaN(parseInt(totalYouHuiJuan))?0:totalYouHuiJuan)  + '张优惠券';
                         if (totalSelectMoney - items.rules[achieveRuleIndex].startPrice < 0) {
-                            middleTitleTip = middleTitleTip + '还差' + (items.rules[achieveRuleIndex].startPrice - totalSelectMoney).toFixed(1) + '元';
+                            middleTitleTip = middleTitleTip + '还差' + (items.rules[achieveRuleIndex].startPrice - totalSelectMoney).toFixed(2) + '元';
                         }
                         items.middleTitle = middleTitleTip;
                     }
