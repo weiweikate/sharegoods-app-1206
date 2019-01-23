@@ -163,9 +163,10 @@ export default class LoginPage extends BasePage {
                         headImg: data.headerImg,
                         iv: '',
                         nickname: data.nickName,
-                        openid: data.openid,
+                        appOpenid: data.appOpenid,
                         systemVersion: data.systemVersion,
-                        wechatVersion: ''
+                        wechatVersion: '',
+                        unionid:data.unionid
                     }).then((res) => {
                         if (res.code === 34005) {
                             data.title = '绑定手机号';

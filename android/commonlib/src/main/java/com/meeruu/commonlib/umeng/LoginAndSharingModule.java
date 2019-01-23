@@ -295,7 +295,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 umengDeleteOauth(SHARE_MEDIA.WEIXIN);
                 WXLoginBean bean = new WXLoginBean();
                 bean.setDevice(android.os.Build.DEVICE);
-                bean.setOpenid(openid);
+                bean.setAppOpenid(openid);
+                bean.setUnionid(unionid);
                 bean.setSystemVersion(android.os.Build.VERSION.RELEASE);
                 bean.setNickName(name);
                 bean.setHeaderImg(iconurl);
