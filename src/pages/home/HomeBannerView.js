@@ -77,7 +77,7 @@ export default class HomeBannerView extends Component {
 
     render() {
         const { bannerList } = bannerModule;
-        if (bannerList.length === 0) {
+        if (!bannerList || bannerList.length === 0) {
             return null;
         }
 

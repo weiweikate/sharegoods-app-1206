@@ -93,7 +93,7 @@ class ApiEnvironment {
         try {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 await AsyncStorage.setItem(KEY_ApiEnvironment, envType);
-                await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
+                if (ApiConfig[envType]) { await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));}
                 this.envType = envType;
             } else {
                 __DEV__ && console.error(`Not support envType with: 【${envType}】, for more details to see documents in ApiEnvironment.js file`);

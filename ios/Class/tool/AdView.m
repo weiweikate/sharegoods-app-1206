@@ -163,7 +163,10 @@
 //  }];
   
 //  [self performSelectorWithArgs:@selector(cancelOperation:) afterDelay:3,operation];
-  
+  if(path == nil || path.length == 0)  {
+    self.isPlayAd = YES;
+    return;
+  }
   [self requestImageWithPath:[NSString stringWithFormat:@"%@%@",path,bg] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
      dispatch_async(dispatch_get_main_queue(), ^{
        if (image) {

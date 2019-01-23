@@ -81,7 +81,7 @@ export default class HomeStarShopView extends Component {
     render() {
         let cells = [];
         const { shopList } = starShopModule;
-        if (shopList && shopList.length <= 0) {
+        if (!shopList || (shopList && shopList.length <= 0)) {
             return <View/>;
         }
         shopList.map((shop, index) => {
