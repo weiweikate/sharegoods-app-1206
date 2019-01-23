@@ -5,11 +5,10 @@ import {
     ImageBackground,
     StyleSheet,
     View,
-    NativeModules, RefreshControl, ActivityIndicator
+    NativeModules, RefreshControl, ActivityIndicator,
+    TouchableOpacity
 } from 'react-native';
-// import RefreshList from './../../../components/ui/RefreshList';
-import { UIImage, UIText, NoMoreClick } from '../../../components/ui';
-// import { NavigationActions } from 'react-navigation';
+import { UIImage, UIText } from '../../../components/ui';
 import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
@@ -70,8 +69,8 @@ export default class MyCouponsItems extends Component {
         let BG = item.status === 0 && !item.levelimit ? unuesdBg : usedBg;
         let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 1 ? usedRIcon : ActivedIcon));
         return (
-            <NoMoreClick style={{ backgroundColor: DesignRule.bgColor }}
-                         onPress={() => this.clickItem(index, item)}>
+            <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor }}
+                              onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
@@ -151,7 +150,7 @@ export default class MyCouponsItems extends Component {
                         <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction }} value={item.limit}/>
                     </View>
                 </ImageBackground>
-            </NoMoreClick>
+            </TouchableOpacity>
         );
     };
     onRequestClose = () => {
@@ -239,15 +238,15 @@ export default class MyCouponsItems extends Component {
 
                 <View style={{ width: '100%', height: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
                 <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
-                    <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                                 onPress={this.quitTokenCoin}>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+                                      onPress={this.quitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
-                    </NoMoreClick>
+                    </TouchableOpacity>
                     <View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
-                    <NoMoreClick style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-                                 onPress={this.commitTokenCoin}>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+                                      onPress={this.commitTokenCoin}>
                         <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>确定</Text>
-                    </NoMoreClick>
+                    </TouchableOpacity>
                 </View>
 
             </View>
@@ -310,7 +309,7 @@ export default class MyCouponsItems extends Component {
                           allowFontScaling={false}>还没有优惠券哦</Text>
                     <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
                           allowFontScaling={false}>快去商城逛逛吧</Text>
-                    <NoMoreClick
+                    <TouchableOpacity
                         onPress={() => {
                             this._gotoLookAround();
                         }}>
@@ -331,7 +330,7 @@ export default class MyCouponsItems extends Component {
                                 去逛逛
                             </Text>
                         </View>
-                    </NoMoreClick>
+                    </TouchableOpacity>
                 </View>
             );
         }
@@ -371,20 +370,21 @@ export default class MyCouponsItems extends Component {
                         position: 'absolute',
                         bottom: 0, height: 48, borderTopColor: DesignRule.bgColor, borderTopWidth: 1
                     }}>
-                        <NoMoreClick style={{
+                        <TouchableOpacity style={{
                             width: ScreenUtils.width,
                             height: 48,
                             backgroundColor: 'white',
                             borderStyle: 'solid'
                             , alignItems: 'center', justifyContent: 'center'
                         }} activeOpacity={0.5} onPress={() => {
+                            bridge.showLoading('加载中...');
                             this.props.giveupUse();
                         }}>
                             <Text style={{
                                 fontSize: 14,
                                 color: DesignRule.textColor_secondTitle
                             }} allowFontScaling={false}>放弃使用优惠券</Text>
-                        </NoMoreClick></View> : null}
+                        </TouchableOpacity></View> : null}
 
             </View>
         );
@@ -653,9 +653,6 @@ export default class MyCouponsItems extends Component {
             this.setState({ showDialogModal: true });
         } else {
             this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
-            // if (index == 0) {
-            //     this.setState({ showDialogModal: true });
-            // }
         }
     };
 }

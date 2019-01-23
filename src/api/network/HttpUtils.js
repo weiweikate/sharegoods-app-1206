@@ -11,7 +11,7 @@ import user from '../../model/user';
 import DeviceInfo from 'react-native-device-info';
 import { RSA } from './RSA';
 import rsa_config from './rsa_config';
-// console.log('user token', user.getToken())
+import EnvConfig from '../../../config';
 const { RNDeviceInfo } = NativeModules;
 const Qs = require('qs');
 
@@ -50,7 +50,7 @@ function createHistory(response, requestStamp) {
 
     let responseStamp = +new Date();
     let requestHeader = response.config.headers;
-    let responseHeader = response.headers;
+    let responseHeader = response.headers || {};
     let requestBody = response.config.data;
     let responseJson = response.data || {};
     let url = response.config.url;
@@ -72,19 +72,21 @@ function createHistory(response, requestStamp) {
 
 export default class HttpUtils {
     platform = '';
+
     static sign(params, isRSA) {
         if (isRSA) {
             return new Promise((resolve) => {
-                const signParam = RSA.sign(params)
-                resolve(signParam)
-            })
+                const signParam = RSA.sign(params);
+                resolve(signParam);
+            });
         } else {
             return new Promise((resolve) => {
-                resolve({})
-            })
+                resolve({});
+            });
         }
     }
-    static async  get(uri, isRSA, params) {
+
+    static async get(uri, isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
         if (params) {
@@ -99,9 +101,7 @@ export default class HttpUtils {
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
         let signParam = {};
-        console.log(new Date().getTime())
-        signParam = await HttpUtils.sign(params,isRSA);
-        console.log(new Date().getTime())
+        signParam = await HttpUtils.sign(params, isRSA);
         let timeLineStart = +new Date();
         if (!this.platform) {
             this.platform = DeviceInfo.getSystemName() + ' ' + DeviceInfo.getSystemVersion();
@@ -119,17 +119,19 @@ export default class HttpUtils {
             };
             return axios.get(url, config);
         }).then(response => {
-            let data = response.data;
-            let history = createHistory(response, timeLineStart);
-
-            fetchHistory.insertData(history);
+            let data = response.data || {};
+            if (EnvConfig.showDebugPanel) {
+                let history = createHistory(response || {}, timeLineStart);
+                fetchHistory.insertData(history);
+            }
             return data;
         }).catch(response => {
-            let history = createHistory(response, timeLineStart);
-
-            fetchHistory.insertData(history);
-
-            return response.data;
+            let data = response.data || {};
+            if (EnvConfig.showDebugPanel) {
+                let history = createHistory(response || {}, timeLineStart);
+                fetchHistory.insertData(history);
+            }
+            return data;
         });
     }
 
@@ -141,7 +143,7 @@ export default class HttpUtils {
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
         let signParam = {};
-        signParam = await HttpUtils.sign(signParam,isRSA);
+        signParam = await HttpUtils.sign(signParam, isRSA);
         data = {
             ...data
         };
@@ -161,17 +163,19 @@ export default class HttpUtils {
             };
             return axios.post(url, data, config);
         }).then(response => {
-            let history = createHistory(response, timeLineStart);
-
-            fetchHistory.insertData(history);
-
-            return response.data;
-        }).catch(response => {
-                let history = createHistory(response, timeLineStart);
-
+            let data = response.data || {};
+            if (EnvConfig.showDebugPanel) {
+                let history = createHistory(response || {}, timeLineStart);
                 fetchHistory.insertData(history);
-
-                return response.data;
-            });
+            }
+            return data;
+        }).catch(response => {
+            let data = response.data || {};
+            if (EnvConfig.showDebugPanel) {
+                let history = createHistory(response || {}, timeLineStart);
+                fetchHistory.insertData(history);
+            }
+            return data;
+        });
     }
 }
