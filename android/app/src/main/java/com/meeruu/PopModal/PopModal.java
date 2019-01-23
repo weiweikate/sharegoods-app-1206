@@ -22,6 +22,7 @@ import android.widget.PopupWindow;
 import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.common.annotations.VisibleForTesting;
 import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.facebook.react.uimanager.RootView;
@@ -171,8 +172,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
          */
         List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
                 .getRunningAppProcesses();
-        if (appProcesses == null)
+        if (appProcesses == null){
             return false;
+        }
 
         for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
             // The name of the process that this object is associated with.
@@ -194,61 +196,66 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     public void showOrUpdate() {
         // If the existing Dialog is currently up, we may need to redraw it or we may be able to update
         // the property without having to recreate the dialog
-
-        if (popupWindow != null) {
-            fitPopupWindowOverStatusBar(popupWindow, true);
-            popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
-            return;
-        }
-
-        Activity currentActivity = getCurrentActivity();
-        if (currentActivity == null) {
-            return;
-        }
-        popupWindow = new PopupWindow(currentActivity);
-
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        final boolean curFocus = this.focus;
+        UiThreadUtil.runOnUiThread(new Runnable() {
             @Override
-            public void onDismiss() {
+            public void run() {
+                if (popupWindow != null) {
+                    fitPopupWindowOverStatusBar(popupWindow, true);
+                    popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+                    return;
+                }
 
-                new Handler().postDelayed(new Runnable() {
+                Activity currentActivity = getCurrentActivity();
+                if (currentActivity == null) {
+                    return;
+                }
+                popupWindow = new PopupWindow(currentActivity);
+
+                popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
-                    public void run() {
-                        if(!isAppOnForeground(getContext())){
-                            return;
-                        }
-                        eventDispatcher.dispatchEvent(
-                                new PopModalDismissEvent(
-                                        PopModal.this.getId()));
-                    }
-                }, 200);
+                    public void onDismiss() {
 
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!isAppOnForeground(getContext())){
+                                    return;
+                                }
+                                eventDispatcher.dispatchEvent(
+                                        new PopModalDismissEvent(
+                                                PopModal.this.getId()));
+                            }
+                        }, 200);
+
+                    }
+                });
+
+
+                if (Build.VERSION.SDK_INT >= 24) {
+                    if (rect == null) {
+                        rect = new Rect();
+                    }
+                    mHostView.getGlobalVisibleRect(rect);
+                    int h = mHostView.getResources().getDisplayMetrics().heightPixels - rect.bottom;
+                    popupWindow.setHeight(h);
+                }
+                popupWindow.setFocusable(curFocus);
+                popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+                popupWindow.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+                View v = getContentView();
+                popupWindow.setContentView(v);
+                popupWindow.setWidth(ScreenUtils.getScreenWidth());
+                popupWindow.setTouchable(true);// true popwindow优先一切（系统级以外）处理touch  false:popwindow 只是一个view 不影响界面操作
+                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//不设置 不是全屏 周围会有空白部分
+                popupWindow.setOutsideTouchable(true);
+                fitPopupWindowOverStatusBar(popupWindow, true);
+                if (currentActivity != null || !currentActivity.isFinishing()) {
+                    popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+                }
             }
         });
-
-
-        if (Build.VERSION.SDK_INT >= 24) {
-            if (rect == null) {
-                rect = new Rect();
-            }
-            mHostView.getGlobalVisibleRect(rect);
-            int h = mHostView.getResources().getDisplayMetrics().heightPixels - rect.bottom;
-            popupWindow.setHeight(h);
-        }
-        popupWindow.setFocusable(this.focus);
-        popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-        popupWindow.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
-        View v = getContentView();
-        popupWindow.setContentView(v);
-        popupWindow.setWidth(ScreenUtils.getScreenWidth());
-        popupWindow.setTouchable(true);// true popwindow优先一切（系统级以外）处理touch  false:popwindow 只是一个view 不影响界面操作
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//不设置 不是全屏 周围会有空白部分
-        popupWindow.setOutsideTouchable(true);
-        fitPopupWindowOverStatusBar(popupWindow, true);
-        if (currentActivity != null || !currentActivity.isFinishing()) {
-            popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
-        }
     }
 
     public void setFocus(boolean focus){
