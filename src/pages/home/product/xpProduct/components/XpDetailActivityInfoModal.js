@@ -87,7 +87,7 @@ export default class XpDetailActivityInfoModal extends Component {
     _renderItemCoupon = (item) => {
         const { name, type, useConditions } = item.coupon || {};
         let nameType, valueType;
-        //1: 满减 2:抵价 3:折扣 4:兑换',
+        //1: 满减 2:抵价 3:折扣 4:抵扣',
         switch (type) {
             case 1:
                 nameType = '满减券';
@@ -102,7 +102,7 @@ export default class XpDetailActivityInfoModal extends Component {
                 valueType = useConditions > 0 ? `满${useConditions || ''}可用` : `无金额门槛`;
                 break;
             case 4:
-                nameType = '兑换券';
+                nameType = '抵扣券';
                 valueType = `限指定商品可用`;
                 break;
             default:
