@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.facebook.common.references.CloseableReference;
@@ -23,9 +23,9 @@ import com.facebook.imagepipeline.image.CloseableImage;
 import com.meeruu.commonlib.base.BaseActivity;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
-import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
@@ -36,11 +36,6 @@ import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
 
 /**
  * @author louis
@@ -64,7 +59,6 @@ public class MainActivity extends BaseActivity {
     private String title;
     private String adUrl;
     private CountDownTimer countDownTimer = null;
-    private static final String ADURL = "https://cdn.sharegoodsmall.com/sharegoods/resource/sg/images/ad_index/sgad.png";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +67,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
         Log.d("is_phone", !Utils.isEmulator() + "");
-        AsyncStorageManager.getInstance().getItem("ApiEnvironment", new MultiGetCallback() {
-            @Override
-            public void onSuccess(Object data) {
-                Log.e("mrdata",data.toString());
-            }
-
-            @Override
-            public void onFail(String type) {
-                Log.e("error",type);
-            }
-        });
     }
 
     @Override
@@ -123,7 +106,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewAndData() {
-        final Uri uri = Uri.parse(ADURL);
         Uri advUri = Uri.parse("http://testcdn.sharegoodsmall.com/app/start_adv_bg.png");
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -133,7 +115,32 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }, 3000);
-        ImageLoadUtils.downloadImage(advUri, new BaseBitmapDataSubscriber() {
+        AsyncStorageManager.getInstance().getItem("HostJson", new MultiGetCallback() {
+            @Override
+            public void onSuccess(Object data) {
+                LogUtils.d("======", data + "");
+                LoadingAdv(null);
+            }
+
+            @Override
+            public void onFail(String type) {
+                LogUtils.d("======type", type);
+                LoadingAdv(null);
+            }
+        });
+        /**在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+            finish();
+            return;
+        }
+        if (!isTaskRoot()) {
+            finish();
+            return;
+        }
+    }
+
+    private void LoadingAdv(Uri uri) {
+        ImageLoadUtils.downloadImage(uri, new BaseBitmapDataSubscriber() {
 
             @Override
             protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
@@ -154,29 +161,6 @@ public class MainActivity extends BaseActivity {
                 mHandler.sendMessage(msg);
             }
         });
-//        String imgUrl = (String) SPCacheUtils.get("adImg", "");
-//        if (!TextUtils.isEmpty(imgUrl)) {
-//            ((ViewStub) findViewById(R.id.vs_adv)).inflate();
-//            ivAdv = findViewById(R.id.iv_adv);
-//            tvGo = findViewById(R.id.tv_go);
-//            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
-//            params.width = ScreenUtils.getScreenWidth();
-//            params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
-//            ivAdv.setLayoutParams(params);
-////            DisplayImageUtils.formatImgUrlNoHolder(this, imgUrl, ivAdv);
-//
-//            initAdvEvent();
-//            startTimer();
-//        }
-        /**在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
-        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
-            finish();
-            return;
-        }
-        if (!isTaskRoot()) {
-            finish();
-            return;
-        }
     }
 
     @Override
@@ -198,10 +182,6 @@ public class MainActivity extends BaseActivity {
                         ivAdv = findViewById(R.id.iv_adv);
                         ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
-//                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
-//                        params.width = ScreenUtils.getScreenWidth();
-//                        params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
-//                        ivAdv.setLayoutParams(params);
                         ivAdvBg.setImageBitmap((Bitmap) msg.obj);
                         ImageLoadUtils.loadImage(Uri.parse("http://testcdn.sharegoodsmall.com/app/start_adv.png"), ivAdv, 0);
 
