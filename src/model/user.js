@@ -24,6 +24,8 @@ class User {
     }
 
     @observable
+    unionid=null;
+    @observable
     id = 0;                 //用户id
     @observable
     code = null;            //授权码
@@ -214,9 +216,10 @@ class User {
         if (!info) {
             return;
         }
+        this.unionid = info.unionid;
         this.id = info.id;                          //用户id
         this.code = info.code;                      //授权码
-        this.openid = info.openid;                  //
+        this.appOpenid = info.appOpenid;                  //
         this.nickname = info.nickname;              //昵称
         this.wechatId = info.wechatId;              //微信号id
         this.wechatName = info.wechatName;          //微信用户名称
@@ -288,9 +291,10 @@ class User {
 
     // 解绑/绑定微信号
     @action
-    untiedWechat(wechatName, openId) {
+    untiedWechat(wechatName, openId,unionid) {
         this.wechatName = wechatName;
         this.openid = openId;
+        this.unionid = unionid;
     }
 
     // 存储离线购物车信息
@@ -328,7 +332,7 @@ class User {
     clearUserInfo() {
         this.id = 0;                 //用户id
         this.code = null;            //授权码
-        this.openid = null;          //
+        this.appOpenid = null;          //
         this.nickname = '';          //昵称
         this.wechatId = '';          //微信号id
         this.wechatName = '';          //微信用户昵称
