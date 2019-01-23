@@ -28,6 +28,8 @@ import topic from '../pages/topic';
 import show from '../pages/show/Index';
 import shareTask from '../pages/shareTask';
 
+import deepLinkPath from './DeepLinkPath'
+
 
 const Router = {
     Tab: {
@@ -43,20 +45,8 @@ const Router = {
 const PageKey = {};
 
 function getPathWithPageName(pageName) {
-    if (pageName === 'RegistPage') {
-        return 'path/' + pageName + '/:phone'
-    }else if (pageName === 'DownPricePage'){
-        return 'path/'+ pageName +'/:linkTypeCode'
-    } else if (pageName === 'ProductDetailPage'){
-        return 'path/'+ pageName +'/:productCode'
-    }else if (pageName === 'TopicDetailPage'){
-        return 'path/'+ pageName +'/:activityType/:activityCode'
-    } else {
-        return 'path/' + pageName;
-    }
+    return deepLinkPath[pageName];
 }
-
-
 // 添加模块内子路由配置
 function addSubModule(module, prefixPath) {
 
