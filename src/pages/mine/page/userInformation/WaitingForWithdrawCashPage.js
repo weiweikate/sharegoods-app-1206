@@ -4,7 +4,7 @@ import {
     View,
     Image,
     TouchableOpacity,
-    ImageBackground,
+    ImageBackground
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList, UIImage, UIText } from '../../../../components/ui';
@@ -18,7 +18,7 @@ import CommModal from '../../../../comm/components/CommModal';
 import { observer } from 'mobx-react/native';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text} from '../../../../components/ui'
+import { MRText as Text } from '../../../../components/ui';
 
 const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
 const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
@@ -81,7 +81,8 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             <View style={styles.container}>
                 <ImageBackground style={styles.imageBackgroundStyle}/>
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }} allowFontScaling={false}>待提现余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }}
+                          allowFontScaling={false}>待提现余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
                             <Text style={{
@@ -127,7 +128,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         return (
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
-                       ref={(ref)=>{
+                       ref={(ref) => {
                            this.modal = ref;
                        }}
             >
@@ -135,8 +136,8 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     alignItems: 'center',
                     justifyContent: 'center',
                     flex: 1,
-                    width:ScreenUtils.width,
-                    marginTop:60
+                    width: ScreenUtils.width,
+                    marginTop: 60
                 }}>
                     <View style={{
                         backgroundColor: 'white',
@@ -155,7 +156,8 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             borderRadius: 5
 
                         }}>
-                            <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }} allowFontScaling={false}>待提现账户说明</Text>
+                            <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}
+                                  allowFontScaling={false}>待提现账户说明</Text>
                         </ImageBackground>
                         <View style={{ marginLeft: ScreenUtils.px2dp(22), marginRight: ScreenUtils.px2dp(22) }}>
                             <Text style={{
@@ -199,7 +201,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         right: 30,
                         position: 'absolute'
                     }} onPress={this._onPress}>
-                        <Image style={{width:20,height:20}} source={topicShowClose}/>
+                        <Image style={{ width: 20, height: 20 }} source={topicShowClose}/>
                     </TouchableOpacity>
                 </View>
 
@@ -272,7 +274,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '顾问管理费', '品牌分红奖励', '品牌推广奖励', '现金红包', '任务奖励'];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '服务顾问管理费', '品牌分红奖励', '品牌推广奖励', '现金红包', '任务奖励'];
         let use_type_symbol = ['', '+', '-'];
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();
@@ -322,7 +324,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
-        if(!this.state.isEmpty){
+        if (!this.state.isEmpty) {
             this.currentPage++;
             this.getDataFromNetwork();
         }
