@@ -8,7 +8,7 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
 import com.brentvatne.react.ReactVideoPackage;
-import com.meeruu.nativedb.AsyncStorageManager;
+import com.meeruu.sharegoods.rn.storage.AsyncStorageManager;
 import com.oblador.vectoricons.VectorIconsPackage;
 import cn.reactnative.modules.update.UpdatePackage;
 import com.horcrux.svg.SvgPackage;
