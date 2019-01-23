@@ -118,6 +118,8 @@
 		CD1AA5FE21D602C9007F045D /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1AA5FD21D602B1007F045D /* libReact-Native-Webview-Bridge.a */; };
 		CD1E51C921C9D96B007103A1 /* BGKeychainTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */; };
 		CD1E52E021CCB8D2007103A1 /* WelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1E52DF21CCB8D1007103A1 /* WelcomeView.m */; };
+		CD24240921F825C1008C7FF4 /* StorageFromRN.m in Sources */ = {isa = PBXBuildFile; fileRef = CD24240821F825C1008C7FF4 /* StorageFromRN.m */; };
+		CD24240F21F837A9008C7FF4 /* NSDictionary+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */; };
 		CD3A8A0721F05DF3003B9803 /* MRLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */; };
 		CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0921F05E17003B9803 /* MRLoadingViewManager.m */; };
 		CD6741F621DEF78500464549 /* AdView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6741F521DEF78500464549 /* AdView.m */; };
@@ -769,6 +771,10 @@
 		CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BGKeychainTool.m; sourceTree = "<group>"; };
 		CD1E52DE21CCB8D1007103A1 /* WelcomeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WelcomeView.h; sourceTree = "<group>"; };
 		CD1E52DF21CCB8D1007103A1 /* WelcomeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WelcomeView.m; sourceTree = "<group>"; };
+		CD24240721F825C1008C7FF4 /* StorageFromRN.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StorageFromRN.h; sourceTree = "<group>"; };
+		CD24240821F825C1008C7FF4 /* StorageFromRN.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StorageFromRN.m; sourceTree = "<group>"; };
+		CD24240D21F837A9008C7FF4 /* NSDictionary+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Util.h"; sourceTree = "<group>"; };
+		CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Util.m"; sourceTree = "<group>"; };
 		CD3A8A0521F05DF3003B9803 /* MRLoadingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRLoadingView.h; sourceTree = "<group>"; };
 		CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRLoadingView.m; sourceTree = "<group>"; };
 		CD3A8A0821F05E17003B9803 /* MRLoadingViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRLoadingViewManager.h; sourceTree = "<group>"; };
@@ -1656,6 +1662,8 @@
 				CD1E52DF21CCB8D1007103A1 /* WelcomeView.m */,
 				CD6741F421DEF78500464549 /* AdView.h */,
 				CD6741F521DEF78500464549 /* AdView.m */,
+				CD24240721F825C1008C7FF4 /* StorageFromRN.h */,
+				CD24240821F825C1008C7FF4 /* StorageFromRN.m */,
 			);
 			path = tool;
 			sourceTree = "<group>";
@@ -1692,6 +1700,8 @@
 			children = (
 				CDA2F5332171D90E005FD4B3 /* NSObject+Util.h */,
 				CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */,
+				CD24240D21F837A9008C7FF4 /* NSDictionary+Util.h */,
+				CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */,
 			);
 			path = NSObject;
 			sourceTree = "<group>";
@@ -2522,6 +2532,7 @@
 				5077FC8221A4F987003B860D /* HBRSAHandler.m in Sources */,
 				5068361221379B78001AB175 /* UIView+captureSceen.m in Sources */,
 				CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */,
+				CD24240F21F837A9008C7FF4 /* NSDictionary+Util.m in Sources */,
 				5068363821379B78001AB175 /* SGQRCodeHelperTool.m in Sources */,
 				5068361021379B78001AB175 /* AppDelegate+ConfigLib.m in Sources */,
 				CDA2F57821744443005FD4B3 /* ShareImageMaker.m in Sources */,
@@ -2568,6 +2579,7 @@
 				CDCB5BDA2196DF71006B5F4E /* UIImage+Util.m in Sources */,
 				5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */,
 				CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */,
+				CD24240921F825C1008C7FF4 /* StorageFromRN.m in Sources */,
 				5068362C21379B78001AB175 /* JRCacheManager.m in Sources */,
 				5068363721379B78001AB175 /* PickerManager.m in Sources */,
 				50043A8721C79D7F00270DFA /* ShopCartListManager.m in Sources */,
