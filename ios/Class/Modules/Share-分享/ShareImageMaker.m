@@ -63,7 +63,7 @@
   {
     CGFloat i = 3;
     priceStr = [NSString stringWithFormat:@"市场价:%@",priceStr];
-    retailPrice = [NSString stringWithFormat:@"零售价:%@",retailPrice];
+    retailPrice = [NSString stringWithFormat:@"V0价:%@",retailPrice];
     spellPrice = [NSString stringWithFormat:@"拼店价:%@",spellPrice];
     
     CGFloat sigle =  [self getStringHeightWithText:@"1" fontSize:13*i viewWidth:220*i];
