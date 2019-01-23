@@ -7,16 +7,19 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.image.CloseableImage;
@@ -25,7 +28,6 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
-import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
@@ -37,11 +39,6 @@ import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 /**
  * @author louis
  * @desc 启动页
@@ -51,6 +48,7 @@ import javax.annotation.Nullable;
 public class MainActivity extends BaseActivity {
 
     private SimpleDraweeView ivAdv;
+    private SimpleDraweeView ivAdvBg;
     private TextView tvGo;
 
     private WeakHandler mHandler;
@@ -63,7 +61,7 @@ public class MainActivity extends BaseActivity {
     private String title;
     private String adUrl;
     private CountDownTimer countDownTimer = null;
-    private static final String ADURL = "https://cdn.sharegoodsmall.com/sharegoods/resource/sg/images/ad_index/sgad.png";
+    private String ossHost = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,30 +70,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
         Log.d("is_phone", !Utils.isEmulator() + "");
-
-        AsyncStorageManager.getInstance().getItem("ApiEnvironment", new MultiGetCallback() {
-            @Override
-            public void onSuccess(Object data) {
-                Log.e("mrdata",data.toString());
-            }
-
-            @Override
-            public void onFail(String type) {
-                Log.e("error",type);
-            }
-        });
-//
-//        AsyncStorageManager.getInstance().setItem("ApiEnvironment", "pre_release", new MultiSetCallback() {
-//            @Override
-//            public void onSuccess() {
-//                int a= 1;
-//            }
-//
-//            @Override
-//            public void onFail(String type) {
-//                Log.e("error",type);
-//            }
-//        });
     }
 
     @Override
@@ -111,7 +85,7 @@ public class MainActivity extends BaseActivity {
 //                //有广告时延迟时间增加
 //                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
 //            } else {
-//                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+//                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
 //            }
         } else {
             if (needGo && hasBasePer) {
@@ -135,7 +109,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewAndData() {
-        final Uri uri = Uri.parse(ADURL);
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -144,41 +117,26 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }, 3000);
-        ImageLoadUtils.downloadImage(uri, new BaseBitmapDataSubscriber() {
-
+        AsyncStorageManager.getInstance().getItem("HostJson", new MultiGetCallback() {
             @Override
-            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
-                hasAdResp = true;
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+            public void onSuccess(String data) {
+                if (!TextUtils.isEmpty(data)) {
+                    JSONObject object = JSON.parseObject(data);
+                    ossHost = object.getString("oss");
+                    Uri uri = Uri.parse(ossHost + "/app/start_adv_bg.png");
+                    LoadingAdv(uri);
+                } else {
+                    hasAdResp = true;
+                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+                }
             }
 
             @Override
-            protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+            public void onFail(String msg) {
                 hasAdResp = true;
-                if (bitmap == null) {
-                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
-                    return;
-                }
-                Message msg = Message.obtain();
-                msg.obj = bitmap;
-                msg.what = ParameterUtils.TIMER_START;
-                mHandler.sendMessage(msg);
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
             }
         });
-//        String imgUrl = (String) SPCacheUtils.get("adImg", "");
-//        if (!TextUtils.isEmpty(imgUrl)) {
-//            ((ViewStub) findViewById(R.id.vs_adv)).inflate();
-//            ivAdv = findViewById(R.id.iv_adv);
-//            tvGo = findViewById(R.id.tv_go);
-//            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
-//            params.width = ScreenUtils.getScreenWidth();
-//            params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
-//            ivAdv.setLayoutParams(params);
-////            DisplayImageUtils.formatImgUrlNoHolder(this, imgUrl, ivAdv);
-//
-//            initAdvEvent();
-//            startTimer();
-//        }
         /**在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
@@ -188,6 +146,30 @@ public class MainActivity extends BaseActivity {
             finish();
             return;
         }
+    }
+
+    private void LoadingAdv(Uri uri) {
+        ImageLoadUtils.downloadImage(uri, new BaseBitmapDataSubscriber() {
+
+            @Override
+            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                hasAdResp = true;
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+            }
+
+            @Override
+            protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                hasAdResp = true;
+                if (bitmap == null) {
+                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+                    return;
+                }
+                Message msg = Message.obtain();
+                msg.obj = bitmap;
+                msg.what = ParameterUtils.TIMER_START;
+                mHandler.sendMessage(msg);
+            }
+        });
     }
 
     @Override
@@ -207,12 +189,10 @@ public class MainActivity extends BaseActivity {
                         mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
                         ((ViewStub) findViewById(R.id.vs_adv)).inflate();
                         ivAdv = findViewById(R.id.iv_adv);
+                        ImageLoadUtils.loadImage(Uri.parse(ossHost + "/app/start_adv.png"), ivAdv, ScalingUtils.ScaleType.FIT_CENTER);
+                        ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
-                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
-                        params.width = ScreenUtils.getScreenWidth();
-                        params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
-                        ivAdv.setLayoutParams(params);
-                        ivAdv.setImageBitmap((Bitmap) msg.obj);
+                        ivAdvBg.setImageBitmap((Bitmap) msg.obj);
 
                         initAdvEvent();
                         startTimer();

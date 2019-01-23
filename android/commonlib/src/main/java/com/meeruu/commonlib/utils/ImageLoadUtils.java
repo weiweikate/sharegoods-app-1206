@@ -123,6 +123,24 @@ public class ImageLoadUtils {
         view.setImageURI(uri);
     }
 
+    public static void loadImage(Uri uri, SimpleDraweeView view, ScalingUtils.ScaleType scaleType) {
+        roundParams.setCornersRadius(0);
+        GenericDraweeHierarchy hierarchy =
+                new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
+                        .setFadeDuration(300)
+                        .setRoundingParams(roundParams)
+                        .setPlaceholderImage(R.drawable.bg_app_img)
+                        .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                        .build();
+        if (scaleType != null) {
+            hierarchy.setActualImageScaleType(scaleType);
+        } else {
+            hierarchy.setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP);
+        }
+        view.setHierarchy(hierarchy);
+        view.setImageURI(uri);
+    }
+
     public static void loadImage(Uri uri, SimpleDraweeView view, int radius, ControllerListener listener) {
         roundParams.setCornersRadius(radius);
         GenericDraweeHierarchy hierarchy =
