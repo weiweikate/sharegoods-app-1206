@@ -101,6 +101,9 @@ export default class HelperFeedbackPage extends BasePage {
     };
 
     feedback2server() {
+        if(this.disabled){
+            return;
+        }
         this.disabled = true;
         if (this.state.typeKey === -1) {
             this.disabled = false;
@@ -130,7 +133,7 @@ export default class HelperFeedbackPage extends BasePage {
             content: this.state.detailContent, typeKey: this.state.typeKey || 1, smallImg: smallImgs,
             originalImg: orignImgs
         }).then(res => {
-            this.disabled = false;
+            this.disabled = true;
             this.setState({ isShowFinishModal: true });
             this.finishModal && this.finishModal.open();
         }).catch(err => {
