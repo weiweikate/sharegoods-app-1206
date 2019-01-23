@@ -59,9 +59,9 @@ export default class AccountSettingPage extends BasePage {
                     marginLeft: 15,
                     marginRight: 15
                 }}/>
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditWechat(user.openid)}>
+                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditWechat(user.unionid)}>
                     <UIText value={'微信账号'} style={[styles.blackText, { flex: 1 }]}/>
-                    <UIText value={StringUtils.isEmpty(user.openid) ? '未绑定' : user.wechatName}
+                    <UIText value={StringUtils.isEmpty(user.unionid) ? '未绑定' : user.wechatName}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
                     <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>
@@ -89,16 +89,17 @@ export default class AccountSettingPage extends BasePage {
             });
         }
     };
-    _toEditWechat = (openid) => {
-        if (StringUtils.isEmpty(openid)) {
+    _toEditWechat = (unionid) => {
+        if (StringUtils.isEmpty(unionid)) {
             bridge.$loginWx((data) => {
                 MineAPI.updateUserById({
+                    ...data,
                     type: 4,
                     openid: data.openid,
                     wechatName: data.nickName
                 }).then((resp) => {
                     if (resp.code === 10000) {
-                        user.untiedWechat(data.nickName, data.openid);
+                        user.untiedWechat(data.nickName, data.appOpenid,data.unionid);
                         bridge.$toast('绑定成功');
                     } else {
                         bridge.$toast(resp.msg);
@@ -117,7 +118,7 @@ export default class AccountSettingPage extends BasePage {
                 {
                     text: '确定', onPress: () => {
                         MineAPI.untiedWechat({}).then((response) => {
-                            user.untiedWechat('', '');
+                            user.untiedWechat('', '','');
                             bridge.$toast('解绑成功');
                         }).catch((data) => {
                             bridge.$toast(data.msg);

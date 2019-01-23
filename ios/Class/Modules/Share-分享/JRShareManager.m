@@ -173,11 +173,12 @@ SINGLETON_FOR_CLASS(JRShareManager)
     }
     UMSocialUserInfoResponse * res = result;
     NSDictionary *dicData = @{
-                              @"openid":res.openid?res.openid:[NSNull null],
+                              @"appOpenid":res.openid?res.openid:[NSNull null],
                               @"systemVersion":[JRDeviceInfo systemVersion],
                               @"device":[JRDeviceInfo device],
                               @"nickName":res.name?res.name:@"---",
-                              @"headerImg":res.iconurl
+                              @"headerImg":res.iconurl,
+                              @"unionid":res.unionId
                               };
     NSLog(@"%@",res);
     if(finshBlock){
