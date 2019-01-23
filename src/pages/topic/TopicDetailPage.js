@@ -634,23 +634,25 @@ export default class TopicDetailPage extends BasePage {
             colorType = 0;
         }
 
-        let productPrice, productName, productImgUrl, firstCategoryId, secCategoryId, originalPrice, groupPrice;
+        let productPrice, productName, productImgUrl, firstCategoryId, secCategoryId, originalPrice, groupPrice,
+            v0Price;
         if (this.state.activityType === 3) {
             const { name, levelPrice, imgUrl } = this.state.data || {};
-            productPrice = levelPrice;
-            productName = name;
+            productPrice = levelPrice || '';
+            productName = name || '';
             productImgUrl = imgUrl;
+            v0Price = (this.state.data || {}).v0Price || '';
         } else {
             const { minPrice, name, imgUrl } = this.state.data || {};
-            productPrice = minPrice;
-            productName = name;
+            productPrice = minPrice || '';
+            productName = name || '';
             productImgUrl = imgUrl;
+            v0Price = (this.state.data || {}).v0 || '';
         }
         firstCategoryId = (this.state.data || {}).firstCategoryId;
         secCategoryId = (this.state.data || {}).secCategoryId;
-        originalPrice = (this.state.data || {}).originalPrice;
-        groupPrice = (this.state.data || {}).groupPrice;
-        let v0Price = (this.state.data || {}).v0Price;
+        originalPrice = (this.state.data || {}).originalPrice || '';
+        groupPrice = (this.state.data || {}).groupPrice || '';
 
         return (
             <View style={styles.container}>
