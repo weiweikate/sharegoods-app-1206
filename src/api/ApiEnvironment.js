@@ -7,6 +7,7 @@ import { AsyncStorage } from "react-native";
 import config from "../../config";
 // 磁盘缓存key
 const KEY_ApiEnvironment = "ApiEnvironment";
+const KEY_HostJson = "HostJson";
 const KEY_DefaultFetchTimeout = "DefaultFetchTimeout";
 // HOST配置
 const ApiConfig = config.env;
@@ -72,6 +73,8 @@ class ApiEnvironment {
             const [[, envType], [, defaultTimeout]] = await AsyncStorage.multiGet([KEY_ApiEnvironment, KEY_DefaultFetchTimeout]);
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 this.envType = envType;
+            }else {
+                this.saveEnv(this.envType);
             }
             if (defaultTimeout && Number(defaultTimeout) <= 60 && Number(defaultTimeout) > 0) {
                 this.defaultTimeout = Number(defaultTimeout);
@@ -90,6 +93,7 @@ class ApiEnvironment {
         try {
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 await AsyncStorage.setItem(KEY_ApiEnvironment, envType);
+                await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));
                 this.envType = envType;
             } else {
                 __DEV__ && console.error(`Not support envType with: 【${envType}】, for more details to see documents in ApiEnvironment.js file`);
