@@ -641,13 +641,13 @@ export default class TopicDetailPage extends BasePage {
             productPrice = levelPrice || '';
             productName = name || '';
             productImgUrl = imgUrl;
-            v0Price = (this.state.data || {}).v0Price || '';
+            v0Price = (this.state.data || {}).v0 || '';
         } else {
             const { minPrice, name, imgUrl } = this.state.data || {};
             productPrice = minPrice || '';
             productName = name || '';
             productImgUrl = imgUrl;
-            v0Price = (this.state.data || {}).v0 || '';
+            v0Price = (this.state.data || {}).v0Price || '';
         }
         firstCategoryId = (this.state.data || {}).firstCategoryId;
         secCategoryId = (this.state.data || {}).secCategoryId;
