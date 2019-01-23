@@ -19,7 +19,8 @@ import {
     TouchableWithoutFeedback,
     ImageBackground,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    StatusBar
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -69,7 +70,12 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     componentDidMount() {
+        StatusBar.setHidden( true, 'slide');
         this.loadPageData();
+    }
+
+    componentWillUnmount(){
+        StatusBar.setHidden(false,'slide');
     }
 
     loadPageData() {
