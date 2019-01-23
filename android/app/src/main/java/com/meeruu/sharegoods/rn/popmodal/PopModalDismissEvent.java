@@ -1,4 +1,4 @@
-package com.meeruu.PopModal;
+package com.meeruu.sharegoods.rn.popmodal;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;

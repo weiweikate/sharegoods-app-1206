@@ -1,4 +1,4 @@
-package com.meeruu.MRLoadingView;
+package com.meeruu.sharegoods.rn.loadingview;
 
 import android.view.View;
 

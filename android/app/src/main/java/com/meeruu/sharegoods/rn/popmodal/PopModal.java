@@ -1,4 +1,4 @@
-package com.meeruu.PopModal;
+package com.meeruu.sharegoods.rn.popmodal;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
