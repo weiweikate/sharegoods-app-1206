@@ -1,6 +1,8 @@
 package com.meeruu.sharegoods.rn.storage;
 
 public interface MultiGetCallback {
-    void onSuccess(Object data);
-    void onFail(String type);
+
+    void onSuccess(String data);
+
+    void onFail(String msg);
 }

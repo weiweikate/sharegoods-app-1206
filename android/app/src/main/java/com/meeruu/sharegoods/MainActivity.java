@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -23,7 +25,6 @@ import com.facebook.imagepipeline.image.CloseableImage;
 import com.meeruu.commonlib.base.BaseActivity;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.Utils;
@@ -59,6 +60,7 @@ public class MainActivity extends BaseActivity {
     private String title;
     private String adUrl;
     private CountDownTimer countDownTimer = null;
+    private String ossHost = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +84,7 @@ public class MainActivity extends BaseActivity {
 //                //有广告时延迟时间增加
 //                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
 //            } else {
-//                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+//                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
 //            }
         } else {
             if (needGo && hasBasePer) {
@@ -106,7 +108,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewAndData() {
-        Uri advUri = Uri.parse("http://testcdn.sharegoodsmall.com/app/start_adv_bg.png");
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -117,15 +118,22 @@ public class MainActivity extends BaseActivity {
         }, 3000);
         AsyncStorageManager.getInstance().getItem("HostJson", new MultiGetCallback() {
             @Override
-            public void onSuccess(Object data) {
-                LogUtils.d("======", data + "");
-                LoadingAdv(null);
+            public void onSuccess(String data) {
+                if (!TextUtils.isEmpty(data)) {
+                    JSONObject object = JSON.parseObject(data);
+                    ossHost = object.getString("oss");
+                    Uri uri = Uri.parse(ossHost + "/app/start_adv_bg.png");
+                    LoadingAdv(uri);
+                } else {
+                    hasAdResp = true;
+                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+                }
             }
 
             @Override
-            public void onFail(String type) {
-                LogUtils.d("======type", type);
-                LoadingAdv(null);
+            public void onFail(String msg) {
+                hasAdResp = true;
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
             }
         });
         /**在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
@@ -145,14 +153,14 @@ public class MainActivity extends BaseActivity {
             @Override
             protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
                 hasAdResp = true;
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
             }
 
             @Override
             protected void onNewResultImpl(@Nullable Bitmap bitmap) {
                 hasAdResp = true;
                 if (bitmap == null) {
-                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
                     return;
                 }
                 Message msg = Message.obtain();
@@ -180,10 +188,10 @@ public class MainActivity extends BaseActivity {
                         mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
                         ((ViewStub) findViewById(R.id.vs_adv)).inflate();
                         ivAdv = findViewById(R.id.iv_adv);
+                        ImageLoadUtils.loadImage(Uri.parse(ossHost + "/app/start_adv.png"), ivAdv, 0);
                         ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
                         ivAdvBg.setImageBitmap((Bitmap) msg.obj);
-                        ImageLoadUtils.loadImage(Uri.parse("http://testcdn.sharegoodsmall.com/app/start_adv.png"), ivAdv, 0);
 
                         initAdvEvent();
                         startTimer();
