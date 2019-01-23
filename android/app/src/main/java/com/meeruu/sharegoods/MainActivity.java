@@ -46,6 +46,7 @@ import javax.annotation.Nullable;
 public class MainActivity extends BaseActivity {
 
     private SimpleDraweeView ivAdv;
+    private SimpleDraweeView ivAdvBg;
     private TextView tvGo;
 
     private WeakHandler mHandler;
@@ -107,6 +108,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initViewAndData() {
         final Uri uri = Uri.parse(ADURL);
+        Uri advUri = Uri.parse("http://testcdn.sharegoodsmall.com/app/start_adv_bg.png");
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -115,7 +117,7 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }, 3000);
-        ImageLoadUtils.downloadImage(uri, new BaseBitmapDataSubscriber() {
+        ImageLoadUtils.downloadImage(advUri, new BaseBitmapDataSubscriber() {
 
             @Override
             protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
@@ -178,12 +180,14 @@ public class MainActivity extends BaseActivity {
                         mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
                         ((ViewStub) findViewById(R.id.vs_adv)).inflate();
                         ivAdv = findViewById(R.id.iv_adv);
+                        ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
-                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
-                        params.width = ScreenUtils.getScreenWidth();
-                        params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
-                        ivAdv.setLayoutParams(params);
-                        ivAdv.setImageBitmap((Bitmap) msg.obj);
+//                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
+//                        params.width = ScreenUtils.getScreenWidth();
+//                        params.height = (ScreenUtils.getScreenWidth() * 552) / 375;
+//                        ivAdv.setLayoutParams(params);
+                        ivAdvBg.setImageBitmap((Bitmap) msg.obj);
+                        ImageLoadUtils.loadImage(Uri.parse("http://testcdn.sharegoodsmall.com/app/start_adv.png"), ivAdv, 0);
 
                         initAdvEvent();
                         startTimer();
