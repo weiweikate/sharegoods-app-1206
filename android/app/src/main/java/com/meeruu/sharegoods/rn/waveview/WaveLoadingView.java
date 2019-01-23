@@ -1,4 +1,4 @@
-package com.meeruu.WaveView;
+package com.meeruu.sharegoods.rn.waveview;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

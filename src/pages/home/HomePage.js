@@ -59,22 +59,22 @@ const bannerHeight = px2dp(220);
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
-const Footer = ({errorMsg, isEnd, isFetching}) => <View style={styles.footer}>
-{
-    errorMsg
-        ?
-        <Text style={styles.text} allowFontScaling={false}>{errorMsg}</Text>
-        :
-        isEnd
+const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
+    {
+        errorMsg
             ?
-            <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
+            <Text style={styles.text} allowFontScaling={false}>{errorMsg}</Text>
             :
-            isFetching
+            isEnd
                 ?
-                <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
+                <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
                 :
-                <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
-}
+                isFetching
+                    ?
+                    <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
+                    :
+                    <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
+    }
 </View>;
 
 @observer
@@ -468,11 +468,13 @@ class HomePage extends BasePage {
                                 });
                                 this.registerModal.close();
                                 homeRegisterFirstManager.setShowRegisterModalUrl(null);
-                                this.$toastShow('领取成功');
+                                this.$toastShow('领取成功！请到我的-优惠券中查看');
                             }}>
-                                <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
-                                           resizeMode={'contain'}
-                                           style={styles.messageBgStyle}/>
+                                <View>
+                                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
+                                               resizeMode={'contain'}
+                                               style={styles.messageBgStyle}/>
+                                </View>
                             </TouchableWithoutFeedback>
                             : <View style={styles.messageBgStyle}/>
                     }
@@ -553,7 +555,8 @@ class HomePage extends BasePage {
                     onEndReachedThreshold={0.5}
                     showsVerticalScrollIndicator={false}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
-                    ListFooterComponent={<Footer isFetching={homeModule.isFetching} errorMsg={homeModule.errorMsg} isEnd={homeModule.isEnd}/>}
+                    ListFooterComponent={<Footer isFetching={homeModule.isFetching} errorMsg={homeModule.errorMsg}
+                                                 isEnd={homeModule.isEnd}/>}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}

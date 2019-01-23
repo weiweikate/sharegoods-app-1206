@@ -44,7 +44,7 @@ export default class SetMentorPage extends BasePage {
 
     $navigationBarOptions = {
         show: true,
-        title: '我的顾问'
+        title: '我的服务顾问'
     };
 
     $isMonitorNetworkStatus() {
@@ -58,7 +58,7 @@ export default class SetMentorPage extends BasePage {
 
     _searchWithCode = () => {
         if(this.state.nowSearch && StringUtils.isEmpty(this.state.nowSearch.trim())){
-            this.$toastShow('请输入顾问的会员号！')
+            this.$toastShow('请输入服务顾问的会员号！')
             return;
         }
 
@@ -94,7 +94,7 @@ export default class SetMentorPage extends BasePage {
             tutorCode: this.state.nowSearch
         };
         MineAPI.bindTutor(params).then(data=>{
-            this.$toastShow('顾问设置成功');
+            this.$toastShow('服务顾问设置成功');
             this._saveUser();
 
         }).catch((error)=>{
@@ -124,7 +124,7 @@ export default class SetMentorPage extends BasePage {
         let noCanSet = (
             <TouchableWithoutFeedback onPress={() => {
                 this.$navigate('HtmlPage', {
-                    title: '我的顾问',
+                    title: '我的服务顾问',
                     uri: apiEnvironment.getCurrentH5Url() + '/static/protocol/consultant-explain.html'
                 });
             }}>
@@ -140,7 +140,7 @@ export default class SetMentorPage extends BasePage {
         return (
             <View style={styles.resultWrapper}>
                 <Text style={styles.mentorNickNameStyle}>
-                    顾问：{this.state.mentorNickName}
+                    服务顾问：{this.state.mentorNickName}
                 </Text>
                 {this.state.canSet ? canSet : noCanSet}
             </View>
@@ -169,7 +169,7 @@ export default class SetMentorPage extends BasePage {
         return (
             <TouchableWithoutFeedback disabled={!canCommit} onPress={()=>{
                 Alert.alert(
-                    `你确定要将"${this.state.mentorNickName}"设置为您的顾问？`,
+                    `你确定要将"${this.state.mentorNickName}"设置为您的服务顾问？`,
                     null,
                     [
                         {text: '取消', onPress: () => console.log('取消'),style: 'cancel'},
@@ -180,7 +180,7 @@ export default class SetMentorPage extends BasePage {
             }}>
                 <View style={[styles.buttonStyle, { backgroundColor: color }]}>
                     <Text style={styles.buttonTextStyle}>
-                        设置他为我的顾问
+                        设置他为我的服务顾问
                     </Text>
                 </View>
             </TouchableWithoutFeedback>
@@ -192,7 +192,7 @@ export default class SetMentorPage extends BasePage {
             <View style={styles.searchWrapper}>
                 <View style={styles.textInputWrapper}>
                     <Image resizeMode={'stretch'} source={mentor_search_icon} style={styles.searchIconStyle}/>
-                    <TextInput placeholder={'请输入顾问的会员号'} style={styles.textInputStyle}
+                    <TextInput placeholder={'请输入服务顾问的会员号'} style={styles.textInputStyle}
                                keyboardType={'numeric'}
                                onChangeText={(text) => {
                                    this.setState({
@@ -228,7 +228,7 @@ export default class SetMentorPage extends BasePage {
 
         return (
             <View style={styles.container}>
-                <Text style={styles.titleMentorStyle}>设置我的顾问</Text>
+                <Text style={styles.titleMentorStyle}>设置我的服务顾问</Text>
                 {this._searchRender()}
                 {view}
                 {this._buttonRender()}
