@@ -35,7 +35,7 @@ export default class MentorDetailPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '选择顾问',
+        title: '选择服务顾问',
         show: true// false则隐藏导航
     };
 
@@ -114,7 +114,7 @@ export default class MentorDetailPage extends BasePage {
                             style={styles.bottomBtnBgViewStyle}
                         >
                             <UIText
-                                value={'选择该顾问'}
+                                value={'选择该服务顾问'}
                                 style={{
                                     fontSize: 17,
                                     color: DesignRule.white
