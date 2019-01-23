@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     },
     name: {
         marginTop: 5,
+        paddingBottom: 3,
         width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(30) * 2) / 5,
         fontSize: 11,
         color: DesignRule.textColor_secondTitle,

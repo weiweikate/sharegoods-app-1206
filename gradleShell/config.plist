@@ -1,8 +1,0 @@
-{
-	content = (
-		"apply from: '../../../../android/rn-geolocation.gradle'",
-	);
-	"bulid_path" = (
-		"../node_modules/@mr/rn-geolocation/android/build.gradle",
-	);
-}

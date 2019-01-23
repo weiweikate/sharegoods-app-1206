@@ -59,6 +59,24 @@ const bannerHeight = px2dp(220);
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
+const Footer = ({errorMsg, isEnd, isFetching}) => <View style={styles.footer}>
+{
+    errorMsg
+        ?
+        <Text style={styles.text} allowFontScaling={false}>{errorMsg}</Text>
+        :
+        isEnd
+            ?
+            <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
+            :
+            isFetching
+                ?
+                <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
+                :
+                <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
+}
+</View>;
+
 @observer
 class HomePage extends BasePage {
 
@@ -532,9 +550,10 @@ class HomePage extends BasePage {
                     keyExtractor={this._keyExtractor.bind(this)}
                     onScroll={this._onScroll.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={0.2}
+                    onEndReachedThreshold={0.5}
                     showsVerticalScrollIndicator={false}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
+                    ListFooterComponent={<Footer isFetching={homeModule.isFetching} errorMsg={homeModule.errorMsg} isEnd={homeModule.isEnd}/>}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}
@@ -548,7 +567,6 @@ class HomePage extends BasePage {
                                     height: this.headerH + 14,
                                     opacity: bannerModule.opacity === 1 ? 0 : 0.4
                                 }]}/>
-
                 <HomeSearchView navigation={this.$navigate}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
                                 hasMessage={this.state.hasMessage}
@@ -644,6 +662,15 @@ const styles = StyleSheet.create({
         width: px2dp(10),
         height: px2dp(10),
         borderRadius: px2dp(5)
+    },
+    footer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 50
+    },
+    text: {
+        color: '#999',
+        fontSize: px2dp(11)
     }
 });
 

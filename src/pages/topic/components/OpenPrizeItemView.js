@@ -42,7 +42,7 @@ const statuesImg = {
 };
 const statuesString = {
     [statues.isBeginning]: '马上抢',
-    [statues.haveSoldOut]: '已抢光',
+    [statues.haveSoldOut]: '抢光了',
     [statues.timeOver]: '已结束',
     [statues.handOver]: '已结束'
 };

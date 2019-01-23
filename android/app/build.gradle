@@ -80,6 +80,10 @@ android {
     }
 }
 
+sensorsAnalytics {
+    exclude = ['com.qiyukf']
+}
+
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.3') {

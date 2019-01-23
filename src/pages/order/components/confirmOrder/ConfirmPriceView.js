@@ -5,7 +5,7 @@ import {
     View,
     Image,
     TouchableOpacity,
-    TextInput as RNTextInput,Keyboard
+    TextInput as RNTextInput, Keyboard
 } from 'react-native';
 import {
     UIText
@@ -81,7 +81,7 @@ export default class ConfirmPriceView extends Component {
                 <TouchableOpacity style={styles.couponsStyle} onPress={() => {
                     if (this.input.isFocused()) {
                         this.input.blur();
-                        Keyboard.dismiss()
+                        Keyboard.dismiss();
                     }
                 }}>
                     <UIText value={'买家留言'} style={styles.blackText}/>

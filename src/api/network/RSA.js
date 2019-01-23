@@ -20,7 +20,7 @@ function randomString(len) {
 }
 
 const RSA = {
-     sign(params = {}) {
+     async sign(params = {}) {
         // 'Security-Policy': 'SIGNATURE'
         let result = [];
         let nonce = randomString(16);
@@ -40,7 +40,6 @@ const RSA = {
         result.sort();
 
         try {
-
             // new Promise((resolve) => {
             // })
             let sig = new jsrsasign.crypto.Signature({ 'alg': 'SHA256withRSA' });
@@ -49,21 +48,36 @@ const RSA = {
             // update data
             sig.updateString(result.join('&'));
             let s = sig.sign();
-            // //测试
-            // console.log('-----');
-            // // console.log(s)
+            //测试
+            console.log('-----');
+            // console.log(s)
+            //原生加签
             // console.log(jsrsasign.hex2b64(s));
-            // NativeModules.commModule.signWith(result.join('&'), (jsonDic) => {
-            //     console.log('------原生加签');
-            //     console.log(jsonDic);
-            //     return {
-            //         nonce,
-            //         timestamp,
-            //         client,
-            //         version,
-            //         sign: jsrsasign.hex2b64(s)
-            //     };
-            // });
+            // const signString  =  await NativeModules.commModule.signWith(result.join('&'));
+            // console.log('原生加签');
+            // console.log(signString);
+            // return {
+            //     nonce,
+            //     timestamp,
+            //     client,
+            //     version,
+            //     sign:signString
+            // };
+
+                // NativeModules.commModule.signWith(result.join('&'), (jsonDic) => {
+                // console.log('------原生加签');
+                // console.log(jsonDic);
+                // return {
+                //     nonce,
+                //     timestamp,
+                //     client,
+                //     version,
+                //     sign: jsrsasign.hex2b64(s)
+                // };
+            // }
+
+            // );
+            //js延签
             return {
                 nonce,
                 timestamp,
