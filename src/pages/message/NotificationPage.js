@@ -158,7 +158,8 @@ export default class NotificationPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: DesignRule.bgColor
+        backgroundColor: DesignRule.bgColor,
+        paddingBottom:20
     },
     itemContents: {
         height: 37,

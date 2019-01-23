@@ -15,7 +15,7 @@ import DesignRule from "../../../../constants/DesignRule";
 import AccountItem from '../../components/AccountItem';
 import res from "../../res";
 import user from "../../../../model/user";
-// import DataUtils from "../../../../utils/DateUtils";
+import StringUtils from "../../../../utils/StringUtils";
 // import Toast from "../../../../utils/bridge";
  const {
      jdt_05,
@@ -110,7 +110,7 @@ export default class ExpDetailPage extends BasePage{
                            color: DesignRule.textColor_instruction,
                            fontSize: 13
                        }}>
-                           {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience))}Exp` : '0Exp'}
+                           {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience - this.state.experience)}Exp` : '0Exp'}
                        </Text>
                        {(this.state.levelExperience - this.state.experience) > 0 ? null :
                            <Text style={{ color: DesignRule.mainColor, fontSize: 11 }} allowFontScaling={false}>(Exp已满)</Text>
@@ -164,7 +164,7 @@ export default class ExpDetailPage extends BasePage{
                     arrData.push({
                         type: use_type[parseInt(item.sourceCode)],
                         time: item.createTime,
-                        capital: "+"+item.experience,
+                        capital: `${parseInt(item.sourceType)===1?"+":"-"}${item.experience}`,
                         iconImage: use_let_img[parseInt(item.sourceCode)],
                         capitalRed:parseInt(item.sourceType)===1
 

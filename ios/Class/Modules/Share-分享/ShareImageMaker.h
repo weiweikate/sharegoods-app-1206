@@ -12,6 +12,8 @@
 @property(nonatomic, copy)NSString * imageUrlStr;
 @property(nonatomic, copy)NSString * titleStr;
 @property(nonatomic, copy)NSString * priceStr;
+@property(nonatomic, copy)NSString * retailPrice;
+@property(nonatomic, copy)NSString * spellPrice;
 @property(nonatomic, copy)NSString * QRCodeStr;
 @end
 typedef  void(^ShareImageMakercompletionBlock)(NSString * pathStr, NSString *errorStr);
@@ -33,6 +35,7 @@ SINGLETON_FOR_HEADER(ShareImageMaker)
                                      completion:(ShareImageMakercompletionBlock) completion;
 
 - (void)saveInviteFriendsImage:(NSString*)QRString
+                     logoImage:(NSString*)logoImage
                     completion:(completionBlock) completion;
 
 - (void)saveShopInviteFriendsImage:(NSDictionary*)dic

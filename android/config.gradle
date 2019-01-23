@@ -12,8 +12,8 @@ ext {
             applicationId    : "com.meeruu.sharegoods",
             minSdkVersion    : 16,
             targetSdkVersion : 27,
-            versionCode      : 108,
-            versionName      : "1.0.8"
+            versionCode      : 109,
+            versionName      : "1.0.9"
     ]
 
     dependencies = [
@@ -31,6 +31,7 @@ ext {
             exoplayer   : 'com.google.android.exoplayer:exoplayer:2.7.3',
             exopOKhttp  : 'com.google.android.exoplayer:extension-okhttp:2.7.3',
             multidex    : 'com.android.support:multidex:1.0.3',
-            sensors     : 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.0.0'
+            sensors     : 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.0.0',
+            okhttp      : 'com.squareup.okhttp3:okhttp:3.11.0'
     ]
 }

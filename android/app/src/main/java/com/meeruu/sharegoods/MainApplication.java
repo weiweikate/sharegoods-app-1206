@@ -7,6 +7,18 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
+import com.meeruu.sharegoods.rn.storage.AsyncStorageManager;
+import com.oblador.vectoricons.VectorIconsPackage;
+import cn.reactnative.modules.update.UpdatePackage;
+import com.horcrux.svg.SvgPackage;
+import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
+import com.sensorsdata.analytics.RNSensorsAnalyticsPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.request.MRNetStatePackage;
+import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
+import com.psykar.cookiemanager.CookieManagerPackage;
+import com.reactlibrary.RNGeolocationPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -18,10 +30,10 @@ import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.Utils;
-import com.meeruu.qiyu.imService.QiyuImageLoader;
 import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
+import com.meeruu.sharegoods.rn.kefu.QiyuImageLoader;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
 import com.meeruu.sharegoods.utils.SensorsUtils;
 import com.meituan.android.walle.WalleChannelReader;
@@ -60,6 +72,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
     @Override
     public void onCreate() {
         super.onCreate();
+        AsyncStorageManager.getInstance().init(this);
+
         final SophixManager instance = SophixManager.getInstance();
         instance.setPatchLoadStatusStub(new PatchLoadStatusListener() {
             @Override

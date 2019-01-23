@@ -32,6 +32,7 @@ const CCZImg = res.myData.ccz_03;
 const ProgressImg = res.myData.jdt_05;
 const arrowRightImg= res.myData.black_right_arrow
 import LinearGradient from 'react-native-linear-gradient';
+import StringUtils from "../../../../utils/StringUtils";
 
 const { px2dp } = ScreenUtils;
 
@@ -225,7 +226,7 @@ export default class MyPromotionPage extends BasePage {
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 12
                         }}>
-                            {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience))}Exp` : '0Exp'}
+                            {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience-this.state.experience)}Exp` : '0Exp'}
                         </Text>
                         {(this.state.levelExperience - this.state.experience) > 0 ? null :
                             <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}

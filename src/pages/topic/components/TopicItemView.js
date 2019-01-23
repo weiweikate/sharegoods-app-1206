@@ -21,7 +21,7 @@ export default class TopicItemView extends Component {
     render() {
         const { itemData, numOfColum } = this.props;
         const mainWidth = ScreenUtils.width - 20;
-        const contentWidth = (mainWidth - (20 * (numOfColum - 1))) / numOfColum;
+        const contentWidth = (mainWidth - (16 * (numOfColum - 1))) / numOfColum;
         return (
             <TouchableOpacity onPress={() => {
                 this.props.itemClickAction && this.props.itemClickAction();
@@ -83,13 +83,13 @@ TopicItemView.propTypes = {
 
 const Styles = StyleSheet.create({
     itemBgStyle: {
-        paddingTop: 10,
+        paddingTop: 9,
         alignItems: 'center',
         justifyContent: 'center'
     },
     itemContentStyle: {
         backgroundColor: 'white',
-        paddingBottom: 8
+        paddingBottom: 9
     },
     itemTipBgViewStyle: {
         position: 'absolute',

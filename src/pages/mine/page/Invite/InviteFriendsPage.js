@@ -9,6 +9,7 @@
  *
  */
 
+
 'use strict';
 import React from 'react';
 import {
@@ -18,7 +19,8 @@ import {
     TouchableWithoutFeedback,
     ImageBackground,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    StatusBar
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -41,7 +43,6 @@ const {
     invite: {
         bg,
         button,
-        hongbao,
         wenan
     }
 } = res;
@@ -69,7 +70,12 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     componentDidMount() {
+        StatusBar.setHidden( true, 'slide');
         this.loadPageData();
+    }
+
+    componentWillUnmount(){
+        StatusBar.setHidden(false,'slide');
     }
 
     loadPageData() {
@@ -84,11 +90,15 @@ export default class InviteFriendsPage extends BasePage<Props> {
 
     //截屏
     _saveImg = () => {
+        let logo = 'logo.png';
+        if (user && user.headImg && user.headImg.length >4){
+            logo = user.headImg;
+        }
         track(trackEvent.QrcodeShareto, {qrCodeID: this.linkUrl, shareMethod: '保存图片'})
         this.setState({
             disable: true
         }, () => {
-            bridge.saveInviteFriendsImage(this.linkUrl, () => {
+            bridge.saveInviteFriendsImage(this.linkUrl,logo, () => {
                 this.$toastShow('保存成功');
                 this.__timer__ = setTimeout(() => {
                     this.setState({
@@ -107,23 +117,8 @@ export default class InviteFriendsPage extends BasePage<Props> {
     _render() {
         return (
             <View style={styles.container}>
-                <Image source={bg}
-                       style={{ width: ScreenUtils.width, height: ScreenUtils.height, position: 'absolute' }}/>
-                <View style={{ flex: 1 }}/>
-                <UIImage source={wenan}
-                         style={{
-                             width: autoSizeWidth(174),
-                             height: autoSizeWidth(70),
-                             marginBottom: 30,
-                             alignSelf: 'flex-start',
-                             marginLeft: 50
-                         }}/>
-                <UIImage source={hongbao}
-                         style={{
-                             width: autoSizeWidth(350),
-                             height: autoSizeWidth(490) + ScreenUtils.safeBottom
-
-                         }}/>
+                <Image source={bg} style={{top: 0,left: 0, width: DesignRule.autoSizeWidth(375), height: ScreenUtils.height, resizeMode: 'stretch', position: 'absolute'}}/>
+                <Image source={wenan} style={{top: ScreenUtils.statusBarHeight + 44 ,left: 0, width: autoSizeWidth(375), height: autoSizeWidth(75), resizeMode: 'stretch', position: 'absolute'}}/>
                 <TouchableWithoutFeedback onPress={() => {
                     this.$navigateBack();
                 }}>
@@ -145,13 +140,13 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 </TouchableWithoutFeedback>
                 <View style={{
                     backgroundColor: 'white',
-                    width: autoSizeWidth(180),
-                    height: autoSizeWidth(180),
-                    bottom: autoSizeWidth(200),
-                    left: autoSizeWidth(85 + 12.5),
+                    width: autoSizeWidth(160),
+                    height: autoSizeWidth(160),
+                    top: ScreenUtils.height/1334.0*775 + (ScreenUtils.height/1334*(1334 - 775) - autoSizeWidth(160) - autoSizeWidth(90))/2.0,
+                    left: autoSizeWidth(95 + 12.5),
                     position: 'absolute',
-                    shadowColor: DesignRule.mainColor,
-                    shadowOpacity: 0.3,
+                    // shadowColor: DesignRule.mainColor,
+                    // shadowOpacity: 0.3,
                     justifyContent:'center',
                     alignItems:'center',
                 }}>
@@ -160,18 +155,30 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                  width: autoSizeWidth(160),
                                  height: autoSizeWidth(160)
                              }}/>
+                    {
+                        user && user.headImg && user.headImg.length >4 ?
+                            <View style={styles.logo}>
+                                <UIImage source={{ uri: user.headImg }}
+                                         style={{height: autoSizeWidth(40), width: autoSizeWidth(40)}}/>
+                            </View>:
+                            <View style={styles.logo}>
+                                <UIImage source={res.other.tongyong_logo_nor}
+                                         style={{height: autoSizeWidth(40), width: autoSizeWidth(40)}} />
+                            </View>
+                    }
+
                 </View>
                 <View style={{
                     flexDirection: 'row',
                     position: 'absolute',
                     left: 0,
                     width: ScreenUtils.width,
-                    bottom: 35 + ScreenUtils.safeBottom,
+                    bottom: autoSizeWidth(40),
                     alignItems: 'center',
-                    paddingHorizontal: 40
+                    paddingHorizontal: DesignRule.autoSizeWidth(30)
                 }}>
                     <TouchableOpacity onPress={this._saveImg} disabled={this.state.disable}>
-                        <ImageBackground source={button} style={styles.btnContainer} onPress={this._saveImg}>
+                        <ImageBackground source={button} style={styles.btnContainer} onPress={this._saveImg} resizeMode={'stretch'}>
 
                             <Text style={styles.btnText}>
                                 保存图片
@@ -182,7 +189,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     <TouchableOpacity onPress={() => {
                         this.shareModal.open();
                     }}>
-                        <ImageBackground source={button} style={styles.btnContainer}>
+                        <ImageBackground source={button} style={styles.btnContainer} resizeMode={'stretch'}>
                             <Text style={styles.btnText}>
                                 立即分享
                             </Text>
@@ -212,6 +219,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //     miniProgramPath: 'pages/index/index'}}
                                 trackParmas={{QrCodeID: this.linkUrl}}
                                 trackEvent={trackEvent.QrcodeShareto}
+                                luckyDraw={true}
                 />
             </View>
         );
@@ -221,7 +229,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        backgroundColor: '#ff0050'
     },
     btnContainer: {
         borderRadius: autoSizeWidth(25),
@@ -229,10 +237,20 @@ const styles = StyleSheet.create({
         height: autoSizeWidth(50),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red'
     },
     btnText: {
         fontSize: DesignRule.fontSize_mediumBtnText,
-        color: 'white'
+        color: '#ff0050',
+        marginBottom: autoSizeWidth(7),
+        marginRight: autoSizeWidth(5),
+    },
+    logo: {
+        width: autoSizeWidth(40),
+        height: autoSizeWidth(40),
+        top: autoSizeWidth(60),
+        left: autoSizeWidth(60),
+        position: 'absolute',
+        borderRadius: autoSizeWidth(20),
+        overflow: 'hidden'
     }
 });

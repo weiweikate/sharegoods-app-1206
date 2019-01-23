@@ -4,11 +4,12 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.meeruu.PopModal.PopModalManager;
-import com.meeruu.WaveView.WaveViewManager;
+import com.meeruu.sharegoods.rn.loadingview.MRLoadingViewManager;
+import com.meeruu.sharegoods.rn.popmodal.PopModalManager;
+import com.meeruu.sharegoods.rn.waveview.WaveViewManager;
 import com.meeruu.commonlib.umeng.AnalyticsModule;
 import com.meeruu.commonlib.umeng.LoginAndSharingModule;
-import com.meeruu.qiyu.imService.QYChatModule;
+import com.meeruu.sharegoods.rn.kefu.QYChatModule;
 import com.meeruu.sharegoods.rn.module.AppPayModule;
 import com.meeruu.sharegoods.rn.module.CommModule;
 import com.meeruu.sharegoods.rn.module.QRCodeModule;
@@ -61,6 +62,7 @@ public class RNMRPackage implements ReactPackage {
         return Arrays.<ViewManager>asList(
                 new PopModalManager(),
                 new WaveViewManager(),
+                new MRLoadingViewManager(),
                 new MRBannerViewManager());
     }
 

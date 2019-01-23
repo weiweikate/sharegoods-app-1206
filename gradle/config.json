@@ -1,0 +1,55 @@
+
+{
+    "@mr/geolocation": {
+        "content": "apply from: '../../../../android/rn-geolocation.gradle' //node.js",
+        "bulid_path": "../node_modules/@mr/rn-geolocation/android/build.gradle"
+    },
+    "@mr/request": {
+        "content": "apply from: '../../../../android/rn-request.gradle'",
+        "bulid_path":  "../node_modules/@mr/request/android/build.gradle"
+    },
+    "@mr/image-crop-picker": {
+        "content": "apply from: '../../../../android/rn-image-crop-picker.gradle'",
+        "bulid_path":  "../node_modules/@mr/rn-image-crop-picker/android/build.gradle"
+    },
+    "@mr/cookies": {
+        "content": "apply from: '../../../../android/rn-cookies.gradle'",
+        "bulid_path":  "../node_modules/@mr/cookies/android/build.gradle"
+    },
+    "@mr/webview-bridge": {
+        "content": "apply from: '../../../../android/rn-webView-bridge.gradle'",
+        "bulid_path":  "../node_modules/@mr/rn-webview-bridge/android/build.gradle"
+    },
+    "autoheight-web": {
+        "content": "apply from: '../../../android/rn-autoheight-web.gradle'",
+        "bulid_path":   "../node_modules/react-native-autoheight-webview/android/build.gradle"
+    },
+    "fetch-blob": {
+        "content": "apply from: '../../../android/rn-fetch-blob.gradle'",
+        "bulid_path": "../node_modules/react-native-fetch-blob/android/build.gradle"
+    },
+    "linear-gradien": {
+        "content": "apply from: '../../../android/rn-gradient.gradle'",
+        "bulid_path": "../node_modules/react-native-linear-gradient/android/build.gradle"
+    },
+    "svg": {
+        "content": "apply from: '../../../android/rn-svg.gradle'",
+        "bulid_path":  "../node_modules/react-native-svg/android/build.gradle"
+    },
+    "update": {
+        "content": "apply from: '../../../android/rn-update.gradle'",
+        "bulid_path":   "../node_modules/react-native-update/android/build.gradle"
+    },
+    "icons": {
+        "content": "apply from: '../../../android/rn-vector-icons.gradle'",
+        "bulid_path": "../node_modules/react-native-vector-icons/android/build.gradle"
+    },
+    "video": {
+        "content": "apply from: '../../../android/rn-video.gradle'",
+        "bulid_path":   "../node_modules/react-native-video/android-exoplayer/build.gradle"
+    },
+    "sensors": {
+        "content": "apply from: '../../../../android/rn-sensors.gradle'",
+        "bulid_path":   "../node_modules/@sensors.data/react-native-sensors-analytics/android/build.gradle"
+    }
+}

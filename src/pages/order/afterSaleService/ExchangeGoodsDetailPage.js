@@ -99,12 +99,13 @@ class ExchangeGoodsDetailPage extends BasePage {
         let pageData = this.afterSaleDetailModel.pageData;
         let {
             type,
-            status,
+            status,// 1.待审核 2.待寄回 3.待仓库确认 4.待平台处理 5.售后完成 6.售后关闭
+            // subStatus,  // REVOKED(1, "手动撤销"),OVERTIME(2, "超时关闭"),(3, "拒绝关闭");
+            refundStatus,//退款状态: 1.待退款 2.退款成功 3.三方退款失败 4.平台退款失败 5.取消退款(关闭)
             // orderProductNo,
             refundPrice,
             refundAccountAmount,
             refundCashAmount,
-            reject,
             //平台物流
             sendExpressName,
             sendExpressNo,
@@ -136,9 +137,10 @@ class ExchangeGoodsDetailPage extends BasePage {
         } = pageData;
 
         let pageType = type - 1;
+        let reject = this.afterSaleDetailModel.reject;
         let isShow_operationApplyView = status === 1;
-        /** 退款成功、退货成功、换货变退款成功*/
-        let isShow_refundDetailView = (pageType === 0 && status === 5) || (pageType === 1 && status === 5);
+        /** 退款成功、退货成功、换货变退款成功, (!refundStatus|| refundStatus === 3|| refundStatus === 4)退款没有失败*/
+        let isShow_refundDetailView = ((pageType === 0 && status === 5) || (pageType === 1 && status === 5)) &&((!refundStatus|| (refundStatus !== 3 && refundStatus !== 4)));
 
         let isShow_refuseReasonView = false;
         let refuseReasonViewType = 0;
@@ -146,9 +148,8 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (pageType === 0 && (status === 1 || status === 5) ||
             pageType === 1 && (status === 1 || status === 5)
         ) {
-            if(reject && reject.length > 0){
                 isShow_refuseReasonView = true;
-            }
+
             /** 只要是被拒绝就显示拒绝理由*/
         } else if (status === 6) {
             if(reject && reject.length > 0){
@@ -164,7 +165,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             isShow_backAddressView = true;
             /** 退货 寄回地址、收货人地址在申请中，和关闭的情况不显示*/
         } else if (pageType === 2 && (status === 2 || status === 3 || status === 4 || status === 5)) {
-            isShow_shippingAddressView = true;
+            // isShow_shippingAddressView = true;
             isShow_backAddressView = true;
         }
         let logistics = [];
@@ -172,7 +173,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (pageType === 2 && (status === 4 || status === 5)) {
             if (sendExpressNo) {
                 logistics.push({
-                    title: '平台物流',
+                    title: '平台换货物流',
                     value: sendExpressName,
                     placeholder: '',
                     expressNo: sendExpressNo,
@@ -185,7 +186,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             (status === 2 || status === 3 || status === 4 || status === 5)) {
             orderRefundExpress = orderRefundExpress || {};
             logistics.push({
-                title: '寄回物流',
+                title: '用户寄回物流',
                 value: orderRefundExpress.expressName,
                 placeholder: '请填写寄回物流信息',
                 expressNo: orderRefundExpress.expressNo,
@@ -207,7 +208,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <TipView pageType={pageType} status={status}/>
                     <HeaderView pageType={pageType}
                                 status={status}
-                                headerTitle={pageData.headerTitle}
+                                headerTitle={this.afterSaleDetailModel.headerTitle}
+                                detailTitle={this.afterSaleDetailModel.detailTitle}
                                 timeString={this.afterSaleDetailModel.timeString}
                     />
                     {isShow_operationApplyView ?

@@ -21,41 +21,55 @@ const {
 class ClassifyModules {
     @observable classifyList = [];
     @action loadClassifyList = () => {
-        this.classifyList = [{
+        let classifys = [{
             icon: shareImg,
-            iconUri: OssHelper('/app/share%403x.png'),
+            img: OssHelper('/app/share%403x.png'),
             name: '分享',
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000003'
         }, {
             icon: showImg,
-            iconUri: OssHelper('/app/show%403x.png'),
+            img: OssHelper('/app/show%403x.png'),
             name: '秀场',
             id: 1,
             route: 'show/ShowListPage'
         }, {
             icon: signinImg,
-            iconUri: OssHelper('/app/signin%403x.png'),
+            img: OssHelper('/app/signin%403x.png'),
             name: '签到',
             id: 1,
             route: 'home/signIn/SignInPage',
             needLogin: 1
         }, {
             icon: schoolImg,
-            iconUri: OssHelper('/app/school%403x.png'),
+            img: OssHelper('/app/school%403x.png'),
             name: '必看',
             id: 1,
             linkTypeCode: 'FX181226000001',
             route: 'show/ShowDetailPage'
         }, {
             icon: spikeImg,
-            iconUri: OssHelper('/app/spike%403x.png'),
+            img: OssHelper('/app/spike%403x.png'),
             name: '秒杀',
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000002'
         }];
+
+        HomeApi.classify().then( resData => {
+            if (resData.code === 10000 && resData.data) {
+                let resClassifys = resData.data
+                resClassifys.map((data) => {
+                    if (data.name === '全部分类') {
+                        data.route = 'home/search/CategorySearchPage'
+                    } else {
+                        data.route = 'home/search/SearchResultPage'
+                    }
+                })
+                this.classifyList =  classifys.concat(resClassifys)
+            }
+        })
     };
 }
 
@@ -70,6 +84,7 @@ class HomeModule {
     isEnd = false;
     page = 1;
     firstLoad = true;
+    errorMsg = ''
 
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
@@ -215,9 +230,8 @@ class HomeModule {
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             this.isFetching = false;
             let list = result.data.data;
-            if (list.length <= 0) {
+            if (list.length < 10) {
                 this.isEnd = true;
-                return;
             }
             let itemData = [];
             let home = [];
@@ -244,9 +258,10 @@ class HomeModule {
             }
             this.homeList = this.homeList.concat(home);
             this.page++;
-            this.isFetching = false;
-            this.isEnd = false;
+            // this.isFetching = false;
+            // this.isEnd = false;
         } catch (error) {
+            this.errorMsg = error.msg
             console.log(error);
         }
     });

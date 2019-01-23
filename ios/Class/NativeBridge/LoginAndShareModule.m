@@ -61,10 +61,11 @@ RCT_EXPORT_METHOD(saveScreen:(id)jsonParam
   });
 }
 RCT_EXPORT_METHOD(saveInviteFriendsImage:(NSString *)qrString
+                  logoImage:(NSString*)logoImage
                   onSuccess:(RCTResponseSenderBlock)onSuccess
                   onError:(RCTResponseSenderBlock)onError){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [[ShareImageMaker sharedInstance]saveInviteFriendsImage:qrString completion:^(BOOL success) {
+    [[ShareImageMaker sharedInstance]saveInviteFriendsImage:qrString logoImage:(NSString*)logoImage completion:^(BOOL success) {
       if (success) {
         onSuccess(@[]);
       }else{

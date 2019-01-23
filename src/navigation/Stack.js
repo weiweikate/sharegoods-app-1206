@@ -11,7 +11,7 @@
 import { TabNav } from './Tab';
 //  import  TabNav  from './pages/payment/PaymentMethodPage';
 //  import  TabNav  from './pages/home/product/ProductDetailPage';
-//   import  TabNav  from '../pages/order/afterSaleService/AfterSaleServicePage';
+//   import  TabNav  from '../pages/order/afterSaleService/ExchangeGoodsDetailPage';
 //   import  TabNav  from './Dome';
 // 业务模块
 import debug from '../pages/debug';
@@ -28,6 +28,8 @@ import topic from '../pages/topic';
 import show from '../pages/show/Index';
 import shareTask from '../pages/shareTask';
 
+import deepLinkPath from './DeepLinkPath'
+
 
 const Router = {
     Tab: {
@@ -43,14 +45,8 @@ const Router = {
 const PageKey = {};
 
 function getPathWithPageName(pageName) {
-    if (pageName === 'RegistPage') {
-        return 'path/' + pageName + '/:phone'
-    }else {
-        return 'path/' + pageName;
-    }
+    return deepLinkPath[pageName];
 }
-
-
 // 添加模块内子路由配置
 function addSubModule(module, prefixPath) {
 
@@ -95,6 +91,9 @@ addSubModule(shareTask);
 console.log('Router', Object.keys(Router));
 console.log(Router);
 console.log('Path',Object.values(Router))
+Object.values(Router).map(value=>{
+    console.log(  value.path)
+})
 
 console.log('PageKey',Object.keys(PageKey))
 export { PageKey };

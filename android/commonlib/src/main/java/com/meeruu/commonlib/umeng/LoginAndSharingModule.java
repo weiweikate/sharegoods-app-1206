@@ -15,6 +15,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -185,6 +186,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         switch (shareType) {
             case 0:
                 UMImage image = fixThumImage(params.getString("shareImage"));
+
                 new ShareAction(getCurrentActivity()).setPlatform(platform)//传入平台
                         .withMedia(image).setCallback(umShareListener)//回调监听器
                         .share();
@@ -293,7 +295,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 umengDeleteOauth(SHARE_MEDIA.WEIXIN);
                 WXLoginBean bean = new WXLoginBean();
                 bean.setDevice(android.os.Build.DEVICE);
-                bean.setOpenid(openid);
+                bean.setAppOpenid(openid);
+                bean.setUnionid(unionid);
                 bean.setSystemVersion(android.os.Build.VERSION.RELEASE);
                 bean.setNickName(name);
                 bean.setHeaderImg(iconurl);
@@ -361,8 +364,42 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void saveInviteFriendsImage(String url, Callback success, Callback fail) {
-        drawInviteFriendsImage(mContext, url, success, fail);
+    public void saveInviteFriendsImage(String url,String headImg, Callback success, Callback fail) {
+
+        if(TextUtils.isEmpty(headImg) || "logo.png".equals(headImg)){
+            Bitmap bitmap = getDefaultIcon(mContext);
+            drawInviteFriendsImage(mContext,bitmap, url, success, fail);
+        }else {
+            downloadHeaderImg(mContext,headImg,url,success,fail);
+        }
+
+    }
+
+    private static void downloadHeaderImg(final Context context,final String headImg,final String url,final Callback success,final Callback fail){
+        Fresco.initialize(context);
+
+
+        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(headImg)).setProgressiveRenderingEnabled(true).build();
+
+
+        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, context);
+
+        dataSource.subscribe(new BaseBitmapDataSubscriber() {
+
+            @Override
+            public void onNewResultImpl(Bitmap bitmap) {
+                drawInviteFriendsImage(context,bitmap, url, success, fail);
+            }
+
+            @Override
+            public void onFailureImpl(DataSource dataSource) {
+                Bitmap bitmap = getDefaultIcon(context);
+                drawInviteFriendsImage(context,bitmap, url, success, fail);
+
+            }
+        }, CallerThreadExecutor.getInstance());
+
+
     }
 
     @ReactMethod
@@ -402,12 +439,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 fail.invoke("店主图片下载失败");
             }
         }, CallerThreadExecutor.getInstance());
-
-
-
-
     }
 
+
+    private static Bitmap getDefaultIcon(Context context){
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round);
+        return bitmap;
+    }
 
     public static void drawShopInviteFriendsImageWithHeader(final Context context, final ReadableMap map,final Bitmap headerBitmap, final Callback success, final Callback fail){
         Bitmap result = Bitmap.createBitmap(375, 667, Bitmap.Config.ARGB_8888);
@@ -545,16 +583,16 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
 
-    public static void drawInviteFriendsImage(final Context context, final String url, final Callback success, final Callback fail){
+    public static void drawInviteFriendsImage(final Context context,Bitmap icon, final String url, final Callback success, final Callback fail){
         Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.invite_friends_bg);
-        Bitmap qrBitmap = createQRImage(url, 310, 310);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy);
+        Bitmap qrBitmap = createQRImage(url, 320, 320);
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int newWidth = 750;
-        int newHeight = 1333;
+        int newHeight = 1334;
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
 
@@ -563,7 +601,31 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         canvas.drawBitmap(newbitmap,  0,0,paint);
-        canvas.drawBitmap(qrBitmap, 225, 620, paint);
+        canvas.drawBitmap(qrBitmap, 215, 805, paint);
+
+
+        int iconW = icon.getWidth();
+        int iconH = icon.getHeight();
+        // 设置想要的大小
+        int newIconLenght = 80;
+        // 计算缩放比例
+        float iconWidthScale = ((float) newIconLenght) / iconW;
+        float iconHeightScale = ((float) newIconLenght) / iconH;
+        // 取得想要缩放的matrix参数
+        Matrix matrixIcon = new Matrix();
+        matrixIcon.postScale(iconWidthScale, iconHeightScale);
+        // 得到新的图片
+        Bitmap newIcon = Bitmap.createBitmap(icon, 0, 0, iconW, iconH, matrixIcon,
+                true);
+
+        Bitmap roundIcon = createCircleBitmap(newIcon);
+
+
+
+
+        canvas.drawBitmap(roundIcon,335,925,paint);
+
+
         String path = saveImageToCache(context, result, "inviteFriends.png");
 
         path = "file://"+path;
@@ -577,9 +639,34 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         bitmap.recycle();
         qrBitmap.recycle();
         newbitmap.recycle();
+        icon.recycle();
 
         success.invoke();
     }
+
+    private static Bitmap createCircleBitmap(Bitmap resource)
+    {
+        //获取图片的宽度
+        int width = resource.getWidth();
+        Paint paint = new Paint();
+        //设置抗锯齿
+        paint.setAntiAlias(true);
+
+        //创建一个与原bitmap一样宽度的正方形bitmap
+        Bitmap circleBitmap = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
+        //以该bitmap为低创建一块画布
+        Canvas canvas = new Canvas(circleBitmap);
+        //以（width/2, width/2）为圆心，width/2为半径画一个圆
+        canvas.drawCircle(width/2, width/2, width/2, paint);
+
+        //设置画笔为取交集模式
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        //裁剪图片
+        canvas.drawBitmap(resource, 0, 0, paint);
+
+        return circleBitmap;
+    }
+
 
     public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail) {
         String info = url;
@@ -652,12 +739,21 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String title = shareImageBean.getTitleStr();
         String price = shareImageBean.getPriceStr();
         String info = shareImageBean.getQRCodeStr();
+        String retailPrice = shareImageBean.getRetail();
+        String spellPrice = shareImageBean.getSpell();
 
         int titleSize = 26;
-        int priceSize = 24;
-        int titleCount = (int) ((500 * 0.57) / titleSize);
+        int titleCount = (int) ((440) / titleSize);
+        boolean isTwoLine;
+        if (title.length() <= titleCount) {
+            isTwoLine = false;
+        }else {
+            isTwoLine = true;
+        }
 //        height: autoSizeWidth(650 / 2), width: autoSizeWidth(250)
-        Bitmap result = Bitmap.createBitmap(500, (int) (660), Bitmap.Config.ARGB_8888);
+
+        //680 708
+        Bitmap result = isTwoLine ? Bitmap.createBitmap(500, (int) (708), Bitmap.Config.ARGB_8888) : Bitmap.createBitmap(500, (int) (680), Bitmap.Config.ARGB_8888) ;
 
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -668,11 +764,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         //在图片下边画一个白色矩形块用来放文字，防止文字是透明背景，在有些情况下保存到本地后看不出来
 
         paint.setColor(Color.WHITE);
-        canvas.drawRect(0, 500, 500, 660, paint);
-        paint.setColor(Color.BLACK);
+        if(isTwoLine){
+            canvas.drawRect(0, 500, 500, 708, paint);
+
+        }else {
+            canvas.drawRect(0, 500, 500, 680, paint);
+        }
 
         //绘制文字
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.parseColor("#666666"));
         paint.setTextSize(titleSize);
         Rect bounds = new Rect();
         if (title.length() <= titleCount) {
@@ -680,18 +780,18 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, s.length(), bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 12, 500 + 30, paint);
+            canvas.drawText(s, 30, 500 + 30, paint);
         }
         if (title.length() <= titleCount * 2 && title.length() > titleCount) {
             String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 12, 500 + 30, paint);
+            canvas.drawText(s, 30, 500 + 30, paint);
 
             s = title.substring(titleCount, title.length());
 
-            canvas.drawText(s, 12, 500 + 30 + titleSize + 8 + bounds.height() / 2, paint);
+            canvas.drawText(s, 30, 500 + 30 + titleSize + bounds.height() / 2, paint);
         }
 
         if (title.length() > titleCount * 2) {
@@ -699,21 +799,60 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s, 12, 500 + 30, paint);
+            canvas.drawText(s, 30, 500 + 30, paint);
 
-            s = title.substring(titleCount, titleCount * 2 - 3) + "...";
+            s = title.substring(titleCount, titleCount * 2 - 2) + "...";
 
-            canvas.drawText(s, 12, 500 + 30 + titleSize + 8 + bounds.height() / 2, paint);
+            canvas.drawText(s, 30, 500 + 30 + titleSize  + bounds.height() / 2, paint);
         }
 
-        paint.setColor(Color.RED);
-        paint.setTextSize(priceSize);
-        Rect boundsPrice = new Rect();
-        paint.getTextBounds(price, 0, price.length(), boundsPrice);
-        canvas.drawText(price, 12, 610, paint);
 
-        Bitmap qrBitmap = createQRImage(info, 120, 120);
-        canvas.drawBitmap(qrBitmap, 360, 520, paint);
+        String marketStr = "市场价：";
+        paint.setColor(Color.parseColor("#333333"));
+        paint.setTextSize(20);
+        Rect market = new Rect();
+        paint.getTextBounds(marketStr, 0, marketStr.length(), market);
+        canvas.drawText(marketStr, 30, isTwoLine ?610 : 585, paint);
+
+        paint.setStrikeThruText(true);
+        paint.setTextSize(20);
+        canvas.drawText(price, market.right+30, isTwoLine ?610 : 585, paint);
+
+
+        String retailStr = "V0价：";
+        paint.setColor(Color.parseColor("#333333"));
+        paint.setStrikeThruText(false);
+
+        paint.setTextSize(22);
+        Rect retail = new Rect();
+        paint.getTextBounds(retailStr, 0, retailStr.length(), retail);
+        canvas.drawText(retailStr, 30, isTwoLine ?640 : 615, paint);
+
+        paint.setTextSize(22);
+        paint.setColor(Color.parseColor("#F00050"));
+        canvas.drawText(retailPrice, retail.right+30, isTwoLine ?640 : 615, paint);
+
+
+        String spellStr = "拼店价：";
+        paint.setColor(Color.parseColor("#333333"));
+        paint.setStrikeThruText(false);
+
+        paint.setTextSize(22);
+        Rect spell = new Rect();
+        paint.getTextBounds(spellStr, 0, spellStr.length(), spell);
+        canvas.drawText(spellStr, 30, isTwoLine ?670 : 645, paint);
+
+        paint.setTextSize(22);
+        paint.setColor(Color.parseColor("#F00050"));
+        canvas.drawText(spellPrice, spell.right+30, isTwoLine ?670 : 645, paint);
+
+        Bitmap qrBitmap = createQRImage(info, 100, 100);
+        if(isTwoLine){
+            canvas.drawBitmap(qrBitmap, 370, 590, paint);
+        }else {
+            canvas.drawBitmap(qrBitmap, 370, 565, paint);
+        }
+
         String path = saveImageToCache(context, result, "shareImage.png");
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
@@ -732,22 +871,34 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             return null;
         }
 
+        if (map.hasKey("QRCodeStr")) {
+            shareImageBean.setQRCodeStr(map.getString("QRCodeStr"));
+        } else {
+            return null;
+        }
+
         if (map.hasKey("titleStr")) {
             shareImageBean.setTitleStr(map.getString("titleStr"));
         } else {
-            return null;
+            shareImageBean.setTitleStr("");
         }
 
         if (map.hasKey("priceStr")) {
             shareImageBean.setPriceStr(map.getString("priceStr"));
         } else {
-            return null;
+            shareImageBean.setPriceStr("");
         }
 
-        if (map.hasKey("QRCodeStr")) {
-            shareImageBean.setQRCodeStr(map.getString("QRCodeStr"));
-        } else {
-            return null;
+        if (map.hasKey("retailPrice")) {
+            shareImageBean.setRetail(map.getString("retailPrice"));
+        }else {
+            shareImageBean.setRetail("");
+        }
+
+        if (map.hasKey("spellPrice")) {
+            shareImageBean.setSpell(map.getString("spellPrice"));
+        }else {
+            shareImageBean.setSpell("");
         }
         return shareImageBean;
     }

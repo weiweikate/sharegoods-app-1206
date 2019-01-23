@@ -6,6 +6,7 @@ import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
 import TimerMixin from 'react-timer-mixin';
 import { setCookieToken, setCookies, clearCookies } from '@mr/webview';
+import apiEnvironment from '../api/ApiEnvironment';
 
 export default {
     $toast(msg) {
@@ -64,6 +65,8 @@ export default {
          imageUrlStr: 'http//：xxxx.png',
             titleStr: '商品标题',
             priceStr: '¥100.00',
+           retailPrice: '¥90.00',
+           spellPrice: '¥80.00',
            QRCodeStr: '分享的链接',
  }
      * @param onSuccess(path)
@@ -114,9 +117,9 @@ export default {
     }) {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
     },
-    saveInviteFriendsImage(QRString, onSuccess, onError = (errorStr) => {
+    saveInviteFriendsImage(QRString, logoStr,onSuccess, onError = (errorStr) => {
     }) {
-        NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString, onSuccess, onError);
+        NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString, logoStr, onSuccess, onError);
     },
 
     //{headerImg,shopName,shopId,shopPerson,codeString,wxTip}
@@ -174,11 +177,20 @@ export default {
     setCookies: (data) => {
         // setCookieToken(data.token,'172.16.10.117');
         // setCookies("userData", {id: data.id},'172.16.10.117');
-        setCookieToken(data.token, 'devh5.sharegoodsmall.com');
-        setCookies('userData', { userCode: data.code }, 'devh5.sharegoodsmall.com');
+        let host = apiEnvironment.getCurrentHostUrl();
+        host = host.replace(/(http)s?(:\/\/)/g, "");
+        host = host.replace(/\/\w*/g, "")
+        setCookieToken(data.token, host);
+        setCookies('userData', { userCode: data.code }, host);
     },
     clearCookies: () => {
         clearCookies();
+        let data ={userData: {}, token: ''};
+        let host = apiEnvironment.getCurrentHostUrl();
+        host = host.replace(/(http)s?(:\/\/)/g, "");
+        host = host.replace(/\/\w*/g, "")
+        setCookieToken(data.token, host);
+        setCookies('userData', { userCode: data.code }, host);
     },
 
     //背景风格

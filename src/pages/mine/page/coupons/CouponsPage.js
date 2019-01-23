@@ -8,7 +8,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import MyCouponsItems from './../../components/MyCouponsItems';
 import User from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
-import bridge from "../../../../utils/bridge";
 
 export default class CouponsPage extends BasePage {
     constructor(props) {
@@ -26,7 +25,7 @@ export default class CouponsPage extends BasePage {
 
     componentDidMount() {
         if (!User.isLogin) {
-            this.gotoLoginPage()
+            this.gotoLoginPage();
         }
     }
 
@@ -57,12 +56,11 @@ export default class CouponsPage extends BasePage {
                                     selectTab={this.state.selectTab} isgiveup={this.params.fromOrder}
                                     fromOrder={this.params.fromOrder} justOne={this.params.justOne}
                                     orderParam={this.params.orderParam} giveupUse={() => {
-                        bridge.hiddenLoading();
-                        this.params.callBack('giveUp'), this.$navigateBack();
+                        this.params.callBack('giveUp');
+                        this.$navigateBack();
                     }} useCoupons={(data) => {
-                        this.params.callBack(data),
-                            bridge.hiddenLoading();
-                            this.$navigateBack();
+                        this.params.callBack(data);
+                        this.$navigateBack();
                     }}/>
                     <MyCouponsItems tabLabel={'已使用'} pageStatus={1} nav={this.props.navigation}
                                     selectTab={this.state.selectTab} isgiveup={false}/>

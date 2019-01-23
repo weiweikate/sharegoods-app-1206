@@ -13,21 +13,22 @@
         "run-ios": "react-native run-ios",
         "run-android": "react-native run-android",
         "bundle:android": "cd android && ./gradlew assembleRelease && npm run deploy:android",
-        "deploy:android": "curl -F \"file=@./android/app/build/outputs/apk/app-release.apk\" -F \"_api_key=13949a533c6ab385526ee2a960e88c71\" https://www.pgyer.com/apiv2/app/upload"
+        "deploy:android": "curl -F \"file=@./android/app/build/outputs/apk/app-release.apk\" -F \"_api_key=13949a533c6ab385526ee2a960e88c71\" https://www.pgyer.com/apiv2/app/upload",
+        "gradle": "sh gradle.sh"
     },
     "lint-staged": {
         "src/**/*.js": "eslint"
     },
     "dependencies": {
-        "@mr/rn-geolocation": "0.1.7",
+        "@mr/rn-geolocation": "0.1.11",
         "@mr/image-placeholder": "0.1.18",
         "@mr/largelist": "^1.0.1",
         "@mr/cookies": "0.0.6",
-        "@mr/webview": "0.2.9",
+        "@mr/webview": "0.3.0",
         "@mr/rn-webview-bridge": "0.0.7",
         "@mr/request": "0.1.0",
         "@mr/rn-store": "1.0.4",
-        "@mr/rn-image-crop-picker": "0.0.4",
+        "@mr/rn-image-crop-picker": "0.0.5",
         "@sensors.data/react-native-sensors-analytics": "^1.0.0",
         "axios": "0.18.0",
         "jsrsasign": "8.0.12",
@@ -53,9 +54,9 @@
         "react-native-tab-navigator": "0.3.4",
         "react-native-text-ticker": "0.13.0",
         "react-native-underline-tabbar": "1.3.6",
-        "react-native-update": "^5.1.3",
+        "react-native-update": "^5.1.4",
         "react-native-vector-icons": "4.6.0",
-        "react-native-video": "^3.2.1",
+        "react-native-video": "3.2.1",
         "react-navigation": "1.5.12",
         "react-timer-mixin": "^0.13.4",
         "uuid": "3.3.2",

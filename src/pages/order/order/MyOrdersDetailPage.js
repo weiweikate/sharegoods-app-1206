@@ -152,7 +152,7 @@ export default class MyOrdersDetailPage extends BasePage {
     _renderContent = () => {
         return (
             <View style={{marginBottom:ScreenUtils.safeBottom,flex:1}}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
             <RefreshList
                 ListHeaderComponent={this.renderHeader}
                 ListFooterComponent={this.renderFooter}
@@ -331,10 +331,16 @@ export default class MyOrdersDetailPage extends BasePage {
         let innerStatus = (data.orderCustomerServiceInfoDTO && data.orderCustomerServiceInfoDTO.status) || null;
         switch (outStatus) {
             case 2:
-                if (innerStatus === 5) {
+                if (innerStatus === 5&&condition) {
                     afterSaleService.push({
                         id: 2,
                         operation: "退款成功",
+                        isRed: false
+                    });
+                }else if(innerStatus>=1&&innerStatus<=4){
+                    afterSaleService.push({
+                        id: 2,
+                        operation: "退款中",
                         isRed: false
                     });
                 } else {

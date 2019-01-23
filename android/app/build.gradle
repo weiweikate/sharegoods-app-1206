@@ -80,16 +80,20 @@ android {
     }
 }
 
+sensorsAnalytics {
+    exclude = ['com.qiyukf']
+}
+
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.2') {
+    debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.3') {
         exclude(module: 'support-core-utils')
     }
-    releaseImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.6.2') {
+    releaseImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.6.3') {
         exclude(module: 'support-core-utils')
     }
     // Optional, if you use support library fragments:
-    debugImplementation('com.squareup.leakcanary:leakcanary-support-fragment:1.6.2') {
+    debugImplementation('com.squareup.leakcanary:leakcanary-support-fragment:1.6.3') {
         exclude(module: 'support-core-utils')
     }
 
@@ -119,7 +123,7 @@ dependencies {
     api project(':cookies')
     api project(':rn-geolocation')
     api project(':commonlib')
-    api project(':qiyu_service')
     api project(':qrcode')
     api project(':lottie')
+    api project(':qiyu_service')
 }

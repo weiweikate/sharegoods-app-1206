@@ -57,7 +57,7 @@ export default class HelperFeedbackPage extends BasePage {
 
             picNum: 0
         };
-        this.touchable=false
+        this.disabled = false;
 
     }
 
@@ -95,16 +95,31 @@ export default class HelperFeedbackPage extends BasePage {
     choosePicker = () => {
         let imageArr = this.state.imageArr;
         BusinessUtils.getImagePicker(callback => {
-            imageArr.push({ imageUrl: callback.imageUrl[0], imageThumbUrl: callback.imageThumbUrl[0]});
+            imageArr.push({ imageUrl: callback.imageUrl[0], imageThumbUrl: callback.imageThumbUrl[0] });
             this.setState({ imageArr: imageArr });
         });
     };
 
     feedback2server() {
-        if(this.touchable){
+        if(this.disabled){
             return;
         }
-        this.touchable=true;
+        this.disabled = true;
+        if (this.state.typeKey === -1) {
+            this.disabled = false;
+            this.$toastShow('请选择反馈类型!');
+            return;
+        }
+        if (StringUtils.isEmpty(this.state.detailContent)) {
+            this.disabled = false;
+            this.$toastShow('请输入反馈内容!');
+            return;
+        }
+        if (this.state.detailContent && this.state.detailContent.length < 10) {
+            this.disabled = false;
+            this.$toastShow('反馈内容请大于10个字!');
+            return;
+        }
         let smallImagarr = [];
         let orignImagarr = [];
 
@@ -114,22 +129,15 @@ export default class HelperFeedbackPage extends BasePage {
         }
         let smallImgs = smallImagarr.join(',');
         let orignImgs = orignImagarr.join(',');
-        if (this.state.typeKey === -1) {
-            this.$toastShow('请选择反馈类型!');
-            return;
-        }
-        if (this.state.detailContent && this.state.detailContent.length < 10) {
-            this.$toastShow('反馈内容请大于10个字!');
-            return;
-        }
         MineApi.addFeedback({
             content: this.state.detailContent, typeKey: this.state.typeKey || 1, smallImg: smallImgs,
             originalImg: orignImgs
         }).then(res => {
+            this.disabled = true;
             this.setState({ isShowFinishModal: true });
             this.finishModal && this.finishModal.open();
         }).catch(err => {
-            this.touchable=false;
+            this.disabled = false;
             this.$toastShow(err.msg);
         });
     }
@@ -164,7 +172,7 @@ export default class HelperFeedbackPage extends BasePage {
                                 color: '#c6c6c6',
                                 marginTop: 10
                             }}/>
-                            <UIText value={`     并尽量修复及完善`} style={{
+                            <UIText value={`    并尽量修复及完善`} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
                                 marginTop: 3
@@ -183,7 +191,8 @@ export default class HelperFeedbackPage extends BasePage {
                                 alignItems: 'center',
                                 backgroundColor: DesignRule.lineColor_inColorBg,
                                 width: '100%',
-                                height: 40
+                                height: 40,
+                                borderBottomRightRadius: 5, borderBottomLeftRadius: 5
                             }}>
                                 <Text
                                     style={{
@@ -376,7 +385,7 @@ export default class HelperFeedbackPage extends BasePage {
                         })}
                         {this.renderAddItem()}
                     </View>
-                    <NoMoreClick activeOpacity={0.9} disabled={this.touchable}
+                    <NoMoreClick disabled={this.disabled}
                                  style={{ alignItems: 'center', justifyContent: 'center', marginTop: 50 }}
                                  onPress={() => this.feedback2server()}>
                         <View

@@ -371,7 +371,7 @@ export default class MyShopPage extends BasePage {
         const { totalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
-                <View>
+                <View style = {{marginBottom:30}}>
                     <View style={{ height: 10 }}/>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}

@@ -82,8 +82,8 @@ export default class CommShareModal extends React.Component {
             modalVisible: false,
             shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
-            scale: new Animated.Value(0.5),
-            y: new Animated.Value(autoSizeWidth(300))
+            scale: new Animated.Value(1),
+            y: new Animated.Value(autoSizeWidth(0))
         };
     }
 
@@ -92,18 +92,50 @@ export default class CommShareModal extends React.Component {
         if (user.isLogin) {
             user.userShare();
         }
-
         this.setState({ modalVisible: true, shareType: this.defaultShareType });
         this.modal && this.modal.open();
-        this.state.y.setValue(autoSizeWidth(340));
-        Animated.spring(
-            // Animate value over time
-            this.state.y, // The value to drive
-            {
-                toValue: 0,
-                duration: 500
+        // this.state.y.setValue(autoSizeWidth(340));
+        // Animated.spring(
+        //     // Animate value over time
+        //     this.state.y, // The value to drive
+        //     {
+        //         toValue: 0,
+        //         duration: 500
+        //     }
+        // ).start();
+        this.showImage();
+    }
+
+    /**
+     * 显示图片,如果是分享商品，分享推广，下载图片展示图片动画
+     */
+    showImage(){
+        let type = this.props.type;
+        if (type === 'promotionShare' || type === 'Image'){
+            if (this.state.path.length === 0) {
+                if (type === 'promotionShare') {
+                    bridge.createPromotionShareImage(this.props.webJson.linkUrl, (path) => {
+                        this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
+                            setTimeout(() => {
+                                this.startAnimated();
+                            }, 350);
+                        });
+                    });
+                } else if(type === 'Image'){
+                    let url = this.props.imageJson && this.props.imageJson.imageUrlStr;
+                    this.props.imageJson && (this.props.imageJson.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
+                    bridge.creatShareImage(this.props.imageJson, (path) => {
+                        this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
+                            setTimeout(() => {
+                                this.startAnimated();
+                            }, 350);
+                        });
+                    });
+                }
+            } else {//已经有图片就直接展示
+                this.startAnimated();
             }
-        ).start();
+        }
     }
 
     close() {
@@ -133,6 +165,7 @@ export default class CommShareModal extends React.Component {
      **/
     share(platformType) {
         this.close();
+        let that = this;
         let params = { shareType: this.state.shareType, platformType: platformType };
         if (this.state.shareType === 0) {//图片分享
             params.shareImage = this.state.path;
@@ -160,7 +193,9 @@ export default class CommShareModal extends React.Component {
             track(this.props.trackEvent, { shareMethod, ...p });
         }
         bridge.share(params, () => {
-
+            if (user.isLogin && that.props.luckyDraw === true) {
+                user.luckyDraw();
+            }
         }, (errorStr) => {
 
         });
@@ -183,42 +218,18 @@ export default class CommShareModal extends React.Component {
 
     changeShareType(shareType) {//切换是分享图片还是分享网页
         this.setState({ shareType: shareType });
-
-        if (this.state.path.length === 0 && shareType === 0) {
-            if (this.props.type === 'promotionShare') {
-                bridge.createPromotionShareImage(this.props.webJson.linkUrl, (path) => {
-                    this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
-                        setTimeout(() => {
-                            this.startAnimated();
-                        }, 350);
-                    });
-                });
-            } else {
-                let url = this.props.imageJson && this.props.imageJson.imageUrlStr;
-                this.props.imageJson && (this.props.imageJson.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
-                bridge.creatShareImage(this.props.imageJson, (path) => {
-                    this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
-                        setTimeout(() => {
-                            this.startAnimated();
-                        }, 350);
-                    });
-                });
-            }
-        } else {//已经有图片就直接展示
-            this.startAnimated();
-        }
     }
 
     startAnimated() {
-        this.state.scale.setValue(0.5);
-        Animated.spring(
-            // Animate value over time
-            this.state.scale, // The value to drive
-            {
-                toValue: 1,
-                duration: 500
-            }
-        ).start();
+        // this.state.scale.setValue(0.5);
+        // Animated.spring(
+        //     // Animate value over time
+        //     this.state.scale, // The value to drive
+        //     {
+        //         toValue: 1,
+        //         duration: 500
+        //     }
+        // ).start();
     }
 
     render() {
@@ -254,7 +265,7 @@ export default class CommShareModal extends React.Component {
             }
         });
 
-        this.imageHeight = autoSizeWidth(325);
+        this.imageHeight = autoSizeWidth(350);
         this.imageWidth = autoSizeWidth(250);
         if (this.props.type === 'promotionShare') {
             this.imageHeight = autoSizeWidth(348);
@@ -269,7 +280,7 @@ export default class CommShareModal extends React.Component {
                     }
                 });
                 array.push({
-                    image: res.share.saveImage, title: '保存图片', onPress: () => {
+                    image: res.share.saveImage, title: '分享图片', onPress: () => {
                         this.changeShareType(0);
                     }
                 });
@@ -376,7 +387,7 @@ export default class CommShareModal extends React.Component {
                         </TouchableWithoutFeedback>
                     </Animated.View>
                     {
-                        this.state.shareType === 0 ?
+                        this.props.type === 'promotionShare' || this.props.type === 'Image' ?
                             <Animated.View style={{
                                 height: this.imageHeight,
                                 width: this.imageWidth,
