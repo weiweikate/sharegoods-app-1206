@@ -3,7 +3,6 @@ import User from '../../model/user';
 
 export default function ApiUtils(Urls) {
     let result = {}, list = [];
-
     Object.keys(Urls).forEach(function(name) {
         let value = Urls[name];
         if (typeof value === 'string') {
@@ -27,12 +26,10 @@ export default function ApiUtils(Urls) {
             // code为0表明请求正常
             if (!response.code || response.code === 10000) {
                 filter && filter(response);
-                //console.log(JSON.stringify(response))
                 return Promise.resolve(response);
             } else {
                 // 假如返回未登陆并且当前页面不是登陆页面则进行跳转
                 if (response.code === 10009) {
-                    console.log('未登陆');
                     User.clearUserInfo();
                     User.clearToken();
                     // config.auth &&
@@ -44,7 +41,6 @@ export default function ApiUtils(Urls) {
             }
         };
     });
-
     return result;
 
 }

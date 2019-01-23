@@ -13,7 +13,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.0'
         //添加神策分析 android-gradle-plugin 依赖
-        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:2.2.3'
+        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.0.1'
     }
 }
 
@@ -22,7 +22,7 @@ allprojects {
         mavenCentral()
         google()
 
-//添加 Sensors Analytics maven 库地址
+        //添加 Sensors Analytics maven 库地址
         maven { url 'https://dl.bintray.com/zouyuhan/maven' }
         maven { url 'https://jitpack.io' }
         jcenter()

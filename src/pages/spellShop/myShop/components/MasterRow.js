@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 14,
+        paddingBottom: 3,
         color: '#222'
     },
     level: {

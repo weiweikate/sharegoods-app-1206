@@ -20,7 +20,7 @@ public class ImagePipelineConfigUtils {
     private static final int MAX_HEAP_SIZE = (int) Runtime.getRuntime().maxMemory();
 
     //使用的缓存数量
-    private static final int MAX_MEMORY_CACHE_SIZE = MAX_HEAP_SIZE / 4;
+    private static final int MAX_MEMORY_CACHE_SIZE = MAX_HEAP_SIZE / 3;
 
     //小图极低磁盘空间缓存的最大值（特性：可将大量的小图放到额外放在另一个磁盘空间防止大图占用磁盘空间而删除了大量的小图）
     private static final int MAX_SMALL_DISK_VERYLOW_CACHE_SIZE = 20 * ByteConstants.MB;
@@ -84,7 +84,8 @@ public class ImagePipelineConfigUtils {
                 .setSmallImageDiskCacheConfig(diskSmallCacheConfig)
                 .setMainDiskCacheConfig(diskCacheConfig)
                 .setMemoryTrimmableRegistry(NoOpMemoryTrimmableRegistry.getInstance())
-                .setResizeAndRotateEnabledForNetwork(true);
+                .setResizeAndRotateEnabledForNetwork(true)
+                .setDownsampleEnabled(true);
 
         // 就是这段代码，用于清理缓存
         NoOpMemoryTrimmableRegistry.getInstance().registerMemoryTrimmable(new MemoryTrimmable() {
@@ -96,12 +97,11 @@ public class ImagePipelineConfigUtils {
                 if (MemoryTrimType.OnCloseToDalvikHeapLimit.getSuggestedTrimRatio() == suggestedTrimRatio
                         || MemoryTrimType.OnSystemLowMemoryWhileAppInBackground.getSuggestedTrimRatio() == suggestedTrimRatio
                         || MemoryTrimType.OnSystemLowMemoryWhileAppInForeground.getSuggestedTrimRatio() == suggestedTrimRatio
-                        ) {
+                ) {
                     ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
                 }
             }
         });
-
         return configBuilder.build();
     }
 }

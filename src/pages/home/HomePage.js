@@ -63,7 +63,7 @@ const Footer = ({errorMsg, isEnd, isFetching}) => <View style={styles.footer}>
 {
     errorMsg
         ?
-        <Text style={styles.text} allowFontScaling={false}>{this.state.errorMsg}</Text>
+        <Text style={styles.text} allowFontScaling={false}>{errorMsg}</Text>
         :
         isEnd
             ?

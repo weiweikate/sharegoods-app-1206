@@ -1,6 +1,4 @@
-package com.meeruu.WaveView;
-
-import android.view.View;
+package com.meeruu.sharegoods.rn.waveview;
 
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;

@@ -77,7 +77,7 @@ export default class DetailNavView extends Component {
                                source={this.state.scale ? detailNavView.detail_car_down : detailNavView.detail_car_up}/>
                         {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
                             position: 'absolute', top: 4, right: 8, height: 16,
-                            paddingHorizontal: 4,
+                            paddingHorizontal: 6,
                             backgroundColor: DesignRule.mainColor,
                             borderRadius: 8, justifyContent: 'center', alignItems: 'center'
                         }}>
