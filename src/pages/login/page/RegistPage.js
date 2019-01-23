@@ -128,16 +128,17 @@ export default class RegistPage extends BasePage {
         this.params = this.params || {};
         track(trackEvent.signUp, { signUpMethod: 'App注册' });
         LoginApi.findMemberByPhone({
+            ...this.params,
             code: code,
             device: (this.params && this.params.device) ? this.params.device : '',
             inviteId: '',//邀请id
-            openid: (this.params && this.params.openid) ? this.params.openid : '',
+            appOpenid: (this.params && this.params.appOpenid) ? this.params.appOpenid : '',
             password: password,
             phone: phone,
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
             wechatVersion: '',
             nickname: this.params.nickName,
-            headImg: this.params.headerImg ? this.params.headerImg : ''
+            headImg: this.params.headerImg ? this.params.headerImg : '',
         }).then((data) => {
             if (data.code === 10000) {
                 //推送
