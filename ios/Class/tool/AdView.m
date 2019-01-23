@@ -9,8 +9,10 @@
 #import "AdView.h"
 #import "UIImage+Util.h"
 #import "AppDelegate.h"
-#define ImageStr @"https://cdn.sharegoodsmall.com/sharegoods/resource/sg/images/ad_index/sgad.png"
-//#define ImageStr @"https://testcdn.sharegoodsmall.com/sharegoods/resource/sg/images/ad_index/sgad.png"
+#import "StorageFromRN.h"
+#import "NSDictionary+Util.h"
+#define bg @"/app/start_adv_bg.png"
+#define ad @"/app/start_adv.png"
 #define Nums 3
 @interface TimerView: UIView
 @property(nonatomic, assign)NSInteger num;
@@ -99,10 +101,14 @@
 }
 @end
 @interface AdView()
+@property (nonatomic, strong)UIImageView *bgView;
 @property (nonatomic, strong)UIImageView *launchImgView;
 @property (nonatomic, strong)UIImageView *adImgView;
 @property (nonatomic, strong)UIImageView *logoImgView;
 @property (nonatomic, strong)TimerView *timerView;
+
+@property (nonatomic, strong)UIImage *adImg;
+@property (nonatomic, strong)UIImage *bgImg;
 @end
 @implementation AdView
 
@@ -130,26 +136,72 @@
 
 - (void)loadAd
 {
-  YYWebImageManager * imageManager =  [YYWebImageManager sharedManager];
-  imageManager.cache.diskCache.ageLimit = 60*60*24;
+  NSString * HostJson = [StorageFromRN getItem:@"HostJson"];
+  NSDictionary *dic = @{};
+  if (HostJson) {
+   dic =  [NSDictionary dictionaryWithJsonString:HostJson];
+  }
+//  YYWebImageManager * imageManager =  [YYWebImageManager sharedManager];
+//  imageManager.cache.diskCache.ageLimit = 60*60*24;
+  NSString * path = dic[@"oss"];
+//  YYWebImageOperation* operation = [ imageManager requestImageWithURL:[NSURL URLWithString:] options:YYWebImageOptionUseNSURLCache | YYWebImageOptionIgnoreFailedURL  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//
+//  } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
+//    return image;
+//  } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//      if (image) {//开始广告播放
+//        self.bgView.image = image;
+//        self.logoImgView.image = [UIImage imageNamed:@"default_logo"];
+//        self.timerView.hidden = NO;
+//        [self.timerView start];
+//        [self.launchImgView removeFromSuperview];
+//      }else{//无广告
+//        self.isPlayAd = YES;
+//      }
+//    });
+//  }];
   
-  YYWebImageOperation* operation = [ imageManager requestImageWithURL:[NSURL URLWithString:ImageStr] options:YYWebImageOptionUseNSURLCache | YYWebImageOptionIgnoreFailedURL  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-    
-  } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
-    return image;
-  } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+//  [self performSelectorWithArgs:@selector(cancelOperation:) afterDelay:3,operation];
+  if(path == nil || path.length == 0)  {
+    self.isPlayAd = YES;
+    return;
+  }
+  [self requestImageWithPath:[NSString stringWithFormat:@"%@%@",path,bg] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+     dispatch_async(dispatch_get_main_queue(), ^{
+       if (image) {
+         self.bgImg = image;
+       }else{
+         //无广告
+         self.isPlayAd = YES;
+       }
+     });
+  }];
+  
+  [self requestImageWithPath:[NSString stringWithFormat:@"%@%@",path,ad] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (image) {//开始广告播放
-        self.adImgView.image = image;
-        self.logoImgView.image = [UIImage imageNamed:@"default_logo"];
-        self.timerView.hidden = NO;
-        [self.timerView start];
-        [self.launchImgView removeFromSuperview];
-      }else{//无广告
+      if (image) {
+        self.adImg = image;
+      }else{
+        //无广告
         self.isPlayAd = YES;
       }
     });
   }];
+  
+  
+}
+
+- (void)requestImageWithPath: (NSString *)str
+completion:(YYWebImageCompletionBlock)completion
+{
+  YYWebImageManager * imageManager =  [YYWebImageManager sharedManager];
+  imageManager.cache.diskCache.ageLimit = 60*60*24;
+  YYWebImageOperation* operation = [imageManager requestImageWithURL:[NSURL URLWithString:str] options:YYWebImageOptionUseNSURLCache | YYWebImageOptionIgnoreFailedURL  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    
+  } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
+    return image;
+  } completion:completion];
   
   [self performSelectorWithArgs:@selector(cancelOperation:) afterDelay:3,operation];
 }
@@ -167,6 +219,29 @@
   self.frame = delegate.window.bounds;
 }
 
+- (void)setAdImg:(UIImage *)adImg
+{
+  _adImg = adImg;
+  [self showAd];
+}
+
+- (void)setBgImg:(UIImage *)bgImg
+{
+  _bgImg = bgImg;
+   [self showAd];
+}
+
+- (void)showAd{
+  if (_adImg && _bgImg) {
+    //开始广告播放
+    self.bgView.image = _bgImg;
+    self.adImgView.image = _adImg;
+    self.logoImgView.image = [UIImage imageNamed:@"default_logo"];
+    self.timerView.hidden = NO;
+    [self.timerView start];
+    [self.launchImgView removeFromSuperview];
+  }
+}
 - (void)setIsLoadJS:(BOOL)isLoadJS
 {
   _isLoadJS = isLoadJS;
@@ -198,10 +273,11 @@
   [super layoutSubviews];
   self.launchImgView.frame = self.bounds;
   
-  CGFloat imageHeight = self.width*1140/750.0;
+  CGFloat imageHeight = self.height - 100 -19 - 23;
+  _bgView.frame = CGRectMake(0, 0, self.width, imageHeight);
   _adImgView.frame = CGRectMake(0, 0, self.width, imageHeight);
   _logoImgView.bounds = CGRectMake(0, 0, 200/2, 150/2);
-  _logoImgView.center = CGPointMake(self.width/2.0, (self.height+imageHeight)/2.0);
+  _logoImgView.center = CGPointMake(self.width/2.0,self.height - 50 - 19);
   _adImgView.subviews.firstObject.frame = CGRectMake(self.width - 30, imageHeight - 20, 30, 20);
   _timerView.bounds = CGRectMake(0, 0, 60, 30);
   _timerView.center = CGPointMake(self.width - 30 - 15, kStatusBarHeight + 15);
@@ -212,6 +288,7 @@
 {
   if (!_adImgView) {
     _adImgView = [UIImageView new];
+    _adImgView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:_adImgView];
     UILabel *label = [UILabel new];
     label.textAlignment = 1;
@@ -222,6 +299,15 @@
     [_adImgView addSubview:label];
   }
   return _adImgView;
+}
+
+- (UIImageView *)bgView
+{
+  if (!_bgView) {
+    _bgView = [UIImageView new];
+     [self addSubview:_bgView];
+  }
+  return _bgView;
 }
 
 - (UIImageView *)logoImgView

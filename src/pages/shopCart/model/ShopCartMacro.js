@@ -106,13 +106,18 @@ const getTipString = (itemData) => {
         return returnObj;
         // return tipString;
     }
+
+
+
     if (itemData.shoppingCartActivity.length > 0) {
         itemData.shoppingCartActivity.map((activityItem, activityIndex) => {
-
             //秒杀活动
             if (activityItem.activityType === 1 && activityItem.seckill) {
                 if (itemData.nowTime < activityItem.seckill.beginTime) {
-                    tipString += '秒杀活动未开始,暂不可购买~';
+
+                    if (tipString.indexOf("秒杀活动未开始,暂不可购买~") === -1) {
+                        tipString += '秒杀活动未开始,暂不可购买~';
+                    }
                     //是否存在字符标识
                     if (activityString[activityItem.activityType]) {
                          returnObj.tipString = tipString;
@@ -123,7 +128,10 @@ const getTipString = (itemData) => {
                     activityItem.seckill.beginTime < itemData.nowTime &&
                     activityItem.seckill.endTime > itemData.nowTime
                 ) {
-                    tipString += '该商品正在进行秒杀活动,快去看看~';
+                    if (tipString.indexOf('该商品正在进行秒杀活动,快去看看~') === -1){
+                        tipString += '该商品正在进行秒杀活动,快去看看~';
+                    }
+
                     //是否存在字符标识
                     if (activityString[activityItem.activityType]) {
                         returnObj.tipString = tipString;
@@ -134,8 +142,10 @@ const getTipString = (itemData) => {
             }
             //降价拍
             if (activityItem.activityType === 2) {
-                tipString += '该商品正在进行降价拍活动,快去看看~';
 
+                if (tipString.indexOf('该商品正在进行降价拍活动,快去看看~') === -1){
+                    tipString += '该商品正在进行降价拍活动,快去看看~';
+                }
                 returnObj.tipString = tipString;
                 returnObj.needIconText = true;
                 returnObj.iconText = activityString[activityItem.activityType];

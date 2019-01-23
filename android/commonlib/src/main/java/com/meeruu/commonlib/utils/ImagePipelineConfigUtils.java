@@ -102,7 +102,6 @@ public class ImagePipelineConfigUtils {
                 }
             }
         });
-
         return configBuilder.build();
     }
 }
