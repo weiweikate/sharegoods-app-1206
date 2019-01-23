@@ -714,7 +714,7 @@ export default class MinePage extends BasePage {
         };
 
         let mentor = {
-            text: '顾问',
+            text: '服务顾问',
             icon: mine_icon_mentor,
             onPress: () => {
                 if (user.upUserCode) {
@@ -724,7 +724,7 @@ export default class MinePage extends BasePage {
         };
 
         let mentorSet = {
-            text: '顾问',
+            text: '服务顾问',
             icon: mine_icon_mentor,
             onPress: () => {
                 this.$navigate(RouterMap.SetMentorPage);
