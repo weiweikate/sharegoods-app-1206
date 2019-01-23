@@ -302,7 +302,8 @@ export default class ShopRecruitPage extends BasePage {
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'center',
-                    marginTop: ScreenUtils.autoSizeHeight(76)
+                    marginTop: ScreenUtils.autoSizeHeight(76),
+                    marginBottom:30,
                 }}>
                     <TouchableOpacity onPress={this._closeStore}
                                       style={[styles.unOpen, {
@@ -324,7 +325,8 @@ export default class ShopRecruitPage extends BasePage {
         return (
             <View style={{
                 alignItems: 'center',
-                marginTop: ScreenUtils.autoSizeHeight(76)
+                marginTop: ScreenUtils.autoSizeHeight(76),
+                marginBottom:30,
             }}>
                 {
                     userStatus === 1 ?
