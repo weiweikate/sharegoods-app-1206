@@ -819,7 +819,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         canvas.drawText(price, market.right+30, isTwoLine ?610 : 585, paint);
 
 
-        String retailStr = "零售价：";
+        String retailStr = "V0价：";
         paint.setColor(Color.parseColor("#333333"));
         paint.setStrikeThruText(false);
 
