@@ -259,7 +259,7 @@
       UIGraphicsBeginImageContext(CGSizeMake(750, 1334));
       [bgImage drawInRect:CGRectMake(0, 0, 750, 1334)];
       // 绘制图片
-      [QRCodeImage drawInRect:CGRectMake(215, 715, 320, 320)];
+      [QRCodeImage drawInRect:CGRectMake(215, 805, 320, 320)];
       UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
       if(image){

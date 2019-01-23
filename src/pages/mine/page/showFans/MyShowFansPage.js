@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle_222,
         fontSize: DesignRule.fontSize_mainTitle,
         flex: 1,
-        marginLeft: 8
+        marginLeft: 8,
+        paddingVertical:5
     },
     typeWrapper: {
         width: 55,

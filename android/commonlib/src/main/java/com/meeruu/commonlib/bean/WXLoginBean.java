@@ -13,10 +13,27 @@ public class WXLoginBean {
      */
 
     private String device;
-    private String openid;
+    private String appOpenid;
     private String systemVersion;
     private String nickName;
     private String headerImg;
+    private String unionid;
+
+    public String getAppOpenid() {
+        return appOpenid;
+    }
+
+    public void setAppOpenid(String appOpenid) {
+        this.appOpenid = appOpenid;
+    }
+
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
+    }
 
     public String getDevice() {
         return device;
@@ -24,14 +41,6 @@ public class WXLoginBean {
 
     public void setDevice(String device) {
         this.device = device;
-    }
-
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
     }
 
     public String getSystemVersion() {

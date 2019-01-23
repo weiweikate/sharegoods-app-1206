@@ -47,5 +47,9 @@
     "video": {
         "content": "apply from: '../../../android/rn-video.gradle'",
         "bulid_path":   "../node_modules/react-native-video/android-exoplayer/build.gradle"
+    },
+    "sensors": {
+        "content": "apply from: '../../../../android/rn-sensors.gradle'",
+        "bulid_path":   "../node_modules/@sensors.data/react-native-sensors-analytics/android/build.gradle"
     }
 }
