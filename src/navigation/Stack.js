@@ -45,7 +45,13 @@ const PageKey = {};
 function getPathWithPageName(pageName) {
     if (pageName === 'RegistPage') {
         return 'path/' + pageName + '/:phone'
-    }else {
+    }else if (pageName === 'DownPricePage'){
+        return 'path/'+ pageName +'/:linkTypeCode'
+    } else if (pageName === 'ProductDetailPage'){
+        return 'path/'+ pageName +'/:productCode'
+    }else if (pageName === 'TopicDetailPage'){
+        return 'path/'+ pageName +'/:activityType/:activityCode'
+    } else {
         return 'path/' + pageName;
     }
 }
