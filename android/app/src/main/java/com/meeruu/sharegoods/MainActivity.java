@@ -73,7 +73,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
         Log.d("is_phone", !Utils.isEmulator() + "");
-
         AsyncStorageManager.getInstance().getItem("ApiEnvironment", new MultiGetCallback() {
             @Override
             public void onSuccess(Object data) {
@@ -85,18 +84,6 @@ public class MainActivity extends BaseActivity {
                 Log.e("error",type);
             }
         });
-//
-//        AsyncStorageManager.getInstance().setItem("ApiEnvironment", "pre_release", new MultiSetCallback() {
-//            @Override
-//            public void onSuccess() {
-//                int a= 1;
-//            }
-//
-//            @Override
-//            public void onFail(String type) {
-//                Log.e("error",type);
-//            }
-//        });
     }
 
     @Override
