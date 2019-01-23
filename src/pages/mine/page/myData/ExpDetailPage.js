@@ -164,7 +164,7 @@ export default class ExpDetailPage extends BasePage{
                     arrData.push({
                         type: use_type[parseInt(item.sourceCode)],
                         time: item.createTime,
-                        capital: "+"+item.experience,
+                        capital: `${parseInt(item.sourceType)===1?"+":"-"}${item.experience}`,
                         iconImage: use_let_img[parseInt(item.sourceCode)],
                         capitalRed:parseInt(item.sourceType)===1
 

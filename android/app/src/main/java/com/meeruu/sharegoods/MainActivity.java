@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.image.CloseableImage;
@@ -188,7 +189,7 @@ public class MainActivity extends BaseActivity {
                         mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
                         ((ViewStub) findViewById(R.id.vs_adv)).inflate();
                         ivAdv = findViewById(R.id.iv_adv);
-                        ImageLoadUtils.loadImage(Uri.parse(ossHost + "/app/start_adv.png"), ivAdv, 0);
+                        ImageLoadUtils.loadImage(Uri.parse(ossHost + "/app/start_adv.png"), ivAdv, ScalingUtils.ScaleType.FIT_CENTER);
                         ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
                         ivAdvBg.setImageBitmap((Bitmap) msg.obj);

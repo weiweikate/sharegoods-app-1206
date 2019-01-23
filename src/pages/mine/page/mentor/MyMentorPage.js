@@ -58,10 +58,10 @@ export default class MyMentorPage extends BasePage {
                     levelName: `${info.levelName}品鉴官`,
                     code: info.code,
                     phone: info.phone,
-                    profile: info.profile ? info.profile : "这位顾问很懒，什么也没留下~"
+                    profile: info.profile ? info.profile : "这位服务顾问很懒，什么也没留下~"
                 });
             }else {
-                this.$toastShow('未查询到顾问信息');
+                this.$toastShow('未查询到服务顾问信息');
             }
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -106,7 +106,7 @@ export default class MyMentorPage extends BasePage {
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
-                        顾问详情
+                        服务顾问详情
                     </Text>
                     <View style={{
                         flex: 1
