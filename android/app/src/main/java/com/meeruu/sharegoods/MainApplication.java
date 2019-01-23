@@ -8,6 +8,7 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
 import com.brentvatne.react.ReactVideoPackage;
+import com.meeruu.sharegoods.rn.storage.AsyncStorageManager;
 import com.oblador.vectoricons.VectorIconsPackage;
 import cn.reactnative.modules.update.UpdatePackage;
 import com.horcrux.svg.SvgPackage;
@@ -71,6 +72,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
     @Override
     public void onCreate() {
         super.onCreate();
+        AsyncStorageManager.getInstance().init(this);
+
         final SophixManager instance = SophixManager.getInstance();
         instance.setPatchLoadStatusStub(new PatchLoadStatusListener() {
             @Override
