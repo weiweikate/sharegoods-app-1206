@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     },
     item: {
         width: px2dp(48),
-        height: px2dp(80),
+        height: px2dp(70),
         marginLeft: px2dp(10),
         marginRight: px2dp(10),
         marginTop: px2dp(5),
