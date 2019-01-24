@@ -10,7 +10,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import UIImage from '@mr/image-placeholder';
+import AvatarImage from '../../../../components/ui/AvatarImage';
 import {
     MRText as Text
 } from '../../../../components/ui';
@@ -50,10 +50,9 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {RecommendRowItem.headUrl ? <UIImage style={styles.icon}
-                                                                 source={{ uri: RecommendRowItem.headUrl || '' }}
-                                                                 borderRadius={25}/> :
-                                <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
+                            <AvatarImage style={styles.icon}
+                                         source={{ uri: RecommendRowItem.headUrl || '' }}
+                                         borderRadius={25}/>
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>{RecommendRowItem.name || ''}</Text>
                             </View>
