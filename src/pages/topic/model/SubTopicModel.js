@@ -159,10 +159,7 @@ class TotalTopicresultDataModel {
      */
     @action
     loadTopicData(topicCode) {
-        if (this.isShowLoading){
-            bridge.showLoading('加载中');
-            this.isShowLoading = false;
-        }
+        
         this.setRefresh(false)
         TopicAPI.findTopicById({
             code: topicCode
