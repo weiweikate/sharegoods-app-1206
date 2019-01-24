@@ -12,6 +12,7 @@ import AddPhotos from "./AddPhotos";
 import NoMoreClick from "./NoMoreClick";
 import PasswordInput from "./PasswordInput";
 import UIButton from "./UIButton";
+import AvatarImage from './AvatarImage';
 
 export {
     UIImage,
@@ -29,5 +30,6 @@ export {
     PasswordInput,
     UIButton,
     MRText,
-    MRTextInput
+    MRTextInput,
+    AvatarImage
 };
