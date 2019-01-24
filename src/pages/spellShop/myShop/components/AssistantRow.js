@@ -54,7 +54,7 @@ export default class AssistantRow extends Component {
         sty.push(style);
         sty.push({ backgroundColor: 'white' });
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
-            <View>
+            <View style={sty}>
                 <AvatarImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/>
                 <View style={styles.right}>
                     <Text style={styles.name} allowFontScaling={false}>{nickName || ' '}</Text>
