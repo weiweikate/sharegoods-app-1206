@@ -17,7 +17,7 @@ const { px2dp } = ScreenUtils;
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
 import TextTicker from 'react-native-text-ticker';
-import ImageLoad from '@mr/image-placeholder';
+import AvatarImage from '../../../../components/ui/AvatarImage';
 import {
     MRText as Text
 } from '../../../../components/ui';
@@ -75,7 +75,7 @@ export default class ShopHeader extends Component {
                     marginTop: px2dp(15),
                     marginHorizontal: px2dp(20)
                 }}>
-                    <ImageLoad style={styles.headerImg} borderRadius={px2dp(30)}
+                    <AvatarImage style={styles.headerImg} borderRadius={px2dp(30)}
                                source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
                     <View style={styles.shopInContainer}>
                         <Text style={styles.shopName} allowFontScaling={false}>{name || ''}</Text>
