@@ -1,25 +1,25 @@
-import React from "react";
-import BasePage from "../../BasePage";
+import React from 'react';
+import BasePage from '../../BasePage';
 
 import {
     View,
     StyleSheet,
     ScrollView,
     RefreshControl
-} from "react-native";
-import { observer } from "mobx-react";
-import { ActivityOneView, TopBannerView } from "./components/SbSectiontHeaderView";
-import ScreenUtils from "../../utils/ScreenUtils";
-import SbOpenPrizeHeader from "./components/SbOpenPrizeHeader";
-import OpenPrizeItemView from "./components/OpenPrizeItemView";
-import TotalTopicDataModel from "./model/SubTopicModel";
-import SubSwichView from "./components/SubSwichView";
-import TopicItemView from "./components/TopicItemView";
-import DesignRule from "../../constants/DesignRule";
+} from 'react-native';
+import { observer } from 'mobx-react';
+import { ActivityOneView, TopBannerView } from './components/SbSectiontHeaderView';
+import ScreenUtils from '../../utils/ScreenUtils';
+import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
+import OpenPrizeItemView from './components/OpenPrizeItemView';
+import TotalTopicDataModel from './model/SubTopicModel';
+import SubSwichView from './components/SubSwichView';
+import TopicItemView from './components/TopicItemView';
+import DesignRule from '../../constants/DesignRule';
 // import ImageLoad from '@mr/image-placeholder'
-import { getTopicJumpPageParam } from "./model/TopicMudelTool";
-import { track } from "../../utils/SensorsTrack";
-import bridge from "../../utils/bridge";
+import { getTopicJumpPageParam } from './model/TopicMudelTool';
+import { track } from '../../utils/SensorsTrack';
+import bridge from '../../utils/bridge';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -37,7 +37,7 @@ export default class DownPricePage extends BasePage {
         };
         //初次进入loading
         if (this.dataModel.isShowLoading) {
-            bridge.showLoading("加载中");
+            bridge.showLoading('加载中');
             this.dataModel.isShowLoading = false;
         }
     }
@@ -45,14 +45,14 @@ export default class DownPricePage extends BasePage {
     componentDidMount() {
         // this.$NavigationBarResetTitle(this.dataModel.name)
         this.didBlurSubscription = this.props.navigation.addListener(
-            "didFocus",
+            'didFocus',
             payload => {
                 const { linkTypeCode } = this.params;
-                console.log("-----" + linkTypeCode);
+                console.log('-----' + linkTypeCode);
                 this.dataModel.loadTopicData(linkTypeCode);
             }
         );
-        track("$AppViewScreen", { "$screen_name": "DownPricePage", "$title": "专题" });
+        track('$AppViewScreen', { '$screen_name': 'DownPricePage', '$title': '专题' });
     }
 
     /**
@@ -67,8 +67,8 @@ export default class DownPricePage extends BasePage {
             <View
                 style={
                     {
-                        flexDirection: "row",//设置横向布局
-                        flexWrap: "wrap",  //设置换行显示
+                        flexDirection: 'row',//设置横向布局
+                        flexWrap: 'wrap',  //设置换行显示
                         // alignItems: 'flex-start',
                         backgroundColor: DesignRule.bgColor
                     }
@@ -101,8 +101,8 @@ export default class DownPricePage extends BasePage {
             <View
                 style={
                     {
-                        flexDirection: "row",//设置横向布局
-                        flexWrap: "wrap",  //设置换行显示
+                        flexDirection: 'row',//设置横向布局
+                        flexWrap: 'wrap',  //设置换行显示
                         backgroundColor: DesignRule.bgColor,
                         // backgroundColor:'red',
                         width: ScreenUtils.width - 20,
@@ -110,7 +110,7 @@ export default class DownPricePage extends BasePage {
                     }
                 }
             >
-                {section.key !== "one" ?
+                {section.key !== 'one' ?
                     <ActivityOneView imageUrl={section.bannerImg} ratio={section.aspectRatio}/> : null}
 
                 {
@@ -181,11 +181,10 @@ export default class DownPricePage extends BasePage {
             <ScrollView
                 alwaysBounceVertical={true}
                 contentContainerStyle={Styles.list}
+                showsVerticalScrollIndicator={false}
                 style={{
                     width: ScreenUtils.width,
-                    flex: 1,
-                    paddingBottom: 10
-                    // backgroundColor:'red'
+                    flex: 1
                 }}
                 refreshControl={
                     <RefreshControl
@@ -262,9 +261,10 @@ export default class DownPricePage extends BasePage {
 
 const Styles = StyleSheet.create({
     list: {
-        flexDirection: "row",//设置横向布局
-        flexWrap: "wrap",  //设置换行显示
-        backgroundColor: DesignRule.bgColor
+        flexDirection: 'row',//设置横向布局
+        flexWrap: 'wrap',  //设置换行显示
+        backgroundColor: DesignRule.bgColor,
+        paddingBottom: 20
     },
     itemBgStyle: {
         width: ScreenUtils.width / 2,
