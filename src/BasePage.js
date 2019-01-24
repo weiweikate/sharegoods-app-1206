@@ -19,7 +19,7 @@ import {
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
-import { netState } from '@mr/request';
+import { netState } from '@mr/rn-request';
 import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from './constants/DesignRule';
