@@ -26,9 +26,9 @@ import res from '../res';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import WaveView from '../../../comm/components/WaveView';
 import MessageApi from '../../message/api/MessageApi';
-import ImageLoad from '@mr/image-placeholder';
+// import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
-import { MRText as Text } from '../../../components/ui';
+import { MRText as Text ,AvatarImage} from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 
 const {
@@ -320,7 +320,7 @@ export default class MinePage extends BasePage {
         }
 
         let icon = (user.headImg && user.headImg.length > 0) ?
-            <ImageLoad source={{ uri: user.headImg }} style={styles.userIconStyle}
+            <AvatarImage source={{ uri: user.headImg }} style={styles.userIconStyle}
                        borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
                                                            borderRadius={px2dp(27)}/>;
 
