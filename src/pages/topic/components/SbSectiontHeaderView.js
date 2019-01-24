@@ -12,6 +12,7 @@ import SubSwichView from './SubSwichView';
 // import ImageLoad from '@mr/image-placeholder'
 import DesignRule from '../../../constants/DesignRule';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import StringUtils from "../../../utils/StringUtils";
 
 class SbSectiontHeaderView extends Component {
 
@@ -114,8 +115,8 @@ class TopBannerView extends Component {
 
     //当接收到新的props时候，而且imageUrl存在再去调用计算
     componentWillReceiveProps(props) {
-        if (props.imageUrl.length > 0) {
-            Image.getSize(this.props.imageUrl,(width,heigth)=>{
+        if (!StringUtils.isEmpty(props.imgUrl)) {
+            Image.getSize(props.imageUrl,(width,heigth)=>{
                 this.setState({
                     ratio:heigth / width
                 })
@@ -145,7 +146,7 @@ class TopBannerView extends Component {
 const TopBannerViewStyle = StyleSheet.create({
     bgImageStyle: {
         width: ScreenUtils.width,
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
     }
 });
 
