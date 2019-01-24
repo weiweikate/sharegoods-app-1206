@@ -99,10 +99,8 @@ const ActivityOneViewStyles = StyleSheet.create({
     }
 });
 
-
 /*活动类型one的view 只是测试 可能会有多种,再添加*/
 class TopBannerView extends Component {
-
     static propTypes = {
         imageUrl: PropTypes.string.isRequired,
         ratio: PropTypes.number
@@ -113,17 +111,21 @@ class TopBannerView extends Component {
             ratio:0.5
         }
     }
-    componentDidMount(){
 
+    //当接收到新的props时候，而且imageUrl存在再去调用计算
+    componentWillReceiveProps(props) {
+        if (props.imageUrl.length > 0) {
+            Image.getSize(this.props.imageUrl,(width,heigth)=>{
+                this.setState({
+                    ratio:heigth / width
+                })
+            })
+        }
     }
     render() {
         const { imageUrl } = this.props;
         console.log(this.props);
-        Image.getSize(this.props.imageUrl,(width,heigth)=>{
-            this.setState({
-                ratio:heigth / width
-            })
-        })
+
         return (
             <View>
                 <PreLoadImage
@@ -142,11 +144,8 @@ class TopBannerView extends Component {
 
 const TopBannerViewStyle = StyleSheet.create({
     bgImageStyle: {
-        // height: ScreenUtils.width * 16 / 75,
         width: ScreenUtils.width,
         backgroundColor: 'white',
-        // marginLeft:-10,
-        // marginTop:10,
     }
 });
 
