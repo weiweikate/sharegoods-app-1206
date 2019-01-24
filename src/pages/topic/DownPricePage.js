@@ -8,7 +8,7 @@ import {
     RefreshControl
 } from 'react-native';
 import { observer } from 'mobx-react';
-import { ActivityOneView } from './components/SbSectiontHeaderView';
+import { ActivityOneView,TopBannerView } from './components/SbSectiontHeaderView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
@@ -16,7 +16,7 @@ import TotalTopicDataModel from './model/SubTopicModel';
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from '../../constants/DesignRule';
-import ImageLoad from '@mr/image-placeholder'
+// import ImageLoad from '@mr/image-placeholder'
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
 import { track } from '../../utils/SensorsTrack';
 
@@ -190,7 +190,8 @@ export default class DownPricePage extends BasePage {
                     />
                 }
             >
-                <ImageLoad style={Styles.topBannerImageStyle} source={{ uri: imgUrl ? imgUrl : '' }}/>
+                {/*<ImageLoad style={Styles.topBannerImageStyle} source={{ uri: imgUrl ? imgUrl : '' }}/>*/}
+                <TopBannerView imageUrl={imgUrl} ratio={0.5}/>
                 {
                     this._getTopicType() === 0
                         ?
