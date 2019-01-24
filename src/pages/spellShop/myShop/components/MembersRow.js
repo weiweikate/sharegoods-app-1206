@@ -12,7 +12,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import UIImage from '@mr/image-placeholder';
+import AvatarImage from '../../../../components/ui/AvatarImage';
 import {
     MRText as Text
 } from '../../../../components/ui';
@@ -59,9 +59,8 @@ export default class MembersRow extends Component {
                             marginTop: (index >= 5) ? 0 : 9,
                             marginBottom: (index >= 5) ? 24 : 20
                         }} key={index}>
-                            {headImg ? <UIImage source={{ uri: headImg }}
-                                                style={styles.headerImg} borderRadius={20}/> :
-                                <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
+                            <AvatarImage source={{ uri: headImg }}
+                                          style={styles.headerImg} borderRadius={20}/>
                             <Text numberOfLines={1} style={styles.name} allowFontScaling={false}>{nickName || ''}</Text>
                         </View>);
                     })
