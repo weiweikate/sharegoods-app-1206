@@ -3,7 +3,7 @@ import { Linking, ActionSheetIOS, Platform, Alert} from 'react-native';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
 import Toast from './../../../utils/bridge';
-import { request } from '@mr/request';
+import { request } from '@mr/rn-request';
 import ImagePicker from '@mr/rn-image-crop-picker'
 
  const Utiles = {
