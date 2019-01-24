@@ -4,22 +4,23 @@ import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
+
 const { px2dp, width } = ScreenUtils;
-import HTML from 'react-native-render-html'
+import HTML from 'react-native-render-html';
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
-import ImageLoad from '@mr/image-placeholder'
-import BasePage from '../../BasePage'
-import { PageLoadingState } from '../../components/pageDecorator/PageState'
+import ImageLoad from '@mr/image-placeholder';
+import BasePage from '../../BasePage';
+import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import {
-    MRText as Text,
+    MRText as Text
 } from '../../components/ui';
-import Toast from '../../utils/bridge'
-import { NetFailedView } from '../../components/pageDecorator/BaseView'
-import AvatarImage from '../../components/ui/AvatarImage'
+import Toast from '../../utils/bridge';
+import { NetFailedView } from '../../components/pageDecorator/BaseView';
+import AvatarImage from '../../components/ui/AvatarImage';
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -39,19 +40,22 @@ export default class ShowDetailPage extends BasePage {
         title: '',
         show: false
     };
+
     constructor(props) {
         super(props);
-        this.params = this.props.navigation.state.params || {}
-        this.showDetailModule = new ShowDetail()
+        this.params = this.props.navigation.state.params || {};
+        this.showDetailModule = new ShowDetail();
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: ''
-        }
+        };
 
     }
+
     $isMonitorNetworkStatus() {
         return true;
     }
+
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
@@ -62,36 +66,36 @@ export default class ShowDetailPage extends BasePage {
                         this.showDetailModule.showDetailCode(this.params.code).then(() => {
                             this.setState({
                                 pageState: PageLoadingState.success
-                            })
+                            });
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
                                 errorMsg: error.msg || '获取详情失败'
-                            })
-                            this._whiteNavRef.setNativeProps({
-                                opacity:1
                             });
-                            Toast.$toast(error.msg || '获取详情失败')
-                        })
+                            this._whiteNavRef.setNativeProps({
+                                opacity: 1
+                            });
+                            Toast.$toast(error.msg || '获取详情失败');
+                        });
                     } else {
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             this.setState({
                                 pageState: PageLoadingState.success
-                            })
+                            });
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
                                 errorMsg: error.msg || '获取详情失败'
-                            })
-                            this._whiteNavRef.setNativeProps({
-                                opacity:1
                             });
-                            Toast.$toast(error.msg || '获取详情失败')
-                        })
+                            this._whiteNavRef.setNativeProps({
+                                opacity: 1
+                            });
+                            Toast.$toast(error.msg || '获取详情失败');
+                        });
                     }
                 }
             }
-        )
+        );
     }
 
     componentWillUnmount() {
@@ -99,7 +103,7 @@ export default class ShowDetailPage extends BasePage {
     }
 
     _goBack() {
-        console.log('_goBack')
+        console.log('_goBack');
         const { navigation } = this.props;
         navigation.goBack(null);
     }
@@ -107,7 +111,7 @@ export default class ShowDetailPage extends BasePage {
     _goToGoodsPage(good) {
         const { navigation } = this.props;
         navigation.push('home/product/ProductDetailPage', {
-            productCode: good.code,preseat:'秀场详情'
+            productCode: good.code, preseat: '秀场详情'
         });
     }
 
@@ -135,47 +139,50 @@ export default class ShowDetailPage extends BasePage {
     }
 
     _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y
-        let height = ScreenUtils.width
-        let shadowOpacity = 0
-        console.log('_onScroll', Y)
+        let Y = event.nativeEvent.contentOffset.y;
+        let height = ScreenUtils.width;
+        let shadowOpacity = 0;
+        console.log('_onScroll', Y);
         if (Y < height) {
-            shadowOpacity = Y / height
+            shadowOpacity = Y / height;
         } else {
             shadowOpacity = 1;
         }
         this._whiteNavRef.setNativeProps({
-            opacity:shadowOpacity
+            opacity: shadowOpacity
         });
         this._blackNavRef.setNativeProps({
-            opacity:1 - shadowOpacity
-        })
-    }
+            opacity: 1 - shadowOpacity
+        });
+    };
 
     _renderNormalTitle() {
-        return <View style={styles.whiteNav} ref={(ref)=> {this._whiteNavRef = ref}} opacity={0}>
-        <View style={styles.navTitle}>
-            <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                <Image source={res.back}/>
-            </TouchableOpacity>
-            <View style={styles.titleView}>
-                <Text style={styles.title}>秀场</Text>
+        return <View style={styles.whiteNav} ref={(ref) => {
+            this._whiteNavRef = ref;
+        }} opacity={0}>
+            <View style={styles.navTitle}>
+                <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
+                    <Image source={res.back}/>
+                </TouchableOpacity>
+                <View style={styles.titleView}>
+                    <Text style={styles.title}>秀场</Text>
+                </View>
+                <TouchableOpacity style={styles.shareView} onPress={() => {
+                    this._goToShare();
+                }}>
+                    <Image source={res.more}/>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.shareView} onPress={() => {
-                this._goToShare();
-            }}>
-                <Image source={res.more}/>
-            </TouchableOpacity>
-        </View>
-    </View>
+        </View>;
     }
 
     _render() {
 
         const { pageState } = this.state;
-        console.log('PageLoadingState', pageState)
+        console.log('PageLoadingState', pageState);
         if (pageState === PageLoadingState.fail) {
-            return <View style={styles.container}><NetFailedView netFailedInfo={{msg: this.state.errorMsg}}/>{this._renderNormalTitle()}</View>
+            return <View style={styles.container}><NetFailedView
+                netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}</View>;
         }
 
         const { detail, isCollecting } = this.showDetailModule;
@@ -185,12 +192,12 @@ export default class ShowDetailPage extends BasePage {
 
         let content = `<div>${detail.content}</div>`;
         let products = detail.products;
-        let number = detail.click
+        let number = detail.click;
         if (!number) {
-            number = 0
+            number = 0;
         }
         if (number > 999999) {
-            number = 999999 + '+'
+            number = 999999 + '+';
         }
         return <View style={styles.container}>
             <ScrollView
@@ -198,64 +205,75 @@ export default class ShowDetailPage extends BasePage {
                 showsVerticalScrollIndicator={false}
                 onScroll={this._onScroll.bind(this)}
             >
-            {
-                detail.imgs
-                ?
-                <ShowImageView items={detail.imgs.slice()}/>
-                :
-                <View style={styles.header}/>
-            }
-            <View style={styles.profileRow}>
-                <View style={styles.profileLeft}>
-                    <AvatarImage borderRadius={px2dp(15)} style={styles.portrait} source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
-                    <Text style={styles.showName} allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
-                </View>
-                <View style={styles.profileRight}>
-                    <Image source={res.button.see}/>
-                    <Text style={styles.number} allowFontScaling={false}>{number}</Text>
-                </View>
-            </View>
-            <HTML html={content} imagesMaxWidth={width - px2dp(30)} imagesInitialDimensions={{width: width - px2dp(30), height: 0}} containerStyle={{
-                backgroundColor: '#fff',
-                marginLeft: px2dp(15),
-                marginRight: px2dp(15)
-            }} baseFontStyle={{ lineHeight: px2dp(25), color: DesignRule.textColor_mainTitle, fontSize: px2dp(13) }}/>
-            <View style={styles.goodsView}>
                 {
-                    products.map((value, index) => {
-                        return <Goods key={index} data={value} press={() => {
-                            this._goToGoodsPage(value);
-                        }}/>;
-                    })
+                    detail.imgs
+                        ?
+                        <ShowImageView items={detail.imgs.slice()}/>
+                        :
+                        <View style={styles.header}/>
                 }
-            </View>
-        </ScrollView>
+                <View style={styles.profileRow}>
+                    <View style={styles.profileLeft}>
+                        <AvatarImage borderRadius={px2dp(15)} style={styles.portrait}
+                                     source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
+                        <Text style={styles.showName}
+                              allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
+                    </View>
+                    <View style={styles.profileRight}>
+                        <Image source={res.button.see}/>
+                        <Text style={styles.number} allowFontScaling={false}>{number}</Text>
+                    </View>
+                </View>
+                <HTML html={content} imagesMaxWidth={width - px2dp(30)}
+                      imagesInitialDimensions={{ width: width - px2dp(30), height: 0 }} containerStyle={{
+                    backgroundColor: '#fff',
+                    marginLeft: px2dp(15),
+                    marginRight: px2dp(15)
+                }} baseFontStyle={{
+                    lineHeight: px2dp(28),
+                    color: DesignRule.textColor_mainTitle,
+                    fontSize: px2dp(13)
+                }}/>
+                <View style={styles.goodsView}>
+                    {
+                        products.map((value, index) => {
+                            return <Goods key={index} data={value} press={() => {
+                                this._goToGoodsPage(value);
+                            }}/>;
+                        })
+                    }
+                </View>
+            </ScrollView>
             <View style={styles.bottom}>
                 {
                     isCollecting
-                    ?
-                    <View style={[styles.bottomBtn]}>
-                        <ActivityIndicator style={styles.btnLoading} size='small'/>
-                    </View>
-                    :
-                    <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
-                        <Image style={styles.collectImg} source={detail.hadCollect ? res.collected : res.uncollected}/>
-                        <Text style={styles.bottomText} allowFontScaling={false}>{'人气值'} · {detail.collectCount}</Text>
-                    </TouchableOpacity>
+                        ?
+                        <View style={[styles.bottomBtn]}>
+                            <ActivityIndicator style={styles.btnLoading} size='small'/>
+                        </View>
+                        :
+                        <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
+                            <Image style={styles.collectImg}
+                                   source={detail.hadCollect ? res.collected : res.uncollected}/>
+                            <Text style={styles.bottomText}
+                                  allowFontScaling={false}>{'人气值'} · {detail.collectCount}</Text>
+                        </TouchableOpacity>
                 }
                 <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
                     <Image source={res.share}/>
-                    <View style={{width: px2dp(10)}}/>
+                    <View style={{ width: px2dp(10) }}/>
                     <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
                 </TouchableOpacity>
             </View>
             {this._renderNormalTitle()}
-            <View style={styles.nav} ref={(ref)=> {this._blackNavRef = ref}}>
+            <View style={styles.nav} ref={(ref) => {
+                this._blackNavRef = ref;
+            }}>
                 <View style={styles.navTitle}>
                     <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
                         <Image source={res.button.show_detail_back}/>
                     </TouchableOpacity>
-                    <View style={{flex: 1}}/>
+                    <View style={{ flex: 1 }}/>
                     <TouchableOpacity style={styles.shareView} onPress={() => {
                         this._goToShare();
                     }}>
