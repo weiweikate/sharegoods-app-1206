@@ -4,6 +4,8 @@ import bridge from '../../../utils/bridge';
 
 class TotalTopicresultDataModel {
     @observable
+    isShowLoading = true;
+    @observable
     isFirstLoad = true;
     @observable
     checkIndex = 0;
@@ -157,15 +159,18 @@ class TotalTopicresultDataModel {
      */
     @action
     loadTopicData(topicCode) {
+        
         this.setRefresh(false)
         TopicAPI.findTopicById({
             code: topicCode
         }).then(result => {
             this.saveResultDataWith(result.data);
+            bridge.hiddenLoading()
             this.setRefresh(false)
             console.log(result);
         }).catch(error => {
             this.setRefresh(false)
+            bridge.hiddenLoading()
             bridge.$toast(error.msg);
         });
     }

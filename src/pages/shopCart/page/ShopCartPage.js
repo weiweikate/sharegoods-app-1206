@@ -33,7 +33,7 @@ import ShopCartCell from '../components/ShopCartCell';
 import SectionHeaderView from '../components/SectionHeaderView';
 import RouterMap from '../../../navigation/RouterMap';
 import user from '../../../model/user';
-import StringUtils from "../../../utils/StringUtils";
+import StringUtils from '../../../utils/StringUtils';
 // import ShopCartSectionHeaderView from '../components/ShopCartSectionHeaderView';
 // import { track } from '../../../utils/SensorsTrack';
 // import TempShopCartCell from '../components/TempShopCartCell';
@@ -208,6 +208,7 @@ export default class ShopCartPage extends BasePage {
                     }}
                     listViewRef={(listView) => this.contentList = listView}
                     rightOpenValue={-75}
+                    showsVerticalScrollIndicator={false}
                     swipeRefreshControl={
                         <RefreshControl
                             refreshing={shopCartStore.isRefresh}
@@ -233,7 +234,7 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _gotoCollectBills = (sectionData) => {
-        if (!StringUtils.isEmpty(sectionData.activityCode)){
+        if (!StringUtils.isEmpty(sectionData.activityCode)) {
             this.$navigate(RouterMap.XpDetailPage, {
                 activityCode: sectionData.activityCode
             });
@@ -272,13 +273,13 @@ export default class ShopCartPage extends BasePage {
                     }
                 >
                     <View
-                    style={{
-                        width:75,
-                        justifyContent:'center',
-                        alignItems:'center',
-                        backgroundColor:DesignRule.mainColor,
-                        height:140,
-                    }}
+                        style={{
+                            width: 75,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: DesignRule.mainColor,
+                            height: 140
+                        }}
                     >
                         <UIText style={styles.backUITextWhite} value='删除'/>
                     </View>
@@ -468,7 +469,7 @@ const styles = StyleSheet.create({
         // backgroundColor: DesignRule.bgColor,
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-end'
 
     },
     backUITextWhite: {
