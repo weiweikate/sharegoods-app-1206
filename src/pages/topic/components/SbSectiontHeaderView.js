@@ -99,6 +99,56 @@ const ActivityOneViewStyles = StyleSheet.create({
     }
 });
 
-export { SbSectiontHeaderView, ActivityOneView };
+/*活动类型one的view 只是测试 可能会有多种,再添加*/
+class TopBannerView extends Component {
+    static propTypes = {
+        imageUrl: PropTypes.string.isRequired,
+        ratio: PropTypes.number
+    };
+    constructor(props){
+        super(props)
+        this.state = {
+            ratio:0.5
+        }
+    }
+
+    //当接收到新的props时候，而且imageUrl存在再去调用计算
+    componentWillReceiveProps(props) {
+        if (props.imageUrl.length > 0) {
+            Image.getSize(this.props.imageUrl,(width,heigth)=>{
+                this.setState({
+                    ratio:heigth / width
+                })
+            })
+        }
+    }
+    render() {
+        const { imageUrl } = this.props;
+        console.log(this.props);
+
+        return (
+            <View>
+                <PreLoadImage
+                    imageUri={imageUrl}
+                    style={[
+                        TopBannerViewStyle.bgImageStyle,
+                        {
+                            height: ScreenUtils.width * this.state.ratio
+                        }
+                    ]}
+                />
+            </View>
+        );
+    }
+}
+
+const TopBannerViewStyle = StyleSheet.create({
+    bgImageStyle: {
+        width: ScreenUtils.width,
+        backgroundColor: 'white',
+    }
+});
+
+export { SbSectiontHeaderView, ActivityOneView, TopBannerView};
 
 

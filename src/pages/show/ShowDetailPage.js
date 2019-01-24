@@ -19,6 +19,7 @@ import {
 } from '../../components/ui';
 import Toast from '../../utils/bridge'
 import { NetFailedView } from '../../components/pageDecorator/BaseView'
+import AvatarImage from '../../components/ui/AvatarImage'
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -206,7 +207,7 @@ export default class ShowDetailPage extends BasePage {
             }
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
-                    <ImageLoad borderRadius={px2dp(15)} style={styles.portrait} source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
+                    <AvatarImage borderRadius={px2dp(15)} style={styles.portrait} source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
                     <Text style={styles.showName} allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
                 </View>
                 <View style={styles.profileRight}>
