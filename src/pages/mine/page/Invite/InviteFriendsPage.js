@@ -19,13 +19,12 @@ import {
     TouchableWithoutFeedback,
     ImageBackground,
     Image,
-    TouchableOpacity,
-    StatusBar
+    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import {UIImage} from '../../../../components/ui'
-import {MRText as Text} from '../../../../components/ui'
+import { UIImage } from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
@@ -34,7 +33,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
-import { trackEvent, track} from '../../../../utils/SensorsTrack';
+import { trackEvent, track } from '../../../../utils/SensorsTrack';
 
 const {
     button: {
@@ -70,12 +69,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     componentDidMount() {
-        StatusBar.setHidden( true, 'slide');
         this.loadPageData();
-    }
-
-    componentWillUnmount(){
-        StatusBar.setHidden(false,'slide');
     }
 
     loadPageData() {
@@ -91,14 +85,14 @@ export default class InviteFriendsPage extends BasePage<Props> {
     //截屏
     _saveImg = () => {
         let logo = 'logo.png';
-        if (user && user.headImg && user.headImg.length >4){
+        if (user && user.headImg && user.headImg.length > 4) {
             logo = user.headImg;
         }
-        track(trackEvent.QrcodeShareto, {qrCodeID: this.linkUrl, shareMethod: '保存图片'})
+        track(trackEvent.QrcodeShareto, { qrCodeID: this.linkUrl, shareMethod: '保存图片' });
         this.setState({
             disable: true
         }, () => {
-            bridge.saveInviteFriendsImage(this.linkUrl,logo, () => {
+            bridge.saveInviteFriendsImage(this.linkUrl, logo, () => {
                 this.$toastShow('保存成功');
                 this.__timer__ = setTimeout(() => {
                     this.setState({
@@ -117,8 +111,22 @@ export default class InviteFriendsPage extends BasePage<Props> {
     _render() {
         return (
             <View style={styles.container}>
-                <Image source={bg} style={{top: 0,left: 0, width: DesignRule.autoSizeWidth(375), height: ScreenUtils.height, resizeMode: 'stretch', position: 'absolute'}}/>
-                <Image source={wenan} style={{top: ScreenUtils.statusBarHeight + 44 ,left: 0, width: autoSizeWidth(375), height: autoSizeWidth(75), resizeMode: 'stretch', position: 'absolute'}}/>
+                <Image source={bg} style={{
+                    top: 0,
+                    left: 0,
+                    width: DesignRule.autoSizeWidth(375),
+                    height: ScreenUtils.height,
+                    resizeMode: 'stretch',
+                    position: 'absolute'
+                }}/>
+                <Image source={wenan} style={{
+                    top: ScreenUtils.statusBarHeight + 44,
+                    left: 0,
+                    width: autoSizeWidth(375),
+                    height: autoSizeWidth(75),
+                    resizeMode: 'stretch',
+                    position: 'absolute'
+                }}/>
                 <TouchableWithoutFeedback onPress={() => {
                     this.$navigateBack();
                 }}>
@@ -140,30 +148,30 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 </TouchableWithoutFeedback>
                 <View style={{
                     backgroundColor: 'white',
-                    width: autoSizeWidth(150),
-                    height: autoSizeWidth(150),
-                    top: ScreenUtils.height/1334.0*775 + (ScreenUtils.height/1334*(1334 - 775) - autoSizeWidth(160) - autoSizeWidth(90))/2.0,
-                    left: autoSizeWidth(95 + 12.5 + 5),
+                    width: autoSizeWidth(160),
+                    height: autoSizeWidth(160),
+                    top: ScreenUtils.height / 1334.0 * 775 + (ScreenUtils.height / 1334 * (1334 - 775) - autoSizeWidth(160) - autoSizeWidth(90)) / 2.0,
+                    left: autoSizeWidth(95 + 12.5),
                     position: 'absolute',
                     // shadowColor: DesignRule.mainColor,
                     // shadowOpacity: 0.3,
-                    justifyContent:'center',
-                    alignItems:'center',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                 }}>
                     <UIImage source={{ uri: this.state.path }}
                              style={{
-                                 width: autoSizeWidth(150),
-                                 height: autoSizeWidth(150)
+                                 width: autoSizeWidth(160),
+                                 height: autoSizeWidth(160)
                              }}/>
                     {
-                        user && user.headImg && user.headImg.length >4 ?
+                        user && user.headImg && user.headImg.length > 4 ?
                             <View style={styles.logo}>
                                 <UIImage source={{ uri: user.headImg }}
-                                         style={{height: autoSizeWidth(40), width: autoSizeWidth(40)}}/>
-                            </View>:
+                                         style={{ height: autoSizeWidth(40), width: autoSizeWidth(40) }}/>
+                            </View> :
                             <View style={styles.logo}>
                                 <UIImage source={res.other.tongyong_logo_nor}
-                                         style={{height: autoSizeWidth(40), width: autoSizeWidth(40)}} />
+                                         style={{ height: autoSizeWidth(40), width: autoSizeWidth(40) }}/>
                             </View>
                     }
 
@@ -173,12 +181,13 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     position: 'absolute',
                     left: 0,
                     width: ScreenUtils.width,
-                    bottom: autoSizeWidth(30),
+                    bottom: autoSizeWidth(40),
                     alignItems: 'center',
                     paddingHorizontal: DesignRule.autoSizeWidth(30)
                 }}>
                     <TouchableOpacity onPress={this._saveImg} disabled={this.state.disable}>
-                        <ImageBackground source={button} style={styles.btnContainer} onPress={this._saveImg} resizeMode={'stretch'}>
+                        <ImageBackground source={button} style={styles.btnContainer} onPress={this._saveImg}
+                                         resizeMode={'stretch'}>
 
                             <Text style={styles.btnText}>
                                 保存图片
@@ -217,7 +226,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //     linkUrl: '${apiEnvironment.getCurrentH5Url()}/pages/index/index',
                     //     userName: 'gh_3ac2059ac66f',
                     //     miniProgramPath: 'pages/index/index'}}
-                                trackParmas={{QrCodeID: this.linkUrl}}
+                                trackParmas={{ QrCodeID: this.linkUrl }}
                                 trackEvent={trackEvent.QrcodeShareto}
                                 luckyDraw={true}
                 />
@@ -236,13 +245,13 @@ const styles = StyleSheet.create({
         width: autoSizeWidth(145),
         height: autoSizeWidth(50),
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     btnText: {
         fontSize: DesignRule.fontSize_mediumBtnText,
         color: '#ff0050',
         marginBottom: autoSizeWidth(7),
-        marginRight: autoSizeWidth(5),
+        marginRight: autoSizeWidth(5)
     },
     logo: {
         width: autoSizeWidth(40),

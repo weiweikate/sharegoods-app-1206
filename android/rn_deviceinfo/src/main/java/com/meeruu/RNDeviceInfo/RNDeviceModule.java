@@ -327,7 +327,6 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         constants.put("totalMemory", memInfo.totalMem);
         constants.put("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
         constants.put("channel", WalleChannelReader.getChannel(reactContext, "guanwang"));
-
         return constants;
     }
 }
