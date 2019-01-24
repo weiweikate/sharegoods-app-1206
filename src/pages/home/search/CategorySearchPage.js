@@ -159,7 +159,7 @@ export default class CategorySearchPage extends BasePage {
                                      renderSectionHeader={this._sectionHeader}
                                      ListFooterComponent={this._listFooter}
                                      sections={this.state.sectionArr}
-                                     initialNumToRender={9}
+                                     initialNumToRender={15}
                                      removeClippedSubviews={false}
                                      stickySectionHeadersEnabled={false}
                                      showsVerticalScrollIndicator={false}
@@ -263,16 +263,14 @@ export default class CategorySearchPage extends BasePage {
                         HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
                             bridge.hiddenLoading();
                             let datas = response.data || {};
-                            let arr = [];
-                            for (let i = 0, len = datas.productCategoryList.length; i < len; i++) {
-                                let data = {
-                                    title: datas.productCategoryList[i].name,
-                                    data: datas.productCategoryList[i].productCategoryList
+                            let arr = datas.productCategoryList.map((item) => {
+                                return {
+                                    title: item.name,
+                                    data: item.productCategoryList
                                 };
-                                arr.push(data);
-                            }
+                            });
                             this.setState({
-                                sectionArr: arr,
+                                sectionArr: arr || [],
                                 bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
                                     img: datas.img,
                                     linkType: datas.linkType,
