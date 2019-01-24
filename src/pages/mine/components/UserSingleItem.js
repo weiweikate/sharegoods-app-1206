@@ -13,8 +13,8 @@ import {
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
-import ImageLoad from '@mr/image-placeholder';
-import { MRText as Text } from '../../../components/ui';
+// import ImageLoad from '@mr/image-placeholder';
+import { MRText as Text ,AvatarImage} from '../../../components/ui';
 
 export default class UserSingleItem extends Component {
     constructor(props) {
@@ -69,7 +69,7 @@ export default class UserSingleItem extends Component {
         const { headImage, isArrow = true } = this.props;
         return (
             !headImage ? null :
-                <ImageLoad source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
+                <AvatarImage source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
                            style={{ width: 30, height: 30, borderRadius: 15, marginRight: isArrow ? 8 : 15 }}
                            borderRadius={15}/>
         );
