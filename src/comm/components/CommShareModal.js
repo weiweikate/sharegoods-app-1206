@@ -206,6 +206,7 @@ export default class CommShareModal extends React.Component {
             track(this.props.trackEvent, { shareMethod: '保存图片', ...this.props.trackParmas });
         }
         bridge.saveImage(path);
+        this.close();
     }
 
     copyUrl() {

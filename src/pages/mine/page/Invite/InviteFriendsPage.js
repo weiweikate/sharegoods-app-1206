@@ -140,10 +140,10 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 </TouchableWithoutFeedback>
                 <View style={{
                     backgroundColor: 'white',
-                    width: autoSizeWidth(160),
-                    height: autoSizeWidth(160),
+                    width: autoSizeWidth(150),
+                    height: autoSizeWidth(150),
                     top: ScreenUtils.height/1334.0*775 + (ScreenUtils.height/1334*(1334 - 775) - autoSizeWidth(160) - autoSizeWidth(90))/2.0,
-                    left: autoSizeWidth(95 + 12.5),
+                    left: autoSizeWidth(95 + 12.5 + 5),
                     position: 'absolute',
                     // shadowColor: DesignRule.mainColor,
                     // shadowOpacity: 0.3,
@@ -152,8 +152,8 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 }}>
                     <UIImage source={{ uri: this.state.path }}
                              style={{
-                                 width: autoSizeWidth(160),
-                                 height: autoSizeWidth(160)
+                                 width: autoSizeWidth(150),
+                                 height: autoSizeWidth(150)
                              }}/>
                     {
                         user && user.headImg && user.headImg.length >4 ?
@@ -173,7 +173,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     position: 'absolute',
                     left: 0,
                     width: ScreenUtils.width,
-                    bottom: autoSizeWidth(40),
+                    bottom: autoSizeWidth(30),
                     alignItems: 'center',
                     paddingHorizontal: DesignRule.autoSizeWidth(30)
                 }}>
