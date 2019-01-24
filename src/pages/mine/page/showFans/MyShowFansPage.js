@@ -22,10 +22,9 @@ import { MRText as Text } from '../../../../components/ui';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-import ImageLoad from '@mr/image-placeholder';
 import MineAPI from '../../api/MineApi';
 import res from '../../res';
-
+import AvatarImage from '../../../../components/ui/AvatarImage';
 const {
     bg_fans_item
 } = res.homeBaseImg;
@@ -44,51 +43,23 @@ export default class MyShowFansPage extends BasePage<Props> {
     };
 
 
-    // componentDidMount() {
-    //     this.loadPageData();
-    // }
-    //
-    // loadPageData() {
-    //     MineAPI.getShowFansCount().then((data) => {
-    //         if (data.data) {
-    //             this.setState({
-    //                 activatedNum: data.data.showFansCount
-    //             });
-    //         }
-    //     }).catch((error) => {
-    //     });
-    //
-    // }
-
     _listItemRender = ({ item }) => {
-        // let noActivate = (
-        //     <View style={[styles.typeWrapper, {
-        //         borderColor: DesignRule.mainColor,
-        //         borderWidth: 1,
-        //         backgroundColor: '#fcf5f9'
-        //     }]}>
-        //         <Text style={styles.activateTextStyle}>
-        //             未激活
-        //         </Text>
-        //     </View>
-        // );
-        // let activate = (
-        //     <View style={[styles.typeWrapper, { borderColor: '#e0e1e0', borderWidth: 1, backgroundColor: '#f1f1f1' }]}>
-        //         <Text style={styles.noActivateTextStyle}>
-        //             已激活
-        //         </Text>
-        //     </View>
-        // );
         const uri = { uri: item.headImg };
         return (
             <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
-                <View style={[styles.fansIcon,{ overflow: 'hidden'}]}>
-                    <ImageLoad style={styles.fansIcon} cacheable={true} source={uri}/>
+                <View style={[styles.fansIcon, { overflow: 'hidden' }]}>
+                    <AvatarImage style={styles.fansIcon} cacheable={true} source={uri}/>
                 </View>
                 <Text style={styles.fansNameStyle}>
                     {item.nickname}
                 </Text>
-                {/*{item.status ? activate : noActivate}*/}
+
+                    <View style={styles.levelWrapper}>
+                        <Text style={styles.levelTextStyle}>
+                            {`V${item.level ? item.level  : 0}`}
+                        </Text>
+                    </View>
+
             </ImageBackground>
         );
     };
@@ -136,13 +107,13 @@ const styles = StyleSheet.create({
         flex: 1
     },
     itemWrapper: {
-        height: 66*240/195,
-        width: (ScreenUtils.width - DesignRule.margin_page * 2)*1071/1030,
+        height: 66 * 240 / 195,
+        width: (ScreenUtils.width - DesignRule.margin_page * 2) * 1071 / 1030,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: DesignRule.margin_page+5,
+        paddingHorizontal: DesignRule.margin_page + 5,
         marginTop: 3,
-        alignSelf: 'center',
+        alignSelf: 'center'
     },
     fansIcon: {
         height: 40,
@@ -152,9 +123,8 @@ const styles = StyleSheet.create({
     fansNameStyle: {
         color: DesignRule.textColor_mainTitle_222,
         fontSize: DesignRule.fontSize_mainTitle,
-        flex: 1,
         marginLeft: 8,
-        paddingVertical:5
+        paddingVertical: 5
     },
     typeWrapper: {
         width: 55,
@@ -175,7 +145,21 @@ const styles = StyleSheet.create({
         marginLeft: DesignRule.margin_page,
         marginTop: 15,
         fontSize: DesignRule.fontSize_threeTitle,
-        color:DesignRule.textColor_secondTitle
+        color: DesignRule.textColor_secondTitle
+    },
+    levelWrapper: {
+        borderRadius: 2,
+        height: 15,
+        justifyContent: 'center',
+        borderWidth: 1,
+        marginLeft: 15,
+        borderColor:DesignRule.mainColor,
+        paddingHorizontal:12,
+    },
+    levelTextStyle: {
+        color: DesignRule.mainColor,
+        includeFontPadding: false,
+        fontSize: DesignRule.fontSize_20
     }
 
 });
