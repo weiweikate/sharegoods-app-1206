@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,Image
 } from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
-import UIImage from '@mr/image-placeholder';
+import AvatarImage from '../../../../components/ui/AvatarImage';
 
 const ShopMasterIcon = res.myShop.dz_03;
 import {
@@ -43,12 +43,9 @@ export default class MasterRow extends Component {
         contribution = StringUtils.isEmpty(contribution) ? 0 : parseFloat(contribution);
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={styles.container}>
-                <UIImage style={styles.iconGap} source={ShopMasterIcon}/>
+                <Image style={styles.iconGap} source={ShopMasterIcon}/>
                 <View style={styles.row}>
-                    {
-                        headImg ? <UIImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/> :
-                            <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
-                    }
+                    <AvatarImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/>
                     <View style={styles.right}>
                         <Text style={styles.name} allowFontScaling={false}>{(nickName || '  ')}</Text>
                         <Text style={styles.level} allowFontScaling={false}>{levelName || ' '}</Text>

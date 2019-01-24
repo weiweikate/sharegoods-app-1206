@@ -56,9 +56,11 @@ export default class TopicDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
+
+        console.log(this.params);
         this.state = {
             //类型: 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 99.普通产品
-            activityType: this.params.activityType,
+            activityType: parseInt(this.params.activityType),
             //参数还是详情
             selectedIndex: 0,
             //正常数据 礼包
