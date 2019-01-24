@@ -22,10 +22,9 @@ import { MRText as Text } from '../../../../components/ui';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-import ImageLoad from '@mr/image-placeholder';
 import MineAPI from '../../api/MineApi';
 import res from '../../res';
-
+import AvatarImage from '../../../../components/ui/AvatarImage';
 const {
     bg_fans_item
 } = res.homeBaseImg;
@@ -49,7 +48,7 @@ export default class MyShowFansPage extends BasePage<Props> {
         return (
             <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
                 <View style={[styles.fansIcon, { overflow: 'hidden' }]}>
-                    <ImageLoad style={styles.fansIcon} cacheable={true} source={uri}/>
+                    <AvatarImage style={styles.fansIcon} cacheable={true} source={uri}/>
                 </View>
                 <Text style={styles.fansNameStyle}>
                     {item.nickname}
