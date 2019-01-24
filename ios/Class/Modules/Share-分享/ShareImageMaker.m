@@ -63,7 +63,7 @@
   {
     CGFloat i = 3;
     priceStr = [NSString stringWithFormat:@"市场价:%@",priceStr];
-    retailPrice = [NSString stringWithFormat:@"零售价:%@",retailPrice];
+    retailPrice = [NSString stringWithFormat:@"V0价:%@",retailPrice];
     spellPrice = [NSString stringWithFormat:@"拼店价:%@",spellPrice];
     
     CGFloat sigle =  [self getStringHeightWithText:@"1" fontSize:13*i viewWidth:220*i];
@@ -259,7 +259,7 @@
       UIGraphicsBeginImageContext(CGSizeMake(750, 1334));
       [bgImage drawInRect:CGRectMake(0, 0, 750, 1334)];
       // 绘制图片
-      [QRCodeImage drawInRect:CGRectMake(215, 715, 320, 320)];
+      [QRCodeImage drawInRect:CGRectMake(215, 805, 320, 320)];
       UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
       if(image){

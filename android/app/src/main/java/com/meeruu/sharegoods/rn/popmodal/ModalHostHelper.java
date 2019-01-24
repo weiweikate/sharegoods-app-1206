@@ -1,6 +1,6 @@
 // Copyright 2004-present Facebook. All Rights Reserved.
 
-package com.meeruu.PopModal;
+package com.meeruu.sharegoods.rn.popmodal;
 
 import android.annotation.TargetApi;
 import android.content.Context;

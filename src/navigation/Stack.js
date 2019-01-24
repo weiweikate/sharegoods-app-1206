@@ -28,6 +28,8 @@ import topic from '../pages/topic';
 import show from '../pages/show/Index';
 import shareTask from '../pages/shareTask';
 
+import deepLinkPath from './DeepLinkPath'
+
 
 const Router = {
     Tab: {
@@ -43,14 +45,8 @@ const Router = {
 const PageKey = {};
 
 function getPathWithPageName(pageName) {
-    if (pageName === 'RegistPage') {
-        return 'path/' + pageName + '/:phone'
-    }else {
-        return 'path/' + pageName;
-    }
+    return deepLinkPath[pageName];
 }
-
-
 // 添加模块内子路由配置
 function addSubModule(module, prefixPath) {
 

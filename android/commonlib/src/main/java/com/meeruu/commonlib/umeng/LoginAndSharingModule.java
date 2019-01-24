@@ -295,7 +295,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 umengDeleteOauth(SHARE_MEDIA.WEIXIN);
                 WXLoginBean bean = new WXLoginBean();
                 bean.setDevice(android.os.Build.DEVICE);
-                bean.setOpenid(openid);
+                bean.setAppOpenid(openid);
+                bean.setUnionid(unionid);
                 bean.setSystemVersion(android.os.Build.VERSION.RELEASE);
                 bean.setNickName(name);
                 bean.setHeaderImg(iconurl);
@@ -586,7 +587,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.invite_friends_bg);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy);
         Bitmap qrBitmap = createQRImage(url, 320, 320);
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
@@ -600,7 +601,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         canvas.drawBitmap(newbitmap,  0,0,paint);
-        canvas.drawBitmap(qrBitmap, 215, 710, paint);
+        canvas.drawBitmap(qrBitmap, 215, 805, paint);
 
 
         int iconW = icon.getWidth();
@@ -622,7 +623,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
 
-        canvas.drawBitmap(roundIcon,335,830,paint);
+        canvas.drawBitmap(roundIcon,335,925,paint);
 
 
         String path = saveImageToCache(context, result, "inviteFriends.png");
@@ -818,7 +819,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         canvas.drawText(price, market.right+30, isTwoLine ?610 : 585, paint);
 
 
-        String retailStr = "零售价：";
+        String retailStr = "V0价：";
         paint.setColor(Color.parseColor("#333333"));
         paint.setStrikeThruText(false);
 

@@ -33,6 +33,7 @@ import ShopCartCell from '../components/ShopCartCell';
 import SectionHeaderView from '../components/SectionHeaderView';
 import RouterMap from '../../../navigation/RouterMap';
 import user from '../../../model/user';
+import StringUtils from "../../../utils/StringUtils";
 // import ShopCartSectionHeaderView from '../components/ShopCartSectionHeaderView';
 // import { track } from '../../../utils/SensorsTrack';
 // import TempShopCartCell from '../components/TempShopCartCell';
@@ -232,9 +233,14 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _gotoCollectBills = (sectionData) => {
-        this.$navigate(RouterMap.XpDetailPage, {
-            activityCode: sectionData.activityCode
-        });
+        if (!StringUtils.isEmpty(sectionData.activityCode)){
+            this.$navigate(RouterMap.XpDetailPage, {
+                activityCode: sectionData.activityCode
+            });
+        } else {
+            this.$toastShow('活动不存在');
+        }
+
     };
     /**
      * 渲染每行的隐藏组件

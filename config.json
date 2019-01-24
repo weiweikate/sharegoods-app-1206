@@ -1,6 +1,6 @@
 {
-    "showDebugPanel": true,
-    "envType": "qa",
+    "showDebugPanel": false,
+    "envType": "online",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -121,11 +121,11 @@
         },
         "开发平台1080": {
             "name": "开发平台1080",
-            "host": "http://192.168.100.22:1080/gateway"
+            "host": "http://172.16.10.101:1080/gateway"
         },
         "开发平台9090": {
             "name": "开发平台9090",
-            "host": "http://192.168.100.22:9090/gateway"
+            "host": "http://172.16.10.101:9090/gateway"
         },
         "岑登": {
             "name": "岑登",
