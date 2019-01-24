@@ -21,7 +21,7 @@ import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
 import DesignRule from '../../../../constants/DesignRule';
 import UIImage from '@mr/image-placeholder';
-import {MRText as Text,NoMoreClick} from '../../../../components/ui'
+import {MRText as Text,NoMoreClick,AvatarImage} from '../../../../components/ui'
 // import { NavigationActions } from 'react-navigation';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 
@@ -120,10 +120,7 @@ export default class MyCollectPage extends BasePage {
             <NoMoreClick onPress={() => this.go2PruductDetailPage(item.storeCode, 0)}
                          activeOpacity={1}>
                 <View style={styles.rowContainer}>
-                    {
-                        item.headUrl ? <UIImage source={{ uri: item.headUrl }} style={styles.img} borderRadius={25}/> :
-                            <View style={styles.img}/>
-                    }
+                         <AvatarImage source={{ uri: item.headUrl }} style={styles.img} borderRadius={25}/>
                     <View style={styles.right}>
                         <View style={styles.row}>
                             <Text numberOfLines={1} style={styles.title} allowFontScaling={false}>{item.name || ''}</Text>
