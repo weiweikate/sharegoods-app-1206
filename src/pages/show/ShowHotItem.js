@@ -13,6 +13,7 @@ const seeImg = res.button.see_white;
 const maskImg = res.other.show_mask;
 import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder';
+import AvatarImage from '../../components/ui/AvatarImage'
 import TimerMixin from 'react-timer-mixin';
 import {
     MRText as Text,
@@ -75,7 +76,11 @@ export default class ShowHotItem extends Component {
                     <Text numberOfLines={2}
                           style={styles.title} allowFontScaling={false}>{data.pureContent ? data.pureContent.slice(0, 100) : ''}</Text>
                     <View style={styles.row}>
-                        <ImageLoad borderRadius={px2dp(15)} style={styles.portrait} source={{ uri: data.userHeadImg ? data.userHeadImg : '' }}/>
+                        <AvatarImage
+                            borderRadius={px2dp(15)}
+                            style={styles.portrait}
+                            source={{ uri: data.userHeadImg ? data.userHeadImg : '' }}
+                        />
                         <Text
                             style={styles.name} allowFontScaling={false}>{data.userName && data.userName.length > 5 ? data.userName.slice(0, 5) + '...' : data.userName}</Text>
                         <View style={{ flex: 1 }}/>
