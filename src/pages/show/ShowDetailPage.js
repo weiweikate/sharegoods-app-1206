@@ -48,8 +48,7 @@ export default class ShowDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: ''
-        };
-
+        }
     }
 
     $isMonitorNetworkStatus() {
@@ -62,11 +61,13 @@ export default class ShowDetailPage extends BasePage {
             payload => {
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
+                    Toast.showLoading()
                     if (this.params.code) {
                         this.showDetailModule.showDetailCode(this.params.code).then(() => {
                             this.setState({
                                 pageState: PageLoadingState.success
-                            });
+                            })
+                            Toast.hiddenLoading()
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
@@ -75,13 +76,15 @@ export default class ShowDetailPage extends BasePage {
                             this._whiteNavRef.setNativeProps({
                                 opacity: 1
                             });
-                            Toast.$toast(error.msg || '获取详情失败');
-                        });
+                            Toast.$toast(error.msg || '获取详情失败')
+                            Toast.hiddenLoading()
+                        })
                     } else {
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             this.setState({
                                 pageState: PageLoadingState.success
-                            });
+                            })
+                            Toast.hiddenLoading()
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
@@ -90,8 +93,9 @@ export default class ShowDetailPage extends BasePage {
                             this._whiteNavRef.setNativeProps({
                                 opacity: 1
                             });
-                            Toast.$toast(error.msg || '获取详情失败');
-                        });
+                            Toast.$toast(error.msg || '获取详情失败')
+                            Toast.hiddenLoading()
+                        })
                     }
                 }
             }
