@@ -11,7 +11,6 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import {
     MRText as Text
 } from '../../components/ui';
-
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
