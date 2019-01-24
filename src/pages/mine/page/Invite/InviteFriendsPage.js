@@ -152,8 +152,8 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 }}>
                     <UIImage source={{ uri: this.state.path }}
                              style={{
-                                 width: autoSizeWidth(150),
-                                 height: autoSizeWidth(150)
+                                 width: Platform.OS === 'ios' ? autoSizeWidth(150):autoSizeWidth(140),
+                                 height: Platform.OS === 'ios' ? autoSizeWidth(150):autoSizeWidth(140),
                              }}/>
                     {
                         user && user.headImg && user.headImg.length >4 ?
