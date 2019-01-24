@@ -12,6 +12,7 @@ const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder'
+import AvatarImage from '../../components/ui/AvatarImage'
 import TimerMixin from 'react-timer-mixin'
 import {
     MRText as Text,
@@ -62,7 +63,7 @@ class Card extends Component {
             <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
         </ImageLoad>
         <View style={styles.profileView}>
-            <ImageLoad style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}} borderRadius={px2dp(15)}/>
+            <AvatarImage style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}} borderRadius={px2dp(15)}/>
             <Text style={styles.name} allowFontScaling={false}>{item.userName}</Text>
             <View style={{flex: 1}}/>
             <View style={styles.rightRow}>

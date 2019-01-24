@@ -110,11 +110,11 @@ const styles = StyleSheet.create({
     },
     item: {
         width: px2dp(48),
-        height: px2dp(80),
+        height: px2dp(68),
         marginLeft: px2dp(10),
         marginRight: px2dp(10),
-        marginTop: px2dp(5),
-        marginBottom: px2dp(5),
+        marginTop: px2dp(7.5),
+        marginBottom: px2dp(7.5),
         alignItems: 'center',
         justifyContent: 'center'
     },

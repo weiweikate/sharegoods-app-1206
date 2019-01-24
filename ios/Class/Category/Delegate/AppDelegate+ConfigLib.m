@@ -91,10 +91,10 @@
                                                                       andLaunchOptions:launchOptions
                                                                           andDebugMode:SA_DEBUG_MODE];
   
-  // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
-  [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
-   SensorsAnalyticsEventTypeAppEnd|
-   SensorsAnalyticsEventTypeAppClick];
+//  // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
+//  [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppStart|
+//   SensorsAnalyticsEventTypeAppEnd|
+//   SensorsAnalyticsEventTypeAppClick];
   /** 设置公共属性*/
   NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
   NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
@@ -109,9 +109,6 @@
   // 忽略单个页面
   [sdkInstance ignoreAutoTrackViewControllers:@[[JRBaseVC class]]];
   [sdkInstance identify: uuid];
-  [sdkInstance enableAutoTrack:SensorsAnalyticsEventTypeAppEnd |
-                               SensorsAnalyticsEventTypeAppStart |
-                               SensorsAnalyticsEventTypeAppViewScreen];
   
 }
   

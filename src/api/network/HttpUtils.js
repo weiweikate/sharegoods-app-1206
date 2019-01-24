@@ -12,6 +12,7 @@ import DeviceInfo from 'react-native-device-info';
 import { RSA } from './RSA';
 import rsa_config from './rsa_config';
 import EnvConfig from '../../../config';
+
 const { RNDeviceInfo } = NativeModules;
 const Qs = require('qs');
 
@@ -119,6 +120,7 @@ export default class HttpUtils {
             };
             return axios.get(url, config);
         }).then(response => {
+            console.log(response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);
@@ -126,6 +128,7 @@ export default class HttpUtils {
             }
             return data;
         }).catch(response => {
+            console.log(response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);
@@ -163,6 +166,7 @@ export default class HttpUtils {
             };
             return axios.post(url, data, config);
         }).then(response => {
+            console.log(response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);
@@ -170,6 +174,7 @@ export default class HttpUtils {
             }
             return data;
         }).catch(response => {
+            console.log(response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);

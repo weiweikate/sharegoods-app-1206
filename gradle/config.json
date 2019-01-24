@@ -6,7 +6,7 @@
     },
     "@mr/request": {
         "content": "apply from: '../../../../android/rn-request.gradle'",
-        "bulid_path":  "../node_modules/@mr/request/android/build.gradle"
+        "bulid_path":  "../node_modules/@mr/rn-request/android/build.gradle"
     },
     "@mr/image-crop-picker": {
         "content": "apply from: '../../../../android/rn-image-crop-picker.gradle'",

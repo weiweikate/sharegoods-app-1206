@@ -5,6 +5,6 @@ const index = {
     uncollected: require('./uncollected.png'),
     share: require('./share.png'),
     back: require('./back.png'),
-    more: require('./more.png')
+    more: require('./more.png'),
 };
 export default index
