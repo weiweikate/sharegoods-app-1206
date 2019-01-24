@@ -22,7 +22,8 @@ import { UIImage,
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils'
 import res from '../../res';
-import ImageLoad from '@mr/image-placeholder';
+// import ImageLoad from '@mr/image-placeholder';
+import AvatarImage from '../../../../components/ui/AvatarImage';
 import { MRText as Text } from '../../../../components/ui';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -139,7 +140,7 @@ export default class MyPromotionPage extends BasePage {
 
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 25, marginBottom: 40 }}>
-                    <ImageLoad style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
+                    <AvatarImage style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
                                borderRadius={headerWidth / 2}
                                source={{ uri: this.state.headImg }}/>
                     <View style={{
