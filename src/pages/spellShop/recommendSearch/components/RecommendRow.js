@@ -13,7 +13,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import ImageLoad from '@mr/image-placeholder';
+import AvatarImage from '../../../../components/ui/AvatarImage';
 import {
     MRText as Text
 } from '../../../../components/ui';
@@ -36,9 +36,7 @@ export default class RecommendRow extends Component {
     renderIconItem = ({ item }) => {
         return (<TouchableOpacity onPress={() => {
         }} style={[styles.itemIcon, { marginLeft: 15 }]}>
-            {StringUtils.isNoEmpty(item.headImg) ?
-                <ImageLoad style={styles.itemIcon} source={{ uri: item.headImg }} borderRadius={20}/> :
-                <View style={[styles.itemIcon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
+            <AvatarImage style={styles.itemIcon} source={{ uri: item.headImg }} borderRadius={20}/>
         </TouchableOpacity>);
     };
     _onPress = () => {
@@ -67,10 +65,9 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {StringUtils.isNoEmpty(RecommendRowItem.headUrl) ? <ImageLoad style={styles.icon}
-                                                                                          borderRadius={25}
-                                                                                          source={{ uri: RecommendRowItem.headUrl }}/> :
-                                <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
+                            <AvatarImage style={styles.icon}
+                                         borderRadius={25}
+                                         source={{ uri: RecommendRowItem.headUrl }}/>
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1} allowFontScaling={false}>{RecommendRowItem.name || ''}</Text>
                                 <Text style={styles.member}
