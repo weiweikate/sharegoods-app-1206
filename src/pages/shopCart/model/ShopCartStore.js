@@ -158,6 +158,7 @@ class ShopCartStore {
                     goodItem.isSelected = false;
                     goodItem.key = ''+index+goodItemIndex;
                     goodItem.nowTime = itemObj.nowTime;//系统当前时间戳
+                    goodItem.activityCode = itemObj.activityCode;
 
                     let tempSpecContent = '规格:';
                     goodItem.specifies.map((specify,specifyIndex)=>{
