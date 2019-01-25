@@ -192,7 +192,10 @@ export default class MyCashAccountPage extends BasePage {
         let use_type = ["", "用户收益", "提现支出", "消费支出", "服务顾问管理费", "品牌分红奖励", "品牌推广奖励", "现金红包", "任务奖励","消费退款","提现退回"];
         let use_type_symbol = ["", "+", "-"];
         let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu,xiaofei,tuikuan];
-        Toast.showLoading();
+        if(this.currentPage>1){
+            Toast.showLoading();
+        }
+
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: 1 }).then((response) => {
             Toast.hiddenLoading();
