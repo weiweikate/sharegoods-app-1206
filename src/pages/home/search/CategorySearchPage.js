@@ -223,6 +223,10 @@ export default class CategorySearchPage extends BasePage {
             this.$navigate('show/ShowDetailPage', {
                 code: item.linkTypeCode
             });
+        } else if (item.linkType === homeLinkType.exp) {
+            this.$navigate('home/product/xpProduct/XpDetailPage', {
+                code: item.linkTypeCode
+            });
         }
     };
 

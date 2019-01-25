@@ -119,7 +119,7 @@ dependencies {
     api project(':rn_deviceinfo')
     api project(':rn-webview-bridge')
     api project(':react-native-sensors-analytics')
-    api project(':request')
+    api project(':rn-request')
     api project(':cookies')
     api project(':rn-geolocation')
     api project(':commonlib')
