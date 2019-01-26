@@ -134,7 +134,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   NSData *infoData = [info dataUsingEncoding:NSUTF8StringEncoding];
   //滤镜对象kvc存值
   [filter setValue:infoData forKeyPath:@"inputMessage"];
-  
+  [filter setValue:@"H" forKey:@"inputCorrectionLevel"];
   CIImage *outImage = [filter outputImage];
   
   return [self createNonInterpolatedUIImageFormCIImage:outImage withSize:250];
@@ -174,11 +174,11 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 }
 
 - (void)QRCode:(UIImage *)str image:(UIImage *)image com:(void(^)(UIImage * image))com{
-  CGRect rect = CGRectMake(0.0f, 0.0f, 250 , 250);
-  UIGraphicsBeginImageContext(CGSizeMake(250, 250));
+  CGRect rect = CGRectMake(0.0f, 0.0f, 360 , 350);
+  UIGraphicsBeginImageContext(CGSizeMake(360, 360));
   [str drawInRect:rect];
   image = [self creatRoundImagwwwe: image];
-  [image drawInRect:CGRectMake(85, 85, 80, 80)];
+  [image drawInRect:CGRectMake(145, 145, 60, 60)];
   UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   com(image2);
@@ -370,8 +370,8 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 }
 
 -(UIImage *)creatRoundImagwwwe:(UIImage *)image{
-  CGRect rect = CGRectMake(0.0f, 0.0f, 80 , 80);
-  UIGraphicsBeginImageContext(CGSizeMake(80, 80));
+  CGRect rect = CGRectMake(0.0f, 0.0f, 60 , 60);
+  UIGraphicsBeginImageContext(CGSizeMake(60, 60));
   CGContextRef ctx = UIGraphicsGetCurrentContext();
   CGContextAddEllipseInRect(ctx, rect);
   CGContextClip(ctx);
