@@ -589,7 +589,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy);
-        Bitmap qrBitmap = createQRImage(url, 350, 350);
+        Bitmap qrBitmap = createQRImage(url, 360, 360);
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int newWidth = 750;
@@ -602,13 +602,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         canvas.drawBitmap(newbitmap,  0,0,paint);
-        canvas.drawBitmap(qrBitmap, 205, 795, paint);
+        canvas.drawBitmap(qrBitmap, 200, 795, paint);
 
 
         int iconW = icon.getWidth();
         int iconH = icon.getHeight();
         // 设置想要的大小
-        int newIconLenght = 60;
+        int newIconLenght = 80;
         // 计算缩放比例
         float iconWidthScale = ((float) newIconLenght) / iconW;
         float iconHeightScale = ((float) newIconLenght) / iconH;
@@ -624,7 +624,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
 
-        canvas.drawBitmap(roundIcon,350,940,paint);
+        canvas.drawBitmap(roundIcon,340,930,paint);
 
 
         String path = saveImageToCache(context, result, "inviteFriends.png");
