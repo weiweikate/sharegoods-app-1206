@@ -63,8 +63,8 @@ export default class SignInCircleView extends PureComponent {
 
     noSignInRender(){
         return (
-            <View style={[styles.circleStyle,{ width:px2dp(26),
-                height:px2dp(26),backgroundColor: '#c6b478',borderRadius:px2dp(13), borderWidth: px2dp(2),
+            <View style={[styles.circleStyle,{ width:px2dp(30),
+                height:px2dp(30),backgroundColor: '#c6b478',borderRadius:px2dp(15), borderWidth: px2dp(1),
                 borderColor:'white'
             }]}>
                 <Text style={[styles.textStyle,{color:DesignRule.textColor_secondTitle}]}>
@@ -94,9 +94,9 @@ export default class SignInCircleView extends PureComponent {
 
 const styles = StyleSheet.create({
     circleStyle:{
-        width:px2dp(24),
-        height:px2dp(24),
-        borderRadius:px2dp(12),
+        width:px2dp(28),
+        height:px2dp(28),
+        borderRadius:px2dp(14),
         justifyContent:'center',
         alignItems:'center'
     },
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
         fontSize:px2dp(12),
     },
     iconStyle:{
-        width:px2dp(18),
-        height:px2dp(18)
+        width:px2dp(20),
+        height:px2dp(20)
     }
 });
 
