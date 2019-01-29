@@ -126,7 +126,12 @@ SINGLETON_FOR_CLASS(JRShareManager)
           msg = @"QQ未安装";
         }else if (platform == UMSocialPlatformType_WechatSession || platform == UMSocialPlatformType_WechatTimeLine) {
           msg = @"微信未安装";
+        }else if (platform == UMSocialPlatformType_Sina) {
+          msg = @"微博未安装";
         }
+      }
+      if(msg == nil || msg.length == 0){
+         msg = @"分享取消";
       }
       [JRLoadingAndToastTool showToast:msg andDelyTime:1.5f];
       completion(msg);
