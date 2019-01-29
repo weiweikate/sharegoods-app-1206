@@ -134,10 +134,10 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   NSData *infoData = [info dataUsingEncoding:NSUTF8StringEncoding];
   //滤镜对象kvc存值
   [filter setValue:infoData forKeyPath:@"inputMessage"];
-  
+  [filter setValue:@"H" forKey:@"inputCorrectionLevel"];
   CIImage *outImage = [filter outputImage];
   
-  return [self createNonInterpolatedUIImageFormCIImage:outImage withSize:250];
+  return [self createNonInterpolatedUIImageFormCIImage:outImage withSize:360];
 }
 
 - (void)QRCodeWithStr:(NSString *)str imageStr:(NSString *)logoStr com:(void(^)(UIImage * image))com{
@@ -149,10 +149,10 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   NSData *infoData = [info dataUsingEncoding:NSUTF8StringEncoding];
   //滤镜对象kvc存值
   [filter setValue:infoData forKeyPath:@"inputMessage"];
-  
+  [filter setValue:@"H" forKey:@"inputCorrectionLevel"];
   CIImage *outImage = [filter outputImage];
   
-  UIImage * qrImage = [self createNonInterpolatedUIImageFormCIImage:outImage withSize:250];
+  UIImage * qrImage = [self createNonInterpolatedUIImageFormCIImage:outImage withSize:360];
   if ([logoStr hasPrefix:@"http"]) {
     [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:logoStr] options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
       
@@ -174,11 +174,11 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 }
 
 - (void)QRCode:(UIImage *)str image:(UIImage *)image com:(void(^)(UIImage * image))com{
-  CGRect rect = CGRectMake(0.0f, 0.0f, 250 , 250);
-  UIGraphicsBeginImageContext(CGSizeMake(250, 250));
+  CGRect rect = CGRectMake(0.0f, 0.0f, 360 , 350);
+  UIGraphicsBeginImageContext(CGSizeMake(360, 360));
   [str drawInRect:rect];
   image = [self creatRoundImagwwwe: image];
-  [image drawInRect:CGRectMake(85, 85, 80, 80)];
+  [image drawInRect:CGRectMake(140, 140, 80, 80)];
   UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   com(image2);
@@ -262,7 +262,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     UIGraphicsBeginImageContext(CGSizeMake(750, 1334));
     [bgImage drawInRect:CGRectMake(0, 0, 750, 1334)];
     // 绘制图片
-    [QRCodeImage drawInRect:CGRectMake(215, 805, 320, 320)];
+    [QRCodeImage drawInRect:CGRectMake(215 - 40, 805, 400, 400)];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     if(image){
@@ -370,8 +370,8 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 }
 
 -(UIImage *)creatRoundImagwwwe:(UIImage *)image{
-  CGRect rect = CGRectMake(0.0f, 0.0f, 80 , 80);
-  UIGraphicsBeginImageContext(CGSizeMake(80, 80));
+  CGRect rect = CGRectMake(0.0f, 0.0f, 60 , 60);
+  UIGraphicsBeginImageContext(CGSizeMake(60, 60));
   CGContextRef ctx = UIGraphicsGetCurrentContext();
   CGContextAddEllipseInRect(ctx, rect);
   CGContextClip(ctx);
