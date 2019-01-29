@@ -11,7 +11,7 @@ import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
-    MRText as Text,
+    MRText as Text
 } from '../../components/ui';
 
 @observer
@@ -31,10 +31,10 @@ export default class ShowListPage extends BasePage {
         needsExpensive: false
     };
 
-    handleBackPress=()=>{
+    handleBackPress = () => {
         this.$navigate('HomePage');
         return true;
-    }
+    };
 
 
     componentWillMount() {
@@ -76,7 +76,7 @@ export default class ShowListPage extends BasePage {
                 });
             }
         );
-        this.setState({needsExpensive: true})
+        this.setState({ needsExpensive: true });
     }
 
 
@@ -101,11 +101,11 @@ export default class ShowListPage extends BasePage {
     _render() {
         const { page, left, needsExpensive } = this.state;
 
-        let HotView = null
-        let HotFindView = null
+        let HotView = null;
+        let HotFindView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
-            HotFindView = require('./ShowHotFindView').default
+            HotFindView = require('./ShowHotFindView').default;
         }
 
         return <View style={styles.container}>
@@ -121,12 +121,14 @@ export default class ShowListPage extends BasePage {
                 }
                 <View style={styles.titleView}>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
-                        <Text style={page === 0 ? styles.activityIndex : styles.index} allowFontScaling={false}>精选热门</Text>
+                        <Text style={page === 0 ? styles.activityIndex : styles.index}
+                              allowFontScaling={false}>精选热门</Text>
                         {page === 0 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                     <View style={{ width: 50 }}/>
                     <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(1)}>
-                        <Text style={page === 1 ? styles.activityIndex : styles.index} allowFontScaling={false}>最新秀场</Text>
+                        <Text style={page === 1 ? styles.activityIndex : styles.index}
+                              allowFontScaling={false}>最新秀场</Text>
                         {page === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                 </View>
@@ -142,26 +144,26 @@ export default class ShowListPage extends BasePage {
                 showsVerticalScrollIndicator={false}
             >
                 <View key={1} style={styles.container} tabLabel="">
-                {
-                    needsExpensive
-                    ?
-                    <HotView navigate={this.$navigate} ref={(ref) => {
-                        this.showHotViewRef = ref;
-                    }} pageFocus={this.state.pageFocused}/>
-                    :
-                    null
-                }
+                    {
+                        needsExpensive
+                            ?
+                            <HotView navigate={this.$navigate} ref={(ref) => {
+                                this.showHotViewRef = ref;
+                            }} pageFocus={this.state.pageFocused}/>
+                            :
+                            null
+                    }
                 </View>
                 <View key={2} style={styles.container} tabLabel="   ">
-                {
-                    needsExpensive
-                    ?
-                    <HotFindView navigate={this.$navigate} ref={(ref) => {
-                        this.showHotFindeView = ref;
-                    }}/>
-                    :
-                    null
-                }
+                    {
+                        needsExpensive
+                            ?
+                            <HotFindView navigate={this.$navigate} ref={(ref) => {
+                                this.showHotFindeView = ref;
+                            }}/>
+                            :
+                            null
+                    }
                 </View>
             </ScrollableTabView>
         </View>;
@@ -228,6 +230,6 @@ let styles = StyleSheet.create({
     line: {
         backgroundColor: DesignRule.mainColor,
         width: 30,
-        height: 1
+        height: 2
     }
 });

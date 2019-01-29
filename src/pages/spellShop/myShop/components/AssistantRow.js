@@ -12,7 +12,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import {
     MRText as Text
 } from '../../../../components/ui';
-import UIImage from '@mr/image-placeholder';
+import AvatarImage from '../../../../components/ui/AvatarImage';
 
 export default class AssistantRow extends Component {
 
@@ -55,10 +55,7 @@ export default class AssistantRow extends Component {
         sty.push({ backgroundColor: 'white' });
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={sty}>
-                {
-                    headImg ? <UIImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/> :
-                        <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
-                }
+                <AvatarImage source={{ uri: headImg }} style={styles.headerImg} borderRadius={14}/>
                 <View style={styles.right}>
                     <Text style={styles.name} allowFontScaling={false}>{nickName || ' '}</Text>
                     <Text style={styles.level} allowFontScaling={false}>{levelName || ' '}</Text>

@@ -159,9 +159,10 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     alignItems: 'center'
                 }}>
                     <UIImage source={{ uri: this.state.path }}
+                             resizeMode={'stretch'}
                              style={{
                                  width: autoSizeWidth(160),
-                                 height: autoSizeWidth(160)
+                                 height: autoSizeWidth(160),
                              }}/>
                     {
                         user && user.headImg && user.headImg.length > 4 ?

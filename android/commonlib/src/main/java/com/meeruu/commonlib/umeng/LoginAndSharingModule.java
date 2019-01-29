@@ -39,6 +39,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.bean.WXLoginBean;
 import com.meeruu.commonlib.utils.LogUtils;
@@ -588,7 +589,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy);
-        Bitmap qrBitmap = createQRImage(url, 320, 320);
+        Bitmap qrBitmap = createQRImage(url, 360, 360);
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int newWidth = 750;
@@ -601,7 +602,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         canvas.drawBitmap(newbitmap,  0,0,paint);
-        canvas.drawBitmap(qrBitmap, 215, 805, paint);
+        canvas.drawBitmap(qrBitmap, 200, 795, paint);
 
 
         int iconW = icon.getWidth();
@@ -623,7 +624,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
 
-        canvas.drawBitmap(roundIcon,335,925,paint);
+        canvas.drawBitmap(roundIcon,340,930,paint);
 
 
         String path = saveImageToCache(context, result, "inviteFriends.png");
@@ -914,7 +915,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void creatQRCodeImage(String QRCodeStr, final Callback success, final Callback fail) {
-        Bitmap bitmap = createQRImage(QRCodeStr, 100, 100);
+        Bitmap bitmap = createQRImage(QRCodeStr, 300, 300);
         if (bitmap == null) {
             fail.invoke("二维码生成失败！");
             bitmap.recycle();
@@ -991,6 +992,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
             hints.put(EncodeHintType.MARGIN, 0);
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
             // 图像数据转换，使用了矩阵转换
             BitMatrix bitMatrix = new QRCodeWriter().encode(url, BarcodeFormat.QR_CODE, width, height, hints);
             int[] pixels = new int[width * height];

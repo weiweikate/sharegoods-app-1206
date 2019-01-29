@@ -205,3 +205,16 @@ emptyProps
     4.批量写入渠道：java -jar walle-cli-all.jar batch -f channel app-release.encrypted_signed.apk /Users/louis/tool/1.0.7
         
     5.单个写入渠道：java -jar walle-cli-all.jar put -c wandoujia app-release.encrypted_signed.apk
+    
+### android gradle自动配置
+android开发人员在引入新的module包时，需要重新配置gradle文件，统一版本号，并且还需要在我们预留的json文件下配置相关路径。
+
+预留的json文件位置：'../gradle/config.json',在内部添加：
+
+
+```
+"module_name": {
+    "content": "apply from: 'custom gralde file path'"，
+    "bulid_path":"../node_nodules/module_name/android/build.gradle "
+}
+```

@@ -8,7 +8,7 @@ import {
     RefreshControl
 } from 'react-native';
 import { observer } from 'mobx-react';
-import { ActivityOneView,TopBannerView } from './components/SbSectiontHeaderView';
+import { ActivityOneView, TopBannerView } from './components/SbSectiontHeaderView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
@@ -19,6 +19,7 @@ import DesignRule from '../../constants/DesignRule';
 // import ImageLoad from '@mr/image-placeholder'
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
 import { track } from '../../utils/SensorsTrack';
+import bridge from '../../utils/bridge';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -34,6 +35,11 @@ export default class DownPricePage extends BasePage {
         this.state = {
             selectNav: 0
         };
+        //初次进入loading
+        if (this.dataModel.isShowLoading) {
+            bridge.showLoading('加载中');
+            this.dataModel.isShowLoading = false;
+        }
     }
 
     componentDidMount() {
@@ -46,7 +52,14 @@ export default class DownPricePage extends BasePage {
                 this.dataModel.loadTopicData(linkTypeCode);
             }
         );
-        track('$AppViewScreen', { '$screen_name': 'DownPricePage','$title':'专题' });
+        track('$AppViewScreen', { '$screen_name': 'DownPricePage', '$title': '专题' });
+    }
+
+    /**
+     * 去掉loading
+     */
+    componentWillUnmount(){
+        this.$loadingDismiss();
     }
 
     /**
@@ -175,8 +188,10 @@ export default class DownPricePage extends BasePage {
             <ScrollView
                 alwaysBounceVertical={true}
                 contentContainerStyle={Styles.list}
+                showsVerticalScrollIndicator={false}
                 style={{
-                    width: ScreenUtils.width
+                    width: ScreenUtils.width,
+                    flex: 1
                 }}
                 refreshControl={
                     <RefreshControl
@@ -255,7 +270,8 @@ const Styles = StyleSheet.create({
     list: {
         flexDirection: 'row',//设置横向布局
         flexWrap: 'wrap',  //设置换行显示
-        backgroundColor: DesignRule.bgColor
+        backgroundColor: DesignRule.bgColor,
+        paddingBottom: 20
     },
     itemBgStyle: {
         width: ScreenUtils.width / 2,

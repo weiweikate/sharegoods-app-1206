@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     sureBtn: {
         justifyContent: 'center', alignItems: 'center',
         alignSelf: 'center',
-        height: 44, width: ScreenUtils.width - 30, marginBottom: ScreenUtils.safeBottom,
+        height: 44, width: ScreenUtils.width - 30, marginBottom: ScreenUtils.safeBottom + 15,
         backgroundColor: DesignRule.bgColor_btn, borderRadius: 22
     },
     sureText: {
