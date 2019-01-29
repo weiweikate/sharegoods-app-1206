@@ -9,6 +9,8 @@ const myData = {
     members_icon:require('./me_icon4_normal.png'),
     activity_icon:require('./me_icon5_normal.png'),
     thirNoSign_icon:require('./me_icon6_normal.png'),
-    no_up2_standard:require('./me_icon7_normal.png')
+    no_up2_standard:require('./me_icon7_normal.png'),
+    xiugou_present:require('./me_icon8_normal.png'),
+    xiugou_punishment:require('./me_icon9_normal.png')
 };
 export default myData;
