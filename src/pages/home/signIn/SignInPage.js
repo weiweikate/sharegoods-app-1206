@@ -205,7 +205,7 @@ export default class SignInPage extends BasePage {
     }
 
     _smallLineRenderWithColor(color) {
-        return (<View style={{ backgroundColor: color, height: px2dp(2), width: px2dp(15) }}/>);
+        return (<View style={{ backgroundColor: color, height: px2dp(1), width: px2dp(15) }}/>);
     }
 
     _signInInfoRender = () => {
@@ -233,7 +233,7 @@ export default class SignInPage extends BasePage {
             } else {
                 return (
                     <View key={'circle' + index} style={styles.signInItemWrapper}>
-                        <View style={{ backgroundColor: index < 4 ? 'white' : '#c6b478', height: px2dp(2), flex: 1 }}/>
+                        <View style={{ backgroundColor: index < 4 ? 'white' : '#c6b478', height: px2dp(1), flex: 1 }}/>
                         <SignInCircleView count={count} kind={kind}/>
                     </View>
                 );
