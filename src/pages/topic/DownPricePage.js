@@ -56,6 +56,13 @@ export default class DownPricePage extends BasePage {
     }
 
     /**
+     * 去掉loading
+     */
+    componentWillUnmount(){
+        this.$loadingDismiss();
+    }
+
+    /**
      * 渲染底部组列表
      * @param sections 所有组数据
      * @returns {*}
