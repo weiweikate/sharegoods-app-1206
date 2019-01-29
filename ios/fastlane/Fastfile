@@ -38,6 +38,6 @@ platform :ios do
       }
     )
     # 上传ipa到蒲公英服务器
-    pgyer(api_key: "f8fd88e52443f483f4bb5d7dfb857e02", user_key: "0ceec8de7f57ef87ef2a7ad14bb728ab")
+    # pgyer(api_key: "f8fd88e52443f483f4bb5d7dfb857e02", user_key: "0ceec8de7f57ef87ef2a7ad14bb728ab")
   end
 end
