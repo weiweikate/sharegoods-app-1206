@@ -146,7 +146,9 @@ export default class MyIntegralAccountPage extends BasePage {
         let use_type_symbol = ['', '+', '-'];
         let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg, taskImg,zensong];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
-        Toast.showLoading();
+        if(this.currentPage>1){
+            Toast.showLoading();
+        }
         MineApi.userScoreQuery({
             page: this.currentPage,
             size: 10
