@@ -17,9 +17,10 @@ import { RefreshList } from '../../components/ui';
 import Toast from '../../utils/bridge';
 import EmptyUtils from '../../utils/EmptyUtils';
 import MessageAPI from './api/MessageApi';
+
 const { px2dp } = ScreenUtils;
-import CommonUtils from '../../utils/CommonUtils'
-import MessageUtils from './utils/MessageUtils'
+import CommonUtils from '../../utils/CommonUtils';
+import MessageUtils from './utils/MessageUtils';
 import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 
@@ -228,7 +229,7 @@ export default class ShopMessagePage extends BasePage {
                     <Text style={{
                         marginLeft: 15,
                         fontSize: 13,
-                        color: DesignRule.textColor_secondTitle
+                        color: DesignRule.textColor_secondTitle, lineHeight: 23
                     }}>{item.content}</Text>
                 </View>
                 {this.itemBottomRender(item, index)}
@@ -299,7 +300,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: DesignRule.bgColor,
-        paddingBottom:20
+        paddingBottom: 20
     },
     typetitleStyle: {
         height: 49,
