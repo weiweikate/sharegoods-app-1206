@@ -1,6 +1,6 @@
 {
-    "showDebugPanel": false,
-    "envType": "online",
+    "showDebugPanel": true,
+    "envType": "qa",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -65,7 +65,7 @@
         },
         "shen_yaoxing": {
             "name": "沈耀鑫",
-            "host": "http://172.16.10.60:8180/gateway"
+            "host": "http://172.16.10.60:9090/gateway"
         },
         "dev_cs": {
             "name": "陈帅",

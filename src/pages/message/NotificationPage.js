@@ -69,7 +69,7 @@ export default class NotificationPage extends BasePage {
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
                 <View style={{ justifyContent: 'center', backgroundColor: 'white', paddingVertical: 32 }}>
-                    <Text style={{ marginLeft: 15, fontSize: 15, lineHeight: 23 }}>{item.content}</Text>
+                    <Text style={{ marginHorizontal: 15, fontSize: 15, lineHeight: 23 }}>{item.content}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
             </View>

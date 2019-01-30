@@ -1,6 +1,6 @@
 /**
- * @author xzm
- * @date 2019/1/23
+ * @author huyufeng
+ * @date 2019/1/29
  */
 
 var Client = require('ftp');
@@ -13,12 +13,11 @@ var config = {
     user:'ziming.x',
     password:'XIEziming123.'
 }
-var remoatPath = '/package/test/android';
+var remoatPath = '/package/test/ios';
 var currDate = new Date();
 var dirName = `/${currDate.getFullYear()}.${currDate.getMonth()+1}.${currDate.getDate()}-${currDate.getHours()}.${currDate.getMinutes()}.${currDate.getMinutes()}`;
 var dir = remoatPath+dirName;
-
-var localfile = '../android/app/build/outputs/apk/release/app-release.apk';
+var localfile = '../ios/app/build/outputs/apk/release/app-release.apk';
 
 function cdRemoteDir() {
     c.cwd(dir,function(error,currDir) {

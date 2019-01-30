@@ -62,7 +62,6 @@ export default class ShopCartPage extends BasePage {
         this.$navigationBarOptions.leftNavItemHidden = hiddeLeft;
         this.state = {
             showNav: false
-
         };
 
         this.dataArr = [
@@ -134,10 +133,15 @@ export default class ShopCartPage extends BasePage {
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
-    handleBackPress = () => {
-        this.$navigate('HomePage');
-        return true;
 
+
+    handleBackPress = () => {
+        if (this.$navigationBarOptions.leftNavItemHidden){
+            this.$navigate('HomePage');
+            return true;
+        } else {
+            return false;
+        }
     };
 
     _render() {

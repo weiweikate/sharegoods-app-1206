@@ -227,7 +227,7 @@ export default class ShopMessagePage extends BasePage {
                 </View>
                 <View style={{ backgroundColor: 'white', marginVertical: px2dp(15) }}>
                     <Text style={{
-                        marginLeft: 15,
+                        marginHorizontal: 15,
                         fontSize: 13,
                         color: DesignRule.textColor_secondTitle, lineHeight: 23
                     }}>{item.content}</Text>
