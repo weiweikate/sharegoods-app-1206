@@ -87,6 +87,9 @@ public class MainActivity extends BaseActivity {
 //            } else {
 //                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
 //            }
+            if (canSkip) {
+                mHandler.sendEmptyMessage(ParameterUtils.EMPTY_WHAT);
+            }
         } else {
             if (needGo && hasBasePer) {
                 goIndex();

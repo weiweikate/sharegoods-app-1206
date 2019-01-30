@@ -4,7 +4,7 @@ import {
     StyleSheet, DeviceEventEmitter,
     View
 } from 'react-native';
-import {MRText as Text} from '../../components/ui'
+import { MRText as Text } from '../../components/ui';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DateUtils from '../../utils/DateUtils';
 import StringUtils from '../../utils/StringUtils';
@@ -14,6 +14,7 @@ import MessageApi from './api/MessageApi';
 import Toast from '../../utils/bridge';
 import DesignRule from '../../constants/DesignRule';
 import RES from './res';
+
 const emptyIcon = RES.message_empty;
 
 
@@ -22,7 +23,7 @@ export default class NotificationPage extends BasePage {
         super(props);
         this.state = {
             viewData: [],
-            isEmpty: false,
+            isEmpty: false
         };
         this.currentPage = 1;
     }
@@ -36,7 +37,7 @@ export default class NotificationPage extends BasePage {
         this.loadPageData();
     }
 
-    $isMonitorNetworkStatus(){
+    $isMonitorNetworkStatus() {
         return true;
     }
 
@@ -52,14 +53,23 @@ export default class NotificationPage extends BasePage {
         return (
             <View style={{ width: ScreenUtils.width }}>
                 <View style={styles.itemContents}>
-                    <Text>{DateUtils.getFormatDate(item.startTime / 1000,'MM/dd hh:mm')}</Text>
+                    <Text>{DateUtils.getFormatDate(item.startTime / 1000, 'MM/dd hh:mm')}</Text>
                 </View>
-                <View style={{paddingVertical:17, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
-                    <Text style={{ marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.title}</Text>
+                <View style={{
+                    paddingVertical: 17,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: 'white'
+                }}>
+                    <Text style={{
+                        marginLeft: 15,
+                        fontSize: 15,
+                        color: DesignRule.textColor_mainTitle
+                    }}>{item.title}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
-                <View style={{ justifyContent: 'center', backgroundColor: 'white',paddingVertical:32 }}>
-                    <Text style={{ marginHorizontal: 15, fontSize: 15 }}>{item.content}</Text>
+                <View style={{ justifyContent: 'center', backgroundColor: 'white', paddingVertical: 32 }}>
+                    <Text style={{ marginHorizontal: 15, fontSize: 15, lineHeight: 23 }}>{item.content}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
             </View>
@@ -69,11 +79,11 @@ export default class NotificationPage extends BasePage {
 
     //type:200
 
-    loadPageData =()=> {
-        Toast.showLoading()
-        MessageApi.queryNotice({ page: 1, pageSize: 10,type:200 }).then(res => {
+    loadPageData = () => {
+        Toast.showLoading();
+        MessageApi.queryNotice({ page: 1, pageSize: 10, type: 200 }).then(res => {
             DeviceEventEmitter.emit('contentViewed');
-            Toast.hiddenLoading()
+            Toast.hiddenLoading();
             if (res.data.data) {
                 let arrs = [];
                 res.data.data.map((item, index) => {
@@ -81,27 +91,27 @@ export default class NotificationPage extends BasePage {
                         startTime: item.startTime,
                         content: item.content,
                         title: item.title,
-                        type: item.type,
+                        type: item.type
                     });
                 });
-                if(arrs.length > 0){
+                if (arrs.length > 0) {
                     this.setState({
                         viewData: arrs
                     });
-                }else {
-                    this.setState({isEmpty:true})
+                } else {
+                    this.setState({ isEmpty: true });
                 }
 
-            }else {
-                this.setState({isEmpty:true})
+            } else {
+                this.setState({ isEmpty: true });
             }
 
-        }).catch(error=>{
-            Toast.hiddenLoading()
-            this.setState({isEmpty:true})
+        }).catch(error => {
+            Toast.hiddenLoading();
+            this.setState({ isEmpty: true });
             this.$toastShow(error.msg);
         });
-    }
+    };
 
     //下拉加载更多
     onLoadMore = () => {
@@ -114,8 +124,8 @@ export default class NotificationPage extends BasePage {
         this.getDataFromNetwork();
     };
 
-    getDataFromNetwork =()=> {
-        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10 ,type:200}).then(res => {
+    getDataFromNetwork = () => {
+        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 200 }).then(res => {
             if (res.ok && typeof res.data === 'object' && StringUtils.isNoEmpty(res.data.data)) {
                 let arrs = this.currentPage === 1 ? [] : this.state.viewData;
                 res.data.data.map((item, index) => {
@@ -123,7 +133,7 @@ export default class NotificationPage extends BasePage {
                         startTime: item.startTime,
                         content: item.content,
                         title: item.title,
-                        type: item.type,
+                        type: item.type
                     });
                 });
                 this.setState({
@@ -134,7 +144,7 @@ export default class NotificationPage extends BasePage {
                 this.setState({ isEmpty: true });
             }
         });
-    }
+    };
 
     _render() {
         return (
@@ -159,7 +169,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: DesignRule.bgColor,
-        paddingBottom:20
+        paddingBottom: 20
     },
     itemContents: {
         height: 37,
