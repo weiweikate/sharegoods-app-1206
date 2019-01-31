@@ -42,4 +42,5 @@ dependencies {
     api files('libs/umeng-share-QQ-simplify-6.9.4.jar')
     api files('libs/umeng-share-core-6.9.4.jar')
     api files('libs/umeng-sharetool-6.9.4.jar')
+    api files('libs/utdid4all-1.1.5.3_proguard.jar')
 }
