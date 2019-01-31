@@ -6,9 +6,9 @@
 'use strict';
 import { action, observable } from 'mobx';
 import OssHelper from '../../../utils/OssHelper';
-const newuser_n = OssHelper('/sharegoods/resource/sg/images/package/newuser_n.png'+'?ts='+new Date().getTime());
-const newuser_y = OssHelper('/sharegoods/resource/sg/images/package/newuser_y.png'+'?ts='+new Date().getTime());
-const olduser = OssHelper('/sharegoods/resource/sg/images/package/olduser.png'+'?ts='+new Date().getTime());
+const newuser_n = OssHelper('/sharegoods/resource/sg/images/package/newuser_n.png');
+const newuser_y = OssHelper('/sharegoods/resource/sg/images/package/newuser_y.png');
+const olduser = OssHelper('/sharegoods/resource/sg/images/package/olduser.png');
 
 
 

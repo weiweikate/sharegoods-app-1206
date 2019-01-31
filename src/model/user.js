@@ -181,7 +181,7 @@ class User {
             if (infoStr && typeof infoStr === 'string') {
                 const info = JSON.parse(infoStr);
                 console.log('readUserInfoFromDisk', info);
-                bridge.setCookies(info);
+                // bridge.setCookies(info);
                 this.saveUserInfo(info, false);
             }else {
                 bridge.clearCookies();
