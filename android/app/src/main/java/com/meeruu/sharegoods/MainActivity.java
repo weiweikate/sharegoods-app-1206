@@ -87,6 +87,9 @@ public class MainActivity extends BaseActivity {
 //            } else {
 //                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
 //            }
+            if (canSkip) {
+                mHandler.sendEmptyMessage(ParameterUtils.EMPTY_WHAT);
+            }
         } else {
             if (needGo && hasBasePer) {
                 goIndex();
@@ -189,7 +192,9 @@ public class MainActivity extends BaseActivity {
                         mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
                         ((ViewStub) findViewById(R.id.vs_adv)).inflate();
                         ivAdv = findViewById(R.id.iv_adv);
-                        ImageLoadUtils.loadImage(Uri.parse(ossHost + "/app/start_adv.png"), ivAdv, ScalingUtils.ScaleType.FIT_CENTER);
+                        String url = ossHost + "/app/start_adv.png?" + System.currentTimeMillis();
+                        ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
+                                ScalingUtils.ScaleType.FIT_CENTER, true);
                         ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
                         ivAdvBg.setImageBitmap((Bitmap) msg.obj);

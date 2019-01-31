@@ -1,7 +1,9 @@
 package com.meeruu.commonlib.utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.disk.NoOpDiskTrimmableRegistry;
@@ -16,11 +18,10 @@ import com.facebook.imagepipeline.core.ImagePipelineFactory;
 
 public class ImagePipelineConfigUtils {
 
-    //分配的可用内存
-    private static final int MAX_HEAP_SIZE = (int) Runtime.getRuntime().maxMemory();
-
-    //使用的缓存数量
-    private static final int MAX_MEMORY_CACHE_SIZE = MAX_HEAP_SIZE / 3;
+    //最大缓存数量
+    private static final int MAX_CACHE_ENTRIES = 64;
+    private static final int MAX_CACHE_ASHM_ENTRIES = 128;
+    private static final int MAX_CACHE_EVICTION_ENTRIES = 32;
 
     //小图极低磁盘空间缓存的最大值（特性：可将大量的小图放到额外放在另一个磁盘空间防止大图占用磁盘空间而删除了大量的小图）
     private static final int MAX_SMALL_DISK_VERYLOW_CACHE_SIZE = 20 * ByteConstants.MB;
@@ -45,19 +46,26 @@ public class ImagePipelineConfigUtils {
 
     public static ImagePipelineConfig getDefaultImagePipelineConfig(Context context) {
 
-        //内存配置
-        final MemoryCacheParams bitmapCacheParams = new MemoryCacheParams(
-                MAX_MEMORY_CACHE_SIZE,// 内存缓存中总图片的最大大小,以字节为单位。
-                Integer.MAX_VALUE,// 内存缓存中图片的最大数量。
-                MAX_MEMORY_CACHE_SIZE,// 内存缓存中准备清除但尚未被删除的总图片的最大大小,以字节为单位。
-                Integer.MAX_VALUE,// 内存缓存中准备清除的总图片的最大数量。
-                Integer.MAX_VALUE);// 内存缓存中单个图片的最大大小。
+        final int maxCacheSize = getMaxCacheSize(context);
 
         //修改内存图片缓存数量，空间策略（这个方式有点恶心）
         Supplier<MemoryCacheParams> mSupplierMemoryCacheParams = new Supplier<MemoryCacheParams>() {
             @Override
             public MemoryCacheParams get() {
-                return bitmapCacheParams;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    return new MemoryCacheParams(maxCacheSize,     // 最大总图片缓存空间
+                            MAX_CACHE_ENTRIES,                     // 最大总图片缓存数量
+                            maxCacheSize / 2,    // 准备清除的总图片最大空间
+                            MAX_CACHE_EVICTION_ENTRIES,            // 准备清除的总图片最大数量
+                            maxCacheSize / 2);     // 单个图片最大大小
+                } else {
+                    return new MemoryCacheParams(
+                            maxCacheSize,
+                            MAX_CACHE_ASHM_ENTRIES,
+                            Integer.MAX_VALUE,
+                            Integer.MAX_VALUE,
+                            Integer.MAX_VALUE);
+                }
             }
         };
         //小图片的磁盘配置
@@ -103,5 +111,23 @@ public class ImagePipelineConfigUtils {
             }
         });
         return configBuilder.build();
+    }
+
+    private static int getMaxCacheSize(Context context) {
+        final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        final int maxMemory = Math.min(activityManager.getMemoryClass() * ByteConstants.MB, Integer.MAX_VALUE);
+        if (maxMemory < 32 * ByteConstants.MB) {
+            return 4 * ByteConstants.MB;
+        } else if (maxMemory < 64 * ByteConstants.MB) {
+            return 6 * ByteConstants.MB;
+        } else {
+            // We don't want to use more ashmem on Gingerbread for now, since it doesn't respond well to
+            // native memory pressure (doesn't throw exceptions, crashes app, crashes phone)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                return 8 * ByteConstants.MB;
+            } else {
+                return maxMemory / 4;
+            }
+        }
     }
 }

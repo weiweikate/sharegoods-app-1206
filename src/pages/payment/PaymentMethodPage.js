@@ -114,7 +114,10 @@ export default class PaymentMethodPage extends BasePage {
             this.setState({ orderChecking: false });
             if (data === 3) {
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
-                this.paymentResultView.show(1);
+                this.paymentResultView.show(PaymentResult.sucess);
+            }
+            if (data === 4) {
+                this.paymentResultView.show(PaymentResult.warning, '订单支付超时，下单金额已原路返回');
             }
         }).catch(() => {
             this.setState({ orderChecking: false });
