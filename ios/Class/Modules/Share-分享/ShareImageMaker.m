@@ -62,9 +62,9 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                                     QRCodeStr:(NSString *)QRCodeStr
 {
   CGFloat i = 3;
-  priceStr = [NSString stringWithFormat:@"市场价:%@",priceStr];
-  retailPrice = [NSString stringWithFormat:@"V0价:%@",retailPrice];
-  spellPrice = [NSString stringWithFormat:@"拼店价:%@",spellPrice];
+  priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
+  retailPrice = [NSString stringWithFormat:@"V  0  价：%@",retailPrice];
+  spellPrice = [NSString stringWithFormat:@"拼店价：%@",spellPrice];
   
   CGFloat sigle =  [self getStringHeightWithText:@"1" fontSize:13*i viewWidth:220*i];
   CGFloat height =  [self getStringHeightWithText:titleStr fontSize:13*i viewWidth:220*i];
@@ -80,7 +80,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   [priceAttrStr addAttributes:@{ NSStrikethroughStyleAttributeName: @0} range:NSMakeRange(0, 4)];
   
   NSMutableAttributedString *retailPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:retailPrice attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10*i], NSForegroundColorAttributeName: [UIColor redColor]}];
-  [retailPriceAttrStr addAttributes:@{ NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]} range:NSMakeRange(0, 4)];
+  [retailPriceAttrStr addAttributes:@{ NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]} range:NSMakeRange(0, 8)];
   
   NSMutableAttributedString *spellPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:spellPrice attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10*i], NSForegroundColorAttributeName: [UIColor redColor]}];
   [spellPriceAttrStr addAttributes:@{ NSForegroundColorAttributeName:[UIColor colorWithHexString:@"333333"]} range:NSMakeRange(0, 4)];
