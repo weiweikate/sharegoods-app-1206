@@ -200,7 +200,7 @@ export class ShowRecommendModules {
     }
 
     @action fetchRecommendList = (params, currentDate, page) => {
-        return ShowApi.showQuery({...params, page: page, size: 20}).then(result => {
+        return ShowApi.showQuery({...params, page: page}).then(result => {
             this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 this.page = 2
