@@ -10,10 +10,11 @@
  */
 'use strict';
 import apiEnvironment from '../api/ApiEnvironment';
+const timestamp = new Date().getTime();
 
 export default function(url) {
     if(url){
-        return apiEnvironment.getCurrentOssHost() + url;
+        return apiEnvironment.getCurrentOssHost() + url + '?ts=' + timestamp;
     }else {
         return url;
     }
