@@ -16,6 +16,8 @@ import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
 
+import java.io.File;
+
 public class ImagePipelineConfigUtils {
 
     //最大缓存数量
@@ -68,8 +70,9 @@ public class ImagePipelineConfigUtils {
                 }
             }
         };
+        File cacheFile = SDCardUtils.getFileDirPath("MR/cache");
         //小图片的磁盘配置
-        DiskCacheConfig diskSmallCacheConfig = DiskCacheConfig.newBuilder(context).setBaseDirectoryPath(SDCardUtils.getFileDirPath("MR/cache"))//缓存图片基路径
+        DiskCacheConfig diskSmallCacheConfig = DiskCacheConfig.newBuilder(context).setBaseDirectoryPath(cacheFile)//缓存图片基路径
                 .setBaseDirectoryName(IMAGE_PIPELINE_SMALL_CACHE_DIR)//文件夹名
                 .setMaxCacheSize(MAX_DISK_CACHE_SIZE)//默认缓存的最大大小。
                 .setMaxCacheSizeOnLowDiskSpace(MAX_SMALL_DISK_LOW_CACHE_SIZE)//缓存的最大大小,使用设备时低磁盘空间。
@@ -77,7 +80,7 @@ public class ImagePipelineConfigUtils {
                 .setDiskTrimmableRegistry(NoOpDiskTrimmableRegistry.getInstance())
                 .build();
         //默认图片的磁盘配置
-        DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(context).setBaseDirectoryPath(SDCardUtils.getFileDirPath("MR/cache"))//缓存图片基路径
+        DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(context).setBaseDirectoryPath(cacheFile)//缓存图片基路径
                 .setBaseDirectoryName(IMAGE_PIPELINE_CACHE_DIR)//文件夹名
                 .setMaxCacheSize(MAX_DISK_CACHE_SIZE)//默认缓存的最大大小。
                 .setMaxCacheSizeOnLowDiskSpace(MAX_DISK_CACHE_LOW_SIZE)//缓存的最大大小,使用设备时低磁盘空间。
