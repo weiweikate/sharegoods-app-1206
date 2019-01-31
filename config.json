@@ -40,7 +40,7 @@
         },
         "garyTest": {
             "name": "灰度测试",
-            "host": "https://47.110.199.35/gateway",
+            "host": "https://apif.sharegoodsmall.com/gateway",
             "h5": "https://h5.sharegoodsmall.com",
             "oss": "https://cdn.sharegoodsmall.com",
             "wxAppletKey": "gh_e0c6b86659cc",
