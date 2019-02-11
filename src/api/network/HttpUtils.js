@@ -120,7 +120,7 @@ export default class HttpUtils {
             };
             return axios.get(url, config);
         }).then(response => {
-            console.log(response);
+            console.log('get', url, response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);
@@ -128,7 +128,7 @@ export default class HttpUtils {
             }
             return data;
         }).catch(response => {
-            console.log(response);
+            console.log('get error', url, response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);
@@ -166,7 +166,7 @@ export default class HttpUtils {
             };
             return axios.post(url, data, config);
         }).then(response => {
-            console.log(response);
+            console.log('post', url, data, response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);
@@ -174,7 +174,7 @@ export default class HttpUtils {
             }
             return data;
         }).catch(response => {
-            console.log(response);
+            console.log('post error', url, data, response);
             let data = response.data || {};
             if (EnvConfig.showDebugPanel) {
                 let history = createHistory(response || {}, timeLineStart);

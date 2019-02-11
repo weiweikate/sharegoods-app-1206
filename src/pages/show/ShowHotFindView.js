@@ -80,7 +80,7 @@ export default class ShowHotView extends Component {
             this.waterfall && this.waterfall.clear();
             this.waterfall && (this.waterfall.index = 1);
             this.waterfall && (this.waterfall.itemQueue = []);
-            this.recommendModules.fetchRecommendList({}, currentDate, 1).then(data => {
+            this.recommendModules.fetchRecommendList({size: 20}, currentDate, 1).then(data => {
                 this.setState({ isFetching: false });
                 this.waterfall.addItems(data);
             }).catch((error) => {

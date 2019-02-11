@@ -73,7 +73,7 @@ export default class ShowHotView extends Component {
         this.waterfall && this.waterfall.scrollToTop();
         this.waterfall && (this.waterfall.index = 1);
         this.waterfall && this.waterfall.clear();
-        this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
+        this.recommendModules.loadRecommendList({ generalize: tag.Recommend, size: 10 }).then(data => {
             this.firstLoad = false;
             let hasRecommend = false;
             console.log('loadRecommendList', data);
@@ -138,7 +138,7 @@ export default class ShowHotView extends Component {
             }
         </View>;
     };
-    _keyExtractor = (data) => data.id + '';
+    _keyExtractor = (data) => data.code + '';
 
     _renderInfinite() {
         const { hasRecommend } = this.state;

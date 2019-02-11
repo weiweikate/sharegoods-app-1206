@@ -6,7 +6,6 @@ let requestIndex = 0;
 let cancelRequestMap = {};
 
 export default function configureTimeout(config) {
-    console.log('config', config);
     requestIndex += 1;
     const currentRequestIndex = requestIndex;
     config.cancelToken = new axios.CancelToken((cancelExecutor) => {
