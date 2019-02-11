@@ -53,6 +53,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMMin;
 import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.sina.helper.MD5;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,6 +61,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URI;
+import java.security.MessageDigest;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -539,12 +541,25 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         intent.setData(uri);
         context.sendBroadcast(intent);
 
-        result.recycle();
-        bitmap.recycle();
-        whiteBitmap.recycle();
-        header.recycle();
-        qrBitmap.recycle();
+        if(!result.isRecycled()){
+            result.recycle();
+        }
 
+        if(!bitmap.isRecycled()){
+            bitmap.recycle();
+        }
+
+        if(!whiteBitmap.isRecycled()){
+            whiteBitmap.recycle();
+        }
+
+        if(!header.isRecycled()){
+            header.recycle();
+        }
+
+        if(!qrBitmap.isRecycled()){
+            qrBitmap.recycle();
+        }
         success.invoke();
 
     }
@@ -627,7 +642,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         canvas.drawBitmap(roundIcon,340,930,paint);
 
 
-        String path = saveImageToCache(context, result, "inviteFriends.png");
+        String path = saveImageToCache(context, result, "inviteFriends.png",url);
 
         path = "file://"+path;
         Uri uri = Uri.parse(path);
@@ -635,12 +650,25 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         intent.setData(uri);
         context.sendBroadcast(intent);
 
+        if(!result.isRecycled()){
+            result.recycle();
+        }
 
-        result.recycle();
-        bitmap.recycle();
-        qrBitmap.recycle();
-        newbitmap.recycle();
-        icon.recycle();
+        if(!bitmap.isRecycled()){
+            bitmap.recycle();
+        }
+
+        if(!qrBitmap.isRecycled()){
+            qrBitmap.recycle();
+        }
+
+        if(!newbitmap.isRecycled()){
+            newbitmap.recycle();
+        }
+
+        if(!icon.isRecycled()){
+            icon.recycle();
+        }
 
         success.invoke();
     }
@@ -705,10 +733,21 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             fail.invoke("图片生成失败");
         }
 
-        bitmap.recycle();
-        result.recycle();
-        qrBitmap.recycle();
-        newbitmap.recycle();
+        if(!bitmap.isRecycled()){
+            bitmap.recycle();
+        }
+
+        if(!result.isRecycled()){
+            result.recycle();
+        }
+
+        if(!qrBitmap.isRecycled()){
+            qrBitmap.recycle();
+        }
+
+        if(!newbitmap.isRecycled()){
+            newbitmap.recycle();
+        }
     }
 
 
@@ -854,14 +893,20 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             canvas.drawBitmap(qrBitmap, 370, 565, paint);
         }
 
-        String path = saveImageToCache(context, result, "shareImage.png");
+
+        String path = saveImageToCache(context, result, "shareImage.png",shareImageBean.toString());
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
         } else {
             fail.invoke("图片生成失败");
         }
-        result.recycle();
-        qrBitmap.recycle();
+        if(!result.isRecycled()){
+            result.recycle();
+        }
+
+        if(!qrBitmap.isRecycled()){
+            qrBitmap.recycle();
+        }
     }
 
     private ShareImageBean parseParam(ReadableMap map) {
@@ -918,17 +963,23 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Bitmap bitmap = createQRImage(QRCodeStr, 300, 300);
         if (bitmap == null) {
             fail.invoke("二维码生成失败！");
-            bitmap.recycle();
+            if(!bitmap.isRecycled()){
+                bitmap.recycle();
+            }
+
             return;
         }
-        String path = saveImageToCache(mContext, bitmap, "shareImage.png");
+        String path = saveImageToCache(mContext, bitmap, "shareImage.png",QRCodeStr);
         if (TextUtils.isEmpty(path)) {
             fail.invoke("图片保存失败！");
         } else {
             success.invoke(path);
         }
 
-        bitmap.recycle();
+        if(!bitmap.isRecycled()){
+            bitmap.recycle();
+        }
+
     }
 
     @ReactMethod
@@ -970,8 +1021,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             fail.invoke();
         }
-
-        bmp.recycle();
+        if(!bmp.isRecycled()){
+            bmp.recycle();
+        }
     }
 
 
@@ -1041,6 +1093,34 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         return file.getAbsolutePath();
     }
 
+    private static String saveImageToCache(Context context, Bitmap bitmap, String name,String url) {
+
+        String path = getDiskCachePath();
+        String md5 = "";
+        try {
+            md5 = MD5(url);
+        }catch (Exception e){
+
+        }
+        String fileName = md5 + name;
+        File file = new File(path, fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file.getAbsolutePath();
+    }
+
     /**
      * 获取cache路径
      *
@@ -1049,5 +1129,28 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     public static String getDiskCachePath() {
         File file = SDCardUtils.getFileDirPath("MR/picture");
         return file.getAbsolutePath();
+    }
+
+
+    private static String MD5(String s) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] bytes = md.digest(s.getBytes("utf-8"));
+            return toHex(bytes);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String toHex(byte[] bytes) {
+
+        final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
+        StringBuilder ret = new StringBuilder(bytes.length * 2);
+        for (int i=0; i<bytes.length; i++) {
+            ret.append(HEX_DIGITS[(bytes[i] >> 4) & 0x0f]);
+            ret.append(HEX_DIGITS[bytes[i] & 0x0f]);
+        }
+        return ret.toString();
     }
 }
