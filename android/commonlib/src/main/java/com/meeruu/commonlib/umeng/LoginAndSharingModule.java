@@ -62,6 +62,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.security.MessageDigest;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -532,8 +533,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.getTextBounds(wxTip, 0, wxTip.length(), bounds);
         canvas.drawText(wxTip, (375-bounds.width())/2, 470, paint);
 
+        HashMap hashMap = map.toHashMap();
 
-        String path = saveImageToCache(context, result, "inviteShop.png");
+        String path = saveImageToCache(context, result, "inviteShop.png",hashMap.toString());
 
         path = "file://"+path;
         Uri uri = Uri.parse(path);
