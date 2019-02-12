@@ -617,7 +617,9 @@ export default class MyCouponsItems extends Component {
         console.log('refresh');
         this.isEnd = false;
         this.currentPage = 1;
-        this.getUserInfo();
+        if (user.isLogin){
+            this.getUserInfo();
+        }
         this.getDataFromNetwork();
     };
 
