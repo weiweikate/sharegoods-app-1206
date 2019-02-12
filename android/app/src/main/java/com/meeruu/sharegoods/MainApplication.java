@@ -92,7 +92,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return;
         }
         LeakCanary.install(this);
-        Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
         if (getProcessName(this).equals(getPackageName())) {
             AsyncStorageManager.getInstance().init(this);
             // umeng初始化

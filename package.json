@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@mr/rn-geolocation": "0.1.11",
-        "@mr/image-placeholder": "0.1.18",
+        "@mr/image-placeholder": "0.1.22",
         "@mr/largelist": "^1.0.1",
         "@mr/cookies": "0.0.6",
         "@mr/webview": "0.3.0",

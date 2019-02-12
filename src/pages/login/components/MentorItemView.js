@@ -17,17 +17,15 @@ import React, { Component } from 'react';
 import {
     View,
     TouchableOpacity,
-    Animated,
-    Image
+    Animated
 } from 'react-native';
-import {MRText as Text} from '../../../components/ui'
+import { MRText as Text } from '../../../components/ui';
 // import {
 //   UIText,
 //   UIImage,
 // } from '../../../components/ui';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import res from '../../../comm/res';
 // import ImageLoad from '@mr/image-placeholder'
 // import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
@@ -70,61 +68,20 @@ export default class MentorItemView extends Component {
                     height: 100,
                     alignItems: 'center',
                     justifyContent: 'center'
-                }}
-            >
+                }}>
                 <TouchableOpacity
                     onPress={() => {
                         // this.state.isSelected? this._resetAnimation(): this._startAnimation();
                         // this.state.isSelected = !this.state.isSelected;
                         this.props.clickItemAction && this.props.clickItemAction(this.state.itemData);
-                    }
-                    }
-                >
-                    {/*<Image*/}
-                    {/*source={*/}
-                    {/*{*/}
-                    {/*uri: this.state.itemData.headImg?this.state.itemData.headImg:''*/}
-                    {/*}*/}
-
-                    {/*}*/}
-                    {/*style={{*/}
-                    {/*height: ImageWidth,*/}
-                    {/*width: ImageWidth,*/}
-                    {/*borderRadius: ImageWidth / 2*/}
-                    {/*}}*/}
-                    {/*/>*/}
-                    {/*<ImageLoad*/}
-                    {/*height={ImageWidth}*/}
-                    {/*width={ImageWidth}*/}
-                    {/*style={imageStyle}*/}
-                    {/*borderRadius={ImageWidth / 2}*/}
-                    {/*source={{*/}
-                    {/*uri:this.props.itemData.headImg ? this.props.itemData.headImg : ''*/}
-                    {/*}}*/}
-                    {/*renderPlaceholder={() => {*/}
-                    {/*return (<Image*/}
-                    {/*style={*/}
-                    {/*{*/}
-                    {/*height: ImageWidth,*/}
-                    {/*width: ImageWidth,*/}
-                    {/*borderRadius: ImageWidth / 2*/}
-                    {/*}*/}
-                    {/*}*/}
-                    {/*source={res.placeholder.noHeadImage}*/}
-                    {/*/>);*/}
-                    {/*}}*/}
-                    {/*/>*/}
-                        <ImageLoad
-                            source={{uri:this.state.itemData.headImg ? this.state.itemData.headImg : ''}}
-                            renderPlaceholder={()=> <Image source={res.placeholder.noHeadImage}  style={{
-                                height: ImageWidth,
-                                width: ImageWidth,
-                                borderRadius: ImageWidth / 2
-                            }}/>}
-                            height={ImageWidth}
-                            width={ImageWidth}
-                            borderRadius={ImageWidth / 2}
-                        />
+                    }}>
+                    <ImageLoad
+                        source={{ uri: this.state.itemData.headImg ? this.state.itemData.headImg : '' }}
+                        isAvatar={true}
+                        height={ImageWidth}
+                        width={ImageWidth}
+                        borderRadius={ImageWidth / 2}
+                    />
                 </TouchableOpacity>
                 <Text
                     numberOfLines={1}
