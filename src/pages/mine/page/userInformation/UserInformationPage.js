@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     View,
-    StyleSheet, ScrollView, RefreshControl
+    StyleSheet, ScrollView, RefreshControl, Clipboard,Alert
 } from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
@@ -63,6 +63,27 @@ export default class UserInformationPage extends BasePage {
 
     };
 
+    copyCode = () => {
+        let type = user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? '靓号' : '会员号';
+
+        Alert.alert(
+            `复制${type}`, null, [
+                {
+                    text: '确定', onPress: () => {
+                        let code = user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? `${user.perfectNumberCode}` : `${user.code}`;
+                        Clipboard.setString(code);
+                    }
+                },
+                {
+                    text: '取消', onPress: () => {
+                    }
+                }
+            ]
+        );
+
+
+    };
+
     _render() {
         return (
             <ScrollView
@@ -85,8 +106,13 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}
                                 onPress={() => this.jumpToNickNameModifyPage()}/>
                 {this.renderWideLine()}
-                <UserSingleItem leftText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? '靓号' : '会员号'} rightText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? user.perfectNumberCode : user.code} rightTextStyle={styles.grayText}
-                                leftTextStyle={styles.blackText} isArrow={false}/>
+                <UserSingleItem
+                    leftText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? '靓号' : '会员号'}
+                    rightText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? user.perfectNumberCode : user.code}
+                    rightTextStyle={styles.grayText}
+                    leftTextStyle={styles.blackText} isArrow={false}
+                    onPress={()=>this.copyCode()}
+                />
                 <UserSingleItem leftText={'会员等级'} rightText={user.levelRemark}
                                 rightTextStyle={[styles.grayText, { color: 'white' }]}
                                 leftTextStyle={styles.blackText} isArrow={false} circleStyle={{
@@ -142,7 +168,7 @@ export default class UserInformationPage extends BasePage {
                     this.gotoLoginPage();
                 }
             });
-        },1,true);
+        }, 1, true);
     };
     jumpToIDVertify2Page = () => {
         if (!user.realname) {
