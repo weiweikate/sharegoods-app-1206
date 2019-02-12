@@ -12,7 +12,7 @@ const api = {
     //密码登陆
     passwordLogin: '/user/userLogin/passwordLogin',
     //获取个人信息
-    getUser: ['/user/getUser', { method: 'get' }],
+    getUser: ['/user/getUser', { method: 'get', checkLogin: true }],
     //根据ID查询问题详情
     findHelpQuestionById: ['/help/helpQuestion/findHelpQuestionById', { method: 'get' }],
     //查询问题的列表
