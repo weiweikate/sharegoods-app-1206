@@ -2,7 +2,6 @@ package com.meeruu.sharegoods.ui.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +23,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactNativeHost;
@@ -388,26 +386,6 @@ public class MainRNActivity extends ReactActivity {
                 break;
             default:
                 break;
-        }
-    }
-
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-        try {
-            if (level >= ComponentCallbacks2.TRIM_MEMORY_MODERATE) {
-                ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        try {
-            ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
-        } catch (Exception e) {
         }
     }
 }
