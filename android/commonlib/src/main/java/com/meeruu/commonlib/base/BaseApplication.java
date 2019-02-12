@@ -6,12 +6,10 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.soloader.SoLoader;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
-import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
@@ -62,7 +60,6 @@ public class BaseApplication extends MultiDexApplication {
         ForegroundCallbacks.init(this);
         if (getProcessName(this).equals(getPackageName())) {
             SoLoader.init(this, /* native exopackage */ false);
-            Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
             // 友盟统计
