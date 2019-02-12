@@ -428,5 +428,70 @@ public final class BitmapUtils {
         return bitmap;
     }
 
+    /**
+     * bitmap转file，返回file的路径,id唯一标识拼接到name
+     *
+     * @param bitmap
+     * @param name
+     * @param id
+     * @return
+     */
+    public static String saveImageToCache(Bitmap bitmap, String name, String id) {
+        File dir = SDCardUtils.getFileDirPath("MR/picture");
+        String path = dir.getAbsolutePath();
+        String md5 = "";
+        try {
+            md5 = SecurityUtils.MD5(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String fileName = md5 + name;
+        File file = new File(path, fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file.getAbsolutePath();
+    }
+
+    /**
+     * bitmap转file，返回file的路径
+     *
+     * @param bitmap
+     * @param name
+     * @return
+     */
+    public static String saveImageToCache(Bitmap bitmap, String name) {
+        File dir = SDCardUtils.getFileDirPath("MR/picture");
+        String path = dir.getAbsolutePath();
+        long date = System.currentTimeMillis();
+        String fileName = date + name;
+        File file = new File(path, fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file.getAbsolutePath();
+    }
 
 }
