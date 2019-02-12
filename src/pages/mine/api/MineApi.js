@@ -46,7 +46,7 @@ const api = {
     //查询余额记录
     userBalanceQuery: ['/user/userBalance/query', { method: 'get' }],
     //用户登出
-    signOut: ['/user/userLogin/signOut', { method: 'get' }],
+    signOut: ['/user/userLogin/signOut', { method: 'get', checkLogin: true}],
     //添加实名认证
     addUserCertification: '/user/UserCertification/addUserCertification',
     // 修改手机号
