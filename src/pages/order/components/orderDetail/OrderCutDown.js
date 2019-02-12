@@ -10,7 +10,7 @@ const getDateData = (closeTime) => {
     let diff = closeTime - Date.parse(new Date()) / 1000;
     if (diff <= 0) {
         // this.sec = 0
-        this.stop(); // 倒计时为0的时候, 将计时器清除
+        // this.stop(); // 倒计时为0的时候, 将计时器清除
         return { sec: -1 };
     }
 
