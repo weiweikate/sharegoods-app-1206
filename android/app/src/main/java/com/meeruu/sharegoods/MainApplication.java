@@ -6,19 +6,8 @@ import android.support.multidex.MultiDex;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
-import com.brentvatne.react.ReactVideoPackage;
-import com.meeruu.sharegoods.rn.storage.AsyncStorageManager;
-import com.oblador.vectoricons.VectorIconsPackage;
-import cn.reactnative.modules.update.UpdatePackage;
-import com.horcrux.svg.SvgPackage;
-import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
-import com.sensorsdata.analytics.RNSensorsAnalyticsPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.request.MRNetStatePackage;
-import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
-import com.psykar.cookiemanager.CookieManagerPackage;
-import com.reactlibrary.RNGeolocationPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -35,6 +24,7 @@ import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.kefu.QiyuImageLoader;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
+import com.meeruu.sharegoods.rn.storage.AsyncStorageManager;
 import com.meeruu.sharegoods.utils.SensorsUtils;
 import com.meituan.android.walle.WalleChannelReader;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -72,8 +62,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
     @Override
     public void onCreate() {
         super.onCreate();
-        AsyncStorageManager.getInstance().init(this);
-
         final SophixManager instance = SophixManager.getInstance();
         instance.setPatchLoadStatusStub(new PatchLoadStatusListener() {
             @Override
@@ -104,7 +92,9 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return;
         }
         LeakCanary.install(this);
+        Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
         if (getProcessName(this).equals(getPackageName())) {
+            AsyncStorageManager.getInstance().init(this);
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
             if (Utils.isApkInDebug()) {
