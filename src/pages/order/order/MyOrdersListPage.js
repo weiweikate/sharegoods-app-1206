@@ -59,6 +59,7 @@ class MyOrdersListPage extends BasePage {
     _render() {
         return (
             <ScrollableTabView
+                style={styles.container}
                 renderTabBar={this._renderTabBar}
                 //进界面的时候打算进第几个
                 initialPage={parseInt(this.state.index)}>
@@ -96,6 +97,10 @@ class MyOrdersListPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginBottom: ScreenUtils.safeBottom
+    },
     tabBar: {
         width: ScreenUtils.width,
         height: 48,
