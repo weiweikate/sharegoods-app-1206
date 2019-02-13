@@ -1,15 +1,19 @@
 package com.meeruu.commonlib.base;
 
 import android.app.ActivityManager;
+import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.soloader.SoLoader;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
+import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
@@ -59,6 +63,7 @@ public class BaseApplication extends MultiDexApplication {
         // activity生命周期，onCreate之后
         ForegroundCallbacks.init(this);
         if (getProcessName(this).equals(getPackageName())) {
+            Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
             SoLoader.init(this, /* native exopackage */ false);
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
@@ -113,5 +118,25 @@ public class BaseApplication extends MultiDexApplication {
             }
         }
         return "";
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        try {
+            if (level >= ComponentCallbacks2.TRIM_MEMORY_MODERATE) {
+                ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        try {
+            ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
+        } catch (Exception e) {
+        }
     }
 }

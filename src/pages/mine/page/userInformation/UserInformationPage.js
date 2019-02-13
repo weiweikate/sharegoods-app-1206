@@ -47,12 +47,20 @@ export default class UserInformationPage extends BasePage {
     };
 
     _reload = () => {
-        MineApi.getUser().then(res => {
-            let data = res.data;
-            user.saveUserInfo(data);
-        }).catch(err => {
-            this.$toastShow(err.msg);
-        });
+        if(user.isLogin){
+            MineApi.getUser().then(res => {
+                let data = res.data;
+                user.saveUserInfo(data);
+            }).catch(err => {
+                this.$toastShow(err.msg);
+                if (err.code === 10009) {
+                    this.gotoLoginPage()
+                }
+            });
+        }else{
+            this.gotoLoginPage();
+        }
+
     };
 
     copyCode = () => {

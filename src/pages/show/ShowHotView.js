@@ -1,7 +1,7 @@
 /**
  * 精选热门
  */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import ShowBannerView from './ShowBannerView';
@@ -20,7 +20,7 @@ import ItemView from './ShowHotItem';
 const imgWidth = (ScreenUtils.width - px2dp(40)) / 2;
 
 @observer
-export default class ShowHotView extends Component {
+export default class ShowHotView extends PureComponent {
 
     state = {
         isEnd: false,
@@ -180,9 +180,6 @@ export default class ShowHotView extends Component {
 }
 
 let styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
     titleView: {
         height: px2dp(53),
         alignItems: 'center',
