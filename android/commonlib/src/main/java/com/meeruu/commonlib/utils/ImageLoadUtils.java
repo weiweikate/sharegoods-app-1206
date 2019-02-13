@@ -35,7 +35,6 @@ public class ImageLoadUtils {
         roundParams = new RoundingParams();
     }
 
-
     public static void loadImageRes(Context context, @DrawableRes int resId, SimpleDraweeView view) {
         Uri uri = Uri.parse("res://" + context.getPackageName() + "/" + resId);
         loadImage(uri, view, 0, false);
@@ -170,8 +169,16 @@ public class ImageLoadUtils {
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
                 .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
                 .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
+        int width = view.getMeasuredWidth();
+        int height = view.getMeasuredHeight();
         if (scale) {
-            requestBuilder.setResizeOptions(new ResizeOptions(view.getMeasuredWidth(), view.getMeasuredHeight()));
+            requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+        } else {
+            if (width > 0) {
+                requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+            } else {
+                requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
+            }
         }
         ImageRequest request = requestBuilder.build();
         GenericDraweeHierarchy hierarchy =
@@ -197,8 +204,16 @@ public class ImageLoadUtils {
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
                 .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
                 .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
+        int width = view.getMeasuredWidth();
+        int height = view.getMeasuredHeight();
         if (scale) {
-            requestBuilder.setResizeOptions(new ResizeOptions(view.getMeasuredWidth(), view.getMeasuredHeight()));
+            requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+        } else {
+            if (width > 0) {
+                requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+            } else {
+                requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
+            }
         }
         ImageRequest request = requestBuilder.build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -264,8 +279,16 @@ public class ImageLoadUtils {
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
                 .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
                 .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
+        int width = view.getMeasuredWidth();
+        int height = view.getMeasuredHeight();
         if (scale) {
-            requestBuilder.setResizeOptions(new ResizeOptions(view.getMeasuredWidth(), view.getMeasuredHeight()));
+            requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+        } else {
+            if (width > 0) {
+                requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+            } else {
+                requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
+            }
         }
         ImageRequest request = requestBuilder.build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()

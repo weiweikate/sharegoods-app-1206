@@ -1,7 +1,7 @@
 /**
  * 精选热门
  */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import ShowBannerView from './ShowBannerView';
@@ -20,7 +20,7 @@ import ItemView from './ShowHotItem';
 const imgWidth = (ScreenUtils.width - px2dp(40)) / 2;
 
 @observer
-export default class ShowHotView extends Component {
+export default class ShowHotView extends PureComponent {
 
     state = {
         isEnd: false,
@@ -73,7 +73,7 @@ export default class ShowHotView extends Component {
         this.waterfall && this.waterfall.scrollToTop();
         this.waterfall && (this.waterfall.index = 1);
         this.waterfall && this.waterfall.clear();
-        this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
+        this.recommendModules.loadRecommendList({ generalize: tag.Recommend, size: 10 }).then(data => {
             this.firstLoad = false;
             let hasRecommend = false;
             console.log('loadRecommendList', data);
@@ -138,7 +138,7 @@ export default class ShowHotView extends Component {
             }
         </View>;
     };
-    _keyExtractor = (data) => data.id + '';
+    _keyExtractor = (data) => data.code + '';
 
     _renderInfinite() {
         const { hasRecommend } = this.state;
@@ -180,9 +180,6 @@ export default class ShowHotView extends Component {
 }
 
 let styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
     titleView: {
         height: px2dp(53),
         alignItems: 'center',

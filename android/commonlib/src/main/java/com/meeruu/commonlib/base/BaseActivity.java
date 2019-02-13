@@ -206,25 +206,5 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             permissionDialog.show();
         }
     }
-
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-        try {
-            if (level >= ComponentCallbacks2.TRIM_MEMORY_MODERATE) {
-                ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        try {
-            ImagePipelineFactory.getInstance().getImagePipeline().clearMemoryCaches();
-        } catch (Exception e) {
-        }
-    }
 }
 

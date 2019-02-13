@@ -1,6 +1,6 @@
 const api = {
     //购物车列表
-    list: ["/user/shoppingcart/list",{ method: 'get'}],
+    list: ["/user/shoppingcart/list",{ method: 'get', checkLogin: true}],
     /*购物车更新商品*/
     // updateItem: "/user/shoppingcart/updateItem",
     updateItem: "/user/shoppingcart/update",

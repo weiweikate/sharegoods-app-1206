@@ -46,9 +46,9 @@ const api = {
     //查询签到信息
     querySignList:['/user/userSign/querySignList',{method:'get'}],
     //用户签到
-    userSign:['/user/userSign/sign',{method:'post'}],
+    userSign:['/user/userSign/sign',{method:'post', checkLogin: true}],
     //一元优惠券兑换
-    exchangeTokenCoin:['/user/exchangeTokenCoin',{method:'post'}],
+    exchangeTokenCoin:['/user/exchangeTokenCoin',{method:'post', checkLogin: true}],
     //首页分类
     classify: ['/config/advertisement/queryCategoryList', {method: 'get'}],
     //秀豆兑换比例
