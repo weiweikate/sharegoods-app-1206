@@ -80,10 +80,10 @@ export default class RequestDetailPage extends BasePage {
 
     _render() {
         let height = ScreenUtils.height - ScreenUtils.headerHeight ;
-        if(ScreenUtils.isAllScreenDevice && !ScreenUtils.isNavigationBarShow){
+        if(ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()){
             height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ScreenUtils.headerHeight;
-        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.isNavigationBarShow){
-            if(ScreenUtils.isAnroidNotchScreen){
+        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()){
+            if(ScreenUtils.getHasNotchScreen()){
                 height = ScreenUtils.height - 44;
             }else {
                 height = ScreenUtils.height - 44 -ExtraDimensions.get('STATUS_BAR_HEIGHT');
