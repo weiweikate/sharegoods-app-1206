@@ -44,7 +44,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
       if (error) {//如果加载网络图片失败，就用默认图
         image2 = [UIImage imageNamed:@""];
       }
-      NSString *path = [weakSelf ceratShareImageWithProductImage:image2 titleStr:model.titleStr priceStr:model.priceStr retailPrice: model.retailPrice spellPrice: model.spellPrice QRCodeStr:model.QRCodeStr];
+      NSString *path = [weakSelf ceratShareImageWithProductImage:image2 titleStr:model.titleStr priceStr:model.priceStr retailPrice: model.retailPrice spellPrice: model.spellPrice QRCodeStr:model.QRCodeStr model: model];
       if (path == nil || path.length == 0) {
         completion(nil, @"ShareImageMaker：保存图片到本地失败");
       }else{
@@ -60,6 +60,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
                                   retailPrice:(NSString *)retailPrice
                                    spellPrice:(NSString *)spellPrice
                                     QRCodeStr:(NSString *)QRCodeStr
+                                        model:(ShareImageMakerModel *)model
 {
   CGFloat i = 3;
   priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
@@ -105,8 +106,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   [QRCodeImage drawInRect:CGRectMake(180*i, 253*i+height+10*i, 48*i, 48*i)];
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  NSDate * date =[NSDate new];
-  return [self save:image withPath:[NSString stringWithFormat:@"/Documents/QRCode%lf.png",date.timeIntervalSince1970]];
+  return [self save:image withPath:[NSString stringWithFormat:@"/Documents/QRCode%@.png",[model modelToJSONString].md5String]];
 }
 
 /**
@@ -118,7 +118,6 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   if ([UIImagePNGRepresentation(imgsave) writeToFile:Pathimg atomically:YES] == YES) {
     return Pathimg;
   }
-  
   return @"";
 }
 
@@ -217,7 +216,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     return;
   }
   UIImage *QRCodeImage =  [self QRCodeWithStr:QRCodeStr];
-  NSString *path = [self save:QRCodeImage withPath:[NSString stringWithFormat:@"/Documents/InviteFriendsQRCode%lf.png", [NSDate new].timeIntervalSince1970]];
+  NSString *path = [self save:QRCodeImage withPath:[NSString stringWithFormat:@"/Documents/InviteFriendsQRCode%@.png", QRCodeStr.md5String]];
   if (path.length == 0 || path == nil) {
     completion(nil,@"保存二维码失败");
   }else{

@@ -52,7 +52,14 @@ public class ShareImageBean {
         return QRCodeStr;
     }
 
+    @Override
+    public String toString() {
+        return "ShareImageBean{" + "imageUrlStr='" + imageUrlStr + '\'' + ", titleStr='" + titleStr + '\'' + ", priceStr='" + priceStr + '\'' + ", QRCodeStr='" + QRCodeStr + '\'' + ", retail='" + retail + '\'' + ", spell='" + spell + '\'' + '}';
+    }
+
     public void setQRCodeStr(String QRCodeStr) {
         this.QRCodeStr = QRCodeStr;
     }
+
+
 }

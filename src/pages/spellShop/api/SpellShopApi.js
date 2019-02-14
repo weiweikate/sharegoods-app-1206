@@ -4,7 +4,7 @@ import ApiUtils from '../../../api/network/ApiUtils';
 const api = {
 
     // 查询用户个人信息
-    getUser: ['/user/getUser', { method: 'get' }],
+    getUser: ['/user/getUser', { method: 'get', checkLogin: true}],
 
     // 查询首页推荐店铺
     queryHomeStore: ['/user/store/queryHomeStore', { method: 'get' }],

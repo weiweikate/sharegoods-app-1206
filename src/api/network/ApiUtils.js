@@ -20,8 +20,17 @@ export default function ApiUtils(Urls) {
     });
     list.forEach(function(item) {
         let name = item.name, url = item.uri, method = item.method || 'post', isRSA = item.isRSA || false,
-            filter = item.filter;
+            filter = item.filter, checkLogin = item.checkLogin || false;
         result[name] = async function(params, config = {}) {
+            if (checkLogin === true && !User.isLogin){
+                config.nav && config.nav.navigate('login/login/LoginPage', {
+                    callback: config.callback
+                });
+                return  Promise.reject({
+                    code: 10009,
+                    msg: "用户登录失效",
+                });
+            }
             const response = await HttpUtils[method](url, isRSA, params, config);
             // code为0表明请求正常
             if (!response.code || response.code === 10000) {

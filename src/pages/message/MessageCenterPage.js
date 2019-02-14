@@ -11,12 +11,8 @@ import {
     UIText
 } from '../../components/ui';
 import {MRText as Text} from '../../components/ui'
-
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
-// import HomeApi from '../home/api/HomeAPI';
-// import Toast from '../../utils/bridge';
-
 import MessageApi from './api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from '../../constants/DesignRule';
@@ -120,15 +116,13 @@ export default class MessageCenterPage extends BasePage {
                         flex: 1,
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        height: 44,
-                        paddingLeft: 21,
-                        paddingRight: 28,
+                        paddingHorizontal:DesignRule.margin_page,
                         backgroundColor: 'white',
                         flexDirection: 'row'
                     }} onPress={() => this.orderMenuJump(i)}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={leftImage[i]} style={{ height: 35 }} resizeMode={'contain'}/>
-                            <UIText value={leftText[i]} style={[{ fontSize: 15, marginLeft: 5 }]}/>
+                            <UIText value={leftText[i]} style={[{ fontSize: DesignRule.fontSize_secondTitle, marginLeft: DesignRule.margin_page }]}/>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {count ? <View style={{

@@ -12,18 +12,21 @@ import com.facebook.common.memory.MemoryTrimType;
 import com.facebook.common.memory.MemoryTrimmable;
 import com.facebook.common.memory.NoOpMemoryTrimmableRegistry;
 import com.facebook.common.util.ByteConstants;
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
 import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
 
 import java.io.File;
 
+import okhttp3.OkHttpClient;
+
 public class ImagePipelineConfigUtils {
 
     //最大缓存数量
     private static final int MAX_CACHE_ENTRIES = 64;
     private static final int MAX_CACHE_ASHM_ENTRIES = 128;
-    private static final int MAX_CACHE_EVICTION_ENTRIES = 32;
+    private static final int MAX_CACHE_EVICTION_ENTRIES = 16;
 
     //小图极低磁盘空间缓存的最大值（特性：可将大量的小图放到额外放在另一个磁盘空间防止大图占用磁盘空间而删除了大量的小图）
     private static final int MAX_SMALL_DISK_VERYLOW_CACHE_SIZE = 20 * ByteConstants.MB;
@@ -55,11 +58,12 @@ public class ImagePipelineConfigUtils {
             @Override
             public MemoryCacheParams get() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    return new MemoryCacheParams(maxCacheSize,     // 最大总图片缓存空间
+                    return new MemoryCacheParams(
+                            maxCacheSize,                          // 最大总图片缓存空间
                             MAX_CACHE_ENTRIES,                     // 最大总图片缓存数量
-                            maxCacheSize / 2,    // 准备清除的总图片最大空间
+                            maxCacheSize / 3,    // 准备清除的总图片最大空间
                             MAX_CACHE_EVICTION_ENTRIES,            // 准备清除的总图片最大数量
-                            maxCacheSize / 2);     // 单个图片最大大小
+                            maxCacheSize / 5);     // 单个图片最大大小
                 } else {
                     return new MemoryCacheParams(
                             maxCacheSize,
@@ -88,8 +92,11 @@ public class ImagePipelineConfigUtils {
                 .setDiskTrimmableRegistry(NoOpDiskTrimmableRegistry.getInstance())
                 .build();
 
+        //将网络请求设置为okhttp，取消连接失败之后的重试
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().retryOnConnectionFailure(false).build();
+
         //缓存图片配置
-        ImagePipelineConfig.Builder configBuilder = ImagePipelineConfig.newBuilder(context)
+        ImagePipelineConfig.Builder configBuilder = OkHttpImagePipelineConfigFactory.newBuilder(context, okHttpClient)
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
                 .setBitmapMemoryCacheParamsSupplier(mSupplierMemoryCacheParams)
                 .setSmallImageDiskCacheConfig(diskSmallCacheConfig)
@@ -124,13 +131,7 @@ public class ImagePipelineConfigUtils {
         } else if (maxMemory < 64 * ByteConstants.MB) {
             return 6 * ByteConstants.MB;
         } else {
-            // We don't want to use more ashmem on Gingerbread for now, since it doesn't respond well to
-            // native memory pressure (doesn't throw exceptions, crashes app, crashes phone)
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                return 8 * ByteConstants.MB;
-            } else {
-                return maxMemory / 4;
-            }
+            return maxMemory / 4;
         }
     }
 }

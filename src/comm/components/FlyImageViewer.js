@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import { ImageCacheManager } from 'react-native-cached-image'
 import {
     TouchableOpacity,
     View,
@@ -14,7 +15,9 @@ import {
     TouchableWithoutFeedback,
     CameraRoll,
     Platform,
-    StyleSheet
+    StyleSheet,
+    ActionSheetIOS,
+    Alert
 } from 'react-native';
 //import * as typings from './image-viewer.type'
 // import {TransmitTransparently} from 'nt-transmit-transparently'
@@ -518,6 +521,28 @@ export default class FlyImageViewer extends Component {
             // this.setState({
             //     isShowMenu: true
             // });
+            let that = this;
+            if (Platform.OS === 'ios'){
+                ActionSheetIOS.showActionSheetWithOptions({
+                        options: ['取消', '保存图片到相册'],
+                        // title: null,
+                        cancelButtonIndex: 0,
+                    },
+                    (buttonIndex) => {
+                        if (buttonIndex === 1) {that.saveToLocal()}
+                    });
+            }else {
+
+                Alert.alert(
+                    '保存图片',
+                    null,
+                    [
+                        {text: '取消', onPress: () => console.log('取消'),style: 'cancel'},
+                        {text: '保存到相册', onPress: () => that.saveToLocal()}
+                    ],
+                    { cancelable: false }
+                )
+            }
         }
     }
 
@@ -598,6 +623,7 @@ export default class FlyImageViewer extends Component {
                                cropHeight={this.height}
                                imageWidth={width}
                                imageHeight={height}
+                               longPressTime={600}
                                maxOverflow={this.props.maxOverflow}
                                horizontalOuterRangeOffset={this.handleHorizontalOuterRangeOffset.bind(this)}
                                responderRelease={this.handleResponderRelease.bind(this)}
@@ -698,15 +724,24 @@ export default class FlyImageViewer extends Component {
      */
     saveToLocal() {
         if (!this.props.onSave) {
-            CameraRoll.saveToCameraRoll(this.props.imageUrls[this.state.currentShowIndex]);
-            this.props.onSaveToCamera(this.state.currentShowIndex);
+            let that = this;
+            if (Platform.OS === 'ios'){
+                CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])
+                    .then(()=> {that.props.onSaveToCamera(that.state.currentShowIndex);});
+            }else {
+                ImageCacheManager().downloadAndCacheUrl(this.props.imageUrls[this.state.currentShowIndex]).then(((path)=>{
+                    CameraRoll.saveToCameraRoll(path)
+                        .then(()=> {that.props.onSaveToCamera(that.state.currentShowIndex);})
+                }));
+            }
+
         } else {
             this.props.onSave(this.props.imageUrls[this.state.currentShowIndex]);
         }
 
-        this.setState({
-            isShowMenu: false
-        });
+        // this.setState({
+        //     isShowMenu: false
+        // });
     }
 
     getMenu() {
