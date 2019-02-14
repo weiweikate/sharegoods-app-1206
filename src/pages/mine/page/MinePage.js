@@ -393,8 +393,7 @@ export default class MinePage extends BasePage {
                                   style={{
                                       width: px2dp(44),
                                       height: px2dp(44)
-                                  }}
-                        />
+                                  }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.$navigate(RouterMap.MyPromotionPage);
                         }}>
