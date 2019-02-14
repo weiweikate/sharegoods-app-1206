@@ -156,7 +156,7 @@ export default class ConfirmOrderPage extends BasePage {
 
     // 选择优惠券
     jumpToCouponsPage = (params) => {
-        if (params === 'justOne') {
+        if (params === 'justOne') {//一元券
             this.$navigate('mine/coupons/CouponsPage', {
                 justOne: (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) : 1,
                 callBack: (data) => {
