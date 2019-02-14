@@ -220,7 +220,7 @@ export default class Masonry extends React.Component {
         let y = event.nativeEvent.contentOffset.y;
         let height = event.nativeEvent.layoutMeasurement.height;
         let contentHeight = event.nativeEvent.contentSize.height;
-        if (y + height >= contentHeight - 300) {
+        if (y + height >= contentHeight - 100) {
             // this.setState({
             //   infiniting: true
             // })

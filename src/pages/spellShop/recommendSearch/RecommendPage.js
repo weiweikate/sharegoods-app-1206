@@ -329,7 +329,7 @@ export default class RecommendPage extends BasePage {
                                      titleColor={DesignRule.textColor_instruction}
                                      colors={[DesignRule.mainColor]}/>}
                              onEndReached={this._onEndReached.bind(this)}
-                             onEndReachedThreshold={0.1}
+                             onEndReachedThreshold={0.3}
                              ListFooterComponent={this._ListFooterComponent}
                              showsVerticalScrollIndicator={false}
                              ListHeaderComponent={this._renderListHeader}
