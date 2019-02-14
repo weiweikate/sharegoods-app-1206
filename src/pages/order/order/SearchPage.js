@@ -2,12 +2,11 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    NativeModules,
     InteractionManager,
     DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { HotSearch, RecentSearch} from './../../../components/ui';
+import {  RecentSearch} from './../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import Storage from '../../../utils/storage';
 import SearchNav from '../../home/search/components/SearchNav';
@@ -15,10 +14,8 @@ import DesignRule from '../../../constants/DesignRule';
 const dismissKeyboard = require('dismissKeyboard');
 //全局变量，历史搜索记录,因为是递加的
 let array = [];
-// import ProductApi from 'ProductApi';
-// import Toast from '../../../utils/bridge';
 const recentDataKey = 'orderRecentDataKey';
-class SearchPage extends BasePage {
+export default class SearchPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,36 +49,7 @@ class SearchPage extends BasePage {
     }
     loadPageData() {
         this.getRecentSearch();
-        switch (this.state.pageType) {
-            case 0:
-                this.getHotWordsListActive();
-                break;
-            case 1:
-                break;
-        }
-
     }
-
-    getHotWordsListActive = () => {
-        // Toast.showLoading()
-        // ProductApi.getHotWordsListActive({}).then((response)=>{
-        //     Toast.hiddenLoading()
-        //     if(response.ok ){
-        //         let data=response.data
-        //         let hotData=[]
-        //         data.map((item, index)=> {
-        //             hotData.push(item.wordName)
-        //         })
-        //         this.setState({
-        //             hotData: hotData,
-        //         })
-        //     } else {
-        //         NativeModules.commModule.toast(response.msg)
-        //     }
-        // }).catch(e=>{
-        //     NativeModules.commModule.toast(e)
-        // });
-    };
     onChangeText = (inputText) => {
         this.setState({ inputText: inputText });
     };
@@ -100,19 +68,14 @@ class SearchPage extends BasePage {
                                onChangeText={this.onChangeText}/>
                     <View style={{ height: 1 }}/>
                     {this.renderRecentSearch()}
-                    {this.renderHotSearch()}
                 </View>
         );
     }
 
     cancel = () => {
         dismissKeyboard();
-        // this.navigateBack()
         InteractionManager.runAfterInteractions(() => {
             this.$navigateBack();
-            // setTimeout(() => {
-            //     this.navigateBack()
-            // }, 200)
         });
     };
 
@@ -141,43 +104,19 @@ class SearchPage extends BasePage {
         }
     };
 
-    renderHotSearch = () => {
-        switch (this.state.pageType) {
-            case 0:
-                return (
-                    <HotSearch recentData={this.state.hotData} clearHistory={() => {
-                        this.setState({ hotData: [] });
-                        array = [];
-                    }}/>
-                );
-                break;
-            case 1:
-                break;
-        }
-    };
-
     //开始进行搜索要把这次搜索的历史记录保存
     startSearch = (inputText) => {
         if (inputText.length === 0) {
-            NativeModules.commModule.toast('请输入搜索内容');
+            this.$toastShow('请输入搜索内容');
             return;
         }
         //把搜索框里的值存起来
         if (StringUtils.isNoEmpty(inputText)) {
-            // if (this.state.recentData.indexOf(inputText) === -1) {//数组去重
-            //     if (this.state.recentData.length < 10) {
-            //         this.state.recentData.push(inputText);
-            //     } else {
-            //         this.state.recentData.shift(array);
-            //         this.state.recentData.push(inputText);
-            //     }
-            // }
             this.state.recentData.length === 10 ? this.state.recentData.splice(9, 1) : this.state.recentData
             this.state.recentData.unshift(inputText)
             let setArr = new Set(this.state.recentData)
             this.state.recentData = [...setArr]
             console.log('最近搜索记录=' + array);
-            // let data = JSON.stringify(array);
             Storage.set(recentDataKey, this.state.recentData);
             this.getRecentSearch();
         }
@@ -225,4 +164,3 @@ const styles = StyleSheet.create({
         height: 20
     }
 });
-export default SearchPage;

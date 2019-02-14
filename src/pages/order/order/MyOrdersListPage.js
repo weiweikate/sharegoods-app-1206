@@ -22,7 +22,8 @@ class MyOrdersListPage extends BasePage {
         super(props);
         this.state = {
             index: this.params.index ? this.params.index : 0,
-            key: 1
+            key: 1,
+            selectTab:10
         };
     }
 
@@ -34,16 +35,6 @@ class MyOrdersListPage extends BasePage {
     $isMonitorNetworkStatus() {
         return true;
     }
-
-    $getPageStateOptions = () => {
-        return {
-            loadingState: 'success',
-            netFailedProps: {
-                netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: this._reload
-            }
-        };
-    };
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity onPress={this.gotoSearchPage}>
@@ -53,30 +44,33 @@ class MyOrdersListPage extends BasePage {
     };
 
     gotoSearchPage = () => {
-        this.$navigate('order/order/SearchPage', { keyWord: 'kafaka' });
+        this.$navigate('order/order/SearchPage');
     };
 
     _render() {
         return (
             <ScrollableTabView
+                onChangeTab={(obj) => {
+                    this.setState({ selectTab: obj.i });
+                }}
                 style={styles.container}
                 renderTabBar={this._renderTabBar}
                 //进界面的时候打算进第几个
                 initialPage={parseInt(this.state.index)}>
                 <MyOrdersListView
-                    tabLabel={'全部'} pageStatus={0}
+                    tabLabel={'全部'} pageStatus={0} selectTab={this.state.selectTab}
                     nav={this.$navigate}/>
                 <MyOrdersListView
-                    tabLabel={'待付款'} pageStatus={1}
+                    tabLabel={'待付款'} pageStatus={1} selectTab={this.state.selectTab}
                     nav={this.$navigate}/>
                 <MyOrdersListView
-                    tabLabel={'待发货'} pageStatus={2}
+                    tabLabel={'待发货'} pageStatus={2} selectTab={this.state.selectTab}
                     nav={this.$navigate}/>
                 <MyOrdersListView
-                    tabLabel={'待收货'} pageStatus={3}
+                    tabLabel={'待收货'} pageStatus={3} selectTab={this.state.selectTab}
                     nav={this.$navigate}/>
                 <MyOrdersListView
-                    tabLabel={'已完成'} pageStatus={4}
+                    tabLabel={'已完成'} pageStatus={4} selectTab={this.state.selectTab}
                     nav={this.$navigate}/>
 
             </ScrollableTabView>
