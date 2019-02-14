@@ -11,6 +11,10 @@ export default class CheckBigImagesView extends BasePage {
     $navigationBarOptions = {
         show: false
     };
+    // 禁用某个页面的手势
+    static navigationOptions = {
+        gesturesEnabled: false
+    };
 
     _render() {
         return (
