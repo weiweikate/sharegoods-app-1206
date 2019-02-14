@@ -250,6 +250,28 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         p.resolve(batteryLevel);
     }
 
+    @ReactMethod
+    public void isNavigationBarExist(Callback callback){
+        try {
+            boolean isNavigationBarExist = DeviceUtils.isNavigationBarExist(reactContext.getCurrentActivity());
+            callback.invoke(isNavigationBarExist);
+        }catch (Exception e){
+            //默认有虚拟键盘
+            callback.invoke(true);
+        }
+    }
+
+    @ReactMethod
+    public void hasNotchScreen(Callback callback){
+        try {
+            boolean hasNotchScreen = ScreenUtils.hasNotchScreen(reactContext.getCurrentActivity());
+            callback.invoke(hasNotchScreen);
+        }catch (Exception e){
+            //默认有虚拟键盘
+            callback.invoke(false);
+        }
+    }
+
     public String getInstallReferrer() {
         SharedPreferences sharedPref = getReactApplicationContext().getSharedPreferences("react-native-device-info", Context.MODE_PRIVATE);
         return sharedPref.getString("installReferrer", null);
@@ -342,9 +364,8 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         constants.put("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
         constants.put("channel", WalleChannelReader.getChannel(reactContext, "guanwang"));
         constants.put("isAllScreenDevice",DeviceUtils.isAllScreenDevice(reactContext));
-        constants.put("isNavigationBarShow",DeviceUtils.isNavigationBarExist(reactContext.getCurrentActivity()));
-        constants.put("isAnroidNotchScreen",ScreenUtils.hasNotchScreen(reactContext.getCurrentActivity()));
-
+//        constants.put("isNavigationBarShow",DeviceUtils.isNavigationBarExist(reactContext.getCurrentActivity()));
+//        constants.put("isAnroidNotchScreen",ScreenUtils.hasNotchScreen(reactContext.getCurrentActivity()));
         return constants;
     }
 
