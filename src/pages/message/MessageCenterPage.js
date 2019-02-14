@@ -11,12 +11,8 @@ import {
     UIText
 } from '../../components/ui';
 import {MRText as Text} from '../../components/ui'
-
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
-// import HomeApi from '../home/api/HomeAPI';
-// import Toast from '../../utils/bridge';
-
 import MessageApi from './api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from '../../constants/DesignRule';
