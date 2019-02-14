@@ -118,7 +118,11 @@ export default class InviteFriendsPage extends BasePage<Props> {
         if(ScreenUtils.isAllScreenDevice && !ScreenUtils.isNavigationBarShow){
             height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')
         }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.isNavigationBarShow){
-            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')+ExtraDimensions.get('STATUS_BAR_HEIGHT')
+            if(ScreenUtils.isAnroidNotchScreen){
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')+ExtraDimensions.get('STATUS_BAR_HEIGHT')
+            }else {
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')
+            }
         }
 
         return (

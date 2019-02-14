@@ -107,4 +107,5 @@ export default {
     // saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0
     isAllScreenDevice:Platform.OS === 'ios' ? false:RNDeviceInfo.isAllScreenDevice,
     isNavigationBarShow:Platform.OS === 'ios' ? false:RNDeviceInfo.isNavigationBarShow,
+    isAnroidNotchScreen:Platform.OS === 'ios' ? false:RNDeviceInfo.isAnroidNotchScreen,
 };
