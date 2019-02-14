@@ -1,29 +1,23 @@
-import React from 'react';
+import React from "react";
 import {
     StyleSheet,
     View
-} from 'react-native';
-import BasePage from '../../../BasePage';
-import MyOrdersListView from './../components/MyOrdersListView';
-import DesignRule from '../../../constants/DesignRule';
+} from "react-native";
+import BasePage from "../../../BasePage";
+import MyOrdersListView from "./../components/MyOrdersListView";
+import DesignRule from "../../../constants/DesignRule";
 
-class OrderSearchResultPage extends BasePage {
+export default class OrderSearchResultPage extends BasePage {
     constructor(props) {
         super(props);
         console.log(this.props);
         this.state = {
-            phone: '',
-            pwd: '',
-            thirdType: 1,
-            passwordDis: false,
-            phoneError: false,
-            passwordError: false,
             keyWord: this.props.navigation.state.params.keyWord
         };
     }
 
     $navigationBarOptions = {
-        title: '搜索结果',
+        title: "搜索结果",
         show: true// false则隐藏导航
     };
 
@@ -46,15 +40,18 @@ class OrderSearchResultPage extends BasePage {
 
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
+            <View style={styles.wideStyle}/>
         );
     };
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: 'white'
+        flex: 1, backgroundColor: "white"
+    },
+    wideStyle: {
+        height: 10,
+        backgroundColor: DesignRule.bgColor
     }
 });
 
-export default OrderSearchResultPage;
