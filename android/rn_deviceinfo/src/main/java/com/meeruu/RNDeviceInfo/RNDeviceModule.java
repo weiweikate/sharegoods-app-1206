@@ -26,6 +26,7 @@ import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -340,67 +341,17 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         constants.put("totalMemory", memInfo.totalMem);
         constants.put("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
         constants.put("channel", WalleChannelReader.getChannel(reactContext, "guanwang"));
-        constants.put("isAllScreenDevice",isAllScreenDevice(reactContext));
-        constants.put("isNavigationBarShow",isNavigationBarExist());
+        constants.put("isAllScreenDevice",DeviceUtils.isAllScreenDevice(reactContext));
+        constants.put("isNavigationBarShow",DeviceUtils.isNavigationBarExist(reactContext.getCurrentActivity()));
+        constants.put("isAnroidNotchScreen",ScreenUtils.hasNotchScreen(reactContext.getCurrentActivity()));
+
         return constants;
     }
 
 
-    /**
-     * 判断是否显示虚拟按键
-     */
-    private static final String NAVIGATION= "navigationBarBackground";
-
-    public  boolean isNavigationBarExist(){
-        ViewGroup vp = (ViewGroup) reactContext.getCurrentActivity().getWindow().getDecorView();
-        if (vp != null) {
-            for (int i = 0; i < vp.getChildCount(); i++) {
-                vp.getChildAt(i).getContext().getPackageName();
-                if (vp.getChildAt(i).getId()!= View.NO_ID && NAVIGATION.equals(reactContext.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
 
 
-    /**
-     * 判断是否是全面屏
-     */
-    private volatile static boolean mHasCheckAllScreen;
-    private volatile static boolean mIsAllScreenDevice;
-
-    public static boolean isAllScreenDevice(Context context) {
-        if (mHasCheckAllScreen) {
-            return mIsAllScreenDevice;
-        }
-        mHasCheckAllScreen = true;
-        mIsAllScreenDevice = false;
-        // 低于 API 21的，都不会是全面屏。。。
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return false;
-        }
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        if (windowManager != null) {
-            Display display = windowManager.getDefaultDisplay();
-            Point point = new Point();
-            display.getRealSize(point);
-            float width, height;
-            if (point.x < point.y) {
-                width = point.x;
-                height = point.y;
-            } else {
-                width = point.y;
-                height = point.x;
-            }
-            if (height / width >= 1.97f) {
-                mIsAllScreenDevice = true;
-            }
-        }
-        return mIsAllScreenDevice;
-    }
 
 
 }
