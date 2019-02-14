@@ -33,6 +33,7 @@ import Storage from './utils/storage';
 // import OldImag from './home_icon.png';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
+import ScreenUtils from './utils/ScreenUtils';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
@@ -77,6 +78,7 @@ export default class App extends Component {
 
     async componentWillMount() {
         netStatus.startMonitorNetworkStatus();
+
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$routes = [];
@@ -87,6 +89,14 @@ export default class App extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
+                ScreenUtils.isNavigationBarExist((data)=>{
+                    ScreenUtils.setBarShow(data);
+                });
+
+                ScreenUtils.checkhasNotchScreen((data)=>{
+                    ScreenUtils.setHasNotchScreen(data)
+                });
+
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
                     android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'

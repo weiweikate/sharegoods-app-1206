@@ -1,4 +1,4 @@
-import { NativeModules, Dimensions, Platform, PixelRatio } from 'react-native';
+import { NativeModules, Dimensions, Platform, PixelRatio  } from 'react-native';
 
 const { RNDeviceInfo } = NativeModules;
 
@@ -55,6 +55,39 @@ let screenW = Dimensions.get('window').width;
 const r2 = 2;
 const w2 = 750 / r2;
 
+var isNavigationBarShow = true;
+var hasNotchScreen = false;
+
+function setBarShow(isShow) {
+    isNavigationBarShow = isShow;
+}
+
+function getBarShow() {
+    return isNavigationBarShow;
+}
+
+function isNavigationBarExist(callback = ()=>{}) {
+    if(Platform.OS === 'ios'){
+        return;
+    }
+    RNDeviceInfo.isNavigationBarExist(callback)
+}
+
+function setHasNotchScreen(isNotch) {
+    hasNotchScreen = isNotch;
+}
+
+function getHasNotchScreen() {
+    return hasNotchScreen;
+}
+
+function checkhasNotchScreen(callback = ()=>{}) {
+    if(Platform.OS === 'ios'){
+        return;
+    }
+    // RNDeviceInfo.hasNotchScreen(callback)
+}
+
 export const DEFAULT_DENSITY = 1;
 
 /**
@@ -83,6 +116,12 @@ function getImgHeightWithWidth(size: Size, width: number = screenW): number {
 
 export default {
     px2dp,
+    setBarShow,
+    getBarShow,
+    isNavigationBarExist,
+    setHasNotchScreen,
+    getHasNotchScreen,
+    checkhasNotchScreen,
     getImgHeightWithWidth,
     autoSizeWidth: autoSizeWidth,
     autoSizeHeight: autoSizeHeight,
@@ -106,5 +145,6 @@ export default {
     isIphoneMax: __ISIPHONEXSMAX__,
     // saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0
     isAllScreenDevice:Platform.OS === 'ios' ? false:RNDeviceInfo.isAllScreenDevice,
-    isNavigationBarShow:Platform.OS === 'ios' ? false:RNDeviceInfo.isNavigationBarShow,
+    // isNavigationBarShow:Platform.OS === 'ios' ? false:RNDeviceInfo.isNavigationBarShow,
+    isAnroidNotchScreen:Platform.OS === 'ios' ? false:RNDeviceInfo.isAnroidNotchScreen,
 };
