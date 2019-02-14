@@ -53,7 +53,7 @@ class MyOrdersListPage extends BasePage {
     };
 
     gotoSearchPage = () => {
-        this.$navigate('order/order/SearchPage', { keyWord: 'kafaka' });
+        this.$navigate('order/order/SearchPage');
     };
 
     _render() {
