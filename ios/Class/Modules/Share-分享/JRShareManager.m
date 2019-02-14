@@ -210,7 +210,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
     if (!error) {
       [JRLoadingAndToastTool showToast:@"图片保存成功" andDelyTime:0.5f];
     }else{
-      [JRLoadingAndToastTool showToast:@"图片保存失败" andDelyTime:0.5f];
+      [JRLoadingAndToastTool showToast:@"保存失败\n请确认图片保存权限已开启" andDelyTime:0.5f];
     }
   }];
 }
