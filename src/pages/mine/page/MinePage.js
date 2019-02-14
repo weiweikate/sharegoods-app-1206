@@ -604,6 +604,7 @@ export default class MinePage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         onScroll={this._onScroll.bind(this)}
+                        scrollEventThrottle={30}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
