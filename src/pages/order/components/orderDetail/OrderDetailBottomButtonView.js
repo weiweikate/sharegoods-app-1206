@@ -22,11 +22,17 @@ export default class OrderDetailBottomButtonView extends Component {
     }
 
     render() {
-        return (
-            <View style={styles.containerStyle}>
-                {this.renderMenu()}
-            </View>
-        );
+        let nameArr = orderDetailAfterServiceModel.menu;
+        if(nameArr.length>0){
+            return (
+                <View style={styles.containerStyle}>
+                    {this.renderMenu()}
+                </View>
+            );
+        }else{
+            return null;
+        }
+
     }
 
     renderMenu = () => {
@@ -178,6 +184,20 @@ export default class OrderDetailBottomButtonView extends Component {
                                 Toast.$toast(e.msg);
                             });
 
+                        }
+                    }
+
+                ], { cancelable: true });
+                break;
+            case 10:
+                Alert.alert('', `确定去晒单？`, [
+                    {
+                        text: `取消`, onPress: () => {
+                        }
+                    },
+                    {
+                        text: `确定`, onPress: () => {
+                            Toast.$toast('已经晒过单了！');
                         }
                     }
 

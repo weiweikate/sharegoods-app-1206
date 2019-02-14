@@ -5,7 +5,7 @@ import {
     View,
     TouchableOpacity,
     Image, DeviceEventEmitter,
-    ScrollView
+    // ScrollView
 } from "react-native";
 import BasePage from "../../../BasePage";
 import { RefreshList } from "../../../components/ui";
@@ -151,8 +151,8 @@ export default class MyOrdersDetailPage extends BasePage {
 
     _renderContent = () => {
         return (
-            <View style={{marginBottom:ScreenUtils.safeBottom,flex:1}}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{flex:1}}>
+            {/*<ScrollView showsVerticalScrollIndicator={false}>*/}
             <RefreshList
                 ListHeaderComponent={this.renderHeader}
                 ListFooterComponent={this.renderFooter}
@@ -164,7 +164,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 isEmpty={this.state.isEmpty}
                 emptyTip={"暂无数据！"}
             />
-            </ScrollView>
+            {/*</ScrollView>*/}
             <OrderDetailBottomButtonView
         goBack={() => this.$navigateBack()}
         nav={this.$navigate}
@@ -516,6 +516,11 @@ export default class MyOrdersDetailPage extends BasePage {
                     }, {
                         id: 8,
                         operation: "再次购买",
+                        isRed: true
+                    },
+                    {
+                        id: 10,
+                        operation: "晒单",
                         isRed: true
                     }
                 ],

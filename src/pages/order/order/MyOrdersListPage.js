@@ -97,7 +97,7 @@ class MyOrdersListPage extends BasePage {
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={'已完成'} pageStatus={4}
+                        tabLabel={'待晒单'} pageStatus={4}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
 
@@ -110,7 +110,7 @@ class MyOrdersListPage extends BasePage {
         return (
             <ScrollableTabBar
                 style={{
-                    borderWidth: 0.5
+                    borderWidth: 0
 
                 }}/>
         );

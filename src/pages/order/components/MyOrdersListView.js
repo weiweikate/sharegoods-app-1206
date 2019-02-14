@@ -514,6 +514,29 @@ export default class MyOrdersListView extends Component {
 
                 ], { cancelable: true });
                 break;
+            case 10:
+                Alert.alert('', `确定去晒单？`, [
+                    {
+                        text: `取消`, onPress: () => {
+                        }
+                    },
+                    {
+                        text: `确定`, onPress: () => {
+                            console.log(this.state.menu);
+                            // Toast.showLoading();
+                            // OrderApi.deleteOrder({ orderNo: this.state.viewData[this.state.index].orderNum }).then((response) => {
+                            //     Toast.hiddenLoading();
+                                Toast.$toast('已经晒过单了！');
+                            //     this.onRefresh();
+                            // }).catch(e => {
+                            //     Toast.hiddenLoading();
+                            //     Toast.$toast(e.msg);
+                            // });
+                        }
+                    }
+
+                ], { cancelable: true });
+                break;
         }
 
     };

@@ -138,6 +138,7 @@ const GoodsListItem = props => {
             itemArr.push(
                 <GoodsGrayItem
                     key={i}
+                    style={{backgroundColor:'white'}}
                     uri={orderProduct[i].imgUrl}
                     goodsName={orderProduct[i].productName}
                     salePrice={orderProduct[i].price}
@@ -156,7 +157,7 @@ const GoodsListItem = props => {
                     <UIText value={'订单编号：' + orderNum}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
                     <UIText value={constants.viewOrderStatus[orderStatus].orderStatus}
-                            style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 18 }}/>
+                            style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 13 }}/>
                 </View>
             </View>
         );
@@ -224,28 +225,34 @@ const GoodsListItem = props => {
                 justifyContent: 'flex-start',
                 alignItems: 'center',
                 flexDirection: 'row',
-                paddingRight: 16,
-                paddingLeft: 16
+                paddingRight: 15,
+                paddingLeft: 15,
             }}>
                 {aboutTime}
             </View>
         );
     };
     return (
-        <View>
-            <NoMoreClick onPress={clickItem}>
+        <View style={{
+            marginLeft:15,
+            marginRight:15,
+            backgroundColor: 'white',
+            marginBottom:10
+        }}>
+            <NoMoreClick onPress={clickItem} >
                 <View />
                 {this.renderOrderNum()}
                 {this.renderGoodsList()}
                 {this.renderCalculate()}
                 {/*{this.renderLine()}*/}
                 {/*{this.renderTime()}*/}
-                {this.renderLine()}
+                {/*{this.renderLine()}*/}
             </NoMoreClick>
             {constants.viewOrderStatus[orderStatus].menuData.length === 0 ? null :
                 <View style={{
                     flexDirection: 'row',
                     height: 48,
+                    width:'100%',
                     justifyContent: 'flex-end',
                     alignItems: 'center',
                     backgroundColor: 'white'
@@ -253,7 +260,7 @@ const GoodsListItem = props => {
                     {this.renderMenu()}
                 </View>
             }
-            {this.renderWideLine()}
+            {/*{this.renderWideLine()}*/}
         </View>
     );
 };
