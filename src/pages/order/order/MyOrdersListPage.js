@@ -34,16 +34,6 @@ class MyOrdersListPage extends BasePage {
     $isMonitorNetworkStatus() {
         return true;
     }
-
-    $getPageStateOptions = () => {
-        return {
-            loadingState: 'success',
-            netFailedProps: {
-                netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: this._reload
-            }
-        };
-    };
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity onPress={this.gotoSearchPage}>
@@ -53,7 +43,7 @@ class MyOrdersListPage extends BasePage {
     };
 
     gotoSearchPage = () => {
-        this.$navigate('order/order/SearchPage', { keyWord: 'kafaka' });
+        this.$navigate('order/order/SearchPage');
     };
 
     _render() {
