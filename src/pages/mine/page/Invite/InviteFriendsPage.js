@@ -26,6 +26,10 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { UIImage } from '../../../../components/ui';
 import { MRText as Text } from '../../../../components/ui';
 
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+
+
+
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import bridge from '../../../../utils/bridge';
@@ -109,13 +113,21 @@ export default class InviteFriendsPage extends BasePage<Props> {
     };
 
     _render() {
+
+        let height = ScreenUtils.height;
+        if(ScreenUtils.isAllScreenDevice && !ScreenUtils.isNavigationBarShow){
+            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')
+        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.isNavigationBarShow){
+            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')+ExtraDimensions.get('STATUS_BAR_HEIGHT')
+        }
+
         return (
             <View style={styles.container}>
                 <Image source={bg} style={{
                     top: 0,
                     left: 0,
                     width: DesignRule.autoSizeWidth(375),
-                    height: ScreenUtils.height,
+                    height,
                     resizeMode: 'stretch',
                     position: 'absolute'
                 }}/>
@@ -239,7 +251,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ff0050'
+        backgroundColor: '#ff0050',
     },
     btnContainer: {
         borderRadius: autoSizeWidth(25),

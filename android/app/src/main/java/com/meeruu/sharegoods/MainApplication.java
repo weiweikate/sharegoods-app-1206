@@ -8,6 +8,7 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -149,7 +150,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new LottiePackage(),
                     new MRNetStatePackage(),
                     new RNSensorsAnalyticsPackage(),
-                    new PickerPackage()
+                    new PickerPackage(),
+                    new ExtraDimensionsPackage()
             );
         }
 
