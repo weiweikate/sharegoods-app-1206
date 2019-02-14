@@ -14,6 +14,7 @@ import DetailBanner from './DetailBanner';
 import RES from '../../../../comm/res';
 import StringUtils from '../../../../utils/StringUtils';
 import { MRText as Text } from '../../../../components/ui';
+import DetailScoreView from './DetailScoreView';
 
 const arrow_right = RES.button.arrow_right_black;
 /**
@@ -133,7 +134,7 @@ export default class DetailHeaderView extends Component {
                         </View>
                     </View>
                 </View>
-                <View style={{ backgroundColor: 'white', marginTop: 10, marginBottom: 12 }}>
+                <View style={{ backgroundColor: 'white', marginTop: 10, marginBottom: 10 }}>
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 16,
@@ -151,6 +152,8 @@ export default class DetailHeaderView extends Component {
                               allowFontScaling={false}>{`正品保证·急速发货  ${(restrictions & 4) === 4 ? `7天退换` : ``}`}</Text>
                     </View>
                 </View>
+
+                <DetailScoreView allAction={this.props.allAction}/>
             </View>
         );
     }

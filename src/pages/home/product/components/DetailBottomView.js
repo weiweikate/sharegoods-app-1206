@@ -26,8 +26,9 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
+        let { pData } = this.props;
         //productStatus  1正常  2下架  3当前时间不能买
-        let { shareMoney, productStatus } = this.props;
+        let { shareMoney, productStatus } = pData || {};
         //是否下架
         let isDown = productStatus === 2;//是否下架  样式
 
@@ -42,7 +43,7 @@ export default class DetailBottomView extends Component {
         //立即购买文案
         let buyText = productStatus === 3 ? '暂不可购买' : '立即购买';
         return (
-            <View style={{ height: 49 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
+            <View style={{ height: 48 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
                 {isDown ? <View style={{
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -115,7 +116,7 @@ export default class DetailBottomView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 49, flexDirection: 'row', backgroundColor: 'white', borderWidth: 1,
+        height: 48, flexDirection: 'row', backgroundColor: 'white', borderWidth: 1,
         borderColor: DesignRule.lineColor_inGrayBg
     }
 });

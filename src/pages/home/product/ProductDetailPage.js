@@ -39,6 +39,7 @@ import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/Navigat
 // import res from '../res';
 import MessageApi from '../../message/api/MessageApi';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
+import RouterMap from '../../../navigation/RouterMap';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -361,6 +362,9 @@ export default class ProductDetailPage extends BasePage {
                                  goShopAction={() => {
                                      this.$navigateBackToStore();
                                  }}
+                                 allAction={() => {
+                                     this.$navigate(RouterMap.P_ScorePublishPage, { pData: this.state.data });
+                                 }}
                                  navigation={this.props.navigation}/>;
     };
 
@@ -538,7 +542,7 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { minPrice, name, imgUrl, buyLimit, leftBuyNum, shareMoney, productStatus, prodCode, firstCategoryId, secCategoryId, originalPrice, groupPrice, v0Price } = this.state.data || {};
+        const { minPrice, name, imgUrl, prodCode, firstCategoryId, secCategoryId, originalPrice, groupPrice, v0Price } = this.state.data || {};
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -584,9 +588,8 @@ export default class ProductDetailPage extends BasePage {
                          sections={[{ data: [{}] }]}
                          scrollEventThrottle={10}
                          showsVerticalScrollIndicator={false}/>
-            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney}
-                              productStatus={productStatus}
-                              buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
+            <DetailBottomView bottomViewAction={this._bottomViewAction}
+                              pData={this.state.data}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             trackParmas={{
