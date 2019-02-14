@@ -22,7 +22,6 @@ class MyOrdersListPage extends BasePage {
         super(props);
         this.state = {
             index: this.params.index ? this.params.index : 0,
-            key: 1,
             selectTab:10
         };
     }
