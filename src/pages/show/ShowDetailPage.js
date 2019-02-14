@@ -207,6 +207,7 @@ export default class ShowDetailPage extends BasePage {
             <ScrollView
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
+                scrollEventThrottle={30}
                 onScroll={this._onScroll.bind(this)}
             >
                 {

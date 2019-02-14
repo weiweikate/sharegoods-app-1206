@@ -538,7 +538,7 @@ export default class FlyImageViewer extends Component {
                     null,
                     [
                         {text: '取消', onPress: () => console.log('取消'),style: 'cancel'},
-                        {text: '保存图片到相册', onPress: () => that.saveToLocal()}
+                        {text: '保存到相册', onPress: () => that.saveToLocal()}
                     ],
                     { cancelable: false }
                 )
