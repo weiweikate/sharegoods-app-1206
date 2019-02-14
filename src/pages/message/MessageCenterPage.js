@@ -120,15 +120,13 @@ export default class MessageCenterPage extends BasePage {
                         flex: 1,
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        height: 44,
-                        paddingLeft: 21,
-                        paddingRight: 28,
+                        paddingHorizontal:DesignRule.margin_page,
                         backgroundColor: 'white',
                         flexDirection: 'row'
                     }} onPress={() => this.orderMenuJump(i)}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={leftImage[i]} style={{ height: 35 }} resizeMode={'contain'}/>
-                            <UIText value={leftText[i]} style={[{ fontSize: 15, marginLeft: 5 }]}/>
+                            <UIText value={leftText[i]} style={[{ fontSize: DesignRule.fontSize_secondTitle, marginLeft: DesignRule.margin_page }]}/>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {count ? <View style={{
