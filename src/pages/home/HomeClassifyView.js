@@ -34,7 +34,7 @@ class Item extends Component {
             {
                 loadingError
                     ?
-                    <Image source={icon}/>
+                    <Image style={styles.icon}  source={icon}/>
                     :
                     <ImageLoad style={styles.icon} source={source} onError={() => {
                         console.log('loadingError');
