@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, StyleSheet, Image, ImageBackground } from 'react-native';
+import { View, StyleSheet, Image, ImageBackground } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import LottieView from 'lottie-react-native';
@@ -28,7 +28,8 @@ export default class ShopHeaderBonus extends Component {
         currentUserSettle = StringUtils.isEmpty(currentUserSettle) ? 0 : parseFloat(currentUserSettle);
         bonusNeedMoney = StringUtils.isEmpty(bonusNeedMoney) ? 0 : parseFloat(bonusNeedMoney);
 
-        let gxd = (tradeBalance === 0 ? 0.00 : ((currentUserSettle / tradeBalance) * 100)).toFixed(2);
+        //个人贡献度去掉
+        // let gxd = (tradeBalance === 0 ? 0.00 : ((currentUserSettle / tradeBalance) * 100)).toFixed(2);
         let progress = bonusNeedMoney === 0 ? 0.00 : ((tradeBalance / bonusNeedMoney) * 100).toFixed(2);
         let box_img = shop_box_0;
         if (progress >= 100) {
@@ -43,7 +44,7 @@ export default class ShopHeaderBonus extends Component {
                 <View style={styles.whiteBg}>
                     <View style={styles.whiteBgTopRow}>
                         <Image source={CCZImg}/>
-                        <Text style={styles.gongXian} allowFontScaling={false}>{`贡献度: ${gxd}%`}</Text>
+                        <Text style={styles.gongXian}>{`本店铺任务完成度${progress}%`}</Text>
                     </View>
                     <View style={{
                         marginHorizontal: px2dp(10),
@@ -79,28 +80,25 @@ export default class ShopHeaderBonus extends Component {
                         </View>
 
                         <View>
-                            <Text style={{
-                                fontSize: 12,
-                                marginTop: px2dp(5),
-                                color: DesignRule.textColor_secondTitle
-                            }} allowFontScaling={false}>本次任务完成度<Text style={{ color: DesignRule.textColor_redWarn }}>{progress}%</Text></Text>
-                            <Text style={{
-                                fontSize: 12,
-                                marginTop: px2dp(5),
-                                color: DesignRule.textColor_secondTitle
-                            }} allowFontScaling={false}>距离本次奖励还有<Text
-                                style={{ color: DesignRule.textColor_redWarn }}>{nextBonusTime || ''}</Text>天</Text>
-                            <Text style={{
-                                fontSize: 12,
-                                marginTop: px2dp(5),
-                                color: DesignRule.textColor_secondTitle
-                            }} numberOfLines={2} allowFontScaling={false}>预计本次可得额外品牌奖励<Text
-                                style={{ color: DesignRule.textColor_redWarn }}>{currentUserSettle}</Text>元</Text>
-                            <Text style={{
-                                fontSize: 10,
-                                marginTop: px2dp(5),
-                                color: DesignRule.textColor_instruction
-                            }} allowFontScaling={false}>任务达到100%，才可以获得奖励</Text>
+                            <View style={{ justifyContent: 'space-between', flex: 1 }}>
+                                <Text style={{
+                                    fontSize: 12,
+                                    marginTop: px2dp(5),
+                                    color: DesignRule.textColor_secondTitle
+                                }}>距离本月品牌奖励还有<Text
+                                    style={{ color: DesignRule.textColor_redWarn }}>{nextBonusTime || ''}</Text>天</Text>
+                                <Text style={{
+                                    fontSize: 12,
+                                    marginTop: px2dp(5),
+                                    color: DesignRule.textColor_secondTitle
+                                }} numberOfLines={2}>预计本月个人销售额外可得品牌奖励<Text
+                                    style={{ color: DesignRule.textColor_redWarn }}>{currentUserSettle}</Text>元</Text>
+                                <Text style={{
+                                    fontSize: 10,
+                                    marginTop: px2dp(5),
+                                    color: DesignRule.textColor_instruction
+                                }}>任务达到100%，才可以获得奖励</Text>
+                            </View>
                         </View>
                     </View>
                 </View>
