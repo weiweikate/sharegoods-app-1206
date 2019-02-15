@@ -34,7 +34,7 @@ class Item extends Component {
             {
                 loadingError
                     ?
-                    <Image source={icon}/>
+                    <Image style={styles.icon}  source={icon}/>
                     :
                     <ImageLoad style={styles.icon} source={source} onError={() => {
                         console.log('loadingError');
@@ -70,7 +70,8 @@ export default class HomeClassifyView extends Component {
             linkTypeCode: data.linkTypeCode,
             code: data.linkTypeCode,
             name: data.name,
-            categoryId: data.id
+            categoryId: data.id,
+            activityCode: data.linkTypeCode,
         });
     };
 

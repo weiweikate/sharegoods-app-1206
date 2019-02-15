@@ -20,10 +20,6 @@
         "content": "apply from: '../../../../android/rn-webView-bridge.gradle'",
         "bulid_path":  "../node_modules/@mr/rn-webview-bridge/android/build.gradle"
     },
-    "autoheight-web": {
-        "content": "apply from: '../../../android/rn-autoheight-web.gradle'",
-        "bulid_path":   "../node_modules/react-native-autoheight-webview/android/build.gradle"
-    },
     "fetch-blob": {
         "content": "apply from: '../../../android/rn-fetch-blob.gradle'",
         "bulid_path": "../node_modules/react-native-fetch-blob/android/build.gradle"
@@ -51,5 +47,9 @@
     "sensors": {
         "content": "apply from: '../../../../android/rn-sensors.gradle'",
         "bulid_path":   "../node_modules/@sensors.data/react-native-sensors-analytics/android/build.gradle"
+    },
+    "extra_dimensions": {
+        "content": "apply from: '../../../android/rn_extra_dimensions.gradle'",
+        "bulid_path":   "../node_modules/react-native-extra-dimensions-android/android/build.gradle"
     }
 }

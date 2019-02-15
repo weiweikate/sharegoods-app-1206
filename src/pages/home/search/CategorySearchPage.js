@@ -59,7 +59,7 @@ export default class CategorySearchPage extends BasePage {
         HomeAPI.findHotList().then((response) => {
             let datas = response.data || {};
             this.setState({
-                sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
+                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList }],
                 bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
                     img: datas.img,
                     linkType: datas.linkType,
@@ -94,10 +94,10 @@ export default class CategorySearchPage extends BasePage {
         return (
 
             <View style={{ flexDirection: 'column' }}>
-                <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={styles.searchBox} onPress={() => this.go2SearchPage()}>
+                <View style={{ height: 56, alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableOpacity style={styles.searchBox} activeOpacity={0.5} onPress={() => this.go2SearchPage()}>
                         <Image source={icon_search}
-                               style={{ width: 22, height: 21, marginLeft: 15 }}/>
+                               style={{ width: 22, height: 21, marginLeft: 20 }}/>
                         <View style={styles.inputText}/>
                     </TouchableOpacity>
                 </View>
@@ -108,7 +108,7 @@ export default class CategorySearchPage extends BasePage {
                                 style={{
                                     width: 90,
                                     backgroundColor: DesignRule.lineColor_inColorBg,
-                                    height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
+                                    height: ScreenUtils.height - 56 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                                 }}
                                 renderItem={this._categoryItem}
                                 refreshing={false}
@@ -122,8 +122,8 @@ export default class CategorySearchPage extends BasePage {
                         width: bannerW + 20,
                         flexDirection: 'column',
                         backgroundColor: 'white',
-                        paddingTop: 10,
-                        height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
+                        paddingTop: this.state.bannerData.length > 0 ? 10 : 0,
+                        height: ScreenUtils.height - 56 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                     }}>
                         {
                             this.state.swiperShow ?
@@ -148,22 +148,25 @@ export default class CategorySearchPage extends BasePage {
                                            style={{ marginBottom: 10 }}
                                 /> : null
                         }
-                        <SectionList style={{
-                            marginTop: this.state.bannerData.length > 0 ? 10 : 0,
-                            marginLeft: 10,
-                            marginRight: 10
-                        }} contentContainerStyle={{
-                            flexWrap: 'wrap',
-                            flexDirection: 'row'
-                        }} renderItem={this._sectionItem}
-                                     renderSectionHeader={this._sectionHeader}
-                                     ListFooterComponent={this._listFooter}
-                                     sections={this.state.sectionArr}
-                                     initialNumToRender={15}
-                                     removeClippedSubviews={false}
-                                     stickySectionHeadersEnabled={false}
-                                     showsVerticalScrollIndicator={false}
-                                     keyExtractor={(item) => item.id + ''}/>
+                        <SectionList
+                            style={{
+                                marginTop: this.state.bannerData.length > 0 ? 10 : 0,
+                                marginLeft: 10,
+                                marginRight: 10
+                            }}
+                            contentContainerStyle={{
+                                flexWrap: 'wrap',
+                                flexDirection: 'row'
+                            }}
+                            renderItem={this._sectionItem}
+                            renderSectionHeader={this._sectionHeader}
+                            ListFooterComponent={this._listFooter}
+                            sections={this.state.sectionArr}
+                            initialNumToRender={15}
+                            removeClippedSubviews={false}
+                            stickySectionHeadersEnabled={false}
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={(item) => item.id + ''}/>
                     </View>
                 </View>
             </View>
@@ -250,7 +253,7 @@ export default class CategorySearchPage extends BasePage {
                             bridge.hiddenLoading();
                             let datas = response.data || {};
                             this.setState({
-                                sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
+                                sectionArr: [{ index: 0, title: '热门分类', data: datas.productCategoryList }],
                                 bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
                                     img: datas.img,
                                     linkType: datas.linkType,
@@ -267,8 +270,9 @@ export default class CategorySearchPage extends BasePage {
                         HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
                             bridge.hiddenLoading();
                             let datas = response.data || {};
-                            let arr = datas.productCategoryList.map((item) => {
+                            let arr = datas.productCategoryList.map((item, index) => {
                                 return {
+                                    index: index,
                                     title: item.name,
                                     data: item.productCategoryList
                                 };
@@ -311,12 +315,12 @@ export default class CategorySearchPage extends BasePage {
                 <UIText value={item.item.name}
                         style={{
                             textAlign: 'center',
-                            height: 30,
                             fontSize: 13,
                             color: DesignRule.textColor_mainTitle,
                             marginTop: 10,
                             marginBottom: 22
-                        }}/>
+                        }}
+                        numberOfLines={2}/>
             </View>
         );
     };
@@ -329,7 +333,8 @@ export default class CategorySearchPage extends BasePage {
                         fontSize: 13,
                         width: ScreenUtils.width - 110,
                         color: DesignRule.textColor_mainTitle,
-                        marginBottom: 20
+                        marginBottom: 20,
+                        marginTop: this.state.bannerData.length === 0 && section.index === 0 ? 10 : 0
                     }}/>
         );
     };
@@ -371,10 +376,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
     searchBox: {
-        height: 40,
+        height: 36,
         flexDirection: 'row',
         width: ScreenUtils.width - 30,
-        borderRadius: 15,
+        borderRadius: 18,
         backgroundColor: DesignRule.lineColor_inColorBg,
         alignItems: 'center',
         marginLeft: 15,

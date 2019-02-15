@@ -115,10 +115,14 @@ export default class InviteFriendsPage extends BasePage<Props> {
     _render() {
 
         let height = ScreenUtils.height;
-        if(ScreenUtils.isAllScreenDevice && !ScreenUtils.isNavigationBarShow){
+        if(ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()){
             height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')
-        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.isNavigationBarShow){
-            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')+ExtraDimensions.get('STATUS_BAR_HEIGHT')
+        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()){
+            if(ScreenUtils.getHasNotchScreen()){
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')+ExtraDimensions.get('STATUS_BAR_HEIGHT')
+            }else {
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')
+            }
         }
 
         return (
@@ -162,7 +166,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     backgroundColor: 'white',
                     width: autoSizeWidth(160),
                     height: autoSizeWidth(160),
-                    top: ScreenUtils.height / 1334.0 * 775 + (ScreenUtils.height / 1334 * (1334 - 775) - autoSizeWidth(160) - autoSizeWidth(90)) / 2.0,
+                    top: height / 1334.0 * 775 + (height / 1334 * (1334 - 775) - autoSizeWidth(160) - autoSizeWidth(90)) / 2.0,
                     left: autoSizeWidth(95 + 12.5),
                     position: 'absolute',
                     // shadowColor: DesignRule.mainColor,

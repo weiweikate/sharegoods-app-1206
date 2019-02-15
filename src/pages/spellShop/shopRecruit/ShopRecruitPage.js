@@ -374,6 +374,7 @@ export default class ShopRecruitPage extends BasePage {
                 <ScrollView showsVerticalScrollIndicator={false}
                             style={DesignRule.bgColor}
                             onScroll={this._onScroll}
+                            scrollEventThrottle={30}
                             refreshControl={
                                 <RefreshControl
                                     refreshing={this.state.refreshing}
