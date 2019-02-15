@@ -5,7 +5,7 @@ import P_ScorePubItemView from './components/P_ScorePubItemView';
 import ActionSheetView from '../../../spellShop/components/ActionSheetView';
 import P_ScorePublishModel from './P_ScorePublishModel';
 import { observer } from 'mobx-react';
-import BusinessUtils from '../../../mine/components/BusinessUtils';
+// import BusinessUtils from '../../../mine/components/BusinessUtils';
 import ImagePicker from '@mr/rn-image-crop-picker';
 
 @observer
