@@ -101,17 +101,15 @@ export default class DetailNavShowModal extends Component {
             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }}
                   allowFontScaling={false}>{item.tittle}</Text>
             {item.index === 0 && this.state.messageCount > 0 ? <View style={{
-                position: 'absolute',
+                position: 'absolute', justifyContent: 'center', alignItems: 'center',
                 top: ScreenUtils.autoSizeWidth(9),
-                left: ScreenUtils.autoSizeWidth(35),
+                left: 23 + 12,
                 backgroundColor: DesignRule.mainColor,
-                borderRadius: 4
+                borderRadius: 8, width: 16, height: 16
             }}>
                 <Text style={{
                     color: DesignRule.white,
-                    fontSize: 9,
-                    paddingHorizontal: 4,
-                    paddingVertical: 2
+                    fontSize: 9
                 }} allowFontScaling={false}>{this.state.messageCount > 99 ? 99 : this.state.messageCount}</Text>
             </View> : null}
         </TouchableOpacity>;

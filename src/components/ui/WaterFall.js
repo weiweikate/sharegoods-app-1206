@@ -78,7 +78,7 @@ class LoadMore extends React.Component {
 
     render() {
         return (
-            <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', height: 48 }}>
                 <Text>{this.props.loading ? '加载中...' : '加载更多'}</Text>
             </View>
         );
@@ -267,7 +267,7 @@ export default class Masonry extends React.Component {
                     this.props.infinite ? this._onInfinite.bind(this) : null
                 }
                 showsVerticalScrollIndicator={false}
-                scrollEventThrottle={100}>
+                scrollEventThrottle={30}>
                 {this.props.renderHeader ? this.props.renderHeader() : null}
                 <View style={[{ flexDirection: 'row' }, this.props.containerStyle]}>
                     {this.state.columns.map((col, index) => {
