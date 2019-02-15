@@ -20,10 +20,6 @@
         "content": "apply from: '../../../../android/rn-webView-bridge.gradle'",
         "bulid_path":  "../node_modules/@mr/rn-webview-bridge/android/build.gradle"
     },
-    "autoheight-web": {
-        "content": "apply from: '../../../android/rn-autoheight-web.gradle'",
-        "bulid_path":   "../node_modules/react-native-autoheight-webview/android/build.gradle"
-    },
     "fetch-blob": {
         "content": "apply from: '../../../android/rn-fetch-blob.gradle'",
         "bulid_path": "../node_modules/react-native-fetch-blob/android/build.gradle"
