@@ -11,12 +11,8 @@ import {
     UIText
 } from '../../components/ui';
 import {MRText as Text} from '../../components/ui'
-
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
-// import HomeApi from '../home/api/HomeAPI';
-// import Toast from '../../utils/bridge';
-
 import MessageApi from './api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from '../../constants/DesignRule';
@@ -120,30 +116,28 @@ export default class MessageCenterPage extends BasePage {
                         flex: 1,
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        height: 44,
-                        paddingLeft: 21,
-                        paddingRight: 28,
+                        paddingHorizontal:DesignRule.margin_page,
                         backgroundColor: 'white',
                         flexDirection: 'row'
                     }} onPress={() => this.orderMenuJump(i)}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={leftImage[i]} style={{ height: 35 }} resizeMode={'contain'}/>
-                            <UIText value={leftText[i]} style={[{ fontSize: 15, marginLeft: 5 }]}/>
+                            <UIText value={leftText[i]} style={[{ fontSize: DesignRule.fontSize_secondTitle, marginLeft: DesignRule.margin_page }]}/>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {count ? <View style={{
                                 marginRight: 7,
                                 backgroundColor: DesignRule.mainColor,
-                                borderRadius: px2dp(8.5),
-                                height: px2dp(17),
-                                paddingHorizontal: px2dp(9),
+                                borderRadius: px2dp(8),
+                                height: px2dp(16),
+                                width: px2dp(16),
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
                                 <Text style={{
                                     color: 'white',
                                     includeFontPadding: false,
-                                    fontSize: px2dp(13)
+                                    fontSize: DesignRule.fontSize_20
                                 }}>{count}</Text>
                             </View> : null}
                             <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>

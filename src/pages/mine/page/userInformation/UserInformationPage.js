@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     View,
-    StyleSheet, ScrollView, RefreshControl
+    StyleSheet, ScrollView, RefreshControl, Clipboard, TouchableWithoutFeedback
 } from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
@@ -14,6 +14,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 const dismissKeyboard = require('dismissKeyboard');
 import MineApi from '../../api/MineApi';
 import RouterMap from '../../../../navigation/RouterMap';
+import CommModal from '../../../../comm/components/CommModal';
+import { MRText as Text } from '../../../../components/ui';
 
 /**
  * @author chenxiang
@@ -35,7 +37,8 @@ export default class UserInformationPage extends BasePage {
         super(props);
         this.state = {
             hasVertifyID: false,
-            isShowTakePhotoModal: false
+            isShowTakePhotoModal: false,
+            showCopy: false
         };
     }
 
@@ -47,12 +50,75 @@ export default class UserInformationPage extends BasePage {
     };
 
     _reload = () => {
-        MineApi.getUser().then(res => {
-            let data = res.data;
-            user.saveUserInfo(data);
-        }).catch(err => {
-            this.$toastShow(err.msg);
+        if (user.isLogin) {
+            MineApi.getUser().then(res => {
+                let data = res.data;
+                user.saveUserInfo(data);
+            }).catch(err => {
+                this.$toastShow(err.msg);
+                if (err.code === 10009) {
+                    this.gotoLoginPage();
+                }
+            });
+        } else {
+            this.gotoLoginPage();
+        }
+
+    };
+
+    copyCode = () => {
+        let code = user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? `${user.perfectNumberCode}` : `${user.code}`;
+        Clipboard.setString(code);
+        this.setState({
+            showCopy: false
         });
+    };
+
+    showCopyModal = () => {
+        this.setState({
+            showCopy: true
+        });
+    };
+
+
+    copyModal = () => {
+        return (
+            <CommModal
+                onRequestClose={() => {
+                    this.setState({
+                        showCopy: false
+                    });
+                }}
+
+                visible={this.state.showCopy}>
+                <TouchableWithoutFeedback onPress={()=>{
+                    this.setState({
+                        showCopy: false
+                    });
+                }}>
+                    <View style={{ flex: 1 ,justifyContent:'center',alignItems:'center'}}>
+                        <TouchableWithoutFeedback onPress={this.copyCode}>
+                            <View style={{
+                                backgroundColor: DesignRule.white,
+                                height: 60,
+                                width: DesignRule.width - 120,
+                                paddingLeft: DesignRule.margin_page,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                borderRadius: 2
+                            }}>
+                                <Text style={{
+                                    color: DesignRule.textColor_mainTitle_222,
+                                    fontSize: DesignRule.fontSize_threeTitle_28
+                                }}>
+                                    复制
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </TouchableWithoutFeedback>
+            </CommModal>
+        );
     };
 
     _render() {
@@ -77,8 +143,13 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}
                                 onPress={() => this.jumpToNickNameModifyPage()}/>
                 {this.renderWideLine()}
-                <UserSingleItem leftText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? '靓号' : '会员号'} rightText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? user.perfectNumberCode : user.code} rightTextStyle={styles.grayText}
-                                leftTextStyle={styles.blackText} isArrow={false}/>
+                <UserSingleItem
+                    leftText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? '靓号' : '会员号'}
+                    rightText={user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? user.perfectNumberCode : user.code}
+                    rightTextStyle={styles.grayText}
+                    leftTextStyle={styles.blackText} isArrow={false}
+                    onPress={() => this.showCopyModal()}
+                />
                 <UserSingleItem leftText={'会员等级'} rightText={user.levelRemark}
                                 rightTextStyle={[styles.grayText, { color: 'white' }]}
                                 leftTextStyle={styles.blackText} isArrow={false} circleStyle={{
@@ -113,6 +184,7 @@ export default class UserInformationPage extends BasePage {
                                     numberOfLines: 2
                                 }]} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.editProfile()}/>
+                {this.copyModal()}
             </ScrollView>
         );
     }
@@ -134,7 +206,7 @@ export default class UserInformationPage extends BasePage {
                     this.gotoLoginPage();
                 }
             });
-        },1,true);
+        }, 1, true);
     };
     jumpToIDVertify2Page = () => {
         if (!user.realname) {

@@ -7,24 +7,11 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
-import com.brentvatne.react.ReactVideoPackage;
-import com.meeruu.sharegoods.rn.storage.AsyncStorageManager;
-import com.oblador.vectoricons.VectorIconsPackage;
-import cn.reactnative.modules.update.UpdatePackage;
-import com.horcrux.svg.SvgPackage;
-import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
-import com.sensorsdata.analytics.RNSensorsAnalyticsPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.request.MRNetStatePackage;
-import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
-import com.psykar.cookiemanager.CookieManagerPackage;
-import com.reactlibrary.RNGeolocationPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.horcrux.svg.SvgPackage;
-import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
@@ -35,6 +22,7 @@ import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.kefu.QiyuImageLoader;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
+import com.meeruu.sharegoods.rn.storage.AsyncStorageManager;
 import com.meeruu.sharegoods.utils.SensorsUtils;
 import com.meituan.android.walle.WalleChannelReader;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -55,6 +43,7 @@ import com.taobao.sophix.listener.PatchLoadStatusListener;
 import java.util.Arrays;
 import java.util.List;
 
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import cn.reactnative.modules.update.UpdateContext;
 import cn.reactnative.modules.update.UpdatePackage;
 
@@ -72,8 +61,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
     @Override
     public void onCreate() {
         super.onCreate();
-        AsyncStorageManager.getInstance().init(this);
-
         final SophixManager instance = SophixManager.getInstance();
         instance.setPatchLoadStatusStub(new PatchLoadStatusListener() {
             @Override
@@ -105,6 +92,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
         }
         LeakCanary.install(this);
         if (getProcessName(this).equals(getPackageName())) {
+            AsyncStorageManager.getInstance().init(this);
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
             if (Utils.isApkInDebug()) {
@@ -151,7 +139,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new UpdatePackage(),
                     new SvgPackage(),
                     new RNDeviceInfo(),
-                    new AutoHeightWebViewPackage(),
                     new RNGeolocationPackage(),
                     new LinearGradientPackage(),
                     new RNFetchBlobPackage(),
@@ -160,7 +147,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new LottiePackage(),
                     new MRNetStatePackage(),
                     new RNSensorsAnalyticsPackage(),
-                    new PickerPackage()
+                    new PickerPackage(),
+                    new ExtraDimensionsPackage()
             );
         }
 

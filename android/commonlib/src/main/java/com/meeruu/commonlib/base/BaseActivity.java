@@ -1,5 +1,6 @@
 package com.meeruu.commonlib.base;
 
+import android.content.ComponentCallbacks2;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.utils.NoFastClickUtils;
@@ -36,7 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected boolean hasBasePer = false;
     protected boolean canFastClick = false;
     private static String[] mDenyPerms = StringUtis.concatAll(
-            Permission.STORAGE,Permission.LOCATION);
+            Permission.STORAGE, Permission.LOCATION);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

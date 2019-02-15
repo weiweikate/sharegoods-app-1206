@@ -13,7 +13,7 @@ var config = {
     user:'ziming.x',
     password:'XIEziming123.'
 }
-var remoatPath = '/package/test';
+var remoatPath = '/package/test/android';
 var currDate = new Date();
 var dirName = `/${currDate.getFullYear()}.${currDate.getMonth()+1}.${currDate.getDate()}-${currDate.getHours()}.${currDate.getMinutes()}.${currDate.getMinutes()}`;
 var dir = remoatPath+dirName;

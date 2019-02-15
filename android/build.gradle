@@ -11,7 +11,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.3.1'
         //添加神策分析 android-gradle-plugin 依赖
         classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.0.1'
     }

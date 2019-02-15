@@ -8,7 +8,7 @@ import {
     // Linking,
     TouchableWithoutFeedback,
     RefreshControl, DeviceEventEmitter, TouchableOpacity,
-    Image, BackHandler
+    Image, BackHandler, Clipboard
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
@@ -28,8 +28,9 @@ import WaveView from '../../../comm/components/WaveView';
 import MessageApi from '../../message/api/MessageApi';
 // import ImageLoad from '@mr/image-placeholder';
 import UIImage from '../../../components/ui/UIImage';
-import { MRText as Text ,AvatarImage} from '../../../components/ui';
+import { MRText as Text, AvatarImage } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
+import CommModal from '../../../comm/components/CommModal';
 
 const {
     mine_header_bg,
@@ -84,7 +85,8 @@ export default class MinePage extends BasePage {
             isRefreshing: false,
             changeHeader: true,
             hasMessageNum: 0,
-            hasFans: false
+            hasFans: false,
+            modalId: false
         };
     }
 
@@ -228,6 +230,14 @@ export default class MinePage extends BasePage {
         this.$navigate('mine/userInformation/UserInformationPage');
     };
 
+    copyId = () => {
+        let code = user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? `${user.perfectNumberCode}` : `${user.code}`;
+        Clipboard.setString(code);
+        this.setState({
+            modalId:false
+        })
+    };
+
     //**********************************ViewPart******************************************
     _render() {
         return (
@@ -267,7 +277,7 @@ export default class MinePage extends BasePage {
                 }}>
                     <View style={{ flex: 1 }}/>
                     <Text style={{
-                        color: this.state.changeHeader ? DesignRule.white : '#828282',
+                        color: this.state.changeHeader ? DesignRule.white : DesignRule.textColor_mainTitle,
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
@@ -306,9 +316,15 @@ export default class MinePage extends BasePage {
 
     renderUserHead = () => {
         let accreditID = !EmptyUtils.isEmpty(user.code) ? (
-            <Text style={{ fontSize: 11, color: DesignRule.white, includeFontPadding: false, marginTop: 5 }}>
-                {user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? `靓号：${user.perfectNumberCode}` : `会员号: ${user.code}`}
-            </Text>
+            <TouchableWithoutFeedback onLongPress={() => {
+                this.setState({
+                    modalId: true
+                });
+            }}>
+                <Text style={{ fontSize: 11, color: DesignRule.white, includeFontPadding: false, marginTop: 5 }}>
+                    {user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? `靓号：${user.perfectNumberCode}` : `会员号: ${user.code}`}
+                </Text>
+            </TouchableWithoutFeedback>
         ) : null;
 
         let name = '';
@@ -321,8 +337,8 @@ export default class MinePage extends BasePage {
 
         let icon = (user.headImg && user.headImg.length > 0) ?
             <AvatarImage source={{ uri: user.headImg }} style={styles.userIconStyle}
-                       borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
-                                                           borderRadius={px2dp(27)}/>;
+                         borderRadius={px2dp(27)}/> : <Image source={mine_user_icon} style={styles.userIconStyle}
+                                                             borderRadius={px2dp(27)}/>;
 
         return (
             <ImageBackground style={styles.headerBgStyle} source={mine_header_bg}>
@@ -377,8 +393,7 @@ export default class MinePage extends BasePage {
                                   style={{
                                       width: px2dp(44),
                                       height: px2dp(44)
-                                  }}
-                        />
+                                  }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.$navigate(RouterMap.MyPromotionPage);
                         }}>
@@ -400,8 +415,34 @@ export default class MinePage extends BasePage {
                         </TouchableWithoutFeedback>
                     </ImageBackground>
                 </View>
+                {this.copyModalRender()}
             </ImageBackground>
         );
+    };
+
+    copyModalRender = () => {
+        return (<CommModal
+            onRequestClose={() => {
+                this.setState({
+                    modalId: false
+                });
+            }}
+            transparent={true}
+            visible={this.state.modalId}>
+            <TouchableWithoutFeedback onPress={() => {
+                this.setState({
+                    modalId: false
+                });
+            }}>
+                <View style={{ flex: 1, width: DesignRule.width, height: DesignRule.height }}>
+                    <TouchableWithoutFeedback onPress={() => this.copyId()}>
+                        <View style={styles.copyViewStyle}>
+                            <Text style={styles.copyTextStyle}>复制</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+            </TouchableWithoutFeedback>
+        </CommModal>);
     };
 
     accountRender = () => {
@@ -562,6 +603,7 @@ export default class MinePage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         onScroll={this._onScroll.bind(this)}
+                        scrollEventThrottle={30}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
@@ -740,7 +782,7 @@ export default class MinePage extends BasePage {
             }
         };
 
-        let menu = [invite, message,coupon, data, shop, service, address, collect];
+        let menu = [invite, message, coupon, data, shop, service, address, collect];
 
         if (this.state.hasFans) {
             menu.push(fans);
@@ -761,7 +803,7 @@ export default class MinePage extends BasePage {
                     marginTop: 10,
                     marginBottom: 10
                 }} onPress={menu[i].onPress} key={i}>
-                    <View style={{ paddingTop: 7,paddingLeft:8,paddingRight:8, paddingBottom: 0}}>
+                    <View style={{ paddingTop: 7, paddingLeft: 8, paddingRight: 8, paddingBottom: 0 }}>
                         <UIImage source={menu[i].icon}
                                  resizeMode={'contain'}
                                  style={{ width: 20, marginBottom: 8 }}/>
@@ -773,10 +815,14 @@ export default class MinePage extends BasePage {
                             position: 'absolute',
                             top: 0,
                             right: 0,
-                            alignItems:'center',
-                            justifyContent:'center'
+                            alignItems: 'center',
+                            justifyContent: 'center'
                         }}>
-                            <Text style={{color:DesignRule.white,fontSize:9,includeFontPadding:false}}>{menu[i].num > 99 ? 99 : menu[i].num}</Text>
+                            <Text style={{
+                                color: DesignRule.white,
+                                fontSize: 9,
+                                includeFontPadding: false
+                            }}>{menu[i].num > 99 ? 99 : menu[i].num}</Text>
                         </View> : null}
                     </View>
                     <UIText value={menu[i].text} style={styles.greyText}/>
@@ -866,7 +912,7 @@ const styles = StyleSheet.create({
     },
     greyText: {
         fontSize: 12,
-        color: '#212121',
+        color: '#212121'
     },
     blackText: {
         fontSize: 13,
@@ -910,6 +956,20 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         height: px2dp(32),
         justifyContent: 'space-between'
+    },
+    copyViewStyle: {
+        height: 20,
+        width: 50,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        marginTop: ScreenUtils.getImgHeightWithWidth(headerBgSize) / 2 - 5,
+        marginLeft: px2dp(90),
+        borderRadius: 2,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    copyTextStyle: {
+        color: DesignRule.white,
+        fontSize: DesignRule.fontSize_22
     }
 });
 

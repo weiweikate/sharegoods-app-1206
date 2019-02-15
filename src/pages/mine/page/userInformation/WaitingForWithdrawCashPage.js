@@ -315,14 +315,16 @@ export default class WaitingForWithdrawCashPage extends BasePage {
     };
     onRefresh = () => {
         this.currentPage = 1;
-        MineApi.getUser().then(resp => {
-            let data = resp.data;
-            user.saveUserInfo(data);
-        }).catch(err => {
-            if (err.code === 10009) {
-                this.gotoLoginPage();
-            }
-        });
+        if(user.isLogin){
+            MineApi.getUser().then(resp => {
+                let data = resp.data;
+                user.saveUserInfo(data);
+            }).catch(err => {
+                if (err.code === 10009) {
+                    this.gotoLoginPage();
+                }
+            });
+        }
         this.getDataFromNetwork();
     };
     onLoadMore = () => {

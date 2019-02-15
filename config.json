@@ -40,7 +40,7 @@
         },
         "garyTest": {
             "name": "灰度测试",
-            "host": "https://47.110.199.35/gateway",
+            "host": "https://apif.sharegoodsmall.com/gateway",
             "h5": "https://h5.sharegoodsmall.com",
             "oss": "https://cdn.sharegoodsmall.com",
             "wxAppletKey": "gh_e0c6b86659cc",
@@ -65,7 +65,7 @@
         },
         "shen_yaoxing": {
             "name": "沈耀鑫",
-            "host": "http://172.16.10.60:8180/gateway"
+            "host": "http://172.16.10.60:9090/gateway"
         },
         "dev_cs": {
             "name": "陈帅",

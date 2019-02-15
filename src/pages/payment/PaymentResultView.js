@@ -10,9 +10,11 @@ import DesignRule from '../../constants/DesignRule';
 import {MRText as Text} from '../../components/ui'
 import res from './res';
 const failImg = res.fail;
+const warningImg = res.warning;
 export const PaymentResult = {
     sucess: 1,
-    fail: 2
+    fail: 2,
+    warning: 3,
 };
 export default class PaymentResultView extends Component {
     state = {
@@ -45,9 +47,17 @@ export default class PaymentResultView extends Component {
     }
 
     show(result, message) {
+
+        let msg = ''
+        if (result === PaymentResult.sucess) {
+            msg = '支付成功'
+        } else if (result === PaymentResult.fail) {
+            msg = '支付失败'
+        }
+
         this.setState({
             modalVisible: true,
-            resultText: result === PaymentResult.sucess ? '支付成功' : '支付失败',
+            resultText: msg,
             result: result,
             message: message
         });
@@ -64,6 +74,15 @@ export default class PaymentResultView extends Component {
     render() {
         const { resultText, result, message } = this.state;
 
+        let img = successImg
+        if (result === PaymentResult.sucess) {
+            img = successImg
+        } else if (result === PaymentResult.fail) {
+            img = failImg
+        } else {
+            img = warningImg
+        }
+
         console.log('PaymentResultView message', message);
         return (
             <Modal
@@ -78,8 +97,14 @@ export default class PaymentResultView extends Component {
                 <View style={styles.container}>
                     <View style={styles.content}>
                         <Image style={styles.image}
-                                source={result === PaymentResult.sucess ? successImg : failImg}/>
-                        <Text allowFontScaling={false}  style={styles.text}>{resultText}</Text>
+                                source={img}/>
+                        {
+                            resultText
+                            ?
+                            <Text allowFontScaling={false}  style={styles.text}>{resultText}</Text>
+                            :
+                            null
+                        }
                         {
                             message
                                 ?
@@ -89,7 +114,7 @@ export default class PaymentResultView extends Component {
                         }
                         <View style={{ flex: 1 }}/>
                         {
-                            result === PaymentResult.sucess
+                            result === PaymentResult.sucess || result === PaymentResult.warning
                                 ?
                                 <View style={styles.bottom}>
                                     <TouchableOpacity style={styles.button} onPress={() => this._goToHome()}>

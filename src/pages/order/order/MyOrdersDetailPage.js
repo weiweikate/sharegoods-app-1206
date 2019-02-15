@@ -1,6 +1,5 @@
 import React from "react";
 import {
-    // NativeModules,
     StyleSheet,
     View,
     TouchableOpacity,
@@ -75,10 +74,10 @@ export default class MyOrdersDetailPage extends BasePage {
         };
     };
 
-    _reload() {
+    _reload=()=> {
         orderDetailModel.netFailedInfo = null;
         orderDetailModel.loadingState = PageLoadingState.loading;
-        this.loadPageData;
+        this.loadPageData();
     }
 
     $NavBarRenderRightItem = () => {
@@ -120,10 +119,6 @@ export default class MyOrdersDetailPage extends BasePage {
 
     }
 
-    // 重新加载
-    _reload = () => {
-        this.loadPageData();
-    };
 
     getCancelOrder() {
         let arrs = [];
@@ -151,7 +146,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     _renderContent = () => {
         return (
-            <View style={{marginBottom:ScreenUtils.safeBottom,flex:1}}>
+            <View style={{flex:1}}>
             <ScrollView showsVerticalScrollIndicator={false}>
             <RefreshList
                 ListHeaderComponent={this.renderHeader}
@@ -417,35 +412,6 @@ export default class MyOrdersDetailPage extends BasePage {
         Toast.hiddenLoading();
         let dataArr = [];
         let pageStateString = orderDetailAfterServiceModel.AfterServiceList[parseInt(orderDetailModel.warehouseOrderDTOList[0].status)];
-        if (orderDetailModel.warehouseOrderDTOList[0].status === 1) {
-            this.stop();
-            this.settimer(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
-            orderDetailAfterServiceModel.menu = [{
-                id: 1,
-                operation: "取消订单",
-                isRed: false
-            }, {
-                id: 2,
-                operation: "去支付",
-                isRed: true
-            }],
-                orderDetailModel.warehouseOrderDTOList.map((item, index) => {
-                    item.products.map((item, index) => {
-                        dataArr.push({
-                            productId: item.id,
-                            uri: item.specImg,
-                            goodsName: item.productName,
-                            salePrice: StringUtils.isNoEmpty(item.unitPrice) ? item.unitPrice : 0,
-                            category: item.specValues,
-                            goodsNum: item.quantity,
-                            afterSaleService: this.getAfterSaleService(item, index),
-                            status: item.status,
-                            activityCode: item.activityCode
-                        });
-                    });
-                });
-
-        } else {
             orderDetailModel.warehouseOrderDTOList.map((resp, index1) => {
                 resp.products.map((item, index) => {
                     dataArr.push({
@@ -457,11 +423,10 @@ export default class MyOrdersDetailPage extends BasePage {
                         goodsNum: item.quantity,
                         afterSaleService: this.getAfterSaleService(item, index),
                         status: item.status,
-                        activityCode: item.skuCode
+                        activityCode: orderDetailModel.warehouseOrderDTOList[0].status === 1?item.activityCode:item.skuCode
                     });
                 });
             });
-        }
         this.setState({ viewData: dataArr });
         /*
          * operationMenuCheckList
@@ -472,6 +437,19 @@ export default class MyOrdersDetailPage extends BasePage {
          * 交易关闭                 ->  5
          * */
         switch (parseInt(orderDetailModel.warehouseOrderDTOList[0].status)) {
+            case 1:
+                this.stop();
+                this.settimer(orderDetailModel.warehouseOrderDTOList[0].cancelTime);
+                orderDetailAfterServiceModel.menu = [{
+                    id: 1,
+                    operation: "取消订单",
+                    isRed: false
+                }, {
+                    id: 2,
+                    operation: "去支付",
+                    isRed: true
+                }];
+                break;
             case 2:
                 orderDetailAfterServiceModel.moreDetail = "";
                 orderDetailAfterServiceModel.menu = [];

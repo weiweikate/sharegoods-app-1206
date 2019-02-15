@@ -32,8 +32,12 @@ export default class ShowListPage extends BasePage {
     };
 
     handleBackPress = () => {
-        this.$navigate('HomePage');
-        return true;
+        if (this.state.left) {
+            return false;
+        } else {
+            this.$navigate('HomePage');
+            return true;
+        }
     };
 
 
@@ -216,7 +220,7 @@ let styles = StyleSheet.create({
         justifyContent: 'flex-end'
     },
     index: {
-        color: DesignRule.textColor_instruction,
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(14),
         fontWeight: '600',
         marginBottom: 16
@@ -230,6 +234,7 @@ let styles = StyleSheet.create({
     line: {
         backgroundColor: DesignRule.mainColor,
         width: 30,
-        height: 2
+        height: 2,
+        borderRadius: 1
     }
 });

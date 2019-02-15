@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
@@ -87,6 +88,9 @@ public class MainActivity extends BaseActivity {
 //            } else {
 //                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
 //            }
+            if (canSkip) {
+                mHandler.sendEmptyMessage(ParameterUtils.EMPTY_WHAT);
+            }
         } else {
             if (needGo && hasBasePer) {
                 goIndex();
@@ -149,27 +153,29 @@ public class MainActivity extends BaseActivity {
     }
 
     private void LoadingAdv(Uri uri) {
-        ImageLoadUtils.downloadImage(uri, new BaseBitmapDataSubscriber() {
+        if (Fresco.hasBeenInitialized()) {
+            ImageLoadUtils.downloadImage(uri, new BaseBitmapDataSubscriber() {
 
-            @Override
-            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
-                hasAdResp = true;
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
-            }
-
-            @Override
-            protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                hasAdResp = true;
-                if (bitmap == null) {
+                @Override
+                protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                    hasAdResp = true;
                     mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
-                    return;
                 }
-                Message msg = Message.obtain();
-                msg.obj = bitmap;
-                msg.what = ParameterUtils.TIMER_START;
-                mHandler.sendMessage(msg);
-            }
-        });
+
+                @Override
+                protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                    hasAdResp = true;
+                    if (bitmap == null) {
+                        mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+                        return;
+                    }
+                    Message msg = Message.obtain();
+                    msg.obj = bitmap;
+                    msg.what = ParameterUtils.TIMER_START;
+                    mHandler.sendMessage(msg);
+                }
+            });
+        }
     }
 
     @Override
@@ -189,7 +195,9 @@ public class MainActivity extends BaseActivity {
                         mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
                         ((ViewStub) findViewById(R.id.vs_adv)).inflate();
                         ivAdv = findViewById(R.id.iv_adv);
-                        ImageLoadUtils.loadImage(Uri.parse(ossHost + "/app/start_adv.png"), ivAdv, ScalingUtils.ScaleType.FIT_CENTER);
+                        String url = ossHost + "/app/start_adv.png?" + System.currentTimeMillis();
+                        ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
+                                ScalingUtils.ScaleType.FIT_CENTER, true);
                         ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
                         ivAdvBg.setImageBitmap((Bitmap) msg.obj);

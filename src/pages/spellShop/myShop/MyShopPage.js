@@ -163,7 +163,10 @@ export default class MyShopPage extends BasePage {
 
     _loadPageData = () => {
         this._requestGetById();
-        this._requestGetByStoreId();
+        //非首页时请求
+        if (!this.props.leftNavItemHidden) {
+            this._requestGetByStoreId();
+        }
     };
 
     _requestGetById = () => {
@@ -462,6 +465,7 @@ export default class MyShopPage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         onScroll={this._onScroll}
+                        scrollEventThrottle={30}
                         refreshControl={<RefreshControl
                             onRefresh={this._onRefresh}
                             refreshing={this.state.isRefresh}

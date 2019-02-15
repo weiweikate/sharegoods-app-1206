@@ -25,6 +25,8 @@ import StringUtils from "../../../../utils/StringUtils";
      share_icon,
      members_icon,
      activity_icon,
+     xiugou_present,
+     xiugou_punishment
  } =res.myData;
 export default class ExpDetailPage extends BasePage{
     constructor(props){
@@ -151,8 +153,8 @@ export default class ExpDetailPage extends BasePage{
     };
     getDataFromNetwork = () => {
         console.log("getDataFromNetwork",this.params.experience)
-        let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励","其他","其他"];
-        let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,share_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon,activity_icon,activity_icon ];
+        let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励","其他","秀购赠送","秀购惩罚","其他"];
+        let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,share_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon,activity_icon,xiugou_present,xiugou_punishment,activity_icon ];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         MineApi.expDetail({
             page: this.currentPage,
@@ -178,14 +180,6 @@ export default class ExpDetailPage extends BasePage{
     };
     onRefresh = () => {
         this.currentPage = 1;
-        MineApi.getUser().then(resp => {
-            let data = resp.data;
-            user.saveUserInfo(data);
-        }).catch(err => {
-            if (err.code === 10009) {
-                this.gotoLoginPage();
-            }
-        });
         this.getDataFromNetwork();
     };
     onLoadMore = () => {

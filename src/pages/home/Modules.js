@@ -26,8 +26,8 @@ class ClassifyModules {
             img: OssHelper('/app/share%403x.png'),
             name: '分享',
             id: 1,
-            route: 'topic/DownPricePage',
-            linkTypeCode: 'ZT2018000003'
+            route: 'home/product/xpProduct/XpDetailPage',
+            linkTypeCode: 'JF201901250002'
         }, {
             icon: showImg,
             img: OssHelper('/app/show%403x.png'),
@@ -56,20 +56,19 @@ class ClassifyModules {
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000002'
         }];
-
-        HomeApi.classify().then( resData => {
+        HomeApi.classify().then(resData => {
             if (resData.code === 10000 && resData.data) {
-                let resClassifys = resData.data
+                let resClassifys = resData.data;
                 resClassifys.map((data) => {
                     if (data.name === '全部分类') {
-                        data.route = 'home/search/CategorySearchPage'
+                        data.route = 'home/search/CategorySearchPage';
                     } else {
-                        data.route = 'home/search/SearchResultPage'
+                        data.route = 'home/search/SearchResultPage';
                     }
-                })
-                this.classifyList =  classifys.concat(resClassifys)
+                });
+                this.classifyList = classifys.concat(resClassifys);
             }
-        })
+        });
     };
 }
 
@@ -84,7 +83,7 @@ class HomeModule {
     isEnd = false;
     page = 1;
     firstLoad = true;
-    errorMsg = ''
+    errorMsg = '';
 
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
@@ -118,7 +117,7 @@ class HomeModule {
             storeCode: storeCode,
             uri: data.linkTypeCode,
             id: data.showId,
-            code: data.linkTypeCode,
+            code: data.linkTypeCode
         };
 
     };
@@ -137,7 +136,7 @@ class HomeModule {
         recommendModule.loadRecommendList(this.firstLoad);
         subjectModule.loadSubjectList(this.firstLoad);
         this.page = 1;
-        this.isEnd = false
+        this.isEnd = false;
         this.homeList = [{
             id: 0,
             type: homeType.swiper
@@ -171,7 +170,7 @@ class HomeModule {
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             let list = result.data.data;
             console.log('loadhomelist', list);
-            let home = []
+            let home = [];
             if (list.length > 0) {
                 home.push({
                     id: 9,
@@ -225,7 +224,7 @@ class HomeModule {
             return;
         }
         try {
-            const timeStamp = new Date().getTime()
+            const timeStamp = new Date().getTime();
             this.isFetching = true;
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             this.isFetching = false;
@@ -261,7 +260,7 @@ class HomeModule {
             // this.isFetching = false;
             // this.isEnd = false;
         } catch (error) {
-            this.errorMsg = error.msg
+            this.errorMsg = error.msg;
             console.log(error);
         }
     });

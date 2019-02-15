@@ -26,6 +26,10 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { UIImage } from '../../../../components/ui';
 import { MRText as Text } from '../../../../components/ui';
 
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+
+
+
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import bridge from '../../../../utils/bridge';
@@ -109,13 +113,25 @@ export default class InviteFriendsPage extends BasePage<Props> {
     };
 
     _render() {
+
+        let height = ScreenUtils.height;
+        if(ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()){
+            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')
+        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()){
+            if(ScreenUtils.getHasNotchScreen()){
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')+ExtraDimensions.get('STATUS_BAR_HEIGHT')
+            }else {
+                height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT')
+            }
+        }
+
         return (
             <View style={styles.container}>
                 <Image source={bg} style={{
                     top: 0,
                     left: 0,
                     width: DesignRule.autoSizeWidth(375),
-                    height: ScreenUtils.height,
+                    height,
                     resizeMode: 'stretch',
                     position: 'absolute'
                 }}/>
@@ -150,7 +166,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     backgroundColor: 'white',
                     width: autoSizeWidth(160),
                     height: autoSizeWidth(160),
-                    top: ScreenUtils.height / 1334.0 * 775 + (ScreenUtils.height / 1334 * (1334 - 775) - autoSizeWidth(160) - autoSizeWidth(90)) / 2.0,
+                    top: height / 1334.0 * 775 + (height / 1334 * (1334 - 775) - autoSizeWidth(160) - autoSizeWidth(90)) / 2.0,
                     left: autoSizeWidth(95 + 12.5),
                     position: 'absolute',
                     // shadowColor: DesignRule.mainColor,
@@ -239,7 +255,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ff0050'
+        backgroundColor: '#ff0050',
     },
     btnContainer: {
         borderRadius: autoSizeWidth(25),
