@@ -5,6 +5,7 @@ import P_ScorePubItemView from './components/P_ScorePubItemView';
 import ActionSheetView from '../../../spellShop/components/ActionSheetView';
 import P_ScorePublishModel from './P_ScorePublishModel';
 import { observer } from 'mobx-react';
+import BusinessUtils from '../../../mine/components/BusinessUtils';
 
 @observer
 export class P_ScorePublishPage extends BasePage {
@@ -20,7 +21,30 @@ export class P_ScorePublishPage extends BasePage {
         this.ActionSheetView.show({
             items: ['小视频', '拍照', '我的相册']
         }, (value, index1) => {
-            this.p_ScorePublishModel.addImgVideo(itemIndex);
+            switch (index1) {
+                case 0:
+                    setTimeout(() => {
+                        BusinessUtils.pickSingleWithCamera(true, (response) => {
+                            // const { imageUrl } = response;
+                        });
+                    }, 500);
+                    break;
+                case 1:
+                    setTimeout(() => {
+                        BusinessUtils.pickSingleWithCamera(true, (response) => {
+                            // const { imageUrl } = response;
+                        });
+                    }, 500);
+                    break;
+                case 2:
+                    setTimeout(() => {
+                        BusinessUtils.pickMultiple(3, (response) => {
+                            // const { imageUrl } = response;
+                        });
+                    }, 500);
+                    break;
+            }
+            // this.p_ScorePublishModel.addImgVideo(itemIndex);
         });
     };
 
