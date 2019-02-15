@@ -89,7 +89,7 @@ export default class MessageGatherPage extends BasePage {
         return (
             <View style={{ width: ScreenUtils.width,backgroundColor:'white' }}>
                 <View style={styles.itemContents}>
-                    <Text>{DateUtils.getFormatDate(item.displayTime / 1000 ,'MM/dd hh:mm')}</Text>
+                    <Text style={styles.timeStyle}>{DateUtils.getFormatDate(item.displayTime / 1000 ,'MM/dd hh:mm')}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop:px2dp(15)}}>
                     <Text style={{ marginHorizontal: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.title}</Text>
@@ -198,9 +198,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     itemContents: {
-        height: 37,
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:DesignRule.bgColor
-    }
+        backgroundColor:DesignRule.bgColor,
+        paddingTop:px2dp(20),
+        paddingBottom:px2dp(10)
+    },
+    timeStyle:{
+        color:DesignRule.textColor_instruction,
+        fontSize:DesignRule.fontSize_threeTitle
+    },
 });
