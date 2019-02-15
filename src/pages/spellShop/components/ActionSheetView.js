@@ -71,25 +71,30 @@ export default class ActionSheetView extends Component {
      * @callBack 动画结束的回到函数
      **/
     _closeAnimated = (callBack) => {
-        Animated.timing(
-            this.state.panelTopToBottom,
-            {
-                toValue: SCREEN_HEIGHT,
-                duration: Animated_Duration * 2 / 3
+        Animated.parallel([
+            Animated.timing(
+                this.state.panelTopToBottom,
+                {
+                    toValue: SCREEN_HEIGHT,
+                    duration: Animated_Duration
+                }
+            ),
+            //透明度
+            Animated.timing(
+                this.state.backOpacity,
+                {
+                    toValue: 0,
+                    duration: Animated_Duration
+                }
+            )]
+        ).start(
+            () => {
+                this.setState({ modalVisible: false }, () => {
+                    callBack && callBack();
+                });
             }
-        ).start();
-        //透明度
-        Animated.timing(
-            this.state.backOpacity,
-            {
-                toValue: 0,
-                duration: Animated_Duration * 2 / 3
-            }
-        ).start(() => {
-            this.setState({ modalVisible: false }, () => {
-                callBack && callBack();
-            });
-        });
+        );
+
     };
 
 
@@ -155,8 +160,7 @@ export default class ActionSheetView extends Component {
     // 渲染可选项
     _renderArrItems = () => {
         const clickItemPress = (item, index) => {
-            this._closeAnimated();
-            this.state.selectCallBack && this.state.selectCallBack(item, index);
+            this._closeAnimated(this.state.selectCallBack && this.state.selectCallBack(item, index));
         };
         return this.state.items.map((item, index) => {
             return this._renderItem(item, index, clickItemPress);

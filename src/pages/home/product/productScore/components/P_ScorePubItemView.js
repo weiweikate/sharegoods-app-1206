@@ -74,9 +74,10 @@ class ImgVideoView extends Component {
         const { showAction, index, p_ScorePublishModel } = this.props;
         const { itemDataS, deleteImgVideo } = p_ScorePublishModel;
         const itemData = itemDataS[index];
+        const { imgVideos, hasVideo } = itemData;
         return <View style={styles.imgVideosView}>
             {
-                itemData.imgVideos.map((value, index1) => {
+                imgVideos.map((value, index1) => {
                     return <View style={[styles.imgVideoView, { marginRight: index1 === 3 ? 0 : 2.5 }]}>
                         <Image style={styles.imgVideo}/>
                         <NoMoreClick style={styles.deleteImg}
@@ -88,10 +89,17 @@ class ImgVideoView extends Component {
                     </View>;
                 })
             }
-            {itemData.imgVideos.length >= 6 ? null :
-                <NoMoreClick onPress={() => showAction(index)}>
-                    <Image style={styles.imgVideo} source={p_score_add}/>
-                </NoMoreClick>
+            {
+                imgVideos.length >= 6 ? null :
+                    <NoMoreClick onPress={() => showAction(index)}>
+                        <Image style={styles.imgVideo} source={p_score_add}/>
+                    </NoMoreClick>
+            }
+            {
+                imgVideos.length >= 6 || hasVideo ? null :
+                    <NoMoreClick onPress={() => showAction(index, true)}>
+                        <Image style={[styles.imgVideo, { marginLeft: 12 }]} source={p_score_add}/>
+                    </NoMoreClick>
             }
         </View>;
     }
