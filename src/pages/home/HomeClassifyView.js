@@ -70,7 +70,8 @@ export default class HomeClassifyView extends Component {
             linkTypeCode: data.linkTypeCode,
             code: data.linkTypeCode,
             name: data.name,
-            categoryId: data.id
+            categoryId: data.id,
+            activityCode: data.linkTypeCode,
         });
     };
 
