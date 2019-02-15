@@ -26,8 +26,8 @@ class ClassifyModules {
             img: OssHelper('/app/share%403x.png'),
             name: '分享',
             id: 1,
-            route: 'topic/DownPricePage',
-            linkTypeCode: 'ZT2018000003'
+            route: 'home/product/xpProduct/XpDetailPage',
+            linkTypeCode: 'JF201901250002'
         }, {
             icon: showImg,
             img: OssHelper('/app/show%403x.png'),
