@@ -79,7 +79,7 @@ export default class ShopHeaderBonus extends Component {
                                 style={{ color: DesignRule.textColor_mainTitle }}>元待分红</Text></Text>
                         </View>
 
-                        <View>
+                        <View style = {{flex:1}}>
                             <View style={{ justifyContent: 'space-between', flex: 1 }}>
                                 <Text style={{
                                     fontSize: 12,
