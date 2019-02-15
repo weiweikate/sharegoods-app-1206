@@ -277,7 +277,7 @@ export default class MinePage extends BasePage {
                 }}>
                     <View style={{ flex: 1 }}/>
                     <Text style={{
-                        color: this.state.changeHeader ? DesignRule.white : '#828282',
+                        color: this.state.changeHeader ? DesignRule.white : DesignRule.textColor_mainTitle,
                         fontSize: px2dp(17),
                         includeFontPadding: false
                     }}>
