@@ -341,10 +341,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     itemContents: {
-        height: 37,
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: DesignRule.bgColor
+        backgroundColor: DesignRule.bgColor,
+        paddingTop:px2dp(20),
+        paddingBottom:px2dp(10)
+    },
+    timeStyle:{
+      color:DesignRule.textColor_instruction,
+        fontSize:DesignRule.fontSize_threeTitle
     },
     itemBottomWrapper: {
         height: px2dp(60),

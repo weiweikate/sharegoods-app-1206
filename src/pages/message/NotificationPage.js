@@ -14,10 +14,8 @@ import MessageApi from './api/MessageApi';
 import Toast from '../../utils/bridge';
 import DesignRule from '../../constants/DesignRule';
 import RES from './res';
-
 const emptyIcon = RES.message_empty;
-
-
+const {px2dp} = ScreenUtils;
 export default class NotificationPage extends BasePage {
     constructor(props) {
         super(props);
@@ -53,7 +51,7 @@ export default class NotificationPage extends BasePage {
         return (
             <View style={{ width: ScreenUtils.width }}>
                 <View style={styles.itemContents}>
-                    <Text>{DateUtils.getFormatDate(item.startTime / 1000, 'MM/dd hh:mm')}</Text>
+                    <Text style={styles.timeStyle}>{DateUtils.getFormatDate(item.startTime / 1000, 'MM/dd hh:mm')}</Text>
                 </View>
                 <View style={{
                     paddingVertical: 17,
@@ -172,8 +170,12 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     itemContents: {
-        height: 37,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+        paddingTop:px2dp(20),
+        paddingBottom:px2dp(10)
+    },
+    timeStyle:{
+        color:DesignRule.textColor_instruction,
+        fontSize:DesignRule.fontSize_threeTitle
+    },
 });

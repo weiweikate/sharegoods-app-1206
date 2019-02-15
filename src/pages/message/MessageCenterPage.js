@@ -128,16 +128,16 @@ export default class MessageCenterPage extends BasePage {
                             {count ? <View style={{
                                 marginRight: 7,
                                 backgroundColor: DesignRule.mainColor,
-                                borderRadius: px2dp(8.5),
-                                height: px2dp(17),
-                                paddingHorizontal: px2dp(9),
+                                borderRadius: px2dp(8),
+                                height: px2dp(16),
+                                width: px2dp(16),
                                 alignItems: 'center',
                                 justifyContent: 'center'
                             }}>
                                 <Text style={{
                                     color: 'white',
                                     includeFontPadding: false,
-                                    fontSize: px2dp(13)
+                                    fontSize: DesignRule.fontSize_20
                                 }}>{count}</Text>
                             </View> : null}
                             <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>
