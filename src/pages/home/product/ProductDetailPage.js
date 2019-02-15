@@ -40,6 +40,7 @@ import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/Navigat
 import MessageApi from '../../message/api/MessageApi';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import RouterMap from '../../../navigation/RouterMap';
+import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -362,8 +363,11 @@ export default class ProductDetailPage extends BasePage {
                                  goShopAction={() => {
                                      this.$navigateBackToStore();
                                  }}
-                                 allAction={() => {
+                                 allScoreAction={() => {
                                      this.$navigate(RouterMap.P_ScorePublishPage, { pData: this.state.data });
+                                 }}
+                                 serviceAction={() => {
+                                     this.DetailHeaderServiceModal.show(true, true);
                                  }}
                                  navigation={this.props.navigation}/>;
     };
@@ -624,6 +628,7 @@ export default class ProductDetailPage extends BasePage {
                                 miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+            <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>
             {/*<ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>*/}
             {/*{this._renderCouponModal()}*/}
         </View>;

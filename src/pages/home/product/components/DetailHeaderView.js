@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import {
     View,
     TouchableOpacity,
-    Image
+    Image,
+    StyleSheet
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ProductActivityView from './ProductActivityView';
@@ -14,7 +15,8 @@ import DetailBanner from './DetailBanner';
 import RES from '../../../../comm/res';
 import StringUtils from '../../../../utils/StringUtils';
 import { MRText as Text } from '../../../../components/ui';
-import DetailScoreView from './DetailScoreView';
+import DetailHeaderScoreView from './DetailHeaderScoreView';
+import NoMoreClick from '../../../../components/ui/NoMoreClick';
 
 const arrow_right = RES.button.arrow_right_black;
 /**
@@ -43,7 +45,7 @@ export default class DetailHeaderView extends Component {
     }
 
     render() {
-        const { activityType } = this.props;
+        const { activityType, allScoreAction, serviceAction } = this.props;
         //priceType 3会员价  2拼店价
         const {
             freight, monthSaleCount, originalPrice, priceType,
@@ -134,27 +136,31 @@ export default class DetailHeaderView extends Component {
                         </View>
                     </View>
                 </View>
-                <View style={{ backgroundColor: 'white', marginTop: 10, marginBottom: 10 }}>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 16,
-                        width: ScreenUtils.width - 32,
-                        marginVertical: 13,
-                        alignItems: 'center'
-                    }}>
-                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}
-                              allowFontScaling={false}>服务</Text>
-                        <Text style={{
-                            marginLeft: 11,
-                            color: DesignRule.textColor_secondTitle,
-                            fontSize: 12
-                        }}
-                              allowFontScaling={false}>{`正品保证·急速发货  ${(restrictions & 4) === 4 ? `7天退换` : ``}`}</Text>
-                    </View>
-                </View>
-
-                <DetailScoreView allAction={this.props.allAction}/>
+                <NoMoreClick style={styles.serviceView} onPress={serviceAction}>
+                    <Text style={styles.serviceNameText}>服务</Text>
+                    <Text style={styles.serviceValueText}>
+                        {`正品保证·急速发货${(restrictions & 4) === 4 ? `·7天无理由退换` : ``}`}
+                    </Text>
+                    <Image source={arrow_right}/>
+                </NoMoreClick>
+                <DetailHeaderScoreView allScoreAction={allScoreAction}/>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    /**服务**/
+    serviceView: {
+        flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 10, paddingHorizontal: 15,
+        backgroundColor: 'white', height: 40
+    },
+    serviceNameText: {
+        color: DesignRule.textColor_instruction, fontSize: 13
+    },
+    serviceValueText: {
+        flex: 1, marginLeft: 15,
+        color: DesignRule.textColor_secondTitle, fontSize: 12
+    }
+
+});

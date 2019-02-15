@@ -12,7 +12,7 @@ import RES from '../../../../comm/res';
 const arrow_right = RES.button.arrow_right_black;
 const { px2dp, width } = ScreenUtils;
 
-export class DetailScoreView extends Component {
+export class DetailHeaderScoreView extends Component {
 
     _renderContentImgs = (imgs) => {
         if (imgs.length > 0) {
@@ -32,11 +32,11 @@ export class DetailScoreView extends Component {
     };
 
     render() {
-        const { allAction } = this.props;
+        const { allScoreAction } = this.props;
         let imgArr = ['', '', '', ''] || [];
         return (
             <View style={styles.container}>
-                <NoMoreClick style={styles.tittleView} onPress={allAction}>
+                <NoMoreClick style={styles.tittleView} onPress={allScoreAction}>
                     <Text style={styles.countText}>晒单(10)</Text>
                     <Text style={styles.moreText}>查看全部</Text>
                     <Image style={styles.moreImage} source={arrow_right}/>
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default DetailScoreView;
+export default DetailHeaderScoreView;
