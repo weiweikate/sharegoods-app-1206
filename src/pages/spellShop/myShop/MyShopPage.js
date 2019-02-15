@@ -465,6 +465,7 @@ export default class MyShopPage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         onScroll={this._onScroll}
+                        scrollEventThrottle={30}
                         refreshControl={<RefreshControl
                             onRefresh={this._onRefresh}
                             refreshing={this.state.isRefresh}
