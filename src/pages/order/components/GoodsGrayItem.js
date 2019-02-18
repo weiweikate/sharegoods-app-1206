@@ -29,16 +29,7 @@ export default class GoodsGrayItem extends React.Component {
     constructor(props) {
         super(props);
 
-        this._bind();
-
         this.state = {};
-    }
-
-    _bind() {
-
-    }
-
-    componentDidMount() {
     }
 
 
@@ -55,7 +46,7 @@ export default class GoodsGrayItem extends React.Component {
                             </View>
                             <UIText value={salePrice} style={[styles.title, { marginRight: 4 }]}/>
                         </View>
-                        <View style={{ marginTop: 10, marginRight: 5, flexDirection: "row" }}>
+                        <View style={{ marginTop: 20, marginRight: 5, flexDirection: "row" }}>
                             <UIText value={category}
                                     style={[styles.detail, { flex: 1, textAlign: "left", marginRight: 10 }]}/>
                             <UIText value={"x" + goodsNum} style={styles.detail}/>

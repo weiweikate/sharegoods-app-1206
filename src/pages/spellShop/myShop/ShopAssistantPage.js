@@ -205,6 +205,7 @@ export default class AssistantListPage extends BasePage {
                          ListFooterComponent={<View style={{ height: 15 }}/>}
                          renderItem={this._renderItem}
                          keyExtractor={this._keyExtractor}
+                         showsVerticalScrollIndicator={false}
                          refreshControl={
                              <RefreshControl
                                  refreshing={this.state.refreshing}

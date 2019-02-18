@@ -152,7 +152,7 @@ const GoodsListItem = props => {
     };
     this.renderOrderNum = () => {
         return (
-            <View style={{ height: 44, backgroundColor: 'white', justifyContent: 'center' }}>
+            <View style={{ height: 44,justifyContent: 'center' }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UIText value={'订单编号：' + orderNum}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
@@ -167,7 +167,6 @@ const GoodsListItem = props => {
             <View style={{
                 flex: 1,
                 height: 40,
-                backgroundColor: 'white',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
                 flexDirection: 'row',
@@ -237,7 +236,10 @@ const GoodsListItem = props => {
             marginLeft:15,
             marginRight:15,
             backgroundColor: 'white',
-            marginBottom:10
+            marginBottom:10,
+            borderRadius:10,
+            borderWidth:1,
+            borderColor:'white'
         }}>
             <NoMoreClick onPress={clickItem} >
                 <View />
@@ -255,7 +257,6 @@ const GoodsListItem = props => {
                     width:'100%',
                     justifyContent: 'flex-end',
                     alignItems: 'center',
-                    backgroundColor: 'white'
                 }}>
                     {this.renderMenu()}
                 </View>

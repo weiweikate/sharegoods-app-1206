@@ -80,7 +80,7 @@ export default class ShowHotView extends Component {
             this.waterfall && this.waterfall.clear();
             this.waterfall && (this.waterfall.index = 1);
             this.waterfall && (this.waterfall.itemQueue = []);
-            this.recommendModules.fetchRecommendList({size: 20}, currentDate, 1).then(data => {
+            this.recommendModules.fetchRecommendList({ size: 10 }, currentDate, 1).then(data => {
                 this.setState({ isFetching: false });
                 this.waterfall.addItems(data);
             }).catch((error) => {
@@ -123,22 +123,10 @@ export default class ShowHotView extends Component {
     _keyExtractor = (data) => data.id + '' + data.currentDate;
 
     _renderInfinite() {
+        let bottomStr = this.state.errorMsg ? this.state.errorMsg : (this.state.isEnd
+            ? '我也是有底线的' : (this.state.isFetching ? '加载中..' : '加载更多'));
         return <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
-            {
-                this.state.errorMsg
-                    ?
-                    <Text style={styles.text} allowFontScaling={false}>{this.state.errorMsg}</Text>
-                    :
-                    this.state.isEnd
-                        ?
-                        <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
-                        :
-                        this.state.isFetching
-                            ?
-                            <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
-                            :
-                            <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
-            }
+            <Text style={styles.text} allowFontScaling={false}>{bottomStr}</Text>
         </View>;
     }
 

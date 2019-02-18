@@ -145,11 +145,10 @@ export default class ShowHotView extends PureComponent {
         if (!hasRecommend) {
             return <View/>;
         }
+        let bottomStr = this.state.isEnd ? '我也是有底线的' : (this.state.isFetching
+            ? '加载中...' : '加载更多');
         return <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
-            {this.state.isEnd ?
-                <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text> : this.state.isFetching ?
-                    <Text style={styles.text} allowFontScaling={false}>加载中...</Text> :
-                    <Text style={styles.text} allowFontScaling={false}>加载更多</Text>}
+            <Text style={styles.text} allowFontScaling={false}>{bottomStr}</Text>
         </View>;
     }
 

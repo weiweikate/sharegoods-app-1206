@@ -89,12 +89,12 @@ class OrderDetailModel {
             orderDetailModel.address = rep.data.address
             this.status = rep.data.warehouseOrderDTOList[0].status
             orderDetailModel.payAmount = rep.data.payAmount
-            orderDetailModel.loading=false
+            // orderDetailModel.loading=false
             orderDetailModel.loadingState=PageLoadingState.success
 
             return rep
         }).catch(err=>{
-                orderDetailModel.loading=false
+                // orderDetailModel.loading=false
                 orderDetailModel.netFailedInfo=err
                 orderDetailModel.loadingState=PageLoadingState.fail
             Toast.hiddenLoading();
