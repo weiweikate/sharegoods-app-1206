@@ -16,7 +16,7 @@ import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode';
 import ImageLoad from '@mr/image-placeholder';
 
 import { track, trackEvent } from '../../utils/SensorsTrack'
-
+export {bannerHeight};
 @observer
 export default class HomeBannerView extends Component {
     state = {
