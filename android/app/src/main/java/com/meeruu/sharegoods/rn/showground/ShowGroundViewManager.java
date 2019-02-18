@@ -37,7 +37,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext,view);
         initData();
-        return null;
+        return view;
     }
 
     private void initView(Context context, View view) {

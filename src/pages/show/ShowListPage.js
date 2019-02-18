@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, BackHandler,requireNativeComponent } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -13,7 +13,7 @@ import { observer } from 'mobx-react';
 import {
     MRText as Text
 } from '../../components/ui';
-
+import ShowGroundView from './components/ShowGroundView';
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -162,9 +162,7 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <HotFindView navigate={this.$navigate} ref={(ref) => {
-                                this.showHotFindeView = ref;
-                            }}/>
+                            <ShowGroundView/>
                             :
                             null
                     }
