@@ -15,8 +15,6 @@ include ':react-native-update'
 project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
 include ':react-native-svg'
 project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
-include ':react-native-autoheight-webview'
-project(':react-native-autoheight-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-autoheight-webview/android')
 include ':react-native-sensors-analytics'
 project(':react-native-sensors-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/@sensors.data/react-native-sensors-analytics/android')
 include ':rn-request'

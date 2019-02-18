@@ -24,10 +24,10 @@ class ClassifyModules {
         let classifys = [{
             icon: shareImg,
             img: OssHelper('/app/share%403x.png'),
-            name: '分享',
+            name: '升级',
             id: 1,
-            route: 'topic/DownPricePage',
-            linkTypeCode: 'ZT2018000003'
+            route: 'home/product/xpProduct/XpDetailPage',
+            linkTypeCode: 'JF201901250002'
         }, {
             icon: showImg,
             img: OssHelper('/app/show%403x.png'),

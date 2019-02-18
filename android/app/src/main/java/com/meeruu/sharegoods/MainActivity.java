@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data)) {
                     JSONObject object = JSON.parseObject(data);
                     ossHost = object.getString("oss");
-                    Uri uri = Uri.parse(ossHost + "/app/start_adv_bg.png");
+                    Uri uri = Uri.parse(ossHost + "/app/start_adv_bg.png?" + System.currentTimeMillis());
                     LoadingAdv(uri);
                 } else {
                     hasAdResp = true;
