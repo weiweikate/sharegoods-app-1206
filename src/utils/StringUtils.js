@@ -50,7 +50,7 @@ const formatDecimal = (num, needSymbol = true) => {
     return temp;
 };
 const checkPhone = (str) => {
-    let myreg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+    let myreg = /^(13[0-9]|14[56789]|15[0-3,5-9]|16[56]|17[0-9]|18[0-9]|19[189])\d{8}$/;
     if (!myreg.test(str)) {
         return false;
     } else {
