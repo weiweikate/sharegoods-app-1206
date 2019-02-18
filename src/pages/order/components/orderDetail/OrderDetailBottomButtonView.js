@@ -132,7 +132,7 @@ export default class OrderDetailBottomButtonView extends Component {
             case 7:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert("", `确定删除此订单吗`, [
+                Alert.alert("", `确定删除此订单吗?`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -171,7 +171,7 @@ export default class OrderDetailBottomButtonView extends Component {
             case 9:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert("", `确定删除此订单吗`, [
+                Alert.alert("", `确定删除此订单吗?`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -189,6 +189,20 @@ export default class OrderDetailBottomButtonView extends Component {
                                 Toast.$toast(e.msg);
                             });
 
+                        }
+                    }
+
+                ], { cancelable: true });
+                break;
+            case 10:
+                Alert.alert('', `确定去晒单？`, [
+                    {
+                        text: `取消`, onPress: () => {
+                        }
+                    },
+                    {
+                        text: `确定`, onPress: () => {
+                            Toast.$toast('已经晒过单了！');
                         }
                     }
 

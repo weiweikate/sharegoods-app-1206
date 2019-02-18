@@ -51,12 +51,10 @@ export default class MyOrdersDetailPage extends BasePage {
         this.state = {
             isShowSingleSelctionModal: false,
             isShowShowMessageModal: false,
-            orderId: this.params.orderId,
             expressNo: "",
             viewData: {},
             menu: {},
             giftBagCoupons: [],
-            cancelArr: []
         };
     }
 
@@ -76,7 +74,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     _reload=()=> {
         orderDetailModel.netFailedInfo = null;
-        orderDetailModel.loadingState = PageLoadingState.loading;
+        orderDetailModel.netFailedInfo = PageLoadingState.loading;
         this.loadPageData();
     }
 
@@ -494,6 +492,11 @@ export default class MyOrdersDetailPage extends BasePage {
                     }, {
                         id: 8,
                         operation: "再次购买",
+                        isRed: true
+                    },
+                    {
+                        id: 10,
+                        operation: "晒单",
                         isRed: true
                     }
                 ],

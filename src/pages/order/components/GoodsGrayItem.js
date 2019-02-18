@@ -29,16 +29,7 @@ export default class GoodsGrayItem extends React.Component {
     constructor(props) {
         super(props);
 
-        this._bind();
-
         this.state = {};
-    }
-
-    _bind() {
-
-    }
-
-    componentDidMount() {
     }
 
 

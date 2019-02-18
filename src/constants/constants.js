@@ -103,7 +103,12 @@ let constants = {
                 id:8,
                 operation:'再次购买',
                 isRed:true,
-            }],
+            },
+                ,{
+                    id:10,//完成订单的新补充功能
+                    operation:'晒单',
+                    isRed:true,
+                }],
             menuData2:['退款','退款中','售后完成']
         },{
             index:5,
