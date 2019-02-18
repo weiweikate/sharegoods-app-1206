@@ -1,4 +1,5 @@
 package com.meeruu.sharegoods.rn.showground.listener;
 
-public class OnLoadMoreListener {
+public interface OnLoadMoreListener {
+    void onLoadMore(boolean isReload);
 }
