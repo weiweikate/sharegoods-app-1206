@@ -197,7 +197,7 @@ public class MainActivity extends BaseActivity {
                         ivAdv = findViewById(R.id.iv_adv);
                         String url = ossHost + "/app/start_adv.png?" + System.currentTimeMillis();
                         ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
-                                ScalingUtils.ScaleType.FIT_CENTER, true);
+                                ScalingUtils.ScaleType.FIT_CENTER);
                         ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
                         ivAdvBg.setImageBitmap((Bitmap) msg.obj);
