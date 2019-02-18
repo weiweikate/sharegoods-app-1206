@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, BackHandler,requireNativeComponent } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -106,10 +106,10 @@ export default class ShowListPage extends BasePage {
         const { page, left, needsExpensive } = this.state;
 
         let HotView = null;
-        let HotFindView = null;
+        // let HotFindView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
-            HotFindView = require('./ShowHotFindView').default;
+            // HotFindView = require('./ShowHotFindView').default;
         }
 
         return <View style={styles.container}>
