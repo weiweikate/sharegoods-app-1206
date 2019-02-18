@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
- *
+ * <p>
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.common.ReactConstants;
+import com.meeruu.commonlib.base.BaseApplication;
 
 import javax.annotation.Nullable;
 
@@ -34,26 +35,27 @@ public class ReactDatabaseSupplier extends SQLiteOpenHelper {
     static final String VALUE_COLUMN = "value";
 
     static final String VERSION_TABLE_CREATE =
-        "CREATE TABLE " + TABLE_CATALYST + " (" +
-            KEY_COLUMN + " TEXT PRIMARY KEY, " +
-            VALUE_COLUMN + " TEXT NOT NULL" +
-            ")";
+            "CREATE TABLE " + TABLE_CATALYST + " (" +
+                    KEY_COLUMN + " TEXT PRIMARY KEY, " +
+                    VALUE_COLUMN + " TEXT NOT NULL" +
+                    ")";
 
     private static @Nullable
     ReactDatabaseSupplier sReactDatabaseSupplierInstance;
 
     private Context mContext;
-    private @Nullable SQLiteDatabase mDb;
-    private long mMaximumDatabaseSize =  6L * 1024L * 1024L; // 6 MB in bytes
+    private @Nullable
+    SQLiteDatabase mDb;
+    private long mMaximumDatabaseSize = 6L * 1024L * 1024L; // 6 MB in bytes
 
     private ReactDatabaseSupplier(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
     }
 
-    public static ReactDatabaseSupplier getInstance(Context context) {
+    public static ReactDatabaseSupplier getInstance() {
         if (sReactDatabaseSupplierInstance == null) {
-            sReactDatabaseSupplierInstance = new ReactDatabaseSupplier(context.getApplicationContext());
+            sReactDatabaseSupplierInstance = new ReactDatabaseSupplier(BaseApplication.appContext);
         }
         return sReactDatabaseSupplierInstance;
     }
@@ -74,7 +76,8 @@ public class ReactDatabaseSupplier extends SQLiteOpenHelper {
     /**
      * Verify the database exists and is open.
      */
-    /* package */ synchronized boolean ensureDatabase() {
+    /* package */
+    synchronized boolean ensureDatabase() {
         if (mDb != null && mDb.isOpen()) {
             return true;
         }
@@ -132,7 +135,8 @@ public class ReactDatabaseSupplier extends SQLiteOpenHelper {
         }
     }
 
-    /* package */ synchronized void clear() {
+    /* package */
+    synchronized void clear() {
         get().delete(TABLE_CATALYST, null, null);
     }
 
