@@ -43,7 +43,9 @@ public class DecodeEntry {
         int pixels[] = new int[size];
         bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
         if (recycle) {
-            bitmap.recycle();
+            if (bitmap != null && !bitmap.isRecycled()) {
+                bitmap.recycle();
+            }
         }
         if (barcodeFormat != null) {
             return decodeFileFromJNI(barcodeFormat.get(), pixels, width, height);
