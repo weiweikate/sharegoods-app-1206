@@ -24,7 +24,7 @@ class StarsView extends Component {
         let stars = [];
         for (let i = 1; i < 6; i++) {
             stars.push(
-                <NoMoreClick onPress={() => {
+                <NoMoreClick key={i} onPress={() => {
                     changeStar(index, i);
                 }}>
                     <Image source={itemData.starCount >= i ? p_score_star : p_score_unStar}
@@ -49,7 +49,7 @@ class TextInputView extends Component {
         const { index, p_ScorePublishModel } = this.props;
         const { changeText, itemDataS } = p_ScorePublishModel;
         const itemData = itemDataS[index];
-        return <View style={{ marginHorizontal: 15 }}>
+        return <View style={styles.textView}>
             <TextInput style={styles.textInput}
                        multiline
                        onChangeText={(text) => {
@@ -72,17 +72,17 @@ class TextInputView extends Component {
 class ImgVideoView extends Component {
     render() {
         const { showAction, index, p_ScorePublishModel } = this.props;
-        const { itemDataS, deleteImgVideo } = p_ScorePublishModel;
+        const { itemDataS, deleteImg, maxImageVideoCount } = p_ScorePublishModel;
         const itemData = itemDataS[index];
-        const { imgVideos, hasVideo } = itemData;
+        const { images, video } = itemData;
         return <View style={styles.imgVideosView}>
             {
-                imgVideos.map((value, index1) => {
+                images.map((value, index1) => {
                     return <View style={[styles.imgVideoView, { marginRight: index1 === 3 ? 0 : 2.5 }]}>
-                        <Image style={styles.imgVideo}/>
+                        <UIImage style={styles.imgVideo} source={{ uri: value }}/>
                         <NoMoreClick style={styles.deleteImg}
                                      onPress={() => {
-                                         deleteImgVideo(index, index1);
+                                         deleteImg(index, index1);
                                      }}>
                             <Image source={p_score_delete}/>
                         </NoMoreClick>
@@ -90,18 +90,19 @@ class ImgVideoView extends Component {
                 })
             }
             {
-                imgVideos.length >= 6 ? null :
+                images.length >= maxImageVideoCount ? null :
                     <NoMoreClick onPress={() => showAction(index)}>
                         <Image style={styles.imgVideo} source={p_score_add}/>
                     </NoMoreClick>
             }
             {
-                imgVideos.length >= 6 || hasVideo ? null :
+                images.length >= maxImageVideoCount || video ? null :
                     <NoMoreClick onPress={() => showAction(index, true)}>
                         <Image style={[styles.imgVideo, { marginLeft: 12 }]} source={p_score_add}/>
                     </NoMoreClick>
             }
         </View>;
+        ;
     }
 }
 
@@ -149,6 +150,9 @@ const styles = StyleSheet.create({
         fontSize: 13, color: DesignRule.textColor_instruction
     },
     /**输入框**/
+    textView: {
+        marginHorizontal: 15
+    },
     textInput: {
         padding: 0,
         height: 60, fontSize: 13, color: DesignRule.textColor_mainTitle, textAlignVertical: 'top'
@@ -172,3 +176,4 @@ const styles = StyleSheet.create({
         position: 'absolute', right: 0, top: 0
     }
 });
+;

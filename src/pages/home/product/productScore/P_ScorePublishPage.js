@@ -5,8 +5,10 @@ import P_ScorePubItemView from './components/P_ScorePubItemView';
 import ActionSheetView from '../../../spellShop/components/ActionSheetView';
 import P_ScorePublishModel from './P_ScorePublishModel';
 import { observer } from 'mobx-react';
-// import BusinessUtils from '../../../mine/components/BusinessUtils';
 import ImagePicker from '@mr/rn-image-crop-picker';
+
+import CameraView from '../../../../components/ui/CameraView';
+import BusinessUtils from '../../../mine/components/BusinessUtils';
 
 @observer
 export class P_ScorePublishPage extends BasePage {
@@ -18,7 +20,7 @@ export class P_ScorePublishPage extends BasePage {
         this.p_ScorePublishModel.setDefaultData();
     }
 
-    _camera = (itemIndex) => {
+    _pic = (itemIndex) => {
         ImagePicker.openCamera({
             cropping: true,
             width: 300,
@@ -28,33 +30,44 @@ export class P_ScorePublishPage extends BasePage {
             cropperChooseText: '选取',
             loadingLabelText: '处理中...'
         }).then(image => {
-            this.p_ScorePublishModel.addImgVideo(itemIndex);
-
-            // Utiles.upload([image.path], callBack)
+            BusinessUtils.pickSingleWithCamera(false, (img) => {
+                this.p_ScorePublishModel.addImg(itemIndex, img.imageUrl);
+            });
         }).catch(e => {
         });
     };
 
     _choosePic = (itemIndex) => {
-        ImagePicker.openPicker({
-            multiple: true,
-            waitAnimationEnd: false,
-            includeExif: true,
-            forceJpg: true,
-            maxFiles: 3,
-            mediaType: 'photo',
-            loadingLabelText: '处理中...'
-        }).then(images => {
-            // Utiles.upload(images.map(item => item.path), callBack)
-        }).catch(e => {
+        BusinessUtils.pickMultiple(6, (img) => {
+            this.p_ScorePublishModel.addImg(itemIndex, img.imageUrl);
         });
+        // ImagePicker.openPicker({
+        //     multiple: true,
+        //     waitAnimationEnd: false,
+        //     includeExif: true,
+        //     forceJpg: true,
+        //     maxFiles: 3,
+        //     mediaType: 'photo',
+        //     loadingLabelText: '处理中...'
+        // }).then(images => {
+        //     // BusinessUtils.getImagePicker(callback => {
+        //     //     this.setState({ frontIdCard: callback.imageUrl[0] });
+        //     // });
+        //     BusinessUtils.pickMultiple(6,(img)=>{
+        //         this.p_ScorePublishModel.addImgVideo(itemIndex,img)
+        //     })
+        //     // this.p_ScorePublishModel.uploadImg(images.map(item => item.path), itemIndex);
+        // }).catch(e => {
+        // });
     };
 
     _video = (itemIndex) => {
-
+        this.CameraView.show((videoData) => {
+            this.p_ScorePublishModel.uploadVideo(videoData, itemIndex);
+        });
     };
 
-    _chooseVideo = (itemIndex,) => {
+    _chooseVideo = (itemIndex) => {
         ImagePicker.openPicker({
             multiple: true,
             waitAnimationEnd: false,
@@ -64,7 +77,7 @@ export class P_ScorePublishPage extends BasePage {
             mediaType: 'video',
             loadingLabelText: '处理中...'
         }).then(images => {
-            // Utiles.upload(images.map(item => item.path), callBack)
+            this.p_ScorePublishModel.uploadVideo(images[0].path, itemIndex);
         }).catch(e => {
         });
 
@@ -83,7 +96,7 @@ export class P_ScorePublishPage extends BasePage {
                         if (isVideo) {
                             this._video(itemIndex);
                         } else {
-                            this._camera(itemIndex);
+                            this._pic(itemIndex);
                         }
                         break;
                     default:
@@ -117,6 +130,9 @@ export class P_ScorePublishPage extends BasePage {
                           keyExtractor={this._keyExtractor}/>
                 <ActionSheetView ref={(ref) => {
                     this.ActionSheetView = ref;
+                }}/>
+                <CameraView ref={(ref) => {
+                    this.CameraView = ref;
                 }}/>
             </View>
 

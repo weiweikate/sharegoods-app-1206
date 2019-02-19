@@ -6,6 +6,7 @@ import ScreenUtils from '../../../../../utils/ScreenUtils';
 import AvatarImage from '../../../../../components/ui/AvatarImage';
 import UIImage from '@mr/image-placeholder';
 import pRes from '../../../res';
+import DateUtils from '../../../../../utils/DateUtils';
 
 const { p_score_star, p_score_unStar } = pRes.product.productScore;
 
@@ -13,12 +14,13 @@ const { px2dp, width } = ScreenUtils;
 
 export class P_ScoreListItemView extends Component {
 
-    _renderStars = () => {
-        let score = 4;
+    _renderStars = (star) => {
+        let score = parseInt(star);
         let stars = [];
         for (let i = 0; i < 5; i++) {
             stars.push(
-                <Image source={score > i ? p_score_star : p_score_unStar}
+                <Image key={i}
+                       source={score > i ? p_score_star : p_score_unStar}
                        style={{ height: 10, width: 10, marginLeft: i === 0 ? 0 : 6 }}/>
             );
         }
@@ -28,7 +30,7 @@ export class P_ScoreListItemView extends Component {
     };
 
     _renderContentImgs = (imgs) => {
-        if (imgs.length > 0) {
+        if ((imgs || []).length > 0) {
             return <View style={styles.contentImgView}>
                 {
                     imgs.map((value, index) => {
@@ -36,7 +38,8 @@ export class P_ScoreListItemView extends Component {
                             return;
                         }
                         let leftValue = index === 0 ? 0 : px2dp(8);
-                        return <UIImage style={[styles.contentImg, { marginLeft: leftValue }]}
+                        return <UIImage key={index}
+                                        style={[styles.contentImg, { marginLeft: leftValue }]}
                                         source={{ uri: value }}/>;
                     })
                 }
@@ -45,19 +48,24 @@ export class P_ScoreListItemView extends Component {
     };
 
     render() {
-        let imgArr = ['', '', '', ''] || [];
-
+        const { headImg, nickname, star, paramList, comment, imgUrl, createTime } = this.props.itemData || {};
+        let imgs = (imgUrl || '').split('$');
+        let paramArr = (paramList || []).map((item) => {
+            item = item || {};
+            return `${item.paramName || ''}: ${item.paramValue || ''}`;
+        });
+        let paramStr = paramArr.join('; ');
         return (
             <View style={styles.container}>
                 <View style={styles.iconView}>
-                    <AvatarImage style={styles.iconImg}/>
-                    <Text style={styles.nameText}>Raul Kling</Text>
-                    {this._renderStars()}
+                    <AvatarImage style={styles.iconImg} source={{ uri: headImg }}/>
+                    <Text style={styles.nameText}>{nickname || ''}</Text>
+                    {this._renderStars(star)}
                 </View>
-                <Text style = {styles.skuText}>颜色：白色；尺码：XL</Text>
-                <Text style={styles.contentText}>衣服很合身，穿着很舒服，已经是第二次购买了！</Text>
-                {this._renderContentImgs(imgArr)}
-                <Text style={styles.dateText}>2018-12-27</Text>
+                <Text style={styles.skuText}>{paramStr}</Text>
+                <Text style={styles.contentText}>{comment || ''}</Text>
+                {this._renderContentImgs(imgs)}
+                <Text style={styles.dateText}>{DateUtils.formatDate(createTime || '', 'yyyy-MM-dd')}</Text>
             </View>
         );
     }
@@ -83,7 +91,7 @@ const styles = StyleSheet.create({
     starsView: {
         flexDirection: 'row'
     },
-    skuText:{
+    skuText: {
         fontSize: 11, color: DesignRule.textColor_instruction
     },
     /**文字**/

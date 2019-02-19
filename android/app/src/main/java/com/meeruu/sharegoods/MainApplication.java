@@ -8,6 +8,7 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;

@@ -23,7 +23,8 @@ export class DetailHeaderScoreView extends Component {
                             return;
                         }
                         let leftValue = index === 0 ? 0 : px2dp(8);
-                        return <UIImage style={[styles.contentImg, { marginLeft: leftValue }]}
+                        return <UIImage key={index + value}
+                                        style={[styles.contentImg, { marginLeft: leftValue }]}
                                         source={{ uri: value }}/>;
                     })
                 }
@@ -32,21 +33,24 @@ export class DetailHeaderScoreView extends Component {
     };
 
     render() {
-        const { allScoreAction } = this.props;
-        let imgArr = ['', '', '', ''] || [];
+        const { allScoreAction, pData } = this.props;
+        const { comment, totalComment } = pData;
+        const { headImg, nickname, imgUrl } = comment || {};
+        const commentTemp = (comment || {}).comment;
+        let images = (imgUrl || '').split('$');
         return (
             <View style={styles.container}>
                 <NoMoreClick style={styles.tittleView} onPress={allScoreAction}>
-                    <Text style={styles.countText}>晒单(10)</Text>
+                    <Text style={styles.countText}>{`晒单(${totalComment})`}</Text>
                     <Text style={styles.moreText}>查看全部</Text>
                     <Image style={styles.moreImage} source={arrow_right}/>
                 </NoMoreClick>
                 <View style={styles.iconView}>
-                    <AvatarImage style={styles.iconImg}/>
-                    <Text style={styles.nameText}>Raul Kling</Text>
+                    <AvatarImage style={styles.iconImg} source={{ uri: headImg }}/>
+                    <Text style={styles.nameText}>{nickname}</Text>
                 </View>
-                <Text style={styles.contentText}>衣服很合身，穿着很舒服，已经是第二次购买了！</Text>
-                {this._renderContentImgs(imgArr)}
+                <Text style={styles.contentText}>{commentTemp}</Text>
+                {this._renderContentImgs(images)}
             </View>
         );
     }

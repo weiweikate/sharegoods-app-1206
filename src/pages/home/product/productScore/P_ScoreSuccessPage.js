@@ -6,10 +6,17 @@ import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
+import HomeAPI from '../../api/HomeAPI';
 
 const { width } = ScreenUtils;
 
 export default class P_ScoreSuccessPage extends BasePage {
+
+    componentDidMount() {
+        HomeAPI.order_list({ page: 1, pageSize: 10 }).then((data) => {
+            return Promise.resolve(data);
+        });
+    }
 
     _renderListHeader = () => {
         return <View style={styles.headerContainer}>
