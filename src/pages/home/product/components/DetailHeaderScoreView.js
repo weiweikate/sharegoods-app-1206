@@ -32,25 +32,35 @@ export class DetailHeaderScoreView extends Component {
         }
     };
 
-    render() {
-        const { allScoreAction, pData } = this.props;
-        const { comment, totalComment } = pData;
+    _renderContent = (comment) => {
         const { headImg, nickname, imgUrl } = comment || {};
         const commentTemp = (comment || {}).comment;
         let images = (imgUrl || '').split('$');
         return (
+            <View>
+                <View style={styles.iconView}>
+                    <AvatarImage style={styles.iconImg} source={{ uri: headImg }} borderRadius={15}/>
+                    <Text style={styles.nameText}>{nickname || ''}</Text>
+                </View>
+                <Text style={styles.contentText}>{commentTemp || ''}</Text>
+                {this._renderContentImgs(images)}
+            </View>
+        );
+    };
+
+    render() {
+        const { allScoreAction, pData } = this.props;
+        const { comment, totalComment } = pData;
+        return (
             <View style={styles.container}>
                 <NoMoreClick style={styles.tittleView} onPress={allScoreAction}>
-                    <Text style={styles.countText}>{`晒单(${totalComment})`}</Text>
+                    <Text style={styles.countText}>{`晒单(${totalComment || 0})`}</Text>
                     <Text style={styles.moreText}>查看全部</Text>
                     <Image style={styles.moreImage} source={arrow_right}/>
                 </NoMoreClick>
-                <View style={styles.iconView}>
-                    <AvatarImage style={styles.iconImg} source={{ uri: headImg }}/>
-                    <Text style={styles.nameText}>{nickname}</Text>
-                </View>
-                <Text style={styles.contentText}>{commentTemp}</Text>
-                {this._renderContentImgs(images)}
+                {
+                    comment ? this._renderContent(comment) : null
+                }
             </View>
         );
     }

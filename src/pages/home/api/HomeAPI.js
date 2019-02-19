@@ -15,6 +15,8 @@ const api = {
     appraise_queryByProdCode:['/appraise/queryByProdCode',{method:'get'}],
     //商品详情晒单列表全部
     appraise_list:['/appraise/list'],
+    //继续晒单
+    queryCommentByUserCode:['/appraise/queryCommentByUserCode',{method:'get'}],
     /**经验值专区**/
     act_exp_detail: ['/operator/act-exp/detail',{method:'get'}],
 

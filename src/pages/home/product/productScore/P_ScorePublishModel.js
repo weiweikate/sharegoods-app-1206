@@ -3,6 +3,7 @@ import Toast from '../../../../utils/bridge';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import { request } from '@mr/rn-request';
 import HomeAPI from '../../api/HomeAPI';
+import orderApi from '../../../order/api/orderApi';
 
 export default class P_ScorePublishModel {
 
@@ -60,8 +61,11 @@ export default class P_ScorePublishModel {
 
     };
 
-
-    _publish = () => {
+    _lookDetail = (orderNo) => {
+        orderApi.lookDetail({ orderNo: orderNo }).then((data) => {
+        });
+    };
+    _publish = (callBack) => {
         let params = this.itemDataS.map((item) => {
             return {
                 warehouseOrderProductNo: 'test-1',
@@ -73,9 +77,12 @@ export default class P_ScorePublishModel {
             };
         });
         HomeAPI.appraise_publish({ warehouseOrderNo: 'C181210164920000001', params: params }).then((data) => {
+            callBack && callBack();
             console.log(data);
         });
     };
+
+    /**tool**/
 
     uploadVideo(path, itemIndex) {
         let fileData = {

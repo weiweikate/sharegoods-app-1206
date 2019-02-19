@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, FlatList, Image } from 'react-native';
+import { View, StyleSheet, FlatList, Image, Alert } from 'react-native';
 import { MRText as Text } from '../../../../components/ui';
 import BasePage from '../../../../BasePage';
 import P_ScoreListItemView from './components/P_ScoreListItemView';
@@ -8,11 +8,17 @@ import HomeAPI from '../../api/HomeAPI';
 import { PageLoadingState, renderViewByLoadingState } from '../../../../components/pageDecorator/PageState';
 import res from '../../res';
 import DesignRule from '../../../../constants/DesignRule';
-import NoMoreClick from '../../../../components/ui/NoMoreClick';
+import user from '../../../../model/user';
+import SelectionPage from '../SelectionPage';
+import apiEnvironment from '../../../../api/ApiEnvironment';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import CommShareModal from '../../../../comm/components/CommShareModal';
+import shopCartCacheTool from '../../../shopCart/model/ShopCartCacheTool';
+import QYChatUtil from '../../../mine/page/helper/QYChatModel';
+import DetailNavShowModal from '../components/DetailNavShowModal';
+import DetailNavView from '../components/DetailNavView';
 
-const { p_score_smile } = res.product.productScore;
-const { detail_car_down, detail_more_down } = res.product.detailNavView;
-
+const { p_score_smile, p_score_empty } = res.product.productScore;
 
 export default class P_ScoreListPage extends BasePage {
 
@@ -29,20 +35,13 @@ export default class P_ScoreListPage extends BasePage {
         dataArray: []
     };
 
+    $navigationBarOptions = {
+        show: false
+    };
+
     componentDidMount() {
         this._loadPageData();
     }
-
-    $NavBarRenderRightItem = () => {
-        return <View style={styles.rightBarItemContainer}>
-            <NoMoreClick style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
-                <Image source={detail_car_down}/>
-            </NoMoreClick>
-            <NoMoreClick style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
-                <Image source={detail_more_down}/>
-            </NoMoreClick>
-        </View>;
-    };
 
     _getPageStateOptions = () => {
         return {
@@ -52,8 +51,8 @@ export default class P_ScoreListPage extends BasePage {
                 reloadBtnClick: this._loadPageData
             },
             emptyProps: {
-                // source: res.recommendSearch.shop_notHave,
-                description: '暂无数据'
+                source: p_score_empty,
+                description: '晒单在奔跑赶来~'
             }
         };
     };
@@ -116,6 +115,87 @@ export default class P_ScoreListPage extends BasePage {
         });
     };
 
+    //选择规格确认
+    _selectionViewConfirm = (amount, skuCode) => {
+        const { pData } = this.params;
+        let orderProducts = [];
+        if (this.state.goType === 'gwc') {
+            //hyf更改
+            let temp = {
+                'amount': amount,
+                'skuCode': skuCode,
+                'productCode': pData.prodCode
+            };
+            /*加入购物车埋点*/
+            const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = pData || {};
+            track(trackEvent.addToShoppingcart, {
+                shoppingCartEntrance: '详情页面',
+                commodityNumber: amount,
+                commodityID: prodCode,
+                commodityName: name,
+                firstCommodity: firstCategoryId,
+                secondCommodity: secCategoryId,
+                pricePerCommodity: minPrice
+            });
+            shopCartCacheTool.addGoodItem(temp);
+        } else if (this.state.goType === 'buy') {
+            orderProducts.push({
+                skuCode: skuCode,
+                quantity: amount,
+                productCode: pData.prodCode
+            });
+            this.$navigate('order/order/ConfirOrderPage', {
+                orderParamVO: {
+                    orderType: 99,
+                    orderProducts: orderProducts,
+                    source: 2
+                }
+            });
+        }
+    };
+
+    _bottomViewAction = (type) => {
+        const { pData } = this.params;
+        switch (type) {
+            case 'jlj':
+                if (!user.isLogin) {
+                    Alert.alert('提示', '登录后分享才能获取奖励',
+                        [
+                            {
+                                text: '取消', onPress: () => {
+                                    this.shareModal.open();
+                                }
+                            },
+                            {
+                                text: '去登录', onPress: () => {
+                                    this.$navigate('login/login/LoginPage');
+                                }
+                            }
+                        ]
+                    );
+                } else {
+                    this.shareModal.open();
+                }
+                break;
+            case 'buy':
+                if (!user.isLogin) {
+                    this.$navigate('login/login/LoginPage');
+                    return;
+                }
+                this.state.goType = type;
+                this.SelectionPage.show(pData, this._selectionViewConfirm);
+                break;
+            case 'gwc':
+                this.state.goType = type;
+                this.SelectionPage.show(pData, this._selectionViewConfirm);
+                break;
+        }
+    };
+
+    _renderItem = ({ item }) => {
+        return <P_ScoreListItemView itemData={item}/>;
+    };
+
     _onEndReached = () => {
         const { loadingMore, noMore, loadingState } = this.state;
         if (loadingMore || loadingState !== PageLoadingState.success || noMore) {
@@ -127,18 +207,6 @@ export default class P_ScoreListPage extends BasePage {
     _ListFooterComponent = () => {
         const { pData } = this.params;
         const { overtimeComment } = pData || {};
-        // if (this.state.loadingState !== PageLoadingState.success) {
-        //     return null;
-        // }
-        // return <ListFooter loadingMore={this.state.loadingMore}
-        //                    errorDesc={this.state.loadingMoreError}
-        //                    onPressLoadError={this._onEndReached}/>;
-        // if (this.state.loadingMore || this.state.loadingMoreError) {
-        //     return <ListFooter loadingMore={this.state.loadingMore}
-        //                        errorDesc={this.state.loadingMoreError}
-        //                        onPressLoadError={this._onEndReached}/>;
-        //
-        // } else {
         return (
             <View>
                 <View style={styles.footView}>
@@ -148,12 +216,6 @@ export default class P_ScoreListPage extends BasePage {
                 {this.state.noMore ? <Text style={styles.footerNoMoreText}>我也是有底线的~</Text> : null}
             </View>
         );
-        // }
-
-    };
-
-    _renderItem = ({ item }) => {
-        return <P_ScoreListItemView itemData={item}/>;
     };
 
     _keyExtractor = (item, index) => {
@@ -170,12 +232,83 @@ export default class P_ScoreListPage extends BasePage {
     };
 
     _render() {
-        const { pData } = this.params;
+        const { pData, messageCount } = this.params;
+        const { minPrice, name, imgUrl, prodCode, firstCategoryId, secCategoryId, originalPrice, groupPrice, v0Price } = pData || {};
         return (
             <View style={styles.container}>
+                <DetailNavView ref={(e) => this.DetailNavView = e}
+                               messageCount={messageCount}
+                               scale={true}
+                               source={imgUrl}
+                               navBack={() => {
+                                   this.$navigateBack();
+                               }}
+                               navRLeft={() => {
+                                   this.$navigate('shopCart/ShopCart', {
+                                       hiddeLeft: false
+                                   });
+                               }}
+                               navRRight={() => {
+                                   this.DetailNavShowModal.show(messageCount, (item) => {
+                                       switch (item.index) {
+                                           case 0:
+                                               if (!user.isLogin) {
+                                                   this.gotoLoginPage();
+                                                   return;
+                                               }
+                                               this.$navigate('message/MessageCenterPage');
+                                               break;
+                                           case 1:
+                                               this.$navigate('home/search/SearchPage');
+                                               break;
+                                           case 2:
+                                               this.shareModal.open();
+                                               break;
+                                           case 3:
+                                               setTimeout(() => {
+                                                   QYChatUtil.qiYUChat();
+                                               }, 100);
+                                               break;
+                                       }
+                                   });
+                               }}/>
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderFlatList)}
                 <DetailBottomView bottomViewAction={this._bottomViewAction}
                                   pData={pData}/>
+                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
+                <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                trackParmas={{
+                                    commodityID: prodCode,
+                                    commodityName: name,
+                                    firstCommodity: firstCategoryId,
+                                    secondCommodity: secCategoryId,
+                                    pricePerCommodity: minPrice
+                                }}
+                                trackEvent={trackEvent.share}
+                                type={'Image'}
+                                imageJson={{
+                                    imageUrlStr: imgUrl,
+                                    titleStr: `${name}`,
+                                    priceStr: `￥${originalPrice}`,
+                                    retailPrice: `￥${v0Price}`,
+                                    spellPrice: `￥${groupPrice}`,
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
+                                }}
+                                webJson={{
+                                    title: `${name}`,
+                                    dec: '商品详情',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    thumImage: imgUrl
+                                }}
+                                miniProgramJson={{
+                                    title: `${name}`,
+                                    dec: '商品详情',
+                                    thumImage: 'logo.png',
+                                    hdImageURL: imgUrl,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                    miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
+                                }}/>
             </View>
         );
     }

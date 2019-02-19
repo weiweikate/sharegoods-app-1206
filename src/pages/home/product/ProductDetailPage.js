@@ -166,7 +166,7 @@ export default class ProductDetailPage extends BasePage {
     //数据
     _getProductDetail = () => {
         HomeAPI.getProductDetailByCode({
-            code: 'SPU00000088'
+            code: this.params.productCode
         }).then((data) => {
             this._savaData(data.data || {});
         }).catch((error) => {
@@ -202,7 +202,6 @@ export default class ProductDetailPage extends BasePage {
             this.$loadingDismiss();
         });
     };
-
 
 
     //消息数据
@@ -366,10 +365,13 @@ export default class ProductDetailPage extends BasePage {
                                      this.$navigateBackToStore();
                                  }}
                                  allScoreAction={() => {
-                                     this.$navigate(RouterMap.P_ScoreListPage, { pData: this.state.data });
+                                     this.$navigate(RouterMap.P_ScorePublishPage, {
+                                         pData: this.state.data,
+                                         messageCount: this.state.messageCount
+                                     });
                                  }}
                                  serviceAction={() => {
-                                     this.DetailHeaderServiceModal.show(true, true);
+                                     this.DetailHeaderServiceModal.show(this.state.data);
                                  }}
                                  navigation={this.props.navigation}/>;
     };

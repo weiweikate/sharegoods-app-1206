@@ -9,7 +9,7 @@ import pRes from '../../../res';
 import { observer } from 'mobx-react';
 
 const { px2dp, width } = ScreenUtils;
-const { p_score_star, p_score_unStar, p_score_add, p_score_delete } = pRes.product.productScore;
+const { p_score_star, p_score_unStar, p_score_add, p_score_delete, shaidan_icon_shipin } = pRes.product.productScore;
 const img_w_h = (width - 60 - 12 * 3) / 4.0;
 
 /**
@@ -75,10 +75,11 @@ class ImgVideoView extends Component {
         const { itemDataS, deleteImg, maxImageVideoCount } = p_ScorePublishModel;
         const itemData = itemDataS[index];
         const { images, video } = itemData;
+        let dataCount = video ? images.length + 1 : images.length;
         return <View style={styles.imgVideosView}>
             {
                 images.map((value, index1) => {
-                    return <View style={[styles.imgVideoView, { marginRight: index1 === 3 ? 0 : 2.5 }]}>
+                    return <View key={index1} style={[styles.imgVideoView, { marginRight: index1 === 3 ? 0 : 2.5 }]}>
                         <UIImage style={styles.imgVideo} source={{ uri: value }}/>
                         <NoMoreClick style={styles.deleteImg}
                                      onPress={() => {
@@ -90,15 +91,15 @@ class ImgVideoView extends Component {
                 })
             }
             {
-                images.length >= maxImageVideoCount ? null :
+                dataCount >= maxImageVideoCount ? null :
                     <NoMoreClick onPress={() => showAction(index)}>
                         <Image style={styles.imgVideo} source={p_score_add}/>
                     </NoMoreClick>
             }
             {
-                images.length >= maxImageVideoCount || video ? null :
+                dataCount >= maxImageVideoCount || video ? null :
                     <NoMoreClick onPress={() => showAction(index, true)}>
-                        <Image style={[styles.imgVideo, { marginLeft: 12 }]} source={p_score_add}/>
+                        <Image style={[styles.imgVideo, { marginLeft: 12 }]} source={shaidan_icon_shipin}/>
                     </NoMoreClick>
             }
         </View>;
