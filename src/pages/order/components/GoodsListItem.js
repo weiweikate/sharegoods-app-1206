@@ -37,6 +37,7 @@ const GoodsListItem = props => {
         callBack,
         quantity,
         deliverTime,//发货时间
+        commentStatus
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
@@ -61,6 +62,13 @@ const GoodsListItem = props => {
     //28:45:45后自动取消订单 {this.startCutDownTime2(shutOffTime)}
     this.renderMenu = () => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
+        if(orderStatus==4&&commentStatus&&nameArr.length==2){
+            nameArr.push({
+                id: 10,
+                operation: "晒单",
+                isRed: true
+            });
+        }
         if (orderStatus === 1) {
             return (
                 <View style={{

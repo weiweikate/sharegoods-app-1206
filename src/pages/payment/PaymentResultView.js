@@ -41,7 +41,7 @@ export default class PaymentResultView extends Component {
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
             routeName: 'order/order/MyOrdersListPage',
-            params: { index: 2 }
+            params: { index: 2 , orderNo:1}
         });
         this.props.navigation.dispatch(replace);
     }
@@ -124,7 +124,7 @@ export default class PaymentResultView extends Component {
                                     <TouchableOpacity style={styles.button} onPress={() => {
                                         this._goToOrder();
                                     }}>
-                                        <Text allowFontScaling={false}  style={styles.buttonText}>查看订单</Text>
+                                        <Text allowFontScaling={false}  style={styles.buttonText}>立即晒单</Text>
                                     </TouchableOpacity>
                                 </View>
                                 :

@@ -94,7 +94,7 @@ let constants = {
             menuData2:['退换','退换中','售后完成']
         },{
             index:4,
-            orderStatus:'已完成',
+            orderStatus:'交易完成',
             menuData:[{
                 id:7,
                 operation:'删除订单',
@@ -103,16 +103,11 @@ let constants = {
                 id:8,
                 operation:'再次购买',
                 isRed:true,
-            },
-                ,{
-                    id:10,//完成订单的新补充功能
-                    operation:'晒单',
-                    isRed:true,
-                }],
+            }],
             menuData2:['退款','退款中','售后完成']
         },{
             index:5,
-            orderStatus:'已关闭',
+            orderStatus:'交易关闭',
             menuData:[{
                 id:7,
                 operation:'删除订单',
@@ -125,7 +120,7 @@ let constants = {
             menuData2:['退换','退换中','售后完成']
         },{
             index:6,
-            orderStatus:'已关闭',
+            orderStatus:'交易关闭',
             menuData:[{
                 id:7,
                 operation:'删除订单',

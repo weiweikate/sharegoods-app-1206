@@ -79,7 +79,7 @@ export default class ConfirmOrderPage extends BasePage {
             uri={item.item.specImg}
             goodsName={item.item.productName}
             salePrice={StringUtils.formatMoneyString(item.item.unitPrice)}
-            category={item.item.specValues}
+            category={item.item.spec}
             goodsNum={'x' + item.item.quantity}
             onPress={() => {
             }}
