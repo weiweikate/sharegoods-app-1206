@@ -41,7 +41,6 @@ export default class PaymentMethodPage extends BasePage {
     };
 
     handleBackPress = () => {
-
         return this.payment.isShowResult;
     };
 
