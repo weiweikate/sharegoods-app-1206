@@ -14,6 +14,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.horcrux.svg.SvgPackage;
+import com.lwansbrough.RCTCamera.RCTCameraViewManager;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
@@ -150,7 +151,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new MRNetStatePackage(),
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
-                    new ExtraDimensionsPackage()
+                    new ExtraDimensionsPackage(),
+                    new RNCameraPackage()
             );
         }
 

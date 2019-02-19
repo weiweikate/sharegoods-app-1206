@@ -127,4 +127,5 @@ dependencies {
     api project(':qrcode')
     api project(':lottie')
     api project(':qiyu_service')
+    api project(':react-native-camera')
 }
