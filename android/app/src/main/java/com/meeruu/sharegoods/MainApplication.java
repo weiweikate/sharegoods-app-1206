@@ -92,7 +92,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
         }
         LeakCanary.install(this);
         if (getProcessName(this).equals(getPackageName())) {
-            AsyncStorageManager.getInstance().init(this);
+            AsyncStorageManager.getInstance().init();
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
             if (Utils.isApkInDebug()) {

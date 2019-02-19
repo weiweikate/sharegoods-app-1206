@@ -112,7 +112,8 @@ const api = {
     //查询顾问
     findTutor:['/user/findTutor',{method:'get'}],
     //绑定顾问
-    bindTutor:['/user/bindTutor',{method:'get'}]
+    bindTutor:['/user/bindTutor',{method:'get'}],
+    getDays:['/user/getDays',{method:'get'}]
 
 
 

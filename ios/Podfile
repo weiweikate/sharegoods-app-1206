@@ -23,7 +23,7 @@ pod 'Bugly', '~> 2.5.0'
 pod 'WechatOpenSDK','~> 1.8.3'
 #友盟统计
 pod 'UMCCommon'
-pod 'UMCAnalytics'
+pod 'UMCAnalytics', '~> 5.5.2'
 pod 'UMCSecurityPlugins'
 #友盟分享
 
