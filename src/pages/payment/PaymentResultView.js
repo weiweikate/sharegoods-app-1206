@@ -41,7 +41,7 @@ export default class PaymentResultView extends Component {
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
             routeName: 'order/order/MyOrdersListPage',
-            params: { index: 2 , orderNo:1}
+            params: { index: 2 , orderNo:this.props.payment.orderNo}
         });
         this.props.navigation.dispatch(replace);
     }
