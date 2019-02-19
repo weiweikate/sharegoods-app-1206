@@ -32,7 +32,13 @@ export default class SetNewPhoneNumPage extends BasePage {
 
     _render() {
         return (<View style={{ flex: 1 }}>
-            <View style={{ height: 10, justifyContent: 'center' }}>
+            <View style={{ height: 40, justifyContent: 'center' }}>
+                <UIText value={this.state.tips}
+                        style={{
+                            color: DesignRule.textColor_instruction,
+                            fontSize: 13,
+                            marginLeft: 16
+                        }}/>
             </View>
             <View style={{ backgroundColor: 'white', flexDirection: 'column' }}>
                 <View style={styles.horizontalItem}>
@@ -72,13 +78,6 @@ export default class SetNewPhoneNumPage extends BasePage {
                     </TouchableOpacity>
                 </View>
             </View>
-            <UIText value={this.state.tips}
-                    style={{
-                        color: 'red',
-                        fontSize: 12,
-                        marginLeft: 16,
-                        marginTop: 10
-                    }}/>
             <TouchableOpacity style={{
                 marginTop: 54,
                 backgroundColor: DesignRule.mainColor,
@@ -130,7 +129,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             return;
         } else {
             if (oldNum === tel) {
-                bridge.$toast('请新绑定手机号不能和旧手机号相同');
+                bridge.$toast('新绑定手机号不能和旧手机号相同');
                 return;
             }
         }
