@@ -3,6 +3,7 @@ import MyOrdersListPage from "./MyOrdersListPage";
 import OrderSearchResultPage from "./OrderSearchResultPage";
 import ConfirOrderPage from "./ConfirmOrderPage";
 import SearchPage from "./SearchPage";
+import ConfirmReceiveGoodsPage from './ConfirmReceiveGoodsPage';
 
 export default {
     moduleName: "order",    //模块名称
@@ -12,5 +13,6 @@ export default {
         OrderSearchResultPage,
         ConfirOrderPage,
         SearchPage,
+        ConfirmReceiveGoodsPage
     }
 };

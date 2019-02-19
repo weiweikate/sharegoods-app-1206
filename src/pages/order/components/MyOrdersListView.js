@@ -472,8 +472,11 @@ export default class MyOrdersListView extends Component {
                             Toast.showLoading();
                             OrderApi.confirmReceipt({ orderNo: this.state.viewData[index].orderNo }).then((response) => {
                                 Toast.hiddenLoading();
+                                this.props.nav('order/order/ConfirmReceiveGoodsPage',{
+                                    orderNo: this.state.viewData[index].orderNo,
+                                    callBack: this.onRefresh
+                                })
                                 Toast.$toast("确认收货成功");
-                                this.onRefresh();
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 Toast.$toast(e.msg);
