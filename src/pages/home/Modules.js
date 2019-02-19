@@ -24,7 +24,7 @@ class ClassifyModules {
         let classifys = [{
             icon: shareImg,
             img: OssHelper('/app/share%403x.png'),
-            name: '分享',
+            name: '升级',
             id: 1,
             route: 'home/product/xpProduct/XpDetailPage',
             linkTypeCode: 'JF201901250002'

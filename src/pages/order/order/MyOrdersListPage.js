@@ -69,9 +69,8 @@ class MyOrdersListPage extends BasePage {
                     tabLabel={'待收货'} pageStatus={3} selectTab={this.state.selectTab}
                     nav={this.$navigate}/>
                 <MyOrdersListView
-                    tabLabel={'已完成'} pageStatus={4} selectTab={this.state.selectTab}
+                    tabLabel={'待晒单'} pageStatus={4} selectTab={this.state.selectTab}
                     nav={this.$navigate}/>
-
             </ScrollableTabView>
         );
     }

@@ -6,7 +6,6 @@ import android.support.multidex.MultiDex;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import org.reactnative.camera.RNCameraPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
@@ -15,7 +14,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.horcrux.svg.SvgPackage;
-import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
@@ -47,6 +45,7 @@ import com.taobao.sophix.listener.PatchLoadStatusListener;
 import java.util.Arrays;
 import java.util.List;
 
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import cn.reactnative.modules.update.UpdateContext;
 import cn.reactnative.modules.update.UpdatePackage;
 
@@ -142,7 +141,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new UpdatePackage(),
                     new SvgPackage(),
                     new RNDeviceInfo(),
-                    new AutoHeightWebViewPackage(),
                     new RNGeolocationPackage(),
                     new LinearGradientPackage(),
                     new RNFetchBlobPackage(),

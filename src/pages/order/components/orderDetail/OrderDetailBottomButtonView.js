@@ -108,7 +108,14 @@ export default class OrderDetailBottomButtonView extends Component {
                 }
                 break;
             case 6:
-                Alert.alert("", `是否确认收货?`, [
+                let content='是否确认收货?';
+               orderDetailModel.warehouseOrderDTOList[0].products.map((value)=>{
+                   if(value.status<3){
+                       content='您还有商品未发货，确认收货吗？'
+                   }
+               })
+
+                Alert.alert("", `${content}`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -132,7 +139,7 @@ export default class OrderDetailBottomButtonView extends Component {
             case 7:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert("", `确定删除此订单吗`, [
+                Alert.alert("", `确定删除此订单吗?`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -171,7 +178,7 @@ export default class OrderDetailBottomButtonView extends Component {
             case 9:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert("", `确定删除此订单吗`, [
+                Alert.alert("", `确定删除此订单吗?`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -193,6 +200,11 @@ export default class OrderDetailBottomButtonView extends Component {
                     }
 
                 ], { cancelable: true });
+                break;
+            case 10:
+                this.props.nav("order/order/MyOrdersDetailPage", {
+                    orderNo:  orderDetailModel.getOrderNo()
+                });
                 break;
         }
     };

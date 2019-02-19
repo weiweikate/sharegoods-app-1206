@@ -29,16 +29,7 @@ export default class GoodsGrayItem extends React.Component {
     constructor(props) {
         super(props);
 
-        this._bind();
-
         this.state = {};
-    }
-
-    _bind() {
-
-    }
-
-    componentDidMount() {
     }
 
 
@@ -49,7 +40,7 @@ export default class GoodsGrayItem extends React.Component {
                 <View style={[styles.container, this.props.style]}>
                     <UIImage source={{ uri: uri }} style={styles.image}/>
                     <View style={{ marginHorizontal: 10, flex: 1, height: 100 }}>
-                        <View style={{ flexDirection: "row", marginTop: 10 }}>
+                        <View style={{ flexDirection: "row", marginTop: 0 }}>
                             <View style={{ flex: 1, flexDirection: "row", marginRight: 10, alignItems: "center" }}>
                                 <Text style={[styles.title]} numberOfLines={2}>{goodsName}</Text>
                             </View>

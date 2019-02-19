@@ -112,7 +112,6 @@ dependencies {
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api project(':react-native-update')
     api project(':react-native-video')
-    api project(':react-native-autoheight-webview')
     api project(':react-native-vector-icons')
     api project(':react-native-svg')
     api project(':react-native-linear-gradient')
