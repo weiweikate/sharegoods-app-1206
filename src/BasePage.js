@@ -307,11 +307,3 @@ export default class BasePage extends Component {
         Toast.hiddenLoading(callBack);
     };
 }
-
-// @NoNetHighComponent
-// class Container extends Component  {
-//
-//      render(){
-//          return(this.props._render());
-//      }
-// }
