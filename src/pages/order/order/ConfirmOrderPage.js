@@ -88,6 +88,7 @@ export default class ConfirmOrderPage extends BasePage {
 
     componentWillUnmount() {
         confirmOrderModel.clearData();
+        clearTimeout();
     }
 
     _render() {

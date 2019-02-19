@@ -166,7 +166,8 @@ export default class ProductDetailPage extends BasePage {
     //数据
     _getProductDetail = () => {
         HomeAPI.getProductDetailByCode({
-            code: 'SPU00000088'
+            // code: 'SPU00000088'
+            code: this.params.productCode
         }).then((data) => {
             this._savaData(data.data || {});
         }).catch((error) => {
