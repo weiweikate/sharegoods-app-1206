@@ -14,14 +14,13 @@ import java.util.Map;
 import static com.meeruu.commonlib.utils.ParameterUtils.NETWORK_ELSE_CACHED;
 
 public class ShowgroundModel implements IShowgroundModel{
-    private List data = new ArrayList();
 
     @Override
     public void fetchRecommendList(int page, int size, final BaseCallback callback ) {
         ShowgroundRequestConfig showgroundRequestConfig = new ShowgroundRequestConfig();
         HashMap params = new HashMap();
-        params.put("size",size);
-        params.put("page",page);
+        params.put("size",size+"");
+        params.put("page",page+"");
         showgroundRequestConfig.setParams(params);
         RequestManager.getInstance().doGet(NETWORK_ELSE_CACHED, showgroundRequestConfig, callback);
     }

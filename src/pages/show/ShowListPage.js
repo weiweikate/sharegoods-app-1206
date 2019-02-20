@@ -162,7 +162,7 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <ShowGroundView/>
+                            <ShowGroundView style={{flex:1}}/>
                             :
                             null
                     }

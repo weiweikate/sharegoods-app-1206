@@ -2,14 +2,19 @@ package com.meeruu.sharegoods.rn.showground.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+
+/**
+ * Created by cl on 2018/5/3.
+ */
 
 public class ScaleImageView extends SimpleDraweeView {
     private int initWidth;
     private int initHeight;
 
-    public ScaleImageView(Context context){
+    public ScaleImageView(Context context) {
         this(context, null);
     }
 
@@ -20,6 +25,8 @@ public class ScaleImageView extends SimpleDraweeView {
     public void setInitSize(int initWidth, int initHeight) {
         this.initWidth = initWidth;
         this.initHeight = initHeight;
+        this.requestLayout();
+        this.invalidate();
     }
 
     @Override
@@ -37,5 +44,4 @@ public class ScaleImageView extends SimpleDraweeView {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
-
 }
