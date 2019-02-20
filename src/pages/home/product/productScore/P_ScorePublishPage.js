@@ -34,19 +34,8 @@ export class P_ScorePublishPage extends BasePage {
     }
 
     _pic = (itemIndex) => {
-        ImagePicker.openCamera({
-            cropping: true,
-            width: 300,
-            height: 300,
-            includeExif: true,
-            cropperCancelText: '取消',
-            cropperChooseText: '选取',
-            loadingLabelText: '处理中...'
-        }).then(image => {
-            BusinessUtils.pickSingleWithCamera(false, (img) => {
-                this.p_ScorePublishModel.addImg(itemIndex, img.imageUrl);
-            });
-        }).catch(e => {
+        BusinessUtils.pickSingleWithCamera(false, (img) => {
+            this.p_ScorePublishModel.addImg(itemIndex, img.imageUrl);
         });
     };
 
@@ -59,24 +48,6 @@ export class P_ScorePublishPage extends BasePage {
         BusinessUtils.pickMultiple(leaveCount, (img) => {
             this.p_ScorePublishModel.addImg(itemIndex, img.imageUrl);
         });
-        // ImagePicker.openPicker({
-        //     multiple: true,
-        //     waitAnimationEnd: false,
-        //     includeExif: true,
-        //     forceJpg: true,
-        //     maxFiles: 3,
-        //     mediaType: 'photo',
-        //     loadingLabelText: '处理中...'
-        // }).then(images => {
-        //     // BusinessUtils.getImagePicker(callback => {
-        //     //     this.setState({ frontIdCard: callback.imageUrl[0] });
-        //     // });
-        //     BusinessUtils.pickMultiple(6,(img)=>{
-        //         this.p_ScorePublishModel.addImgVideo(itemIndex,img)
-        //     })
-        //     // this.p_ScorePublishModel.uploadImg(images.map(item => item.path), itemIndex);
-        // }).catch(e => {
-        // });
     };
 
     _video = (itemIndex) => {
@@ -129,8 +100,17 @@ export class P_ScorePublishPage extends BasePage {
     };
 
     _renderItem = ({ item, index }) => {
+        const { itemDataS } = this.p_ScorePublishModel;
+        const itemData = itemDataS[index];
         return <P_ScorePubItemView itemData={{ item, index }}
                                    p_ScorePublishModel={this.p_ScorePublishModel}
+                                   modalShow={() => {
+                                       this.$navigate(RouterMap.P_ScoreSwiperPage, {
+                                           video: itemData.video,
+                                           videoImg: itemData.videoImg,
+                                           images: itemData.images
+                                       });
+                                   }}
                                    showAction={this._showAction}/>;
     };
 

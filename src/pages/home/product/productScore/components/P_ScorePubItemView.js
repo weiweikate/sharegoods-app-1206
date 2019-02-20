@@ -71,13 +71,13 @@ class TextInputView extends Component {
 @observer
 class ImgVideoView extends Component {
     render() {
-        const { showAction, index, p_ScorePublishModel } = this.props;
+        const { showAction, modalShow, index, p_ScorePublishModel } = this.props;
         const { itemDataS, deleteImg, deleteVideo, maxImageVideoCount } = p_ScorePublishModel;
         const itemData = itemDataS[index];
         const { images, videoImg } = itemData;
         let dataCount = videoImg ? images.length + 1 : images.length;
         return <View style={styles.imgVideosView}>
-            {videoImg ? <View style={[styles.imgVideoView]}>
+            {videoImg ? <NoMoreClick style={[styles.imgVideoView]} onPress={modalShow}>
                 <Image style={styles.imgVideo} source={{ uri: videoImg }}/>
                 <NoMoreClick style={styles.deleteImg}
                              onPress={() => {
@@ -85,10 +85,12 @@ class ImgVideoView extends Component {
                              }}>
                     <Image source={p_score_delete}/>
                 </NoMoreClick>
-            </View> : null}
+            </NoMoreClick> : null}
             {
                 images.map((value, index1) => {
-                    return <View key={index1} style={[styles.imgVideoView, { marginRight: index1 === 3 ? 0 : 2.5 }]}>
+                    return <NoMoreClick key={index1}
+                                        onPress={modalShow}
+                                        style={[styles.imgVideoView, { marginRight: index1 === 3 ? 0 : 2.5 }]}>
                         <UIImage style={styles.imgVideo} source={{ uri: value }}/>
                         <NoMoreClick style={styles.deleteImg}
                                      onPress={() => {
@@ -96,7 +98,7 @@ class ImgVideoView extends Component {
                                      }}>
                             <Image source={p_score_delete}/>
                         </NoMoreClick>
-                    </View>;
+                    </NoMoreClick>;
                 })
             }
             {
@@ -108,7 +110,8 @@ class ImgVideoView extends Component {
             {
                 dataCount >= maxImageVideoCount || videoImg ? null :
                     <NoMoreClick onPress={() => showAction(index, true)}>
-                        <Image style={[styles.imgVideo, { marginLeft: 12 }]} source={shaidan_icon_shipin}/>
+                        <Image style={[styles.imgVideo, { marginLeft: images.length === 3 ? 0 : 12 }]}
+                               source={shaidan_icon_shipin}/>
                     </NoMoreClick>
             }
         </View>;
@@ -118,7 +121,7 @@ class ImgVideoView extends Component {
 
 export default class P_ScorePubItemView extends Component {
     render() {
-        const { itemData, showAction, p_ScorePublishModel } = this.props;
+        const { itemData, showAction, modalShow, p_ScorePublishModel } = this.props;
         const { index } = itemData;
 
         const { productArr } = p_ScorePublishModel;
@@ -134,7 +137,10 @@ export default class P_ScorePubItemView extends Component {
                 </View>
             </View>
             <TextInputView index={index} p_ScorePublishModel={p_ScorePublishModel}/>
-            <ImgVideoView showAction={showAction} index={index} p_ScorePublishModel={p_ScorePublishModel}/>
+            <ImgVideoView modalShow={modalShow}
+                          showAction={showAction}
+                          index={index}
+                          p_ScorePublishModel={p_ScorePublishModel}/>
         </View>;
     }
 }

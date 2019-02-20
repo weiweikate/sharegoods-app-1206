@@ -7,4 +7,6 @@ export default {
     p_score_unStar:require('./p_score_unStar.png'),
     kong_icon_shaidan:require('./kong_icon_shaidan.png'),
     shaidan_icon_shipin:require('./shaidan_icon_shipin.png'),
+    swiper_cancel:require('./swiper_cancel.png'),
+
 }

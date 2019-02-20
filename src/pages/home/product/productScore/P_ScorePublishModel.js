@@ -90,6 +90,7 @@ export default class P_ScorePublishModel {
                 star: item.starCount
             };
         });
+        console.log(params);
         HomeAPI.appraise_publish({ warehouseOrderNo: this.warehouseOrderNo, params: params }).then((data) => {
             callBack && callBack();
             console.log(data);
