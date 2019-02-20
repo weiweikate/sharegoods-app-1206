@@ -138,8 +138,8 @@ export default class DetailHeaderView extends Component {
                 </View>
                 <NoMoreClick style={styles.serviceView} onPress={serviceAction}>
                     <Text style={styles.serviceNameText}>服务</Text>
-                    <Text style={styles.serviceValueText}>
-                        {`正品保证·急速发货${(restrictions & 4) === 4 ? `·7天无理由退换` : ``}`}
+                    <Text style={styles.serviceValueText} numberOfLines={1}>
+                        {`质量保障·48小时发货${(restrictions & 4) === 4 ? `·7天退换` : ``}${(restrictions & 8) === 8 ? `·节假日发货` : ``}`}
                     </Text>
                     <Image source={arrow_right}/>
                 </NoMoreClick>

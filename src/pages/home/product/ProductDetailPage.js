@@ -205,7 +205,6 @@ export default class ProductDetailPage extends BasePage {
     };
 
 
-
     //消息数据
     _getMessageCount = () => {
         if (user.token) {
@@ -367,10 +366,13 @@ export default class ProductDetailPage extends BasePage {
                                      this.$navigateBackToStore();
                                  }}
                                  allScoreAction={() => {
-                                     this.$navigate(RouterMap.P_ScoreListPage, { pData: this.state.data });
+                                     this.$navigate(RouterMap.P_ScoreListPage, {
+                                         pData: this.state.data,
+                                         messageCount: this.state.messageCount
+                                     });
                                  }}
                                  serviceAction={() => {
-                                     this.DetailHeaderServiceModal.show(true, true);
+                                     this.DetailHeaderServiceModal.show(this.state.data);
                                  }}
                                  navigation={this.props.navigation}/>;
     };

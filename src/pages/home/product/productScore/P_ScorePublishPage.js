@@ -9,15 +9,28 @@ import ImagePicker from '@mr/rn-image-crop-picker';
 
 import CameraView from '../../../../components/ui/CameraView';
 import BusinessUtils from '../../../mine/components/BusinessUtils';
+import DesignRule from '../../../../constants/DesignRule';
+import RouterMap from '../../../../navigation/RouterMap';
 
 @observer
 export class P_ScorePublishPage extends BasePage {
 
     p_ScorePublishModel = new P_ScorePublishModel();
 
+    $navigationBarOptions = {
+        title: '我要晒单',
+        rightNavTitle: '发布',
+        rightTitleStyle: styles.rightItem
+    };
+
+    $NavBarRightPressed = () => {
+        this.p_ScorePublishModel._publish(() => {
+            this.$navigate(RouterMap.P_ScoreSuccessPage);
+        });
+    };
 
     componentDidMount() {
-        this.p_ScorePublishModel.setDefaultData();
+        this.p_ScorePublishModel._lookDetail(this.params.orderNo);
     }
 
     _pic = (itemIndex) => {
@@ -38,7 +51,12 @@ export class P_ScorePublishPage extends BasePage {
     };
 
     _choosePic = (itemIndex) => {
-        BusinessUtils.pickMultiple(6, (img) => {
+        const { itemDataS, maxImageVideoCount } = this.p_ScorePublishModel;
+        const itemData = itemDataS[itemIndex];
+        const { images, video } = itemData;
+        let leaveCount = maxImageVideoCount - images.length - (video ? 1 : 0);
+
+        BusinessUtils.pickMultiple(leaveCount, (img) => {
             this.p_ScorePublishModel.addImg(itemIndex, img.imageUrl);
         });
         // ImagePicker.openPicker({
@@ -80,7 +98,6 @@ export class P_ScorePublishPage extends BasePage {
             this.p_ScorePublishModel.uploadVideo(images[0].path, itemIndex);
         }).catch(e => {
         });
-
     };
     _showAction = (itemIndex, isVideo) => {
         let items = ['拍照', '我的相册'];
@@ -107,7 +124,7 @@ export class P_ScorePublishPage extends BasePage {
                         }
                         break;
                 }
-            }, 400);
+            }, 500);
         });
     };
 
@@ -143,5 +160,8 @@ export class P_ScorePublishPage extends BasePage {
 export default P_ScorePublishPage;
 
 const styles = StyleSheet.create({
-    container: { flex: 1 }
+    container: { flex: 1 },
+    rightItem: {
+        color: DesignRule.mainColor
+    }
 });

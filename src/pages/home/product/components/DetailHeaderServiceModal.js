@@ -14,7 +14,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 
 const { px2dp } = ScreenUtils;
-const { fa_huo, ji_su, qi_tian, zheng_ping } = res.product.service;
+const { fa_huo, ji_su, qi_tian, zheng_ping, bounus } = res.product.service;
 
 export default class DetailHeaderServiceModal extends Component {
 
@@ -22,8 +22,7 @@ export default class DetailHeaderServiceModal extends Component {
         super(props);
         this.state = {
             modalVisible: false,
-            supportSeven: false,
-            supportHoliday: false
+            pData: {}
         };
     }
 
@@ -34,11 +33,10 @@ export default class DetailHeaderServiceModal extends Component {
         return false;
     }
 
-    show = (supportSeven, supportHoliday) => {
+    show = (pData) => {
         this.setState({
             modalVisible: true,
-            supportSeven,
-            supportHoliday
+            pData
         });
     };
 
@@ -71,30 +69,39 @@ export default class DetailHeaderServiceModal extends Component {
     };
 
     render() {
-        const { supportHoliday, supportSeven } = this.state;
+        const { restrictions } = this.state.pData;
+        //1优惠券,4退换,8节假日
 
         let sectionListData = [
             {
-                headerTittle: '正品保证',
+                headerTittle: '质量保障',
                 headerImg: zheng_ping,
-                data: [{ content: '该商品由中国人保承保正品保证险' }]
+                data: [{ content: '秀购售卖的所有商品均通过正规品牌商或供应商渠道采购（由正规品牌商或者供应商提供），确保正品（质量有保障），请您放心购买' }]
             },
             {
-                headerTittle: '极速退款',
+                headerTittle: '48小时发货',
                 headerImg: ji_su,
-                data: [{ content: '消费退款是为诚信会员提供的退款退货流程的专享特权，额度是根据每个用户当前 信誉评级情况而定' }]
+                data: [{ content: '支持48小时发货（法定节假日或者促销活动期间以平台通知为准，因自然灾害等不可抗力因素造成的发货延时除外）' }]
             },
             {
-                headerTittle: `${supportSeven ? '' : '不支持'}七天无理由退换`,
+                headerTittle: `${(restrictions & 4) === 4 ? '' : '不支持'}7天无理由退换货`,
                 headerImg: qi_tian,
-                data: [{ content: '消费者在满足7天无理由退换货申请条件的前提下，可以提成 "7天无理由退换货" 的申请' }]
+                data: [{ content: `${(restrictions & 4) === 4 ? '收到商品之日7天（含）内，可在线申请退货服务（部分食品、贴身衣物等特殊商品除外）' : '食品、贴身衣物、兑换、秒杀、经验翻倍等特殊商品，无质量问题不支持退换货'}` }]
             },
             {
-                headerTittle: `${supportHoliday ? '' : '不支持'}节假日发货`,
+                headerTittle: `${(restrictions & 8) === 8 ? '' : '不支持'}节假日发货`,
                 headerImg: fa_huo,
-                data: [{ content: '该商品支持节假日发货' }]
+                data: [{ content: `该商品${(restrictions & 8) === 8 ? '' : '不支持'}节假日发货` }]
             }
         ];
+
+        if ((restrictions & 1) !== 1) {
+            sectionListData.push({
+                headerTittle: `不支持使用优惠券`,
+                headerImg: bounus,
+                data: [{ content: `该商品不支持使用优惠券使用优惠券` }]
+            });
+        }
 
 
         return (
@@ -150,7 +157,7 @@ const styles = StyleSheet.create({
     },
 
     itemText: {
-        paddingVertical: 5, marginLeft: px2dp(42), marginRight: px2dp(25),
+        paddingVertical: 5, marginLeft: px2dp(25) + 16 + 5, marginRight: px2dp(25),
         color: DesignRule.textColor_instruction, fontSize: 11
     },
 

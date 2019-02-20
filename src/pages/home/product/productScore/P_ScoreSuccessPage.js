@@ -7,34 +7,72 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import BasePage from '../../../../BasePage';
 import HomeAPI from '../../api/HomeAPI';
+import RouterMap from '../../../../navigation/RouterMap';
+import res from '../../../../comm/res';
+import pRes from '../../res';
 
-const { width } = ScreenUtils;
+const { tongyon_icon_check_green } = res.button;
+const { kong_icon_shaidan } = pRes.product.productScore;
+const { width, autoSizeHeight } = ScreenUtils;
 
 export default class P_ScoreSuccessPage extends BasePage {
 
+    state = {
+        dataList: []
+    };
+
     componentDidMount() {
-        HomeAPI.order_list({ page: 1, pageSize: 10 }).then((data) => {
-            return Promise.resolve(data);
+        HomeAPI.queryCommentByUserCode().then((data) => {
+            let tempList = (data || {}).data || [];
+            this.setState({
+                dataList: tempList
+            });
         });
     }
 
+    $navigationBarOptions = {
+        title: '晒单成功'
+    };
+
+    _goPublish = (warehouseOrderNo) => {
+        this.$navigate(RouterMap.P_ScorePublishPage, { orderNo: warehouseOrderNo });
+    };
+
+    _ListEmptyComponent = () => {
+        return (
+            <View style={styles.emptyView}>
+                <Image source={kong_icon_shaidan} style={styles.emptyImage}/>
+                <Text style={styles.emptyText}>晒单王，您已全部晒单成功~</Text>
+            </View>
+        );
+    };
+
     _renderListHeader = () => {
         return <View style={styles.headerContainer}>
-            <Image style={styles.headerImg}/>
+            <Image style={styles.headerImg} source={tongyon_icon_check_green}/>
             <Text style={styles.headerText}>感谢晒单~</Text>
-            <NoMoreClick style={styles.headerBtn}>
+            <NoMoreClick style={styles.headerBtn} onPress={this.$navigateBackToHome}>
                 <Text style={styles.headerBtnText}>返回首页</Text>
             </NoMoreClick>
-            <View style={styles.nextView}>
-                <Text style={styles.nextText}>接着晒下去</Text>
-            </View>
+            {
+                this.state.dataList.length === 0 ? null : <View style={styles.nextView}>
+                    <Text style={styles.nextText}>接着晒下去</Text>
+                </View>
+            }
+
         </View>;
     };
+
     _renderItem = ({ item }) => {
+        //warehouseOrderNo 仓库订单号
+        //productName 产品标题  specImg 规格图
+        const { productName, specImg, warehouseOrderNo } = item || {};
         return <View style={styles.itemContainer}>
-            <UIImage style={styles.itemImg}/>
-            <Text style={styles.itemTittle} numberOfLines={2}>大熊毛绒玩具送女友泰迪熊熊猫公仔抱抱熊2米女生布娃娃</Text>
-            <NoMoreClick style={styles.itemBtn}>
+            <UIImage style={styles.itemImg} source={{ uri: specImg }}/>
+            <Text style={styles.itemTittle} numberOfLines={2}>{productName || ''}</Text>
+            <NoMoreClick style={styles.itemBtn} onPress={() => {
+                this._goPublish(warehouseOrderNo);
+            }}>
                 <Text style={styles.itemBtnText}>去晒单</Text>
             </NoMoreClick>
         </View>;
@@ -47,9 +85,10 @@ export default class P_ScoreSuccessPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                <FlatList data={['', '', '', '', '', '', '', '']}
+                <FlatList data={this.state.dataList}
                           renderItem={this._renderItem}
                           keyExtractor={this._keyExtractor}
+                          ListEmptyComponent={this._ListEmptyComponent}
                           ListHeaderComponent={this._renderListHeader}/>
             </View>
         );
@@ -86,6 +125,17 @@ const styles = StyleSheet.create({
     },
 
     /**item**/
+    emptyView: {
+        alignItems: 'center'
+    },
+    emptyImage: {
+        marginTop: autoSizeHeight(70)
+    },
+    emptyText: {
+        marginTop: 10,
+        fontSize: 13, color: DesignRule.textColor_secondTitle
+    },
+
     itemContainer: {
         flexDirection: 'row', marginBottom: 10,
 
