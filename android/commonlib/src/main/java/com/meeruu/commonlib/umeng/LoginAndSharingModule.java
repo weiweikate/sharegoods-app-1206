@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -13,22 +12,17 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
-import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.image.CloseableImage;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -43,6 +37,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.bean.WXLoginBean;
 import com.meeruu.commonlib.utils.BitmapUtils;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
@@ -54,15 +49,11 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMMin;
 import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.sina.helper.MD5;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URI;
-import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -380,31 +371,22 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     }
 
-    private static void downloadHeaderImg(final Context context, final String headImg, final String url, final Callback success, final Callback fail) {
-        Fresco.initialize(context);
+    private void downloadHeaderImg(final Context context, final String headImg, final String url, final Callback success, final Callback fail) {
+        if (Fresco.hasBeenInitialized()) {
+            ImageLoadUtils.downloadImage(Uri.parse(headImg), new BaseBitmapDataSubscriber() {
 
+                @Override
+                protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                    Bitmap bitmap = getDefaultIcon(context);
+                    drawInviteFriendsImage(context, bitmap, url, success, fail);
+                }
 
-        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(headImg)).setProgressiveRenderingEnabled(true).build();
-
-
-        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, context);
-
-        dataSource.subscribe(new BaseBitmapDataSubscriber() {
-
-            @Override
-            public void onNewResultImpl(Bitmap bitmap) {
-                drawInviteFriendsImage(context, bitmap, url, success, fail);
-            }
-
-            @Override
-            public void onFailureImpl(DataSource dataSource) {
-                Bitmap bitmap = getDefaultIcon(context);
-                drawInviteFriendsImage(context, bitmap, url, success, fail);
-
-            }
-        }, CallerThreadExecutor.getInstance());
-
-
+                @Override
+                protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                    drawInviteFriendsImage(context, bitmap, url, success, fail);
+                }
+            });
+        }
     }
 
     @ReactMethod
@@ -418,30 +400,23 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 //    shopPerson: `店主: ${manager.nickname || ''}`,
 //    codeString: this.state.codeString,
 //    wxTip: this.state.wxTip
-    public static void drawShopInviteFriendsImage(final Context context, final ReadableMap map, final Callback success, final Callback fail) {
+    public void drawShopInviteFriendsImage(final Context context, final ReadableMap map, final Callback success, final Callback fail) {
 
+        if (Fresco.hasBeenInitialized()) {
+            String headerImgUrl = map.getString("headerImg");
+            ImageLoadUtils.downloadImage(Uri.parse(headerImgUrl), new BaseBitmapDataSubscriber() {
 
-        Fresco.initialize(context);
+                @Override
+                protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                    fail.invoke("店主图片下载失败");
+                }
 
-        String headerImgUrl = map.getString("headerImg");
-
-        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(headerImgUrl)).setProgressiveRenderingEnabled(true).build();
-
-
-        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, context);
-
-        dataSource.subscribe(new BaseBitmapDataSubscriber() {
-
-            @Override
-            public void onNewResultImpl(Bitmap bitmap) {
-                drawShopInviteFriendsImageWithHeader(context, map, bitmap, success, fail);
-            }
-
-            @Override
-            public void onFailureImpl(DataSource dataSource) {
-                fail.invoke("店主图片下载失败");
-            }
-        }, CallerThreadExecutor.getInstance());
+                @Override
+                protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                    drawShopInviteFriendsImageWithHeader(context, map, bitmap, success, fail);
+                }
+            });
+        }
     }
 
 
@@ -450,7 +425,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         return bitmap;
     }
 
-    public static void drawShopInviteFriendsImageWithHeader(final Context context, final ReadableMap map, final Bitmap headerBitmap, final Callback success, final Callback fail) {
+    public void drawShopInviteFriendsImageWithHeader(final Context context, final ReadableMap map, final Bitmap headerBitmap, final Callback success, final Callback fail) {
         Bitmap result = Bitmap.createBitmap(375, 667, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -538,28 +513,20 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         path = "file://" + path;
         Uri uri = Uri.parse(path);
-        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        intent.setData(uri);
-        context.sendBroadcast(intent);
+        saveImageAndRefresh(uri);
 
-        if (!result.isRecycled()) {
-            result.recycle();
-        }
 
-        if (!bitmap.isRecycled()) {
+        if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
+            bitmap = null;
         }
-
-        if (!whiteBitmap.isRecycled()) {
+        if (whiteBitmap != null && !whiteBitmap.isRecycled()) {
             whiteBitmap.recycle();
+            whiteBitmap = null;
         }
-
-        if (!header.isRecycled()) {
-            header.recycle();
-        }
-
-        if (!qrBitmap.isRecycled()) {
+        if (qrBitmap != null && !qrBitmap.isRecycled()) {
             qrBitmap.recycle();
+            qrBitmap = null;
         }
         success.invoke();
 
@@ -597,7 +564,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
 
-    public static void drawInviteFriendsImage(final Context context, Bitmap icon, final String url, final Callback success, final Callback fail) {
+    public void drawInviteFriendsImage(final Context context, Bitmap icon, final String url, final Callback success, final Callback fail) {
         Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -633,38 +600,34 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         Bitmap roundIcon = createCircleBitmap(newIcon);
 
-
         canvas.drawBitmap(roundIcon, 340, 930, paint);
-
 
         String path = BitmapUtils.saveImageToCache(result, "inviteFriends.png", url);
 
         path = "file://" + path;
         Uri uri = Uri.parse(path);
-        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        intent.setData(uri);
-        context.sendBroadcast(intent);
+        saveImageAndRefresh(uri);
 
-        if (!result.isRecycled()) {
-            result.recycle();
-        }
-
-        if (!bitmap.isRecycled()) {
+        if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
+            bitmap = null;
         }
-
-        if (!qrBitmap.isRecycled()) {
+        if (qrBitmap != null && !qrBitmap.isRecycled()) {
             qrBitmap.recycle();
+            qrBitmap = null;
         }
-
-        if (!newbitmap.isRecycled()) {
+        if (newbitmap != null && !newbitmap.isRecycled()) {
             newbitmap.recycle();
+            newbitmap = null;
         }
-
-        if (!icon.isRecycled()) {
+        if (roundIcon != null && !roundIcon.isRecycled()) {
+            roundIcon.recycle();
+            roundIcon = null;
+        }
+        if (icon != null && !icon.isRecycled()) {
             icon.recycle();
+            icon = null;
         }
-
         success.invoke();
     }
 
@@ -686,6 +649,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         //裁剪图片
         canvas.drawBitmap(resource, 0, 0, paint);
+        if (resource != null && !resource.isRecycled()) {
+            resource.recycle();
+            resource = null;
+        }
 
         return circleBitmap;
     }
@@ -727,45 +694,39 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             fail.invoke("图片生成失败");
         }
 
-        if (!bitmap.isRecycled()) {
+        if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
+            bitmap = null;
         }
-
-        if (!result.isRecycled()) {
-            result.recycle();
-        }
-
-        if (!qrBitmap.isRecycled()) {
+        if (qrBitmap != null && !qrBitmap.isRecycled()) {
             qrBitmap.recycle();
+            qrBitmap = null;
         }
-
-        if (!newbitmap.isRecycled()) {
+        if (newbitmap != null && !newbitmap.isRecycled()) {
             newbitmap.recycle();
+            newbitmap = null;
         }
     }
 
 
     public static void getBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
-        Fresco.initialize(context);
+        if (Fresco.hasBeenInitialized()) {
+            ImageLoadUtils.downloadImage(Uri.parse(shareImageBean.getImageUrlStr()), new BaseBitmapDataSubscriber() {
 
-        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(shareImageBean.getImageUrlStr())).setProgressiveRenderingEnabled(true).build();
+                @Override
+                protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                }
 
-
-        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, context);
-
-        dataSource.subscribe(new BaseBitmapDataSubscriber() {
-
-            @Override
-            public void onNewResultImpl(Bitmap bitmap) {
-
-                draw(context, bitmap, shareImageBean, success, fail);
-            }
-
-            @Override
-            public void onFailureImpl(DataSource dataSource) {
-            }
-        }, CallerThreadExecutor.getInstance());
-
+                @Override
+                protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                    draw(context, bitmap, shareImageBean, success, fail);
+                    if (bitmap != null && !bitmap.isRecycled()) {
+                        bitmap.recycle();
+                        bitmap = null;
+                    }
+                }
+            });
+        }
     }
 
     public static void draw(Context context, Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
@@ -894,12 +855,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             fail.invoke("图片生成失败");
         }
-        if (!result.isRecycled()) {
-            result.recycle();
-        }
 
-        if (!qrBitmap.isRecycled()) {
+        if (qrBitmap != null && !qrBitmap.isRecycled()) {
             qrBitmap.recycle();
+            qrBitmap = null;
         }
     }
 
@@ -946,10 +905,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void saveImage(String path) {
         Uri uri = Uri.parse(path);
+        saveImageAndRefresh(uri);
+        ToastUtils.showToast("保存成功");
+    }
+
+    private void saveImageAndRefresh(Uri uri) {
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
         mContext.sendBroadcast(intent);
-        ToastUtils.showToast("保存成功");
     }
 
     @ReactMethod
@@ -957,10 +920,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Bitmap bitmap = createQRImage(QRCodeStr, 300, 300);
         if (bitmap == null) {
             fail.invoke("二维码生成失败！");
-            if (!bitmap.isRecycled()) {
-                bitmap.recycle();
-            }
-
             return;
         }
         String path = BitmapUtils.saveImageToCache(bitmap, "shareImage.png", QRCodeStr);
@@ -970,8 +929,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             success.invoke(path);
         }
 
-        if (!bitmap.isRecycled()) {
+        if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
+            bitmap = null;
         }
 
     }
@@ -991,7 +951,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
         long date = System.currentTimeMillis();
-        String storePath = getDiskCachePath() + File.separator + date + "screenshotImage.png";
+        String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath()
+                + File.separator + "screenshotImage.png_" + date;
 
         File file = new File(storePath);
         if (bmp != null) {
@@ -1003,11 +964,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
                 os.flush();
                 os.close();
-                long currentTime = System.currentTimeMillis();
                 Uri uri = Uri.fromFile(file);
-                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                intent.setData(uri);
-                mContext.sendBroadcast(intent);
+                saveImageAndRefresh(uri);
+
                 success.invoke();
             } catch (Exception e) {
                 fail.invoke(e.getMessage());
@@ -1015,8 +974,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             fail.invoke();
         }
-        if (!bmp.isRecycled()) {
+        if (bmp != null && !bmp.isRecycled()) {
             bmp.recycle();
+            bmp = null;
         }
     }
 
@@ -1062,16 +1022,4 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
         return null;
     }
-
-    /**
-     * 获取cache路径
-     *
-     * @return
-     */
-    public static String getDiskCachePath() {
-        File file = SDCardUtils.getFileDirPath("MR/picture");
-        return file.getAbsolutePath();
-    }
-
-
 }

@@ -9,7 +9,7 @@ import fetchHistory from '../../model/FetchHistory';
 import apiEnvironment from '../ApiEnvironment';
 import user from '../../model/user';
 import DeviceInfo from 'react-native-device-info';
-import { RSA } from './RSA';
+// import { RSA } from './RSA';
 import rsa_config from './rsa_config';
 import EnvConfig from '../../../config';
 
@@ -75,16 +75,16 @@ export default class HttpUtils {
     platform = '';
 
     static sign(params, isRSA) {
-        if (isRSA) {
-            return new Promise((resolve) => {
-                const signParam = RSA.sign(params);
-                resolve(signParam);
-            });
-        } else {
-            return new Promise((resolve) => {
-                resolve({});
-            });
-        }
+        // if (isRSA) {
+        //     return new Promise((resolve) => {
+        //         const signParam = RSA.sign(params);
+        //         resolve(signParam);
+        //     });
+        // } else {
+        return new Promise((resolve) => {
+            resolve({});
+        });
+        // }
     }
 
     static async get(uri, isRSA, params) {
@@ -183,4 +183,8 @@ export default class HttpUtils {
             return data;
         });
     }
+
+    doSign = () => {
+
+    };
 }
