@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp, onePixel } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
-import UIImage from '@mr/image-placeholder';
+// import UIImage from '@mr/image-placeholder';
+import {ImageCacheManager} from 'react-native-cached-image';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
 
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
         <View style={styles.image}>
-            <UIImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
+            <ReuserImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
             {
                 StringUtils.isEmpty(goods.title)
                 ?
@@ -59,6 +60,55 @@ export default class GoodsCell extends Component {
                     <View style={styles.uncontainer}/>
             }
         </View>;
+    }
+}
+
+class ReuserImage extends Component{
+    constructor(props) {
+        super(props);
+
+        this.fetchImage = this.fetchImage.bind(this);
+
+        this.state = {
+            imagePath: null,
+        };
+    }
+
+    componentDidMount() {
+        this.fetchImage(this.props);
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.source && nextProps.source &&
+            this.props.source ===nextProps.source
+        ) {
+            this.fetchImage(nextProps);
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.imagePath !== nextState.imagePath;
+    }
+
+    fetchImage(props) {
+        this.setState({imagePath: ''});
+        let that = this;
+        if (props && props.source && props.source.uri){
+            ImageCacheManager().downloadAndCacheUrl(props.source.uri).then(
+                (path)=> {
+                    that.setState({imagePath: path});
+                }
+            )
+        }
+    }
+
+    render() {
+        const { imagePath } = this.state;
+        return <Image
+            {...this.props}
+            source={{ uri: imagePath }}
+        />;
     }
 }
 
