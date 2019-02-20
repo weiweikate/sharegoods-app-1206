@@ -41,9 +41,8 @@ export class P_ScoreListItemView extends Component {
                             return;
                         }
                         let leftValue = index === 0 ? 0 : px2dp(8);
-                        return <NoMoreClick onPress={this._action}>
-                            <UIImage key={index}
-                                     style={[styles.contentImg, { marginLeft: leftValue }]}
+                        return <NoMoreClick onPress={this._action} key={index}>
+                            <UIImage style={[styles.contentImg, { marginLeft: leftValue }]}
                                      source={{ uri: value }}/>
                         </NoMoreClick>;
                     })
@@ -54,12 +53,13 @@ export class P_ScoreListItemView extends Component {
 
     _action = () => {
         const { navigation, itemData } = this.props;
-        const { imgUrl, videoUrl } = itemData;
+        const { imgUrl, videoUrl, comment } = itemData;
         let images = (imgUrl || '').split('$');
         navigation.navigate(RouterMap.P_ScoreSwiperPage, {
             video: videoUrl,
             videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
-            images: images
+            images: images,
+            content: comment
         });
     };
 
@@ -67,7 +67,7 @@ export class P_ScoreListItemView extends Component {
         const { headImg, nickname, star, comment, imgUrl, createTime, spec, videoUrl } = this.props.itemData || {};
         let imgs = [];
         if (StringUtils.isNoEmpty(videoUrl)) {
-            imgUrl.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
+            imgs.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
         }
         if (StringUtils.isNoEmpty(imgUrl)) {
             let temp = imgUrl.split('$');
@@ -81,7 +81,8 @@ export class P_ScoreListItemView extends Component {
                     {this._renderStars(star)}
                 </View>
                 <Text style={styles.skuText}>{spec || ''}</Text>
-                <Text style={styles.contentText}>{comment || ''}</Text>
+                <Text
+                    style={styles.contentText}>{(StringUtils.isEmpty(comment) && imgs.length === 0 ? '此用户未留下晒单内容~' : comment || '')}</Text>
                 {this._renderContentImgs(imgs)}
                 <Text style={styles.dateText}>{DateUtils.formatDate(createTime || '', 'yyyy-MM-dd')}</Text>
             </View>

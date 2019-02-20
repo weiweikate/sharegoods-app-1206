@@ -25,7 +25,7 @@ export default class P_ScoreSwiperPage extends BasePage {
     };
 
     state = {
-        index: 0
+        index: 1
     };
 
     _renderViewPageItem = (item) => {
@@ -40,7 +40,7 @@ export default class P_ScoreSwiperPage extends BasePage {
     };
 
     _render() {
-        const { video, images, videoImg } = this.params;
+        const { video, images, videoImg, content } = this.params;
 
         this.videoImageList = [...images];
         if (StringUtils.isNoEmpty(video)) {
@@ -72,6 +72,20 @@ export default class P_ScoreSwiperPage extends BasePage {
                     }}>{`${this.state.index}/${this.videoImageList.length}`}</Text>
                 </View>
 
+                <View style={{
+                    position: 'absolute',
+                    height: 48,
+                    width: width,
+                    bottom: 0, left: 15, right: 15
+                }}>
+                    <Text style={{
+                        fontSize: 12,
+                        width: width - 30,
+                        color: DesignRule.white
+                    }}
+                          numberOfLines={3}>{content}</Text>
+
+                </View>
 
                 <NoMoreClick style={{
                     position: 'absolute',

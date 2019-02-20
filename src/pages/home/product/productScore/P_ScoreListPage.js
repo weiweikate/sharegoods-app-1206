@@ -58,13 +58,13 @@ export default class P_ScoreListPage extends BasePage {
     };
 
     _loadPageData = () => {
-        // const { pData } = this.params;
-        // const { prodCode, overtimeComment } = pData;
+        const { pData } = this.params;
+        const { prodCode } = pData;
         let promises = [];
-        promises.push(HomeAPI.appraise_queryByProdCode({ prodCode: 'SPU00000088' }).then((data) => {
+        promises.push(HomeAPI.appraise_queryByProdCode({ prodCode: prodCode }).then((data) => {
             return Promise.resolve((data || {}).data || []);
         }));
-        promises.push(HomeAPI.appraise_list({ page: 1, pageSize: 1, prodCode: 'SPU00000088' }).then((data) => {
+        promises.push(HomeAPI.appraise_list({ page: 1, pageSize: 10, prodCode: prodCode }).then((data) => {
             //isMore层
             let dataTemp = (data || {}).data;
             return Promise.resolve((dataTemp || {}).data || []);
@@ -90,12 +90,13 @@ export default class P_ScoreListPage extends BasePage {
     };
 
     _loadPageDataMore = () => {
-
+        const { pData } = this.params;
+        const { prodCode } = pData;
         this.setState({
             loadingMore: true
         }, () => {
             HomeAPI.appraise_list({
-                page: this.state.page, pageSize: 1, prodCode: 'SPU00000088'
+                page: this.state.page, pageSize: 10, prodCode: prodCode
             }).then((data) => {
                 this.state.page++;
                 //isMore层

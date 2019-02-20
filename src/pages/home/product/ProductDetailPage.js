@@ -39,7 +39,6 @@ import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/Navigat
 // import res from '../res';
 import MessageApi from '../../message/api/MessageApi';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
-import RouterMap from '../../../navigation/RouterMap';
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 // import bridge from '../../../utils/bridge';
 
@@ -365,15 +364,10 @@ export default class ProductDetailPage extends BasePage {
                                  goShopAction={() => {
                                      this.$navigateBackToStore();
                                  }}
-                                 allScoreAction={() => {
-                                     this.$navigate(RouterMap.P_ScoreListPage, {
-                                         pData: this.state.data,
-                                         messageCount: this.state.messageCount
-                                     });
-                                 }}
                                  serviceAction={() => {
                                      this.DetailHeaderServiceModal.show(this.state.data);
                                  }}
+                                 messageCount={this.state.messageCount}
                                  navigation={this.props.navigation}/>;
     };
 

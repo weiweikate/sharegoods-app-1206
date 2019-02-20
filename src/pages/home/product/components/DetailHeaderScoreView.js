@@ -64,21 +64,31 @@ export class DetailHeaderScoreView extends Component {
     _action = () => {
         const { navigation, pData } = this.props;
         const { comment } = pData;
+        const commentTemp = (comment || {}).comment;
         const { imgUrl, videoUrl } = comment || {};
         let images = (imgUrl || '').split('$');
         navigation.navigate(RouterMap.P_ScoreSwiperPage, {
             video: videoUrl,
             videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
-            images: images
+            images: images,
+            content: commentTemp
+        });
+    };
+
+    _allScoreAction = () => {
+        const { navigation, pData, messageCount } = this.props;
+        navigation.navigate(RouterMap.P_ScoreListPage, {
+            pData: pData,
+            messageCount: messageCount
         });
     };
 
     render() {
-        const { allScoreAction, pData } = this.props;
+        const { pData } = this.props;
         const { comment, totalComment } = pData;
         return (
-            <View style={styles.container}>
-                <NoMoreClick style={styles.tittleView} onPress={allScoreAction}>
+            <View style={[styles.container, this.props.style]}>
+                <NoMoreClick style={styles.tittleView} onPress={this._allScoreAction}>
                     <Text style={styles.countText}>{`晒单(${totalComment || 0})`}</Text>
                     <Text style={styles.moreText}>查看全部</Text>
                     <Image style={styles.moreImage} source={arrow_right}/>

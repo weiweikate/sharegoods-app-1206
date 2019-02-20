@@ -46,6 +46,7 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorB
 import MessageAPI from '../message/api/MessageApi';
 import QYChatUtil from '../mine/page/helper/QYChatModel';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+import DetailHeaderServiceModal from '../home/product/components/DetailHeaderServiceModal';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -414,6 +415,9 @@ export default class TopicDetailPage extends BasePage {
                                       activityType={this.state.activityType}
                                       activityData={this.state.activityData}
                                       navigation={this.props.navigation}
+                                      serviceAction={() => {
+                                          this.DetailHeaderServiceModal.show(this.state.data);
+                                      }}
                                       showDetailModal={() => {
                                           this.TopicDetailShowModal.show('降价拍玩法规则', null, null, `1、参与降价拍的商品，活动开始之后，商品价格由高到低依次递减，直到竞买人应价，商品库存有限，活动时间有限，先拍先得。\n2、一个降价拍商品，每人只能抢购一件，下单之后不可立马取消订单，直到该商品结束降价拍活动，才开放退货退款入口。\n3、降价拍商品不与其它优惠同享。`);
                                       }}/>;
@@ -777,6 +781,7 @@ export default class TopicDetailPage extends BasePage {
                 <DetailNavShowModal ref={(ref) => {
                     this.DetailNavShowModal = ref;
                 }}/>
+                <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>
                 {/*{this._renderCouponModal()}*/}
             </View>
         );
