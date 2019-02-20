@@ -16,26 +16,10 @@ export default class CameraView extends Component {
         };
     }
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     if (this.state.modalVisible !== nextState.modalVisible) {
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
     show = (callBack) => {
         this.setState({
             modalVisible: true,
             callBack
-        });
-    };
-
-    _close = (data) => {
-        const { callBack } = this.state;
-        this.setState({
-            modalVisible: false
-        }, () => {
-            callBack && callBack(data);
         });
     };
 
@@ -52,15 +36,15 @@ export default class CameraView extends Component {
                         style={styles.CameraView}
                         type={RNCamera.Constants.Type.back}
                         flashMode={RNCamera.Constants.FlashMode.off}
-                        permissionDialogTitle={'Permission to use camera'}
-                        permissionDialogMessage={'We need your permission to use your camera phone'}
+                        permissionDialogTitle={'使用相机'}
+                        permissionDialogMessage={'需要使用相机权限'}
                         onGoogleVisionBarcodesDetected={({ barcodes }) => {
                             console.log(barcodes);
                         }}>
                     </RNCamera>
                     <TouchableOpacity onPress={this.state.isRecording ? this.cancel : this.takeVideo.bind(this)}
                                       style={styles.recordingBtn}>
-                        <Text style={{ fontSize: 14 }}> {this.state.isRecording ? '取消' : '拍照'} </Text>
+                        <Text style={{ fontSize: 14 }}> {this.state.isRecording ? '结束' : '开始'} </Text>
                     </TouchableOpacity>
                 </View>
             </Modal>
@@ -68,14 +52,24 @@ export default class CameraView extends Component {
     }
 
     takeVideo = async function() {
+        const { callBack } = this.state;
         if (this.camera) {
             try {
-                const promise = this.camera.recordAsync({});
+                const promise = this.camera.recordAsync({
+                    mute: false,
+                    maxDuration: 10,
+                    quality: RNCamera.Constants.VideoQuality['288p']
+                });
                 if (promise) {
                     this.setState({ isRecording: true });
                     const data = await promise;
-                    this.setState({ isRecording: false });
                     console.warn('takeVideo', data);
+                    this.setState({
+                        isRecording: false,
+                        modalVisible: false
+                    }, () => {
+                        callBack && callBack(data.uri);
+                    });
                 }
             } catch (e) {
                 console.error(e);
@@ -84,7 +78,7 @@ export default class CameraView extends Component {
     };
 
     cancel = () => {
-        this.camera.stopRecording;
+        this.camera.stopRecording();
     };
 }
 
@@ -97,7 +91,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     recordingBtn: {
-        position: 'absolute', bottom: 40, left: 10,
-        width: 40, height: 40, borderRadius: 20, backgroundColor: DesignRule.mainColor
+        position: 'absolute', bottom: 40, alignSelf: 'center', justifyContent: 'center', alignItems: 'center',
+        width: 80, height: 80, borderRadius: 40, backgroundColor: DesignRule.white
     }
 });

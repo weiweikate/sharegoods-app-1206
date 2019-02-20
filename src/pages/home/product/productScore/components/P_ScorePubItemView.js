@@ -72,11 +72,20 @@ class TextInputView extends Component {
 class ImgVideoView extends Component {
     render() {
         const { showAction, index, p_ScorePublishModel } = this.props;
-        const { itemDataS, deleteImg, maxImageVideoCount } = p_ScorePublishModel;
+        const { itemDataS, deleteImg, deleteVideo, maxImageVideoCount } = p_ScorePublishModel;
         const itemData = itemDataS[index];
-        const { images, video } = itemData;
-        let dataCount = video ? images.length + 1 : images.length;
+        const { images, videoImg } = itemData;
+        let dataCount = videoImg ? images.length + 1 : images.length;
         return <View style={styles.imgVideosView}>
+            {videoImg ? <View style={[styles.imgVideoView]}>
+                <Image style={styles.imgVideo} source={{ uri: videoImg }}/>
+                <NoMoreClick style={styles.deleteImg}
+                             onPress={() => {
+                                 deleteVideo(index);
+                             }}>
+                    <Image source={p_score_delete}/>
+                </NoMoreClick>
+            </View> : null}
             {
                 images.map((value, index1) => {
                     return <View key={index1} style={[styles.imgVideoView, { marginRight: index1 === 3 ? 0 : 2.5 }]}>
@@ -97,7 +106,7 @@ class ImgVideoView extends Component {
                     </NoMoreClick>
             }
             {
-                dataCount >= maxImageVideoCount || video ? null :
+                dataCount >= maxImageVideoCount || videoImg ? null :
                     <NoMoreClick onPress={() => showAction(index, true)}>
                         <Image style={[styles.imgVideo, { marginLeft: 12 }]} source={shaidan_icon_shipin}/>
                     </NoMoreClick>
