@@ -129,6 +129,7 @@
 		CD5EAFA0221BFB8E007AAEE0 /* ShowGroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9F221BFB8E007AAEE0 /* ShowGroundView.m */; };
 		CD5EAFA4221BFD01007AAEE0 /* LMHWaterFallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA3221BFD01007AAEE0 /* LMHWaterFallLayout.m */; };
 		CD5EAFA7221BFE89007AAEE0 /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
+		CD5EB082221D46E3007AAEE0 /* ShowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB081221D46E3007AAEE0 /* ShowCell.m */; };
 		CD6741F621DEF78500464549 /* AdView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6741F521DEF78500464549 /* AdView.m */; };
 		CD6742D021E4418900464549 /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742CF21E4418900464549 /* RSKImageCropper.framework */; };
 		CD6742D121E4418900464549 /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742CF21E4418900464549 /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -807,6 +808,8 @@
 		CD5EAFA3221BFD01007AAEE0 /* LMHWaterFallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMHWaterFallLayout.m; sourceTree = "<group>"; };
 		CD5EAFA5221BFE89007AAEE0 /* ShowQueryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowQueryModel.h; sourceTree = "<group>"; };
 		CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowQueryModel.m; sourceTree = "<group>"; };
+		CD5EB080221D46E3007AAEE0 /* ShowCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowCell.h; sourceTree = "<group>"; };
+		CD5EB081221D46E3007AAEE0 /* ShowCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowCell.m; sourceTree = "<group>"; };
 		CD6741F421DEF78500464549 /* AdView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdView.h; sourceTree = "<group>"; };
 		CD6741F521DEF78500464549 /* AdView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdView.m; sourceTree = "<group>"; };
 		CD67428F21E43F5F00464549 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/@mr/rn-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
@@ -1762,6 +1765,8 @@
 				CD5EAF9F221BFB8E007AAEE0 /* ShowGroundView.m */,
 				CD5EAFA5221BFE89007AAEE0 /* ShowQueryModel.h */,
 				CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */,
+				CD5EB080221D46E3007AAEE0 /* ShowCell.h */,
+				CD5EB081221D46E3007AAEE0 /* ShowCell.m */,
 			);
 			path = ShowGroundView;
 			sourceTree = "<group>";
@@ -2652,6 +2657,7 @@
 				5077FDCA21A79326003B860D /* JSPushManager.m in Sources */,
 				5068363121379B78001AB175 /* commModule.m in Sources */,
 				5068362F21379B78001AB175 /* JRShareManager.m in Sources */,
+				CD5EB082221D46E3007AAEE0 /* ShowCell.m in Sources */,
 				CD5EAFA0221BFB8E007AAEE0 /* ShowGroundView.m in Sources */,
 				5068362D21379B78001AB175 /* JRServiceManager.m in Sources */,
 				CD5EAF48221BEA9F007AAEE0 /* NetWorkTool.m in Sources */,
