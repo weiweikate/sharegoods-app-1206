@@ -11,20 +11,19 @@ import ImageLoad from '@mr/image-placeholder';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
-import { homeModule, classifyModules } from './Modules';
+import { homeModule } from './Modules';
 import { homeType } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
-import HomeClassifyView from './HomeClassifyView';
+import HomeClassifyView, {kHomeClassifyHeight } from './HomeClassifyView';
 import HomeStarShopView from './HomeStarShopView';
 import HomeTodayView from './HomeTodayView';
 import HomeRecommendView from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './HomeBannerView';
 import HomeAdView, { adViewHeight } from './HomeAdView';
-import HomeGoodsView from './HomeGoodsView';
+import HomeGoodsView, {kHomeGoodsViewHeight} from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
-import ShowView from '../show/ShowView';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from '../../comm/components/CommModal';
 import XQSwiper from '../../components/ui/XGSwiper';
@@ -62,23 +61,23 @@ const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
-// const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
-//     {
-//         errorMsg
-//             ?
-//             <Text style={styles.text} allowFontScaling={false}>{errorMsg}</Text>
-//             :
-//             isEnd
-//                 ?
-//                 <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
-//                 :
-//                 isFetching
-//                     ?
-//                     <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
-//                     :
-//                     <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
-//     }
-// </View>;
+const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
+    {
+        errorMsg
+            ?
+            <Text style={styles.text} allowFontScaling={false}>{errorMsg}</Text>
+            :
+            isEnd
+                ?
+                <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
+                :
+                isFetching
+                    ?
+                    <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
+                    :
+                    <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
+    }
+</View>;
 
 @observer
 class HomePage extends BasePage {
@@ -97,10 +96,9 @@ class HomePage extends BasePage {
     });
 
     layoutProvider = new LayoutProvider((i) => {
-        return this.dataProvider.getDataForIndex(i).type;
+        return this.dataProvider.getDataForIndex(i).type || 0;
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
-        const { classifyList } = classifyModules;
         const { ad } = adModules;
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
@@ -111,7 +109,7 @@ class HomePage extends BasePage {
                 dim.height = bannerHeight;
                 break;
             case homeType.classify:
-                dim.height = px2dp(83)*(classifyList.length/5);
+                dim.height = kHomeClassifyHeight;
                 break;
             case homeType.ad:
                 dim.height = ad.length > 0 ? adViewHeight : 0;
@@ -128,15 +126,11 @@ class HomePage extends BasePage {
             case homeType.starShop:
                 dim.height = 0;
                 break;
-
             case homeType.user:
-                dim.height = user.isLogin? px2dp(44): 0;
+                dim.height = user.isLogin ? px2dp(44): 0;
                 break;
             case homeType.goods:
-                dim.height = px2dp(257);
-                break;
-            case homeType.show:
-                dim.height = 300;
+                dim.height = kHomeGoodsViewHeight;
                 break;
             case homeType.goodsTitle:
                 dim.height =  px2dp(55);
@@ -357,6 +351,9 @@ class HomePage extends BasePage {
     // 滑动头部透明度渐变
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
+        if ( Y > ScreenUtils.height ) {
+            return
+        }
         if (!this._refHeader) {
             return;
         }
@@ -417,9 +414,6 @@ class HomePage extends BasePage {
             return <HomeUserView navigate={this.$navigate}/>;
         } else if (type === homeType.goods) {
             return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
-        } else if (type === homeType.show) {
-            const { isShow } = this.state;
-            return <ShowView navigation={this.props.navigation} isShow={isShow}/>;
         } else if (type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title} allowFontScaling={false}>为你推荐</Text>
@@ -627,10 +621,16 @@ class HomePage extends BasePage {
                                                     colors={[DesignRule.mainColor]}
                                                     progressViewOffset={ScreenUtils.headerHeight}/>}
                     onEndReached={this._onEndReached.bind(this)}
+                    onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider = {this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
                     showsVerticalScrollIndicator={false}
+                    renderFooter={()=><Footer
+                        isFetching={homeModule.isFetching}
+                        errorMsg={homeModule.errorMsg}
+                        isEnd={homeModule.isEnd}/>
+                        }
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
@@ -712,7 +712,8 @@ const styles = StyleSheet.create({
         marginTop: px2dp(25),
         marginBottom: px2dp(10),
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width: ScreenUtils.width
     },
     title: {
         color: DesignRule.textColor_mainTitle,

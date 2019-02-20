@@ -11,6 +11,8 @@ import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
 import res from './res'
 
+export const kHomeGoodsViewHeight = px2dp(263)
+
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
         <View style={styles.image}>
@@ -97,7 +99,7 @@ class ReuserImage extends Component{
         if (props && props.source && props.source.uri){
             ImageCacheManager().downloadAndCacheUrl(props.source.uri).then(
                 (path)=> {
-                    that.setState({imagePath: path});
+                    that.setState({imagePath: `file://${path}`});
                 }
             )
         }
@@ -168,10 +170,11 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(7)
     },
     cell: {
-        height: px2dp(263),
+        width: ScreenUtils.width,
+        height: kHomeGoodsViewHeight,
         flexDirection: 'row',
-        marginRight: px2dp(15),
-        marginLeft: px2dp(15),
+        paddingRight: px2dp(15),
+        paddingLeft: px2dp(15),
         alignItems: 'center',
         justifyContent: 'center'
     },

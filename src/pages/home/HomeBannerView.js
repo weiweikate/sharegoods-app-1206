@@ -85,7 +85,7 @@ export default class HomeBannerView extends Component {
             items.push(value.imgUrl);
         });
 
-        return <View>
+        return <View style={styles.container}>
             {
                 Platform.OS === 'ios'
                     ?
@@ -117,6 +117,10 @@ export default class HomeBannerView extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        height: bannerHeight,
+        width: ScreenUtils.width
+    },
     img: {
         height: bannerHeight,
         width: ScreenUtils.width

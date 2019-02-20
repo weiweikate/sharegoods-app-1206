@@ -149,7 +149,8 @@ export default class HomeSubjectView extends Component {
 let styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        marginTop: px2dp(10)
+        marginTop: px2dp(10),
+        width: ScreenUtil.width
     },
     space: {
         width: px2dp(15)

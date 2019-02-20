@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginTop: ScreenUtils.px2dp(10),
         paddingLeft: px2dp(15),
-        paddingRight: px2dp(15)
+        paddingRight: px2dp(15),
+        width: ScreenUtils.width
     },
     featureBox: {
         position: 'relative',
