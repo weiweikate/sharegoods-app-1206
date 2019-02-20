@@ -7,10 +7,11 @@
 //
 
 #import "NetWorkTool.h"
-#import "LoginVC.h"
-#import "NSObject+HCCategory.h"
 #import <AFNetworking.h>
-#import "BaseNaviVC.h"
+#import "MBProgressHUD+PD.h"
+#import "StorageFromRN.h"
+#import <YYKit.h>
+#import "NSDictionary+Util.h"
 
 #define kTimeOutInterval 10
 
@@ -28,7 +29,16 @@
         manager.requestSerializer.timeoutInterval = kTimeOutInterval;
         
         [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-        
+      
+      NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+      // app版本
+      NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+
+      manager.requestSerializer = [AFJSONRequestSerializer serializer];
+      [manager.requestSerializer setValue:@"appstore"  forHTTPHeaderField:@"channel"];
+      [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"platform"];
+      [manager.requestSerializer setValue:app_Version forHTTPHeaderField:@"version"];
+      [manager.requestSerializer setValue:@"SIGNATURE" forHTTPHeaderField:@"Security-Policy"];
         
     });
     
@@ -43,9 +53,19 @@
                failure:(AFErrorBlock)errorBlock
            showLoading:(NSString *)showLoading
 {
+  NSString * HostJson = [StorageFromRN getItem:@"HostJson"];
+  NSDictionary *dic = @{};
+  if (HostJson) {
+    dic =  [NSDictionary dictionaryWithJsonString:HostJson];
+  }
+  NSString * path = dic[@"host"];
+  if (path==nil || path.length == 0) {
+    path = @"https://api.sharegoodsmall.com/gateway";
+  }
+  [[self manager].requestSerializer setValue:@"" forHTTPHeaderField:@"sg-token"];
     NSArray<NSString *> * arr = [url componentsSeparatedByString:@"@"];
-    NSString * URL = [NSString stringWithFormat:@"%@%@",kBaseUrl,arr.firstObject];
-    if ([[arr.lastObject capitalizedString] isEqualToString:@"GET"]) {
+    NSString * URL = [NSString stringWithFormat:@"%@%@",path,arr.firstObject];
+    if ([[arr.lastObject uppercaseString] isEqualToString:@"GET"]) {
         [self GETWithURL:URL params:parmas toModel:modelClass success:successBlock failure:errorBlock showLoading:showLoading];
     }else{
         [self POSTWithURL:URL params:parmas toModel:modelClass success:successBlock failure:errorBlock showLoading:showLoading];
@@ -67,9 +87,9 @@
         if (showLoading) {
             [hub hideAnimated:YES];
         }
-        NSInteger code = [responseObject[@"flg"] integerValue];
+        NSInteger code = [responseObject[@"code"] integerValue];
         switch (code) {
-            case 1:
+            case 10000:
             { ///成功就返回结果
                 id model = nil;
                 id data = responseObject[@"data"];
@@ -86,16 +106,12 @@
                 }
                 break;
             }
-            case -2:
-            { ///用户信息失效
-                 NSLog(@"请求结果：\n用户信息失效");
-                if([[self getCurrentVC] isMemberOfClass:[LoginVC class]] == NO){
-                    LoginVC *vc = [LoginVC new];
-                    [[self getCurrentVC] presentViewController:[[BaseNaviVC alloc]initWithRootViewController:vc] animated:YES completion:nil];
-                }
-                errorBlock(responseObject[@"msg"], code);
-                break;
-            }
+//            case -2:
+//            { ///用户信息失效
+//                 NSLog(@"请求结果：\n用户信息失效");
+//                errorBlock(responseObject[@"msg"], code);
+//                break;
+//            }
 
             default:///其他情况返回error
                 NSLog(@"请求结果：\n%@",responseObject[@"msg"]);
@@ -127,10 +143,10 @@
         if (showLoading) {
             [hub hideAnimated:YES];
         }
-        NSInteger code = [responseObject[@"flg"] integerValue];
+        NSInteger code = [responseObject[@"code"] integerValue];
         NSLog(@"================%@请求=====================\n\n%@\n\n",url,parmas);
         switch (code) {
-            case 1:
+            case 10000:
             { ///成功就返回结果
                 id model = nil;
                 id data = responseObject[@"data"];
@@ -147,16 +163,12 @@
                 }
                 break;
             }
-            case -2:
-            { ///用户信息失效
-                 NSLog(@"请求结果：\n用户信息失效");
-                if([[self getCurrentVC] isMemberOfClass:[LoginVC class]] == NO){
-                    LoginVC *vc = [LoginVC new];
-                    [[self getCurrentVC] presentViewController:[[BaseNaviVC alloc]initWithRootViewController:vc] animated:YES completion:nil];
-                }
-                errorBlock(responseObject[@"msg"], code);
-                break;
-            }
+//            case -2:
+//            { ///用户信息失效
+//                 NSLog(@"请求结果：\n用户信息失效");
+//                errorBlock(responseObject[@"msg"], code);
+//                break;
+//            }
                 
             default:///其他情况返回error
                 NSLog(@"请求结果：\n%@",responseObject[@"msg"]);

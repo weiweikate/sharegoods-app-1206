@@ -11,3 +11,8 @@
 @implementation ShowQueryModel
 
 @end
+
+
+@implementation ShowQuery_dataModel
+
+@end

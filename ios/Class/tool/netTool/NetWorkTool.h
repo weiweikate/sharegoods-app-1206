@@ -7,6 +7,7 @@
 ///  模拟网络请求
 
 #import <Foundation/Foundation.h>
+#import "XG_Api.h"
 typedef void (^SuccessBlock)(id result);
 typedef void (^AFErrorBlock)(NSString *msg, NSInteger code);
 @interface NetWorkTool : NSObject
