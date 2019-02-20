@@ -76,6 +76,7 @@ export default class MentorItemView extends Component {
                         this.props.clickItemAction && this.props.clickItemAction(this.state.itemData);
                     }}>
                     <ImageLoad
+                        style={{ width: ImageWidth, height: ImageWidth }}
                         source={{ uri: this.state.itemData.headImg ? this.state.itemData.headImg : '' }}
                         isAvatar={true}
                         height={ImageWidth}
