@@ -13,6 +13,7 @@ import com.facebook.soloader.SoLoader;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
+import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
@@ -92,6 +93,7 @@ public class BaseApplication extends MultiDexApplication {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+        AppUtils.daemonsFix();
     }
 
     /**

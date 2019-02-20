@@ -10,6 +10,7 @@ import com.facebook.common.disk.NoOpDiskTrimmableRegistry;
 import com.facebook.common.internal.Supplier;
 import com.facebook.common.memory.MemoryTrimType;
 import com.facebook.common.memory.MemoryTrimmable;
+import com.facebook.common.memory.MemoryTrimmableRegistry;
 import com.facebook.common.memory.NoOpMemoryTrimmableRegistry;
 import com.facebook.common.util.ByteConstants;
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
@@ -95,18 +96,9 @@ public class ImagePipelineConfigUtils {
         //将网络请求设置为okhttp，取消连接失败之后的重试
         OkHttpClient okHttpClient = new OkHttpClient.Builder().retryOnConnectionFailure(false).build();
 
-        //缓存图片配置
-        ImagePipelineConfig.Builder configBuilder = OkHttpImagePipelineConfigFactory.newBuilder(context, okHttpClient)
-                .setBitmapsConfig(Bitmap.Config.RGB_565)
-                .setBitmapMemoryCacheParamsSupplier(mSupplierMemoryCacheParams)
-                .setSmallImageDiskCacheConfig(diskSmallCacheConfig)
-                .setMainDiskCacheConfig(diskCacheConfig)
-                .setMemoryTrimmableRegistry(NoOpMemoryTrimmableRegistry.getInstance())
-                .setResizeAndRotateEnabledForNetwork(true)
-                .setDownsampleEnabled(true);
-
-        // 就是这段代码，用于清理缓存
-        NoOpMemoryTrimmableRegistry.getInstance().registerMemoryTrimmable(new MemoryTrimmable() {
+        // 设置内存紧张时的应对措施
+        MemoryTrimmableRegistry memoryTrimmableRegistry = NoOpMemoryTrimmableRegistry.getInstance();
+        memoryTrimmableRegistry.registerMemoryTrimmable(new MemoryTrimmable() {
             @Override
             public void trim(MemoryTrimType trimType) {
                 final double suggestedTrimRatio = trimType.getSuggestedTrimRatio();
@@ -120,6 +112,15 @@ public class ImagePipelineConfigUtils {
                 }
             }
         });
+        //缓存图片配置
+        ImagePipelineConfig.Builder configBuilder = OkHttpImagePipelineConfigFactory.newBuilder(context, okHttpClient)
+                .setBitmapsConfig(Bitmap.Config.RGB_565)
+                .setBitmapMemoryCacheParamsSupplier(mSupplierMemoryCacheParams)
+                .setSmallImageDiskCacheConfig(diskSmallCacheConfig)
+                .setMainDiskCacheConfig(diskCacheConfig)
+                .setMemoryTrimmableRegistry(memoryTrimmableRegistry)
+                .setResizeAndRotateEnabledForNetwork(true)
+                .setDownsampleEnabled(true);
         return configBuilder.build();
     }
 

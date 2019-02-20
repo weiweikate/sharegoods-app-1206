@@ -376,7 +376,7 @@ public class WaveLoadingView extends View {
             mCanvasHeight = h;
         } else {
             mCanvasSize = w;
-            if (h < mCanvasSize){
+            if (h < mCanvasSize) {
                 mCanvasSize = h;
             }
         }
@@ -387,8 +387,9 @@ public class WaveLoadingView extends View {
         // IllegalArgumentException: width and height must be > 0 while loading Bitmap from View
         // http://stackoverflow.com/questions/17605662/illegalargumentexception-width-and-height-must-be-0-while-loading-bitmap-from
         if (bitmapBuffer == null || haveBoundsChanged()) {
-            if (bitmapBuffer != null){
+            if (bitmapBuffer != null && !bitmapBuffer.isRecycled()) {
                 bitmapBuffer.recycle();
+                bitmapBuffer = null;
             }
             int width = getMeasuredWidth();
             int height = getMeasuredHeight();
