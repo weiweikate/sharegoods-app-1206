@@ -9,6 +9,7 @@ import DesignRule from '../../constants/DesignRule';
 import {ImageCacheManager} from 'react-native-cached-image';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
+import res from './res'
 
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
@@ -70,18 +71,17 @@ class ReuserImage extends Component{
         this.fetchImage = this.fetchImage.bind(this);
 
         this.state = {
-            imagePath: null,
+            imagePath: res.placeholder.bg_default_img,
         };
     }
 
     componentDidMount() {
         this.fetchImage(this.props);
     }
-
-
+    
     componentWillReceiveProps(nextProps) {
         if (this.props.source && nextProps.source &&
-            this.props.source ===nextProps.source
+            this.props.source.uri !== nextProps.source.uri
         ) {
             this.fetchImage(nextProps);
         }
@@ -92,7 +92,7 @@ class ReuserImage extends Component{
     }
 
     fetchImage(props) {
-        this.setState({imagePath: ''});
+        this.setState({imagePath: res.placeholder.bg_default_img});
         let that = this;
         if (props && props.source && props.source.uri){
             ImageCacheManager().downloadAndCacheUrl(props.source.uri).then(
@@ -105,9 +105,16 @@ class ReuserImage extends Component{
 
     render() {
         const { imagePath } = this.state;
+        let source = {};
+        if (typeof imagePath === 'string') {
+            source = { uri: imagePath };
+        }
+        else {
+            source = imagePath;
+        }
         return <Image
             {...this.props}
-            source={{ uri: imagePath }}
+            source={source}
         />;
     }
 }
