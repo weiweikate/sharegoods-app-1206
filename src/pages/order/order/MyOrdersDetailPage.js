@@ -57,6 +57,7 @@ export default class MyOrdersDetailPage extends BasePage {
             menu: {},
             giftBagCoupons: [],
         };
+        orderDetailAfterServiceModel.menu=[];
     }
 
     $navigationBarOptions = {
@@ -147,8 +148,11 @@ export default class MyOrdersDetailPage extends BasePage {
         if(orderDetailModel.deleteInfo){
             return(
                 <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                  <Image souce={deleteIcon} style={{width:px2dp(66),height:px2dp(82)}} resizeMode={'contain'}/>
-                  <Text style={{color:DesignRule.textColor_instruction,fontSize:px2dp(13),marginTop:5}}>该订单已删除！</Text>
+                    <View style={{justifyContent:'center',alignItems:'center'}}>
+                        <Image source={deleteIcon} style={{width:px2dp(82),height:px2dp(82)}} />
+                        <Text style={{color:DesignRule.textColor_instruction,fontSize:px2dp(13),marginTop:5}}>该订单已删除！</Text>
+                    </View>
+
                 </View>
             )
         }else{

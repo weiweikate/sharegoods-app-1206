@@ -28,7 +28,16 @@ export default class OrderDetailBottomButtonView extends Component {
         if (nameArr.length > 0) {
             return (
                 <View style={styles.containerStyle}>
-                    {this.renderMenu()}
+                    {nameArr.map((item,i)=>{
+                        return  <NoMoreClick key={i}
+                                             style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
+                                             onPress={() => {
+                                                 this.operationMenuClick(item);
+                                             }}>
+                            <Text style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
+                                  allowFontScaling={false}>{item.operation}</Text>
+                        </NoMoreClick>
+                    })}
                 </View>
             );
         } else {
@@ -36,25 +45,6 @@ export default class OrderDetailBottomButtonView extends Component {
         }
 
     }
-
-    renderMenu = () => {
-        let nameArr = orderDetailAfterServiceModel.menu;
-        console.log("OrderDetailBottomButtonView", orderDetailAfterServiceModel.totalAsList);
-        let itemArr = [];
-        for (let i = 0; i < nameArr.length; i++) {
-            itemArr.push(
-                <NoMoreClick key={i}
-                             style={[styles.touchableStyle, { borderColor: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
-                             onPress={() => {
-                                 this.operationMenuClick(nameArr[i]);
-                             }}>
-                    <Text style={{ color: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
-                          allowFontScaling={false}>{nameArr[i].operation}</Text>
-                </NoMoreClick>
-            );
-        }
-        return itemArr;
-    };
     operationMenuClick = (menu) => {
         /*
          * 取消订单                 ->  1
