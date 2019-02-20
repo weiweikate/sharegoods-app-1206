@@ -11,6 +11,8 @@ import OrderApi from "../../api/orderApi";
 import Toast from "../../../../utils/bridge";
 import shopCartCacheTool from "../../../shopCart/model/ShopCartCacheTool";
 import { observer } from "mobx-react/native";
+import RouterMap from "../../../../navigation/RouterMap";
+
 
 const { px2dp } = ScreenUtils;
 import { MRText as Text, NoMoreClick } from "../../../../components/ui";
@@ -202,7 +204,7 @@ export default class OrderDetailBottomButtonView extends Component {
                 ], { cancelable: true });
                 break;
             case 10:
-                this.props.nav("order/order/MyOrdersDetailPage", {
+                this.props.nav(RouterMap.P_ScorePublishPage, {
                     orderNo:  orderDetailModel.getOrderNo()
                 });
                 break;
