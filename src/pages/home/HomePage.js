@@ -20,8 +20,8 @@ import HomeStarShopView from './HomeStarShopView';
 import HomeTodayView from './HomeTodayView';
 import HomeRecommendView from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
-import HomeBannerView from './HomeBannerView';
-import HomeAdView, {adViewHeight} from './HomeAdView';
+import HomeBannerView, { bannerHeight } from './HomeBannerView';
+import HomeAdView, { adViewHeight } from './HomeAdView';
 import HomeGoodsView from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import ShowView from '../show/ShowView';
@@ -59,7 +59,6 @@ const home_notice_bg = res.home_notice_bg;
  */
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
-const bannerHeight = px2dp(220);
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
@@ -94,8 +93,8 @@ class HomePage extends BasePage {
 
     headerH = headerHeight - (ScreenUtils.isIOSX ? 10 : 0);
     dataProvider =  new DataProvider((r1, r2) => {
-    return r1 !== r2
-});
+        return r1 !== r2
+    });
 
     layoutProvider = new LayoutProvider((i) => {
         return this.dataProvider.getDataForIndex(i).type;
@@ -109,13 +108,13 @@ class HomePage extends BasePage {
 
         switch (type) {
             case homeType.swiper:
-                dim.height = px2dp(230);
+                dim.height = bannerHeight;
                 break;
             case homeType.classify:
                 dim.height = px2dp(83)*(classifyList.length/5);
                 break;
             case homeType.ad:
-                dim.height = ad.length > 0 ?adViewHeight: 0;
+                dim.height = ad.length > 0 ? adViewHeight : 0;
                 break;
             case homeType.today:
                 dim.height = todayList.length > 0?px2dp(243): 0;

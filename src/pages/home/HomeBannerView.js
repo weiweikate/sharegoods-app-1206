@@ -11,12 +11,11 @@ import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import { bannerModule } from './HomeBannerModel';
 
-const bannerHeight = px2dp(230);
+export const bannerHeight = px2dp(230);
 import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode';
 import ImageLoad from '@mr/image-placeholder';
 
 import { track, trackEvent } from '../../utils/SensorsTrack'
-export {bannerHeight};
 @observer
 export default class HomeBannerView extends Component {
     state = {
