@@ -25,11 +25,15 @@ export default class DetailNavView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            scale: props.scale || false
+            scale: false
         };
     }
 
     componentDidMount() {
+
+        if (this.props.scale) {
+            this.updateWithScale(1);
+        }
 
     }
 
@@ -48,8 +52,8 @@ export default class DetailNavView extends Component {
     };
 
     render() {
-        const { messageCount, scale } = this.props;
-        return (<View style={styles.transparentView}>
+        const { messageCount } = this.props;
+        return (<View style={!this.props.scale ? styles.transparentView : styles.transparentView1}>
                 <View style={styles.leftBarItemContainer}>
                     {/*返回*/}
                     <TouchableOpacity onPress={() => {
@@ -61,12 +65,13 @@ export default class DetailNavView extends Component {
                 </View>
                 {/*图片*/}
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    {this.state.scale && scale === undefined ? <UIImage source={{ uri: this.props.source }} style={{
-                        width: 38,
-                        height: 38,
-                        borderColor: DesignRule.color_ddd,
-                        borderWidth: 1
-                    }}/> : null}
+                    {this.state.scale && this.props.scale !== true ?
+                        <UIImage source={{ uri: this.props.source }} style={{
+                            width: 38,
+                            height: 38,
+                            borderColor: DesignRule.color_ddd,
+                            borderWidth: 1
+                        }}/> : null}
                 </View>
                 <View style={styles.rightBarItemContainer}>
                     {/*购物车*/}
@@ -116,6 +121,14 @@ const styles = StyleSheet.create({
         right: 8,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    transparentView1: {
+        width: ScreenUtils.width,
+        paddingTop: ScreenUtils.statusBarHeight,
+        height: ScreenUtils.headerHeight,
+        backgroundColor: 'white',
+        flexDirection: 'row',
         justifyContent: 'space-between'
     },
     rightBarItemContainer: {

@@ -8,6 +8,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 
 import RES from '../../../../comm/res';
+import RouterMap from '../../../../navigation/RouterMap';
+import StringUtils from '../../../../utils/StringUtils';
 
 const arrow_right = RES.button.arrow_right_black;
 const { px2dp, width } = ScreenUtils;
@@ -23,9 +25,11 @@ export class DetailHeaderScoreView extends Component {
                             return;
                         }
                         let leftValue = index === 0 ? 0 : px2dp(8);
-                        return <UIImage key={index + value}
-                                        style={[styles.contentImg, { marginLeft: leftValue }]}
-                                        source={{ uri: value }}/>;
+                        return <NoMoreClick onPress={this._action}>
+                            <UIImage key={index + value}
+                                     style={[styles.contentImg, { marginLeft: leftValue }]}
+                                     source={{ uri: value }}/>
+                        </NoMoreClick>;
                     })
                 }
             </View>;
@@ -33,9 +37,18 @@ export class DetailHeaderScoreView extends Component {
     };
 
     _renderContent = (comment) => {
-        const { headImg, nickname, imgUrl } = comment || {};
+        const { headImg, nickname, imgUrl, videoUrl } = comment || {};
         const commentTemp = (comment || {}).comment;
-        let images = (imgUrl || '').split('$');
+
+        let images = [];
+        if (StringUtils.isNoEmpty(videoUrl)) {
+            imgUrl.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
+        }
+        if (StringUtils.isNoEmpty(imgUrl)) {
+            let temp = imgUrl.split('$');
+            images.push(...temp);
+        }
+
         return (
             <View>
                 <View style={styles.iconView}>
@@ -48,12 +61,34 @@ export class DetailHeaderScoreView extends Component {
         );
     };
 
+    _action = () => {
+        const { navigation, pData } = this.props;
+        const { comment } = pData;
+        const commentTemp = (comment || {}).comment;
+        const { imgUrl, videoUrl } = comment || {};
+        let images = (imgUrl || '').split('$');
+        navigation.navigate(RouterMap.P_ScoreSwiperPage, {
+            video: videoUrl,
+            videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
+            images: images,
+            content: commentTemp
+        });
+    };
+
+    _allScoreAction = () => {
+        const { navigation, pData, messageCount } = this.props;
+        navigation.navigate(RouterMap.P_ScoreListPage, {
+            pData: pData,
+            messageCount: messageCount
+        });
+    };
+
     render() {
-        const { allScoreAction, pData } = this.props;
+        const { pData } = this.props;
         const { comment, totalComment } = pData;
         return (
-            <View style={styles.container}>
-                <NoMoreClick style={styles.tittleView} onPress={allScoreAction}>
+            <View style={[styles.container, this.props.style]}>
+                <NoMoreClick style={styles.tittleView} onPress={this._allScoreAction}>
                     <Text style={styles.countText}>{`晒单(${totalComment || 0})`}</Text>
                     <Text style={styles.moreText}>查看全部</Text>
                     <Image style={styles.moreImage} source={arrow_right}/>

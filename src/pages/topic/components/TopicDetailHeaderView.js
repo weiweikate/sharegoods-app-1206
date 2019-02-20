@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-    // StyleSheet,
+    StyleSheet,
     View,
     TouchableOpacity,
     Image
@@ -20,8 +20,13 @@ import {
 
 // const { px2dp } = ScreenUtils;
 import res from '../res';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
+import DetailHeaderScoreView from '../../home/product/components/DetailHeaderScoreView';
+import RES from '../../../comm/res';
 
 const xjt_03 = res.xjt_03;
+const arrow_right = RES.button.arrow_right_black;
+
 /**
  * 商品详情头部view
  */
@@ -50,7 +55,7 @@ export default class TopicDetailHeaderView extends Component {
     }
 
     render() {
-        const { activityType } = this.props;
+        const { activityType, data, navigation, serviceAction } = this.props;
         let bannerImgList, tittle, secondNameS, freightValue, monthSale;
         let nowPrice, oldPrice, levelTypeName, restrictionsTT;
 
@@ -156,43 +161,30 @@ export default class TopicDetailHeaderView extends Component {
                         </TouchableOpacity>
                         <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     </View> : null}
-                <View style={{ backgroundColor: 'white', marginTop: activityType === 2 ? 0 : 10, marginBottom: 12 }}>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginLeft: 16,
-                        width: ScreenUtils.width - 32,
-                        marginVertical: 16,
-                        alignItems: 'center'
-                    }}>
-                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}
-                              allowFontScaling={false}>服务</Text>
-                        <Text style={{
-                            marginLeft: 11,
-                            color: DesignRule.textColor_secondTitle,
-                            fontSize: 12
-                        }}
-                              allowFontScaling={false}>{`正品保证·急速发货  ${(restrictionsTT & 4) === 4 ? `7天退换` : ``}`}</Text>
-                    </View>
-                </View>
+                <NoMoreClick style={styles.serviceView} onPress={activityType !== 3 && serviceAction}>
+                    <Text style={styles.serviceNameText}>服务</Text>
+                    <Text style={styles.serviceValueText} numberOfLines={1}>
+                        {`质量保障·48小时发货${(restrictionsTT & 4) === 4 ? `·7天退换` : ``}${(restrictionsTT & 8) === 8 ? `·节假日发货` : ``}`}
+                    </Text>
+                    {activityType !== 3 ? <Image source={arrow_right}/> : null}
+                </NoMoreClick>
+                {activityType === 3 ? null : <DetailHeaderScoreView pData={data} navigation={navigation}/>}
             </View>
         );
     }
 }
 
-// const styles = StyleSheet.create({
-//     indexView: {
-//         position: 'absolute',
-//         height: px2dp(20),
-//         borderRadius: px2dp(10),
-//         right: px2dp(14),
-//         bottom: px2dp(20),
-//         backgroundColor: 'rgba(0, 0, 0, 0.7)',
-//         alignItems: 'center',
-//         justifyContent: 'center'
-//     },
-//     text: {
-//         color: '#fff',
-//         fontSize: px2dp(10),
-//         paddingHorizontal: 8
-//     }
-// });
+const styles = StyleSheet.create({
+    /**服务**/
+    serviceView: {
+        flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 10, paddingHorizontal: 15,
+        backgroundColor: 'white', height: 40
+    },
+    serviceNameText: {
+        color: DesignRule.textColor_instruction, fontSize: 13
+    },
+    serviceValueText: {
+        flex: 1, marginLeft: 15,
+        color: DesignRule.textColor_secondTitle, fontSize: 12
+    }
+});
