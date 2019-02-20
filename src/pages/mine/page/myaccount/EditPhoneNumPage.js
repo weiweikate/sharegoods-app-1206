@@ -40,7 +40,6 @@ export default class EditPhoneNumPage extends BasePage {
 
     componentDidMount() {
        MineAPI.getDays({}).then((data)=>{
-           alert(JSON.stringify(data))
            if (this.state.tip.length === 0){
                this.setState({tip: '注：解绑后的手机号，' + data.data + '天内不可进行注册新账户'})
            }
