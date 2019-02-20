@@ -35,7 +35,7 @@ export default class P_ScoreSuccessPage extends BasePage {
     };
 
     _goPublish = (warehouseOrderNo) => {
-        this.$navigate(RouterMap.P_ScorePublishPage, { warehouseOrderNo: warehouseOrderNo });
+        this.$navigate(RouterMap.P_ScorePublishPage, { orderNo: warehouseOrderNo });
     };
 
     _ListEmptyComponent = () => {

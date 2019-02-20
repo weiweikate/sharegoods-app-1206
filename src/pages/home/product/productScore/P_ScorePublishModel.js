@@ -9,6 +9,7 @@ export default class P_ScorePublishModel {
 
     @observable maxImageVideoCount = 6;
     @observable productArr = [];
+    @observable warehouseOrderNo = '';
 
     /*{
     images,
@@ -18,8 +19,9 @@ export default class P_ScorePublishModel {
     }*/
     @observable itemDataS = [];
 
-    @action setDefaultData = () => {
-        this.productArr = [{}, {}, {}];
+    @action setDefaultData = (dataList, orderNo) => {
+        this.warehouseOrderNo = orderNo;
+        this.productArr = dataList || [];
         for (let i = 0; i < this.productArr.length; i++) {
             this.itemDataS.push(
                 { images: [], video: undefined, starCount: 5, contentText: '' }
@@ -63,22 +65,34 @@ export default class P_ScorePublishModel {
 
     _lookDetail = (orderNo) => {
         orderApi.lookDetail({ orderNo: orderNo }).then((data) => {
+            let tempList = [];
+            let tempData = data.data;
+            tempData = (tempData || {}).warehouseOrderDTOList || [];
+            tempData.forEach((item) => {
+                (item || {}).products.forEach((item) => {
+                    tempList.push(item);
+                });
+            });
+            this.setDefaultData(tempList, orderNo);
         });
     };
     _publish = (callBack) => {
-        let params = this.itemDataS.map((item) => {
+        let params = this.itemDataS.map((item, index) => {
+            let pData = this.productArr[index];
             return {
-                warehouseOrderProductNo: 'test-1',
-                skuCode: 'SKU000000880001',
+                warehouseOrderProductNo: this.warehouseOrderNo,
+                skuCode: pData.skuCode,
                 comment: item.contentText,
                 videoUrl: item.video,
-                imgUrl: item.images,
+                imgUrl: item.images.join('$'),
                 star: item.starCount
             };
         });
-        HomeAPI.appraise_publish({ warehouseOrderNo: 'C181210164920000001', params: params }).then((data) => {
+        HomeAPI.appraise_publish({ warehouseOrderNo: this.warehouseOrderNo, params: params }).then((data) => {
             callBack && callBack();
             console.log(data);
+        }).catch((error) => {
+            Toast.$toast(error.msg);
         });
     };
 

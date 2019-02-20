@@ -30,7 +30,7 @@ export class P_ScorePublishPage extends BasePage {
     };
 
     componentDidMount() {
-        this.p_ScorePublishModel.setDefaultData();
+        this.p_ScorePublishModel._lookDetail(this.params.orderNo);
     }
 
     _pic = (itemIndex) => {

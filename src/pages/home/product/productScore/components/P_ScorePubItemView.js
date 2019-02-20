@@ -111,9 +111,14 @@ export default class P_ScorePubItemView extends Component {
     render() {
         const { itemData, showAction, p_ScorePublishModel } = this.props;
         const { index } = itemData;
+
+        const { productArr } = p_ScorePublishModel;
+        const imgData = productArr[index];
+        const { specImg } = imgData || {};
+
         return <View style={styles.container}>
             <View style={styles.scoreView}>
-                <UIImage style={styles.productImg}/>
+                <UIImage style={styles.productImg} source={{ uri: specImg }}/>
                 <View>
                     <Text style={styles.satisfactionText}>商品满意度</Text>
                     <StarsView style={styles.starsView} index={index} p_ScorePublishModel={p_ScorePublishModel}/>
