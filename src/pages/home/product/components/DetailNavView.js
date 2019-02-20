@@ -3,14 +3,14 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    View,
+    View
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import ShopCartStore from '../../../shopCart/model/ShopCartStore';
 import res from '../../res';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 import UIImage from '@mr/image-placeholder';
 
 const detailNavView = res.product.detailNavView;
@@ -25,7 +25,7 @@ export default class DetailNavView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            scale: false
+            scale: props.scale || false
         };
     }
 
@@ -48,7 +48,7 @@ export default class DetailNavView extends Component {
     };
 
     render() {
-        const { messageCount } = this.props;
+        const { messageCount, scale } = this.props;
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {/*返回*/}
@@ -61,7 +61,7 @@ export default class DetailNavView extends Component {
                 </View>
                 {/*图片*/}
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    {this.state.scale ? <UIImage source={{ uri: this.props.source }} style={{
+                    {this.state.scale && scale === undefined ? <UIImage source={{ uri: this.props.source }} style={{
                         width: 38,
                         height: 38,
                         borderColor: DesignRule.color_ddd,
@@ -84,7 +84,8 @@ export default class DetailNavView extends Component {
                             <Text style={{
                                 color: 'white',
                                 fontSize: 10
-                            }} allowFontScaling={false}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
+                            }}
+                                  allowFontScaling={false}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity> : null}
                     {/*分享相关*/}
@@ -93,11 +94,11 @@ export default class DetailNavView extends Component {
                     }} style={styles.btnContainer}>
                         <Image source={this.state.scale ? detailNavView.detail_more_down : res.button.show_share}/>
                         {messageCount === 0 ? null : <View style={{
-                            position: 'absolute', top: 4, right: 8, height: 10,width:10,
+                            position: 'absolute', top: 4, right: 8, height: 10, width: 10,
                             paddingHorizontal: 4,
                             backgroundColor: DesignRule.mainColor,
                             borderRadius: 5, justifyContent: 'center', alignItems: 'center'
-                        }} />}
+                        }}/>}
                     </TouchableOpacity>
                 </View>
             </View>

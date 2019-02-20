@@ -48,21 +48,16 @@ export class P_ScoreListItemView extends Component {
     };
 
     render() {
-        const { headImg, nickname, star, paramList, comment, imgUrl, createTime } = this.props.itemData || {};
+        const { headImg, nickname, star, comment, imgUrl, createTime, spec } = this.props.itemData || {};
         let imgs = (imgUrl || '').split('$');
-        let paramArr = (paramList || []).map((item) => {
-            item = item || {};
-            return `${item.paramName || ''}: ${item.paramValue || ''}`;
-        });
-        let paramStr = paramArr.join('; ');
         return (
             <View style={styles.container}>
                 <View style={styles.iconView}>
-                    <AvatarImage style={styles.iconImg} source={{ uri: headImg }}/>
+                    <AvatarImage style={styles.iconImg} source={{ uri: headImg }} borderRadius={15}/>
                     <Text style={styles.nameText}>{nickname || ''}</Text>
                     {this._renderStars(star)}
                 </View>
-                <Text style={styles.skuText}>{paramStr}</Text>
+                <Text style={styles.skuText}>{spec || ''}</Text>
                 <Text style={styles.contentText}>{comment || ''}</Text>
                 {this._renderContentImgs(imgs)}
                 <Text style={styles.dateText}>{DateUtils.formatDate(createTime || '', 'yyyy-MM-dd')}</Text>
