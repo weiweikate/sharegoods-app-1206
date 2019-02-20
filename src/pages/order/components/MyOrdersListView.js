@@ -20,6 +20,8 @@ import {
     MRText as Text
 } from "../../../components/ui";
 import user from "../../../model/user";
+import RouterMap from "../../../navigation/RouterMap";
+
 
 const emptyIcon = res.kongbeuye_dingdan;
 
@@ -546,7 +548,7 @@ export default class MyOrdersListView extends Component {
                 ], { cancelable: true });
                 break;
             case 10:
-                this.props.nav("order/order/MyOrdersDetailPage", {
+                this.props.nav(RouterMap.P_ScorePublishPage, {
                     orderNo: this.state.viewData[index].orderNo,
                     callBack: this.onRefresh
                 });
