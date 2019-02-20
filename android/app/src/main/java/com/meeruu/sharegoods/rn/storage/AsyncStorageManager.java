@@ -1,6 +1,5 @@
 package com.meeruu.sharegoods.rn.storage;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 import android.os.AsyncTask;
@@ -37,6 +36,7 @@ public class AsyncStorageManager {
 
     private static final ThreadFactory sThreadFactory = new ThreadFactory() {
         private final AtomicInteger mCount = new AtomicInteger(1);
+
         @Override
         public Thread newThread(Runnable r) {
             return new Thread(r, "AsyncTask #" + mCount.getAndIncrement());
@@ -81,7 +81,7 @@ public class AsyncStorageManager {
 //        }
 //    }
 
-//    private final AsyncStorageManager.SerialExecutor executor;
+    //    private final AsyncStorageManager.SerialExecutor executor;
     private AsyncStorageManager() {
     }
 
@@ -93,13 +93,13 @@ public class AsyncStorageManager {
         return AsyncStorageManagerHolder.instance;
     }
 
-    public void init(Context context) {
+    public void init() {
 //        this.executor = new AsyncStorageManager.SerialExecutor(executor);
 
-        mReactDatabaseSupplier = ReactDatabaseSupplier.getInstance(context);
+        mReactDatabaseSupplier = ReactDatabaseSupplier.getInstance();
     }
 
-    public void getItem(final String key,final MultiGetCallback callback) {
+    public void getItem(final String key, final MultiGetCallback callback) {
         if (TextUtils.isEmpty(key)) {
             callback.onFail(StorageErrorType.KEYERROR);
             return;
@@ -107,7 +107,7 @@ public class AsyncStorageManager {
 
         final List<String> keys = new ArrayList();
         keys.add(key);
-        new AsyncTask<Void, Void,Void>(){
+        new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... objects) {
                 if (!ensureDatabase()) {
@@ -155,9 +155,9 @@ public class AsyncStorageManager {
                     keysRemaining.clear();
                 }
 
-                if(data != null && data.get(0) != null && data.get(0).get(1) != null){
+                if (data != null && data.get(0) != null && data.get(0).get(1) != null) {
                     callback.onSuccess(data.get(0).get(1));
-                }else {
+                } else {
                     callback.onSuccess(null);
                 }
                 return null;
@@ -166,8 +166,8 @@ public class AsyncStorageManager {
     }
 
 
-    public void setItem(final String key,final Object value,final MultiSetCallback callback){
-        if(TextUtils.isEmpty(key)){
+    public void setItem(final String key, final Object value, final MultiSetCallback callback) {
+        if (TextUtils.isEmpty(key)) {
             callback.onFail(StorageErrorType.KEYERROR);
             return;
         }
@@ -177,7 +177,7 @@ public class AsyncStorageManager {
         final List<List<String>> keyValueArray = new ArrayList();
         keyValueArray.add(keyValue);
 
-        new AsyncTask<Void, Void,Void>(){
+        new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... objects) {
                 if (!ensureDatabase()) {
@@ -189,7 +189,7 @@ public class AsyncStorageManager {
 
                 try {
                     mReactDatabaseSupplier.get().beginTransaction();
-                    for (int idx=0; idx < keyValueArray.size(); idx++) {
+                    for (int idx = 0; idx < keyValueArray.size(); idx++) {
                         if (keyValueArray.get(idx).size() != 2) {
                             callback.onFail(StorageErrorType.VALUEERROR);
                             return null;
@@ -231,6 +231,9 @@ public class AsyncStorageManager {
     }
 
     private boolean ensureDatabase() {
+        if (mReactDatabaseSupplier == null) {
+            mReactDatabaseSupplier = ReactDatabaseSupplier.getInstance();
+        }
         return mReactDatabaseSupplier.ensureDatabase();
     }
 }
