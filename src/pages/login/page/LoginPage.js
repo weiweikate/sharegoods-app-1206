@@ -210,7 +210,7 @@ export default class LoginPage extends BasePage {
             LoginAPI.codeLogin({
                 authcode: '',
                 code: LoginParam.code,
-                device: '设备名称',
+                device: DeviceInfo.getDeviceName()+"",
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
                 systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() : '暂无',
