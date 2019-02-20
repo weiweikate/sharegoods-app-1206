@@ -366,7 +366,7 @@ export default class ProductDetailPage extends BasePage {
                                      this.$navigateBackToStore();
                                  }}
                                  allScoreAction={() => {
-                                     this.$navigate(RouterMap.P_ScorePublishPage, {
+                                     this.$navigate(RouterMap.P_ScoreListPage, {
                                          pData: this.state.data,
                                          messageCount: this.state.messageCount
                                      });

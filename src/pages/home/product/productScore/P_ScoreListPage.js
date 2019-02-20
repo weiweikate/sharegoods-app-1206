@@ -193,7 +193,7 @@ export default class P_ScoreListPage extends BasePage {
     };
 
     _renderItem = ({ item }) => {
-        return <P_ScoreListItemView itemData={item}/>;
+        return <P_ScoreListItemView itemData={item} navigation={this.props.navigation}/>;
     };
 
     _onEndReached = () => {

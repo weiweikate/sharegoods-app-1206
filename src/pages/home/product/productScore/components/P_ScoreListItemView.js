@@ -7,6 +7,9 @@ import AvatarImage from '../../../../../components/ui/AvatarImage';
 import UIImage from '@mr/image-placeholder';
 import pRes from '../../../res';
 import DateUtils from '../../../../../utils/DateUtils';
+import RouterMap from '../../../../../navigation/RouterMap';
+import NoMoreClick from '../../../../../components/ui/NoMoreClick';
+import StringUtils from '../../../../../utils/StringUtils';
 
 const { p_score_star, p_score_unStar } = pRes.product.productScore;
 
@@ -38,18 +41,38 @@ export class P_ScoreListItemView extends Component {
                             return;
                         }
                         let leftValue = index === 0 ? 0 : px2dp(8);
-                        return <UIImage key={index}
-                                        style={[styles.contentImg, { marginLeft: leftValue }]}
-                                        source={{ uri: value }}/>;
+                        return <NoMoreClick onPress={this._action}>
+                            <UIImage key={index}
+                                     style={[styles.contentImg, { marginLeft: leftValue }]}
+                                     source={{ uri: value }}/>
+                        </NoMoreClick>;
                     })
                 }
             </View>;
         }
     };
 
+    _action = () => {
+        const { navigation, itemData } = this.props;
+        const { imgUrl, videoUrl } = itemData;
+        let images = (imgUrl || '').split('$');
+        navigation.navigate(RouterMap.P_ScoreSwiperPage, {
+            video: videoUrl,
+            videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
+            images: images
+        });
+    };
+
     render() {
-        const { headImg, nickname, star, comment, imgUrl, createTime, spec } = this.props.itemData || {};
-        let imgs = (imgUrl || '').split('$');
+        const { headImg, nickname, star, comment, imgUrl, createTime, spec, videoUrl } = this.props.itemData || {};
+        let imgs = [];
+        if (StringUtils.isNoEmpty(videoUrl)) {
+            imgUrl.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
+        }
+        if (StringUtils.isNoEmpty(imgUrl)) {
+            let temp = imgUrl.split('$');
+            imgs.push(...temp);
+        }
         return (
             <View style={styles.container}>
                 <View style={styles.iconView}>

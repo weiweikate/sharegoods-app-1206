@@ -45,7 +45,7 @@ export default class DetailHeaderView extends Component {
     }
 
     render() {
-        const { activityType, allScoreAction, serviceAction, data } = this.props;
+        const { activityType, allScoreAction, serviceAction, data, navigation } = this.props;
         //priceType 3会员价  2拼店价
         const {
             freight, monthSaleCount, originalPrice, priceType,
@@ -143,7 +143,7 @@ export default class DetailHeaderView extends Component {
                     </Text>
                     <Image source={arrow_right}/>
                 </NoMoreClick>
-                <DetailHeaderScoreView allScoreAction={allScoreAction} pData={data}/>
+                <DetailHeaderScoreView allScoreAction={allScoreAction} pData={data} navigation={navigation}/>
             </View>
         );
     }

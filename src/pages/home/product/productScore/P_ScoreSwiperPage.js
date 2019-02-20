@@ -7,11 +7,12 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 // import StringUtils from '../../../utils/StringUtils';
 import { MRText as Text } from '../../../../components/ui/UIText';
 // import DesignRule from '../../../constants/DesignRule';
-import Swiper from 'react-native-swiper';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import pRes from '../../res';
 import VideoView from '../../../../components/ui/video/VideoView';
 import DesignRule from '../../../../constants/DesignRule';
+import XGSwiper from '../../../../components/ui/XGSwiper';
+import StringUtils from '../../../../utils/StringUtils';
 
 const { swiper_cancel } = pRes.product.productScore;
 
@@ -24,29 +25,40 @@ export default class P_ScoreSwiperPage extends BasePage {
     };
 
     state = {
-        count: 1
+        index: 0
+    };
+
+    _renderViewPageItem = (item) => {
+        if (item.videoUrl) {
+            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
+        } else {
+            return (
+                <UIImage style={{ width: width, height: height }} source={{ uri: item }}
+                         resizeMode={'contain'}/>
+            );
+        }
     };
 
     _render() {
         const { video, images, videoImg } = this.params;
+
+        this.videoImageList = [...images];
+        if (StringUtils.isNoEmpty(video)) {
+            this.videoImageList.unshift({ videoUrl: video, videoCover: videoImg });
+        }
         return (
             <View style={styles.containerView}>
-                <Swiper height={height} loop={false} showsPagination={false} onMomentumScrollEnd={(event, state) => {
-                    this.setState({
-                        count: state.index + 1
-                    });
-                }}>
-                    {
-                        video ? <VideoView videoUrl={video} videoCover={videoImg}/> : null
-                    }
-                    {
-                        images.map((item) => {
-                            return <UIImage style={{ width: width, height: height }} source={{ uri: item }}
-                                            resizeMode={'contain'}/>;
-                        })
-                    }
-                </Swiper>
-
+                <XGSwiper height={height} width={width}
+                          loop={false}
+                          renderRow={this._renderViewPageItem}
+                          dataSource={this.videoImageList}
+                          onDidChange={(item, index) => {
+                              // if (this.state.index !== index) {
+                              this.setState({
+                                  index: index + 1
+                              });
+                              // }
+                          }}/>
                 <View style={{
                     position: 'absolute',
                     alignSelf: 'center',
@@ -57,7 +69,7 @@ export default class P_ScoreSwiperPage extends BasePage {
                     <Text style={{
                         fontSize: 13,
                         color: DesignRule.textColor_instruction
-                    }}>{`${this.state.count}/${images.length}`}</Text>
+                    }}>{`${this.state.index}/${this.videoImageList.length}`}</Text>
                 </View>
 
 
