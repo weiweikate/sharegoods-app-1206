@@ -24,7 +24,7 @@ export default class P_ScorePublishModel {
         this.productArr = dataList || [];
         for (let i = 0; i < this.productArr.length; i++) {
             this.itemDataS.push(
-                { images: [], video: undefined, starCount: 5, contentText: '' }
+                { images: [], video: undefined, videoImg: undefined, starCount: 5, contentText: '' }
             );
         }
     };
@@ -41,7 +41,7 @@ export default class P_ScorePublishModel {
 
     @action addImg = (itemIndex, images) => {
         let itemData = this.itemDataS[itemIndex];
-        itemData.images = images;
+        itemData.images.push(...images);
     };
 
     @action deleteImg = (itemIndex, imgIndex) => {
@@ -52,11 +52,13 @@ export default class P_ScorePublishModel {
     @action addVideo = (itemIndex, video) => {
         let itemData = this.itemDataS[itemIndex];
         itemData.video = video;
+        itemData.videoImg = `${video}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`;
     };
 
     @action deleteVideo = (itemIndex) => {
         let itemData = this.itemDataS[itemIndex];
         itemData.video = undefined;
+        itemData.videoImg = undefined;
     };
 
     _list = () => {
@@ -105,12 +107,17 @@ export default class P_ScorePublishModel {
             name: new Date().getTime() + itemIndex + '.mp4'
         };
         request.setBaseUrl(apiEnvironment.getCurrentHostUrl());
+        Toast.showLoading('正在上传');
         request.upload('/common/upload/oss', fileData, {}).then((res) => {
+            Toast.hiddenLoading();
             if (res.code === 10000 && res.data) {
                 this.addVideo(itemIndex, res.data);
             } else {
                 Toast.$toast('视频上传失败');
             }
+        }).catch(() => {
+            Toast.hiddenLoading();
+            Toast.$toast('视频上传失败');
         });
     }
 

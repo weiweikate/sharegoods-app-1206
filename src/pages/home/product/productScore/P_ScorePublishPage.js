@@ -81,7 +81,7 @@ export class P_ScorePublishPage extends BasePage {
 
     _video = (itemIndex) => {
         this.CameraView.show((videoData) => {
-            this.p_ScorePublishModel.uploadVideo(videoData, itemIndex);
+            videoData && this.p_ScorePublishModel.uploadVideo(videoData, itemIndex);
         });
     };
 
