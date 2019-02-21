@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
@@ -14,7 +15,8 @@ import com.meeruu.sharegoods.rn.showground.widgets.ScaleImageView;
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
 
-    private float[] raduis = {6, 6, 6, 6, 0, 0, 0, 0};
+    private final int radius = DensityUtils.dip2px(5);
+    private float[] raduis = {radius, radius, radius, radius, 0, 0, 0, 0};
 
     public ShowGroundAdapter() {
         super(R.layout.item_showground);

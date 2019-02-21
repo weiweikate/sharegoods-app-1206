@@ -148,9 +148,9 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     public void addView(ViewGroup parent, View child, int index) {
         super.addView(parent, child, index);
 //        adapter.addHeaderView(child);
-        if(child instanceof RecyclerViewHeaderView){
-            adapter.addHeaderView(child);
-        }
+//        if(child instanceof RecyclerViewHeaderView){
+//            adapter.addHeaderView(child);
+//        }
     }
 
     @Override
