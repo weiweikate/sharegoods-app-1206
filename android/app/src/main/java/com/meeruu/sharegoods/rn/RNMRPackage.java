@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.meeruu.sharegoods.rn.loadingview.MRLoadingViewManager;
 import com.meeruu.sharegoods.rn.popmodal.PopModalManager;
+import com.meeruu.sharegoods.rn.showground.RecyclerViewHeaderManager;
 import com.meeruu.sharegoods.rn.showground.ShowGroundViewManager;
 import com.meeruu.sharegoods.rn.waveview.WaveViewManager;
 import com.meeruu.commonlib.umeng.AnalyticsModule;
@@ -65,6 +66,7 @@ public class RNMRPackage implements ReactPackage {
                 new WaveViewManager(),
                 new MRLoadingViewManager(),
                 new MRBannerViewManager(),
+                new RecyclerViewHeaderManager(),
                 new ShowGroundViewManager());
     }
 

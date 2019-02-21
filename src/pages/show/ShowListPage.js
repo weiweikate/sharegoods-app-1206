@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-na
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
-
+import RecycleHeaderView from './components/RecycleHeaderView'
 const { px2dp } = ScreenUtils;
 // import ShowHotView from './ShowHotView';
 // import ShowHotFindView from './ShowHotFindView';
@@ -169,7 +169,9 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <ShowGroundView onItemPress={this._press} style={{flex:1}}/>
+                            <ShowGroundView onItemPress={this._press} style={{flex:1}}>
+                                <RecycleHeaderView style={{height:50,width:50,backgroundColor:'red'}}/>
+                            </ShowGroundView>
                             :
                             null
                     }

@@ -7,11 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
@@ -19,6 +21,7 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
@@ -35,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ShowGroundViewManager extends SimpleViewManager<View> implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
+public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private static final String COMPONENT_NAME = "ShowGroundView";
     private int page = 1;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -51,13 +54,13 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     }
 
     @Override
-    protected View createViewInstance(ThemedReactContext reactContext) {
+    protected ViewGroup createViewInstance(ThemedReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
         initData();
-        return view;
+        return (ViewGroup) view;
     }
 
     private void initView(Context context, final View view) {
@@ -142,12 +145,20 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     }
 
     @Override
+    public void addView(ViewGroup parent, View child, int index) {
+        super.addView(parent, child, index);
+//        adapter.addHeaderView(child);
+        if(child instanceof RecyclerViewHeaderView){
+            adapter.addHeaderView(child);
+        }
+    }
+
+    @Override
     public void viewLoadMore(final List data) {
         page++;
         if (data != null) {
             adapter.addData(data);
         }
-
     }
 
     @Override
