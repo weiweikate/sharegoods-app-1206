@@ -130,7 +130,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             specImg,
             productName,
             unitPrice,
-            specValues,
+            spec,
             quantity,
             //寄回物流
             orderRefundExpress = {}
@@ -255,7 +255,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         uri={specImg}
                         goodsName={productName}
                         salePrice={StringUtils.formatMoneyString(unitPrice)}
-                        category={'规格：' + specValues}
+                        category={spec}
                         goodsNum={quantity}
                         style={{ backgroundColor: DesignRule.white }}
                     />
