@@ -14,6 +14,7 @@ import StringUtils from '../../../../../utils/StringUtils';
 const { p_score_star, p_score_unStar } = pRes.product.productScore;
 
 const { px2dp, width } = ScreenUtils;
+const img_w_h = (width - 30 - px2dp(16) - 1) / 3;
 
 export class P_ScoreListItemView extends Component {
 
@@ -37,10 +38,10 @@ export class P_ScoreListItemView extends Component {
             return <View style={styles.contentImgView}>
                 {
                     imgs.map((value, index) => {
-                        if (index > 2) {
+                        if (index > 5) {
                             return;
                         }
-                        let leftValue = index === 0 ? 0 : px2dp(8);
+                        let leftValue = index === 0 || index === 3 ? 0 : px2dp(8);
                         return <NoMoreClick onPress={this._action} key={index}>
                             <UIImage style={[styles.contentImg, { marginLeft: leftValue }]}
                                      source={{ uri: value }}/>
@@ -120,13 +121,13 @@ const styles = StyleSheet.create({
     },
     /**图片**/
     contentImgView: {
-        flexDirection: 'row'
+        flexDirection: 'row', flexWrap: 'wrap'
     },
     contentImg: {
-        width: (width - 30 - px2dp(16)) / 3, height: (width - 30 - px2dp(16)) / 3
+        width: img_w_h, height: img_w_h, marginBottom: 10
     },
     dateText: {
-        marginVertical: 10,
+        marginBottom: 10,
         fontSize: 11, color: DesignRule.textColor_instruction
     }
 
