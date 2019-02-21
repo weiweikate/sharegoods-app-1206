@@ -9,7 +9,7 @@ import ImageLoader from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
 
-export const kHomeGoodsViewHeight = px2dp(263)
+export const kHomeGoodsViewHeight = px2dp(263);
 
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
@@ -17,12 +17,12 @@ const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => pre
             <ReuserImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
             {
                 StringUtils.isEmpty(goods.title)
-                ?
-                null
-                :
-                <View style={styles.titleView}>
-                    <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
-                </View>
+                    ?
+                    null
+                    :
+                    <View style={styles.titleView}>
+                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+                    </View>
             }
         </View>
         <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
@@ -64,7 +64,7 @@ export default class GoodsCell extends Component {
     }
 }
 
-class ReuserImage extends Component{
+class ReuserImage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -73,8 +73,6 @@ class ReuserImage extends Component{
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps this.props.source', this.props.source)
-        console.log('componentWillReceiveProps nextProps.source', nextProps.source)
         if (this.props.source && nextProps.source &&
             this.props.source.uri !== nextProps.source.uri
         ) {
@@ -95,7 +93,6 @@ class ReuserImage extends Component{
     shouldComponentUpdate(nextProps, nextState) {
         return this.state.imagePath !== nextState.imagePath;
     }
-
 
     render() {
         return <ImageLoader
