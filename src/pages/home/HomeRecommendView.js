@@ -61,7 +61,8 @@ let styles = StyleSheet.create({
     container: {
         height: px2dp(207),
         backgroundColor: '#fff',
-        marginTop: px2dp(10)
+        marginTop: px2dp(10),
+        width: ScreenUtil.width
     },
     titleView: {
         height: px2dp(53),

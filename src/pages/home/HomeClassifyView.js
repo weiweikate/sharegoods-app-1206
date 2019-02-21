@@ -20,6 +20,8 @@ import { MRText as Text } from '../../components/ui';
 const { px2dp } = ScreenUtils;
 import ImageLoad from '@mr/image-placeholder';
 
+export const kHomeClassifyHeight = px2dp(83) * 2
+
 class Item extends Component {
     state = {
         loadingError: false
@@ -107,7 +109,8 @@ const styles = StyleSheet.create({
         paddingRight: px2dp(2),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        width: ScreenUtils.width
     },
     item: {
         width: px2dp(48),

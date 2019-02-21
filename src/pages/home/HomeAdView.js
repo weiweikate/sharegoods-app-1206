@@ -13,6 +13,8 @@ const featureBox1Height = featureBox1Wdith * 100 / 97;
 const featureBox2Wdith = (ScreenUtils.width - px2dp(35)) * 39 / 85;
 const featureBox2Height = (featureBox1Height - px2dp(4.5)) / 2;
 
+const  adViewHeight = featureBox1Height + 20 + px2dp(10);
+export {adViewHeight};
 @observer
 export default class HomeAdView extends Component {
     _adAction(value) {
@@ -73,7 +75,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginTop: ScreenUtils.px2dp(10),
         paddingLeft: px2dp(15),
-        paddingRight: px2dp(15)
+        paddingRight: px2dp(15),
+        width: ScreenUtils.width
     },
     featureBox: {
         position: 'relative',
