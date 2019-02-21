@@ -35,6 +35,10 @@ export default class P_ScoreSuccessPage extends BasePage {
         });
     }
 
+    $NavBarLeftPressed = () => {
+        this.$navigateBack(-2);
+    };
+
     $navigationBarOptions = {
         title: '晒单成功'
     };
