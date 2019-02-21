@@ -18,7 +18,8 @@ const { width, autoSizeHeight } = ScreenUtils;
 export default class P_ScoreSuccessPage extends BasePage {
 
     state = {
-        dataList: []
+        dataList: [],
+        isFail: false
     };
 
     componentDidMount() {
@@ -26,6 +27,10 @@ export default class P_ScoreSuccessPage extends BasePage {
             let tempList = (data || {}).data || [];
             this.setState({
                 dataList: tempList
+            });
+        }).catch(() => {
+            this.setState({
+                isFail: true
             });
         });
     }
@@ -54,28 +59,31 @@ export default class P_ScoreSuccessPage extends BasePage {
             <NoMoreClick style={styles.headerBtn} onPress={this.$navigateBackToHome}>
                 <Text style={styles.headerBtnText}>返回首页</Text>
             </NoMoreClick>
-            {
-                this.state.dataList.length === 0 ? null : <View style={styles.nextView}>
-                    <Text style={styles.nextText}>接着晒下去</Text>
-                </View>
-            }
-
         </View>;
     };
 
-    _renderItem = ({ item }) => {
+    _renderItem = ({ item, index }) => {
         //warehouseOrderNo 仓库订单号
         //productName 产品标题  specImg 规格图
         const { productName, specImg, warehouseOrderNo } = item || {};
-        return <View style={styles.itemContainer}>
-            <UIImage style={styles.itemImg} source={{ uri: specImg }}/>
-            <Text style={styles.itemTittle} numberOfLines={2}>{productName || ''}</Text>
-            <NoMoreClick style={styles.itemBtn} onPress={() => {
-                this._goPublish(warehouseOrderNo);
-            }}>
-                <Text style={styles.itemBtnText}>去晒单</Text>
-            </NoMoreClick>
-        </View>;
+        return (
+            <View>
+                {
+                    index === 0 ? <View style={styles.nextView}>
+                        <Text style={styles.nextText}>接着晒下去</Text>
+                    </View> : null
+                }
+                <View style={styles.itemContainer}>
+                    <UIImage style={styles.itemImg} source={{ uri: specImg }}/>
+                    <Text style={styles.itemTittle} numberOfLines={2}>{productName || ''}</Text>
+                    <NoMoreClick style={styles.itemBtn} onPress={() => {
+                        this._goPublish(warehouseOrderNo);
+                    }}>
+                        <Text style={styles.itemBtnText}>去晒单</Text>
+                    </NoMoreClick>
+                </View>
+            </View>
+        );
     };
 
     _keyExtractor = (item, index) => {
@@ -85,11 +93,12 @@ export default class P_ScoreSuccessPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                <FlatList data={this.state.dataList}
-                          renderItem={this._renderItem}
-                          keyExtractor={this._keyExtractor}
-                          ListEmptyComponent={this._ListEmptyComponent}
-                          ListHeaderComponent={this._renderListHeader}/>
+                {this._renderListHeader()}
+                {this.state.isFail ? null : <FlatList data={this.state.dataList}
+                                                      renderItem={this._renderItem}
+                                                      keyExtractor={this._keyExtractor}
+                                                      ListEmptyComponent={this._ListEmptyComponent}/>}
+
             </View>
         );
     }
