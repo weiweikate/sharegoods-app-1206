@@ -75,6 +75,8 @@ export default class P_ScoreSwiperPage extends BasePage {
 
                 <View style={{
                     position: 'absolute',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    justifyContent: 'center',
                     height: 48,
                     width: width,
                     bottom: 0, left: 15, right: 15
