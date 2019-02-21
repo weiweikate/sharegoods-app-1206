@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    View, Alert, DeviceEventEmitter, Keyboard, TouchableWithoutFeedback,
+    View, Alert, Keyboard, TouchableWithoutFeedback,
     StyleSheet, TouchableOpacity, Image
 } from "react-native";
 import RefreshList from "../../../components/ui/RefreshList";
@@ -62,7 +62,7 @@ export default class MyOrdersListView extends Component {
                 clickItem={() => {
                     this.clickItem(index);
                 }}
-                commentStatus={item.commentStatus}
+                commentStatus={item.commentStatus||false}
                 goodsItemClick={() => this.clickItem(index)}
                 operationMenuClick={(menu) => this.operationMenuClick(menu, index)}
                 status={item.status}
@@ -273,7 +273,7 @@ export default class MyOrdersListView extends Component {
             this.getDataFromNetwork();
         }
         this.getCancelOrder();
-        DeviceEventEmitter.addListener("OrderNeedRefresh", () => this.onRefresh());
+        // DeviceEventEmitter.addListener("OrderNeedRefresh", () => this.onRefresh());
         // this.timeDown();
     }
 
@@ -293,17 +293,10 @@ export default class MyOrdersListView extends Component {
         });
     }
 
-    timeDown() {
-        this.interval = setInterval(() => {
-            let timeunit = new Date().valueOf();
-            this.setState({ timeOff: timeunit });
-        }, 1000);
-    }
-
-    componentWillUnmount() {
-        this.interval && clearInterval(this.interval);
-        DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
-    }
+    // componentWillUnmount() {
+    //     this.interval && clearInterval(this.interval);
+    //     DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
+    // }
 
     handleDatas() {
         let params = {
@@ -392,7 +385,7 @@ export default class MyOrdersListView extends Component {
         } else {
             this.props.nav("order/order/MyOrdersDetailPage", {
                 orderNo: this.state.viewData[index].orderNo,
-                callBack: this.onRefresh
+                // callBack: this.onRefresh
             });
         }
     };
@@ -476,7 +469,7 @@ export default class MyOrdersListView extends Component {
                                 Toast.hiddenLoading();
                                 this.props.nav('order/order/ConfirmReceiveGoodsPage',{
                                     orderNo: this.state.viewData[index].orderNo,
-                                    callBack: this.onRefresh
+                                    // callBack: this.onRefresh
                                 })
                                 Toast.$toast("确认收货成功");
                             }).catch(e => {
@@ -550,7 +543,7 @@ export default class MyOrdersListView extends Component {
             case 10:
                 this.props.nav(RouterMap.P_ScorePublishPage, {
                     orderNo: this.state.viewData[index].orderNo,
-                    callBack: this.onRefresh
+                    // callBack: this.onRefresh
                 });
                 break;
         }

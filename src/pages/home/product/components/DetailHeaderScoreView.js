@@ -13,6 +13,7 @@ import StringUtils from '../../../../utils/StringUtils';
 
 const arrow_right = RES.button.arrow_right_black;
 const { px2dp, width } = ScreenUtils;
+const img_w_h = (width - 30 - px2dp(16) - 1) / 3;
 
 export class DetailHeaderScoreView extends Component {
 
@@ -21,14 +22,20 @@ export class DetailHeaderScoreView extends Component {
             return <View style={styles.contentImgView}>
                 {
                     imgs.map((value, index) => {
-                        if (index > 2) {
+                        if (index > 5) {
                             return;
                         }
-                        let leftValue = index === 0 ? 0 : px2dp(8);
-                        return <NoMoreClick onPress={this._action}>
-                            <UIImage key={index + value}
-                                     style={[styles.contentImg, { marginLeft: leftValue }]}
-                                     source={{ uri: value }}/>
+                        let leftValue = index === 0 || index === 3 ? 0 : px2dp(8);
+                        return <NoMoreClick onPress={() => this._action(index)}>
+                            {
+                                index === 0 && this.hasVideo ? <Image key={index + value}
+                                                                      style={[styles.contentImg, { marginLeft: leftValue }]}
+                                                                      source={{ uri: value }}/> :
+                                    <UIImage key={index + value}
+                                             style={[styles.contentImg, { marginLeft: leftValue }]}
+                                             source={{ uri: value }}/>
+                            }
+
                         </NoMoreClick>;
                     })
                 }
@@ -42,7 +49,8 @@ export class DetailHeaderScoreView extends Component {
 
         let images = [];
         if (StringUtils.isNoEmpty(videoUrl)) {
-            imgUrl.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
+            this.hasVideo = true;
+            images.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
         }
         if (StringUtils.isNoEmpty(imgUrl)) {
             let temp = imgUrl.split('$');
@@ -61,7 +69,7 @@ export class DetailHeaderScoreView extends Component {
         );
     };
 
-    _action = () => {
+    _action = (index) => {
         const { navigation, pData } = this.props;
         const { comment } = pData;
         const commentTemp = (comment || {}).comment;
@@ -71,7 +79,8 @@ export class DetailHeaderScoreView extends Component {
             video: videoUrl,
             videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
             images: images,
-            content: commentTemp
+            content: commentTemp,
+            index: index
         });
     };
 
@@ -138,10 +147,10 @@ const styles = StyleSheet.create({
     },
     /**图片**/
     contentImgView: {
-        flexDirection: 'row', marginBottom: 10
+        flexDirection: 'row', flexWrap: 'wrap'
     },
     contentImg: {
-        width: (width - 30 - px2dp(16)) / 3, height: (width - 30 - px2dp(16)) / 3
+        width: img_w_h, height: img_w_h, marginBottom: 10
     }
 
 });
