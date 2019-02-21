@@ -91,10 +91,13 @@ export default class P_ScorePublishModel {
             };
         });
         console.log(params);
+        Toast.showLoading();
         HomeAPI.appraise_publish({ warehouseOrderNo: this.warehouseOrderNo, params: params }).then((data) => {
+            Toast.hiddenLoading();
             callBack && callBack();
             console.log(data);
         }).catch((error) => {
+            Toast.hiddenLoading();
             Toast.$toast(error.msg);
         });
     };

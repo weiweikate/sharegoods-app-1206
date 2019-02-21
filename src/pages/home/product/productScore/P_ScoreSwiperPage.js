@@ -25,7 +25,7 @@ export default class P_ScoreSwiperPage extends BasePage {
     };
 
     state = {
-        index: 1
+        index: this.params.index ? this.params.index + 1 : 1
     };
 
     _renderViewPageItem = (item) => {
@@ -40,7 +40,7 @@ export default class P_ScoreSwiperPage extends BasePage {
     };
 
     _render() {
-        const { video, images, videoImg, content } = this.params;
+        const { video, images, videoImg, content, index } = this.params;
 
         this.videoImageList = [...images];
         if (StringUtils.isNoEmpty(video)) {
@@ -49,6 +49,7 @@ export default class P_ScoreSwiperPage extends BasePage {
         return (
             <View style={styles.containerView}>
                 <XGSwiper height={height} width={width}
+                          index={index}
                           loop={false}
                           renderRow={this._renderViewPageItem}
                           dataSource={this.videoImageList}
@@ -74,6 +75,8 @@ export default class P_ScoreSwiperPage extends BasePage {
 
                 <View style={{
                     position: 'absolute',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    justifyContent: 'center',
                     height: 48,
                     width: width,
                     bottom: 0, left: 15, right: 15

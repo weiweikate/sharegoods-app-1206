@@ -64,7 +64,12 @@ export default class P_ScoreListPage extends BasePage {
         promises.push(HomeAPI.appraise_queryByProdCode({ prodCode: prodCode }).then((data) => {
             return Promise.resolve((data || {}).data || []);
         }));
-        promises.push(HomeAPI.appraise_list({ page: 1, pageSize: 10, prodCode: prodCode }).then((data) => {
+        promises.push(HomeAPI.appraise_list({
+            page: 1,
+            pageSize: 10,
+            prodCode: prodCode,
+            createTime: ''
+        }).then((data) => {
             //isMore层
             let dataTemp = (data || {}).data;
             return Promise.resolve((dataTemp || {}).data || []);
@@ -95,8 +100,13 @@ export default class P_ScoreListPage extends BasePage {
         this.setState({
             loadingMore: true
         }, () => {
+            const { dataArray } = this.state;
+            let lastData = {};
+            if (dataArray.length > 0) {
+                lastData = dataArray[dataArray.length - 1];
+            }
             HomeAPI.appraise_list({
-                page: this.state.page, pageSize: 10, prodCode: prodCode
+                page: this.state.page, pageSize: 10, prodCode: prodCode, createTime: lastData.createTime || ''
             }).then((data) => {
                 this.state.page++;
                 //isMore层
