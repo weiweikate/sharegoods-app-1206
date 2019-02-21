@@ -1,38 +1,45 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.loadmore.LoadMoreView;
-import com.facebook.react.bridge.UiThreadUtil;
-import com.facebook.react.uimanager.SimpleViewManager;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
+import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.util.List;
+import java.util.Map;
 
-public class ShowGroundViewManager extends SimpleViewManager<View> implements IShowgroundView , SwipeRefreshLayout.OnRefreshListener {
+public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private static final String COMPONENT_NAME = "ShowGroundView";
     private int page = 1;
-    private int size = 10;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView recyclerView;
+    private RnRecyclerView recyclerView;
     private ShowGroundAdapter adapter;
     private ShowgroundPresenter presenter;
-    private View view ;
+    private EventDispatcher eventDispatcher;
+    private onItemPressEvent itemPressEvent;
+
 
     @Override
     public String getName() {
@@ -40,16 +47,16 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     }
 
     @Override
-    protected View createViewInstance(ThemedReactContext reactContext) {
+    protected ViewGroup createViewInstance(ThemedReactContext reactContext) {
+        eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
-        initView(reactContext,view);
+        initView(reactContext, view);
         initData();
-        this.view = view;
-        return view;
+        return (ViewGroup) view;
     }
 
-    private void initView(Context context, View view) {
+    private void initView(Context context, final View view) {
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
@@ -61,18 +68,13 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
                 presenter.initShowground();
             }
         });
-
+        itemPressEvent = new onItemPressEvent();
         adapter = new ShowGroundAdapter();
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setPreLoadNumber(3);
-        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-//        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);//最重要的这句
-//        recyclerView.setPadding(0,0,0,0);
-
-//        recyclerView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -81,17 +83,34 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
             }
         });
         adapter.setLoadMoreView(new CustomLoadMoreView());
+
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view1, int position) {
+                List<NewestShowGroundBean.DataBean> data = adapter.getData();
+                if (data != null) {
+                    NewestShowGroundBean.DataBean item = data.get(position);
+                    String json = JSONObject.toJSONString(item);
+                    Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
+                    });
+                    WritableMap realData = Arguments.makeNativeMap(map);
+                    if (eventDispatcher != null) {
+                        itemPressEvent.init(view.getId());
+                        itemPressEvent.setData(realData);
+                        eventDispatcher.dispatchEvent(itemPressEvent);
+                    }
+                }
+
+            }
+        });
+        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         recyclerView.setAdapter(adapter);
-//        recyclerView.setItemAnimator(null);
-//        ((SimpleItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        recyclerView.setAnimation(null);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-//                layoutManager.invalidateSpanAssignments();
-                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager)recyclerView.getLayoutManager();
-//                layoutManager.invalidateSpanAssignments();
-
+                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
                 int[] first = new int[2];
                 layoutManager.findFirstCompletelyVisibleItemPositions(first);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && (first[0] == 1 || first[1] == 1)) {
@@ -109,79 +128,70 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
 
     @Override
     public void onRefresh() {
-//        presenter.initShowground();
         adapter.setEnableLoadMore(false);
         page = 1;
         presenter.initShowground();
     }
 
     @Override
-    public void loadMoreFail(){
-        if(adapter != null){
+    public void loadMoreFail() {
+        if (adapter != null) {
             adapter.loadMoreFail();
         }
     }
 
     @Override
-    public void viewLoadMore(final List data){
+    public void addView(ViewGroup parent, View child, int index) {
+        super.addView(parent, child, index);
+//        adapter.addHeaderView(child);
+//        if(child instanceof RecyclerViewHeaderView){
+//            adapter.addHeaderView(child);
+//        }
+    }
+
+    @Override
+    public void viewLoadMore(final List data) {
         page++;
-
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.addData(data);
-
-            }
-        });
-//        adapter.addData(data);
-
+        if (data != null) {
+            adapter.addData(data);
+        }
     }
 
     @Override
     public void refreshShowground(final List data) {
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.setEnableLoadMore(true);
-                if(adapter != null){
-                    adapter.setNewData(data);
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }
-        });
-}
+        page++;
+        adapter.setEnableLoadMore(true);
+        if (adapter != null) {
+            adapter.setNewData(data);
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
 
     @Override
     public void loadMoreEnd() {
-        if(adapter != null){
-            UiThreadUtil.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.loadMoreEnd();
-                }
-            });
+        if (adapter != null) {
+            adapter.loadMoreEnd();
         }
     }
 
     @Override
     public void loadMoreComplete() {
-//        if(adapter != null){
-//            adapter.loadMoreComplete();
-            UiThreadUtil.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.loadMoreComplete();
-//                    recyclerView.requestLayout();
-//                    recyclerView.invalidate();
-//                    view.requestLayout();
-//                    adapter.loadMoreComplete();
-//                    ViewParent view = recyclerView.getParent();
-//                    view.requestLayout();
-//                    recyclerView.requestLayout();
-//                    adapter.loadMoreComplete();
-                }
-            });
-        }
+        adapter.loadMoreComplete();
     }
-//}
+
+    @Nullable
+    @Override
+    public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+                .put(
+                        "MrShowGroundOnItemPressEvent",
+                        MapBuilder.of(
+                                "phasedRegistrationNames",
+                                MapBuilder.of(
+                                        "bubbled", "onItemPress")))
+                .build();
+    }
+
+}
+
 

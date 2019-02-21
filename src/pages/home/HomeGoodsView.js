@@ -1,26 +1,30 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp, onePixel } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
-import UIImage from '@mr/image-placeholder';
+import { ImageCacheManager } from 'react-native-cached-image';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
+import res from './res';
+import { getSource } from '@mr/image-placeholder/oos';
+
+export const kHomeGoodsViewHeight = px2dp(263);
 
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
         <View style={styles.image}>
-            <UIImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
+            <ReuserImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
             {
                 StringUtils.isEmpty(goods.title)
-                ?
-                null
-                :
-                <View style={styles.titleView}>
-                    <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
-                </View>
+                    ?
+                    null
+                    :
+                    <View style={styles.titleView}>
+                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+                    </View>
             }
         </View>
         <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
@@ -59,6 +63,65 @@ export default class GoodsCell extends Component {
                     <View style={styles.uncontainer}/>
             }
         </View>;
+    }
+}
+
+class ReuserImage extends Component {
+    constructor(props) {
+        super(props);
+
+        this.fetchImage = this.fetchImage.bind(this);
+
+        this.state = {
+            imagePath: res.placeholder.bg_default_img
+        };
+    }
+
+    componentDidMount() {
+        this.fetchImage(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.source && nextProps.source &&
+            this.props.source.uri !== nextProps.source.uri
+        ) {
+            this.fetchImage(nextProps);
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.imagePath !== nextState.imagePath;
+    }
+
+    fetchImage(props) {
+        this.setState({ imagePath: res.placeholder.bg_default_img });
+        let that = this;
+        if (props && props.source && props.source.uri) {
+            let thestyle = StyleSheet.flatten(props.style);
+            let theWidth = props.width || thestyle.width;
+            let theHeight = props.height || thestyle.height;
+            let imgSource = getSource(props.source, theWidth, theHeight, 'lfit');
+            ImageCacheManager().downloadAndCacheUrl(imgSource.uri).then(
+                (path) => {
+                    that.setState({ imagePath: `file://${path}` });
+                }
+            );
+        }
+    }
+
+    render() {
+        const { imagePath } = this.state;
+        let source = {};
+        if (typeof imagePath === 'string') {
+            source = { uri: imagePath };
+        }
+        else {
+            source = imagePath;
+        }
+        return <Image
+            {...this.props}
+            source={source}
+        />;
     }
 }
 
@@ -111,10 +174,11 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(7)
     },
     cell: {
-        height: px2dp(263),
+        width: ScreenUtils.width,
+        height: kHomeGoodsViewHeight,
         flexDirection: 'row',
-        marginRight: px2dp(15),
-        marginLeft: px2dp(15),
+        paddingRight: px2dp(15),
+        paddingLeft: px2dp(15),
         alignItems: 'center',
         justifyContent: 'center'
     },

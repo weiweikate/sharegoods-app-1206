@@ -12,11 +12,12 @@ public class onDidSelectItemAtIndexEvent extends Event<onDidSelectItemAtIndexEve
 
     private int index;
 
-    public onDidSelectItemAtIndexEvent(
-            int viewId,
-            int index
-    ) {
-        super(viewId);
+    @Override
+    protected void init(int viewTag) {
+        super.init(viewTag);
+    }
+
+    public void setIndex(int index) {
         this.index = index;
     }
 

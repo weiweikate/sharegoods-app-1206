@@ -229,7 +229,7 @@ export class XpDetailPage extends BasePage {
         } else {
             let pageStateDic = this._getProductStateOptions();
             return <View style={styles.container}>
-                <ScrollView onScroll={this._onScroll} scrollEventThrottle={10}>
+                <ScrollView onScroll={this._onScroll} scrollEventThrottle={10} showsVerticalScrollIndicator={false}>
                     {/*选择框*/}
                     <XpDetailSelectListView xpDetailModel={this.xpDetailModel}/>
                     {/*页面状态*/}

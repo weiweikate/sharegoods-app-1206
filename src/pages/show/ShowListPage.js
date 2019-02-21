@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-na
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
-
 const { px2dp } = ScreenUtils;
 // import ShowHotView from './ShowHotView';
 // import ShowHotFindView from './ShowHotFindView';
@@ -102,6 +101,13 @@ export default class ShowListPage extends BasePage {
         this.props.navigation.goBack(null);
     }
 
+    _press = ({nativeEvent})=>{
+        let data = nativeEvent;
+        // data.click = data.click + 1;
+        // this.recommendModules.recommendList.replace
+        this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
+    }
+
     _render() {
         const { page, left, needsExpensive } = this.state;
 
@@ -162,11 +168,14 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
+
                             <ShowGroundView style={{flex:1}}
                                             onItemPress={({nativeEvent})=> {
 
                                                 this.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
-                            />
+                            >
+                            </ShowGroundView>
+
                             :
                             null
                     }

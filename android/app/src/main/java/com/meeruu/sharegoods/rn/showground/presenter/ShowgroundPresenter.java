@@ -9,6 +9,7 @@ import com.meeruu.sharegoods.rn.showground.model.ShowgroundModel;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 
 import java.lang.ref.WeakReference;
+import java.util.Collections;
 import java.util.List;
 
 public class ShowgroundPresenter {
@@ -58,7 +59,9 @@ public class ShowgroundPresenter {
 
                 IShowgroundView view = showgroundViewWeakReference.get();
                 view.viewLoadMore(list);
-                if(list.size() < 10){
+                if(list == null){
+                    view.loadMoreEnd();
+                }else if(list.size()<10){
                     view.loadMoreEnd();
                 }else {
                     view.loadMoreComplete();
