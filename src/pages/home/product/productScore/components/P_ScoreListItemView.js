@@ -42,9 +42,15 @@ export class P_ScoreListItemView extends Component {
                             return;
                         }
                         let leftValue = index === 0 || index === 3 ? 0 : px2dp(8);
-                        return <NoMoreClick onPress={this._action} key={index}>
-                            <UIImage style={[styles.contentImg, { marginLeft: leftValue }]}
-                                     source={{ uri: value }}/>
+                        return <NoMoreClick onPress={() => this._action(index)} key={index}>
+                            {
+                                this.hasVideo && index === 0 ?
+                                    <Image style={[styles.contentImg, { marginLeft: leftValue }]}
+                                             source={{ uri: value }}/> :
+                                    <UIImage style={[styles.contentImg, { marginLeft: leftValue }]}
+                                             source={{ uri: value }}/>
+                            }
+
                         </NoMoreClick>;
                     })
                 }
@@ -52,7 +58,7 @@ export class P_ScoreListItemView extends Component {
         }
     };
 
-    _action = () => {
+    _action = (index) => {
         const { navigation, itemData } = this.props;
         const { imgUrl, videoUrl, comment } = itemData;
         let images = (imgUrl || '').split('$');
@@ -60,7 +66,8 @@ export class P_ScoreListItemView extends Component {
             video: videoUrl,
             videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
             images: images,
-            content: comment
+            content: comment,
+            index: index
         });
     };
 
@@ -68,6 +75,7 @@ export class P_ScoreListItemView extends Component {
         const { headImg, nickname, star, comment, imgUrl, createTime, spec, videoUrl } = this.props.itemData || {};
         let imgs = [];
         if (StringUtils.isNoEmpty(videoUrl)) {
+            this.hasVideo = true;
             imgs.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
         }
         if (StringUtils.isNoEmpty(imgUrl)) {

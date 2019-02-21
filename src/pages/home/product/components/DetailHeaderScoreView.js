@@ -26,10 +26,16 @@ export class DetailHeaderScoreView extends Component {
                             return;
                         }
                         let leftValue = index === 0 || index === 3 ? 0 : px2dp(8);
-                        return <NoMoreClick onPress={this._action}>
-                            <UIImage key={index + value}
-                                     style={[styles.contentImg, { marginLeft: leftValue }]}
-                                     source={{ uri: value }}/>
+                        return <NoMoreClick onPress={() => this._action(index)}>
+                            {
+                                index === 0 && this.hasVideo ? <Image key={index + value}
+                                                                      style={[styles.contentImg, { marginLeft: leftValue }]}
+                                                                      source={{ uri: value }}/> :
+                                    <UIImage key={index + value}
+                                             style={[styles.contentImg, { marginLeft: leftValue }]}
+                                             source={{ uri: value }}/>
+                            }
+
                         </NoMoreClick>;
                     })
                 }
@@ -43,6 +49,7 @@ export class DetailHeaderScoreView extends Component {
 
         let images = [];
         if (StringUtils.isNoEmpty(videoUrl)) {
+            this.hasVideo = true;
             images.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
         }
         if (StringUtils.isNoEmpty(imgUrl)) {
@@ -62,7 +69,7 @@ export class DetailHeaderScoreView extends Component {
         );
     };
 
-    _action = () => {
+    _action = (index) => {
         const { navigation, pData } = this.props;
         const { comment } = pData;
         const commentTemp = (comment || {}).comment;
@@ -72,7 +79,8 @@ export class DetailHeaderScoreView extends Component {
             video: videoUrl,
             videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
             images: images,
-            content: commentTemp
+            content: commentTemp,
+            index: index
         });
     };
 

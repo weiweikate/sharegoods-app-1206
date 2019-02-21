@@ -104,11 +104,12 @@ export class P_ScorePublishPage extends BasePage {
         const itemData = itemDataS[index];
         return <P_ScorePubItemView itemData={{ item, index }}
                                    p_ScorePublishModel={this.p_ScorePublishModel}
-                                   modalShow={() => {
+                                   modalShow={(index1) => {
                                        this.$navigate(RouterMap.P_ScoreSwiperPage, {
                                            video: itemData.video,
                                            videoImg: itemData.videoImg,
-                                           images: itemData.images
+                                           images: itemData.images,
+                                           index: index1
                                        });
                                    }}
                                    showAction={this._showAction}/>;
