@@ -10,6 +10,10 @@
         android:id="@+id/showground_item_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <View android:layout_height="30dp"
+        android:layout_alignBottom="@+id/showground_item_image"
+        android:layout_width="match_parent"
+        android:background="@drawable/showground_item_mask"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
