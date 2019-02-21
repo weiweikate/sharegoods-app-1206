@@ -2,24 +2,26 @@ package com.meeruu.sharegoods.rn.showground.presenter;
 
 import com.alibaba.fastjson.JSON;
 import com.meeruu.commonlib.callback.BaseCallback;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.model.IShowgroundModel;
 import com.meeruu.sharegoods.rn.showground.model.ShowgroundModel;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 
 import java.lang.ref.WeakReference;
+import java.util.Collections;
 import java.util.List;
 
 public class ShowgroundPresenter {
     private IShowgroundModel showgroundModel;
     private WeakReference<IShowgroundView> showgroundViewWeakReference;
 
-    public ShowgroundPresenter(IShowgroundView view) {
+    public ShowgroundPresenter(IShowgroundView view){
         showgroundViewWeakReference = new WeakReference<>(view);
         showgroundModel = new ShowgroundModel();
     }
 
-    public void initShowground() {
+    public void initShowground(){
         showgroundModel.fetchRecommendList(1, 10, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
@@ -29,20 +31,20 @@ public class ShowgroundPresenter {
 
             @Override
             public void onSuccess(String result) {
-                NewestShowGroundBean data = JSON.parseObject(result, NewestShowGroundBean.class);
+                NewestShowGroundBean data = JSON.parseObject(result,NewestShowGroundBean.class);
                 List list = data.getData();
                 initView(data.getData());
                 IShowgroundView view = showgroundViewWeakReference.get();
-                if (list.size() < 10) {
+                if(list.size() < 10){
                     view.loadMoreEnd();
-                } else {
+                }else {
                     view.loadMoreComplete();
                 }
             }
         });
     }
 
-    public void loadMore(int page) {
+    public void loadMore(int page){
         showgroundModel.fetchRecommendList(page, 10, new BaseCallback<String>() {
             @Override
             public void onErr(String errCode, String msg) {
@@ -52,24 +54,26 @@ public class ShowgroundPresenter {
 
             @Override
             public void onSuccess(String result) {
-                NewestShowGroundBean data = JSON.parseObject(result, NewestShowGroundBean.class);
+                NewestShowGroundBean data = JSON.parseObject(result,NewestShowGroundBean.class);
                 List list = data.getData();
 
                 IShowgroundView view = showgroundViewWeakReference.get();
                 view.viewLoadMore(list);
-                if (list.size() < 10) {
+                if(list == null){
                     view.loadMoreEnd();
-                } else {
+                }else if(list.size()<10){
+                    view.loadMoreEnd();
+                }else {
                     view.loadMoreComplete();
                 }
             }
         });
     }
 
-    public void initView(List data) {
-        if (showgroundViewWeakReference != null) {
+    public void initView(List data){
+        if(showgroundViewWeakReference != null){
             IShowgroundView iShowgroundView = showgroundViewWeakReference.get();
-            if (iShowgroundView != null) {
+            if(iShowgroundView != null){
                 iShowgroundView.refreshShowground(data);
             }
         }

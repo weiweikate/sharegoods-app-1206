@@ -15,18 +15,19 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
+import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShowGroundViewManager extends SimpleViewManager<View> implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private static final String COMPONENT_NAME = "ShowGroundView";
     private int page = 1;
-    private int size = 10;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView recyclerView;
+    private RnRecyclerView recyclerView;
     private ShowGroundAdapter adapter;
     private ShowgroundPresenter presenter;
-    private View view;
+
 
     @Override
     public String getName() {
@@ -39,7 +40,6 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
         initData();
-        this.view = view;
         return view;
     }
 
@@ -60,32 +60,22 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setPreLoadNumber(3);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-//        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);//最重要的这句
-//        recyclerView.setPadding(0,0,0,0);
-
-//        recyclerView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 presenter.loadMore(page);
             }
-        }, recyclerView);
+        });
         adapter.setLoadMoreView(new CustomLoadMoreView());
         recyclerView.setAdapter(adapter);
-//        recyclerView.setItemAnimator(null);
-//        ((SimpleItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-//                layoutManager.invalidateSpanAssignments();
                 StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
-//                layoutManager.invalidateSpanAssignments();
-
                 int[] first = new int[2];
                 layoutManager.findFirstCompletelyVisibleItemPositions(first);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && (first[0] == 1 || first[1] == 1)) {
@@ -103,7 +93,6 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
 
     @Override
     public void onRefresh() {
-//        presenter.initShowground();
         adapter.setEnableLoadMore(false);
         page = 1;
         presenter.initShowground();
@@ -119,59 +108,33 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     @Override
     public void viewLoadMore(final List data) {
         page++;
-
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.addData(data);
-
-            }
-        });
-//        adapter.addData(data);
+        if (data != null) {
+            adapter.addData(data);
+        }
 
     }
 
     @Override
     public void refreshShowground(final List data) {
+        page++;
+        adapter.setEnableLoadMore(true);
         if (adapter != null) {
-            adapter.setEnableLoadMore(true);
             adapter.setNewData(data);
             swipeRefreshLayout.setRefreshing(false);
-            recyclerView.postInvalidate();
         }
     }
 
     @Override
     public void loadMoreEnd() {
         if (adapter != null) {
-            UiThreadUtil.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.loadMoreEnd();
-                }
-            });
+            adapter.loadMoreEnd();
         }
     }
 
     @Override
     public void loadMoreComplete() {
-//        if(adapter != null){
-//            adapter.loadMoreComplete();
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.loadMoreComplete();
-//                    recyclerView.requestLayout();
-//                    recyclerView.invalidate();
-//                    view.requestLayout();
-//                    adapter.loadMoreComplete();
-//                    ViewParent view = recyclerView.getParent();
-//                    view.requestLayout();
-//                    recyclerView.requestLayout();
-//                    adapter.loadMoreComplete();
-            }
-        });
+        adapter.loadMoreComplete();
     }
 }
-//}
+
 
