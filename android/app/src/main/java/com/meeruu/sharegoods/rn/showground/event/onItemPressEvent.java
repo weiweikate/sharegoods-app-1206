@@ -8,12 +8,12 @@ public class onItemPressEvent extends Event<onItemPressEvent> {
     private WritableMap data;
     private static final String EVENT_NAME = "MrShowGroundOnItemPressEvent";
 
-    public void setData(WritableMap data){
+    public void setData(WritableMap data) {
         this.data = data;
     }
 
     @Override
-    protected void init(int viewTag) {
+    public void init(int viewTag) {
         super.init(viewTag);
     }
 

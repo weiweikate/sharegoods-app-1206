@@ -68,7 +68,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
                 presenter.initShowground();
             }
         });
-
+        itemPressEvent = new onItemPressEvent();
         adapter = new ShowGroundAdapter();
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setPreLoadNumber(3);
@@ -105,6 +105,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         recyclerView.setAdapter(adapter);
+        recyclerView.setAnimation(null);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -123,7 +124,6 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
 
     private void initData() {
         presenter = new ShowgroundPresenter(this);
-        itemPressEvent = new onItemPressEvent();
     }
 
     @Override
