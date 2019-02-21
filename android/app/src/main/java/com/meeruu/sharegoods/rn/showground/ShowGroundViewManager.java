@@ -71,7 +71,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
         });
         adapter.setLoadMoreView(new CustomLoadMoreView());
 
-        recyclerView.addItemDecoration(new SpaceItemDecoration(10,2));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

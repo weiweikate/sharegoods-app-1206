@@ -24,7 +24,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
     protected void convert(BaseViewHolder helper, NewestShowGroundBean.DataBean item) {
 
         SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
-        ImageLoadUtils.loadCircleNetImage(item.getUserHeadImg(),userIcon,false);
+        ImageLoadUtils.loadCircleNetImage(item.getUserHeadImg(),userIcon);
 
         ScaleImageView imageView = helper.getView(R.id.showground_item_image);
         float width = 1;
@@ -44,7 +44,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         int realHeight = (int) ((height / width) * realWidth);
 
         imageView.setInitSize(realWidth, realHeight);
-        ImageLoadUtils.loadNetImage(imgUrl, imageView, false);
+        ImageLoadUtils.loadNetImage(imgUrl, imageView);
 
 
 

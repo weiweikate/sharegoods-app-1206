@@ -4,7 +4,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/refresh_control">
+        android:id="@+id/refresh_control"
+        android:paddingHorizontal="15dp"
+    >
 
         <com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView
             android:layout_height="match_parent"

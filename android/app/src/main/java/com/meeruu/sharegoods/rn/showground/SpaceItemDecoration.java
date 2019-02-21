@@ -5,14 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
+import com.meeruu.commonlib.utils.DensityUtils;
+
 public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
     private static final String TAG = SpaceItemDecoration.class.getName();
     private int space;
-    private int columnCount;
 
-    public SpaceItemDecoration(int space, int columnCount) {
-        this.space = space;
-        this.columnCount = columnCount;
+
+    public SpaceItemDecoration(int space) {
+        this.space = DensityUtils.dip2px(space);
     }
 
     @Override
@@ -26,7 +27,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
          * 根据params.getSpanIndex()来判断左右边确定分割线
          * 第一列设置左边距为space，右边距为space/2  （第二列反之）
          */
-        if (params.getSpanIndex() % 2 != 0) {
+        if (params.getSpanIndex() % 2 == 0) {
             outRect.left = space;
             outRect.right = space / 2;
         } else {
