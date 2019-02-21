@@ -116,7 +116,7 @@ static const CGFloat colCount = 3;
             self.colunMaxYDic[key] = @(y + size.height);
         }
         
-        attri.frame = CGRectMake(x , y, size.width, size.height);
+        attri.frame = CGRectMake(0 , y, size.width, size.height);
         return attri;
     }
     

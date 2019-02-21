@@ -162,7 +162,11 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <ShowGroundView style={{flex:1}}/>
+                            <ShowGroundView style={{flex:1}}
+                                            onItemPress={({nativeEvent})=> {
+
+                                                this.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
+                            />
                             :
                             null
                     }

@@ -9,7 +9,7 @@
 #import "ShowGroundViewManager.h"
 #import "ShowGroundView.h"
 @implementation ShowGroundViewManager
-
+RCT_EXPORT_VIEW_PROPERTY(onItemPress, RCTBubblingEventBlock)
 RCT_EXPORT_MODULE(ShowGroundView)
 - (UIView *)view
 {

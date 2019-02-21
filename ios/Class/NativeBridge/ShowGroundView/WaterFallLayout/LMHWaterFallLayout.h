@@ -10,7 +10,7 @@
 
 @class LMHWaterFallLayout;
 
-@protocol  LMHWaterFallLayoutDeleaget<NSObject>
+@protocol  LMHWaterFallLayoutDeleaget<UICollectionViewDelegateFlowLayout>
 
 @required
 /**

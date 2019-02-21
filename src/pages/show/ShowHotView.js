@@ -3,7 +3,7 @@
  */
 import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
-import Waterfall from '../../components/ui/WaterFall';
+// import Waterfall from '../../components/ui/WaterFall';
 import ShowBannerView from './ShowBannerView';
 import ShowChoiceView from './ShowChoiceView';
 import {
@@ -16,6 +16,7 @@ import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
+import ShowGroundView from './components/ShowGroundView';
 
 const imgWidth = (ScreenUtils.width - px2dp(40)) / 2;
 
@@ -124,19 +125,21 @@ export default class ShowHotView extends PureComponent {
     };
     renderHeader = () => {
         const { hasRecommend } = this.state;
-        return <View><ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
-            <ShowChoiceView navigate={this.props.navigate}/>
-            {/* <ShowHotScrollView navigation={this.props.navigation}/> */}
-            {
-                hasRecommend
-                    ?
-                    <View style={styles.titleView}>
-                        <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
-                    </View>
-                    :
-                    null
-            }
-        </View>;
+        return (<View style={{backgroundColor: '#f5f5f5', height: 800, width: ScreenUtils.width}}>
+                <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
+                <ShowChoiceView navigate={this.props.navigate}/>
+                {/*<ShowHotScrollView navigation={this.props.navigation}/>*/}
+                {
+                    hasRecommend
+                        ?
+                        <View style={styles.titleView}>
+                            <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
+                        </View>
+                        :
+                        null
+                }
+            </View>
+        )
     };
     _keyExtractor = (data) => data.code + '';
 
@@ -155,23 +158,29 @@ export default class ShowHotView extends PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                <Waterfall
-                    space={10}
-                    ref={(ref) => {
-                        this.waterfall = ref;
-                    }}
-                    columns={2}
-                    infinite={true}
-                    hasMore={true}
-                    renderItem={item => this.renderItem(item)}
-                    // renderInfinite={loading => this.renderLoadMore(loading)}
-                    renderHeader={() => this.renderHeader()}
-                    containerStyle={{ marginLeft: 15, marginRight: 15 }}
-                    keyExtractor={(data) => this._keyExtractor(data)}
-                    infiniting={(done) => this.infiniting(done)}
-                    showsVerticalScrollIndicator={false}
-                    refreshing={(done) => this.refreshing(done)}
-                    renderInfinite={() => this._renderInfinite()}
+                {/*<Waterfall*/}
+                    {/*space={10}*/}
+                    {/*ref={(ref) => {*/}
+                        {/*this.waterfall = ref;*/}
+                    {/*}}*/}
+                    {/*columns={2}*/}
+                    {/*infinite={true}*/}
+                    {/*hasMore={true}*/}
+                    {/*renderItem={item => this.renderItem(item)}*/}
+                    {/*// renderInfinite={loading => this.renderLoadMore(loading)}*/}
+                    {/*renderHeader={() => this.renderHeader()}*/}
+                    {/*containerStyle={{ marginLeft: 15, marginRight: 15 }}*/}
+                    {/*keyExtractor={(data) => this._keyExtractor(data)}*/}
+                    {/*infiniting={(done) => this.infiniting(done)}*/}
+                    {/*showsVerticalScrollIndicator={false}*/}
+                    {/*refreshing={(done) => this.refreshing(done)}*/}
+                    {/*renderInfinite={() => this._renderInfinite()}*/}
+                {/*/>*/}
+                <ShowGroundView style={{flex:1}}
+                                renderHeader={this.renderHeader}
+                                onItemPress={({nativeEvent})=> {
+
+                                    this.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
                 />
             </View>
         );
@@ -191,6 +200,11 @@ let styles = StyleSheet.create({
     },
     text: {
         color: '#999',
-        fontSize: px2dp(11)
+        fontSize: px2dp(11),
+        height: 100,
+        width: 100
+    },
+    container: {
+        flex: 1
     }
 });

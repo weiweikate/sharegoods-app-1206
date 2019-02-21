@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <React/RCTView.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ShowGroundView : UIView
-
+@property (nonatomic, copy) RCTBubblingEventBlock onItemPress;
 @end
 
 NS_ASSUME_NONNULL_END

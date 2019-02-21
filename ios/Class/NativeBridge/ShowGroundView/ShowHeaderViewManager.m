@@ -7,7 +7,7 @@
 //
 
 #import "ShowHeaderViewManager.h"
-
+#import "ShowHeaderView.h"
 @implementation ShowHeaderViewManager
 
 /*
@@ -17,5 +17,13 @@
     // Drawing code
 }
 */
+
+RCT_EXPORT_MODULE(ShowHeaderView)
+- (UIView *)view
+{
+  ShowHeaderView *view = [[ShowHeaderView alloc] init];
+  return view;
+}
+
 
 @end

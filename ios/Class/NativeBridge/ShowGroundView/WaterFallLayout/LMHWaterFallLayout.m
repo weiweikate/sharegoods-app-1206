@@ -9,7 +9,7 @@
 #import "LMHWaterFallLayout.h"
 
 /** 默认的列数    */
-static const CGFloat LMHDefaultColunmCount = 3;
+static const CGFloat LMHDefaultColunmCount = 2;
 /** 每一列之间的间距    */
 static const CGFloat LMHDefaultColunmMargin = 10;
 
@@ -17,7 +17,7 @@ static const CGFloat LMHDefaultColunmMargin = 10;
 static const CGFloat LMHDefaultRowMargin = 10;
 
 /** 内边距    */
-static const UIEdgeInsets LMHDefaultEdgeInsets = {10,10,10,10};
+static const UIEdgeInsets LMHDefaultEdgeInsets = {0,15,0,15};
 
 
 @interface LMHWaterFallLayout()
