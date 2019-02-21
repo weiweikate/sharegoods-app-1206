@@ -56,7 +56,8 @@ export default class HomeTodayView extends Component {
 let styles = StyleSheet.create({
     container: {
         height: px2dp(243),
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        width: ScreenUtil.width
     },
     titleView: {
         height: px2dp(53),
