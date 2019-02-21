@@ -14,12 +14,18 @@ import com.meeruu.sharegoods.rn.showground.widgets.ScaleImageView;
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
 
+    private float[] raduis = {6, 6, 6, 6, 0, 0, 0, 0};
+
     public ShowGroundAdapter() {
         super(R.layout.item_showground);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, NewestShowGroundBean.DataBean item) {
+
+        SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
+        ImageLoadUtils.loadCircleNetImage(item.getUserHeadImg(), userIcon);
+
         ScaleImageView imageView = helper.getView(R.id.showground_item_image);
         float width = 1;
         float height = 1;
@@ -38,10 +44,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         int realHeight = (int) ((height / width) * realWidth);
 
         imageView.setInitSize(realWidth, realHeight);
-        ImageLoadUtils.loadNetImage(imgUrl, imageView);
-
-        SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
-        ImageLoadUtils.loadNetImage(item.getUserHeadImg(), userIcon);
+        ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, raduis);
 
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserName());
@@ -51,9 +54,5 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
         TextView title = helper.getView(R.id.showground_item_title);
         title.setText(item.getPureContent());
-
-
     }
-
-
 }
