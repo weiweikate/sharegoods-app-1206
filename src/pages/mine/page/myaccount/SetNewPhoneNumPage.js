@@ -78,7 +78,6 @@ export default class SetNewPhoneNumPage extends BasePage {
                     </TouchableOpacity>
                 </View>
             </View>
-
             <TouchableOpacity style={{
                 marginTop: 54,
                 backgroundColor: DesignRule.mainColor,
@@ -130,7 +129,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             return;
         } else {
             if (oldNum === tel) {
-                bridge.$toast('请输入新的手机号');
+                bridge.$toast('新绑定手机号不能和旧手机号相同');
                 return;
             }
         }
@@ -153,6 +152,10 @@ export default class SetNewPhoneNumPage extends BasePage {
             }).catch((data) => {
                 this.isLoadding = false;
                 bridge.$toast(data.msg);
+                    // this.setState({
+                    //    tips : data.msg
+                    // });
+
             });
         } else {
             bridge.$toast('手机格式不对');

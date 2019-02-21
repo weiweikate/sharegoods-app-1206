@@ -94,7 +94,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     uri={item.specImg}
                     goodsName={item.productName}
                     salePrice={StringUtils.formatMoneyString(item.unitPrice)}
-                    category={'规格：' + item.specValues}
+                    category={item.spec}
                     goodsNum={item.quantity}
                     style={{backgroundColor: DesignRule.white}}
                     // onPress={() => this.jumpToProductDetailPage()}

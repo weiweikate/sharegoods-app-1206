@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 
 import com.meeruu.commonlib.base.BaseApplication;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -96,6 +98,7 @@ public class AppUtils {
 
     /**
      * 判断APP是否在前台
+     *
      * @param context
      * @return
      */
@@ -126,11 +129,28 @@ public class AppUtils {
     /*
      * 根据包名启动APP
      */
-    public static void startAPP(Context context, String appPackageName){
-        try{
+    public static void startAPP(Context context, String appPackageName) {
+        try {
             Intent intent = context.getPackageManager().getLaunchIntentForPackage(appPackageName);
             context.startActivity(intent);
-        }catch(Exception e){
+        } catch (Exception e) {
+        }
+    }
+
+    public static void daemonsFix() {
+        try {
+            Class clazz = Class.forName("java.lang.Daemons$FinalizerWatchdogDaemon");
+
+            Method method = clazz.getSuperclass().getDeclaredMethod("stop");
+            method.setAccessible(true);
+
+            Field field = clazz.getDeclaredField("INSTANCE");
+            field.setAccessible(true);
+
+            method.invoke(field.get(null));
+
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 
