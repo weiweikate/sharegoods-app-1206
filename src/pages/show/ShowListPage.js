@@ -14,6 +14,7 @@ import {
     MRText as Text
 } from '../../components/ui';
 import ShowGroundView from './components/ShowGroundView';
+
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -161,10 +162,8 @@ export default class ShowListPage extends BasePage {
                 <View key={2} style={styles.container} tabLabel="   ">
                     {
                         needsExpensive
-                            ?
-                            <ShowGroundView style={{flex:1}}/>
-                            :
-                            null
+                            ? <ShowGroundView style={{ flex: 1 }} accessible={true}/>
+                            : null
                     }
                 </View>
             </ScrollableTabView>

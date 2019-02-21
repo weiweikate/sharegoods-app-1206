@@ -1,19 +1,13 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.loadmore.LoadMoreView;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -24,7 +18,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 
 import java.util.List;
 
-public class ShowGroundViewManager extends SimpleViewManager<View> implements IShowgroundView , SwipeRefreshLayout.OnRefreshListener {
+public class ShowGroundViewManager extends SimpleViewManager<View> implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private static final String COMPONENT_NAME = "ShowGroundView";
     private int page = 1;
     private int size = 10;
@@ -32,7 +26,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     private RecyclerView recyclerView;
     private ShowGroundAdapter adapter;
     private ShowgroundPresenter presenter;
-    private View view ;
+    private View view;
 
     @Override
     public String getName() {
@@ -43,7 +37,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     protected View createViewInstance(ThemedReactContext reactContext) {
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
-        initView(reactContext,view);
+        initView(reactContext, view);
         initData();
         this.view = view;
         return view;
@@ -65,7 +59,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
         adapter = new ShowGroundAdapter();
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setPreLoadNumber(3);
-        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 //        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
@@ -79,7 +73,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
             public void onLoadMoreRequested() {
                 presenter.loadMore(page);
             }
-        });
+        }, recyclerView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
         recyclerView.setAdapter(adapter);
 //        recyclerView.setItemAnimator(null);
@@ -89,7 +83,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 //                layoutManager.invalidateSpanAssignments();
-                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager)recyclerView.getLayoutManager();
+                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
 //                layoutManager.invalidateSpanAssignments();
 
                 int[] first = new int[2];
@@ -116,14 +110,14 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     }
 
     @Override
-    public void loadMoreFail(){
-        if(adapter != null){
+    public void loadMoreFail() {
+        if (adapter != null) {
             adapter.loadMoreFail();
         }
     }
 
     @Override
-    public void viewLoadMore(final List data){
+    public void viewLoadMore(final List data) {
         page++;
 
         UiThreadUtil.runOnUiThread(new Runnable() {
@@ -139,21 +133,17 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
 
     @Override
     public void refreshShowground(final List data) {
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.setEnableLoadMore(true);
-                if(adapter != null){
-                    adapter.setNewData(data);
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }
-        });
-}
+        if (adapter != null) {
+            adapter.setEnableLoadMore(true);
+            adapter.setNewData(data);
+            swipeRefreshLayout.setRefreshing(false);
+            recyclerView.postInvalidate();
+        }
+    }
 
     @Override
     public void loadMoreEnd() {
-        if(adapter != null){
+        if (adapter != null) {
             UiThreadUtil.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -167,10 +157,10 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     public void loadMoreComplete() {
 //        if(adapter != null){
 //            adapter.loadMoreComplete();
-            UiThreadUtil.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.loadMoreComplete();
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.loadMoreComplete();
 //                    recyclerView.requestLayout();
 //                    recyclerView.invalidate();
 //                    view.requestLayout();
@@ -179,9 +169,9 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
 //                    view.requestLayout();
 //                    recyclerView.requestLayout();
 //                    adapter.loadMoreComplete();
-                }
-            });
-        }
+            }
+        });
     }
+}
 //}
 
