@@ -102,7 +102,7 @@ class HomePage extends BasePage {
         const { ad } = adModules;
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
-        const { subjectList } = subjectModule;
+        const { subjectHeight } = subjectModule;
 
         switch (type) {
             case homeType.swiper:
@@ -121,7 +121,7 @@ class HomePage extends BasePage {
                 dim.height = recommendList.length > 0? px2dp(217): 0;
                 break;
             case homeType.subject:
-                dim.height = subjectList.length > 0? px2dp(244+190-63)*subjectList.length+63 : 0;
+                dim.height = subjectHeight;
                 break;
             case homeType.starShop:
                 dim.height = 0;
