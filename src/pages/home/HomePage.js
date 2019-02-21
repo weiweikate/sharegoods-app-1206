@@ -15,14 +15,14 @@ import { homeModule } from './Modules';
 import { homeType } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
-import HomeClassifyView, {kHomeClassifyHeight } from './HomeClassifyView';
+import HomeClassifyView, { kHomeClassifyHeight } from './HomeClassifyView';
 import HomeStarShopView from './HomeStarShopView';
 import HomeTodayView from './HomeTodayView';
 import HomeRecommendView from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './HomeBannerView';
 import HomeAdView, { adViewHeight } from './HomeAdView';
-import HomeGoodsView, {kHomeGoodsViewHeight} from './HomeGoodsView';
+import HomeGoodsView, { kHomeGoodsViewHeight } from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from '../../comm/components/CommModal';
@@ -39,7 +39,7 @@ import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
 import { MRText as Text } from '../../components/ui';
-import {RecyclerListView, LayoutProvider, DataProvider} from "recyclerlistview";
+import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import { adModules } from './HomeAdModel';
 import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
@@ -91,8 +91,8 @@ class HomePage extends BasePage {
     };
 
     headerH = headerHeight - (ScreenUtils.isIOSX ? 10 : 0);
-    dataProvider =  new DataProvider((r1, r2) => {
-        return r1 !== r2
+    dataProvider = new DataProvider((r1, r2) => {
+        return r1 !== r2;
     });
 
     layoutProvider = new LayoutProvider((i) => {
@@ -115,10 +115,10 @@ class HomePage extends BasePage {
                 dim.height = ad.length > 0 ? adViewHeight : 0;
                 break;
             case homeType.today:
-                dim.height = todayList.length > 0?px2dp(243): 0;
+                dim.height = todayList.length > 0 ? px2dp(243) : 0;
                 break;
             case homeType.recommend:
-                dim.height = recommendList.length > 0? px2dp(217): 0;
+                dim.height = recommendList.length > 0 ? px2dp(217) : 0;
                 break;
             case homeType.subject:
                 dim.height = subjectHeight;
@@ -127,13 +127,13 @@ class HomePage extends BasePage {
                 dim.height = 0;
                 break;
             case homeType.user:
-                dim.height = user.isLogin ? px2dp(44): 0;
+                dim.height = user.isLogin ? px2dp(44) : 0;
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
                 break;
             case homeType.goodsTitle:
-                dim.height =  px2dp(55);
+                dim.height = px2dp(55);
                 break;
             default:
                 dim.height = 0;
@@ -351,8 +351,8 @@ class HomePage extends BasePage {
     // 滑动头部透明度渐变
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        if ( Y > ScreenUtils.height ) {
-            return
+        if (Y > ScreenUtils.height) {
+            return;
         }
         if (!this._refHeader) {
             return;
@@ -394,7 +394,7 @@ class HomePage extends BasePage {
     }
 
     _keyExtractor = (item, index) => item.id + '';
-    _renderItem = (type,item) => {
+    _renderItem = (type, item) => {
         let data = item;
         if (type === homeType.swiper) {
             return <HomeBannerView navigate={this.$navigate}/>;
@@ -598,22 +598,6 @@ class HomePage extends BasePage {
         return (
             <View style={styles.container}>
                 {this._renderTableHeader()}
-                {/*<FlatList*/}
-                    {/*data={homeList}*/}
-                    {/*renderItem={this._renderItem.bind(this)}*/}
-                    {/*keyExtractor={this._keyExtractor.bind(this)}*/}
-                    {/*onScroll={this._onScroll.bind(this)}*/}
-                    {/*onEndReached={this._onEndReached.bind(this)}*/}
-                    {/*onEndReachedThreshold={0.5}*/}
-                    {/*showsVerticalScrollIndicator={false}*/}
-                    {/*onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}*/}
-                    {/*ListFooterComponent={<Footer isFetching={homeModule.isFetching} errorMsg={homeModule.errorMsg}*/}
-                                                 {/*isEnd={homeModule.isEnd}/>}*/}
-                    {/*refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}*/}
-                                                    {/*onRefresh={this._onRefresh.bind(this)}*/}
-                                                    {/*colors={[DesignRule.mainColor]}*/}
-                                                    {/*progressViewOffset={ScreenUtils.headerHeight}/>}*/}
-                {/*/>*/}
                 <RecyclerListView
                     onScroll={this._onScroll.bind(this)}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
@@ -622,15 +606,15 @@ class HomePage extends BasePage {
                                                     progressViewOffset={ScreenUtils.headerHeight}/>}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 2}
-                    dataProvider = {this.dataProvider}
+                    dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
                     showsVerticalScrollIndicator={false}
-                    renderFooter={()=><Footer
+                    renderFooter={() => <Footer
                         isFetching={homeModule.isFetching}
                         errorMsg={homeModule.errorMsg}
                         isEnd={homeModule.isEnd}/>
-                        }
+                    }
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
