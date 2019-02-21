@@ -164,6 +164,7 @@ public class ImageLoadUtils {
 
     private static void loadImage(Uri uri, SimpleDraweeView view, int radius) {
         roundParams.setCornersRadius(radius);
+        roundParams.setRoundAsCircle(false);
         ImageRequestBuilder requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri)
                 //缩放,在解码前修改内存中的图片大小, 配合Downsampling可以处理所有图片,否则只能处理jpg,
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
@@ -195,6 +196,7 @@ public class ImageLoadUtils {
 
     private static void loadImage(Uri uri, SimpleDraweeView view, ScalingUtils.ScaleType scaleType) {
         roundParams.setCornersRadius(0);
+        roundParams.setRoundAsCircle(false);
         ImageRequestBuilder requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri)
                 //缩放,在解码前修改内存中的图片大小, 配合Downsampling可以处理所有图片,否则只能处理jpg,
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
@@ -231,6 +233,7 @@ public class ImageLoadUtils {
 
     public static void loadImage(Uri uri, SimpleDraweeView view, int radius, ControllerListener listener) {
         roundParams.setCornersRadius(radius);
+        roundParams.setRoundAsCircle(false);
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setOldController(view.getController())
                 .setControllerListener(listener)

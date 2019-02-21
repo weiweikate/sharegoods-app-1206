@@ -1,8 +1,6 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.text.TextUtils;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -22,10 +20,6 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
     @Override
     protected void convert(BaseViewHolder helper, NewestShowGroundBean.DataBean item) {
-
-        SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
-        ImageLoadUtils.loadCircleNetImage(item.getUserHeadImg(),userIcon,false);
-
         ScaleImageView imageView = helper.getView(R.id.showground_item_image);
         float width = 1;
         float height = 1;
@@ -44,10 +38,10 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         int realHeight = (int) ((height / width) * realWidth);
 
         imageView.setInitSize(realWidth, realHeight);
-        ImageLoadUtils.loadNetImage(imgUrl, imageView, false);
+        ImageLoadUtils.loadNetImage(imgUrl, imageView);
 
-
-
+        SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
+        ImageLoadUtils.loadNetImage(item.getUserHeadImg(), userIcon);
 
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserName());
