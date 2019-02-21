@@ -9,21 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
-import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
@@ -31,10 +26,7 @@ import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
-import com.meeruu.sharegoods.rn.viewmanager.onDidScrollToIndexEvent;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +37,8 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     private RnRecyclerView recyclerView;
     private ShowGroundAdapter adapter;
     private ShowgroundPresenter presenter;
-    public EventDispatcher eventDispatcher;
+    private EventDispatcher eventDispatcher;
+    private onItemPressEvent itemPressEvent;
 
 
     @Override
@@ -95,14 +88,16 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view1, int position) {
                 List<NewestShowGroundBean.DataBean> data = adapter.getData();
-                if(data != null){
+                if (data != null) {
                     NewestShowGroundBean.DataBean item = data.get(position);
                     String json = JSONObject.toJSONString(item);
-                    Map map = JSONObject.parseObject(json,new TypeReference<Map>(){});
-                    WritableMap realData =  Arguments.makeNativeMap(map);
-                    if(eventDispatcher != null){
-                        eventDispatcher.dispatchEvent(
-                                new onItemPressEvent(view.getId(), realData));
+                    Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
+                    });
+                    WritableMap realData = Arguments.makeNativeMap(map);
+                    if (eventDispatcher != null) {
+                        itemPressEvent.init(view.getId());
+                        itemPressEvent.setData(realData);
+                        eventDispatcher.dispatchEvent(itemPressEvent);
                     }
                 }
 
@@ -128,6 +123,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
 
     private void initData() {
         presenter = new ShowgroundPresenter(this);
+        itemPressEvent = new onItemPressEvent();
     }
 
     @Override
