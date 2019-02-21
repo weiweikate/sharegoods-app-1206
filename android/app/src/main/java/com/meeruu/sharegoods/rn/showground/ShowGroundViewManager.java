@@ -8,11 +8,13 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.UiThreadUtil;
@@ -145,12 +147,14 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     }
 
     @Override
-    public void addView(ViewGroup parent, View child, int index) {
-        super.addView(parent, child, index);
-//        adapter.addHeaderView(child);
-//        if(child instanceof RecyclerViewHeaderView){
-//            adapter.addHeaderView(child);
-//        }
+    public void addView(ViewGroup parent,final View child, int index) {
+        Assertions.assertCondition(child instanceof RecyclerViewHeaderView,"");
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.addHeaderView(child);
+            }
+        });
     }
 
     @Override

@@ -119,6 +119,7 @@ export default class ShowListPage extends BasePage {
             // HotFindView = require('./ShowHotFindView').default;
         }
 
+
         return <View style={styles.container}>
             <View style={styles.header}>
                 {
