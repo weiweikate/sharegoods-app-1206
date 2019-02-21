@@ -32,10 +32,25 @@ class StarsView extends Component {
                 </NoMoreClick>
             );
         }
+        let starText = '非常好';
+        switch (itemData.starCount) {
+            case 1:
+                starText = '非常差';
+                break;
+            case 2:
+                starText = '差';
+                break;
+            case 3:
+                starText = '一般';
+                break;
+            case 4:
+                starText = '好';
+                break;
+        }
 
         return <View style={[style, { flexDirection: 'row', alignItems: 'center' }]}>
             {stars}
-            <Text style={styles.wellText}>{itemData.starCount === 5 ? '非常好' : '好'}</Text>
+            <Text style={styles.wellText}>{starText}</Text>
         </View>;
     }
 }
