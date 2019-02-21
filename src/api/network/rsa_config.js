@@ -12,7 +12,6 @@ import {
 import DeviceInfo from 'react-native-device-info';
 
 export default {
-    // version: packageVersion,
     version: DeviceInfo.getVersion(),
     client: Platform.OS,
     rsa_key: Platform.OS === 'ios'

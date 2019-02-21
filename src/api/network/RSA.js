@@ -1,9 +1,5 @@
 import jsrsasign from 'jsrsasign';
 import rsa_config from './rsa_config';
-// 创建RSAKey对象
-// import {
-//     NativeModules
-// } from 'react-native';
 
 let may_key = '-----BEGIN PRIVATE KEY-----' + rsa_config.rsa_key + '-----END PRIVATE KEY-----';
 
@@ -20,11 +16,9 @@ function randomString(len) {
 }
 
 const RSA = {
-     async sign(params = {}) {
-        // 'Security-Policy': 'SIGNATURE'
-        let result = [];
+    async sign(params = {}) {
         let nonce = randomString(16);
-        let timestamp = +new Date();
+        let timestamp = new Date().getTime();
         let client = rsa_config.client;
         let version = rsa_config.version;
         let map = {
@@ -34,49 +28,18 @@ const RSA = {
             version,//版本
             ...params//参数
         };
+        let result = [];
         for (let key in map) {
             result.push(key + '=' + map[key]);
         }
         result.sort();
 
         try {
-            // new Promise((resolve) => {
-            // })
             let sig = new jsrsasign.crypto.Signature({ 'alg': 'SHA256withRSA' });
-            // initialize for signature generation
             sig.init(may_key);
-            // update data
             sig.updateString(result.join('&'));
             let s = sig.sign();
-            //测试
-            console.log('-----');
-            // console.log(s)
-            //原生加签
-            // console.log(jsrsasign.hex2b64(s));
-            // const signString  =  await NativeModules.commModule.signWith(result.join('&'));
-            // console.log('原生加签');
-            // console.log(signString);
-            // return {
-            //     nonce,
-            //     timestamp,
-            //     client,
-            //     version,
-            //     sign:signString
-            // };
-
-                // NativeModules.commModule.signWith(result.join('&'), (jsonDic) => {
-                // console.log('------原生加签');
-                // console.log(jsonDic);
-                // return {
-                //     nonce,
-                //     timestamp,
-                //     client,
-                //     version,
-                //     sign: jsrsasign.hex2b64(s)
-                // };
-            // }
-
-            // );
+            console.log('-----' + s);
             //js延签
             return {
                 nonce,

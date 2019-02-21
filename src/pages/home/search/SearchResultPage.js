@@ -26,7 +26,7 @@ import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-import {MRText as Text} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
 
 const {
     toGwc,
@@ -217,7 +217,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     _onPressAtIndex = (prodCode) => {
-        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode,preseat:'搜索结果' });
+        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode, preseat: '搜索结果' });
     };
 
     //选择规格确认
@@ -228,8 +228,16 @@ export default class SearchResultPage extends BasePage {
             'productCode': this.state.prodCode
         };
         /*加入购物车埋点*/
-        const {prodCode,name,firstCategoryId,secCategoryId,minPrice} = this.productItem||{};
-        track(trackEvent.addToShoppingcart,{shoppingCartEntrance:'搜索页面',commodityNumber:amount,commodityID:prodCode,commodityName:name,firstCommodity:firstCategoryId,secondCommodity:secCategoryId,pricePerCommodity:minPrice})
+        const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.productItem || {};
+        track(trackEvent.addToShoppingcart, {
+            shoppingCartEntrance: '搜索页面',
+            commodityNumber: amount,
+            commodityID: prodCode,
+            commodityName: name,
+            firstCommodity: firstCategoryId,
+            secondCommodity: secCategoryId,
+            pricePerCommodity: minPrice
+        });
         shopCartCacheTool.addGoodItem(temp);
     };
 
@@ -239,7 +247,7 @@ export default class SearchResultPage extends BasePage {
         });
     };
     _onPressToTop = () => {
-        this.FlatListShow.scrollToOffset({ offset: 0 });
+        this.FlatListShow && this.FlatListShow.scrollToOffset({ offset: 0 });
     };
 
     //getKeywords数据
@@ -409,7 +417,7 @@ export default class SearchResultPage extends BasePage {
                                   allowFontScaling={false}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity>
-                    {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop}>
+                    {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop.bind(this)}>
                         <Image style={{ marginTop: 5 }} source={toTop}/>
                     </TouchableOpacity> : null}
 

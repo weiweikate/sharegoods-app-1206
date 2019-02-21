@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, FlatList, StyleSheet, TouchableWithoutFeedback, Platform } from 'react-native';
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import { MRText as Text } from '../../../../../components/ui';
@@ -50,7 +50,7 @@ export class XpDetailSelectListView extends Component {
 
     _scrollToIndex = (index) => {
         this.flatList && this.flatList.scrollToIndex({
-            viewPosition: 0.5,
+            viewPosition: Platform.OS === 'ios'? 0.5 : 0,//ios可以弹性拉伸停驻点在中间，android不可弹性拉伸停驻点在起点。这个比较好看
             animated: true,
             index: index
         });
