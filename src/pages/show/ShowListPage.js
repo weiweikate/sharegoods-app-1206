@@ -14,7 +14,6 @@ import {
     MRText as Text
 } from '../../components/ui';
 import ShowGroundView from './components/ShowGroundView';
-
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -103,6 +102,13 @@ export default class ShowListPage extends BasePage {
         this.props.navigation.goBack(null);
     }
 
+    _press = ({nativeEvent})=>{
+        let data = nativeEvent;
+        // data.click = data.click + 1;
+        // this.recommendModules.recommendList.replace
+        this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
+    }
+
     _render() {
         const { page, left, needsExpensive } = this.state;
 
@@ -162,8 +168,10 @@ export default class ShowListPage extends BasePage {
                 <View key={2} style={styles.container} tabLabel="   ">
                     {
                         needsExpensive
-                            ? <ShowGroundView style={{ flex: 1 }} accessible={true}/>
-                            : null
+                            ?
+                            <ShowGroundView onItemPress={this._press} style={{flex:1}}/>
+                            :
+                            null
                     }
                 </View>
             </ScrollableTabView>

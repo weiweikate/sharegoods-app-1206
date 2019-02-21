@@ -1,24 +1,39 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.UiThreadUtil;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
+import com.meeruu.sharegoods.rn.viewmanager.onDidScrollToIndexEvent;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ShowGroundViewManager extends SimpleViewManager<View> implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private static final String COMPONENT_NAME = "ShowGroundView";
@@ -27,6 +42,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     private RnRecyclerView recyclerView;
     private ShowGroundAdapter adapter;
     private ShowgroundPresenter presenter;
+    public EventDispatcher eventDispatcher;
 
 
     @Override
@@ -36,6 +52,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
 
     @Override
     protected View createViewInstance(ThemedReactContext reactContext) {
+        eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
@@ -43,7 +60,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
         return view;
     }
 
-    private void initView(Context context, View view) {
+    private void initView(Context context, final View view) {
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
@@ -71,6 +88,23 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
         });
         adapter.setLoadMoreView(new CustomLoadMoreView());
 
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view1, int position) {
+                List<NewestShowGroundBean.DataBean> data = adapter.getData();
+                if(data != null){
+                    NewestShowGroundBean.DataBean item = data.get(position);
+                    String json = JSONObject.toJSONString(item);
+                    Map map = JSONObject.parseObject(json,new TypeReference<Map>(){});
+                    WritableMap realData =  Arguments.makeNativeMap(map);
+                    if(eventDispatcher != null){
+                        eventDispatcher.dispatchEvent(
+                                new onItemPressEvent(view.getId(), realData));
+                    }
+                }
+
+            }
+        });
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -137,6 +171,20 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     public void loadMoreComplete() {
         adapter.loadMoreComplete();
     }
+
+    @Nullable
+    @Override
+    public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+                .put(
+                        "MrShowGroundOnItemPressEvent",
+                        MapBuilder.of(
+                                "phasedRegistrationNames",
+                                MapBuilder.of(
+                                        "bubbled", "onItemPress")))
+                .build();
+    }
+
 }
 
 
