@@ -1,6 +1,8 @@
 import { observable, computed, action, flow } from 'mobx';
 import ShowApi from './ShowApi';
 import Toast from '../../utils/bridge'
+import ScreenUtil from '../../utils/ScreenUtils';
+const { px2dp } = ScreenUtil;
 
 //推广 1：精选 2：热门 3：推荐 4：最新 全部则不传
 export const tag = {
@@ -82,8 +84,8 @@ class ShowBannerModules {
     @observable bannerList = [];
     @observable type = showTypes.banner;
 
-    @computed get bannerCount() {
-        return this.bannerList.length;
+    @computed get bannerHeight() {
+        return this.bannerList.length > 0 ? px2dp(210) : 0;
     }
 
     @action loadBannerList = () => {
@@ -140,8 +142,8 @@ class ShowChoiceModules {
     @observable choiceList = [];
     @observable type = showTypes.choice;
 
-    @computed get choiceCount() {
-        return this.choiceList.length;
+    @computed get choiceHeight() {
+        return this.choiceList.length * px2dp(234);
     }
 
     @action loadChoiceList = flow(function* (params) {
@@ -183,6 +185,7 @@ export class ShowRecommendModules {
     @observable isRefreshing = false;
     @observable type = showTypes.recommend;
     @observable isEnd = false;
+    @observable recommendHeight = 0;
 
     @computed get recommendCount() {
         return this.recommendList.length;

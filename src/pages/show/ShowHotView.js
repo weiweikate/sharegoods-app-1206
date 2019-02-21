@@ -10,7 +10,7 @@ import {
     MRText as Text
 } from '../../components/ui';
 import { observer } from 'mobx-react';
-import { ShowRecommendModules, tag } from './Show';
+import { ShowRecommendModules, tag, showBannerModules, showChoiceModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 
@@ -125,7 +125,7 @@ export default class ShowHotView extends PureComponent {
     };
     renderHeader = () => {
         const { hasRecommend } = this.state;
-        return (<View style={{backgroundColor: '#f5f5f5', height: 800, width: ScreenUtils.width}}>
+        return (<View style={{backgroundColor: '#f5f5f5', height: showBannerModules.bannerHeight + showChoiceModules.choiceHeight, width: ScreenUtils.width}}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
                 <ShowChoiceView navigate={this.props.navigate}/>
                 {/*<ShowHotScrollView navigation={this.props.navigation}/>*/}
