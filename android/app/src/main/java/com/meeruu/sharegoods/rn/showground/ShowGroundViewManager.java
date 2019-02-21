@@ -20,10 +20,9 @@ import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowGroundViewManager extends SimpleViewManager<View> implements IShowgroundView , SwipeRefreshLayout.OnRefreshListener {
+public class ShowGroundViewManager extends SimpleViewManager<View> implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private static final String COMPONENT_NAME = "ShowGroundView";
     private int page = 1;
-    private int size = 10;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RnRecyclerView recyclerView;
     private ShowGroundAdapter adapter;
@@ -39,7 +38,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     protected View createViewInstance(ThemedReactContext reactContext) {
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
-        initView(reactContext,view);
+        initView(reactContext, view);
         initData();
         return view;
     }
@@ -60,7 +59,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
         adapter = new ShowGroundAdapter();
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setPreLoadNumber(3);
-        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
         adapter.setEnableLoadMore(true);
@@ -76,7 +75,7 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager)recyclerView.getLayoutManager();
+                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
                 int[] first = new int[2];
                 layoutManager.findFirstCompletelyVisibleItemPositions(first);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && (first[0] == 1 || first[1] == 1)) {
@@ -100,54 +99,42 @@ public class ShowGroundViewManager extends SimpleViewManager<View> implements IS
     }
 
     @Override
-    public void loadMoreFail(){
-        if(adapter != null){
+    public void loadMoreFail() {
+        if (adapter != null) {
             adapter.loadMoreFail();
         }
     }
 
     @Override
-    public void viewLoadMore(final List data){
+    public void viewLoadMore(final List data) {
         page++;
+        if (data != null) {
+            adapter.addData(data);
+        }
 
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.addData(data);
-            }
-        });
     }
 
     @Override
     public void refreshShowground(final List data) {
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.setEnableLoadMore(true);
-                if(adapter != null){
-                    adapter.setNewData(data);
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }
-        });
-}
+        page++;
+        adapter.setEnableLoadMore(true);
+        if (adapter != null) {
+            adapter.setNewData(data);
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
 
     @Override
     public void loadMoreEnd() {
-        if(adapter != null){
-            UiThreadUtil.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.loadMoreEnd();
-                }
-            });
+        if (adapter != null) {
+            adapter.loadMoreEnd();
         }
     }
 
     @Override
     public void loadMoreComplete() {
         adapter.loadMoreComplete();
-        }
     }
+}
 
 
