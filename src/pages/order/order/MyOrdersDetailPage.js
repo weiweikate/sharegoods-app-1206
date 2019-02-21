@@ -3,7 +3,7 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Image, DeviceEventEmitter,
+    Image,
     ScrollView,Text
 } from "react-native";
 import BasePage from "../../../BasePage";
@@ -92,6 +92,27 @@ export default class MyOrdersDetailPage extends BasePage {
             </TouchableOpacity>
         );
     };
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        // DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
+        this.stop();
+    }
+    componentWillMount() {
+        let i=0;
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                i++;
+                const { state } = payload;
+                console.log('willFocusSubscriptionMyOrdersDetailPage', payload);
+                if (state && state.routeName === 'order/order/MyOrdersDetailPage') {
+                    if(i>1){
+                        this.loadPageData();
+                    }
+
+                }
+            });
+    }
     showMore = () => {
         this.setState({ isShowShowMessageModal: true });
         this.messageModal && this.messageModal.open();
@@ -113,7 +134,7 @@ export default class MyOrdersDetailPage extends BasePage {
     };
 
     componentDidMount() {
-        DeviceEventEmitter.addListener("OrderNeedRefresh", () => this.loadPageData());
+        // DeviceEventEmitter.addListener("OrderNeedRefresh", () => this.loadPageData());
         this.loadPageData();
         this.getCancelOrder();
 
@@ -137,12 +158,6 @@ export default class MyOrdersDetailPage extends BasePage {
     onRefresh = () => {
         this.loadPageData();
     };
-
-    componentWillUnmount() {
-        DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
-        this.stop();
-        // this.timeUtils.stop();
-    }
 
     _renderContent = () => {
         if(orderDetailModel.deleteInfo){
