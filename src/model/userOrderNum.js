@@ -22,6 +22,8 @@ class UserOrderNum {
     waitReceiveNum = 0;
     @observable
     waitSendNum = 0;
+    @observable
+    waitShowNum = 0;
 
     // 设置用户信息
     @action
@@ -34,6 +36,7 @@ class UserOrderNum {
         this.waitPayNum = data.nonPay;
         this.waitReceiveNum = data.nonReceiving;
         this.waitSendNum = data.nonDelivery;
+        this.waitShowNum = data.nonShow || 0;
     }
 
     @action
@@ -42,6 +45,7 @@ class UserOrderNum {
         this.waitPayNum = 0;
         this.waitReceiveNum = 0;
         this.waitSendNum = 0;
+        this.waitShowNum = 0;
     }
 
     @action getUserOrderNum() {
