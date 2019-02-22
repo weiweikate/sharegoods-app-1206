@@ -357,7 +357,7 @@ class HomePage extends BasePage {
         if (!this._refHeader) {
             return;
         }
-        if (bannerModule.bannerList.length <= 0) {
+        if (bannerModule.isShowHeader) {
             this.st = 1;
             this._refHeader.setNativeProps({
                 opacity: this.st

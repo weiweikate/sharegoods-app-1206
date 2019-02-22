@@ -56,6 +56,9 @@ public class ImageLoadUtils {
     }
 
     public static void loadNetImage(final String url, final SimpleDraweeView view) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -82,6 +85,9 @@ public class ImageLoadUtils {
 
     public static void loadScaleTypeNetImage(final String url, final SimpleDraweeView view,
                                              final ScalingUtils.ScaleType scaleType) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -108,6 +114,9 @@ public class ImageLoadUtils {
 
     public static void loadRoundNetImage(final String url, final SimpleDraweeView view,
                                          final int radius) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -134,6 +143,9 @@ public class ImageLoadUtils {
 
     public static void loadRoundNetImage(final String url, final SimpleDraweeView view,
                                          final float[] radius) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -159,6 +171,9 @@ public class ImageLoadUtils {
     }
 
     public static void loadCircleNetImage(final String url, final SimpleDraweeView view) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 

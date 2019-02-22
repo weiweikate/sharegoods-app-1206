@@ -22,7 +22,6 @@ import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.kefu.QiyuImageLoader;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
-import com.meeruu.sharegoods.rn.storage.AsyncStorageManager;
 import com.meeruu.sharegoods.utils.SensorsUtils;
 import com.meituan.android.walle.WalleChannelReader;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -92,7 +91,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
         }
         LeakCanary.install(this);
         if (getProcessName(this).equals(getPackageName())) {
-            AsyncStorageManager.getInstance().init();
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
             if (Utils.isApkInDebug()) {

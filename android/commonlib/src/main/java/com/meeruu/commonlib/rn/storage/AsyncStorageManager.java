@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.storage;
+package com.meeruu.commonlib.rn.storage;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
@@ -50,38 +50,7 @@ public class AsyncStorageManager {
         threadPoolExecutor.allowCoreThreadTimeOut(true);
         THREAD_POOL_EXECUTOR = threadPoolExecutor;
     }
-//    private class SerialExecutor implements Executor {
-//        private final ArrayDeque<Runnable> mTasks = new ArrayDeque<Runnable>();
-//        private Runnable mActive;
-//        private final Executor executor;
-//
-//        SerialExecutor(Executor executor) {
-//            this.executor = executor;
-//        }
-//
-//        @Override
-//        public synchronized void execute(final Runnable r) {
-//            mTasks.offer(new Runnable() {
-//                public void run() {
-//                    try {
-//                        r.run();
-//                    } finally {
-//                        scheduleNext();
-//                    }
-//                }
-//            });
-//            if (mActive == null) {
-//                scheduleNext();
-//            }
-//        }
-//        synchronized void scheduleNext() {
-//            if ((mActive = mTasks.poll()) != null) {
-//                executor.execute(mActive);
-//            }
-//        }
-//    }
 
-    //    private final AsyncStorageManager.SerialExecutor executor;
     private AsyncStorageManager() {
     }
 
@@ -94,8 +63,6 @@ public class AsyncStorageManager {
     }
 
     public void init() {
-//        this.executor = new AsyncStorageManager.SerialExecutor(executor);
-
         mReactDatabaseSupplier = ReactDatabaseSupplier.getInstance();
     }
 
