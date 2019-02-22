@@ -8,6 +8,7 @@ import com.meeruu.commonlib.callback.ReqProgressCallBack;
 import com.meeruu.commonlib.config.BaseRequestConfig;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.okhttpcache.interceptor.CacheAndCookieInterceptor;
+import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.DeviceUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
@@ -517,6 +518,8 @@ public class RequestManager {
         params.put("device", DeviceUtils.getUniquePsuedoID());
         params.put("channel", channel);
         params.put("platform", "Android " + DeviceUtils.getSystemName());
+        params.put("Security-Policy", "SIGNATURE");
+        params.put("version", AppUtils.getVersionName());
         return params;
     }
 
