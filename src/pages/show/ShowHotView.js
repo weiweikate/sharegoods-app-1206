@@ -39,25 +39,6 @@ export default class ShowHotView extends PureComponent {
         }
     }
 
-    infiniting(done) {
-        setTimeout(() => {
-            const { isFetching } = this.state;
-            if (isFetching) {
-                return;
-            }
-            this.setState({ isFetching: true });
-            this.recommendModules.getMoreRecommendList({ generalize: tag.Recommend }).then(data => {
-                if (data && data.length !== 0) {
-                    this.waterfall && this.waterfall.addItems(data);
-                    this.setState({ isFetching: false });
-                } else {
-                    this.setState({ isFetching: false, isEnd: true });
-                }
-            });
-            done();
-        }, 1000);
-    }
-
     refresh() {
         console.log('ShowHotView refresh ');
         if (this.firstLoad === true) {
@@ -67,32 +48,8 @@ export default class ShowHotView extends PureComponent {
     }
 
     loadData() {
-        this.setState({ isEnd: false, isFetching: true });
-        this.waterfall && this.waterfall.scrollToTop();
-        this.waterfall && (this.waterfall.index = 1);
-        this.waterfall && this.waterfall.clear();
-        this.recommendModules.loadRecommendList({ generalize: tag.Recommend, size: 10 }).then(data => {
-            this.firstLoad = false;
-            let hasRecommend = false;
-            console.log('loadRecommendList', data);
-            if (data && data.length > 0) {
-                hasRecommend = true;
-            }
-            this.setState({ isFetching: false, hasRecommend: hasRecommend });
-            this.waterfall && this.waterfall.addItems(data || []);
-        }).catch(() => {
-            this.setState({ isFetching: false, hasRecommend: false });
-        });
-    }
-
-    refreshing(done) {
-        setTimeout(() => {
-            this.waterfall && this.waterfall.clear();
-            this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
-                this.waterfall && this.waterfall.addItems(data || []);
-            });
-            done();
-        }, 1000);
+        showChoiceModules.loadChoiceList();
+        showBannerModules.loadBannerList();
     }
 
     _gotoDetail(data) {
@@ -101,20 +58,12 @@ export default class ShowHotView extends PureComponent {
     }
 
     renderHeader = () => {
-        const { hasRecommend } = this.state;
-        return (<View style={{backgroundColor: '#f5f5f5', height: showBannerModules.bannerHeight + showChoiceModules.choiceHeight + px2dp(116), width: ScreenUtils.width}}>
+        return (<View style={{backgroundColor: '#f5f5f5',  width: ScreenUtils.width}}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
                 <ShowChoiceView navigate={this.props.navigate} ref={(ref)=> {this.choiceView = ref}}/>
-                {/*<ShowHotScrollView navigation={this.props.navigation}/>*/}
-                {
-                    hasRecommend
-                        ?
-                        <View style={styles.titleView}>
-                            <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
-                        </View>
-                        :
-                        null
-                }
+                <View style={styles.titleView}>
+                    <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
+                </View>
             </View>
         )
     };

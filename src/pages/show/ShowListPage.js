@@ -4,8 +4,6 @@ import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
 const { px2dp } = ScreenUtils;
-// import ShowHotView from './ShowHotView';
-// import ShowHotFindView from './ShowHotFindView';
 import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -116,7 +114,6 @@ export default class ShowListPage extends BasePage {
         // let HotFindView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
-            // HotFindView = require('./ShowHotFindView').default;
         }
 
         return <View style={styles.container}>

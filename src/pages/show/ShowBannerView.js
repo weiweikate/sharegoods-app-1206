@@ -65,7 +65,7 @@ export default class ShowBannerView extends Component {
     _onDidScrollToIndex(e) {
         this.setState({ index: e.nativeEvent.index });
     }
-c
+
     _onDidChange(item, changeIndex) {
         const { index } = this.state;
         if (index !== changeIndex) {

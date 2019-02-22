@@ -88,11 +88,9 @@ export default class ShowChoiceView extends Component {
     changeIsScroll(isScroll)
     {
         this.isScroll = isScroll
-        console.log('_onChoiceAction' , this.isScroll)
     }
 
     _onChoiceAction(item) {
-        console.log('_onChoiceAction' , this.isScroll)
         const { navigate } = this.props
         if (this.isScroll === true) {
             return
@@ -113,7 +111,7 @@ export default class ShowChoiceView extends Component {
         {
             items.length > 0
             ?
-            <View style={styles.container}>
+            <View style={[styles.container, {height: showChoiceModules.choiceHeight + px2dp(53)}]}>
                 <View style={styles.titleView}>
                     <Text style={styles.title} allowFontScaling={false}>精选</Text>
                 </View>
