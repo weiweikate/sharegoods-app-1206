@@ -110,6 +110,7 @@ export default class ShowListPage extends BasePage {
     }
 
     _render() {
+        let that = this;
         const { page, left, needsExpensive } = this.state;
 
         let HotView = null;
@@ -174,7 +175,7 @@ export default class ShowListPage extends BasePage {
                                             uri={'/discover/query@GET'}
                                             onItemPress={({nativeEvent})=> {
 
-                                                this.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
+                                                that.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
                             >
                                 <RecycleHeaderView style={{height:50,width:50,backgroundColor:'red',flex:1}}/>
 

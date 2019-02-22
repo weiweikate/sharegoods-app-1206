@@ -156,6 +156,7 @@ export default class ShowHotView extends PureComponent {
     }
 
     render() {
+        let that = this;
         return (
             <View style={styles.container}>
                 {/*<Waterfall*/}
@@ -183,7 +184,7 @@ export default class ShowHotView extends PureComponent {
                                 params={{generalize: tag.Recommend + ''}}
                                 onItemPress={({nativeEvent})=> {
 
-                                    this.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
+                                    that.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
                 />
             </View>
         );
