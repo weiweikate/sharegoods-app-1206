@@ -48,9 +48,9 @@ export default class ShowBannerView extends Component {
 
     renderIndexView() {
         const { index } = this.state;
-        const { bannerCount } = showBannerModules;
+        const { bannerList } = showBannerModules;
         let items = [];
-        for (let i = 0; i < bannerCount; i++) {
+        for (let i = 0; i < bannerList.length; i++) {
             if (index === i) {
                 items.push(<View key={i} style={styles.activityIndex}/>);
             } else {
@@ -74,7 +74,7 @@ c
     }
 
     render() {
-        const { bannerList, bannerCount } = showBannerModules;
+        const { bannerList } = showBannerModules;
         if (!bannerList || bannerList.length <= 0) {
             return <View/>;
         }
@@ -84,7 +84,7 @@ c
         });
         return <View style={styles.container}>
         {
-            bannerCount === 1
+            bannerList.length === 1
             ?
             <TouchableWithoutFeedback onPress={()=>this._onPressRowWithItem(bannerList[0])}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
