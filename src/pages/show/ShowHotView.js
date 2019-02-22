@@ -125,7 +125,7 @@ export default class ShowHotView extends PureComponent {
     };
     renderHeader = () => {
         const { hasRecommend } = this.state;
-        return (<View style={{backgroundColor: '#f5f5f5', height: showBannerModules.bannerHeight + showChoiceModules.choiceHeight, width: ScreenUtils.width}}>
+        return (<View style={{backgroundColor: '#f5f5f5', height: showBannerModules.bannerHeight + showChoiceModules.choiceHeight + px2dp(116), width: ScreenUtils.width}}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
                 <ShowChoiceView navigate={this.props.navigate}/>
                 {/*<ShowHotScrollView navigation={this.props.navigation}/>*/}
@@ -180,7 +180,7 @@ export default class ShowHotView extends PureComponent {
                 <ShowGroundView style={{flex:1}}
                                 uri={'/discover/query@GET'}
                                 renderHeader={this.renderHeader}
-                                onStartRefresh={()=> {alert(111)}}
+                                onStartRefresh={()=> {}}
                                 params={{generalize: tag.Recommend + ''}}
                                 onItemPress={({nativeEvent})=> {
 
