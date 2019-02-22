@@ -13,7 +13,7 @@
                                 fileSize:(NSInteger)fileSize
                                limitSize:(NSInteger)limitSize{
   UIImage *srcImage = [UIImage imageWithContentsOfFile:path];
-  NSString* newpath = [path substringFromIndex:7];
+  NSString* newpath = path;                  
   if (!srcImage) {
     srcImage = [UIImage imageWithContentsOfFile:newpath];
   }
