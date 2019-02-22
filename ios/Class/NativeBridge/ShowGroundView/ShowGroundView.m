@@ -76,7 +76,6 @@
 {
   [super layoutSubviews];
    _collectionView.frame = self.bounds;
-  self.collectionView.mj_footer.ignoredScrollViewContentInsetBottom = self.height / 2.0;
 }
 
 /**
@@ -95,6 +94,7 @@
   [self.collectionView.mj_header beginRefreshing];
   
   MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
+  footer.triggerAutomaticallyRefreshPercent = -5;
   [footer setTitle:@"上拉加载" forState:MJRefreshStateIdle];
   [footer setTitle:@"正在加载 ..." forState:MJRefreshStateRefreshing];
   [footer setTitle:@"我也是有底线" forState:MJRefreshStateNoMoreData];
