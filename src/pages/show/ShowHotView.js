@@ -104,7 +104,7 @@ export default class ShowHotView extends PureComponent {
         const { hasRecommend } = this.state;
         return (<View style={{backgroundColor: '#f5f5f5', height: showBannerModules.bannerHeight + showChoiceModules.choiceHeight + px2dp(116), width: ScreenUtils.width}}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
-                <ShowChoiceView navigate={this.props.navigate} isScroll={this.state.isScroll}/>
+                <ShowChoiceView navigate={this.props.navigate} ref={(ref)=> {this.choiceView = ref}}/>
                 {/*<ShowHotScrollView navigation={this.props.navigation}/>*/}
                 {
                     hasRecommend
@@ -128,18 +128,15 @@ export default class ShowHotView extends PureComponent {
                     onStartRefresh={()=> {}}
                     params={{generalize: tag.Recommend + ''}}
                     onStartScroll={()=> {
-                        console.log('_onChoiceAction start1' )
-                        this.setState({
-                            isScroll: true
-                        })
+                        console.log('_onChoiceAction star' )
+                       this.choiceView && this.choiceView.changeIsScroll(true)
+                        // this.choiceView && this.choiceView.isScroll = true;
                     }}
                     onEndScroll={() => {
 
                         console.log('_onChoiceAction end1' )
                         setTimeout(()=> {
-                            this.setState({
-                            isScroll: false
-                        })
+                            this.choiceView && this.choiceView.changeIsScroll(false)
                         }, 700)
                     }}
                     onItemPress={({nativeEvent})=> {
