@@ -22,7 +22,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         outRect.top = space;
-        if(view instanceof LinearLayout){
+        if (view instanceof LinearLayout) {
             return;
         }
         //瀑布流专属分割线
@@ -32,11 +32,11 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
          * 第一列设置左边距为space，右边距为space/2  （第二列反之）
          */
         if (params.getSpanIndex() % 2 == 0) {
-            outRect.left = space+5;
+            outRect.left = space + 5;
             outRect.right = space / 2;
         } else {
             outRect.left = space / 2;
-            outRect.right = space+5;
+            outRect.right = space + 5;
         }
     }
 }
