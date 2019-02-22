@@ -5,13 +5,13 @@ import ScreenUtils from '../../utils/ScreenUtils';
 const { px2dp, onePixel } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
-// import UIImage from '@mr/image-placeholder';
-import {ImageCacheManager} from 'react-native-cached-image';
+import { ImageCacheManager } from 'react-native-cached-image';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
-import res from './res'
+import res from './res';
+import { getSource } from '@mr/image-placeholder/oos';
 
-export const kHomeGoodsViewHeight = px2dp(263)
+export const kHomeGoodsViewHeight = px2dp(263);
 
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
@@ -19,12 +19,12 @@ const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => pre
             <ReuserImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
             {
                 StringUtils.isEmpty(goods.title)
-                ?
-                null
-                :
-                <View style={styles.titleView}>
-                    <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
-                </View>
+                    ?
+                    null
+                    :
+                    <View style={styles.titleView}>
+                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+                    </View>
             }
         </View>
         <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
@@ -66,21 +66,21 @@ export default class GoodsCell extends Component {
     }
 }
 
-class ReuserImage extends Component{
+class ReuserImage extends Component {
     constructor(props) {
         super(props);
 
         this.fetchImage = this.fetchImage.bind(this);
 
         this.state = {
-            imagePath: res.placeholder.bg_default_img,
+            imagePath: res.placeholder.bg_default_img
         };
     }
 
     componentDidMount() {
         this.fetchImage(this.props);
     }
-    
+
     componentWillReceiveProps(nextProps) {
         if (this.props.source && nextProps.source &&
             this.props.source.uri !== nextProps.source.uri
@@ -94,14 +94,18 @@ class ReuserImage extends Component{
     }
 
     fetchImage(props) {
-        this.setState({imagePath: res.placeholder.bg_default_img});
+        this.setState({ imagePath: res.placeholder.bg_default_img });
         let that = this;
-        if (props && props.source && props.source.uri){
-            ImageCacheManager().downloadAndCacheUrl(props.source.uri).then(
-                (path)=> {
-                    that.setState({imagePath: `file://${path}`});
+        if (props && props.source && props.source.uri) {
+            let thestyle = StyleSheet.flatten(props.style);
+            let theWidth = props.width || thestyle.width;
+            let theHeight = props.height || thestyle.height;
+            let imgSource = getSource(props.source, theWidth, theHeight, 'lfit');
+            ImageCacheManager().downloadAndCacheUrl(imgSource.uri).then(
+                (path) => {
+                    that.setState({ imagePath: `file://${path}` });
                 }
-            )
+            );
         }
     }
 

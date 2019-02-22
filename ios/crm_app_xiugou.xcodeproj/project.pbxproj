@@ -2546,7 +2546,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/QIYU_iOS_SDK/SDK/QYResource.bundle",
 				"${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/back_icon@2x.png",
@@ -2571,7 +2571,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
