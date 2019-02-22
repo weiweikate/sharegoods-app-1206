@@ -2,7 +2,7 @@
  * 精选热门
  */
 import React, { PureComponent } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet,Platform } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import ShowChoiceView from './ShowChoiceView';
 import {
@@ -82,7 +82,7 @@ export default class ShowHotView extends PureComponent {
             <View style={styles.container}>
                 <ShowGroundView style={{flex:1}}
                     uri={'/discover/query@GET'}
-                    renderHeader={this.state.headerView}
+                    renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                     onStartRefresh={()=> {}}
                     params={{generalize: tag.Recommend + ''}}
                     onStartScroll={()=> {
