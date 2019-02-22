@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ShowGroundView : UIView
 @property (nonatomic, copy) RCTBubblingEventBlock onItemPress;
+@property (nonatomic, copy) RCTBubblingEventBlock onStartRefresh;
+@property (nonatomic, copy) NSString* uri;
+@property (nonatomic, strong) NSDictionary* params;
 @end
 
 NS_ASSUME_NONNULL_END
