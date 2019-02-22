@@ -126,5 +126,4 @@ dependencies {
     api project(':commonlib')
     api project(':qrcode')
     api project(':lottie')
-    api project(':qiyu_service')
 }

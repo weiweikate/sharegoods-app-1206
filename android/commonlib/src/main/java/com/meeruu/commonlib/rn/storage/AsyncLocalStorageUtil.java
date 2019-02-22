@@ -1,10 +1,3 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 package com.meeruu.commonlib.rn.storage;
 
 import android.content.ContentValues;
@@ -12,12 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import com.facebook.react.bridge.ReadableArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -26,17 +20,14 @@ import static com.meeruu.commonlib.rn.storage.ReactDatabaseSupplier.TABLE_CATALY
 import static com.meeruu.commonlib.rn.storage.ReactDatabaseSupplier.VALUE_COLUMN;
 
 
-/**
- * Helper for database operations.
- */
 public class AsyncLocalStorageUtil {
-
     /**
      * Build the String required for an SQL select statement:
-     *  WHERE key IN (?, ?, ..., ?)
+     * WHERE key IN (?, ?, ..., ?)
      * without 'WHERE' and with selectionCount '?'
      */
-    /* package */ static String buildKeySelection(int selectionCount) {
+    /* package */
+    static String buildKeySelection(int selectionCount) {
         String[] list = new String[selectionCount];
         Arrays.fill(list, "?");
         return KEY_COLUMN + " IN (" + TextUtils.join(", ", list) + ")";
@@ -44,13 +35,14 @@ public class AsyncLocalStorageUtil {
 
     /**
      * Build the String[] arguments needed for an SQL selection, i.e.:
-     *  {a, b, c}
+     * {a, b, c}
      * to be used in the SQL select statement: WHERE key in (?, ?, ?)
      */
-    /* package */ static String[] buildKeySelectionArgs(List<String> keys, int start, int count) {
+    /* package */
+    static String[] buildKeySelectionArgs(ReadableArray keys, int start, int count) {
         String[] selectionArgs = new String[count];
         for (int keyIndex = 0; keyIndex < count; keyIndex++) {
-            selectionArgs[keyIndex] = keys.get(start + keyIndex);
+            selectionArgs[keyIndex] = keys.getString(start + keyIndex);
         }
         return selectionArgs;
     }
@@ -58,18 +50,19 @@ public class AsyncLocalStorageUtil {
     /**
      * Returns the value of the given key, or null if not found.
      */
-    public static @Nullable String getItemImpl(SQLiteDatabase db, String key) {
+    public static @Nullable
+    String getItemImpl(SQLiteDatabase db, String key) {
         String[] columns = {VALUE_COLUMN};
         String[] selectionArgs = {key};
 
         Cursor cursor = db.query(
-            TABLE_CATALYST,
-            columns,
-            KEY_COLUMN + "=?",
-            selectionArgs,
-            null,
-            null,
-            null);
+                TABLE_CATALYST,
+                columns,
+                KEY_COLUMN + "=?",
+                selectionArgs,
+                null,
+                null,
+                null);
 
         try {
             if (!cursor.moveToFirst()) {
@@ -85,16 +78,17 @@ public class AsyncLocalStorageUtil {
     /**
      * Sets the value for the key given, returns true if successful, false otherwise.
      */
-    /* package */ static boolean setItemImpl(SQLiteDatabase db, String key, String value) {
+    /* package */
+    static boolean setItemImpl(SQLiteDatabase db, String key, String value) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_COLUMN, key);
         contentValues.put(VALUE_COLUMN, value);
 
         long inserted = db.insertWithOnConflict(
-            TABLE_CATALYST,
-            null,
-            contentValues,
-            SQLiteDatabase.CONFLICT_REPLACE);
+                TABLE_CATALYST,
+                null,
+                contentValues,
+                SQLiteDatabase.CONFLICT_REPLACE);
 
         return (-1 != inserted);
     }
@@ -102,10 +96,12 @@ public class AsyncLocalStorageUtil {
     /**
      * Does the actual merge of the (key, value) pair with the value stored in the database.
      * NB: This assumes that a database lock is already in effect!
+     *
      * @return the errorCode of the operation
      */
-    /* package */ static boolean mergeImpl(SQLiteDatabase db, String key, String value)
-        throws JSONException {
+    /* package */
+    static boolean mergeImpl(SQLiteDatabase db, String key, String value)
+            throws JSONException {
         String oldValue = getItemImpl(db, key);
         String newValue;
 
@@ -127,7 +123,7 @@ public class AsyncLocalStorageUtil {
      * are of type {@link JSONObject}). oldJSON will contain the result of this merge.
      */
     private static void deepMergeInto(JSONObject oldJSON, JSONObject newJSON)
-        throws JSONException {
+            throws JSONException {
         Iterator<?> keys = newJSON.keys();
         while (keys.hasNext()) {
             String key = (String) keys.next();
