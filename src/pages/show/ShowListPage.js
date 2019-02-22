@@ -119,7 +119,6 @@ export default class ShowListPage extends BasePage {
             // HotFindView = require('./ShowHotFindView').default;
         }
 
-
         return <View style={styles.container}>
             <View style={styles.header}>
                 {
@@ -170,9 +169,16 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <ShowGroundView onItemPress={this._press} style={{flex:1}}>
+
+                            <ShowGroundView style={{flex:1}}
+                                            onItemPress={({nativeEvent})=> {
+
+                                                this.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
+                            >
                                 <RecycleHeaderView style={{height:50,width:50,backgroundColor:'red',flex:1}}/>
+
                             </ShowGroundView>
+
                             :
                             null
                     }

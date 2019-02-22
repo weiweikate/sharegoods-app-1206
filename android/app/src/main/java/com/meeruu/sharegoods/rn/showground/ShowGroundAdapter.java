@@ -16,7 +16,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.ScaleImageView;
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
 
     private final int radius = DensityUtils.dip2px(5);
-    private float[] raduis = {radius, radius, radius, radius, 0, 0, 0, 0};
+    private float[] arr_raduis = {radius, radius, radius, radius, 0, 0, 0, 0};
 
     public ShowGroundAdapter() {
         super(R.layout.item_showground);
@@ -46,7 +46,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         int realHeight = (int) ((height / width) * realWidth);
 
         imageView.setInitSize(realWidth, realHeight);
-        ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, raduis);
+        ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
 
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserName());
