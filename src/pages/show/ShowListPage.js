@@ -3,10 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-na
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
-import RecycleHeaderView from './components/RecycleHeaderView'
 const { px2dp } = ScreenUtils;
-// import ShowHotView from './ShowHotView';
-// import ShowHotFindView from './ShowHotFindView';
 import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -117,7 +114,6 @@ export default class ShowListPage extends BasePage {
         // let HotFindView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
-            // HotFindView = require('./ShowHotFindView').default;
         }
 
         return <View style={styles.container}>
@@ -176,11 +172,7 @@ export default class ShowListPage extends BasePage {
                                             onItemPress={({nativeEvent})=> {
 
                                                 that.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
-                            >
-                                <RecycleHeaderView style={{height:50,width:50,backgroundColor:'red',flex:1}}/>
-
-                            </ShowGroundView>
-
+                            />
                             :
                             null
                     }

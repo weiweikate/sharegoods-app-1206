@@ -4,8 +4,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 
 public class RecyclerViewHeaderManager extends ViewGroupManager<RecyclerViewHeaderView> {
-    private static final String COMPONENT = "RecyclerViewHeaderView";
-
+    private static final String COMPONENT = "ShowHeaderView";
     @Override
     public String getName() {
         return COMPONENT;

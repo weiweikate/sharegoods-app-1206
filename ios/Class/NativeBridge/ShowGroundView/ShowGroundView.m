@@ -16,7 +16,7 @@
 #import <React/RCTComponent.h>
 #import <React/UIView+React.h>
 #import "ShowCollectionReusableView.h"
-@interface ShowGroundView()<UICollectionViewDataSource, WHCWaterfallFlowLayoutDelegate, UICollectionViewDelegate>
+@interface ShowGroundView()<UICollectionViewDataSource, WHCWaterfallFlowLayoutDelegate, UICollectionViewDelegate, UIScrollViewDelegate>
 @property (nonatomic, weak) UICollectionView * collectionView;
 @property (nonatomic, strong)NSMutableArray<ShowQuery_dataModel *> *dataArr;
 @property (nonatomic, assign)NSInteger page;
@@ -69,13 +69,13 @@
   [collectionView registerClass:[ShowCell class] forCellWithReuseIdentifier:@"ShowCell"];
   
   self.collectionView = collectionView;
+  
 }
 
 - (void)layoutSubviews
 {
   [super layoutSubviews];
    _collectionView.frame = self.bounds;
-  self.collectionView.mj_footer.ignoredScrollViewContentInsetBottom = self.height / 2.0;
 }
 
 /**
@@ -83,11 +83,25 @@
  */
 - (void)setupRefresh{
   
-  self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
+  MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
+  [header setTitle:@"下拉刷新" forState:MJRefreshStateIdle];
+  [header setTitle:@"松开刷新" forState:MJRefreshStatePulling];
+  [header setTitle:@"正在刷新 ..." forState:MJRefreshStateRefreshing];
+  header.lastUpdatedTimeLabel.hidden = YES;
+  header.stateLabel.font = [UIFont systemFontOfSize:11];
+  header.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
+  self.collectionView.mj_header = header;
   [self.collectionView.mj_header beginRefreshing];
   
+  MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
+  footer.triggerAutomaticallyRefreshPercent = -5;
+  [footer setTitle:@"上拉加载" forState:MJRefreshStateIdle];
+  [footer setTitle:@"正在加载 ..." forState:MJRefreshStateRefreshing];
+  [footer setTitle:@"我也是有底线" forState:MJRefreshStateNoMoreData];
+  footer.stateLabel.font = [UIFont systemFontOfSize:11];
+  footer.stateLabel.textColor = [UIColor colorWithRed:144/255.f green:144/255.f blue:144/255.f alpha:1.0f];
   
-  self.collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
+  self.collectionView.mj_footer = footer;
   self.collectionView.mj_footer.hidden = YES;
 }
 
@@ -212,6 +226,28 @@
     if ([view isKindOfClass:[ShowHeaderView class]]) {
         self.headerView = view;
         [self.collectionView reloadData];
+    }
+  }
+}
+
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+  if (self.onStartScroll) {
+    self.onStartScroll(@{});
+  }
+}
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+  if (self.onEndScroll) {
+    self.onEndScroll(@{});
+  }
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+  if (decelerate==NO) {
+    if (self.onEndScroll) {
+      self.onEndScroll(@{});
     }
   }
 }

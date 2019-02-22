@@ -8,7 +8,20 @@
 
 #import "ShowHeaderView.h"
 
+@interface ShowHeaderView() <UIGestureRecognizerDelegate>
+
+@end
+
 @implementation ShowHeaderView
+
+//- (instancetype)
+
+//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+//  if (self.isScroll) {
+//    return self;
+//  }
+//  return [super hitTest:point withEvent:event];
+//}
 
 /*
 // Only override drawRect: if you perform custom drawing.

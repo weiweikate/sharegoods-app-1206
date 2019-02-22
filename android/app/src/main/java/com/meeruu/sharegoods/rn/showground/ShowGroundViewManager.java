@@ -9,26 +9,33 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
+import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
+import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
+import com.meeruu.sharegoods.rn.showground.event.onStartScrollEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +48,12 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     private ShowgroundPresenter presenter;
     private EventDispatcher eventDispatcher;
     private onItemPressEvent itemPressEvent;
+    private onStartRefreshEvent startRefreshEvent;
+    private onStartScrollEvent startScrollEvent;
+    private onEndScrollEvent endScrollEvent;
+
+    private WeakReference<View> showgroundView;
+
 
     @Override
     public String getName() {
@@ -58,6 +71,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     }
 
     private void initView(Context context, final View view) {
+        showgroundView = new WeakReference<>(view);
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
@@ -70,12 +84,35 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
             }
         });
         itemPressEvent = new onItemPressEvent();
+        startRefreshEvent = new onStartRefreshEvent();
+        startScrollEvent = new onStartScrollEvent();
+        endScrollEvent = new onEndScrollEvent();
         adapter = new ShowGroundAdapter();
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setPreLoadNumber(3);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState){
+                    case RecyclerView.SCROLL_STATE_IDLE:{
+                        endScrollEvent.init(view.getId());
+                        eventDispatcher.dispatchEvent(endScrollEvent);
+                    }
+                    break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:{
+                        startScrollEvent.init(view.getId());
+                        eventDispatcher.dispatchEvent(startScrollEvent);
+                    }
+                    break;
+                    default:break;
+                }
+
+            }
+        });
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -85,7 +122,6 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
             }
         }, recyclerView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
-
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view1, int position) {
@@ -128,6 +164,13 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
 
     @Override
     public void onRefresh() {
+        if (eventDispatcher != null) {
+            View view = showgroundView.get();
+            if(view != null){
+                startRefreshEvent.init(view.getId());
+                eventDispatcher.dispatchEvent(startRefreshEvent);
+            }
+        }
         adapter.setEnableLoadMore(false);
         page = 1;
         presenter.getShowList(page);
@@ -144,6 +187,8 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     public void addView(ViewGroup parent, final View child, int index) {
         Assertions.assertCondition(child instanceof RecyclerViewHeaderView, "");
         adapter.addHeaderView(child);
+        child.postInvalidateDelayed(1000);
+//        recyclerView.postInvalidateDelayed(200);
     }
 
     @Override
@@ -184,6 +229,18 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
                                 "phasedRegistrationNames",
                                 MapBuilder.of(
                                         "bubbled", "onItemPress")))
+                .put("MrShowGroundOnStartRefreshEvent",MapBuilder.of(
+                        "phasedRegistrationNames",
+                        MapBuilder.of(
+                                "bubbled", "onStartRefresh")))
+                .put("MrShowGroundOnStartScrollEvent",MapBuilder.of(
+                        "phasedRegistrationNames",
+                        MapBuilder.of(
+                                "bubbled", "onStartScroll")))
+                .put("MrShowGroundOnEndScrollEvent",MapBuilder.of(
+                        "phasedRegistrationNames",
+                        MapBuilder.of(
+                                "bubbled", "onEndScroll")))
                 .build();
     }
 
