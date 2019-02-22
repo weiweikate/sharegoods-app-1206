@@ -11,6 +11,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.soloader.SoLoader;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.rn.storage.AsyncStorageManager;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.AppUtils;
@@ -61,9 +62,11 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         appContext = this;
-        // activity生命周期，onCreate之后
-        ForegroundCallbacks.init(this);
         if (getProcessName(this).equals(getPackageName())) {
+            AsyncStorageManager.getInstance().init();
+            AppUtils.initStorage();
+            // activity生命周期，onCreate之后
+            ForegroundCallbacks.init(this);
             Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
             SoLoader.init(this, /* native exopackage */ false);
             // umeng初始化

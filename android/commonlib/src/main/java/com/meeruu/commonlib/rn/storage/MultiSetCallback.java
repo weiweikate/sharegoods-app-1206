@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn.storage;
+package com.meeruu.commonlib.rn.storage;
 
 public interface MultiSetCallback {
     void onSuccess();

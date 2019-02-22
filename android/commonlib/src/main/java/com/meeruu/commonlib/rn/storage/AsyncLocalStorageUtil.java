@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.meeruu.sharegoods.rn.storage;
+package com.meeruu.commonlib.rn.storage;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -21,9 +21,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import static com.meeruu.sharegoods.rn.storage.ReactDatabaseSupplier.KEY_COLUMN;
-import static com.meeruu.sharegoods.rn.storage.ReactDatabaseSupplier.TABLE_CATALYST;
-import static com.meeruu.sharegoods.rn.storage.ReactDatabaseSupplier.VALUE_COLUMN;
+import static com.meeruu.commonlib.rn.storage.ReactDatabaseSupplier.KEY_COLUMN;
+import static com.meeruu.commonlib.rn.storage.ReactDatabaseSupplier.TABLE_CATALYST;
+import static com.meeruu.commonlib.rn.storage.ReactDatabaseSupplier.VALUE_COLUMN;
 
 
 /**

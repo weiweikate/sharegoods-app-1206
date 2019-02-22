@@ -4,17 +4,16 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.infer.annotation.Assertions;
-import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
@@ -43,7 +42,6 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     private EventDispatcher eventDispatcher;
     private onItemPressEvent itemPressEvent;
 
-
     @Override
     public String getName() {
         return COMPONENT_NAME;
@@ -68,7 +66,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
-                presenter.initShowground();
+                onRefresh();
             }
         });
         itemPressEvent = new onItemPressEvent();
@@ -82,9 +80,10 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                presenter.loadMore(page);
+                page++;
+                presenter.getShowList(page);
             }
-        });
+        }, recyclerView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
 
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -108,7 +107,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         recyclerView.setAdapter(adapter);
-        recyclerView.setAnimation(null);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -120,9 +119,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
                     layoutManager.invalidateSpanAssignments();
                 }
             }
-
         });
-
     }
 
     private void initData() {
@@ -133,7 +130,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     public void onRefresh() {
         adapter.setEnableLoadMore(false);
         page = 1;
-        presenter.initShowground();
+        presenter.getShowList(page);
     }
 
     @Override
@@ -144,17 +141,13 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     }
 
     @Override
-    public void addView(ViewGroup parent,final View child, int index) {
-        Assertions.assertCondition(child instanceof RecyclerViewHeaderView,"");
+    public void addView(ViewGroup parent, final View child, int index) {
+        Assertions.assertCondition(child instanceof RecyclerViewHeaderView, "");
         adapter.addHeaderView(child);
-//        child.requestLayout();
-//        parent.requestLayout();
-//        parent.postInvalidate();
     }
 
     @Override
     public void viewLoadMore(final List data) {
-        page++;
         if (data != null) {
             adapter.addData(data);
         }
@@ -162,7 +155,6 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
 
     @Override
     public void refreshShowground(final List data) {
-        page++;
         if (adapter != null) {
             adapter.setEnableLoadMore(true);
             adapter.setNewData(data);
