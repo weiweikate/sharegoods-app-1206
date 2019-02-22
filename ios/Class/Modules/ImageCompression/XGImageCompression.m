@@ -25,7 +25,6 @@
 //     NSLog(@"???%ld", [UIImageJPEGRepresentation(thumbnail, 1) writeToFile:path atomically:YES]);
 //      [UIImageJPEGRepresentation(thumbnail, 1) writeToFile:path atomically:YES];
     }
-  
   NSLog(@"图片保存成功path: %@",path);
 }
 
