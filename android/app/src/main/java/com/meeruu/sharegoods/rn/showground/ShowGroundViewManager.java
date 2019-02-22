@@ -78,13 +78,13 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
+        swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
                 onRefresh();
             }
-        });
+        },200);
         itemPressEvent = new onItemPressEvent();
         startRefreshEvent = new onStartRefreshEvent();
         startScrollEvent = new onStartScrollEvent();
@@ -165,7 +165,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     }
 
     @ReactProp(name = "params")
-    private void setParams(ReadableMap map){
+    public void setParams(View view,ReadableMap map){
         if(presenter != null){
             HashMap map1 = map.toHashMap();
             presenter.setParams(map1);
