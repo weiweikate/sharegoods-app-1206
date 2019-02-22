@@ -9,20 +9,17 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
-import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
@@ -97,18 +94,19 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                switch (newState){
-                    case RecyclerView.SCROLL_STATE_IDLE:{
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE: {
                         endScrollEvent.init(view.getId());
                         eventDispatcher.dispatchEvent(endScrollEvent);
                     }
                     break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:{
+                    case RecyclerView.SCROLL_STATE_DRAGGING: {
                         startScrollEvent.init(view.getId());
                         eventDispatcher.dispatchEvent(startScrollEvent);
                     }
                     break;
-                    default:break;
+                    default:
+                        break;
                 }
 
             }
@@ -166,7 +164,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     public void onRefresh() {
         if (eventDispatcher != null) {
             View view = showgroundView.get();
-            if(view != null){
+            if (view != null) {
                 startRefreshEvent.init(view.getId());
                 eventDispatcher.dispatchEvent(startRefreshEvent);
             }
@@ -229,15 +227,15 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
                                 "phasedRegistrationNames",
                                 MapBuilder.of(
                                         "bubbled", "onItemPress")))
-                .put("MrShowGroundOnStartRefreshEvent",MapBuilder.of(
+                .put("MrShowGroundOnStartRefreshEvent", MapBuilder.of(
                         "phasedRegistrationNames",
                         MapBuilder.of(
                                 "bubbled", "onStartRefresh")))
-                .put("MrShowGroundOnStartScrollEvent",MapBuilder.of(
+                .put("MrShowGroundOnStartScrollEvent", MapBuilder.of(
                         "phasedRegistrationNames",
                         MapBuilder.of(
                                 "bubbled", "onStartScroll")))
-                .put("MrShowGroundOnEndScrollEvent",MapBuilder.of(
+                .put("MrShowGroundOnEndScrollEvent", MapBuilder.of(
                         "phasedRegistrationNames",
                         MapBuilder.of(
                                 "bubbled", "onEndScroll")))

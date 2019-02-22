@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">秀购</string>
-    <string name="install_allow">安装apk需要权限，请设置允许安装秀购！</string>
-    <string name="ad_loop">跳过 %1$d</string>
+    <string name="brvah_app_name">Library</string>
     <string name="brvah_loading">加载中...</string>
     <string name="brvah_load_failed">加载失败，请点我重试</string>
     <string name="brvah_load_end">我也是有底线的</string>
