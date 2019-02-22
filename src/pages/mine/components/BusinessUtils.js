@@ -123,7 +123,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
 
          Toast.showLoading('正在上传');
          // this.$toastShow('图片上传中，请稍后');
-         NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024*10, () => {
+         let upload = () => {
              //commonAPI/ossClient
              //user/
              let url = apiEnvironment.getCurrentHostUrl();
@@ -164,7 +164,12 @@ import ImagePicker from '@mr/rn-image-crop-picker'
                  console.warn('图片上传失败' + error.toString());
                  Toast.$toast('图片上传失败');
              });
-         })
+         }
+         if (Platform.OS === 'ios') {
+             NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024*1024*3, upload);
+         }else {
+             upload();
+         }
      },
     callPhone: (phoneNum) => {
         Linking.openURL('tel:' + phoneNum);
