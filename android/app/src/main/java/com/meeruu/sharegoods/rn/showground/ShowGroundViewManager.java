@@ -149,12 +149,10 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     @Override
     public void addView(ViewGroup parent,final View child, int index) {
         Assertions.assertCondition(child instanceof RecyclerViewHeaderView,"");
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.addHeaderView(child);
-            }
-        });
+        adapter.addHeaderView(child);
+//        child.requestLayout();
+//        parent.requestLayout();
+//        parent.postInvalidate();
     }
 
     @Override
@@ -168,8 +166,8 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     @Override
     public void refreshShowground(final List data) {
         page++;
-        adapter.setEnableLoadMore(true);
         if (adapter != null) {
+            adapter.setEnableLoadMore(true);
             adapter.setNewData(data);
             swipeRefreshLayout.setRefreshing(false);
         }

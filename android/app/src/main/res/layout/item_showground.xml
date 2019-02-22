@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:includeFontPadding="false"
-            android:text="112"
+            android:id="@+id/showground_item_show_times"
             android:textColor="#fff"
             android:textSize="10sp" />
     </LinearLayout>

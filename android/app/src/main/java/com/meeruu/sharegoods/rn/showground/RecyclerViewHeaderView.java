@@ -21,4 +21,30 @@ public class RecyclerViewHeaderView extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
     }
+
+
+  
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        post(measureAndLayout);
+    }
+
+    private final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            measure(
+                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            int height= getHeight();
+            int width = getWidth();
+            int left = getLeft();
+            int top = getTop();
+            int right = getRight();
+            int bottom = getBottom();
+            layout(left, top, right, bottom);
+        }
+    };
+
 }

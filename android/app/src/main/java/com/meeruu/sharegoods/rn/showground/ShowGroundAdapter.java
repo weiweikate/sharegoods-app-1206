@@ -56,5 +56,15 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
         TextView title = helper.getView(R.id.showground_item_title);
         title.setText(item.getPureContent());
+
+        TextView showTimes = helper.getView(R.id.showground_item_show_times);
+        int times = item.getClick();
+        String seeTimes = "";
+        if (times > 999999) {
+            seeTimes = times + "+";
+        } else {
+            seeTimes = times + "";
+        }
+        showTimes.setText(seeTimes);
     }
 }

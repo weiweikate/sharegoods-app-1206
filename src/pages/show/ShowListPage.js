@@ -171,7 +171,7 @@ export default class ShowListPage extends BasePage {
                         needsExpensive
                             ?
                             <ShowGroundView onItemPress={this._press} style={{flex:1}}>
-                                <RecycleHeaderView style={{height:50,width:50,backgroundColor:'red'}}/>
+                                <RecycleHeaderView style={{height:50,width:50,backgroundColor:'red',flex:1}}/>
                             </ShowGroundView>
                             :
                             null
