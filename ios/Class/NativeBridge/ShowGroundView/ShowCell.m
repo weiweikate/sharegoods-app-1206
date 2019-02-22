@@ -18,6 +18,8 @@
 @end
 @implementation ShowCell
 
+
+
 - (UIImageView *)imageView
 {
   if (!_imageView) {
@@ -131,14 +133,14 @@
 {
   _model = model;
   [self.imageView setImageWithURL:[NSURL URLWithString:model.showImage]
-                      placeholder:[UIImage imageNamed:@""]];
+                      placeholder:[UIImage imageNamed:@"default_img"]];
   [self.headimgView setImageWithURL:[NSURL URLWithString:model.userHeadImg]
-                        placeholder:[UIImage imageNamed:@""]];
+                        placeholder:[UIImage imageNamed:@"default_img"]];
   self.titleLb.text = model.title;
   self.timeLb.text = model.time;
   self.authorLb.text = model.userName;
   self.numLb.text = model.click > 999999 ?
                     @"999999+" :
-                    [NSString stringWithFormat:@"%ld", model.click];
+  [NSString stringWithFormat:@"%ld", (long)model.click];
 }
 @end
