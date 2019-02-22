@@ -687,8 +687,10 @@ export default class MinePage extends BasePage {
                 return userOrderNum.waitReceiveNum;
                 break;
             case 3:
-                return userOrderNum.afterSaleServiceNum;
+                return userOrderNum.waitShowNum;
                 break;
+            case 4:
+                return userOrderNum.afterSaleServiceNum;
             default:
                 return 0;
                 break;
@@ -852,6 +854,9 @@ export default class MinePage extends BasePage {
                 this.$navigate('order/order/MyOrdersListPage', { index: 3 });
                 break;
             case 3:
+                this.$navigate('order/order/MyOrdersListPage', { index: 4 });
+                break;
+            case 4:
                 this.$navigate('order/afterSaleService/AfterSaleListPage', { index: 4 });
                 break;
         }
