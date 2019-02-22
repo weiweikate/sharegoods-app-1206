@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Image, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import { ScrollView, Image, TouchableOpacity, View, ActivityIndicator , StyleSheet} from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -180,10 +180,17 @@ export default class ShowDetailPage extends BasePage {
         </View>;
     }
 
+    _showImagesPage(imgs, index) {
+        const { navigation } = this.props;
+        navigation.push('show/ShowDetailImagePage', {
+            imageUrls:imgs,
+            index: index
+        });
+    }
+
     _render() {
 
         const { pageState } = this.state;
-        console.log('PageLoadingState', pageState);
         if (pageState === PageLoadingState.fail) {
             return <View style={styles.container}><NetFailedView
                 netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}</View>;
@@ -213,7 +220,7 @@ export default class ShowDetailPage extends BasePage {
                 {
                     detail.imgs
                         ?
-                        <ShowImageView items={detail.imgs.slice()}/>
+                        <ShowImageView items={detail.imgs.slice()} onPress={(imgs, index)=> this._showImagesPage(imgs, index)}/> 
                         :
                         <View style={styles.header}/>
                 }
