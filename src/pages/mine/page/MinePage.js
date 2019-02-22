@@ -55,7 +55,8 @@ const {
     mine_icon_mentor,
     mine_user_icon,
     mine_icon_fans,
-    mine_icon_message
+    mine_icon_message,
+    mine_showOrder
 } = res.homeBaseImg;
 
 
@@ -636,8 +637,8 @@ export default class MinePage extends BasePage {
     };
 
     renderOrderStates = () => {
-        let statesImage = [mine_wait_pay_icon, mine_wait_send_icon, mine_wait_receive_icon, mine_after_buy_icon];
-        let statesText = ['待付款', '待发货', '待收货', '售后/退款'];
+        let statesImage = [mine_wait_pay_icon, mine_wait_send_icon, mine_wait_receive_icon,mine_showOrder, mine_after_buy_icon];
+        let statesText = ['待付款', '待发货', '待收货', '待晒单','售后/退款'];
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
             let num = this.getOrderNum(i);
