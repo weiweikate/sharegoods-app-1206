@@ -33,7 +33,6 @@ class SubjectModule {
             }
             height += px2dp(181);
           })
-          console.log('this.subjectHeight', this.subjectHeight, this.subjectList.length)
           this.subjectHeight = height;
           this.subjectList = list;
           save(kHomeSujectStore, res.data)
