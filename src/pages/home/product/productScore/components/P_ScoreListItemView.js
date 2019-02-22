@@ -46,7 +46,7 @@ export class P_ScoreListItemView extends Component {
                             {
                                 this.hasVideo && index === 0 ?
                                     <Image style={[styles.contentImg, { marginLeft: leftValue }]}
-                                             source={{ uri: value }}/> :
+                                           source={{ uri: value }}/> :
                                     <UIImage style={[styles.contentImg, { marginLeft: leftValue }]}
                                              source={{ uri: value }}/>
                             }
@@ -72,7 +72,7 @@ export class P_ScoreListItemView extends Component {
     };
 
     render() {
-        const { headImg, nickname, star, comment, imgUrl, createTime, spec, videoUrl } = this.props.itemData || {};
+        const { headImg, nickname, star, comment, imgUrl, createTime, spec, videoUrl, reply } = this.props.itemData || {};
         let imgs = [];
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.hasVideo = true;
@@ -94,6 +94,13 @@ export class P_ScoreListItemView extends Component {
                     style={styles.contentText}>{(StringUtils.isEmpty(comment) && imgs.length === 0 ? '此用户未留下晒单内容~' : comment || '')}</Text>
                 {this._renderContentImgs(imgs)}
                 <Text style={styles.dateText}>{DateUtils.formatDate(createTime || '', 'yyyy-MM-dd')}</Text>
+                {
+                    StringUtils.isEmpty(reply) ? null : <View style={styles.responseView}>
+                        <Text style={styles.responseTittleText}>秀秀回复</Text>
+                        <Text
+                            style={styles.responseContentText}>{reply}</Text>
+                    </View>
+                }
             </View>
         );
     }
@@ -136,6 +143,18 @@ const styles = StyleSheet.create({
     },
     dateText: {
         marginBottom: 10,
+        fontSize: 11, color: DesignRule.textColor_instruction
+    },
+    responseView: {
+        marginBottom: 10,
+        backgroundColor: '#f2f2f2', borderRadius: 5
+    },
+    responseTittleText: {
+        marginTop: 10, marginLeft: 10,
+        fontSize: 11, color: DesignRule.textColor_secondTitle
+    },
+    responseContentText: {
+        marginHorizontal: 10, marginVertical: 10,
         fontSize: 11, color: DesignRule.textColor_instruction
     }
 
