@@ -3,7 +3,6 @@ package com.meeruu.sharegoods.rn.viewmanager;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
-import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class onDidScrollToIndexEvent extends Event<onDidScrollToIndexEvent> {
@@ -11,11 +10,12 @@ public class onDidScrollToIndexEvent extends Event<onDidScrollToIndexEvent> {
 
     private int index;
 
-    public onDidScrollToIndexEvent(
-            int viewId,
-            int index
-    ) {
-        super(viewId);
+    @Override
+    protected void init(int viewTag) {
+        super.init(viewTag);
+    }
+
+    public void setIndex(int index) {
         this.index = index;
     }
 

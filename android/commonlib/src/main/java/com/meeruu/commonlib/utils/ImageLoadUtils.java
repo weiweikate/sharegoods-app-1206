@@ -169,8 +169,8 @@ public class ImageLoadUtils {
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
                 .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
                 .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
-        int width = view.getMeasuredWidth();
-        int height = view.getMeasuredHeight();
+        int width = view.getWidth();
+        int height = view.getHeight();
         if (width > 0) {
             requestBuilder.setResizeOptions(new ResizeOptions(width, height));
         } else {
@@ -200,8 +200,8 @@ public class ImageLoadUtils {
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
                 .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
                 .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
-        int width = view.getMeasuredWidth();
-        int height = view.getMeasuredHeight();
+        int width = view.getWidth();
+        int height = view.getHeight();
 
         if (width > 0) {
             requestBuilder.setResizeOptions(new ResizeOptions(width, height));
@@ -271,8 +271,8 @@ public class ImageLoadUtils {
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
                 .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
                 .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
-        int width = view.getMeasuredWidth();
-        int height = view.getMeasuredHeight();
+        int width = view.getWidth();
+        int height = view.getHeight();
         if (width > 0) {
             requestBuilder.setResizeOptions(new ResizeOptions(width, height));
         } else {
