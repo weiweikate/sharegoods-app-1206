@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { width, px2dp } = ScreenUtils;
@@ -10,33 +10,38 @@ import {
     MRText as Text,
 } from '../../components/ui';
 
-const renderPagination = (index, total) => <View style={styles.indexView}>
-    <Text style={styles.text} allowFontScaling={false}>{index + 1} / {total}</Text>
-</View>;
-
 export default class ShowImageView extends Component {
 
     state = {
-        pageIndex: 0,
-        total: 2,
         items:[]
     };
 
     constructor(props) {
         super(props)
+        this.index = 0
         this.state.items = this.props.items
     }
 
     componentWillReceiveProps(nextProps) {
         const {items} = nextProps
-        console.log('componentWillReceiveProps', items, this.state.items)
         if (items && items.length !== this.state.items.length) {
             this.state.items = items
         }
     }
 
+    _renderPagination(index, total) {
+        this.index = index;
+        return <View style={styles.indexView}>
+            <Text style={styles.text} allowFontScaling={false}>{index + 1} / {total}</Text>
+        </View>
+    }
+
     _renderViewPageItem(item) {
-        return <ImageLoad style={styles.image} source={{ uri: item }} resizeMode='contain'/>;
+        return <TouchableWithoutFeedback onPress={()=> this.props.onPress(this.state.items, this.index)}>
+            <View>
+            <ImageLoad style={styles.image} source={{ uri: item }} resizeMode='contain'/>
+            </View>
+        </TouchableWithoutFeedback>
     }
 
     render() {
@@ -52,7 +57,7 @@ export default class ShowImageView extends Component {
                 autoplay={true}
                 loop={false}
                 height={imageHeight}
-                renderPagination={renderPagination}
+                renderPagination={this._renderPagination.bind(this)}
                 index={0}
                 scrollsToTop={true}
             />
