@@ -9,12 +9,14 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -72,8 +74,8 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                onRefresh();
+//                swipeRefreshLayout.setRefreshing(true);
+//                onRefresh();
             }
         });
         itemPressEvent = new onItemPressEvent();
@@ -97,9 +99,6 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view1, int position) {
-                if(view1 instanceof RecyclerViewHeaderView){
-                    return;
-                }
                 List<NewestShowGroundBean.DataBean> data = adapter.getData();
                 if (data != null) {
                     NewestShowGroundBean.DataBean item = data.get(position);

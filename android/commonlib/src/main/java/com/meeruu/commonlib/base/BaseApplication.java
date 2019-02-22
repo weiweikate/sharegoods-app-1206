@@ -65,8 +65,6 @@ public class BaseApplication extends MultiDexApplication {
         if (getProcessName(this).equals(getPackageName())) {
             AsyncStorageManager.getInstance().init();
             AppUtils.initStorage();
-            // activity生命周期，onCreate之后
-            ForegroundCallbacks.init(this);
             Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
             SoLoader.init(this, /* native exopackage */ false);
             // umeng初始化

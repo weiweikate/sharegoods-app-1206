@@ -67,6 +67,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                 patchStatus = code;
             }
         });
+        // activity生命周期，onCreate之后
+        ForegroundCallbacks.init(this);
         ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
             @Override
             public void onBecameForeground() {
