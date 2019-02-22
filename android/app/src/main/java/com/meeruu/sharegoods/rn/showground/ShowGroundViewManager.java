@@ -186,9 +186,12 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     @Override
     public void addView(ViewGroup parent, final View child, int index) {
         Assertions.assertCondition(child instanceof RecyclerViewHeaderView, "");
+        int i = adapter.getHeaderLayoutCount();
+        if(i!=0){
+            adapter.removeAllHeaderView();
+        }
         adapter.addHeaderView(child);
-        child.postInvalidateDelayed(1000);
-//        recyclerView.postInvalidateDelayed(200);
+        recyclerView.scrollToPosition(0);
     }
 
     @Override
