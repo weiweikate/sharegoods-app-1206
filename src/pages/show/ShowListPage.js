@@ -171,6 +171,7 @@ export default class ShowListPage extends BasePage {
                             ?
 
                             <ShowGroundView style={{flex:1}}
+                                            uri={'/discover/query@GET'}
                                             onItemPress={({nativeEvent})=> {
 
                                                 this.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}

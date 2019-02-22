@@ -75,6 +75,7 @@
 {
   [super layoutSubviews];
    _collectionView.frame = self.bounds;
+  self.collectionView.mj_footer.ignoredScrollViewContentInsetBottom = self.height / 2.0;
 }
 
 /**
@@ -87,18 +88,34 @@
   
   
   self.collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
+  self.collectionView.mj_footer.hidden = YES;
 }
+
 /**
  刷新数据
  */
 - (void)refreshData
 {
+  if (self.onStartRefresh) {
+    self.onStartRefresh(@{});
+  }
   self.page = 1;
+  NSMutableDictionary *dic = [NSMutableDictionary new];
+  if (self.params) {
+    dic = [self.params mutableCopy];
+  }
+  [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
   __weak ShowGroundView * weakSelf = self;
-  [NetWorkTool requestWithURL:ShowApi_query params:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"} toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
+  [NetWorkTool requestWithURL:self.uri params:dic  toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
     weakSelf.dataArr = [result.data mutableCopy];
     [weakSelf.collectionView reloadData];
     [weakSelf.collectionView.mj_header endRefreshing];
+    if(result.data.count < 10){
+      [weakSelf.collectionView.mj_footer endRefreshingWithNoMoreData];
+    }else{
+        [weakSelf.collectionView.mj_footer resetNoMoreData];
+    }
+    weakSelf.collectionView.mj_footer.hidden = NO;
   } failure:^(NSString *msg, NSInteger code) {
     [weakSelf.collectionView.mj_header endRefreshing];
   } showLoading:nil];
@@ -110,15 +127,19 @@
 - (void)getMoreData
 {
   self.page++;
+   NSMutableDictionary *dic = [NSMutableDictionary new];
+  if (self.params) {
+     dic = [self.params mutableCopy];
+  }
+  [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
   __weak ShowGroundView * weakSelf = self;
-  [NetWorkTool requestWithURL:ShowApi_query params:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"} toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
+  [NetWorkTool requestWithURL:self.uri params:dic toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
     [weakSelf.dataArr addObjectsFromArray:result.data];
     [weakSelf.collectionView reloadData];
-    [weakSelf.collectionView.mj_footer endRefreshing];
-    if (result.currentPage == result.totalPage) {
-      
+    if(result.data.count < 10){
+      [weakSelf.collectionView.mj_footer endRefreshingWithNoMoreData];
     }else{
-      
+       [weakSelf.collectionView.mj_footer endRefreshing];
     }
   } failure:^(NSString *msg, NSInteger code) {
     [weakSelf.collectionView.mj_footer endRefreshing];
@@ -152,10 +173,10 @@
 //  if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
     ShowCollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView" forIndexPath:indexPath];
 //    view.backgroundColor = [UIColor redColor];
-//  if (view.headerView != self.headerView) {
-//    [view.headerView removeFromSuperview];
-      [view addSubview:self.headerView];
-//  }
+
+      [view removeAllSubviews];
+     [view addSubview:self.headerView];
+  
     return view;
 //  }else{
 //    UICollectionReusableView * view = [UICollectionReusableView new];
@@ -169,7 +190,7 @@
 {
   if (_onItemPress) {
      _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
-    self.dataArr[indexPath.item].readNumber++ ;
+    self.dataArr[indexPath.item].click++ ;
     [collectionView reloadData];
   }
 }

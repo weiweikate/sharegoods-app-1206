@@ -177,7 +177,10 @@ export default class ShowHotView extends PureComponent {
                     {/*renderInfinite={() => this._renderInfinite()}*/}
                 {/*/>*/}
                 <ShowGroundView style={{flex:1}}
+                                uri={'/discover/query@GET'}
                                 renderHeader={this.renderHeader}
+                                onStartRefresh={()=> {alert(111)}}
+                                params={{generalize: tag.Recommend + ''}}
                                 onItemPress={({nativeEvent})=> {
 
                                     this.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
