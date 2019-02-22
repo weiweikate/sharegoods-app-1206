@@ -21,15 +21,18 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
+import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +45,8 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     private ShowgroundPresenter presenter;
     private EventDispatcher eventDispatcher;
     private onItemPressEvent itemPressEvent;
-
+    private onStartRefreshEvent startRefreshEvent;
+    private WeakReference<View> showgroundView;
 
     @Override
     public String getName() {
@@ -60,18 +64,20 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     }
 
     private void initView(Context context, final View view) {
+        showgroundView = new WeakReference<>(view);
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
+        swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
                 presenter.initShowground();
             }
-        });
+        },200);
         itemPressEvent = new onItemPressEvent();
+        startRefreshEvent = new onStartRefreshEvent();
         adapter = new ShowGroundAdapter();
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setPreLoadNumber(3);
@@ -90,6 +96,9 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view1, int position) {
+                if(view1 instanceof RecyclerViewHeaderView){
+                    return;
+                }
                 List<NewestShowGroundBean.DataBean> data = adapter.getData();
                 if (data != null) {
                     NewestShowGroundBean.DataBean item = data.get(position);
@@ -129,8 +138,19 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         presenter = new ShowgroundPresenter(this);
     }
 
+    @ReactProp(name = "uri")
+    public void getUri(){
+    }
+
     @Override
     public void onRefresh() {
+        if (eventDispatcher != null) {
+            View view = showgroundView.get();
+            if(view != null){
+                startRefreshEvent.init(view.getId());
+                eventDispatcher.dispatchEvent(startRefreshEvent);
+            }
+        }
         adapter.setEnableLoadMore(false);
         page = 1;
         presenter.initShowground();
@@ -147,9 +167,6 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     public void addView(ViewGroup parent,final View child, int index) {
         Assertions.assertCondition(child instanceof RecyclerViewHeaderView,"");
         adapter.addHeaderView(child);
-//        child.requestLayout();
-//        parent.requestLayout();
-//        parent.postInvalidate();
     }
 
     @Override
@@ -192,6 +209,10 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
                                 "phasedRegistrationNames",
                                 MapBuilder.of(
                                         "bubbled", "onItemPress")))
+                .put("MrShowGroundOnStartRefreshEvent",MapBuilder.of(
+                        "phasedRegistrationNames",
+                        MapBuilder.of(
+                                "bubbled", "onStartRefresh")))
                 .build();
     }
 

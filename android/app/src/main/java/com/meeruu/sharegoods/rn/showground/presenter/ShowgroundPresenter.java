@@ -35,13 +35,19 @@ public class ShowgroundPresenter {
                 List list = data.getData();
                 initView(data.getData());
                 IShowgroundView view = showgroundViewWeakReference.get();
-                if(list.size() < 10){
+                if(list == null){
+                    view.loadMoreEnd();
+                }else if (list.size() < 10){
                     view.loadMoreEnd();
                 }else {
                     view.loadMoreComplete();
                 }
             }
         });
+    }
+
+    public void setUri(String uri){
+        showgroundModel.setUri(uri);
     }
 
     public void loadMore(int page){

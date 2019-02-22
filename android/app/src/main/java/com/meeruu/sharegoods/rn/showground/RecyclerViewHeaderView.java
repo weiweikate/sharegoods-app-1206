@@ -53,8 +53,6 @@ public class RecyclerViewHeaderView extends ViewGroup {
             measure(
                     MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                     MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            int height= getHeight();
-            int width = getWidth();
             int left = getLeft();
             int top = getTop();
             int right = getRight();

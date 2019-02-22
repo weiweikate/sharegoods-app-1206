@@ -15,6 +15,12 @@ import static com.meeruu.commonlib.utils.ParameterUtils.NETWORK_ELSE_CACHED;
 
 public class ShowgroundModel implements IShowgroundModel{
 
+    private final String GET = "GET";
+    private final String POST = "POST";
+    private String uri = "";
+    private String rnParams = null;
+    private String requestType = GET;
+
     @Override
     public void fetchRecommendList(int page, int size, final BaseCallback callback ) {
         ShowgroundRequestConfig showgroundRequestConfig = new ShowgroundRequestConfig();
@@ -22,7 +28,22 @@ public class ShowgroundModel implements IShowgroundModel{
         params.put("size",size+"");
         params.put("page",page+"");
         showgroundRequestConfig.setParams(params);
-        RequestManager.getInstance().doGet(NETWORK_ELSE_CACHED, showgroundRequestConfig, callback);
+        switch (this.requestType){
+            case GET:{
+                RequestManager.getInstance().doGet(NETWORK_ELSE_CACHED, showgroundRequestConfig, callback);
+            }
+            break;
+            case POST:{
+                RequestManager.getInstance().doPost(showgroundRequestConfig, callback);
+            }
+            break;
+            default:return;
+        }
+    }
+
+    @Override
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     private static class ShowgroundRequestConfig implements BaseRequestConfig{
@@ -42,4 +63,5 @@ public class ShowgroundModel implements IShowgroundModel{
            return map;
         }
     }
+
 }
