@@ -2,7 +2,7 @@
  * 精选热门
  */
 import React, { PureComponent } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet,Platform } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import ShowChoiceView from './ShowChoiceView';
 import {
@@ -15,6 +15,7 @@ import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ShowGroundView from './components/ShowGroundView';
+
 
 @observer
 export default class ShowHotView extends PureComponent {
@@ -30,6 +31,10 @@ export default class ShowHotView extends PureComponent {
         super(props);
         this.firstLoad = true;
         this.recommendModules = new ShowRecommendModules();
+        this.state = {
+            headerView:null
+        }
+
     }
 
     componentDidMount() {
@@ -48,7 +53,11 @@ export default class ShowHotView extends PureComponent {
     }
 
     loadData() {
-        showChoiceModules.loadChoiceList();
+        showChoiceModules.loadChoiceList().then(data => {
+            this.setState({
+                headerView:this.renderHeader()
+            })
+        });
         showBannerModules.loadBannerList();
     }
 
@@ -73,7 +82,7 @@ export default class ShowHotView extends PureComponent {
             <View style={styles.container}>
                 <ShowGroundView style={{flex:1}}
                     uri={'/discover/query@GET'}
-                    renderHeader={this.renderHeader}
+                    renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                     onStartRefresh={()=> {}}
                     params={{generalize: tag.Recommend + ''}}
                     onStartScroll={()=> {

@@ -16,7 +16,7 @@ export default class ShowGroundView extends Component {
             <RCTShowGroundView {...this.props}>
                 {this.props.renderHeader &&
                 <NativeHeader>
-                    {this.props.renderHeader()}
+                    {this.props.renderHeader}
                 </NativeHeader>}
             </RCTShowGroundView>
         );

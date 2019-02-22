@@ -9,6 +9,7 @@ import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Map;
 
 public class ShowgroundPresenter {
     private IShowgroundModel showgroundModel;
@@ -17,6 +18,10 @@ public class ShowgroundPresenter {
     public ShowgroundPresenter(IShowgroundView view) {
         showgroundViewWeakReference = new WeakReference<>(view);
         showgroundModel = new ShowgroundModel();
+    }
+
+    public void setParams(Map map){
+        showgroundModel.setParams(map);
     }
 
     public void getShowList(final int page) {

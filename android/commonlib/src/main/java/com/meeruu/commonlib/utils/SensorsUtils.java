@@ -1,11 +1,8 @@
-package com.meeruu.sharegoods.utils;
+package com.meeruu.commonlib.utils;
 
 import android.content.Context;
 import android.webkit.WebView;
 
-import com.meeruu.commonlib.utils.AppUtils;
-import com.meeruu.commonlib.utils.DeviceUtils;
-import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import org.json.JSONObject;
@@ -59,8 +56,8 @@ public class SensorsUtils {
             // 这里安装事件取名为 AppInstall。
             // 注意 由于要追踪不同渠道链接中投放的推广渠道，所以 Manifest 中不能按照“方案一”神策meta-data方式定制渠道信息，代码中也不能传入 $utm_ 开头的渠道字段！！！
             SensorsDataAPI.sharedInstance(context).trackInstallation("AppInstall", installation);
-            // 忽略单个页面
-            SensorsDataAPI.sharedInstance().ignoreAutoTrackActivity(MainRNActivity.class);
+            // 忽略单个页面，java反射拿到rn容器activity
+            SensorsDataAPI.sharedInstance().ignoreAutoTrackActivity(Class.forName("com.meeruu.sharegoods.ui.activity.MainRNActivity"));
             // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
             List<SensorsDataAPI.AutoTrackEventType> eventTypeList = new ArrayList<>();
             // $AppStart

@@ -1,10 +1,3 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * <p>
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 package com.meeruu.commonlib.rn.storage;
 
 import android.content.Context;
@@ -14,14 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.common.ReactConstants;
-import com.meeruu.commonlib.base.BaseApplication;
 
 import javax.annotation.Nullable;
 
-/**
- * Database supplier of the database used by react native. This creates, opens and deletes the
- * database as necessary.
- */
 public class ReactDatabaseSupplier extends SQLiteOpenHelper {
 
     // VisibleForTesting
@@ -53,9 +41,9 @@ public class ReactDatabaseSupplier extends SQLiteOpenHelper {
         mContext = context;
     }
 
-    public static ReactDatabaseSupplier getInstance() {
+    public static ReactDatabaseSupplier getInstance(Context context) {
         if (sReactDatabaseSupplierInstance == null) {
-            sReactDatabaseSupplierInstance = new ReactDatabaseSupplier(BaseApplication.appContext);
+            sReactDatabaseSupplierInstance = new ReactDatabaseSupplier(context.getApplicationContext());
         }
         return sReactDatabaseSupplierInstance;
     }

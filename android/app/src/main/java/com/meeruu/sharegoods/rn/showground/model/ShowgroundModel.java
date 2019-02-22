@@ -15,7 +15,7 @@ public class ShowgroundModel implements IShowgroundModel {
     private final String GET = "GET";
     private final String POST = "POST";
     private String uri = "";
-    private String rnParams = null;
+    private HashMap rnParams = null;
     private String requestType = GET;
 
     @Override
@@ -39,8 +39,8 @@ public class ShowgroundModel implements IShowgroundModel {
     }
 
     @Override
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setParams(HashMap map) {
+        this.rnParams = map;
     }
 
     private static class ShowgroundRequestConfig implements BaseRequestConfig {
