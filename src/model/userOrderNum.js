@@ -36,7 +36,7 @@ class UserOrderNum {
         this.waitPayNum = data.nonPay;
         this.waitReceiveNum = data.nonReceiving;
         this.waitSendNum = data.nonDelivery;
-        this.waitShowNum = data.nonShow || 0;
+        this.waitShowNum = data.comment || 0;
     }
 
     @action
