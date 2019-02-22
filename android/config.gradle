@@ -32,6 +32,7 @@ ext {
             exopOKhttp  : 'com.google.android.exoplayer:extension-okhttp:2.7.3',
             multidex    : 'com.android.support:multidex:1.0.3',
             sensors     : 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.0.0',
-            okhttp      : 'com.squareup.okhttp3:okhttp:3.11.0'
+            okhttp      : 'com.squareup.okhttp3:okhttp:3.11.0',
+            adapter     : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46',
     ]
 }

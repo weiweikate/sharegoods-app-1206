@@ -1,0 +1,7 @@
+package com.meeruu.sharegoods.rn.showground.model;
+
+import com.meeruu.commonlib.callback.BaseCallback;
+
+public interface IShowgroundModel {
+    void fetchRecommendList(int page, int size, BaseCallback callback);
+}
