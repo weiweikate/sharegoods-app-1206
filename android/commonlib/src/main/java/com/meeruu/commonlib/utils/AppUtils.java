@@ -7,11 +7,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 
 import com.meeruu.commonlib.base.BaseApplication;
-import com.meeruu.commonlib.rn.storage.AsyncStorageManager;
-import com.meeruu.commonlib.rn.storage.MultiGetCallback;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -155,24 +152,5 @@ public class AppUtils {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-    }
-
-    public static void initStorage() {
-        // key需要跟rn端保持一致
-        AsyncStorageManager.getInstance().getItem("HostJson", new MultiGetCallback() {
-            @Override
-            public void onSuccess(String data) {
-                if (!TextUtils.isEmpty(data)) {
-                    SPCacheUtils.put(ParameterUtils.API_SERVER, data);
-                } else {
-                    SPCacheUtils.put(ParameterUtils.API_SERVER, "");
-                }
-            }
-
-            @Override
-            public void onFail(String msg) {
-                SPCacheUtils.put(ParameterUtils.API_SERVER, "");
-            }
-        });
     }
 }

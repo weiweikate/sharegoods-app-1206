@@ -16,20 +16,11 @@ import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
-import com.meeruu.commonlib.utils.Utils;
-import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
-import com.meeruu.sharegoods.rn.kefu.QiyuImageLoader;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
-import com.meeruu.sharegoods.utils.SensorsUtils;
-import com.meituan.android.walle.WalleChannelReader;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
-import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
-import com.qiyukf.unicorn.api.UICustomization;
-import com.qiyukf.unicorn.api.Unicorn;
-import com.qiyukf.unicorn.api.YSFOptions;
 import com.reactlibrary.RNGeolocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.request.MRNetStatePackage;
@@ -67,6 +58,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                 patchStatus = code;
             }
         });
+        // activity生命周期，onCreate之后
+        ForegroundCallbacks.init(this);
         ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
             @Override
             public void onBecameForeground() {
@@ -90,21 +83,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return;
         }
         LeakCanary.install(this);
-        if (getProcessName(this).equals(getPackageName())) {
-            // umeng初始化
-            String channel = WalleChannelReader.getChannel(this, "guanwang");
-            if (Utils.isApkInDebug()) {
-                // 初始化 Sensors SDK
-                SensorsUtils.initDebugMode(this, channel);
-            } else {
-                // 捕获闪退日志
-                CrashHandler.getInstance().init(this);
-                // 初始化 Sensors SDK
-                SensorsUtils.initReleaseMode(this, channel);
-            }
-            // 七鱼初始化
-            Unicorn.init(this, "b87fd67831699ca494a9d3de266cd3b0", options(), new QiyuImageLoader(this));
-        }
     }
 
     @Override
@@ -159,23 +137,5 @@ public class MainApplication extends BaseApplication implements ReactApplication
     @Override
     public ReactNativeHost getReactNativeHost() {
         return mReactNativeHost;
-    }
-
-    // 如果返回值为null，则全部使用默认参数。
-    private YSFOptions options() {
-        YSFOptions options = new YSFOptions();
-        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
-        UICustomization uiCustomization = new UICustomization();
-        // 头像风格，0为圆形，1为方形
-        uiCustomization.avatarShape = 0;
-        // 标题栏背景
-        uiCustomization.titleBackgroundColor = 0xFFFFFFFF;
-        uiCustomization.titleBarStyle = 0;
-        uiCustomization.topTipBarBackgroundColor = 0xFF666666;
-        uiCustomization.titleCenter = true;
-        uiCustomization.topTipBarTextColor = 0xFFFFFFFF;
-        options.categoryDialogStyle = 0;
-        options.uiCustomization = uiCustomization;
-        return options;
     }
 }
