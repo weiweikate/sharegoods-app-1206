@@ -77,13 +77,14 @@ export default class P_ScoreSwiperPage extends BasePage {
                     position: 'absolute',
                     backgroundColor: 'rgba(0,0,0,0.5)',
                     justifyContent: 'center',
+                    alignItems: 'center',
                     height: 48,
                     width: width,
-                    bottom: 0, left: 15, right: 15
+                    bottom: 0, left: 0, right: 0
                 }}>
                     <Text style={{
                         fontSize: 12,
-                        width: width - 30,
+                        marginHorizontal: 15,
                         color: DesignRule.white
                     }}
                           numberOfLines={3}>{content}</Text>
