@@ -148,6 +148,7 @@ class ShowChoiceModules {
         try {
             const result = yield ShowApi.showQuery({ generalize: tag.Featured });
             this.choiceList = result.data.data;
+            return result
         } catch (error) {
             console.log(error);
         }

@@ -15,11 +15,13 @@ import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
@@ -33,6 +35,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,13 +76,13 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
+        swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
                 onRefresh();
             }
-        });
+        }, 200);
         itemPressEvent = new onItemPressEvent();
         startRefreshEvent = new onStartRefreshEvent();
         startScrollEvent = new onStartScrollEvent();
@@ -160,6 +163,14 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         presenter = new ShowgroundPresenter(this);
     }
 
+    @ReactProp(name = "params")
+    public void setParams(View view, ReadableMap map) {
+        if (presenter != null) {
+            HashMap map1 = map.toHashMap();
+            presenter.setParams(map1);
+        }
+    }
+
     @Override
     public void onRefresh() {
         if (eventDispatcher != null) {
@@ -184,9 +195,12 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     @Override
     public void addView(ViewGroup parent, final View child, int index) {
         Assertions.assertCondition(child instanceof RecyclerViewHeaderView, "");
+        int i = adapter.getHeaderLayoutCount();
+        if (i != 0) {
+            adapter.removeAllHeaderView();
+        }
         adapter.addHeaderView(child);
-        child.postInvalidateDelayed(1000);
-//        recyclerView.postInvalidateDelayed(200);
+        recyclerView.scrollToPosition(0);
     }
 
     @Override
