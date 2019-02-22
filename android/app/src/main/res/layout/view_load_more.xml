@@ -17,7 +17,7 @@
             android:layout_marginLeft="@dimen/dp_4"
             android:text="@string/brvah_loading"
             android:textColor="@android:color/darker_gray"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <FrameLayout
@@ -33,7 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/brvah_load_failed"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
 
     </FrameLayout>
 
@@ -48,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/brvah_load_end"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
     </FrameLayout>
 </FrameLayout>
