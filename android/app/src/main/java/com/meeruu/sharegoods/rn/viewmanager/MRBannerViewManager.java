@@ -1,8 +1,6 @@
 package com.meeruu.sharegoods.rn.viewmanager;
 
 import android.support.annotation.Nullable;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
@@ -24,7 +22,9 @@ import java.util.Map;
 @ReactModule(name = MRBannerViewManager.REACT_CLASS)
 public class MRBannerViewManager extends SimpleViewManager<BannerLayout> implements BannerLayout.OnBannerItemClickListener {
     protected static final String REACT_CLASS = "MRBannerView";
-    public EventDispatcher eventDispatcher;
+    private EventDispatcher eventDispatcher;
+    private onDidScrollToIndexEvent scrollToIndexEvent;
+    private onDidSelectItemAtIndexEvent selectItemAtIndexEvent;
     private boolean pageFocus;
     private BannerLayout banner;
 
@@ -35,11 +35,8 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
 
     @Override
     protected BannerLayout createViewInstance(final ThemedReactContext reactContext) {
-        eventDispatcher =
-                reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         banner = new BannerLayout(reactContext);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        banner.setLayoutParams(params);
         banner.setShowIndicator(false);
         initBannerEvent(banner);
         initLifeEvent();
@@ -47,12 +44,15 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     }
 
     private void initBannerEvent(final BannerLayout banner) {
+        scrollToIndexEvent = new onDidScrollToIndexEvent();
+        selectItemAtIndexEvent = new onDidSelectItemAtIndexEvent();
         banner.setOnPageSelected(new OnPageSelected() {
             @Override
             public void pageSelected(int position) {
-                if(eventDispatcher != null){
-                    eventDispatcher.dispatchEvent(
-                            new onDidScrollToIndexEvent(banner.getId(), position));
+                if (eventDispatcher != null) {
+                    scrollToIndexEvent.init(banner.getId());
+                    scrollToIndexEvent.setIndex(position);
+                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
                 }
             }
         });
@@ -140,17 +140,18 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     @Override
     public void onDropViewInstance(BannerLayout view) {
         view.removeAllViews();
-        view = null;
+        eventDispatcher.onCatalystInstanceDestroyed();
         eventDispatcher = null;
-        eventDispatcher = null;
+        scrollToIndexEvent = null;
+        selectItemAtIndexEvent = null;
         super.onDropViewInstance(view);
     }
 
     @Override
     public void onItemClick(int position) {
         banner.setAutoPlaying(false);
-        eventDispatcher.dispatchEvent(
-                new onDidSelectItemAtIndexEvent(
-                        banner.getId(), position));
+        selectItemAtIndexEvent.init(banner.getId());
+        selectItemAtIndexEvent.setIndex(position);
+        eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
     }
 }
