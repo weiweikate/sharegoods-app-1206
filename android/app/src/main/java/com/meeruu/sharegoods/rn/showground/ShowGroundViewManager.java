@@ -16,6 +16,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
@@ -36,6 +37,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -160,6 +162,14 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
 
     private void initData() {
         presenter = new ShowgroundPresenter(this);
+    }
+
+    @ReactProp(name = "params")
+    private void setParams(ReadableMap map){
+        if(presenter != null){
+            HashMap map1 = map.toHashMap();
+            presenter.setParams(map1);
+        }
     }
 
     @Override
