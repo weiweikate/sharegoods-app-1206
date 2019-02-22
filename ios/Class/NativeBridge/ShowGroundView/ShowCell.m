@@ -8,7 +8,6 @@
 
 #import "ShowCell.h"
 #import  <SDAutoLayout.h>
-#import "GradientView.h"
 @interface ShowCell()
 @property(nonatomic, strong)UIImageView *imageView;
 @property(nonatomic, strong)UILabel *numLb;
@@ -26,18 +25,13 @@
     [self.contentView addSubview:_imageView];
     _imageView.sd_layout
     .spaceToSuperView(UIEdgeInsetsMake(0, 0, 90, 0));
-    GradientView *view = [GradientView new];
-    view.gradientLayer.startPoint = CGPointMake(0, 1);
-    view.gradientLayer.endPoint = CGPointMake(0, 0);
-    view.gradientLayer.colors = @[(id)[[UIColor blackColor]colorWithAlphaComponent:0.3] .CGColor,
-                                  (id)[UIColor whiteColor].CGColor];
-    [_imageView addSubview:view];
-    view.sd_layout
+    UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"show_mask"]];
+    [_imageView addSubview:bgView];
+    bgView.sd_layout
     .bottomSpaceToView(_imageView, 0)
     .rightSpaceToView(_imageView, 0)
     .leftSpaceToView(_imageView, 0)
     .heightIs(30);
-    
   }
   return _imageView;
 }
