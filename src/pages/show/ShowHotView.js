@@ -129,15 +129,16 @@ export default class ShowHotView extends PureComponent {
                     params={{generalize: tag.Recommend + ''}}
                     onStartScroll={()=> {
                         console.log('_onChoiceAction star' )
+                       this.timer && clearTimeout(this.timer)
                        this.choiceView && this.choiceView.changeIsScroll(true)
                         // this.choiceView && this.choiceView.isScroll = true;
                     }}
                     onEndScroll={() => {
 
                         console.log('_onChoiceAction end1' )
-                        setTimeout(()=> {
+                      this.timer = setTimeout(()=> {
                             this.choiceView && this.choiceView.changeIsScroll(false)
-                        }, 700)
+                        }, 500)
                     }}
                     onItemPress={({nativeEvent})=> {
                         const { navigate } = this.props;
