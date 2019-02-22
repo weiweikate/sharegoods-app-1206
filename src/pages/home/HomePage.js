@@ -728,7 +728,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#999',
-        fontSize: px2dp(11)
+        fontSize: DesignRule.fontSize_24
     }
 });
 

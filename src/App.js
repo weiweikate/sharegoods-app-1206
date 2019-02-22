@@ -79,6 +79,7 @@ export default class App extends Component {
     async componentWillMount() {
         netStatus.startMonitorNetworkStatus();
 
+        // 环境配置
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$routes = [];

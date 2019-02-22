@@ -124,6 +124,15 @@
 		CD24240F21F837A9008C7FF4 /* NSDictionary+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CD24240E21F837A9008C7FF4 /* NSDictionary+Util.m */; };
 		CD3A8A0721F05DF3003B9803 /* MRLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */; };
 		CD3A8A0A21F05E17003B9803 /* MRLoadingViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3A8A0921F05E17003B9803 /* MRLoadingViewManager.m */; };
+		CD5EAF48221BEA9F007AAEE0 /* NetWorkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */; };
+		CD5EAF9D221BFB5E007AAEE0 /* ShowGroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9C221BFB5E007AAEE0 /* ShowGroundViewManager.m */; };
+		CD5EAFA0221BFB8E007AAEE0 /* ShowGroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAF9F221BFB8E007AAEE0 /* ShowGroundView.m */; };
+		CD5EAFA7221BFE89007AAEE0 /* ShowQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */; };
+		CD5EB082221D46E3007AAEE0 /* ShowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB081221D46E3007AAEE0 /* ShowCell.m */; };
+		CD5EB10B221E9A9F007AAEE0 /* ShowHeaderViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB10A221E9A9E007AAEE0 /* ShowHeaderViewManager.m */; };
+		CD5EB143221E9AB3007AAEE0 /* ShowHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB142221E9AB3007AAEE0 /* ShowHeaderView.m */; };
+		CD5EB146221EA148007AAEE0 /* WHCWaterfallFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB145221EA148007AAEE0 /* WHCWaterfallFlowLayout.m */; };
+		CD5EB149221EA933007AAEE0 /* ShowCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */; };
 		CD6741F621DEF78500464549 /* AdView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6741F521DEF78500464549 /* AdView.m */; };
 		CD6742D021E4418900464549 /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742CF21E4418900464549 /* RSKImageCropper.framework */; };
 		CD6742D121E4418900464549 /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742CF21E4418900464549 /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -791,6 +800,25 @@
 		CD3A8A0821F05E17003B9803 /* MRLoadingViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRLoadingViewManager.h; sourceTree = "<group>"; };
 		CD3A8A0921F05E17003B9803 /* MRLoadingViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRLoadingViewManager.m; sourceTree = "<group>"; };
 		CD45EE1A21C7885000846B39 /* liblottie-react-native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblottie-react-native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkTool.m; sourceTree = "<group>"; };
+		CD5EAF12221BEA9F007AAEE0 /* NetWorkTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkTool.h; sourceTree = "<group>"; };
+		CD5EAF49221BECA3007AAEE0 /* XG_Api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XG_Api.h; sourceTree = "<group>"; };
+		CD5EAF9B221BFB5E007AAEE0 /* ShowGroundViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowGroundViewManager.h; sourceTree = "<group>"; };
+		CD5EAF9C221BFB5E007AAEE0 /* ShowGroundViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowGroundViewManager.m; sourceTree = "<group>"; };
+		CD5EAF9E221BFB8E007AAEE0 /* ShowGroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowGroundView.h; sourceTree = "<group>"; };
+		CD5EAF9F221BFB8E007AAEE0 /* ShowGroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowGroundView.m; sourceTree = "<group>"; };
+		CD5EAFA5221BFE89007AAEE0 /* ShowQueryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowQueryModel.h; sourceTree = "<group>"; };
+		CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowQueryModel.m; sourceTree = "<group>"; };
+		CD5EB080221D46E3007AAEE0 /* ShowCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowCell.h; sourceTree = "<group>"; };
+		CD5EB081221D46E3007AAEE0 /* ShowCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowCell.m; sourceTree = "<group>"; };
+		CD5EB109221E9A9E007AAEE0 /* ShowHeaderViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowHeaderViewManager.h; sourceTree = "<group>"; };
+		CD5EB10A221E9A9E007AAEE0 /* ShowHeaderViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowHeaderViewManager.m; sourceTree = "<group>"; };
+		CD5EB141221E9AB3007AAEE0 /* ShowHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowHeaderView.h; sourceTree = "<group>"; };
+		CD5EB142221E9AB3007AAEE0 /* ShowHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowHeaderView.m; sourceTree = "<group>"; };
+		CD5EB144221EA147007AAEE0 /* WHCWaterfallFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHCWaterfallFlowLayout.h; sourceTree = "<group>"; };
+		CD5EB145221EA148007AAEE0 /* WHCWaterfallFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHCWaterfallFlowLayout.m; sourceTree = "<group>"; };
+		CD5EB147221EA932007AAEE0 /* ShowCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowCollectionReusableView.h; sourceTree = "<group>"; };
+		CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowCollectionReusableView.m; sourceTree = "<group>"; };
 		CD6741F421DEF78500464549 /* AdView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdView.h; sourceTree = "<group>"; };
 		CD6741F521DEF78500464549 /* AdView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdView.m; sourceTree = "<group>"; };
 		CD67428F21E43F5F00464549 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/@mr/rn-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
@@ -1303,6 +1331,7 @@
 		506835C421379B78001AB175 /* NativeBridge */ = {
 			isa = PBXGroup;
 			children = (
+				CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */,
 				CD3A89D021F05DD3003B9803 /* MRLoadingView */,
 				50043A7721C76D6100270DFA /* ShopCart */,
 				CDAB6D18219AC5F800DE6716 /* WaveProgressView */,
@@ -1693,6 +1722,7 @@
 		CD1E519221C9D935007103A1 /* tool */ = {
 			isa = PBXGroup;
 			children = (
+				CD5EAF10221BEA9F007AAEE0 /* netTool */,
 				CD1E51C721C9D96B007103A1 /* BGKeychainTool.h */,
 				CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */,
 				CD1E52DE21CCB8D1007103A1 /* WelcomeView.h */,
@@ -1722,6 +1752,39 @@
 				CD45EE0121C77E1A00846B39 /* libRNSensorsAnalyticsModule.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CD5EAF10221BEA9F007AAEE0 /* netTool */ = {
+			isa = PBXGroup;
+			children = (
+				CD5EAF49221BECA3007AAEE0 /* XG_Api.h */,
+				CD5EAF12221BEA9F007AAEE0 /* NetWorkTool.h */,
+				CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */,
+			);
+			path = netTool;
+			sourceTree = "<group>";
+		};
+		CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */ = {
+			isa = PBXGroup;
+			children = (
+				CD5EB144221EA147007AAEE0 /* WHCWaterfallFlowLayout.h */,
+				CD5EB145221EA148007AAEE0 /* WHCWaterfallFlowLayout.m */,
+				CD5EAF9B221BFB5E007AAEE0 /* ShowGroundViewManager.h */,
+				CD5EAF9C221BFB5E007AAEE0 /* ShowGroundViewManager.m */,
+				CD5EAF9E221BFB8E007AAEE0 /* ShowGroundView.h */,
+				CD5EAF9F221BFB8E007AAEE0 /* ShowGroundView.m */,
+				CD5EAFA5221BFE89007AAEE0 /* ShowQueryModel.h */,
+				CD5EAFA6221BFE89007AAEE0 /* ShowQueryModel.m */,
+				CD5EB080221D46E3007AAEE0 /* ShowCell.h */,
+				CD5EB081221D46E3007AAEE0 /* ShowCell.m */,
+				CD5EB109221E9A9E007AAEE0 /* ShowHeaderViewManager.h */,
+				CD5EB10A221E9A9E007AAEE0 /* ShowHeaderViewManager.m */,
+				CD5EB141221E9AB3007AAEE0 /* ShowHeaderView.h */,
+				CD5EB142221E9AB3007AAEE0 /* ShowHeaderView.m */,
+				CD5EB147221EA932007AAEE0 /* ShowCollectionReusableView.h */,
+				CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */,
+			);
+			path = ShowGroundView;
 			sourceTree = "<group>";
 		};
 		CD67429021E43F5F00464549 /* Products */ = {
@@ -2516,8 +2579,9 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/QIYU_iOS_SDK/SDK/QYResource.bundle",
 				"${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/back_icon@2x.png",
 				"${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/back_icon@3x.png",
@@ -2531,6 +2595,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QYResource.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/back_icon@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/back_icon@3x.png",
@@ -2541,7 +2606,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2569,6 +2634,7 @@
 				5068361021379B78001AB175 /* AppDelegate+ConfigLib.m in Sources */,
 				CDA2F57821744443005FD4B3 /* ShareImageMaker.m in Sources */,
 				5077FCE621A504C5003B860D /* RSAManager.m in Sources */,
+				CD5EAF9D221BFB5E007AAEE0 /* ShowGroundViewManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				5068363E21379B78001AB175 /* QYChatModule.m in Sources */,
 				50043A7E21C772AF00270DFA /* MRShopCartCellManager.m in Sources */,
@@ -2590,6 +2656,7 @@
 				50043A8121C79C4900270DFA /* ShopCartListView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
+				CD5EAFA7221BFE89007AAEE0 /* ShowQueryModel.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
 				5068363321379B78001AB175 /* LoginAndShareModule.m in Sources */,
 				5077FC2721A401E3003B860D /* RSAEncryptor.m in Sources */,
@@ -2599,15 +2666,22 @@
 				5077FDCA21A79326003B860D /* JSPushManager.m in Sources */,
 				5068363121379B78001AB175 /* commModule.m in Sources */,
 				5068362F21379B78001AB175 /* JRShareManager.m in Sources */,
+				CD5EB082221D46E3007AAEE0 /* ShowCell.m in Sources */,
+				CD5EAFA0221BFB8E007AAEE0 /* ShowGroundView.m in Sources */,
 				5068362D21379B78001AB175 /* JRServiceManager.m in Sources */,
+				CD5EAF48221BEA9F007AAEE0 /* NetWorkTool.m in Sources */,
+				CD5EB149221EA933007AAEE0 /* ShowCollectionReusableView.m in Sources */,
 				CD3A8A0721F05DF3003B9803 /* MRLoadingView.m in Sources */,
+				CD5EB143221E9AB3007AAEE0 /* ShowHeaderView.m in Sources */,
 				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,
+				CD5EB146221EA148007AAEE0 /* WHCWaterfallFlowLayout.m in Sources */,
 				033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */,
 				CD1E52E021CCB8D2007103A1 /* WelcomeView.m in Sources */,
 				5068363421379B78001AB175 /* JRPay.m in Sources */,
 				5068363C21379B78001AB175 /* QRCodeModule.m in Sources */,
 				50043A8421C79D5400270DFA /* SCCell.m in Sources */,
 				5068363021379B78001AB175 /* CachesModule.m in Sources */,
+				CD5EB10B221E9A9F007AAEE0 /* ShowHeaderViewManager.m in Sources */,
 				CDCB5BDA2196DF71006B5F4E /* UIImage+Util.m in Sources */,
 				5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */,
 				CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */,
