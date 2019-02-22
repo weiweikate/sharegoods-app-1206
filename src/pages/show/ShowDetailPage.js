@@ -49,6 +49,7 @@ export default class ShowDetailPage extends BasePage {
             pageState: PageLoadingState.loading,
             errorMsg: ''
         }
+        this.noNeedRefresh = false
     }
 
     $isMonitorNetworkStatus() {
@@ -59,44 +60,29 @@ export default class ShowDetailPage extends BasePage {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
+                if (this.noNeedRefresh) {
+                    this.noNeedRefresh = true
+                    return
+                }
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
                     Toast.showLoading()
-                    if (this.params.code) {
-                        this.showDetailModule.showDetailCode(this.params.code).then(() => {
-                            this.setState({
-                                pageState: PageLoadingState.success
-                            })
-                            Toast.hiddenLoading()
-                        }).catch(error => {
-                            this.setState({
-                                pageState: PageLoadingState.fail,
-                                errorMsg: error.msg || '获取详情失败'
-                            });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 1
-                            });
-                            Toast.$toast(error.msg || '获取详情失败')
-                            Toast.hiddenLoading()
+                    this.showDetailModule.showDetailCode(this.params.code).then(() => {
+                        this.setState({
+                            pageState: PageLoadingState.success
                         })
-                    } else {
-                        this.showDetailModule.loadDetail(this.params.id).then(() => {
-                            this.setState({
-                                pageState: PageLoadingState.success
-                            })
-                            Toast.hiddenLoading()
-                        }).catch(error => {
-                            this.setState({
-                                pageState: PageLoadingState.fail,
-                                errorMsg: error.msg || '获取详情失败'
-                            });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 1
-                            });
-                            Toast.$toast(error.msg || '获取详情失败')
-                            Toast.hiddenLoading()
-                        })
-                    }
+                        Toast.hiddenLoading()
+                    }).catch(error => {
+                        this.setState({
+                            pageState: PageLoadingState.fail,
+                            errorMsg: error.msg || '获取详情失败'
+                        });
+                        this._whiteNavRef.setNativeProps({
+                            opacity: 1
+                        });
+                        Toast.$toast(error.msg || '获取详情失败')
+                        Toast.hiddenLoading()
+                    })
                 }
             }
         );
@@ -181,6 +167,7 @@ export default class ShowDetailPage extends BasePage {
     }
 
     _showImagesPage(imgs, index) {
+        this.noNeedRefresh = true
         const { navigation } = this.props;
         navigation.push('show/ShowDetailImagePage', {
             imageUrls:imgs,
