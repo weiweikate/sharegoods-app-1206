@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.meeruu.sharegoods.rn.storage;
+package com.meeruu.commonlib.rn.storage;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -2,12 +2,14 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 
 public class RecyclerViewHeaderView extends ViewGroup {
     public RecyclerViewHeaderView(Context context) {
         super(context);
     }
+    private int mHeight;
 
     public RecyclerViewHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -23,7 +25,21 @@ public class RecyclerViewHeaderView extends ViewGroup {
     }
 
 
-  
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int w = MeasureSpec.getSize(widthMeasureSpec), h = mHeight;
+        if (mHeight < 1 && getChildCount() > 0) {
+            final View child = getChildAt(0);
+            LayoutParams lp = child.getLayoutParams();
+            if (lp == null) {
+                lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+            }
+            int w1 = MeasureSpec.makeMeasureSpec(lp.width, MeasureSpec.AT_MOST), h1 = MeasureSpec.makeMeasureSpec(lp.height, MeasureSpec.AT_MOST);
+            child.measure(w1, h1);
+            h = child.getHeight();
+        }
+        setMeasuredDimension(w, h);
+    }
 
     @Override
     public void requestLayout() {
@@ -37,8 +53,6 @@ public class RecyclerViewHeaderView extends ViewGroup {
             measure(
                     MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
                     MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            int height= getHeight();
-            int width = getWidth();
             int left = getLeft();
             int top = getTop();
             int right = getRight();

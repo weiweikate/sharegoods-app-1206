@@ -1,0 +1,27 @@
+package com.meeruu.sharegoods.utils;
+
+
+import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.meeruu.commonlib.utils.ParameterUtils;
+import com.meeruu.commonlib.utils.SPCacheUtils;
+
+public class HttpUrlUtils {
+
+    /**************************** api ***************************/
+    public static final String URL_SHOWLIST = "/discover/query"; //秀场列表
+
+
+    /*********获取api接口url***********/
+    public static String getUrl(String url) {
+        String SERVER = "https://api.sharegoodsmall.com/gateway";
+        String jsonStr = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
+        if (!TextUtils.isEmpty(jsonStr)) {
+            JSONObject object = JSON.parseObject(jsonStr);
+            SERVER = object.getString("host");
+        }
+        return SERVER + url;
+    }
+}

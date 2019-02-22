@@ -4,32 +4,34 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.infer.annotation.Assertions;
-import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.onItemPressEvent;
+import com.meeruu.sharegoods.rn.showground.event.onStartRefreshEvent;
 import com.meeruu.sharegoods.rn.showground.presenter.ShowgroundPresenter;
 import com.meeruu.sharegoods.rn.showground.view.IShowgroundView;
 import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +44,8 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     private ShowgroundPresenter presenter;
     private EventDispatcher eventDispatcher;
     private onItemPressEvent itemPressEvent;
+    private onStartRefreshEvent startRefreshEvent;
+    private WeakReference<View> showgroundView;
 
 
     @Override
@@ -60,6 +64,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     }
 
     private void initView(Context context, final View view) {
+        showgroundView = new WeakReference<>(view);
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
@@ -68,10 +73,11 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
-                presenter.initShowground();
+                onRefresh();
             }
         });
         itemPressEvent = new onItemPressEvent();
+        startRefreshEvent = new onStartRefreshEvent();
         adapter = new ShowGroundAdapter();
         adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setPreLoadNumber(3);
@@ -82,14 +88,18 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                presenter.loadMore(page);
+                page++;
+                presenter.getShowList(page);
             }
-        });
+        }, recyclerView);
         adapter.setLoadMoreView(new CustomLoadMoreView());
 
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view1, int position) {
+                if(view1 instanceof RecyclerViewHeaderView){
+                    return;
+                }
                 List<NewestShowGroundBean.DataBean> data = adapter.getData();
                 if (data != null) {
                     NewestShowGroundBean.DataBean item = data.get(position);
@@ -108,7 +118,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         recyclerView.setAdapter(adapter);
-        recyclerView.setAnimation(null);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -120,9 +130,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
                     layoutManager.invalidateSpanAssignments();
                 }
             }
-
         });
-
     }
 
     private void initData() {
@@ -131,9 +139,16 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
 
     @Override
     public void onRefresh() {
+        if (eventDispatcher != null) {
+            View view = showgroundView.get();
+            if(view != null){
+                startRefreshEvent.init(view.getId());
+                eventDispatcher.dispatchEvent(startRefreshEvent);
+            }
+        }
         adapter.setEnableLoadMore(false);
         page = 1;
-        presenter.initShowground();
+        presenter.getShowList(page);
     }
 
     @Override
@@ -144,17 +159,13 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
     }
 
     @Override
-    public void addView(ViewGroup parent,final View child, int index) {
-        Assertions.assertCondition(child instanceof RecyclerViewHeaderView,"");
+    public void addView(ViewGroup parent, final View child, int index) {
+        Assertions.assertCondition(child instanceof RecyclerViewHeaderView, "");
         adapter.addHeaderView(child);
-//        child.requestLayout();
-//        parent.requestLayout();
-//        parent.postInvalidate();
     }
 
     @Override
     public void viewLoadMore(final List data) {
-        page++;
         if (data != null) {
             adapter.addData(data);
         }
@@ -162,7 +173,6 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
 
     @Override
     public void refreshShowground(final List data) {
-        page++;
         if (adapter != null) {
             adapter.setEnableLoadMore(true);
             adapter.setNewData(data);
@@ -192,6 +202,10 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> implement
                                 "phasedRegistrationNames",
                                 MapBuilder.of(
                                         "bubbled", "onItemPress")))
+                .put("MrShowGroundOnStartRefreshEvent",MapBuilder.of(
+                        "phasedRegistrationNames",
+                        MapBuilder.of(
+                                "bubbled", "onStartRefresh")))
                 .build();
     }
 
