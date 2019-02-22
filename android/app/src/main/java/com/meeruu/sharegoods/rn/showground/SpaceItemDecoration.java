@@ -4,7 +4,9 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.LinearLayout;
 
+import com.facebook.infer.annotation.Assertions;
 import com.meeruu.commonlib.utils.DensityUtils;
 
 public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
@@ -19,8 +21,10 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
-//        if (parent.getChildViewHolder(view) instanceof HomeAdapter.FormalThreeVH) {}
         outRect.top = space;
+        if (view instanceof LinearLayout) {
+            return;
+        }
         //瀑布流专属分割线
         StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
         /**
@@ -28,11 +32,11 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
          * 第一列设置左边距为space，右边距为space/2  （第二列反之）
          */
         if (params.getSpanIndex() % 2 == 0) {
-            outRect.left = space;
+            outRect.left = space + 5;
             outRect.right = space / 2;
         } else {
             outRect.left = space / 2;
-            outRect.right = space;
+            outRect.right = space + 5;
         }
     }
 }
