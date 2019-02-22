@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { requireNativeComponent } from 'react-native';
 
-const RCTShowGroundView =  requireNativeComponent('ShowGroundView');
+ const RCTShowGroundView = requireNativeComponent('ShowGroundView', ShowGroundView);
 const NativeHeader = requireNativeComponent("ShowHeaderView");
 
 export default class ShowGroundView extends Component {

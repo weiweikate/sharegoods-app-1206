@@ -79,8 +79,24 @@ class Card extends Component {
 @observer
 export default class ShowChoiceView extends Component {
 
+    constructor(props) {
+        super(props)
+        this.isScroll = false;
+        this.changeIsScroll = this.changeIsScroll.bind(this);
+    }
+
+    changeIsScroll(isScroll)
+    {
+        this.isScroll = isScroll
+        console.log('_onChoiceAction' + this.isScroll)
+    }
+
     _onChoiceAction(item) {
+        console.log('_onChoiceAction' + this.isScroll)
         const { navigate } = this.props
+        if (this.isScroll === true) {
+            return
+        }
         navigate('show/ShowDetailPage', {id: item.id, code: item.code})
     }
 
