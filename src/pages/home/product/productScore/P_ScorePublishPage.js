@@ -64,10 +64,10 @@ export class P_ScorePublishPage extends BasePage {
             mediaType: 'video',
             loadingLabelText: '处理中...'
         }).then(video => {
-            // if (images[0].size > 3 * 1024 * 1024) {
-            //     this.$toastShow('图片过大,建议上传3M以内的视频');
-            //     return;
-            // }
+            if (video.size > 3 * 1024 * 1024) {
+                this.$toastShow('图片过大,建议上传3M以内的视频');
+                return;
+            }
             this.p_ScorePublishModel.uploadVideo(video.path, itemIndex);
         }).catch(e => {
         });
