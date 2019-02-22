@@ -88,11 +88,11 @@ export default class ShowChoiceView extends Component {
     changeIsScroll(isScroll)
     {
         this.isScroll = isScroll
-        console.log('_onChoiceAction' + this.isScroll)
+        console.log('_onChoiceAction' , this.isScroll)
     }
 
     _onChoiceAction(item) {
-        console.log('_onChoiceAction' + this.isScroll)
+        console.log('_onChoiceAction' , this.isScroll)
         const { navigate } = this.props
         if (this.isScroll === true) {
             return
