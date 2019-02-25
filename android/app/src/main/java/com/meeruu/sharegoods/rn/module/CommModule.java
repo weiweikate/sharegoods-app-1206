@@ -5,6 +5,9 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -15,6 +18,8 @@ import android.webkit.CookieSyncManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -30,6 +35,7 @@ import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.ImageCacheUtils;
+import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
@@ -45,6 +51,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
@@ -478,5 +485,69 @@ public class CommModule extends ReactContextBaseJavaModule {
             tagSet.add(data.getString("version"));
         }
         JPushInterface.setTags(this.mContext, tagSet, null);
+    }
+
+    /**
+     * 获取视频文件关键帧
+     * @param filePath
+     * @param callback
+     */
+    @ReactMethod
+    public void RN_Video_Image(String filePath,Promise promise){
+        Bitmap bitmap = null;
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try
+        {
+            if (filePath.startsWith("http://")
+                    || filePath.startsWith("https://")
+                    || filePath.startsWith("widevine://"))
+            {
+                retriever.setDataSource(filePath, new Hashtable<String, String>());
+            }
+            else
+            {
+                retriever.setDataSource(filePath);
+            }
+            bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC); //retriever.getFrameAtTime(-1);
+        }
+        catch (IllegalArgumentException ex)
+        {
+            // Assume this is a corrupt video file
+            ex.printStackTrace();
+        }
+        catch (RuntimeException ex)
+        {
+            // Assume this is a corrupt video file.
+            ex.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                retriever.release();
+            }
+            catch (RuntimeException ex)
+            {
+                // Ignore failures while cleaning up.
+                ex.printStackTrace();
+            }
+        }
+
+        if (bitmap == null)
+        {
+            promise.reject("");
+            return ;
+        }
+
+        String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png",filePath);
+
+        if(bitmap!= null && !bitmap.isRecycled()){
+            bitmap.recycle();
+        }
+        bitmap = null;
+
+        WritableMap map = Arguments.createMap();
+        map.putString("imagePath",returnPath);
+        promise.resolve(map);
     }
 }
