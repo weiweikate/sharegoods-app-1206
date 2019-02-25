@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    StyleSheet
+    StyleSheet,View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
@@ -8,18 +8,18 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import MyCouponsItems from './../../components/MyCouponsItems';
 import User from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
-
 export default class CouponsPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: true
+            modalVisible: false,
+            titleName : '优惠券'
         };
     }
 
     $navigationBarOptions = {
         title: '优惠券',
-        show: true // false则隐藏导航
+        show: true, // false则隐藏导航
     };
 
     componentDidMount() {
@@ -28,8 +28,10 @@ export default class CouponsPage extends BasePage {
         }
     }
 
+
     _render() {
         return (
+            <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
             <ScrollableTabView
                 style={styles.container}
                 renderTabBar={this._renderTabBar}
@@ -52,6 +54,7 @@ export default class CouponsPage extends BasePage {
                 <MyCouponsItems tabLabel={'已失效'} pageStatus={2} nav={this.props.navigation}
                                 isgiveup={false}/>
             </ScrollableTabView>
+            </View>
         );
     }
 
@@ -67,9 +70,6 @@ export default class CouponsPage extends BasePage {
         />;
     };
 
-    setModalVisible(visible) {
-        this.setState({ modalVisible: visible });
-    }
 }
 const styles = StyleSheet.create({
     container: {
