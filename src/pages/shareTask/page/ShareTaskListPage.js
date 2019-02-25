@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ShareTaskResultAlert from '../components/ShareTaskResultAlert';
-import RefreshLargeList from '../../../comm/components/RefreshLargeList';
+// import RefreshLargeList from '../../../comm/components/RefreshLargeList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import taskApi from '../api/taskApi';
 import DesignRule from '../../../constants/DesignRule';
@@ -103,22 +103,22 @@ export default class ShareTaskListPage extends BasePage<Props> {
     _render() {
         return (
             <View style={styles.container}>
-                <RefreshLargeList
-                    style={{ flex: 1 }}
-                    url={taskApi.taskList}
-                    params={{}}
-                    ref={(ref) => {
-                        this.list2 = ref;
-                    }}
-                    heightForCell={({ row }) => {
-                        return this.expansions[row] ? autoSizeWidth(315) : autoSizeWidth(95);
-                    }}
-                    renderItem={this._renderIndexPath}
-                    renderItemSeparator={this.renderItemSeparator}
-                    handleRequestResult={(data) => data.data}
-                    isSupportLoadingMore={false}
-                    onEndRefresh={this._onEndRefresh.bind(this)}
-                />
+                {/*<RefreshLargeList*/}
+                    {/*style={{ flex: 1 }}*/}
+                    {/*url={taskApi.taskList}*/}
+                    {/*params={{}}*/}
+                    {/*ref={(ref) => {*/}
+                        {/*this.list2 = ref;*/}
+                    {/*}}*/}
+                    {/*heightForCell={({ row }) => {*/}
+                        {/*return this.expansions[row] ? autoSizeWidth(315) : autoSizeWidth(95);*/}
+                    {/*}}*/}
+                    {/*renderItem={this._renderIndexPath}*/}
+                    {/*renderItemSeparator={this.renderItemSeparator}*/}
+                    {/*handleRequestResult={(data) => data.data}*/}
+                    {/*isSupportLoadingMore={false}*/}
+                    {/*onEndRefresh={this._onEndRefresh.bind(this)}*/}
+                {/*/>*/}
                 <ShareTaskResultAlert ref={(ref) => this.successModal = ref}
                                       success={true}
                                       money={this.state.recieveMoney}
