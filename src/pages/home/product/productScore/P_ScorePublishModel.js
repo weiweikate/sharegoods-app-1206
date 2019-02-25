@@ -4,6 +4,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import { request } from '@mr/rn-request';
 import HomeAPI from '../../api/HomeAPI';
 import orderApi from '../../../order/api/orderApi';
+import { NativeModules } from 'react-native';
 
 export default class P_ScorePublishModel {
 
@@ -49,10 +50,10 @@ export default class P_ScorePublishModel {
         itemData.images.splice(imgIndex, 1);
     };
 
-    @action addVideo = (itemIndex, video) => {
+    @action addVideo = (itemIndex, videoUrl, imgPath) => {
         let itemData = this.itemDataS[itemIndex];
-        itemData.video = video;
-        itemData.videoImg = `${video}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`;
+        itemData.video = videoUrl;
+        itemData.videoImg = imgPath;
     };
 
     @action deleteVideo = (itemIndex) => {
@@ -101,23 +102,25 @@ export default class P_ScorePublishModel {
     /**tool**/
 
     uploadVideo(videoPath, itemIndex) {
-        let fileData = {
-            type: 'video/mp4',
-            uri: videoPath,
-            name: new Date().getTime() + itemIndex + '.mp4'
-        };
-        request.setBaseUrl(apiEnvironment.getCurrentHostUrl());
-        Toast.showLoading('正在上传');
-        request.upload('/common/upload/oss', fileData, {}).then((res) => {
-            Toast.hiddenLoading();
-            if (res.code === 10000 && res.data) {
-                this.addVideo(itemIndex, res.data);
-            } else {
+        NativeModules.commModule.RN_Video_Image(videoPath).then(({ imagePath }) => {
+            let fileData = {
+                type: 'video/mp4',
+                uri: videoPath,
+                name: new Date().getTime() + itemIndex + '.mov'
+            };
+            request.setBaseUrl(apiEnvironment.getCurrentHostUrl());
+            Toast.showLoading('正在上传');
+            request.upload('/common/upload/oss', fileData, {}).then((res) => {
+                Toast.hiddenLoading();
+                if (res.code === 10000 && res.data) {
+                    this.addVideo(itemIndex, res.data, imagePath);
+                } else {
+                    Toast.$toast('视频上传失败');
+                }
+            }).catch(() => {
+                Toast.hiddenLoading();
                 Toast.$toast('视频上传失败');
-            }
-        }).catch(() => {
-            Toast.hiddenLoading();
-            Toast.$toast('视频上传失败');
-        });
+            });
+        })
     }
 }
