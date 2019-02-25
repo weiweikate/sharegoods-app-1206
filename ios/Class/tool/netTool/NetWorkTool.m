@@ -36,11 +36,21 @@
       NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
       NSString *systemVersion = [UIDevice currentDevice].systemVersion;
       manager.requestSerializer = [AFJSONRequestSerializer serializer];
-      [manager.requestSerializer setValue:@"appstore"  forHTTPHeaderField:@"channel"];
-      [manager.requestSerializer setValue:[NSString stringWithFormat:@"ios%@",systemVersion] forHTTPHeaderField:@"platform"];
-      [manager.requestSerializer setValue:app_Version forHTTPHeaderField:@"version"];
-      [manager.requestSerializer setValue:@"SIGNATURE" forHTTPHeaderField:@"Security-Policy"];
-      [manager.requestSerializer setValue:[BGKeychainTool getDeviceIDInKeychain]  forHTTPHeaderField:@"device"];
+      
+      [manager.requestSerializer setValue:@"appstore"
+                       forHTTPHeaderField:@"channel"];
+      
+      [manager.requestSerializer setValue:[NSString stringWithFormat:@"ios%@",systemVersion]
+                       forHTTPHeaderField:@"platform"];
+      
+      [manager.requestSerializer setValue:app_Version
+                       forHTTPHeaderField:@"version"];
+      
+      [manager.requestSerializer setValue:@"SIGNATURE"
+                       forHTTPHeaderField:@"Security-Policy"];
+      
+      [manager.requestSerializer setValue:[BGKeychainTool getDeviceIDInKeychain]
+                       forHTTPHeaderField:@"device"];
       
     });
     
