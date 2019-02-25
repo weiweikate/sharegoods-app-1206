@@ -5,6 +5,8 @@ import ScreenUtils from "../../../utils/ScreenUtils";
 import DesignRule from "../../../constants/DesignRule";
 import res from "../res";
 import RouterMap from "../../../navigation/RouterMap";
+import Toast from "../../../utils/bridge";
+import OrderApi from "../api/orderApi";
 
 const successImg = res.button.tongyon_icon_check_green;
 const { px2dp } = ScreenUtils;
@@ -46,10 +48,17 @@ export default class ConfirmReceiveGoodsPage extends BasePage {
 
     };
     showOrderPage = () => {
-        this.$navigate(RouterMap.P_ScorePublishPage, {
-            orderNo: this.params.orderNo
-        });
-
+        OrderApi.checkInfo({warehouseOrderNo:this.params.orderNo}).then(res => {
+            if(res.data){
+                this.$navigate(RouterMap.P_ScorePublishPage, {
+                    orderNo: this.params.orderNo
+                });
+            }else{
+                Toast.$toast('该商品已晒过单！');
+            }
+        }).catch(e =>{
+            Toast.$toast(e.msg);
+        })
     };
     $NavBarLeftPressed = () => {
         this.$navigateBack();

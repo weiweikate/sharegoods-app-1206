@@ -541,10 +541,19 @@ export default class MyOrdersListView extends Component {
                 ], { cancelable: true });
                 break;
             case 10:
-                this.props.nav(RouterMap.P_ScorePublishPage, {
-                    orderNo: this.state.viewData[index].orderNo,
-                    // callBack: this.onRefresh
-                });
+                OrderApi.checkInfo({warehouseOrderNo:this.state.viewData[index].orderNo}).then(res => {
+                    if(res.data){
+                        this.props.nav(RouterMap.P_ScorePublishPage, {
+                            orderNo: this.state.viewData[index].orderNo,
+                        });
+                    }else{
+                        Toast.$toast('该商品已晒过单！');
+                        this.onRefresh()
+                    }
+
+                }).catch(e =>{
+                    Toast.$toast(e.msg);
+                })
                 break;
         }
 
