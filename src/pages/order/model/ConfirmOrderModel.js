@@ -7,6 +7,7 @@ import user from '../../../model/user';
 import API from '../../../api';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
+import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
 
 class ConfirmOrderModel {
     @observable
@@ -264,6 +265,7 @@ class ConfirmOrderModel {
                     bridge.hiddenLoading();
                     let data = response.data;
                     this.canCommit = true;
+                    shopCartCacheTool.getShopCartGoodsListData();
                     callback(data);
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
@@ -300,6 +302,7 @@ class ConfirmOrderModel {
                     let data = response.data;
                     this.canCommit = true;
                     callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
@@ -335,6 +338,7 @@ class ConfirmOrderModel {
                     let data = response.data;
                     this.canCommit = true;
                     callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
@@ -370,6 +374,7 @@ class ConfirmOrderModel {
                     let data = response.data;
                     this.canCommit = true;
                     callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
@@ -408,6 +413,7 @@ class ConfirmOrderModel {
                     let data = response.data;
                     this.canCommit = true;
                     callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
