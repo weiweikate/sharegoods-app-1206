@@ -265,6 +265,7 @@ class ConfirmOrderModel {
                     bridge.hiddenLoading();
                     let data = response.data;
                     this.canCommit = true;
+                    shopCartCacheTool.getShopCartGoodsListData();
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
