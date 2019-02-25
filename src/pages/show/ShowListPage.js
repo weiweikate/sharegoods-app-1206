@@ -3,17 +3,14 @@ import { View, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-na
 import BasePage from '../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../utils/ScreenUtils';
-
 const { px2dp } = ScreenUtils;
-// import ShowHotView from './ShowHotView';
-// import ShowHotFindView from './ShowHotFindView';
 import backIconImg from '../../comm/res/button/icon_header_back.png';
 import DesignRule from '../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import {
     MRText as Text
 } from '../../components/ui';
-
+import ShowGroundView from './components/ShowGroundView';
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -102,14 +99,21 @@ export default class ShowListPage extends BasePage {
         this.props.navigation.goBack(null);
     }
 
+    _press = ({nativeEvent})=>{
+        let data = nativeEvent;
+        // data.click = data.click + 1;
+        // this.recommendModules.recommendList.replace
+        this.$navigate('show/ShowDetailPage', { id: data.id, code: data.code });
+    }
+
     _render() {
+        let that = this;
         const { page, left, needsExpensive } = this.state;
 
         let HotView = null;
-        let HotFindView = null;
+        // let HotFindView = null;
         if (needsExpensive) {
             HotView = require('./ShowHotView').default;
-            HotFindView = require('./ShowHotFindView').default;
         }
 
         return <View style={styles.container}>
@@ -162,9 +166,13 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <HotFindView navigate={this.$navigate} ref={(ref) => {
-                                this.showHotFindeView = ref;
-                            }}/>
+
+                            <ShowGroundView style={{flex:1}}
+                                            uri={'/discover/query@GET'}
+                                            onItemPress={({nativeEvent})=> {
+
+                                                that.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
+                            />
                             :
                             null
                     }

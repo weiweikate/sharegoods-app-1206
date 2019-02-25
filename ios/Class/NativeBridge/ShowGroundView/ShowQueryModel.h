@@ -41,6 +41,10 @@ NS_ASSUME_NONNULL_END
 @property (nonatomic, copy)NSString *updateId;
 @property (nonatomic, copy)NSString *updateTime;
 @property (nonatomic, copy)NSString *content;
+@property (nonatomic, copy)NSString *userHeadImg;
+@property (nonatomic, copy)NSString *userName;
+@property (nonatomic, copy)NSString *time;
+@property (nonatomic, assign)NSInteger click;
 
 @property (nonatomic, assign)CGFloat coverImgWide;
 @property (nonatomic, assign)CGFloat coverImgHigh;
@@ -54,5 +58,5 @@ NS_ASSUME_NONNULL_END
 /**
  显示图片链接
  */
-@property (nonatomic, copy)NSString *showImage;
+@property (nonatomic, readonly, assign)NSString *showImage;
 @end

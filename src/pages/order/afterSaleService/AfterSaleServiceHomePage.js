@@ -69,7 +69,7 @@ class AfterSaleServiceHomePage extends BasePage {
                     uri={productData.specImg}
                     goodsName={productData.productName}
                     salePrice={StringUtils.formatMoneyString(productData.unitPrice)}
-                    category={'规格：' + productData.specValues}
+                    category={productData.spec}
                     goodsNum={productData.quantity}
                    // onPress={() => this.jumpToProductDetailPage()}
                 />

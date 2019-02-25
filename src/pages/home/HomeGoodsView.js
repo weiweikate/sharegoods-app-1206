@@ -5,22 +5,24 @@ import ScreenUtils from '../../utils/ScreenUtils';
 const { px2dp, onePixel } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
-import UIImage from '@mr/image-placeholder';
+import ImageLoader from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
+
+export const kHomeGoodsViewHeight = px2dp(263);
 
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
         <View style={styles.image}>
-            <UIImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
+            <ReuserImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
             {
                 StringUtils.isEmpty(goods.title)
-                ?
-                null
-                :
-                <View style={styles.titleView}>
-                    <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
-                </View>
+                    ?
+                    null
+                    :
+                    <View style={styles.titleView}>
+                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+                    </View>
             }
         </View>
         <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
@@ -59,6 +61,44 @@ export default class GoodsCell extends Component {
                     <View style={styles.uncontainer}/>
             }
         </View>;
+    }
+}
+
+class ReuserImage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            imagePath: this.props.source.uri,
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.source && nextProps.source &&
+            this.props.source.uri !== nextProps.source.uri
+        ) {
+            this.fetchImage(nextProps.source.uri);
+        }
+    }
+
+    fetchImage(url) {
+        this.setState({
+            imagePath: ''
+        }, () => {
+            this.setState({
+                imagePath: url
+            })
+        })
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.imagePath !== nextState.imagePath;
+    }
+
+    render() {
+        return <ImageLoader
+            {...this.props}
+            source={{uri: this.state.imagePath}}
+        />;
     }
 }
 
@@ -111,10 +151,11 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(7)
     },
     cell: {
-        height: px2dp(263),
+        width: ScreenUtils.width,
+        height: kHomeGoodsViewHeight,
         flexDirection: 'row',
-        marginRight: px2dp(15),
-        marginLeft: px2dp(15),
+        paddingRight: px2dp(15),
+        paddingLeft: px2dp(15),
         alignItems: 'center',
         justifyContent: 'center'
     },
