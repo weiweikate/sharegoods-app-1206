@@ -62,21 +62,8 @@ import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
-    {
-        errorMsg
-            ?
-            <Text style={styles.text} allowFontScaling={false}>{errorMsg}</Text>
-            :
-            isEnd
-                ?
-                <Text style={styles.text} allowFontScaling={false}>我也是有底线的</Text>
-                :
-                isFetching
-                    ?
-                    <Text style={styles.text} allowFontScaling={false}>加载中...</Text>
-                    :
-                    <Text style={styles.text} allowFontScaling={false}>加载更多</Text>
-    }
+    <Text style={styles.text}
+          allowFontScaling={false}>{errorMsg ? errorMsg : (isEnd ? '我也是有底线的' : (isFetching ? '加载中...' : '加载更多'))}</Text>
 </View>;
 
 @observer
@@ -351,13 +338,31 @@ class HomePage extends BasePage {
     // 滑动头部透明度渐变
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
+        // 防止拉到底部闪烁
         if (Y > ScreenUtils.height) {
+            if (this.st !== 1) {
+                this.st = 1;
+                this._refHeader.setNativeProps({
+                    opacity: this.st
+                });
+            }
+            if (this.shadowOpacity !== 0) {
+                this.shadowOpacity = 0;
+                this.headerShadow.setNativeProps({
+                    opacity: this.shadowOpacity
+                });
+            }
+            if (this.state.whiteIcon) {
+                this.setState({
+                    whiteIcon: false
+                });
+            }
             return;
         }
         if (!this._refHeader) {
             return;
         }
-        if (bannerModule.bannerList.length <= 0) {
+        if (bannerModule.bannerCount === 0) {
             this.st = 1;
             this._refHeader.setNativeProps({
                 opacity: this.st
@@ -728,7 +733,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#999',
-        fontSize: px2dp(11)
+        fontSize: DesignRule.fontSize_24
     }
 });
 

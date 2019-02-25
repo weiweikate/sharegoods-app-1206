@@ -128,4 +128,5 @@ dependencies {
     api project(':lottie')
     api project(':qiyu_service')
     api project(':react-native-camera')
+    api project(':base_adapter')
 }

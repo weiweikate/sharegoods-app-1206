@@ -2,6 +2,7 @@ import ShowListPage from "./ShowListPage"
 import ShowDetailPage from './ShowDetailPage'
 import ShowGoodsPage from './ShowGoodsPage'
 import ShowConnectPage from './ShowConnectPage'
+import ShowDetailImagePage from './ShowDetailImagePage'
 
 export default {
     moduleName: 'show',
@@ -9,6 +10,7 @@ export default {
         ShowListPage,
         ShowDetailPage,
         ShowGoodsPage,
-        ShowConnectPage
+        ShowConnectPage,
+        ShowDetailImagePage
     }
 }

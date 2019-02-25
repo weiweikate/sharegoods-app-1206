@@ -23,17 +23,16 @@ class SubjectModule {
         }
           const res = yield HomeApi.getSubject({ type: homeType.subject });
           let list = res.data;
-          let height = px2dp(53);
+          let height = px2dp(63);
           list.map(value => {
             const { topicBannerProductDTOList } = value
             if (topicBannerProductDTOList && topicBannerProductDTOList.length > 0) {
-              height += px2dp(190);
+              height += px2dp(192);
             } else {
-              height += px2dp(20);
+              height += px2dp(10);
             }
             height += px2dp(181);
           })
-          console.log('this.subjectHeight', this.subjectHeight, this.subjectList.length)
           this.subjectHeight = height;
           this.subjectList = list;
           save(kHomeSujectStore, res.data)

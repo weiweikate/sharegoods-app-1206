@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     footerText: {
-        fontSize: 12,
+        fontSize: DesignRule.fontSize_24,
         color: DesignRule.textColor_secondTitle
     }
 });
