@@ -11,6 +11,8 @@ import OrderApi from "../../api/orderApi";
 import Toast from "../../../../utils/bridge";
 import shopCartCacheTool from "../../../shopCart/model/ShopCartCacheTool";
 import { observer } from "mobx-react/native";
+import RouterMap from "../../../../navigation/RouterMap";
+
 
 const { px2dp } = ScreenUtils;
 import { MRText as Text, NoMoreClick } from "../../../../components/ui";
@@ -26,7 +28,16 @@ export default class OrderDetailBottomButtonView extends Component {
         if (nameArr.length > 0) {
             return (
                 <View style={styles.containerStyle}>
-                    {this.renderMenu()}
+                    {nameArr.map((item,i)=>{
+                        return  <NoMoreClick key={i}
+                                             style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
+                                             onPress={() => {
+                                                 this.operationMenuClick(item);
+                                             }}>
+                            <Text style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
+                                  allowFontScaling={false}>{item.operation}</Text>
+                        </NoMoreClick>
+                    })}
                 </View>
             );
         } else {
@@ -34,25 +45,6 @@ export default class OrderDetailBottomButtonView extends Component {
         }
 
     }
-
-    renderMenu = () => {
-        let nameArr = orderDetailAfterServiceModel.menu;
-        console.log("OrderDetailBottomButtonView", orderDetailAfterServiceModel.totalAsList);
-        let itemArr = [];
-        for (let i = 0; i < nameArr.length; i++) {
-            itemArr.push(
-                <NoMoreClick key={i}
-                             style={[styles.touchableStyle, { borderColor: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
-                             onPress={() => {
-                                 this.operationMenuClick(nameArr[i]);
-                             }}>
-                    <Text style={{ color: nameArr[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
-                          allowFontScaling={false}>{nameArr[i].operation}</Text>
-                </NoMoreClick>
-            );
-        }
-        return itemArr;
-    };
     operationMenuClick = (menu) => {
         /*
          * 取消订单                 ->  1
@@ -108,7 +100,14 @@ export default class OrderDetailBottomButtonView extends Component {
                 }
                 break;
             case 6:
-                Alert.alert("", `是否确认收货?`, [
+                let content='是否确认收货?';
+               orderDetailModel.warehouseOrderDTOList[0].products.map((value)=>{
+                   if(value.status<3){
+                       content='您还有商品未发货，确认收货吗？'
+                   }
+               })
+
+                Alert.alert("", `${content}`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -119,7 +118,10 @@ export default class OrderDetailBottomButtonView extends Component {
                             OrderApi.confirmReceipt({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                 Toast.hiddenLoading();
                                 Toast.$toast("确认收货成功");
-                                this.props.loadPageData();
+                                this.props.nav('order/order/ConfirmReceiveGoodsPage',{
+                                    orderNo: orderDetailModel.getOrderNo(),
+                                    callBack: this.props.loadPageData()
+                                })
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 Toast.$toast(e.msg);
@@ -132,7 +134,7 @@ export default class OrderDetailBottomButtonView extends Component {
             case 7:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert("", `确定删除此订单吗`, [
+                Alert.alert("", `确定删除此订单吗?`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -171,7 +173,7 @@ export default class OrderDetailBottomButtonView extends Component {
             case 9:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert("", `确定删除此订单吗`, [
+                Alert.alert("", `确定删除此订单吗?`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -193,6 +195,22 @@ export default class OrderDetailBottomButtonView extends Component {
                     }
 
                 ], { cancelable: true });
+                break;
+            case 10:
+                OrderApi.checkInfo({warehouseOrderNo:orderDetailModel.getOrderNo()}).then(res => {
+                    if(res.data){
+                        this.props.nav(RouterMap.P_ScorePublishPage, {
+                            orderNo:  orderDetailModel.getOrderNo()
+                        });
+                    }else{
+                        Toast.$toast('该商品已晒过单！');
+                        this.props.loadPageData()
+                    }
+
+                }).catch(e =>{
+                    Toast.$toast(e.msg);
+                })
+
                 break;
         }
     };

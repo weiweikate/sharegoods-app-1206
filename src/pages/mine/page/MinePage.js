@@ -34,6 +34,7 @@ import CommModal from '../../../comm/components/CommModal';
 
 const {
     mine_header_bg,
+    mine_account_bg,
     mine_setting_icon_gray,
     mine_message_icon_gray,
     mine_wait_pay_icon,
@@ -55,7 +56,8 @@ const {
     mine_icon_mentor,
     mine_user_icon,
     mine_icon_fans,
-    mine_icon_message
+    mine_icon_message,
+    mine_showOrder
 } = res.homeBaseImg;
 
 
@@ -447,7 +449,7 @@ export default class MinePage extends BasePage {
 
     accountRender = () => {
         return (
-            <ImageBackground source={mine_header_bg} style={{
+            <ImageBackground source={mine_account_bg} style={{
                 marginTop: px2dp(41),
                 marginHorizontal: px2dp(15),
                 borderRadius: 5,
@@ -559,9 +561,11 @@ export default class MinePage extends BasePage {
                     height: ScreenUtils.onePixel,
                     alignSelf: 'center'
                 }}/>
+                <ScrollView style={{width:DesignRule.width-DesignRule.margin_page*2,}} horizontal={true} showsHorizontalScrollIndicator={false}>
                 <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(28) }}>
                     {this.renderOrderStates()}
                 </View>
+                </ScrollView>
             </View>
 
         );
@@ -636,9 +640,10 @@ export default class MinePage extends BasePage {
     };
 
     renderOrderStates = () => {
-        let statesImage = [mine_wait_pay_icon, mine_wait_send_icon, mine_wait_receive_icon, mine_after_buy_icon];
-        let statesText = ['待付款', '待发货', '待收货', '售后/退款'];
-        let arr = [];
+        let statesImage = [mine_wait_pay_icon, mine_wait_send_icon, mine_wait_receive_icon,mine_showOrder, mine_after_buy_icon];
+        let statesText = ['待付款', '待发货', '待收货', '待晒单','售后/退款'];
+        let width = (DesignRule.width-DesignRule.margin_page*2)/4.5;
+            let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
             let num = this.getOrderNum(i);
             let numView = num ? (
@@ -660,7 +665,7 @@ export default class MinePage extends BasePage {
             ) : null;
 
             arr.push(
-                <NoMoreClick style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: px2dp(30) }}
+                <NoMoreClick style={{ width, justifyContent: 'center', alignItems: 'center', paddingTop: px2dp(30) }}
                              onPress={() => this.jumpToOrderAccordingStates(i)} key={i}>
                     <ImageBackground source={statesImage[i]}
                                      style={{ height: 18, width: 20, marginBottom: 10, overflow: 'visible' }}>
@@ -686,8 +691,10 @@ export default class MinePage extends BasePage {
                 return userOrderNum.waitReceiveNum;
                 break;
             case 3:
-                return userOrderNum.afterSaleServiceNum;
+                return userOrderNum.waitShowNum;
                 break;
+            case 4:
+                return userOrderNum.afterSaleServiceNum;
             default:
                 return 0;
                 break;
@@ -851,6 +858,9 @@ export default class MinePage extends BasePage {
                 this.$navigate('order/order/MyOrdersListPage', { index: 3 });
                 break;
             case 3:
+                this.$navigate('order/order/MyOrdersListPage', { index: 4 });
+                break;
+            case 4:
                 this.$navigate('order/afterSaleService/AfterSaleListPage', { index: 4 });
                 break;
         }

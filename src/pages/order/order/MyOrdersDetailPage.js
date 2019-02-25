@@ -3,8 +3,8 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Image, DeviceEventEmitter,
-    ScrollView
+    Image,
+    ScrollView,Text
 } from "react-native";
 import BasePage from "../../../BasePage";
 import { RefreshList } from "../../../components/ui";
@@ -40,6 +40,7 @@ const finishPayIcon = res.dingdanxiangqing_icon_yiwangcheng;
 const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
 const refuseIcon = res.dingdanxiangqing_icon_guangbi;
 const moreIcon = res.message_three;
+const deleteIcon = res.delete_icon;
 
 const { px2dp } = ScreenUtils;
 
@@ -51,13 +52,12 @@ export default class MyOrdersDetailPage extends BasePage {
         this.state = {
             isShowSingleSelctionModal: false,
             isShowShowMessageModal: false,
-            orderId: this.params.orderId,
             expressNo: "",
             viewData: {},
             menu: {},
             giftBagCoupons: [],
-            cancelArr: []
         };
+        orderDetailAfterServiceModel.menu=[];
     }
 
     $navigationBarOptions = {
@@ -76,7 +76,7 @@ export default class MyOrdersDetailPage extends BasePage {
 
     _reload=()=> {
         orderDetailModel.netFailedInfo = null;
-        orderDetailModel.loadingState = PageLoadingState.loading;
+        orderDetailModel.netFailedInfo = PageLoadingState.loading;
         this.loadPageData();
     }
 
@@ -92,6 +92,27 @@ export default class MyOrdersDetailPage extends BasePage {
             </TouchableOpacity>
         );
     };
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        // DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
+        this.stop();
+    }
+    componentWillMount() {
+        let i=0;
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                i++;
+                const { state } = payload;
+                console.log('willFocusSubscriptionMyOrdersDetailPage', payload);
+                if (state && state.routeName === 'order/order/MyOrdersDetailPage') {
+                    if(i>1){
+                        this.loadPageData();
+                    }
+
+                }
+            });
+    }
     showMore = () => {
         this.setState({ isShowShowMessageModal: true });
         this.messageModal && this.messageModal.open();
@@ -113,7 +134,7 @@ export default class MyOrdersDetailPage extends BasePage {
     };
 
     componentDidMount() {
-        DeviceEventEmitter.addListener("OrderNeedRefresh", () => this.loadPageData());
+        // DeviceEventEmitter.addListener("OrderNeedRefresh", () => this.loadPageData());
         this.loadPageData();
         this.getCancelOrder();
 
@@ -138,35 +159,42 @@ export default class MyOrdersDetailPage extends BasePage {
         this.loadPageData();
     };
 
-    componentWillUnmount() {
-        DeviceEventEmitter.removeAllListeners("OrderNeedRefresh");
-        this.stop();
-        // this.timeUtils.stop();
-    }
-
     _renderContent = () => {
-        return (
-            <View style={{flex:1}}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-            <RefreshList
-                ListHeaderComponent={this.renderHeader}
-                ListFooterComponent={this.renderFooter}
-                data={this.state.viewData}
-                renderItem={this.renderItem}
-                onRefresh={this.onRefresh}
-                onLoadMore={this.onLoadMore}
-                extraData={this.state}
-                isEmpty={this.state.isEmpty}
-                emptyTip={"暂无数据！"}
-            />
-            </ScrollView>
-            <OrderDetailBottomButtonView
-        goBack={() => this.$navigateBack()}
-        nav={this.$navigate}
-        callBack={this.params.callBack && (()=>this.params.callBack())}
-        loadPageData={() => this.loadPageData()}/>
-            </View>
-        );
+        if(orderDetailModel.deleteInfo){
+            return(
+                <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                    <View style={{justifyContent:'center',alignItems:'center'}}>
+                        <Image source={deleteIcon} style={{width:px2dp(82),height:px2dp(82)}} />
+                        <Text style={{color:DesignRule.textColor_instruction,fontSize:px2dp(13),marginTop:5}}>该订单已删除！</Text>
+                    </View>
+
+                </View>
+            )
+        }else{
+            return (
+                <View style={{flex:1}}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <RefreshList
+                            ListHeaderComponent={this.renderHeader}
+                            ListFooterComponent={this.renderFooter}
+                            data={this.state.viewData}
+                            renderItem={this.renderItem}
+                            onRefresh={this.onRefresh}
+                            onLoadMore={this.onLoadMore}
+                            extraData={this.state}
+                            isEmpty={this.state.isEmpty}
+                            emptyTip={"暂无数据！"}
+                        />
+                    </ScrollView>
+                    <OrderDetailBottomButtonView
+                        goBack={() => this.$navigateBack()}
+                        nav={this.$navigate}
+                        callBack={this.params.callBack && (()=>this.params.callBack())}
+                        loadPageData={() => this.loadPageData()}/>
+                </View>
+            );
+        }
+
     };
 
     _render = () => {
@@ -183,7 +211,7 @@ export default class MyOrdersDetailPage extends BasePage {
                     uri={item.uri}
                     goodsName={item.goodsName}
                     salePrice={"￥" + StringUtils.formatMoneyString(item.salePrice, false)}
-                    category={item.category.replace(/@/g, "")}
+                    category={item.category}
                     goodsNum={item.goodsNum}
                     style={{ backgroundColor: "white" }}
                     clickItem={() => {
@@ -419,7 +447,7 @@ export default class MyOrdersDetailPage extends BasePage {
                         uri: item.specImg,
                         goodsName: item.productName,
                         salePrice: StringUtils.isNoEmpty(item.unitPrice) ? item.unitPrice : 0,
-                        category: item.specValues,
+                        category: item.spec,
                         goodsNum: item.quantity,
                         afterSaleService: this.getAfterSaleService(item, index),
                         status: item.status,
@@ -495,8 +523,15 @@ export default class MyOrdersDetailPage extends BasePage {
                         id: 8,
                         operation: "再次购买",
                         isRed: true
-                    }
-                ],
+                    },
+                ];
+                if(orderDetailModel.warehouseOrderDTOList[0].commentStatus){
+                    orderDetailAfterServiceModel.menu.push({
+                        id: 10,
+                        operation: "晒单",
+                        isRed: true
+                    })
+                }
                     pageStateString.logisticsTime = orderDetailModel.warehouseOrderDTOList[0].deliverTime ? orderDetailModel.warehouseOrderDTOList[0].deliverTime : orderDetailModel.warehouseOrderDTOList[0].autoReceiveTime;
                 break;
             case 5:

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 // 图片资源
 import res from '../../res';
+
 const HeaderBarBgImg = res.shopRecruit.bg_02;
 const Shape = res.shopRecruit.Shape;
 const shoushi = res.shopRecruit.shoushi;
@@ -31,9 +32,8 @@ export default class RecommendRow extends Component {
     };
 
     _judgeCanOpenShop = () => {
-        let { storeUserList, maxUser } = this.props.storeData;
-        storeUserList = storeUserList || [];
-        return maxUser && maxUser <= storeUserList.length ? '已满足人员要求' : '尚未满足人员要求';
+        let { userCount, maxUser } = this.props.storeData;
+        return maxUser && maxUser <= userCount ? '已满足人员要求' : '尚未满足人员要求';
     };
 
     _renderItems = (img, tittle, content) => {
