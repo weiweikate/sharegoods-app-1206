@@ -12,6 +12,7 @@
 #import "StorageFromRN.h"
 #import <YYKit.h>
 #import "NSDictionary+Util.h"
+#import "BGKeychainTool.h"
 
 #define kTimeOutInterval 10
 
@@ -33,13 +34,24 @@
       NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
       // app版本
       NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-
+      NSString *systemVersion = [UIDevice currentDevice].systemVersion;
       manager.requestSerializer = [AFJSONRequestSerializer serializer];
-      [manager.requestSerializer setValue:@"appstore"  forHTTPHeaderField:@"channel"];
-      [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"platform"];
-      [manager.requestSerializer setValue:app_Version forHTTPHeaderField:@"version"];
-      [manager.requestSerializer setValue:@"SIGNATURE" forHTTPHeaderField:@"Security-Policy"];
-        
+      
+      [manager.requestSerializer setValue:@"appstore"
+                       forHTTPHeaderField:@"channel"];
+      
+      [manager.requestSerializer setValue:[NSString stringWithFormat:@"ios%@",systemVersion]
+                       forHTTPHeaderField:@"platform"];
+      
+      [manager.requestSerializer setValue:app_Version
+                       forHTTPHeaderField:@"version"];
+      
+      [manager.requestSerializer setValue:@"SIGNATURE"
+                       forHTTPHeaderField:@"Security-Policy"];
+      
+      [manager.requestSerializer setValue:[BGKeychainTool getDeviceIDInKeychain]
+                       forHTTPHeaderField:@"device"];
+      
     });
     
     return manager;
