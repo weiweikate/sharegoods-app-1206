@@ -25,6 +25,7 @@ const index = {
     mine_user_icon:require('./mine_user_icon.png'),
     mine_icon_fans:require('./mine_icon_fans.png'),
     bg_fans_item:require('./bg_fans_item.png'),
-    mine_icon_message:require('./mine_icon_message.png')
+    mine_icon_message:require('./mine_icon_message.png'),
+    mine_showOrder: require('./me_icon_shaidan_nor.png')
 };
 export default index;

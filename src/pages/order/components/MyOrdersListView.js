@@ -360,7 +360,7 @@ export default class MyOrdersListView extends Component {
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectTab != this.state.pageStatus) {
-            this.getDataFromNetwork();
+            this.onRefresh();
         }
     }
 
