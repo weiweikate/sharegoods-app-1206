@@ -5,6 +5,8 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -478,5 +480,28 @@ public class CommModule extends ReactContextBaseJavaModule {
             tagSet.add(data.getString("version"));
         }
         JPushInterface.setTags(this.mContext, tagSet, null);
+    }
+
+    /**
+     * 获取视频文件关键帧
+     * @param path
+     * @param callback
+     */
+    @ReactMethod
+    public void RN_Video_Image(String path,Callback callback){
+        MediaMetadataRetriever media = new MediaMetadataRetriever();
+
+        media.setDataSource(path);
+
+        Bitmap bitmap = media.getFrameAtTime();
+
+        String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png",path);
+
+        if(bitmap!= null && !bitmap.isRecycled()){
+            bitmap.recycle();
+        }
+        bitmap = null;
+
+        callback.invoke(returnPath);
     }
 }
