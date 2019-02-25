@@ -548,6 +548,7 @@ export default class MyOrdersListView extends Component {
                         });
                     }else{
                         Toast.$toast('该商品已晒过单！');
+                        this.onRefresh()
                     }
 
                 }).catch(e =>{

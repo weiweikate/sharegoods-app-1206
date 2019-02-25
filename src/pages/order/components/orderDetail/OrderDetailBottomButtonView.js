@@ -204,6 +204,7 @@ export default class OrderDetailBottomButtonView extends Component {
                         });
                     }else{
                         Toast.$toast('该商品已晒过单！');
+                        this.props.loadPageData()
                     }
 
                 }).catch(e =>{
