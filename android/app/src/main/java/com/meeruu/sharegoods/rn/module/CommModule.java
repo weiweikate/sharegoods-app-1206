@@ -19,6 +19,7 @@ import android.webkit.CookieSyncManager;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -545,6 +546,8 @@ public class CommModule extends ReactContextBaseJavaModule {
         }
         bitmap = null;
 
-        promise.resolve(returnPath);
+        WritableMap map = Arguments.createMap();
+        map.putString("imagePath",returnPath);
+        promise.resolve(map);
     }
 }
