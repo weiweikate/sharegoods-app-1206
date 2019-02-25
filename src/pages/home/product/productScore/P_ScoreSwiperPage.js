@@ -64,7 +64,7 @@ export default class P_ScoreSwiperPage extends BasePage {
                     position: 'absolute',
                     alignSelf: 'center',
                     height: 44,
-                    top: 20,
+                    top: ScreenUtils.statusBarHeight,
                     justifyContent: 'center'
                 }}>
                     <Text style={{
@@ -95,7 +95,7 @@ export default class P_ScoreSwiperPage extends BasePage {
                     position: 'absolute',
                     width: 44,
                     height: 44,
-                    top: 20,
+                    top: ScreenUtils.statusBarHeight,
                     left: 14,
                     justifyContent: 'center',
                     alignItems: 'center'
