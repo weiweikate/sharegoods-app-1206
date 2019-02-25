@@ -49,7 +49,7 @@ export default class GoodsGrayItem extends React.Component {
                         <View style={{ marginTop: 10, marginRight: 5, flexDirection: "row" }}>
                             <View style={{ flex: 1, flexDirection: "row", marginRight: 10, alignItems: "center" }}>
                             <UIText value={category}
-                                    style={[styles.detail ]} numberOfLines={3}/>
+                                    style={[styles.detail ,{textAlign:"left"}]} numberOfLines={3}/>
                             </View>
                             <UIText value={"x" + goodsNum} style={styles.detail}/>
                         </View>

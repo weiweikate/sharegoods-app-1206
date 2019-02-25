@@ -267,7 +267,7 @@ export default class HelperFeedbackPage extends BasePage {
                 <NoMoreClick onPress={() => {
                     this.setState({ showModal: false });
                 }}>
-                    <View>
+                    <View style={{marginTop:-ScreenUtils.statusBarHeight}}>
                         <NavigatorBar title={'问题反馈'} leftPressed={() => {
                             if (this.state.showModal) {
                                 this.setState({ showModal: false });
