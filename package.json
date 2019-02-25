@@ -22,7 +22,6 @@
     "dependencies": {
         "@mr/cookies": "0.0.6",
         "@mr/image-placeholder": "0.1.22",
-        "@mr/largelist": "^1.0.1",
         "@mr/rn-geolocation": "0.1.11",
         "@mr/rn-image-crop-picker": "0.0.6",
         "@mr/rn-request": "0.1.10",
