@@ -267,6 +267,7 @@ class ConfirmOrderModel {
                     this.canCommit = true;
                     shopCartCacheTool.getShopCartGoodsListData();
                     callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
