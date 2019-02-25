@@ -61,10 +61,6 @@ export default class P_ScorePublishModel {
         itemData.videoImg = undefined;
     };
 
-    _list = () => {
-
-    };
-
     _lookDetail = (orderNo) => {
         orderApi.lookDetail({ orderNo: orderNo }).then((data) => {
             let tempList = [];
@@ -104,10 +100,10 @@ export default class P_ScorePublishModel {
 
     /**tool**/
 
-    uploadVideo(path, itemIndex) {
+    uploadVideo(videoPath, itemIndex) {
         let fileData = {
-            type: 'video',
-            uri: path,
+            type: 'video/mp4',
+            uri: videoPath,
             name: new Date().getTime() + itemIndex + '.mp4'
         };
         request.setBaseUrl(apiEnvironment.getCurrentHostUrl());
@@ -122,39 +118,6 @@ export default class P_ScorePublishModel {
         }).catch(() => {
             Toast.hiddenLoading();
             Toast.$toast('视频上传失败');
-        });
-    }
-
-    uploadImg(paths, itemIndex) {
-        for (let i = 0; i < paths.length; i++) {
-            let uri = paths[i] || '';
-            let array = uri.split('.').reverse();
-            let fileType = array[0].toLowerCase();
-            if (fileType === 'gif') {
-                Toast.$toast('不支持上传动态图');
-                return;
-            }
-        }
-
-        request.setBaseUrl(apiEnvironment.getCurrentHostUrl());
-        let promises = paths.map((item, index) => {
-            let fileData = {
-                type: 'img',
-                uri: item,
-                name: new Date().getTime() + index + '.jpg'
-            };
-            return request.upload('/common/upload/oss', fileData, {}).then((res) => {
-                if (res.code === 10000 && res.data) {
-                    return Promise.resolve({ imgUrl: res.data, imageThumbUrl: res.data });
-                } else {
-                    return Promise.reject({ msg: '上传失败' });
-                }
-            });
-        });
-        Promise.all(promises).then((data) => {
-            this.addImg(itemIndex, data);
-        }).catch(() => {
-            Toast.$toast('图片上传失败');
         });
     }
 }

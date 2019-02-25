@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp, onePixel } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
-// import UIImage from '@mr/image-placeholder';
-import {ImageCacheManager} from 'react-native-cached-image';
+import ImageLoader from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
-import res from './res'
 
-export const kHomeGoodsViewHeight = px2dp(263)
+export const kHomeGoodsViewHeight = px2dp(263);
 
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
@@ -19,12 +17,12 @@ const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => pre
             <ReuserImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
             {
                 StringUtils.isEmpty(goods.title)
-                ?
-                null
-                :
-                <View style={styles.titleView}>
-                    <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
-                </View>
+                    ?
+                    null
+                    :
+                    <View style={styles.titleView}>
+                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+                    </View>
             }
         </View>
         <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
@@ -66,57 +64,40 @@ export default class GoodsCell extends Component {
     }
 }
 
-class ReuserImage extends Component{
+class ReuserImage extends Component {
     constructor(props) {
         super(props);
-
-        this.fetchImage = this.fetchImage.bind(this);
-
         this.state = {
-            imagePath: res.placeholder.bg_default_img,
+            imagePath: this.props.source.uri,
         };
     }
 
-    componentDidMount() {
-        this.fetchImage(this.props);
-    }
-    
     componentWillReceiveProps(nextProps) {
         if (this.props.source && nextProps.source &&
             this.props.source.uri !== nextProps.source.uri
         ) {
-            this.fetchImage(nextProps);
+            this.fetchImage(nextProps.source.uri);
         }
+    }
+
+    fetchImage(url) {
+        this.setState({
+            imagePath: ''
+        }, () => {
+            this.setState({
+                imagePath: url
+            })
+        })
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         return this.state.imagePath !== nextState.imagePath;
     }
 
-    fetchImage(props) {
-        this.setState({imagePath: res.placeholder.bg_default_img});
-        let that = this;
-        if (props && props.source && props.source.uri){
-            ImageCacheManager().downloadAndCacheUrl(props.source.uri).then(
-                (path)=> {
-                    that.setState({imagePath: `file://${path}`});
-                }
-            )
-        }
-    }
-
     render() {
-        const { imagePath } = this.state;
-        let source = {};
-        if (typeof imagePath === 'string') {
-            source = { uri: imagePath };
-        }
-        else {
-            source = imagePath;
-        }
-        return <Image
+        return <ImageLoader
             {...this.props}
-            source={source}
+            source={{uri: this.state.imagePath}}
         />;
     }
 }

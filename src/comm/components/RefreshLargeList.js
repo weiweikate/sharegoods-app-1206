@@ -130,6 +130,7 @@ export default class RefreshLargeList extends React.Component {
                            style={{ width: 110, height: 110 }}
                            resizeMode={'contain'}/>
                     <Text style={{
+                        fontSize: DesignRule.fontSize_224,
                         marginTop: 10,
                         color: DesignRule.textColor_secondTitle
                     }}>{this.props.defaultEmptyText}</Text>
@@ -472,7 +473,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     footerText: {
-        fontSize: 12,
+        fontSize: DesignRule.fontSize_24,
         color: DesignRule.textColor_secondTitle
     }
 });

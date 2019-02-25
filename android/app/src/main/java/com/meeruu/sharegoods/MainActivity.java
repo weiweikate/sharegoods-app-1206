@@ -32,8 +32,6 @@ import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
-import com.meeruu.sharegoods.rn.storage.AsyncStorageManager;
-import com.meeruu.sharegoods.rn.storage.MultiGetCallback;
 import com.meeruu.sharegoods.ui.activity.GuideActivity;
 import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 
@@ -121,26 +119,16 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }, 3000);
-        AsyncStorageManager.getInstance().getItem("HostJson", new MultiGetCallback() {
-            @Override
-            public void onSuccess(String data) {
-                if (!TextUtils.isEmpty(data)) {
-                    JSONObject object = JSON.parseObject(data);
-                    ossHost = object.getString("oss");
-                    Uri uri = Uri.parse(ossHost + "/app/start_adv_bg.png?" + System.currentTimeMillis());
-                    LoadingAdv(uri);
-                } else {
-                    hasAdResp = true;
-                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
-                }
-            }
-
-            @Override
-            public void onFail(String msg) {
-                hasAdResp = true;
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
-            }
-        });
+        String hostJson = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
+        if (!TextUtils.isEmpty(hostJson)) {
+            JSONObject object = JSON.parseObject(hostJson);
+            ossHost = object.getString("oss");
+            Uri uri = Uri.parse(ossHost + "/app/start_adv_bg.png?" + System.currentTimeMillis());
+            LoadingAdv(uri);
+        } else {
+            hasAdResp = true;
+            mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+        }
         /**在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();

@@ -21,6 +21,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
@@ -233,32 +234,35 @@ public class CommModule extends ReactContextBaseJavaModule {
      * 图片压缩
      */
     @ReactMethod
-    public void RN_ImageCompression(String filePath, int fileSize, int maxSize, Callback callback) {
-
-        File file = new File(filePath);
-        if (!file.exists()) {
-            ToastUtils.showToast("文件不存在");
+    public void RN_ImageCompression(ReadableArray filePaths, int fileSize, int maxSize, Callback callback) {
+        List list = filePaths.toArrayList();
+        if(list == null){
             callback.invoke();
             return;
         }
-        if (isVideo(filePath)) {
-            ToastUtils.showToast("头像不能上传视频");
-            callback.invoke();
-            return;
-        }
+        for(int i = 0;i<list.size();i++){
+            String filePath = (String) list.get(i);
+            File file = new File(filePath);
 
-        if (isGIF(filePath)) {
-            ToastUtils.showToast("头像不支持GIF格式图片");
-            callback.invoke();
-            return;
-        }
+            if (!file.exists()) {
+                continue;
+            }
+            if (isVideo(filePath)) {
+                continue;
+            }
 
-        if (fileSize > maxSize) {
-            BitmapUtils.compressBitmap(filePath, maxSize / 1024, filePath);
-            callback.invoke();
-        } else {
-            callback.invoke();
+            if (isGIF(filePath)) {
+                continue;
+            }
+
+            if(fileSize>maxSize){
+                BitmapUtils.compressBitmap(filePath, maxSize / 1024, filePath);
+            }else {
+                continue;
+            }
+
         }
+        callback.invoke();
     }
 
 

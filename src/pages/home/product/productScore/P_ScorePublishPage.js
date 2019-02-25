@@ -60,15 +60,15 @@ export class P_ScorePublishPage extends BasePage {
 
     _chooseVideo = (itemIndex) => {
         ImagePicker.openPicker({
-            multiple: true,
-            waitAnimationEnd: false,
             includeExif: true,
-            forceJpg: true,
-            maxFiles: 1,
             mediaType: 'video',
             loadingLabelText: '处理中...'
-        }).then(images => {
-            this.p_ScorePublishModel.uploadVideo(images[0].path, itemIndex);
+        }).then(video => {
+            if (video.size > 3 * 1024 * 1024) {
+                this.$toastShow('图片过大,建议上传3M以内的视频');
+                return;
+            }
+            this.p_ScorePublishModel.uploadVideo(video.path, itemIndex);
         }).catch(e => {
         });
     };

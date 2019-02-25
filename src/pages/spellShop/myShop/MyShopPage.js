@@ -374,7 +374,7 @@ export default class MyShopPage extends BasePage {
         const { totalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
-                <View style = {{marginBottom:30}}>
+                <View style={{ marginBottom: 30 }}>
                     <View style={{ height: 10 }}/>
                     {this._renderRow(RmbIcon, '店铺已完成奖励总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}
@@ -399,14 +399,14 @@ export default class MyShopPage extends BasePage {
     };
 
     _renderJoinBtn = () => {
-        const { storeMaxUser, storeUserList = [], recruitStatus, userStatus, status } = this.state.storeData;
+        const { storeMaxUser, userCount, recruitStatus, userStatus, status } = this.state.storeData;
         //已经加入||为空
         if (userStatus === 1 || StringUtils.isEmpty(userStatus)) {
             return null;
         }
         let btnText;
         //2,10,店铺未没关闭&&允许加入&&人数未满
-        let canJoin = (userStatus !== 10 && userStatus !== 2 && status !== 0) && (recruitStatus === 0 || recruitStatus === 1) && storeMaxUser > storeUserList.length;
+        let canJoin = (userStatus !== 10 && userStatus !== 2 && status !== 0) && (recruitStatus === 0 || recruitStatus === 1) && storeMaxUser > userCount;
         switch (userStatus) {
             case 2:
                 btnText = '申请中';
@@ -460,8 +460,7 @@ export default class MyShopPage extends BasePage {
     };
     // 主题内容
     renderBodyView = () => {
-        let { userStatus, storeUserList } = this.state.storeData;
-        storeUserList = storeUserList || [];
+        let { userStatus, storeUserList, userCount } = this.state.storeData;
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         onScroll={this._onScroll}
@@ -474,7 +473,8 @@ export default class MyShopPage extends BasePage {
                         />}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
-                <MembersRow dealerList={storeUserList.slice()}
+                <MembersRow storeUserList={storeUserList || []}
+                            userCount={userCount}
                             userStatus={userStatus}
                             onPressAllMembers={this._clickAllMembers}
                             onPressMemberItem={this._clickItemMembers}/>
