@@ -18,6 +18,8 @@ import android.webkit.CookieSyncManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -33,6 +35,7 @@ import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.ImageCacheUtils;
+import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
@@ -490,7 +493,7 @@ public class CommModule extends ReactContextBaseJavaModule {
      * @param callback
      */
     @ReactMethod
-    public void RN_Video_Image(String filePath,Callback callback){
+    public void RN_Video_Image(String filePath,Promise promise){
         Bitmap bitmap = null;
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         try
@@ -532,7 +535,7 @@ public class CommModule extends ReactContextBaseJavaModule {
 
         if (bitmap == null)
         {
-            callback.invoke();
+            promise.reject("");
             return ;
         }
 
@@ -543,6 +546,8 @@ public class CommModule extends ReactContextBaseJavaModule {
         }
         bitmap = null;
 
-        callback.invoke(returnPath);
+        WritableMap map = Arguments.createMap();
+        map.putString("imagePath",returnPath);
+        promise.resolve(map);
     }
 }
