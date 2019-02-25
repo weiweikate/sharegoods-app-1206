@@ -23,7 +23,7 @@ const GoodItems = ({ img, title, money, press }) => {
         press && press();
     }}>
         <View style={styles.goodsView}>
-            <ImageLoad cacheable={true} style={styles.goodImg} source={{ uri: img ? encodeURI(img) : '' }}/>
+            <ImageLoad style={styles.goodImg} source={{ uri: img ? encodeURI(img) : '' }}/>
             <Text style={styles.goodsTitle} numberOfLines={2} allowFontScaling={false}>{title}</Text>
             <View style={{ flex: 1 }}/>
             {
@@ -73,7 +73,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
         }}>
             <View style={styles.bannerBox}>
                 <View style={styles.bannerView}>
-                    <ImageLoad cacheable={true} style={styles.banner}
+                    <ImageLoad style={styles.banner}
                                source={{ uri: imgUrl ? encodeURI(imgUrl) : '' }}/>
                 </View>
             </View>
