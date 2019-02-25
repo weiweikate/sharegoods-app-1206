@@ -92,7 +92,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
                     <View style={styles.space}/>
                 </ScrollView>
                 :
-                <View style={{ height: px2dp(20) }}/>
+                <View style={{ height: px2dp(15) }}/>
         }
     </View>;
 };
@@ -149,7 +149,8 @@ export default class HomeSubjectView extends Component {
 let styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        marginTop: px2dp(10)
+        paddingTop: px2dp(10),
+        width: ScreenUtil.width
     },
     space: {
         width: px2dp(15)

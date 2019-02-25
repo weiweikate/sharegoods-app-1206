@@ -5,6 +5,9 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -21,6 +24,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
@@ -44,6 +48,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
@@ -233,32 +238,35 @@ public class CommModule extends ReactContextBaseJavaModule {
      * 图片压缩
      */
     @ReactMethod
-    public void RN_ImageCompression(String filePath, int fileSize, int maxSize, Callback callback) {
-
-        File file = new File(filePath);
-        if (!file.exists()) {
-            ToastUtils.showToast("文件不存在");
+    public void RN_ImageCompression(ReadableArray filePaths, int fileSize, int maxSize, Callback callback) {
+        List list = filePaths.toArrayList();
+        if(list == null){
             callback.invoke();
             return;
         }
-        if (isVideo(filePath)) {
-            ToastUtils.showToast("头像不能上传视频");
-            callback.invoke();
-            return;
-        }
+        for(int i = 0;i<list.size();i++){
+            String filePath = (String) list.get(i);
+            File file = new File(filePath);
 
-        if (isGIF(filePath)) {
-            ToastUtils.showToast("头像不支持GIF格式图片");
-            callback.invoke();
-            return;
-        }
+            if (!file.exists()) {
+                continue;
+            }
+            if (isVideo(filePath)) {
+                continue;
+            }
 
-        if (fileSize > maxSize) {
-            BitmapUtils.compressBitmap(filePath, maxSize / 1024, filePath);
-            callback.invoke();
-        } else {
-            callback.invoke();
+            if (isGIF(filePath)) {
+                continue;
+            }
+
+            if(fileSize>maxSize){
+                BitmapUtils.compressBitmap(filePath, maxSize / 1024, filePath);
+            }else {
+                continue;
+            }
+
         }
+        callback.invoke();
     }
 
 
@@ -474,5 +482,67 @@ public class CommModule extends ReactContextBaseJavaModule {
             tagSet.add(data.getString("version"));
         }
         JPushInterface.setTags(this.mContext, tagSet, null);
+    }
+
+    /**
+     * 获取视频文件关键帧
+     * @param filePath
+     * @param callback
+     */
+    @ReactMethod
+    public void RN_Video_Image(String filePath,Callback callback){
+        Bitmap bitmap = null;
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try
+        {
+            if (filePath.startsWith("http://")
+                    || filePath.startsWith("https://")
+                    || filePath.startsWith("widevine://"))
+            {
+                retriever.setDataSource(filePath, new Hashtable<String, String>());
+            }
+            else
+            {
+                retriever.setDataSource(filePath);
+            }
+            bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC); //retriever.getFrameAtTime(-1);
+        }
+        catch (IllegalArgumentException ex)
+        {
+            // Assume this is a corrupt video file
+            ex.printStackTrace();
+        }
+        catch (RuntimeException ex)
+        {
+            // Assume this is a corrupt video file.
+            ex.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                retriever.release();
+            }
+            catch (RuntimeException ex)
+            {
+                // Ignore failures while cleaning up.
+                ex.printStackTrace();
+            }
+        }
+
+        if (bitmap == null)
+        {
+            callback.invoke();
+            return ;
+        }
+
+        String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png",filePath);
+
+        if(bitmap!= null && !bitmap.isRecycled()){
+            bitmap.recycle();
+        }
+        bitmap = null;
+
+        callback.invoke(returnPath);
     }
 }

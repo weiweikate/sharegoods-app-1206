@@ -133,8 +133,8 @@ class HomeModule {
         adModules.loadAdList(this.firstLoad);
         classifyModules.loadClassifyList();
         starShopModule.loadShopList(this.firstLoad);
-        recommendModule.loadRecommendList(this.firstLoad);
         subjectModule.loadSubjectList(this.firstLoad);
+        recommendModule.loadRecommendList(this.firstLoad);
         this.page = 1;
         this.isEnd = false;
         this.homeList = [{

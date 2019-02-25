@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.base.BaseActivity;
 import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.ui.adapter.GuidePageAdapter;
@@ -115,7 +117,7 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
         viewList = new ArrayList<>();
         // 循环创建View并加入到集合中
         int len = imageIdArray.length;
-        ImageView imageView;
+        SimpleDraweeView imageView;
         RelativeLayout parent;
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -126,12 +128,12 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
             parent.setBackgroundResource(imgBg[i]);
             parent.setLayoutParams(params);
             parent.setGravity(Gravity.CENTER);
-            imageView = new ImageView(this);
+            imageView = new SimpleDraweeView(this);
             RelativeLayout.LayoutParams imgParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
             imageView.setLayoutParams(imgParams);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imageView.setBackgroundResource(imageIdArray[i]);
+            ImageLoadUtils.loadImageRes(this, imageIdArray[i], imageView);
             parent.addView(imageView);
             // 将ImageView加入到集合中
             viewList.add(parent);

@@ -1,4 +1,4 @@
-import { Linking, ActionSheetIOS, Platform, Alert} from 'react-native';
+import { Linking, ActionSheetIOS, Platform, Alert, NativeModules} from 'react-native';
 // import ImagePicker from 'react-native-image-picker';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
@@ -62,7 +62,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
             //     image: {uri: image.path, width: image.width, height: image.height},
             //     images: null
             // });
-            Utiles.upload([image.path], callBack)
+            Utiles.upload([image.path], [image.size + ''], callBack)
         }).catch(e => {});
     },
     pickSingle(cropit, circular=false, callBack) {
@@ -85,7 +85,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
             //     image: {uri: image.path, width: image.width, height: image.height, mime: image.mime},
             //     images: null
             // });
-            Utiles.upload([image.path], callBack)
+            Utiles.upload([image.path],[image.size + ''], callBack)
         }).catch(e => {
             console.log(e);
         })
@@ -100,10 +100,10 @@ import ImagePicker from '@mr/rn-image-crop-picker'
              mediaType: 'photo',
              loadingLabelText: '处理中...'
          }).then(images => {
-             Utiles.upload(images.map(item => item.path), callBack)
+             Utiles.upload(images.map(item => item.path), images.map(item => item.size + ''), callBack)
          }).catch(e => {});
      },
-     upload(paths, callBack) {
+     upload(paths, sizes, callBack) {
         for (let i = 0; i < paths.length; i ++)
          {
              let uri = paths[i];
@@ -123,14 +123,14 @@ import ImagePicker from '@mr/rn-image-crop-picker'
 
          Toast.showLoading('正在上传');
          // this.$toastShow('图片上传中，请稍后');
-         // NativeModules.commModule.RN_ImageCompression(uri, response.fileSize, 1024 * 1024 * 3, () => {
+         let upload = () => {
              //commonAPI/ossClient
              //user/
              let url = apiEnvironment.getCurrentHostUrl();
              request.setBaseUrl(url);
              let promises = [];
 
-             for (let i = 0; i< paths.length; i++){
+             for (let i = 0; i < paths.length; i++) {
                  let datas = {
                      type: 'image/png',
                      uri: paths[i],
@@ -141,29 +141,35 @@ import ImagePicker from '@mr/rn-image-crop-picker'
                  promises.push(request.upload('/common/upload/oss', datas, {}).then((res) => {
                      if (res.code === 10000 && res.data) {
                          return Promise.resolve(res.data);
-                     }else {
+                     } else {
                          return Promise.reject({
                              msg: '图片上传失败',
                          });
                      }
                  }));
              }
-            Promise.all(promises).then(res => {
-                console.log(res);
-                Toast.hiddenLoading();
-                    callBack({
-                        ok: true,
-                        imageUrl: res,
-                        imageThumbUrl: res
-                    });
-            }).catch(error => {
-                Toast.hiddenLoading();
-                console.log(error);
-                // callBack({ ok: false, msg: '上传图片失败' });
-                console.log(error);
-                console.warn('图片上传失败' + error.toString());
-                Toast.$toast('图片上传失败');
-            });
+             Promise.all(promises).then(res => {
+                 console.log(res);
+                 Toast.hiddenLoading();
+                 callBack({
+                     ok: true,
+                     imageUrl: res,
+                     imageThumbUrl: res
+                 });
+             }).catch(error => {
+                 Toast.hiddenLoading();
+                 console.log(error);
+                 // callBack({ ok: false, msg: '上传图片失败' });
+                 console.log(error);
+                 console.warn('图片上传失败' + error.toString());
+                 Toast.$toast('图片上传失败');
+             });
+         }
+         if (Platform.OS === 'ios') {
+             NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024*1024*3, upload);
+         }else {
+             upload();
+         }
      },
     callPhone: (phoneNum) => {
         Linking.openURL('tel:' + phoneNum);
