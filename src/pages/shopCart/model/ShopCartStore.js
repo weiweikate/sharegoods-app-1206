@@ -46,7 +46,11 @@ class ShopCartStore {
     @computed
     get getAllGoodsClassNumber() {
         if (this.data.slice() instanceof Array && this.data.slice().length > 0) {
-            return this.data.slice().length;
+            let tempNumber = 0;
+            this.data.slice().map((classGoods) =>{
+                tempNumber += classGoods.data.slice().length;
+            })
+            return tempNumber;
         } else {
             return 0;
         }
