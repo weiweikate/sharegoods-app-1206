@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIImage (Util)
 + (UIImage *)getLaunchImage;
+-(NSData *)compressWithMaxLength:(NSUInteger)maxLength;
 @end
 
 NS_ASSUME_NONNULL_END

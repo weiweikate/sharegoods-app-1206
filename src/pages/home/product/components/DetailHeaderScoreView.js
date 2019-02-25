@@ -74,7 +74,10 @@ export class DetailHeaderScoreView extends Component {
         const { comment } = pData;
         const commentTemp = (comment || {}).comment;
         const { imgUrl, videoUrl } = comment || {};
-        let images = (imgUrl || '').split('$');
+        let images = [];
+        if (StringUtils.isNoEmpty(imgUrl)) {
+            images = imgUrl.split('$');
+        }
         navigation.navigate(RouterMap.P_ScoreSwiperPage, {
             video: videoUrl,
             videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,

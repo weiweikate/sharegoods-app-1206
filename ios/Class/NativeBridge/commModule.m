@@ -252,12 +252,16 @@ RCT_EXPORT_METHOD(netWorkState:(RCTResponseSenderBlock)callback){
     
 }
 
-RCT_EXPORT_METHOD(RN_ImageCompression:(NSString*) path
-                  fileSize:(NSInteger)fileSize
+RCT_EXPORT_METHOD(RN_ImageCompression:(NSArray *) paths
+                  fileSize:(NSArray *)fileSizes
                   limitSize:(NSInteger)limitSize
                   callback:(RCTResponseSenderBlock)callback
                   ){
-  [XGImageCompression RN_ImageCompressionWithPath:path fileSize:fileSize limitSize:limitSize];
+  NSLog(@"%@\n%@", paths, fileSizes);
+  for (int i = 0 ; i < paths.count; i++) {
+     [XGImageCompression RN_ImageCompressionWithPath:paths[i] fileSize:[fileSizes[i] integerValue] limitSize:limitSize];
+  }
+ 
   NSLog(@"执行开始");
   callback(@[]);
   NSLog(@"执行结束");

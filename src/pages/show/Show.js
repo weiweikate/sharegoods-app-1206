@@ -1,6 +1,8 @@
 import { observable, computed, action, flow } from 'mobx';
 import ShowApi from './ShowApi';
 import Toast from '../../utils/bridge'
+import ScreenUtil from '../../utils/ScreenUtils';
+const { px2dp } = ScreenUtil;
 
 //推广 1：精选 2：热门 3：推荐 4：最新 全部则不传
 export const tag = {
@@ -82,8 +84,8 @@ class ShowBannerModules {
     @observable bannerList = [];
     @observable type = showTypes.banner;
 
-    @computed get bannerCount() {
-        return this.bannerList.length;
+    @computed get bannerHeight() {
+        return this.bannerList.length > 0 ? px2dp(210) : 0;
     }
 
     @action loadBannerList = () => {
@@ -135,19 +137,18 @@ class ShowBannerModules {
 
 export const showBannerModules = new ShowBannerModules();
 
-
 class ShowChoiceModules {
     @observable choiceList = [];
     @observable type = showTypes.choice;
-
-    @computed get choiceCount() {
-        return this.choiceList.length;
+    @computed get choiceHeight() {
+      return this.choiceList.length * px2dp(234)
     }
 
     @action loadChoiceList = flow(function* (params) {
         try {
             const result = yield ShowApi.showQuery({ generalize: tag.Featured });
             this.choiceList = result.data.data;
+            return result
         } catch (error) {
             console.log(error);
         }
@@ -156,25 +157,7 @@ class ShowChoiceModules {
 
 export const showChoiceModules = new ShowChoiceModules();
 
-class ShowHotModules {
-    @observable hotList = [];
-    @observable type = showTypes.hot;
 
-    @computed get hotCount() {
-        return this.hotList.length;
-    }
-
-    @action loadHotList = flow(function* (params) {
-        try {
-            const result = yield ShowApi.showQuery({ generalize: tag.Hot });
-            this.hotList = result.data.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-}
-
-export const showHotModules = new ShowHotModules();
 export class ShowRecommendModules {
     @observable recommendList = [];
     @observable selectedList = new Map();
@@ -183,20 +166,10 @@ export class ShowRecommendModules {
     @observable isRefreshing = false;
     @observable type = showTypes.recommend;
     @observable isEnd = false;
+    @observable recommendHeight = 0;
 
     @computed get recommendCount() {
         return this.recommendList.length;
-    }
-
-    @action loadRecommendList = (params) => {
-        let currentDate = new Date()
-        this.page = 1
-        this.isEnd = false
-        showChoiceModules.loadChoiceList()
-        showBannerModules.loadBannerList()
-        showHotModules.loadHotList()
-        this.isRefreshing = true
-        return this.fetchRecommendList(params, currentDate, this.page)
     }
 
     @action fetchRecommendList = (params, currentDate, page) => {

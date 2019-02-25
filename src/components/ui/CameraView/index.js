@@ -25,17 +25,21 @@ export default class CameraView extends Component {
             modalVisible: false,
             //有无数据
             data: undefined,
-            //防止安卓过早出现权限弹框
+            //防止安卓过早出现权限弹框  和返回后再点击出现黑屏
             has_authorized: false
         };
     }
 
     show = (callBack) => {
         this.setState({
-            modalVisible: true,
-            data: undefined,
-            has_authorized: true,
-            callBack
+            has_authorized: false
+        }, () => {
+            this.setState({
+                modalVisible: true,
+                data: undefined,
+                has_authorized: true,
+                callBack
+            });
         });
     };
 
@@ -70,10 +74,6 @@ export default class CameraView extends Component {
                                 ],
                                 { cancelable: false }
                             );
-                        });
-                    } else {
-                        this.setState({
-                            has_authorized: true
                         });
                     }
                 }}>
@@ -177,8 +177,8 @@ export default class CameraView extends Component {
             try {
                 const promise = this.camera.recordAsync({
                     mute: false,
-                    maxDuration: 10,
-                    quality: RNCamera.Constants.VideoQuality['288p']
+                    maxFileSize: 3 * 1024 * 1024,
+                    quality: RNCamera.Constants.VideoQuality['480p']
                 });
                 if (promise) {
                     this.setState({ isRecording: true });

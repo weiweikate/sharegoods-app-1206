@@ -127,7 +127,8 @@ dependencies {
     api project(':qrcode')
     api project(':lottie')
     api project(':qiyu_service')
-//    api project(':react-native-camera')
+    api project(':react-native-camera')
+    api project(':base_adapter')
     compile (project(':react-native-camera')) {
         exclude group: "com.google.android.gms"
         compile 'com.android.support:exifinterface:25.+'
