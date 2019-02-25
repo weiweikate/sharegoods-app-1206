@@ -1,5 +1,6 @@
 const index = {
-    mine_header_bg: require('./bg_img_user.png'),
+    mine_header_bg: require('./me_bg_top_nor.png'),
+    mine_account_bg: require('./me_bg_account_nor.png'),
     mine_setting_icon_gray:require('./mine_setting_icon_gray.png'),
     mine_setting_icon_white:require('./mine_setting_icon_white.png'),
     mine_message_icon_gray:require('./mine_message_icon_gray.png'),

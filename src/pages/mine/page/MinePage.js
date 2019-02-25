@@ -34,6 +34,7 @@ import CommModal from '../../../comm/components/CommModal';
 
 const {
     mine_header_bg,
+    mine_account_bg,
     mine_setting_icon_gray,
     mine_message_icon_gray,
     mine_wait_pay_icon,
@@ -448,7 +449,7 @@ export default class MinePage extends BasePage {
 
     accountRender = () => {
         return (
-            <ImageBackground source={mine_header_bg} style={{
+            <ImageBackground source={mine_account_bg} style={{
                 marginTop: px2dp(41),
                 marginHorizontal: px2dp(15),
                 borderRadius: 5,
