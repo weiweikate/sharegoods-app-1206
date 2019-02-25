@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, NativeModules } from 'react-native';
 import { MRText as Text } from '../../../../../components/ui';
 import DesignRule from '../../../../../constants/DesignRule';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
@@ -60,26 +60,39 @@ export class P_ScoreListItemView extends Component {
 
     _action = (index) => {
         const { navigation, itemData } = this.props;
-        const { imgUrl, videoUrl, comment } = itemData;
+        const { imgUrl, videoUrl, videoImgPath, comment } = itemData;
         let images = [];
         if (StringUtils.isNoEmpty(imgUrl)) {
             images = imgUrl.split('$');
         }
         navigation.navigate(RouterMap.P_ScoreSwiperPage, {
             video: videoUrl,
-            videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
+            videoImg: videoImgPath,
             images: images,
             content: comment,
             index: index
         });
     };
 
+    componentWillReceiveProps(nextProps) {
+        //处理视频图片
+        let { videoUrl } = nextProps.itemData;
+        if (StringUtils.isNoEmpty(videoUrl)) {
+            NativeModules.commModule.RN_Video_Image(videoUrl).then(({ imagePath }) => {
+                nextProps.itemData.videoImgPath = imagePath;
+                this.setState({
+                    data: nextProps.pData
+                });
+            });
+        }
+    }
+
     render() {
-        const { headImg, nickname, star, comment, imgUrl, createTime, spec, videoUrl, reply } = this.props.itemData || {};
+        const { headImg, nickname, star, comment, imgUrl, createTime, spec, videoUrl, videoImgPath, reply } = this.props.itemData || {};
         let imgs = [];
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.hasVideo = true;
-            imgs.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
+            imgs.push(videoImgPath);
         }
         if (StringUtils.isNoEmpty(imgUrl)) {
             let temp = imgUrl.split('$');

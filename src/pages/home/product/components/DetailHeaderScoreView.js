@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, NativeModules } from 'react-native';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import AvatarImage from '../../../../components/ui/AvatarImage';
@@ -16,6 +16,20 @@ const { px2dp, width } = ScreenUtils;
 const img_w_h = (width - 30 - px2dp(16) - 1) / 3;
 
 export class DetailHeaderScoreView extends Component {
+
+    componentWillReceiveProps(nextProps) {
+        //处理视频图片
+        let { comment } = nextProps.pData;
+        const { videoUrl } = comment || {};
+        if (StringUtils.isNoEmpty(videoUrl)) {
+            NativeModules.commModule.RN_Video_Image(videoUrl).then(({ imagePath }) => {
+                comment.videoImgPath = imagePath;
+                this.setState({
+                    data: nextProps.pData
+                });
+            });
+        }
+    }
 
     _renderContentImgs = (imgs) => {
         if (imgs.length > 0) {
@@ -44,13 +58,13 @@ export class DetailHeaderScoreView extends Component {
     };
 
     _renderContent = (comment) => {
-        const { headImg, nickname, imgUrl, videoUrl } = comment || {};
+        const { headImg, nickname, imgUrl, videoUrl, videoImgPath } = comment || {};
         const commentTemp = (comment || {}).comment;
 
         let images = [];
         if (StringUtils.isNoEmpty(videoUrl)) {
             this.hasVideo = true;
-            images.push(`${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`);
+            images.push(videoImgPath);
         }
         if (StringUtils.isNoEmpty(imgUrl)) {
             let temp = imgUrl.split('$');
@@ -63,7 +77,8 @@ export class DetailHeaderScoreView extends Component {
                     <AvatarImage style={styles.iconImg} source={{ uri: headImg }} borderRadius={15}/>
                     <Text style={styles.nameText}>{nickname || ''}</Text>
                 </View>
-                <Text style={styles.contentText}>{commentTemp || ''}</Text>
+                <Text
+                    style={styles.contentText}>{StringUtils.isNoEmpty(commentTemp) ? commentTemp : '此用户未留下晒单内容~'}</Text>
                 {this._renderContentImgs(images)}
             </View>
         );
@@ -73,14 +88,14 @@ export class DetailHeaderScoreView extends Component {
         const { navigation, pData } = this.props;
         const { comment } = pData;
         const commentTemp = (comment || {}).comment;
-        const { imgUrl, videoUrl } = comment || {};
+        const { imgUrl, videoUrl, videoImgPath } = comment || {};
         let images = [];
         if (StringUtils.isNoEmpty(imgUrl)) {
             images = imgUrl.split('$');
         }
         navigation.navigate(RouterMap.P_ScoreSwiperPage, {
             video: videoUrl,
-            videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
+            videoImg: videoImgPath,
             images: images,
             content: commentTemp,
             index: index

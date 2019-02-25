@@ -79,6 +79,7 @@ export default class P_ScoreListPage extends BasePage {
 
             let tempArr = [];
             data.forEach((item) => {
+                //item 数组
                 tempArr.push(...item);
             });
             this.setState({
@@ -220,10 +221,10 @@ export default class P_ScoreListPage extends BasePage {
         const { overtimeComment } = pData || {};
         return (
             <View>
-                <View style={styles.footView}>
+                {overtimeComment && parseInt(overtimeComment) > 0 ? <View style={styles.footView}>
                     <Image source={p_score_smile} style={styles.footerImg}/>
-                    <Text style={styles.footerText}>{`${overtimeComment || 0}位用户默认给了优秀晒单`}</Text>
-                </View>
+                    <Text style={styles.footerText}>{`${overtimeComment}位用户默认给了优秀晒单`}</Text>
+                </View> : null}
                 {this.state.noMore ? <Text style={styles.footerNoMoreText}>我也是有底线的~</Text> : null}
             </View>
         );

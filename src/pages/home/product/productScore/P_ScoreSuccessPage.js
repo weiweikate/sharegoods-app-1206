@@ -10,6 +10,7 @@ import HomeAPI from '../../api/HomeAPI';
 import RouterMap from '../../../../navigation/RouterMap';
 import res from '../../../../comm/res';
 import pRes from '../../res';
+import OrderApi from '../../../order/api/orderApi';
 
 const { tongyon_icon_check_green } = res.button;
 const { kong_icon_shaidan } = pRes.product.productScore;
@@ -23,6 +24,10 @@ export default class P_ScoreSuccessPage extends BasePage {
     };
 
     componentDidMount() {
+       this._loadPageData();
+    }
+
+    _loadPageData = ()=>{
         HomeAPI.queryCommentByUserCode().then((data) => {
             let tempList = (data || {}).data || [];
             this.setState({
@@ -44,7 +49,16 @@ export default class P_ScoreSuccessPage extends BasePage {
     };
 
     _goPublish = (warehouseOrderNo) => {
-        this.$navigate(RouterMap.P_ScorePublishPage, { orderNo: warehouseOrderNo });
+        OrderApi.checkInfo({ warehouseOrderNo: warehouseOrderNo }).then(res => {
+            if (res.data) {
+                this.$navigate(RouterMap.P_ScorePublishPage, { orderNo: warehouseOrderNo });
+            } else {
+                this._loadPageData();
+                this.$toastShow('该商品已晒过单！');
+            }
+        }).catch(e => {
+            this.$toastShow(e.msg);
+        });
     };
 
     _ListEmptyComponent = () => {

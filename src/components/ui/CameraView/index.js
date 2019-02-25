@@ -178,7 +178,6 @@ export default class CameraView extends Component {
                 const promise = this.camera.recordAsync({
                     mute: false,
                     maxFileSize: 3 * 1024 * 1024,
-                    quality: RNCamera.Constants.VideoQuality['480p']
                 });
                 if (promise) {
                     this.setState({ isRecording: true });
