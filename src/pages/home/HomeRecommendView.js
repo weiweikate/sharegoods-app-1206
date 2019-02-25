@@ -15,7 +15,7 @@ import { MRText as Text } from '../../components/ui';
 
 const RecommendItem = ({ item, press }) => <TouchableOpacity style={styles.item} onPress={() => press && press()}>
     <View style={styles.imgView}>
-        <ImageLoad cacheable={true} style={styles.img} source={{ uri: item.imgUrl }}/>
+        <ImageLoad style={styles.img} source={{ uri: item.imgUrl }}/>
     </View>
 </TouchableOpacity>;
 

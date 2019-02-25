@@ -102,12 +102,10 @@ const getTipString = (itemData) => {
     }
 
 
-    if (itemData.shoppingCartActivity === null) {
+    if (itemData.shoppingCartActivity === null || itemData.shoppingCartActivity === undefined) {
         return returnObj;
         // return tipString;
     }
-
-
 
     if (itemData.shoppingCartActivity.length > 0) {
         itemData.shoppingCartActivity.map((activityItem, activityIndex) => {

@@ -23,7 +23,7 @@ const ArrowImg = res.myShop.xjt_03;
 export default class MembersRow extends Component {
 
     static propTypes = {
-        dealerList: PropTypes.array,
+        storeUserList: PropTypes.array,
         onPressAllMembers: PropTypes.func,//点击查看全部成员
         onPressMemberItem: PropTypes.func//点击某个成员
     };
@@ -34,8 +34,7 @@ export default class MembersRow extends Component {
     };
 
     render() {
-        let dealerList = this.props.dealerList || [];
-        const { userStatus } = this.props;
+        const { userStatus, userCount, storeUserList } = this.props;
         return (<View style={styles.container}>
             <TouchableOpacity onPress={this.props.onPressAllMembers}
                               activeOpacity={1}
@@ -43,13 +42,14 @@ export default class MembersRow extends Component {
                 <Image style={styles.icon} source={PeopleImg}/>
                 <Text style={styles.iconTitle} allowFontScaling={false}>店铺成员</Text>
                 <Text
-                    style={[styles.iconDesc, { marginRight: userStatus !== 1 ? 21 : 0 }]} allowFontScaling={false}>{`共${dealerList.length}人`}</Text>
+                    style={[styles.iconDesc, { marginRight: userStatus !== 1 ? 21 : 0 }]}
+                    allowFontScaling={false}>{`共${userCount || 0}人`}</Text>
                 {userStatus === 1 ? <Image style={styles.arrow} source={ArrowImg}/> : null}
             </TouchableOpacity>
             <View style={styles.gapLine}/>
             <View style={styles.membersContainer}>
                 {
-                    dealerList.map((item, index) => {
+                    (storeUserList || []).map((item, index) => {
                         const { headImg, nickName } = item || {};
                         if (index > 9) {
                             return;
@@ -60,7 +60,7 @@ export default class MembersRow extends Component {
                             marginBottom: (index >= 5) ? 24 : 20
                         }} key={index}>
                             <AvatarImage source={{ uri: headImg }}
-                                          style={styles.headerImg} borderRadius={20}/>
+                                         style={styles.headerImg} borderRadius={20}/>
                             <Text numberOfLines={1} style={styles.name} allowFontScaling={false}>{nickName || ''}</Text>
                         </View>);
                     })

@@ -13,6 +13,7 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* crm_app_xiugouTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* crm_app_xiugouTests.m */; };
+		031BFDE1221A56AE00D9E878 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 031BFDD8221A568C00D9E878 /* libRNCamera.a */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
 		037DBABE21B0E3030003DA18 /* money_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABC21B0E3030003DA18 /* money_0.png */; };
 		037DBABF21B0E3030003DA18 /* money_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABD21B0E3030003DA18 /* money_1.png */; };
@@ -194,6 +195,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = crm_app_xiugou;
+		};
+		031BFDD7221A568C00D9E878 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 031BFDA6221A568C00D9E878 /* RNCamera.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
+			remoteInfo = RNCamera;
 		};
 		03A568E021DEFA0C00D6A770 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -564,6 +572,7 @@
 		00E356EE1AD99517003FC87E /* crm_app_xiugouTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = crm_app_xiugouTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* crm_app_xiugouTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = crm_app_xiugouTests.m; sourceTree = "<group>"; };
+		031BFDA6221A568C00D9E878 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		033C66B621927ACB00433026 /* MRBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBannerViewManager.h; sourceTree = "<group>"; };
 		033C66B721927ACB00433026 /* MRBannerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBannerViewManager.m; sourceTree = "<group>"; };
 		037DBABC21B0E3030003DA18 /* money_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_0.png; sourceTree = "<group>"; };
@@ -864,6 +873,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				031BFDE1221A56AE00D9E878 /* libRNCamera.a in Frameworks */,
 				CD15545622126AB4004C75FB /* libRCTCameraRoll.a in Frameworks */,
 				CD6742D821E441D500464549 /* libimageCropPicker.a in Frameworks */,
 				03A568E621DEFA1E00D6A770 /* libRNGeolocation.a in Frameworks */,
@@ -995,6 +1005,14 @@
 				00E356F11AD99517003FC87E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		031BFDA7221A568C00D9E878 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				031BFDD8221A568C00D9E878 /* libRNCamera.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		033C66B521927AA800433026 /* MRBannerView */ = {
@@ -1583,6 +1601,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				031BFDA6221A568C00D9E878 /* RNCamera.xcodeproj */,
 				CD15541C22126A94004C75FB /* RCTCameraRoll.xcodeproj */,
 				CD67428F21E43F5F00464549 /* imageCropPicker.xcodeproj */,
 				CD1AA5F821D602B1007F045D /* React-Native-Webview-Bridge.xcodeproj */,
@@ -2058,6 +2077,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 031BFDA7221A568C00D9E878 /* Products */;
+					ProjectRef = 031BFDA6221A568C00D9E878 /* RNCamera.xcodeproj */;
+				},
+				{
 					ProductGroup = 1872318221CB96D300513B04 /* Products */;
 					ProjectRef = 1872318121CB96D300513B04 /* RNCookieManagerIOS.xcodeproj */;
 				},
@@ -2130,6 +2153,13 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		031BFDD8221A568C00D9E878 /* libRNCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCamera.a;
+			remoteRef = 031BFDD7221A568C00D9E878 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		03A568E121DEFA0C00D6A770 /* libRNGeolocation.a */ = {

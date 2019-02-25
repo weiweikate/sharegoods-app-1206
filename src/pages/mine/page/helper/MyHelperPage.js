@@ -77,7 +77,7 @@ export default class MyHelperPage extends BasePage {
                                                 fontSize: 15,
                                                 color: DesignRule.textColor_secondTitle
                                             }}
-                                            value={item.list.length > 0 ? item.list[0].title : ''} numberOfLines={1}/>
+                                            value={ Array.isArray(item.list)&&item.list.length > 0 ? item.list[0].title : ''} numberOfLines={1}/>
                                 </View>
                                 <View style={{ width: '100%', height: 0.5, backgroundColor: '#c9c9c9' }}/>
                                 <View style={{ flex: 1, justifyContent: 'center', borderColor: '#c9c9c9' }}>
@@ -87,7 +87,7 @@ export default class MyHelperPage extends BasePage {
                                                 fontSize: 15,
                                                 color: DesignRule.textColor_secondTitle
                                             }}
-                                            value={item.list.length > 1 ? item.list[1].title : ''} numberOfLines={1}/>
+                                            value={item.list instanceof Array&&item.list.length > 1 ? item.list[1].title : ''} numberOfLines={1}/>
                                 </View>
                             </View>
                         </View>
@@ -232,6 +232,7 @@ export default class MyHelperPage extends BasePage {
                     imgUrl: item.imgUrl
                 });
             });
+            console.log("componentDidMount",list)
             this.setState({
                 typeList: list
             });
