@@ -61,7 +61,10 @@ export class P_ScoreListItemView extends Component {
     _action = (index) => {
         const { navigation, itemData } = this.props;
         const { imgUrl, videoUrl, comment } = itemData;
-        let images = (imgUrl || '').split('$');
+        let images = [];
+        if (StringUtils.isNoEmpty(imgUrl)) {
+            images = imgUrl.split('$');
+        }
         navigation.navigate(RouterMap.P_ScoreSwiperPage, {
             video: videoUrl,
             videoImg: `${videoUrl}?x-oss-process=video/snapshot,t_0,f_png,w_600,h_600,m_fast`,
