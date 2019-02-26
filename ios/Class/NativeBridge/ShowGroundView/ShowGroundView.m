@@ -16,6 +16,7 @@
 #import <React/RCTComponent.h>
 #import <React/UIView+React.h>
 #import "ShowCollectionReusableView.h"
+#import "MBProgressHUD+PD.h"
 @interface ShowGroundView()<UICollectionViewDataSource, WHCWaterfallFlowLayoutDelegate, UICollectionViewDelegate, UIScrollViewDelegate>
 @property (nonatomic, weak) UICollectionView * collectionView;
 @property (nonatomic, strong)NSMutableArray<ShowQuery_dataModel *> *dataArr;
@@ -133,6 +134,7 @@
     }
     weakSelf.collectionView.mj_footer.hidden = NO;
   } failure:^(NSString *msg, NSInteger code) {
+    [MBProgressHUD showSuccess:msg];
     [weakSelf.collectionView.mj_header endRefreshing];
   } showLoading:nil];
 }
@@ -158,6 +160,7 @@
       [weakSelf.collectionView.mj_footer endRefreshing];
     }
   } failure:^(NSString *msg, NSInteger code) {
+    [MBProgressHUD showSuccess:msg];
     [weakSelf.collectionView.mj_footer endRefreshing];
   } showLoading:nil];
 }

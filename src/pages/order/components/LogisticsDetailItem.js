@@ -1,7 +1,6 @@
 import React from "react";
 import {
-    View,
-    TouchableOpacity
+    View
 } from 'react-native';
 // import { color } from '../../../constants/Theme';
 import {
@@ -34,21 +33,9 @@ const LogisticsDetailItem = props => {
             }}/>
         );
     };
-    this.renderLine2 = () => {
-        return (
-            <View style={{
-                flex: 1,
-                height: 1,
-                backgroundColor: DesignRule.lineColor_inColorBg,
-                marginTop: 10,
-                marginBottom: 10,
-                alignItems: "center"
-            }}/>
-        );
-    };
     this.renderMiddleImage = () => {
         return (!middleImage ?
-                <UIText value={"·"} style={{ fontSize: 40, marginLeft: 40, marginTop: -15 }}/> :
+                <UIText value={"·"} style={{ fontSize: 40, marginLeft: 40, marginTop:-20}}/> :
                 <UIImage source={middleImage} style={{ width: 28, height: 28, marginLeft: 30, opacity: 1 }}/>
         );
     };
@@ -67,7 +54,7 @@ const LogisticsDetailItem = props => {
                     marginLeft: 5,
                     marginRight: 5,
                     marginTop: isTop ? 21 : 0,
-                    height: 30
+                    height: 20
                 }}/>
         );
     };
@@ -77,13 +64,15 @@ const LogisticsDetailItem = props => {
             : null);
     };
     return (
-        <TouchableOpacity style={{ paddingLeft: 16, paddingRight: 16, flexDirection: "row" }}>
-            <View style={{width: 40, marginTop: 20}}>
+        <View style={{marginRight:15,marginLeft:15,borderTopLeftRadius:isTop?10:0,borderTopRightRadius:isTop?10:0 ,backgroundColor:'white',
+            borderBottomLeftRadius:isBottom?10:0,borderBottomRightRadius:isBottom?10:0}}>
+        <View style={{ paddingLeft: 15, paddingRight: 15, flexDirection: "row"}}>
+            <View style={{width: 40, marginTop: 10}}>
                 <UIText value={time.substr(5,5)} style={{ fontSize: 14, color: DesignRule.textColor_mainTitle_222,textAlign:'right'}}/>
             <UIText value={time.substr(10,6)} style={{ fontSize: 11, color: DesignRule.textColor_mainTitle_222,marginTop:-10 ,textAlign:'right' }}/>
             </View>
             {this.renderMiddleLine()}
-            <View style={{ marginTop: 25 }}>
+            <View style={{ marginTop: 15 }}>
                 {this.renderTitle()}
                 <View style={{ flex: 1, flexDirection: "row", paddingLeft: 15, paddingRight: 48, flexWrap: "wrap" }}>
                     <UIText value={content1} style={{ fontSize: 12, color: DesignRule.textColor_mainTitle_222 }}/>
@@ -92,7 +81,9 @@ const LogisticsDetailItem = props => {
             <View style={{ position: "absolute", marginLeft: 16, marginTop: 20 }}>
                 {this.renderMiddleImage()}
             </View>
-        </TouchableOpacity>
+        </View>
+            {isBottom?null:<View style={{height:1,backgroundColor:DesignRule.lineColor_inWhiteBg}}/>}
+        </View>
 
     );
 };
