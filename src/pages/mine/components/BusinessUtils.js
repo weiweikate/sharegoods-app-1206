@@ -165,11 +165,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
                  Toast.$toast('图片上传失败');
              });
          }
-         if (Platform.OS === 'ios') {
-             NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024*1024*3, upload);
-         }else {
-             upload();
-         }
+         NativeModules.commModule.RN_ImageCompression(paths, sizes, 1024*1024*3, upload);
      },
     callPhone: (phoneNum) => {
         Linking.openURL('tel:' + phoneNum);
