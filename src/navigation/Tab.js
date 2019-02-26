@@ -17,7 +17,7 @@ export const TabNav = TabNavigator(
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarLabel: '首页v4',
+                tabBarLabel: '首页ss',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
