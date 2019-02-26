@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         width: 30, height: 30
     },
     nameText: {
-        marginLeft: 5, marginRight: 16,
+        marginLeft: 5, marginRight: 16, paddingVertical: 3,
         fontSize: 12, color: DesignRule.textColor_mainTitle
     },
     starsView: {
