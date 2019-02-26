@@ -16,6 +16,7 @@ import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SensorsUtils;
 import com.meeruu.commonlib.utils.Utils;
@@ -138,16 +139,20 @@ public class BaseApplication extends MultiDexApplication {
      */
     public String getProcessName(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
-        if (runningAppProcesses == null) {
-            return "";
-        }
-
-        for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
-            if (runningAppProcess.pid == android.os.Process.myPid()
-                    && !TextUtils.isEmpty(runningAppProcess.processName)) {
-                return runningAppProcess.processName;
+        try {
+            List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
+            if (runningAppProcesses == null) {
+                return "";
             }
+
+            for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
+                if (runningAppProcess.pid == android.os.Process.myPid()
+                        && !TextUtils.isEmpty(runningAppProcess.processName)) {
+                    return runningAppProcess.processName;
+                }
+            }
+        } catch (Exception e) {
+            LogUtils.d(e.getMessage());
         }
         return "";
     }
