@@ -135,7 +135,7 @@
         if (showLoading) {
             [hub hideAnimated:YES];
         }
-        errorBlock(error.description, 1);
+        errorBlock(@"网络链接异常，请检查您的网络", 1);
     }];
 }
 
@@ -192,7 +192,7 @@
         if (showLoading) {
             [hub hideAnimated:YES];
         }
-        errorBlock(error.description, 1);
+        errorBlock(@"网络链接异常，请检查您的网络", 1);
     }];
 }
 
