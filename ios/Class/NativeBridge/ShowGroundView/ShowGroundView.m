@@ -184,19 +184,20 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath
 {
-//  if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+   //section header
+  if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
     ShowCollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView" forIndexPath:indexPath];
 //    view.backgroundColor = [UIColor redColor];
 
-      [view removeAllSubviews];
-     [view addSubview:self.headerView];
+    [view removeAllSubviews];
+    [view addSubview:self.headerView];
   
     return view;
-//  }else{
-//    UICollectionReusableView * view = [UICollectionReusableView new];
-//    view.backgroundColor = [UIColor redColor];
-//    return view;
-//  }
+  }else{
+    //section footer
+     ShowCollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView" forIndexPath:indexPath];
+    return view;
+  }
 }
 
 
