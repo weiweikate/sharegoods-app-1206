@@ -57,6 +57,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -73,6 +78,16 @@ public class CommModule extends ReactContextBaseJavaModule {
     public static ArrayList<IdNameBean> options1Items = new ArrayList<IdNameBean>();
     public static ArrayList<ArrayList<IdNameBean>> options2Items = new ArrayList<ArrayList<IdNameBean>>();
     public static ArrayList<ArrayList<ArrayList<IdNameBean>>> options3Items = new ArrayList<ArrayList<ArrayList<IdNameBean>>>();
+    //参数初始化
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    //核心线程数量大小
+    private static final int corePoolSize = Math.max(2, Math.min(CPU_COUNT - 1, 4));
+    //线程池最大容纳线程数
+    private static final int maximumPoolSize = CPU_COUNT * 2 + 1;
+    //线程空闲后的存活时长
+    private static final int keepAliveTime = 30;
+
+    private ThreadPoolExecutor executor;
 
     /**
      * 构造方法必须实现
@@ -82,6 +97,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     public CommModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.mContext = reactContext;
+        this.executor = new ThreadPoolExecutor(corePoolSize,maximumPoolSize,keepAliveTime, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>(),Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
     }
 
     /**
@@ -497,10 +513,10 @@ public class CommModule extends ReactContextBaseJavaModule {
      * 获取视频文件关键帧
      *
      * @param filePath
-     * @param callback
+     * @param promise
      */
     @ReactMethod
-    public void RN_Video_Image(String filePath, Promise promise) {
+    public void RN_Video_Image(final String filePath,final Promise promise) {
 
         File dir = SDCardUtils.getFileDirPath("MR/picture");
         String absolutePath = dir.getAbsolutePath();
@@ -518,45 +534,52 @@ public class CommModule extends ReactContextBaseJavaModule {
             promise.resolve(map);
             return;
         }
+        this.executor.execute(new Runnable() {
+            @Override
+            public void run() {
 
+                Bitmap bitmap = null;
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                try {
+                    if (filePath.startsWith("http://") || filePath.startsWith("https://") || filePath.startsWith("widevine://")) {
+                        retriever.setDataSource(filePath, new Hashtable<String, String>());
+                    } else {
+                        Uri uri = Uri.parse(filePath);
+                        String path = uri.getPath();
+                        retriever.setDataSource(path);
+                    }
+                    bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC); //retriever.getFrameAtTime(-1);
+                } catch (Exception ex) {
+                    // Assume this is a corrupt video file
+                    ex.printStackTrace();
+                } finally {
+                    try {
+                        retriever.release();
+                    } catch (RuntimeException ex) {
+                        // Ignore failures while cleaning up.
+                        ex.printStackTrace();
+                    }
+                }
 
-        Bitmap bitmap = null;
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try {
-            if (filePath.startsWith("http://") || filePath.startsWith("https://") || filePath.startsWith("widevine://")) {
-                retriever.setDataSource(filePath, new Hashtable<String, String>());
-            } else {
-                Uri uri = Uri.parse(filePath);
-                String path = uri.getPath();
-                retriever.setDataSource(path);
+                if (bitmap == null) {
+                    promise.reject("");
+                    return;
+                }
+
+                String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png", filePath);
+
+                if (bitmap != null && !bitmap.isRecycled()) {
+                    bitmap.recycle();
+                }
+                bitmap = null;
+
+                WritableMap map = Arguments.createMap();
+                map.putString("imagePath", returnPath);
+                promise.resolve(map);
             }
-            bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC); //retriever.getFrameAtTime(-1);
-        } catch (Exception ex) {
-            // Assume this is a corrupt video file
-            ex.printStackTrace();
-        } finally {
-            try {
-                retriever.release();
-            } catch (RuntimeException ex) {
-                // Ignore failures while cleaning up.
-                ex.printStackTrace();
-            }
-        }
+        });
 
-        if (bitmap == null) {
-            promise.reject("");
-            return;
-        }
 
-        String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png", filePath);
 
-        if (bitmap != null && !bitmap.isRecycled()) {
-            bitmap.recycle();
-        }
-        bitmap = null;
-
-        WritableMap map = Arguments.createMap();
-        map.putString("imagePath", returnPath);
-        promise.resolve(map);
     }
 }
