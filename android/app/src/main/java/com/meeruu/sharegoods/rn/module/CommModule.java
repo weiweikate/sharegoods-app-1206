@@ -1,43 +1,33 @@
 package com.meeruu.sharegoods.rn.module;
 
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.meeruu.commonlib.bean.IdNameBean;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.ImageCacheUtils;
-import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
@@ -48,20 +38,12 @@ import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.qiyukf.unicorn.api.Unicorn;
-import com.umeng.commonsdk.debug.D;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -70,24 +52,6 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
-    public static final String EVENT_NAME = "nativeCallRn";
-
-    public static final String EVENT_UPDATE_IMG_URL = "uploadedImageURL";
-    public static final String EVENT_SELECT_CONTACTS = "ContactSelected";
-    public static final String EVENT_ADD_PHOTO = "AddPhotos";
-    public static ArrayList<IdNameBean> options1Items = new ArrayList<IdNameBean>();
-    public static ArrayList<ArrayList<IdNameBean>> options2Items = new ArrayList<ArrayList<IdNameBean>>();
-    public static ArrayList<ArrayList<ArrayList<IdNameBean>>> options3Items = new ArrayList<ArrayList<ArrayList<IdNameBean>>>();
-    //参数初始化
-    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
-    //核心线程数量大小
-    private static final int corePoolSize = Math.max(2, Math.min(CPU_COUNT - 1, 4));
-    //线程池最大容纳线程数
-    private static final int maximumPoolSize = CPU_COUNT * 2 + 1;
-    //线程空闲后的存活时长
-    private static final int keepAliveTime = 30;
-
-    private ThreadPoolExecutor executor;
 
     /**
      * 构造方法必须实现
@@ -97,7 +61,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     public CommModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.mContext = reactContext;
-        this.executor = new ThreadPoolExecutor(corePoolSize,maximumPoolSize,keepAliveTime, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>(),Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
     }
 
     /**
@@ -123,15 +86,6 @@ public class CommModule extends ReactContextBaseJavaModule {
         intent.setData(Uri.parse("tel:" + phone));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 跳转需要添加flag, 否则报错
         mContext.startActivity(intent);
-    }
-
-    /**
-     * Native调用RN
-     *
-     * @param msg
-     */
-    public void nativeCallRn(String msg) {
-        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(EVENT_NAME, msg);
     }
 
     /**
@@ -184,28 +138,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Native调用RN
-     *
-     * @param //msg
-     */
-    public void nativeCallRnUpdateHeadImg(String imgUrl) {
-        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(EVENT_UPDATE_IMG_URL, imgUrl);
-    }
-
-    public void nativeCallRnLoadPhoto(List<String> photos) {
-        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(EVENT_ADD_PHOTO, photos);
-    }
-
-    /**
-     * Native调用RN
-     *
-     * @param //msg
-     */
-    public void nativeCallRnSelectContacts(String phone) {
-        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(EVENT_SELECT_CONTACTS, phone);
-    }
-
-    /**
      * 功能显示加载弹窗
      */
     @ReactMethod
@@ -225,18 +157,6 @@ public class CommModule extends ReactContextBaseJavaModule {
             event.setMsg(msg);
         }
         EventBus.getDefault().post(event);
-    }
-
-    /**
-     * RCTDeviceEventEmitter方式
-     *
-     * @param reactContext
-     * @param eventName    事件名
-     * @param params       传惨
-     */
-    public void sendTransMisson(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
-
     }
 
     @ReactMethod
@@ -329,32 +249,6 @@ public class CommModule extends ReactContextBaseJavaModule {
         }
         cursor.close();
         return uri;
-    }
-
-
-    private String getRealFilePath(final Context context, final Uri uri) {
-        if (null == uri) {
-            return null;
-        }
-        final String scheme = uri.getScheme();
-        String data = null;
-        if (scheme == null) {
-            data = uri.getPath();
-        } else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
-            data = uri.getPath();
-        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
-            Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
-            if (null != cursor) {
-                if (cursor.moveToFirst()) {
-                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                    if (index > -1) {
-                        data = cursor.getString(index);
-                    }
-                }
-                cursor.close();
-            }
-        }
-        return data;
     }
 
     @ReactMethod
@@ -509,8 +403,7 @@ public class CommModule extends ReactContextBaseJavaModule {
      * @param promise
      */
     @ReactMethod
-    public void RN_Video_Image(final String filePath,final Promise promise) {
-
+    public void RN_Video_Image(final String filePath, final Promise promise) {
         File dir = SDCardUtils.getFileDirPath("MR/picture");
         String absolutePath = dir.getAbsolutePath();
         String md5 = "";
@@ -527,52 +420,22 @@ public class CommModule extends ReactContextBaseJavaModule {
             promise.resolve(map);
             return;
         }
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
 
-                Bitmap bitmap = null;
-                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                try {
-                    if (filePath.startsWith("http://") || filePath.startsWith("https://") || filePath.startsWith("widevine://")) {
-                        retriever.setDataSource(filePath, new Hashtable<String, String>());
-                    } else {
-                        Uri uri = Uri.parse(filePath);
-                        String path = uri.getPath();
-                        retriever.setDataSource(path);
-                    }
-                    bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC); //retriever.getFrameAtTime(-1);
-                } catch (Exception ex) {
-                    // Assume this is a corrupt video file
-                    ex.printStackTrace();
-                } finally {
-                    try {
-                        retriever.release();
-                    } catch (RuntimeException ex) {
-                        // Ignore failures while cleaning up.
-                        ex.printStackTrace();
-                    }
-                }
+        Bitmap bmp = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.MINI_KIND);
+        if (bmp != null) {
+            String returnPath = BitmapUtils.saveImageToCache(bmp, "video.png", filePath);
 
-                if (bitmap == null) {
-                    promise.reject("");
-                    return;
-                }
-
-                String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png", filePath);
-
-                if (bitmap != null && !bitmap.isRecycled()) {
-                    bitmap.recycle();
-                }
-                bitmap = null;
-
-                WritableMap map = Arguments.createMap();
-                map.putString("imagePath", returnPath);
-                promise.resolve(map);
+            if (bmp != null && !bmp.isRecycled()) {
+                bmp.recycle();
             }
-        });
+            bmp = null;
 
-
-
+            WritableMap map = Arguments.createMap();
+            map.putString("imagePath", returnPath);
+            promise.resolve(map);
+        } else {
+            promise.reject("");
+            return;
+        }
     }
 }

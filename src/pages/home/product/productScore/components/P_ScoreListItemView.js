@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, NativeModules ,Platform} from 'react-native';
+import { View, StyleSheet, Image, NativeModules, Platform } from 'react-native';
 import { MRText as Text } from '../../../../../components/ui';
 import DesignRule from '../../../../../constants/DesignRule';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
@@ -83,25 +83,27 @@ export class P_ScoreListItemView extends Component {
     }
 
 
-    _getVideoImage = (props)=>{
+    _getVideoImage = (props) => {
         //处理视频图片
         let { videoUrl } = props.itemData;
         if (StringUtils.isNoEmpty(videoUrl)) {
             NativeModules.commModule.RN_Video_Image(videoUrl).then(({ imagePath }) => {
                 props.itemData.videoImgPath = Platform.OS === 'android' ? 'file://' + imagePath : '' + imagePath;
                 this.setState({
-                    data: props.pData
+                    pData: props.itemData
                 });
             });
         }
-    }
+    };
+
     render() {
-        const { headImg, nickname, star, comment, imgUrl, createTime, spec, videoUrl, videoImgPath, reply } = this.props.itemData || {};
+        const { headImg, nickname, star, comment, imgUrl, createTime, spec, reply } = this.props.itemData || {};
         let imgs = [];
-        if (StringUtils.isNoEmpty(videoUrl)) {
-            this.hasVideo = true;
-            imgs.push(videoImgPath);
-        }
+        //去掉视频
+        // if (StringUtils.isNoEmpty(videoUrl)) {
+        //     this.hasVideo = true;
+        //     imgs.push(videoImgPath);
+        // }
         if (StringUtils.isNoEmpty(imgUrl)) {
             let temp = imgUrl.split('$');
             imgs.push(...temp);
