@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -28,6 +29,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.bean.IdNameBean;
@@ -38,6 +40,7 @@ import com.meeruu.commonlib.utils.ImageCacheUtils;
 import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
+import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
@@ -45,6 +48,7 @@ import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.qiyukf.unicorn.api.Unicorn;
+import com.umeng.commonsdk.debug.D;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -53,6 +57,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -69,6 +78,16 @@ public class CommModule extends ReactContextBaseJavaModule {
     public static ArrayList<IdNameBean> options1Items = new ArrayList<IdNameBean>();
     public static ArrayList<ArrayList<IdNameBean>> options2Items = new ArrayList<ArrayList<IdNameBean>>();
     public static ArrayList<ArrayList<ArrayList<IdNameBean>>> options3Items = new ArrayList<ArrayList<ArrayList<IdNameBean>>>();
+    //参数初始化
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    //核心线程数量大小
+    private static final int corePoolSize = Math.max(2, Math.min(CPU_COUNT - 1, 4));
+    //线程池最大容纳线程数
+    private static final int maximumPoolSize = CPU_COUNT * 2 + 1;
+    //线程空闲后的存活时长
+    private static final int keepAliveTime = 30;
+
+    private ThreadPoolExecutor executor;
 
     /**
      * 构造方法必须实现
@@ -78,6 +97,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     public CommModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.mContext = reactContext;
+        this.executor = new ThreadPoolExecutor(corePoolSize,maximumPoolSize,keepAliveTime, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>(),Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
     }
 
     /**
@@ -241,14 +261,16 @@ public class CommModule extends ReactContextBaseJavaModule {
      * 图片压缩
      */
     @ReactMethod
-    public void RN_ImageCompression(ReadableArray filePaths, int fileSize, int maxSize, Callback callback) {
+    public void RN_ImageCompression(ReadableArray filePaths, ReadableArray fileSizes, Integer maxSize, Callback callback) {
         List list = filePaths.toArrayList();
-        if(list == null){
+        List fileSizesList = fileSizes.toArrayList();
+        if (list == null) {
             callback.invoke();
             return;
         }
-        for(int i = 0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             String filePath = (String) list.get(i);
+            int fileSize = Integer.valueOf((String) fileSizesList.get(i)).intValue();
             File file = new File(filePath);
 
             if (!file.exists()) {
@@ -262,9 +284,9 @@ public class CommModule extends ReactContextBaseJavaModule {
                 continue;
             }
 
-            if(fileSize>maxSize){
-                BitmapUtils.compressBitmap(filePath, maxSize / 1024, filePath);
-            }else {
+            if (fileSize > maxSize) {
+                BitmapUtils.compressBitmap(filePath, (int) maxSize.doubleValue() / 1024, filePath);
+            } else {
                 continue;
             }
 
@@ -489,65 +511,75 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     /**
      * 获取视频文件关键帧
+     *
      * @param filePath
-     * @param callback
+     * @param promise
      */
     @ReactMethod
-    public void RN_Video_Image(String filePath,Promise promise){
-        Bitmap bitmap = null;
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try
-        {
-            if (filePath.startsWith("http://")
-                    || filePath.startsWith("https://")
-                    || filePath.startsWith("widevine://"))
-            {
-                retriever.setDataSource(filePath, new Hashtable<String, String>());
-            }
-            else
-            {
-                retriever.setDataSource(filePath);
-            }
-            bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC); //retriever.getFrameAtTime(-1);
-        }
-        catch (IllegalArgumentException ex)
-        {
-            // Assume this is a corrupt video file
-            ex.printStackTrace();
-        }
-        catch (RuntimeException ex)
-        {
-            // Assume this is a corrupt video file.
-            ex.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                retriever.release();
-            }
-            catch (RuntimeException ex)
-            {
-                // Ignore failures while cleaning up.
-                ex.printStackTrace();
-            }
-        }
+    public void RN_Video_Image(final String filePath,final Promise promise) {
 
-        if (bitmap == null)
-        {
-            promise.reject("");
-            return ;
+        File dir = SDCardUtils.getFileDirPath("MR/picture");
+        String absolutePath = dir.getAbsolutePath();
+        String md5 = "";
+        try {
+            md5 = SecurityUtils.MD5(filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png",filePath);
-
-        if(bitmap!= null && !bitmap.isRecycled()){
-            bitmap.recycle();
+        String fileName = md5 + "video.png";
+        File file = new File(absolutePath, fileName);
+        if (file.exists()) {
+            WritableMap map = Arguments.createMap();
+            map.putString("imagePath", file.getAbsolutePath());
+            promise.resolve(map);
+            return;
         }
-        bitmap = null;
+        this.executor.execute(new Runnable() {
+            @Override
+            public void run() {
 
-        WritableMap map = Arguments.createMap();
-        map.putString("imagePath",returnPath);
-        promise.resolve(map);
+                Bitmap bitmap = null;
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                try {
+                    if (filePath.startsWith("http://") || filePath.startsWith("https://") || filePath.startsWith("widevine://")) {
+                        retriever.setDataSource(filePath, new Hashtable<String, String>());
+                    } else {
+                        Uri uri = Uri.parse(filePath);
+                        String path = uri.getPath();
+                        retriever.setDataSource(path);
+                    }
+                    bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC); //retriever.getFrameAtTime(-1);
+                } catch (Exception ex) {
+                    // Assume this is a corrupt video file
+                    ex.printStackTrace();
+                } finally {
+                    try {
+                        retriever.release();
+                    } catch (RuntimeException ex) {
+                        // Ignore failures while cleaning up.
+                        ex.printStackTrace();
+                    }
+                }
+
+                if (bitmap == null) {
+                    promise.reject("");
+                    return;
+                }
+
+                String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png", filePath);
+
+                if (bitmap != null && !bitmap.isRecycled()) {
+                    bitmap.recycle();
+                }
+                bitmap = null;
+
+                WritableMap map = Arguments.createMap();
+                map.putString("imagePath", returnPath);
+                promise.resolve(map);
+            }
+        });
+
+
+
     }
 }
