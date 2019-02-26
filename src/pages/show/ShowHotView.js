@@ -82,6 +82,7 @@ export default class ShowHotView extends PureComponent {
             <View style={styles.container}>
                 <ShowGroundView style={{flex:1}}
                     uri={'/discover/query@GET'}
+                                headerHeight={showBannerModules.bannerHeight + showChoiceModules.choiceHeight}
                     renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                     onStartRefresh={()=> {}}
                     params={{generalize: tag.Recommend + ''}}
