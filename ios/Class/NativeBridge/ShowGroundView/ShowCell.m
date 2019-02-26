@@ -132,7 +132,12 @@
 - (void)setModel:(ShowQuery_dataModel *)model
 {
   _model = model;
-  [self.imageView setImageWithURL:[NSURL URLWithString:model.showImage]
+  CGFloat itemWidth=  [UIScreen mainScreen].bounds.size.width / 2.0 * [UIScreen mainScreen].scale;
+  NSString * showImage = model.showImage;
+  if ([showImage containsString:@"sharegoodsmall"]) {
+    showImage = [NSString stringWithFormat:@"%@?x-oss-process=image/resize,m_lfit,w_%0.0lf,h_%0.0lf",showImage,itemWidth,itemWidth/model.aspectRatio];
+  }
+  [self.imageView setImageWithURL:[NSURL URLWithString:showImage]
                       placeholder:[UIImage imageNamed:@"default_img"]];
   [self.headimgView setImageWithURL:[NSURL URLWithString:model.userHeadImg]
                         placeholder:[UIImage imageNamed:@"default_img"]];
