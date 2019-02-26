@@ -85,8 +85,6 @@ sensorsAnalytics {
 }
 
 dependencies {
-    compile project(':react-native-camera')
-    api project(':react-native-extra-dimensions-android')
     api fileTree(include: ['*.jar'], dir: 'libs')
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.3') {
         exclude(module: 'support-core-utils')
@@ -126,14 +124,7 @@ dependencies {
     api project(':commonlib')
     api project(':qrcode')
     api project(':lottie')
-    api project(':qiyu_service')
-    api project(':react-native-camera')
     api project(':base_adapter')
-    compile (project(':react-native-camera')) {
-        exclude group: "com.google.android.gms"
-        compile 'com.android.support:exifinterface:25.+'
-        compile ('com.google.android.gms:play-services-vision:12.0.1') {
-            force = true
-        }
-    }
+    api project(':react-native-extra-dimensions-android')
+    implementation project(':react-native-camera')
 }
