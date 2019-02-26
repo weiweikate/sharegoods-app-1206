@@ -35,8 +35,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
-import cn.reactnative.modules.update.UpdateContext;
-import cn.reactnative.modules.update.UpdatePackage;
+//import cn.reactnative.modules.update.UpdateContext;
+//import cn.reactnative.modules.update.UpdatePackage;
 
 /**
  * @author louis
@@ -96,7 +96,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
 
         @Override
         protected String getJSBundleFile() {
-            return UpdateContext.getBundleUrl(MainApplication.this);
+//            return UpdateContext.getBundleUrl(MainApplication.this);
+            return CodePush.getJSBundleFile();
         }
 
         @Override
@@ -113,7 +114,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new MainReactPackage(builder.build()),
                     new ReactVideoPackage(),
                     new VectorIconsPackage(),
-                    new UpdatePackage(),
+//                    new UpdatePackage(),
                     new SvgPackage(),
                     new RNDeviceInfo(),
                     new RNGeolocationPackage(),
@@ -125,7 +126,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new MRNetStatePackage(),
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
-                    new ExtraDimensionsPackage()
+                    new ExtraDimensionsPackage(),
+                    new CodePush("WU671PqR4MNz7Gs9Rn-KAPuSjJJN4619a06a-47ab-4a6f-a3b6-7acb423467c6",MainApplication.this,BuildConfig.DEBUG)
             );
         }
 

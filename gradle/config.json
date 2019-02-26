@@ -32,10 +32,6 @@
         "content": "apply from: '../../../android/rn-svg.gradle'",
         "bulid_path":  "../node_modules/react-native-svg/android/build.gradle"
     },
-    "update": {
-        "content": "apply from: '../../../android/rn-update.gradle'",
-        "bulid_path":   "../node_modules/react-native-update/android/build.gradle"
-    },
     "icons": {
         "content": "apply from: '../../../android/rn-vector-icons.gradle'",
         "bulid_path": "../node_modules/react-native-vector-icons/android/build.gradle"
