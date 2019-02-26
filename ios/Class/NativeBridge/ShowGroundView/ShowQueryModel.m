@@ -19,7 +19,7 @@
 @implementation ShowQuery_dataModel
 + (nullable NSDictionary<NSString *, id> *)modelCustomPropertyMapper
 {
-   return  @{@"ID": @"id"};
+  return  @{@"ID": @"id", @"pureContent_1": @"pureContent"};
 }
 
 - (CGFloat)aspectRatio
