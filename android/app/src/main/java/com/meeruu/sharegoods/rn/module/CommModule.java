@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -28,6 +29,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.bean.IdNameBean;
@@ -38,6 +40,7 @@ import com.meeruu.commonlib.utils.ImageCacheUtils;
 import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
+import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
@@ -45,6 +48,7 @@ import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.qiyukf.unicorn.api.Unicorn;
+import com.umeng.commonsdk.debug.D;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -241,14 +245,16 @@ public class CommModule extends ReactContextBaseJavaModule {
      * 图片压缩
      */
     @ReactMethod
-    public void RN_ImageCompression(ReadableArray filePaths, int fileSize, int maxSize, Callback callback) {
+    public void RN_ImageCompression(ReadableArray filePaths, ReadableArray fileSizes, Integer maxSize, Callback callback) {
         List list = filePaths.toArrayList();
-        if(list == null){
+        List fileSizesList = fileSizes.toArrayList();
+        if (list == null) {
             callback.invoke();
             return;
         }
-        for(int i = 0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             String filePath = (String) list.get(i);
+            int fileSize = Integer.valueOf((String) fileSizesList.get(i)).intValue();
             File file = new File(filePath);
 
             if (!file.exists()) {
@@ -262,9 +268,9 @@ public class CommModule extends ReactContextBaseJavaModule {
                 continue;
             }
 
-            if(fileSize>maxSize){
-                BitmapUtils.compressBitmap(filePath, maxSize / 1024, filePath);
-            }else {
+            if (fileSize > maxSize) {
+                BitmapUtils.compressBitmap(filePath, (int) maxSize.doubleValue() / 1024, filePath);
+            } else {
                 continue;
             }
 
@@ -489,65 +495,68 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     /**
      * 获取视频文件关键帧
+     *
      * @param filePath
      * @param callback
      */
     @ReactMethod
-    public void RN_Video_Image(String filePath,Promise promise){
+    public void RN_Video_Image(String filePath, Promise promise) {
+
+        File dir = SDCardUtils.getFileDirPath("MR/picture");
+        String absolutePath = dir.getAbsolutePath();
+        String md5 = "";
+        try {
+            md5 = SecurityUtils.MD5(filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String fileName = md5 + "video.png";
+        File file = new File(absolutePath, fileName);
+        if (file.exists()) {
+            WritableMap map = Arguments.createMap();
+            map.putString("imagePath", file.getAbsolutePath());
+            promise.resolve(map);
+            return;
+        }
+
+
         Bitmap bitmap = null;
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try
-        {
-            if (filePath.startsWith("http://")
-                    || filePath.startsWith("https://")
-                    || filePath.startsWith("widevine://"))
-            {
+        try {
+            if (filePath.startsWith("http://") || filePath.startsWith("https://") || filePath.startsWith("widevine://")) {
                 retriever.setDataSource(filePath, new Hashtable<String, String>());
-            }
-            else
-            {
-                retriever.setDataSource(filePath);
+            } else {
+                Uri uri = Uri.parse(filePath);
+                String path = uri.getPath();
+                retriever.setDataSource(path);
             }
             bitmap = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC); //retriever.getFrameAtTime(-1);
-        }
-        catch (IllegalArgumentException ex)
-        {
+        } catch (Exception ex) {
             // Assume this is a corrupt video file
             ex.printStackTrace();
-        }
-        catch (RuntimeException ex)
-        {
-            // Assume this is a corrupt video file.
-            ex.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
                 retriever.release();
-            }
-            catch (RuntimeException ex)
-            {
+            } catch (RuntimeException ex) {
                 // Ignore failures while cleaning up.
                 ex.printStackTrace();
             }
         }
 
-        if (bitmap == null)
-        {
+        if (bitmap == null) {
             promise.reject("");
-            return ;
+            return;
         }
 
-        String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png",filePath);
+        String returnPath = BitmapUtils.saveImageToCache(bitmap, "video.png", filePath);
 
-        if(bitmap!= null && !bitmap.isRecycled()){
+        if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
         }
         bitmap = null;
 
         WritableMap map = Arguments.createMap();
-        map.putString("imagePath",returnPath);
+        map.putString("imagePath", returnPath);
         promise.resolve(map);
     }
 }
