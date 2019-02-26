@@ -52,7 +52,7 @@ export default class DetailHeaderView extends Component {
             minPrice, maxPrice, groupPrice, name, secondName, restrictions, productStatus
         } = this.props.data || {};
 
-        let priceSuper = minPrice !== maxPrice ? `￥${minPrice || ''}-￥${maxPrice || ''}` : `￥${minPrice || ''}`;
+        let priceSuper = minPrice !== maxPrice ? `￥${StringUtils.isNoEmpty(minPrice) ? minPrice : ''}-￥${StringUtils.isNoEmpty(maxPrice) ? maxPrice : ''}` : `￥${StringUtils.isNoEmpty(minPrice) ? minPrice : ''}`;
         return (
             <View>
                 <DetailBanner data={this.props.data} navigation={this.props.navigation}/>
