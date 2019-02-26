@@ -66,7 +66,7 @@ const LogisticsDetailItem = props => {
     return (
         <View style={{marginRight:15,marginLeft:15,borderTopLeftRadius:isTop?10:0,borderTopRightRadius:isTop?10:0 ,backgroundColor:'white',
             borderBottomLeftRadius:isBottom?10:0,borderBottomRightRadius:isBottom?10:0}}>
-        <View style={{ paddingLeft: 15, paddingRight: 15, flexDirection: "row"}}>
+        <View style={{ paddingLeft: 15, paddingRight: 15, flexDirection: "row",marginBottom:isBottom?5:0}}>
             <View style={{width: 40, marginTop: 10}}>
                 <UIText value={time.substr(5,5)} style={{ fontSize: 14, color: DesignRule.textColor_mainTitle_222,textAlign:'right'}}/>
             <UIText value={time.substr(10,6)} style={{ fontSize: 11, color: DesignRule.textColor_mainTitle_222,marginTop:-10 ,textAlign:'right' }}/>
@@ -82,7 +82,7 @@ const LogisticsDetailItem = props => {
                 {this.renderMiddleImage()}
             </View>
         </View>
-            {isBottom?null:<View style={{height:1,backgroundColor:DesignRule.lineColor_inWhiteBg}}/>}
+            {isBottom?null:<View style={{height:0.5,backgroundColor:DesignRule.lineColor_inWhiteBg}}/>}
         </View>
 
     );
