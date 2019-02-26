@@ -5,9 +5,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
@@ -111,8 +113,19 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         adapter.setLoadMoreView(new CustomLoadMoreView());
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view1, int position) {
-                List<NewestShowGroundBean.DataBean> data = adapter.getData();
+            public void onItemClick(final BaseQuickAdapter adapter, View view1,final int position) {
+                final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+
+                recyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        NewestShowGroundBean.DataBean bean = data.get(position);
+                        bean.setClick(bean.getClick()+1);
+                        adapter.replaceData(data);
+
+                    }
+                },200);
+
                 if (data != null) {
                     NewestShowGroundBean.DataBean item = data.get(position);
                     String json = JSONObject.toJSONString(item);
@@ -165,6 +178,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     @Override
     public void loadMoreFail() {
+        swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.loadMoreFail();
         }

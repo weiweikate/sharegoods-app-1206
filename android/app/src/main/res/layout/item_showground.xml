@@ -33,11 +33,11 @@
             android:src="@drawable/see_white" />
 
         <TextView
+            android:id="@+id/showground_item_show_times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:includeFontPadding="false"
-            android:id="@+id/showground_item_show_times"
             android:textColor="#fff"
             android:textSize="10sp" />
     </LinearLayout>
@@ -65,7 +65,8 @@
         android:layout_marginBottom="10dp"
         android:gravity="center|end"
         android:orientation="horizontal"
-        android:paddingHorizontal="10dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/showground_item_userIcon"
