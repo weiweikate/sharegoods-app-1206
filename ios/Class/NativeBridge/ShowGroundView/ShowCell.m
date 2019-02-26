@@ -141,7 +141,7 @@
                       placeholder:[UIImage imageNamed:@"default_img"]];
   [self.headimgView setImageWithURL:[NSURL URLWithString:model.userHeadImg]
                         placeholder:[UIImage imageNamed:@"default_img"]];
-  self.titleLb.text = model.title;
+  self.titleLb.text = model.pureContent_1;
   self.timeLb.text = model.time;
   self.authorLb.text = model.userName;
   self.numLb.text = model.click > 999999 ?
