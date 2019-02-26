@@ -2,7 +2,6 @@ package com.meeruu.sharegoods.rn.showground;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,7 +9,6 @@ public class RecyclerViewHeaderView extends ViewGroup {
     public RecyclerViewHeaderView(Context context) {
         super(context);
     }
-    private int mHeight;
 
     public RecyclerViewHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -28,8 +26,9 @@ public class RecyclerViewHeaderView extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int w = MeasureSpec.getSize(widthMeasureSpec), h = mHeight;
-        if (mHeight < 1 && getChildCount() > 0) {
+        int w = MeasureSpec.getSize(widthMeasureSpec);
+        int h = 0;
+        if (getChildCount() > 0) {
             final View child = getChildAt(0);
             LayoutParams lp = child.getLayoutParams();
             if (lp == null) {

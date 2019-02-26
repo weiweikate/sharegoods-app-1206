@@ -48,7 +48,7 @@
 - (void)setUI
 {
   // 创建布局
-//  LMHWaterFallLayout * waterFallLayout = [[LMHWaterFallLayout alloc]init];
+  //  LMHWaterFallLayout * waterFallLayout = [[LMHWaterFallLayout alloc]init];
   WHCWaterfallFlowLayout *whcLayout = [[WHCWaterfallFlowLayout alloc] init];
   whcLayout.itemSpacing = 10;
   whcLayout.lineSpacing = 10;
@@ -58,7 +58,9 @@
   
   // 创建collectionView
   UICollectionView * collectionView = [[UICollectionView alloc]initWithFrame:self.bounds collectionViewLayout:whcLayout];
- collectionView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
+  collectionView.showsVerticalScrollIndicator = NO;
+  collectionView.showsHorizontalScrollIndicator = NO;
+  collectionView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
   [collectionView registerClass:[ShowCollectionReusableView class] forSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView"];
   
   collectionView.dataSource = self;
@@ -75,7 +77,7 @@
 - (void)layoutSubviews
 {
   [super layoutSubviews];
-   _collectionView.frame = self.bounds;
+  _collectionView.frame = self.bounds;
 }
 
 /**
@@ -127,7 +129,7 @@
     if(result.data.count < 10){
       [weakSelf.collectionView.mj_footer endRefreshingWithNoMoreData];
     }else{
-        [weakSelf.collectionView.mj_footer resetNoMoreData];
+      [weakSelf.collectionView.mj_footer resetNoMoreData];
     }
     weakSelf.collectionView.mj_footer.hidden = NO;
   } failure:^(NSString *msg, NSInteger code) {
@@ -141,9 +143,9 @@
 - (void)getMoreData
 {
   self.page++;
-   NSMutableDictionary *dic = [NSMutableDictionary new];
+  NSMutableDictionary *dic = [NSMutableDictionary new];
   if (self.params) {
-     dic = [self.params mutableCopy];
+    dic = [self.params mutableCopy];
   }
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"10"}];
   __weak ShowGroundView * weakSelf = self;
@@ -153,7 +155,7 @@
     if(result.data.count < 10){
       [weakSelf.collectionView.mj_footer endRefreshingWithNoMoreData];
     }else{
-       [weakSelf.collectionView.mj_footer endRefreshing];
+      [weakSelf.collectionView.mj_footer endRefreshing];
     }
   } failure:^(NSString *msg, NSInteger code) {
     [weakSelf.collectionView.mj_footer endRefreshing];
@@ -166,7 +168,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
   
-//  self.collectionView.mj_footer.hidden = self.shops.count == 0;
+  //  self.collectionView.mj_footer.hidden = self.shops.count == 0;
   
   return self.dataArr.count;
 }
@@ -184,26 +186,27 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath
 {
-//  if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+  //section header
+  if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
     ShowCollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView" forIndexPath:indexPath];
-//    view.backgroundColor = [UIColor redColor];
-
-      [view removeAllSubviews];
-     [view addSubview:self.headerView];
-  
+    //    view.backgroundColor = [UIColor redColor];
+    
+    [view removeAllSubviews];
+    [view addSubview:self.headerView];
+    
     return view;
-//  }else{
-//    UICollectionReusableView * view = [UICollectionReusableView new];
-//    view.backgroundColor = [UIColor redColor];
-//    return view;
-//  }
+  }else{
+    //section footer
+    ShowCollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView" forIndexPath:indexPath];
+    return view;
+  }
 }
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
   if (_onItemPress) {
-     _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
+    _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
     self.dataArr[indexPath.item].click++ ;
     [collectionView reloadData];
   }
@@ -211,10 +214,10 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(WHCWaterfallFlowLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-   return CGSizeMake(self.width, self.headerView.height);
+  return CGSizeMake(self.width, self.headerView.height);
 }
 
- - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(WHCWaterfallFlowLayout*)collectionViewLayout heightForWidth:(CGFloat)width atIndexPath:(NSIndexPath*)indexPath
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(WHCWaterfallFlowLayout*)collectionViewLayout heightForWidth:(CGFloat)width atIndexPath:(NSIndexPath*)indexPath
 {
   ShowQuery_dataModel * model = self.dataArr[indexPath.item];
   
@@ -224,8 +227,8 @@
 - (void)didUpdateReactSubviews {
   for (UIView *view in self.reactSubviews) {
     if ([view isKindOfClass:[ShowHeaderView class]]) {
-        self.headerView = view;
-        [self.collectionView reloadData];
+      self.headerView = view;
+      [self.collectionView reloadData];
     }
   }
 }
@@ -250,5 +253,19 @@
       self.onEndScroll(@{});
     }
   }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+  CGFloat Y = scrollView.contentOffset.y;
+  if (Y> self.height &&
+      scrollView.bounces == YES &&
+      scrollView.mj_footer.state != MJRefreshStateNoMoreData) {
+    scrollView.bounces = NO;
+  }else if((Y<self.height || scrollView.mj_footer.state == MJRefreshStateNoMoreData) &&
+           scrollView.bounces == NO){
+    scrollView.bounces = YES;
+  }
+  
 }
 @end
