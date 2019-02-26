@@ -1,0 +1,25 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+    }
+    lintOptions {
+        abortOnError false
+        warning 'InvalidPackage'
+    }
+}
+
+dependencies {
+    compileOnly rootProject.ext.dependencies.rn
+    compileOnly 'com.facebook.infer.annotation:infer-annotation:+'
+    implementation "com.drewnoakes:metadata-extractor:2.9.1"
+    implementation "com.google.android.gms:play-services-vision:17.0.2"
+    api rootProject.ext.dependencies.support
+    api rootProject.ext.dependencies.zxing
+    api rootProject.ext.dependencies.exifinterface
+}

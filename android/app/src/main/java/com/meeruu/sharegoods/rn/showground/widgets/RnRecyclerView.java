@@ -8,7 +8,9 @@ import android.util.AttributeSet;
 
 
 public class RnRecyclerView extends RecyclerView {
+
     protected boolean mRequestedLayout = false;
+
     public RnRecyclerView(Context context) {
         super(context);
     }

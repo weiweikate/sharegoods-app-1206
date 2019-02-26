@@ -8,11 +8,14 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
 import com.microsoft.codepush.react.CodePush;
+import org.reactnative.camera.RNCameraPackage;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.horcrux.svg.SvgPackage;
+import com.lwansbrough.RCTCamera.RCTCameraViewManager;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
@@ -128,6 +131,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),
                     new CodePush("WU671PqR4MNz7Gs9Rn-KAPuSjJJN4619a06a-47ab-4a6f-a3b6-7acb423467c6",MainApplication.this,BuildConfig.DEBUG)
+                    new RNCameraPackage()
             );
         }
 

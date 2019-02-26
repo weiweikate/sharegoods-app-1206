@@ -48,7 +48,7 @@ export default class MyShowFansPage extends BasePage<Props> {
         return (
             <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
                 <View style={[styles.fansIcon, { overflow: 'hidden' }]}>
-                    <AvatarImage style={styles.fansIcon} cacheable={true} source={uri}/>
+                    <AvatarImage style={styles.fansIcon} source={uri}/>
                 </View>
                 <Text style={styles.fansNameStyle}>
                     {item.nickname}

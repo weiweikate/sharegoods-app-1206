@@ -266,6 +266,51 @@ RCT_EXPORT_METHOD(RN_ImageCompression:(NSArray *) paths
   callback(@[]);
   NSLog(@"执行结束");
 }
+
+
+/**
+ 截取视频第一帧
+
+ @param NSString 视频url或者本地url
+ @return 图片路径
+ */
+RCT_EXPORT_METHOD(RN_Video_Image:(NSString*) path
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject){
+  
+  NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+  NSString *documentsDirectory=[paths objectAtIndex:0];
+  NSString *savedImagePath=[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",path.md5String]];
+  
+  YYCache *cache = [YYCache cacheWithName:@"crm_app_xiugou_video_image"];
+  [cache objectForKey:savedImagePath withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nonnull object) {
+    if (object) {
+      resolve(@{@"imagePath":key});
+    }else{
+      NSURL *videoUrl;
+      if ([path hasPrefix:@"file://"]) {
+        videoUrl = [NSURL fileURLWithPath:path];
+      }else{
+        videoUrl = [NSURL URLWithString:path];
+      }
+      
+      NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+      AVURLAsset *urlAsset = [AVURLAsset URLAssetWithURL:videoUrl options:opts];
+      AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+      generator.appliesPreferredTrackTransform = YES;
+      NSError *error = nil;
+      CGImageRef img = [generator copyCGImageAtTime:CMTimeMakeWithSeconds(0.0, 600) actualTime:NULL error:&error];
+      UIImage *videoImage = [[UIImage alloc] initWithCGImage:img];
+      CGImageRelease(img);
+      NSData * data = UIImageJPEGRepresentation(videoImage,1.0);
+      
+      [cache setObject:data forKey:key withBlock:^{
+        resolve(@{@"imagePath":key});
+      }];
+    }
+  }];
+}
+
 RCT_EXPORT_METHOD(removeLaunch){
   dispatch_async(dispatch_get_main_queue(), ^{
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;

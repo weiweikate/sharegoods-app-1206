@@ -14,7 +14,7 @@ import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 
 const TodayItem = ({ item, press }) => <TouchableOpacity style={styles.item} onPress={() => press && press()}>
-    <ImageLoad cacheable={true} style={styles.img} source={{ uri: item.imgUrl }}/>
+    <ImageLoad style={styles.img} source={{ uri: item.imgUrl }}/>
 </TouchableOpacity>;
 
 @observer

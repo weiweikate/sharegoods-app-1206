@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_END
 @property (nonatomic, copy)NSString *ID;
 @property (nonatomic, copy)NSString *code;
 @property (nonatomic, copy)NSString *title;
+@property (nonatomic, copy)NSString *pureContent_1;
 @property (nonatomic, copy)NSString *coverImg;
 @property (nonatomic, copy)NSString *img;
 @property (nonatomic, assign)NSInteger generalize;
