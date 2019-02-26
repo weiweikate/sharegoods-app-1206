@@ -46,6 +46,9 @@ pod 'SDAutoLayout'
 #  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
 
+
+#  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
 end
 
 #    暂时未用,先注释已被后期使用

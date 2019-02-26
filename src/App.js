@@ -24,7 +24,6 @@ import CONFIG from '../config';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
-import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
@@ -34,6 +33,7 @@ import Storage from './utils/storage';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
+import codePush from "react-native-code-push";
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
@@ -59,9 +59,15 @@ if (__DEV__) {
 }
 
 @observer
-export default class App extends Component {
+class App extends Component {
     constructor(props) {
         super(props);
+
+        codePush.sync({
+            updateDialog: false,
+            installMode: codePush.InstallMode.ON_NEXT_RESUME
+        });
+
         this.state = {
             load: false,
             showOldBtn: false
@@ -109,8 +115,6 @@ export default class App extends Component {
                 });
             }, 200);
         });
-        //热更新
-        hotUpdateUtil.checkUpdate();
         // 移除启动页
         bridge.removeLaunch();
     }
@@ -151,6 +155,8 @@ export default class App extends Component {
         global.$navigator.dispatch(navigationAction);
     };
 }
+
+export default codePush(App);
 
 const styles = StyleSheet.create({
     container: {

@@ -17,15 +17,15 @@ export const TabNav = TabNavigator(
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarLabel: '首页',
+                tabBarLabel: '首页v4',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
-                            <Image style={styles.tabBarIcon} source={res.tab.home_s}/>
+                            <Image style={styles.tabBarIcon} source={res.tab.discover_s}/>
                         );
                     }
                     return (
-                        <Image style={styles.tabBarIcon} source={res.tab.home_n}/>
+                        <Image style={styles.tabBarIcon} source={res.tab.discover_n}/>
                     );
                 }
             }
