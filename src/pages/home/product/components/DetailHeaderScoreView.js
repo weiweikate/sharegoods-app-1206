@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, NativeModules ,Platform} from 'react-native';
+import { View, StyleSheet, Image, NativeModules, Platform } from 'react-native';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import AvatarImage from '../../../../components/ui/AvatarImage';
@@ -34,7 +34,7 @@ export class DetailHeaderScoreView extends Component {
             NativeModules.commModule.RN_Video_Image(videoUrl).then(({ imagePath }) => {
                 comment.videoImgPath = Platform.OS === 'android' ? 'file://' + imagePath : '' + imagePath;
                 this.setState({
-                    data: props.pData
+                    pData: props.pData
                 });
             });
         }
@@ -67,14 +67,15 @@ export class DetailHeaderScoreView extends Component {
     };
 
     _renderContent = (comment) => {
-        const { headImg, nickname, imgUrl, videoUrl, videoImgPath } = comment || {};
+        const { headImg, nickname, imgUrl } = comment || {};
         const commentTemp = (comment || {}).comment;
 
         let images = [];
-        if (StringUtils.isNoEmpty(videoUrl)) {
-            this.hasVideo = true;
-            images.push(videoImgPath);
-        }
+        //去掉视频
+        // if (StringUtils.isNoEmpty(videoUrl)) {
+        //     this.hasVideo = true;
+        //     images.push(videoImgPath);
+        // }
         if (StringUtils.isNoEmpty(imgUrl)) {
             let temp = imgUrl.split('$');
             images.push(...temp);
