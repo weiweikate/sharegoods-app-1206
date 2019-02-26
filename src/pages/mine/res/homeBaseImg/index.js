@@ -1,5 +1,6 @@
 const index = {
-    mine_header_bg: require('./bg_img_user.png'),
+    mine_header_bg: require('./me_bg_top_nor.png'),
+    mine_account_bg: require('./me_bg_account_nor.png'),
     mine_setting_icon_gray:require('./mine_setting_icon_gray.png'),
     mine_setting_icon_white:require('./mine_setting_icon_white.png'),
     mine_message_icon_gray:require('./mine_message_icon_gray.png'),
@@ -25,6 +26,7 @@ const index = {
     mine_user_icon:require('./mine_user_icon.png'),
     mine_icon_fans:require('./mine_icon_fans.png'),
     bg_fans_item:require('./bg_fans_item.png'),
-    mine_icon_message:require('./mine_icon_message.png')
+    mine_icon_message:require('./mine_icon_message.png'),
+    mine_showOrder: require('./me_icon_shaidan_nor.png')
 };
 export default index;

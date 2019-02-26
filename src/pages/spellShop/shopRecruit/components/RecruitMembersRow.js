@@ -32,20 +32,19 @@ export default class AssistantRow extends Component {
     };
 
     render() {
-        const { myStore } = this.props.storeData || {};
-        let storeUserList = this.props.storeData.storeUserList || [];
+        const { myStore, storeUserList, userCount } = this.props.storeData || {};
         return (<View style={styles.row}>
             <TouchableOpacity activeOpacity={1} onPress={this.props.clickAllMembers} style={styles.topRow}>
                 <Image style={styles.topIcon} source={PeopleImg}/>
                 <Text style={styles.topTitle} allowFontScaling={false}>{'店铺成员'}</Text>
-                <Text style={styles.topDescText} allowFontScaling={false}>{`${storeUserList.length || 0}人`}</Text>
+                <Text style={styles.topDescText} allowFontScaling={false}>{`${userCount || 0}人`}</Text>
                 {myStore ? <Image style={styles.topArrow} source={arrowImg}/> : null}
             </TouchableOpacity>
             <View style={styles.dash}/>
             <ScrollView bounces={false} showsHorizontalScrollIndicator={false}>
                 <View style={styles.listContainer}>
                     {
-                        storeUserList.map((item, index) => {
+                        (storeUserList || []).map((item, index) => {
                             const { headImg, nickName } = item || {};
                             if (index > 9) {
                                 return;
@@ -56,7 +55,7 @@ export default class AssistantRow extends Component {
                                 marginBottom: (index >= 5) ? 24 : 20
                             }} key={index}>
                                 <AvatarImage source={{ uri: headImg }} borderRadius={20}
-                                         style={styles.headerImg}/>
+                                             style={styles.headerImg}/>
                                 <Text numberOfLines={1} style={styles.name}
                                       allowFontScaling={false}>{nickName || ''}</Text>
                             </View>);

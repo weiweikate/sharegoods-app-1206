@@ -26,30 +26,34 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
+        let { pData } = this.props;
         //productStatus  1正常  2下架  3当前时间不能买
-        let { shareMoney, productStatus } = this.props;
-        //是否下架
-        let isDown = productStatus === 2;//是否下架  样式
-
-        // //限购(暂时去掉)
-        // let isLimit = buyLimit !== -1 && leftBuyNum === 0;
+        let { shareMoney, productStatus, skuList } = pData || {};
+        //总库存
+        let stock = 0;
+        (skuList || []).forEach((item) => {
+            stock = stock + item.sellStock;
+        });
+        //提示消息样式
+        let isDown = productStatus === 2 || stock === 0;
+        let showNoticeText = productStatus === 2 ? '商品已经下架啦~' : (stock === 0 ? '商品已售罄' : '');
 
         //不能加入购物车
         let cantJoin = productStatus === 2;
 
-        //不能买 不正常   ||限购(暂时去掉)
-        let cantBuy = productStatus !== 1;
+        //不能立即购买  不正常||库存0
+        let cantBuy = productStatus !== 1 || stock === 0;
         //立即购买文案
         let buyText = productStatus === 3 ? '暂不可购买' : '立即购买';
         return (
-            <View style={{ height: 49 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
+            <View style={{ height: 48 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
                 {isDown ? <View style={{
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: 20,
                     backgroundColor: 'rgba(0,0,0,0.5)'
                 }}>
-                    <Text style={{ color: DesignRule.white, fontSize: 13 }} allowFontScaling={false}>商品已经下架啦~</Text>
+                    <Text style={{ color: DesignRule.white, fontSize: 13 }}>{showNoticeText}</Text>
                 </View> : null}
                 <View style={styles.container}>
                     <TouchableOpacity
@@ -115,7 +119,7 @@ export default class DetailBottomView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 49, flexDirection: 'row', backgroundColor: 'white', borderWidth: 1,
+        height: 48, flexDirection: 'row', backgroundColor: 'white', borderWidth: 1,
         borderColor: DesignRule.lineColor_inGrayBg
     }
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity} from "react-native";
 import BasePage from '../../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import MyOrdersListView from './../components/MyOrdersListView';
@@ -22,7 +22,8 @@ class MyOrdersListPage extends BasePage {
         super(props);
         this.state = {
             index: this.params.index ? this.params.index : 0,
-            selectTab:10
+            selectTab:10,
+            resume:false
         };
     }
 
@@ -45,6 +46,25 @@ class MyOrdersListPage extends BasePage {
     gotoSearchPage = () => {
         this.$navigate('order/order/SearchPage');
     };
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+    }
+    componentWillMount() {
+        let i=0;
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                i++;
+                const { state } = payload;
+                console.log('willFocusSubscriptionOrdersList', payload);
+                if (state && state.routeName === 'order/order/MyOrdersListPage') {
+                    if(i>1){
+                        this.reLoads.onRefresh();
+                    }
+
+                }
+            });
+    }
 
     _render() {
         return (
@@ -57,21 +77,20 @@ class MyOrdersListPage extends BasePage {
                 //进界面的时候打算进第几个
                 initialPage={parseInt(this.state.index)}>
                 <MyOrdersListView
-                    tabLabel={'全部'} pageStatus={0} selectTab={this.state.selectTab}
+                    tabLabel={'全部'} pageStatus={0} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
                     nav={this.$navigate}/>
                 <MyOrdersListView
-                    tabLabel={'待付款'} pageStatus={1} selectTab={this.state.selectTab}
+                    tabLabel={'待付款'} pageStatus={1} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
                     nav={this.$navigate}/>
                 <MyOrdersListView
-                    tabLabel={'待发货'} pageStatus={2} selectTab={this.state.selectTab}
+                    tabLabel={'待发货'} pageStatus={2} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
                     nav={this.$navigate}/>
                 <MyOrdersListView
-                    tabLabel={'待收货'} pageStatus={3} selectTab={this.state.selectTab}
+                    tabLabel={'待收货'} pageStatus={3} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
                     nav={this.$navigate}/>
                 <MyOrdersListView
-                    tabLabel={'已完成'} pageStatus={4} selectTab={this.state.selectTab}
+                    tabLabel={'待晒单'} pageStatus={4} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
                     nav={this.$navigate}/>
-
             </ScrollableTabView>
         );
     }
