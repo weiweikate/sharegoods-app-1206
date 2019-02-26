@@ -12,7 +12,6 @@ import pRes from '../../res';
 import VideoView from '../../../../components/ui/video/VideoView';
 import DesignRule from '../../../../constants/DesignRule';
 import XGSwiper from '../../../../components/ui/XGSwiper';
-import StringUtils from '../../../../utils/StringUtils';
 
 const { swiper_cancel } = pRes.product.productScore;
 
@@ -40,12 +39,13 @@ export default class P_ScoreSwiperPage extends BasePage {
     };
 
     _render() {
-        const { video, images, videoImg, content, index } = this.params;
+        const { images, content, index } = this.params;
 
         this.videoImageList = [...images];
-        if (StringUtils.isNoEmpty(video)) {
-            this.videoImageList.unshift({ videoUrl: video, videoCover: videoImg });
-        }
+        //去掉视频
+        // if (StringUtils.isNoEmpty(video)) {
+        //     this.videoImageList.unshift({ videoUrl: video, videoCover: videoImg });
+        // }
         return (
             <View style={styles.containerView}>
                 <XGSwiper height={height} width={width}
