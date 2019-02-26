@@ -6,11 +6,9 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.facebook.infer.annotation.Assertions;
 import com.meeruu.commonlib.utils.DensityUtils;
 
 public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
-    private static final String TAG = SpaceItemDecoration.class.getName();
     private int space;
 
 
