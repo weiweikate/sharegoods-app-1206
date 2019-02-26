@@ -44,11 +44,11 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         float height = 1;
         String imgUrl;
 
-        if (item.getGeneralize() == New || item.getGeneralize() == Recommend){
+        if (item.getGeneralize() == New || item.getGeneralize() == Recommend) {
             width = item.getCoverImgWide();
             height = item.getCoverImgHigh();
             imgUrl = item.getCoverImg();
-        }else {
+        } else {
             width = item.getImgWide();
             height = item.getImgHigh();
             imgUrl = item.getImg();
@@ -57,8 +57,10 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         int realWidth = (ScreenUtils.getScreenWidth() - 40) / 2;
         int realHeight = (int) ((height / width) * realWidth);
 
-        imageView.setInitSize(realWidth, realHeight);
-        ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
+        if (realHeight > 1) {
+            imageView.setInitSize(realWidth, realHeight);
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
+        }
 
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserName());
