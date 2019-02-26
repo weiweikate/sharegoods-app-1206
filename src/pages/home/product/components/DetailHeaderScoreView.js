@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
         width: 30, height: 30
     },
     nameText: {
-        marginLeft: 5,
+        marginLeft: 5, paddingVertical: 3,
         fontSize: 12, color: DesignRule.textColor_instruction
     },
     /**文字**/
