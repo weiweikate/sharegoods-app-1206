@@ -16,6 +16,7 @@ import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
@@ -29,6 +30,7 @@ import com.meeruu.sharegoods.rn.showground.widgets.CustomLoadMoreView;
 import com.meeruu.sharegoods.rn.showground.widgets.RnRecyclerView;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +48,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     private WeakReference<View> showgroundView;
     public ViewGroup getShowGroundView(ReactContext reactContext){
+        eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
@@ -83,12 +86,12 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE: {
                         endScrollEvent.init(view.getId());
-//                        eventDispatcher.dispatchEvent(endScrollEvent);
+                        eventDispatcher.dispatchEvent(endScrollEvent);
                     }
                     break;
                     case RecyclerView.SCROLL_STATE_DRAGGING: {
                         startScrollEvent.init(view.getId());
-//                        eventDispatcher.dispatchEvent(startScrollEvent);
+                        eventDispatcher.dispatchEvent(startScrollEvent);
                     }
                     break;
                     default:
@@ -119,7 +122,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     if (eventDispatcher != null) {
                         itemPressEvent.init(view.getId());
                         itemPressEvent.setData(realData);
-//                        eventDispatcher.dispatchEvent(itemPressEvent);
+                        eventDispatcher.dispatchEvent(itemPressEvent);
                     }
                 }
 
@@ -202,5 +205,11 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         }
         adapter.addHeaderView(view);
         recyclerView.scrollToPosition(0);
+    }
+
+    public void setParams(HashMap map){
+        if (presenter != null) {
+            presenter.setParams(map);
+        }
     }
 }

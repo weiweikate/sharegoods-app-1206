@@ -42,21 +42,6 @@ import java.util.Map;
 
 public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     private static final String COMPONENT_NAME = "ShowGroundView";
-    private int page = 1;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private RnRecyclerView recyclerView;
-    private ShowGroundAdapter adapter;
-    private ShowgroundPresenter presenter;
-    private EventDispatcher eventDispatcher;
-    private onItemPressEvent itemPressEvent;
-    private onStartRefreshEvent startRefreshEvent;
-    private onStartScrollEvent startScrollEvent;
-    private onEndScrollEvent endScrollEvent;
-
-//    private WeakReference<View> showgroundView;
-
-    HashMap<ViewGroup,ShowGroundView> hashMap = new HashMap();
-
 
     @Override
     public String getName() {
@@ -67,8 +52,7 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     protected ViewGroup createViewInstance(ThemedReactContext reactContext) {
        ShowGroundView showGroundView = new ShowGroundView();
        ViewGroup viewGroup = showGroundView.getShowGroundView(reactContext);
-
-       hashMap.put(viewGroup,showGroundView);
+        viewGroup.setTag(showGroundView);
        return viewGroup;
 
     }
@@ -77,22 +61,18 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
 
     @ReactProp(name = "params")
     public void setParams(View view, ReadableMap map) {
-//        if (presenter != null) {
-//            HashMap map1 = map.toHashMap();
-//            presenter.setParams(map1);
-//        }
+        Object object = view.getTag();
+        if(object!= null && object instanceof ShowGroundView){
+            ((ShowGroundView) object).setParams(map.toHashMap());
+        }
     }
 
     @Override
     public void addView(ViewGroup parent, View child, int index) {
-//        super.addView(parent, child, index);
-        Integer id = parent.getId();
-        Log.e("id",id+"");
-        if(hashMap.containsKey(id)){
-            ShowGroundView showGroundView = hashMap.get(id);
-            showGroundView.addHeader(child);
+        Object object = parent.getTag();
+        if(object!= null && object instanceof ShowGroundView){
+            ((ShowGroundView) object).addHeader(child);
         }
-
     }
 
     @Nullable
