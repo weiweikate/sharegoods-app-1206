@@ -26,7 +26,11 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
     protected void convert(BaseViewHolder helper, NewestShowGroundBean.DataBean item) {
 
         SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
-        ImageLoadUtils.loadCircleNetImage(item.getUserHeadImg(), userIcon);
+        if (!TextUtils.isEmpty(item.getUserHeadImg())) {
+            ImageLoadUtils.loadCircleNetImage(item.getUserHeadImg(), userIcon);
+        } else {
+            userIcon.setImageResource(R.drawable.bg_app_user);
+        }
 
         ScaleImageView imageView = helper.getView(R.id.showground_item_image);
         float width = 1;
