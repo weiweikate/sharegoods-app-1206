@@ -183,14 +183,13 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void RN_ImageCompression(ReadableArray filePaths, ReadableArray fileSizes, Integer maxSize, Callback callback) {
         List list = filePaths.toArrayList();
-        List fileSizesList = fileSizes.toArrayList();
         if (list == null) {
             callback.invoke();
             return;
         }
         for (int i = 0; i < list.size(); i++) {
             String filePath = (String) list.get(i);
-            int fileSize = Integer.valueOf((String) fileSizesList.get(i)).intValue();
+
             File file = new File(filePath);
 
             if (!file.exists()) {
@@ -203,13 +202,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             if (isGIF(filePath)) {
                 continue;
             }
-
-            if (fileSize > maxSize) {
-                BitmapUtils.compressBitmap(filePath, (int) maxSize.doubleValue() / 1024, filePath);
-            } else {
-                continue;
-            }
-
+            BitmapUtils.compressBitmap(filePath, (int) maxSize.doubleValue() / 1024, filePath);
         }
         callback.invoke();
     }

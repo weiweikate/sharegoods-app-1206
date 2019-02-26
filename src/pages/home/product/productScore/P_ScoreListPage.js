@@ -44,6 +44,9 @@ export default class P_ScoreListPage extends BasePage {
     }
 
     _getPageStateOptions = () => {
+        const { pData } = this.params;
+        const { overtimeComment } = pData || {};
+        const hasComment = overtimeComment && parseInt(overtimeComment) > 0;
         return {
             loadingState: this.state.loadingState,
             netFailedProps: {
@@ -51,8 +54,8 @@ export default class P_ScoreListPage extends BasePage {
                 reloadBtnClick: this._loadPageData
             },
             emptyProps: {
-                source: p_score_empty,
-                description: '晒单在奔跑赶来~'
+                source: hasComment ? p_score_smile : p_score_empty,
+                description: hasComment ? `${overtimeComment}位用户默认给了优秀晒单` : '晒单在奔跑赶来~'
             }
         };
     };
