@@ -4,7 +4,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import { request } from '@mr/rn-request';
 import HomeAPI from '../../api/HomeAPI';
 import orderApi from '../../../order/api/orderApi';
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 export default class P_ScorePublishModel {
 
@@ -53,7 +53,7 @@ export default class P_ScorePublishModel {
     @action addVideo = (itemIndex, videoUrl, imgPath) => {
         let itemData = this.itemDataS[itemIndex];
         itemData.video = videoUrl;
-        itemData.videoImg = imgPath;
+        itemData.videoImg = Platform.OS === 'android' ? 'file://' + imgPath : imgPath;
     };
 
     @action deleteVideo = (itemIndex) => {
@@ -121,6 +121,6 @@ export default class P_ScorePublishModel {
                 Toast.hiddenLoading();
                 Toast.$toast('视频上传失败');
             });
-        })
+        });
     }
 }

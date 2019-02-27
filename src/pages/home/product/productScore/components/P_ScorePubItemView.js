@@ -9,7 +9,7 @@ import pRes from '../../../res';
 import { observer } from 'mobx-react';
 
 const { px2dp, width } = ScreenUtils;
-const { p_score_star, p_score_unStar, p_score_add, p_score_delete, shaidan_icon_shipin } = pRes.product.productScore;
+const { p_score_star, p_score_unStar, p_score_add, p_score_delete } = pRes.product.productScore;
 const img_w_h = (width - 60 - 12 * 3) / 4.0;
 
 /**
@@ -123,14 +123,14 @@ class ImgVideoView extends Component {
                     </NoMoreClick>
             }
             {
-                dataCount >= maxImageVideoCount || videoImg ? null :
-                    <NoMoreClick onPress={() => showAction(index, true)}>
-                        <Image style={[styles.imgVideo, { marginLeft: images.length === 3 ? 0 : 12 }]}
-                               source={shaidan_icon_shipin}/>
-                    </NoMoreClick>
+                /*视频入口隐藏先不上*/
+                // dataCount >= maxImageVideoCount || videoImg ? null :
+                //     <NoMoreClick onPress={() => showAction(index, true)}>
+                //         <Image style={[styles.imgVideo, { marginLeft: images.length === 3 ? 0 : 12 }]}
+                //                source={shaidan_icon_shipin}/>
+                //     </NoMoreClick>
             }
         </View>;
-        ;
     }
 }
 

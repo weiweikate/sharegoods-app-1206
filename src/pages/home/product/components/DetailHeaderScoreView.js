@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, NativeModules } from 'react-native';
+import { View, StyleSheet, Image, NativeModules, Platform } from 'react-native';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 import AvatarImage from '../../../../components/ui/AvatarImage';
@@ -17,19 +17,28 @@ const img_w_h = (width - 30 - px2dp(16) - 1) / 3;
 
 export class DetailHeaderScoreView extends Component {
 
+    componentDidMount = () => {
+        this._getVideoImage(this.props);
+    };
+
     componentWillReceiveProps(nextProps) {
+        this._getVideoImage(nextProps);
+    }
+
+
+    _getVideoImage = (props) => {
         //处理视频图片
-        let { comment } = nextProps.pData;
+        let { comment } = props.pData;
         const { videoUrl } = comment || {};
         if (StringUtils.isNoEmpty(videoUrl)) {
             NativeModules.commModule.RN_Video_Image(videoUrl).then(({ imagePath }) => {
-                comment.videoImgPath = imagePath;
+                comment.videoImgPath = Platform.OS === 'android' ? 'file://' + imagePath : '' + imagePath;
                 this.setState({
-                    data: nextProps.pData
+                    pData: props.pData
                 });
             });
         }
-    }
+    };
 
     _renderContentImgs = (imgs) => {
         if (imgs.length > 0) {
@@ -58,14 +67,15 @@ export class DetailHeaderScoreView extends Component {
     };
 
     _renderContent = (comment) => {
-        const { headImg, nickname, imgUrl, videoUrl, videoImgPath } = comment || {};
+        const { headImg, nickname, imgUrl } = comment || {};
         const commentTemp = (comment || {}).comment;
 
         let images = [];
-        if (StringUtils.isNoEmpty(videoUrl)) {
-            this.hasVideo = true;
-            images.push(videoImgPath);
-        }
+        //去掉视频
+        // if (StringUtils.isNoEmpty(videoUrl)) {
+        //     this.hasVideo = true;
+        //     images.push(videoImgPath);
+        // }
         if (StringUtils.isNoEmpty(imgUrl)) {
             let temp = imgUrl.split('$');
             images.push(...temp);
@@ -155,7 +165,7 @@ const styles = StyleSheet.create({
         width: 30, height: 30
     },
     nameText: {
-        marginLeft: 5,
+        marginLeft: 5, paddingVertical: 3,
         fontSize: 12, color: DesignRule.textColor_instruction
     },
     /**文字**/
