@@ -188,8 +188,10 @@ public class MainActivity extends BaseActivity {
                                 ScalingUtils.ScaleType.FIT_CENTER);
                         ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
-                        ivAdvBg.setImageBitmap((Bitmap) msg.obj);
-
+                        Bitmap bmp = (Bitmap) msg.obj;
+                        if (bmp != null && !bmp.isRecycled()) {
+                            ivAdvBg.setImageBitmap((Bitmap) msg.obj);
+                        }
                         initAdvEvent();
                         startTimer();
                         break;
