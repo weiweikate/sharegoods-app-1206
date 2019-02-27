@@ -244,7 +244,7 @@ public class VersionUpdateService extends Service {
                         message.what = ParameterUtils.MSG_WHAT_ERR;
                         mHandler.sendMessage(message);
                         File file = new File(apkfile_file.getAbsolutePath() + File.separator + fileName);
-                        if(file.exists()){
+                        if (file.exists()) {
                             file.delete();
                         }
                     }
@@ -271,9 +271,14 @@ public class VersionUpdateService extends Service {
             if (hasInstallPermission) {
                 Utils.installApk(getApplicationContext(), apk_path);
             } else {
-                ToastUtils.showToast(getString(R.string.install_allow));
-                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
-                startActivity(intent);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtils.showToast(getString(R.string.install_allow));
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                        startActivity(intent);
+                    }
+                });
             }
         } else {
             Utils.installApk(getApplicationContext(), apk_path);

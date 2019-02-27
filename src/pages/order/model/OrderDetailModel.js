@@ -29,6 +29,7 @@ class OrderDetailModel {
     @observable warehouseOrderDTOList=[]
     @observable unSendProductInfoList=[]
     @observable status=null
+    @observable deleteInfo=false
 
     @action  getOrderNo(){
      return   this.status > 1 ? this.warehouseOrderDTOList[0].warehouseOrderNo : this.warehouseOrderDTOList[0].platformOrderNo
@@ -64,6 +65,7 @@ class OrderDetailModel {
 
 
     @action loadDetailInfo(orderNo) {
+        this.deleteInfo=false
         orderDetailAfterServiceModel.addAfterServiceList();
         return OrderApi.lookDetail({
             orderNo:orderNo
@@ -89,14 +91,19 @@ class OrderDetailModel {
             orderDetailModel.address = rep.data.address
             this.status = rep.data.warehouseOrderDTOList[0].status
             orderDetailModel.payAmount = rep.data.payAmount
-            orderDetailModel.loading=false
+            // orderDetailModel.loading=false
             orderDetailModel.loadingState=PageLoadingState.success
 
             return rep
         }).catch(err=>{
-                orderDetailModel.loading=false
-                orderDetailModel.netFailedInfo=err
-                orderDetailModel.loadingState=PageLoadingState.fail
+                if(err.code===47002){
+                    this.deleteInfo=true
+                }else{
+                    orderDetailModel.netFailedInfo=err
+                    orderDetailModel.loadingState=PageLoadingState.fail
+                }
+                // orderDetailModel.netFailedInfo=err
+                // orderDetailModel.loadingState=PageLoadingState.fail
             Toast.hiddenLoading();
             Toast.$toast(err.msg);
             console.log(err);

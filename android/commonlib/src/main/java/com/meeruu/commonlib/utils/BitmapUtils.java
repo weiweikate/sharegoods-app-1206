@@ -369,8 +369,9 @@ public final class BitmapUtils {
             e.printStackTrace();
         }
 
-        if (bitmap != null) {
+        if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
+            bitmap = null;
         }
 
         return true;  //压缩成功返回ture
@@ -460,6 +461,10 @@ public final class BitmapUtils {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
+            bitmap = null;
         }
         return file.getAbsolutePath();
     }

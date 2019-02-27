@@ -20,6 +20,8 @@ import { MRText as Text } from '../../components/ui';
 const { px2dp } = ScreenUtils;
 import ImageLoad from '@mr/image-placeholder';
 
+export const kHomeClassifyHeight = px2dp(83) * 2;
+
 class Item extends Component {
     state = {
         loadingError: false
@@ -34,12 +36,12 @@ class Item extends Component {
             {
                 loadingError
                     ?
-                    <Image style={styles.icon}  source={icon}/>
+                    <Image style={styles.icon} source={icon}/>
                     :
                     <ImageLoad style={styles.icon} source={source} onError={() => {
                         console.log('loadingError');
                         this.setState({ loadingError: true });
-                    }}/>
+                    }} isAvatar={true}/>
             }
             <View style={styles.space}/>
             <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
@@ -71,7 +73,7 @@ export default class HomeClassifyView extends Component {
             code: data.linkTypeCode,
             name: data.name,
             categoryId: data.id,
-            activityCode: data.linkTypeCode,
+            activityCode: data.linkTypeCode
         });
     };
 
@@ -107,7 +109,8 @@ const styles = StyleSheet.create({
         paddingRight: px2dp(2),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        width: ScreenUtils.width
     },
     item: {
         width: px2dp(48),

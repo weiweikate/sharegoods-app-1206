@@ -37,25 +37,28 @@ public class ImageLoadUtils {
 
     public static void loadImageRes(Context context, @DrawableRes int resId, SimpleDraweeView view) {
         Uri uri = Uri.parse("res://" + context.getPackageName() + "/" + resId);
-        loadImage(uri, view, 0, false);
+        loadImage(uri, view);
     }
 
     public static void loadImageResAsCircle(Context context, @DrawableRes int resId, SimpleDraweeView view) {
         Uri uri = Uri.parse("res://" + context.getPackageName() + "/" + resId);
-        loadImageAsCircle(uri, view, false);
+        loadImageAsCircle(uri, view);
     }
 
     public static void loadImageFile(String filePath, SimpleDraweeView view) {
         Uri uri = Uri.parse("file://" + filePath);
-        loadImage(uri, view, 0, false);
+        loadImage(uri, view);
     }
 
     public static void loadImageFileAsCircle(String filePath, SimpleDraweeView view) {
         Uri uri = Uri.parse("file://" + filePath);
-        loadImageAsCircle(uri, view, false);
+        loadImageAsCircle(uri, view);
     }
 
-    public static void loadNetImage(final String url, final SimpleDraweeView view, final boolean scale) {
+    public static void loadNetImage(final String url, final SimpleDraweeView view) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -71,7 +74,7 @@ public class ImageLoadUtils {
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
-                    loadImage(uri, view, 0, scale);
+                    loadImage(uri, view);
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
                     hasMeasured = true;
                 }
@@ -81,7 +84,10 @@ public class ImageLoadUtils {
     }
 
     public static void loadScaleTypeNetImage(final String url, final SimpleDraweeView view,
-                                             final ScalingUtils.ScaleType scaleType, final boolean scale) {
+                                             final ScalingUtils.ScaleType scaleType) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -97,7 +103,7 @@ public class ImageLoadUtils {
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
-                    loadImage(uri, view, scaleType, scale);
+                    loadImage(uri, view, scaleType);
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
                     hasMeasured = true;
                 }
@@ -107,7 +113,10 @@ public class ImageLoadUtils {
     }
 
     public static void loadRoundNetImage(final String url, final SimpleDraweeView view,
-                                         final int radius, final boolean scale) {
+                                         final int radius) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -123,7 +132,7 @@ public class ImageLoadUtils {
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
-                    loadImage(uri, view, radius, scale);
+                    loadRoundImage(uri, view, radius);
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
                     hasMeasured = true;
                 }
@@ -132,7 +141,11 @@ public class ImageLoadUtils {
         });
     }
 
-    public static void loadCircleNetImage(final String url, final SimpleDraweeView view, final boolean scale) {
+    public static void loadRoundNetImage(final String url, final SimpleDraweeView view,
+                                         final float[] radius) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             boolean hasMeasured = false;
 
@@ -148,7 +161,35 @@ public class ImageLoadUtils {
                         }
                     }
                     Uri uri = Uri.parse(newUrl);
-                    loadImageAsCircle(uri, view, scale);
+                    loadRoundImage(uri, view, radius);
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    hasMeasured = true;
+                }
+                return true;
+            }
+        });
+    }
+
+    public static void loadCircleNetImage(final String url, final SimpleDraweeView view) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            boolean hasMeasured = false;
+
+            @Override
+            public boolean onPreDraw() {
+                if (!hasMeasured) {
+                    int width = view.getMeasuredWidth();
+                    int height = view.getMeasuredHeight();
+                    String newUrl = url;
+                    if (width != 0 || height != 0) {
+                        if (!TextUtils.isEmpty(newUrl)) {
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                        }
+                    }
+                    Uri uri = Uri.parse(newUrl);
+                    loadImageAsCircle(uri, view);
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
                     hasMeasured = true;
                 }
@@ -159,32 +200,32 @@ public class ImageLoadUtils {
 
     public static void loadNetImageAsCircle(String url, SimpleDraweeView view) {
         Uri uri = Uri.parse(url);
-        loadImageAsCircle(uri, view, true);
+        loadImageAsCircle(uri, view);
     }
 
-    private static void loadImage(Uri uri, SimpleDraweeView view, int radius, boolean scale) {
-        roundParams.setCornersRadius(radius);
+    /**
+     * 加载图片
+     *
+     * @param uri
+     * @param view
+     */
+    private static void loadImage(Uri uri, SimpleDraweeView view) {
         ImageRequestBuilder requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri)
                 //缩放,在解码前修改内存中的图片大小, 配合Downsampling可以处理所有图片,否则只能处理jpg,
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
                 .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
                 .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
-        int width = view.getMeasuredWidth();
-        int height = view.getMeasuredHeight();
-        if (scale) {
+        int width = view.getWidth();
+        int height = view.getHeight();
+        if (width > 0) {
             requestBuilder.setResizeOptions(new ResizeOptions(width, height));
         } else {
-            if (width > 0) {
-                requestBuilder.setResizeOptions(new ResizeOptions(width, height));
-            } else {
-                requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
-            }
+            requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
         }
         ImageRequest request = requestBuilder.build();
         GenericDraweeHierarchy hierarchy =
                 new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
                         .setFadeDuration(300)
-                        .setRoundingParams(roundParams)
                         .setPlaceholderImage(R.drawable.bg_app_img)
                         .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                         .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
@@ -197,23 +238,19 @@ public class ImageLoadUtils {
         view.setController(controller);
     }
 
-    private static void loadImage(Uri uri, SimpleDraweeView view, ScalingUtils.ScaleType scaleType, boolean scale) {
-        roundParams.setCornersRadius(0);
+    private static void loadImage(Uri uri, SimpleDraweeView view, ScalingUtils.ScaleType scaleType) {
         ImageRequestBuilder requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri)
                 //缩放,在解码前修改内存中的图片大小, 配合Downsampling可以处理所有图片,否则只能处理jpg,
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
                 .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
                 .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
-        int width = view.getMeasuredWidth();
-        int height = view.getMeasuredHeight();
-        if (scale) {
+        int width = view.getWidth();
+        int height = view.getHeight();
+
+        if (width > 0) {
             requestBuilder.setResizeOptions(new ResizeOptions(width, height));
         } else {
-            if (width > 0) {
-                requestBuilder.setResizeOptions(new ResizeOptions(width, height));
-            } else {
-                requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
-            }
+            requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
         }
         ImageRequest request = requestBuilder.build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -236,8 +273,12 @@ public class ImageLoadUtils {
         view.setController(controller);
     }
 
-    public static void loadImage(Uri uri, SimpleDraweeView view, int radius, ControllerListener listener) {
-        roundParams.setCornersRadius(radius);
+    /**
+     * @param uri      图片的uri
+     * @param view     要加载的视图
+     * @param listener 监听
+     */
+    public static void loadImage(Uri uri, SimpleDraweeView view, ControllerListener listener) {
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setOldController(view.getController())
                 .setControllerListener(listener)
@@ -246,7 +287,6 @@ public class ImageLoadUtils {
         GenericDraweeHierarchy hierarchy =
                 new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
                         .setFadeDuration(300)
-                        .setRoundingParams(roundParams)
                         .setPlaceholderImage(R.drawable.bg_app_img)
                         .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                         .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
@@ -258,7 +298,6 @@ public class ImageLoadUtils {
     public static void downloadImage(Uri uri, BaseBitmapDataSubscriber subscriber) {
         ImageRequest imageRequest = ImageRequestBuilder
                 .newBuilderWithSource(uri)
-                .disableDiskCache()
                 .setProgressiveRenderingEnabled(true)//渐进渲染
                 .build();
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
@@ -267,13 +306,13 @@ public class ImageLoadUtils {
     }
 
     /**
-     * 加载图片为圆形图片
+     * 加载图片为圆角图片
      *
-     * @param uri  图片的uri
-     * @param view 要加载的视图
+     * @param uri    图片的uri
+     * @param view   要加载的视图
+     * @param radius 圆角
      */
-    private static void loadImageAsCircle(Uri uri, SimpleDraweeView view, boolean scale) {
-        roundParams.setRoundAsCircle(true);
+    private static void loadRoundImage(Uri uri, SimpleDraweeView view, int radius) {
         ImageRequestBuilder requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri)
                 //缩放,在解码前修改内存中的图片大小, 配合Downsampling可以处理所有图片,否则只能处理jpg,
                 // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
@@ -281,14 +320,84 @@ public class ImageLoadUtils {
                 .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
         int width = view.getMeasuredWidth();
         int height = view.getMeasuredHeight();
-        if (scale) {
+        if (width > 0) {
             requestBuilder.setResizeOptions(new ResizeOptions(width, height));
         } else {
-            if (width > 0) {
-                requestBuilder.setResizeOptions(new ResizeOptions(width, height));
-            } else {
-                requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
-            }
+            requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
+        }
+        ImageRequest request = requestBuilder.build();
+        GenericDraweeHierarchy hierarchy =
+                new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
+                        .setFadeDuration(300)
+                        .setRoundingParams(RoundingParams.fromCornersRadius(radius))
+                        .setPlaceholderImage(R.drawable.bg_app_img)
+                        .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                        .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                        .build();
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(request)
+                .setOldController(view.getController())
+                .build();
+        view.setHierarchy(hierarchy);
+        view.setController(controller);
+    }
+
+    /**
+     * 加载图片为圆角图片
+     *
+     * @param uri    图片的uri
+     * @param view   要加载的视图
+     * @param radius 左上角、右上角、左下角、右下角圆角半径
+     */
+    private static void loadRoundImage(Uri uri, SimpleDraweeView view, float[] radius) {
+        ImageRequestBuilder requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri)
+                //缩放,在解码前修改内存中的图片大小, 配合Downsampling可以处理所有图片,否则只能处理jpg,
+                // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
+                .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
+                .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
+        int width = view.getMeasuredWidth();
+        int height = view.getMeasuredHeight();
+        if (width > 0) {
+            requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+        } else {
+            requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
+        }
+        ImageRequest request = requestBuilder.build();
+        GenericDraweeHierarchy hierarchy =
+                new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
+                        .setFadeDuration(300)
+                        .setRoundingParams(RoundingParams.fromCornersRadii(radius))
+                        .setPlaceholderImage(R.drawable.bg_app_img)
+                        .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                        .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                        .build();
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(request)
+                .setOldController(view.getController())
+                .build();
+        view.setHierarchy(hierarchy);
+        view.setController(controller);
+    }
+
+    /**
+     * 加载图片为圆形图片
+     *
+     * @param uri  图片的uri
+     * @param view 要加载的视图
+     */
+    private static void loadImageAsCircle(Uri uri, SimpleDraweeView view) {
+        roundParams.setRoundAsCircle(true);
+        ImageRequestBuilder requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri)
+                //缩放,在解码前修改内存中的图片大小, 配合Downsampling可以处理所有图片,否则只能处理jpg,
+                // 开启Downsampling:在初始化时设置.setDownsampleEnabled(true)
+                .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
+                .setRotationOptions(RotationOptions.autoRotate()); //如果图片是侧着,可以自动旋转
+        int width = view.getWidth();
+        int height = view.getHeight();
+        if (width > 0) {
+            requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+        } else {
+            requestBuilder.setResizeOptions(new ResizeOptions(ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight() / 2));
         }
         ImageRequest request = requestBuilder.build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -299,7 +408,7 @@ public class ImageLoadUtils {
                 new GenericDraweeHierarchyBuilder(BaseApplication.appContext.getResources())
                         .setFadeDuration(300)
                         .setRoundingParams(roundParams)
-                        .setPlaceholderImage(R.drawable.bg_app_img)
+                        .setPlaceholderImage(R.drawable.bg_app_user)
                         .setPlaceholderImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                         .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                         .build();

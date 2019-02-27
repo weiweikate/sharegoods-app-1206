@@ -10,13 +10,21 @@ import android.text.TextUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.soloader.SoLoader;
-import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.handler.CrashHandler;
+import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
+import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
+import com.meeruu.commonlib.utils.SensorsUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
+import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
+import com.qiyukf.unicorn.api.UICustomization;
+import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.YSFOptions;
 
 import java.util.List;
 
@@ -60,8 +68,6 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         appContext = this;
-        // activity生命周期，onCreate之后
-        ForegroundCallbacks.init(this);
         if (getProcessName(this).equals(getPackageName())) {
             Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
             SoLoader.init(this, /* native exopackage */ false);
@@ -74,6 +80,8 @@ public class BaseApplication extends MultiDexApplication {
             // 初始化极光
             JPushInterface.init(this);
             if (Utils.isApkInDebug()) {
+                // 初始化 Sensors SDK
+                SensorsUtils.initDebugMode(this, channel);
                 // jpush debug
                 JPushInterface.setDebugMode(true);
                 // umeng debug
@@ -84,14 +92,39 @@ public class BaseApplication extends MultiDexApplication {
                 JPushInterface.setDebugMode(false);
                 JPushInterface.initCrashHandler(this);
                 JPushInterface.setChannel(this, channel);
+                // 捕获闪退日志
+                CrashHandler.getInstance().init(this);
+                // 初始化 Sensors SDK
+                SensorsUtils.initReleaseMode(this, channel);
             }
+            // 七鱼初始化
+            Unicorn.init(this, "b87fd67831699ca494a9d3de266cd3b0", options(), new QiyuImageLoader(this));
         }
+    }
+
+    // 如果返回值为null，则全部使用默认参数。
+    private YSFOptions options() {
+        YSFOptions options = new YSFOptions();
+        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
+        UICustomization uiCustomization = new UICustomization();
+        // 头像风格，0为圆形，1为方形
+        uiCustomization.avatarShape = 0;
+        // 标题栏背景
+        uiCustomization.titleBackgroundColor = 0xFFFFFFFF;
+        uiCustomization.titleBarStyle = 0;
+        uiCustomization.topTipBarBackgroundColor = 0xFF666666;
+        uiCustomization.titleCenter = true;
+        uiCustomization.topTipBarTextColor = 0xFFFFFFFF;
+        options.categoryDialogStyle = 0;
+        options.uiCustomization = uiCustomization;
+        return options;
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+        AppUtils.daemonsFix();
     }
 
     /**
@@ -106,16 +139,20 @@ public class BaseApplication extends MultiDexApplication {
      */
     public String getProcessName(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
-        if (runningAppProcesses == null) {
-            return "";
-        }
-
-        for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
-            if (runningAppProcess.pid == android.os.Process.myPid()
-                    && !TextUtils.isEmpty(runningAppProcess.processName)) {
-                return runningAppProcess.processName;
+        try {
+            List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
+            if (runningAppProcesses == null) {
+                return "";
             }
+
+            for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
+                if (runningAppProcess.pid == android.os.Process.myPid()
+                        && !TextUtils.isEmpty(runningAppProcess.processName)) {
+                    return runningAppProcess.processName;
+                }
+            }
+        } catch (Exception e) {
+            LogUtils.d(e.getMessage());
         }
         return "";
     }

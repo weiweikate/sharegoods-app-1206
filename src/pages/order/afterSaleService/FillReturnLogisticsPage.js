@@ -66,7 +66,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                         uri={this.state.pageData.specImg}
                         goodsName={this.state.pageData.productName}
                         salePrice={StringUtils.formatMoneyString(this.state.pageData.unitPrice)}
-                        category={'规格：' + this.state.pageData.specValues}
+                        category={this.state.pageData.spec}
                         goodsNum={this.state.pageData.quantity}
                         // onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
                     />

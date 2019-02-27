@@ -79,8 +79,22 @@ class Card extends Component {
 @observer
 export default class ShowChoiceView extends Component {
 
+    constructor(props) {
+        super(props)
+        this.isScroll = false;
+        this.changeIsScroll = this.changeIsScroll.bind(this);
+    }
+
+    changeIsScroll(isScroll)
+    {
+        this.isScroll = isScroll
+    }
+
     _onChoiceAction(item) {
         const { navigate } = this.props
+        if (this.isScroll === true) {
+            return
+        }
         navigate('show/ShowDetailPage', {id: item.id, code: item.code})
     }
 
@@ -97,7 +111,7 @@ export default class ShowChoiceView extends Component {
         {
             items.length > 0
             ?
-            <View style={styles.container}>
+            <View style={[styles.container, {height: showChoiceModules.choiceHeight + px2dp(53)}]}>
                 <View style={styles.titleView}>
                     <Text style={styles.title} allowFontScaling={false}>精选</Text>
                 </View>

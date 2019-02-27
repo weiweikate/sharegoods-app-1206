@@ -1,5 +1,8 @@
 import detailNavView from './detailNavView';
-import xpProduct from './xpProduct'
+import xpProduct from './xpProduct';
+import productScore from './productScore';
+import service from './service';
+
 const product = {
     detailShowBg: require('./detailShowBg.png'),
     home: require('./home.png'),
@@ -16,6 +19,12 @@ const product = {
     },
     xpProduct: {
         ...xpProduct
+    },
+    productScore: {
+        ...productScore
+    },
+    service: {
+        ...service
     }
 };
 export default product;

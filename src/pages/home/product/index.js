@@ -1,6 +1,7 @@
 import ProductDetailPage from './ProductDetailPage';
 import CheckBigImagesView from './CheckBigImagesView';
 import xpProduct from './xpProduct';
+import productScore from './productScore';
 import BigImagesPage from './BigImagesPage';
 
 export default {
@@ -9,6 +10,7 @@ export default {
         ProductDetailPage,
         CheckBigImagesView,
         xpProduct,
+        productScore,
         BigImagesPage
     }
 };

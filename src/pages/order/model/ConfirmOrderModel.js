@@ -7,6 +7,7 @@ import user from '../../../model/user';
 import API from '../../../api';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
+import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
 
 class ConfirmOrderModel {
     @observable
@@ -263,6 +264,10 @@ class ConfirmOrderModel {
                 OrderApi.submitOrder(paramsnor).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
+                    this.canCommit = true;
+                    shopCartCacheTool.getShopCartGoodsListData();
+                    callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
@@ -278,8 +283,6 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.canCommit = true;
-                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -298,6 +301,9 @@ class ConfirmOrderModel {
                 OrderApi.submitOrder(paramsnor2).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
+                    this.canCommit = true;
+                    callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
@@ -313,8 +319,6 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.canCommit = true;
-                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -333,6 +337,9 @@ class ConfirmOrderModel {
                 OrderApi.SeckillSubmitOrder(needParams).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
+                    this.canCommit = true;
+                    callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
@@ -348,8 +355,6 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.canCommit = true;
-                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -368,6 +373,9 @@ class ConfirmOrderModel {
                 OrderApi.DepreciateSubmitOrder(needParams2).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
+                    this.canCommit = true;
+                    callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
@@ -383,8 +391,6 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.canCommit = true;
-                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -406,6 +412,9 @@ class ConfirmOrderModel {
                 OrderApi.PackageSubmitOrder(params).then((response) => {
                     bridge.hiddenLoading();
                     let data = response.data;
+                    this.canCommit = true;
+                    callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderID: data.orderNo,
                         orderAmount: data.payAmount,
@@ -421,8 +430,6 @@ class ConfirmOrderModel {
                         yiYuanCouponsAmount: this.tokenCoin,
                         storeCode: user.storeCode ? user.storeCode : ''
                     });
-                    this.canCommit = true;
-                    callback(data);
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();

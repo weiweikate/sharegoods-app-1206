@@ -25,7 +25,6 @@ export default class OrderSearchResultPage extends BasePage {
         return true;
     }
 
-    //**********************************ViewPart******************************************
     _render() {
         return (
             <View style={styles.container}>

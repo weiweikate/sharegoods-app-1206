@@ -7,13 +7,14 @@ import {
     View,
     StyleSheet,
     TouchableWithoutFeedback,
-    Image,
+    Image
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import UIImage from '@mr/image-placeholder';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
+import StringUtils from '../../../../utils/StringUtils';
 
 const gwc = res.search.gwc;
 
@@ -59,7 +60,8 @@ export default class ResultHorizontalRow extends Component {
                         left: 10
                     }}>
                         <Text
-                            style={{ color: DesignRule.mainColor, fontSize: 17 }} allowFontScaling={false}>{`￥${minPrice || ''}起`}</Text>
+                            style={{ color: DesignRule.mainColor, fontSize: 17 }}
+                            allowFontScaling={false}>{`￥${StringUtils.isNoEmpty(minPrice) ? minPrice : ''}起`}</Text>
 
                         <TouchableWithoutFeedback onPress={() => {
                             this.props.storeProduct(this.props.itemData);

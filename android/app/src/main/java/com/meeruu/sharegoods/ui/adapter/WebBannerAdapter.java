@@ -54,9 +54,7 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
                 }
             }
         });
-
-        ImageLoadUtils.loadRoundNetImage(url, imageView, radius,true);
-
+        ImageLoadUtils.loadRoundNetImage(url, imageView, radius);
     }
 
     @Override

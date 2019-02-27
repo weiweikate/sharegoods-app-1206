@@ -7,13 +7,14 @@ import {
     View,
     StyleSheet,
     TouchableWithoutFeedback,
-    Image,
+    Image
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 import UIImage from '@mr/image-placeholder';
+import StringUtils from '../../../../utils/StringUtils';
 
 const gwc = res.search.gwc;
 
@@ -48,7 +49,7 @@ export default class ResultVerticalRow extends Component {
                                 <Text style={{
                                     color: DesignRule.mainColor,
                                     fontSize: 17
-                                }} allowFontScaling={false}>{`￥${minPrice || ' '}`}<Text
+                                }} allowFontScaling={false}>{`￥${StringUtils.isNoEmpty(minPrice) ? minPrice : ''}`}<Text
                                     style={{ fontSize: 12 }} allowFontScaling={false}>起</Text>
                                 </Text>
                             </View>

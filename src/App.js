@@ -12,7 +12,7 @@ import {
     StyleSheet,
     Text,
     View,
-    InteractionManager,
+    InteractionManager
     // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -79,6 +79,7 @@ export default class App extends Component {
     async componentWillMount() {
         netStatus.startMonitorNetworkStatus();
 
+        // 环境配置
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$routes = [];
@@ -89,12 +90,12 @@ export default class App extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
-                ScreenUtils.isNavigationBarExist((data)=>{
+                ScreenUtils.isNavigationBarExist((data) => {
                     ScreenUtils.setBarShow(data);
                 });
 
-                ScreenUtils.checkhasNotchScreen((data)=>{
-                    ScreenUtils.setHasNotchScreen(data)
+                ScreenUtils.checkhasNotchScreen((data) => {
+                    ScreenUtils.setHasNotchScreen(data);
                 });
 
                 geolocation.init({
@@ -136,36 +137,6 @@ export default class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
-
-                {/*去掉不再使用*/}
-                {/*{*/}
-                    {/*user.isLogin || !oldUserLoginSingleModel.isShowOldBtn*/}
-                        {/*?*/}
-                        {/*null*/}
-                        {/*: (this.state.curRouteName === RouterMap.LoginPage || this.state.curRouteName === RouterMap.OldUserLoginPage*/}
-                        {/*|| this.state.curRouteName === RouterMap.SetPasswordPage*/}
-                        {/*? null :*/}
-                        {/*<DebugButton*/}
-                            {/*onPress={this.gotoLogin}*/}
-                            {/*style={*/}
-                                {/*styles.oldLoginBtnStyle*/}
-                            {/*}*/}
-                        {/*>*/}
-                            {/*<View*/}
-                                {/*style={{*/}
-                                    {/*width: 150,*/}
-                                    {/*height: 43,*/}
-                                    {/*paddingLeft: 10*/}
-                                {/*}*/}
-                                {/*}*/}
-                            {/*>*/}
-                                {/*<Image*/}
-                                    {/*source={OldImag}*/}
-                                    {/*resizeMode={'contain'}*/}
-                                {/*/>*/}
-                            {/*</View>*/}
-                        {/*</DebugButton>)*/}
-                {/*}*/}
             </View>
         );
     }
@@ -183,8 +154,7 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: 'white'
+        flex: 1
     },
     debugBtn: {
         width: 60,

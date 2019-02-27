@@ -12,7 +12,7 @@ public class ParameterUtils {
     public static final String NETWORN_3G = "NETWORN_3G";
     public static final String NETWORN_4G = "NETWORN_4G";
     public static final String NETWORN_MOBILE = "NETWORN_MOBILE";
-    public static final String API_SERVER = "api_server";
+    public static final String API_SERVER = "host_json";
     public static final String GET_DATA_FAILED = "获取数据失败,请稍候重试!";
     public static final String UPLOAD_ERR = "上传失败!";
     public static final String DOWNLOAD_ERR = "下载失败!";

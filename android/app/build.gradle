@@ -85,7 +85,6 @@ sensorsAnalytics {
 }
 
 dependencies {
-    api project(':react-native-extra-dimensions-android')
     api fileTree(include: ['*.jar'], dir: 'libs')
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.3') {
         exclude(module: 'support-core-utils')
@@ -125,5 +124,7 @@ dependencies {
     api project(':commonlib')
     api project(':qrcode')
     api project(':lottie')
-    api project(':qiyu_service')
+    api project(':base_adapter')
+    api project(':react-native-extra-dimensions-android')
+    implementation project(':react-native-camera')
 }

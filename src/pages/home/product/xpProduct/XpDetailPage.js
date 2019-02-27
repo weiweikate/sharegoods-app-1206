@@ -25,6 +25,7 @@ import user from '../../../../model/user';
 import RouterMap from '../../../../navigation/RouterMap';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import CommShareModal from '../../../../comm/components/CommShareModal';
+import DetailHeaderScoreView from '../components/DetailHeaderScoreView';
 
 const arrow_right_black = res.button.arrow_right_black;
 const detail_more_down = productRes.product.detailNavView.detail_more_down;
@@ -186,7 +187,7 @@ export class XpDetailPage extends BasePage {
     };
 
     _renderProduct = () => {
-        const { pParamList } = this.xpDetailModel;
+        const { pParamList, pData } = this.xpDetailModel;
         return <View>
             {/*商品信息*/}
             <XpDetailProductView xpDetailModel={this.xpDetailModel} imgBtnAction={this._imgBtnAction}/>
@@ -205,6 +206,8 @@ export class XpDetailPage extends BasePage {
                     </View> : null
                 }
             </View>
+            <DetailHeaderScoreView style={{ marginTop: 10, marginBottom: 0 }} pData={pData}
+                                   navigation={this.props.navigation}/>
             <View style={styles.productInfoView}>
                 <View style={styles.infoTextView}>
                     <Text style={styles.pramsText}>商品信息</Text>
@@ -229,7 +232,7 @@ export class XpDetailPage extends BasePage {
         } else {
             let pageStateDic = this._getProductStateOptions();
             return <View style={styles.container}>
-                <ScrollView onScroll={this._onScroll} scrollEventThrottle={10}>
+                <ScrollView onScroll={this._onScroll} scrollEventThrottle={10} showsVerticalScrollIndicator={false}>
                     {/*选择框*/}
                     <XpDetailSelectListView xpDetailModel={this.xpDetailModel}/>
                     {/*页面状态*/}

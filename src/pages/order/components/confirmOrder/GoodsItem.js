@@ -40,7 +40,7 @@ const GoodsItem = props => {
                     }} numberOfLines={2} allowFontScaling={false}>{goodsName}</Text>
                 </View>
                 <View style={{ marginTop: 5, marginLeft: 10 }}>
-                    <UIText value={`规格: ${category}`}
+                    <UIText value={`${category}`}
                             style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                 </View>
                 <View style={{

@@ -128,14 +128,14 @@ export default class ShopRecruitPage extends BasePage {
     _loadPageData = () => {
         SpellShopApi.getById({ storeCode: this.state.storeCode }).then((data) => {
             let dataTemp = data.data || {};
-            let datalist = dataTemp.storeUserList || [];
+            const { userCount } = dataTemp;
             this.setState({
                 loadingState: PageLoadingState.success,
                 refreshing: false,
 
                 storeData: dataTemp,
                 storeCode: dataTemp.storeNumber,
-                canOpen: dataTemp.maxUser && dataTemp.maxUser <= datalist.length
+                canOpen: dataTemp.maxUser && dataTemp.maxUser <= userCount
             });
         }).catch((error) => {
             this.setState({
@@ -303,7 +303,7 @@ export default class ShopRecruitPage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     marginTop: ScreenUtils.autoSizeHeight(76),
-                    marginBottom:30,
+                    marginBottom: 30
                 }}>
                     <TouchableOpacity onPress={this._closeStore}
                                       style={[styles.unOpen, {
@@ -326,7 +326,7 @@ export default class ShopRecruitPage extends BasePage {
             <View style={{
                 alignItems: 'center',
                 marginTop: ScreenUtils.autoSizeHeight(76),
-                marginBottom:30,
+                marginBottom: 30
             }}>
                 {
                     userStatus === 1 ?

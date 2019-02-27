@@ -31,15 +31,34 @@ export default class EditPhoneNumPage extends BasePage {
         super(props);
         this.state = {
             code: '',
-            vertifyCodeTime: 0
+            vertifyCodeTime: 0,
+            isSend: false,
+            tip: ''
         };
         this.isLoadding = false;
     }
 
+    componentDidMount() {
+       MineAPI.getDays({}).then((data)=>{
+           if (this.state.tip.length === 0){
+               this.setState({tip: '注：解绑后的手机号，' + data.data + '天内不可进行注册新账户'})
+           }
+       })
+    }
+
     _render() {
         const { oldNum } = this.props.navigation.state.params;
+        let show_num = oldNum;
+        if (oldNum.length === 11){
+            show_num = oldNum.slice(0, 3) + "****" + oldNum.slice(7, 11);
+        }
+
+        let show_num_str = '修改手机号需要验证： ' + show_num + '手机号';
+        if (this.state.isSend){
+            show_num_str = '短信验证码已发送到绑定手机' + show_num;
+        }
         return (<View style={{ flex: 1 }}>
-            <UIText value={'短信验证码将发送至绑定手机： ' + oldNum}
+            <UIText value={show_num_str}
                     style={{
                         color: DesignRule.textColor_instruction,
                         fontSize: 13,
@@ -68,10 +87,16 @@ export default class EditPhoneNumPage extends BasePage {
                             style={{ color: '#D85674', fontSize: 13, marginRight: 15 }}/>
                 </TouchableOpacity>
             </View>
-
+            <UIText value={this.state.tip}
+                    style={{
+                        color: 'red',
+                        fontSize: 12,
+                        marginTop: 15,
+                        marginLeft: 16
+                    }}/>
             <TouchableOpacity style={{
                 marginTop: 42,
-                backgroundColor: DesignRule.mainColor,
+                backgroundColor: this.state.code.length === 0 ? '#E3E3E3' :DesignRule.mainColor,
                 width: ScreenUtils.width - 84,
                 height: 50,
                 marginLeft: 42,
@@ -79,7 +104,8 @@ export default class EditPhoneNumPage extends BasePage {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 25
-            }} onPress={() => this._toNext(oldNum)}>
+            }} onPress={() => this._toNext(oldNum)}
+                              disabled={this.state.code.length === 0 ? true : false}>
                 <Text style={{ fontSize: 17, color: 'white' }}>下一步</Text>
             </TouchableOpacity>
         </View>);
@@ -92,7 +118,8 @@ export default class EditPhoneNumPage extends BasePage {
                 SMSTool.sendVerificationCode(SMSTool.SMSType.OldPhoneType, oldNum).then((data) => {
                     (new TimeDownUtils()).startDown((time) => {
                         this.setState({
-                            vertifyCodeTime: time
+                            vertifyCodeTime: time,
+                            isSend: true
                         });
                     });
                     bridge.$toast('验证码已发送请注意查收');
@@ -126,6 +153,9 @@ export default class EditPhoneNumPage extends BasePage {
             });
         }).catch((data) => {
             this.isLoadding = false;
+            // if (data.code === 10003){
+            //     this.setState({tip: '验证码错误，请重新输入'})
+            // }
             bridge.$toast(data.msg);
         });
     };

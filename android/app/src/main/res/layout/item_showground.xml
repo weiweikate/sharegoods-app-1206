@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/showground_item_background"
+    android:clipChildren="true">
+
+    <com.meeruu.sharegoods.rn.showground.widgets.ScaleImageView
+        android:id="@+id/showground_item_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/showground_item_image"
+        android:background="@drawable/showground_item_mask" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/showground_item_image"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="9dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="17dp"
+            android:layout_height="11dp"
+            android:src="@drawable/see_white" />
+
+        <TextView
+            android:id="@+id/showground_item_show_times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:includeFontPadding="false"
+            android:textColor="#fff"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/showground_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/showground_item_image"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lines="2"
+        android:paddingLeft="10dp"
+        android:paddingTop="9dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="12dp"
+        android:textColor="#333333"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/showground_item_title"
+        android:layout_marginTop="-1dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center|end"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/showground_item_userIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:roundAsCircle="true" />
+
+        <TextView
+            android:id="@+id/showground_item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxEms="5"
+            android:singleLine="true"
+            android:textColor="#666666"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/showground_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:includeFontPadding="false"
+            android:textColor="#999999"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+</RelativeLayout>

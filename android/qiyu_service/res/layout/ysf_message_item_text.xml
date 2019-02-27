@@ -17,6 +17,22 @@
         android:layout_gravity="center"
         android:textColor="@color/ysf_black_b3000000"
         android:textSize="@dimen/ysf_text_size_16" />
+    <ImageView
+        android:id="@+id/message_item_rich_gif"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_vertical|top"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        android:scaleType="centerCrop" />
+    <ImageView
+        android:id="@+id/iv_message_item_rich_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_vertical|top"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        android:scaleType="centerCrop" />
     <TextView
         android:id="@+id/tv_nim_message_item_url_line"
         android:layout_width="match_parent"

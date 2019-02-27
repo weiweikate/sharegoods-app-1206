@@ -13,6 +13,8 @@ const featureBox1Height = featureBox1Wdith * 100 / 97;
 const featureBox2Wdith = (ScreenUtils.width - px2dp(35)) * 39 / 85;
 const featureBox2Height = (featureBox1Height - px2dp(4.5)) / 2;
 
+const  adViewHeight = featureBox1Height + 20 + px2dp(10);
+export {adViewHeight};
 @observer
 export default class HomeAdView extends Component {
     _adAction(value) {
@@ -33,21 +35,21 @@ export default class HomeAdView extends Component {
             if (index === 0) {
                 items.push(<TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
                     <View style={[styles.featureBox1, styles.radius]}>
-                        <ImageLoad cacheable={true} source={{ uri: value.imgUrl }} style={styles.featureBox1Image}/>
+                        <ImageLoad source={{ uri: value.imgUrl }} style={styles.featureBox1Image}/>
                     </View>
                 </TouchableWithoutFeedback>);
             } else if (index === 1) {
                 items.push(
                     <TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
                         <View style={[styles.featureBox2, styles.radius]}>
-                            <ImageLoad cacheable={true} source={{ uri: value.imgUrl }} style={styles.featureBox2Image}/>
+                            <ImageLoad source={{ uri: value.imgUrl }} style={styles.featureBox2Image}/>
                         </View>
                     </TouchableWithoutFeedback>
                 );
             } else {
                 items.push(<TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
                     <View style={[styles.featureBox3, styles.radius]}>
-                        <ImageLoad source={{ uri: value.imgUrl }} style={styles.featureBox2Image} cacheable={true}/>
+                        <ImageLoad source={{ uri: value.imgUrl }} style={styles.featureBox2Image}/>
                     </View>
                 </TouchableWithoutFeedback>);
             }
@@ -73,7 +75,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginTop: ScreenUtils.px2dp(10),
         paddingLeft: px2dp(15),
-        paddingRight: px2dp(15)
+        paddingRight: px2dp(15),
+        width: ScreenUtils.width
     },
     featureBox: {
         position: 'relative',
