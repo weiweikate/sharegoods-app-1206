@@ -45,12 +45,10 @@ export default class LoginPage extends BasePage {
             isCanClick: true
         };
     }
-
     // 禁用某个页面的手势
     static navigationOptions = {
         gesturesEnabled: false
     };
-
     // 导航配置
     $navigationBarOptions = {
         title: '登录',
@@ -193,7 +191,6 @@ export default class LoginPage extends BasePage {
             }
         });
     };
-
     /*老用户登陆*/
     oldUserLoginClick = () => {
         oldUserLoginSingleModel.JumpToLogin(RouterMap.OldUserLoginPage);
@@ -201,7 +198,6 @@ export default class LoginPage extends BasePage {
     /*注册*/
     registBtnClick = () => {
         oldUserLoginSingleModel.isCanTopRegist(RouterMap.RegistPage);
-        // this.$navigate('login/login/RegistPage');
     };
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
@@ -210,7 +206,7 @@ export default class LoginPage extends BasePage {
             LoginAPI.codeLogin({
                 authcode: '',
                 code: LoginParam.code,
-                device: '设备名称',
+                device: DeviceInfo.getDeviceName()+"",
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
                 systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() : '暂无',
@@ -229,7 +225,6 @@ export default class LoginPage extends BasePage {
                 console.log(UserModel);
                 // 埋点登录成功
                 login(data.data.code);
-
                 if (this.params.callback) {
                     let resetAction = NavigationActions.reset({
                         index: 0,
