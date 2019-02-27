@@ -55,7 +55,7 @@ export default class ShowHotView extends PureComponent {
     loadData() {
         showChoiceModules.loadChoiceList().then(data => {
 
-            if (Platform.OS !== 'ios') {
+            if (Platform.OS !== 'ios' && data) {
                 this.setState({
                     headerView:this.renderHeader()
                 })
