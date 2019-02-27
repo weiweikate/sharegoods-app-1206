@@ -1,4 +1,5 @@
-import LoginPage from './LoginPage';
+// import LoginPage from './LoginPage';
+import LoginPage from './Login'
 import OldUserLoginPage from './OldUserLoginPage';
 import SetPasswordPage from './SetPasswordPage';
 import RegistPage from './RegistPage';
