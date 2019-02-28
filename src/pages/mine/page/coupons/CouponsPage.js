@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    StyleSheet, View, Image, TouchableOpacity,
+    StyleSheet, View, Image, TouchableOpacity
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import ScrollableTabView, { DefaultTabBar } from "react-native-scrollable-tab-view";
@@ -10,21 +10,23 @@ import User from "../../../../model/user";
 import DesignRule from "../../../../constants/DesignRule";
 import NavigatorBar from "../../../../components/pageDecorator/NavigatorBar/NavigatorBar";
 import Modal from "../../../../comm/components/CommModal";
-import { MRText as Text, NoMoreClick} from "../../../../components/ui";
+import { MRText as Text, NoMoreClick } from "../../../../components/ui";
 import res from "./../../res";
 
-const {
-    // icon_arrow_up,
-    // icon_red_select
-} = res;
+const topUp = res.couponsImg.youhuiquan_icon_topArrow;
+const topDown = res.couponsImg.youhuiquan_icon_topArrowed;
 export default class CouponsPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
             modalVisible: false,
             titleName: "优惠券",
-            CONFIG: ["全部", "1元代金券", "折扣券", "抵用券", "抵价券", "满减券", "周期券"],
-            selectIndex:0
+            CONFIG: [{ name: "全部", type: null }, { name: "1元代金券", type: 99 }, { name: "满减券", type: 1 }, {
+                name: "抵价券",
+                type: 2
+            }, { name: "折扣券", type: 3 },
+                { name: "抵扣券", type: 4 }, { name: "周期券", type: 5 }, { name: "靓号券", type: 7 }],
+            selectIndex: 0
         };
     }
 
@@ -42,15 +44,15 @@ export default class CouponsPage extends BasePage {
     $NavBarRenderTitle = () => {
         return (
             <TouchableOpacity style={{ flexDirection: "row", alignItems: "center" }} onPress={() => {
-                this.setState({ titleName: "折扣券", modalVisible: true });
-            }}>
+                this.setState({ modalVisible: true });
+            }} disabled={!!this.params.fromOrder}>
                 <Text style={{
                     fontSize: 18,
                     color: DesignRule.textColor_mainTitle,
                     backgroundColor: "transparent"
                 }}>{this.state.titleName}</Text>
-                <Image source={require("./../../res/homeBaseImg/mine_after_buy_icon.png")}
-                       style={{ width: 20, height: 20 }} resizeMode={"contain"}/>
+                <Image source={this.state.modalVisible ? topDown : topUp}
+                       style={{ width: 10, height: 6, marginLeft: 2 }} resizeMode={"contain"}/>
             </TouchableOpacity>
         );
     };
@@ -67,47 +69,28 @@ export default class CouponsPage extends BasePage {
                 ref="modal">
                 <NoMoreClick onPress={() => {
                     this.setState({ modalVisible: false });
-                }}>
+                }} activeOpacity={1}>
                     <View style={{ marginTop: -ScreenUtils.statusBarHeight }}>
-                        <NavigatorBar title={`${this.state.titleName}`} leftPressed={() => {
+                        <NavigatorBar renderTitle={this.$NavBarRenderTitle} leftPressed={() => {
                             if (this.state.modalVisible) {
                                 this.setState({ modalVisible: false });
                                 return;
                             }
                             this.props.navigation.goBack();
                         }}/>
-                        <View style={{ height: 15, backgroundColor: DesignRule.bgColor }}/>
+                        <View style={{ height: 10, backgroundColor: "white" }}/>
                         <View style={{ flex: 1, alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-                            <View style={{
-                                width: ScreenUtils.width,
-                                backgroundColor: "white",
-                                flexDirection: "row",
-                                flexWrap: "wrap"
-                            }}>
+                            <View style={styles.outterStyle}>
                                 {this.state.CONFIG.map((item, i) => {
                                     return (
-                                        <NoMoreClick key={i} style={{
-                                            width: ScreenUtils.width / 3,
-                                            marginTop: 10,
-                                            marginBottom: 10,
-                                            justifyContent: "center",
-                                            alignItems: "center"
-                                        }}
+                                        <NoMoreClick key={i} style={styles.noMoreStyle}
                                                      activeOpacity={1}
-                                                     onPress={() => this.selectCouType(item,i)}>
-                                            <View style={{
-                                                borderColor: DesignRule.lineColor_inWhiteBg,
-                                                width: 104, height: 34,
-                                                borderRadius: 5,
-                                                borderWidth: 1,
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                                backgroundColor:i === this.state.selectIndex ? DesignRule.textColor_redWarn : DesignRule.white,
-                                            }}>
+                                                     onPress={() => this.selectCouType(item, i)}>
+                                            <View style={[styles.innerStyle,{backgroundColor: i === this.state.selectIndex ? DesignRule.textColor_redWarn : DesignRule.white}]}>
                                                 <Text style={{
                                                     color: i === this.state.selectIndex ? DesignRule.white : DesignRule.textColor_secondTitle,
                                                     fontSize: 15
-                                                }} allowFontScaling={false}>{item}</Text>
+                                                }} allowFontScaling={false}>{item.name}</Text>
                                             </View>
                                         </NoMoreClick>
                                     );
@@ -121,15 +104,16 @@ export default class CouponsPage extends BasePage {
         );
     }
 
-    selectCouType = (item,i) => {
+    selectCouType = (item, i) => {
         if (i == 0) {
             item = "优惠券";
         }
         this.setState({
             modalVisible: false,
-            titleName: item,
+            titleName: item.name,
             selectIndex: i
         });
+        this.selctType.onRefresh(item);
     };
 
     _render() {
@@ -152,11 +136,11 @@ export default class CouponsPage extends BasePage {
                                     useCoupons={(data) => {
                                         this.params.callBack(data);
                                         this.$navigateBack();
-                                    }}/>
+                                    }} ref={(e) => this.selctType = e}/>
                     <MyCouponsItems tabLabel={"已使用"} pageStatus={1} nav={this.props.navigation}
-                                    isgiveup={false}/>
+                                    isgiveup={false} ref={(e) => this.selctType = e}/>
                     <MyCouponsItems tabLabel={"已失效"} pageStatus={2} nav={this.props.navigation}
-                                    isgiveup={false}/>
+                                    isgiveup={false} ref={(e) => this.selctType = e}/>
                 </ScrollableTabView>
             </View>
         );
@@ -198,5 +182,27 @@ const styles = StyleSheet.create({
         marginHorizontal: (ScreenUtils.width - 48 * 3) / 6,
         backgroundColor: DesignRule.mainColor,
         borderRadius: 1
+    },
+    outterStyle: {
+        width: ScreenUtils.width,
+        backgroundColor: "white",
+        flexDirection: "row",
+        flexWrap: "wrap"
+    },
+    noMoreStyle:{
+        width: ScreenUtils.width / 3,
+        marginTop: 10,
+        marginBottom: 10,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    innerStyle:{
+        borderColor: DesignRule.lineColor_inWhiteBg,
+        width: 104,
+        height: 34,
+        borderRadius: 5,
+        borderWidth: 1,
+        justifyContent: "center",
+        alignItems: "center",
     }
 });
