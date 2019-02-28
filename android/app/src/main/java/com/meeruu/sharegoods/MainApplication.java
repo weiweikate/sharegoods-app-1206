@@ -130,7 +130,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),
-                    new CodePush("zVp5j2A0YUu4zd1_pkYYmIjYuhc5d09a437d-53eb-4680-8a81-7078ce8b310b",MainApplication.this,BuildConfig.DEBUG),
+                    new CodePush(BuildConfig.CODEPUSH_KEY,MainApplication.this,BuildConfig.DEBUG),
                     new RNCameraPackage()
             );
         }

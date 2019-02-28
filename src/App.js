@@ -63,11 +63,7 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        codePush.sync({
-            updateDialog: false,
-            installMode: codePush.InstallMode.ON_NEXT_RESUME,
-            deploymentKey:'zVp5j2A0YUu4zd1_pkYYmIjYuhc5d09a437d-53eb-4680-8a81-7078ce8b310b'
-        });
+
 
         this.state = {
             load: false,
@@ -94,8 +90,12 @@ class App extends Component {
 
     componentDidMount() {
         //初始化init  定位存储  和app变活跃 会定位
-
+        codePush.sync({
+            updateDialog: true,
+            installMode: codePush.InstallMode.ON_NEXT_RESTART,
+        })
         InteractionManager.runAfterInteractions(() => {
+
             TimerMixin.setTimeout(() => {
                 ScreenUtils.isNavigationBarExist((data) => {
                     ScreenUtils.setBarShow(data);

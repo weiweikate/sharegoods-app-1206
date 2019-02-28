@@ -9,7 +9,8 @@ project.ext.react = [
 apply from: "../../node_modules/react-native/react.gradle"
 
 def enableSeparateBuildPerCPUArchitecture = false
-
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -64,9 +65,7 @@ android {
             buildConfigField "String", "CODEPUSH_KEY", '""'
         }
         releaseStaging {
-
-            buildConfigField "String", "CODEPUSH_KEY", '"2Guewzu9U_22k4bLQ8NduWMVM1RA4619a06a-47ab-4a6f-a3b6-7acb423467c6"'
-
+            buildConfigField "String", "CODEPUSH_KEY", '"234KZZEWIpPZInQ1__yJljNWvu7Id09a437d-53eb-4680-8a81-7078ce8b310b"'
         }
         release {
             minifyEnabled true
@@ -74,7 +73,7 @@ android {
             zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "CODEPUSH_KEY", '"zVp5j2A0YUu4zd1_pkYYmIjYuhc5d09a437d-53eb-4680-8a81-7078ce8b310b"'
+            buildConfigField "String", "CODEPUSH_KEY", '"vXraedg-bh6b3FVljwZyiQimGnpsd09a437d-53eb-4680-8a81-7078ce8b310b"'
         }
     }
     repositories {
