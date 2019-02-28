@@ -601,9 +601,10 @@ class HomePage extends BasePage {
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
                 {this._renderTableHeader()}
                 <RecyclerListView
+                    style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
                     onScroll={this._onScroll.bind(this)}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
