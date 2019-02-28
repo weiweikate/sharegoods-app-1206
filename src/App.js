@@ -65,7 +65,8 @@ class App extends Component {
 
         codePush.sync({
             updateDialog: false,
-            installMode: codePush.InstallMode.ON_NEXT_RESUME
+            installMode: codePush.InstallMode.ON_NEXT_RESUME,
+            deploymentKey:'zVp5j2A0YUu4zd1_pkYYmIjYuhc5d09a437d-53eb-4680-8a81-7078ce8b310b'
         });
 
         this.state = {
