@@ -1,6 +1,6 @@
 {
-    "showDebugPanel": false,
-    "envType": "online",
+    "showDebugPanel": true,
+    "envType": "qa",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -95,7 +95,7 @@
         },
         "顾嘉豪": {
             "name": "顾嘉豪",
-            "host": "http://172.16.10.58:18080/gateway",
+            "host": "http://172.16.10.58:9090/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "高建伟": {
