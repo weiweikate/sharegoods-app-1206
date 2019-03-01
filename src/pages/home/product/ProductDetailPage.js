@@ -40,6 +40,7 @@ import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/Navigat
 import MessageApi from '../../message/api/MessageApi';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
+import DetailPromoteModal from './components/DetailPromoteModal';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -338,6 +339,7 @@ export default class ProductDetailPage extends BasePage {
                 productCode: this.state.data.prodCode
             });
             this.$navigate('order/order/ConfirOrderPage', {
+                fromType: this.params.type === 9 ? 4 : undefined,
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: orderProducts,
@@ -354,20 +356,24 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <DetailHeaderView data={this.state.data}
+        const { data, activityType, activityData, messageCount } = this.state;
+        return <DetailHeaderView data={data}
                                  ref={(e) => {
                                      this.DetailHeaderView = e;
                                  }}
-                                 activityType={this.state.activityType}
-                                 activityData={this.state.activityData}
+                                 activityType={activityType}
+                                 activityData={activityData}
                                  productActivityViewAction={this._productActivityViewAction}
                                  goShopAction={() => {
                                      this.$navigateBackToStore();
                                  }}
-                                 serviceAction={() => {
-                                     this.DetailHeaderServiceModal.show(this.state.data);
+                                 promotionViewAction={() => {
+                                     this.DetailPromoteModal.show(data);
                                  }}
-                                 messageCount={this.state.messageCount}
+                                 serviceAction={() => {
+                                     this.DetailHeaderServiceModal.show(data);
+                                 }}
+                                 messageCount={messageCount}
                                  navigation={this.props.navigation}/>;
     };
 
@@ -628,6 +634,7 @@ export default class ProductDetailPage extends BasePage {
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>
+            <DetailPromoteModal ref={(ref) => this.DetailPromoteModal = ref}/>
             {/*<ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>*/}
             {/*{this._renderCouponModal()}*/}
         </View>;
