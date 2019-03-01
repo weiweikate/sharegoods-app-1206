@@ -18,9 +18,8 @@ import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 
 const { px2dp } = ScreenUtils;
-import ImageLoad from '@mr/image-placeholder';
 
-export const kHomeClassifyHeight = px2dp(83) * 2;
+export const kHomeClassifyHeight = px2dp(83);
 
 class Item extends Component {
     state = {
@@ -29,21 +28,11 @@ class Item extends Component {
 
     render() {
         const { onPress, data } = this.props;
-        const { img, icon } = this.props.data;
-        const { loadingError } = this.state;
-        let source = { uri: img };
+        const { icon } = this.props.data;
         return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
             {
-                loadingError
-                    ?
-                    <Image style={styles.icon} source={icon}/>
-                    :
-                    <ImageLoad style={styles.icon} source={source} onError={() => {
-                        console.log('loadingError');
-                        this.setState({ loadingError: true });
-                    }} isAvatar={true}/>
+                <Image style={styles.icon} source={icon}/>
             }
-            <View style={styles.space}/>
             <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
         </TouchableOpacity>;
     }
@@ -123,8 +112,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     icon: {
-        width: px2dp(48),
-        height: px2dp(48)
+        width: px2dp(56),
+        height: px2dp(56)
     },
     space: {
         height: px2dp(6)

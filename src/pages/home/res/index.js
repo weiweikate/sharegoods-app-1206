@@ -12,7 +12,7 @@ const resHome = {
     message: require('./message.png'),
     home_notice_bg:require('./home_notice_bg.png'),
     star: require('./star.png'),
-    user_level: require('./user_level.png'),
+    account_bg: require('./account_bg.png'),
     /** 首页5个icon*/
     school: require('./school.png'),
     share_icon: require('./share.png'),
