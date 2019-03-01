@@ -2,7 +2,7 @@ package com.meeruu.sharegoods.application;
 
 import android.content.Context;
 import android.support.annotation.Keep;
-import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.meeruu.sharegoods.MainApplication;
 import com.taobao.sophix.SophixApplication;
@@ -11,10 +11,10 @@ import com.taobao.sophix.SophixManager;
 
 /**
  * @author louis
- * @date on 2018/6/26
+ * @date on 2018/9/3
  * @describe Sophix稳健接入
- * @org xxd.smartstudy.com
- * @email luoyongming@innobuddy.com
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
  */
 public class SophixStubApplication extends SophixApplication {
 
@@ -27,8 +27,9 @@ public class SophixStubApplication extends SophixApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(this);
+        Log.d("1--------", System.currentTimeMillis() + "");
         initSophix();
+        Log.d("2--------", System.currentTimeMillis() + "");
     }
 
     private void initSophix() {

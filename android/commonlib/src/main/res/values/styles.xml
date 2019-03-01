@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="custom_dialog2" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <!-- Dialog的windowFrame框为无 -->
@@ -27,5 +28,23 @@
         <item name="android:windowEnterAnimation">@anim/pickerview_slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/pickerview_slide_out_bottom</item>
     </style>
-
+    <!-- 单项rlyt列表样式 -->
+    <style name="simple_item_rlyt">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <!-- 可点击变色rlyt列表样式 -->
+    <style name="clickable_simple_item_rlyt" parent="@style/simple_item_rlyt">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/simple_item_bg</item>
+    </style>
+    <!-- app全局横向分割线样式 -->
+    <style name="horizontal_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">#E4E4E4</item>
+    </style>
 </resources>
