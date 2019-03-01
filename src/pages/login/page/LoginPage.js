@@ -12,7 +12,7 @@ import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
 import LoginAPI from '../api/LoginApi';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
@@ -84,21 +84,21 @@ export default class LoginPage extends BasePage {
     }
 
     $NavBarLeftPressed = () => {
-        if (UserModel.isLogin) {
-            this.$navigateBack();
-        } else {
-            if (this.params.callback) {
-                let resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                    ]
-                });
-                this.props.navigation.dispatch(resetAction);
-            } else {
+        // if (UserModel.isLogin) {
+        //     this.$navigateBack();
+        // } else {
+            // if (this.params.callback) {
+            //     let resetAction = NavigationActions.reset({
+            //         index: 0,
+            //         actions: [
+            //             NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+            //         ]
+            //     });
+            //     this.props.navigation.dispatch(resetAction);
+            // } else {
                 this.$navigateBack();
-            }
-        }
+            // }
+        // }
     };
 
     _render() {
@@ -178,6 +178,7 @@ export default class LoginPage extends BasePage {
                             console.log(UserModel);
                             homeModule.loadHomeList();
                             bridge.setCookies(res.data);
+                            this.params.callback && this.params.callback();
                             this.$navigateBack();
                             // 埋点登录成功
                             login(data.data.code);
@@ -229,18 +230,19 @@ export default class LoginPage extends BasePage {
                 console.log(UserModel);
                 // 埋点登录成功
                 login(data.data.code);
+                this.params.callback && this.params.callback();
 
-                if (this.params.callback) {
-                    let resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                        ]
-                    });
-                    this.props.navigation.dispatch(resetAction);
-                } else {
+                // if (this.params.callback) {
+                //     let resetAction = NavigationActions.reset({
+                //         index: 0,
+                //         actions: [
+                //             NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+                //         ]
+                //     });
+                //     this.props.navigation.dispatch(resetAction);
+                // } else {
                     this.$navigateBack();
-                }
+                // }
 
                 //推送
                 JPushUtils.updatePushTags();
@@ -286,11 +288,11 @@ export default class LoginPage extends BasePage {
                  */
                 // this.$navigate('login/login/SelectMentorPage');
                 // return;
-                if (this.params.callback) {
-                    this.$navigateBackToHome();
-                } else {
+                // if (this.params.callback) {
+                //     this.$navigateBackToHome();
+                // } else {
                     this.$navigateBack();
-                }
+                // }
 
             }).catch((data) => {
                 this.$loadingDismiss();

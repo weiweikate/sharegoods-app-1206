@@ -106,7 +106,8 @@ export default class RequestDetailPage extends BasePage {
                     source={{ uri: this.state.uri }}
                     navigateAppPage={(r, p) => {
                         if (r === 'login/login/LoginPage'){
-                            this.$navigate(r, {...p, callBack: ()=>{this.webView.reload()}});
+                            this.$navigate(r, {...p, callback: ()=>{
+                                    this.webView && this.webView.reload()}});
                         } else {
                             this.$navigate(r, p);
                         }
@@ -128,6 +129,7 @@ export default class RequestDetailPage extends BasePage {
                 />
                 <CommShareModal
                     ref={(ref) => this.shareModal = ref}
+                    reloadWeb={()=> {this.webView && this.webView.reload()}}
                     {...this.state.shareParmas}
                 />
             </View>
