@@ -45,11 +45,11 @@ export default class DetailHeaderView extends Component {
     }
 
     render() {
-        const { activityType, serviceAction, data, navigation, messageCount } = this.props;
+        const { activityType, data, navigation, messageCount, promotionViewAction, serviceAction } = this.props;
         //priceType 3会员价  2拼店价
         const {
             freight, monthSaleCount, originalPrice, priceType,
-            minPrice, maxPrice, groupPrice, name, secondName, restrictions, productStatus
+            minPrice, maxPrice, groupPrice, name, secondName, restrictions, productStatus, promoteInfoVOList
         } = this.props.data || {};
 
         let priceSuper = minPrice !== maxPrice ? `￥${StringUtils.isNoEmpty(minPrice) ? minPrice : ''}-￥${StringUtils.isNoEmpty(maxPrice) ? maxPrice : ''}` : `￥${StringUtils.isNoEmpty(minPrice) ? minPrice : ''}`;
@@ -136,6 +136,7 @@ export default class DetailHeaderView extends Component {
                         </View>
                     </View>
                 </View>
+                {this._renderPromotionView(promoteInfoVOList, promotionViewAction)}
                 <NoMoreClick style={styles.serviceView} onPress={serviceAction}>
                     <Text style={styles.serviceNameText}>服务</Text>
                     <Text style={styles.serviceValueText} numberOfLines={1}>
@@ -147,9 +148,69 @@ export default class DetailHeaderView extends Component {
             </View>
         );
     }
+
+    _renderPromotionView = (promoteInfoVOList, promotionViewAction) => {
+        if (promoteInfoVOList && promoteInfoVOList.length > 0) {
+            return (
+                <NoMoreClick style={styles.promotionView} onPress={promotionViewAction}>
+                    <View style={styles.promotionItemsView}>
+                        {
+                            promoteInfoVOList.map((item, index) => {
+                                //8：经验翻倍 9：券兑换
+                                const { type, message } = item;
+                                let typeText;
+                                if (type === 8) {
+                                    typeText = '经验翻倍';
+                                } else if (type === 9) {
+                                    typeText = '券兑换';
+                                }
+                                if (index > 1) {
+                                    return null;
+                                }
+                                return <View style={[styles.promotionItemView, { marginTop: index === 0 ? 10 : 0 }]}>
+                                    <Text style={styles.promotionItemNameText}>{index === 0 ? '促销' : ''}</Text>
+                                    {typeText ? <Text
+                                        style={[styles.promotionItemRedText, { marginLeft: index === 0 ? 13 : 39 }]}>{typeText}</Text> : null}
+                                    <Text
+                                        style={[styles.promotionItemText]}
+                                        numberOfLines={1}>{message || ''}</Text>
+                                </View>;
+                            })
+                        }
+                    </View>
+                    <Image source={arrow_right}/>
+                </NoMoreClick>
+            );
+        }
+        return null;
+    };
 }
 
 const styles = StyleSheet.create({
+    promotionView: {
+        flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, marginTop: 10,
+        backgroundColor: 'white'
+    },
+    promotionItemsView: {
+        flex: 1
+    },
+    promotionItemView: {
+        flexDirection: 'row', alignItems: 'center', marginBottom: 10
+    },
+
+    promotionItemNameText: {
+        color: DesignRule.textColor_instruction, fontSize: 13
+    },
+    promotionItemRedText: {
+        borderRadius: 3, borderWidth: 1, borderColor: DesignRule.mainColor,
+        paddingHorizontal: 4, paddingVertical: 2,
+        color: DesignRule.textColor_redWarn, fontSize: 10
+    },
+    promotionItemText: {
+        marginLeft: 10, flex: 1,
+        color: DesignRule.textColor_mainTitle, fontSize: 12
+    },
+
     /**服务**/
     serviceView: {
         flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 10, paddingHorizontal: 15,
@@ -160,7 +221,7 @@ const styles = StyleSheet.create({
     },
     serviceValueText: {
         flex: 1, marginLeft: 15,
-        color: DesignRule.textColor_secondTitle, fontSize: 12
+        color: DesignRule.textColor_mainTitle, fontSize: 12
     }
 
 });
