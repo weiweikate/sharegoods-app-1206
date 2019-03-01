@@ -12,6 +12,7 @@ import API from "../../../../api";
 // import StringUtils from "../../../../utils/StringUtils";
 import bridge from "../../../../utils/bridge";
 import user from "../../../../model/user";
+import { formatDate } from "../../../../utils/DateUtils";
 // const NoMessage = res.couponsImg.coupons_no_data;
 const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg_ex;
 const unUsedBg = res.couponsImg.youhuiquan_bg_unUsedBg;
@@ -28,14 +29,22 @@ export default class CouponsDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            selectIndex: 0
+            viewData: [],
+            pageStatus: this.props.pageStatus,
+            isEmpty: true,
         };
+        this.currentPage = 0;
+        this.isLoadMore = false;
+        this.isEnd = false;
     }
 
     $navigationBarOptions = {
         title: "优惠券",
         show: true // false则隐藏导航
     };
+    componentDidMount() {
+        this.onRefresh();
+    }
 
     _keyExtractor = (item, index) => index;
     // 空布局
@@ -88,9 +97,6 @@ export default class CouponsDetailPage extends BasePage {
     };
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        // let BG = item.status === 0 && !item.remarks ? unUsedBg : unUsedBgex;
-        // let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 1 ? usedRIcon : ActivedIcon));
-        //  let BGR = item.status>0 && !item.remarks ? usedBg:usedBgex;
         if (item.remarks) {
             return (
                 <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 ,justifyContent:'center'}}
@@ -167,9 +173,13 @@ export default class CouponsDetailPage extends BasePage {
                                     <UIText value={'已使用'}
                                             style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> : item.status==2?
                                         <UIText value={'已失效'}
-                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:
-                                        <UIText value={'待激活'}
-                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>}
+                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:(item.levelimit?
+                                            <UIText value={'等级受限'}
+                                                    style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                            :<UIText value={'待激活'}
+                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                    )
+                                        }
                         </View>
                         {!item.tobeextend?<NoMoreClick style={{ height: px2dp(24), justifyContent: "center", alignItems: "center" }}
                                                        onPress={()=>this.pickUpData(item)}><Image style={{ width: 14, height: 7 }} source={itemDown}/>
@@ -270,7 +280,12 @@ export default class CouponsDetailPage extends BasePage {
                                         style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> : item.status==2?
                                     <UIText value={'已失效'}
                                             style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:
-                                    null}
+                                    (item.levelimit?
+                                            <UIText value={'等级受限'}
+                                                    style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                            :<UIText value={'待激活'}
+                                                     style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                    )}
                         </View>
                     </ImageBackground>
                 </TouchableOpacity>
@@ -278,10 +293,15 @@ export default class CouponsDetailPage extends BasePage {
         }
 
     };
+    fmtDate(obj) {
+        return formatDate(obj, "yyyy.MM.dd");
+    }
     parseData = (dataList) => {
         let arrData = [];
+        console.log("currentPage",this.currentPage);
         if (this.currentPage === 1) {//refresh
                 this.handleList(dataList, arrData);
+                console.log("couponsDetail",arrData);
                 this.setState({ viewData: arrData, isFirstLoad: false });
         } else {//more
             this.handleList(dataList, arrData);
@@ -305,12 +325,13 @@ export default class CouponsDetailPage extends BasePage {
                 levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false
             });
         });
+        return arrData;
     };
     onLoadMore = () => {
         console.log("onLoadMore", this.isLoadMore,this.isEnd,this.state.isFirstLoad);
         if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
-            this.getDataFromNetwork(this.dataSel);
+            this.getDataFromNetwork();
         }
     };
     onRefresh = () => {
@@ -323,12 +344,14 @@ export default class CouponsDetailPage extends BasePage {
         API.userCouponList({
             page: this.currentPage,
             pageSize: 10,
-            systemVersion:310,
+            couponIds:this.params.couponIds,
         }).then(result => {
             let data = result.data || {};
             let dataList = data.data || [];
             this.isLoadMore = false;
+            console.log("getDataFromNetwork",dataList);
             this.parseData(dataList);
+
             if (dataList.length === 0) {
                 this.isEnd = true;
                 return;

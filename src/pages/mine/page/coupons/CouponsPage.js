@@ -70,7 +70,7 @@ export default class CouponsPage extends BasePage {
                 <NoMoreClick onPress={() => {
                     this.setState({ modalVisible: false });
                 }} activeOpacity={1}>
-                    <View style={{ marginTop: -ScreenUtils.statusBarHeight }}>
+                    <View style={{ paddingTop:ScreenUtils.statusBarHeight>30?0:-ScreenUtils.statusBarHeight,marginTop:ScreenUtils.statusBarHeight>30?-ScreenUtils.statusBarHeight:0}}>
                         <NavigatorBar renderTitle={this.$NavBarRenderTitle} leftPressed={() => {
                             if (this.state.modalVisible) {
                                 this.setState({ modalVisible: false });
@@ -105,12 +105,12 @@ export default class CouponsPage extends BasePage {
     }
 
     selectCouType = (item, i) => {
-        if (i == 0) {
-            item = "优惠券";
-        }
+        // if (i == 0) {
+        //     item.name = "优惠券";
+        // }
         this.setState({
             modalVisible: false,
-            titleName: item.name,
+            titleName: (i===0?"优惠券":item.name),
             selectIndex: i
         });
         this.selctType.onRefresh(item);

@@ -144,15 +144,36 @@ export default class MyCouponsItems extends Component {
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
-                            {item.type === 99 ?
+                            {   item.status==0?(
+                                item.type === 99 ?
                                 <UIText value={"x" + user.tokenCoin}
-                                        style={styles.xNumStyle}/> :   item.status === 1 ?
-                                    <UIText value={'已使用'}
-                                            style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> : item.status==2?
+                                        style={styles.xNumStyle}/>:(item.levelimit?
+                                    <View style={{marginRight:15,justifyContent:'center',alignItems:'center'}}>
+                                        {item.count>1? <UIText value={"x" + item.count}
+                                                               style={styles.xNumStyle}/>:null}
+                                        <UIText value={'已使用'}
+                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                    </View>
+                                :<UIText value={"x" + item.count}
+                                                                            style={styles.xNumStyle}/>)):   item.status === 1 ?
+                                <View style={{marginRight:15,justifyContent:'center',alignItems:'center'}}>
+                                    {item.count>1? <UIText value={"x" + item.count}
+                                                           style={styles.xNumStyle}/>:null}
+                                <UIText value={'已使用'}
+                                            style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                     </View>: item.status==2?
+                                    <View style={{marginRight:15,justifyContent:'center',alignItems:'center'}}>
+                                        {item.count>1? <UIText value={"x" + item.count}
+                                                               style={styles.xNumStyle}/>:null}
                                         <UIText value={'已失效'}
-                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:
+                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                    </View>:
+                                    <View style={{marginLeft:5,marginRight:15,justifyContent:'center',alignItems:'center'}}>
+                                        {item.count>1? <UIText value={"x" + item.count}
+                                                               style={styles.xNumStyle}/>:null}
                                         <UIText value={'待激活'}
-                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>}
+                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                    </View>}
                         </View>
                         {!item.tobeextend?<NoMoreClick style={{ height: px2dp(24), justifyContent: "center", alignItems: "center" }}
                                                              onPress={()=>this.pickUpData(item)}><Image style={{ width: 14, height: 7 }} source={itemDown}/>
@@ -160,14 +181,15 @@ export default class MyCouponsItems extends Component {
                     </ImageBackground>
                     {item.tobeextend ?
                         <View style={{ backgroundColor: item.status===0?DesignRule.white:DesignRule.color_ddd, width: ScreenUtils.width - px2dp(30),
-                         marginLeft:1,borderRadius:5,marginTop:-1}}>
+                         marginLeft:1,borderRadius:5,marginTop:-2}}>
                             <View style={{ marginTop: 10,marginLeft:10 }}>
                                 <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}
                                       allowFontScaling={false}>使用说明:</Text>
                                 <Text style={{
                                     marginTop: 5,
                                     color: DesignRule.textColor_secondTitle,
-                                    lineHeight: 25
+                                    lineHeight: 25,
+                                    fontSize:12,
 
                                 }} allowFontScaling={false}>{item.remarks}</Text>
                             </View>
@@ -248,12 +270,33 @@ export default class MyCouponsItems extends Component {
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
-                            {item.status === 1 ?
-                                <UIText value={'已使用'}
-                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> : item.status==2?
-                                    <UIText value={'已失效'}
-                                            style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:
-                                    null}
+                            {   item.status==0?(
+                                item.levelimit ?
+                                    <View style={{marginRight:15,justifyContent:'center',alignItems:'center'}}>
+                                        {item.count>1? <UIText value={"x" + item.count}
+                                                               style={styles.xNumStyle}/>:null}
+                                        <UIText value={'等级受限'}
+                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                    </View>:<UIText value={"x" + item.count}
+                                                                               style={styles.xNumStyle}/> ):   item.status === 1 ?
+                                <View style={{marginRight:15,justifyContent:'center',alignItems:'center'}}>
+                                    {item.count>1? <UIText value={"x" + item.count}
+                                                           style={styles.xNumStyle}/>:null}
+                                    <UIText value={'已使用'}
+                                            style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                </View>: item.status==2?
+                                    <View style={{marginRight:15,justifyContent:'center',alignItems:'center'}}>
+                                        {item.count>1? <UIText value={"x" + item.count}
+                                                               style={styles.xNumStyle}/>:null}
+                                        <UIText value={'已失效'}
+                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                    </View>:
+                                    <View style={{marginRight:15,justifyContent:'center',alignItems:'center'}}>
+                                        {item.count>1? <UIText value={"x" + item.count}
+                                                               style={styles.xNumStyle}/>:null}
+                                        <UIText value={'待激活'}
+                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>
+                                    </View>}
                         </View>
                     </ImageBackground>
                 </TouchableOpacity>
@@ -448,7 +491,7 @@ export default class MyCouponsItems extends Component {
                     showsVerticalScrollIndicator={false}
                     initialNumToRender={5}
                     refreshControl={<RefreshControl refreshing={false}
-                                                    onRefresh={this.onRefresh}
+                                                    onRefresh={()=>this.onRefresh(this.dataSel)}
                                                     colors={[DesignRule.mainColor]}/>}
                 />
                 {this.renderDialogModal()}
@@ -537,7 +580,8 @@ export default class MyCouponsItems extends Component {
                             remarks: item.remarks,
                             type: item.type, //以type=99表示1元券
                             levelimit: false,
-                            number: item.number
+                            number: item.number,
+
                         });
                     });
                     this.handleList(dataList, arrData);
@@ -571,7 +615,8 @@ export default class MyCouponsItems extends Component {
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
                 type: item.type,
-                levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false
+                levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false,
+                count: item.count||0,
             });
         });
     };
@@ -610,7 +655,6 @@ export default class MyCouponsItems extends Component {
             API.listAvailable({
                 page: this.currentPage, pageSize: 10,
                 systemVersion:310,
-                type:par.type,
                 ...params
             }).then(res => {
                 let data = res.data || {};
@@ -679,7 +723,7 @@ export default class MyCouponsItems extends Component {
     }
 
     onRefresh = (params={}) => {
-        this.dataSel=params;
+        this.dataSel=params||{};
         console.log("refresh");
         this.isEnd = false;
         this.currentPage = 1;
@@ -714,8 +758,8 @@ export default class MyCouponsItems extends Component {
         } else if (this.props.justOne) {
             this.setState({ showDialogModal: true });
         } else {
-            if(item.type<99){
-                this.props.nav.navigate("mine/coupons/CouponsDetailPage", { item: item });
+            if(item.type<99&&item.count>1){
+                this.props.nav.navigate("mine/coupons/CouponsDetailPage", { couponIds: [item.couponConfigId] });
             }
 
         }
