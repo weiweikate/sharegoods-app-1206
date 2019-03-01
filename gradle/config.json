@@ -51,5 +51,9 @@
     "camera": {
         "content": "apply from: '../../../android/rn_camera.gradle'",
         "bulid_path":   "../node_modules/react-native-camera/android/build.gradle"
+    },
+    "code-push": {
+        "content": "apply from: '../../../android/rn-code-push.gradle'",
+        "bulid_path":   "../node_modules/react-native-code-push/android/app/build.gradle"
     }
 }

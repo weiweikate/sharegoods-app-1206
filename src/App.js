@@ -12,7 +12,7 @@ import {
     StyleSheet,
     Text,
     View,
-    InteractionManager
+    InteractionManager,
     // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -62,8 +62,10 @@ if (__DEV__) {
 class App extends Component {
     constructor(props) {
         super(props);
-
-
+        codePush.sync({
+            updateDialog: false,
+            installMode: codePush.InstallMode.ON_NEXT_RESTART,
+        })
 
         this.state = {
             load: false,
@@ -90,10 +92,7 @@ class App extends Component {
 
     componentDidMount() {
         //初始化init  定位存储  和app变活跃 会定位
-        codePush.sync({
-            updateDialog: true,
-            installMode: codePush.InstallMode.ON_NEXT_RESTART,
-        })
+
         InteractionManager.runAfterInteractions(() => {
 
             TimerMixin.setTimeout(() => {

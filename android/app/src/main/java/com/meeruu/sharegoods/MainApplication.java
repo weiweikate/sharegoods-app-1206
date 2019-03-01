@@ -99,7 +99,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
 
         @Override
         protected String getJSBundleFile() {
-//            return UpdateContext.getBundleUrl(MainApplication.this);
             return CodePush.getJSBundleFile();
         }
 
@@ -117,7 +116,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new MainReactPackage(builder.build()),
                     new ReactVideoPackage(),
                     new VectorIconsPackage(),
-//                    new UpdatePackage(),
                     new SvgPackage(),
                     new RNDeviceInfo(),
                     new RNGeolocationPackage(),
