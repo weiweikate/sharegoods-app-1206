@@ -67,22 +67,41 @@ export default class ShowDetailPage extends BasePage {
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
                     Toast.showLoading()
-                    this.showDetailModule.showDetailCode(this.params.code).then(() => {
-                        this.setState({
-                            pageState: PageLoadingState.success
+                    if (this.params.code) {
+                        this.showDetailModule.showDetailCode(this.params.code || this.params.id).then(() => {
+                            this.setState({
+                                pageState: PageLoadingState.success
+                            })
+                            Toast.hiddenLoading()
+                        }).catch(error => {
+                            this.setState({
+                                pageState: PageLoadingState.fail,
+                                errorMsg: error.msg || '获取详情失败'
+                            });
+                            this._whiteNavRef.setNativeProps({
+                                opacity: 1
+                            });
+                            Toast.$toast(error.msg || '获取详情失败')
+                            Toast.hiddenLoading()
                         })
-                        Toast.hiddenLoading()
-                    }).catch(error => {
-                        this.setState({
-                            pageState: PageLoadingState.fail,
-                            errorMsg: error.msg || '获取详情失败'
-                        });
-                        this._whiteNavRef.setNativeProps({
-                            opacity: 1
-                        });
-                        Toast.$toast(error.msg || '获取详情失败')
-                        Toast.hiddenLoading()
-                    })
+                    } else {
+                        this.showDetailModule.loadDetail(this.params.id).then(() => {
+                            this.setState({
+                                pageState: PageLoadingState.success
+                            })
+                            Toast.hiddenLoading()
+                        }).catch(error => {
+                            this.setState({
+                                pageState: PageLoadingState.fail,
+                                errorMsg: error.msg || '获取详情失败'
+                            });
+                            this._whiteNavRef.setNativeProps({
+                                opacity: 1
+                            });
+                            Toast.$toast(error.msg || '获取详情失败')
+                            Toast.hiddenLoading()
+                        })
+                    }
                 }
             }
         );

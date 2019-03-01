@@ -55,7 +55,7 @@ export default class ShowHotView extends PureComponent {
     loadData() {
         showChoiceModules.loadChoiceList().then(data => {
 
-            if (Platform.OS !== 'ios') {
+            if (Platform.OS !== 'ios' && data) {
                 this.setState({
                     headerView:this.renderHeader()
                 })
@@ -85,7 +85,7 @@ export default class ShowHotView extends PureComponent {
             <View style={styles.container}>
                 <ShowGroundView style={{flex:1}}
                     uri={'/discover/query@GET'}
-                                headerHeight={showBannerModules.bannerHeight + showChoiceModules.choiceHeight}
+                                headerHeight={showBannerModules.bannerHeight + showChoiceModules.choiceHeight + px2dp(116)}
                     renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                     onStartRefresh={()=> {
                         this.loadData()
