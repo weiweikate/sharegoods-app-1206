@@ -3,7 +3,7 @@
 */
 
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
@@ -20,13 +20,14 @@ export default ({ navigation, whiteIcon, hasMessage, pageFocused }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
             <Image source={logoRed} style={styles.logo}/>
-            <TouchableOpacity style={[styles.searchBox, { backgroundColor: '#E4E5E6' }]}
-                              onPress={() => {
+            <TouchableWithoutFeedback onPress={() => {
                                   navigation('home/search/SearchPage');
                               }}>
+                <View style={[styles.searchBox, { backgroundColor: '#E4E5E6' }]}>
                 <Image source={searchImg} style={styles.searchIcon}/>
                 <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
-            </TouchableOpacity>
+                </View>
+            </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => {
                 if (!User.isLogin) {
                     navigation('login/login/LoginPage');
@@ -95,7 +96,7 @@ let styles = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        color: DesignRule.textColor_secondTitle,
-        fontSize: 14
+        color: DesignRule.textColor_placeholder,
+        fontSize: px2dp(12)
     }
 });
