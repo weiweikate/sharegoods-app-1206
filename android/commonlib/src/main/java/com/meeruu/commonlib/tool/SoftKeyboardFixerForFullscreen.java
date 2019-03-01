@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.utils;
+package com.meeruu.commonlib.tool;
 
 import android.app.Activity;
 import android.content.Context;

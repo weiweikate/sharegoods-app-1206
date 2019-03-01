@@ -476,7 +476,7 @@ public final class BitmapUtils {
      * @param name
      * @return
      */
-    public static String saveImageToCache(Bitmap bitmap, String name) {
+    public static File saveImageAsFile(Bitmap bitmap, String name) {
         File dir = SDCardUtils.getFileDirPath("MR/picture");
         String path = dir.getAbsolutePath();
         long date = System.currentTimeMillis();
@@ -496,7 +496,11 @@ public final class BitmapUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return file.getAbsolutePath();
+        return file;
+    }
+
+    public static String saveImageToCache(Bitmap bitmap, String name) {
+        return saveImageAsFile(bitmap, name).getAbsolutePath();
     }
 
 }
