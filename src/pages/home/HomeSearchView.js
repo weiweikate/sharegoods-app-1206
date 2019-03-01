@@ -14,8 +14,7 @@ import res from './res';
 
 const logoRed = res.home_icon_logo_red;
 const searchImg = res.icon_search;
-const msgBlack = res.message_black;
-const msgWhite = res.message_white;
+const messageImg = res.message;
 
 export default ({ navigation, whiteIcon, hasMessage, pageFocused }) =>
     <View style={styles.navBar}>
@@ -36,7 +35,7 @@ export default ({ navigation, whiteIcon, hasMessage, pageFocused }) =>
                 navigation('message/MessageCenterPage');
             }}>
                 <View style={{ height: 32, width: 32, justifyContent: 'center', alignItems: 'center' }}>
-                    <Image source={whiteIcon ? msgWhite : msgBlack} style={styles.msgIcon}/>
+                    <Image source={messageImg} style={styles.msgIcon}/>
                     {hasMessage ? <View style={{
                         width: 10,
                         height: 10,

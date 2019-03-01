@@ -22,7 +22,7 @@ const {
 class ClassifyModules {
     @observable classifyList = [];
     @action loadClassifyList = () => {
-        let classifys = [{
+        this.classifyList = [{
             icon: shareImg,
             img: OssHelper('/app/share%403x.png'),
             name: '升级',
@@ -57,19 +57,7 @@ class ClassifyModules {
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000002'
         }];
-        HomeApi.classify().then(resData => {
-            if (resData.code === 10000 && resData.data) {
-                let resClassifys = resData.data;
-                resClassifys.map((data) => {
-                    if (data.name === '全部分类') {
-                        data.route = 'home/search/CategorySearchPage';
-                    } else {
-                        data.route = 'home/search/SearchResultPage';
-                    }
-                });
-                this.classifyList = classifys.concat(resClassifys);
-            }
-        });
+        
     };
 }
 

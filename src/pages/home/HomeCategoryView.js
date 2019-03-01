@@ -9,8 +9,8 @@ const { px2dp } = ScreenUtils;
 
 export const categoryHeight = px2dp(44)
 
-const CategoryItem = ({text, press}) => <TouchableWithoutFeedback onPress={()=> press && press()}>
-  <View style={styles.item}>
+const CategoryItem = ({text, press, left}) => <TouchableWithoutFeedback onPress={()=> press && press()}>
+  <View style={[styles.item, {marginLeft: left}]}>
     <Text style={styles.text}>{text}</Text>
   </View>
 </TouchableWithoutFeedback>
@@ -33,9 +33,8 @@ export default class HomeCategoryView extends Component {
 
         let itemsArr = [];
         categoryList.map((value, index) => {
-          console.log('categoryList', value)
           itemsArr.push(
-              <CategoryItem text={value.name} key={'category' + index} press={() => this._adAction(value)}/>
+              <CategoryItem text={value.name} key={'category' + index} left={index === 0 ? 0 : px2dp(6)} press={() => this._adAction(value)}/>
             )
         });
         return <View style={styles.container}>
@@ -52,6 +51,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingTop: px2dp(12),
         paddingBottom: px2dp(12),
+        paddingLeft: px2dp(15),
+        paddingRight: px2dp(15),
         width: ScreenUtils.width,
         flexDirection: 'row',
         height: categoryHeight,
