@@ -11,7 +11,9 @@ import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import { bannerModule } from './HomeBannerModel';
 
-export const bannerHeight = px2dp(230);
+export const bannerHeight = px2dp(125);
+const cellHeight = px2dp(120)
+
 import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode';
 import ImageLoad from '@mr/image-placeholder';
 
@@ -86,10 +88,11 @@ export default class HomeBannerView extends Component {
         });
 
         return <View style={styles.container}>
+            <View style={styles.banner}>
             {
                 Platform.OS === 'ios'
                     ?
-                    <MRBannerViewMode imgUrlArray={items} bannerHeight={bannerHeight} modeStyle={1} autoInterval={5}
+                    <MRBannerViewMode itemRadius={px2dp(5)} imgUrlArray={items} bannerHeight={cellHeight} modeStyle={1} autoInterval={5}
                                       onDidSelectItemAtIndex={(index) => {
                                           this._onPressRow(index);
                                       }}/>
@@ -100,12 +103,13 @@ export default class HomeBannerView extends Component {
                         renderItem={this._renderViewPageItem.bind(this)}
                         autoplay={true}
                         loop={true}
-                        height={bannerHeight}
+                        height={cellHeight}
                         renderPagination={this._renderPagination.bind(this)}
                         index={0}
                         scrollsToTop={true}
                     />
             }
+            </View>
         </View>;
     }
 
@@ -119,11 +123,22 @@ export default class HomeBannerView extends Component {
 const styles = StyleSheet.create({
     container: {
         height: bannerHeight,
-        width: ScreenUtils.width
+        width: ScreenUtils.width,
+        backgroundColor: '#fff'
     },
     img: {
         height: bannerHeight,
         width: ScreenUtils.width
+    },
+    banner: {
+        marginLeft: px2dp(15),
+        marginRight: px2dp(15),
+        height: cellHeight,
+        borderRadius: px2dp(5),
+        shadowOffset: {width: 0, height: px2dp(2)},
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        shadowColor: '#000',
     },
     indexView: {
         flexDirection: 'row',
