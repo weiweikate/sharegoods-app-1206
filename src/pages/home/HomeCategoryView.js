@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import { homeModule } from './Modules';
 import { observer } from 'mobx-react';
 import { categoryModule } from './HomeCategoryModel'
 
@@ -18,11 +17,17 @@ const CategoryItem = ({text, press, left}) => <TouchableWithoutFeedback onPress=
 @observer
 export default class HomeCategoryView extends Component {
 
-    _adAction(value) {
-        const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
-        const { navigate } = this.props;
-        const params = homeModule.paramsNavigate(value);
-        navigate(router, { ...params, preseat: 'home_ad' });
+    _adAction(data) {
+      const { navigate } = this.props;
+      navigate(data.route, {
+          fromHome: true,
+          id: 1,
+          linkTypeCode: data.linkTypeCode,
+          code: data.linkTypeCode,
+          name: data.name,
+          categoryId: data.id,
+          activityCode: data.linkTypeCode
+      });
     }
 
     render() {
@@ -34,7 +39,12 @@ export default class HomeCategoryView extends Component {
         let itemsArr = [];
         categoryList.map((value, index) => {
           itemsArr.push(
-              <CategoryItem text={value.name} key={'category' + index} left={index === 0 ? 0 : px2dp(6)} press={() => this._adAction(value)}/>
+              <CategoryItem
+                text={value.name}
+                key={'category' + index}
+                left={index === 0 ? 0 : px2dp(6)}
+                press={() => this._adAction(value)}
+              />
             )
         });
         return <View style={styles.container}>
