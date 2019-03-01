@@ -7,6 +7,7 @@ import { starShopModule } from './HomeStarShopModel';
 import { todayModule } from './HomeTodayModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
+import { categoryModule } from './HomeCategoryModel'
 import OssHelper from '../../utils/OssHelper';
 import res from './res';
 
@@ -135,28 +136,32 @@ class HomeModule {
         starShopModule.loadShopList(this.firstLoad);
         subjectModule.loadSubjectList(this.firstLoad);
         recommendModule.loadRecommendList(this.firstLoad);
+        categoryModule.loadCategoryList()
         this.page = 1;
         this.isEnd = false;
         this.homeList = [{
             id: 0,
+            type: homeType.category
+        },{
+            id: 1,
             type: homeType.swiper
         }, {
             id: 2,
             type: homeType.user
         }, {
-            id: 1,
+            id: 3,
             type: homeType.classify
         }, {
-            id: 3,
+            id: 4,
             type: homeType.ad
         }, {
-            id: 7,
+            id: 5,
             type: homeType.starShop
         }, {
-            id: 5,
+            id: 6,
             type: homeType.today
         }, {
-            id: 6,
+            id: 7,
             type: homeType.recommend
         }, {
             id: 8,
@@ -213,7 +218,6 @@ class HomeModule {
 
     //加载为你推荐列表
     loadMoreHomeList = flow(function* () {
-        console.log('loadMoreHomeList', this.isFetching, this.isEnd, this.firstLoad);
         if (this.isFetching) {
             return;
         }

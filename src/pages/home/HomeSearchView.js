@@ -11,10 +11,8 @@ import UIText from '../../components/ui/UIText';
 import DesignRule from '../../constants/DesignRule';
 import User from '../../model/user';
 import res from './res';
-import bridge from '../../utils/bridge';
 
 const logoRed = res.home_icon_logo_red;
-const logoWhite = res.home_icon_logo_white;
 const searchImg = res.icon_search;
 const msgBlack = res.message_black;
 const msgWhite = res.message_white;
@@ -22,10 +20,8 @@ const msgWhite = res.message_white;
 export default ({ navigation, whiteIcon, hasMessage, pageFocused }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
-            {/*改变状态栏字体颜色*/}
-            {pageFocused && whiteIcon ? bridge.setDarkMode() : bridge.setLightMode()}
-            <Image source={whiteIcon ? logoWhite : logoRed} style={styles.logo}/>
-            <TouchableOpacity style={[styles.searchBox, { backgroundColor: whiteIcon ? 'white' : '#E4E5E6' }]}
+            <Image source={logoRed} style={styles.logo}/>
+            <TouchableOpacity style={[styles.searchBox, { backgroundColor: '#E4E5E6' }]}
                               onPress={() => {
                                   navigation('home/search/SearchPage');
                               }}>
@@ -62,10 +58,7 @@ let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
         height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        zIndex: 4
+        backgroundColor: '#fff'
     },
     navContent: {
         flex: 1,

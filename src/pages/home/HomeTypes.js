@@ -8,6 +8,7 @@ export const homeType = {
   goods: 8,
   other: 'other',
   classify: 'classify',
+  category: 'category',
   goodsTitle: 'goodsTitle',
   user: 'user',
   show: 11,            //秀场
