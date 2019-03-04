@@ -45,8 +45,13 @@ export default class DetailPromoteModal extends Component {
         }
         return <TouchableWithoutFeedback>
             <View style={styles.promotionItemView}>
-                {typeText ? <Text
-                    style={[styles.promotionItemRedText]}>{typeText}</Text> : null}
+                {typeText ?
+                    <View style={styles.promotionItemRedView}>
+                        <Text style={[styles.promotionItemRedText]}>{typeText}</Text>
+                    </View>
+                    :
+                    null
+                }
                 <Text
                     style={[styles.promotionItemText]}>{message || ''}</Text>
             </View>
@@ -109,8 +114,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15,
         paddingVertical: 14
     },
+    promotionItemRedView: {
+        borderRadius: 3, borderWidth: 1, borderColor: DesignRule.mainColor
+    },
     promotionItemRedText: {
-        borderRadius: 3, borderWidth: 1, borderColor: DesignRule.mainColor,
         paddingHorizontal: 4, paddingVertical: 2,
         color: DesignRule.textColor_redWarn, fontSize: 10
     },
