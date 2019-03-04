@@ -28,7 +28,7 @@ export default class DetailBottomView extends Component {
     render() {
         let { pData } = this.props;
         //productStatus  1正常  2下架  3当前时间不能买
-        let { shareMoney, productStatus, skuList } = pData || {};
+        let { productStatus, skuList } = pData || {};
         //总库存
         let stock = 0;
         (skuList || []).forEach((item) => {
@@ -75,7 +75,7 @@ export default class DetailBottomView extends Component {
                         <Text style={{
                             color: cantBuy ? DesignRule.textColor_instruction : DesignRule.white,
                             fontSize: 17
-                        }} allowFontScaling={false}>{buyText}</Text>
+                        }}>{buyText}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -85,33 +85,9 @@ export default class DetailBottomView extends Component {
                             alignItems: 'center'
                         }}
                         onPress={() => this.props.bottomViewAction('jlj')}>
-                        {
-                            // shareMoney未空显示?  为0显示分享赚
-                            (parseFloat(shareMoney) === 0 || shareMoney === '?') ?
-                                <Text style={{ fontSize: 17, color: DesignRule.white }}>分享秀一秀</Text>
-                                : <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    {/*<Text style={{ color: DesignRule.white, fontSize: 25 }} allowFontScaling={false}>赚</Text>*/}
-                                    <View style={{ marginLeft: 5 }}>
-                                        <Text style={{ color: DesignRule.white, fontSize: 11 }}
-                                              allowFontScaling={false}>分享秀一秀</Text>
-                                        <View style={{
-                                            alignItems: 'center',
-                                            marginTop: 6
-                                        }} maxWidth={ScreenUtils.autoSizeWidth(100)}>
-                                            <Text style={{
-                                                color: DesignRule.white,
-                                                fontSize: 11
-                                            }}
-                                                  numberOfLines={2} allowFontScaling={false}>{shareMoney || ''}</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                        }
-
-
+                        <Text style={{ fontSize: 17, color: DesignRule.white }}>分享秀一秀</Text>
                     </TouchableOpacity>
                 </View>
-
             </View>);
     }
 
