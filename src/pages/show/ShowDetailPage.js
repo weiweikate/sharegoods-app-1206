@@ -4,9 +4,9 @@ import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-
-const { px2dp, width } = ScreenUtils;
-import HTML from 'react-native-render-html';
+import AutoHeightWebView from 'react-native-autoheight-webview'
+const { px2dp,  } = ScreenUtils;
+// import HTML from 'react-native-render-html';
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
@@ -226,7 +226,7 @@ export default class ShowDetailPage extends BasePage {
                 {
                     detail.imgs
                         ?
-                        <ShowImageView items={detail.imgs.slice()} onPress={(imgs, index)=> this._showImagesPage(imgs, index)}/> 
+                        <ShowImageView items={detail.imgs.slice()} onPress={(imgs, index)=> this._showImagesPage(imgs, index)}/>
                         :
                         <View style={styles.header}/>
                 }
@@ -242,16 +242,17 @@ export default class ShowDetailPage extends BasePage {
                         <Text style={styles.number} allowFontScaling={false}>{number}</Text>
                     </View>
                 </View>
-                <HTML html={content} imagesMaxWidth={width - px2dp(30)}
-                      imagesInitialDimensions={{ width: width - px2dp(30), height: 0 }} containerStyle={{
-                    backgroundColor: '#fff',
-                    marginLeft: px2dp(15),
-                    marginRight: px2dp(15)
-                }} baseFontStyle={{
-                    lineHeight: px2dp(28),
-                    color: DesignRule.textColor_mainTitle,
-                    fontSize: px2dp(13)
-                }}/>
+                {/*<HTML html={content} imagesMaxWidth={width - px2dp(30)}*/}
+                      {/*imagesInitialDimensions={{ width: width - px2dp(30), height: 0 }} containerStyle={{*/}
+                    {/*backgroundColor: '#fff',*/}
+                    {/*marginLeft: px2dp(15),*/}
+                    {/*marginRight: px2dp(15)*/}
+                {/*}} baseFontStyle={{*/}
+                    {/*lineHeight: px2dp(28),*/}
+                    {/*color: DesignRule.textColor_mainTitle,*/}
+                    {/*fontSize: px2dp(13)*/}
+                {/*}}/>*/}
+                <AutoHeightWebView source={{html:content}}/>
                 <View style={styles.goodsView}>
                     {
                         products.map((value, index) => {

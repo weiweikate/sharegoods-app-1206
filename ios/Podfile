@@ -46,6 +46,8 @@ pod 'SDAutoLayout'
 #  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
 end
 
 #    暂时未用,先注释已被后期使用
