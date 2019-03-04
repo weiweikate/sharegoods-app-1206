@@ -144,7 +144,7 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         width: ScreenUtil.width - px2dp(30),
-        borderRadius: px2dp(5),
+        borderRadius: (5),
         overflow: 'hidden',
         backgroundColor: '#fff'
     },

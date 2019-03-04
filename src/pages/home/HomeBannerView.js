@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         height: cellHeight,
-        borderRadius: px2dp(5),
+        borderRadius: (5),
         shadowOffset: {width: 0, height: px2dp(2)},
         shadowOpacity: 0.2,
         shadowRadius: 5,

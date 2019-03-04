@@ -2,15 +2,15 @@
  * 精品推荐
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback , Text} from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
-
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
 import { recommendModule } from './HomeRecommendModel';
+import HomeTitleView from './HomeTitleView'
 
 export const recommendHeight = px2dp(240)
 
@@ -63,10 +63,7 @@ export default class HomeRecommendView extends Component {
             items.push(item.imgUrl);
         });
         return  <View style={styles.container}>
-        <View style={styles.titleView}>
-            <View style={styles.flag}/>
-            <Text style={styles.title}>精品推荐</Text>
-        </View>
+        <HomeTitleView title={'精品推荐'}/>
         {
             recommendList.length === 1
             ?
@@ -106,25 +103,9 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         width: ScreenUtil.width - px2dp(30),
-        borderRadius: px2dp(5),
+        borderRadius: 5,
         overflow: 'hidden',
         backgroundColor: '#fff'
-    },
-    flag: {
-        backgroundColor: '#FF0050',
-        width: px2dp(2),
-        height: px2dp(8)
-    },
-    titleView: {
-        height: px2dp(42),
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    title: {
-        color: DesignRule.textColor_secondTitle,
-        fontSize: px2dp(16),
-        marginLeft: px2dp(10),
-        fontWeight: '600'
     },
     scroll: {
         height: px2dp(175)
@@ -136,7 +117,7 @@ let styles = StyleSheet.create({
     imgView: {
         width: px2dp(280),
         height: px2dp(140),
-        borderRadius: px2dp(5),
+        borderRadius: (5),
         overflow: 'hidden'
     },
     item: {
