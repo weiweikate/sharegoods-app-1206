@@ -45,31 +45,28 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
 
     _checkUserGongMallResult = () => {
         MineApi.gongmallResult().then((data) => {
-            alert(JSON.stringify(data));
-            this._getSignUrl();
+            if (!data) {
+                this._getSignUrl();
+            } else {
+                this.$navigate('mine/userInformation/WithdrawCashPage');
+            }
         }).catch(error => {
-            this._getSignUrl();
             this.$toastShow(error.msg);
         });
     };
 
     _getSignUrl = () => {
-        NativeModules.commModule.goGongmallPage("");
-return;
-        MineApi.gongmallEnter().then((data)=>{
-            if(data.data){
+        MineApi.gongmallEnter().then((data) => {
+            if (data.data) {
                 NativeModules.commModule.goGongmallPage(data.data);
             }
-        }).catch(error=>{
-            alert(JSON.stringify(error.message));
-
+        }).catch(error => {
             this.$toastShow(error.msg);
         });
     };
 
     _commit = () => {
         this._checkUserGongMallResult();
-        //this.$navigate("mine/userInformation/WithdrawCashPage");
     };
 
 
@@ -82,7 +79,7 @@ return;
                          scalesPageToFit={true}
                          style={styles.webViewWrapper}
                 />
-                <TouchableWithoutFeedback onPress={this._getSignUrl}>
+                <TouchableWithoutFeedback onPress={this._commit}>
                     <View style={styles.bottomButtonWrapper}>
                         <Text style={styles.buttonTextStyle}>
                             同意协议

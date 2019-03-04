@@ -17,6 +17,7 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.permissions.Permission;
 import com.meeruu.permissions.PermissionUtil;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.utils.HttpUrlUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,14 +51,17 @@ public class GongMallActivity extends BaseActivity {
     public static final int REQUEST_SELECT_FILE = 100;
     public ValueCallback<Uri[]> uploadMessageAboveL;
     private static final int FILECHOOSER_RESULTCODE = 2;
-    String url = "https://contract-qa.gongmall.com/url_contract.html?companyId=AVR3eP&positionId=RMQwyV&data=LLGOsQ+rfDavQT5cDFUqxFW90dpz91MEvgG80mlfzCluQABWE3bqAwWIDhqnGj38KgpQb40xEOnZZksRudcXJkKPJQs07NcyNH3LogJMQMq1F5QnaBGplbdDn6F66sTKf63ttVv1eT0XHHJT8HUn9eZPt1ROCs9dq384foz7fceqY7O4QVF7yOF4aqqerAZhwgBGBUO6rwZ7qii8v/5GJUmd993FicmwgSzot+hUxgej8a4YEXyHvjSf9iAWrt9hzZrnDEX5Z/5Q+86WMHCjWQ==";
-
+    private String url ;
+    public static final int SIGN_OK = 889;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gongmall_page);
-
+        this.url = getIntent().getStringExtra("url");
+        if(TextUtils.isEmpty(this.url)){
+            finish();
+        }
     }
 
     //WebViewClient主要帮助WebView处理各种通知、请求事件
@@ -73,9 +78,9 @@ public class GongMallActivity extends BaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.i("ansen", "拦截url:" + url);
-            if (url.equals("http://www.google.com/")) {
-                Toast.makeText(GongMallActivity.this, "国内不能访问google,拦截该url", Toast.LENGTH_LONG).show();
+            if (url.equals(HttpUrlUtils.getUrl(HttpUrlUtils.URL_SHOWLIST))) {
+                setResult(SIGN_OK);
+                finish();
                 return true;//表示我已经处理过了
             }
             return super.shouldOverrideUrlLoading(view, url);
@@ -146,56 +151,6 @@ public class GongMallActivity extends BaseActivity {
     private void take() {
         Intent intent = new Intent(GongMallActivity.this, SelectMyPhotoActivity.class);
         intent.putExtra("singlePic", true);
-////是否需要裁剪照片，目前支持圆形、正方形
-//        intent.putExtra("neeclip", true);
-        startActivityForResult(intent, FILECHOOSER_RESULTCODE);
-
-//        if (!PermissionUtil.hasPermissions(GongMallActivity.this, Permission.CAMERA)) {
-//            PermissionUtil.requestPermissions(GongMallActivity.this, Permission.getPermissionContent(Arrays.asList(Permission.CAMERA)),
-//                    ParameterUtils.REQUEST_CODE_CAMERA,  Permission.CAMERA);
-//            return;
-//        }
-//
-//        File imageStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyApp");
-//        // Create the storage directory if it does not exist
-//        if (!imageStorageDir.exists()) {
-//            imageStorageDir.mkdirs();
-//        }
-//        File file = new File(imageStorageDir + File.separator + "IMG_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
-//        imageUri = Uri.fromFile(file);
-//
-//        final List<Intent> cameraIntents = new ArrayList<Intent>();
-//        final Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        final PackageManager packageManager = getPackageManager();
-//        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
-//        for (ResolveInfo res : listCam) {
-//            final String packageName = res.activityInfo.packageName;
-//            final Intent i = new Intent(captureIntent);
-//            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-//            i.setPackage(packageName);
-//            i.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-//
-//
-//
-//
-////            if (Build.VERSION.SDK_INT>=24){
-////                //这里的BuildConfig，需要是程序包下BuildConfig。
-////                i.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getApplicationContext(), getPackageName()+".fileProvider",file));
-////                i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-////            }else{
-////                i.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-////            }
-//            i.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-//
-//            cameraIntents.add(i);
-//
-//        }
-//        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-//        i.addCategory(Intent.CATEGORY_OPENABLE);
-//        i.setType("image/*");
-//        Intent chooserIntent = Intent.createChooser(i, "Image Chooser");
-//        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
-//        GongMallActivity.this.startActivityForResult(chooserIntent, FILECHOOSER_RESULTCODE);
     }
     /*
      * 图片选择完成操作
@@ -289,10 +244,6 @@ public class GongMallActivity extends BaseActivity {
 
     @Override
     protected void initViewAndData() {
-//        String url = getIntent().getStringExtra("url");
-
-//        progressBar = (ProgressBar) findViewById(R.id.progressbar);//进度条
-
         webView = (WebView) findViewById(R.id.webView);
         webView.loadUrl(url);//加载url
 
@@ -336,26 +287,5 @@ public class GongMallActivity extends BaseActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        PermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        switch (requestCode) {
-            case ParameterUtils.REQUEST_CODE_CAMERA:
-                take();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        //拍照权限申请被拒绝
-       // verifyPermission(perms);
-    }
 
 }

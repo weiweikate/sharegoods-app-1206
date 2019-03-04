@@ -12,6 +12,7 @@ public class HttpUrlUtils {
 
     /**************************** api ***************************/
     public static final String URL_SHOWLIST = "/discover/query"; //秀场列表
+    public static final String URL_GONGMAO = "/gongmall/contract/notify"; //秀场列表
 
 
     /*********获取api接口url***********/
