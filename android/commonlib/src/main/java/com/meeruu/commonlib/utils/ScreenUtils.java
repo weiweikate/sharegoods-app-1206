@@ -302,6 +302,4 @@ public class ScreenUtils {
     public static boolean hasNotchAtOPPO(Context context) {
         return  context.getPackageManager().hasSystemFeature("com.oppo.feature.screen.heteromorphism");
     }
-
-
 }
