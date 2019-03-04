@@ -609,6 +609,7 @@ export default class ProductDetailPage extends BasePage {
                                 titleStr: `${name}`,
                                 priceStr: `￥${originalPrice}`,
                                 retailPrice: `￥${v0Price}`,
+                                v0Price: v0Price,
                                 spellPrice: `￥${groupPrice}`,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
                             }}
