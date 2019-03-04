@@ -545,8 +545,7 @@ class HomePage extends BasePage {
                     style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
-                                                    colors={[DesignRule.mainColor]}
-                                                    progressViewOffset={ScreenUtils.headerHeight}/>}
+                                                    colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
