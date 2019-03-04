@@ -10,19 +10,21 @@
  */
 
 
-"use strict";
-import React from "react";
+'use strict';
+import React from 'react';
 import {
     StyleSheet,
     View,
     WebView,
-    TouchableWithoutFeedback
-} from "react-native";
-import {MRText as Text} from '../../../../components/ui'
-import BasePage from "../../../../BasePage";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "../../../../constants/DesignRule";
+    TouchableWithoutFeedback,
+    NativeModules
+} from 'react-native';
+import { MRText as Text } from '../../../../components/ui';
+import BasePage from '../../../../BasePage';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from '../../../../constants/DesignRule';
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import MineApi from '../../api/MineApi';
 
 const { px2dp } = ScreenUtils;
 type Props = {};
@@ -33,13 +35,42 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
     }
 
     $navigationBarOptions = {
-        title: "提现协议查看",
+        title: '提现协议查看',
         show: true// false则隐藏导航
     };
 
-    $isMonitorNetworkStatus(){
+    $isMonitorNetworkStatus() {
         return true;
     }
+
+    _checkUserGongMallResult = () => {
+        MineApi.gongmallResult().then((data) => {
+            alert(JSON.stringify(data));
+            this._getSignUrl();
+        }).catch(error => {
+            this._getSignUrl();
+            this.$toastShow(error.msg);
+        });
+    };
+
+    _getSignUrl = () => {
+        NativeModules.commModule.goGongmallPage("");
+return;
+        MineApi.gongmallEnter().then((data)=>{
+            if(data.data){
+                NativeModules.commModule.goGongmallPage(data.data);
+            }
+        }).catch(error=>{
+            alert(JSON.stringify(error.message));
+
+            this.$toastShow(error.msg);
+        });
+    };
+
+    _commit = () => {
+        this._checkUserGongMallResult();
+        //this.$navigate("mine/userInformation/WithdrawCashPage");
+    };
 
 
     _render() {
@@ -51,7 +82,7 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
                          scalesPageToFit={true}
                          style={styles.webViewWrapper}
                 />
-                <TouchableWithoutFeedback onPress={this._commit}>
+                <TouchableWithoutFeedback onPress={this._getSignUrl}>
                     <View style={styles.bottomButtonWrapper}>
                         <Text style={styles.buttonTextStyle}>
                             同意协议
@@ -62,9 +93,7 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
         );
     }
 
-    _commit = ()=>{
-        this.$navigate("mine/userInformation/WithdrawCashPage");
-    }
+
 }
 
 const styles = StyleSheet.create({
@@ -77,12 +106,12 @@ const styles = StyleSheet.create({
     bottomButtonWrapper: {
         height: 50,
         width: ScreenUtils.width - px2dp(80),
-        alignSelf: "center",
+        alignSelf: 'center',
         backgroundColor: DesignRule.mainColor,
         borderRadius: 25,
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom:px2dp(34),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: px2dp(34)
     },
     buttonTextStyle: {
         color: DesignRule.white,
