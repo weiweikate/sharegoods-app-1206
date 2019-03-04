@@ -9,6 +9,7 @@ const tab = {
     cart_n: require('./cart_n.png'),
     group_s: require('./group_s.png'),
     group_n: require('./group_n.png'),
-    home_store: require('./home_store.png')
+    home_store: require('./home_store.png'),
+    home_store_flag: require('./home_store_flag.png')
 };
 export default tab;

@@ -1,17 +1,18 @@
 import { TabNavigator } from 'react-navigation';
-import React from 'react';
+import React, {Component} from 'react';
 import {Text, View} from 'react-native'
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
 import MyShop_RecruitPage from '../pages/spellShop/MyShop_RecruitPage';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, ImageBackground } from 'react-native';
 import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
 import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
+import { observer } from 'mobx-react';
 
 
 const NormalTab = ({source, title}) => {
@@ -35,6 +36,76 @@ const Tab = ({focused, activeSource, normalSource, title}) => {
     return <NormalTab source={normalSource} title={title}/>
 }
 
+@observer
+class SpellShopTab extends Component {
+    render() {
+        const { focused, normalSource, activeSource } = this.props
+        if (!user) {
+            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
+        }
+
+        if (!user.isLogin) {
+            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
+        }
+
+        console.log('SpellShopTab', user.storeCode, user.storeStatus , user.levelRemark )
+
+        if (user.levelRemark >= 'V2' && !user.storeCode) {
+            return <Image style={styles.store} source={res.tab.home_store}/>
+        }
+
+        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
+            return <Image style={styles.store} source={res.tab.home_store}/>
+        }
+
+        return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
+    }
+}
+
+const ShowFlag = () => <View style={styles.shopFlag}>
+    <ImageBackground style={styles.flagBg} source={res.tab.home_store_flag}>
+        <Text style={styles.flagText}>快享拼店价</Text>
+    </ImageBackground>
+</View>
+
+@observer
+export class SpellShopFlag extends Component {
+    state = {
+        isFlag: true
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {isShow} = nextProps
+        if (isShow) {
+            setTimeout(() => {
+                this.setState({isFlag: isShow})
+            }, 400)
+        } else {
+            this.setState({isFlag: isShow})
+        }
+    }
+
+    render() {
+        if (!this.state.isFlag) {
+            return null
+        }
+        if (!user) {
+            return null
+        }
+        if (!user.isLogin) {
+            return null
+        }
+        if (user.levelRemark >= 'V2' && !user.storeCode) {
+            return <ShowFlag/>
+        }
+        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
+            return <ShowFlag/>
+        }
+
+        return null;
+    }
+}
+
 export const TabNav = TabNavigator(
     {
         HomePage: {
@@ -54,8 +125,7 @@ export const TabNav = TabNavigator(
             screen: MyShop_RecruitPage,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => {
-                    // return <Image style={styles.store} source={res.tab.home_store}/>
-                    return <Tab focused={focused} normalSource={res.tab.group_n} activeSource={res.tab.group_s} title={'拼店'}/>
+                    return <SpellShopTab focused={focused} normalSource={res.tab.group_n} activeSource={res.tab.group_s}/>
                 }
             }
         },
@@ -138,5 +208,23 @@ const styles = StyleSheet.create({
         color: DesignRule.mainColor,
         fontSize: 11,
         marginTop: 4
+    },
+    shopFlag: {
+        position: 'absolute',
+        bottom: 45,
+        left: (ScreenUtils.width - 76) / 2,
+        width: 76,
+        height: 23
+    },
+    flagBg: {
+        width: 76,
+        height: 23,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: 4
+    },
+    flagText: {
+        color: '#fff',
+        fontSize: 12,
     }
 });
