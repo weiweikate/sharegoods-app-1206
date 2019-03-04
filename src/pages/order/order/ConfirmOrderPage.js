@@ -195,6 +195,7 @@ export default class ConfirmOrderPage extends BasePage {
                             this.loadPageData(params);
                         }, 0);
                     } else if (data === 'giveUp') {
+                        confirmOrderModel.giveUpCou= true;
                         confirmOrderModel.userCouponCode = null;
                         confirmOrderModel.couponName = null;
                         confirmOrderModel.tokenCoin = 0;
