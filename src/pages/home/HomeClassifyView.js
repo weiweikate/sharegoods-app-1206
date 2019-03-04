@@ -31,6 +31,7 @@ class Item extends Component {
         const { icon } = this.props.data;
         return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
             {
+                //TODO: 占位图，等待接口调试
                 <Image style={styles.icon} source={icon}/>
             }
             <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
