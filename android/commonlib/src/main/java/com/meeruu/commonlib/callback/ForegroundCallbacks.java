@@ -14,12 +14,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author louis
  * @date on 2018/7/2
  * @describe 应用前后台状态监听
- * @org xxd.smartstudy.com
- * @email luoyongming@innobuddy.com
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
  */
 public class ForegroundCallbacks implements Application.ActivityLifecycleCallbacks {
     public static final long CHECK_DELAY = 500;
-    public static final String TAG = ForegroundCallbacks.class.getName();
 
     public interface Listener {
         void onBecameForeground();

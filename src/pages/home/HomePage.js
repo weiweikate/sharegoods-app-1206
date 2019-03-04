@@ -16,15 +16,14 @@ import { homeType } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView, { kHomeClassifyHeight } from './HomeClassifyView';
-import HomeStarShopView from './HomeStarShopView';
-import HomeTodayView from './HomeTodayView';
-import HomeRecommendView from './HomeRecommendView';
+import HomeTodayView, {todayHeight} from './HomeTodayView';
+import HomeRecommendView, {recommendHeight} from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './HomeBannerView';
 import HomeAdView, { adViewHeight } from './HomeAdView';
 import HomeGoodsView, { kHomeGoodsViewHeight } from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
-import LinearGradient from 'react-native-linear-gradient';
+import HomeCategoryView, {categoryHeight} from './HomeCategoryView'
 import Modal from '../../comm/components/CommModal';
 import XQSwiper from '../../components/ui/XGSwiper';
 import MessageApi from '../message/api/MessageApi';
@@ -44,6 +43,7 @@ import { adModules } from './HomeAdModel';
 import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
 import { subjectModule } from './HomeSubjectModel';
+import HomeTitleView from './HomeTitleView'
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -57,7 +57,7 @@ const home_notice_bg = res.home_notice_bg;
  * @email zhangjian@meeruu.com
  */
 
-const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
+const { px2dp, headerHeight } = ScreenUtils;
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
@@ -92,6 +92,9 @@ class HomePage extends BasePage {
         const { subjectHeight } = subjectModule;
 
         switch (type) {
+            case homeType.category:
+                dim.height = categoryHeight;
+                break;
             case homeType.swiper:
                 dim.height = bannerHeight;
                 break;
@@ -102,16 +105,13 @@ class HomePage extends BasePage {
                 dim.height = ad.length > 0 ? adViewHeight : 0;
                 break;
             case homeType.today:
-                dim.height = todayList.length > 0 ? px2dp(243) : 0;
+                dim.height = todayList.length > 0 ?  todayHeight : 0;
                 break;
             case homeType.recommend:
-                dim.height = recommendList.length > 0 ? px2dp(217) : 0;
+                dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
             case homeType.subject:
                 dim.height = subjectHeight;
-                break;
-            case homeType.starShop:
-                dim.height = 0;
                 break;
             case homeType.user:
                 dim.height = user.isLogin ? px2dp(44) : 0;
@@ -120,7 +120,7 @@ class HomePage extends BasePage {
                 dim.height = kHomeGoodsViewHeight;
                 break;
             case homeType.goodsTitle:
-                dim.height = px2dp(55);
+                dim.height = px2dp(57);
                 break;
             default:
                 dim.height = 0;
@@ -144,7 +144,9 @@ class HomePage extends BasePage {
 
     constructor(props) {
         super(props);
-        homeModule.loadHomeList(true);
+        InteractionManager.runAfterInteractions(() => {
+            homeModule.loadHomeList(true);
+        });
     }
 
 
@@ -204,15 +206,16 @@ class HomePage extends BasePage {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
-        this.loadMessageCount();
-        this._homeModaldata();
+        InteractionManager.runAfterInteractions(() => {
+            this.loadMessageCount();
+            this._homeModaldata();
+        });
     }
 
     componentWillUnmount() {
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();
         this.listenerLogout && this.listenerLogout.remove();
-
     }
 
     handleBackPress = () => {
@@ -335,73 +338,12 @@ class HomePage extends BasePage {
         }
     }
 
-    // 滑动头部透明度渐变
-    _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
-        // 防止拉到底部闪烁
-        if (Y > ScreenUtils.height) {
-            if (this.st !== 1) {
-                this.st = 1;
-                this._refHeader.setNativeProps({
-                    opacity: this.st
-                });
-            }
-            if (this.shadowOpacity !== 0) {
-                this.shadowOpacity = 0;
-                this.headerShadow.setNativeProps({
-                    opacity: this.shadowOpacity
-                });
-            }
-            if (this.state.whiteIcon) {
-                this.setState({
-                    whiteIcon: false
-                });
-            }
-            return;
-        }
-        if (!this._refHeader) {
-            return;
-        }
-        if (bannerModule.bannerCount === 0) {
-            this.st = 1;
-            this._refHeader.setNativeProps({
-                opacity: this.st
-            });
-            this.shadowOpacity = 0;
-            this.headerShadow.setNativeProps({
-                opacity: this.shadowOpacity
-            });
-            return;
-        }
-        if (Y < bannerHeight) {
-            this.st = Y / (bannerHeight - this.headerH);
-            this.shadowOpacity = (1 - Y / (bannerHeight - this.headerH)) * 0.4;
-            this.setState({
-                whiteIcon: this.st > 0.7 ? false : true
-            });
-        } else {
-            this.st = 1;
-            this.shadowOpacity = 0;
-            this.setState({
-                whiteIcon: false
-            });
-        }
-        this._refHeader.setNativeProps({
-            opacity: this.st
-        });
-        this.headerShadow.setNativeProps({
-            opacity: this.shadowOpacity
-        });
-    };
-
-    _onScrollBeginDrag() {
-        this.shareTaskIcon.close();
-    }
-
     _keyExtractor = (item, index) => item.id + '';
     _renderItem = (type, item) => {
         let data = item;
-        if (type === homeType.swiper) {
+        if (type === homeType.category) {
+            return <HomeCategoryView navigate={this.$navigate}/>
+        } else if (type === homeType.swiper) {
             return <HomeBannerView navigate={this.$navigate}/>;
         } else if (type === homeType.classify) {
             return <HomeClassifyView navigate={this.$navigate}/>;
@@ -413,16 +355,12 @@ class HomePage extends BasePage {
             return <HomeRecommendView navigate={this.$navigate}/>;
         } else if (type === homeType.subject) {
             return <HomeSubjectView navigate={this.$navigate}/>;
-        } else if (type === homeType.starShop) {
-            return <HomeStarShopView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
         } else if (type === homeType.goods) {
             return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
-            return <View style={styles.titleView}>
-                <Text style={styles.title} allowFontScaling={false}>为你推荐</Text>
-            </View>;
+            return <View style={styles.titleView}><HomeTitleView title={'为你推荐'}/></View>;
         }
         return <View/>;
     };
@@ -593,23 +531,21 @@ class HomePage extends BasePage {
         );
     }
 
-    _renderTableHeader() {
-        return !bannerModule.isShowHeader ? null : <View style={{ height: headerHeight }}/>;
-    }
-
     render() {
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
-                {this._renderTableHeader()}
+                <HomeSearchView navigation={this.$navigate}
+                                whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
+                                hasMessage={this.state.hasMessage}
+                                pageFocused={this.homeFocused}
+                />
                 <RecyclerListView
                     style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
-                    onScroll={this._onScroll.bind(this)}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
-                                                    colors={[DesignRule.mainColor]}
-                                                    progressViewOffset={ScreenUtils.headerHeight}/>}
+                                                    colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
@@ -621,19 +557,6 @@ class HomePage extends BasePage {
                         errorMsg={homeModule.errorMsg}
                         isEnd={homeModule.isEnd}/>
                     }
-                />
-                <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
-                      ref={e => this._refHeader = e}/>
-                <LinearGradient colors={['#000', 'transparent']}
-                                ref={e => this.headerShadow = e}
-                                style={[styles.navBar, {
-                                    height: this.headerH + 14,
-                                    opacity: bannerModule.opacity === 1 ? 0 : 0.4
-                                }]}/>
-                <HomeSearchView navigation={this.$navigate}
-                                whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
-                                hasMessage={this.state.hasMessage}
-                                pageFocused={this.homeFocused}
                 />
                 <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
                                ref={(ref) => {
@@ -667,48 +590,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: DesignRule.bgColor
     },
-    // headerBg
-    navBarBg: {
-        flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10,
-        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
-        width: ScreenUtils.width,
-        paddingTop: statusBarHeight,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        zIndex: 2
-    },
-    // header
-    navBar: {
-        flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10,
-        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
-        width: ScreenUtils.width,
-        paddingTop: statusBarHeight,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        zIndex: 3
-    },
     titleView: {
-        marginTop: px2dp(25),
-        marginBottom: px2dp(10),
-        alignItems: 'center',
-        justifyContent: 'center',
+        marginTop: px2dp(10),
+        paddingLeft: px2dp(15),
+        marginBottom: px2dp(5),
         width: ScreenUtils.width
-    },
-    title: {
-        color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(19),
-        fontWeight: '600'
     },
     messageBgStyle: {
         width: px2dp(295),

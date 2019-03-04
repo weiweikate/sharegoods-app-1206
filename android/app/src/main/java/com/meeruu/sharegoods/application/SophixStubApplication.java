@@ -11,10 +11,10 @@ import com.taobao.sophix.SophixManager;
 
 /**
  * @author louis
- * @date on 2018/6/26
+ * @date on 2018/9/3
  * @describe Sophix稳健接入
- * @org xxd.smartstudy.com
- * @email luoyongming@innobuddy.com
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
  */
 public class SophixStubApplication extends SophixApplication {
 
@@ -32,7 +32,7 @@ public class SophixStubApplication extends SophixApplication {
     }
 
     private void initSophix() {
-        String appVersion = "1.0.0";
+        String appVersion = "0.0.0";
         try {
             appVersion = this.getPackageManager()
                     .getPackageInfo(this.getPackageName(), 0)
