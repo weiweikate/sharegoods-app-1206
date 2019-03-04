@@ -5,4 +5,11 @@
     <string name="brvah_loading">加载中...</string>
     <string name="brvah_load_failed">加载失败，请点我重试</string>
     <string name="brvah_load_end">我也是有底线的</string>
+    <string name="picture_unit">张</string>
+    <string name="sure">确定</string>
+    <string name="scan_no_picture">没扫描到图片</string>
+    <string name="loading">正在加载...</string>
+    <string name="no_external_storage">暂无外部存储</string>
+    <string name="picture_load_failure">图片加载失败</string>
+    <string name="picture_max">最多只能同时上传9张图片</string>
 </resources>

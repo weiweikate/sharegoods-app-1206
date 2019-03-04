@@ -18,4 +18,6 @@
     <color name="bg_progress">#F0F0F0</color>
     <!-- 默认图片背景颜色 -->
     <color name="bg_img">#efefef</color>
+    <!-- item点击后颜色改变透明度80% -->
+    <color name="item_click_tran80">#f0f0f0</color>
 </resources>

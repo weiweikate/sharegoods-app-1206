@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.utils;
+package com.meeruu.commonlib.config;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -20,14 +20,14 @@ import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.react.modules.fresco.SystraceRequestListener;
 import com.facebook.react.modules.network.OkHttpClientProvider;
-import com.meeruu.commonlib.config.ReactOkHttpNetworkFetcher;
+import com.meeruu.commonlib.utils.SDCardUtils;
 
 import java.io.File;
 import java.util.HashSet;
 
 import okhttp3.OkHttpClient;
 
-public class ImagePipelineConfigUtils {
+public class FrescoImagePipelineConfig {
 
     // 最大缓存数量
     private static final int MAX_CACHE_ENTRIES = 64;
@@ -119,7 +119,7 @@ public class ImagePipelineConfigUtils {
         HashSet<RequestListener> requestListeners = new HashSet<>();
         requestListeners.add(new SystraceRequestListener());
         //缓存图片配置
-        ImagePipelineConfig.Builder configBuilder = OkHttpImagePipelineConfigFactory.newBuilder(context, client)
+        com.facebook.imagepipeline.core.ImagePipelineConfig.Builder configBuilder = OkHttpImagePipelineConfigFactory.newBuilder(context, client)
                 .setBitmapsConfig(Bitmap.Config.RGB_565)
                 .setBitmapMemoryCacheParamsSupplier(mSupplierMemoryCacheParams)
                 .setSmallImageDiskCacheConfig(diskSmallCacheConfig)
