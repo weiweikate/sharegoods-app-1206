@@ -6,7 +6,8 @@ const kHomeSujectStore = '@home/kHomeSujectStore'
 import ScreenUtil from '../../utils/ScreenUtils';
 const { px2dp } = ScreenUtil;
 
-
+const bannerWidth = ScreenUtil.width - px2dp(50)
+const bannerHeight = bannerWidth * (240 / 650)
 //专题
 class SubjectModule {
   @observable subjectList = [];
@@ -23,15 +24,15 @@ class SubjectModule {
         }
           const res = yield HomeApi.getSubject({ type: homeType.subject });
           let list = res.data;
-          let height = px2dp(63);
+          let height = px2dp(57);
           list.map(value => {
             const { topicBannerProductDTOList } = value
             if (topicBannerProductDTOList && topicBannerProductDTOList.length > 0) {
-              height += px2dp(192);
+              height += px2dp(190);
             } else {
-              height += px2dp(10);
+              height += px2dp(15);
             }
-            height += px2dp(181);
+            height += bannerHeight;
           })
           this.subjectHeight = height;
           this.subjectList = list;
