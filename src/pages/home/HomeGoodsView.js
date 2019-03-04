@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
+
 const { px2dp, onePixel } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
@@ -11,15 +12,15 @@ import StringUtils from '../../utils/StringUtils';
 
 export const kHomeGoodsViewHeight = px2dp(263);
 
-const MoneyItems = ({money}) => {
+const MoneyItems = ({ money }) => {
     if (EmptyUtils.isEmpty(money)) {
-        return <View/>
+        return <View/>;
     }
-    let unitStr = '¥'
-    let moneyStr = money
-    
-    return  <Text style={styles.unit}>{unitStr}<Text style={styles.money}>{moneyStr}</Text> 起</Text>
-}
+    let unitStr = '¥';
+    let moneyStr = money;
+
+    return <Text style={styles.unit}>{unitStr}<Text style={styles.money}>{moneyStr}</Text> 起</Text>;
+};
 
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
@@ -78,7 +79,7 @@ class ReuserImage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            imagePath: this.props.source.uri,
+            imagePath: this.props.source.uri
         };
     }
 
@@ -96,8 +97,8 @@ class ReuserImage extends Component {
         }, () => {
             this.setState({
                 imagePath: url
-            })
-        })
+            });
+        });
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -107,7 +108,8 @@ class ReuserImage extends Component {
     render() {
         return <ImageLoader
             {...this.props}
-            source={{uri: this.state.imagePath}}
+            source={{ uri: this.state.imagePath }}
+            showPlaceholder={false}
         />;
     }
 }
@@ -173,5 +175,5 @@ let styles = StyleSheet.create({
     money: {
         fontSize: px2dp(16),
         fontWeight: '600'
-    },
+    }
 });

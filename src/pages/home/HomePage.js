@@ -144,7 +144,9 @@ class HomePage extends BasePage {
 
     constructor(props) {
         super(props);
-        homeModule.loadHomeList(true);
+        InteractionManager.runAfterInteractions(() => {
+            homeModule.loadHomeList(true);
+        });
     }
 
 
@@ -204,8 +206,10 @@ class HomePage extends BasePage {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
-        this.loadMessageCount();
-        this._homeModaldata();
+        InteractionManager.runAfterInteractions(() => {
+            this.loadMessageCount();
+            this._homeModaldata();
+        });
     }
 
     componentWillUnmount() {
@@ -541,8 +545,7 @@ class HomePage extends BasePage {
                     style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
-                                                    colors={[DesignRule.mainColor]}
-                                                    progressViewOffset={ScreenUtils.headerHeight}/>}
+                                                    colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
