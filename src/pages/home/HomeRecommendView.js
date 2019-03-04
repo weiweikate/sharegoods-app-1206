@@ -107,7 +107,8 @@ let styles = StyleSheet.create({
         marginRight: px2dp(15),
         width: ScreenUtil.width - px2dp(30),
         borderRadius: px2dp(5),
-        overflow: 'hidden'
+        overflow: 'hidden',
+        backgroundColor: '#fff'
     },
     flag: {
         backgroundColor: '#FF0050',

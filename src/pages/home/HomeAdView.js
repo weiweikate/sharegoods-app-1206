@@ -43,7 +43,7 @@ export default class HomeAdView extends Component {
     _renderBanner() {
         //TODO: 占位图，等待接口调试
         return <View style={styles.banner}>
-            <View style={{borderRadius: (5), overflow: 'hidden'}}>
+            <View style={styles.bannerView}>
                 <Image style={styles.bannerImage} source={res.place}/>
             </View>
         </View>
@@ -82,6 +82,10 @@ const styles = StyleSheet.create({
     },
     banner: {
         paddingTop: px2dp(10)
+    },
+    bannerView: {
+        borderRadius: radius,
+        overflow: 'hidden'
     },
     bannerImage: {
         width: bannerWidth,
