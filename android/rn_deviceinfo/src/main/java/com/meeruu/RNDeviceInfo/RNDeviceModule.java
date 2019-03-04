@@ -1,7 +1,6 @@
 package com.meeruu.RNDeviceInfo;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.bluetooth.BluetoothAdapter;
@@ -12,8 +11,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Point;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -21,19 +18,9 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 
 import com.facebook.react.bridge.Callback;
@@ -47,7 +34,6 @@ import com.meeruu.commonlib.utils.DeviceUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meituan.android.walle.WalleChannelReader;
 
-import java.lang.reflect.Method;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.HashMap;
@@ -251,22 +237,22 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void isNavigationBarExist(Callback callback){
+    public void isNavigationBarExist(Callback callback) {
         try {
             boolean isNavigationBarExist = DeviceUtils.isNavigationBarExist(reactContext.getCurrentActivity());
             callback.invoke(isNavigationBarExist);
-        }catch (Exception e){
+        } catch (Exception e) {
             //默认有虚拟键盘
             callback.invoke(true);
         }
     }
 
     @ReactMethod
-    public void hasNotchScreen(Callback callback){
+    public void hasNotchScreen(Callback callback) {
         try {
             boolean hasNotchScreen = ScreenUtils.hasNotchScreen(reactContext.getCurrentActivity());
             callback.invoke(hasNotchScreen);
-        }catch (Exception e){
+        } catch (Exception e) {
             //默认有虚拟键盘
             callback.invoke(false);
         }
@@ -363,16 +349,11 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         constants.put("totalMemory", memInfo.totalMem);
         constants.put("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
         constants.put("channel", WalleChannelReader.getChannel(reactContext, "guanwang"));
-        constants.put("isAllScreenDevice",DeviceUtils.isAllScreenDevice(reactContext));
+        constants.put("isAllScreenDevice", DeviceUtils.isAllScreenDevice(reactContext));
 //        constants.put("isNavigationBarShow",DeviceUtils.isNavigationBarExist(reactContext.getCurrentActivity()));
 //        constants.put("isAnroidNotchScreen",ScreenUtils.hasNotchScreen(reactContext.getCurrentActivity()));
         return constants;
     }
-
-
-
-
-
 
 
 }

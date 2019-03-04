@@ -30,6 +30,11 @@
        userName //"小程序username，如 gh_3ac2059ac66f";
        miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
        }
+ api: { 分享完成调用
+    url: '',
+    methods: 'GET',
+    params: {}
+}
  trackParmas={}埋点
  trackEvent= ''
  gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
@@ -70,6 +75,8 @@ import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import { getSource } from '@mr/image-placeholder/oos';
 import apiEnvironment from '../../api/ApiEnvironment';
+import HttpUtils from '../../api/network/HttpUtils'
+import EmptyUtils from '../../utils/EmptyUtils';
 
 export default class CommShareModal extends React.Component {
 
@@ -196,9 +203,34 @@ export default class CommShareModal extends React.Component {
             if (user.isLogin && that.props.luckyDraw === true) {
                 user.luckyDraw();
             }
+            that.shareSucceedCallBlack()
         }, (errorStr) => {
 
         });
+    }
+
+    shareSucceedCallBlack() {
+        let api = this.props.api;
+        if (EmptyUtils.isEmpty(api)) {
+            return;
+        }
+        let {url, methods, params, refresh} = api;
+        if (EmptyUtils.isEmpty(url)) {
+            return;
+        }
+        if (methods && methods.tolocaleUpperCase === 'GET') {
+            HttpUtils.get(url, false, params).then(() => {
+                if (refresh === true) {
+                    this.props.reloadWeb && this.props.reloadWeb();
+                }
+            })
+        }  else {
+            HttpUtils.post(url, false, params).then(() => {
+                if (refresh === true) {
+                    this.props.reloadWeb && this.props.reloadWeb();
+                }
+            }).catch(()=>{});
+        }
     }
 
     saveImage(path) {

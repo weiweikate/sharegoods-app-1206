@@ -20,7 +20,7 @@ import BasePage from '../../../../BasePage';
 import MineAPI from '../../api/MineApi';
 
 type Props = {};
-export default class GongMallPage  extends BasePage<Props> {
+export default class GongMallContractPage  extends BasePage<Props> {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ export default class GongMallPage  extends BasePage<Props> {
   }
 
   $navigationBarOptions = {
-    title: '工猫认证',
+    title: '工猫合同',
     show: true// false则隐藏导航
   };
 
