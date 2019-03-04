@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    StyleSheet, View, Image, TouchableOpacity,FlatList,RefreshControl,ActivityIndicator,
+    StyleSheet, View, Image,FlatList,RefreshControl,ActivityIndicator,
     ImageBackground
 } from "react-native";
 import BasePage from "../../../../BasePage";
@@ -12,7 +12,8 @@ import API from "../../../../api";
 // import StringUtils from "../../../../utils/StringUtils";
 import bridge from "../../../../utils/bridge";
 import user from "../../../../model/user";
-// const NoMessage = res.couponsImg.coupons_no_data;
+import { formatDate } from "../../../../utils/DateUtils";
+const NoMessage = res.couponsImg.coupons_no_data;
 const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg_ex;
 const unUsedBg = res.couponsImg.youhuiquan_bg_unUsedBg;
 const unUsedBgExd = res.couponsImg.youhuiquan_bg_unUsedBg_exd;
@@ -28,14 +29,24 @@ export default class CouponsDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            selectIndex: 0
+            viewData: [],
+            pageStatus: this.props.pageStatus,
+            isEmpty: true,
+            isFirstLoad: true
         };
+        this.currentPage = 0;
+        this.isLoadMore = false;
+        this.isEnd = false;
+
     }
 
     $navigationBarOptions = {
         title: "优惠券",
         show: true // false则隐藏导航
     };
+    componentDidMount() {
+        this.onRefresh();
+    }
 
     _keyExtractor = (item, index) => index;
     // 空布局
@@ -50,8 +61,24 @@ export default class CouponsDetailPage extends BasePage {
         } else {
             return (
                 <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                    <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
                     <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
-                          allowFontScaling={false}>无数据!</Text>
+                          allowFontScaling={false}>还没有优惠券哦</Text>
+                    <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}
+                          allowFontScaling={false}>快去商城逛逛吧</Text>
+                    <NoMoreClick
+                        onPress={() => {
+                            this._gotoLookAround();
+                        }}>
+                        <View style={styles.guangStyle}>
+                            <Text style={{
+                                color: DesignRule.mainColor,
+                                fontSize: 15
+                            }} allowFontScaling={false}>
+                                去逛逛
+                            </Text>
+                        </View>
+                    </NoMoreClick>
                 </View>
             );
         }
@@ -88,37 +115,33 @@ export default class CouponsDetailPage extends BasePage {
     };
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        // let BG = item.status === 0 && !item.remarks ? unUsedBg : unUsedBgex;
-        // let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 1 ? usedRIcon : ActivedIcon));
-        //  let BGR = item.status>0 && !item.remarks ? usedBg:usedBgex;
         if (item.remarks) {
             return (
-                <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 ,justifyContent:'center'}}
-                                  onPress={() => this.clickItem(index, item)}>
+                <View style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 ,justifyContent:'center'}}>
                     <ImageBackground style={{
                         width: ScreenUtils.width - px2dp(30),
                         height: item.tobeextend ? px2dp(94) : px2dp(118),
                         margin: 2
                     }}
-                                     source={item.status === 0 ? (item.tobeextend ? unUsedBgExd : unUsedBgex) : (item.tobeextend ? useBgexd : usedBgex)}
+                                     source={item.status == 0 ? (item.levelimit?(item.tobeextend ? useBgexd : usedBgex):( item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
                                      resizeMode='stretch'>
                         <View style={{ flexDirection: "row", alignItems: "center", height: px2dp(94) }}>
                             <View style={styles.itemFirStyle}>
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                                     {
-                                        item.type === 3 || item.type === 4 || item.type === 12 ? null :
+                                        item.type === 3 || item.type === 4 || item.type === 5 || item.type === 12 ? null :
                                             <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
                                                 <Text
                                                     style={{
                                                         fontSize: 14,
-                                                        color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
                                                         marginBottom: 4
                                                     }} allowFontScaling={false}>￥</Text>
                                             </View>}
                                     <View>
                                         <Text style={{
                                             fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                            color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle
+                                            color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
                                         }} allowFontScaling={false}>{item.value}</Text>
                                     </View>
                                     {
@@ -127,7 +150,7 @@ export default class CouponsDetailPage extends BasePage {
                                                 <Text
                                                     style={{
                                                         fontSize: 14,
-                                                        color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
                                                         marginBottom: 4
                                                     }} allowFontScaling={false}>折</Text>
                                             </View> : null}
@@ -163,21 +186,21 @@ export default class CouponsDetailPage extends BasePage {
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
-                            {item.status === 1 ?
-                                    <UIText value={'已使用'}
-                                            style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> : item.status==2?
-                                        <UIText value={'已失效'}
-                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:
-                                        <UIText value={'待激活'}
-                                                style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>}
+                            {item.status=== 0?(item.levelimit?
+                                <UIText value={'等级受限'}
+                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:null):
+                                <UIText value={`${item.status===1?'已使用':(item.status===2?'已失效':'待激活')}`}
+                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> }
                         </View>
                         {!item.tobeextend?<NoMoreClick style={{ height: px2dp(24), justifyContent: "center", alignItems: "center" }}
                                                        onPress={()=>this.pickUpData(item)}><Image style={{ width: 14, height: 7 }} source={itemDown}/>
                         </NoMoreClick>:null }
                     </ImageBackground>
                     {item.tobeextend ?
-                        <View style={{ backgroundColor: item.status===0?DesignRule.white:DesignRule.color_ddd, width: ScreenUtils.width - px2dp(30),
-                            marginLeft:1,borderRadius:5,marginTop:-1}}>
+                        <View style={{
+                            backgroundColor: item.status === 0 ?(item.levelimit? DesignRule.color_ddd:DesignRule.white ): DesignRule.color_ddd,
+                            width: ScreenUtils.width - px2dp(30),
+                            marginLeft:1,borderRadius:5,marginTop:-2}}>
                             <View style={{ marginTop: 10,marginLeft:10 }}>
                                 <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}
                                       allowFontScaling={false}>使用说明:</Text>
@@ -192,17 +215,16 @@ export default class CouponsDetailPage extends BasePage {
                                          onPress={()=>this.toExtendData(item)}><Image style={{ width: 14, height: 7 }} source={itemUp}/>
                             </NoMoreClick>
                         </View> : null}
-                </TouchableOpacity>
+                </View>
             );
         } else {
             return (
-                <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}
-                                  onPress={() => this.clickItem(index, item)}>
+                <View style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}>
                     <ImageBackground style={{
                         width: ScreenUtils.width - px2dp(30),
                         height: px2dp(94),
                         margin: 2
-                    }} source={item.status == 0 ? unUsedBg : usedBg} resizeMode='stretch'>
+                    }} source={item.status == 0? (item.levelimit?usedBg : unUsedBg)  : usedBg} resizeMode='stretch'>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <View style={styles.itemFirStyle}>
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -265,23 +287,40 @@ export default class CouponsDetailPage extends BasePage {
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
-                            {item.status === 1 ?
-                                <UIText value={'已使用'}
-                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> : item.status==2?
-                                    <UIText value={'已失效'}
-                                            style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:
-                                    null}
+                            {item.status=== 0?(item.levelimit?
+                                <UIText value={'等级受限'}
+                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:null):
+                                <UIText value={`${item.status===1?'已使用':(item.status===2?'已失效':'待激活')}`}
+                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> }
                         </View>
                     </ImageBackground>
-                </TouchableOpacity>
+                </View>
             );
         }
 
     };
+    fmtDate(obj) {
+        return formatDate(obj, "yyyy.MM.dd");
+    }
+    toExtendData=(item)=>{
+        let index = this.state.viewData.indexOf(item);
+        let viewData = this.state.viewData;
+        viewData[index].tobeextend=false;
+        this.setState({viewData:viewData})
+    }
+    pickUpData=(item)=>{
+        let index = this.state.viewData.indexOf(item);
+        let viewData = this.state.viewData;
+        viewData[index].tobeextend=true;
+        this.setState({viewData:viewData})
+
+    }
     parseData = (dataList) => {
         let arrData = [];
+        console.log("currentPage",this.currentPage);
         if (this.currentPage === 1) {//refresh
                 this.handleList(dataList, arrData);
+                console.log("couponsDetail",arrData);
                 this.setState({ viewData: arrData, isFirstLoad: false });
         } else {//more
             this.handleList(dataList, arrData);
@@ -297,7 +336,7 @@ export default class CouponsDetailPage extends BasePage {
                 status: item.status,
                 name: item.name,
                 timeStr: this.fmtDate(item.startTime) + "-" + this.fmtDate(item.expireTime),
-                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : item.value),
+                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
@@ -310,7 +349,7 @@ export default class CouponsDetailPage extends BasePage {
         console.log("onLoadMore", this.isLoadMore,this.isEnd,this.state.isFirstLoad);
         if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
-            this.getDataFromNetwork(this.dataSel);
+            this.getDataFromNetwork();
         }
     };
     onRefresh = () => {
@@ -323,12 +362,15 @@ export default class CouponsDetailPage extends BasePage {
         API.userCouponList({
             page: this.currentPage,
             pageSize: 10,
-            systemVersion:310,
+            status:this.params.status,
+            couponIds:this.params.couponIds,
         }).then(result => {
             let data = result.data || {};
             let dataList = data.data || [];
             this.isLoadMore = false;
+            console.log("getDataFromNetwork",dataList);
             this.parseData(dataList);
+
             if (dataList.length === 0) {
                 this.isEnd = true;
                 return;
@@ -341,6 +383,7 @@ export default class CouponsDetailPage extends BasePage {
             bridge.$toast(result.msg);
         });
     }
+
    _render(){
        return(
        <View style={styles.container}>
@@ -372,75 +415,11 @@ const styles = StyleSheet.create(
             alignItems: "center",
             backgroundColor: DesignRule.bgColor
         },
-        imgBg: {
-            width: px2dp(345),
-            height: px2dp(110),
-            marginBottom: 10
-        },
-        couponHeader: {
-            width: px2dp(105),
-            alignItems: "center"
-        },
-        modalStyle: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            alignItems: "center",
-            flex: 1,
-            justifyContent: "center"
-        },
-        contentStyle: {
-            marginRight: px2dp(44),
-            width: ScreenUtils.width - px2dp(88),
-            marginLeft: px2dp(44),
-            height: px2dp(165),
-            backgroundColor: "#FCFCFC",
-            borderRadius: 12,
-            justifyContent: "flex-end",
-            alignItems: "center",
-            opacity: 0.8
-        },
-        couNumStyle: {
-            width: px2dp(123),
-            height: px2dp(24),
-            justifyContent: "center",
-            alignItems: "center"
-        },
         itemFirStyle: {
             alignItems: "center",
             flexDirection: "row",
             justifyContent: "center",
             width: px2dp(80)
         },
-        xNumStyle: {
-            marginRight: 15,
-            marginTop: 15,
-            fontSize: 14,
-            color: DesignRule.textColor_mainTitle
-        },
-        guangStyle: {
-            marginTop: 22,
-            justifyContent: "center",
-            alignItems: "center",
-            borderColor: DesignRule.mainColor,
-            borderWidth: 1,
-            borderRadius: 18,
-            width: 115,
-            height: 36
-        },
-        tnStyle: {
-            padding: 0,
-            paddingLeft: 5,
-            alignItems: "center",
-            height: px2dp(24),
-            width: px2dp(136),
-            fontSize: px2dp(15),
-            color: DesignRule.textColor_mainTitle
-        },
-        giveUpTouStyle: {
-            width: ScreenUtils.width,
-            height: 48,
-            backgroundColor: "white",
-            borderStyle: "solid"
-            , alignItems: "center", justifyContent: "center"
-        }
     }
 );

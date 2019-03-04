@@ -47,7 +47,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={!confirmOrderModel.canUseCou ? '不支持使用优惠券' : (confirmOrderModel.couponName ? confirmOrderModel.couponName : '选择优惠券')}
+                            value={confirmOrderModel.couponCount&&confirmOrderModel.couponCount>0?`兑换券x${confirmOrderModel.couponCount}张`:(!confirmOrderModel.canUseCou ? '不支持使用优惠券' : (confirmOrderModel.couponName ? confirmOrderModel.couponName : '选择优惠券'))}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
