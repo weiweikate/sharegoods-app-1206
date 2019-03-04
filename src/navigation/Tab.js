@@ -1,5 +1,6 @@
 import { TabNavigator } from 'react-navigation';
 import React from 'react';
+import {Text, View} from 'react-native'
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
@@ -12,86 +13,62 @@ import user from '../model/user';
 import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
 
+
+const NormalTab = ({source, title}) => {
+    return <View style={styles.tab}>
+    <Image style={styles.tabBarIcon} source={source}/>
+    <Text style={styles.text}>{title}</Text>
+    </View>
+}
+
+const ActiveTab = ({source, title}) => {
+    return <View style={styles.tab}>
+    <Image style={styles.tabBarIcon} source={source}/>
+    <Text style={styles.activeText}>{title}</Text>
+    </View>
+}
+
+const Tab = ({focused, activeSource, normalSource, title}) => {
+    if (focused) {
+        return <ActiveTab source={activeSource} title={title}/>
+    }
+    return <NormalTab source={normalSource} title={title}/>
+}
+
 export const TabNav = TabNavigator(
     {
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarLabel: '首页',
-                tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.home_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.home_n}/>
-                    );
-                }
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.home_n} activeSource={res.tab.home_s} title={'首页'}/>
             }
         },
         ShowListPage: {
             screen: ShowListPage,
             navigationOptions: {
                 tabBarLabel: '秀场',
-                tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.discover_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.discover_n}/>
-                    );
-                }
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.discover_n} activeSource={res.tab.discover_s} title={'秀场'}/>
             }
         },
         MyShop_RecruitPage: {
             screen: MyShop_RecruitPage,
             navigationOptions: {
-                tabBarLabel: '拼店',
                 tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.group_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.group_n}/>
-                    );
+                    // return <Image style={styles.store} source={res.tab.home_store}/>
+                    return <Tab focused={focused} normalSource={res.tab.group_n} activeSource={res.tab.group_s} title={'拼店'}/>
                 }
             }
         },
         ShopCartPage: {
             screen: ShopCart,
             navigationOptions: ({ navigation }) => ({
-                tabBarLabel: '购物车',
-                tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.cart_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.cart_n}/>
-                    );
-                }
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.cart_n} activeSource={res.tab.cart_s} title={'购物车'}/>
             })
         },
         MinePage: {
             screen: Mine,
             navigationOptions: ({ navigation }) => ({
-                tabBarLabel: '我的',
-                tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.mine_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.mine_n}/>
-                    );
-                },
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.mine_n} activeSource={res.tab.mine_s} title={'我的'}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene } = tab;
                     if (user && user.isLogin) {
@@ -105,15 +82,9 @@ export const TabNav = TabNavigator(
     },
     {
         tabBarOptions: {
-
-            //当前选中的tab bar的文本颜色和图标颜色
-            activeTintColor: DesignRule.mainColor,
-            //当前未选中的tab bar的文本颜色和图标颜色
-            inactiveTintColor: '#000',
-            //是否显示tab bar的图标，默认是false
             showIcon: true,
+            showLabel: false,
             //showLabel - 是否显示tab bar的文本，默认是true
-            showLabel: true,
             //是否将文本转换为大小，默认是true
             upperCaseLabel: false,
             //material design中的波纹颜色(仅支持Android >= 5.0)
@@ -128,11 +99,6 @@ export const TabNav = TabNavigator(
                 borderTopWidth: 0.2,
                 paddingTop: 1,
                 borderTopColor: '#ccc'
-            },
-            //tab bar的文本样式
-            labelStyle: {
-                fontSize: 11,
-                margin: 1
             },
             allowFontScaling : false,
             //tab 页指示符的样式 (tab页下面的一条线).
@@ -153,5 +119,24 @@ const styles = StyleSheet.create({
     tabBarIcon: {
         width: 21,
         height: 21
+    },
+    store: {
+        width: 40,
+        height: 40
+    },
+    text: {
+        color: '#666',
+        fontSize: 11,
+        marginTop: 4
+    },
+    tab: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    activeText: {
+        color: DesignRule.mainColor,
+        fontSize: 11,
+        marginTop: 4
     }
 });
