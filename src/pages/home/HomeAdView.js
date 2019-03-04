@@ -18,7 +18,7 @@ const defaultBannerHeight = px2dp(80)
 const adWidth = (ScreenUtils.width - px2dp(35)) / 2
 const adHeight = adWidth * (160 / 340)
 
-const radius = px2dp(5)
+const radius = (5)
 
 @observer
 export default class HomeAdView extends Component {
@@ -43,7 +43,9 @@ export default class HomeAdView extends Component {
     _renderBanner() {
         //TODO: 占位图，等待接口调试
         return <View style={styles.banner}>
-            <Image style={styles.bannerImage} source={res.place}/>
+            <View style={{borderRadius: (5), overflow: 'hidden'}}>
+                <Image style={styles.bannerImage} source={res.place}/>
+            </View>
         </View>
     }
 
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
     },
     bannerImage: {
         width: bannerWidth,
-        height: defaultBannerHeight
+        height: defaultBannerHeight,
     },
     adrow: {
         marginTop: px2dp(15),

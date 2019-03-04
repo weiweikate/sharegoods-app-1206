@@ -53,6 +53,11 @@ export default class HomeRecommendView extends Component {
 
     render() {
         const { recommendList } = recommendModule;
+
+        if (recommendList.length === 0) {
+            return <View/>
+        }
+
         let items = [];
         recommendList.map((item, index) => {
             items.push(item.imgUrl);
@@ -97,7 +102,6 @@ export default class HomeRecommendView extends Component {
 let styles = StyleSheet.create({
     container: {
         height: px2dp(225),
-        backgroundColor: '#fff',
         marginTop: px2dp(15),
         marginLeft: px2dp(15),
         marginRight: px2dp(15),

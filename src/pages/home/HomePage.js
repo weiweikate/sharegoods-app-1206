@@ -16,7 +16,7 @@ import { homeType } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView, { kHomeClassifyHeight } from './HomeClassifyView';
-import HomeTodayView from './HomeTodayView';
+import HomeTodayView, {todayHeight} from './HomeTodayView';
 import HomeRecommendView, {recommendHeight} from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './HomeBannerView';
@@ -104,7 +104,7 @@ class HomePage extends BasePage {
                 dim.height = ad.length > 0 ? adViewHeight : 0;
                 break;
             case homeType.today:
-                dim.height = todayList.length > 0 ? px2dp(243) : 0;
+                dim.height = todayList.length > 0 ?  todayHeight : 0;
                 break;
             case homeType.recommend:
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
