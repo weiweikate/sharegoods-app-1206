@@ -648,7 +648,7 @@ export default class TopicDetailPage extends BasePage {
             productPrice = levelPrice || '';
             productName = name || '';
             productImgUrl = imgUrl;
-            v0Price = (this.state.data || {}).v0 || '';
+            v0Price = (this.state.data || {}).v1 || '';
         } else {
             const { minPrice, name, imgUrl } = this.state.data || {};
             productPrice = minPrice || '';
