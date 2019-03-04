@@ -3,7 +3,6 @@ import HomeApi from './api/HomeAPI';
 import { homeType, homeRoute } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import { adModules } from './HomeAdModel';
-import { starShopModule } from './HomeStarShopModel';
 import { todayModule } from './HomeTodayModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
@@ -120,7 +119,6 @@ class HomeModule {
         todayModule.loadTodayList(this.firstLoad);
         adModules.loadAdList(this.firstLoad);
         classifyModules.loadClassifyList();
-        starShopModule.loadShopList(this.firstLoad);
         subjectModule.loadSubjectList(this.firstLoad);
         recommendModule.loadRecommendList(this.firstLoad);
         categoryModule.loadCategoryList()

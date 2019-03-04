@@ -16,7 +16,6 @@ import { homeType } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView, { kHomeClassifyHeight } from './HomeClassifyView';
-import HomeStarShopView from './HomeStarShopView';
 import HomeTodayView from './HomeTodayView';
 import HomeRecommendView, {recommendHeight} from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
@@ -112,9 +111,6 @@ class HomePage extends BasePage {
                 break;
             case homeType.subject:
                 dim.height = subjectHeight;
-                break;
-            case homeType.starShop:
-                dim.height = 0;
                 break;
             case homeType.user:
                 dim.height = user.isLogin ? px2dp(44) : 0;
@@ -354,8 +350,6 @@ class HomePage extends BasePage {
             return <HomeRecommendView navigate={this.$navigate}/>;
         } else if (type === homeType.subject) {
             return <HomeSubjectView navigate={this.$navigate}/>;
-        } else if (type === homeType.starShop) {
-            return <HomeStarShopView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
         } else if (type === homeType.goods) {
