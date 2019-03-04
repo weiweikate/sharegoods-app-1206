@@ -43,6 +43,7 @@ import { adModules } from './HomeAdModel';
 import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
 import { subjectModule } from './HomeSubjectModel';
+import HomeTitleView from './HomeTitleView'
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -56,7 +57,7 @@ const home_notice_bg = res.home_notice_bg;
  * @email zhangjian@meeruu.com
  */
 
-const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
+const { px2dp, headerHeight } = ScreenUtils;
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
@@ -119,7 +120,7 @@ class HomePage extends BasePage {
                 dim.height = kHomeGoodsViewHeight;
                 break;
             case homeType.goodsTitle:
-                dim.height = px2dp(55);
+                dim.height = px2dp(57);
                 break;
             default:
                 dim.height = 0;
@@ -355,9 +356,7 @@ class HomePage extends BasePage {
         } else if (type === homeType.goods) {
             return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
-            return <View style={styles.titleView}>
-                <Text style={styles.title} allowFontScaling={false}>为你推荐</Text>
-            </View>;
+            return <View style={styles.titleView}><HomeTitleView title={'为你推荐'}/></View>;
         }
         return <View/>;
     };
@@ -588,48 +587,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: DesignRule.bgColor
     },
-    // headerBg
-    navBarBg: {
-        flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10,
-        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
-        width: ScreenUtils.width,
-        paddingTop: statusBarHeight,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        zIndex: 2
-    },
-    // header
-    navBar: {
-        flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10,
-        height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
-        width: ScreenUtils.width,
-        paddingTop: statusBarHeight,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        zIndex: 3
-    },
     titleView: {
-        marginTop: px2dp(25),
-        marginBottom: px2dp(10),
-        alignItems: 'center',
-        justifyContent: 'center',
+        marginTop: px2dp(10),
+        paddingLeft: px2dp(15),
+        marginBottom: px2dp(5),
         width: ScreenUtils.width
-    },
-    title: {
-        color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(19),
-        fontWeight: '600'
     },
     messageBgStyle: {
         width: px2dp(295),
