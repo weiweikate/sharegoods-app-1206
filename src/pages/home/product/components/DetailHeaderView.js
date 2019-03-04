@@ -169,8 +169,15 @@ export default class DetailHeaderView extends Component {
                                 }
                                 return <View style={[styles.promotionItemView, { marginTop: index === 0 ? 10 : 0 }]}>
                                     <Text style={styles.promotionItemNameText}>{index === 0 ? '促销' : ''}</Text>
-                                    {typeText ? <Text
-                                        style={[styles.promotionItemRedText, { marginLeft: index === 0 ? 13 : 39 }]}>{typeText}</Text> : null}
+                                    {typeText ?
+                                        <View
+                                            style={[styles.promotionItemRedView, { marginLeft: index === 0 ? 13 : 39 }]}>
+                                            <Text
+                                                style={[styles.promotionItemRedText]}>{typeText}</Text>
+                                        </View>
+                                        :
+                                        null
+                                    }
                                     <Text
                                         style={[styles.promotionItemText]}
                                         numberOfLines={1}>{message || ''}</Text>
@@ -201,8 +208,10 @@ const styles = StyleSheet.create({
     promotionItemNameText: {
         color: DesignRule.textColor_instruction, fontSize: 13
     },
+    promotionItemRedView: {
+        borderRadius: 3, borderWidth: 1, borderColor: DesignRule.mainColor
+    },
     promotionItemRedText: {
-        borderRadius: 3, borderWidth: 1, borderColor: DesignRule.mainColor,
         paddingHorizontal: 4, paddingVertical: 2,
         color: DesignRule.textColor_redWarn, fontSize: 10
     },
