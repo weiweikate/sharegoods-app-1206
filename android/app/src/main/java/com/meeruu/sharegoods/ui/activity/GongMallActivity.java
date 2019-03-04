@@ -49,10 +49,6 @@ public class GongMallActivity extends BaseActivity {
     public static final int REQUEST_SELECT_FILE = 100;
     public ValueCallback<Uri[]> uploadMessageAboveL;
     private static final int FILECHOOSER_RESULTCODE = 2;
-
-
-    private Uri imageUri;
-
     String url = "https://contract-qa.gongmall.com/url_contract.html?companyId=AVR3eP&positionId=RMQwyV&data=LLGOsQ+rfDavQT5cDFUqxFW90dpz91MEvgG80mlfzCluQABWE3bqAwWIDhqnGj38KgpQb40xEOnZZksRudcXJkKPJQs07NcyNH3LogJMQMq1F5QnaBGplbdDn6F66sTKf63ttVv1eT0XHHJT8HUn9eZPt1ROCs9dq384foz7fceqY7O4QVF7yOF4aqqerAZhwgBGBUO6rwZ7qii8v/5GJUmd993FicmwgSzot+hUxgej8a4YEXyHvjSf9iAWrt9hzZrnDEX5Z/5Q+86WMHCjWQ==";
 
     @Override
@@ -150,9 +146,9 @@ public class GongMallActivity extends BaseActivity {
     private void take() {
         Intent intent = new Intent(GongMallActivity.this, SelectMyPhotoActivity.class);
         intent.putExtra("singlePic", true);
-//是否需要裁剪照片，目前支持圆形、正方形
-        intent.putExtra("neeclip", true);
-        startActivityForResult(intent, ParameterUtils.REQUEST_CODE_CHANGEPHOTO);
+////是否需要裁剪照片，目前支持圆形、正方形
+//        intent.putExtra("neeclip", true);
+        startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
 //        if (!PermissionUtil.hasPermissions(GongMallActivity.this, Permission.CAMERA)) {
 //            PermissionUtil.requestPermissions(GongMallActivity.this, Permission.getPermissionContent(Arrays.asList(Permission.CAMERA)),
@@ -234,34 +230,22 @@ public class GongMallActivity extends BaseActivity {
                     if (uploadMessageAboveL == null){
                         return;
                     }
+                    String filePath = intent.getStringExtra("path");
+                    Uri  imageUri = Uri.fromFile(new File(filePath));
                     Uri[] results = null;
-                    if (intent == null) {
-                        results = new Uri[]{imageUri};
-                    } else {
-                        String dataString = intent.getDataString();
-                        ClipData clipData = intent.getClipData();
-
-                        if (clipData != null) {
-                            results = new Uri[clipData.getItemCount()];
-                            for (int i = 0; i < clipData.getItemCount(); i++) {
-                                ClipData.Item item = clipData.getItemAt(i);
-                                results[i] = item.getUri();
-                            }
-                        }
-
-                        if (dataString != null){
-                            results = new Uri[]{Uri.parse(dataString)};
-                        }
-                    }
+                    results = new Uri[]{imageUri};
                     uploadMessageAboveL.onReceiveValue(results);
                     uploadMessageAboveL = null;
                 } else {
                     if (mUploadMessage == null){
                         return;
                     }
+                    String filePath = intent.getStringExtra("path");
+                    Uri  imageUri = Uri.fromFile(new File(filePath));
                     mUploadMessage.onReceiveValue(imageUri);
                     mUploadMessage = null;
                 }
+
                 break;
             default:
                 Toast.makeText(getBaseContext(), "图片上传失败", Toast.LENGTH_LONG).show();

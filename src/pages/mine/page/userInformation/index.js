@@ -7,7 +7,7 @@ import WithdrawCashPage from './WithdrawCashPage';
 import IDVertify2Page from './IDVertify2Page';
 import WaitingForWithdrawCashPage from './WaitingForWithdrawCashPage';
 import ProfileEditPage from './ProfileEditPage';
-import GongMallPage from './GongMallPage';
+import GongMallContractPage from './GongMallContractPage';
 
 
 
@@ -22,6 +22,6 @@ export default {
         IDVertify2Page,
         WaitingForWithdrawCashPage,
         ProfileEditPage,
-        GongMallPage
+        GongMallContractPage
     }
 };

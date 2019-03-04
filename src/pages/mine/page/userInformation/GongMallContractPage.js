@@ -17,46 +17,24 @@ import {
     WebView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import MineAPI from '../../api/MineApi';
 
 type Props = {};
 export default class GongMallContractPage  extends BasePage<Props> {
-  constructor(props) {
-    super(props);
-    this.state = {
-        url:null
-    };
-  }
 
   $navigationBarOptions = {
     title: '工猫合同',
     show: true// false则隐藏导航
   };
 
-  componentDidMount() {
-    this.loadPageData();
-  }
-
-  loadPageData=()=> {
-      MineAPI.gongmallEnter().then((data)=>{
-          this.setState({
-              url:data.data
-          })
-      }).catch(error=>{
-          this.$toastShow(error.msg);
-      });
-
-  }
-
   _render() {
     return (
       <View style={styles.container}>
-          {this.state.url ?  <WebView source={{ uri: this.state.url }}
-                                      javaScriptEnabled={true}
-                                      domStorageEnabled={true}
-                                      scalesPageToFit={true}
-                                      style={styles.webViewWrapper}
-          />:null}
+          <WebView source={{ uri: 'http://'+this.params.url }}
+                   javaScriptEnabled={true}
+                   domStorageEnabled={true}
+                   scalesPageToFit={true}
+                   style={styles.webViewWrapper}
+          />
       </View>
     );
   }
