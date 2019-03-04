@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import ScreenUtil from '../../utils/ScreenUtils';
 const { px2dp } = ScreenUtil
 import user from '../../model/user'
@@ -22,17 +21,28 @@ export default class HomeUserView extends Component {
         }
         let { levelName } = user
         return  <View style={styles.container}>
-            <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 0}}  colors={['#fff6e7', '#fedb99']} style={styles.inContainer}>
-                <Text style={styles.title} allowFontScaling={false}>尊敬的</Text>{levelName ? <View style={styles.levelName}><Text style={styles.text} allowFontScaling={false}>{levelName.length >= 5 ? levelName.slice(0, 4) + '...' : levelName}</Text></View> : null}<Text style={styles.text} allowFontScaling={false}>品鉴官，您好！</Text>
-                <View style={{flex: 1}}/>
-                <TouchableOpacity onPress={() => this._goToPromotionPage()}>
-                    <ImageBackground style={styles.btnBack} source={res.user_level} resizeMode={'stretch'}>
-                        <Text style={styles.see} allowFontScaling={false}>查看账户</Text>
-                        <View style={{width: 8}}/>
-                        <Image source={res.arrowRight}/>
-                    </ImageBackground>
-                </TouchableOpacity>
-            </LinearGradient>
+         <View style={{height: px2dp(10)}}/>
+        <ImageBackground style={styles.inContainer} source={res.account_bg} resizeMode={'stretch'}>
+            <View style={styles.left}/>
+            <Text style={styles.title} allowFontScaling={false}>尊敬的</Text>
+            {levelName
+            ?
+            <Text style={styles.text} allowFontScaling={false}>
+                {
+                    levelName
+                }
+            </Text>
+            :
+            null}
+                <Text style={styles.text} allowFontScaling={false}>品鉴官，</Text>
+                <Text style={styles.title} allowFontScaling={false}>您好！</Text>
+            <View style={{flex: 1}}/>
+            <TouchableOpacity style={styles.acount} onPress={() => this._goToPromotionPage()}>
+                <Text style={styles.see} allowFontScaling={false}>查看账户</Text>
+                <Image source={res.arrowRight}/>
+                <View style={{width: 10}}/>
+            </TouchableOpacity>
+        </ImageBackground>
         </View>
     }
 }
@@ -40,44 +50,37 @@ export default class HomeUserView extends Component {
 let styles = StyleSheet.create({
     container: {
         height: px2dp(44),
-        width: ScreenUtil.width
+        width: ScreenUtil.width,
+        paddingLeft: px2dp(15),
+        paddingRight: px2dp(15),
+        backgroundColor: '#fff'
     },
     inContainer: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        height: px2dp(30),
+        paddingBottom: px2dp(1)
+    },
+    left: {
+        width: px2dp(20)
     },
     title: {
-        marginLeft: px2dp(25),
-        color: '#9D732A',
+        color: '#333',
         fontSize: px2dp(14)
     },
     text: {
-        color: '#9D732A',
-        fontSize: px2dp(14)
-    },
-    levelName: {
-        paddingLeft: px2dp(7),
-        paddingRight: px2dp(7),
-        margin: px2dp(2),
-        borderRadius: px2dp(10),
-        borderWidth: StyleSheet.hairlineWidth,
-        height: px2dp(20),
-        borderColor: '#9D732A',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    btnBack: {
-        width: px2dp(74),
-        height: px2dp(20),
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        marginRight: px2dp(17),
-        borderRadius: px2dp(10)
+        color: '#333',
+        fontSize: px2dp(14),
+        fontWeight: '600'
     },
     see: {
-        color: '#fff',
-        fontSize: px2dp(11)
+        color: '#666',
+        fontSize: px2dp(12),
+        marginRight: px2dp(4)
+    },
+    acount: {
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 });

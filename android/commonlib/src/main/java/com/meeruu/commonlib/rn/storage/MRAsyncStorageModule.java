@@ -222,7 +222,8 @@ public class MRAsyncStorageModule
                         }
                         // 将rn的host信息缓存
                         if ("HostJson".equals(keyValueArray.getArray(idx).getString(0))) {
-                            SPCacheUtils.put(ParameterUtils.API_SERVER, keyValueArray.getArray(idx).getString(1));
+                            SPCacheUtils.put(ParameterUtils.API_SERVER,
+                                    keyValueArray.getArray(idx).getString(1));
                         }
                         statement.clearBindings();
                         statement.bindString(1, keyValueArray.getArray(idx).getString(0));
