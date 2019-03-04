@@ -12,6 +12,7 @@ const resHome = {
     group: require('./group.png'),
     btn: require('./btn.png'),
     bg: require('./bg.png'),
+    close_white: require('./close_white.png'),
     ...res
 };
 export default resHome;

@@ -18,7 +18,8 @@ import {
     StyleSheet,
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    ImageBackground
 } from 'react-native';
 import CommModal from '../../comm/components/CommModal';
 import res from './res';
@@ -27,6 +28,14 @@ import { MRText } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import OssHelper from '../../utils/OssHelper';
 import ImageLoad from '@mr/image-placeholder';
+import {categoryHeight} from '../home/HomeCategoryView'
+import { bannerHeight } from '../home/HomeBannerView';
+import{ kHomeClassifyHeight } from '../home/HomeClassifyView';
+import  { adViewHeight } from '../home/HomeAdView';
+import { adModules } from '../home/HomeAdModel';
+import user from '../../model/user';
+import { observer } from 'mobx-react';
+import RouterMap,{ navigate } from '../../navigation/RouterMap';
 const {
     tip_one,
     tip_two,
@@ -35,16 +44,21 @@ const {
     tip_five,
     discover,
     group,
-    next_btn
+    next_btn,
+    bg,
+    btn,
+    close_white
 } = res;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
+const adWidth = (ScreenUtils.width - autoSizeWidth(35)) / 2
+const adHeight = adWidth * (160 / 340);
 
 // import {
 //   UIText,
 //   UIImage
 // } from '../../../components/ui';
 // import DesignRule from 'DesignRule';
-
+@observer
 export default class GuideModal extends React.Component {
 
     constructor(props) {
@@ -52,14 +66,15 @@ export default class GuideModal extends React.Component {
 
         this.state = {
             step: 0, /** 新手引导第几步*/
-            visible: false
+            visible: false,
+            num: 98
         };
         /** type: 0 代表*/
         this.data = [{image: discover, tip: tip_one, text: '秀场'},
             {image: OssHelper('/app/share%403x.png'), tip: tip_two, text: '升级'},
             {image: group, tip: tip_three, text: '拼店'},
-            {image: OssHelper('/app/signin%403x.png'), tip: tip_four},
-            {image: OssHelper('/app/signin%403x.png'), tip: tip_five, text: '签到'},
+            {image: OssHelper(''), tip: tip_four},
+            {image: OssHelper('/app/signin%403x.png'), tip: tip_five, text: '签到'}
         ];
     }
 
@@ -110,7 +125,7 @@ export default class GuideModal extends React.Component {
 
 
             if (step === 1){
-                let top =  autoSizeWidth(100);
+                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0);
                 bgStyle = {top: top, left: autoSizeWidth(7)}
                 imageStyle = {width: autoSizeWidth(50), height: autoSizeWidth(50)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
@@ -146,7 +161,15 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 3){
-                let top =  autoSizeWidth(200);
+                let ad = adModules.ad;
+                let top =  kHomeClassifyHeight+categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0);
+                if (ad.length > 0){
+                    data.image = ad[ad.length-1].imgUrl;
+                    top = top + adViewHeight - adHeight
+                }
+                if (top>ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight) {
+                    top = ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight;
+                }
                 bgStyle = {top: top, right: autoSizeWidth(12), height: autoSizeWidth(80), width: autoSizeWidth(180), borderRadius: 5}
                 imageStyle = {width: autoSizeWidth(180), height: autoSizeWidth(80)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
@@ -164,7 +187,7 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 4){
-                let top =  autoSizeWidth(100);
+                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0);
                 bgStyle = {top: top, left: autoSizeWidth(148)}
                 imageStyle = {width: autoSizeWidth(50), height: autoSizeWidth(50)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
@@ -184,7 +207,7 @@ export default class GuideModal extends React.Component {
                 <View style={DesignRule.style_absoluteFullParent}>
                     <View style={[styles.circleBg, bgStyle]}>
                         { typeof data.image === 'string' ?
-                            <ImageLoad source={{uri: data.image}} style = {imageStyle} isAvatar={true}/>:
+                            <ImageLoad source={{uri: data.image}} style = {imageStyle} isAvatar={step!==3}/>:
                             <Image source={data.image} style = {imageStyle}/>
                         }
                         {data.text ? <MRText style={textStyle}>{data.text}</MRText> : null}
@@ -195,11 +218,35 @@ export default class GuideModal extends React.Component {
                     </TouchableOpacity>
                 </View>
             )
+        }else {
+            return (
+                <View style={[DesignRule.style_absoluteFullParent, {alignItems: 'center'}]}>
+                    <View style={{flex: 1}}/>
+                    <ImageBackground style={{height: autoSizeWidth(345), width: autoSizeWidth(250), justifyContent: 'flex-end',alignItems: 'center'}}
+                                     source={bg}
+                    >
+                        <MRText style={{fontSize: 17, color: '#FFECB6', marginBottom: 10}}>{this.state.num + '枚秀豆送给您'}</MRText>
+                        <TouchableOpacity onPress={this.gotoPage} style = {{marginBottom: autoSizeWidth(30), alignItems: 'center'}}>
+                            <Image source={btn} style={{height: autoSizeWidth(40), width: autoSizeWidth(145)}} resizeMode={'stretch'}/>
+                        </TouchableOpacity>
+                    </ImageBackground>
+                    <View style={{flex: 1}}>
+                    <TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>
+                        <Image source={close_white} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
+                    </TouchableOpacity>
+                    </View>
+                </View>
+            )
         }
     }
 
     nextPress=()=>{
         this.setState({step: this.state.step + 1})   ;
+    }
+
+    gotoPage=()=>{
+        navigate(RouterMap.MyIntegralAccountPage);
+        this.close();
     }
 
 
@@ -226,6 +273,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         justifyContent: 'center',
+        overflow: 'hidden'
 
     }
 });
