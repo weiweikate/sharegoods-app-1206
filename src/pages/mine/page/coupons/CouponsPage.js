@@ -12,9 +12,14 @@ import NavigatorBar from "../../../../components/pageDecorator/NavigatorBar/Navi
 import Modal from "../../../../comm/components/CommModal";
 import { MRText as Text, NoMoreClick } from "../../../../components/ui";
 import res from "./../../res";
+import { observer } from 'mobx-react/native';
+import couponsModel from './../../model/CouponsModel';
+import bridge from "../../../../utils/bridge";
 
 const topUp = res.couponsImg.youhuiquan_icon_topArrow;
 const topDown = res.couponsImg.youhuiquan_icon_topArrowed;
+
+@observer
 export default class CouponsPage extends BasePage {
     constructor(props) {
         super(props);
@@ -26,7 +31,8 @@ export default class CouponsPage extends BasePage {
                 type: 2
             }, { name: "折扣券", type: 3 },
                 { name: "抵扣券", type: 4 }, { name: "周期券", type: 5 }, { name: "靓号券", type: 7 }],
-            selectIndex: 0
+            selectIndex: 0,
+            selectTab: 0
         };
     }
 
@@ -45,7 +51,7 @@ export default class CouponsPage extends BasePage {
         return (
             <TouchableOpacity style={{ flexDirection: "row", alignItems: "center" }} onPress={() => {
                 this.setState({ modalVisible: true });
-            }} disabled={!!this.params.fromOrder}>
+            }} disabled={!!this.params.fromOrder||!!this.params.justOne}>
                 <Text style={{
                     fontSize: 18,
                     color: DesignRule.textColor_mainTitle,
@@ -70,7 +76,7 @@ export default class CouponsPage extends BasePage {
                 <NoMoreClick onPress={() => {
                     this.setState({ modalVisible: false });
                 }} activeOpacity={1}>
-                    <View style={{ marginTop: -ScreenUtils.statusBarHeight }}>
+                    <View style={{ paddingTop:ScreenUtils.statusBarHeight>30?0:-ScreenUtils.statusBarHeight,marginTop:ScreenUtils.statusBarHeight>30?-ScreenUtils.statusBarHeight:0}}>
                         <NavigatorBar renderTitle={this.$NavBarRenderTitle} leftPressed={() => {
                             if (this.state.modalVisible) {
                                 this.setState({ modalVisible: false });
@@ -105,15 +111,17 @@ export default class CouponsPage extends BasePage {
     }
 
     selectCouType = (item, i) => {
-        if (i == 0) {
-            item = "优惠券";
-        }
+        // if (i == 0) {
+        //     item.name = "优惠券";
+        // }
         this.setState({
             modalVisible: false,
-            titleName: item.name,
+            titleName: (i===0?"优惠券":item.name),
             selectIndex: i
         });
-        this.selctType.onRefresh(item);
+        couponsModel.changeType(item);
+        bridge.showLoading();
+        this.selctType.onRefresh(couponsModel.params);
     };
 
     _render() {
@@ -121,12 +129,15 @@ export default class CouponsPage extends BasePage {
             <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                 {this.renderModals()}
                 <ScrollableTabView
+                    onChangeTab={(obj) => {
+                        this.setState({ selectTab: obj.i });
+                    }}
                     style={styles.container}
                     renderTabBar={this._renderTabBar}
                     //进界面的时候打算进第几个
                     initialPage={0}>
                     <MyCouponsItems tabLabel={"未使用"} pageStatus={0} nav={this.props.navigation}
-                                    isgiveup={this.params.fromOrder}
+                                    isgiveup={this.params.fromOrder}  selectTab={this.state.selectTab}
                                     fromOrder={this.params.fromOrder} justOne={this.params.justOne}
                                     orderParam={this.params.orderParam}
                                     giveupUse={() => {
@@ -136,11 +147,11 @@ export default class CouponsPage extends BasePage {
                                     useCoupons={(data) => {
                                         this.params.callBack(data);
                                         this.$navigateBack();
-                                    }} ref={(e) => this.selctType = e}/>
+                                    }} ref={(e) => this.selctType = e} />
                     <MyCouponsItems tabLabel={"已使用"} pageStatus={1} nav={this.props.navigation}
-                                    isgiveup={false} ref={(e) => this.selctType = e}/>
+                                    isgiveup={false} ref={(e) => this.selctType = e} selectTab={this.state.selectTab}/>
                     <MyCouponsItems tabLabel={"已失效"} pageStatus={2} nav={this.props.navigation}
-                                    isgiveup={false} ref={(e) => this.selctType = e}/>
+                                    isgiveup={false} ref={(e) => this.selctType = e} selectTab={this.state.selectTab}/>
                 </ScrollableTabView>
             </View>
         );
