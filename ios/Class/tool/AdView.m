@@ -197,7 +197,7 @@ completion:(YYWebImageCompletionBlock)completion
 {
   YYWebImageManager * imageManager =  [YYWebImageManager sharedManager];
   imageManager.cache.diskCache.ageLimit = 60*60*24;
-  YYWebImageOperation* operation = [imageManager requestImageWithURL:[NSURL URLWithString:str] options:YYWebImageOptionUseNSURLCache | YYWebImageOptionIgnoreFailedURL  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+  YYWebImageOperation* operation = [imageManager requestImageWithURL:[NSURL URLWithString:str] options:  YYWebImageOptionIgnoreFailedURL | YYWebImageOptionIgnoreDiskCache  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
     
   } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
     return image;
