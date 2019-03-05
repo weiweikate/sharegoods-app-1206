@@ -53,16 +53,6 @@ public class GongMallActivity extends BaseActivity {
     private static final int FILECHOOSER_RESULTCODE = 2;
     private String url ;
     public static final int SIGN_OK = 889;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.gongmall_page);
-//        this.url = getIntent().getStringExtra("url");
-        if(TextUtils.isEmpty(this.url)){
-            finish();
-        }
-    }
 
     //WebViewClient主要帮助WebView处理各种通知、请求事件
     private WebViewClient webViewClient = new WebViewClient() {
@@ -78,7 +68,7 @@ public class GongMallActivity extends BaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.equals(HttpUrlUtils.getUrl(HttpUrlUtils.URL_SHOWLIST))) {
+            if (url.equals(HttpUrlUtils.getUrl(HttpUrlUtils.URL_GONGMAO))) {
                 setResult(SIGN_OK);
                 finish();
                 return true;//表示我已经处理过了
@@ -151,6 +141,7 @@ public class GongMallActivity extends BaseActivity {
     private void take() {
         Intent intent = new Intent(GongMallActivity.this, SelectMyPhotoActivity.class);
         intent.putExtra("singlePic", true);
+        startActivityForResult(intent, FILECHOOSER_RESULTCODE);
     }
     /*
      * 图片选择完成操作
@@ -244,6 +235,17 @@ public class GongMallActivity extends BaseActivity {
 
     @Override
     protected void initViewAndData() {
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.gongmall_page);
+        this.url = getIntent().getStringExtra("url");
+        if(TextUtils.isEmpty(this.url)){
+            finish();
+        }
         webView = (WebView) findViewById(R.id.webView);
         webView.loadUrl(url);//加载url
 

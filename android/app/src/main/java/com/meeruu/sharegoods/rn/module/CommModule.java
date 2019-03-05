@@ -464,7 +464,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         this.gongMao = promise;
         Intent intent = new Intent(getCurrentActivity(), GongMallActivity.class);
         intent.putExtra("url",url);
-        this.
+//        getCurrentActivity().startActivity(intent);
         getCurrentActivity().startActivityForResult(intent,GONGMAOCODE);
     }
 
