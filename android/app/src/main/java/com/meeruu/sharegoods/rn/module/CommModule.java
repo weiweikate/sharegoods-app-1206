@@ -438,4 +438,15 @@ public class CommModule extends ReactContextBaseJavaModule {
             return;
         }
     }
+
+    @ReactMethod
+    public void saveImageToPhotoAlbumWithUrl(String url,Promise promise){
+        if(TextUtils.isEmpty(url)){
+            promise.reject("url不能为空");
+            return;
+        }
+
+
+
+    }
 }

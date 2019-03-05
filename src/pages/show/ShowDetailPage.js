@@ -4,7 +4,7 @@ import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-import AutoHeightWebView from 'react-native-autoheight-webview';
+import AutoHeightWebView from '@mr/react-native-autoheight-webview';
 
 const { px2dp } = ScreenUtils;
 // import HTML from 'react-native-render-html';
@@ -166,6 +166,10 @@ export default class ShowDetailPage extends BasePage {
         });
     };
 
+    _onLongClickImage=(event)=>{
+        alert(event.nativeEvent.url);
+    }
+
     _renderNormalTitle() {
         return <View style={styles.whiteNav} ref={(ref) => {
             this._whiteNavRef = ref;
@@ -233,7 +237,6 @@ export default class ShowDetailPage extends BasePage {
             + 16
             + 'px;'
             + '}'
-            + 'img {max-width:100px}'
             + 'p {word-break:break-all;}'
             //  + Utils.NVL(this.props.webviewStyle, '')
             + '</style>'
@@ -296,8 +299,13 @@ export default class ShowDetailPage extends BasePage {
                 {/*color: DesignRule.textColor_mainTitle,*/}
                 {/*fontSize: px2dp(13)*/}
                 {/*}}/>*/}
-                <AutoHeightWebView source={{ html: html }} style={{ width: DesignRule.width }} scalesPageToFit={true}
-                                   javaScriptEnabled={true}/>
+                <AutoHeightWebView source={{ html: html }}
+                                   style={{ width: DesignRule.width }}
+                                   scalesPageToFit={true}
+                                   javaScriptEnabled={true}
+                                   onLongClickImage={(event)=>{alert(event.nativeEvent.url)}}
+
+                />
                 <View style={styles.goodsView}>
                     {
                         products.map((value, index) => {
