@@ -335,7 +335,7 @@ export default class CouponsDetailPage extends BasePage {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: this.fmtDate(item.startTime) + "-" + this.fmtDate(item.expireTime),
+                timeStr: this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0),
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
@@ -364,6 +364,7 @@ export default class CouponsDetailPage extends BasePage {
             pageSize: 10,
             status:this.params.status,
             couponIds:this.params.couponIds,
+            pageType:2
         }).then(result => {
             let data = result.data || {};
             let dataList = data.data || [];

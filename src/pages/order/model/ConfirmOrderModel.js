@@ -270,7 +270,9 @@ class ConfirmOrderModel {
                     // orderType: this.state.orderParam.orderType,
                     orderType: 1,
                     source:  orderParamVO.source,
-                    channel: 2
+                    channel: 2,
+                    systemVersion:310,
+                    couponsId: orderParamVO.couponsId,
                 };
                 OrderApi.submitOrder(paramsnor).then((response) => {
                     bridge.hiddenLoading();
