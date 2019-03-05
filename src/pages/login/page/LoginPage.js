@@ -12,7 +12,7 @@ import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
 import LoginAPI from '../api/LoginApi';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
@@ -50,7 +50,6 @@ export default class LoginPage extends BasePage {
     static navigationOptions = {
         gesturesEnabled: false
     };
-
     // 导航配置
     $navigationBarOptions = {
         title: '登录',
@@ -84,21 +83,8 @@ export default class LoginPage extends BasePage {
     }
 
     $NavBarLeftPressed = () => {
-        if (UserModel.isLogin) {
-            this.$navigateBack();
-        } else {
-            if (this.params.callback) {
-                let resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                    ]
-                });
-                this.props.navigation.dispatch(resetAction);
-            } else {
-                this.$navigateBack();
-            }
-        }
+
+        this.$navigateBack();
     };
 
     _render() {
@@ -166,7 +152,7 @@ export default class LoginPage extends BasePage {
                         appOpenid: data.appOpenid,
                         systemVersion: data.systemVersion,
                         wechatVersion: '',
-                        unionid:data.unionid
+                        unionid: data.unionid
                     }).then((res) => {
                         if (res.code === 34005) {
                             data.title = '绑定手机号';
@@ -178,6 +164,7 @@ export default class LoginPage extends BasePage {
                             console.log(UserModel);
                             homeModule.loadHomeList();
                             bridge.setCookies(res.data);
+                            this.params.callback && this.params.callback();
                             this.$navigateBack();
                             // 埋点登录成功
                             login(data.data.code);
@@ -193,7 +180,6 @@ export default class LoginPage extends BasePage {
             }
         });
     };
-
     /*老用户登陆*/
     oldUserLoginClick = () => {
         oldUserLoginSingleModel.JumpToLogin(RouterMap.OldUserLoginPage);
@@ -201,7 +187,6 @@ export default class LoginPage extends BasePage {
     /*注册*/
     registBtnClick = () => {
         oldUserLoginSingleModel.isCanTopRegist(RouterMap.RegistPage);
-        // this.$navigate('login/login/RegistPage');
     };
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
@@ -210,7 +195,7 @@ export default class LoginPage extends BasePage {
             LoginAPI.codeLogin({
                 authcode: '',
                 code: LoginParam.code,
-                device: '设备名称',
+                device: DeviceInfo.getDeviceName() + '',
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
                 systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() : '暂无',
@@ -229,18 +214,9 @@ export default class LoginPage extends BasePage {
                 console.log(UserModel);
                 // 埋点登录成功
                 login(data.data.code);
+                this.params.callback && this.params.callback();
+                this.$navigateBack();
 
-                if (this.params.callback) {
-                    let resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                        ]
-                    });
-                    this.props.navigation.dispatch(resetAction);
-                } else {
-                    this.$navigateBack();
-                }
 
                 //推送
                 JPushUtils.updatePushTags();
@@ -252,7 +228,7 @@ export default class LoginPage extends BasePage {
             });
         } else {
             // this.$loadingShow();
-            console.log('请求开始'+ new Date().getTime());
+            console.log('请求开始' + new Date().getTime());
             track(trackEvent.login, { loginMethod: '密码登录' });
             LoginAPI.passwordLogin({
                 authcode: '22',
@@ -265,7 +241,7 @@ export default class LoginPage extends BasePage {
                 wechatCode: '11',
                 wechatVersion: '11'
             }).then((data) => {
-                console.log('请求结束'+ new Date().getTime());
+                console.log('请求结束' + new Date().getTime());
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
@@ -284,13 +260,7 @@ export default class LoginPage extends BasePage {
                 /**
                  * 跳转导师选择页面
                  */
-                // this.$navigate('login/login/SelectMentorPage');
-                // return;
-                if (this.params.callback) {
-                    this.$navigateBackToHome();
-                } else {
-                    this.$navigateBack();
-                }
+                this.$navigateBack();
 
             }).catch((data) => {
                 this.$loadingDismiss();

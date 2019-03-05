@@ -98,7 +98,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 System.gc();
             }
         }
-
     }
 
     /**

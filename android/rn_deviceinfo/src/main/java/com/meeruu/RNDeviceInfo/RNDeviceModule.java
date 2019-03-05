@@ -1,7 +1,6 @@
 package com.meeruu.RNDeviceInfo;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.bluetooth.BluetoothAdapter;
@@ -12,8 +11,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Point;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -21,19 +18,9 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 
 import com.facebook.react.bridge.Callback;
@@ -41,13 +28,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.meeruu.commonlib.base.BaseApplication;
-import com.meeruu.commonlib.utils.DensityUtils;
-import com.meeruu.commonlib.utils.DeviceUtils;
-import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meituan.android.walle.WalleChannelReader;
 
-import java.lang.reflect.Method;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.HashMap;
@@ -121,7 +103,7 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         intent.setData(Uri.parse(url));
         intent.setAction(Intent.ACTION_DIAL);
         // 是否可以处理跳转到拨号的 Intent
-        boolean canResolveIntent = intent.resolveActivity(BaseApplication.appContext.getPackageManager()) != null;
+        boolean canResolveIntent = intent.resolveActivity(getReactApplicationContext().getPackageManager()) != null;
 
         return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.toLowerCase().contains("vbox")
@@ -134,7 +116,7 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
                 || Build.MANUFACTURER.contains("Genymotion")
                 || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
                 || "google_sdk".equals(Build.PRODUCT)
-                || ((TelephonyManager) BaseApplication.appContext.getSystemService(Context.TELEPHONY_SERVICE))
+                || ((TelephonyManager) getReactApplicationContext().getSystemService(Context.TELEPHONY_SERVICE))
                 .getNetworkOperatorName().toLowerCase().equals("android")
                 || !canResolveIntent;
     }
@@ -251,22 +233,22 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void isNavigationBarExist(Callback callback){
+    public void isNavigationBarExist(Callback callback) {
         try {
-            boolean isNavigationBarExist = DeviceUtils.isNavigationBarExist(reactContext.getCurrentActivity());
+            boolean isNavigationBarExist = Utils.isNavigationBarExist(reactContext.getCurrentActivity());
             callback.invoke(isNavigationBarExist);
-        }catch (Exception e){
+        } catch (Exception e) {
             //默认有虚拟键盘
             callback.invoke(true);
         }
     }
 
     @ReactMethod
-    public void hasNotchScreen(Callback callback){
+    public void hasNotchScreen(Callback callback) {
         try {
-            boolean hasNotchScreen = ScreenUtils.hasNotchScreen(reactContext.getCurrentActivity());
+            boolean hasNotchScreen = Utils.hasNotchScreen(reactContext.getCurrentActivity());
             callback.invoke(hasNotchScreen);
-        }catch (Exception e){
+        } catch (Exception e) {
             //默认有虚拟键盘
             callback.invoke(false);
         }
@@ -328,7 +310,7 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         constants.put("apiLevel", Build.VERSION.SDK_INT);
         constants.put("deviceLocale", this.getCurrentLanguage());
         constants.put("deviceCountry", this.getCurrentCountry());
-        constants.put("uniqueId", DeviceUtils.getUniquePsuedoID());
+        constants.put("uniqueId", Utils.getUniquePsuedoID());
         constants.put("systemManufacturer", Build.MANUFACTURER);
         constants.put("bundleId", packageName);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -361,18 +343,13 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
         actMgr.getMemoryInfo(memInfo);
         constants.put("totalMemory", memInfo.totalMem);
-        constants.put("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
+        constants.put("statusBarHeight", Utils.px2dip(getReactApplicationContext(), Utils.getStatusHeight(getReactApplicationContext())));
         constants.put("channel", WalleChannelReader.getChannel(reactContext, "guanwang"));
-        constants.put("isAllScreenDevice",DeviceUtils.isAllScreenDevice(reactContext));
+        constants.put("isAllScreenDevice", Utils.isAllScreenDevice(reactContext));
 //        constants.put("isNavigationBarShow",DeviceUtils.isNavigationBarExist(reactContext.getCurrentActivity()));
 //        constants.put("isAnroidNotchScreen",ScreenUtils.hasNotchScreen(reactContext.getCurrentActivity()));
         return constants;
     }
-
-
-
-
-
 
 
 }
