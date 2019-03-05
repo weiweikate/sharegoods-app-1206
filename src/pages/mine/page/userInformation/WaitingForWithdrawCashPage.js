@@ -55,7 +55,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
     $navigationBarOptions = {
         show: true, // false则隐藏导航
-        title: '待提现账户'
+        title: '待入账'
     };
 
     //**********************************ViewPart******************************************
@@ -82,7 +82,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                 <ImageBackground style={styles.imageBackgroundStyle}/>
                 <View style={styles.viewStyle}>
                     <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }}
-                          allowFontScaling={false}>待提现余额(元)</Text>
+                          allowFontScaling={false}>待入账(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
                             <Text style={{
