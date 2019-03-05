@@ -11,7 +11,7 @@ import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import { bannerModule } from './HomeBannerModel';
 
-export const bannerHeight = px2dp(125);
+export const bannerHeight = px2dp(130);
 const cellHeight = px2dp(120)
 
 import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode';
@@ -71,7 +71,6 @@ export default class HomeBannerView extends Component {
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
         const { navigate } = this.props;
-        console.log('_onPressRow', data, params, router)
         track(trackEvent.bannerClick, {pageType: 'home', bannerLocation: 'home', bannerID: data.id, bannerRank: data.rank, url: data.imgUrl, bannerName: data.linkTypeCode})
         navigate(router, {...params, preseat:'home_banner'})
     };
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: 0,
-        width: ScreenUtils.width,
+        width: ScreenUtils.width ,
         height: px2dp(15)
     },
     activityIndex: {

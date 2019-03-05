@@ -110,24 +110,6 @@ let styles = StyleSheet.create({
     scroll: {
         height: px2dp(175)
     },
-    img: {
-        width: px2dp(280),
-        height: px2dp(140)
-    },
-    imgView: {
-        width: px2dp(280),
-        height: px2dp(140),
-        borderRadius: (5),
-        overflow: 'hidden'
-    },
-    item: {
-        width: px2dp(280),
-        height: px2dp(145),
-        marginLeft: px2dp(10)
-    },
-    space: {
-        width: px2dp(15)
-    },
     text: {
         color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(13),
@@ -137,7 +119,7 @@ let styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: px2dp(10)
+        flex: 1
     },
     activityIndex: {
         width: px2dp(10),
