@@ -154,7 +154,6 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             alignItems: 'center',
                             justifyContent: 'center',
                             borderRadius: 5
-
                         }}>
                             <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}
                                   allowFontScaling={false}>待提现账户说明</Text>
@@ -204,7 +203,6 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         <Image style={{ width: 20, height: 20 }} source={topicShowClose}/>
                     </TouchableOpacity>
                 </View>
-
             </CommModal>
         );
     }
