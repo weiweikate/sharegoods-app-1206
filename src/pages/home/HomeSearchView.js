@@ -23,7 +23,7 @@ export default ({ navigation, whiteIcon, hasMessage, pageFocused }) =>
             <TouchableWithoutFeedback onPress={() => {
                                   navigation('home/search/SearchPage');
                               }}>
-                <View style={[styles.searchBox, { backgroundColor: '#E4E5E6' }]}>
+                <View style={[styles.searchBox, { backgroundColor: '#F2F2F2' }]}>
                 <Image source={searchImg} style={styles.searchIcon}/>
                 <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
                 </View>
