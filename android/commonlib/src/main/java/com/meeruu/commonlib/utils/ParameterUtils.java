@@ -17,6 +17,7 @@ public class ParameterUtils {
     public static final String UPLOAD_ERR = "上传失败!";
     public static final String DOWNLOAD_ERR = "下载失败!";
     public static final String NET_ERR = "请检查网络连接状态!";
+    public static final String ALL_PICS = "所有图片";
     public static final String RESPONSE_CODE_SUCCESS = "10000";  //响应成功码
     // 无网络连接错误码
     public static final String RESPONE_CODE_NETERR = "net_err";
@@ -43,6 +44,9 @@ public class ParameterUtils {
     public static final int REQUEST_CODE_INSTALL = 38;
     public static final int REQUEST_CODE_MANAGE_APP_SOURCE = 39;
     public static final int TIMER_START = 40;
+    public static final int REQUEST_CODE_CHANGEPHOTO = 41; //更换照片请求码
+    public static final int REQUEST_CODE_CLIP_OVER = 43; //剪裁照片请求码
+    public static final int EMPTY_WHAT_DELAY = 44;
     /**
      * 一般图片url宽高
      */

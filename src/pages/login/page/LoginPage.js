@@ -1,17 +1,17 @@
 import React from "react";
 import LoginTopView from "../components/LoginTopView";
-import UserModel from "../../../model/user";
+// import UserModel from "../../../model/user";
 import {
     View,
     StyleSheet,
     TouchableOpacity,
-    Image,
+    Image
 } from "react-native";
 import { MRText as Text } from "../../../components/ui";
 import CommSpaceLine from "../../../comm/components/CommSpaceLine";
 import BasePage from "../../../BasePage";
 import LoginAPI from "../api/LoginApi";
-import { NavigationActions } from "react-navigation";
+// import { NavigationActions } from "react-navigation";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import DesignRule from "../../../constants/DesignRule";
 import res from "../res";
@@ -97,18 +97,13 @@ export default class LoginPage extends BasePage {
     };
     $NavBarRenderRightItem = () => {
         return (
-        //     { /*<Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>*/ }
-        // {/*返回*/
-        // }
-        // {/*</Text>*/
-        // }
-        <Text style={Styles.rightTopTitleStyle} onPress={()=>{
-            this.$navigateBack()
-        }}>
-            返回
-        </Text>
-    )
-        ;
+            <Text style={Styles.rightTopTitleStyle} onPress={() => {
+                this.$navigateBack();
+            }}>
+                返回
+            </Text>
+        )
+            ;
     };
 
     $isMonitorNetworkStatus() {
@@ -128,21 +123,7 @@ export default class LoginPage extends BasePage {
     }
 
     $NavBarLeftPressed = () => {
-        if (UserModel.isLogin) {
-            this.$navigateBack();
-        } else {
-            if (this.params.callback) {
-                let resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: "Tab" })//要跳转到的页面名字
-                    ]
-                });
-                this.props.navigation.dispatch(resetAction);
-            } else {
-                this.$navigateBack();
-            }
-        }
+        this.$navigateBack();
     };
 
     _render() {

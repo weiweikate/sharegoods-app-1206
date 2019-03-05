@@ -75,6 +75,13 @@ export default class RequestDetailPage extends BasePage {
             // this.webJson = msg.shareParmas;
             this.setState({shareParmas: msg.shareParmas});
             this.shareModal.open();
+            return;
+        }
+
+        if (msg.action === 'backToHome')
+        {
+            this.$navigateBackToHome();
+            return;
         }
     }
 
@@ -98,7 +105,12 @@ export default class RequestDetailPage extends BasePage {
                     }}
                     source={{ uri: this.state.uri }}
                     navigateAppPage={(r, p) => {
-                        this.$navigate(r, p);
+                        if (r === 'login/login/LoginPage'){
+                            this.$navigate(r, {...p, callback: ()=>{
+                                    this.webView && this.webView.reload()}});
+                        } else {
+                            this.$navigate(r, p);
+                        }
                     }}
                     onNavigationStateChange={event => {
                         this.canGoBack = event.canGoBack;
@@ -117,6 +129,7 @@ export default class RequestDetailPage extends BasePage {
                 />
                 <CommShareModal
                     ref={(ref) => this.shareModal = ref}
+                    reloadWeb={()=> {this.webView && this.webView.reload()}}
                     {...this.state.shareParmas}
                 />
             </View>

@@ -23,6 +23,12 @@ class User {
         return (this.realnameStatus + '') === '1';
     }
 
+    @computed
+    get userLevelNumber() {
+        return this.levelRemark;
+    }
+
+    @observable info = null;
     @observable
     unionid=null;
     @observable
@@ -107,6 +113,8 @@ class User {
     pickedUp = null;        //
     @observable
     storeCode = null;         //
+    @observable
+    storeStatus = null;         //
     @observable
     roleType = null;        //
     @observable
@@ -216,6 +224,7 @@ class User {
         if (!info) {
             return;
         }
+        this.info = info;
         this.unionid = info.unionid;
         this.id = info.id;                          //用户id
         this.code = info.code;                      //授权码
@@ -256,6 +265,7 @@ class User {
         this.encryptionCount = info.encryptionCount;//加密次数
         this.pickedUp = info.pickedUp;              //
         this.storeCode = info.storeCode;                //
+        this.storeStatus = info.storeStatus;                //
         this.roleType = info.roleType;              //
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
@@ -369,6 +379,7 @@ class User {
         this.encryptionCount = 0;    //加密次数
         this.pickedUp = null;        //
         this.storeCode = null;         //
+        this.storeStatus = null;
         this.roleType = null;        //
         this.level = null;           //
         this.levelName = null;       //
