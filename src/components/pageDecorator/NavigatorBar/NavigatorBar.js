@@ -65,7 +65,8 @@ export default class NavigatorBar extends Component {
         leftPressed: PropTypes.func,
         rightPressed: PropTypes.func,
 
-        renderRight: PropTypes.func
+        renderRight: PropTypes.func,
+        renderTitle: PropTypes.func
     };
 
     constructor(props) {
@@ -229,8 +230,15 @@ export default class NavigatorBar extends Component {
 
     _renderTitle = () => {
         const { title, titleStyle } = this.state;
+            if (this.props.renderTitle) {
+                return <View
+                    style={[styles.title, titleStyle]}>
+                    {this.props.renderTitle()}
+                </View>;
+            }
         return (<Text style={[styles.title, titleStyle]} allowFontScaling={false} numberOfLines={1}>{title || ' '}</Text>);
-    };
+        }
+
 
     _renderStatusBar = () => {
         if (Platform.OS === 'android') {
