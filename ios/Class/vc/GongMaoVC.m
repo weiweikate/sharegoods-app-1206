@@ -34,7 +34,7 @@ static  NSString * web_back_mark = @"/gongmall/contract/notify";
 - (void)addBackBtn
 {
   UIButton *backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 44, 44)];
-  [backBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+  [backBtn addTarget:self action:@selector(back_web) forControlEvents:UIControlEventTouchUpInside];
   [backBtn setImage:[UIImage imageNamed:@"back"] forState:0];
   backBtn.imageView.sd_layout
   .centerYEqualToView(backBtn)
@@ -42,10 +42,10 @@ static  NSString * web_back_mark = @"/gongmall/contract/notify";
   .heightIs(15)
   .widthIs(15);
   UIBarButtonItem* backItem = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
-  self.navigationItem.backBarButtonItem = backItem;
+  self.navigationItem.leftBarButtonItem = backItem;
 }
 /** 返回事件*/
-- (void)back
+- (void)back_web
 {
   if (self.webView.canGoBack) {
     [self.webView goBack];
@@ -74,7 +74,7 @@ static  NSString * web_back_mark = @"/gongmall/contract/notify";
   NSURL * navi_url = navigationAction.request.URL;
   NSString *url_str = navi_url.absoluteString;
   NSLog(@"%@",url_str);
-  NSString *mark = [NSString stringWithFormat:@"%@%@",[StorageFromRN getHost], web_back_mark];
+  NSString *mark = [NSString stringWithFormat:@"https://testapi.sharegoodsmall.com/gateway%@", web_back_mark];
   if ([mark isEqualToString:url_str]) {
     decisionHandler(WKNavigationActionPolicyCancel);
     [self.navigationController popViewControllerAnimated:YES];

@@ -11,6 +11,7 @@
 #import "XGImageCompression.h"
 #import "JSPushManager.h"
 #import "RSAManager.h"
+#import "GongMaoVC.h"
 
 #define AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
@@ -370,7 +371,9 @@ RCT_EXPORT_METHOD(setLightMode){
 
 RCT_EXPORT_METHOD(goGongmallPage: (NSString *)webUrl){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    GongMaoVC *vc = [GongMaoVC new];
+    vc.url = webUrl;
+    [self.currentViewController_XG.navigationController pushViewController:vc animated: YES];
   });
 }
 
