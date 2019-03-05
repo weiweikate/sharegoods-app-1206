@@ -48,8 +48,6 @@ class SpellShopTab extends Component {
             return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
         }
 
-        console.log('SpellShopTab', user.storeCode, user.storeStatus , user.levelRemark )
-
         if (user.levelRemark >= 'V2' && !user.storeCode) {
             return <Image style={styles.store} source={res.tab.home_store}/>
         }
@@ -197,7 +195,9 @@ const styles = StyleSheet.create({
     text: {
         color: '#666',
         fontSize: 11,
-        marginTop: 4
+        marginTop: 4,
+        width: 60,
+        textAlign: 'center'
     },
     tab: {
         flex: 1,
@@ -207,7 +207,9 @@ const styles = StyleSheet.create({
     activeText: {
         color: DesignRule.mainColor,
         fontSize: 11,
-        marginTop: 4
+        marginTop: 4,
+        width: 60,
+        textAlign: 'center'
     },
     shopFlag: {
         position: 'absolute',

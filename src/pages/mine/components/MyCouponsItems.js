@@ -612,7 +612,7 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: this.fmtDate(item.startTime) + "-" + this.fmtDate(item.expireTime),
+                timeStr: this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0),
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
@@ -767,7 +767,7 @@ export default class MyCouponsItems extends Component {
             this.setState({ showDialogModal: true });
         } else {
             if (item.type < 99 && item.count > 1) {
-                this.props.nav.navigate("mine/coupons/CouponsDetailPage", { couponIds: [item.couponConfigId], status:this.state.pageStatus});
+                this.props.nav.navigate("mine/coupons/CouponsDetailPage", { couponIds: [item.couponConfigId], status:item.status});
             }
 
         }

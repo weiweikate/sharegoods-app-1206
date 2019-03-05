@@ -12,7 +12,7 @@ const { px2dp } = ScreenUtils;
 const  adViewHeight = px2dp(270);
 export {adViewHeight};
 
-const bannerWidth = ScreenUtils.width - px2dp(30)
+const bannerWidth = ScreenUtils.width
 const defaultBannerHeight = px2dp(80)
 
 const adWidth = (ScreenUtils.width - px2dp(35)) / 2
@@ -43,9 +43,7 @@ export default class HomeAdView extends Component {
     _renderBanner() {
         //TODO: 占位图，等待接口调试
         return <View style={styles.banner}>
-            <View style={styles.bannerView}>
-                <Image style={styles.bannerImage} source={res.place}/>
-            </View>
+            <Image style={styles.bannerImage} source={res.place}/>
         </View>
     }
 
@@ -77,25 +75,21 @@ const styles = StyleSheet.create({
     container: {
         width: ScreenUtils.width,
         height: adViewHeight,
-        paddingLeft: px2dp(15),
-        paddingRight: px2dp(15)
-    },
-    banner: {
         paddingTop: px2dp(10)
     },
-    bannerView: {
-        borderRadius: radius,
-        overflow: 'hidden'
+    banner: {
+        marginBottom: px2dp(15)
     },
     bannerImage: {
         width: bannerWidth,
         height: defaultBannerHeight,
     },
     adrow: {
-        marginTop: px2dp(15),
         flexDirection: 'row',
         justifyContent: 'space-between',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        paddingLeft: px2dp(15),
+        paddingRight: px2dp(15)
     },
     ad: {
         width: adWidth,
