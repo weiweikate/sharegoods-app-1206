@@ -42,8 +42,10 @@ const {
     tip_three,
     tip_four,
     tip_five,
+    tip_six,
     discover,
     group,
+    mine,
     next_btn,
     bg,
     btn,
@@ -65,7 +67,7 @@ export default class GuideModal extends React.Component {
         super(props);
 
         this.state = {
-            step: 0, /** 新手引导第几步*/
+            step: 5, /** 新手引导第几步*/
             visible: false,
             num: 98
         };
@@ -74,7 +76,9 @@ export default class GuideModal extends React.Component {
             {image: OssHelper('/app/share%403x.png'), tip: tip_two, text: '升级'},
             {image: group, tip: tip_three, text: '拼店'},
             {image: OssHelper(''), tip: tip_four},
-            {image: OssHelper('/app/signin%403x.png'), tip: tip_five, text: '签到'}
+            {image: OssHelper('/app/signin%403x.png'), tip: tip_five, text: '签到'},
+            {image: mine, tip: tip_six, text: '我的'},
+
         ];
     }
 
@@ -96,7 +100,7 @@ export default class GuideModal extends React.Component {
     renderContent = () => {
         let {step} = this.state;
         let data = this.data[step];
-        if (step < 5) {
+        if (step < 6) {
             let bgStyle = {};
             let imageStyle = {};
             let textStyle = {};
@@ -106,7 +110,7 @@ export default class GuideModal extends React.Component {
                 height: autoSizeWidth(46)
             };
             if (step === 0){
-                let bottom = ScreenUtils.tabBarHeight - autoSizeWidth(75/2.0);
+                let bottom = ScreenUtils.tabBarHeight - autoSizeWidth(75/2.0) - 10;
                 bgStyle = {bottom: bottom, left: ScreenUtils.width/5.0 * 1}
                 imageStyle = {width: autoSizeWidth(32), height: autoSizeWidth(32)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6};
@@ -143,7 +147,7 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 2){
-                let bottom = ScreenUtils.tabBarHeight - autoSizeWidth(75/2.0);
+                let bottom = ScreenUtils.tabBarHeight - autoSizeWidth(75/2.0) - 10;
                 bgStyle = {bottom: bottom, left: ScreenUtils.width/5.0 * 2}
                 imageStyle = {width: autoSizeWidth(32), height: autoSizeWidth(32)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6};
@@ -201,6 +205,24 @@ export default class GuideModal extends React.Component {
                 next_btnStyle= {...next_btnStyle,
                     right: autoSizeWidth(32),
                     top: top - autoSizeWidth(46/2),
+                    position: 'absolute'};
+            }
+
+            if (step === 5){
+                let bottom = ScreenUtils.tabBarHeight - autoSizeWidth(75/2.0) - 10;
+                bgStyle = {bottom: bottom, right: 8}
+                imageStyle = {width: autoSizeWidth(32), height: autoSizeWidth(32)};
+                textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6};
+                tipStyle = {
+                    width: autoSizeWidth(260),
+                    height: autoSizeWidth(130),
+                    left: autoSizeWidth(67),
+                    bottom: bottom+autoSizeWidth(75) + 2,
+                    position: 'absolute'
+                };
+                next_btnStyle= {...next_btnStyle,
+                    right: autoSizeWidth(51),
+                    bottom: ScreenUtils.tabBarHeight + autoSizeWidth(130) + autoSizeWidth(37) + autoSizeWidth(75/2.0),
                     position: 'absolute'};
             }
             return (
