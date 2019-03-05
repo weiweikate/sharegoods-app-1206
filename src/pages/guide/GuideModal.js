@@ -67,7 +67,7 @@ export default class GuideModal extends React.Component {
         super(props);
 
         this.state = {
-            step: 5, /** 新手引导第几步*/
+            step: 0,/** 新手引导第几步*/
             visible: false,
             num: 98
         };
