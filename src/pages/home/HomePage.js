@@ -120,7 +120,7 @@ class HomePage extends BasePage {
                 dim.height = kHomeGoodsViewHeight;
                 break;
             case homeType.goodsTitle:
-                dim.height = px2dp(57);
+                dim.height = px2dp(52);
                 break;
             default:
                 dim.height = 0;
@@ -593,7 +593,6 @@ const styles = StyleSheet.create({
     titleView: {
         marginTop: px2dp(10),
         paddingLeft: px2dp(15),
-        marginBottom: px2dp(5),
         width: ScreenUtils.width
     },
     messageBgStyle: {
