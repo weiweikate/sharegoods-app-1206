@@ -368,4 +368,10 @@ RCT_EXPORT_METHOD(setLightMode){
   });
 }
 
+RCT_EXPORT_METHOD(goGongmallPage: (NSString *)webUrl){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+  });
+}
+
 @end
