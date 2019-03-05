@@ -103,10 +103,6 @@ dependencies {
     api rootProject.ext.dependencies.wechat
     api rootProject.ext.dependencies.recyclerview
 
-    implementation(rootProject.ext.dependencies.sophix) {
-        exclude(module: 'alicloud-android-utdid')
-        exclude(module: 'alicloud-android-ut')
-    }
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api project(':react-native-update')
     api project(':react-native-video')
