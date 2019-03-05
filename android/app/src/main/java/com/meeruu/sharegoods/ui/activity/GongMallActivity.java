@@ -58,7 +58,7 @@ public class GongMallActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gongmall_page);
-        this.url = getIntent().getStringExtra("url");
+//        this.url = getIntent().getStringExtra("url");
         if(TextUtils.isEmpty(this.url)){
             finish();
         }
