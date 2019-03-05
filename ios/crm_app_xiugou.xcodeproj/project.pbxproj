@@ -109,6 +109,9 @@
 		A91F2FFEF0894EB68A6EC16C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF0420E07D6F40B080CEAA13 /* Octicons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BF6EE61B214F8AF3007C1185 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */; };
+		C4F01EE8222D116B00ACA1B4 /* ATAuthSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F01EB2222D116B00ACA1B4 /* ATAuthSDK.framework */; };
+		C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */; };
+		C4F01EEF222D150E00ACA1B4 /* PhoneAuthenModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */; };
 		C670FCDB76F54137AAA53057 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FED5F2163DB441AEAFBF1AB2 /* FontAwesome.ttf */; };
 		C77A347B0E47408BA04324B4 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB6EFB6B04564EBAB951820B /* Feather.ttf */; };
 		CD0F9621219027C800F7C2B0 /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0F95FC219027B400F7C2B0 /* libRCTHotUpdate.a */; };
@@ -777,6 +780,11 @@
 		AEC5D19D8102B9180435B380 /* Pods-crm_app_xiugou.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.debug.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.debug.xcconfig"; sourceTree = "<group>"; };
 		BC4C1D05C5514093933F2341 /* RNGeolocation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGeolocation.xcodeproj; path = "../node_modules/@mr/rn-geolocation/ios/RNGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		C4F01EB2222D116B00ACA1B4 /* ATAuthSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ATAuthSDK.framework; sourceTree = "<group>"; };
+		C4F01EEA222D141200ACA1B4 /* PhoneAutherTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneAutherTool.h; sourceTree = "<group>"; };
+		C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneAutherTool.m; sourceTree = "<group>"; };
+		C4F01EED222D150E00ACA1B4 /* PhoneAuthenModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneAuthenModule.h; sourceTree = "<group>"; };
+		C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneAuthenModule.m; sourceTree = "<group>"; };
 		CAB2E4DB260FDFCE4611A647 /* libPods-crm_app_xiugou-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crm_app_xiugou-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD0F95EF219027B400F7C2B0 /* RCTHotUpdate.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTHotUpdate.xcodeproj; path = "../node_modules/react-native-update/ios/RCTHotUpdate.xcodeproj"; sourceTree = "<group>"; };
 		CD11954E21870DB6007F602E /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
@@ -910,6 +918,7 @@
 				2A217542E6074AE38A88F88A /* libRNSensorsAnalyticsModule.a in Frameworks */,
 				CD6742D021E4418900464549 /* RSKImageCropper.framework in Frameworks */,
 				5D2BFDBC2AFD4DE2B1D63F65 /* libRNReactNativeRequest.a in Frameworks */,
+				C4F01EE8222D116B00ACA1B4 /* ATAuthSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1026,6 +1035,7 @@
 		101157B4219AB448001F5E99 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				C4F01EB2222D116B00ACA1B4 /* ATAuthSDK.framework */,
 				CD6742D921E4430E00464549 /* AMapFoundationKit.framework */,
 				CD6742DA21E4430E00464549 /* AMapLocationKit.framework */,
 			);
@@ -1331,6 +1341,7 @@
 		506835C421379B78001AB175 /* NativeBridge */ = {
 			isa = PBXGroup;
 			children = (
+				C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */,
 				CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */,
 				CD3A89D021F05DD3003B9803 /* MRLoadingView */,
 				50043A7721C76D6100270DFA /* ShopCart */,
@@ -1667,6 +1678,17 @@
 				BF6EE5F5214F89C2007C1185 /* libBVLinearGradient.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */ = {
+			isa = PBXGroup;
+			children = (
+				C4F01EEA222D141200ACA1B4 /* PhoneAutherTool.h */,
+				C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */,
+				C4F01EED222D150E00ACA1B4 /* PhoneAuthenModule.h */,
+				C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */,
+			);
+			path = " PhoneAuther";
 			sourceTree = "<group>";
 		};
 		CD0F95F0219027B400F7C2B0 /* Products */ = {
@@ -2625,6 +2647,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
+				C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */,
 				5068362E21379B78001AB175 /* JRLoadingAndToastTool.m in Sources */,
 				5077FC8221A4F987003B860D /* HBRSAHandler.m in Sources */,
 				5068361221379B78001AB175 /* UIView+captureSceen.m in Sources */,
@@ -2658,6 +2681,7 @@
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
 				CD5EAFA7221BFE89007AAEE0 /* ShowQueryModel.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
+				C4F01EEF222D150E00ACA1B4 /* PhoneAuthenModule.m in Sources */,
 				5068363321379B78001AB175 /* LoginAndShareModule.m in Sources */,
 				5077FC2721A401E3003B860D /* RSAEncryptor.m in Sources */,
 				CDAB6D1F219AC5F800DE6716 /* MRWaveViewManager.m in Sources */,

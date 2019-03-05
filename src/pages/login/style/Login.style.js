@@ -29,7 +29,7 @@ const styles = StyleSheet.create(
         },
         bottomBgContent: {
             flex: 1,
-            backgroundColor: "green"
+            justifyContent:'flex-end',
         }
 
     }
