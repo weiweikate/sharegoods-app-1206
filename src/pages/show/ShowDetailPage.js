@@ -1,11 +1,12 @@
 import React from 'react';
-import { ScrollView, Image, TouchableOpacity, View, ActivityIndicator , StyleSheet} from 'react-native';
+import { ScrollView, Image, TouchableOpacity, View, ActivityIndicator, StyleSheet } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-import AutoHeightWebView from 'react-native-autoheight-webview'
-const { px2dp,  } = ScreenUtils;
+import AutoHeightWebView from 'react-native-autoheight-webview';
+
+const { px2dp } = ScreenUtils;
 // import HTML from 'react-native-render-html';
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
@@ -48,8 +49,8 @@ export default class ShowDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: ''
-        }
-        this.noNeedRefresh = false
+        };
+        this.noNeedRefresh = false;
     }
 
     $isMonitorNetworkStatus() {
@@ -61,18 +62,18 @@ export default class ShowDetailPage extends BasePage {
             'willFocus',
             payload => {
                 if (this.noNeedRefresh) {
-                    this.noNeedRefresh = true
-                    return
+                    this.noNeedRefresh = true;
+                    return;
                 }
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
-                    Toast.showLoading()
+                    Toast.showLoading();
                     if (this.params.code) {
                         this.showDetailModule.showDetailCode(this.params.code || this.params.id).then(() => {
                             this.setState({
                                 pageState: PageLoadingState.success
-                            })
-                            Toast.hiddenLoading()
+                            });
+                            Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
@@ -81,15 +82,15 @@ export default class ShowDetailPage extends BasePage {
                             this._whiteNavRef.setNativeProps({
                                 opacity: 1
                             });
-                            Toast.$toast(error.msg || '获取详情失败')
-                            Toast.hiddenLoading()
-                        })
+                            Toast.$toast(error.msg || '获取详情失败');
+                            Toast.hiddenLoading();
+                        });
                     } else {
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             this.setState({
                                 pageState: PageLoadingState.success
-                            })
-                            Toast.hiddenLoading()
+                            });
+                            Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
@@ -98,9 +99,9 @@ export default class ShowDetailPage extends BasePage {
                             this._whiteNavRef.setNativeProps({
                                 opacity: 1
                             });
-                            Toast.$toast(error.msg || '获取详情失败')
-                            Toast.hiddenLoading()
-                        })
+                            Toast.$toast(error.msg || '获取详情失败');
+                            Toast.hiddenLoading();
+                        });
                     }
                 }
             }
@@ -186,10 +187,10 @@ export default class ShowDetailPage extends BasePage {
     }
 
     _showImagesPage(imgs, index) {
-        this.noNeedRefresh = true
+        this.noNeedRefresh = true;
         const { navigation } = this.props;
         navigation.push('show/ShowDetailImagePage', {
-            imageUrls:imgs,
+            imageUrls: imgs,
             index: index
         });
     }
@@ -206,8 +207,6 @@ export default class ShowDetailPage extends BasePage {
         if (!detail) {
             return <View style={styles.loading}/>;
         }
-
-        let content = `<div>${detail.content}</div>`;
         let products = detail.products;
         let number = detail.click;
         if (!number) {
@@ -216,6 +215,50 @@ export default class ShowDetailPage extends BasePage {
         if (number > 999999) {
             number = 999999 + '+';
         }
+
+
+        let html = '<!DOCTYPE html><html>' +
+            '<head>' +
+            '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' +
+            //'<meta content="m.007fenqi.com" name="author"/>' +
+            '<meta content="yes" name="apple-mobile-web-app-capable"/>' +
+            '<meta content="yes" name="apple-touch-fullscreen"/>' +
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />' +
+            '<meta http-equiv="Expires" content="-1"/>' +
+            '<meta http-equiv="Cache-Control" content="no-cache">' +
+            '<meta http-equiv="Pragma" content="no-cache">'
+            // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
+            + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
+            + 'position:relative;width:100%;margin:0;padding:0;background-color:#f6f6f6' + ';line-height:1;box-sizing:border-box;display:block;font-size:'
+            + 16
+            + 'px;'
+            + '}'
+            + 'img {max-width:100px}'
+            + 'p {word-break:break-all;}'
+            //  + Utils.NVL(this.props.webviewStyle, '')
+            + '</style>'
+            + '<script type="text/javascript">'
+            + 'function ResizeImages() {'
+            + 'var myimg,oldwidth;'
+            + 'var maxwidth = document.body.clientWidth;'
+            + 'for(i=0;i <document.images.length;i++){'
+            + 'myimg = document.images[i];'
+            + 'if(myimg.width > maxwidth){'
+            + 'oldwidth = myimg.width;'
+            + 'myimg.width = maxwidth;'
+            + '}'
+            + '}'
+            + '}'
+            + 'function onLoadFn() {'
+            + 'window.location.hash = "#+document.body.clientHeight";document.title = document.height || document.body.clientHeight;'
+            + 'ResizeImages()'
+            + '}'
+            + '</script>'
+            + '</head>'
+            + '<body onload="onLoadFn();">'
+            + detail.content
+            + '</body></html>';
+
         return <View style={styles.container}>
             <ScrollView
                 style={styles.container}
@@ -226,7 +269,8 @@ export default class ShowDetailPage extends BasePage {
                 {
                     detail.imgs
                         ?
-                        <ShowImageView items={detail.imgs.slice()} onPress={(imgs, index)=> this._showImagesPage(imgs, index)}/>
+                        <ShowImageView items={detail.imgs.slice()}
+                                       onPress={(imgs, index) => this._showImagesPage(imgs, index)}/>
                         :
                         <View style={styles.header}/>
                 }
@@ -243,16 +287,17 @@ export default class ShowDetailPage extends BasePage {
                     </View>
                 </View>
                 {/*<HTML html={content} imagesMaxWidth={width - px2dp(30)}*/}
-                      {/*imagesInitialDimensions={{ width: width - px2dp(30), height: 0 }} containerStyle={{*/}
-                    {/*backgroundColor: '#fff',*/}
-                    {/*marginLeft: px2dp(15),*/}
-                    {/*marginRight: px2dp(15)*/}
+                {/*imagesInitialDimensions={{ width: width - px2dp(30), height: 0 }} containerStyle={{*/}
+                {/*backgroundColor: '#fff',*/}
+                {/*marginLeft: px2dp(15),*/}
+                {/*marginRight: px2dp(15)*/}
                 {/*}} baseFontStyle={{*/}
-                    {/*lineHeight: px2dp(28),*/}
-                    {/*color: DesignRule.textColor_mainTitle,*/}
-                    {/*fontSize: px2dp(13)*/}
+                {/*lineHeight: px2dp(28),*/}
+                {/*color: DesignRule.textColor_mainTitle,*/}
+                {/*fontSize: px2dp(13)*/}
                 {/*}}/>*/}
-                <AutoHeightWebView source={{html:content}}/>
+                <AutoHeightWebView source={{ html: html }} style={{ width: DesignRule.width }} scalesPageToFit={true}
+                                   javaScriptEnabled={true}/>
                 <View style={styles.goodsView}>
                     {
                         products.map((value, index) => {
