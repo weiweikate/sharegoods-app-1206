@@ -380,7 +380,7 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_secondTitle,
                                             fontSize: autoSizeWidth(17),
                                             marginHorizontal: 7
-                                        }}>{`分享秀一秀 ${v0Price || ''}起`}</MRText>
+                                        }}>{`分享秀一秀 ${user.isLogin ? `${v0Price}起` : ''}`}</MRText>
                                         :
                                         <MRText style={{
                                             color: DesignRule.textColor_secondTitle,
