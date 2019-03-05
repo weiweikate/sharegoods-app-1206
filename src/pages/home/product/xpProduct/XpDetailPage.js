@@ -23,8 +23,6 @@ import DetailNavShowModal from '../components/DetailNavShowModal';
 import QYChatUtil from '../../../mine/page/helper/QYChatModel';
 import user from '../../../../model/user';
 import RouterMap from '../../../../navigation/RouterMap';
-import apiEnvironment from '../../../../api/ApiEnvironment';
-import CommShareModal from '../../../../comm/components/CommShareModal';
 import DetailHeaderScoreView from '../components/DetailHeaderScoreView';
 
 const arrow_right_black = res.button.arrow_right_black;
@@ -59,9 +57,6 @@ export class XpDetailPage extends BasePage {
                     break;
                 case 1:
                     this.$navigate('home/search/SearchPage');
-                    break;
-                case 2:
-                    this.shareModal.open();
                     break;
                 case 3:
                     setTimeout(() => {
@@ -253,8 +248,6 @@ export class XpDetailPage extends BasePage {
     };
 
     _render() {
-        const { minPrice, name, imgUrl, prodCode, firstCategoryId, secCategoryId } = this.xpDetailModel.pData;
-
         return (
             <View style={styles.container}>
                 {/*页面状态*/}
@@ -269,37 +262,6 @@ export class XpDetailPage extends BasePage {
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 {/*nav更多跳转*/}
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
-
-                <CommShareModal ref={(ref) => this.shareModal = ref}
-                                trackParmas={{
-                                    commodityID: prodCode,
-                                    commodityName: name,
-                                    firstCommodity: firstCategoryId,
-                                    secondCommodity: secCategoryId,
-                                    pricePerCommodity: minPrice
-                                }}
-                                trackEvent={trackEvent.share}
-                                type={'Image'}
-                                imageJson={{
-                                    imageUrlStr: imgUrl,
-                                    titleStr: `${name}`,
-                                    priceStr: `￥${minPrice}`,
-                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
-                                }}
-                                webJson={{
-                                    title: `${name}`,
-                                    dec: '商品详情',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
-                                    thumImage: imgUrl
-                                }}
-                                miniProgramJson={{
-                                    title: `${name}`,
-                                    dec: '商品详情',
-                                    thumImage: 'logo.png',
-                                    hdImageURL: imgUrl,
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
-                                    miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
-                                }}/>
             </View>
         );
     }

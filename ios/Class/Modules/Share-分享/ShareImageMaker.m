@@ -64,7 +64,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 {
   CGFloat i = 3;
   priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
-  retailPrice = [NSString stringWithFormat:@"V  0  价：%@",retailPrice];
+  retailPrice = [NSString stringWithFormat:@"V  1  价：%@",retailPrice];
   spellPrice = [NSString stringWithFormat:@"拼店价：%@",spellPrice];
   
   CGFloat sigle =  [self getStringHeightWithText:@"1" fontSize:13*i viewWidth:220*i];
