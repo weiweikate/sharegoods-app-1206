@@ -140,8 +140,10 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     @Override
     public void onDropViewInstance(BannerLayout view) {
         view.removeAllViews();
-        eventDispatcher.onCatalystInstanceDestroyed();
-        eventDispatcher = null;
+        if (eventDispatcher != null) {
+            eventDispatcher.onCatalystInstanceDestroyed();
+            eventDispatcher = null;
+        }
         scrollToIndexEvent = null;
         selectItemAtIndexEvent = null;
         super.onDropViewInstance(view);
