@@ -182,7 +182,6 @@ let styles = StyleSheet.create({
     },
     goodsView: {
         marginTop: px2dp(5),
-        marginLeft: px2dp(10),
         width: px2dp(100),
         height: px2dp(170)
     },
@@ -213,6 +212,8 @@ let styles = StyleSheet.create({
         justifyContent: 'center',
         marginLeft: px2dp(5),
         backgroundColor: DesignRule.bgColor,
+        borderRadius: (5),
+        marginRight:px2dp(5)
     },
     seeMore: {
         color: DesignRule.textColor_secondTitle,

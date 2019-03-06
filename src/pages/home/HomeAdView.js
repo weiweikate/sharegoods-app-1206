@@ -5,14 +5,12 @@ import { homeModule } from './Modules';
 import { adModules } from './HomeAdModel';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
-import res from './res'
 
 const { px2dp } = ScreenUtils;
 
-const  adViewHeight = px2dp(270);
-export {adViewHeight};
+const adViewHeight = px2dp(190);
 
-const bannerWidth = ScreenUtils.width - px2dp(30)
+const bannerWidth = ScreenUtils.width
 const defaultBannerHeight = px2dp(80)
 
 const adWidth = (ScreenUtils.width - px2dp(35)) / 2
@@ -25,12 +23,17 @@ export default class HomeAdView extends Component {
 
     constructor(props) {
         super(props)
+        // adModules.adHeights[0] = adViewHeight
         this.adRadius = [
             {borderTopLeftRadius: radius, overflow: 'hidden'},
             {borderTopRightRadius: radius, overflow: 'hidden'},
             {borderBottomLeftRadius: radius, overflow: 'hidden'},
             {borderBottomRightRadius: radius, overflow: 'hidden'},
         ]
+        this.hasLoadImg = {}
+        this.state = {
+            imageHeight : []
+        }
     }
 
     _adAction(value) {
@@ -41,12 +44,37 @@ export default class HomeAdView extends Component {
     }
 
     _renderBanner() {
-        //TODO: 占位图，等待接口调试
-        return <View style={styles.banner}>
-            <View style={styles.bannerView}>
-                <Image style={styles.bannerImage} source={res.place}/>
-            </View>
-        </View>
+        const { banner } = adModules
+        if (banner.length === 0) {
+            return null
+        }
+        let items = []
+        banner.map((val, index) => {
+            console.log('getBanner', this.hasLoadImg)
+            if (!this.hasLoadImg[val.imgUrl]) {
+                Image.getSize(val.imgUrl, (width, height)=> {
+                    let h = bannerWidth * (height / width)
+                    adModules.adHeights.push(h)
+                    let imageHeights = this.state.imageHeight
+                    imageHeights.push({height: h})
+                    this.setState({
+                        imageHeight: imageHeights
+                    })
+                })
+                this.hasLoadImg[val.imgUrl] = true
+            }
+            
+            items.push(
+                <TouchableWithoutFeedback onPress={()=> this._adAction(val)}>
+                    <View style={styles.banner} key={'banner' + index}>
+                        <Image style={[styles.bannerImage, {height: adModules.adHeights[index] ? adModules.adHeights[index] : 0}]} source={{uri: val.imgUrl}}/>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        })
+        console.log('getBanner imageHeights', this.state.imageHeight)
+        
+        return <View>{items}</View>
     }
 
     _renderAd() {
@@ -76,26 +104,21 @@ export default class HomeAdView extends Component {
 const styles = StyleSheet.create({
     container: {
         width: ScreenUtils.width,
-        height: adViewHeight,
-        paddingLeft: px2dp(15),
-        paddingRight: px2dp(15)
-    },
-    banner: {
         paddingTop: px2dp(10)
     },
-    bannerView: {
-        borderRadius: radius,
-        overflow: 'hidden'
+    banner: {
+        marginBottom: px2dp(15)
     },
     bannerImage: {
         width: bannerWidth,
         height: defaultBannerHeight,
     },
     adrow: {
-        marginTop: px2dp(15),
         flexDirection: 'row',
         justifyContent: 'space-between',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        paddingLeft: px2dp(15),
+        paddingRight: px2dp(15)
     },
     ad: {
         width: adWidth,

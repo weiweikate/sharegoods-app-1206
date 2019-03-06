@@ -20,7 +20,7 @@ import HomeTodayView, {todayHeight} from './HomeTodayView';
 import HomeRecommendView, {recommendHeight} from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './HomeBannerView';
-import HomeAdView, { adViewHeight } from './HomeAdView';
+import HomeAdView from './HomeAdView';
 import HomeGoodsView, { kHomeGoodsViewHeight } from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import HomeCategoryView, {categoryHeight} from './HomeCategoryView'
@@ -86,7 +86,6 @@ class HomePage extends BasePage {
         return this.dataProvider.getDataForIndex(i).type || 0;
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
-        const { ad } = adModules;
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
         const { subjectHeight } = subjectModule;
@@ -102,7 +101,7 @@ class HomePage extends BasePage {
                 dim.height = kHomeClassifyHeight;
                 break;
             case homeType.ad:
-                dim.height = ad.length > 0 ? adViewHeight : 0;
+                dim.height =  adModules.adHeight ;
                 break;
             case homeType.today:
                 dim.height = todayList.length > 0 ?  todayHeight : 0;
@@ -120,7 +119,7 @@ class HomePage extends BasePage {
                 dim.height = kHomeGoodsViewHeight;
                 break;
             case homeType.goodsTitle:
-                dim.height = px2dp(57);
+                dim.height = px2dp(52);
                 break;
             default:
                 dim.height = 0;
@@ -532,6 +531,7 @@ class HomePage extends BasePage {
     }
 
     render() {
+        console.log('getBanner render', adModules.adHeight) //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
@@ -593,7 +593,6 @@ const styles = StyleSheet.create({
     titleView: {
         marginTop: px2dp(10),
         paddingLeft: px2dp(15),
-        marginBottom: px2dp(5),
         width: ScreenUtils.width
     },
     messageBgStyle: {
