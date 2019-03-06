@@ -1,5 +1,6 @@
 import res from '../../../comm/res'
 const index = {
+    ...res,
     alipay: require('./alipay.png'),
     balance: require('./balance.png'),
     bank: require('./bank.png'),
@@ -8,6 +9,6 @@ const index = {
     wechat: require('./wechat.png'),
     warning: require('./warning.png'),
     uncheck: require('./uncheck.png'),
-    ...res
+    check: require('./check.png')
 };
 export default index;

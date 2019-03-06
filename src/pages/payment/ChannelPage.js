@@ -1,28 +1,29 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    Image,
+    TouchableWithoutFeedback
+} from 'react-native';
 import res from './res'
 import BasePage from '../../BasePage';
 import { observer } from 'mobx-react/native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
-import user from '../../model/user';
-import { payment } from './Payment'
+import { payment, paymentType } from './Payment'
 const { px2dp } = ScreenUtils;
 
 @observer
-export default class PaymentPage extends BasePage {
+export default class ChannelPage extends BasePage {
 
     $navigationBarOptions = {
         title: '订单支付',
         show: true
-    };
+    }
 
     constructor(props) {
         super(props);
-        payment.amounts = this.params.amounts ? this.params.amounts : 0
-        let orderProduct = this.params.orderProductList[0];
-        payment.name = orderProduct.productName
     }
 
     $NavBarLeftPressed = () => {
@@ -30,39 +31,46 @@ export default class PaymentPage extends BasePage {
     }
 
     goToPay() {
-        this.$navigate('payment/ChannelPage')
+
     }
 
-    _selectedBalance() {
-        payment.selectBalancePayment()
+    _selectedType(type) {
+      payment.selectPayTypeAction(type)
     }
 
     _render() {
-        const { selectedBalace, name } = payment
+        const { selctedPayType, name } = payment
+
         return <View style={styles.container}>
             <View style={styles.content}>
-                <View style={styles.row}>
-                    <Text style={styles.name} numberOfLines={1}>订单名称：{name}</Text>
-                </View>
-                <View style={styles.line}/>
-                <View style={styles.row}>
-                    <Text style={styles.text}>需支付金额：</Text>
-                    <Text style={styles.money}>￥{payment.amounts}</Text>
-                </View>
+            <View style={styles.row}>
+                <Text style={styles.name} numberOfLines={1}>订单名称：{name}</Text>
             </View>
-            <TouchableWithoutFeedback onPress={()=> this._selectedBalance()}>
-            <View style={styles.balanceContent}>
-                <Image style={styles.iconBalance} source={res.balance}/>
-                <Text style={styles.text}>现金账户</Text>
-                <View style={{flex: 1}}/>
-                <Text style={styles.name}>可用金额: {user.availableBalance}元</Text>
-                <Image style={styles.iconCheck} source={selectedBalace ? res.check : res.uncheck}/>
             </View>
-            </TouchableWithoutFeedback>
             <View style={styles.needView}>
-            <Text style={styles.need}>需付金额</Text>
+            <Text style={styles.need}>支付金额</Text>
             <Text style={styles.amount}>￥{payment.amounts}</Text>
             </View>
+            <View style={styles.channelView}>
+            <TouchableWithoutFeedback onPress={()=> this._selectedType(paymentType.wechat)}>
+              <View style={styles.row}>
+                <Image style={styles.icon} source={res.wechat}/>
+                <Text style={styles.text}>微信支付</Text>
+                <View style={{flex: 1}}/>
+                <Image style={styles.iconCheck} source={selctedPayType === paymentType.wechat ? res.check : res.uncheck}/>
+              </View>
+            </TouchableWithoutFeedback>
+              <View style={styles.line}/>
+            <TouchableWithoutFeedback onPress={()=> this._selectedType(paymentType.alipay)}>
+              <View style={styles.row}>
+                <Image style={styles.icon} source={res.alipay}/>
+                <Text style={styles.text}>支付宝支付</Text>
+                <View style={{flex: 1}}/>
+                <Image style={styles.iconCheck} source={selctedPayType === paymentType.alipay  ? res.check : res.uncheck}/>
+              </View>
+            </TouchableWithoutFeedback>
+            </View>
+            <View style={{flex: 1}}/>
             <TouchableWithoutFeedback onPress={() => {this.goToPay()}}>
             <View style={styles.payBtn}>
                 <Text style={styles.payText}>去支付</Text>
@@ -85,26 +93,26 @@ const styles = StyleSheet.create({
         marginTop: px2dp(10),
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
-        height: px2dp(100),
+        height: px2dp(50),
         backgroundColor: whiteBg,
         borderRadius: 5
     },
-    balanceContent: {
-        marginTop: px2dp(10),
-        marginLeft: px2dp(15),
-        marginRight: px2dp(15),
-        paddingRight: px2dp(10),
-        paddingLeft: px2dp(10),
-        height: px2dp(50),
-        backgroundColor: whiteBg,
-        borderRadius: 5,
-        flexDirection: 'row',
-        alignItems: 'center'
+    channelView: {
+      height: px2dp(100),
+      marginLeft: px2dp(15),
+      marginRight: px2dp(15),
+      backgroundColor: whiteBg,
+      borderRadius: 5
+    },
+    icon: {
+      width: px2dp(24),
+      height: px2dp(24),
+      marginRight: px2dp(10)
     },
     row: {
         height: px2dp(50),
         flexDirection: 'row',
-        paddingRight: px2dp(10),
+        paddingRight: px2dp(15),
         paddingLeft: px2dp(10),
         alignItems: 'center'
     },
@@ -124,18 +132,11 @@ const styles = StyleSheet.create({
         color: DesignRule.mainColor,
         fontSize: px2dp(13)
     },
-    iconBalance: {
-        width: px2dp(24),
-        height: px2dp(24),
-        marginRight: px2dp(10)
-    },
     iconCheck: {
-        marginLeft: px2dp(10),
-        width: px2dp(20),
-        height: px2dp(20)
+      width: px2dp(20),
+      height: px2dp(20)
     },
     need: {
-        marginTop: px2dp(30),
         color: DesignRule.textColor_instruction,
         fontSize: px2dp(13)
     },
@@ -146,8 +147,9 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     needView: {
-        flex: 1,
-        alignItems: 'center'
+        height: px2dp(110),
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     payBtn: {
         backgroundColor: buttonBg,

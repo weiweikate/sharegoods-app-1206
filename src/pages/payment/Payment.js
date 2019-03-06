@@ -11,6 +11,7 @@ const alipayImg = resource.alipay;
 import {track, trackEvent} from '../../utils/SensorsTrack'
 
 export const paymentType = {
+    none: 0,
     balance: 1, //余额支付
     wechat: 4,  //微信
     alipay: 8,  //支付宝
@@ -27,6 +28,19 @@ export let paymentTrack = {
 }
 
 export class Payment {
+    @observable orderName = ''
+    @observable selctedPayType = paymentType.none
+    @observable selectedBalace = false
+    @action selectBalancePayment = () => {
+        this.selectedBalace = !this.selectedBalace
+    }
+    @action selectPayTypeAction = (type) => {
+        console.log('selectPayTypeAction', type)
+        this.selctedPayType = type
+    }
+
+
+
     @observable paySuccessFul = false
     @observable availableBalance = 0
     @observable balancePayment = {
@@ -68,10 +82,7 @@ export class Payment {
         }
     ]
     @observable selectedTypes = null
-    @observable selectedBalace = false
-    @action selectBalancePayment = () => {
-        this.selectedBalace = !this.selectedBalace
-    }
+   
     @action selectPaymentType = (data) => {
         if (this.selectedTypes && data.type === this.selectedTypes.type) {
             this.selectedTypes = null
@@ -281,3 +292,5 @@ export class Payment {
     })
 
 }
+
+export const payment = new Payment()
