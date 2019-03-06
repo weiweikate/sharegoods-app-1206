@@ -46,8 +46,6 @@ import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
 
-import org.reactnative.camera.RNCameraPackage;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -139,7 +137,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),
-                    new RNCameraPackage(),
                     new RNCWebViewPackage()
             );
         }

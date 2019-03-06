@@ -123,5 +123,4 @@ dependencies {
     api project(':lottie')
     api project(':base_adapter')
     api project(':react-native-extra-dimensions-android')
-    implementation project(':react-native-camera')
 }
