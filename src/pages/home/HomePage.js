@@ -7,7 +7,6 @@ import {
     Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
     RefreshControl, BackHandler
 } from 'react-native';
-import ImageLoad from '@mr/image-placeholder';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
@@ -36,7 +35,7 @@ import res from './res';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
-import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
+// import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
 import { MRText as Text } from '../../components/ui';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import { adModules } from './HomeAdModel';
@@ -138,7 +137,6 @@ class HomePage extends BasePage {
         shadowOpacity: this.shadowOpacity,
         whiteIcon: true,
         hasMessage: false,
-        showRegister: false
     };
 
     constructor(props) {
@@ -264,17 +262,9 @@ class HomePage extends BasePage {
     };
 
     _showMessageOrActivity = () => {
-        if (homeRegisterFirstManager.showRegisterModalUrl) {
-            //活动
-            this.setState({
-                showRegister: true
-            });
-            this.registerModal && this.registerModal.open();
-        } else {
-            //公告弹窗
-            if (!this.state.showUpdate) {
-                this.showMessageModal();
-            }
+        //公告弹窗
+        if (!this.state.showUpdate) {
+            this.showMessageModal();
         }
     };
 
@@ -430,55 +420,6 @@ class HomePage extends BasePage {
         );
     }
 
-    registerModalRender = () => {
-
-        return (
-            <Modal ref={(ref) => {
-                this.registerModal = ref;
-            }}
-                   onRequestClose={() => {
-                       this.setState({
-                           showRegister: false
-                       });
-                       homeRegisterFirstManager.setShowRegisterModalUrl(null);
-                   }}
-                   visible={this.state.showRegister}>
-                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.setState({
-                            showRegister: false
-                        });
-                        this.registerModal.close();
-                        homeRegisterFirstManager.setShowRegisterModalUrl(null);
-                    }}>
-                        <Image source={closeImg} style={styles.messageCloseStyle}/>
-                    </TouchableWithoutFeedback>
-                    {
-                        homeRegisterFirstManager.showRegisterModalUrl ?
-                            <TouchableWithoutFeedback onPress={() => {
-                                this.setState({
-                                    showRegister: false
-                                });
-                                this.registerModal.close();
-                                homeRegisterFirstManager.setShowRegisterModalUrl(null);
-                                this.$toastShow('领取成功！请到我的-优惠券中查看');
-                            }}>
-                                <View>
-                                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
-                                               resizeMode={'contain'}
-                                               style={styles.messageBgStyle}/>
-                                </View>
-                            </TouchableWithoutFeedback>
-                            : <View style={styles.messageBgStyle}/>
-                    }
-
-
-                </View>
-            </Modal>
-        );
-    };
-
-
     messageIndexRender() {
         if (EmptyUtils.isEmptyArr(this.state.messageData)) {
             return null;
@@ -564,7 +505,6 @@ class HomePage extends BasePage {
                                }}
                 />
                 {this.messageModalRender()}
-                {this.registerModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
                                     onRequestClose={() => {
