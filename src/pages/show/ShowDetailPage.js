@@ -1,5 +1,14 @@
 import React from 'react';
-import { ScrollView, Image, TouchableOpacity, View, ActivityIndicator, StyleSheet } from 'react-native';
+import {
+    ScrollView,
+    Image,
+    TouchableOpacity,
+    View,
+    ActivityIndicator,
+    StyleSheet,
+    NativeModules,
+    Alert
+} from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -166,9 +175,9 @@ export default class ShowDetailPage extends BasePage {
         });
     };
 
-    _onLongClickImage=(event)=>{
+    _onLongClickImage = (event) => {
         alert(event.nativeEvent.url);
-    }
+    };
 
     _renderNormalTitle() {
         return <View style={styles.whiteNav} ref={(ref) => {
@@ -197,6 +206,25 @@ export default class ShowDetailPage extends BasePage {
             imageUrls: imgs,
             index: index
         });
+    }
+
+    _onLongClickImage = (event)=>{
+        let url = event.nativeEvent.url;
+        Alert.alert('保存图片','', [
+            {
+                text: '取消', onPress: () => {
+
+                }
+            },
+            {
+                text: '保存到相册', onPress: () => {
+                    NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url).then(()=>{
+                        this.$toastShow('保存成功!')
+                    }).catch((error)=>{
+
+                    });
+                }
+            }]);
     }
 
     _render() {
@@ -233,7 +261,7 @@ export default class ShowDetailPage extends BasePage {
             '<meta http-equiv="Pragma" content="no-cache">'
             // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
             + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
-            + 'position:relative;width:100%;margin:0;padding:0;background-color:#f6f6f6' + ';line-height:1;box-sizing:border-box;display:block;font-size:'
+            + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:25px;box-sizing:border-box;display:block;font-size:'
             + 16
             + 'px;'
             + '}'
@@ -259,7 +287,9 @@ export default class ShowDetailPage extends BasePage {
             + '</script>'
             + '</head>'
             + '<body onload="onLoadFn();">'
+            + '<div>'
             + detail.content
+            + '</div>'
             + '</body></html>';
 
         return <View style={styles.container}>
@@ -284,10 +314,10 @@ export default class ShowDetailPage extends BasePage {
                         <Text style={styles.showName}
                               allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
                     </View>
-                    <View style={styles.profileRight}>
-                        <Image source={res.button.see}/>
-                        <Text style={styles.number} allowFontScaling={false}>{number}</Text>
-                    </View>
+                    {/*<View style={styles.profileRight}>*/}
+                        {/*<Image source={res.button.see}/>*/}
+                        {/*<Text style={styles.number} allowFontScaling={false}>{number}</Text>*/}
+                    {/*</View>*/}
                 </View>
                 {/*<HTML html={content} imagesMaxWidth={width - px2dp(30)}*/}
                 {/*imagesInitialDimensions={{ width: width - px2dp(30), height: 0 }} containerStyle={{*/}
@@ -300,10 +330,13 @@ export default class ShowDetailPage extends BasePage {
                 {/*fontSize: px2dp(13)*/}
                 {/*}}/>*/}
                 <AutoHeightWebView source={{ html: html }}
-                                   style={{ width: DesignRule.width }}
+                                   style={{ width: DesignRule.width-30,alignSelf:'center' }}
                                    scalesPageToFit={true}
                                    javaScriptEnabled={true}
-                                   onLongClickImage={(event)=>{alert(event.nativeEvent.url)}}
+                                   cacheEnabled={true}
+                                   domStorageEnabled={true}
+                                   mixedContentMode={'always'}
+                                   onLongClickImage={this._onLongClickImage}
 
                 />
                 <View style={styles.goodsView}>
@@ -315,8 +348,7 @@ export default class ShowDetailPage extends BasePage {
                         })
                     }
                 </View>
-            </ScrollView>
-            <View style={styles.bottom}>
+
                 {
                     isCollecting
                         ?
@@ -331,6 +363,13 @@ export default class ShowDetailPage extends BasePage {
                                   allowFontScaling={false}>{'人气值'} · {detail.collectCount}</Text>
                         </TouchableOpacity>
                 }
+            </ScrollView>
+            <View style={styles.bottom}>
+                <View style={styles.showTimesWrapper}>
+                    <Image source={res.button.see} style={styles.seeImgStyle}/>
+                    <Text style={styles.number} allowFontScaling={false}>浏览 · {number}</Text>
+                </View>
+
                 <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
                     <Image source={res.share}/>
                     <View style={{ width: px2dp(10) }}/>
@@ -481,8 +520,8 @@ let styles = StyleSheet.create({
     },
     number: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(11),
-        marginLeft: px2dp(9)
+        fontSize: px2dp(13),
+        marginLeft: px2dp(8)
     },
     bottomBtn: {
         flex: 1,
@@ -490,12 +529,12 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     leftButton: {
-        width: px2dp(125),
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: DesignRule.mainColor,
         flexDirection: 'row',
-        height: px2dp(50)
+        height: px2dp(50),
+        flex:1
     },
     text: {
         color: '#fff',
@@ -547,6 +586,16 @@ let styles = StyleSheet.create({
     title: {
         color: '#333',
         fontSize: px2dp(17)
+    },
+    showTimesWrapper:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+        flex:1
+    },
+    seeImgStyle:{
+        width:px2dp(20),
+        height:px2dp(12)
     }
 });
 

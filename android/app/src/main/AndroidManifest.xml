@@ -249,7 +249,6 @@
             android:launchMode="singleTop"
             android:resizeableActivity="true"
             android:screenOrientation="portrait"
-            android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustNothing|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
