@@ -84,6 +84,9 @@ export default class CouponsDetailPage extends BasePage {
         }
 
     };
+    _gotoLookAround = () => {
+        this.$navigateBackToHome();
+    };
 
     parseCoupon = (item) => {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
