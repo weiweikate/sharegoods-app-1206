@@ -168,7 +168,7 @@ export default class GuideModal extends React.Component {
                 let top =  kHomeClassifyHeight+categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0);
                 if (ad.length > 0){
                     data.image = ad[ad.length-1].imgUrl;
-                    top = top + adModules.adHeight - adHeight
+                    top = top + adModules.adHeight - adHeight-autoSizeWidth(10);
                 }
                 if (top>ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight) {
                     top = ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight;
