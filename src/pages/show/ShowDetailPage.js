@@ -390,7 +390,7 @@ export default class ShowDetailPage extends BasePage {
                     <TouchableOpacity style={styles.shareView} onPress={() => {
                         this._goToShare();
                     }}>
-                        <Image source={res.button.show_share}/>
+                        <Image source={res.grayMore}/>
                     </TouchableOpacity>
                 </View>
             </View>
