@@ -143,7 +143,7 @@ export default class ConfirmOrderPage extends BasePage {
             callback: (data) => {
                 let replace = NavigationActions.replace({
                     key: this.props.navigation.state.key,
-                    routeName: 'payment/PaymentMethodPage',
+                    routeName: 'payment/PaymentPage',
                     params: {
                         orderNum: data.orderNo,
                         amounts: data.payAmount,

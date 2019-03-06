@@ -8,8 +8,6 @@ import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 
-const adViewHeight = px2dp(190);
-
 const bannerWidth = ScreenUtils.width
 const defaultBannerHeight = px2dp(80)
 

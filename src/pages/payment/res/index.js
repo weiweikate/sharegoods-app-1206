@@ -7,6 +7,7 @@ const index = {
     fail: require('./fail.png'),
     wechat: require('./wechat.png'),
     warning: require('./warning.png'),
+    uncheck: require('./uncheck.png'),
     ...res
 };
 export default index;
