@@ -248,7 +248,7 @@ export default class P_ScoreListPage extends BasePage {
 
     _render() {
         const { pData, messageCount } = this.params;
-        const { minPrice, name, imgUrl, prodCode, firstCategoryId, secCategoryId, originalPrice, groupPrice, v0Price } = pData || {};
+        const { minPrice, name, imgUrl, prodCode, firstCategoryId, secCategoryId, originalPrice, groupPrice, v0Price, shareMoney } = pData || {};
         return (
             <View style={styles.container}>
                 <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -307,7 +307,7 @@ export default class P_ScoreListPage extends BasePage {
                                     titleStr: `${name}`,
                                     priceStr: `￥${originalPrice}`,
                                     retailPrice: `￥${v0Price}`,
-                                    v0Price: v0Price,
+                                    shareMoney: shareMoney,
                                     spellPrice: `￥${groupPrice}`,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
                                 }}
