@@ -46,7 +46,7 @@ const Styles = StyleSheet.create(
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            marginBottom: 30
+            marginBottom: px2dp(20)
         },
         bottomTipBtnStyle: {
             color: DesignRule.textColor_instruction,

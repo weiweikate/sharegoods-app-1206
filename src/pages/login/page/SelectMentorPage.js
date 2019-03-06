@@ -99,8 +99,7 @@ export default class SelectMentorPage extends BasePage {
                 });
             } else {
                 this.setState({
-                    // mentorData: response.data
-                    mentorData:[]
+                    mentorData: response.data
                 });
             }
         }).catch(error => {
@@ -124,8 +123,6 @@ export default class SelectMentorPage extends BasePage {
                 >
                     <View
                         style={{
-                            // borderWidth: 1,
-                            // borderRadius: 10,
                             height: 20,
                             alignItems: "center",
                             justifyContent: "center",
@@ -135,7 +132,6 @@ export default class SelectMentorPage extends BasePage {
                     >
                         <Text
                             onPress={
-                                // () => this.jumpToWriteCodePage()
                                 () => this.jump()
                             }
                             style={{
@@ -151,11 +147,6 @@ export default class SelectMentorPage extends BasePage {
             </View>
         );
     }
-
-    _testScro = () => {
-        this.scrView.scrollTo({ x: this.state.selectIndex * ScreenUtils.width / 5, y: 0, animated: true });
-
-    };
     _renderMentorListView = () => {
         return (
             <View

@@ -13,12 +13,20 @@ import { login } from "../../../utils/SensorsTrack";
 import JPushUtils from "../../../utils/JPushUtils";
 import DeviceInfo from "react-native-device-info/deviceinfo";
 import { DeviceEventEmitter } from "react-native";
+
 /**
  * 回调code 和 数据 34005 需要去绑定手机号 10000 登录成功
  * @param callBack
  */
 const wxLoginAction = (callBack) => {
     bridge.$loginWx((data) => {
+        // appOpenid: "o-gdS1iEksKTwhko1pgSXdi82KUI"
+        // device: "iPhone 7 Plus"
+        // headerImg: "https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTItjYTTok0ich165RayY0byaJH5nQZMUmZR6pFch6aBLNH0iaicTO9miaaSSMvTwFvUob1rSJib52WVxow/132"
+        // nickName: "腊月雨"
+        // systemVersion: "11.4.1"
+        // title: "绑定手机号"
+        // unionid: "oJCt41Mr5Jk4dDg3x92ZfvXP4F10"
         console.log(data);
         LoginAPI.appWechatLogin({
             device: data.device,
@@ -35,6 +43,7 @@ const wxLoginAction = (callBack) => {
                 data.title = "绑定手机号";
                 callBack(res.code, data);
             } else if (res.code === 10000) {
+                callBack(res.code,data);
                 UserModel.saveUserInfo(res.data);
                 UserModel.saveToken(res.data.token);
                 bridge.$toast("登录成功");
@@ -43,7 +52,6 @@ const wxLoginAction = (callBack) => {
                 bridge.setCookies(res.data);
                 // 埋点登录成功
                 login(data.data.code);
-                callBack(res.code, res.data);
             }
         }).catch((error) => {
             if (error.code === 34005) {
@@ -71,21 +79,21 @@ const codeLoginAction = (LoginParam, callBack) => {
         wechatCode: "",
         wechatVersion: ""
     }).then((data) => {
+        callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
+        bridge.setCookies(data.data);
         DeviceEventEmitter.emit("homePage_message", null);
         DeviceEventEmitter.emit("contentViewed", null);
         bridge.$toast("登录成功");
         homeModule.loadHomeList();
-        bridge.setCookies(data.data);
         login(data.data.code); // 埋点登录成功
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
-        callBack(data);
     }).catch((error) => {
         callBack(error);
-        bridge.$toast(error.msg)
+        bridge.$toast(error.msg);
     });
 };
 /**
@@ -105,22 +113,48 @@ const pwdLoginAction = (LoginParam, callBack) => {
         wechatCode: "11",
         wechatVersion: "11"
     }).then((data) => {
+        callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
+        bridge.setCookies(data.data);
         DeviceEventEmitter.emit("homePage_message", null);
         DeviceEventEmitter.emit("contentViewed", null);
-        bridge.$toast("登录成功");
         homeModule.loadHomeList();
-        bridge.setCookies(data.data);
         login(data.data.code); // 埋点登录成功
         //推送
         JPushUtils.updatePushTags();
         JPushUtils.updatePushAlias();
-        callBack(data);
     }).catch((error) => {
         callBack(error);
         bridge.$toast(error.msg);
     });
 };
+/**
+ * 注册函数
+ * @param params
+ * @param callback
+ */
+const registAction = (params,callback) => {
+    LoginAPI.findMemberByPhone({
+        ...params,
+        device: (this.params && this.params.device) ? this.params.device : "",
+        inviteId: "",//邀请id
+        appOpenid: (this.params && this.params.appOpenid) ? this.params.appOpenid : "",
+        systemVersion: DeviceInfo.getSystemVersion()+'',
+        wechatVersion: "",
+    }).then((data) => {
+        if (data.code === 10000) {
+            //推送
+            JPushUtils.updatePushTags();
+            JPushUtils.updatePushAlias();
+            UserModel.saveUserInfo(data.data);
+            UserModel.saveToken(data.data.token);
+        }
+        callback(data);
+    }).catch((response) => {
+        callback(response);
+    });
 
-export { wxLoginAction, codeLoginAction, pwdLoginAction };
+};
+
+export { wxLoginAction, codeLoginAction, pwdLoginAction, registAction };

@@ -1,7 +1,7 @@
 import React, {} from "react";
 import {
     View,
-    Image,
+    Image
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/Login.style";
@@ -10,6 +10,9 @@ import res from "../res";
 // import ScreenUtils from "../../../utils/ScreenUtils";
 import RouterMap from "../../../navigation/RouterMap";
 import { isCanPhoneAuthen } from "../model/PhoneAuthenAction";
+import { wxLoginAction } from "../model/LoginActionModel";
+import ProtocolView from "../components/Login.protocol.view";
+// import loginModel from "../model/LoginModel";
 
 // const { px2dp } = ScreenUtils;
 const {
@@ -24,7 +27,8 @@ export default class Login extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            canPhoneAuthen: false//是否可以本地号码一键登录 默认不可以
+            canPhoneAuthen: false,//是否可以本地号码一键登录 默认不可以
+            isSelectProtocol: true
         };
     }
 
@@ -98,10 +102,8 @@ export default class Login extends BasePage {
                 >
                     <View
                         style={{
-                            flexDirection: "row",
                             justifyContent: "center",
-                            alignItems: "center",
-                            marginBottom: 30
+                            alignItems: "center"
                         }}
                     >
                         {
@@ -111,8 +113,22 @@ export default class Login extends BasePage {
                                 } else {
                                     this.$navigate(RouterMap.OtherLoginPage);
                                 }
-                            })}
+                            })
+                        }
                     </View>
+                    <ProtocolView
+                        textClick={(htmlUrl) => {
+                            this.$navigate("HtmlPage", {
+                                title: "用户协议内容",
+                                uri: htmlUrl
+                            });
+                        }}
+                        selectImageClick={(isSelect) => {
+                            this.setState({
+                                isSelectProtocol: isSelect
+                            });
+                        }}
+                    />
                 </View>
             </View>
         );
@@ -120,8 +136,12 @@ export default class Login extends BasePage {
 
     _clickAction = (btnType) => {
         console.log("执行了");
-        if (btnType == loginBtnType.wxLoginBtnType) {
-            this.$navigate(RouterMap.InputPhoneNum);
+        if (!this.state.isSelectProtocol) {
+            this.$toastShow("清先勾选用户协议");
+            return;
+        }
+        if (btnType === loginBtnType.wxLoginBtnType) {
+            this._wxLogin();
         } else if (btnType === loginBtnType.localPhoneNumLoginType) {
             this.$navigate(RouterMap.LocalNumLogin);
         } else {
@@ -129,6 +149,14 @@ export default class Login extends BasePage {
         }
     };
     _wxLogin = () => {
-
+        wxLoginAction((code, data) => {
+            if (code === 10000) {
+                this.$navigateBack(-1);
+                this.params.callback && this.params.callBack();
+            } else {
+                console.log(data);
+                this.$navigate(RouterMap.InputPhoneNum, data);
+            }
+        });
     };
 }

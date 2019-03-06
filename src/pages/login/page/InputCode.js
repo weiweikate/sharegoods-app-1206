@@ -17,6 +17,8 @@ import VerifyCode from "../components/VerifyCodeInput";
 import RouterMap from "../../../navigation/RouterMap";
 import { netStatusTool } from "../../../api/network/NetStatusTool";
 import { TimeDownUtils } from "../../../utils/TimeDownUtils";
+import SMSTool from "../../../utils/SMSTool";
+import { registAction } from "../model/LoginActionModel";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -37,10 +39,7 @@ export default class InputCode extends BasePage {
     $navigationBarOptions = {
         title: "输入手机号",
         show: true
-
-
     };
-
 
     _render() {
         const { phoneNum } = this.params;
@@ -112,7 +111,7 @@ export default class InputCode extends BasePage {
                             >
                                 <Text
                                     style={this.state.downTime > 0 ?
-                                        [Styles.authHaveSendCodeBtnStyle, {textDecorationLine: 'underline'}]
+                                        [Styles.authHaveSendCodeBtnStyle, { textDecorationLine: "underline" }]
                                         : [Styles.authReSendCodeStyle]}
                                 >
                                     重新发送
@@ -130,8 +129,8 @@ export default class InputCode extends BasePage {
      * @private
      */
     _reSendClickAction = () => {
+        const { phoneNum } = this.params;
         const { downTime } = this.state;
-        // const { phoneNum } = this.params;
         if (downTime > 0) {
             return;
         }
@@ -140,18 +139,34 @@ export default class InputCode extends BasePage {
             return;
         }
         bridge.$toast("验证码发送成功,注意查收");
+
         (new TimeDownUtils()).startDown((time) => {
             this.setState({
                 downTime: time
             });
-            // loginModel.dowTime = time;
         });
 
+        SMSTool.sendVerificationCode(1, phoneNum);
     };
 
     _finshInputCode = (text) => {
         if (text.length === 4) {
-            this.$navigate(RouterMap.InviteCodePage);
+            const { phoneNum, nickname, headerImg } = this.params;
+            let params = {
+                ...this.params,
+                code : text,
+                phone : phoneNum,
+                nickName : nickname,
+                headImg : headerImg
+            };
+            registAction(params, (res) => {
+                if (res.code === 10000) {
+                    this.$toastShow("注册成功");
+                    this.$navigate(RouterMap.InviteCodePage);
+                } else {
+                    this.$toastShow(res.msg);
+                }
+            });
         }
     };
 

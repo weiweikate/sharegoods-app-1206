@@ -16,16 +16,21 @@
    *      accessCode：预取的编码
    *      msg：文案或错误提示
    */
-  [TXCommonAuthHandler getAccessCodeWithTimeout:400 complete:^(NSDictionary * _Nonnull resultDic) {
-    if (finshBlock) {
-      finshBlock(resultDic);
-    }
-  }];
+  if ([TXCommonAuthHandler checkGatewayVerifyEnable:phoneNum]) {
+    [TXCommonAuthHandler getAccessCodeWithTimeout:4000 complete:^(NSDictionary * _Nonnull resultDic) {
+      if (finshBlock) {
+        finshBlock(resultDic);
+      }
+    }];
+  }else{
+    finshBlock(@{@"resultCode":@(-1)});
+  }
+ 
 }
 
 +(BOOL)isCanPhoneAuthen{
-         [TXCommonAuthHandler getVersion];
-  BOOL isCan = [TXCommonAuthHandler checkGatewayVerifyEnable:@""];
+               [TXCommonAuthHandler getVersion];
+  BOOL isCan = [TXCommonAuthHandler checkGatewayVerifyEnable:nil];
   return isCan;
 }
 @end

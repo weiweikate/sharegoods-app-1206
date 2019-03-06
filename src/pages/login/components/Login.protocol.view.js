@@ -21,12 +21,11 @@ const {
 
 const ProtocolViewStyle = StyleSheet.create({
     bgContent: {
-        alignItems: "center",
         flexDirection: "row",
         justifyContent: "center",
         marginTop: px2dp(20),
-        height: px2dp(80),
-        width: ScreenUtils.width
+        height: px2dp(50),
+        width: ScreenUtils.width,
     },
     selectImageStyle: { width: px2dp(11), height: px2dp(11), marginRight: px2dp(5) },
     readTextStyle: { fontSize: 11, color: DesignRule.textColor_secondTitle },
@@ -58,7 +57,7 @@ export default class ProtocolView extends Component {
                         style={ProtocolViewStyle.selectImageStyle}/>
                 </TouchableOpacity>
                 <Text style={ProtocolViewStyle.readTextStyle}>
-                    阅读并接受
+                    阅读并已接受
                 </Text>
                 <TouchableOpacity onPress={() => {
                     textClick && textClick(htmlUrl);

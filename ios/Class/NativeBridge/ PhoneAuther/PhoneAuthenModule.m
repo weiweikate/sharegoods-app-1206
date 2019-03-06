@@ -29,10 +29,9 @@ RCT_EXPORT_METHOD(isCanPhoneAuthen:(RCTPromiseResolveBlock)resolve reject:(RCTPr
   }
 }
 RCT_EXPORT_METHOD(startPhoneAuthenWithPhoneNum:(NSString *)phoneNum resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
-  
-//  [PhoneAutherTool ]
-  //  if([PhoneAutherTool isCan])
-  
+  [PhoneAutherTool startPhoneAutherWithPhoneNum:phoneNum andFinshBlock:^(NSDictionary * _Nonnull resultDic) {
+    resolve(resultDic);
+  }];
 }
 
 @end

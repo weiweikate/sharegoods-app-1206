@@ -13,6 +13,7 @@ import DesignRule from "../../../constants/DesignRule";
 import StringUtils from "../../../utils/StringUtils";
 import RouterMap from "../../../navigation/RouterMap";
 import ProtocolView from "../components/Login.protocol.view";
+// import { startPhoneAuthen } from "../model/PhoneAuthenAction";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -31,7 +32,7 @@ export default class InputPhoneNum extends BasePage {
     $navigationBarOptions = {
         title: "",
         show: true,
-        leftNavTitle:'取消'
+        leftNavTitle: "取消"
     };
 
     _render() {
@@ -100,16 +101,19 @@ export default class InputPhoneNum extends BasePage {
         } else {
             if (StringUtils.checkPhone(this.state.phoneNum)) {
                 if (!this.state.isSelectProtocol) {
-                    this.$toastShow('请勾选用户协议');
-                }else {
-                    this.$navigate(RouterMap.InputCode, { phoneNum: this.state.phoneNum });
+                    this.$toastShow("请勾选用户协议");
+                } else {
+                    let params = {
+                        ...this.params,
+                        phoneNum:this.state.phoneNum
+                    }
+                    this.$navigate(RouterMap.InputCode, params);
                 }
             } else {
                 this.$toastShow("您输入的手机号有误，请重新输入");
             }
         }
     };
-
     /**
      * 发送验证码
      * @private

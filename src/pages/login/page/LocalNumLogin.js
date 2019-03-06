@@ -16,6 +16,7 @@ import DesignRule from "../../../constants/DesignRule";
 import StringUtils from "../../../utils/StringUtils";
 import { MRTextInput } from "../../../components/ui";
 import ProtocolView from "../components/Login.protocol.view";
+import { startPhoneAuthen } from "../model/PhoneAuthenAction";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -42,7 +43,6 @@ export default class LocalNumLogin extends BasePage {
     };
 
     $isMonitorNetworkStatus() {
-
         return false;
     }
 
@@ -94,27 +94,29 @@ export default class LocalNumLogin extends BasePage {
                     />
                     <View
                         style={{
-                            marginTop: ScreenUtils.px2dp(10),
+                            marginTop: ScreenUtils.px2dp(3),
                             height: 1,
                             width: ScreenUtils.width - ScreenUtils.px2dp(80),
                             backgroundColor: DesignRule.imgBg_color
                         }}
                     />
-                    <View
-                        style={localNumberLoginStyles.btnBgStyle}
+                    <TouchableOpacity
+                        onPress={() => {
+                            this._clickAction();
+                        }}
                     >
-                        <TouchableOpacity
-                            onPress={() => {
-                                this._clickAction();
-                            }}
+                        <View
+                            style={localNumberLoginStyles.btnBgStyle}
                         >
+
                             <Text
                                 style={localNumberLoginStyles.btnTextStyle}
                             >
                                 本机号码一键登录
                             </Text>
-                        </TouchableOpacity>
-                    </View>
+
+                        </View>
+                    </TouchableOpacity>
                 </View>
 
                 {/*下部分视图*/}
@@ -122,7 +124,8 @@ export default class LocalNumLogin extends BasePage {
                     style={Styles.bottomBgContent}
                 >
                     <ProtocolView
-                        selectImageClick={() => {}}
+                        selectImageClick={() => {
+                        }}
                         textClick={() => {
 
                         }}
@@ -136,19 +139,28 @@ export default class LocalNumLogin extends BasePage {
         if (StringUtils.checkPhone(this.state.phoneNumber)) {
 
             Alert.alert(
-                '18768435263',
-                '如果您是双卡手机，请确保填写的号码是默认上网的手机号码',
+                "18768435263",
+                "如果您是双卡手机，请确保填写的号码是默认上网的手机号码",
                 [
-                    {text: '从新填写', onPress: () => console.log('Ask me later pressed')},
+                    { text: "从新填写", onPress: () => console.log("Ask me later pressed") },
 
-                    {text: '确定', onPress: () => console.log('Cancel Pressed')},
+                    {
+                        text: "确定", onPress: () => {
+                            this._sureClick();
+                        }
+                    }
                 ],
                 { cancelable: false }
-            )
-
+            );
         } else {
             this.$toastShow("请输入正确手机号");
         }
+    };
+
+    _sureClick = () => {
+        startPhoneAuthen(this.state.phoneNumber).then(res => {
+            console.log(res);
+        });
     };
 }
 

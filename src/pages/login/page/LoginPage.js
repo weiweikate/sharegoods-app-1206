@@ -11,7 +11,6 @@ import { MRText as Text } from "../../../components/ui";
 import CommSpaceLine from "../../../comm/components/CommSpaceLine";
 import BasePage from "../../../BasePage";
 import LoginAPI from "../api/LoginApi";
-// import { NavigationActions } from "react-navigation";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import DesignRule from "../../../constants/DesignRule";
 import res from "../res";
@@ -102,8 +101,7 @@ export default class LoginPage extends BasePage {
             }}>
                 返回
             </Text>
-        )
-            ;
+        );
     };
 
     $isMonitorNetworkStatus() {
@@ -163,11 +161,11 @@ export default class LoginPage extends BasePage {
         oldUserLoginSingleModel.isCanLoginWithWx((flag) => {
             if (flag) {
                 wxLoginAction((code, data) => {
-                    if (code === 10000) {
+                    if (code == 10000) {
                         this.params.callback && this.params.callBack();
-                        this.$navigateBack();
+                        this.$navigateBack(-2);
                     } else if (code === 34005) {
-                        this.$navigate("login/login/RegistPage", data);
+                        this.$navigate(RouterMap.InputPhoneNum, data);
                     }
                 });
             }
@@ -186,10 +184,12 @@ export default class LoginPage extends BasePage {
         if (loginType === 0) {
             track(trackEvent.login, { loginMethod: "验证码登录" });
             codeLoginAction(LoginParam, (data) => {
-                if (data.code === 10000) {
+                if (data.code == 10000) {
+                    this.$toastShow("登录成功");
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
-                    this.$navigateBack();
+                    this.$navigateBack(-2);
+
                 } else {
                     this.$loadingDismiss();
                     this.$toastShow(data.msg);
@@ -198,10 +198,11 @@ export default class LoginPage extends BasePage {
         } else {
             track(trackEvent.login, { loginMethod: "密码登录" });
             pwdLoginAction(LoginParam, (data) => {
-                if (data.code === 10000) {
+                if (data.code == 10000) {
+                    this.$toastShow("登录成功");
                     this.params.callback && this.params.callback();
-                    this.$navigateBack();
                     this.$loadingDismiss();
+                    this.$navigateBack(-2);
                 } else {
                     this.$loadingDismiss();
                     this.$toastShow(data.msg);
