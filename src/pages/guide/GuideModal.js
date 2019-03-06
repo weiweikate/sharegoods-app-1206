@@ -31,7 +31,6 @@ import ImageLoad from '@mr/image-placeholder';
 import {categoryHeight} from '../home/HomeCategoryView'
 import { bannerHeight } from '../home/HomeBannerView';
 import{ kHomeClassifyHeight } from '../home/HomeClassifyView';
-import  { adViewHeight } from '../home/HomeAdView';
 import { adModules } from '../home/HomeAdModel';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
@@ -169,7 +168,7 @@ export default class GuideModal extends React.Component {
                 let top =  kHomeClassifyHeight+categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0);
                 if (ad.length > 0){
                     data.image = ad[ad.length-1].imgUrl;
-                    top = top + adViewHeight - adHeight
+                    top = top + adModules.adHeight - adHeight
                 }
                 if (top>ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight) {
                     top = ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     View,
     StyleSheet,
@@ -8,38 +8,39 @@ import {
     Alert
     // TouchableWithoutFeedback,
     // ImageBackground,
-} from 'react-native';
+} from "react-native";
 
-import BasePage from '../../../BasePage';
-import DetailHeaderView from './components/DetailHeaderView';
-import DetailSegmentView from './components/DetailSegmentView';
-import DetailBottomView from './components/DetailBottomView';
-import PriceExplain from './components/PriceExplain';
-import DetailNavView from './components/DetailNavView';
-import SelectionPage from './SelectionPage';
-import HomeAPI from '../api/HomeAPI';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import CommShareModal from '../../../comm/components/CommShareModal';
-import HTML from 'react-native-render-html';
-import DetailNavShowModal from './components/DetailNavShowModal';
-import apiEnvironment from '../../../api/ApiEnvironment';
-import { MRText as Text } from '../../../components/ui';
+import BasePage from "../../../BasePage";
+import DetailHeaderView from "./components/DetailHeaderView";
+import DetailSegmentView from "./components/DetailSegmentView";
+import DetailBottomView from "./components/DetailBottomView";
+import PriceExplain from "./components/PriceExplain";
+import DetailNavView from "./components/DetailNavView";
+import SelectionPage from "./SelectionPage";
+import HomeAPI from "../api/HomeAPI";
+import ScreenUtils from "../../../utils/ScreenUtils";
+import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
+import CommShareModal from "../../../comm/components/CommShareModal";
+import HTML from "react-native-render-html";
+import DetailNavShowModal from "./components/DetailNavShowModal";
+import apiEnvironment from "../../../api/ApiEnvironment";
+import { MRText as Text } from "../../../components/ui";
 // import CommModal from '../../../comm/components/CommModal';
-import DesignRule from '../../../constants/DesignRule';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import DesignRule from "../../../constants/DesignRule";
+import { track, trackEvent } from "../../../utils/SensorsTrack";
 
 // const { px2dp } = ScreenUtils;
-import user from '../../../model/user';
-import EmptyUtils from '../../../utils/EmptyUtils';
+import user from "../../../model/user";
+import EmptyUtils from "../../../utils/EmptyUtils";
 // import StringUtils from '../../../utils/StringUtils';
 // import ConfirmAlert from '../../../components/ui/ConfirmAlert';
-import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import { PageLoadingState, renderViewByLoadingState } from "../../../components/pageDecorator/PageState";
+import NavigatorBar from "../../../components/pageDecorator/NavigatorBar/NavigatorBar";
 // import res from '../res';
-import MessageApi from '../../message/api/MessageApi';
-import QYChatUtil from '../../mine/page/helper/QYChatModel';
-import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
+import MessageApi from "../../message/api/MessageApi";
+import QYChatUtil from "../../mine/page/helper/QYChatModel";
+import DetailHeaderServiceModal from "./components/DetailHeaderServiceModal";
+import DetailPromoteModal from "./components/DetailPromoteModal";
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -63,7 +64,7 @@ export default class ProductDetailPage extends BasePage {
         super(props);
         this.state = {
             data: {},
-            goType: '',
+            goType: "",
             selectedIndex: 0,
             //活动数据
             activityData: {},
@@ -85,7 +86,7 @@ export default class ProductDetailPage extends BasePage {
         return {
             loadingState: this.state.loadingState,
             netFailedProps: {
-                buttonText: productStatus === 0 ? '去首页' : '重新加载',
+                buttonText: productStatus === 0 ? "去首页" : "重新加载",
                 netFailedInfo: this.state.netFailedInfo,
                 reloadBtnClick: productStatus === 0 ? (() => this.$navigateBackToHome()) : (() => this._getProductDetail())
             }
@@ -98,11 +99,11 @@ export default class ProductDetailPage extends BasePage {
 
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            "willFocus",
             payload => {
                 const { state } = payload;
-                console.log('willFocus', state);
-                if (state && state.routeName === 'home/product/ProductDetailPage') {
+                console.log("willFocus", state);
+                if (state && state.routeName === "home/product/ProductDetailPage") {
                     this._getProductDetail();
                     this._getMessageCount();
                 }
@@ -235,7 +236,7 @@ export default class ProductDetailPage extends BasePage {
                 /*商品详情埋点*/
                 const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = data || {};
                 track(trackEvent.commodityDetail, {
-                    preSeat: this.params.preseat || '',
+                    preSeat: this.params.preseat || "",
                     commodityID: prodCode,
                     commodityName: name,
                     firstCommodity: firstCategoryId,
@@ -263,10 +264,10 @@ export default class ProductDetailPage extends BasePage {
 
     _productActivityViewAction = () => {
         if (this.state.activityType === 1 || this.state.activityType === 2) {
-            this.$navigate('topic/TopicDetailPage', {
+            this.$navigate("topic/TopicDetailPage", {
                 activityCode: this.state.activityData.activityCode,
                 activityType: this.state.activityType,
-                preseat: '商品详情活动信息'
+                preseat: "商品详情活动信息"
             });
         }
     };
@@ -274,17 +275,17 @@ export default class ProductDetailPage extends BasePage {
     //去购物车
     _bottomViewAction = (type) => {
         switch (type) {
-            case 'jlj':
+            case "jlj":
                 if (!user.isLogin) {
-                    Alert.alert('提示', '登录后分享才能获取奖励',
+                    Alert.alert("提示", "登录后分享才能获取奖励",
                         [
                             {
-                                text: '取消', onPress: () => {
+                                text: "取消", onPress: () => {
                                     this.shareModal.open();
                                 }
                             },
                             {
-                                text: '去登录', onPress: () => {
+                                text: "去登录", onPress: () => {
                                     this.gotoLoginPage();
                                 }
                             }
@@ -294,15 +295,15 @@ export default class ProductDetailPage extends BasePage {
                     this.shareModal.open();
                 }
                 break;
-            case 'buy':
+            case "buy":
                 if (!user.isLogin) {
-                    this.$navigate('login/login/LoginPage');
+                    this.$navigate("login/login/LoginPage");
                     return;
                 }
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
                 break;
-            case 'gwc':
+            case "gwc":
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
                 break;
@@ -312,17 +313,17 @@ export default class ProductDetailPage extends BasePage {
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode) => {
         let orderProducts = [];
-        if (this.state.goType === 'gwc') {
+        if (this.state.goType === "gwc") {
             //hyf更改
             let temp = {
-                'amount': amount,
-                'skuCode': skuCode,
-                'productCode': this.state.data.prodCode
+                "amount": amount,
+                "skuCode": skuCode,
+                "productCode": this.state.data.prodCode
             };
             /*加入购物车埋点*/
             const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.state.data || {};
             track(trackEvent.addToShoppingcart, {
-                shoppingCartEntrance: '详情页面',
+                shoppingCartEntrance: "详情页面",
                 commodityNumber: amount,
                 commodityID: prodCode,
                 commodityName: name,
@@ -331,17 +332,21 @@ export default class ProductDetailPage extends BasePage {
                 pricePerCommodity: minPrice
             });
             shopCartCacheTool.addGoodItem(temp);
-        } else if (this.state.goType === 'buy') {
+        } else if (this.state.goType === "buy") {
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: this.state.data.prodCode
             });
-            this.$navigate('order/order/ConfirOrderPage', {
+            console.log("ConfirOrderPage", this.params);
+            this.$navigate("order/order/ConfirOrderPage", {
+                // fromType: this.params.type === 9 ? 4 : undefined,
+                // couponsId:this.params.couponId,
                 orderParamVO: {
                     orderType: 99,
                     orderProducts: orderProducts,
-                    source: 2
+                    source: parseInt(this.params.type) === 9 ? 4 : 2,
+                    couponsId: parseInt(this.params.couponId)
                 }
             });
         }
@@ -354,20 +359,24 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <DetailHeaderView data={this.state.data}
+        const { data, activityType, activityData, messageCount } = this.state;
+        return <DetailHeaderView data={data}
                                  ref={(e) => {
                                      this.DetailHeaderView = e;
                                  }}
-                                 activityType={this.state.activityType}
-                                 activityData={this.state.activityData}
+                                 activityType={activityType}
+                                 activityData={activityData}
                                  productActivityViewAction={this._productActivityViewAction}
                                  goShopAction={() => {
                                      this.$navigateBackToStore();
                                  }}
-                                 serviceAction={() => {
-                                     this.DetailHeaderServiceModal.show(this.state.data);
+                                 promotionViewAction={() => {
+                                     this.DetailPromoteModal.show(data);
                                  }}
-                                 messageCount={this.state.messageCount}
+                                 serviceAction={() => {
+                                     this.DetailHeaderServiceModal.show(data);
+                                 }}
+                                 messageCount={messageCount}
                                  navigation={this.props.navigation}/>;
     };
 
@@ -379,15 +388,15 @@ export default class ProductDetailPage extends BasePage {
         const { content } = this.state.data;
         if (this.state.selectedIndex === 0) {
             if (content) {
-                let contentS = content.split(',') || [];
-                let html = '';
+                let contentS = content.split(",") || [];
+                let html = "";
                 contentS.forEach((item) => {
                     html = `${html}<p><img src=${item}></p>`;
                 });
                 return <View>
                     <HTML html={html} imagesMaxWidth={ScreenUtils.width}
                           imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
-                          containerStyle={{ backgroundColor: '#fff' }}/>
+                          containerStyle={{ backgroundColor: "#fff" }}/>
                     <PriceExplain/>
                 </View>;
             } else {
@@ -395,7 +404,7 @@ export default class ProductDetailPage extends BasePage {
             }
 
         } else {
-            return <View style={{ backgroundColor: 'white' }}>
+            return <View style={{ backgroundColor: "white" }}>
                 <FlatList
                     style={{
                         marginHorizontal: 16,
@@ -414,21 +423,21 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderSmallItem = ({ item }) => {
-        return <View style={{ flexDirection: 'row', height: 35 }}>
-            <View style={{ backgroundColor: DesignRule.lineColor_inGrayBg, width: 70, justifyContent: 'center' }}>
+        return <View style={{ flexDirection: "row", height: 35 }}>
+            <View style={{ backgroundColor: DesignRule.lineColor_inGrayBg, width: 70, justifyContent: "center" }}>
                 <Text style={{
                     marginLeft: 10,
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 12
-                }} allowFontScaling={false}>{item.paramName || ''}</Text>
+                }} allowFontScaling={false}>{item.paramName || ""}</Text>
             </View>
             <Text style={{
                 flex: 1,
-                alignSelf: 'center',
+                alignSelf: "center",
                 marginLeft: 20,
                 color: DesignRule.textColor_instruction,
                 fontSize: 12
-            }} allowFontScaling={false}>{item.paramValue || ' '}</Text>
+            }} allowFontScaling={false}>{item.paramValue || " "}</Text>
         </View>;
     };
 
@@ -536,7 +545,7 @@ export default class ProductDetailPage extends BasePage {
         return (
             <View style={styles.container}>
                 {dic.loadingState === PageLoadingState.fail ?
-                    <NavigatorBar title={productStatus === 0 ? '暂无商品' : '商品详情'} leftPressed={() => {
+                    <NavigatorBar title={productStatus === 0 ? "暂无商品" : "商品详情"} leftPressed={() => {
                         this.$navigateBack();
                     }}/> : null}
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderContent)}
@@ -555,7 +564,7 @@ export default class ProductDetailPage extends BasePage {
                                this.$navigateBack();
                            }}
                            navRLeft={() => {
-                               this.$navigate('shopCart/ShopCart', {
+                               this.$navigate("shopCart/ShopCart", {
                                    hiddeLeft: false
                                });
                            }}
@@ -567,10 +576,10 @@ export default class ProductDetailPage extends BasePage {
                                                this.gotoLoginPage();
                                                return;
                                            }
-                                           this.$navigate('message/MessageCenterPage');
+                                           this.$navigate("message/MessageCenterPage");
                                            break;
                                        case 1:
-                                           this.$navigate('home/search/SearchPage');
+                                           this.$navigate("home/search/SearchPage");
                                            break;
                                        case 2:
                                            this.shareModal.open();
@@ -603,31 +612,33 @@ export default class ProductDetailPage extends BasePage {
                                 pricePerCommodity: minPrice
                             }}
                             trackEvent={trackEvent.share}
-                            type={'Image'}
+                            type={"Image"}
                             imageJson={{
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
                                 priceStr: `￥${originalPrice}`,
                                 retailPrice: `￥${v0Price}`,
+                                v0Price: v0Price,
                                 spellPrice: `￥${groupPrice}`,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ""}`
                             }}
                             webJson={{
                                 title: `${name}`,
-                                dec: '商品详情',
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
+                                dec: "商品详情",
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ""}`,
                                 thumImage: imgUrl
                             }}
                             miniProgramJson={{
                                 title: `${name}`,
-                                dec: '商品详情',
-                                thumImage: 'logo.png',
+                                dec: "商品详情",
+                                thumImage: "logo.png",
                                 hdImageURL: imgUrl,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
-                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ''}`
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ""}`,
+                                miniProgramPath: `/pages/index/index?type=99&id=${prodCode}&inviteId=${user.code || ""}`
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             <DetailHeaderServiceModal ref={(ref) => this.DetailHeaderServiceModal = ref}/>
+            <DetailPromoteModal ref={(ref) => this.DetailPromoteModal = ref}/>
             {/*<ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>*/}
             {/*{this._renderCouponModal()}*/}
         </View>;
@@ -641,8 +652,8 @@ const styles = StyleSheet.create({
     },
     opacityView: {
         height: ScreenUtils.headerHeight,
-        backgroundColor: 'white',
-        position: 'absolute',
+        backgroundColor: "white",
+        position: "absolute",
         top: 0,
         left: 0,
         right: 0,

@@ -16,6 +16,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
+import ImageLoad from '@mr/image-placeholder'
 
 const { px2dp } = ScreenUtils;
 
@@ -28,11 +29,18 @@ class Item extends Component {
 
     render() {
         const { onPress, data } = this.props;
-        const { icon } = this.props.data;
+        const { img, icon } = this.props.data;
+        const { loadingError } = this.state;
+        let source = { uri: img };
         return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
             {
-                //TODO: 占位图，等待接口调试
-                <Image style={styles.icon} source={icon}/>
+                loadingError
+                    ?
+                    <Image style={styles.icon}  source={icon}/>
+                    :
+                    <ImageLoad style={styles.icon} showPlaceholder={false} source={source} onError={() => {
+                        this.setState({ loadingError: true });
+                    }}/>
             }
             <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
         </TouchableOpacity>;

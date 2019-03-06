@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         marginRight: 2
     },
     index: {
-        width: 10,
+        width: 5,
         height: 3,
         borderRadius: 3,
         backgroundColor: '#eee',

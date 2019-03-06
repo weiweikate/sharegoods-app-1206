@@ -35,6 +35,7 @@ import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
 import GuideModal from './pages/guide/GuideModal';
+import {SpellShopFlag} from './navigation/Tab';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
@@ -65,7 +66,8 @@ export default class App extends Component {
         super(props);
         this.state = {
             load: false,
-            showOldBtn: false
+            showOldBtn: false,
+            isShowShopFlag: true
         };
         user.readToken();
         if (user.isLogin) {
@@ -119,6 +121,7 @@ export default class App extends Component {
 
     render() {
         const prefix = 'meeruu://';
+        const {isShowShopFlag} = this.state
         return (
             <View style={styles.container}>
                 <Navigator
@@ -129,11 +132,12 @@ export default class App extends Component {
                     }}
                     onNavigationStateChange={(prevState, currentState) => {
                         let curRouteName = getCurrentRouteName(currentState);
-                        this.setState({ curRouteName });
                         // 拦截当前router的名称
-                        console.log(curRouteName);
                         global.$routes = currentState.routes;
-                    }}/>
+                        this.setState({ curRouteName, isShowShopFlag: currentState.routes.length === 1 });
+                    }}
+                />
+                <SpellShopFlag isShow={isShowShopFlag}/>
                 {
                     CONFIG.showDebugPanel ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
