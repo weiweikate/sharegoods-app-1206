@@ -248,6 +248,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:resizeableActivity="true"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateHidden">
             <intent-filter>
