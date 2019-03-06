@@ -5,6 +5,7 @@ import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.meeruu.sharegoods.rn.loadingview.MRLoadingViewManager;
+import com.meeruu.sharegoods.rn.module.PhoneAuthenModule;
 import com.meeruu.sharegoods.rn.popmodal.PopModalManager;
 import com.meeruu.sharegoods.rn.showground.RecyclerViewHeaderManager;
 import com.meeruu.sharegoods.rn.showground.ShowGroundViewManager;
@@ -33,6 +34,7 @@ public class RNMRPackage implements ReactPackage {
     public LoginAndSharingModule loginAndSharingModule;
     public QRCodeModule qrCodeModule;
     public AnalyticsModule analyticsModule;
+    public PhoneAuthenModule phoneAuthenModule;
 
     /**
      * 创建Native Module
@@ -49,12 +51,17 @@ public class RNMRPackage implements ReactPackage {
         loginAndSharingModule = new LoginAndSharingModule(reactContext);
         qrCodeModule = new QRCodeModule(reactContext);
         analyticsModule = new AnalyticsModule(reactContext);
+        phoneAuthenModule = new PhoneAuthenModule(reactContext);
+
+
         modules.add(mModule);
         modules.add(qyChatModule);
         modules.add(appPayModule);
         modules.add(loginAndSharingModule);
         modules.add(qrCodeModule);
         modules.add(analyticsModule);
+        modules.add(phoneAuthenModule);
+
         return modules;
     }
 

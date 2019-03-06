@@ -46,6 +46,8 @@ const api = {
     getAd: ['/config/advertisement/queryAdvertisementList'],
     //专题
     getSubject: ['/config/advertisement/queryAdvertisementList'],
+
+    getBanner: ['/config/advertisement/queryAdvertisementList'],
     //会员
     getMembers: ['/user/level/get', {method: 'get'}],
     //为你推荐

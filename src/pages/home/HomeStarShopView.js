@@ -24,7 +24,7 @@ const starImg = res.star;
 
 
 const Banner = ({ backImage, title, press }) => <TouchableWithoutFeedback onPress={() => press && press()}><View style={styles.bannerContainer}>
-    <ImageLoad style={styles.bannerImg} source={backImage}/>
+    <ImageLoad style={styles.bannerImg} source={backImage} cacheable={true}/>
 </View></TouchableWithoutFeedback>;
 
 const Line = () => <View style={styles.line}/>;

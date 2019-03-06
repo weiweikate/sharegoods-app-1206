@@ -137,12 +137,15 @@ export default class BasePage extends Component {
                 {
                     isShowNavBar && <NavigatorBar {...navigationBarOptions}
                                                   renderRight={this.$NavBarRenderRightItem || null}
+                                                  renderTitle={this.$NavBarRenderTitle || null}
                                                   navigation={this.props.navigation}
                                                   leftPressed={() => (this.$NavBarLeftPressed || this.$NavigationBarDefaultLeftPressed).call(this)}
                                                   rightPressed={() => (this.$NavBarRightPressed || this.$NavigationBarDefaultRightPressed).call(this)}
                                                   ref={(bar) => {
                                                       this.$navigatorBar = bar;
-                                                  }}/>
+                                                  }}
+
+                    />
                 }
                 {this.$isMonitorNetworkStatus() && netState.isConnected === false && this.viewDidLoad === false ?
                     this._renderDefaultNoNet() :

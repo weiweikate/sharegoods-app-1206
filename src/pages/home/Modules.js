@@ -3,12 +3,12 @@ import HomeApi from './api/HomeAPI';
 import { homeType, homeRoute } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import { adModules } from './HomeAdModel';
-import { starShopModule } from './HomeStarShopModel';
 import { todayModule } from './HomeTodayModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
-import OssHelper from '../../utils/OssHelper';
+import { categoryModule } from './HomeCategoryModel'
 import res from './res';
+import OssHelper from '../../utils/OssHelper'
 
 const {
     school: schoolImg,
@@ -21,54 +21,42 @@ const {
 class ClassifyModules {
     @observable classifyList = [];
     @action loadClassifyList = () => {
-        let classifys = [{
+        this.classifyList = [{
             icon: shareImg,
-            img: OssHelper('/app/share%403x.png'),
+            img: OssHelper('/app/share11.png'),
             name: '升级',
             id: 1,
             route: 'home/product/xpProduct/XpDetailPage',
             linkTypeCode: 'JF201901250002'
         }, {
             icon: showImg,
-            img: OssHelper('/app/show%403x.png'),
+            img: OssHelper('/app/show11.png'),
             name: '秀场',
             id: 1,
             route: 'show/ShowListPage'
         }, {
             icon: signinImg,
-            img: OssHelper('/app/signin%403x.png'),
+            img: OssHelper('/app/signin11.png'),
             name: '签到',
             id: 1,
             route: 'home/signIn/SignInPage',
             needLogin: 1
         }, {
             icon: schoolImg,
-            img: OssHelper('/app/school%403x.png'),
+            img: OssHelper('/app/school11.png'),
             name: '必看',
             id: 1,
             linkTypeCode: 'FX181226000001',
             route: 'show/ShowDetailPage'
         }, {
             icon: spikeImg,
-            img: OssHelper('/app/spike%403x.png'),
+            img: OssHelper('/app/spike11.png'),
             name: '秒杀',
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000002'
         }];
-        HomeApi.classify().then(resData => {
-            if (resData.code === 10000 && resData.data) {
-                let resClassifys = resData.data;
-                resClassifys.map((data) => {
-                    if (data.name === '全部分类') {
-                        data.route = 'home/search/CategorySearchPage';
-                    } else {
-                        data.route = 'home/search/SearchResultPage';
-                    }
-                });
-                this.classifyList = classifys.concat(resClassifys);
-            }
-        });
+        
     };
 }
 
@@ -132,31 +120,34 @@ class HomeModule {
         todayModule.loadTodayList(this.firstLoad);
         adModules.loadAdList(this.firstLoad);
         classifyModules.loadClassifyList();
-        starShopModule.loadShopList(this.firstLoad);
         subjectModule.loadSubjectList(this.firstLoad);
         recommendModule.loadRecommendList(this.firstLoad);
+        categoryModule.loadCategoryList()
         this.page = 1;
         this.isEnd = false;
         this.homeList = [{
             id: 0,
+            type: homeType.category
+        },{
+            id: 1,
             type: homeType.swiper
         }, {
             id: 2,
             type: homeType.user
         }, {
-            id: 1,
+            id: 3,
             type: homeType.classify
         }, {
-            id: 3,
+            id: 4,
             type: homeType.ad
         }, {
-            id: 7,
+            id: 5,
             type: homeType.starShop
         }, {
-            id: 5,
+            id: 6,
             type: homeType.today
         }, {
-            id: 6,
+            id: 7,
             type: homeType.recommend
         }, {
             id: 8,
@@ -213,7 +204,6 @@ class HomeModule {
 
     //加载为你推荐列表
     loadMoreHomeList = flow(function* () {
-        console.log('loadMoreHomeList', this.isFetching, this.isEnd, this.firstLoad);
         if (this.isFetching) {
             return;
         }

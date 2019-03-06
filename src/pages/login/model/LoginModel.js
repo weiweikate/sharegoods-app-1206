@@ -1,25 +1,32 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed } from "mobx";
 
 class LoginModel {
     @observable
     selectIndex = 0;
     @observable
-    phoneNumber = '';
+    phoneNumber = "";
     @observable
-    vertifyCode = '';
+    vertifyCode = "";
     @observable
-    password = '';
+    password = "";
     @observable
     isSecuret = true;
     @observable
     dowTime = 0;
     @observable
     haveClick = false;
+    @observable
+    isSelectProtocol = true;
+
+    @action
+    saveIsSelectProtocol(isSelect) {
+        this.isSelectProtocol = isSelect;
+    }
 
     @action
     savePhoneNumber(phoneNmber) {
         if (!phoneNmber || phoneNmber.length === 0) {
-            this.phoneNumber = '';
+            this.phoneNumber = "";
             return;
         }
         this.phoneNumber = phoneNmber;
@@ -33,7 +40,7 @@ class LoginModel {
     @action
     savePassword(password) {
         if (!password) {
-            this.password = '';
+            this.password = "";
             return;
         }
         this.password = password;
@@ -41,13 +48,13 @@ class LoginModel {
 
     @action
     clearPassword() {
-        this.password = '';
+        this.password = "";
     }
 
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
-            this.vertifyCode = '';
+            this.vertifyCode = "";
             return;
         }
         this.vertifyCode = vertifyCode;
@@ -55,7 +62,7 @@ class LoginModel {
 
     @computed
     get isCanClick() {
-        if (this.phoneNumber.length < 11 && !this.haveClick) {
+        if (this.phoneNumber.length < 11 && !this.haveClick || !this.isSelectProtocol) {
             return false;
         }
         if (this.selectIndex === 0) {

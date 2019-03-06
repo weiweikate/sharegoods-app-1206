@@ -126,7 +126,7 @@ export default class ShowChoiceView extends Component {
 
 let styles = StyleSheet.create({
     container: {
-        marginTop: px2dp(10)
+        marginTop: px2dp(5)
     },
     scroll: {
         height: px2dp(175)

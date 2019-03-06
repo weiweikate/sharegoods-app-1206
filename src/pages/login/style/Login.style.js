@@ -29,7 +29,8 @@ const styles = StyleSheet.create(
         },
         bottomBgContent: {
             flex: 1,
-            backgroundColor: "green"
+            flexDirection:'column',
+            justifyContent:'flex-end',
         }
 
     }

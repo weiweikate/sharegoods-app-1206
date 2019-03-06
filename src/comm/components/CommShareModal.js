@@ -30,6 +30,11 @@
        userName //"小程序username，如 gh_3ac2059ac66f";
        miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
        }
+ api: { 分享完成调用
+    url: '',
+    methods: 'GET',
+    params: {}
+}
  trackParmas={}埋点
  trackEvent= ''
  gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
@@ -56,7 +61,8 @@ import {
 
 import {
     UIText,
-    UIImage
+    UIImage,
+    MRText
 } from '../../components/ui';
 
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -70,6 +76,8 @@ import { track } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import { getSource } from '@mr/image-placeholder/oos';
 import apiEnvironment from '../../api/ApiEnvironment';
+import HttpUtils from '../../api/network/HttpUtils';
+import EmptyUtils from '../../utils/EmptyUtils';
 
 export default class CommShareModal extends React.Component {
 
@@ -82,6 +90,7 @@ export default class CommShareModal extends React.Component {
             modalVisible: false,
             shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
+            showToastImage: false,
             scale: new Animated.Value(1),
             y: new Animated.Value(autoSizeWidth(0))
         };
@@ -92,7 +101,7 @@ export default class CommShareModal extends React.Component {
         if (user.isLogin) {
             user.userShare();
         }
-        this.setState({ modalVisible: true, shareType: this.defaultShareType });
+        this.setState({ modalVisible: true, shareType: this.defaultShareType, showToastImage: false });
         this.modal && this.modal.open();
         // this.state.y.setValue(autoSizeWidth(340));
         // Animated.spring(
@@ -103,15 +112,17 @@ export default class CommShareModal extends React.Component {
         //         duration: 500
         //     }
         // ).start();
-        this.showImage();
+        if (this.props.type !== 'Image') {
+            this.showImage();
+        }
     }
 
     /**
      * 显示图片,如果是分享商品，分享推广，下载图片展示图片动画
      */
-    showImage(){
+    showImage() {
         let type = this.props.type;
-        if (type === 'promotionShare' || type === 'Image'){
+        if (type === 'promotionShare' || type === 'Image') {
             if (this.state.path.length === 0) {
                 if (type === 'promotionShare') {
                     bridge.createPromotionShareImage(this.props.webJson.linkUrl, (path) => {
@@ -121,11 +132,12 @@ export default class CommShareModal extends React.Component {
                             }, 350);
                         });
                     });
-                } else if(type === 'Image'){
+                } else if (type === 'Image') {
                     let url = this.props.imageJson && this.props.imageJson.imageUrlStr;
                     this.props.imageJson && (this.props.imageJson.imageUrlStr = getSource(url, this.imageWidth, this.imageHeight));
                     bridge.creatShareImage(this.props.imageJson, (path) => {
                         this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path }, () => {
+                            this.changeShareType(0);
                             setTimeout(() => {
                                 this.startAnimated();
                             }, 350);
@@ -196,9 +208,35 @@ export default class CommShareModal extends React.Component {
             if (user.isLogin && that.props.luckyDraw === true) {
                 user.luckyDraw();
             }
+            that.shareSucceedCallBlack();
         }, (errorStr) => {
 
         });
+    }
+
+    shareSucceedCallBlack() {
+        let api = this.props.api;
+        if (EmptyUtils.isEmpty(api)) {
+            return;
+        }
+        let { url, methods, params, refresh } = api;
+        if (EmptyUtils.isEmpty(url)) {
+            return;
+        }
+        if (methods && methods.tolocaleUpperCase === 'GET') {
+            HttpUtils.get(url, false, params).then(() => {
+                if (refresh === true) {
+                    this.props.reloadWeb && this.props.reloadWeb();
+                }
+            });
+        } else {
+            HttpUtils.post(url, false, params).then(() => {
+                if (refresh === true) {
+                    this.props.reloadWeb && this.props.reloadWeb();
+                }
+            }).catch(() => {
+            });
+        }
     }
 
     saveImage(path) {
@@ -235,11 +273,6 @@ export default class CommShareModal extends React.Component {
 
     render() {
         let array = [];
-        let { isLogin, needLogin } = this.props;
-        let isShow = false;
-        if (needLogin === true && isLogin === false) {
-            isShow = true;
-        }
         array.push({
             image: res.share.wechat, title: '微信好友', onPress: () => {
                 this.share(0);
@@ -282,7 +315,11 @@ export default class CommShareModal extends React.Component {
                 });
                 array.push({
                     image: res.share.saveImage, title: '分享图片', onPress: () => {
-                        this.changeShareType(0);
+                        this.setState({
+                            showToastImage: true
+                        }, () => {
+                            this.showImage();
+                        });
                     }
                 });
             }
@@ -302,6 +339,8 @@ export default class CommShareModal extends React.Component {
                 }
             }];
         }
+
+        const { v0Price } = this.props.imageJson || {};
 
         return (
             <CommModal onRequestClose={this.close}
@@ -335,12 +374,20 @@ export default class CommShareModal extends React.Component {
                                     height: 1,
                                     backgroundColor: DesignRule.lineColor_inColorBg
                                 }}/>
-                                <UIText value={'分享到'}
-                                        style={{
+                                {
+                                    this.props.type === 'Image' ?
+                                        <MRText style={{
                                             color: DesignRule.textColor_secondTitle,
                                             fontSize: autoSizeWidth(17),
                                             marginHorizontal: 7
-                                        }}/>
+                                        }}>{`分享秀一秀 ${user.isLogin ? `${v0Price}起` : ''}`}</MRText>
+                                        :
+                                        <MRText style={{
+                                            color: DesignRule.textColor_secondTitle,
+                                            fontSize: autoSizeWidth(17),
+                                            marginHorizontal: 7
+                                        }}>分享到</MRText>
+                                }
                                 <View style={{
                                     flex: 1,
                                     marginRight: autoSizeWidth(25),
@@ -388,7 +435,7 @@ export default class CommShareModal extends React.Component {
                         </TouchableWithoutFeedback>
                     </Animated.View>
                     {
-                        this.props.type === 'promotionShare' || this.props.type === 'Image' ?
+                        this.props.type === 'promotionShare' || (this.props.type === 'Image' && this.state.showToastImage) ?
                             <Animated.View style={{
                                 height: this.imageHeight,
                                 width: this.imageWidth,
@@ -416,22 +463,6 @@ export default class CommShareModal extends React.Component {
                                                backgroundColor: 'white'
                                            }}/>
                                 </TouchableWithoutFeedback>
-                                {
-                                    isShow ? <UIText value={'登陆以后分享才能获取奖励'}
-                                                     style={{
-                                                         position: 'absolute',
-                                                         left: 0,
-                                                         right: 0,
-                                                         height: 20,
-                                                         top: this.imageWidth - 20,
-                                                         backgroundColor: 'rgba(0,0,0,0.3)',
-                                                         fontSize: 12,
-                                                         textAlign: 'center',
-                                                         color: 'white'
-                                                     }}/>
-                                        : null
-
-                                }
                                 {
                                     this.state.path === '' ? <ActivityIndicator
                                         color="#aaaaaa"

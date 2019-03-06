@@ -1,97 +1,142 @@
 import { TabNavigator } from 'react-navigation';
-import React from 'react';
+import React, {Component} from 'react';
+import {Text, View} from 'react-native'
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
 import MyShop_RecruitPage from '../pages/spellShop/MyShop_RecruitPage';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, ImageBackground } from 'react-native';
 import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
 import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
+import { observer } from 'mobx-react';
+
+
+const NormalTab = ({source, title}) => {
+    return <View style={styles.tab}>
+    <Image style={styles.tabBarIcon} source={source}/>
+    <Text style={styles.text}>{title}</Text>
+    </View>
+}
+
+const ActiveTab = ({source, title}) => {
+    return <View style={styles.tab}>
+    <Image style={styles.tabBarIcon} source={source}/>
+    <Text style={styles.activeText}>{title}</Text>
+    </View>
+}
+
+const Tab = ({focused, activeSource, normalSource, title}) => {
+    if (focused) {
+        return <ActiveTab source={activeSource} title={title}/>
+    }
+    return <NormalTab source={normalSource} title={title}/>
+}
+
+@observer
+class SpellShopTab extends Component {
+    render() {
+        const { focused, normalSource, activeSource } = this.props
+        if (!user) {
+            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
+        }
+
+        if (!user.isLogin) {
+            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
+        }
+
+        if (user.levelRemark >= 'V2' && !user.storeCode) {
+            return <Image style={styles.store} source={res.tab.home_store}/>
+        }
+
+        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
+            return <Image style={styles.store} source={res.tab.home_store}/>
+        }
+
+        return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
+    }
+}
+
+const ShowFlag = () => <View style={styles.shopFlag}>
+    <ImageBackground style={styles.flagBg} source={res.tab.home_store_flag}>
+        <Text style={styles.flagText}>快享拼店价</Text>
+    </ImageBackground>
+</View>
+
+@observer
+export class SpellShopFlag extends Component {
+    state = {
+        isFlag: true
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {isShow} = nextProps
+        if (isShow) {
+            setTimeout(() => {
+                this.setState({isFlag: isShow})
+            }, 400)
+        } else {
+            this.setState({isFlag: isShow})
+        }
+    }
+
+    render() {
+        if (!this.state.isFlag) {
+            return null
+        }
+        if (!user) {
+            return null
+        }
+        if (!user.isLogin) {
+            return null
+        }
+        if (user.levelRemark >= 'V2' && !user.storeCode) {
+            return <ShowFlag/>
+        }
+        if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
+            return <ShowFlag/>
+        }
+
+        return null;
+    }
+}
 
 export const TabNav = TabNavigator(
     {
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarLabel: '首页',
-                tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.home_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.home_n}/>
-                    );
-                }
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.home_n} activeSource={res.tab.home_s} title={'首页'}/>
             }
         },
         ShowListPage: {
             screen: ShowListPage,
             navigationOptions: {
                 tabBarLabel: '秀场',
-                tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.discover_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.discover_n}/>
-                    );
-                }
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.discover_n} activeSource={res.tab.discover_s} title={'秀场'}/>
             }
         },
         MyShop_RecruitPage: {
             screen: MyShop_RecruitPage,
             navigationOptions: {
-                tabBarLabel: '拼店',
                 tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.group_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.group_n}/>
-                    );
+                    return <SpellShopTab focused={focused} normalSource={res.tab.group_n} activeSource={res.tab.group_s}/>
                 }
             }
         },
         ShopCartPage: {
             screen: ShopCart,
             navigationOptions: ({ navigation }) => ({
-                tabBarLabel: '购物车',
-                tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.cart_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.cart_n}/>
-                    );
-                }
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.cart_n} activeSource={res.tab.cart_s} title={'购物车'}/>
             })
         },
         MinePage: {
             screen: Mine,
             navigationOptions: ({ navigation }) => ({
-                tabBarLabel: '我的',
-                tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={res.tab.mine_s}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={res.tab.mine_n}/>
-                    );
-                },
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.mine_n} activeSource={res.tab.mine_s} title={'我的'}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene } = tab;
                     if (user && user.isLogin) {
@@ -105,15 +150,9 @@ export const TabNav = TabNavigator(
     },
     {
         tabBarOptions: {
-
-            //当前选中的tab bar的文本颜色和图标颜色
-            activeTintColor: DesignRule.mainColor,
-            //当前未选中的tab bar的文本颜色和图标颜色
-            inactiveTintColor: '#000',
-            //是否显示tab bar的图标，默认是false
             showIcon: true,
+            showLabel: false,
             //showLabel - 是否显示tab bar的文本，默认是true
-            showLabel: true,
             //是否将文本转换为大小，默认是true
             upperCaseLabel: false,
             //material design中的波纹颜色(仅支持Android >= 5.0)
@@ -128,11 +167,6 @@ export const TabNav = TabNavigator(
                 borderTopWidth: 0.2,
                 paddingTop: 1,
                 borderTopColor: '#ccc'
-            },
-            //tab bar的文本样式
-            labelStyle: {
-                fontSize: 11,
-                margin: 1
             },
             allowFontScaling : false,
             //tab 页指示符的样式 (tab页下面的一条线).
@@ -153,5 +187,46 @@ const styles = StyleSheet.create({
     tabBarIcon: {
         width: 21,
         height: 21
+    },
+    store: {
+        width: 40,
+        height: 40
+    },
+    text: {
+        color: '#666',
+        fontSize: 11,
+        marginTop: 4,
+        width: 60,
+        textAlign: 'center'
+    },
+    tab: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    activeText: {
+        color: DesignRule.mainColor,
+        fontSize: 11,
+        marginTop: 4,
+        width: 60,
+        textAlign: 'center'
+    },
+    shopFlag: {
+        position: 'absolute',
+        bottom: 45,
+        left: (ScreenUtils.width - 76) / 2,
+        width: 76,
+        height: 23
+    },
+    flagBg: {
+        width: 76,
+        height: 23,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: 4
+    },
+    flagText: {
+        color: '#fff',
+        fontSize: 12,
     }
 });

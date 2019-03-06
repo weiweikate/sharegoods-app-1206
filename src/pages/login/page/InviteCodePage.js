@@ -10,29 +10,29 @@
  */
 
 
-'use strict';
-import { observer } from 'mobx-react';
-import { observable, computed, action } from 'mobx';
-import React from 'react';
+"use strict";
+import { observer } from "mobx-react";
+import { observable, computed, action } from "mobx";
+import React from "react";
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
-} from 'react-native';
-import BasePage from '../../../BasePage';
-import DesignRule from '../../../constants/DesignRule';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import UIText from '../../../components/ui/UIText';
-import LoginAPI from '../api/LoginApi';
-// import { NavigationActions } from 'react-navigation';
-import bridge from '../../../utils/bridge';
-import {MRText as Text, MRTextInput as TextInput} from '../../../components/ui'
-import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
+    TouchableOpacity
+} from "react-native";
+import BasePage from "../../../BasePage";
+import DesignRule from "../../../constants/DesignRule";
+import ScreenUtils from "../../../utils/ScreenUtils";
+import UIText from "../../../components/ui/UIText";
+import LoginAPI from "../api/LoginApi";
+import bridge from "../../../utils/bridge";
+import { MRTextInput as TextInput } from "../../../components/ui";
+import { homeRegisterFirstManager } from "../../home/model/HomeRegisterFirstManager";
+import RouterMap from "../../../navigation/RouterMap";
 
 class inviteModel {
     /*0代表验证码登录 1代表密码登录*/
     @observable
-    inviteCode = '';
+    inviteCode = "";
 
     @action
     saveInviteCode(code) {
@@ -51,7 +51,7 @@ class inviteModel {
 }
 
 @observer
-export default class  extends BasePage {
+export default class InviteCodePage  extends BasePage {
 
     inviteModel = new inviteModel();
 
@@ -62,21 +62,12 @@ export default class  extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '填写会员号',
+        title: "",
         show: true// false则隐藏导航
-    };
 
-    /*render右上角*/
-    $NavBarRenderRightItem = () => {
-        return (
-            <Text style={styles.rightTopTitleStyle} onPress={this.jump}>
-                跳过
-            </Text>
-        );
     };
-
-    jump = () => {
-        bridge.$toast("注册成功")
+    _jump = () => {
+        bridge.$toast("注册成功");
         LoginAPI.givePackage().then(result => {
             homeRegisterFirstManager.setShowRegisterModalUrl(result.data.give);
             this.$navigateBackToHome();
@@ -98,35 +89,15 @@ export default class  extends BasePage {
 
     _render() {
         return (
-            <View style={[
-                DesignRule.style_container
-                , styles.contentStyle
-
-            ]}>
-                <UIText
-                    value={'填写会员号'}
-                    style={{
-                        marginTop: 20,
-                        width: ScreenUtils.width - 50
-                    }}
-                />
-                <View
-                    style={{
-                        backgroundColor: '#fff',
-                        marginLeft: 10,
-                        width: ScreenUtils.width - 20,
-                        // justifyContent: 'center',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        height: 50,
-                        marginTop: 20
-                    }}>
-                    {/*<UIText*/}
-                    {/*style={{*/}
-                    {/*marginLeft: 15*/}
-                    {/*}}*/}
-                    {/*value={'请输入邀请人授权码'}*/}
-                    {/*/>*/}
+            <View style={styles.mainBgStyle}>
+                <View style={ styles.contentStyle}>
+                    <UIText
+                        value={"填输入会员号"}
+                        style={{
+                            marginTop: 80,
+                            fontSize: 23
+                        }}
+                    />
                     <TextInput
                         style={styles.inputTextStyle}
                         value={this.inviteModel.inviteCode}
@@ -134,60 +105,69 @@ export default class  extends BasePage {
                         placeholder='请输入邀请人会员号'
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
+                    <View style={styles.inputTextBottomLine}/>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => {
+                            this.sureAction();
+
+                        }}
+                    >
+                        <View
+                            style={
+                                [
+                                    styles.sureBtnStyle,
+                                    this.inviteModel.isCanClick ? {
+                                            backgroundColor: DesignRule.mainColor
+                                        } :
+                                        {
+                                            backgroundColor: "#bbb"
+                                        }
+                                ]}
+                        >
+                            <UIText
+                                value={"确定"}
+                                style={{
+                                    color: "#fff",
+                                    fontSize: 17
+                                }}
+                            />
+                        </View>
+                    </TouchableOpacity>
                 </View>
-
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() => {
-                        this.sureAction();
-                    }}
-                >
+                <View style={styles.bottomContentStyle}>
                     <View
-                        style={
-                            [{
-                                marginTop: 100,
-                                backgroundColor: DesignRule.mainColor,
-                                width: 300,
-                                height: 50,
-                                borderRadius: 25,
-                                justifyContent: 'center',
-                                alignItems: 'center'
-
-                            },
-                                this.inviteModel.isCanClick ? {
-                                        backgroundColor: DesignRule.mainColor
-                                    } :
-                                    {
-                                        backgroundColor: '#bbb'
-                                    }
-                            ]}
+                    style={styles.selectMentorBgStyle}
                     >
                         <UIText
-                            value={'确定'}
+                            value={"秀购为您推荐顾问"}
                             style={{
-                                color: '#fff',
-                                fontSize: 17
+                                color: DesignRule.textColor_instruction,
+                                fontSize: 13
                             }}
+                            onPress={
+                                () => {
+                                    this.$navigate(RouterMap.SelectMentorPage)
+                                }
+                            }
                         />
                     </View>
-                </TouchableOpacity>
-                <UIText
-                    value={'选择服务顾问'}
-                    style={{
-                        marginTop:20,
-                        color: DesignRule.textColor_instruction,
-                        fontSize: 12
-                    }}
-                    onPress={
-                        ()=>{
-                            this.$navigateBack()
+                    <UIText
+                        value={"跳过"}
+                        style={{
+                            marginTop:ScreenUtils.px2dp(10),
+                            color: DesignRule.textColor_instruction,
+                            fontSize: 12
+                        }}
+                        onPress={
+                            () => {
+                                this._jump();
+                            }
                         }
-                    }
-
-                />
+                    />
+                </View>
             </View>
         );
-
     }
 
     sureAction = () => {
@@ -197,7 +177,7 @@ export default class  extends BasePage {
                 code: this.inviteModel.inviteCode
             }).then(res => {
                 this.$loadingDismiss();
-                bridge.$toast('注册成功');
+                bridge.$toast("注册成功");
                 homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
                 this.$navigateBackToHome();
             }).catch(res => {
@@ -207,26 +187,58 @@ export default class  extends BasePage {
         }
     };
 }
-
+const {px2dp} = ScreenUtils;
 const styles = StyleSheet.create({
-    contentStyle: {
-        alignItems: 'center',
-        flexDirection: 'column'
+    mainBgStyle:{
+        marginTop:px2dp(-3),
+        backgroundColor: DesignRule.bgColor,
+        justifyContent:'space-between',
+        flexDirection:'column',
+        flex:1
     },
-
+    contentStyle: {
+        alignItems: "center",
+        flexDirection: "column",
+        flex:1
+    },
     inputTextStyle: {
-        marginLeft: 15,
-        width: 150
-
+        marginTop: px2dp(70),
+        width: ScreenUtils.width - px2dp(80),
+        paddingBottom:px2dp(7)
+    },
+    inputTextBottomLine: {
+        height: 1,
+        // marginTop: px2dp(5),
+        width: ScreenUtils.width - px2dp(70),
+        backgroundColor: DesignRule.lineColor_inWhiteBg
     },
     bottomBtnStyle: {
         width: 200,
         height: 60,
         backgroundColor: DesignRule.mainColor
     },
-    rightTopTitleStyle: {
-        fontSize: 15,
-        color: DesignRule.textColor_secondTitle
+    sureBtnStyle: {
+        marginTop: px2dp(100),
+        backgroundColor: DesignRule.mainColor,
+        width: ScreenUtils.width - px2dp(60),
+        height: 40,
+        borderRadius: 20,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    bottomContentStyle:{
+        height:ScreenUtils.px2dp(130),
+        justifyContent:'center',
+        flexDirection:'column',
+        alignItems:'center'
+    },
+    selectMentorBgStyle:{
+        borderRadius:20,
+        borderColor:DesignRule.textColor_placeholder,
+        justifyContent:'center',
+        alignItems:'center',
+        borderWidth:1,
+        height:ScreenUtils.px2dp(40),
+        width:ScreenUtils.width - 60
     }
-
 });

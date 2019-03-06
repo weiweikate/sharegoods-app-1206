@@ -8,30 +8,57 @@ import {
 import ScreenUtils from "../../../utils/ScreenUtils";
 import DesignRule from "../../../constants/DesignRule";
 
+const { px2dp, width } = ScreenUtils;
+
 const Styles = StyleSheet.create(
     {
         wxLoginBgView: {
-            marginLeft:ScreenUtils.px2dp(30),
-            width: ScreenUtils.width - ScreenUtils.px2dp(60),
-            height: ScreenUtils.px2dp(50),
+            marginLeft: px2dp(30),
+            width: width - px2dp(60),
+            height: px2dp(40),
             backgroundColor: DesignRule.mainColor,
-            borderRadius: ScreenUtils.px2dp(25),
+            borderRadius: px2dp(20)
         },
-        touchableStyle:{
-            flex:1,
-            justifyContent:'center',
-            alignItems:'center'
+        wxTextView: {
+            color: DesignRule.color_f2,
+            fontSize: 17
         },
-        otherLoginBgView:{
-            marginTop:ScreenUtils.px2dp(24),
-            marginLeft:ScreenUtils.px2dp(30),
-            width: ScreenUtils.width - ScreenUtils.px2dp(60),
-            height: ScreenUtils.px2dp(50),
+        otherTextView: {
+            color: DesignRule.textColor_btnText,
+            fontSize: 17
+        },
+        touchableStyle: {
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center"
+        },
+        otherLoginBgView: {
+            marginTop: px2dp(24),
+            marginLeft: px2dp(30),
+            width: width - px2dp(60),
+            height: px2dp(40),
             backgroundColor: DesignRule.color_fff,
-            borderRadius: ScreenUtils.px2dp(25),
-            borderWidth:ScreenUtils.px2dp(2),
-            borderColor:DesignRule.mainColor
+            borderRadius: px2dp(20),
+            borderWidth: px2dp(0.5),
+            borderColor: DesignRule.mainColor
+        },
+        bottomTipBtnBgStyle: {
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: px2dp(20)
+        },
+        bottomTipBtnStyle: {
+            color: DesignRule.textColor_instruction,
+            fontSize: px2dp(12)
+        },
+        bottomLineStyle: {
+            height: 10,
+            width: 1,
+            backgroundColor: DesignRule.textColor_instruction,
+            margin: 5
         }
+
     }
 );
 const loginBtnType = {
@@ -39,64 +66,93 @@ const loginBtnType = {
     localPhoneNumLoginType: 1,
     otherLoginBtnType: 2
 };
-const getLoginBtnBgStyle={
-    [loginBtnType.wxLoginBtnType]:Styles.wxLoginBgView,
-    [loginBtnType.localPhoneNumLoginType]:Styles.otherLoginBgView,
-    [loginBtnType.otherLoginBtnType]:Styles.otherLoginBgView
-}
+const getLoginBtnBgStyle = {
+    [loginBtnType.wxLoginBtnType]: Styles.wxLoginBgView,
+    [loginBtnType.localPhoneNumLoginType]: Styles.otherLoginBgView,
+    [loginBtnType.otherLoginBtnType]: Styles.otherLoginBgView
+};
+const getTextStyle = {
+    [loginBtnType.wxLoginBtnType]: Styles.wxTextView,
+    [loginBtnType.localPhoneNumLoginType]: Styles.otherTextView,
+    [loginBtnType.otherLoginBtnType]: Styles.otherTextView
 
+};
 
-
-
-const getWxLoginBtn = (btnStyle,btnText, btnClick) => (<View style={Styles.wxLoginBgView}>
+const getLoginBtn = (btnStyle, btnText, btnClick) => (<View style={getLoginBtnBgStyle[btnStyle]}>
         <TouchableOpacity
-            style={getLoginBtnBgStyle[btnStyle]}
+            style={Styles.touchableStyle}
             onPress={() => {
                 btnClick && btnClick();
             }}
         >
-            <Text>
+            <Text
+                style={getTextStyle[btnStyle]}
+            >
                 {btnText}
             </Text>
         </TouchableOpacity>
     </View>
 );
-// const getLocalPhoneNumLoginBtn = (btnText, btnClick) => (<View style={Styles.otherLoginBgStyle}>
-//         <TouchableOpacity
-//             style={}
-//             onPress={() => {
-//                 btnClick && btnClick();
-//             }}
-//         >
-//             <Text>
-//                 {btnText}
-//             </Text>
-//         </TouchableOpacity>
-//     </View>
-// );
-// const getOtherLoginBtn = (btnText, btnClick) => (<View style={Styles.wxLoginBgView}>
-//         <TouchableOpacity
-//             style={{ flex: 1 }}
-//             onPress={() => {
-//                 btnClick && btnClick();
-//             }}
-//         >
-//             <Text>
-//                 {btnText}
-//             </Text>
-//         </TouchableOpacity>
-//     </View>
-// );
+const createBottomButton = (textArr, clickAction) => {
+    if (textArr.length === 2) {
+        return (
+            <View style={Styles.bottomTipBtnBgStyle}>
+                <TouchableOpacity
+                    onPress={() => {
+                        clickAction && clickAction(textArr[0]);
+                    }}
+                >
+                    <Text style={Styles.bottomTipBtnStyle}>
+                        {textArr[0]}
+                    </Text>
+                </TouchableOpacity>
+
+                <View style={Styles.bottomLineStyle}/>
+
+                <TouchableOpacity
+                    onPress={() => {
+                        clickAction && clickAction(textArr[1]);
+                    }}
+                >
+                    <Text style={Styles.bottomTipBtnStyle}>
+                        {textArr[1]}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        );
+    } else {
+        return (
+            <View
+                style={Styles.bottomTipBtnBgStyle}
+            >
+                <TouchableOpacity
+                    onPress={() => {
+                        clickAction && clickAction(textArr[0]);
+                    }}
+                >
+                    <Text style={Styles.bottomTipBtnStyle}>
+                        {textArr[0]}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
+
+};
+
+
 const createLoginButton = (btnType, btnText, btnClick) => {
     if (btnType === loginBtnType.wxLoginBtnType) {
-        return getWxLoginBtn(btnType,btnText, btnClick);
-    }else if(btnType === loginBtnType.localPhoneNumLoginType) {
-        return getWxLoginBtn(btnType,btnText, btnClick);
-    }else {
-        return getWxLoginBtn(btnType,btnText, btnClick);
+        return getLoginBtn(btnType, btnText, btnClick);
+    } else if (btnType === loginBtnType.localPhoneNumLoginType) {
+        return getLoginBtn(btnType, btnText, btnClick);
+    } else {
+        return getLoginBtn(btnType, btnText, btnClick);
     }
 };
-export { createLoginButton,loginBtnType} ;
+
+export { createLoginButton, loginBtnType, createBottomButton } ;
 
 
 

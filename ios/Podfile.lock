@@ -30,15 +30,15 @@ PODS:
   - QIYU_iOS_SDK (4.9.0)
   - SandBoxPreviewTool (1.1)
   - SDAutoLayout (2.2.1)
-  - SDWebImage (4.4.5):
-    - SDWebImage/Core (= 4.4.5)
-  - SDWebImage/Core (4.4.5)
-  - SensorsAnalyticsSDK (1.10.21):
-    - SensorsAnalyticsSDK/core (= 1.10.21)
-  - SensorsAnalyticsSDK/core (1.10.21)
+  - SDWebImage (4.4.6):
+    - SDWebImage/Core (= 4.4.6)
+  - SDWebImage/Core (4.4.6)
+  - SensorsAnalyticsSDK (1.10.22):
+    - SensorsAnalyticsSDK/core (= 1.10.22)
+  - SensorsAnalyticsSDK/core (1.10.22)
   - TYCyclePagerView (1.1.2)
   - UICKeyChainStore (2.1.2)
-  - UMCAnalytics (5.5.2):
+  - UMCAnalytics (5.5.4):
     - UMCCommon
   - UMCCommon (2.0.0)
   - UMCSecurityPlugins (1.0.6)
@@ -118,17 +118,17 @@ SPEC CHECKSUMS:
   QIYU_iOS_SDK: 7343f8366e56b92aa6b2da3ae8e92d5bd0e95c73
   SandBoxPreviewTool: 2d837db4409c74c9a8047838f5b320c08161fad1
   SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
-  SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
-  SensorsAnalyticsSDK: f1a111da485eea78d33c979bce50420caed24f70
+  SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
+  SensorsAnalyticsSDK: 7469cb961b214ca30a6f2abc4439efd215a94bb5
   TYCyclePagerView: 0f67b0986995fd614843e819bc974cadd7f98008
   UICKeyChainStore: 85db518bb1d294366d15ec9b92a416c4e670518f
-  UMCAnalytics: 6654fd3c8201ff6da5c86a3ae29cd5c8436d3b7b
+  UMCAnalytics: 8449e33b7627ee26f1169202827a8d5a00b5442b
   UMCCommon: 79b5a614c958db367113eed5740109d9a98e1223
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   UMCShare: 552b29753f1b4da87b51d96545ed19e6263df397
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 178f6cb19dd403eb00ed862731ad8cb3ecec65ac
+PODFILE CHECKSUM: db0bb9eeb21fa3c1c35da5064a3f55b7d51aad34
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.5.3

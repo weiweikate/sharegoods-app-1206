@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import MRBannerView from './MRBannerView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import {MRText as Text}from '../UIText';
+const { px2dp } = ScreenUtils
 
 export default class MRBannerViewMode extends Component {
 
@@ -19,7 +20,8 @@ export default class MRBannerViewMode extends Component {
         //滚动间隔 设置0为不滚动  默认3
         autoInterval: PropTypes.number,
         //是否轮播 默认true
-        autoLoop: PropTypes.bool
+        autoLoop: PropTypes.bool,
+        itemRadius: PropTypes.number
     };
 
     constructor(props) {
@@ -73,12 +75,13 @@ export default class MRBannerViewMode extends Component {
 
 
     render() {
-        const { bannerHeight, imgUrlArray, autoLoop, autoInterval } = this.props;
+        const { bannerHeight, imgUrlArray, autoLoop, autoInterval, itemRadius } = this.props;
         return (
             <View>
-                <MRBannerView style={[{ height: bannerHeight, width: ScreenUtils.width }]}
+                <MRBannerView style={[{ height: bannerHeight, width: ScreenUtils.width - ScreenUtils.px2dp(30) }]}
                               onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
                               imgUrlArray={imgUrlArray}
+                              itemRadius={itemRadius}
                               onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
                               autoLoop={autoLoop === false ? false : true}
                               autoInterval={autoInterval || (autoInterval === 0 ? 0 : 3)}/>
@@ -92,27 +95,27 @@ export default class MRBannerViewMode extends Component {
 const styles = StyleSheet.create({
     indexView: {
         position: 'absolute',
-        bottom: 13,
+        bottom: 5,
         left: 0,
-        width: ScreenUtils.width,
+        width: ScreenUtils.width - px2dp(30),
         flexDirection: 'row',
         justifyContent: 'center'
     },
     activityIndex: {
-        width: 24,
-        height: 6,
-        borderRadius: 3,
-        backgroundColor: '#eee',
-        marginLeft: 2.5,
-        marginRight: 2.5
+        width: 10,
+        height: 3,
+        borderRadius: 1.5,
+        backgroundColor: '#333',
+        marginLeft: 2,
+        marginRight: 2
     },
     index: {
-        width: 6,
-        height: 6,
+        width: 5,
+        height: 3,
         borderRadius: 3,
         backgroundColor: '#eee',
-        marginLeft: 2.5,
-        marginRight: 2.5
+        marginLeft: 2,
+        marginRight: 2
     },
     indexViewTwo: {
         position: 'absolute',
