@@ -108,8 +108,10 @@ export default class GuideModal extends React.Component {
                 width: autoSizeWidth(74),
                 height: autoSizeWidth(46)
             };
+            // alert(ScreenUtils.headerHeight);
             if (step === 0){
-                let bottom = ScreenUtils.tabBarHeight - autoSizeWidth(75/2.0) - 10;
+                let bg_offsety = ScreenUtils.tabBarHeight > 49 ? 49 : ScreenUtils.tabBarHeight;
+                let bottom = ScreenUtils.tabBarHeight - bg_offsety + 3;
                 bgStyle = {bottom: bottom, left: ScreenUtils.width/5.0 * 1}
                 imageStyle = {width: autoSizeWidth(32), height: autoSizeWidth(32)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6};
@@ -128,7 +130,7 @@ export default class GuideModal extends React.Component {
 
 
             if (step === 1){
-                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0);
+                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0) - (ScreenUtils.isIphonex?10:0);
                 bgStyle = {top: top, left: autoSizeWidth(7)}
                 imageStyle = {width: autoSizeWidth(50), height: autoSizeWidth(50)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
@@ -146,7 +148,8 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 2){
-                let bottom = ScreenUtils.tabBarHeight - autoSizeWidth(75/2.0) - 10;
+                let bg_offsety = ScreenUtils.tabBarHeight > 49 ? 49 : ScreenUtils.tabBarHeight;
+                let bottom = ScreenUtils.tabBarHeight - bg_offsety + 3;
                 bgStyle = {bottom: bottom, left: ScreenUtils.width/5.0 * 2}
                 imageStyle = {width: autoSizeWidth(32), height: autoSizeWidth(32)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6};
@@ -165,10 +168,10 @@ export default class GuideModal extends React.Component {
 
             if (step === 3){
                 let ad = adModules.ad;
-                let top =  kHomeClassifyHeight+categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0);
+                let top =  kHomeClassifyHeight+categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0)- (ScreenUtils.isIphonex?10:0);
                 if (ad.length > 0){
                     data.image = ad[ad.length-1].imgUrl;
-                    top = top + adModules.adHeight - adHeight-autoSizeWidth(10);
+                    top = top + adModules.adHeight - adHeight;
                 }
                 if (top>ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight) {
                     top = ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight;
@@ -190,7 +193,7 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 4){
-                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0);
+                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0)- (ScreenUtils.isIphonex?10:0);
                 bgStyle = {top: top, left: autoSizeWidth(148)}
                 imageStyle = {width: autoSizeWidth(50), height: autoSizeWidth(50)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
@@ -208,7 +211,8 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 5){
-                let bottom = ScreenUtils.tabBarHeight - autoSizeWidth(75/2.0) - 10;
+                let bg_offsety = ScreenUtils.tabBarHeight > 49 ? 49 : ScreenUtils.tabBarHeight;
+                let bottom = ScreenUtils.tabBarHeight - bg_offsety + 3;
                 bgStyle = {bottom: bottom, right: 8}
                 imageStyle = {width: autoSizeWidth(32), height: autoSizeWidth(32)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6};

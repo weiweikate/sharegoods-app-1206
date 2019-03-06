@@ -143,6 +143,7 @@ export default {
     safeBottomX: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 37 : 0) : 0,
     safeBottom: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 37 : 0) : 0,
     isIphoneMax: __ISIPHONEXSMAX__,
+    isIphonex: __ISIPHONEX__,
     // saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0
     isAllScreenDevice:Platform.OS === 'ios' ? false:RNDeviceInfo.isAllScreenDevice,
     // isNavigationBarShow:Platform.OS === 'ios' ? false:RNDeviceInfo.isNavigationBarShow,

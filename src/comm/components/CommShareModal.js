@@ -230,7 +230,7 @@ export default class CommShareModal extends React.Component {
                 }
             });
         } else {
-            HttpUtils.post(url, false, params).then(() => {
+            HttpUtils.post(url, false, params, {}).then(() => {
                 if (refresh === true) {
                     this.props.reloadWeb && this.props.reloadWeb();
                 }
