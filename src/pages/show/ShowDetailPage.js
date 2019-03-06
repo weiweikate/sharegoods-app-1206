@@ -261,8 +261,8 @@ export default class ShowDetailPage extends BasePage {
             '<meta http-equiv="Pragma" content="no-cache">'
             // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
             + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
-            + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:25px;box-sizing:border-box;display:block;font-size:'
-            + 16
+            + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
+            + px2dp(13)
             + 'px;'
             + '}'
             + 'p {word-break:break-all;}'
@@ -286,7 +286,7 @@ export default class ShowDetailPage extends BasePage {
             + '}'
             + '</script>'
             + '</head>'
-            + '<body onload="onLoadFn();">'
+            + '<body onload="ResizeImages();">'
             + '<div>'
             + detail.content
             + '</div>'
@@ -337,6 +337,8 @@ export default class ShowDetailPage extends BasePage {
                                    domStorageEnabled={true}
                                    mixedContentMode={'always'}
                                    onLongClickImage={this._onLongClickImage}
+                                   showsHorizontalScrollIndicator={false}
+                                   showsVerticalScrollIndicator={false}
 
                 />
                 <View style={styles.goodsView}>
@@ -358,7 +360,7 @@ export default class ShowDetailPage extends BasePage {
                         :
                         <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
                             <Image style={styles.collectImg}
-                                   source={detail.hadCollect ? res.collected : res.uncollected}/>
+                                   source={detail.hadCollect ? res.showFire : res.noShowFire}/>
                             <Text style={styles.bottomText}
                                   allowFontScaling={false}>{'人气值'} · {detail.collectCount}</Text>
                         </TouchableOpacity>
@@ -470,7 +472,7 @@ let styles = StyleSheet.create({
         marginTop: px2dp(17),
         marginRight: px2dp(15),
         marginLeft: px2dp(15),
-        marginBottom: px2dp(20)
+        marginBottom: px2dp(15)
     },
     button: {
         backgroundColor: '#FF1A54',
@@ -526,7 +528,8 @@ let styles = StyleSheet.create({
     bottomBtn: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom:px2dp(15)
     },
     leftButton: {
         justifyContent: 'center',
