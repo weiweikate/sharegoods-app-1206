@@ -56,7 +56,7 @@ class ClassifyModules {
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000002'
         }];
-        
+
     };
 }
 
@@ -72,12 +72,12 @@ class HomeModule {
     page = 1;
     firstLoad = true;
     errorMsg = '';
-
+    //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
         return homeRoute[linkType];
     };
-
+   //获取参数
     @action paramsNavigate = (data) => {
         const { topicBannerProductDTOList } = data;
         let product = null;

@@ -34,7 +34,8 @@ import{ kHomeClassifyHeight } from '../home/HomeClassifyView';
 import { adModules } from '../home/HomeAdModel';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
-import RouterMap,{ navigate } from '../../navigation/RouterMap';
+// import RouterMap,{ navigate } from '../../navigation/RouterMap';
+// import { homeModule } from '../home/Modules';
 const {
     tip_one,
     tip_two,
@@ -47,7 +48,6 @@ const {
     mine,
     next_btn,
     bg,
-    btn,
     close_white
 } = res;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
@@ -243,18 +243,20 @@ export default class GuideModal extends React.Component {
             return (
                 <View style={[DesignRule.style_absoluteFullParent, {alignItems: 'center'}]}>
                     <View style={{flex: 1}}/>
-                    <ImageBackground style={{height: autoSizeWidth(345), width: autoSizeWidth(250), justifyContent: 'flex-end',alignItems: 'center'}}
-                                     source={bg}
-                    >
-                        <MRText style={{fontSize: 17, color: '#FFECB6', marginBottom: 10}}>{this.state.num + '枚秀豆送给您'}</MRText>
-                        <TouchableOpacity onPress={this.gotoPage} style = {{marginBottom: autoSizeWidth(30), alignItems: 'center'}}>
-                            <Image source={btn} style={{height: autoSizeWidth(40), width: autoSizeWidth(145)}} resizeMode={'stretch'}/>
-                        </TouchableOpacity>
-                    </ImageBackground>
-                    <View style={{flex: 1}}>
-                    <TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>
-                        <Image source={close_white} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
+                    <TouchableOpacity nPress={this.gotoPage}>
+                        <ImageBackground style={{height: autoSizeWidth(345), width: autoSizeWidth(250), justifyContent: 'flex-end',alignItems: 'center'}}
+                                         source={bg}
+                        >
+                            {/*<MRText style={{fontSize: 17, color: '#FFECB6', marginBottom: 10}}>{this.state.num + '枚秀豆送给您'}</MRText>*/}
+                            {/*<TouchableOpacity onPress={this.gotoPage} style = {{marginBottom: autoSizeWidth(30), alignItems: 'center'}}>*/}
+                            {/*<Image source={btn} style={{height: autoSizeWidth(40), width: autoSizeWidth(145)}} resizeMode={'stretch'}/>*/}
+                            {/*</TouchableOpacity>*/}
+                        </ImageBackground>
                     </TouchableOpacity>
+                    <View style={{flex: 1}}>
+                        <TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>
+                            <Image source={close_white} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )
@@ -266,7 +268,8 @@ export default class GuideModal extends React.Component {
     }
 
     gotoPage=()=>{
-        navigate(RouterMap.MyIntegralAccountPage);
+        // const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        // let params = homeModule.paramsNavigate(data);
         this.close();
     }
 
