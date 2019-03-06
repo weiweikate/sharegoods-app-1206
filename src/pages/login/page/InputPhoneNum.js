@@ -13,6 +13,7 @@ import DesignRule from "../../../constants/DesignRule";
 import StringUtils from "../../../utils/StringUtils";
 import RouterMap from "../../../navigation/RouterMap";
 import ProtocolView from "../components/Login.protocol.view";
+import SMSTool from "../../../utils/SMSTool";
 // import { startPhoneAuthen } from "../model/PhoneAuthenAction";
 
 const { px2dp } = ScreenUtils;
@@ -103,11 +104,7 @@ export default class InputPhoneNum extends BasePage {
                 if (!this.state.isSelectProtocol) {
                     this.$toastShow("请勾选用户协议");
                 } else {
-                    let params = {
-                        ...this.params,
-                        phoneNum:this.state.phoneNum
-                    }
-                    this.$navigate(RouterMap.InputCode, params);
+                   this._sendAutherCode();
                 }
             } else {
                 this.$toastShow("您输入的手机号有误，请重新输入");
@@ -120,6 +117,13 @@ export default class InputPhoneNum extends BasePage {
      */
     _sendAutherCode = () => {
 
+        //发送验证码
+        SMSTool.sendVerificationCode(1, this.state.phoneNum);
+        let params = {
+            ...this.params,
+            phoneNum:this.state.phoneNum
+        }
+        this.$navigate(RouterMap.InputCode, params);
     };
 
 }

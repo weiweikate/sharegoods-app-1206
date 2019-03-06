@@ -32,7 +32,7 @@ export default class InputCode extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            downTime: 0
+            downTime: 60
         };
     }
 
@@ -40,6 +40,14 @@ export default class InputCode extends BasePage {
         title: "输入手机号",
         show: true
     };
+
+    componentDidMount() {
+        (new TimeDownUtils()).startDown((time) => {
+            this.setState({
+                downTime: time
+            });
+        });
+    }
 
     _render() {
         const { phoneNum } = this.params;
@@ -102,8 +110,9 @@ export default class InputCode extends BasePage {
                             }
                             <TouchableOpacity
                                 style={{
+                                    paddingTop:px2dp(2),
                                     marginLeft: px2dp(5),
-                                    alignItems: "center"
+                                    justifyContent: "center"
                                 }}
                                 onPress={() => {
                                     this._reSendClickAction();
@@ -145,7 +154,6 @@ export default class InputCode extends BasePage {
                 downTime: time
             });
         });
-
         SMSTool.sendVerificationCode(1, phoneNum);
     };
 
@@ -154,10 +162,10 @@ export default class InputCode extends BasePage {
             const { phoneNum, nickname, headerImg } = this.params;
             let params = {
                 ...this.params,
-                code : text,
-                phone : phoneNum,
-                nickName : nickname,
-                headImg : headerImg
+                code: text,
+                phone: phoneNum,
+                nickName: nickname,
+                headImg: headerImg
             };
             registAction(params, (res) => {
                 if (res.code === 10000) {

@@ -17,6 +17,7 @@ import StringUtils from "../../../utils/StringUtils";
 import { MRTextInput } from "../../../components/ui";
 import ProtocolView from "../components/Login.protocol.view";
 import { startPhoneAuthen } from "../model/PhoneAuthenAction";
+import RouterMap from "../../../navigation/RouterMap";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -137,28 +138,37 @@ export default class LocalNumLogin extends BasePage {
 
     _clickAction = () => {
         if (StringUtils.checkPhone(this.state.phoneNumber)) {
+            this.$loadingShow();
+            setTimeout(() => {
+                this.$loadingDismiss();
+                Alert.alert(
+                    "18768435263",
+                    "如果您是双卡手机，请确保填写的号码是默认上网的手机号码",
+                    [
+                        { text: "从新填写", onPress: () => console.log("Ask me later pressed") },
 
-            Alert.alert(
-                "18768435263",
-                "如果您是双卡手机，请确保填写的号码是默认上网的手机号码",
-                [
-                    { text: "从新填写", onPress: () => console.log("Ask me later pressed") },
-
-                    {
-                        text: "确定", onPress: () => {
-                            this._sureClick();
+                        {
+                            text: "确定", onPress: () => {
+                                this._sureClick();
+                            }
                         }
-                    }
-                ],
-                { cancelable: false }
-            );
+                    ],
+                    { cancelable: false }
+                );
+            });
         } else {
             this.$toastShow("请输入正确手机号");
         }
     };
 
     _sureClick = () => {
+
+
+        this.$navigate(RouterMap.InputPhoneNum);
+        return;
+        this.$loadingShow();
         startPhoneAuthen(this.state.phoneNumber).then(res => {
+            this.$loadingDismiss();
             console.log(res);
         });
     };

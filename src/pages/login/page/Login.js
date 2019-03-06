@@ -1,7 +1,8 @@
 import React, {} from "react";
 import {
     View,
-    Image
+    Image,
+    // Alert
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/Login.style";
@@ -44,7 +45,10 @@ export default class Login extends BasePage {
     }
 
     componentDidMount() {
+        // this.$loadingShow();
         isCanPhoneAuthen().then(result => {
+            // this.$loadingDismiss();
+            alert(result.phoneNum);
             if (result.isCanAuthen === 1) {
                 this.setState({
                     canPhoneAuthen: true
@@ -143,7 +147,8 @@ export default class Login extends BasePage {
         if (btnType === loginBtnType.wxLoginBtnType) {
             this._wxLogin();
         } else if (btnType === loginBtnType.localPhoneNumLoginType) {
-            this.$navigate(RouterMap.LocalNumLogin);
+            // this.$navigate(RouterMap.LocalNumLogin);
+            this.$navigate(RouterMap.InputCode);
         } else {
             this.$navigate(RouterMap.OtherLoginPage);
         }

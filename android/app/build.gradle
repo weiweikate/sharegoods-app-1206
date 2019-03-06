@@ -57,6 +57,12 @@ android {
             storeFile file(STORE_FILE)
             storePassword KEYSTORE_PASSWORD
         }
+        debug {
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+            storeFile file(STORE_FILE)
+            storePassword KEYSTORE_PASSWORD
+        }
     }
     buildTypes {
         debug {

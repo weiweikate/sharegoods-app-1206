@@ -8,7 +8,7 @@ import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 
-const adViewHeight = px2dp(190);
+// const adViewHeight = px2dp(190);
 
 const bannerWidth = ScreenUtils.width
 const defaultBannerHeight = px2dp(80)
@@ -63,7 +63,7 @@ export default class HomeAdView extends Component {
                 })
                 this.hasLoadImg[val.imgUrl] = true
             }
-            
+
             items.push(
                 <TouchableWithoutFeedback onPress={()=> this._adAction(val)}>
                     <View style={styles.banner} key={'banner' + index}>
@@ -73,7 +73,7 @@ export default class HomeAdView extends Component {
             )
         })
         console.log('getBanner imageHeights', this.state.imageHeight)
-        
+
         return <View>{items}</View>
     }
 
