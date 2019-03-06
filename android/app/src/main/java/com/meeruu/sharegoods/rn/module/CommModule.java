@@ -10,11 +10,25 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.facebook.binaryresource.BinaryResource;
+import com.facebook.binaryresource.FileBinaryResource;
+import com.facebook.cache.common.CacheKey;
+import com.facebook.common.executors.CallerThreadExecutor;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -23,6 +37,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
@@ -42,6 +57,9 @@ import com.qiyukf.unicorn.api.Unicorn;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 
@@ -437,5 +455,56 @@ public class CommModule extends ReactContextBaseJavaModule {
             promise.reject("");
             return;
         }
+    }
+
+    @ReactMethod
+    public void saveImageToPhotoAlbumWithUrl(final String url, final Promise promise) {
+        if (TextUtils.isEmpty(url)) {
+            promise.reject("url不能为空");
+            return;
+        }
+
+        final ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url)).setProgressiveRenderingEnabled(true).build();
+        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, mContext);
+        dataSource.subscribe(new BaseBitmapDataSubscriber() {
+            @Override
+            public void onNewResultImpl(Bitmap bitmap) {
+                CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(imageRequest, this);
+                BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                if (resource == null) {
+                    promise.reject("");
+                    return;
+                }
+                final File file = ((FileBinaryResource) resource).getFile();
+                if (file == null) {
+                    promise.reject("");
+                    return;
+                }
+                UiThreadUtil.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String exten = FileUtils.getExtensionName(url);
+                        String filename = FileUtils.getFileNameNoEx(file.getName());
+                        String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
+                        try {
+                            FileUtils.copyFile(file.getAbsolutePath(),storePath);
+                        }catch (Exception e){
+                            promise.reject("文件操作失败");
+                            return;
+                        }
+                        Uri uri = Uri.parse("file://"+storePath);
+                        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                        intent.setData(uri);
+                        mContext.sendBroadcast(intent);
+                        promise.resolve(null);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailureImpl(DataSource dataSource) {
+                promise.reject("下载失败");
+            }
+        }, CallerThreadExecutor.getInstance());
     }
 }
