@@ -35,7 +35,7 @@ const viewTypes = {
 
 };
 
-const { width } = ScreenUtils;
+const { width, height } = ScreenUtils;
 
 
 const {
@@ -435,7 +435,7 @@ export default class SearchResultPage extends BasePage {
                                   showsVerticalScrollIndicator={false}
                                   onScroll={this._onScroll}
                                   onEndReached={this._onEndReached.bind(this)}
-                                  onEndReachedThreshold={20}
+                                  onEndReachedThreshold={height / 2.0}
                                   renderFooter={this._ListFooterComponent}/>
             </View>
         );
