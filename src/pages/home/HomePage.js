@@ -43,6 +43,8 @@ import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
 import { subjectModule } from './HomeSubjectModel';
 import HomeTitleView from './HomeTitleView'
+import GuideModal from '../guide/GuideModal'
+import LuckyIcon from '../guide/LuckyIcon'
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -164,6 +166,8 @@ class HomePage extends BasePage {
                 if (state && state.routeName === 'HomePage') {
                     // this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
+                    this.guideModal.getUserRecord();
+                    this.luckyIcon.getLucky();
                 }
             }
         );
@@ -504,7 +508,9 @@ class HomePage extends BasePage {
                                    this.shareTaskIcon = ref;
                                }}
                 />
+                <LuckyIcon  ref={(ref) => {this.luckyIcon = ref;}}/>
                 {this.messageModalRender()}
+                <GuideModal ref={(ref)=>{this.guideModal = ref}}/>
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
                                     onRequestClose={() => {

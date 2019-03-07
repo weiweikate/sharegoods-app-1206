@@ -19,7 +19,7 @@ import {
     View,
     Image,
     TouchableOpacity,
-    ImageBackground
+    TouchableWithoutFeedback
 } from 'react-native';
 import CommModal from '../../comm/components/CommModal';
 import res from './res';
@@ -34,8 +34,9 @@ import{ kHomeClassifyHeight } from '../home/HomeClassifyView';
 import { adModules } from '../home/HomeAdModel';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
-// import RouterMap,{ navigate } from '../../navigation/RouterMap';
-// import { homeModule } from '../home/Modules';
+import { navigate } from '../../navigation/RouterMap';
+import { homeModule } from '../home/Modules';
+import GuideApi from './GuideApi';
 const {
     tip_one,
     tip_two,
@@ -47,8 +48,6 @@ const {
     group,
     mine,
     next_btn,
-    bg,
-    close_white
 } = res;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const adWidth = (ScreenUtils.width - autoSizeWidth(35)) / 2
@@ -68,18 +67,39 @@ export default class GuideModal extends React.Component {
         this.state = {
             step: 0,/** 新手引导第几步*/
             visible: false,
-            num: 98
+            num: 98,
+            rewardzData: {},
         };
-        /** type: 0 代表*/
+        /** 每一步引导的数据*/
         this.data = [{image: discover, tip: tip_one, text: '秀场'},
             {image: OssHelper('/app/share%403x.png'), tip: tip_two, text: '升级'},
             {image: group, tip: tip_three, text: '拼店'},
-            {image: OssHelper(''), tip: tip_four},
+            {image: '', tip: tip_four},//这个图片从 mobox获取
             {image: OssHelper('/app/signin%403x.png'), tip: tip_five, text: '签到'},
             {image: mine, tip: tip_six, text: '我的'},
 
         ];
     }
+
+    getUserRecord = () => {
+        GuideApi.getUserRecord().then((data)=> {
+            if(data.data === true){
+                this.open();
+                this.getRewardzInfo();
+            }
+        }).catch(()=> {
+        })
+    }
+
+    getRewardzInfo = () => {
+        GuideApi.rewardzInfo({type: 17}).then((data)=> {
+            data = data.data || [];
+            if (data.length>0){
+                this.setState({rewardzData: data[0]});
+            }
+        })
+    }
+
 
     open = () => {
         this.setState({visible: true});
@@ -170,7 +190,7 @@ export default class GuideModal extends React.Component {
                 let ad = adModules.ad;
                 let top =  kHomeClassifyHeight+categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0)- (ScreenUtils.isIphonex?10:0);
                 if (ad.length > 0){
-                    data.image = ad[ad.length-1].imgUrl;
+                    data.image = ad[ad.length-1].imgUrl;//获取最后一个图片地址
                     top = top + adModules.adHeight - adHeight;
                 }
                 if (top>ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight) {
@@ -232,7 +252,7 @@ export default class GuideModal extends React.Component {
                 <View style={DesignRule.style_absoluteFullParent}>
                     <View style={[styles.circleBg, bgStyle]}>
                         { typeof data.image === 'string' ?
-                            <ImageLoad source={{uri: data.image}} style = {imageStyle} isAvatar={step!==3}/>:
+                            <ImageLoad source={{uri: data.image}} style = {imageStyle} isAvatar={step!==3} key={step+''}/>:
                             <Image source={data.image} style = {imageStyle}/>
                         }
                         {data.text ? <MRText style={textStyle}>{data.text}</MRText> : null}
@@ -244,23 +264,27 @@ export default class GuideModal extends React.Component {
                 </View>
             )
         }else {
+            let imageStyle = {height: autoSizeWidth(375), width: autoSizeWidth(315), justifyContent: 'flex-end',alignItems: 'center'};
             return (
                 <View style={[DesignRule.style_absoluteFullParent, {alignItems: 'center'}]}>
                     <View style={{flex: 1}}/>
-                    <TouchableOpacity nPress={this.gotoPage}>
-                        <ImageBackground style={{height: autoSizeWidth(345), width: autoSizeWidth(250), justifyContent: 'flex-end',alignItems: 'center'}}
-                                         source={bg}
+                    <TouchableWithoutFeedback onPress={this.gotoPage}>
+                        <View>
+                        <ImageLoad style={imageStyle}
+                                   source={{uri: this.state.rewardzData.imgUrl}}
+                                   resizeMode={'contain'}
                         >
                             {/*<MRText style={{fontSize: 17, color: '#FFECB6', marginBottom: 10}}>{this.state.num + '枚秀豆送给您'}</MRText>*/}
                             {/*<TouchableOpacity onPress={this.gotoPage} style = {{marginBottom: autoSizeWidth(30), alignItems: 'center'}}>*/}
                             {/*<Image source={btn} style={{height: autoSizeWidth(40), width: autoSizeWidth(145)}} resizeMode={'stretch'}/>*/}
                             {/*</TouchableOpacity>*/}
-                        </ImageBackground>
-                    </TouchableOpacity>
+                        </ImageLoad>
+                        </View>
+                    </TouchableWithoutFeedback>
                     <View style={{flex: 1}}>
-                        <TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>
-                            <Image source={close_white} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>*/}
+                        {/*<Image source={close_white} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                 </View>
             )
@@ -268,12 +292,19 @@ export default class GuideModal extends React.Component {
     }
 
     nextPress=()=>{
+        if (this.state.step === 5){
+            GuideApi.registerSend({});//完成了新手引导
+        }
         this.setState({step: this.state.step + 1})   ;
     }
 
     gotoPage=()=>{
-        // const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
-        // let params = homeModule.paramsNavigate(data);
+        let data = this.state.rewardzData;
+        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        let params = homeModule.paramsNavigate(data);
+        if (router){
+            navigate(router, params);
+        }
         this.close();
     }
 

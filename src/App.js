@@ -34,7 +34,6 @@ import Storage from './utils/storage';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
-import GuideModal from './pages/guide/GuideModal';
 import {SpellShopFlag} from './navigation/Tab';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
@@ -116,7 +115,6 @@ export default class App extends Component {
         hotUpdateUtil.checkUpdate();
         // 移除启动页
         bridge.removeLaunch();
-        this.guideModal.open();
     }
 
     render() {
@@ -143,7 +141,6 @@ export default class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
-                <GuideModal ref={(ref)=>{this.guideModal = ref}}/>
             </View>
         );
     }
