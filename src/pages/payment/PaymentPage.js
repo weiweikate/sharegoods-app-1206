@@ -7,9 +7,11 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 import user from '../../model/user';
-import { payment } from './Payment'
-import PasswordView from './PasswordView'
+import { payment, payStatus, payStatusMsg } from './Payment'
+import PasswordView from './PayPasswordView'
+import PaymentResultView, { PaymentResult } from './PaymentResultView';
 const { px2dp } = ScreenUtils;
+import Toast from '../../utils/bridge'
 
 @observer
 export default class PaymentPage extends BasePage {
@@ -29,6 +31,7 @@ export default class PaymentPage extends BasePage {
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         payment.name = orderProduct && orderProduct.productName
         payment.orderNo = this.params.orderNum;
+        payment.platformOrderNo = this.params.platformOrderNo;
     }
 
     $NavBarLeftPressed = () => {
@@ -44,7 +47,16 @@ export default class PaymentPage extends BasePage {
 
         //用户设置过交易密码
         if (user.hadSalePassword) {
-            this.setState({ showPwd: true })
+            payment.checkOrderStatus().then(result => {
+                if (result.data === payStatus.payNo) {
+                    this.setState({ showPwd: true })
+                } else {
+                    Toast.$toast(payStatusMsg[result.data])
+                }
+            }).catch(err => {
+                console.log('checkOrderStatus page err', err)
+                Toast.$toast(err.msg)
+            })
         }  else {
             this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
         }
@@ -55,7 +67,13 @@ export default class PaymentPage extends BasePage {
     }
 
     _finishedAction(password) {
-        payment.platformPay(password)
+        payment.platformPay(password).then((result) => {
+            this.setState({ showPwd: false })
+            this.paymentResultView.show(PaymentResult.sucess)
+        }).catch(err => {
+            this.setState({ showPwd: false })
+            this.paymentResultView.show(PaymentResult.fail, err.msg)
+        })
     }
 
     _forgetPassword = () => {
@@ -100,6 +118,14 @@ export default class PaymentPage extends BasePage {
                 forgetAction={()=>{this._forgetPassword()}}
                 dismiss={()=>{this.setState({showPwd: false})}}
             /> : null}
+            <PaymentResultView
+                ref={(ref) => {
+                    this.paymentResultView = ref;
+                }}
+                navigation={this.props.navigation}
+                payment={this.payment}
+                repay={() => this._repay()}
+            />
         </View>;
     }
 }

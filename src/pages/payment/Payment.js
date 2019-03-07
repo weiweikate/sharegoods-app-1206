@@ -19,6 +19,22 @@ export const paymentType = {
     section: 5
 }
 
+export const payStatus = {
+    payNo: 20804,
+    payClose: 20800,
+    payfail: 20002,
+    payNeedThrid: 20803,
+    PayError: 20806
+}
+
+export const payStatusMsg = {
+    [payStatus.payNo]: '订单未支付',
+    [payStatus.payClose]: '该订单已关闭，请重拍',
+    [payStatus.payfail]: '支付失败',
+    [payStatus.payNeedThrid]: '平台支付成功,需要三方支付',
+    [payStatus.PayError]: '订单状态异常'   
+}
+
 
 export let paymentTrack = {
     orderId : '',
@@ -32,6 +48,7 @@ export class Payment {
     @observable selctedPayType = paymentType.none
     @observable selectedBalace = false
     @observable orderNo = ''
+    @observable platformOrderNo = ''
     
     //选择余额支付
     @action selectBalancePayment = () => {
@@ -40,7 +57,6 @@ export class Payment {
 
     //选择三方支付方式
     @action selectPayTypeAction = (type) => {
-        console.log('selectPayTypeAction', type)
         this.selctedPayType = type
     }
 
@@ -54,12 +70,7 @@ export class Payment {
         track(trackEvent.payOrder, trackPoint)
         try {
             Toast.showLoading()
-            const result = yield PaymentApi.platformPay({orderNo: this.orderNo, salePswd: password})
-            if (result.code !== 10000) {
-                let error = new Error(result.msg)
-                throw error
-            }
-            
+            const result = yield PaymentApi.platformPay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo, password: password})
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'success'})
             this.updateUserData()
             Toast.hiddenLoading()
@@ -67,11 +78,95 @@ export class Payment {
         } catch (error) {
             Toast.hiddenLoading();
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', errorCause: error.msg})
-            return error
+            throw error
         }
     })
 
+    //检查订单状态
+    @action checkOrderStatus = flow(function * (password) {
+         try {
+            Toast.showLoading()
+            const result = yield PaymentApi.check({platformOrderNo: this.platformOrderNo})
+            if (result.code !== 10000) {
+                let error = new Error(result.msg)
+                throw error
+            }
+            Toast.hiddenLoading()
+            return result
+        } catch (error) {
+            Toast.hiddenLoading();
+            throw error
+        }
+    })
 
+    //支付宝支付
+    @action alipay = flow(function * () {
+        paymentTrack.paymentMethod = 'alipay'
+        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
+        try {
+            Toast.showLoading()
+            const result = yield PaymentApi.alipay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo})
+            Toast.hiddenLoading();
+            if (result && result.code === 10000) {
+                this.isGoToPay = true
+                const resultStr = yield PayUtil.appAliPay(result.data.payInfo)
+                if (resultStr.sdkCode !== 9000) {
+                    throw new Error(resultStr.msg)
+                }
+                return resultStr;
+            }
+        } catch(error) {
+            Toast.hiddenLoading();
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
+            throw error
+        }
+    })
+
+    //微信支付
+    @action appWXPay = flow(function * () {
+        paymentTrack.paymentMethod = 'wxpay'
+        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
+
+        try {
+            Toast.showLoading()
+            const result = yield PaymentApi.wechatPay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo})
+            if (result && result.code === 10000) {
+                if (!result.data) {
+                    throw new Error('支付异常')
+                }
+                if (!result.data.payInfo) {
+                    throw new Error('支付异常')
+                }
+                this.isGoToPay = true
+                const payInfo = JSON.parse(result.data.payInfo)
+                Toast.hiddenLoading()
+                payInfo.partnerid = payInfo.mchId
+                payInfo.timestamp = payInfo.timeStamp
+                payInfo.prepayid = payInfo.prepayId
+                payInfo.sign = payInfo.paySign
+                payInfo.noncestr = payInfo.nonceStr
+                payInfo.appid = payInfo.appId
+                const resultStr = yield PayUtil.appWXPay(payInfo);
+                console.log(JSON.stringify(resultStr));
+                if (parseInt(resultStr.code, 0) !== 0) {
+                    // ref && ref.show(2, resultStr.msg)
+                    throw new Error(resultStr.msg)
+                }
+                return resultStr
+            } else {
+                Toast.hiddenLoading()
+                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
+                Toast.$toast(result.msg);
+            }
+
+        } catch (error) {
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
+            Toast.hiddenLoading()
+            this.payError = error
+            this.isGoToPay = false
+            throw error
+        }
+    })
 
 
     @observable paySuccessFul = false
@@ -155,82 +250,10 @@ export class Payment {
     })
 
     //支付宝支付
-    @action alipay = flow(function * (ref) {
-        paymentTrack.paymentMethod = 'alipay'
-        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
-        try {
-            Toast.showLoading()
-            const result = yield PaymentApi.alipay({orderNo: this.orderNo})
-            Toast.hiddenLoading();
-            if (result && result.code === 10000) {
-                this.isGoToPay = true
-                const resultStr = yield PayUtil.appAliPay(result.data.payInfo)
-                if (resultStr.sdkCode !== 9000) {
-                    throw new Error(resultStr.msg)
-                }
-                return resultStr;
-            } else {
-                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
-                Toast.$toast(result.msg)
-                return ''
-            }
-        } catch(error) {
-            Toast.hiddenLoading();
-            this.payError = error
-            this.isGoToPay = false
-            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
-            ref && ref.show(2, error.msg || error.message)
-            return error
-        }
-    })
+    
 
     //微信支付
-    @action appWXPay = flow(function * (ref) {
-        paymentTrack.paymentMethod = 'wxpay'
-        track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
-
-        try {
-            Toast.showLoading()
-            const result = yield PaymentApi.wachatpay({orderNo: this.orderNo})
-
-            if (result && result.code === 10000) {
-                if (!result.data) {
-                    throw new Error('支付异常')
-                }
-                if (!result.data.payInfo) {
-                    throw new Error('支付异常')
-                }
-                this.isGoToPay = true
-                const payInfo = JSON.parse(result.data.payInfo)
-                Toast.hiddenLoading()
-                payInfo.partnerid = payInfo.mchId
-                payInfo.timestamp = payInfo.timeStamp
-                payInfo.prepayid = payInfo.prepayId
-                payInfo.sign = payInfo.paySign
-                payInfo.noncestr = payInfo.nonceStr
-                payInfo.appid = payInfo.appId
-                const resultStr = yield PayUtil.appWXPay(payInfo);
-                console.log(JSON.stringify(resultStr));
-                if (parseInt(resultStr.code, 0) !== 0) {
-                    // ref && ref.show(2, resultStr.msg)
-                    throw new Error(resultStr.msg)
-                }
-                return resultStr
-            } else {
-                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
-                Toast.$toast(result.msg);
-                return
-            }
-
-        } catch (error) {
-            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
-            Toast.hiddenLoading()
-            this.payError = error
-            this.isGoToPay = false
-            ref && ref.show(2, error.msg || error.message)
-            console.log(error)
-        }
-    })
+    
 
     //支付宝+平台
     @action ailpayAndBalance = flow(function * (password, ref) {

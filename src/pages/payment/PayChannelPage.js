@@ -31,7 +31,11 @@ export default class ChannelPage extends BasePage {
     }
 
     goToPay() {
-
+        if (payment.selectPaymentType === paymentType.alipay) {
+            payment.alipay()
+        } else {
+            payment.appWXPay()
+        }
     }
 
     _selectedType(type) {

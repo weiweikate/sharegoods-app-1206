@@ -1,6 +1,6 @@
 import PaymentMethodPage from './PaymentMethodPage';
 import PaymentPage from './PaymentPage'
-import ChannelPage from './ChannelPage'
+import ChannelPage from './PayChannelPage'
 
 export default {
     moduleName: 'payment',    //模块名称

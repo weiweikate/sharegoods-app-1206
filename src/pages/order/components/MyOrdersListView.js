@@ -228,8 +228,8 @@ export default class MyOrdersListView extends Component {
                         cancelTime: item.warehouseOrderDTOList[0].cancelTime,
                         outTradeNo: item.warehouseOrderDTOList[0].outTradeNo,
                         orderAmount: item.orderAmount,
-                        commentStatus: item.commentStatus
-
+                        commentStatus: item.commentStatus,
+                        platformOrderNo: item.platformOrderNo
                     });
 
                 } else {
@@ -246,7 +246,8 @@ export default class MyOrdersListView extends Component {
                             nowTime: resp.nowTime,
                             unSendProductInfoList: resp.unSendProductInfoList || [],
                             outTradeNo: resp.outTradeNo,
-                            commentStatus: resp.commentStatus
+                            commentStatus: resp.commentStatus,
+                            platformOrderNo: item.platformOrderNo
                         });
                     });
                 }
@@ -404,6 +405,7 @@ export default class MyOrdersListView extends Component {
          * */
         console.log(menu);
         this.setState({ menu: menu, index: index });
+        console.log('view data platformOrderNo', this.state.viewData[index])
         switch (menu.id) {
             case 1:
                 if (this.state.CONFIG.length > 0) {
@@ -415,23 +417,28 @@ export default class MyOrdersListView extends Component {
 
                 break;
             case 2:
-                console.log("payment/PaymentMethodPage2", this.state.viewData[index]);
-                this.props.nav("payment/PaymentMethodPage", {
+                this.props.nav("payment/PaymentPage", {
                     orderNum: this.state.viewData[index].outTradeNo,
-                    amounts: this.state.viewData[index].totalPrice
+                    amounts: this.state.viewData[index].totalPrice,
+                    platformOrderNo: this.state.viewData[index].platformOrderNo,
+                    orderProductList: this.state.viewData[index].orderProduct
+
                 });
                 break;
             case 3:
-                console.log("payment/PaymentMethodPage3", this.state.viewData[index]);
-                this.props.nav("payment/PaymentMethodPage", {
+                this.props.nav("payment/PaymentPage", {
                     orderNum: this.state.viewData[index].outTradeNo,
-                    amounts: this.state.viewData[index].totalPrice
+                    amounts: this.state.viewData[index].totalPrice,
+                    platformOrderNo: this.state.viewData[index].platformOrderNo,
+                    orderProductList: this.state.viewData[index].orderProduct
                 });
                 break;
             case 4:
-                this.props.nav("payment/PaymentMethodPage", {
+                this.props.nav("payment/PaymentPage", {
                     orderNo: this.state.viewData[index].orderNo,
-                    amounts: this.state.viewData[index].price
+                    amounts: this.state.viewData[index].price,
+                    platformOrderNo: this.state.viewData[index].platformOrderNo,
+                    orderProductList: this.state.viewData[index].orderProduct
                 });
                 break;
             case 5:

@@ -1,6 +1,4 @@
 const api = {
-    //支付宝支付:
-    alipay: ['/pay/alipay'],
     //微信支付
     wachatpay: ['/pay/wxpay'],
     //支付宝+平台
@@ -12,7 +10,13 @@ const api = {
     //检查订单状态
     payStatus: ['/order/pay-status'],
     //平台余额支付接口
-    platformPay: ['/gateway/payV2/platform']
+    platformPay: ['/payV2/platform'],
+    //检查订单状态:
+    check: ['/payV2/check', {method:'get'}],
+    //支付宝支付v2
+    alipay: ['payV2/notify/alipay'],
+    //微信支付v2
+    wechatPay: ['payV2/notify/wxpay']
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

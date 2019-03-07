@@ -12,7 +12,7 @@ export default class PasswordView extends Component {
     static propTypes = {
         finishedAction: PropTypes.func,
         forgetAction: PropTypes.func.isRequired,
-        closeAction: PropTypes.func.isRequired
+        closeAction: PropTypes.func
     };
 
     state = {
