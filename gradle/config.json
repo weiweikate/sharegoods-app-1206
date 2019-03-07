@@ -51,9 +51,5 @@
     "extra_dimensions": {
         "content": "apply from: '../../../android/rn_extra_dimensions.gradle'",
         "bulid_path":   "../node_modules/react-native-extra-dimensions-android/android/build.gradle"
-    },
-    "camera": {
-        "content": "apply from: '../../../android/rn_camera.gradle'",
-        "bulid_path":   "../node_modules/react-native-camera/android/build.gradle"
     }
 }

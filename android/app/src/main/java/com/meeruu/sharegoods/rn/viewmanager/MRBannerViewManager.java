@@ -100,6 +100,11 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     public void setTittleArray(BannerLayout view, ReadableArray titles) {
     }
 
+    @ReactProp(name = "interceptTouchEvent")
+    public void setInterceptTouchEvent(BannerLayout view, boolean intercept) {
+        view.setIntercept(intercept);
+    }
+
     @ReactProp(name = "pageFocused")
     public void pageFocused(BannerLayout view, Boolean focuse) {
         this.pageFocus = focuse;
@@ -140,8 +145,10 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     @Override
     public void onDropViewInstance(BannerLayout view) {
         view.removeAllViews();
-        eventDispatcher.onCatalystInstanceDestroyed();
-        eventDispatcher = null;
+        if (eventDispatcher != null) {
+            eventDispatcher.onCatalystInstanceDestroyed();
+            eventDispatcher = null;
+        }
         scrollToIndexEvent = null;
         selectItemAtIndexEvent = null;
         super.onDropViewInstance(view);
