@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import MRBannerView from './MRBannerView';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {MRText as Text}from '../UIText';
-const { px2dp } = ScreenUtils
+import { MRText as Text } from '../UIText';
 
-export default class MRBannerViewMode extends Component {
+const { px2dp } = ScreenUtils;
+
+export default class MRBannerViewComponent extends Component {
 
     static propTypes = {
         //ModeStyle
@@ -76,18 +77,21 @@ export default class MRBannerViewMode extends Component {
 
     render() {
         const { bannerHeight, imgUrlArray, autoLoop, autoInterval, itemRadius } = this.props;
+        let imgWidth = ScreenUtils.width - ScreenUtils.px2dp(30);
         return (
             <View>
-                <MRBannerView style={[{ height: bannerHeight, width: ScreenUtils.width - ScreenUtils.px2dp(30) }]}
+                {/*加一个0.5修正值*/}
+                <MRBannerView style={[{ height: bannerHeight, width: imgWidth + 0.5 }]}
                               onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
                               imgUrlArray={imgUrlArray}
                               itemRadius={itemRadius}
+                              itemWidth={imgWidth + 0.5}
+                              itemSpace={0}
                               onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
                               autoLoop={autoLoop === false ? false : true}
-                              autoInterval={autoInterval || (autoInterval === 0 ? 0 : 3)}/>
+                              autoInterval={autoInterval || (autoInterval === 0 ? 0 : 5)}/>
                 {this._renderPageControl()}
             </View>
-
         );
     }
 }
