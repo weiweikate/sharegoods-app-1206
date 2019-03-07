@@ -19,6 +19,7 @@
 		0386E92E218C59CB00697612 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92D218C59CA00697612 /* libz.tbd */; };
 		0386E930218C59D900697612 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92F218C59D900697612 /* libbz2.1.0.tbd */; };
 		03A568E621DEFA1E00D6A770 /* libRNGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A568E121DEFA0C00D6A770 /* libRNGeolocation.a */; };
+		0409D925222F7725003A53EC /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0409D91E222F7706003A53EC /* libRNCWebView.a */; };
 		081956136AE44CE8B81938B3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 120228A31812462B96F8AA63 /* Zocial.ttf */; };
 		101157BA219AB489001F5E99 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157B9219AB489001F5E99 /* SystemConfiguration.framework */; };
 		101157C4219AB6FD001F5E99 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */; };
@@ -132,7 +133,6 @@
 		CD5EB143221E9AB3007AAEE0 /* ShowHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB142221E9AB3007AAEE0 /* ShowHeaderView.m */; };
 		CD5EB146221EA148007AAEE0 /* WHCWaterfallFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB145221EA148007AAEE0 /* WHCWaterfallFlowLayout.m */; };
 		CD5EB149221EA933007AAEE0 /* ShowCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */; };
-		CD5EB4D422250E7E007AAEE0 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD5EB4D322250E58007AAEE0 /* libRNCamera.a */; };
 		CD6741F621DEF78500464549 /* AdView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6741F521DEF78500464549 /* AdView.m */; };
 		CD6742D021E4418900464549 /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742CF21E4418900464549 /* RSKImageCropper.framework */; };
 		CD6742D121E4418900464549 /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742CF21E4418900464549 /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -201,6 +201,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNGeolocation;
+		};
+		0409D91D222F7706003A53EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0409D8EA222F7706003A53EC /* RNCWebView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNCWebView;
 		};
 		1016E32521F98FD3003227E7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -524,13 +531,6 @@
 			remoteGlobalIDString = A18E9FA621A6AB4300A66E41;
 			remoteInfo = RNSensorsAnalyticsModule;
 		};
-		CD5EB4D222250E58007AAEE0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CD5EB4CE22250E57007AAEE0 /* RNCamera.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
-			remoteInfo = RNCamera;
-		};
 		CD67429721E43F5F00464549 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD67428F21E43F5F00464549 /* imageCropPicker.xcodeproj */;
@@ -570,6 +570,7 @@
 		037DBABD21B0E3030003DA18 /* money_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_1.png; sourceTree = "<group>"; };
 		0386E92D218C59CA00697612 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		0386E92F218C59D900697612 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
+		0409D8EA222F7706003A53EC /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCWebView.xcodeproj; path = "../node_modules/@mr/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; };
 		101157B9219AB489001F5E99 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		101157C5219AB715001F5E99 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -818,7 +819,6 @@
 		CD5EB145221EA148007AAEE0 /* WHCWaterfallFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHCWaterfallFlowLayout.m; sourceTree = "<group>"; };
 		CD5EB147221EA932007AAEE0 /* ShowCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowCollectionReusableView.h; sourceTree = "<group>"; };
 		CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowCollectionReusableView.m; sourceTree = "<group>"; };
-		CD5EB4CE22250E57007AAEE0 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		CD6741F421DEF78500464549 /* AdView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdView.h; sourceTree = "<group>"; };
 		CD6741F521DEF78500464549 /* AdView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdView.m; sourceTree = "<group>"; };
 		CD67428F21E43F5F00464549 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/@mr/rn-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
@@ -864,7 +864,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD5EB4D422250E7E007AAEE0 /* libRNCamera.a in Frameworks */,
+				0409D925222F7725003A53EC /* libRNCWebView.a in Frameworks */,
 				CD15545622126AB4004C75FB /* libRCTCameraRoll.a in Frameworks */,
 				CD6742D821E441D500464549 /* libimageCropPicker.a in Frameworks */,
 				03A568E621DEFA1E00D6A770 /* libRNGeolocation.a in Frameworks */,
@@ -1019,6 +1019,14 @@
 			isa = PBXGroup;
 			children = (
 				03A568E121DEFA0C00D6A770 /* libRNGeolocation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0409D8EB222F7706003A53EC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0409D91E222F7706003A53EC /* libRNCWebView.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1583,7 +1591,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				CD5EB4CE22250E57007AAEE0 /* RNCamera.xcodeproj */,
+				0409D8EA222F7706003A53EC /* RNCWebView.xcodeproj */,
 				CD15541C22126A94004C75FB /* RCTCameraRoll.xcodeproj */,
 				CD67428F21E43F5F00464549 /* imageCropPicker.xcodeproj */,
 				CD1AA5F821D602B1007F045D /* React-Native-Webview-Bridge.xcodeproj */,
@@ -1777,14 +1785,6 @@
 				CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */,
 			);
 			path = ShowGroundView;
-			sourceTree = "<group>";
-		};
-		CD5EB4CF22250E57007AAEE0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CD5EB4D322250E58007AAEE0 /* libRNCamera.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		CD67429021E43F5F00464549 /* Products */ = {
@@ -2058,12 +2058,12 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = CD5EB4CF22250E57007AAEE0 /* Products */;
-					ProjectRef = CD5EB4CE22250E57007AAEE0 /* RNCamera.xcodeproj */;
-				},
-				{
 					ProductGroup = 1872318221CB96D300513B04 /* Products */;
 					ProjectRef = 1872318121CB96D300513B04 /* RNCookieManagerIOS.xcodeproj */;
+				},
+				{
+					ProductGroup = 0409D8EB222F7706003A53EC /* Products */;
+					ProjectRef = 0409D8EA222F7706003A53EC /* RNCWebView.xcodeproj */;
 				},
 				{
 					ProductGroup = 1073EF8E21798F4900C202AC /* Products */;
@@ -2137,6 +2137,13 @@
 			fileType = archive.ar;
 			path = libRNGeolocation.a;
 			remoteRef = 03A568E021DEFA0C00D6A770 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0409D91E222F7706003A53EC /* libRNCWebView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCWebView.a;
+			remoteRef = 0409D91D222F7706003A53EC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1016E32621F98FD3003227E7 /* libRNReactNativeRequest.a */ = {
@@ -2454,13 +2461,6 @@
 			remoteRef = CD45EE0021C77E1A00846B39 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CD5EB4D322250E58007AAEE0 /* libRNCamera.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNCamera.a;
-			remoteRef = CD5EB4D222250E58007AAEE0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CD67429821E43F5F00464549 /* libimageCropPicker.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2554,15 +2554,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-crm_app_xiugou-checkManifestLockResult.txt",
 			);
@@ -2575,8 +2571,6 @@
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
@@ -2591,8 +2585,6 @@
 				"${PODS_ROOT}/SensorsAnalyticsSDK/SensorsAnalyticsSDK/SensorsAnalyticsSDK.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",

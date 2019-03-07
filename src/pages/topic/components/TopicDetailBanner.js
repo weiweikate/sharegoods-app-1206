@@ -52,7 +52,8 @@ export class TopicDetailBanner extends Component {
     _renderViewPageItem = (item = {}, index) => {
         const { bannerImgList } = this.props;
         if (item.videoUrl) {
-            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
+            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}
+                              navigation={this.props.navigation}/>;
         } else {
             const { originalImg } = item;
             let imgList = this.getImageList(bannerImgList);
@@ -60,7 +61,7 @@ export class TopicDetailBanner extends Component {
                 <TouchableWithoutFeedback onPress={() => {
                     const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
                     const { navigation } = this.props;
-                    navigation && navigation.navigate('home/product/CheckBigImagesView', params);
+                    navigation && navigation.navigate('product/CheckBigImagesView', params);
                 }}>
                     <View>
                         <ImageLoad source={{ uri: originalImg }}

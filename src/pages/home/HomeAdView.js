@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './Modules';
 import { adModules } from './HomeAdModel';
@@ -8,30 +8,26 @@ import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 
-const bannerWidth = ScreenUtils.width
-const defaultBannerHeight = px2dp(80)
+const bannerWidth = ScreenUtils.width;
+const defaultBannerHeight = px2dp(10);
 
-const adWidth = (ScreenUtils.width - px2dp(35)) / 2
-const adHeight = adWidth * (160 / 340)
+const adWidth = (ScreenUtils.width - px2dp(35)) / 2;
+const adHeight = adWidth * (160 / 340);
 
-const radius = (5)
+const radius = (5);
 
 @observer
 export default class HomeAdView extends Component {
 
     constructor(props) {
-        super(props)
-        // adModules.adHeights[0] = adViewHeight
+        super(props);
         this.adRadius = [
-            {borderTopLeftRadius: radius, overflow: 'hidden'},
-            {borderTopRightRadius: radius, overflow: 'hidden'},
-            {borderBottomLeftRadius: radius, overflow: 'hidden'},
-            {borderBottomRightRadius: radius, overflow: 'hidden'},
-        ]
-        this.hasLoadImg = {}
-        this.state = {
-            imageHeight : []
-        }
+            { borderTopLeftRadius: radius, overflow: 'hidden' },
+            { borderTopRightRadius: radius, overflow: 'hidden' },
+            { borderBottomLeftRadius: radius, overflow: 'hidden' },
+            { borderBottomRightRadius: radius, overflow: 'hidden' }
+        ];
+        this.hasLoadImg = {};
     }
 
     _adAction(value) {
@@ -42,60 +38,59 @@ export default class HomeAdView extends Component {
     }
 
     _renderBanner() {
-        const { banner } = adModules
+        const { banner, notExistAdUrls } = adModules;
         if (banner.length === 0) {
-            return null
+            return null;
         }
-        let items = []
-        banner.map((val, index) => {
-            console.log('getBanner', this.hasLoadImg)
-            if (!this.hasLoadImg[val.imgUrl]) {
-                Image.getSize(val.imgUrl, (width, height)=> {
-                    let h = bannerWidth * (height / width)
-                    adModules.adHeights.push(h)
-                    let imageHeights = this.state.imageHeight
-                    imageHeights.push({height: h})
-                    this.setState({
-                        imageHeight: imageHeights
-                    })
-                })
-                this.hasLoadImg[val.imgUrl] = true
+        let items = [];
+        notExistAdUrls.map((url) => {
+            if (!this.hasLoadImg[url]) {
+                Image.getSize(url, (width, height) => {
+                    let h = (bannerWidth * height) / width;
+                    adModules.adHeights.set(url, h);
+                });
+                this.hasLoadImg[url] = true;
             }
+        });
 
+        banner.map((val, index) => {
+            let url = val.imgUrl;
             items.push(
-                <TouchableWithoutFeedback onPress={()=> this._adAction(val)}>
-                    <View style={styles.banner} key={'banner' + index}>
-                        <Image style={[styles.bannerImage, {height: adModules.adHeights[index] ? adModules.adHeights[index] : 0}]} source={{uri: val.imgUrl}}/>
-                    </View>
+                <TouchableWithoutFeedback onPress={() => this._adAction(val)}>
+                    <Image
+                        key={'banner' + index}
+                        style={[styles.bannerImage, { height: adModules.adHeights.get(url) }]}
+                        source={{ uri: url }}/>
                 </TouchableWithoutFeedback>
-            )
-        })
-        console.log('getBanner imageHeights', this.state.imageHeight)
-
-        return <View>{items}</View>
+            );
+        });
+        return <View>{items}</View>;
     }
+
 
     _renderAd() {
         const { ad } = adModules;
         let items = [];
         ad.map((value, index) => {
             items.push(<TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
-                <View style={[styles.ad, this.adRadius[index]]}>
-                    <ImageLoad source={{ uri: value.imgUrl }} style={styles.ad}/>
+                <View
+                    style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : 0 }, this.adRadius[index]]}>
+                    <ImageLoad source={{ uri: value.imgUrl }}
+                               style={[styles.ad,
+                                   { marginTop: adModules.banner.length === 0 ? 0 : ((index !== 0 && index !== 1) ? px2dp(5) : 0) }]}/>
                 </View>
             </TouchableWithoutFeedback>);
-        })
+        });
         return <View style={styles.adrow}>
             {items}
-        </View>
+        </View>;
     }
 
     render() {
         return <View style={styles.container}>
-            <View style={styles.tran}/>
             {this._renderBanner()}
             {this._renderAd()}
-        </View>
+        </View>;
     }
 }
 
@@ -104,12 +99,10 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width,
         paddingTop: px2dp(10)
     },
-    banner: {
-        marginBottom: px2dp(15)
-    },
     bannerImage: {
         width: bannerWidth,
         height: defaultBannerHeight,
+        marginBottom: px2dp(15)
     },
     adrow: {
         flexDirection: 'row',
@@ -120,15 +113,6 @@ const styles = StyleSheet.create({
     },
     ad: {
         width: adWidth,
-        height: adHeight,
-        marginBottom: px2dp(4)
-    },
-    tran: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: px2dp(54),
-        backgroundColor: '#fff'
+        height: adHeight
     }
 });

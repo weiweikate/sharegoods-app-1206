@@ -16,7 +16,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
-import ImageLoad from '@mr/image-placeholder'
+import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 
@@ -36,7 +36,7 @@ class Item extends Component {
             {
                 loadingError
                     ?
-                    <Image style={styles.icon}  source={icon}/>
+                    <Image style={styles.icon} source={icon}/>
                     :
                     <ImageLoad style={styles.icon} showPlaceholder={false} source={source} onError={() => {
                         this.setState({ loadingError: true });
@@ -87,8 +87,7 @@ export default class HomeClassifyView extends Component {
     };
 
     render() {
-        return (<View
-                style={styles.container}>
+        return (<View style={styles.container}>
                 {this.renderItems()}
             </View>
         );
@@ -103,20 +102,18 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingLeft: px2dp(2),
-        paddingRight: px2dp(2),
+        paddingLeft: px2dp(16),
+        paddingRight: px2dp(16),
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fff',
+        justifyContent: 'space-between',
+        backgroundColor: 'white',
         width: ScreenUtils.width
     },
     item: {
-        width: px2dp(48),
-        height: px2dp(68),
-        marginLeft: px2dp(10),
-        marginRight: px2dp(10),
-        marginTop: px2dp(7.5),
-        marginBottom: px2dp(7.5),
+        width: px2dp(56),
+        height: px2dp(70),
+        marginTop: px2dp(10),
+        marginBottom: px2dp(10),
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -124,12 +121,9 @@ const styles = StyleSheet.create({
         width: px2dp(56),
         height: px2dp(56)
     },
-    space: {
-        height: px2dp(6)
-    },
     name: {
-        color: DesignRule.textColor_secondTitle,
-        fontSize: px2dp(10)
+        color: DesignRule.textColor_mainTitle,
+        fontSize: px2dp(11)
     }
 });
 

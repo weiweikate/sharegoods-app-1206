@@ -10,6 +10,7 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -135,7 +136,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new MRNetStatePackage(),
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
-                    new ExtraDimensionsPackage()
+                    new ExtraDimensionsPackage(),
+                    new RNCWebViewPackage()
             );
         }
 
