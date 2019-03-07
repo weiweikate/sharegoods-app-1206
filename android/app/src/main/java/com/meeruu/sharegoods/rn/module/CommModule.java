@@ -1,5 +1,6 @@
 package com.meeruu.sharegoods.rn.module;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,20 @@ import android.webkit.CookieSyncManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.facebook.binaryresource.BinaryResource;
+import com.facebook.binaryresource.FileBinaryResource;
+import com.facebook.cache.common.CacheKey;
+import com.facebook.common.executors.CallerThreadExecutor;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -23,6 +38,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
@@ -37,6 +53,7 @@ import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
+import com.meeruu.sharegoods.ui.activity.GongMallActivity;
 import com.qiyukf.unicorn.api.Unicorn;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,11 +64,15 @@ import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
+import static com.meeruu.sharegoods.ui.activity.GongMallActivity.SIGN_OK;
+
 
 public class CommModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
+    private static final int GONGMAOCODE = 888;
+    private Promise gongMao ;
 
     /**
      * 构造方法必须实现
@@ -61,6 +82,19 @@ public class CommModule extends ReactContextBaseJavaModule {
     public CommModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.mContext = reactContext;
+        this.mContext.addActivityEventListener(new ActivityEventListener() {
+            @Override
+            public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+                if(gongMao != null && requestCode == GONGMAOCODE && resultCode == SIGN_OK){
+                    gongMao.resolve(null);
+                }
+            }
+
+            @Override
+            public void onNewIntent(Intent intent) {
+
+            }
+        });
     }
 
     /**
@@ -482,15 +516,15 @@ public class CommModule extends ReactContextBaseJavaModule {
                     }
                 });
             }
-
-
-
-}
-
             @Override
             public void onFailureImpl(DataSource dataSource) {
                 promise.reject("下载失败");
             }
+
+
+
+
+
         }, CallerThreadExecutor.getInstance());
     }
 
