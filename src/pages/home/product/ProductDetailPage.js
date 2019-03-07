@@ -554,7 +554,8 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { minPrice, name, imgUrl, prodCode, firstCategoryId, secCategoryId, originalPrice, groupPrice, v0Price } = this.state.data || {};
+
+        const { minPrice, name, imgUrl, prodCode, firstCategoryId, secCategoryId, originalPrice, groupPrice, v0Price,shareMoney } = this.state.data || {};
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -618,7 +619,7 @@ export default class ProductDetailPage extends BasePage {
                                 titleStr: `${name}`,
                                 priceStr: `￥${originalPrice}`,
                                 retailPrice: `￥${v0Price}`,
-                                v0Price: v0Price,
+                                shareMoney: shareMoney,
                                 spellPrice: `￥${groupPrice}`,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ""}`
                             }}
