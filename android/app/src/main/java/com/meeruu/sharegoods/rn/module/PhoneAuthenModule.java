@@ -43,6 +43,7 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
                 if(authPromise != null){
                     WritableMap map = Arguments.createMap();
                     map.putInt("isCanAuthen",1);
+                    map.putInt("resultCode",666);
                     map.putString("data",s);
                     map.putString("phoneNum",mAutInitResult.getSimPhoneNumber());
                     authPromise.resolve(map);

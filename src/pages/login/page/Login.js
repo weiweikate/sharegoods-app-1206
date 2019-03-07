@@ -51,7 +51,9 @@ export default class Login extends BasePage {
             alert(result.phoneNum);
             if (result.isCanAuthen === 1) {
                 this.setState({
-                    canPhoneAuthen: true
+                    canPhoneAuthen: true,
+                    tempPhone:result.phoneNum||"",
+                    authenToken:result.data||"",
                 });
             } else {
                 this.setState({
@@ -147,8 +149,8 @@ export default class Login extends BasePage {
         if (btnType === loginBtnType.wxLoginBtnType) {
             this._wxLogin();
         } else if (btnType === loginBtnType.localPhoneNumLoginType) {
-            // this.$navigate(RouterMap.LocalNumLogin);
-            this.$navigate(RouterMap.InputCode);
+            this.$navigate(RouterMap.LocalNumLogin,{tempPhone:this.state.tempPhone,authenToken:this.state.authenToken});
+            // this.$navigate(RouterMap.InputCode);
         } else {
             this.$navigate(RouterMap.OtherLoginPage);
         }

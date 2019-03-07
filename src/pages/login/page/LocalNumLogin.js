@@ -5,7 +5,8 @@ import {
     TouchableOpacity,
     Text,
     StyleSheet,
-    Alert
+    Alert,
+    Platform
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/Login.style";
@@ -32,8 +33,14 @@ export default class LocalNumLogin extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            phoneNumber: ""
+            phoneNumber: this.params.tempPhone || "",
+            authenToken: this.params.authenToken || ""
         };
+    }
+
+    componentDidMount() {
+
+
     }
 
     // 导航配置
@@ -125,10 +132,16 @@ export default class LocalNumLogin extends BasePage {
                     style={Styles.bottomBgContent}
                 >
                     <ProtocolView
-                        selectImageClick={() => {
+                        selectImageClick={(isSelect) => {
+                            this.setState({
+                                isSelectProtocol: isSelect
+                            });
                         }}
-                        textClick={() => {
-
+                        textClick={(htmlUrl) => {
+                            this.$navigate("HtmlPage", {
+                                title: "用户协议内容",
+                                uri: htmlUrl
+                            });
                         }}
                     />
                 </View>
@@ -162,15 +175,35 @@ export default class LocalNumLogin extends BasePage {
     };
 
     _sureClick = () => {
-
-
         this.$navigate(RouterMap.InputPhoneNum);
         return;
         this.$loadingShow();
-        startPhoneAuthen(this.state.phoneNumber).then(res => {
-            this.$loadingDismiss();
-            console.log(res);
-        });
+        if (Platform.OS === "android") {
+            if (this.state.authenToken.length > 0) {
+                // this.state.authenToken
+                // this.state.phoneNumber
+                this._beginAuthen(this.state.phoneNumber, this.state.authenToken);
+
+            }
+        } else {
+            startPhoneAuthen(this.state.phoneNumber).then(res => {
+                this.$loadingDismiss();
+                // this.state.phoneNumber
+                // res.tokemn
+                console.log(res);
+            });
+        }
+
+    };
+    /**
+     * 开始认证函数
+     * @param phone
+     * @param authenToken
+     * @private
+     */
+    _beginAuthen = (phone, authenToken) => {
+        console.log(phone);
+        console.log(authenToken);
     };
 }
 
