@@ -360,7 +360,12 @@ class HomePage extends BasePage {
         } else if (type === homeType.goods) {
             return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
-            return <View style={styles.titleView}><HomeTitleView title={'为你推荐'}/></View>;
+            return <View style={styles.titleView}
+                         onLayout={event => {
+                             this.layout = event.nativeEvent.layout;
+                         }}>
+                <HomeTitleView title={'为你推荐'}/>
+            </View>;
         }
         return <View/>;
     };

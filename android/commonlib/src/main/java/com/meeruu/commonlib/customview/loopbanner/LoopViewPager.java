@@ -43,22 +43,4 @@ public class LoopViewPager extends RecyclerView {
             return Math.max(velocity, -FLING_MAX_VELOCITY);
         }
     }
-
-    @Override
-    public void requestLayout() {
-        super.requestLayout();
-        if (!mRequestedLayout) {
-            mRequestedLayout = true;
-            this.post(new Runnable() {
-                @SuppressLint("WrongCall")
-                @Override
-                public void run() {
-                    mRequestedLayout = false;
-                    layout(getLeft(), getTop(), getRight(), getBottom());
-                    onLayout(false, getLeft(), getTop(), getRight(), getBottom());
-                }
-            });
-        }
-    }
-
 }

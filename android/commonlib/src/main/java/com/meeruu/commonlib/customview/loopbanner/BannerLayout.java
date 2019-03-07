@@ -30,7 +30,7 @@ import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
 
 public class BannerLayout extends FrameLayout {
 
-    private int autoPlayDuration = 3000;//刷新间隔时间
+    private int autoPlayDuration = 5000;//刷新间隔时间
 
     private boolean showIndicator;//是否显示指示器
     private RecyclerView indicatorContainer;
