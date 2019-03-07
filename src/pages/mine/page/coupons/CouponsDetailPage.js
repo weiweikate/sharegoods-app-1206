@@ -84,6 +84,9 @@ export default class CouponsDetailPage extends BasePage {
         }
 
     };
+    _gotoLookAround = () => {
+        this.$navigateBackToHome();
+    };
 
     parseCoupon = (item) => {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
@@ -229,7 +232,7 @@ export default class CouponsDetailPage extends BasePage {
                             <View style={styles.itemFirStyle}>
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                                     {
-                                        item.type === 3 || item.type === 4 || item.type === 12 ? null :
+                                        item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
                                             <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
                                                 <Text
                                                     style={{

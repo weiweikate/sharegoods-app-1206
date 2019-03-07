@@ -10,6 +10,7 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -44,8 +45,6 @@ import com.squareup.leakcanary.LeakCanary;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
-
-import org.reactnative.camera.RNCameraPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -138,7 +137,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),
-                    new RNCameraPackage()
+                    new RNCWebViewPackage()
             );
         }
 
