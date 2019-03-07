@@ -103,6 +103,7 @@ export default class RequestDetailPage extends BasePage {
                     ref={(ref) => {
                         this.webView = ref;
                     }}
+                    originWhitelist={['(.*?)']}
                     source={{ uri: this.state.uri }}
                     navigateAppPage={(r, p) => {
                         if (r === 'login/login/LoginPage'){
