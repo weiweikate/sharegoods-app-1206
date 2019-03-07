@@ -44,7 +44,7 @@ public class SelectMyPhotoAdapter extends CommonAdapter<String> {
             imageUrl = item;
         }
         SimpleDraweeView imageView = helper.getView(R.id.id_item_image);
-        helper.setImageUrl(imageView, imageUrl);
+        helper.setImageFileUrl(imageView, imageUrl);
         final CheckBox mCheckBox = helper.getView(R.id.child_checkbox);
         mCheckBox.setChecked(mSelectMap.get(position));
         mCheckBox.setOnClickListener(new View.OnClickListener() {

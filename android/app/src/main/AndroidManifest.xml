@@ -260,6 +260,22 @@
                 <data android:scheme="meeruu" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.activity.GongMallActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".ui.activity.ClipPictureActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".ui.activity.SelectMyPhotoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
             android:screenOrientation="portrait" />

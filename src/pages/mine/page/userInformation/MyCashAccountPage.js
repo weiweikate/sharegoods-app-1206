@@ -19,6 +19,7 @@ import { observer } from "mobx-react/native";
 import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import {MRText as Text} from '../../../../components/ui';
+import NoMoreClick from '../../../../components/ui/NoMoreClick';
 
 const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
 const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
@@ -103,9 +104,9 @@ export default class MyCashAccountPage extends BasePage {
                                 color: "white"
                             }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        {/*<NoMoreClick style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
-                            {/*<Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>*/}
-                        {/*</NoMoreClick>*/}
+                        <NoMoreClick style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
+                            <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
+                        </NoMoreClick>
                     </View>
                 </View>
             </View>
