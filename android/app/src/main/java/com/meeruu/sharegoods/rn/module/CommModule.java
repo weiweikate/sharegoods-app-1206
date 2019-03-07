@@ -520,11 +520,15 @@ public class CommModule extends ReactContextBaseJavaModule {
                     }
                 });
             }
-
             @Override
             public void onFailureImpl(DataSource dataSource) {
                 promise.reject("下载失败");
             }
+
+
+
+
+
         }, CallerThreadExecutor.getInstance());
     }
    @ReactMethod

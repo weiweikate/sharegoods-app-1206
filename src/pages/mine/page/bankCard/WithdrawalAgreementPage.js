@@ -35,7 +35,7 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
     }
 
     $navigationBarOptions = {
-        title: '提现协议查看',
+        title: '提现说明',
         show: true// false则隐藏导航
     };
 
@@ -86,6 +86,7 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
                          domStorageEnabled={true}
                          scalesPageToFit={true}
                          style={styles.webViewWrapper}
+                         showsVerticalScrollIndicator={false}
                 />
                 <TouchableWithoutFeedback onPress={this._checkUserGongMallResult}>
                     <View style={styles.bottomButtonWrapper}>
@@ -103,7 +104,8 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor:DesignRule.white
     },
     webViewWrapper: {
         marginBottom: px2dp(16)
@@ -112,14 +114,16 @@ const styles = StyleSheet.create({
         height: 50,
         width: ScreenUtils.width - px2dp(80),
         alignSelf: 'center',
-        backgroundColor: DesignRule.mainColor,
+        backgroundColor: DesignRule.white,
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: px2dp(34)
+        marginBottom: px2dp(34),
+        borderColor:DesignRule.mainColor,
+        borderWidth:1
     },
     buttonTextStyle: {
-        color: DesignRule.white,
+        color: DesignRule.mainColor,
         fontSize: DesignRule.fontSize_bigBtnText,
         includeFontPadding: false
     }
