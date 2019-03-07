@@ -17,7 +17,6 @@ import DetailBottomView from "./components/DetailBottomView";
 import PriceExplain from "./components/PriceExplain";
 import DetailNavView from "./components/DetailNavView";
 import SelectionPage from "./SelectionPage";
-import HomeAPI from "../home/api/HomeAPI";
 import ScreenUtils from "../../utils/ScreenUtils";
 import shopCartCacheTool from "../shopCart/model/ShopCartCacheTool";
 import CommShareModal from "../../comm/components/CommShareModal";
@@ -41,6 +40,7 @@ import MessageApi from "../message/api/MessageApi";
 import QYChatUtil from "../mine/page/helper/QYChatModel";
 import DetailHeaderServiceModal from "./components/DetailHeaderServiceModal";
 import DetailPromoteModal from "./components/DetailPromoteModal";
+import ProductApi from './api/ProductApi';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -165,7 +165,7 @@ export default class ProductDetailPage extends BasePage {
 
     //数据
     _getProductDetail = () => {
-        HomeAPI.getProductDetailByCode({
+        ProductApi.getProductDetailByCode({
             // code: 'SPU00000088'
             code: this.params.productCode
         }).then((data) => {
@@ -180,7 +180,7 @@ export default class ProductDetailPage extends BasePage {
         if (!prodCode) {
             return;
         }
-        HomeAPI.queryByProductCode({
+        ProductApi.queryByProductCode({
             productCode: prodCode
         }).then((data) => {
             this.$loadingDismiss();

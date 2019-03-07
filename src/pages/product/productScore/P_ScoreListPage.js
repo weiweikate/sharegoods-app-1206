@@ -4,7 +4,6 @@ import { MRText as Text } from '../../../components/ui/index';
 import BasePage from '../../../BasePage';
 import P_ScoreListItemView from './components/P_ScoreListItemView';
 import DetailBottomView from '../components/DetailBottomView';
-import HomeAPI from '../../home/api/HomeAPI';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import res from '../res/product';
 import DesignRule from '../../../constants/DesignRule';
@@ -17,6 +16,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import DetailNavShowModal from '../components/DetailNavShowModal';
 import DetailNavView from '../components/DetailNavView';
+import ProductApi from '../api/ProductApi';
 
 const { p_score_smile, p_score_empty } = res.productScore;
 
@@ -64,10 +64,10 @@ export default class P_ScoreListPage extends BasePage {
         const { pData } = this.params;
         const { prodCode } = pData;
         let promises = [];
-        promises.push(HomeAPI.appraise_queryByProdCode({ prodCode: prodCode }).then((data) => {
+        promises.push(ProductApi.appraise_queryByProdCode({ prodCode: prodCode }).then((data) => {
             return Promise.resolve((data || {}).data || []);
         }));
-        promises.push(HomeAPI.appraise_list({
+        promises.push(ProductApi.appraise_list({
             page: 1,
             pageSize: 10,
             prodCode: prodCode,
@@ -109,7 +109,7 @@ export default class P_ScoreListPage extends BasePage {
             if (dataArray.length > 0) {
                 lastData = dataArray[dataArray.length - 1];
             }
-            HomeAPI.appraise_list({
+            ProductApi.appraise_list({
                 page: this.state.page, pageSize: 10, prodCode: prodCode, createTime: lastData.createTime || ''
             }).then((data) => {
                 this.state.page++;

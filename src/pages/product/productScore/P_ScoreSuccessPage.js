@@ -6,10 +6,10 @@ import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import BasePage from '../../../BasePage';
-import HomeAPI from '../../home/api/HomeAPI';
 import RouterMap from '../../../navigation/RouterMap';
 import res from '../res/product';
 import OrderApi from '../../order/api/orderApi';
+import ProductApi from '../api/ProductApi';
 
 const { tongyon_icon_check_green } = res.button;
 const { kong_icon_shaidan } = res.productScore;
@@ -27,7 +27,7 @@ export default class P_ScoreSuccessPage extends BasePage {
     }
 
     _loadPageData = ()=>{
-        HomeAPI.queryCommentByUserCode().then((data) => {
+        ProductApi.queryCommentByUserCode().then((data) => {
             let tempList = (data || {}).data || [];
             this.setState({
                 dataList: tempList

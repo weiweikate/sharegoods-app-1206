@@ -16,7 +16,6 @@ import TopicDetailSegmentView from './components/TopicDetailSegmentView';
 import PriceExplain from '../product/components/PriceExplain';
 import ScreenUtils from '../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
-import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
 import user from '../../model/user';
 import TopicDetailSelectPage from './TopicDetailSelectPage';
@@ -47,6 +46,7 @@ import MessageAPI from '../message/api/MessageApi';
 import QYChatUtil from '../mine/page/helper/QYChatModel';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
+import ProductApi from '../product/api/ProductApi';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -281,7 +281,7 @@ export default class TopicDetailPage extends BasePage {
             this.setState({
                 loadingState: PageLoadingState.success
             }, () => {
-                HomeAPI.getProductDetailByCode({
+                ProductApi.getProductDetailByCode({
                     code: prodCode
                 }).then((data) => {
                     this.setState({

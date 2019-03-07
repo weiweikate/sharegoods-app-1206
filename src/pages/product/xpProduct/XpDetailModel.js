@@ -1,9 +1,9 @@
 import { observable, action, computed } from 'mobx';
-import HomeAPI from '../../home/api/HomeAPI';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import MessageApi from '../../message/api/MessageApi';
+import ProductApi from '../api/ProductApi';
 
 class XpDetailModel {
     @observable showUpSelectList = false;
@@ -190,7 +190,7 @@ class XpDetailModel {
 
     request_act_exp_detail = (activityCode, productCode) => {
         this.basePageState = PageLoadingState.loading;
-        HomeAPI.act_exp_detail({
+        ProductApi.act_exp_detail({
             //测试 JF201812270017
             code: activityCode
         }).then((data) => {
@@ -205,7 +205,7 @@ class XpDetailModel {
     /*第一加载第一个  选择加载  失败重试*/
     request_getProductDetailByCode = () => {
         this.productPageState = PageLoadingState.loading;
-        HomeAPI.getProductDetailByCode({
+        ProductApi.getProductDetailByCode({
             // code:'SPU00000375',
             code: this.selectedSpuCode
         }).then((data) => {

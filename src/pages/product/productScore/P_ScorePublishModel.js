@@ -2,9 +2,9 @@ import { observable, action } from 'mobx';
 import Toast from '../../../utils/bridge';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { request } from '@mr/rn-request';
-import HomeAPI from '../../home/api/HomeAPI';
 import orderApi from '../../order/api/orderApi';
 import { NativeModules, Platform } from 'react-native';
+import ProductApi from '../api/ProductApi';
 
 export default class P_ScorePublishModel {
 
@@ -89,7 +89,7 @@ export default class P_ScorePublishModel {
         });
         console.log(params);
         Toast.showLoading();
-        HomeAPI.appraise_publish({ warehouseOrderNo: this.warehouseOrderNo, params: params }).then((data) => {
+        ProductApi.appraise_publish({ warehouseOrderNo: this.warehouseOrderNo, params: params }).then((data) => {
             Toast.hiddenLoading();
             callBack && callBack();
             console.log(data);
