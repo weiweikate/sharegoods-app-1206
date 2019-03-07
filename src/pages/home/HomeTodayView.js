@@ -16,44 +16,8 @@ import { MRText as Text } from '../../components/ui';
 
 export const todayHeight = px2dp(240)
 
-// const TodayItem = ({ item, press }) => <TouchableOpacity style={styles.item} onPress={() => press && press()}>
-//     <ImageLoad style={styles.img} source={{ uri: item.imgUrl }}/>
-// </TouchableOpacity>;
-
 @observer
 export default class HomeTodayView extends Component {
-    // _todayItemAction(item) {
-    //     let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-    //     let params = homeModule.paramsNavigate(item);
-    //     const { navigate } = this.props;
-    //     navigate && navigate(router, { ...params, preseat: '今日榜单' });
-    // }
-
-    // render() {
-    //     const { todayList } = todayModule;
-    //     let items = [];
-    //     todayList.map((item, index) => {
-    //         items.push(<TodayItem key={index} item={item} press={() => this._todayItemAction(item)}/>);
-    //     });
-    //     return <View>
-    //         {
-    //             items.length > 0
-    //                 ?
-    //                 <View style={styles.container}>
-    //                     <View style={styles.titleView}>
-    //                         <Text style={styles.title} allowFontScaling={false}>今日榜单</Text>
-    //                     </View>
-    //                     <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-    //                         <View style={{ width: px2dp(4) }}/>
-    //                         {items}
-    //                         <View style={styles.space}/>
-    //                     </ScrollView>
-    //                 </View>
-    //                 :
-    //                 null
-    //         }
-    //     </View>;
-    // }
 
     state = {
         index: 0
@@ -123,7 +87,6 @@ export default class HomeTodayView extends Component {
                 itemWidth={px2dp(295)}
                 itemSpace={px2dp(10)}
                 itemRadius={5}
-                pageFocused={this.props.pageFocused}
                 onDidSelectItemAtIndex={(index) => {
                     this._onPressRow(index);
                 }}

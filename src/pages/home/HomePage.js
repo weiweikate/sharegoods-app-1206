@@ -16,14 +16,14 @@ import { homeType } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView, { kHomeClassifyHeight } from './HomeClassifyView';
-import HomeTodayView, {todayHeight} from './HomeTodayView';
-import HomeRecommendView, {recommendHeight} from './HomeRecommendView';
+import HomeTodayView, { todayHeight } from './HomeTodayView';
+import HomeRecommendView, { recommendHeight } from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './HomeBannerView';
 import HomeAdView from './HomeAdView';
 import HomeGoodsView, { kHomeGoodsViewHeight } from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
-import HomeCategoryView, {categoryHeight} from './HomeCategoryView'
+import HomeCategoryView, { categoryHeight } from './HomeCategoryView';
 import Modal from '../../comm/components/CommModal';
 import XQSwiper from '../../components/ui/XGSwiper';
 import MessageApi from '../message/api/MessageApi';
@@ -43,7 +43,7 @@ import { adModules } from './HomeAdModel';
 import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
 import { subjectModule } from './HomeSubjectModel';
-import HomeTitleView from './HomeTitleView'
+import HomeTitleView from './HomeTitleView';
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -57,7 +57,7 @@ const home_notice_bg = res.home_notice_bg;
  * @email zhangjian@meeruu.com
  */
 
-const { px2dp, headerHeight } = ScreenUtils;
+const { px2dp } = ScreenUtils;
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
@@ -77,7 +77,6 @@ class HomePage extends BasePage {
         show: false
     };
 
-    headerH = headerHeight - (ScreenUtils.isIOSX ? 10 : 0);
     dataProvider = new DataProvider((r1, r2) => {
         return r1 !== r2;
     });
@@ -101,10 +100,10 @@ class HomePage extends BasePage {
                 dim.height = kHomeClassifyHeight;
                 break;
             case homeType.ad:
-                dim.height =  adModules.adHeight ;
+                dim.height = adModules.adHeight;
                 break;
             case homeType.today:
-                dim.height = todayList.length > 0 ?  todayHeight : 0;
+                dim.height = todayList.length > 0 ? todayHeight : 0;
                 break;
             case homeType.recommend:
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
@@ -126,6 +125,8 @@ class HomePage extends BasePage {
 
         }
     });
+
+
     state = {
         isShow: true,
         showMessage: false,
@@ -341,7 +342,7 @@ class HomePage extends BasePage {
     _renderItem = (type, item) => {
         let data = item;
         if (type === homeType.category) {
-            return <HomeCategoryView navigate={this.$navigate}/>
+            return <HomeCategoryView navigate={this.$navigate}/>;
         } else if (type === homeType.swiper) {
             return <HomeBannerView navigate={this.$navigate}/>;
         } else if (type === homeType.classify) {
@@ -531,7 +532,7 @@ class HomePage extends BasePage {
     }
 
     render() {
-        console.log('getBanner render', adModules.adHeight) //千万别去掉
+        console.log('getBanner render', adModules.adHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
