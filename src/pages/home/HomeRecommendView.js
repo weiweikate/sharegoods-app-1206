@@ -2,24 +2,25 @@
  * 精品推荐
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
+
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
 import { recommendModule } from './HomeRecommendModel';
-import HomeTitleView from './HomeTitleView'
+import HomeTitleView from './HomeTitleView';
 
-export const recommendHeight = px2dp(240)
+export const recommendHeight = px2dp(240);
 
 @observer
 export default class HomeRecommendView extends Component {
 
     state = {
         index: 0
-    }
+    };
 
     _onPressRow(e) {
         let index = e.nativeEvent.index;
@@ -55,43 +56,42 @@ export default class HomeRecommendView extends Component {
         const { recommendList } = recommendModule;
 
         if (recommendList.length === 0) {
-            return <View/>
+            return <View/>;
         }
 
         let items = [];
         recommendList.map((item, index) => {
             items.push(item.imgUrl);
         });
-        return  <View style={styles.container}>
-        <HomeTitleView title={'精品推荐'}/>
-        {
-            recommendList.length === 1
-            ?
-            <TouchableWithoutFeedback onPress={()=>this._onPressRowWithItem(recommendList[0])}>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                {this.renderRow(recommendList[0])}
-            </View>
-            </TouchableWithoutFeedback>
-            :
-            <MRBannerView
-                style={{
-                    height: px2dp(160),
-                    width: ScreenUtil.width - px2dp(30)
-                }}
-                imgUrlArray={items}
-                itemWidth={px2dp(295)}
-                itemSpace={px2dp(10)}
-                itemRadius={5}
-                pageFocused={this.props.pageFocused}
-                onDidSelectItemAtIndex={(index) => {
-                    this._onPressRow(index);
-                }}
-                onDidScrollToIndex={(index) => {
-                    this._onDidScrollToIndex(index);
-                }}
-            />
-        }
-        {this.renderIndexView()}
+        return <View style={styles.container}>
+            <HomeTitleView title={'精品推荐'}/>
+            {
+                recommendList.length === 1
+                    ?
+                    <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(recommendList[0])}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            {this.renderRow(recommendList[0])}
+                        </View>
+                    </TouchableWithoutFeedback>
+                    :
+                    <MRBannerView
+                        style={{
+                            height: px2dp(160),
+                            width: ScreenUtil.width - px2dp(30)
+                        }}
+                        imgUrlArray={items}
+                        itemWidth={px2dp(295)}
+                        itemSpace={px2dp(10)}
+                        itemRadius={5}
+                        onDidSelectItemAtIndex={(index) => {
+                            this._onPressRow(index);
+                        }}
+                        onDidScrollToIndex={(index) => {
+                            this._onDidScrollToIndex(index);
+                        }}
+                    />
+            }
+            {this.renderIndexView()}
         </View>;
     }
 }

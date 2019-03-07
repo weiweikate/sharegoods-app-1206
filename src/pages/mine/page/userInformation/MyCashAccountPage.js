@@ -3,14 +3,14 @@ import {
     StyleSheet,
     View,
     // ImageBackground,
-    TouchableOpacity,
+    // TouchableOpacity,
     Alert,
     Image,
     TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
-import AccountItem from '../../components/CashAccountItem';
+// import AccountItem from '../../components/CashAccountItem';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
@@ -23,14 +23,15 @@ import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 
-const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
-const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
-const storeShareBonus = res.userInfoImg.xiangjzhanghu_icon03_06;
-const shouyi = res.userInfoImg.xiangjzhanghu_icon03_10;
-const xiaofei = res.userInfoImg.xiangjzhanghu_icon03_12;
-const salesCommissions = res.userInfoImg.xiangjzhanghu_icon03_08;
-const renwu = res.userInfoImg.xiangjzhanghu_icon03_16;
-const tuikuan = res.userInfoImg.tuikuan_icon;
+    const renwu=res.cashAccount.renwu;
+    const daoshi=res.cashAccount.daoshi;
+    const  fenhong =res.cashAccount.fenhong;
+    const hongbao =res.cashAccount.hongbao;
+    const tuiguang= res.cashAccount.tuiguang;
+    const tixiang = res.cashAccount.tixiang;
+    const tixiantk= res.cashAccount.tixiantk;
+    const xiaofei= res.cashAccount.xiaofei;
+    const xiaofeitk= res.cashAccount.xiaofeitk;
 
 @observer
 export default class MyCashAccountPage extends BasePage {
@@ -82,8 +83,10 @@ export default class MyCashAccountPage extends BasePage {
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
+                <View style={{borderTopLeftRadius:15,borderTopRightRadius:15,marginTop:-15,flex:1,backgroundColor:'white'}}>
                 <RefreshList
                     data={this.state.viewData}
+                    ListHeaderComponent={this.renderReHeader}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
@@ -91,6 +94,7 @@ export default class MyCashAccountPage extends BasePage {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据'}
                 />
+                </View>
             </View>
         );
     }
@@ -147,21 +151,33 @@ export default class MyCashAccountPage extends BasePage {
         );
     };
 
+    renderReHeader=()=>{
+        if(this.state.viewData&&this.state.viewData.length>0){
+            return(
+                <View style={{marginLeft:18,marginTop:17,marginBottom:24}}>
+                    <Text style={{fontSize:13,color:DesignRule.textColor_mainTitle}}>账户明细</Text>
+                </View>
+            )
+        }else{
+            return null;
+        }
+
+    }
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity>
-                <AccountItem
-                    type={item.type}
-                    time={item.time}
-                    serialNumber={item.serialNumber}
-                    capital={StringUtils.formatMoneyString(item.capital, false)}
-                    iconImage={item.iconImage}
-                    clickItem={() => {
-                        this.clickItem(index);
-                    }}
-                    capitalRed={item.capitalRed}
-                />
-            </TouchableOpacity>
+            <View style={{height:47,flexDirection:'row',alignItems:'center',width:ScreenUtils.width,marginBottom:12}}>
+              <Image source={item.iconImage} style={{marginLeft:15,width:30,height:28}} />
+                <View style={{justifyContent:'center',marginLeft:17,marginRight:18,flex:1}}>
+                   <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                       <Text style={{fontSize:13,color:DesignRule.textColor_secondTitle}}>{item.type}</Text>
+                       <Text style={{fontSize:13,color:DesignRule.textColor_instruction}}>{item.time}</Text>
+                   </View>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <Text style={{fontSize:17,color:DesignRule.textColor_mainTitle}}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                        <Text style={{fontSize:12,color:DesignRule.textColor_instruction}}>{item.serialNumber}</Text>
+                    </View>
+                </View>
+            </View>
         );
     };
     renderLine = () => {
@@ -226,7 +242,7 @@ export default class MyCashAccountPage extends BasePage {
     getDataFromNetwork = () => {
         let use_type = ['', '用户收益', '提现支出', '消费支出', '服务顾问管理费', '品牌分红奖励', '品牌推广奖励', '现金红包', '任务奖励', '消费退款', '提现退回'];
         let use_type_symbol = ['', '+', '-'];
-        let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu, xiaofei, tuikuan];
+        let useLeftImg = ['', renwu, tixiang, xiaofei, daoshi, fenhong, tuiguang, hongbao, renwu, xiaofeitk, tixiantk];
         if (this.currentPage > 1) {
             Toast.showLoading();
         }

@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -59,6 +60,9 @@ import com.qiyukf.unicorn.api.Unicorn;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 
@@ -527,9 +531,7 @@ public class CommModule extends ReactContextBaseJavaModule {
 
         }, CallerThreadExecutor.getInstance());
     }
-
-
-    @ReactMethod
+   @ReactMethod
     public void goGongmallPage(String url,Promise promise){
         this.gongMao = promise;
         Intent intent = new Intent(getCurrentActivity(), GongMallActivity.class);
@@ -537,4 +539,6 @@ public class CommModule extends ReactContextBaseJavaModule {
 //        getCurrentActivity().startActivity(intent);
         getCurrentActivity().startActivityForResult(intent,GONGMAOCODE);
     }
+
+
 }

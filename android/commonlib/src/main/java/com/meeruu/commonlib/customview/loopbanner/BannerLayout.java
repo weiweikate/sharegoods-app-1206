@@ -55,6 +55,7 @@ public class BannerLayout extends FrameLayout {
     float moveSpeed;
     private OnPageSelected onPageSelected;
     private RecyclerView.Adapter adapter;
+    private boolean intercept;
 
     protected WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
         @Override
@@ -265,13 +266,17 @@ public class BannerLayout extends FrameLayout {
             // 开始翻页
             setPlaying(true);
         } else if (action == MotionEvent.ACTION_DOWN) {
-            getParent().requestDisallowInterceptTouchEvent(true);
+            getParent().requestDisallowInterceptTouchEvent(intercept);
             // 停止翻页
             if (isPlaying) {
                 setPlaying(false);
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    public void setIntercept(boolean intercept) {
+        this.intercept = intercept;
     }
 
     @Override
