@@ -41,7 +41,7 @@ export default class ResultVerticalRow extends Component {
             }}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
-                        <ReuserImage style={styles.img} source={{ uri: imgUrl || '' }}/>
+                        <ReuserImage style={styles.img} source={{ uri: imgUrl || '' }} borderRadius={5}/>
                         <View style={styles.textContentView}>
                             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                   numberOfLines={2} allowFontScaling={false}>{`${name || ''}`}</Text>
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     img: {
+        borderRadius:5,
         backgroundColor: DesignRule.lineColor_inColorBg,
         height: 120,
         width: 120

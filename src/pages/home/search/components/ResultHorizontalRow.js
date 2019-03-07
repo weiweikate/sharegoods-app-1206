@@ -124,6 +124,8 @@ class ReuserImage extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        overflow:'hidden',
+        borderRadius:5,
         marginTop: 5,
         height: imgHeight + 82,
         backgroundColor: 'white',

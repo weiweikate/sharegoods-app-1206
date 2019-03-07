@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 
 const upDown = res.search.updown;
 
@@ -42,17 +42,21 @@ export default class SearchSegmentView extends Component {
         }}>
             <View style={styles.btnContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selIndex === index ? DesignRule.mainColor : DesignRule.textColor_instruction }]} allowFontScaling={false}>{title}</Text>
+                    style={[styles.title, { color: this.state.selIndex === index ? DesignRule.mainColor : DesignRule.textColor_instruction }]}
+                    allowFontScaling={false}>{title}</Text>
                 {index === 2 && <Image source={upDown}/>}
             </View>
         </TouchableWithoutFeedback>;
     };
 
     render() {
-        return (<View style={[styles.container, this.props.style]}>
-            {this._renderItem('综合', 0)}
-            {this._renderItem('销量', 1)}
-            {this._renderItem('价格', 2)}
+        return (<View>
+            <View style={[styles.container, this.props.style]}>
+                {this._renderItem('综合', 0)}
+                {this._renderItem('销量', 1)}
+                {this._renderItem('价格', 2)}
+            </View>
+            <View style={styles.lineView}/>
         </View>);
     }
 
@@ -63,6 +67,9 @@ const styles = StyleSheet.create({
         height: 49,
         backgroundColor: 'white',
         flexDirection: 'row'
+    },
+    lineView: {
+        height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg
     },
     btnContainer: {
         flex: 1,
