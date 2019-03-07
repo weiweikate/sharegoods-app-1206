@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
+import EmptyUtils from '../../utils/EmptyUtils';
 
-const { px2dp, onePixel } = ScreenUtils;
+const { px2dp } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
 import ImageLoader from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
 
-export const kHomeGoodsViewHeight = px2dp(263);
+export const kHomeGoodsViewHeight = px2dp(246);
+const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;
+
+const MoneyItems = ({ money }) => {
+    if (EmptyUtils.isEmpty(money)) {
+        return <View/>;
+    }
+    let unitStr = '¥';
+    let moneyStr = money;
+
+    return <Text style={styles.unit}>{unitStr}<Text style={styles.money}>{moneyStr}</Text> 起</Text>;
+};
 
 const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
@@ -27,7 +39,7 @@ const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => pre
         </View>
         <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
         <View style={{ flex: 1 }}/>
-        <Text style={styles.money} allowFontScaling={false}>¥ {goods.price} 起</Text>
+        <MoneyItems money={goods.price}/>
     </View>
 </TouchableWithoutFeedback>;
 
@@ -68,7 +80,7 @@ class ReuserImage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            imagePath: this.props.source.uri,
+            imagePath: this.props.source.uri
         };
     }
 
@@ -86,8 +98,8 @@ class ReuserImage extends Component {
         }, () => {
             this.setState({
                 imagePath: url
-            })
-        })
+            });
+        });
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -97,33 +109,31 @@ class ReuserImage extends Component {
     render() {
         return <ImageLoader
             {...this.props}
-            source={{uri: this.state.imagePath}}
+            source={{ uri: this.state.imagePath }}
+            showPlaceholder={false}
         />;
     }
 }
 
 let styles = StyleSheet.create({
     container: {
-        height: px2dp(257),
-        width: px2dp(172),
-        backgroundColor: '#fff',
+        height: px2dp(240),
+        width: goodsWidth,
+        backgroundColor: 'white',
         borderRadius: px2dp(5),
-        borderColor: '#EDEDED',
-        borderWidth: onePixel,
         overflow: 'hidden'
     },
     uncontainer: {
-        height: px2dp(257),
-        width: px2dp(172)
+        height: px2dp(240),
+        width: goodsWidth
     },
     image: {
-        height: px2dp(172),
-        width: px2dp(172)
+        height: goodsWidth,
+        width: goodsWidth
     },
     titleView: {
         height: px2dp(25),
-        backgroundColor: '#F0F0F0',
-        opacity: 0.75,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         position: 'absolute',
         left: 0,
         bottom: 0,
@@ -132,23 +142,17 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     dis: {
-        color: DesignRule.textColor_secondTitle,
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(12),
         marginTop: px2dp(10),
         marginLeft: px2dp(7),
         marginRight: px2dp(7)
     },
     title: {
-        color: DesignRule.textColor_secondTitle,
+        color: '#fff',
         fontSize: px2dp(12),
         marginLeft: px2dp(5),
         marginRight: px2dp(5)
-    },
-    money: {
-        color: DesignRule.mainColor,
-        fontSize: px2dp(14),
-        marginBottom: 15,
-        marginLeft: px2dp(7)
     },
     cell: {
         width: ScreenUtils.width,
@@ -161,5 +165,14 @@ let styles = StyleSheet.create({
     },
     space: {
         width: px2dp(5)
+    },
+    unit: {
+        color: DesignRule.mainColor,
+        marginBottom: px2dp(5),
+        marginLeft: px2dp(7)
+    },
+    money: {
+        fontSize: px2dp(16),
+        fontWeight: '600'
     }
 });

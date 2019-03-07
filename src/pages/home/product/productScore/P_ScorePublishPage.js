@@ -7,7 +7,7 @@ import P_ScorePublishModel from './P_ScorePublishModel';
 import { observer } from 'mobx-react';
 import ImagePicker from '@mr/rn-image-crop-picker';
 
-import CameraView from '../../../../components/ui/CameraView';
+// import CameraView from '../../../../components/ui/CameraView';
 import BusinessUtils from '../../../mine/components/BusinessUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import RouterMap from '../../../../navigation/RouterMap';
@@ -131,9 +131,9 @@ export class P_ScorePublishPage extends BasePage {
                 <ActionSheetView ref={(ref) => {
                     this.ActionSheetView = ref;
                 }}/>
-                <CameraView ref={(ref) => {
-                    this.CameraView = ref;
-                }}/>
+                {/*<CameraView ref={(ref) => {*/}
+                    {/*this.CameraView = ref;*/}
+                {/*}}/>*/}
             </View>
 
         );

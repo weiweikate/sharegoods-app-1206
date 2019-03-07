@@ -648,7 +648,7 @@ export default class TopicDetailPage extends BasePage {
             productPrice = levelPrice || '';
             productName = name || '';
             productImgUrl = imgUrl;
-            v0Price = (this.state.data || {}).v0 || '';
+            v0Price = (this.state.data || {}).v1 || '';
         } else {
             const { minPrice, name, imgUrl } = this.state.data || {};
             productPrice = minPrice || '';
@@ -757,6 +757,7 @@ export default class TopicDetailPage extends BasePage {
                                     titleStr: productName,
                                     priceStr: `￥${originalPrice}`,
                                     retailPrice: `￥${v0Price}`,
+                                    v0Price: v0Price,
                                     spellPrice: `￥${groupPrice}`,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`
                                 }}

@@ -46,6 +46,13 @@
             "wxAppletKey": "gh_e0c6b86659cc",
             "miniProgramType": 0
         },
+        "openApi":{
+            "name": "openApi",
+            "host": "http://devopenapi.sharegoodsmall.com/gateway",
+            "h5": "https://testh5.sharegoodsmall.com",
+            "oss": "https://testcdn.sharegoodsmall.com",
+            "wxAppletKey": "gh_aa91c3ea0f6c"
+        },
         "吴承骏": {
             "name": "吴承骏",
             "host": "http://172.16.10.123:8903/gateway"
@@ -95,7 +102,7 @@
         },
         "顾嘉豪": {
             "name": "顾嘉豪",
-            "host": "http://172.16.10.58:18080/gateway",
+            "host": "http://172.16.10.58:9090/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "高建伟": {

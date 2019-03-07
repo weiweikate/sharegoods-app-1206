@@ -1,6 +1,5 @@
 package com.meeruu.sharegoods.rn.module;
 
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.webkit.CookieSyncManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -39,7 +37,6 @@ import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
-import com.meeruu.sharegoods.ui.activity.GongMallActivity;
 import com.qiyukf.unicorn.api.Unicorn;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,15 +47,11 @@ import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
-import static com.meeruu.sharegoods.ui.activity.GongMallActivity.SIGN_OK;
-
 
 public class CommModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
-    private static final int GONGMAOCODE = 888;
-    private Promise gongMao ;
 
     /**
      * 构造方法必须实现
@@ -68,19 +61,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     public CommModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.mContext = reactContext;
-        this.mContext.addActivityEventListener(new ActivityEventListener() {
-            @Override
-            public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-                if(gongMao != null && requestCode == GONGMAOCODE && resultCode == SIGN_OK){
-                    gongMao.resolve(null);
-                }
-            }
-
-            @Override
-            public void onNewIntent(Intent intent) {
-
-            }
-        });
     }
 
     /**
@@ -460,6 +440,62 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void saveImageToPhotoAlbumWithUrl(final String url, final Promise promise) {
+        if (TextUtils.isEmpty(url)) {
+            promise.reject("url不能为空");
+            return;
+        }
+
+        final ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url)).setProgressiveRenderingEnabled(true).build();
+        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, mContext);
+        dataSource.subscribe(new BaseBitmapDataSubscriber() {
+            @Override
+            public void onNewResultImpl(Bitmap bitmap) {
+                CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(imageRequest, this);
+                BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                if (resource == null) {
+                    promise.reject("");
+                    return;
+                }
+                final File file = ((FileBinaryResource) resource).getFile();
+                if (file == null) {
+                    promise.reject("");
+                    return;
+                }
+                UiThreadUtil.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String exten = FileUtils.getExtensionName(url);
+                        String filename = FileUtils.getFileNameNoEx(file.getName());
+                        String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
+                        try {
+                            FileUtils.copyFile(file.getAbsolutePath(),storePath);
+                        }catch (Exception e){
+                            promise.reject("文件操作失败");
+                            return;
+                        }
+                        Uri uri = Uri.parse("file://"+storePath);
+                        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                        intent.setData(uri);
+                        mContext.sendBroadcast(intent);
+                        promise.resolve(null);
+                    }
+                });
+            }
+
+
+
+}
+
+            @Override
+            public void onFailureImpl(DataSource dataSource) {
+                promise.reject("下载失败");
+            }
+        }, CallerThreadExecutor.getInstance());
+    }
+
+
+    @ReactMethod
     public void goGongmallPage(String url,Promise promise){
         this.gongMao = promise;
         Intent intent = new Intent(getCurrentActivity(), GongMallActivity.class);
@@ -467,6 +503,4 @@ public class CommModule extends ReactContextBaseJavaModule {
 //        getCurrentActivity().startActivity(intent);
         getCurrentActivity().startActivityForResult(intent,GONGMAOCODE);
     }
-
-
 }

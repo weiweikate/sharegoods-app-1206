@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 
 const { px2dp, onePixel } = ScreenUtil;
@@ -16,9 +16,23 @@ import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTo
 import ImageLoad from '@mr/image-placeholder';
 import EmptyUtils from '../../utils/EmptyUtils';
 import { MRText as Text } from '../../components/ui';
+import HomeTitleView from './HomeTitleView';
+import res from './res';
+
+const MoneyItems = ({ money }) => {
+    if (EmptyUtils.isEmpty(money)) {
+        return null;
+    }
+    let unitStr = '¥';
+    let moneyStr = '';
+    let index = money.indexOf('¥');
+    if (index !== -1) {
+        moneyStr = money.substring(index + 1, money.length);
+    }
+    return <Text style={styles.unit}>{unitStr}<Text style={styles.money}>{moneyStr}</Text> 起</Text>;
+};
 
 const GoodItems = ({ img, title, money, press }) => {
-
     return <TouchableWithoutFeedback onPress={() => {
         press && press();
     }}>
@@ -26,13 +40,7 @@ const GoodItems = ({ img, title, money, press }) => {
             <ImageLoad style={styles.goodImg} source={{ uri: img ? encodeURI(img) : '' }}/>
             <Text style={styles.goodsTitle} numberOfLines={2} allowFontScaling={false}>{title}</Text>
             <View style={{ flex: 1 }}/>
-            {
-                EmptyUtils.isEmpty(money)
-                    ?
-                    null
-                    :
-                    <Text style={styles.money} allowFontScaling={false}>{money} 起</Text>
-            }
+            <MoneyItems money={money}/>
         </View>
     </TouchableWithoutFeedback>;
 };
@@ -40,11 +48,9 @@ const GoodItems = ({ img, title, money, press }) => {
 const MoreItem = ({ press }) => <TouchableOpacity style={styles.moreView} onPress={() => {
     press && press();
 }}>
-    <View style={styles.backView}>
-        <Text style={styles.seeMore} allowFontScaling={false}>查看更多</Text>
-        <View style={styles.line}/>
-        <Text style={styles.seeMoreEn} allowFontScaling={false}>View More</Text>
-    </View>
+    <Image source={res.home_right}/>
+    <View style={{ height: px2dp(10) }}/>
+    <Text style={styles.seeMore} allowFontScaling={false}>查看更多</Text>
 </TouchableOpacity>;
 
 const ActivityItem = ({ data, press, goodsPress }) => {
@@ -71,23 +77,23 @@ const ActivityItem = ({ data, press, goodsPress }) => {
         <TouchableWithoutFeedback onPress={() => {
             press && press();
         }}>
-            <View style={styles.bannerBox}>
-                <View style={styles.bannerView}>
-                    <ImageLoad style={styles.banner}
-                               source={{ uri: imgUrl ? encodeURI(imgUrl) : '' }}/>
-                </View>
+            <View style={styles.bannerView}>
+                <ImageLoad style={styles.banner}
+                           source={{ uri: imgUrl ? encodeURI(imgUrl) : '' }}/>
             </View>
         </TouchableWithoutFeedback>
         {
             topicBannerProductDTOList && topicBannerProductDTOList.length > 0
                 ?
                 <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-                    <View style={{ width: px2dp(4) }}/>
+                    <View style={{ width: px2dp(7.5) }}/>
                     {goodsItem}
                     {
-                        topicBannerProductDTOList.length >= 8 ? <MoreItem press={() => {
-                            press && press();
-                        }}/> : null
+                        topicBannerProductDTOList.length >= 8 ?
+                            <MoreItem press={() => {
+                                press && press();
+                            }}/>
+                            : null
                     }
                     <View style={styles.space}/>
                 </ScrollView>
@@ -138,88 +144,77 @@ export default class HomeSubjectView extends Component {
                                      }}/>);
         });
         return <View style={styles.container}>
-            <View style={styles.titleView}>
-                <Text style={styles.title} allowFontScaling={false}>超值热卖</Text>
-            </View>
+            <HomeTitleView title={'超值热卖'}/>
             {items}
         </View>;
     }
 }
 
+const bannerWidth = ScreenUtil.width - px2dp(50);
+const bannerHeight = bannerWidth * (240 / 650);
+
 let styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        paddingTop: px2dp(10),
-        width: ScreenUtil.width
+        marginTop: px2dp(15),
+        width: ScreenUtil.width - px2dp(30),
+        marginLeft: px2dp(15),
+        marginRight: px2dp(15),
+        borderRadius: 5
     },
     space: {
-        width: px2dp(15)
-    },
-    titleView: {
-        height: px2dp(53),
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    title: {
-        color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(19),
-        fontWeight: '600'
-    },
-    bannerBox: {
-        height: px2dp(181),
-        alignItems: 'center',
-        justifyContent: 'center'
+        width: px2dp(5)
     },
     bannerView: {
-        width: px2dp(345),
-        height: px2dp(181),
+        marginLeft: px2dp(10),
+        marginRight: px2dp(10),
         borderRadius: px2dp(5),
         overflow: 'hidden'
     },
     banner: {
-        width: px2dp(345),
-        height: px2dp(181)
+        width: bannerWidth,
+        height: bannerHeight
     },
     scroll: {
-        height: px2dp(170),
+        height: px2dp(165),
         marginTop: px2dp(5),
         marginBottom: px2dp(15)
     },
     goodsView: {
         marginTop: px2dp(5),
-        marginLeft: px2dp(10),
         width: px2dp(100),
-        height: px2dp(170)
+        height: px2dp(165),
+        marginHorizontal: px2dp(2.5)
     },
     goodImg: {
         width: px2dp(100),
         height: px2dp(100)
     },
     goodsTitle: {
-        marginLeft: px2dp(2),
-        color: DesignRule.textColor_secondTitle,
+        marginHorizontal: px2dp(2.5),
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(12),
-        marginTop: px2dp(8)
+        marginTop: px2dp(5)
     },
     money: {
-        marginLeft: px2dp(2),
+        fontSize: px2dp(16),
+        fontWeight: '600'
+    },
+    unit: {
+        marginHorizontal: px2dp(2.5),
         color: DesignRule.mainColor,
-        fontSize: px2dp(14),
+        fontSize: px2dp(12),
         marginBottom: px2dp(10)
     },
     moreView: {
         width: px2dp(100),
-        height: px2dp(170),
+        height: px2dp(165),
         alignItems: 'center',
-        justifyContent: 'center'
-    },
-    backView: {
+        justifyContent: 'center',
+        marginLeft: px2dp(5),
         backgroundColor: DesignRule.bgColor,
-        width: px2dp(75),
-        height: px2dp(75),
-        borderRadius: px2dp(75) / 2,
-        alignItems: 'center',
-        justifyContent: 'center'
+        borderRadius: (5),
+        marginRight: px2dp(5)
     },
     seeMore: {
         color: DesignRule.textColor_secondTitle,

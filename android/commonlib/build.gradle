@@ -16,6 +16,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    repositories {
+        maven {
+            url "http://maven.aliyun.com/nexus/content/repositories/releases"
+        }
+    }
 }
 
 dependencies {
@@ -28,6 +34,10 @@ dependencies {
     api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.okhttp
     api rootProject.ext.dependencies.sensors
+    api (rootProject.ext.dependencies.sophix) {
+        exclude(module: 'alicloud-android-utdid')
+        exclude(module: 'alicloud-android-ut')
+    }
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'

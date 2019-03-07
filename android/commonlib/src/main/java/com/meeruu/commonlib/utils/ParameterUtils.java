@@ -46,6 +46,7 @@ public class ParameterUtils {
     public static final int TIMER_START = 40;
     public static final int REQUEST_CODE_CHANGEPHOTO = 41; //更换照片请求码
     public static final int REQUEST_CODE_CLIP_OVER = 43; //剪裁照片请求码
+    public static final int EMPTY_WHAT_DELAY = 44;
     /**
      * 一般图片url宽高
      */

@@ -6,5 +6,8 @@ const index = {
     share: require('./share.png'),
     back: require('./back.png'),
     more: require('./more.png'),
+    showFire:require('./show_fire.png'),
+    noShowFire:require('./no_show_fire.png'),
+    grayMore:require('./gray_more.png')
 };
 export default index

@@ -2,102 +2,137 @@
  * 精品推荐
  */
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
-
+import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
 import { recommendModule } from './HomeRecommendModel';
-import ImageLoad from '@mr/image-placeholder';
-import { MRText as Text } from '../../components/ui';
+import HomeTitleView from './HomeTitleView'
 
-const RecommendItem = ({ item, press }) => <TouchableOpacity style={styles.item} onPress={() => press && press()}>
-    <View style={styles.imgView}>
-        <ImageLoad style={styles.img} source={{ uri: item.imgUrl }}/>
-    </View>
-</TouchableOpacity>;
+export const recommendHeight = px2dp(240)
 
 @observer
 export default class HomeRecommendView extends Component {
 
-    _onRecommendAction(item) {
+    state = {
+        index: 0
+    }
+
+    _onPressRow(e) {
+        let index = e.nativeEvent.index;
+        const { recommendList } = recommendModule;
+        let item = recommendList[index];
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
         navigate(router, { ...params, preseat: 'home_recommend' });
-        // navigate && navigate(router,  params)
+    }
+
+    _onDidScrollToIndex(e) {
+        this.setState({ index: e.nativeEvent.index });
+    }
+
+    renderIndexView() {
+        const { index } = this.state;
+        const { recommendList } = recommendModule;
+        let items = [];
+        for (let i = 0; i < recommendList.length; i++) {
+            if (index === i) {
+                items.push(<View key={i} style={styles.activityIndex}/>);
+            } else {
+                items.push(<View key={i} style={styles.index}/>);
+            }
+        }
+        return <View style={styles.indexView}>
+            {items}
+        </View>;
     }
 
     render() {
         const { recommendList } = recommendModule;
+
+        if (recommendList.length === 0) {
+            return <View/>
+        }
+
         let items = [];
         recommendList.map((item, index) => {
-            items.push(<RecommendItem key={index} item={item} press={() => this._onRecommendAction(item)}/>);
+            items.push(item.imgUrl);
         });
-        return <View>
-            {
-                items.length > 0
-                    ?
-                    <View style={styles.container}>
-                        <View style={styles.titleView}>
-                            <Text style={styles.title} allowFontScaling={false}>精品推荐</Text>
-                        </View>
-                        <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-                            <View style={{ width: px2dp(4) }}/>
-                            {items}
-                            <View style={styles.space}/>
-                        </ScrollView>
-                    </View>
-                    :
-                    null
-            }
+        return  <View style={styles.container}>
+        <HomeTitleView title={'精品推荐'}/>
+        {
+            recommendList.length === 1
+            ?
+            <TouchableWithoutFeedback onPress={()=>this._onPressRowWithItem(recommendList[0])}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                {this.renderRow(recommendList[0])}
+            </View>
+            </TouchableWithoutFeedback>
+            :
+            <MRBannerView
+                style={{
+                    height: px2dp(160),
+                    width: ScreenUtil.width - px2dp(30)
+                }}
+                imgUrlArray={items}
+                itemWidth={px2dp(295)}
+                itemSpace={px2dp(10)}
+                itemRadius={5}
+                pageFocused={this.props.pageFocused}
+                onDidSelectItemAtIndex={(index) => {
+                    this._onPressRow(index);
+                }}
+                onDidScrollToIndex={(index) => {
+                    this._onDidScrollToIndex(index);
+                }}
+            />
+        }
+        {this.renderIndexView()}
         </View>;
     }
 }
 
 let styles = StyleSheet.create({
     container: {
-        height: px2dp(207),
-        backgroundColor: '#fff',
-        marginTop: px2dp(10),
-        width: ScreenUtil.width
-    },
-    titleView: {
-        height: px2dp(53),
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    title: {
-        color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(19),
-        fontWeight: '600'
+        height: px2dp(225),
+        marginTop: px2dp(15),
+        marginLeft: px2dp(15),
+        marginRight: px2dp(15),
+        width: ScreenUtil.width - px2dp(30),
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: '#fff'
     },
     scroll: {
         height: px2dp(175)
-    },
-    img: {
-        width: px2dp(280),
-        height: px2dp(140)
-    },
-    imgView: {
-        width: px2dp(280),
-        height: px2dp(140),
-        borderRadius: px2dp(5),
-        overflow: 'hidden'
-    },
-    item: {
-        width: px2dp(280),
-        height: px2dp(145),
-        marginLeft: px2dp(10)
-    },
-    space: {
-        width: px2dp(15)
     },
     text: {
         color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(13),
         marginTop: px2dp(10)
+    },
+    indexView: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1
+    },
+    activityIndex: {
+        width: px2dp(10),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: '#FF0050',
+        margin: 2
+    },
+    index: {
+        width: px2dp(5),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: '#E4E4E4',
+        margin: 2
     }
 });
