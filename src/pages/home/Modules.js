@@ -26,7 +26,7 @@ class ClassifyModules {
             img: OssHelper('/app/share11.png'),
             name: '升级',
             id: 1,
-            route: 'home/product/xpProduct/XpDetailPage',
+            route: 'product/xpProduct/XpDetailPage',
             linkTypeCode: 'JF201901250002'
         }, {
             icon: showImg,

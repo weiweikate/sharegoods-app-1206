@@ -229,7 +229,7 @@ export default class RecommendPage extends BasePage {
             bannerName: item.linkTypeCode
         });
         if (item.linkType === homeLinkType.good) {
-            this.$navigate('home/product/ProductDetailPage', {
+            this.$navigate('product/ProductDetailPage', {
                 productCode: item.linkTypeCode, preseat: '拼店推荐banner'
             });
         } else if (item.linkType === homeLinkType.subject) {
