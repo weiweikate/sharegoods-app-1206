@@ -1,7 +1,6 @@
 
 import HomePage from "./HomePage";
 import search from './search'
-import product from './product'
 import signIn from './signIn'
 
 export default {
@@ -9,7 +8,6 @@ export default {
     childRoutes: {          //模块内部子路由
         HomePage,
         search,
-        product,
         signIn,
     }
 }

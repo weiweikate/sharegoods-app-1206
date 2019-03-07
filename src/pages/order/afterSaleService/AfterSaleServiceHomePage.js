@@ -209,7 +209,7 @@ class AfterSaleServiceHomePage extends BasePage {
                 break;
 
             case 99://普通商品
-                this.$navigate('home/product/ProductDetailPage', { productId: productData.productId });
+                this.$navigate('product/ProductDetailPage', { productId: productData.productId });
                 break;
             default:
                 break;

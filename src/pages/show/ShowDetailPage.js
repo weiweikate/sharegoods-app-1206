@@ -129,7 +129,7 @@ export default class ShowDetailPage extends BasePage {
 
     _goToGoodsPage(good) {
         const { navigation } = this.props;
-        navigation.push('home/product/ProductDetailPage', {
+        navigation.push('product/ProductDetailPage', {
             productCode: good.code, preseat: '秀场详情'
         });
     }

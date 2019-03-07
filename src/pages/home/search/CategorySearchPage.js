@@ -204,7 +204,7 @@ export default class CategorySearchPage extends BasePage {
     clickBanner = (item) => {
         // banner点击跳转
         if (item.linkType === homeLinkType.good) {
-            this.$navigate('home/product/ProductDetailPage', {
+            this.$navigate('product/ProductDetailPage', {
                 productCode: item.linkTypeCode, preseat: '类目banner'
             });
         } else if (item.linkType === homeLinkType.subject) {
@@ -227,7 +227,7 @@ export default class CategorySearchPage extends BasePage {
                 code: item.linkTypeCode
             });
         } else if (item.linkType === homeLinkType.exp) {
-            this.$navigate('home/product/xpProduct/XpDetailPage', {
+            this.$navigate('product/xpProduct/XpDetailPage', {
                 code: item.linkTypeCode
             });
         }
