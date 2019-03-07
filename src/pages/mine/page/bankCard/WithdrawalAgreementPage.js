@@ -58,7 +58,9 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
     _getSignUrl = () => {
         MineApi.gongmallEnter().then((data) => {
             if (data.data) {
-                NativeModules.commModule.goGongmallPage(data.data);
+                NativeModules.commModule.goGongmallPage(data.data).then(()=>{
+                    this.$navigateBack('mine/userInformation/MyCashAccountPage');
+                });
             }
         }).catch(error => {
             this.$toastShow(error.msg);
@@ -66,9 +68,13 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
     };
 
     _commit = () => {
-        // this._checkUserGongMallResult();
-        let s = 'https://contract-qa.gongmall.com/url_contract.html?companyId=AVR3eP&positionId=RMQwyV&data=8567o/DnpfCNVY4w+XJZpKA7OWEoP1flChjbrsQazI9K7OeY2hJSk4ua05Jz5wtVcuuuafiJ+xVSjcq7V7Bu+nHTZeBTT/S2XUErK6CNko4TWjTyFlGZ0HtheXRkpTMI05uerC3UcKjlHoP1sN9Av4a6feGVnJx73bdxwH+dO6gQ0dR5zyyh53U93Riuak1dTDPBOCm419nrU6jI721Ce816vlkXP19WVWS48wInPrq6OqiAQcBBMoICrQCkWXP/'
-        NativeModules.commModule.goGongmallPage(s);
+        // this.$navigate('mine/userInformation/WithdrawCashPage');
+        // return;
+        this._checkUserGongMallResult();
+        // let s = 'https://contract-qa.gongmall.com/url_contract.html?companyId=AVR3eP&positionId=RMQwyV&data=8567o/DnpfCNVY4w+XJZpKA7OWEoP1flChjbrsQazI9K7OeY2hJSk4ua05Jz5wtVcuuuafiJ+xVSjcq7V7Bu+nHTZeBTT/S2XUErK6CNko4TWjTyFlGZ0HtheXRkpTMI05uerC3UcKjlHoP1sN9Av4a6feGVnJx73bdxwH+dO6gQ0dR5zyyh53U93Riuak1dTDPBOCm419nrU6jI721Ce816vlkXP19WVWS48wInPrq6OqiAQcBBMoICrQCkWXP/'
+        // NativeModules.commModule.goGongmallPage(s).then(()=>{
+        //     alert();
+        // });
     };
 
 
@@ -81,7 +87,7 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
                          scalesPageToFit={true}
                          style={styles.webViewWrapper}
                 />
-                <TouchableWithoutFeedback onPress={this._commit}>
+                <TouchableWithoutFeedback onPress={this._checkUserGongMallResult}>
                     <View style={styles.bottomButtonWrapper}>
                         <Text style={styles.buttonTextStyle}>
                             同意协议
