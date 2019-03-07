@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    StyleSheet, View, Image, TouchableOpacity
+    StyleSheet, View, Image, TouchableOpacity, Platform
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import ScrollableTabView, { DefaultTabBar } from "react-native-scrollable-tab-view";
@@ -76,8 +76,7 @@ export default class CouponsPage extends BasePage {
                     this.setState({ modalVisible: false });
                 }} activeOpacity={1}>
                     <View style={{
-                        paddingTop: ScreenUtils.statusBarHeight > 30 ? 0 : -ScreenUtils.statusBarHeight,
-                        marginTop: ScreenUtils.statusBarHeight > 30 ? -ScreenUtils.statusBarHeight : 0
+                        marginTop:Platform.OS=='ios'?0:ScreenUtils.statusBarHeight>30?-ScreenUtils.statusBarHeight:0
                     }}>
                         <NavigatorBar renderTitle={this.$NavBarRenderTitle} leftPressed={() => {
                             if (this.state.modalVisible) {
