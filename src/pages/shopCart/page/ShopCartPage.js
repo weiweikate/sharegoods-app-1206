@@ -447,7 +447,7 @@ export default class ShopCartPage extends BasePage {
             return;
         }
         //跳转产品详情
-        this.$navigate('home/product/ProductDetailPage', {
+        this.$navigate('product/ProductDetailPage', {
             productId: itemData.productId,
             productCode: itemData.spuCode,
             preseat: '购物车'
