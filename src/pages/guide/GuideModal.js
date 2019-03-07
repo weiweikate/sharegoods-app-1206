@@ -252,7 +252,7 @@ export default class GuideModal extends React.Component {
                 <View style={DesignRule.style_absoluteFullParent}>
                     <View style={[styles.circleBg, bgStyle]}>
                         { typeof data.image === 'string' ?
-                            <ImageLoad source={{uri: data.image}} style = {imageStyle} isAvatar={step!==3} key={step+''}/>:
+                            <ImageLoad source={{uri: data.image}} style = {imageStyle}  key={step+''}/>:
                             <Image source={data.image} style = {imageStyle}/>
                         }
                         {data.text ? <MRText style={textStyle}>{data.text}</MRText> : null}
