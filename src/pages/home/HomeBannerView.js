@@ -2,9 +2,8 @@
  * 首页轮播图
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Platform } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import ViewPager from '../../components/ui/ViewPager';
 
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
@@ -13,7 +12,7 @@ import { bannerModule } from './HomeBannerModel';
 
 export const bannerHeight = px2dp(120);
 
-import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode';
+import MRBannerViewComponent from '../../components/ui/bannerView/MRBannerViewComponent';
 import ImageLoad from '@mr/image-placeholder';
 
 import { track, trackEvent } from '../../utils/SensorsTrack';
@@ -102,27 +101,11 @@ export default class HomeBannerView extends Component {
         });
 
         return <View style={styles.banner}>
-            {
-                Platform.OS === 'ios'
-                    ?
-                    <MRBannerViewMode itemRadius={px2dp(5)} imgUrlArray={items} bannerHeight={bannerHeight}
-                                      modeStyle={1} autoInterval={5}
-                                      onDidSelectItemAtIndex={(index) => {
-                                          this._onPressRow(index);
-                                      }}/>
-                    :
-                    <ViewPager
-                        swiperShow={true}
-                        arrayData={items}
-                        renderItem={this._renderViewPageItem.bind(this)}
-                        autoplay={true}
-                        loop={true}
-                        height={bannerHeight}
-                        renderPagination={this._renderPagination.bind(this)}
-                        index={0}
-                        scrollsToTop={true}
-                    />
-            }
+            <MRBannerViewComponent itemRadius={px2dp(5)} imgUrlArray={items} bannerHeight={bannerHeight}
+                                   modeStyle={1} autoInterval={5}
+                                   onDidSelectItemAtIndex={(index) => {
+                                       this._onPressRow(index);
+                                   }}/>
         </View>;
     }
 
@@ -158,7 +141,7 @@ const styles = StyleSheet.create({
         width: px2dp(10),
         height: px2dp(3),
         borderRadius: px2dp(3),
-        backgroundColor: DesignRule.mainColor,
+        backgroundColor: DesignRule.textColor_mainTitle,
         marginLeft: px2dp(2),
         marginRight: px2dp(2)
     },

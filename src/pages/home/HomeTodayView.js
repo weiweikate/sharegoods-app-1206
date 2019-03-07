@@ -87,6 +87,7 @@ export default class HomeTodayView extends Component {
                 itemWidth={px2dp(295)}
                 itemSpace={px2dp(10)}
                 itemRadius={5}
+                pageFocused={this.props.pageFocused}
                 onDidSelectItemAtIndex={(index) => {
                     this._onPressRow(index);
                 }}

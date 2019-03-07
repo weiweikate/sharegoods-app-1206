@@ -56,7 +56,7 @@ class ClassifyModules {
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000002'
         }];
-        
+
     };
 }
 
