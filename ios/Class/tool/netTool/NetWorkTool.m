@@ -65,15 +65,7 @@
                failure:(AFErrorBlock)errorBlock
            showLoading:(NSString *)showLoading
 {
-  NSString * HostJson = [StorageFromRN getItem:@"HostJson"];
-  NSDictionary *dic = @{};
-  if (HostJson) {
-    dic =  [NSDictionary dictionaryWithJsonString:HostJson];
-  }
-  NSString * path = dic[@"host"];
-  if (path==nil || path.length == 0) {
-    path = @"https://api.sharegoodsmall.com/gateway";
-  }
+  NSString * path = [StorageFromRN getHost];
   [[self manager].requestSerializer setValue:@"" forHTTPHeaderField:@"sg-token"];
     NSArray<NSString *> * arr = [url componentsSeparatedByString:@"@"];
     NSString * URL = [NSString stringWithFormat:@"%@%@",path,arr.firstObject];

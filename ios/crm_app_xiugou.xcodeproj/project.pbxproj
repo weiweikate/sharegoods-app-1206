@@ -117,6 +117,7 @@
 		CD13656721BA0F4200754B0E /* MBProgressHUD+PD.m in Sources */ = {isa = PBXBuildFile; fileRef = CD13653321BA0F4200754B0E /* MBProgressHUD+PD.m */; };
 		CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD14EA182183FC9A00480A06 /* XGImageCompression.m */; };
 		CD15545622126AB4004C75FB /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD15542922126A94004C75FB /* libRCTCameraRoll.a */; };
+		CD194A17222E4B6700B34E34 /* GongMaoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CD194A16222E4B6700B34E34 /* GongMaoVC.m */; };
 		CD1AA5FE21D602C9007F045D /* libReact-Native-Webview-Bridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1AA5FD21D602B1007F045D /* libReact-Native-Webview-Bridge.a */; };
 		CD1E51C921C9D96B007103A1 /* BGKeychainTool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */; };
 		CD1E52E021CCB8D2007103A1 /* WelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1E52DF21CCB8D1007103A1 /* WelcomeView.m */; };
@@ -794,6 +795,8 @@
 		CD14EA172183FC9A00480A06 /* XGImageCompression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XGImageCompression.h; sourceTree = "<group>"; };
 		CD14EA182183FC9A00480A06 /* XGImageCompression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XGImageCompression.m; sourceTree = "<group>"; };
 		CD15541C22126A94004C75FB /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
+		CD194A15222E4B6700B34E34 /* GongMaoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GongMaoVC.h; sourceTree = "<group>"; };
+		CD194A16222E4B6700B34E34 /* GongMaoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GongMaoVC.m; sourceTree = "<group>"; };
 		CD1AA5F821D602B1007F045D /* React-Native-Webview-Bridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "React-Native-Webview-Bridge.xcodeproj"; path = "../node_modules/@mr/rn-webview-bridge/ios/React-Native-Webview-Bridge.xcodeproj"; sourceTree = "<group>"; };
 		CD1E51C721C9D96B007103A1 /* BGKeychainTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BGKeychainTool.h; sourceTree = "<group>"; };
 		CD1E51C821C9D96B007103A1 /* BGKeychainTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BGKeychainTool.m; sourceTree = "<group>"; };
@@ -1205,6 +1208,7 @@
 		5068356A21379B78001AB175 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				CD1949DF222E4B2C00B34E34 /* vc */,
 				CD1E519221C9D935007103A1 /* tool */,
 				5077FC8A21A4FE37003B860D /* openssl */,
 				5068356B21379B78001AB175 /* Base */,
@@ -1720,6 +1724,15 @@
 				CD15542922126A94004C75FB /* libRCTCameraRoll.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CD1949DF222E4B2C00B34E34 /* vc */ = {
+			isa = PBXGroup;
+			children = (
+				CD194A15222E4B6700B34E34 /* GongMaoVC.h */,
+				CD194A16222E4B6700B34E34 /* GongMaoVC.m */,
+			);
+			path = vc;
 			sourceTree = "<group>";
 		};
 		CD1AA5F921D602B1007F045D /* Products */ = {
@@ -2659,6 +2672,7 @@
 				CD5EAF9D221BFB5E007AAEE0 /* ShowGroundViewManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				5068363E21379B78001AB175 /* QYChatModule.m in Sources */,
+				CD194A17222E4B6700B34E34 /* GongMaoVC.m in Sources */,
 				50043A7E21C772AF00270DFA /* MRShopCartCellManager.m in Sources */,
 				5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */,
 				5077FCE221A4FE37003B860D /* NSData+Base64.m in Sources */,
