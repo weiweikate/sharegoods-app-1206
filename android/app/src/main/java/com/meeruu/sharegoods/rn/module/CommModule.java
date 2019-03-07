@@ -527,7 +527,7 @@ public class CommModule extends ReactContextBaseJavaModule {
             }
         }, CallerThreadExecutor.getInstance());
     }
-
+   @ReactMethod
     public void goGongmallPage(String url,Promise promise){
         this.gongMao = promise;
         Intent intent = new Intent(getCurrentActivity(), GongMallActivity.class);
