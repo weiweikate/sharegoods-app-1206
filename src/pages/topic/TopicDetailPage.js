@@ -757,7 +757,6 @@ export default class TopicDetailPage extends BasePage {
                                     titleStr: productName,
                                     priceStr: `￥${originalPrice}`,
                                     retailPrice: `￥${v0Price}`,
-                                    v0Price: v0Price,
                                     spellPrice: `￥${groupPrice}`,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`
                                 }}
