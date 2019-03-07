@@ -81,12 +81,13 @@ export default class MRBannerViewComponent extends Component {
         return (
             <View>
                 {/*加一个0.5修正值*/}
-                <MRBannerView style={[{ height: bannerHeight, width: imgWidth + 0.5 }]}
+                <MRBannerView style={[{ height: bannerHeight, width: imgWidth }]}
                               onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
                               imgUrlArray={imgUrlArray}
                               itemRadius={itemRadius}
                               itemWidth={imgWidth + 0.5}
                               itemSpace={0}
+                              pageFocused={this.props.pageFocused}
                               onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
                               autoLoop={autoLoop === false ? false : true}
                               autoInterval={autoInterval || (autoInterval === 0 ? 0 : 5)}/>
