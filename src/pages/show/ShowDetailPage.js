@@ -266,6 +266,15 @@ export default class ShowDetailPage extends BasePage {
             + 'px;'
             + '}'
             + 'p {word-break:break-all;}'
+            + 'table { border-collapse:collapse;}'
+            + 'table, td, th {border:1px solid #ddd;}'
+            + 'blockquote { display: block;' +
+            '    background: #f9f9f9;' +
+            '    border-left: 10px solid #ccc;' +
+            '    margin: 10px;' +
+            '    padding: 0px;' +
+            '    position: relative;' +
+            '    box-sizing: border-box;}'
             //  + Utils.NVL(this.props.webviewStyle, '')
             + '</style>'
             + '<script type="text/javascript">'
@@ -279,10 +288,6 @@ export default class ShowDetailPage extends BasePage {
             + 'myimg.width = maxwidth;'
             + '}'
             + '}'
-            + '}'
-            + 'function onLoadFn() {'
-            + 'window.location.hash = "#+document.body.clientHeight";document.title = document.height || document.body.clientHeight;'
-            + 'ResizeImages()'
             + '}'
             + '</script>'
             + '</head>'
