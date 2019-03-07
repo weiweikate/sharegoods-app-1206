@@ -26,7 +26,7 @@
         "@mr/rn-image-crop-picker": "0.0.6",
         "@mr/rn-request": "0.1.10",
         "@mr/rn-store": "1.0.4",
-        "@mr/rn-webview-bridge": "0.0.10",
+        "@mr/rn-webview-bridge": "0.0.11",
         "@mr/react-native-autoheight-webview": "^1.0.4",
         "@mr/react-native-webview": "^5.2.4",
         "@mr/webview": "0.3.0",
