@@ -60,7 +60,7 @@ export class TopicDetailBanner extends Component {
                 <TouchableWithoutFeedback onPress={() => {
                     const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
                     const { navigation } = this.props;
-                    navigation && navigation.navigate('home/product/CheckBigImagesView', params);
+                    navigation && navigation.navigate('product/CheckBigImagesView', params);
                 }}>
                     <View>
                         <ImageLoad source={{ uri: originalImg }}

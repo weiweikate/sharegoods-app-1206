@@ -27,6 +27,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     private onDidSelectItemAtIndexEvent selectItemAtIndexEvent;
     private boolean pageFocus;
     private BannerLayout banner;
+    private WebBannerAdapter webBannerAdapter;
 
     @Override
     public String getName() {
@@ -80,9 +81,16 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     public void setImgUrlArray(final BannerLayout view, ReadableArray urls) {
         if (urls != null) {
             final List datas = urls.toArrayList();
-            WebBannerAdapter webBannerAdapter = new WebBannerAdapter(view.getContext(), datas);
+            webBannerAdapter = new WebBannerAdapter(view.getContext(), datas);
             webBannerAdapter.setOnBannerItemClickListener(this);
             view.setAdapter(webBannerAdapter);
+        }
+    }
+
+    @ReactProp(name = "itemWidth")
+    public void setItemWidth(BannerLayout view, Integer width) {
+        if (webBannerAdapter != null) {
+            webBannerAdapter.setItemWidth(DensityUtils.dip2px(width));
         }
     }
 
@@ -98,6 +106,11 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
 
     @ReactProp(name = "tittleArray")
     public void setTittleArray(BannerLayout view, ReadableArray titles) {
+    }
+
+    @ReactProp(name = "interceptTouchEvent")
+    public void setInterceptTouchEvent(BannerLayout view, boolean intercept) {
+        view.setIntercept(intercept);
     }
 
     @ReactProp(name = "pageFocused")

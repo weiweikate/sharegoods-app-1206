@@ -15,7 +15,7 @@ import ResultVerticalRow from './components/ResultVerticalRow';
 import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
-import SelectionPage from '../product/SelectionPage';
+import SelectionPage from '../../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ShopCartStore from '../../shopCart/model/ShopCartStore';
@@ -27,6 +27,16 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../components/ui';
+import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
+
+const viewTypes = {
+    rowView: 'rowView',
+    rowView1: 'rowView1'
+
+};
+
+const { width } = ScreenUtils;
+
 
 const {
     toGwc,
@@ -164,6 +174,38 @@ export default class SearchResultPage extends BasePage {
         });
     };
 
+    shouldComponentUpdate(nextProps, nextState) {
+        let itemData = [];
+        let dataList = [];
+        if (nextState.isHorizontal) {
+            (nextState.productList || []).forEach((item, index) => {
+                if (index % 2 === 1) {
+                    itemData.push(item);
+                    dataList.push({
+                        itemData: itemData,
+                        type: viewTypes.rowView
+                    });
+                    itemData = [];
+                } else {
+                    itemData.push(item);
+                }
+            });
+            if (itemData.length > 0) {
+                dataList.push({
+                    itemData: itemData,
+                    type: viewTypes.rowView
+                });
+            }
+        } else {
+            (nextState.productList || []).forEach((item) => {
+                item.type = viewTypes.rowView1;
+                dataList.push(item);
+            });
+        }
+        this.productListResult = dataList;
+        return true;
+    }
+
     _loadPageDataMore = () => {
         this.onEndReached = true;
         this.setState({
@@ -247,7 +289,7 @@ export default class SearchResultPage extends BasePage {
         });
     };
     _onPressToTop = () => {
-        this.FlatListShow && this.FlatListShow.scrollToOffset({ offset: 0 });
+        this.RecyclerListView && this.RecyclerListView.scrollToTop(true);
     };
 
     //getKeywords数据
@@ -316,16 +358,6 @@ export default class SearchResultPage extends BasePage {
         }
     };
 
-    _renderItem = ({ item }) => {
-        if (this.state.isHorizontal) {
-            return (<ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}
-                                         itemData={item}/>);
-        } else {
-            return (<ResultVerticalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}
-                                       itemData={item}/>);
-        }
-    };
-
     _ListFooterComponent = () => {
         if (this.state.productList.length === 0) {
             return null;
@@ -341,28 +373,72 @@ export default class SearchResultPage extends BasePage {
         this._loadPageDataMore();
     };
 
+    dataProvider = new DataProvider((r1, r2) => {
+        return r1 !== r2;
+    });
+
+    _layoutProvider = new LayoutProvider((index) => {
+        return this.dataProvider.getDataForIndex(index).type;
+    }, (type, dim) => {
+        dim.width = width;
+        switch (type) {
+            case viewTypes.rowView:
+                dim.height = (width - 30 - 5) / 2 + 82 + 5;
+                break;
+            case viewTypes.rowView1:
+                dim.height = 130;
+                break;
+            default:
+                dim.height = 0;
+                dim.width = 0;
+                break;
+        }
+    });
+
+    _rowRenderer = (type, data) => {
+        switch (type) {
+            case viewTypes.rowView:
+                const { itemData } = data;
+                return <View style={{ flexDirection: 'row', marginHorizontal: 15 }}>
+                    {itemData[0] ?
+                        <ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}
+                                             itemData={itemData[0]}/> : null}
+                    {itemData[1] ?
+                        <ResultHorizontalRow style={{ marginLeft: 5 }} onPressAtIndex={this._onPressAtIndex}
+                                             storeProduct={this._storeProduct}
+                                             itemData={itemData[1]}/> : null}
+                </View>;
+            case viewTypes.rowView1:
+                return (<ResultVerticalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}
+                                           itemData={data}/>);
+            default:
+                return null;
+        }
+    };
+
     _renderListView = () => {
-        return <FlatList ref={(ref) => this.FlatListShow = ref}
-                         refreshControl={
-                             <RefreshControl
-                                 refreshing={this.state.refreshing}
-                                 onRefresh={this._refreshing.bind(this)}
-                                 title="下拉刷新"
-                                 tintColor={DesignRule.textColor_instruction}
-                                 titleColor={DesignRule.textColor_instruction}
-                                 colors={[DesignRule.mainColor]}/>}
-                         onScroll={this._onScroll}
-                         onEndReached={this._onEndReached.bind(this)}
-                         onEndReachedThreshold={0.1}
-                         ListFooterComponent={this._ListFooterComponent}
-                         scrollEventThrottle={10}
-                         style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
-                         renderItem={this._renderItem}
-                         showsVerticalScrollIndicator={false}
-                         keyExtractor={(item, index) => `${index}`}
-                         numColumns={this.state.isHorizontal ? 2 : 1}
-                         key={this.state.isHorizontal ? 'hShow' : 'vShow'}
-                         data={this.state.productList}/>;
+        this.dataProvider = this.dataProvider.cloneWithRows(this.productListResult);
+        return (
+            <View style={{ flex: 1 }}>
+                <RecyclerListView ref={(ref) => this.RecyclerListView = ref}
+                                  style={{ minHeight: 1, minWidth: width, flex: 1 }}
+                                  refreshControl={<RefreshControl
+                                      refreshing={this.state.refreshing}
+                                      onRefresh={this._refreshing.bind(this)}
+                                      title="下拉刷新"
+                                      tintColor={DesignRule.textColor_instruction}
+                                      titleColor={DesignRule.textColor_instruction}
+                                      colors={[DesignRule.mainColor]}/>}
+                                  layoutProvider={this._layoutProvider}
+                                  dataProvider={this.dataProvider}
+                                  rowRenderer={this._rowRenderer}
+                                  showsVerticalScrollIndicator={false}
+                                  onScroll={this._onScroll}
+                                  onEndReached={this._onEndReached.bind(this)}
+                                  onEndReachedThreshold={20}
+                                  renderFooter={this._ListFooterComponent}/>
+            </View>
+        );
     };
 
     _onScroll = (event) => {

@@ -13,17 +13,16 @@ import {
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
-import PriceExplain from '../home/product/components/PriceExplain';
+import PriceExplain from '../product/components/PriceExplain';
 import ScreenUtils from '../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
-import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
 import user from '../../model/user';
 import TopicDetailSelectPage from './TopicDetailSelectPage';
 import PackageDetailSelectPage from './PackageDetailSelectPage';
 import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
-import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
+import DetailNavShowModal from '../product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import DesignRule from '../../constants/DesignRule';
 import {
@@ -34,7 +33,7 @@ import {
 import EmptyUtils from '../../utils/EmptyUtils';
 // import StringUtils from '../../utils/StringUtils';
 // import CommModal from 'CommModal';
-import DetailNavView from '../home/product/components/DetailNavView';
+import DetailNavView from '../product/components/DetailNavView';
 
 // const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 // import res from './res';
@@ -46,7 +45,8 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorB
 import MessageAPI from '../message/api/MessageApi';
 import QYChatUtil from '../mine/page/helper/QYChatModel';
 import { track, trackEvent } from '../../utils/SensorsTrack';
-import DetailHeaderServiceModal from '../home/product/components/DetailHeaderServiceModal';
+import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
+import ProductApi from '../product/api/ProductApi';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -247,7 +247,7 @@ export default class TopicDetailPage extends BasePage {
         if (this.state.activityType !== 3 && (status === 4 || status === 5) && type === 1) {
             this.__timer__ = setTimeout(() => {
                 this.havePushDone = true;
-                this.$navigate('home/product/ProductDetailPage', {
+                this.$navigate('product/ProductDetailPage', {
                     productCode: this.state.activityData.prodCode,
                     preseat: '活动结束跳转'
                 });
@@ -281,7 +281,7 @@ export default class TopicDetailPage extends BasePage {
             this.setState({
                 loadingState: PageLoadingState.success
             }, () => {
-                HomeAPI.getProductDetailByCode({
+                ProductApi.getProductDetailByCode({
                     code: prodCode
                 }).then((data) => {
                     this.setState({
@@ -757,7 +757,6 @@ export default class TopicDetailPage extends BasePage {
                                     titleStr: productName,
                                     priceStr: `￥${originalPrice}`,
                                     retailPrice: `￥${v0Price}`,
-                                    v0Price: v0Price,
                                     spellPrice: `￥${groupPrice}`,
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`
                                 }}

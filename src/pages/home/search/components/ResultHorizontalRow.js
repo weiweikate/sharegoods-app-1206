@@ -39,8 +39,8 @@ export default class ResultHorizontalRow extends Component {
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(prodCode);
             }}>
-                <View style={[styles.container]}>
-                    <UIImage style={styles.img} source={{ uri: imgUrl }}/>
+                <View style={[styles.container, this.props.style]}>
+                    <ReuserImage style={styles.img} source={{ uri: imgUrl }}/>
 
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
@@ -83,11 +83,51 @@ export default class ResultHorizontalRow extends Component {
 
 }
 
+class ReuserImage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            imagePath: this.props.source.uri
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.source && nextProps.source &&
+            this.props.source.uri !== nextProps.source.uri
+        ) {
+            this.fetchImage(nextProps.source.uri);
+        }
+    }
+
+    fetchImage(url) {
+        this.setState({
+            imagePath: ''
+        }, () => {
+            this.setState({
+                imagePath: url
+            });
+        });
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.imagePath !== nextState.imagePath;
+    }
+
+    render() {
+        return <UIImage
+            {...this.props}
+            source={{ uri: this.state.imagePath }}
+            showPlaceholder={false}
+        />;
+    }
+}
+
 const styles = StyleSheet.create({
     container: {
+        overflow:'hidden',
+        borderRadius:5,
         marginTop: 5,
-        marginLeft: 5,
-        height: imgHeight + 164 / 2,
+        height: imgHeight + 82,
         backgroundColor: 'white',
         width: imgHeight
     },

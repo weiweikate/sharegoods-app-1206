@@ -133,7 +133,6 @@
 		CD5EB143221E9AB3007AAEE0 /* ShowHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB142221E9AB3007AAEE0 /* ShowHeaderView.m */; };
 		CD5EB146221EA148007AAEE0 /* WHCWaterfallFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB145221EA148007AAEE0 /* WHCWaterfallFlowLayout.m */; };
 		CD5EB149221EA933007AAEE0 /* ShowCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */; };
-		CD5EB4D422250E7E007AAEE0 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD5EB4D322250E58007AAEE0 /* libRNCamera.a */; };
 		CD6741F621DEF78500464549 /* AdView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6741F521DEF78500464549 /* AdView.m */; };
 		CD6742D021E4418900464549 /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742CF21E4418900464549 /* RSKImageCropper.framework */; };
 		CD6742D121E4418900464549 /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD6742CF21E4418900464549 /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -532,13 +531,6 @@
 			remoteGlobalIDString = A18E9FA621A6AB4300A66E41;
 			remoteInfo = RNSensorsAnalyticsModule;
 		};
-		CD5EB4D222250E58007AAEE0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CD5EB4CE22250E57007AAEE0 /* RNCamera.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
-			remoteInfo = RNCamera;
-		};
 		CD67429721E43F5F00464549 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD67428F21E43F5F00464549 /* imageCropPicker.xcodeproj */;
@@ -827,7 +819,6 @@
 		CD5EB145221EA148007AAEE0 /* WHCWaterfallFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHCWaterfallFlowLayout.m; sourceTree = "<group>"; };
 		CD5EB147221EA932007AAEE0 /* ShowCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowCollectionReusableView.h; sourceTree = "<group>"; };
 		CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowCollectionReusableView.m; sourceTree = "<group>"; };
-		CD5EB4CE22250E57007AAEE0 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		CD6741F421DEF78500464549 /* AdView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdView.h; sourceTree = "<group>"; };
 		CD6741F521DEF78500464549 /* AdView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdView.m; sourceTree = "<group>"; };
 		CD67428F21E43F5F00464549 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/@mr/rn-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
@@ -874,7 +865,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0409D925222F7725003A53EC /* libRNCWebView.a in Frameworks */,
-				CD5EB4D422250E7E007AAEE0 /* libRNCamera.a in Frameworks */,
 				CD15545622126AB4004C75FB /* libRCTCameraRoll.a in Frameworks */,
 				CD6742D821E441D500464549 /* libimageCropPicker.a in Frameworks */,
 				03A568E621DEFA1E00D6A770 /* libRNGeolocation.a in Frameworks */,
@@ -1602,7 +1592,6 @@
 			isa = PBXGroup;
 			children = (
 				0409D8EA222F7706003A53EC /* RNCWebView.xcodeproj */,
-				CD5EB4CE22250E57007AAEE0 /* RNCamera.xcodeproj */,
 				CD15541C22126A94004C75FB /* RCTCameraRoll.xcodeproj */,
 				CD67428F21E43F5F00464549 /* imageCropPicker.xcodeproj */,
 				CD1AA5F821D602B1007F045D /* React-Native-Webview-Bridge.xcodeproj */,
@@ -1796,14 +1785,6 @@
 				CD5EB148221EA932007AAEE0 /* ShowCollectionReusableView.m */,
 			);
 			path = ShowGroundView;
-			sourceTree = "<group>";
-		};
-		CD5EB4CF22250E57007AAEE0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CD5EB4D322250E58007AAEE0 /* libRNCamera.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		CD67429021E43F5F00464549 /* Products */ = {
@@ -2075,10 +2056,6 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
-				},
-				{
-					ProductGroup = CD5EB4CF22250E57007AAEE0 /* Products */;
-					ProjectRef = CD5EB4CE22250E57007AAEE0 /* RNCamera.xcodeproj */;
 				},
 				{
 					ProductGroup = 1872318221CB96D300513B04 /* Products */;
@@ -2484,13 +2461,6 @@
 			remoteRef = CD45EE0021C77E1A00846B39 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CD5EB4D322250E58007AAEE0 /* libRNCamera.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNCamera.a;
-			remoteRef = CD5EB4D222250E58007AAEE0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CD67429821E43F5F00464549 /* libimageCropPicker.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2603,7 +2573,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/QIYU_iOS_SDK/SDK/QYResource.bundle",
@@ -2628,7 +2598,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
