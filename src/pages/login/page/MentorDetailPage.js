@@ -133,7 +133,7 @@ export default class MentorDetailPage extends BasePage {
             code: mentorData.perfectNumberCode
         }).then(res => {
             this.$toastShow('选择成功');
-            homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
+            // homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
             this.$navigateBackToHome()
         }).catch(res => {
             this.$toastShow(res.msg)
