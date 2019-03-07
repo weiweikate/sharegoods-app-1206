@@ -31,13 +31,46 @@ export class Payment {
     @observable orderName = ''
     @observable selctedPayType = paymentType.none
     @observable selectedBalace = false
+    @observable orderNo = ''
+    
+    //选择余额支付
     @action selectBalancePayment = () => {
         this.selectedBalace = !this.selectedBalace
     }
+
+    //选择三方支付方式
     @action selectPayTypeAction = (type) => {
         console.log('selectPayTypeAction', type)
         this.selctedPayType = type
     }
+
+    //平台余额支付
+    @action platformPay = flow(function * (password) {
+        if (!this.selectedBalace) {
+            return
+        }
+        paymentTrack.paymentMethod = 'balance'
+        let trackPoint = {...paymentTrack, paymentProgress: 'start'}
+        track(trackEvent.payOrder, trackPoint)
+        try {
+            Toast.showLoading()
+            const result = yield PaymentApi.platformPay({orderNo: this.orderNo, salePswd: password})
+            if (result.code !== 10000) {
+                let error = new Error(result.msg)
+                throw error
+            }
+            
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'success'})
+            this.updateUserData()
+            Toast.hiddenLoading()
+            return result
+        } catch (error) {
+            Toast.hiddenLoading();
+            track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', errorCause: error.msg})
+            return error
+        }
+    })
+
 
 
 
@@ -50,7 +83,6 @@ export class Payment {
         hasBalance: true
     }
     @observable isGoToPay = false
-    @observable orderNo = ''
     @observable amount = 0
     @observable isShowResult = false
     @observable payError = ''

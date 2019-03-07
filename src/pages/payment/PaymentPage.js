@@ -8,6 +8,7 @@ import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 import user from '../../model/user';
 import { payment } from './Payment'
+import PasswordView from './PasswordView'
 const { px2dp } = ScreenUtils;
 
 @observer
@@ -18,11 +19,16 @@ export default class PaymentPage extends BasePage {
         show: true
     };
 
+    state = {
+        showPwd: false
+    }
+
     constructor(props) {
         super(props);
         payment.amounts = this.params.amounts ? this.params.amounts : 0
-        let orderProduct = this.params.orderProductList[0];
-        payment.name = orderProduct.productName
+        let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
+        payment.name = orderProduct && orderProduct.productName
+        payment.orderNo = this.params.orderNum;
     }
 
     $NavBarLeftPressed = () => {
@@ -30,15 +36,36 @@ export default class PaymentPage extends BasePage {
     }
 
     goToPay() {
-        this.$navigate('payment/ChannelPage')
+        const {selectedBalace} = payment
+        if (!selectedBalace) {
+            this.$navigate('payment/ChannelPage')
+            return
+        }
+
+        //用户设置过交易密码
+        if (user.hadSalePassword) {
+            this.setState({ showPwd: true })
+        }  else {
+            this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+        }
     }
 
     _selectedBalance() {
         payment.selectBalancePayment()
     }
 
+    _finishedAction(password) {
+        payment.platformPay(password)
+    }
+
+    _forgetPassword = () => {
+        this.setState({ showPwd: false })
+        this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+    };
+
     _render() {
         const { selectedBalace, name } = payment
+        const { showPwd } = this.state
         return <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.row}>
@@ -68,6 +95,11 @@ export default class PaymentPage extends BasePage {
                 <Text style={styles.payText}>去支付</Text>
             </View>
             </TouchableWithoutFeedback>
+            {showPwd ? <PasswordView
+                finishedAction={(pwd)=> {this._finishedAction(pwd)}}
+                forgetAction={()=>{this._forgetPassword()}}
+                dismiss={()=>{this.setState({showPwd: false})}}
+            /> : null}
         </View>;
     }
 }
