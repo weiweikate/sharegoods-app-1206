@@ -382,8 +382,6 @@ class HomePage extends BasePage {
                 this.showModal();
             }
         });
-
-
     };
 
     messageModalRender() {

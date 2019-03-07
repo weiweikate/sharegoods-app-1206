@@ -74,9 +74,10 @@ export default class HomeAdView extends Component {
         ad.map((value, index) => {
             items.push(<TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
                 <View
-                    style={[styles.ad, { marginTop: adModules.banner.length === 0 && (index === 0 || index === 1) ? px2dp(5) : 0 },
-                        this.adRadius[index]]}>
-                    <ImageLoad source={{ uri: value.imgUrl }} style={styles.ad}/>
+                    style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : 0 }, this.adRadius[index]]}>
+                    <ImageLoad source={{ uri: value.imgUrl }}
+                               style={[styles.ad,
+                                   { marginTop: adModules.banner.length === 0 ? 0 : ((index !== 0 && index !== 1) ? px2dp(5) : 0) }]}/>
                 </View>
             </TouchableWithoutFeedback>);
         });
@@ -112,7 +113,6 @@ const styles = StyleSheet.create({
     },
     ad: {
         width: adWidth,
-        height: adHeight,
-        marginBottom: px2dp(5)
+        height: adHeight
     }
 });
