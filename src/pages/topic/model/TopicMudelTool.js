@@ -45,7 +45,7 @@ const jumpPageParams = {
     [productTypes.giftPackage]: 'topic/TopicDetailPage',
     [productTypes.helpFree]: 'topic/TopicDetailPage',
     [productTypes.newTopic]: 'topic/DownPricePage',
-    [productTypes.normalProduct]: 'home/product/ProductDetailPage'
+    [productTypes.normalProduct]: 'product/ProductDetailPage'
 
 };
 /**
