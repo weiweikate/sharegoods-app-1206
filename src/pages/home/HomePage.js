@@ -344,15 +344,15 @@ class HomePage extends BasePage {
         if (type === homeType.category) {
             return <HomeCategoryView navigate={this.$navigate}/>;
         } else if (type === homeType.swiper) {
-            return <HomeBannerView navigate={this.$navigate}/>;
+            return <HomeBannerView navigate={this.$navigate} pageFocused={this.homeFocused}/>;
         } else if (type === homeType.classify) {
             return <HomeClassifyView navigate={this.$navigate}/>;
         } else if (type === homeType.ad) {
             return <HomeAdView navigate={this.$navigate}/>;
         } else if (type === homeType.today) {
-            return <HomeTodayView navigate={this.$navigate}/>;
+            return <HomeTodayView navigate={this.$navigate} pageFocused={this.homeFocused}/>;
         } else if (type === homeType.recommend) {
-            return <HomeRecommendView navigate={this.$navigate}/>;
+            return <HomeRecommendView navigate={this.$navigate} pageFocused={this.homeFocused}/>;
         } else if (type === homeType.subject) {
             return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
@@ -382,8 +382,6 @@ class HomePage extends BasePage {
                 this.showModal();
             }
         });
-
-
     };
 
     messageModalRender() {
