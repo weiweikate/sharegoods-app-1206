@@ -11,7 +11,7 @@ export const categoryHeight = px2dp(44);
 
 const CategoryItem = ({ text, press, left }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={[styles.item, { marginLeft: left }]}>
-        <Text style={styles.text}>{text}</Text>
+        <Text style={styles.text} numberOfLines={1}>{text}</Text>
     </View>
 </TouchableWithoutFeedback>;
 
