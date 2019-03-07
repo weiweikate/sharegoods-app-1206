@@ -116,7 +116,6 @@ export default class InputPhoneNum extends BasePage {
      * @private
      */
     _sendAutherCode = () => {
-
         //发送验证码
         SMSTool.sendVerificationCode(1, this.state.phoneNum);
         let params = {

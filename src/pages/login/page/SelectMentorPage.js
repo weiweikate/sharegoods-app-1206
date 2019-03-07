@@ -152,7 +152,7 @@ export default class SelectMentorPage extends BasePage {
             <View
                 style={{
                     alignItems: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
                 }}
             >
                 {
@@ -212,7 +212,6 @@ export default class SelectMentorPage extends BasePage {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     marginTop: px2dp(10),
-                    backgroundColor: DesignRule.textColor_white,
                     alignItems: "center",
                     width: ScreenUtils.width - px2dp(100),
                     marginLeft: px2dp(50)
@@ -312,6 +311,7 @@ export default class SelectMentorPage extends BasePage {
                 contentContainerStyle={
                     SwichStyles.bgStyle
                 }
+                scrollEnabled={false}
                 // contentOffset={{ x: this.state.selectIndex * ScreenUtils.width / 5, y: 0 }}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
@@ -461,9 +461,7 @@ export default class SelectMentorPage extends BasePage {
                     flexDirection: "row",
                     justifyContent: "center",
                     marginTop: px2dp(80),
-                    backgroundColor: DesignRule.textColor_white,
                     alignItems: "center"
-
                 }}
             >
                 <Text

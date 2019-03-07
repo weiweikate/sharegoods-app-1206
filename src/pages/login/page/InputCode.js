@@ -110,7 +110,7 @@ export default class InputCode extends BasePage {
                             }
                             <TouchableOpacity
                                 style={{
-                                    paddingTop:px2dp(2),
+                                    paddingTop:px2dp(0),
                                     marginLeft: px2dp(5),
                                     justifyContent: "center"
                                 }}

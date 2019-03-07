@@ -2,19 +2,17 @@ import React, {} from "react";
 import {
     View,
     Image,
-    // Alert
+    Platform
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/Login.style";
 import { createBottomButton, createLoginButton, loginBtnType } from "../components/Login.button.view";
 import res from "../res";
-// import ScreenUtils from "../../../utils/ScreenUtils";
 import RouterMap from "../../../navigation/RouterMap";
 import { isCanPhoneAuthen } from "../model/PhoneAuthenAction";
 import { wxLoginAction } from "../model/LoginActionModel";
 import ProtocolView from "../components/Login.protocol.view";
 // import loginModel from "../model/LoginModel";
-
 // const { px2dp } = ScreenUtils;
 const {
     other: {
@@ -28,39 +26,46 @@ export default class Login extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            canPhoneAuthen: false,//是否可以本地号码一键登录 默认不可以
+            canPhoneAuthen: true,//是否可以本地号码一键登录 默认不可以
             isSelectProtocol: true
         };
     }
-
     // 导航配置
     $navigationBarOptions = {
         // title: '登录',
         gesturesEnabled: false
-
     };
-
     $isMonitorNetworkStatus() {
         return false;
     }
-
     componentDidMount() {
-        // this.$loadingShow();
-        isCanPhoneAuthen().then(result => {
-            // this.$loadingDismiss();
-            alert(result.phoneNum);
-            if (result.isCanAuthen === 1) {
-                this.setState({
-                    canPhoneAuthen: true,
-                    tempPhone:result.phoneNum||"",
-                    authenToken:result.data||"",
-                });
-            } else {
-                this.setState({
-                    canPhoneAuthen: false
-                });
-            }
-        });
+        if (Platform.OS === "android") {
+            this.$loadingShow();
+            isCanPhoneAuthen().then(result => {
+                this.$loadingDismiss();
+                if (
+                    result.isCanAuthen === 1
+                    && result.phoneNum.length > 0
+                ) {
+                    this.setState({
+                        canPhoneAuthen: true,
+                        tempPhone: result.phoneNum || "",
+                        authenToken: result.data || ""
+                    });
+                } else {
+                    this.setState({
+                        canPhoneAuthen: false
+                    });
+                }
+            }).catch(res => {
+                this.$loadingDismiss();
+            });
+        } else {
+            //ios平台主动开启
+            this.setState({
+                canPhoneAuthen: true
+            })
+        }
     }
 
     _render() {
@@ -149,8 +154,10 @@ export default class Login extends BasePage {
         if (btnType === loginBtnType.wxLoginBtnType) {
             this._wxLogin();
         } else if (btnType === loginBtnType.localPhoneNumLoginType) {
-            this.$navigate(RouterMap.LocalNumLogin,{tempPhone:this.state.tempPhone,authenToken:this.state.authenToken});
-            // this.$navigate(RouterMap.InputCode);
+            this.$navigate(RouterMap.LocalNumLogin, {
+                tempPhone: this.state.tempPhone,
+                authenToken: this.state.authenToken
+            });
         } else {
             this.$navigate(RouterMap.OtherLoginPage);
         }
@@ -160,8 +167,8 @@ export default class Login extends BasePage {
             if (code === 10000) {
                 this.$navigateBack(-1);
                 this.params.callback && this.params.callBack();
-            } else {
-                console.log(data);
+            } else if(code === 34005) {
+                //绑定手机号
                 this.$navigate(RouterMap.InputPhoneNum, data);
             }
         });

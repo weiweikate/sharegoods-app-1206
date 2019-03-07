@@ -7,6 +7,7 @@ const other = {
     noGoodImg: require('./noGoodImg.png'),
     red_big_envelope: require('./red_big_envelope.png'),
     loading_bar: require('./loading_bar.png'),
-    commOldLoginImg:require('./home_icon.png')
+    commOldLoginImg:require('./home_icon.png'),
+    close_X:require('./close_X.png')
 };
 export default other;

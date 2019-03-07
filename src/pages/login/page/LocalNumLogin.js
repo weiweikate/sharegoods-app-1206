@@ -18,7 +18,7 @@ import StringUtils from "../../../utils/StringUtils";
 import { MRTextInput } from "../../../components/ui";
 import ProtocolView from "../components/Login.protocol.view";
 import { startPhoneAuthen } from "../model/PhoneAuthenAction";
-import RouterMap from "../../../navigation/RouterMap";
+// import RouterMap from "../../../navigation/RouterMap";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -82,7 +82,7 @@ export default class LocalNumLogin extends BasePage {
                 >
                     <MRTextInput
                         style={InputStyle.textInputStyle}
-                        value={this.state.phoneNumber}
+                        value={StringUtils.encryptPhone(this.state.phoneNumber)}
                         onChangeText={text => this.setState({
                             phoneNumber: text
                         })}
@@ -175,14 +175,16 @@ export default class LocalNumLogin extends BasePage {
     };
 
     _sureClick = () => {
-        this.$navigate(RouterMap.InputPhoneNum);
-        return;
         this.$loadingShow();
         if (Platform.OS === "android") {
             if (this.state.authenToken.length > 0) {
+                this.$loadingDismiss();
                 // this.state.authenToken
                 // this.state.phoneNumber
                 this._beginAuthen(this.state.phoneNumber, this.state.authenToken);
+
+            } else {
+                this.$toastShow("本地号码一键登录失败，请尝试其他登录方式");
 
             }
         } else {
@@ -191,6 +193,7 @@ export default class LocalNumLogin extends BasePage {
                 // this.state.phoneNumber
                 // res.tokemn
                 console.log(res);
+
             });
         }
 
@@ -202,6 +205,7 @@ export default class LocalNumLogin extends BasePage {
      * @private
      */
     _beginAuthen = (phone, authenToken) => {
+        alert(authenToken);
         console.log(phone);
         console.log(authenToken);
     };

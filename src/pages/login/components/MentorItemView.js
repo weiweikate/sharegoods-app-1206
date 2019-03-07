@@ -55,30 +55,42 @@ export default class MentorItemView extends Component {
 
     changeSelectState = (isSelect) => {
         this.setState({
-            isSelect : isSelect
+            isSelect: isSelect
         });
     };
 
     render() {
         // const ImageWidth = this.state.isSelect ? ScreenUtils.width / 5 : ScreenUtils.width / 5 - 20;
-        const ImageWidth =  ScreenUtils.width / 5 - 20;
+        // const ImageWidth = ScreenUtils.width / 4 - 20;
+        const ImageContentWith = px2dp(60);
         console.log("this.props.itemData.headImg", this.props.itemData.headImg);
         return (
             <View
                 style={[styles.mainBgStyle,
-                    this.state.isSelect?null:{ opacity:0.5}]}>
+                    this.state.isSelect ? null : { opacity: 0.5 }]}>
                 <TouchableOpacity
                     onPress={() => {
                         this.props.clickItemAction && this.props.clickItemAction(this.state.itemData);
                     }}>
-                    <ImageLoad
-                        style={{ width: ImageWidth, height: ImageWidth }}
-                        source={{ uri: this.state.itemData.headImg ? this.state.itemData.headImg : "" }}
-                        isAvatar={true}
-                        height={ImageWidth}
-                        width={ImageWidth}
-                        borderRadius={ImageWidth / 2}
-                    />
+                    <View style={{
+                        width: ImageContentWith,
+                        height: ImageContentWith,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderWidth: px2dp(3),
+                        borderColor:DesignRule.color_fff,
+                        borderRadius:ImageContentWith/2,
+                    }}>
+                        <ImageLoad
+                            style={{ width: ImageContentWith - px2dp(6), height: ImageContentWith - px2dp(6)}}
+                            source={{ uri: this.state.itemData.headImg ? this.state.itemData.headImg : "" }}
+                            isAvatar={true}
+                            height={ImageContentWith - px2dp(6) }
+                            width={ImageContentWith - px2dp(6)}
+                            borderRadius={(ImageContentWith - px2dp(6)) / 2}
+                        />
+                    </View>
+
                 </TouchableOpacity>
                 <Text
                     numberOfLines={1}
@@ -95,16 +107,14 @@ export default class MentorItemView extends Component {
     }
 }
 
-const styles=StyleSheet.create(
+const styles = StyleSheet.create(
     {
-        mainBgStyle:{
-            width: ScreenUtils.width / 5,
+        mainBgStyle: {
+            width: ScreenUtils.width / 4,
             height: 100,
             alignItems: "center",
-            justifyContent: "center",
-            borderWidth: px2dp(2),
-            borderColor: DesignRule.color_fff,
+            justifyContent: "center"
         }
     }
-)
+);
 
