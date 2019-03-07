@@ -72,10 +72,10 @@ export default class GuideModal extends React.Component {
         };
         /** 每一步引导的数据*/
         this.data = [{image: discover, tip: tip_one, text: '秀场'},
-            {image: OssHelper('/app/share%403x.png'), tip: tip_two, text: '升级'},
+            {image: OssHelper('/app/share11.png'), tip: tip_two, text: '升级'},
             {image: group, tip: tip_three, text: '拼店'},
             {image: '', tip: tip_four},//这个图片从 mobox获取
-            {image: OssHelper('/app/signin%403x.png'), tip: tip_five, text: '签到'},
+            {image: OssHelper('/app/signin11.png'), tip: tip_five, text: '签到'},
             {image: mine, tip: tip_six, text: '我的'},
 
         ];
@@ -150,7 +150,7 @@ export default class GuideModal extends React.Component {
 
 
             if (step === 1){
-                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0) - (ScreenUtils.isIphonex?10:0);
+                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0) - (ScreenUtils.isIphonex?10:0) + 6;
                 bgStyle = {top: top, left: autoSizeWidth(7)}
                 imageStyle = {width: autoSizeWidth(50), height: autoSizeWidth(50)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
@@ -213,7 +213,7 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 4){
-                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0)- (ScreenUtils.isIphonex?10:0);
+                let top =  categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0)- (ScreenUtils.isIphonex?10:0) + 6;
                 bgStyle = {top: top, left: autoSizeWidth(148)}
                 imageStyle = {width: autoSizeWidth(50), height: autoSizeWidth(50)};
                 textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
