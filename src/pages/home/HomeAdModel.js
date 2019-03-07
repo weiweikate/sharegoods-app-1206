@@ -18,9 +18,16 @@ class AdModules {
     adUrls = [];
 
     @computed get adHeight() {
-        let h = kAdHeight * 2 + px2dp(16);
+        let h = kAdHeight * 2 + px2dp(15);
+        if (this.banner.length === 0) {
+            h += px2dp(5);
+        } else {
+            h -= px2dp(5);
+        }
         this.adHeights.forEach((value, key, map) => {
-            h += value + px2dp(15);
+            if (value > 0) {
+                h += value + px2dp(15);
+            }
         });
         return h;
     }
@@ -35,20 +42,25 @@ class AdModules {
             }
 
             const res = yield HomeApi.getAd({ type: homeType.ad });
-            console.log('loadAdList', res);
             this.ad = res.data;
             save(kHomeAdStore, res.data);
             const bannerRes = yield HomeApi.getBanner({ type: homeType.banner });
             this.banner = bannerRes.data;
-            // 先清空
-            this.adUrls.length = 0;
-            // 再重新赋值
-            this.banner.map((data) => {
-                this.adUrls.push(data.imgUrl);
-            });
-            this.notExistAdUrls.length = 0;
-            // 赋值adHeights
-            this.deleteNotExist();
+            if (this.banner.length === 0) {
+                this.adHeights.clear();
+                this.adUrls.length = 0;
+                this.notExistAdUrls.length = 0;
+            } else {
+                // 先清空
+                this.adUrls.length = 0;
+                // 再重新赋值
+                this.banner.map((data) => {
+                    this.adUrls.push(data.imgUrl);
+                });
+                this.notExistAdUrls.length = 0;
+                // 赋值adHeights
+                this.deleteNotExist();
+            }
         } catch (error) {
             console.log(error);
         }
