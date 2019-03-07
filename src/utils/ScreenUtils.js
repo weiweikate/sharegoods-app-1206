@@ -85,7 +85,7 @@ function checkhasNotchScreen(callback = ()=>{}) {
     if(Platform.OS === 'ios'){
         return;
     }
-    // RNDeviceInfo.hasNotchScreen(callback)
+    RNDeviceInfo.hasNotchScreen(callback);
 }
 
 export const DEFAULT_DENSITY = 1;
