@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import MRBannerView from './MRBannerView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { MRText as Text } from '../UIText';
+import DesignRule from '../../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 
@@ -58,7 +59,6 @@ export default class MRBannerViewComponent extends Component {
     };
 
     _renderStyleTwo = () => {
-
         const bannerCount = this.props.imgUrlArray.length;
         return <View style={styles.indexViewTwo}>
             <Text style={styles.text} allowFontScaling={false}>{this.state.index + 1} / {bannerCount}</Text>
@@ -106,18 +106,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     activityIndex: {
-        width: 10,
-        height: 3,
-        borderRadius: 1.5,
-        backgroundColor: '#333',
+        width: px2dp(10),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: DesignRule.mainColor,
         marginLeft: 2,
         marginRight: 2
     },
     index: {
-        width: 5,
-        height: 3,
-        borderRadius: 3,
-        backgroundColor: '#eee',
+        width: px2dp(5),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: DesignRule.lineColor_inWhiteBg,
         marginLeft: 2,
         marginRight: 2
     },
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     text: {
-        color: '#fff',
+        color: 'white',
         fontSize: 10,
         paddingHorizontal: 8
     }
