@@ -1,12 +1,22 @@
 import React from 'react';
-import { ScrollView, Image, TouchableOpacity, View, ActivityIndicator , StyleSheet} from 'react-native';
+import {
+    ScrollView,
+    Image,
+    TouchableOpacity,
+    View,
+    ActivityIndicator,
+    StyleSheet,
+    NativeModules,
+    Alert
+} from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
+import AutoHeightWebView from '@mr/react-native-autoheight-webview';
 
-const { px2dp, width } = ScreenUtils;
-import HTML from 'react-native-render-html';
+const { px2dp } = ScreenUtils;
+// import HTML from 'react-native-render-html';
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
@@ -48,8 +58,8 @@ export default class ShowDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: ''
-        }
-        this.noNeedRefresh = false
+        };
+        this.noNeedRefresh = false;
     }
 
     $isMonitorNetworkStatus() {
@@ -61,18 +71,18 @@ export default class ShowDetailPage extends BasePage {
             'willFocus',
             payload => {
                 if (this.noNeedRefresh) {
-                    this.noNeedRefresh = true
-                    return
+                    this.noNeedRefresh = true;
+                    return;
                 }
                 const { state } = payload;
                 if (state && state.routeName === 'show/ShowDetailPage') {
-                    Toast.showLoading()
+                    Toast.showLoading();
                     if (this.params.code) {
                         this.showDetailModule.showDetailCode(this.params.code || this.params.id).then(() => {
                             this.setState({
                                 pageState: PageLoadingState.success
-                            })
-                            Toast.hiddenLoading()
+                            });
+                            Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
@@ -81,15 +91,15 @@ export default class ShowDetailPage extends BasePage {
                             this._whiteNavRef.setNativeProps({
                                 opacity: 1
                             });
-                            Toast.$toast(error.msg || '获取详情失败')
-                            Toast.hiddenLoading()
-                        })
+                            Toast.$toast(error.msg || '获取详情失败');
+                            Toast.hiddenLoading();
+                        });
                     } else {
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             this.setState({
                                 pageState: PageLoadingState.success
-                            })
-                            Toast.hiddenLoading()
+                            });
+                            Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
@@ -98,9 +108,9 @@ export default class ShowDetailPage extends BasePage {
                             this._whiteNavRef.setNativeProps({
                                 opacity: 1
                             });
-                            Toast.$toast(error.msg || '获取详情失败')
-                            Toast.hiddenLoading()
-                        })
+                            Toast.$toast(error.msg || '获取详情失败');
+                            Toast.hiddenLoading();
+                        });
                     }
                 }
             }
@@ -165,6 +175,10 @@ export default class ShowDetailPage extends BasePage {
         });
     };
 
+    _onLongClickImage = (event) => {
+        alert(event.nativeEvent.url);
+    };
+
     _renderNormalTitle() {
         return <View style={styles.whiteNav} ref={(ref) => {
             this._whiteNavRef = ref;
@@ -186,12 +200,31 @@ export default class ShowDetailPage extends BasePage {
     }
 
     _showImagesPage(imgs, index) {
-        this.noNeedRefresh = true
+        this.noNeedRefresh = true;
         const { navigation } = this.props;
         navigation.push('show/ShowDetailImagePage', {
-            imageUrls:imgs,
+            imageUrls: imgs,
             index: index
         });
+    }
+
+    _onLongClickImage = (event)=>{
+        let url = event.nativeEvent.url;
+        Alert.alert('保存图片','', [
+            {
+                text: '取消', onPress: () => {
+
+                }
+            },
+            {
+                text: '保存到相册', onPress: () => {
+                    NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url).then(()=>{
+                        this.$toastShow('保存成功!')
+                    }).catch((error)=>{
+
+                    });
+                }
+            }]);
     }
 
     _render() {
@@ -206,8 +239,6 @@ export default class ShowDetailPage extends BasePage {
         if (!detail) {
             return <View style={styles.loading}/>;
         }
-
-        let content = `<div>${detail.content}</div>`;
         let products = detail.products;
         let number = detail.click;
         if (!number) {
@@ -216,6 +247,51 @@ export default class ShowDetailPage extends BasePage {
         if (number > 999999) {
             number = 999999 + '+';
         }
+
+
+        let html = '<!DOCTYPE html><html>' +
+            '<head>' +
+            '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />' +
+            //'<meta content="m.007fenqi.com" name="author"/>' +
+            '<meta content="yes" name="apple-mobile-web-app-capable"/>' +
+            '<meta content="yes" name="apple-touch-fullscreen"/>' +
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />' +
+            '<meta http-equiv="Expires" content="-1"/>' +
+            '<meta http-equiv="Cache-Control" content="no-cache">' +
+            '<meta http-equiv="Pragma" content="no-cache">'
+            // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
+            + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
+            + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
+            + px2dp(13)
+            + 'px;'
+            + '}'
+            + 'p {word-break:break-all;}'
+            //  + Utils.NVL(this.props.webviewStyle, '')
+            + '</style>'
+            + '<script type="text/javascript">'
+            + 'function ResizeImages() {'
+            + 'var myimg,oldwidth;'
+            + 'var maxwidth = document.body.clientWidth;'
+            + 'for(i=0;i <document.images.length;i++){'
+            + 'myimg = document.images[i];'
+            + 'if(myimg.width > maxwidth){'
+            + 'oldwidth = myimg.width;'
+            + 'myimg.width = maxwidth;'
+            + '}'
+            + '}'
+            + '}'
+            + 'function onLoadFn() {'
+            + 'window.location.hash = "#+document.body.clientHeight";document.title = document.height || document.body.clientHeight;'
+            + 'ResizeImages()'
+            + '}'
+            + '</script>'
+            + '</head>'
+            + '<body onload="ResizeImages();">'
+            + '<div>'
+            + detail.content
+            + '</div>'
+            + '</body></html>';
+
         return <View style={styles.container}>
             <ScrollView
                 style={styles.container}
@@ -226,7 +302,8 @@ export default class ShowDetailPage extends BasePage {
                 {
                     detail.imgs
                         ?
-                        <ShowImageView items={detail.imgs.slice()} onPress={(imgs, index)=> this._showImagesPage(imgs, index)}/> 
+                        <ShowImageView items={detail.imgs.slice()}
+                                       onPress={(imgs, index) => this._showImagesPage(imgs, index)}/>
                         :
                         <View style={styles.header}/>
                 }
@@ -237,21 +314,33 @@ export default class ShowDetailPage extends BasePage {
                         <Text style={styles.showName}
                               allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
                     </View>
-                    <View style={styles.profileRight}>
-                        <Image source={res.button.see}/>
-                        <Text style={styles.number} allowFontScaling={false}>{number}</Text>
-                    </View>
+                    {/*<View style={styles.profileRight}>*/}
+                        {/*<Image source={res.button.see}/>*/}
+                        {/*<Text style={styles.number} allowFontScaling={false}>{number}</Text>*/}
+                    {/*</View>*/}
                 </View>
-                <HTML html={content} imagesMaxWidth={width - px2dp(30)}
-                      imagesInitialDimensions={{ width: width - px2dp(30), height: 0 }} containerStyle={{
-                    backgroundColor: '#fff',
-                    marginLeft: px2dp(15),
-                    marginRight: px2dp(15)
-                }} baseFontStyle={{
-                    lineHeight: px2dp(28),
-                    color: DesignRule.textColor_mainTitle,
-                    fontSize: px2dp(13)
-                }}/>
+                {/*<HTML html={content} imagesMaxWidth={width - px2dp(30)}*/}
+                {/*imagesInitialDimensions={{ width: width - px2dp(30), height: 0 }} containerStyle={{*/}
+                {/*backgroundColor: '#fff',*/}
+                {/*marginLeft: px2dp(15),*/}
+                {/*marginRight: px2dp(15)*/}
+                {/*}} baseFontStyle={{*/}
+                {/*lineHeight: px2dp(28),*/}
+                {/*color: DesignRule.textColor_mainTitle,*/}
+                {/*fontSize: px2dp(13)*/}
+                {/*}}/>*/}
+                <AutoHeightWebView source={{ html: html }}
+                                   style={{ width: DesignRule.width-30,alignSelf:'center' }}
+                                   scalesPageToFit={true}
+                                   javaScriptEnabled={true}
+                                   cacheEnabled={true}
+                                   domStorageEnabled={true}
+                                   mixedContentMode={'always'}
+                                   onLongClickImage={this._onLongClickImage}
+                                   showsHorizontalScrollIndicator={false}
+                                   showsVerticalScrollIndicator={false}
+
+                />
                 <View style={styles.goodsView}>
                     {
                         products.map((value, index) => {
@@ -261,8 +350,7 @@ export default class ShowDetailPage extends BasePage {
                         })
                     }
                 </View>
-            </ScrollView>
-            <View style={styles.bottom}>
+
                 {
                     isCollecting
                         ?
@@ -272,11 +360,18 @@ export default class ShowDetailPage extends BasePage {
                         :
                         <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
                             <Image style={styles.collectImg}
-                                   source={detail.hadCollect ? res.collected : res.uncollected}/>
+                                   source={detail.hadCollect ? res.showFire : res.noShowFire}/>
                             <Text style={styles.bottomText}
                                   allowFontScaling={false}>{'人气值'} · {detail.collectCount}</Text>
                         </TouchableOpacity>
                 }
+            </ScrollView>
+            <View style={styles.bottom}>
+                <View style={styles.showTimesWrapper}>
+                    <Image source={res.button.see} style={styles.seeImgStyle}/>
+                    <Text style={styles.number} allowFontScaling={false}>浏览 · {number}</Text>
+                </View>
+
                 <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
                     <Image source={res.share}/>
                     <View style={{ width: px2dp(10) }}/>
@@ -295,7 +390,7 @@ export default class ShowDetailPage extends BasePage {
                     <TouchableOpacity style={styles.shareView} onPress={() => {
                         this._goToShare();
                     }}>
-                        <Image source={res.button.show_share}/>
+                        <Image source={res.grayMore}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -377,7 +472,7 @@ let styles = StyleSheet.create({
         marginTop: px2dp(17),
         marginRight: px2dp(15),
         marginLeft: px2dp(15),
-        marginBottom: px2dp(20)
+        marginBottom: px2dp(15)
     },
     button: {
         backgroundColor: '#FF1A54',
@@ -427,21 +522,22 @@ let styles = StyleSheet.create({
     },
     number: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(11),
-        marginLeft: px2dp(9)
+        fontSize: px2dp(13),
+        marginLeft: px2dp(8)
     },
     bottomBtn: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom:px2dp(15)
     },
     leftButton: {
-        width: px2dp(125),
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: DesignRule.mainColor,
         flexDirection: 'row',
-        height: px2dp(50)
+        height: px2dp(50),
+        flex:1
     },
     text: {
         color: '#fff',
@@ -493,6 +589,16 @@ let styles = StyleSheet.create({
     title: {
         color: '#333',
         fontSize: px2dp(17)
+    },
+    showTimesWrapper:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+        flex:1
+    },
+    seeImgStyle:{
+        width:px2dp(20),
+        height:px2dp(12)
     }
 });
 

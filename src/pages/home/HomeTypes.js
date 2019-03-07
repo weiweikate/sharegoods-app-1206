@@ -11,7 +11,8 @@ export const homeType = {
   goodsTitle: 'goodsTitle',
   user: 'user',
   show: 11,            //秀场
-  web: 10
+  web: 10,
+  banner: 14
 }
 
 

@@ -3,14 +3,15 @@ import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 
-const { px2dp, onePixel } = ScreenUtils;
+const { px2dp } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
 import ImageLoader from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
 
-export const kHomeGoodsViewHeight = px2dp(263);
+export const kHomeGoodsViewHeight = px2dp(246);
+const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;
 
 const MoneyItems = ({ money }) => {
     if (EmptyUtils.isEmpty(money)) {
@@ -116,21 +117,19 @@ class ReuserImage extends Component {
 
 let styles = StyleSheet.create({
     container: {
-        height: px2dp(257),
-        width: px2dp(172),
-        backgroundColor: '#fff',
+        height: px2dp(240),
+        width: goodsWidth,
+        backgroundColor: 'white',
         borderRadius: px2dp(5),
-        borderColor: '#EDEDED',
-        borderWidth: onePixel,
         overflow: 'hidden'
     },
     uncontainer: {
-        height: px2dp(257),
-        width: px2dp(172)
+        height: px2dp(240),
+        width: goodsWidth
     },
     image: {
-        height: px2dp(172),
-        width: px2dp(172)
+        height: goodsWidth,
+        width: goodsWidth
     },
     titleView: {
         height: px2dp(25),
@@ -143,7 +142,7 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     dis: {
-        color: DesignRule.textColor_secondTitle,
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(12),
         marginTop: px2dp(10),
         marginLeft: px2dp(7),
@@ -169,7 +168,7 @@ let styles = StyleSheet.create({
     },
     unit: {
         color: DesignRule.mainColor,
-        marginBottom: 15,
+        marginBottom: px2dp(5),
         marginLeft: px2dp(7)
     },
     money: {
