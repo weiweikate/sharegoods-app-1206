@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     },
     shopFlag: {
         position: 'absolute',
-        bottom: 45,
+        bottom: 45 + ScreenUtils.safeBottom,
         left: (ScreenUtils.width - 76) / 2,
         width: 76,
         height: 23
