@@ -103,6 +103,7 @@ export default class HomeBannerView extends Component {
         return <View style={styles.banner}>
             <MRBannerViewComponent itemRadius={px2dp(5)} imgUrlArray={items} bannerHeight={bannerHeight}
                                    modeStyle={1} autoInterval={5}
+                                   pageFocused={this.props.pageFocused}
                                    onDidSelectItemAtIndex={(index) => {
                                        this._onPressRow(index);
                                    }}/>
