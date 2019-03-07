@@ -49,7 +49,7 @@ export class DetailBanner extends Component {
 
     _renderViewPageItem = (item = {}, index) => {
         if (item.videoUrl) {
-            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
+            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover} navigation = {this.props.navigation}/>;
         } else {
             const { originalImg } = item;
             let imgList = this.getImageList(this.productImgListOutVideo);
