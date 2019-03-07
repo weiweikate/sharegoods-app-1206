@@ -6,6 +6,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import apiEnvironment from '../../api/ApiEnvironment';
 
 export default class RequestDetailPage extends BasePage {
 
@@ -24,6 +25,9 @@ export default class RequestDetailPage extends BasePage {
             realUri = uri + '&ts=' + new Date().getTime();
         } else {
             realUri = uri + '?ts=' + new Date().getTime();
+        }
+        if (realUri.indexOf('http') === -1){
+            realUri =  apiEnvironment.getCurrentH5Url() + realUri;
         }
         this.state = {
             title: title,
@@ -68,6 +72,7 @@ export default class RequestDetailPage extends BasePage {
                     ref={(ref) => {
                         this.webView = ref;
                     }}
+                    originWhitelist={['(.*?)']}
                     source={{ uri: this.state.uri }}
                     navigateAppPage={(r, p) => {
                         if (r === 'login/login/LoginPage') {

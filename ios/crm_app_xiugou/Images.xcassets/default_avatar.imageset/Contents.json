@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "bg_default_avatar.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "yuan@2x.png",
       "scale" : "2x"
     },
     {

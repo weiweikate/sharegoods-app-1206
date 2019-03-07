@@ -213,7 +213,7 @@
 {
   if (_onItemPress) {
     _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
-    self.dataArr[indexPath.item].click++ ;
+    self.dataArr[indexPath.item].click = self.dataArr[indexPath.item].click + 5;
     [collectionView reloadData];
   }
 }
