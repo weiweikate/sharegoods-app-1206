@@ -34,7 +34,7 @@ import Storage from './utils/storage';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
-import {SpellShopFlag} from './navigation/Tab'
+import {SpellShopFlag} from './navigation/Tab';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {

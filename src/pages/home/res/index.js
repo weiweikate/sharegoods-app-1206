@@ -1,7 +1,6 @@
 import res from '../../../comm/res';
 import signIn from './signIn';
 import search from './search';
-import product from './product'
 
 const resHome = {
     arrowRight: require('./arrow_right.png'),
@@ -25,9 +24,6 @@ const resHome = {
     },
     search: {
         ...search
-    },
-    product: {
-        ...product
     },
     ...res
 };

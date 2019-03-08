@@ -15,7 +15,7 @@ import ResultVerticalRow from './components/ResultVerticalRow';
 import RouterMap from '../../../navigation/RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
-import SelectionPage from '../product/SelectionPage';
+import SelectionPage from '../../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ShopCartStore from '../../shopCart/model/ShopCartStore';
@@ -35,7 +35,7 @@ const viewTypes = {
 
 };
 
-const { width } = ScreenUtils;
+const { width, height } = ScreenUtils;
 
 
 const {
@@ -435,7 +435,7 @@ export default class SearchResultPage extends BasePage {
                                   showsVerticalScrollIndicator={false}
                                   onScroll={this._onScroll}
                                   onEndReached={this._onEndReached.bind(this)}
-                                  onEndReachedThreshold={20}
+                                  onEndReachedThreshold={height / 2.0}
                                   renderFooter={this._ListFooterComponent}/>
             </View>
         );

@@ -27,6 +27,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     private onDidSelectItemAtIndexEvent selectItemAtIndexEvent;
     private boolean pageFocus;
     private BannerLayout banner;
+    private WebBannerAdapter webBannerAdapter;
 
     @Override
     public String getName() {
@@ -49,11 +50,12 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
         banner.setOnPageSelected(new OnPageSelected() {
             @Override
             public void pageSelected(int position) {
-                if (eventDispatcher != null) {
-                    scrollToIndexEvent.init(banner.getId());
-                    scrollToIndexEvent.setIndex(position);
-                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
+                if (eventDispatcher == null) {
+
                 }
+                scrollToIndexEvent.init(banner.getId());
+                scrollToIndexEvent.setIndex(position);
+                eventDispatcher.dispatchEvent(scrollToIndexEvent);
             }
         });
     }
@@ -80,9 +82,16 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     public void setImgUrlArray(final BannerLayout view, ReadableArray urls) {
         if (urls != null) {
             final List datas = urls.toArrayList();
-            WebBannerAdapter webBannerAdapter = new WebBannerAdapter(view.getContext(), datas);
+            webBannerAdapter = new WebBannerAdapter(view.getContext(), datas);
             webBannerAdapter.setOnBannerItemClickListener(this);
             view.setAdapter(webBannerAdapter);
+        }
+    }
+
+    @ReactProp(name = "itemWidth")
+    public void setItemWidth(BannerLayout view, Integer width) {
+        if (webBannerAdapter != null) {
+            webBannerAdapter.setItemWidth(DensityUtils.dip2px(width));
         }
     }
 

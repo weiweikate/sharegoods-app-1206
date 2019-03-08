@@ -83,6 +83,7 @@ export default class HomeRecommendView extends Component {
                         itemWidth={px2dp(295)}
                         itemSpace={px2dp(10)}
                         itemRadius={5}
+                        pageFocused={this.props.pageFocused}
                         onDidSelectItemAtIndex={(index) => {
                             this._onPressRow(index);
                         }}
@@ -105,7 +106,7 @@ let styles = StyleSheet.create({
         width: ScreenUtil.width - px2dp(30),
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: '#fff'
+        backgroundColor: 'white'
     },
     scroll: {
         height: px2dp(175)
@@ -125,14 +126,14 @@ let styles = StyleSheet.create({
         width: px2dp(10),
         height: px2dp(3),
         borderRadius: px2dp(1.5),
-        backgroundColor: '#FF0050',
+        backgroundColor: DesignRule.mainColor,
         margin: 2
     },
     index: {
         width: px2dp(5),
         height: px2dp(3),
         borderRadius: px2dp(1.5),
-        backgroundColor: '#E4E4E4',
+        backgroundColor: DesignRule.lineColor_inWhiteBg,
         margin: 2
     }
 });

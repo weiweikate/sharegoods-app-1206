@@ -54,9 +54,25 @@ export default class VideoView extends Component {
         };
     }
 
+    componentWillMount() {
+        this.willBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                const { state } = payload;
+                if (state && (state.routeName === 'product/ProductDetailPage' || state.routeName === 'topic/TopicDetailPage')) {
+                    this.pauseVideo();
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+    }
+
     _render = () => {
         if (this.state.showVideoCover) {
-            return <View style={{ flex: 1,backgroundColor:DesignRule.imgBg_color }}>
+            return <View style={{ flex: 1, backgroundColor: DesignRule.imgBg_color }}>
                 <Image style={{ flex: 1, width: this.state.width }}
                        source={{ uri: this.state.videoCover }}
                        resizeMode={'cover'}/>
@@ -331,7 +347,7 @@ export default class VideoView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     playButton: {
         width: 50,
@@ -357,6 +373,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 44,
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)'
     }
 });
