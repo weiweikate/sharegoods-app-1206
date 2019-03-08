@@ -32,6 +32,10 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
         radius = DensityUtils.dip2px(5f);
     }
 
+    public void setUrlList(List<String> urlList) {
+        this.urlList = urlList;
+    }
+
     public void setItemWidth(int itemWidth) {
         this.itemWidth = itemWidth;
     }

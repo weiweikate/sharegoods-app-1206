@@ -50,11 +50,12 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
         banner.setOnPageSelected(new OnPageSelected() {
             @Override
             public void pageSelected(int position) {
-                if (eventDispatcher != null) {
-                    scrollToIndexEvent.init(banner.getId());
-                    scrollToIndexEvent.setIndex(position);
-                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
+                if (eventDispatcher == null) {
+
                 }
+                scrollToIndexEvent.init(banner.getId());
+                scrollToIndexEvent.setIndex(position);
+                eventDispatcher.dispatchEvent(scrollToIndexEvent);
             }
         });
     }
