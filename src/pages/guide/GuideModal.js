@@ -48,6 +48,9 @@ const {
     group,
     mine,
     next_btn,
+    button: {
+        cancel_white_circle
+    }
 } = res;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const adWidth = (ScreenUtils.width - autoSizeWidth(35)) / 2
@@ -90,7 +93,6 @@ export default class GuideModal extends React.Component {
                 this.getRewardzInfo();
             }
         }).catch(()=> {
-
         })
     }
 
@@ -290,9 +292,9 @@ export default class GuideModal extends React.Component {
                         </View>
                     </TouchableWithoutFeedback>
                     <View style={{flex: 1}}>
-                        {/*<TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>*/}
-                        {/*<Image source={close_white} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>*/}
-                        {/*</TouchableOpacity>*/}
+                        <TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>
+                        <Image source={cancel_white_circle} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )
