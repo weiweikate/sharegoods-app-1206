@@ -38,7 +38,7 @@ export default class PaymentPage extends BasePage {
         this.$navigateBack();
     }
 
-    goToPay() {
+    goToPay =()=> {
         const {selectedBalace} = payment
         if (!selectedBalace) {
             this.$navigate('payment/ChannelPage')
@@ -48,7 +48,7 @@ export default class PaymentPage extends BasePage {
         //用户设置过交易密码
         if (user.hadSalePassword) {
             payment.checkOrderStatus().then(result => {
-                if (result.data === payStatus.payNo) {
+                if (result.data.code === payStatus.payNo) {
                     this.setState({ showPwd: true })
                 } else if (result.data === payStatus.payNeedThrid) {
                     this.$navigate('payment/ChannelPage')
