@@ -85,7 +85,7 @@ export default class LocalNumLogin extends BasePage {
                     </TouchableOpacity>
                 </View>
                 {/*下部分视图*/}
-                <View style={Styles.bottomBgContent}>
+                <View style={Styles.localNumBottomContent}>
                     <ProtocolView
                         selectImageClick={(isSelect) => {
                             this.setState({
