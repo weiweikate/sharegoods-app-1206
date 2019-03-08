@@ -5,7 +5,7 @@ import {
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
-    RefreshControl, BackHandler
+    RefreshControl, BackHandler,NativeModules
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
@@ -62,6 +62,7 @@ const home_notice_bg = res.home_notice_bg;
 const { px2dp } = ScreenUtils;
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
+import { ScrollEvent } from 'recyclerlistview/dist/reactnative/core/scrollcomponent/BaseScrollView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -358,7 +359,11 @@ class HomePage extends BasePage {
         } else if (type === homeType.goodsTitle) {
             return <View style={styles.titleView}
                          onLayout={event => {
-                             this.layout = event.nativeEvent.layout;
+                             // this.layout = event.nativeEvent.layout;
+                             NativeModules.UIManager.measure(event.target, (x, y, width, height, pageX, pageY) => {
+                                 this.currentPosY = pageY;
+                             });
+
                          }}>
                 <HomeTitleView title={'为你推荐'}/>
             </View>;
@@ -482,6 +487,14 @@ class HomePage extends BasePage {
         );
     }
 
+    _onListViewScroll=(rawEvent: ScrollEvent, offsetX: number, offsetY: number)=>{
+        if(this.currentPosY){
+            if((this.currentPosY-offsetY) < (ScreenUtils.height-100)){
+                console.log((this.currentPosY-offsetY)+'---' +(ScreenUtils.height-100))
+            }
+        }
+    }
+
     render() {
         console.log('getBanner render', adModules.adHeight); //千万别去掉
         const { homeList } = homeModule;
@@ -505,6 +518,7 @@ class HomePage extends BasePage {
                     layoutProvider={this.layoutProvider}
                     onScrollBeginDrag={()=> {this.luckyIcon.close();}}
                     showsVerticalScrollIndicator={false}
+                    onScroll={this._onListViewScroll}
                     renderFooter={() => <Footer
                         isFetching={homeModule.isFetching}
                         errorMsg={homeModule.errorMsg}
