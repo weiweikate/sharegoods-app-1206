@@ -59,11 +59,7 @@ export default class RequestDetailPage extends BasePage {
         if (ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()) {
             height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ScreenUtils.headerHeight;
         } else if (ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()) {
-            if (ScreenUtils.getHasNotchScreen()) {
-                height = ScreenUtils.height - 44;
-            } else {
-                height = ScreenUtils.height - 44 - ExtraDimensions.get('STATUS_BAR_HEIGHT');
-            }
+            height = ScreenUtils.height - 44- ExtraDimensions.get('STATUS_BAR_HEIGHT');
         }
         return (
             <View style={{ height, overflow: 'hidden' }}>
