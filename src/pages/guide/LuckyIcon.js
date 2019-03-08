@@ -51,6 +51,7 @@ export default class LuckyIcon extends React.Component {
                 this.setState({show: false});
             }
         }).catch(() => {
+            this.setState({show: false});
         })
     }
 
@@ -87,6 +88,7 @@ export default class LuckyIcon extends React.Component {
     _onPress = () => {
         if (this.isOpen === false){
             this.open();
+            return;
         }
         let data = this.state.data;
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
