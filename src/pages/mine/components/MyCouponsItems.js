@@ -524,10 +524,14 @@ export default class MyCouponsItems extends Component {
         3、单产品、限iphone手机商品可用（产品名称，名称过长则超过6个字后...限iphone手机...商品可用）
         4、多产品、则直接显示，限指定商品可使用
         5、产品+分类的情况下，则显示，限指定商品可使用
+        6。如果产品是周期券，直接返回'限指定商品可使用'
     * */
     parseCoupon = (item) => {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
+        if(item.type === 5){
+            return "限商品：限指定商品可用";
+        }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
                 return "限商品：限指定商品可用";

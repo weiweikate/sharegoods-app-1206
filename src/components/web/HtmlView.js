@@ -2,11 +2,10 @@ import React from 'react';
 import BasePage from '../../BasePage';
 import WebViewBridge from '@mr/webview';
 import { View } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
 import apiEnvironment from '../../api/ApiEnvironment';
+import RouterMap from '../../navigation/RouterMap';
 
 export default class RequestDetailPage extends BasePage {
 
@@ -26,8 +25,8 @@ export default class RequestDetailPage extends BasePage {
         } else {
             realUri = uri + '?ts=' + new Date().getTime();
         }
-        if (realUri.indexOf('http') === -1){
-            realUri =  apiEnvironment.getCurrentH5Url() + realUri;
+        if (realUri.indexOf('http') === -1) {
+            realUri = apiEnvironment.getCurrentH5Url() + realUri;
         }
         this.state = {
             title: title,
@@ -55,18 +54,8 @@ export default class RequestDetailPage extends BasePage {
     };
 
     _render() {
-        let height = ScreenUtils.height - ScreenUtils.headerHeight;
-        if (ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()) {
-            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ScreenUtils.headerHeight;
-        } else if (ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()) {
-            if (ScreenUtils.getHasNotchScreen()) {
-                height = ScreenUtils.height - 44;
-            } else {
-                height = ScreenUtils.height - 44 - ExtraDimensions.get('STATUS_BAR_HEIGHT');
-            }
-        }
         return (
-            <View style={{ height, overflow: 'hidden' }}>
+            <View style={{ flex:1, overflow: 'hidden' }}>
                 <WebViewBridge
                     style={{ flex: 1 }}
                     ref={(ref) => {
@@ -82,6 +71,10 @@ export default class RequestDetailPage extends BasePage {
                                 }
                             });
                         } else {
+                            if (r.length > 0) {
+                                let routerKey = r.split('/').pop();
+                                r = RouterMap[routerKey] || r;
+                            }
                             this.$navigate(r, p);
                         }
                     }}

@@ -73,7 +73,7 @@ const phoneBindWx = () => {
             headImg:wxInfo.headerImg,
             nickname:wxInfo.nickName
         }).then(result => {
-            bridge.$toast('微信绑定成功');
+            // bridge.$toast('微信绑定成功');
         }).catch(error=>{
             bridge.$toast(error.msg);
         })

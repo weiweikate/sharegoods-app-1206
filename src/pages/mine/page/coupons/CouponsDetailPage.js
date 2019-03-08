@@ -91,6 +91,9 @@ export default class CouponsDetailPage extends BasePage {
     parseCoupon = (item) => {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
+        if(item.type === 5){
+            return "限商品：限指定商品可用";
+        }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
                 return "限商品：限指定商品可用";

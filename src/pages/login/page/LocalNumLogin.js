@@ -19,7 +19,6 @@ import { MRTextInput } from "../../../components/ui";
 import ProtocolView from "../components/Login.protocol.view";
 import { startPhoneAuthen } from "../model/PhoneAuthenAction";
 import { oneClickLoginValidation } from "../model/LoginActionModel";
-// import RouterMap from "../../../navigation/RouterMap";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -38,12 +37,6 @@ export default class LocalNumLogin extends BasePage {
             authenToken: this.params.authenToken || ""
         };
     }
-
-    componentDidMount() {
-
-
-    }
-
     // 导航配置
     $navigationBarOptions = {
         // title: '登录',
@@ -61,26 +54,14 @@ export default class LocalNumLogin extends BasePage {
                 style={Styles.bgContent}
             >
                 {/*上部分视图*/}
-                <View
-                    style={Styles.topBgContent}
-                >
-                    <View
-                        style={Styles.topImageBgView}
-                    >
-                        <Image
-                            style={Styles.topImageView}
-                            source={tongyong_logo_nor}
-                        />
+                <View style={Styles.topBgContent}>
+                    <View style={Styles.topImageBgView}>
+                        <Image style={Styles.topImageView} source={tongyong_logo_nor}/>
                     </View>
                 </View>
 
                 {/*中部视图*/}
-                <View
-                    style={{
-                        flex: 1,
-                        alignItems: "center"
-                    }}
-                >
+                <View style={localNumberLoginStyles.middleBgViewStyle}>
                     <MRTextInput
                         style={InputStyle.textInputStyle}
                         value={StringUtils.encryptPhone(this.state.phoneNumber)}
@@ -90,48 +71,21 @@ export default class LocalNumLogin extends BasePage {
                         placeholder='请输入手机号'
                         keyboardType='numeric'
                         maxLength={11}
-                        onEndEditing={() => {
-                            // if (StringUtils.isEmpty(loginModel.phoneNumber.trim())) {
-                            //     bridge.$toast("请输入手机号");
-                            // } else {
-                            //     if (!StringUtils.checkPhone(loginModel.phoneNumber)) {
-                            //         bridge.$toast("手机号格式不对");
-                            //     }
-                            // }
-                        }}
                         placeholderTextColor={DesignRule.textColor_placeholder}
                     />
-                    <View
-                        style={{
-                            marginTop: ScreenUtils.px2dp(3),
-                            height: 1,
-                            width: ScreenUtils.width - ScreenUtils.px2dp(80),
-                            backgroundColor: DesignRule.imgBg_color
-                        }}
-                    />
-                    <TouchableOpacity
-                        onPress={() => {
-                            this._clickAction();
-                        }}
-                    >
-                        <View
-                            style={localNumberLoginStyles.btnBgStyle}
-                        >
-
-                            <Text
-                                style={localNumberLoginStyles.btnTextStyle}
-                            >
+                    <View style={localNumberLoginStyles.middleLineStyle}/>
+                    <TouchableOpacity onPress={() => {
+                        this._clickAction();
+                    }}>
+                        <View style={localNumberLoginStyles.btnBgStyle}>
+                            <Text style={localNumberLoginStyles.btnTextStyle}>
                                 本机号码一键登录
                             </Text>
-
                         </View>
                     </TouchableOpacity>
                 </View>
-
                 {/*下部分视图*/}
-                <View
-                    style={Styles.bottomBgContent}
-                >
+                <View style={Styles.localNumBottomContent}>
                     <ProtocolView
                         selectImageClick={(isSelect) => {
                             this.setState({
@@ -156,7 +110,7 @@ export default class LocalNumLogin extends BasePage {
             setTimeout(() => {
                 this.$loadingDismiss();
                 Alert.alert(
-                    "18768435263",
+                    this.state.phoneNumber,
                     "如果您是双卡手机，请确保填写的号码是默认上网的手机号码",
                     [
                         { text: "从新填写", onPress: () => console.log("Ask me later pressed") },
@@ -180,18 +134,14 @@ export default class LocalNumLogin extends BasePage {
         if (Platform.OS === "android") {
             if (this.state.authenToken.length > 0) {
                 this.$loadingDismiss();
-                // this.state.authenToken
-                // this.state.phoneNumber
                 this._beginAuthen(this.state.phoneNumber, this.state.authenToken);
-
             } else {
                 this.$toastShow("本地号码一键登录失败，请尝试其他登录方式");
-
             }
         } else {
             startPhoneAuthen(this.state.phoneNumber).then(res => {
                     this.$loadingDismiss();
-                    if (res.resultCode === '6666') {
+                    if (res.resultCode === "6666") {
                         // this.state.phoneNumber 6666代表拿到了token
                         // res.accessCode
                         this._beginAuthen(this.state.phoneNumber, res.accessCode);
@@ -209,12 +159,10 @@ export default class LocalNumLogin extends BasePage {
      * @param authenToken
      * @private
      */
-    _beginAuthen = (phone, authenToken='') => {
-        alert(authenToken);
-        console.log(phone);
-        console.log(authenToken);
-        let {navigation} = this.props;
-        oneClickLoginValidation(phone,authenToken,navigation)
+    _beginAuthen = (phone, authenToken = "") => {
+        // alert(authenToken);
+        let { navigation } = this.props;
+        oneClickLoginValidation(phone, authenToken, navigation);
     };
 }
 
@@ -232,6 +180,16 @@ const localNumberLoginStyles = StyleSheet.create(
         btnTextStyle: {
             color: DesignRule.color_fff,
             fontSize: px2dp(17)
+        },
+        middleBgViewStyle: {
+            flex: 1,
+            alignItems: "center"
+        },
+        middleLineStyle: {
+            marginTop: ScreenUtils.px2dp(3),
+            height: 1,
+            width: ScreenUtils.width - ScreenUtils.px2dp(80),
+            backgroundColor: DesignRule.imgBg_color
         }
     }
 );

@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/InputPhoneNum.Style";
-import res from "../res";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import bridge from "../../../utils/bridge";
 import StringUtils from "../../../utils/StringUtils";
@@ -21,11 +20,6 @@ import SMSTool from "../../../utils/SMSTool";
 import { registAction } from "../model/LoginActionModel";
 
 const { px2dp } = ScreenUtils;
-const {
-    other: {
-        // tongyong_logo_nor
-    }
-} = res;
 
 export default class InputCode extends BasePage {
 

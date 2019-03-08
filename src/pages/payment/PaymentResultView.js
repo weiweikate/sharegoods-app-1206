@@ -61,14 +61,14 @@ export default class PaymentResultView extends Component {
             result: result,
             message: message
         });
-        this.props.payment.isShowResult = true
-        this.props.payment.paySuccessFul = result === PaymentResult.sucess
+        // this.props.payment.isShowResult = true
+        // this.props.payment.paySuccessFul = result === PaymentResult.sucess
     }
 
     dismiss() {
         this.setState({ modalVisible: false, message: '' });
-        this.props.repay()
-        this.props.payment.isShowResult = false
+        // this.props.repay()
+        // this.props.payment.isShowResult = false
     }
 
     render() {
