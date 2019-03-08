@@ -42,7 +42,7 @@ class Card extends Component {
 
         TimerMixin.setTimeout(() => {
             const { readNumber } = this.state
-            this.setState({readNumber: readNumber + 1})
+            this.setState({readNumber: readNumber + 5})
         }, 800)
     }
 

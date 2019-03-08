@@ -1,6 +1,6 @@
 import { TabNavigator } from 'react-navigation';
-import React, {Component} from 'react';
-import {Text, View} from 'react-native'
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
@@ -15,48 +15,48 @@ import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
 
 
-const NormalTab = ({source, title}) => {
+const NormalTab = ({ source, title }) => {
     return <View style={styles.tab}>
-    <Image style={styles.tabBarIcon} source={source}/>
-    <Text style={styles.text}>{title}</Text>
-    </View>
-}
+        <Image style={styles.tabBarIcon} source={source}/>
+        <Text style={styles.text}>{title}</Text>
+    </View>;
+};
 
-const ActiveTab = ({source, title}) => {
+const ActiveTab = ({ source, title }) => {
     return <View style={styles.tab}>
-    <Image style={styles.tabBarIcon} source={source}/>
-    <Text style={styles.activeText}>{title}</Text>
-    </View>
-}
+        <Image style={styles.tabBarIcon} source={source}/>
+        <Text style={styles.activeText}>{title}</Text>
+    </View>;
+};
 
-const Tab = ({focused, activeSource, normalSource, title}) => {
+const Tab = ({ focused, activeSource, normalSource, title }) => {
     if (focused) {
-        return <ActiveTab source={activeSource} title={title}/>
+        return <ActiveTab source={activeSource} title={title}/>;
     }
-    return <NormalTab source={normalSource} title={title}/>
-}
+    return <NormalTab source={normalSource} title={title}/>;
+};
 
 @observer
 class SpellShopTab extends Component {
     render() {
-        const { focused, normalSource, activeSource } = this.props
+        const { focused, normalSource, activeSource } = this.props;
         if (!user) {
-            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
+            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
         }
 
         if (!user.isLogin) {
-            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
+            return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
         }
 
         if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <Image style={styles.store} source={res.tab.home_store}/>
+            return <Image style={styles.store} source={res.tab.home_store}/>;
         }
 
         if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <Image style={styles.store} source={res.tab.home_store}/>
+            return <Image style={styles.store} source={res.tab.home_store}/>;
         }
 
-        return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>
+        return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
     }
 }
 
@@ -64,40 +64,40 @@ const ShowFlag = () => <View style={styles.shopFlag}>
     <ImageBackground style={styles.flagBg} source={res.tab.home_store_flag}>
         <Text style={styles.flagText}>快享拼店价</Text>
     </ImageBackground>
-</View>
+</View>;
 
 @observer
 export class SpellShopFlag extends Component {
     state = {
         isFlag: true
-    }
+    };
 
     componentWillReceiveProps(nextProps) {
-        const {isShow} = nextProps
+        const { isShow } = nextProps;
         if (isShow) {
             setTimeout(() => {
-                this.setState({isFlag: isShow})
-            }, 400)
+                this.setState({ isFlag: isShow });
+            }, 400);
         } else {
-            this.setState({isFlag: isShow})
+            this.setState({ isFlag: isShow });
         }
     }
 
     render() {
         if (!this.state.isFlag) {
-            return null
+            return null;
         }
         if (!user) {
-            return null
+            return null;
         }
         if (!user.isLogin) {
-            return null
+            return null;
         }
         if (user.levelRemark >= 'V2' && !user.storeCode) {
-            return <ShowFlag/>
+            return <ShowFlag/>;
         }
         if (user.storeCode && user.levelRemark >= 'V2' && user.storeStatus === 0) {
-            return <ShowFlag/>
+            return <ShowFlag/>;
         }
 
         return null;
@@ -109,34 +109,39 @@ export const TabNav = TabNavigator(
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.home_n} activeSource={res.tab.home_s} title={'首页'}/>
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.home_n}
+                                                  activeSource={res.tab.home_s} title={'首页'}/>
             }
         },
         ShowListPage: {
             screen: ShowListPage,
             navigationOptions: {
                 tabBarLabel: '秀场',
-                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.discover_n} activeSource={res.tab.discover_s} title={'秀场'}/>
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.discover_n}
+                                                  activeSource={res.tab.discover_s} title={'秀场'}/>
             }
         },
         MyShop_RecruitPage: {
             screen: MyShop_RecruitPage,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => {
-                    return <SpellShopTab focused={focused} normalSource={res.tab.group_n} activeSource={res.tab.group_s}/>
+                    return <SpellShopTab focused={focused} normalSource={res.tab.group_n}
+                                         activeSource={res.tab.group_s}/>;
                 }
             }
         },
         ShopCartPage: {
             screen: ShopCart,
             navigationOptions: ({ navigation }) => ({
-                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.cart_n} activeSource={res.tab.cart_s} title={'购物车'}/>
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.cart_n}
+                                                  activeSource={res.tab.cart_s} title={'购物车'}/>
             })
         },
         MinePage: {
             screen: Mine,
             navigationOptions: ({ navigation }) => ({
-                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.mine_n} activeSource={res.tab.mine_s} title={'我的'}/>,
+                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.mine_n}
+                                                  activeSource={res.tab.mine_s} title={'我的'}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene } = tab;
                     if (user && user.isLogin) {
@@ -163,12 +168,11 @@ export const TabNav = TabNavigator(
             style: {
                 backgroundColor: '#fff',
                 paddingBottom: ScreenUtils.safeBottomMax + 1,
-                height: 50,
+                height: 48,
                 borderTopWidth: 0.2,
-                paddingTop: 1,
                 borderTopColor: '#ccc'
             },
-            allowFontScaling : false,
+            allowFontScaling: false,
             //tab 页指示符的样式 (tab页下面的一条线).
             indicatorStyle: { height: 0 }
         },
@@ -185,8 +189,8 @@ export const TabNav = TabNavigator(
     });
 const styles = StyleSheet.create({
     tabBarIcon: {
-        width: 21,
-        height: 21
+        width: 24,
+        height: 24
     },
     store: {
         width: 40,
@@ -213,7 +217,7 @@ const styles = StyleSheet.create({
     },
     shopFlag: {
         position: 'absolute',
-        bottom: 45,
+        bottom: 45 + ScreenUtils.safeBottom,
         left: (ScreenUtils.width - 76) / 2,
         width: 76,
         height: 23
@@ -227,6 +231,6 @@ const styles = StyleSheet.create({
     },
     flagText: {
         color: '#fff',
-        fontSize: 12,
+        fontSize: 12
     }
 });
