@@ -26,7 +26,7 @@ export default class Login extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            canPhoneAuthen: true,//是否可以本地号码一键登录 默认不可以
+            canPhoneAuthen: false,//是否可以本地号码一键登录 默认不可以
             isSelectProtocol: true
         };
     }

@@ -397,6 +397,9 @@ export default class SelectMentorPage extends BasePage {
     * 绑定导师
     * */
     _bindMentor = () => {
+        if (this.state.selectIndex === -1){
+            return ;
+        }
         if (this.state.selectIndex <= this.state.mentorData.length - 1) {
             let mentorData = this.state.mentorData[this.state.selectIndex];
             LoginAPI.mentorBind({

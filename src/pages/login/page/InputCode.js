@@ -169,7 +169,6 @@ export default class InputCode extends BasePage {
             };
             registAction(params, (res) => {
                 if (res.code === 10000) {
-                    this.$toastShow("注册成功");
                     this.$navigate(RouterMap.InviteCodePage);
                 } else {
                     this.$toastShow(res.msg);

@@ -103,6 +103,7 @@ export default class LoginPage extends BasePage {
                 this.$navigateBack();
             }}>
                 <Image
+                    style={{paddingRight:5}}
                     source={close_X}
                 />
             </TouchableOpacity>

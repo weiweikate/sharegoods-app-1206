@@ -18,6 +18,7 @@ import StringUtils from "../../../utils/StringUtils";
 import { MRTextInput } from "../../../components/ui";
 import ProtocolView from "../components/Login.protocol.view";
 import { startPhoneAuthen } from "../model/PhoneAuthenAction";
+import { oneClickLoginValidation } from "../model/LoginActionModel";
 // import RouterMap from "../../../navigation/RouterMap";
 
 const { px2dp } = ScreenUtils;
@@ -189,14 +190,18 @@ export default class LocalNumLogin extends BasePage {
             }
         } else {
             startPhoneAuthen(this.state.phoneNumber).then(res => {
-                this.$loadingDismiss();
-                // this.state.phoneNumber
-                // res.tokemn
-                console.log(res);
-
-            });
+                    this.$loadingDismiss();
+                    if (res.resultCode === '6666') {
+                        // this.state.phoneNumber 6666代表拿到了token
+                        // res.accessCode
+                        this._beginAuthen(this.state.phoneNumber, res.accessCode);
+                        console.log(res);
+                    } else {
+                        this.$toastShow("本地号码一键登录失败，请尝试其他登录方式");
+                    }
+                }
+            );
         }
-
     };
     /**
      * 开始认证函数
@@ -204,10 +209,12 @@ export default class LocalNumLogin extends BasePage {
      * @param authenToken
      * @private
      */
-    _beginAuthen = (phone, authenToken) => {
+    _beginAuthen = (phone, authenToken='') => {
         alert(authenToken);
         console.log(phone);
         console.log(authenToken);
+        let {navigation} = this.props;
+        oneClickLoginValidation(phone,authenToken,navigation)
     };
 }
 

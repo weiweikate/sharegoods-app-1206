@@ -31,7 +31,10 @@ const api = {
     oldUserActivateJudge:['/user/userSign/oldUserActivateJudge',{method:'get'}],
     //是否有秀迷
     queryShowFansStatus:['/user/queryShowFansStatus',{method:'post'}],
-
+    //一键登录后去绑定微信操作
+    phoneBindWx:['/user/userLogin/bindWeChat'],
+    //一键登录校验token借口
+    oneClickLoginValidation:['/user/userLogin/autoLogin'],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
