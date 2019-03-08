@@ -27,8 +27,8 @@ export default class RequestDetailPage extends BasePage {
         } else {
             realUri = uri + '?ts=' + new Date().getTime();
         }
-        if (realUri.indexOf('http') === -1){
-            realUri =  apiEnvironment.getCurrentH5Url() + realUri;
+        if (realUri.indexOf('http') === -1) {
+            realUri = apiEnvironment.getCurrentH5Url() + realUri;
         }
         this.state = {
             title: title,
@@ -60,7 +60,7 @@ export default class RequestDetailPage extends BasePage {
         if (ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()) {
             height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ScreenUtils.headerHeight;
         } else if (ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()) {
-            height = ScreenUtils.height - 44- ExtraDimensions.get('STATUS_BAR_HEIGHT');
+            height = ScreenUtils.height - 44 - ExtraDimensions.get('STATUS_BAR_HEIGHT');
         }
         return (
             <View style={{ height, overflow: 'hidden' }}>
@@ -80,7 +80,7 @@ export default class RequestDetailPage extends BasePage {
                             });
                         } else {
                             if (r.length > 0) {
-                                let routerKey = r.split('/').slice(-1);
+                                let routerKey = r.split('/').pop();
                                 r = RouterMap[routerKey] || r;
                             }
                             this.$navigate(r, p);
