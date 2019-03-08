@@ -25,8 +25,8 @@ export default class RequestDetailPage extends BasePage {
         } else {
             realUri = uri + '?ts=' + new Date().getTime();
         }
-        if (realUri.indexOf('http') === -1){
-            realUri =  apiEnvironment.getCurrentH5Url() + realUri;
+        if (realUri.indexOf('http') === -1) {
+            realUri = apiEnvironment.getCurrentH5Url() + realUri;
         }
         this.state = {
             title: title,
@@ -54,7 +54,6 @@ export default class RequestDetailPage extends BasePage {
     };
 
     _render() {
-
         return (
             <View style={{ flex:1, overflow: 'hidden' }}>
                 <WebViewBridge
@@ -73,7 +72,7 @@ export default class RequestDetailPage extends BasePage {
                             });
                         } else {
                             if (r.length > 0) {
-                                let routerKey = r.split('/').slice(-1);
+                                let routerKey = r.split('/').pop();
                                 r = RouterMap[routerKey] || r;
                             }
                             this.$navigate(r, p);
