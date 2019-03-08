@@ -180,6 +180,7 @@ class HomePage extends BasePage {
                 this.homeFocused = false;
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
+                    this.guideModal.cancelUserRecord();
                     this.setState({ isShow: false }, () => {
                         // android状态栏黑色字体
                         bridge.setLightMode();
@@ -501,6 +502,7 @@ class HomePage extends BasePage {
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
+                    onScrollBeginDrag={()=> {this.luckyIcon.close();}}
                     showsVerticalScrollIndicator={false}
                     renderFooter={() => <Footer
                         isFetching={homeModule.isFetching}
