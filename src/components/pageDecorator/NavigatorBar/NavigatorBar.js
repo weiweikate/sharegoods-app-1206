@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     button: {
-        color: DesignRule.mainColor,
+        color: DesignRule.textColor_mainTitle,
         fontSize: 13
     }
 });

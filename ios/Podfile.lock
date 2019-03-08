@@ -30,12 +30,12 @@ PODS:
   - QIYU_iOS_SDK (4.9.0)
   - SandBoxPreviewTool (1.1)
   - SDAutoLayout (2.2.1)
-  - SDWebImage (4.4.5):
-    - SDWebImage/Core (= 4.4.5)
-  - SDWebImage/Core (4.4.5)
-  - SensorsAnalyticsSDK (1.10.21):
-    - SensorsAnalyticsSDK/core (= 1.10.21)
-  - SensorsAnalyticsSDK/core (1.10.21)
+  - SDWebImage (4.4.6):
+    - SDWebImage/Core (= 4.4.6)
+  - SDWebImage/Core (4.4.6)
+  - SensorsAnalyticsSDK (1.10.23):
+    - SensorsAnalyticsSDK/core (= 1.10.23)
+  - SensorsAnalyticsSDK/core (1.10.23)
   - TYCyclePagerView (1.1.2)
   - UICKeyChainStore (2.1.2)
   - UMCAnalytics (5.5.4):
@@ -118,8 +118,8 @@ SPEC CHECKSUMS:
   QIYU_iOS_SDK: 7343f8366e56b92aa6b2da3ae8e92d5bd0e95c73
   SandBoxPreviewTool: 2d837db4409c74c9a8047838f5b320c08161fad1
   SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
-  SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
-  SensorsAnalyticsSDK: f1a111da485eea78d33c979bce50420caed24f70
+  SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
+  SensorsAnalyticsSDK: a8c0834cc06c2640b6c0d62cd8666e18b756d13a
   TYCyclePagerView: 0f67b0986995fd614843e819bc974cadd7f98008
   UICKeyChainStore: 85db518bb1d294366d15ec9b92a416c4e670518f
   UMCAnalytics: 8449e33b7627ee26f1169202827a8d5a00b5442b
@@ -131,4 +131,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: db0bb9eeb21fa3c1c35da5064a3f55b7d51aad34
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1
