@@ -372,6 +372,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        this.luckyIcon.getLucky();
         this.loadMessageCount();
     }
 
