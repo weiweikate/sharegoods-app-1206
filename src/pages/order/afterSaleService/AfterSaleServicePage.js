@@ -26,13 +26,13 @@ import BusinessUtils from '../../mine/components/BusinessUtils';
 
 import OrderApi from '../api/orderApi';
 // import SelectionPage from '../../home/product/SelectionPage';
-import HomeAPI from '../../home/api/HomeAPI';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import { trackEvent, track } from '../../../utils/SensorsTrack';
+import ProductApi from '../../product/api/ProductApi';
 
 const { arrow_right } = res;
 
@@ -475,7 +475,7 @@ class AfterSaleServicePage extends BasePage {
      */
     loadSelectionData() {
         this.$loadingShow();
-        HomeAPI.getProductSpec({
+        ProductApi.getProductSpec({
             id: this.params.productId
         }).then((data) => {
             this.$loadingDismiss();

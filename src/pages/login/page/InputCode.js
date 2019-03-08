@@ -110,7 +110,7 @@ export default class InputCode extends BasePage {
                             }
                             <TouchableOpacity
                                 style={{
-                                    paddingTop:px2dp(2),
+                                    paddingTop:px2dp(0),
                                     marginLeft: px2dp(5),
                                     justifyContent: "center"
                                 }}
@@ -169,7 +169,6 @@ export default class InputCode extends BasePage {
             };
             registAction(params, (res) => {
                 if (res.code === 10000) {
-                    this.$toastShow("注册成功");
                     this.$navigate(RouterMap.InviteCodePage);
                 } else {
                     this.$toastShow(res.msg);

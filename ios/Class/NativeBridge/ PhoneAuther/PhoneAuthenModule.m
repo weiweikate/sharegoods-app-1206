@@ -23,7 +23,7 @@ RCT_EXPORT_METHOD(isCanPhoneAuthen:(RCTPromiseResolveBlock)resolve reject:(RCTPr
 //  resolve(@{@"isCanAuthen":@22});
 ////  return;
   if( [PhoneAutherTool isCanPhoneAuthen]){
-    resolve(@{@"isCanAuthen":@1});
+    resolve(@{@"isCanAuthen":@0});
   }else{
     resolve(@{@"isCanAuthen":@0});
   }

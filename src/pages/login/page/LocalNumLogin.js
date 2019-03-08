@@ -5,7 +5,8 @@ import {
     TouchableOpacity,
     Text,
     StyleSheet,
-    Alert
+    Alert,
+    Platform
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/Login.style";
@@ -17,7 +18,8 @@ import StringUtils from "../../../utils/StringUtils";
 import { MRTextInput } from "../../../components/ui";
 import ProtocolView from "../components/Login.protocol.view";
 import { startPhoneAuthen } from "../model/PhoneAuthenAction";
-import RouterMap from "../../../navigation/RouterMap";
+import { oneClickLoginValidation } from "../model/LoginActionModel";
+// import RouterMap from "../../../navigation/RouterMap";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -32,8 +34,14 @@ export default class LocalNumLogin extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            phoneNumber: ""
+            phoneNumber: this.params.tempPhone || "",
+            authenToken: this.params.authenToken || ""
         };
+    }
+
+    componentDidMount() {
+
+
     }
 
     // 导航配置
@@ -75,7 +83,7 @@ export default class LocalNumLogin extends BasePage {
                 >
                     <MRTextInput
                         style={InputStyle.textInputStyle}
-                        value={this.state.phoneNumber}
+                        value={StringUtils.encryptPhone(this.state.phoneNumber)}
                         onChangeText={text => this.setState({
                             phoneNumber: text
                         })}
@@ -125,10 +133,16 @@ export default class LocalNumLogin extends BasePage {
                     style={Styles.bottomBgContent}
                 >
                     <ProtocolView
-                        selectImageClick={() => {
+                        selectImageClick={(isSelect) => {
+                            this.setState({
+                                isSelectProtocol: isSelect
+                            });
                         }}
-                        textClick={() => {
-
+                        textClick={(htmlUrl) => {
+                            this.$navigate("HtmlPage", {
+                                title: "用户协议内容",
+                                uri: htmlUrl
+                            });
                         }}
                     />
                 </View>
@@ -162,15 +176,45 @@ export default class LocalNumLogin extends BasePage {
     };
 
     _sureClick = () => {
-
-
-        this.$navigate(RouterMap.InputPhoneNum);
-        return;
         this.$loadingShow();
-        startPhoneAuthen(this.state.phoneNumber).then(res => {
-            this.$loadingDismiss();
-            console.log(res);
-        });
+        if (Platform.OS === "android") {
+            if (this.state.authenToken.length > 0) {
+                this.$loadingDismiss();
+                // this.state.authenToken
+                // this.state.phoneNumber
+                this._beginAuthen(this.state.phoneNumber, this.state.authenToken);
+
+            } else {
+                this.$toastShow("本地号码一键登录失败，请尝试其他登录方式");
+
+            }
+        } else {
+            startPhoneAuthen(this.state.phoneNumber).then(res => {
+                    this.$loadingDismiss();
+                    if (res.resultCode === '6666') {
+                        // this.state.phoneNumber 6666代表拿到了token
+                        // res.accessCode
+                        this._beginAuthen(this.state.phoneNumber, res.accessCode);
+                        console.log(res);
+                    } else {
+                        this.$toastShow("本地号码一键登录失败，请尝试其他登录方式");
+                    }
+                }
+            );
+        }
+    };
+    /**
+     * 开始认证函数
+     * @param phone
+     * @param authenToken
+     * @private
+     */
+    _beginAuthen = (phone, authenToken='') => {
+        alert(authenToken);
+        console.log(phone);
+        console.log(authenToken);
+        let {navigation} = this.props;
+        oneClickLoginValidation(phone,authenToken,navigation)
     };
 }
 

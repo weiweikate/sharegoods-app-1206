@@ -14,14 +14,14 @@ import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 import { MRText as Text } from '../../components/ui';
 
 
-export const todayHeight = px2dp(240)
+export const todayHeight = px2dp(240);
 
 @observer
 export default class HomeTodayView extends Component {
 
     state = {
         index: 0
-    }
+    };
 
     _onPressRow(e) {
         let index = e.nativeEvent.index;
@@ -57,45 +57,46 @@ export default class HomeTodayView extends Component {
         const { todayList } = todayModule;
 
         if (todayList.length === 0) {
-            return <View/>
+            return <View/>;
         }
 
         let items = [];
         todayList.map((item, index) => {
             items.push(item.imgUrl);
         });
-        return  <View style={styles.container}>
-        <View style={styles.titleView}>
-            <View style={styles.flag}/>
-            <Text style={styles.title}>今日榜单</Text>
-        </View>
-        {
-            todayList.length === 1
-            ?
-            <TouchableWithoutFeedback onPress={()=>this._onPressRowWithItem(todayList[0])}>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                {this.renderRow(todayList[0])}
+        return <View style={styles.container}>
+            <View style={styles.titleView}>
+                <View style={styles.flag}/>
+                <Text style={styles.title}>今日榜单</Text>
             </View>
-            </TouchableWithoutFeedback>
-            :
-            <MRBannerView
-                style={{
-                    height: px2dp(160),
-                    width: ScreenUtil.width - px2dp(30)
-                }}
-                imgUrlArray={items}
-                itemWidth={px2dp(295)}
-                itemSpace={px2dp(10)}
-                itemRadius={5}
-                onDidSelectItemAtIndex={(index) => {
-                    this._onPressRow(index);
-                }}
-                onDidScrollToIndex={(index) => {
-                    this._onDidScrollToIndex(index);
-                }}
-            />
-        }
-        {this.renderIndexView()}
+            {
+                todayList.length === 1
+                    ?
+                    <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(todayList[0])}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            {this.renderRow(todayList[0])}
+                        </View>
+                    </TouchableWithoutFeedback>
+                    :
+                    <MRBannerView
+                        style={{
+                            height: px2dp(160),
+                            width: ScreenUtil.width - px2dp(30)
+                        }}
+                        imgUrlArray={items}
+                        itemWidth={px2dp(295)}
+                        itemSpace={px2dp(10)}
+                        itemRadius={5}
+                        pageFocused={this.props.pageFocused}
+                        onDidSelectItemAtIndex={(index) => {
+                            this._onPressRow(index);
+                        }}
+                        onDidScrollToIndex={(index) => {
+                            this._onDidScrollToIndex(index);
+                        }}
+                    />
+            }
+            {this.renderIndexView()}
         </View>;
     }
 }

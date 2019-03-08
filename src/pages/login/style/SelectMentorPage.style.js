@@ -12,7 +12,7 @@ const  Styles =  StyleSheet.create(
             flex: 1,
             margin: 0,
             marginTop: -2,
-            backgroundColor: DesignRule.textColor_white
+            backgroundColor: DesignRule.bgColor
         },
         rightTopTitleStyle: {
             fontSize: 15,

@@ -43,6 +43,7 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
                 if(authPromise != null){
                     WritableMap map = Arguments.createMap();
                     map.putInt("isCanAuthen",1);
+                    map.putInt("resultCode",666);
                     map.putString("data",s);
                     map.putString("phoneNum",mAutInitResult.getSimPhoneNumber());
                     authPromise.resolve(map);
@@ -59,29 +60,7 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
                 }
             }
         });
-
-        if (ActivityCompat.checkSelfPermission(this.mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermission(new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionCallback() {
-                @Override
-                public void onPermissionGranted(boolean isRequestUser) {
-                    /*
-                     *   5.sdk init
-                     */
-                    mAutInitResult = mAlicomAuthHelper.init();
-                }
-
-                @Override
-                public void onPermissionDenied(boolean isRequestUser) {
-//                    Toast.makeText(MainActivity.this, "请允许相关权限", Toast.LENGTH_LONG).show();
-                }
-            });
-        } else {
-            /*
-             *   5.sdk init
-             */
             mAutInitResult = mAlicomAuthHelper.init();
-        }
-//        mAutInitResult = mAlicomAuthHelper.init();
     }
     /**
      * 在rn代码里面是需要这个名字来调用该类的方法
@@ -100,7 +79,6 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void isCanPhoneAuthen(Promise promise) {
-         //   WritableMap map = Arguments.createMap();
         //1代表可以本地认证 其他代表不可以
         this.authPromise = promise;
         mAlicomAuthHelper.getAuthToken(5000);

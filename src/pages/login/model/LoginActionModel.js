@@ -13,12 +13,77 @@ import { login } from "../../../utils/SensorsTrack";
 import JPushUtils from "../../../utils/JPushUtils";
 import DeviceInfo from "react-native-device-info/deviceinfo";
 import { DeviceEventEmitter } from "react-native";
+import RouterMap from "../../../navigation/RouterMap";
+import { NavigationActions } from "react-navigation";
 
 /**
- * 回调code 和 数据 34005 需要去绑定手机号 10000 登录成功
- * @param callBack
+ * @param phone 校验手机号
+ * @param athenToken  ali 返回的校验token
+ * @param navigation  导航器
+ * @param successCallBack 登录成功后的回调
  */
-const wxLoginAction = (callBack) => {
+const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
+    LoginAPI.oneClickLoginValidation({
+        phone:phone,
+        token:authenToken
+    }).then(result => {
+        successCallBack && successCallBack();
+        if (result.unionid == null){
+            //未绑定微信
+            phoneBindWx();
+        }
+        if (result.data.regNow){
+            //新用户
+            navigation.navigate(RouterMap.InviteCodePage);
+        } else {
+            //老用户
+            gobackPage(navigation);
+        }
+        UserModel.saveUserInfo(result.data);
+        UserModel.saveToken(result.data.token);
+        console.log(UserModel);
+        homeModule.loadHomeList();
+        bridge.setCookies(result.data);
+    }).catch(error => {
+        bridge.$toast(error.msg);
+    });
+};
+const gobackPage=(navigation)=>{
+    // //老用户登录成功后直接退出原界面
+    try {
+        let $routes = global.$routes || [];
+        let router = $routes[$routes.length - 2];
+        let routerKey = router.key;
+        const backAction = NavigationActions.back({ key: routerKey });
+        navigation.dispatch(backAction);
+    } catch (e) {
+        navigation.popToTop();
+    }
+}
+/**
+ * 一键登录后未绑定微信去绑定微信
+ */
+const phoneBindWx = () => {
+    getWxUserInfo((wxInfo) => {
+        console.log(wxInfo);
+        //去绑定微信，成功与否不管
+        LoginAPI.phoneBindWx({
+            unionId:wxInfo.unionid,
+            appOpenid:wxInfo.appOpenid,
+            headImg:wxInfo.headerImg,
+            nickname:wxInfo.nickName
+        }).then(result => {
+            bridge.$toast('微信绑定成功');
+        }).catch(error=>{
+            bridge.$toast(error.msg);
+        })
+    });
+};
+/**
+ * 获取微信用户信息
+ * @param callback
+ */
+const getWxUserInfo = (callback) => {
     bridge.$loginWx((data) => {
         // appOpenid: "o-gdS1iEksKTwhko1pgSXdi82KUI"
         // device: "iPhone 7 Plus"
@@ -27,7 +92,15 @@ const wxLoginAction = (callBack) => {
         // systemVersion: "11.4.1"
         // title: "绑定手机号"
         // unionid: "oJCt41Mr5Jk4dDg3x92ZfvXP4F10"
-        console.log(data);
+        callback(data);
+    });
+};
+/**
+ * 回调code 和 数据 34005 需要去绑定手机号 10000 登录成功
+ * @param callBack
+ */
+const wxLoginAction = (callBack) => {
+    getWxUserInfo((data) => {
         LoginAPI.appWechatLogin({
             device: data.device,
             encryptedData: "",
@@ -41,9 +114,9 @@ const wxLoginAction = (callBack) => {
         }).then((res) => {
             if (res.code === 34005) {
                 data.title = "绑定手机号";
-                callBack(res.code, data);
+                callBack && callBack(res.code, data);
             } else if (res.code === 10000) {
-                callBack(res.code,data);
+                callBack && callBack(res.code, data);
                 UserModel.saveUserInfo(res.data);
                 UserModel.saveToken(res.data.token);
                 bridge.$toast("登录成功");
@@ -56,7 +129,7 @@ const wxLoginAction = (callBack) => {
         }).catch((error) => {
             if (error.code === 34005) {
                 data.title = "绑定手机号";
-                callBack(error.code, data);
+                callBack && callBack(error.code, data);
             }
             bridge.$toast(data.msg);
         });
@@ -134,27 +207,40 @@ const pwdLoginAction = (LoginParam, callBack) => {
  * @param params
  * @param callback
  */
-const registAction = (params,callback) => {
+const registAction = (params, callback) => {
     LoginAPI.findMemberByPhone({
         ...params,
         device: (this.params && this.params.device) ? this.params.device : "",
         inviteId: "",//邀请id
         appOpenid: (this.params && this.params.appOpenid) ? this.params.appOpenid : "",
-        systemVersion: DeviceInfo.getSystemVersion()+'',
-        wechatVersion: "",
+        systemVersion: DeviceInfo.getSystemVersion() + "",
+        wechatVersion: ""
     }).then((data) => {
         if (data.code === 10000) {
+            callback(data);
             //推送
             JPushUtils.updatePushTags();
             JPushUtils.updatePushAlias();
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
+            homeModule.loadHomeList();
+            bridge.setCookies(data.data);
+            DeviceEventEmitter.emit("homePage_message", null);
+            DeviceEventEmitter.emit("contentViewed", null);
+        } else {
+            callback(data);
         }
-        callback(data);
     }).catch((response) => {
         callback(response);
     });
 
 };
 
-export { wxLoginAction, codeLoginAction, pwdLoginAction, registAction };
+export {
+    wxLoginAction,
+    codeLoginAction,
+    pwdLoginAction,
+    registAction,
+    phoneBindWx,
+    oneClickLoginValidation
+};

@@ -95,7 +95,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
                             }}/>
                             : null
                     }
-                    <View style={styles.space}/>
+                    <View style={{ width: topicBannerProductDTOList.length < 8 ? px2dp(7.5) : px2dp(5) }}/>
                 </ScrollView>
                 :
                 <View style={{ height: px2dp(15) }}/>
@@ -161,9 +161,6 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         borderRadius: 5
-    },
-    space: {
-        width: px2dp(5)
     },
     bannerView: {
         marginLeft: px2dp(10),

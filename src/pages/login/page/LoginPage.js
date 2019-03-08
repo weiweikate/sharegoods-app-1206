@@ -24,6 +24,9 @@ import loginModel from "../model/LoginModel";
 const {
     share: {
         weiXin
+    },
+    other: {
+        close_X
     }
 } = res;
 
@@ -96,11 +99,14 @@ export default class LoginPage extends BasePage {
     };
     $NavBarRenderRightItem = () => {
         return (
-            <Text style={Styles.rightTopTitleStyle} onPress={() => {
+            <TouchableOpacity onPress={() => {
                 this.$navigateBack();
             }}>
-                返回
-            </Text>
+                <Image
+                    style={{paddingRight:5}}
+                    source={close_X}
+                />
+            </TouchableOpacity>
         );
     };
 
