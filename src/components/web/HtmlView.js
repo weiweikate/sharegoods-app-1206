@@ -7,6 +7,7 @@ import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import apiEnvironment from '../../api/ApiEnvironment';
+import RouterMap from '../../navigation/RouterMap';
 
 export default class RequestDetailPage extends BasePage {
 
@@ -82,6 +83,10 @@ export default class RequestDetailPage extends BasePage {
                                 }
                             });
                         } else {
+                            if (r.length > 0) {
+                                let routerKey = r.split('/').slice(-1);
+                                r = RouterMap[routerKey] || r;
+                            }
                             this.$navigate(r, p);
                         }
                     }}
