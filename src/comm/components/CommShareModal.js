@@ -341,7 +341,7 @@ export default class CommShareModal extends React.Component {
         }
 
         const { shareMoney } = this.props.imageJson || {};
-        let shareMoneyText = (parseFloat(shareMoney) > 0 && shareMoney !== '?') ? `${shareMoney}起` : '';
+        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}起` : '';
 
         return (
             <CommModal onRequestClose={this.close}

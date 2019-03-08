@@ -67,6 +67,7 @@ export default class GuideModal extends React.Component {
         this.state = {
             step: 0,/** 新手引导第几步*/
             visible: false,
+            isHome: false,
             num: 98,
             rewardzData: {},
         };
@@ -82,16 +83,23 @@ export default class GuideModal extends React.Component {
     }
 
     getUserRecord = () => {
+        this.state.isHome = true;
         GuideApi.getUserRecord().then((data)=> {
             if(data.data === true){
                 this.open();
                 this.getRewardzInfo();
             }
         }).catch(()=> {
+
         })
     }
 
-    getRewardzInfo = () => {
+    cancelUserRecord = () => {
+        this.setState({isHome: false, visible: false});
+    }
+
+
+        getRewardzInfo = () => {
         GuideApi.rewardzInfo({type: 17}).then((data)=> {
             data = data.data || [];
             if (data.length>0){
@@ -313,7 +321,7 @@ export default class GuideModal extends React.Component {
         return (
             <CommModal
                 ref={(ref) => {this.modal = ref}}
-                visible={this.state.visible}
+                visible={this.state.visible && this.state.isHome}
             >
                 {this.renderContent()}
             </CommModal>
