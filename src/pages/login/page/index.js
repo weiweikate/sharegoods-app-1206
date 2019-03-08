@@ -8,7 +8,6 @@ import SetPasswordPage from './SetPasswordPage';
 import RegistPage from './RegistPage';
 import ForgetPasswordPage from './ForgetPasswordPage';
 import GetRedpacketPage from './GetRedpacketPage';
-import TestNav from './testNav';
 import InviteCodePage from './InviteCodePage';
 import SelectMentorPage from './SelectMentorPage'
 import MentorDetailPage from './MentorDetailPage'
@@ -29,7 +28,6 @@ export default {
         RegistPage,
         ForgetPasswordPage,
         GetRedpacketPage,
-        TestNav,
         InviteCodePage,
         SelectMentorPage,
         MentorDetailPage
