@@ -16,7 +16,7 @@ import { Payment, paymentType, paymentTrack } from './Payment';
 import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-import PasswordView from './PasswordView';
+import PasswordView from './PayPasswordView';
 import { MRText as Text } from '../../components/ui';
 // import { NavigationActions } from 'react-navigation';
 
