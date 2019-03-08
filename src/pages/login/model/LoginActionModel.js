@@ -28,7 +28,7 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         token:authenToken
     }).then(result => {
         successCallBack && successCallBack();
-        if (result.unionid == null){
+        if (result.unionid === null){
             //未绑定微信
             phoneBindWx();
         }
@@ -73,7 +73,7 @@ const phoneBindWx = () => {
             headImg:wxInfo.headerImg,
             nickname:wxInfo.nickName
         }).then(result => {
-            bridge.$toast('微信绑定成功');
+            // bridge.$toast('微信绑定成功');
         }).catch(error=>{
             bridge.$toast(error.msg);
         })

@@ -14,7 +14,6 @@ import StringUtils from "../../../utils/StringUtils";
 import RouterMap from "../../../navigation/RouterMap";
 import ProtocolView from "../components/Login.protocol.view";
 import SMSTool from "../../../utils/SMSTool";
-// import { startPhoneAuthen } from "../model/PhoneAuthenAction";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -35,7 +34,6 @@ export default class InputPhoneNum extends BasePage {
         show: true,
         leftNavTitle: "取消"
     };
-
     _render() {
         return (
             <View style={Styles.bgContent}>
@@ -59,7 +57,6 @@ export default class InputPhoneNum extends BasePage {
                         />
                         <View
                             style={{
-                                // marginTop: ScreenUtils.px2dp(5),
                                 height: 1,
                                 width: ScreenUtils.width - ScreenUtils.px2dp(80),
                                 backgroundColor: DesignRule.imgBg_color
@@ -104,7 +101,7 @@ export default class InputPhoneNum extends BasePage {
                 if (!this.state.isSelectProtocol) {
                     this.$toastShow("请勾选用户协议");
                 } else {
-                   this._sendAutherCode();
+                    this._sendAutherCode();
                 }
             } else {
                 this.$toastShow("您输入的手机号有误，请重新输入");
@@ -120,8 +117,8 @@ export default class InputPhoneNum extends BasePage {
         SMSTool.sendVerificationCode(1, this.state.phoneNum);
         let params = {
             ...this.params,
-            phoneNum:this.state.phoneNum
-        }
+            phoneNum: this.state.phoneNum
+        };
         this.$navigate(RouterMap.InputCode, params);
     };
 

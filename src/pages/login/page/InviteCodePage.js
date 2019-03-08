@@ -38,7 +38,6 @@ class inviteModel {
     saveInviteCode(code) {
         this.inviteCode = code;
     }
-
     @computed
     get isCanClick() {
         if (this.inviteCode.length > 3) {
@@ -51,7 +50,7 @@ class inviteModel {
 }
 
 @observer
-export default class InviteCodePage  extends BasePage {
+export default class InviteCodePage extends BasePage {
 
     inviteModel = new inviteModel();
 
@@ -90,7 +89,7 @@ export default class InviteCodePage  extends BasePage {
     _render() {
         return (
             <View style={styles.mainBgStyle}>
-                <View style={ styles.contentStyle}>
+                <View style={styles.contentStyle}>
                     <UIText
                         value={"填输入会员号"}
                         style={{
@@ -137,7 +136,7 @@ export default class InviteCodePage  extends BasePage {
                 </View>
                 <View style={styles.bottomContentStyle}>
                     <View
-                    style={styles.selectMentorBgStyle}
+                        style={styles.selectMentorBgStyle}
                     >
                         <UIText
                             value={"秀购为您推荐顾问"}
@@ -147,7 +146,7 @@ export default class InviteCodePage  extends BasePage {
                             }}
                             onPress={
                                 () => {
-                                    this.$navigate(RouterMap.SelectMentorPage)
+                                    this.$navigate(RouterMap.SelectMentorPage);
                                 }
                             }
                         />
@@ -155,7 +154,7 @@ export default class InviteCodePage  extends BasePage {
                     <UIText
                         value={"跳过"}
                         style={{
-                            marginTop:ScreenUtils.px2dp(10),
+                            marginTop: ScreenUtils.px2dp(10),
                             color: DesignRule.textColor_instruction,
                             fontSize: 12
                         }}
@@ -187,24 +186,24 @@ export default class InviteCodePage  extends BasePage {
         }
     };
 }
-const {px2dp} = ScreenUtils;
+const { px2dp } = ScreenUtils;
 const styles = StyleSheet.create({
-    mainBgStyle:{
-        marginTop:px2dp(-3),
+    mainBgStyle: {
+        marginTop: px2dp(-3),
         backgroundColor: DesignRule.bgColor,
-        justifyContent:'space-between',
-        flexDirection:'column',
-        flex:1
+        justifyContent: "space-between",
+        flexDirection: "column",
+        flex: 1
     },
     contentStyle: {
         alignItems: "center",
         flexDirection: "column",
-        flex:1
+        flex: 1
     },
     inputTextStyle: {
         marginTop: px2dp(70),
         width: ScreenUtils.width - px2dp(80),
-        paddingBottom:px2dp(7)
+        paddingBottom: px2dp(7)
     },
     inputTextBottomLine: {
         height: 1,
@@ -226,19 +225,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-    bottomContentStyle:{
-        height:ScreenUtils.px2dp(130),
-        justifyContent:'center',
-        flexDirection:'column',
-        alignItems:'center'
+    bottomContentStyle: {
+        height: ScreenUtils.px2dp(130),
+        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center"
     },
-    selectMentorBgStyle:{
-        borderRadius:20,
-        borderColor:DesignRule.textColor_placeholder,
-        justifyContent:'center',
-        alignItems:'center',
-        borderWidth:1,
-        height:ScreenUtils.px2dp(40),
-        width:ScreenUtils.width - 60
+    selectMentorBgStyle: {
+        borderRadius: 20,
+        borderColor: DesignRule.textColor_placeholder,
+        justifyContent: "center",
+        alignItems: "center",
+        borderWidth: 1,
+        height: ScreenUtils.px2dp(40),
+        width: ScreenUtils.width - 60
     }
 });
