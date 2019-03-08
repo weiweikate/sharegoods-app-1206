@@ -17,7 +17,8 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Animated
 } from 'react-native';
 
 import ImageLoad from '@mr/image-placeholder';
@@ -31,9 +32,11 @@ export default class LuckyIcon extends React.Component {
         super(props);
 
         this.state = {
+            x: new Animated.Value(25),
             show: false,
             data: {}
         };
+        this.isOpen = false;
     }
 
     componentDidMount() {
@@ -42,24 +45,51 @@ export default class LuckyIcon extends React.Component {
     getLucky = () =>{
         GuideApi.getLucky({}).then((data) => {
             if (data.data && data.data.linkTypeCode){
-                this.open();
+                this.setState({show: true});
                 this.setState({data: data.data})
             } else {
-                this.close();
+                this.setState({show: false});
             }
         }).catch(() => {
+            this.setState({show: false});
         })
     }
 
     open = () => {
-        this.setState({show: true});
+        if (this.isOpen === false) {
+            Animated.spring(
+                // Animate value over time
+                this.state.x, // The value to drive
+                {
+                    toValue: 0,
+                    duration: 500,
+                    useNativeDriver: true
+                }
+            ).start();
+        }
+        this.isOpen = true;
     }
 
     close = () => {
-        this.setState({show: false});
+        if (this.isOpen === true) {
+            Animated.spring(
+                // Animate value over time
+                this.state.x, // The value to drive
+                {
+                    toValue: 25,
+                    duration: 500,
+                    useNativeDriver: true
+                }
+            ).start();
+            this.isOpen = false;
+        }
     }
 
     _onPress = () => {
+        if (this.isOpen === false){
+            this.open();
+            return;
+        }
         let data = this.state.data;
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
@@ -74,15 +104,16 @@ export default class LuckyIcon extends React.Component {
         }
 
         return (
-            <View style={{position: 'absolute', right: 0, bottom: 40}}>
+            <Animated.View style={{position: 'absolute', right: 5, bottom: 40, transform: [{ translateX: this.state.x}]}}>
                 <TouchableOpacity onPress={this._onPress}>
                     <ImageLoad
                         style={styles.image}
                         source={{uri: this.state.data.icon}}
                         resizeMode={'contain'}
+                        isAvatar={true}
                     />
                 </TouchableOpacity>
-            </View>
+            </Animated.View>
         );
     }
 }
@@ -91,6 +122,5 @@ const styles = StyleSheet.create({
     image: {
         height: 50,
         width: 50,
-        backgroundColor: 'red'
     }
 });

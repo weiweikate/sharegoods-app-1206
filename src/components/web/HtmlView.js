@@ -2,10 +2,8 @@ import React from 'react';
 import BasePage from '../../BasePage';
 import WebViewBridge from '@mr/webview';
 import { View } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
 import CommShareModal from '../../comm/components/CommShareModal';
 // import res from '../../comm/res';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
 import apiEnvironment from '../../api/ApiEnvironment';
 import RouterMap from '../../navigation/RouterMap';
 
@@ -56,14 +54,8 @@ export default class RequestDetailPage extends BasePage {
     };
 
     _render() {
-        let height = ScreenUtils.height - ScreenUtils.headerHeight;
-        if (ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()) {
-            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT') - ScreenUtils.headerHeight;
-        } else if (ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()) {
-            height = ScreenUtils.height - 44 - ExtraDimensions.get('STATUS_BAR_HEIGHT');
-        }
         return (
-            <View style={{ height, overflow: 'hidden' }}>
+            <View style={{ flex:1, overflow: 'hidden' }}>
                 <WebViewBridge
                     style={{ flex: 1 }}
                     ref={(ref) => {
