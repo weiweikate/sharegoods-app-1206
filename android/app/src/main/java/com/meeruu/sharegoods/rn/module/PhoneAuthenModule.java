@@ -1,13 +1,8 @@
 package com.meeruu.sharegoods.rn.module;
-
-import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.SparseArray;
-import android.widget.Toast;
-
 import com.alicom.phonenumberauthsdk.gatewayauth.AlicomAuthHelper;
 import com.alicom.phonenumberauthsdk.gatewayauth.TokenResultListener;
 import com.alicom.phonenumberauthsdk.gatewayauth.model.InitResult;
@@ -43,7 +38,7 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
                 if(authPromise != null){
                     WritableMap map = Arguments.createMap();
                     map.putInt("isCanAuthen",1);
-                    map.putInt("resultCode",666);
+                    map.putInt("resultCode",6666);
                     map.putString("data",s);
                     map.putString("phoneNum",mAutInitResult.getSimPhoneNumber());
                     authPromise.resolve(map);
