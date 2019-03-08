@@ -9,7 +9,6 @@ import CommRegistView from '../components/CommRegistView';
 import LoginAPI from "../api/LoginApi";
 import bridge from "../../../utils/bridge";
 
-
 @observer
 export default class ForgetPasswordPage extends BasePage {
     $navigationBarOptions = {

@@ -110,6 +110,9 @@
 		A91F2FFEF0894EB68A6EC16C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF0420E07D6F40B080CEAA13 /* Octicons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BF6EE61B214F8AF3007C1185 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */; };
+		C4F01EE8222D116B00ACA1B4 /* ATAuthSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F01EB2222D116B00ACA1B4 /* ATAuthSDK.framework */; };
+		C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */; };
+		C4F01EEF222D150E00ACA1B4 /* PhoneAuthenModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */; };
 		C670FCDB76F54137AAA53057 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FED5F2163DB441AEAFBF1AB2 /* FontAwesome.ttf */; };
 		C77A347B0E47408BA04324B4 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB6EFB6B04564EBAB951820B /* Feather.ttf */; };
 		CD0F9621219027C800F7C2B0 /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0F95FC219027B400F7C2B0 /* libRCTHotUpdate.a */; };
@@ -600,8 +603,6 @@
 		2D02E4901E0B4A5D006451C7 /* crm_app_xiugou-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "crm_app_xiugou-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E00CEEA555A4CB28FE001B8 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		36AA80A9C34EFF2939BEBA93 /* Pods-crm_app_xiugou.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.debug.xcconfig"; path = "Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.debug.xcconfig"; sourceTree = "<group>"; };
-		4085D6548DA397B19E927DE3 /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
 		44E50B6F599846558BA9C080 /* RNReactNativeRequest.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeRequest.xcodeproj; path = "../node_modules/@mr/rn-request/ios/RNReactNativeRequest.xcodeproj"; sourceTree = "<group>"; };
 		4C21E6CAAF624B8198676636 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		50043A7921C76EC300270DFA /* ShopCartCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCartCell.h; sourceTree = "<group>"; };
@@ -774,11 +775,18 @@
 		819703F9E0F54FA6A75C43D4 /* libRCTHotUpdate.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTHotUpdate.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8D6A9D7AD61D46CAAA5A13C9 /* libRNReactNativeRequest.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNReactNativeRequest.a; sourceTree = "<group>"; };
+		A4224B1E9D3BD9245B84DD24 /* Pods-crm_app_xiugou.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.debug.xcconfig"; path = "Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.debug.xcconfig"; sourceTree = "<group>"; };
 		AB39A891905F4966BC073930 /* libRNGeolocation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGeolocation.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE4716B854E34520B3C18596 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		BBA2B7A1D54FA53B49740582 /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
 		BC4C1D05C5514093933F2341 /* RNGeolocation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGeolocation.xcodeproj; path = "../node_modules/@mr/rn-geolocation/ios/RNGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		C4F01EB2222D116B00ACA1B4 /* ATAuthSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ATAuthSDK.framework; sourceTree = "<group>"; };
+		C4F01EEA222D141200ACA1B4 /* PhoneAutherTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneAutherTool.h; sourceTree = "<group>"; };
+		C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneAutherTool.m; sourceTree = "<group>"; };
+		C4F01EED222D150E00ACA1B4 /* PhoneAuthenModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneAuthenModule.h; sourceTree = "<group>"; };
+		C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneAuthenModule.m; sourceTree = "<group>"; };
 		CAB2E4DB260FDFCE4611A647 /* libPods-crm_app_xiugou-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crm_app_xiugou-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD0F95EF219027B400F7C2B0 /* RCTHotUpdate.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTHotUpdate.xcodeproj; path = "../node_modules/react-native-update/ios/RCTHotUpdate.xcodeproj"; sourceTree = "<group>"; };
 		CD11954E21870DB6007F602E /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
@@ -912,6 +920,7 @@
 				2A217542E6074AE38A88F88A /* libRNSensorsAnalyticsModule.a in Frameworks */,
 				CD6742D021E4418900464549 /* RSKImageCropper.framework in Frameworks */,
 				5D2BFDBC2AFD4DE2B1D63F65 /* libRNReactNativeRequest.a in Frameworks */,
+				C4F01EE8222D116B00ACA1B4 /* ATAuthSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1036,6 +1045,7 @@
 		101157B4219AB448001F5E99 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				C4F01EB2222D116B00ACA1B4 /* ATAuthSDK.framework */,
 				CD6742D921E4430E00464549 /* AMapFoundationKit.framework */,
 				CD6742DA21E4430E00464549 /* AMapLocationKit.framework */,
 			);
@@ -1341,6 +1351,7 @@
 		506835C421379B78001AB175 /* NativeBridge */ = {
 			isa = PBXGroup;
 			children = (
+				C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */,
 				CD5EAF9A221BFADF007AAEE0 /* ShowGroundView */,
 				CD3A89D021F05DD3003B9803 /* MRLoadingView */,
 				50043A7721C76D6100270DFA /* ShopCart */,
@@ -1572,6 +1583,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6DEE81D5BE579D7AB0643527 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A4224B1E9D3BD9245B84DD24 /* Pods-crm_app_xiugou.debug.xcconfig */,
+				BBA2B7A1D54FA53B49740582 /* Pods-crm_app_xiugou.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1634,7 +1655,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				FA27D427516E4834811C0234 /* Resources */,
 				CDE20087217DBA69001146FF /* Recovered References */,
-				C6A8F80BE35848E021CC1641 /* Pods */,
+				6DEE81D5BE579D7AB0643527 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -1670,16 +1691,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C6A8F80BE35848E021CC1641 /* Pods */ = {
+		C4F01EE9222D13F500ACA1B4 /*  PhoneAuther */ = {
 			isa = PBXGroup;
 			children = (
-				36AA80A9C34EFF2939BEBA93 /* Pods-crm_app_xiugou.debug.xcconfig */,
-				4085D6548DA397B19E927DE3 /* Pods-crm_app_xiugou.release.xcconfig */,
-				F223A756490300B42A2AB92D /* Pods-crm_app_xiugou.debug.xcconfig */,
-				1CB2199043CE79D3452A3C1B /* Pods-crm_app_xiugou.release.xcconfig */,
+				C4F01EEA222D141200ACA1B4 /* PhoneAutherTool.h */,
+				C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */,
+				C4F01EED222D150E00ACA1B4 /* PhoneAuthenModule.h */,
+				C4F01EEE222D150E00ACA1B4 /* PhoneAuthenModule.m */,
 			);
-			name = Pods;
-			path = Pods;
+			path = " PhoneAuther";
 			sourceTree = "<group>";
 		};
 		CD0F95F0219027B400F7C2B0 /* Products */ = {
@@ -1843,6 +1863,8 @@
 				AB39A891905F4966BC073930 /* libRNGeolocation.a */,
 				F5B1AC20114D4E68971B3AB1 /* libRNSensorsAnalyticsModule.a */,
 				8D6A9D7AD61D46CAAA5A13C9 /* libRNReactNativeRequest.a */,
+				F223A756490300B42A2AB92D /* Pods-crm_app_xiugou.debug.xcconfig */,
+				1CB2199043CE79D3452A3C1B /* Pods-crm_app_xiugou.release.xcconfig */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1891,13 +1913,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "crm_app_xiugou" */;
 			buildPhases = (
-				26103575D68C4A251488EFD6 /* [CP] Check Pods Manifest.lock */,
+				118F7DFCFE1F1392800CF645 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				CD6742D521E4418A00464549 /* Embed Frameworks */,
-				78ECAFDAB4C893A2C8B3068B /* [CP] Copy Pods Resources */,
+				E600B33CE0D178B6B7F64A2C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2540,10 +2562,12 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		26103575D68C4A251488EFD6 /* [CP] Check Pods Manifest.lock */ = {
+		118F7DFCFE1F1392800CF645 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
@@ -2572,13 +2596,15 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		78ECAFDAB4C893A2C8B3068B /* [CP] Copy Pods Resources */ = {
+		E600B33CE0D178B6B7F64A2C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/QIYU_iOS_SDK/SDK/QYResource.bundle",
@@ -2590,6 +2616,8 @@
 				"${PODS_ROOT}/SensorsAnalyticsSDK/SensorsAnalyticsSDK/SensorsAnalyticsSDK.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
@@ -2603,7 +2631,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2622,6 +2650,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
+				C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */,
 				5068362E21379B78001AB175 /* JRLoadingAndToastTool.m in Sources */,
 				5077FC8221A4F987003B860D /* HBRSAHandler.m in Sources */,
 				5068361221379B78001AB175 /* UIView+captureSceen.m in Sources */,
@@ -2655,6 +2684,7 @@
 				5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */,
 				CD5EAFA7221BFE89007AAEE0 /* ShowQueryModel.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
+				C4F01EEF222D150E00ACA1B4 /* PhoneAuthenModule.m in Sources */,
 				5068363321379B78001AB175 /* LoginAndShareModule.m in Sources */,
 				5077FC2721A401E3003B860D /* RSAEncryptor.m in Sources */,
 				CDAB6D1F219AC5F800DE6716 /* MRWaveViewManager.m in Sources */,
@@ -2828,7 +2858,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F223A756490300B42A2AB92D /* Pods-crm_app_xiugou.debug.xcconfig */;
+			baseConfigurationReference = A4224B1E9D3BD9245B84DD24 /* Pods-crm_app_xiugou.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2883,7 +2913,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1CB2199043CE79D3452A3C1B /* Pods-crm_app_xiugou.release.xcconfig */;
+			baseConfigurationReference = BBA2B7A1D54FA53B49740582 /* Pods-crm_app_xiugou.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

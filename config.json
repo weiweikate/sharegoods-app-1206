@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "qa",
+    "envType": "吴承骏",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -55,7 +55,7 @@
         },
         "吴承骏": {
             "name": "吴承骏",
-            "host": "http://172.16.10.123:9090/gateway"
+            "host": "http://172.16.10.123:8903/gateway"
         },
         "da_wei": {
             "name": "蒋大为",
