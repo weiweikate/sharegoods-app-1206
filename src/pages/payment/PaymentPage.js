@@ -50,6 +50,8 @@ export default class PaymentPage extends BasePage {
             payment.checkOrderStatus().then(result => {
                 if (result.data === payStatus.payNo) {
                     this.setState({ showPwd: true })
+                } else if (result.data === payStatus.payNeedThrid) {
+                    this.$navigate('payment/ChannelPage')
                 } else {
                     Toast.$toast(payStatusMsg[result.data])
                 }
@@ -69,6 +71,10 @@ export default class PaymentPage extends BasePage {
     _finishedAction(password) {
         payment.platformPay(password).then((result) => {
             this.setState({ showPwd: false })
+            if (result.data === payStatus.payNeedThrid) {
+                this.$navigate('payment/ChannelPage', {remainMoney: payment.amounts - user.availableBalance})
+                return
+            }
             this.paymentResultView.show(PaymentResult.sucess)
         }).catch(err => {
             this.setState({ showPwd: false })

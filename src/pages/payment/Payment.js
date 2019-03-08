@@ -24,7 +24,10 @@ export const payStatus = {
     payClose: 20800,
     payfail: 20002,
     payNeedThrid: 20803,
-    PayError: 20806
+    PayError: 20806,
+    paySuccess: 20807,
+    payOutTime: 20808,
+    payWait: 20809
 }
 
 export const payStatusMsg = {
@@ -105,18 +108,18 @@ export class Payment {
         track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
         try {
             Toast.showLoading()
+            console.log('payment alipay');
             const result = yield PaymentApi.alipay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo})
             Toast.hiddenLoading();
-            if (result && result.code === 10000) {
-                this.isGoToPay = true
-                const resultStr = yield PayUtil.appAliPay(result.data.payInfo)
-                if (resultStr.sdkCode !== 9000) {
-                    throw new Error(resultStr.msg)
-                }
-                return resultStr;
+            this.isGoToPay = true
+            const resultStr = yield PayUtil.appAliPay(result.data)
+            if (resultStr.sdkCode !== 9000) {
+                throw new Error(resultStr.msg)
             }
+            return resultStr;
+            
         } catch(error) {
-            Toast.hiddenLoading();
+            Toast.hiddenLoading()
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             throw error
         }
@@ -130,40 +133,39 @@ export class Payment {
         try {
             Toast.showLoading()
             const result = yield PaymentApi.wechatPay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo})
-            if (result && result.code === 10000) {
-                if (!result.data) {
-                    throw new Error('支付异常')
-                }
-                if (!result.data.payInfo) {
-                    throw new Error('支付异常')
-                }
-                this.isGoToPay = true
-                const payInfo = JSON.parse(result.data.payInfo)
-                Toast.hiddenLoading()
-                payInfo.partnerid = payInfo.mchId
-                payInfo.timestamp = payInfo.timeStamp
-                payInfo.prepayid = payInfo.prepayId
-                payInfo.sign = payInfo.paySign
-                payInfo.noncestr = payInfo.nonceStr
-                payInfo.appid = payInfo.appId
-                const resultStr = yield PayUtil.appWXPay(payInfo);
-                console.log(JSON.stringify(resultStr));
-                if (parseInt(resultStr.code, 0) !== 0) {
+            
+            this.isGoToPay = true
+            const payInfo = JSON.parse(result.data)
+            Toast.hiddenLoading()
+            payInfo.partnerid = payInfo.mchId
+            payInfo.timestamp = payInfo.timeStamp
+            payInfo.prepayid = payInfo.prepayId
+            payInfo.sign = payInfo.paySign
+            payInfo.noncestr = payInfo.nonceStr
+            payInfo.appid = payInfo.appId
+            const resultStr = yield PayUtil.appWXPay(payInfo);
+            console.log(JSON.stringify(resultStr));
+            if (parseInt(resultStr.sdkCode, 0) !== 0) {
                     // ref && ref.show(2, resultStr.msg)
-                    throw new Error(resultStr.msg)
-                }
-                return resultStr
-            } else {
-                Toast.hiddenLoading()
-                track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: result.msg})
-                Toast.$toast(result.msg);
+                throw new Error(resultStr.msg)
             }
-
+            return resultStr
+            
         } catch (error) {
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             Toast.hiddenLoading()
             this.payError = error
             this.isGoToPay = false
+            throw error
+        }
+    })
+
+    //检查订单状态
+    @action checkPayStatus = flow(function * (){
+        try {
+            const result = yield PaymentApi.payStatus({platformOrderNo: this.platformOrderNo})
+            return result
+        } catch (error) {
             throw error
         }
     })
@@ -327,24 +329,7 @@ export class Payment {
         }
     })
 
-    @action checkPayStatus = flow(function * (){
-        try {
-            if (this.payError) {
-                throw new Error('支付失败')
-            }
-            const result = yield PaymentApi.payStatus({platformOrderNo: this.orderNo})
-            if (result && result.code === 10000) {
-                return result.data
-            } else {
-                return
-            }
-        } catch (error) {
-            // ref && ref.show(2, error.msg || error.message)
-            console.log(error)
-            this.payError = ''
-            return error
-        }
-    })
+    
 
 }
 

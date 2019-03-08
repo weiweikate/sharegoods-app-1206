@@ -8,15 +8,15 @@ const api = {
     //平台
     balance: ['/pay/sgpay'],
     //检查订单状态
-    payStatus: ['/order/pay-status'],
+    payStatus: ['/payV2/status'],
     //平台余额支付接口
     platformPay: ['/payV2/platform'],
     //检查订单状态:
     check: ['/payV2/check', {method:'get'}],
     //支付宝支付v2
-    alipay: ['payV2/notify/alipay'],
+    alipay: ['/payV2/alipay'],
     //微信支付v2
-    wechatPay: ['payV2/notify/wxpay']
+    wechatPay: ['/payV2/wxpay']
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

@@ -149,7 +149,8 @@ export default class ConfirmOrderPage extends BasePage {
                         orderNum: data.orderNo,
                         amounts: data.payAmount,
                         pageType: 0,
-                        orderProductList: data.orderProductList
+                        orderProductList: data.orderProductList,
+                        outTradeNo: data.orderNo
                     },
                 });
                 this.props.navigation.dispatch(replace);

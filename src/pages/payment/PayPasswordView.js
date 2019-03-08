@@ -50,7 +50,6 @@ export default class PasswordView extends Component {
     }
 
     forgetAction() {
-        console.log('forgetAction')
         this.props.forgetAction()
     }
 

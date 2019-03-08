@@ -3,7 +3,9 @@ import {
     View,
     StyleSheet,
     Image,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    AppState,
+    ActivityIndicator
 } from 'react-native';
 import res from './res'
 import BasePage from '../../BasePage';
@@ -11,7 +13,9 @@ import { observer } from 'mobx-react/native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
-import { payment, paymentType } from './Payment'
+import { payment, paymentType, paymentTrack, payStatus } from './Payment'
+import PaymentResultView, { PaymentResult } from './PaymentResultView'
+import { track, trackEvent } from '../../utils/SensorsTrack';
 const { px2dp } = ScreenUtils;
 
 @observer
@@ -23,7 +27,19 @@ export default class ChannelPage extends BasePage {
     }
 
     constructor(props) {
-        super(props);
+        super(props)
+        this.state = {
+            orderChecking: false
+        }
+        console.log('orderChecking', this.state.orderChecking)
+    }
+
+    componentDidMount() {
+        AppState.addEventListener('change', (state) => this._handleAppStateChange(state));
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', (state) => this._handleAppStateChange(state));
     }
 
     $NavBarLeftPressed = () => {
@@ -31,11 +47,64 @@ export default class ChannelPage extends BasePage {
     }
 
     goToPay() {
-        if (payment.selectPaymentType === paymentType.alipay) {
-            payment.alipay()
+        if (payment.selctedPayType === paymentType.alipay) {
+            this.alipay()
         } else {
             payment.appWXPay()
         }
+    }
+
+    async alipay() {
+        try {
+            let result = await payment.alipay()
+            console.log('alipay result', result)
+            this.paymentResultView.show(PaymentResult.sucess)
+        } catch (err) {
+            this.paymentResultView.show(PaymentResult.fail, err.message)
+        }
+    }
+
+    _handleAppStateChange(state) {
+        if (state !== 'active') {
+            return
+        }
+        const { selctedPayType } = payment;
+        if (this.state.orderChecking === true) {
+            return;
+        }
+        if (payment.orderNo && selctedPayType !== paymentType.none) {
+            this.setState({ orderChecking: true });
+            this.orderTime = (new Date().getTime()) / 1000;
+            this._checkOrder();
+        }
+    }
+
+    _checkOrder() {
+        let time = (new Date().getTime()) / 1000;
+        console.log('checkorder', this.orderTime, time);
+        track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checking' });
+        if (time - this.orderTime > 10) {
+            track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checkOut' });
+            return;
+        }
+        payment.checkPayStatus().then(data => {
+            if (data === payStatus.payWait) {
+                setTimeout(() => {
+                    this._checkOrder();
+                }, 1000);
+                return;
+            }
+            this.setState({ orderChecking: false });
+            if (data === payStatus.paySuccess) {
+                track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
+                this.paymentResultView.show(PaymentResult.sucess);
+            }
+            if (data === payStatus.payOutTime) {
+                this.paymentResultView.show(PaymentResult.warning, '订单支付超时，下单金额已原路返回');
+            }
+        }).catch(() => {
+            this.setState({ orderChecking: false });
+        });
     }
 
     _selectedType(type) {
@@ -80,6 +149,26 @@ export default class ChannelPage extends BasePage {
                 <Text style={styles.payText}>去支付</Text>
             </View>
             </TouchableWithoutFeedback>
+            <PaymentResultView
+                ref={(ref) => {
+                    this.paymentResultView = ref;
+                }}
+                navigation={this.props.navigation}
+                repay={() => this._repay()}
+            />
+            {
+                this.state.orderChecking
+                    ?
+                    <View style={styles.loadingView}>
+                        <View style={styles.loading}>
+                            <ActivityIndicator size='large' color='#fff'/>
+                            <View style={styles.loadingSpace}/>
+                            <Text style={styles.loadingText}>支付结果等待中...</Text>
+                        </View>
+                    </View>
+                    :
+                    null
+            }
         </View>;
     }
 }
@@ -168,6 +257,30 @@ const styles = StyleSheet.create({
     payText: {
         color: whiteBg,
         fontSize: px2dp(17)
+    },
+    loadingView: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    loading: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: px2dp(140),
+        height: px2dp(140),
+        borderRadius: px2dp(10)
+    },
+    loadingText: {
+        color: '#fff',
+        fontSize: px2dp(13)
+    },
+    loadingSpace: {
+        height: px2dp(27)
     }
 });
 
