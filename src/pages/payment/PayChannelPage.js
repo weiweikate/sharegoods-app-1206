@@ -15,7 +15,7 @@ import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 import { payment, paymentType, paymentTrack, payStatus } from './Payment'
 import PaymentResultView, { PaymentResult } from './PaymentResultView'
-import { track, trackEvent } from '../../utils/SensorsTrack';
+import { track, trackEvent } from '../../utils/SensorsTrack'
 const { px2dp } = ScreenUtils;
 
 @observer
@@ -31,7 +31,7 @@ export default class ChannelPage extends BasePage {
         this.state = {
             orderChecking: false
         }
-        console.log('orderChecking', this.state.orderChecking)
+        this.remainMoney = this.params.remainMoney
     }
 
     componentDidMount() {
@@ -48,19 +48,9 @@ export default class ChannelPage extends BasePage {
 
     goToPay() {
         if (payment.selctedPayType === paymentType.alipay) {
-            this.alipay()
+            payment.alipay()
         } else {
             payment.appWXPay()
-        }
-    }
-
-    async alipay() {
-        try {
-            let result = await payment.alipay()
-            console.log('alipay result', result)
-            this.paymentResultView.show(PaymentResult.sucess)
-        } catch (err) {
-            this.paymentResultView.show(PaymentResult.fail, err.message)
         }
     }
 
@@ -72,7 +62,11 @@ export default class ChannelPage extends BasePage {
         if (this.state.orderChecking === true) {
             return;
         }
-        if (payment.orderNo && selctedPayType !== paymentType.none) {
+        if (payment.isGoToPay === false) {
+            return;
+        }
+        if (payment.platformOrderNo && selctedPayType !== paymentType.none) {
+            payment.isGoToPay = false
             this.setState({ orderChecking: true });
             this.orderTime = (new Date().getTime()) / 1000;
             this._checkOrder();
@@ -81,25 +75,26 @@ export default class ChannelPage extends BasePage {
 
     _checkOrder() {
         let time = (new Date().getTime()) / 1000;
-        console.log('checkorder', this.orderTime, time);
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checking' });
         if (time - this.orderTime > 10) {
             track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checkOut' });
             return;
         }
-        payment.checkPayStatus().then(data => {
-            if (data === payStatus.payWait) {
+        payment.checkPayStatus().then(result => {
+            if (result.data === payStatus.payWait) {
                 setTimeout(() => {
                     this._checkOrder();
                 }, 1000);
                 return;
             }
-            this.setState({ orderChecking: false });
-            if (data === payStatus.paySuccess) {
+            this.setState({ orderChecking: false })
+            console.log('checkPayStatus', result, parseInt(result.data, 0) === payStatus.paySuccess)
+            if (parseInt(result.data, 0) === payStatus.paySuccess) {
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
                 this.paymentResultView.show(PaymentResult.sucess);
+                payment.resetPayment()
             }
-            if (data === payStatus.payOutTime) {
+            if (result.data === payStatus.payOutTime) {
                 this.paymentResultView.show(PaymentResult.warning, '订单支付超时，下单金额已原路返回');
             }
         }).catch(() => {
@@ -122,7 +117,7 @@ export default class ChannelPage extends BasePage {
             </View>
             <View style={styles.needView}>
             <Text style={styles.need}>支付金额</Text>
-            <Text style={styles.amount}>￥{payment.amounts}</Text>
+            <Text style={styles.amount}>￥{this.remainMoney  ? this.remainMoney  : payment.amounts}</Text>
             </View>
             <View style={styles.channelView}>
             <TouchableWithoutFeedback onPress={()=> this._selectedType(paymentType.wechat)}>
