@@ -50,12 +50,13 @@ public class BannerLayout extends FrameLayout {
     private boolean isPlaying = false;
 
     private boolean isAutoPlaying = true;
-    int itemSpace;
-    float centerScale;
-    float moveSpeed;
+    private int itemSpace;
+    private float centerScale;
+    private float moveSpeed;
     private OnPageSelected onPageSelected;
     private RecyclerView.Adapter adapter;
     private boolean intercept;
+    private int raduis;
 
     protected WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
         @Override
@@ -89,7 +90,7 @@ public class BannerLayout extends FrameLayout {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BannerLayout);
         showIndicator = a.getBoolean(R.styleable.BannerLayout_showIndicator, true);
-        autoPlayDuration = a.getInt(R.styleable.BannerLayout_interval, 3000);
+        autoPlayDuration = a.getInt(R.styleable.BannerLayout_interval, 5000);
         isAutoPlaying = a.getBoolean(R.styleable.BannerLayout_autoPlaying, true);
         itemSpace = a.getInt(R.styleable.BannerLayout_itemSpace, 20);
         centerScale = a.getFloat(R.styleable.BannerLayout_centerScale, 1.0f);
@@ -223,6 +224,20 @@ public class BannerLayout extends FrameLayout {
         }
     }
 
+    public RecyclerView.Adapter getAdapter() {
+        return this.adapter;
+    }
+
+    public void refreshBanner(int size) {
+        hasInit = false;
+        bannerSize = size;
+        mLayoutManager.setInfinite(bannerSize >= 1);
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+    }
+
     /**
      * 设置轮播数据集
      */
@@ -233,6 +248,10 @@ public class BannerLayout extends FrameLayout {
         bannerSize = adapter.getItemCount();
         mLayoutManager.setInfinite(bannerSize >= 1);
         setPlaying(true);
+        initScrollListener();
+    }
+
+    public void initScrollListener() {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -345,7 +364,7 @@ public class BannerLayout extends FrameLayout {
     /**
      * 改变导航的指示点
      */
-    protected synchronized void refreshIndicator() {
+    public synchronized void refreshIndicator() {
         if (bannerSize > 0) {
             int position = currentIndex % bannerSize;
             onPageSelected.pageSelected(position);
