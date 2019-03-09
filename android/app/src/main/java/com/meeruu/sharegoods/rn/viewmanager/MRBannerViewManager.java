@@ -86,16 +86,13 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
     public void setImgUrlArray(final BannerLayout view, ReadableArray urls) {
         if (urls != null) {
             view.setCurrentIndex(0);
-            if (view.isPlaying()) {
-                view.setAutoPlaying(false);
-            }
             final List datas = urls.toArrayList();
             WebBannerAdapter webBannerAdapter = null;
             if (view.getAdapter() != null) {
                 webBannerAdapter = (WebBannerAdapter) view.getAdapter();
                 webBannerAdapter.setUrlList(datas);
-                view.refreshBanner(datas.size());
                 view.refreshIndicator();
+                view.refreshBanner(datas.size());
             } else {
                 webBannerAdapter = new WebBannerAdapter(view.getContext(), datas);
                 view.setAdapter(webBannerAdapter);

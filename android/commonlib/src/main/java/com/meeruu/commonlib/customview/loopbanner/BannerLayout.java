@@ -56,7 +56,6 @@ public class BannerLayout extends FrameLayout {
     private OnPageSelected onPageSelected;
     private RecyclerView.Adapter adapter;
     private boolean intercept;
-    private int raduis;
 
     protected WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
         @Override
@@ -229,12 +228,13 @@ public class BannerLayout extends FrameLayout {
     }
 
     public void refreshBanner(int size) {
-        hasInit = false;
         bannerSize = size;
         mLayoutManager.setInfinite(bannerSize >= 1);
+        hasInit = true;
     }
 
     public void setCurrentIndex(int currentIndex) {
+        hasInit = false;
         this.currentIndex = currentIndex;
     }
 
