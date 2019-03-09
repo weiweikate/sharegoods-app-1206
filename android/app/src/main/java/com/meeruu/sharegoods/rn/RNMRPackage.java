@@ -53,7 +53,6 @@ public class RNMRPackage implements ReactPackage {
         analyticsModule = new AnalyticsModule(reactContext);
         phoneAuthenModule = new PhoneAuthenModule(reactContext);
 
-
         modules.add(mModule);
         modules.add(qyChatModule);
         modules.add(appPayModule);
