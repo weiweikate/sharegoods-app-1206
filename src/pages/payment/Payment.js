@@ -53,6 +53,15 @@ export class Payment {
     @observable orderNo = ''
     @observable platformOrderNo = ''
     @observable isGoToPay = false
+
+    @action resetPayment = () => {
+        this.orderName = ''
+        this.selctedPayType = paymentType.none
+        this.selectedBalace = false
+        this.orderNo = ''
+        this.platformOrderNo = ''
+        this.isGoToPay = false
+    }
     
     //选择余额支付
     @action selectBalancePayment = () => {

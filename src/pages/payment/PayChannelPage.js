@@ -15,7 +15,7 @@ import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 import { payment, paymentType, paymentTrack, payStatus } from './Payment'
 import PaymentResultView, { PaymentResult } from './PaymentResultView'
-import { track, trackEvent } from '../../utils/SensorsTrack';
+import { track, trackEvent } from '../../utils/SensorsTrack'
 const { px2dp } = ScreenUtils;
 
 @observer
@@ -75,7 +75,6 @@ export default class ChannelPage extends BasePage {
 
     _checkOrder() {
         let time = (new Date().getTime()) / 1000;
-        console.log('checkorder', this.orderTime, time);
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checking' });
         if (time - this.orderTime > 10) {
             track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'checkOut' });
@@ -88,11 +87,12 @@ export default class ChannelPage extends BasePage {
                 }, 1000);
                 return;
             }
-            this.setState({ orderChecking: false });
-            console.log('_checkOrder', result.data)
-            if (result.data === payStatus.paySuccess) {
+            this.setState({ orderChecking: false })
+            console.log('checkPayStatus', result, parseInt(result.data, 0) === payStatus.paySuccess)
+            if (parseInt(result.data, 0) === payStatus.paySuccess) {
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
                 this.paymentResultView.show(PaymentResult.sucess);
+                payment.resetPayment()
             }
             if (result.data === payStatus.payOutTime) {
                 this.paymentResultView.show(PaymentResult.warning, '订单支付超时，下单金额已原路返回');

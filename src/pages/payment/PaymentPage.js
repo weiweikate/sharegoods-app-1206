@@ -74,6 +74,7 @@ export default class PaymentPage extends BasePage {
                 this.$navigate('payment/ChannelPage', {remainMoney: Math.floor((payment.amounts - user.availableBalance) * 100) / 100})
                 return
             }
+            payment.resetPayment()
             this.paymentResultView.show(PaymentResult.sucess)
         }).catch(err => {
             this.setState({ showPwd: false })
