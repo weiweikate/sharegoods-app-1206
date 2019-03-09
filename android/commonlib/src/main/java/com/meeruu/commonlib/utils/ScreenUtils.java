@@ -190,7 +190,6 @@ public class ScreenUtils {
                 || hasNotchAtVivo(activity) || isAndroidP(activity) != null){ //TODO 各种品牌
             return true;
         }
-
         return false;
     }
 

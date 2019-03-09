@@ -220,7 +220,7 @@ class SettingPage extends BasePage {
                     text: '确认', onPress: () => {
                         AsyncStorage.removeItem('lastMessageTime').catch(e => {
                         });
-                        this.$loadingShow();
+                        // this.$loadingShow();
                         // 正常退出，或者登录超时，都去清空数据
                         user.clearUserInfo();
                         user.clearToken();

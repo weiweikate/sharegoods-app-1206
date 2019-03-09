@@ -36,6 +36,7 @@ import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
 // import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
+import {homeTabManager} from './model/HomeTabManager';
 import { MRText as Text } from '../../components/ui';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import { adModules } from './HomeAdModel';
@@ -62,6 +63,7 @@ const home_notice_bg = res.home_notice_bg;
 const { px2dp } = ScreenUtils;
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
+import { ScrollEvent } from 'recyclerlistview/dist/reactnative/core/scrollcomponent/BaseScrollView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -180,6 +182,7 @@ class HomePage extends BasePage {
                 this.homeFocused = false;
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
+                    this.guideModal.cancelUserRecord();
                     this.setState({ isShow: false }, () => {
                         // android状态栏黑色字体
                         bridge.setLightMode();
@@ -209,6 +212,8 @@ class HomePage extends BasePage {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
+        this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
+
         InteractionManager.runAfterInteractions(() => {
             this.loadMessageCount();
             this._homeModaldata();
@@ -219,6 +224,13 @@ class HomePage extends BasePage {
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();
         this.listenerLogout && this.listenerLogout.remove();
+        this.listenerRetouchHome && this.listenerRetouchHome.remove();
+    }
+
+    retouchHome=()=>{
+        if(homeTabManager.aboveRecommend){
+            this.recyclerListView && this.recyclerListView.scrollToTop(true)
+        }
     }
 
     handleBackPress = () => {
@@ -356,9 +368,9 @@ class HomePage extends BasePage {
             return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
             return <View style={styles.titleView}
-                         onLayout={event => {
-                             this.layout = event.nativeEvent.layout;
-                         }}>
+                         ref={(ref)=>{this.point = ref}}
+                         //onLayout不用删除，否则measure失效
+                         onLayout={event => {}}>
                 <HomeTitleView title={'为你推荐'}/>
             </View>;
         }
@@ -371,6 +383,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        this.luckyIcon.getLucky();
         this.loadMessageCount();
     }
 
@@ -480,6 +493,20 @@ class HomePage extends BasePage {
         );
     }
 
+    _onListViewScroll=(rawEvent: ScrollEvent, offsetX: number, offsetY: number)=>{
+        if(this.point){
+            this.point.measure((x,y,width,height,left,top) => {
+                if(top-ScreenUtils.height*0.5<(ScreenUtils.headerHeight)*-1 && offsetY>ScreenUtils.height){
+                    homeTabManager.setAboveRecommend(true);
+                }else {
+                    homeTabManager.setAboveRecommend(false);
+                }
+            })
+        }else {
+            homeTabManager.setAboveRecommend(false);
+        }
+    }
+
     render() {
         console.log('getBanner render', adModules.adHeight); //千万别去掉
         const { homeList } = homeModule;
@@ -492,16 +519,20 @@ class HomePage extends BasePage {
                                 pageFocused={this.homeFocused}
                 />
                 <RecyclerListView
+                    ref={(ref)=>{this.recyclerListView = ref}}
                     style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
+                    scrollEventThrottle={30}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
+                    onScrollBeginDrag={()=> {this.luckyIcon.close();}}
                     showsVerticalScrollIndicator={false}
+                    onScroll={this._onListViewScroll}
                     renderFooter={() => <Footer
                         isFetching={homeModule.isFetching}
                         errorMsg={homeModule.errorMsg}

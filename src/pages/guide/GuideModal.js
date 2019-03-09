@@ -48,6 +48,9 @@ const {
     group,
     mine,
     next_btn,
+    button: {
+        cancel_white_circle
+    }
 } = res;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const adWidth = (ScreenUtils.width - autoSizeWidth(35)) / 2
@@ -67,6 +70,7 @@ export default class GuideModal extends React.Component {
         this.state = {
             step: 0,/** 新手引导第几步*/
             visible: false,
+            isHome: false,
             num: 98,
             rewardzData: {},
         };
@@ -82,6 +86,7 @@ export default class GuideModal extends React.Component {
     }
 
     getUserRecord = () => {
+        this.state.isHome = true;
         GuideApi.getUserRecord().then((data)=> {
             if(data.data === true){
                 this.open();
@@ -91,7 +96,12 @@ export default class GuideModal extends React.Component {
         })
     }
 
-    getRewardzInfo = () => {
+    cancelUserRecord = () => {
+        this.setState({isHome: false, visible: false});
+    }
+
+
+        getRewardzInfo = () => {
         GuideApi.rewardzInfo({type: 17}).then((data)=> {
             data = data.data || [];
             if (data.length>0){
@@ -282,9 +292,9 @@ export default class GuideModal extends React.Component {
                         </View>
                     </TouchableWithoutFeedback>
                     <View style={{flex: 1}}>
-                        {/*<TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>*/}
-                        {/*<Image source={close_white} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>*/}
-                        {/*</TouchableOpacity>*/}
+                        <TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>
+                        <Image source={cancel_white_circle} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )
@@ -313,7 +323,7 @@ export default class GuideModal extends React.Component {
         return (
             <CommModal
                 ref={(ref) => {this.modal = ref}}
-                visible={this.state.visible}
+                visible={this.state.visible && this.state.isHome}
             >
                 {this.renderContent()}
             </CommModal>

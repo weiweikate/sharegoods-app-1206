@@ -1,6 +1,6 @@
 import { TabNavigator } from 'react-navigation';
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { DeviceEventEmitter, Text, View } from 'react-native';
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
@@ -10,6 +10,7 @@ import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
+import {homeTabManager} from '../pages/home/model/HomeTabManager'
 import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -58,6 +59,21 @@ class SpellShopTab extends Component {
 
         return <Tab focused={focused} normalSource={normalSource} activeSource={activeSource} title={'拼店'}/>;
     }
+}
+
+@observer
+class HomeTab extends Component {
+    render() {
+        const { focused, normalSource } = this.props;
+
+        if (homeTabManager.aboveRecommend) {
+            return <Tab focused={focused} normalSource={normalSource} activeSource={res.tab.home_top} title={'首页'}/>;
+        }else {
+            return <Tab focused={focused} normalSource={normalSource} activeSource={res.tab.home_s} title={'首页'}/>;
+        }
+
+        return <Tab focused={focused} normalSource={res.tab.home_n}
+                    activeSource={res.tab.home_s} title={'首页'}/>    }
 }
 
 const ShowFlag = () => <View style={styles.shopFlag}>
@@ -109,9 +125,18 @@ export const TabNav = TabNavigator(
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.home_n}
-                                                  activeSource={res.tab.home_s} title={'首页'}/>
-            }
+                tabBarIcon: ({ focused }) => <HomeTab focused={focused} normalSource={res.tab.home_n} title={'首页'}/>,
+                tabBarOnPress: (tab) => {
+                    const { jumpToIndex, scene ,previousScene} = tab;
+                    if(previousScene.key !== 'HomePage'){
+                        jumpToIndex(scene.index);
+                    }else {
+                        DeviceEventEmitter.emit('retouch_home');
+                    }
+                }
+            },
+
+
         },
         ShowListPage: {
             screen: ShowListPage,
@@ -217,7 +242,7 @@ const styles = StyleSheet.create({
     },
     shopFlag: {
         position: 'absolute',
-        bottom: 45,
+        bottom: 45 + ScreenUtils.safeBottom,
         left: (ScreenUtils.width - 76) / 2,
         width: 76,
         height: 23
