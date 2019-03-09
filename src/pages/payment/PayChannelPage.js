@@ -90,11 +90,10 @@ export default class ChannelPage extends BasePage {
             this.setState({ orderChecking: false })
             console.log('checkPayStatus', result, parseInt(result.data, 0) === payStatus.paySuccess)
             if (parseInt(result.data, 0) === payStatus.paySuccess) {
-                track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
                 this.paymentResultView.show(PaymentResult.sucess);
-                payment.resetPayment()
-            }
-            if (result.data === payStatus.payOutTime) {
+                track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
+                payment.resetPayment()   
+            } else if (result.data === payStatus.payOutTime) {
                 this.paymentResultView.show(PaymentResult.warning, '订单支付超时，下单金额已原路返回');
             }
         }).catch(() => {
