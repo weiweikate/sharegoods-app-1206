@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
   flag: {
     backgroundColor: '#FF0050',
     width: px2dp(2),
-    height: px2dp(8)
+    height: px2dp(8),
+    borderRadius: px2dp(1)
   },
   titleView: {
       height: px2dp(42),

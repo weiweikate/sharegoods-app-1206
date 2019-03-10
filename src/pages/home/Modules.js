@@ -8,6 +8,7 @@ import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
 import { categoryModule } from './HomeCategoryModel'
 import res from './res';
+import OssHelper from '../../utils/OssHelper'
 
 const {
     school: schoolImg,
@@ -22,40 +23,40 @@ class ClassifyModules {
     @action loadClassifyList = () => {
         this.classifyList = [{
             icon: shareImg,
-            // img: OssHelper('/appshare%403x.png'),
+            img: OssHelper('/app/share11.png'),
             name: '升级',
             id: 1,
-            route: 'home/product/xpProduct/XpDetailPage',
+            route: 'product/xpProduct/XpDetailPage',
             linkTypeCode: 'JF201901250002'
         }, {
             icon: showImg,
-            // img: OssHelper('/app/show%403x.png'),
+            img: OssHelper('/app/show11.png'),
             name: '秀场',
             id: 1,
             route: 'show/ShowListPage'
         }, {
             icon: signinImg,
-            // img: OssHelper('/app/signin%403x.png'),
+            img: OssHelper('/app/signin11.png'),
             name: '签到',
             id: 1,
             route: 'home/signIn/SignInPage',
             needLogin: 1
         }, {
             icon: schoolImg,
-            // img: OssHelper('/app/school%403x.png'),
+            img: OssHelper('/app/school11.png'),
             name: '必看',
             id: 1,
             linkTypeCode: 'FX181226000001',
             route: 'show/ShowDetailPage'
         }, {
             icon: spikeImg,
-            // img: OssHelper('/app/spike%403x.png'),
+            img: OssHelper('/app/spike11.png'),
             name: '秒杀',
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000002'
         }];
-        
+
     };
 }
 
@@ -71,12 +72,12 @@ class HomeModule {
     page = 1;
     firstLoad = true;
     errorMsg = '';
-
+    //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
         return homeRoute[linkType];
     };
-
+   //获取参数
     @action paramsNavigate = (data) => {
         const { topicBannerProductDTOList } = data;
         let product = null;

@@ -57,6 +57,12 @@ android {
             storeFile file(STORE_FILE)
             storePassword KEYSTORE_PASSWORD
         }
+        debug {
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+            storeFile file(STORE_FILE)
+            storePassword KEYSTORE_PASSWORD
+        }
     }
     buildTypes {
         debug {
@@ -85,6 +91,7 @@ sensorsAnalytics {
 }
 
 dependencies {
+    compile project(':react-native-webview')
     api fileTree(include: ['*.jar'], dir: 'libs')
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.3') {
         exclude(module: 'support-core-utils')
@@ -104,6 +111,7 @@ dependencies {
     api rootProject.ext.dependencies.recyclerview
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
+    api(name: 'alicom-number-verification-android-2.0.0-20190219-release',ext: 'aar')
     api project(':react-native-update')
     api project(':react-native-video')
     api project(':react-native-vector-icons')
@@ -122,5 +130,4 @@ dependencies {
     api project(':lottie')
     api project(':base_adapter')
     api project(':react-native-extra-dimensions-android')
-    implementation project(':react-native-camera')
 }

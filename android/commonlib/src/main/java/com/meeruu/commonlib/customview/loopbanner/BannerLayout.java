@@ -30,7 +30,7 @@ import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
 
 public class BannerLayout extends FrameLayout {
 
-    private int autoPlayDuration = 3000;//刷新间隔时间
+    private int autoPlayDuration = 5000;//刷新间隔时间
 
     private boolean showIndicator;//是否显示指示器
     private RecyclerView indicatorContainer;
@@ -50,11 +50,12 @@ public class BannerLayout extends FrameLayout {
     private boolean isPlaying = false;
 
     private boolean isAutoPlaying = true;
-    int itemSpace;
-    float centerScale;
-    float moveSpeed;
+    private int itemSpace;
+    private float centerScale;
+    private float moveSpeed;
     private OnPageSelected onPageSelected;
     private RecyclerView.Adapter adapter;
+    private boolean intercept;
 
     protected WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
         @Override
@@ -88,7 +89,7 @@ public class BannerLayout extends FrameLayout {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BannerLayout);
         showIndicator = a.getBoolean(R.styleable.BannerLayout_showIndicator, true);
-        autoPlayDuration = a.getInt(R.styleable.BannerLayout_interval, 3000);
+        autoPlayDuration = a.getInt(R.styleable.BannerLayout_interval, 5000);
         isAutoPlaying = a.getBoolean(R.styleable.BannerLayout_autoPlaying, true);
         itemSpace = a.getInt(R.styleable.BannerLayout_itemSpace, 20);
         centerScale = a.getFloat(R.styleable.BannerLayout_centerScale, 1.0f);
@@ -222,6 +223,21 @@ public class BannerLayout extends FrameLayout {
         }
     }
 
+    public RecyclerView.Adapter getAdapter() {
+        return this.adapter;
+    }
+
+    public void refreshBanner(int size) {
+        bannerSize = size;
+        mLayoutManager.setInfinite(bannerSize >= 1);
+        hasInit = true;
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        hasInit = false;
+        this.currentIndex = currentIndex;
+    }
+
     /**
      * 设置轮播数据集
      */
@@ -232,6 +248,10 @@ public class BannerLayout extends FrameLayout {
         bannerSize = adapter.getItemCount();
         mLayoutManager.setInfinite(bannerSize >= 1);
         setPlaying(true);
+        initScrollListener();
+    }
+
+    public void initScrollListener() {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -265,13 +285,17 @@ public class BannerLayout extends FrameLayout {
             // 开始翻页
             setPlaying(true);
         } else if (action == MotionEvent.ACTION_DOWN) {
-            getParent().requestDisallowInterceptTouchEvent(true);
+            getParent().requestDisallowInterceptTouchEvent(intercept);
             // 停止翻页
             if (isPlaying) {
                 setPlaying(false);
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    public void setIntercept(boolean intercept) {
+        this.intercept = intercept;
     }
 
     @Override
@@ -340,7 +364,7 @@ public class BannerLayout extends FrameLayout {
     /**
      * 改变导航的指示点
      */
-    protected synchronized void refreshIndicator() {
+    public synchronized void refreshIndicator() {
         if (bannerSize > 0) {
             int position = currentIndex % bannerSize;
             onPageSelected.pageSelected(position);

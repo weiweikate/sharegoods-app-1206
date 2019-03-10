@@ -62,7 +62,7 @@ const homeLinkType = {
 };
 
 const bannerRoute = {
-    [homeLinkType.good]: 'home/product/ProductDetailPage',
+    [homeLinkType.good]: 'product/ProductDetailPage',
     [homeLinkType.subject]: 'topic/DownPricePage',
     [homeLinkType.down]: 'topic/TopicDetailPage',
     [homeLinkType.spike]: 'topic/TopicDetailPage',
@@ -70,7 +70,7 @@ const bannerRoute = {
     [homeLinkType.store]: 'spellShop/MyShop_RecruitPage',
     [homeLinkType.web]: 'HtmlPage',
     [homeLinkType.show]: 'show/ShowDetailPage',
-    [homeLinkType.exp]: 'home/product/xpProduct/XpDetailPage'
+    [homeLinkType.exp]: 'product/xpProduct/XpDetailPage'
 };
 
 export const showTypes = {

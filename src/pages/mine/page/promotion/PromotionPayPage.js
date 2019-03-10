@@ -61,7 +61,7 @@ export default class PromotionPayPage extends BasePage<Props> {
         //     alert(error.msg);
         // })
 
-        this.$navigate('payment/PaymentMethodPage',{packageId:this.params.id,amounts:this.params.total,payPromotion:true})
+        this.$navigate('payment/PaymentPage',{packageId:this.params.id,amounts:this.params.total,payPromotion:true})
     }
 
     _render() {

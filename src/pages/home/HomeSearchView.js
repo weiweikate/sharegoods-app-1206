@@ -21,11 +21,11 @@ export default ({ navigation, whiteIcon, hasMessage, pageFocused }) =>
         <View style={styles.navContent}>
             <Image source={logoRed} style={styles.logo}/>
             <TouchableWithoutFeedback onPress={() => {
-                                  navigation('home/search/SearchPage');
-                              }}>
-                <View style={[styles.searchBox, { backgroundColor: '#E4E5E6' }]}>
-                <Image source={searchImg} style={styles.searchIcon}/>
-                <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
+                navigation('home/search/SearchPage');
+            }}>
+                <View style={[styles.searchBox, { backgroundColor: '#F2F2F2' }]}>
+                    <Image source={searchImg} style={styles.searchIcon}/>
+                    <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
                 </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => {
@@ -58,7 +58,7 @@ let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
         height: headerHeight - (ScreenUtils.isIOSX ? 10 : 0),
-        backgroundColor: '#fff'
+        backgroundColor: 'white'
     },
     navContent: {
         flex: 1,

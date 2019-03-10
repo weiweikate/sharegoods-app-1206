@@ -230,7 +230,7 @@ export default class CommShareModal extends React.Component {
                 }
             });
         } else {
-            HttpUtils.post(url, false, params).then(() => {
+            HttpUtils.post(url, false, params, {}).then(() => {
                 if (refresh === true) {
                     this.props.reloadWeb && this.props.reloadWeb();
                 }
@@ -340,7 +340,8 @@ export default class CommShareModal extends React.Component {
             }];
         }
 
-        const { v0Price } = this.props.imageJson || {};
+        const { shareMoney } = this.props.imageJson || {};
+        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}起` : '';
 
         return (
             <CommModal onRequestClose={this.close}
@@ -380,7 +381,7 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_secondTitle,
                                             fontSize: autoSizeWidth(17),
                                             marginHorizontal: 7
-                                        }}>{`分享秀一秀 ${v0Price || ''}起`}</MRText>
+                                        }}>{`分享秀一秀 ${user.isLogin ? shareMoneyText : ''}`}</MRText>
                                         :
                                         <MRText style={{
                                             color: DesignRule.textColor_secondTitle,

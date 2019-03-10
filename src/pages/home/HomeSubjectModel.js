@@ -28,7 +28,7 @@ class SubjectModule {
           list.map(value => {
             const { topicBannerProductDTOList } = value
             if (topicBannerProductDTOList && topicBannerProductDTOList.length > 0) {
-              height += px2dp(190);
+              height += px2dp(185);
             } else {
               height += px2dp(15);
             }

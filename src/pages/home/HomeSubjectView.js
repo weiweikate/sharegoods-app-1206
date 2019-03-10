@@ -16,21 +16,21 @@ import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTo
 import ImageLoad from '@mr/image-placeholder';
 import EmptyUtils from '../../utils/EmptyUtils';
 import { MRText as Text } from '../../components/ui';
-import HomeTitleView from './HomeTitleView'
-import res from './res'
+import HomeTitleView from './HomeTitleView';
+import res from './res';
 
-const MoneyItems = ({money}) => {
+const MoneyItems = ({ money }) => {
     if (EmptyUtils.isEmpty(money)) {
-        return <View/>
+        return null;
     }
-    let unitStr = '¥'
-    let moneyStr = ''
-    let index = money.indexOf("¥")
+    let unitStr = '¥';
+    let moneyStr = '';
+    let index = money.indexOf('¥');
     if (index !== -1) {
-        moneyStr = money.substring(index + 1, money.length)
+        moneyStr = money.substring(index + 1, money.length);
     }
-    return  <Text style={styles.unit}>{unitStr}<Text style={styles.money}>{moneyStr}</Text> 起</Text>
-}
+    return <Text style={styles.unit}>{unitStr}<Text style={styles.money}>{moneyStr}</Text> 起</Text>;
+};
 
 const GoodItems = ({ img, title, money, press }) => {
     return <TouchableWithoutFeedback onPress={() => {
@@ -49,7 +49,7 @@ const MoreItem = ({ press }) => <TouchableOpacity style={styles.moreView} onPres
     press && press();
 }}>
     <Image source={res.home_right}/>
-    <View style={{height: px2dp(10)}}/>
+    <View style={{ height: px2dp(10) }}/>
     <Text style={styles.seeMore} allowFontScaling={false}>查看更多</Text>
 </TouchableOpacity>;
 
@@ -77,25 +77,25 @@ const ActivityItem = ({ data, press, goodsPress }) => {
         <TouchableWithoutFeedback onPress={() => {
             press && press();
         }}>
-            <View style={styles.bannerBox}>
-                <View style={styles.bannerView}>
-                    <ImageLoad style={styles.banner}
-                               source={{ uri: imgUrl ? encodeURI(imgUrl) : '' }}/>
-                </View>
+            <View style={styles.bannerView}>
+                <ImageLoad style={styles.banner}
+                           source={{ uri: imgUrl ? encodeURI(imgUrl) : '' }}/>
             </View>
         </TouchableWithoutFeedback>
         {
             topicBannerProductDTOList && topicBannerProductDTOList.length > 0
                 ?
                 <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-                    <View style={{ width: px2dp(4) }}/>
+                    <View style={{ width: px2dp(7.5) }}/>
                     {goodsItem}
                     {
-                        topicBannerProductDTOList.length >= 8 ? <MoreItem press={() => {
-                            press && press();
-                        }}/> : null
+                        topicBannerProductDTOList.length >= 8 ?
+                            <MoreItem press={() => {
+                                press && press();
+                            }}/>
+                            : null
                     }
-                    <View style={styles.space}/>
+                    <View style={{ width: topicBannerProductDTOList.length < 8 ? px2dp(7.5) : px2dp(5) }}/>
                 </ScrollView>
                 :
                 <View style={{ height: px2dp(15) }}/>
@@ -150,8 +150,8 @@ export default class HomeSubjectView extends Component {
     }
 }
 
-const bannerWidth = ScreenUtil.width - px2dp(50)
-const bannerHeight = bannerWidth * (240 / 650)
+const bannerWidth = ScreenUtil.width - px2dp(50);
+const bannerHeight = bannerWidth * (240 / 650);
 
 let styles = StyleSheet.create({
     container: {
@@ -161,9 +161,6 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         borderRadius: 5
-    },
-    space: {
-        width: px2dp(5)
     },
     bannerView: {
         marginLeft: px2dp(10),
@@ -176,23 +173,23 @@ let styles = StyleSheet.create({
         height: bannerHeight
     },
     scroll: {
-        height: px2dp(170),
+        height: px2dp(165),
         marginTop: px2dp(5),
         marginBottom: px2dp(15)
     },
     goodsView: {
         marginTop: px2dp(5),
-        marginLeft: px2dp(10),
         width: px2dp(100),
-        height: px2dp(170)
+        height: px2dp(165),
+        marginHorizontal: px2dp(2.5)
     },
     goodImg: {
         width: px2dp(100),
         height: px2dp(100)
     },
     goodsTitle: {
-        marginLeft: px2dp(2),
-        color: DesignRule.textColor_secondTitle,
+        marginHorizontal: px2dp(2.5),
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(12),
         marginTop: px2dp(5)
     },
@@ -201,18 +198,20 @@ let styles = StyleSheet.create({
         fontWeight: '600'
     },
     unit: {
-        marginLeft: px2dp(2),
+        marginHorizontal: px2dp(2.5),
         color: DesignRule.mainColor,
         fontSize: px2dp(12),
-        marginBottom: px2dp(10),
+        marginBottom: px2dp(10)
     },
     moreView: {
         width: px2dp(100),
-        height: px2dp(160),
+        height: px2dp(165),
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: px2dp(5),
         backgroundColor: DesignRule.bgColor,
+        borderRadius: (5),
+        marginRight: px2dp(5)
     },
     seeMore: {
         color: DesignRule.textColor_secondTitle,

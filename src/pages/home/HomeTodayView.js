@@ -14,50 +14,14 @@ import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 import { MRText as Text } from '../../components/ui';
 
 
-export const todayHeight = px2dp(240)
-
-// const TodayItem = ({ item, press }) => <TouchableOpacity style={styles.item} onPress={() => press && press()}>
-//     <ImageLoad style={styles.img} source={{ uri: item.imgUrl }}/>
-// </TouchableOpacity>;
+export const todayHeight = px2dp(240);
 
 @observer
 export default class HomeTodayView extends Component {
-    // _todayItemAction(item) {
-    //     let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-    //     let params = homeModule.paramsNavigate(item);
-    //     const { navigate } = this.props;
-    //     navigate && navigate(router, { ...params, preseat: '今日榜单' });
-    // }
-
-    // render() {
-    //     const { todayList } = todayModule;
-    //     let items = [];
-    //     todayList.map((item, index) => {
-    //         items.push(<TodayItem key={index} item={item} press={() => this._todayItemAction(item)}/>);
-    //     });
-    //     return <View>
-    //         {
-    //             items.length > 0
-    //                 ?
-    //                 <View style={styles.container}>
-    //                     <View style={styles.titleView}>
-    //                         <Text style={styles.title} allowFontScaling={false}>今日榜单</Text>
-    //                     </View>
-    //                     <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-    //                         <View style={{ width: px2dp(4) }}/>
-    //                         {items}
-    //                         <View style={styles.space}/>
-    //                     </ScrollView>
-    //                 </View>
-    //                 :
-    //                 null
-    //         }
-    //     </View>;
-    // }
 
     state = {
         index: 0
-    }
+    };
 
     _onPressRow(e) {
         let index = e.nativeEvent.index;
@@ -66,7 +30,7 @@ export default class HomeTodayView extends Component {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
-        navigate(router, { ...params, preseat: 'home_recommend' });
+        navigate(router, { ...params, preseat: 'home_today' });
     }
 
     _onDidScrollToIndex(e) {
@@ -93,46 +57,46 @@ export default class HomeTodayView extends Component {
         const { todayList } = todayModule;
 
         if (todayList.length === 0) {
-            return <View/>
+            return <View/>;
         }
 
         let items = [];
         todayList.map((item, index) => {
             items.push(item.imgUrl);
         });
-        return  <View style={styles.container}>
-        <View style={styles.titleView}>
-            <View style={styles.flag}/>
-            <Text style={styles.title}>今日榜单</Text>
-        </View>
-        {
-            todayList.length === 1
-            ?
-            <TouchableWithoutFeedback onPress={()=>this._onPressRowWithItem(todayList[0])}>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                {this.renderRow(todayList[0])}
+        return <View style={styles.container}>
+            <View style={styles.titleView}>
+                <View style={styles.flag}/>
+                <Text style={styles.title}>今日榜单</Text>
             </View>
-            </TouchableWithoutFeedback>
-            :
-            <MRBannerView
-                style={{
-                    height: px2dp(160),
-                    width: ScreenUtil.width - px2dp(30)
-                }}
-                imgUrlArray={items}
-                itemWidth={px2dp(295)}
-                itemSpace={px2dp(10)}
-                itemRadius={5}
-                pageFocused={this.props.pageFocused}
-                onDidSelectItemAtIndex={(index) => {
-                    this._onPressRow(index);
-                }}
-                onDidScrollToIndex={(index) => {
-                    this._onDidScrollToIndex(index);
-                }}
-            />
-        }
-        {this.renderIndexView()}
+            {
+                todayList.length === 1
+                    ?
+                    <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(todayList[0])}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            {this.renderRow(todayList[0])}
+                        </View>
+                    </TouchableWithoutFeedback>
+                    :
+                    <MRBannerView
+                        style={{
+                            height: px2dp(160),
+                            width: ScreenUtil.width - px2dp(30)
+                        }}
+                        imgUrlArray={items}
+                        itemWidth={px2dp(295)}
+                        itemSpace={px2dp(10)}
+                        itemRadius={5}
+                        pageFocused={this.props.pageFocused}
+                        onDidSelectItemAtIndex={(index) => {
+                            this._onPressRow(index);
+                        }}
+                        onDidScrollToIndex={(index) => {
+                            this._onDidScrollToIndex(index);
+                        }}
+                    />
+            }
+            {this.renderIndexView()}
         </View>;
     }
 }
@@ -146,10 +110,10 @@ let styles = StyleSheet.create({
         width: ScreenUtil.width - px2dp(30),
         borderRadius: (5),
         overflow: 'hidden',
-        backgroundColor: '#fff'
+        backgroundColor: 'white'
     },
     flag: {
-        backgroundColor: '#FF0050',
+        backgroundColor: DesignRule.mainColor,
         width: px2dp(2),
         height: px2dp(8)
     },
@@ -200,14 +164,14 @@ let styles = StyleSheet.create({
         width: px2dp(10),
         height: px2dp(3),
         borderRadius: px2dp(1.5),
-        backgroundColor: '#FF0050',
+        backgroundColor: DesignRule.mainColor,
         margin: 2
     },
     index: {
         width: px2dp(5),
         height: px2dp(3),
         borderRadius: px2dp(1.5),
-        backgroundColor: '#E4E4E4',
+        backgroundColor: DesignRule.lineColor_inWhiteBg,
         margin: 2
     }
 });

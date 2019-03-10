@@ -161,8 +161,8 @@ export default class MyCouponsItems extends Component {
                                                         color: DesignRule.textColor_instruction,
                                                     }}/>
                                         </View>
-                                        : <UIText value={"x" + item.count}
-                                                  style={styles.xNumsStyle}/>))
+                                        : (item.count>1?<UIText value={"x" + item.count}
+                                                                style={styles.xNumsStyle}/>:null)))
 
                                 : <View style={{ marginRight: 15, justifyContent: "center", alignItems: "center" }}>
                                     {item.count > 1 ? <UIText value={"x" + item.count}
@@ -220,7 +220,7 @@ export default class MyCouponsItems extends Component {
                             <View style={styles.itemFirStyle}>
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                                     {
-                                        item.type === 3 || item.type === 4 || item.type === 12 ? null :
+                                        item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
                                             <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
                                                 <Text
                                                     style={{
@@ -288,7 +288,8 @@ export default class MyCouponsItems extends Component {
                                                 color: DesignRule.textColor_instruction,
                                                 marginRight: 15
                                             }}/>
-                                </View> : null) :
+                                </View> : (item.count>1?<UIText value={"x" + item.count}
+                                                   style={styles.xNumsStyle}/>:null)) :
                                 <View style={{ marginRight: 15, justifyContent: "center", alignItems: "center" }}>
                                     {item.count > 1 ? <UIText value={"x" + item.count}
                                                               style={styles.xNumsStyle}/> : null}
@@ -523,10 +524,14 @@ export default class MyCouponsItems extends Component {
         3、单产品、限iphone手机商品可用（产品名称，名称过长则超过6个字后...限iphone手机...商品可用）
         4、多产品、则直接显示，限指定商品可使用
         5、产品+分类的情况下，则显示，限指定商品可使用
+        6。如果产品是周期券，直接返回'限指定商品可使用'
     * */
     parseCoupon = (item) => {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
+        if(item.type === 5){
+            return "限商品：限指定商品可用";
+        }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
                 return "限商品：限指定商品可用";
@@ -568,10 +573,11 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            if (!this.props.fromOrder && (couponsModel.params.type || 0) > 6) {
+            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || couponsModel.params.type === null) {
                 API.queryCoupons({
                     status: this.state.pageStatus
                 }).then(result => {
+                    this.isLoadMore = false;
                     let data = result.data || [];
                     data.forEach((item) => {
                         arrData.push({
@@ -583,7 +589,7 @@ export default class MyCouponsItems extends Component {
                             remarks: item.remarks,
                             type: item.type, //以type=99表示1元券
                             levelimit: false,
-                            number: item.number
+                            count: item.number||0
 
                         });
                     });
@@ -695,7 +701,12 @@ export default class MyCouponsItems extends Component {
             }
             this.setState({ viewData: arrData });
             this.isEnd = true;
-        } else {
+        } else if (this.dataSel.type === 7){
+            bridge.hiddenLoading();
+            let dataList =  [];
+            this.parseData(dataList);
+        }
+        else {
             API.userCouponList({
                 page: this.currentPage,
                 status,
