@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.customview.loopbanner.BannerLayout;
-import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.sharegoods.R;
 
@@ -24,20 +23,27 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
 
     private List<String> urlList;
     private BannerLayout.OnBannerItemClickListener onBannerItemClickListener;
-    private int radius;
     private int itemWidth;
+    private int radius;
 
     public WebBannerAdapter(Context context, List urlList) {
         this.urlList = urlList;
-        radius = DensityUtils.dip2px(5f);
     }
 
     public void setUrlList(List<String> urlList) {
-        this.urlList = urlList;
+        if (this.urlList != null && this.urlList.size() > 0) {
+            this.urlList.clear();
+            this.urlList.addAll(urlList);
+            notifyDataSetChanged();
+        }
     }
 
     public void setItemWidth(int itemWidth) {
         this.itemWidth = itemWidth;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
     }
 
     public void setOnBannerItemClickListener(BannerLayout.OnBannerItemClickListener onBannerItemClickListener) {
@@ -50,7 +56,7 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
     }
 
     @Override
-    public void onBindViewHolder(WebBannerAdapter.MzViewHolder holder, final int position) {
+    public void onBindViewHolder(final WebBannerAdapter.MzViewHolder holder, final int position) {
         if (urlList == null || urlList.isEmpty())
             return;
         final int realPos = position % urlList.size();
@@ -67,7 +73,7 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
                 }
             }
         });
-        ImageLoadUtils.loadRoundNetImage(url, imageView, radius);
+        ImageLoadUtils.loadRoundNetImage(url, imageView, this.radius);
     }
 
     @Override

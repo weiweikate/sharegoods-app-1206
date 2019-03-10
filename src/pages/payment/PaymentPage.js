@@ -38,30 +38,29 @@ export default class PaymentPage extends BasePage {
         this.$navigateBack();
     }
 
-    goToPay() {
-        const {selectedBalace} = payment
-        if (!selectedBalace) {
-            this.$navigate('payment/ChannelPage')
-            return
-        }
-
-        //用户设置过交易密码
-        if (user.hadSalePassword) {
-            payment.checkOrderStatus().then(result => {
-                if (result.data === payStatus.payNo) {
-                    this.setState({ showPwd: true })
-                } else if (result.data === payStatus.payNeedThrid) {
+    goToPay =()=> {
+        payment.checkOrderStatus().then(result => {
+            if (result.code === payStatus.payNo) {
+                const {selectedBalace} = payment
+                if (!selectedBalace) {
                     this.$navigate('payment/ChannelPage')
-                } else {
-                    Toast.$toast(payStatusMsg[result.data])
+                    return
                 }
-            }).catch(err => {
-                console.log('checkOrderStatus page err', err)
-                Toast.$toast(err.msg)
-            })
-        }  else {
-            this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
-        }
+                //用户设置过交易密码
+                if (user.hadSalePassword) {
+                    this.setState({ showPwd: true })
+                }  else {
+                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
+                }
+            } else if (result.code === payStatus.payNeedThrid) {
+                this.$navigate('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
+            } else {
+                Toast.$toast(payStatusMsg[result.code])
+            }
+        }).catch(err => {
+            console.log('checkOrderStatus page err', err)
+            Toast.$toast(err.msg)
+        })
     }
 
     _selectedBalance() {
@@ -72,9 +71,10 @@ export default class PaymentPage extends BasePage {
         payment.platformPay(password).then((result) => {
             this.setState({ showPwd: false })
             if (result.data === payStatus.payNeedThrid) {
-                this.$navigate('payment/ChannelPage', {remainMoney: payment.amounts - user.availableBalance})
+                this.$navigate('payment/ChannelPage', {remainMoney: Math.floor((payment.amounts - user.availableBalance) * 100) / 100})
                 return
             }
+            payment.resetPayment()
             this.paymentResultView.show(PaymentResult.sucess)
         }).catch(err => {
             this.setState({ showPwd: false })

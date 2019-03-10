@@ -38,6 +38,7 @@ class inviteModel {
     saveInviteCode(code) {
         this.inviteCode = code;
     }
+
     @computed
     get isCanClick() {
         if (this.inviteCode.length > 3) {
@@ -135,22 +136,21 @@ export default class InviteCodePage extends BasePage {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.bottomContentStyle}>
-                    <View
-                        style={styles.selectMentorBgStyle}
+                    <TouchableOpacity
+                    onPress={()=>{this.$navigate(RouterMap.SelectMentorPage);}}
                     >
-                        <UIText
-                            value={"秀购为您推荐顾问"}
-                            style={{
-                                color: DesignRule.textColor_instruction,
-                                fontSize: 13
-                            }}
-                            onPress={
-                                () => {
-                                    this.$navigate(RouterMap.SelectMentorPage);
-                                }
-                            }
-                        />
-                    </View>
+                        <View
+                            style={styles.selectMentorBgStyle}
+                        >
+                            <UIText
+                                value={"秀购为您推荐顾问"}
+                                style={{
+                                    color: DesignRule.textColor_instruction,
+                                    fontSize: 13
+                                }}
+                            />
+                        </View>
+                    </TouchableOpacity>
                     <UIText
                         value={"跳过"}
                         style={{

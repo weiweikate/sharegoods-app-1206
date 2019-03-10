@@ -31,7 +31,7 @@ export default class PasswordView extends Component {
         this.keyboardHideEventListener && this.keyboardHideEventListener.remove()
     }
 
-    handleKeyboardShow = (keyboardEvent) => { 
+    handleKeyboardShow = (keyboardEvent) => {
         this.setState({keyboardHeight : keyboardEvent.endCoordinates.height + px2dp(233)})
     }
 
@@ -61,6 +61,7 @@ export default class PasswordView extends Component {
         const { keyboardHeight } = this.state
         return  <Modal
         animation='fade'
+        visible={true}
         >
         <View style={styles.container}>
             <View style={{flex: 1}}/>
