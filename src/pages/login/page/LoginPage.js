@@ -103,7 +103,7 @@ export default class LoginPage extends BasePage {
                 this.$navigateBack();
             }}>
                 <Image
-                    style={{paddingRight:5}}
+                    style={{ paddingRight: 5 }}
                     source={close_X}
                 />
             </TouchableOpacity>
@@ -208,7 +208,8 @@ export default class LoginPage extends BasePage {
                     this.$toastShow("登录成功");
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
-                    this.$navigateBack(-2);
+                    // this.$navigateBack(-2);
+                    this.$navigate(RouterMap.InviteCodePage);
                 } else {
                     this.$loadingDismiss();
                     this.$toastShow(data.msg);

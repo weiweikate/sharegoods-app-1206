@@ -24,7 +24,7 @@ const styles = StyleSheet.create(
         },
         textInputStyle: {
             width: width - px2dp(80),
-            height: px2dp(35)
+            height: px2dp(38)
         },
         btnCanClickBgStyle: {
             marginTop: px2dp(64),

@@ -22,7 +22,6 @@
 #import "ShareImageMaker.h"
 #import "WelcomeView.h"
 #import "NetWorkTool.h"
-#import <CoreTelephony/>
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
