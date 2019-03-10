@@ -95,8 +95,8 @@ export default class MentorItemView extends Component {
                 <Text
                     numberOfLines={1}
                     style={{
-                        marginTop: 15,
-                        fontSize: 13,
+                        marginTop: 12,
+                        fontSize: 12,
                         color: DesignRule.textColor_mainTitle
                     }}
                 >
