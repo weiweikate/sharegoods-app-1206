@@ -12,6 +12,10 @@ const styles = StyleSheet.create(
             flex: 1,
             backgroundColor: DesignRule.color_fff
         },
+        contentStyle: {
+            marginTop: 84,
+            alignItems: "center"
+        },
         topTitleStyle: {
             marginTop: px2dp(15),
             fontSize: 23,
