@@ -1,5 +1,6 @@
-// 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
-
+/**
+ * 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+  */
 const statues = {
     deleteStatue: 0,
     noBegin: 1,
@@ -8,6 +9,10 @@ const statues = {
     timeOver: 4,
     handOver: 5
 };
+/**
+ * 不同状态对应的价格字段
+ * @type {{[p: string]: string, [p: number]: string}}
+ */
 const downPriceParam = {
     [statues.noBegin]: 'startPrice',
     [statues.isBeginning]: 'markdownPrice',
@@ -16,7 +21,9 @@ const downPriceParam = {
     [statues.handOver]: 'markdownPrice'
 };
 
-// 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 6 经验值专区 99.普通产品
+/**
+ * 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 6 经验值专区 99.普通产品
+ */
 const productTypes = {
     skill: 1,
     down: 2,
@@ -38,6 +45,10 @@ const typeName = {
     [productTypes.experienceValue]:'originalPrice'
 };
 
+/**
+ * 获取跳转路由
+ * @type {{[p: string]: string, [p: number]: string}}
+ */
 const jumpPageParams = {
     [productTypes.skill]: 'topic/TopicDetailPage',
     //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
@@ -45,7 +56,7 @@ const jumpPageParams = {
     [productTypes.giftPackage]: 'topic/TopicDetailPage',
     [productTypes.helpFree]: 'topic/TopicDetailPage',
     [productTypes.newTopic]: 'topic/DownPricePage',
-    [productTypes.normalProduct]: 'home/product/ProductDetailPage'
+    [productTypes.normalProduct]: 'product/ProductDetailPage'
 
 };
 /**
@@ -68,6 +79,11 @@ function getTopicJumpPageParam(itemData, preseat = '专题列表') {
     }
 }
 
+/**
+ * 获取不同状态下的价格
+ * @param itemData
+ * @returns {string}
+ */
 function getShowPrice(itemData) {
     if (itemData.productType === productTypes.newTopic) {
         return ''

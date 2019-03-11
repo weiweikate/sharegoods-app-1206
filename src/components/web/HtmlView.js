@@ -1,17 +1,21 @@
-import React from 'react';
-import BasePage from '../../BasePage';
-import WebViewBridge from '@mr/webview';
-import { View} from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
-import CommShareModal from '../../comm/components/CommShareModal';
+import React from "react";
+import BasePage from "../../BasePage";
+import WebViewBridge from "@mr/webview";
+import { View } from 'react-native';
+import CommShareModal from "../../comm/components/CommShareModal";
 // import res from '../../comm/res';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
+import apiEnvironment from "../../api/ApiEnvironment";
+import RouterMap from "../../navigation/RouterMap";
+import { autorun } from "mobx";
+import user from "../../model/user";
+import { observer } from "mobx-react";
 
+@observer
 export default class RequestDetailPage extends BasePage {
 
     // 页面配置
     $navigationBarOptions = {
-        title: this.params.title || '加载中...'
+        title: this.params.title || "加载中..."
     };
 
     constructor(props) {
@@ -19,98 +23,61 @@ export default class RequestDetailPage extends BasePage {
         const params = this.props.navigation.state.params || {};
         const { uri, title } = params;
         this.canGoBack = false;
-        let realUri = '';
-        if(uri && uri.indexOf('?') > 0){
-            realUri = uri + '&ts='+new Date().getTime();
-        }else {
-            realUri = uri + '?ts='+new Date().getTime();
+        let realUri = "";
+        if (uri && uri.indexOf("?") > 0) {
+            realUri = uri + "&ts=" + new Date().getTime();
+        } else {
+            realUri = uri + "?ts=" + new Date().getTime();
+        }
+        if (realUri.indexOf("http") === -1) {
+            realUri = apiEnvironment.getCurrentH5Url() + realUri;
         }
         this.state = {
             title: title,
             uri: realUri,
-            shareParmas: {},
+            shareParmas: {}
         };
 
-        // this.webJson = {};
-        // this.imageJson={};
-        // this.miniProgramJson={};
-        // this.type = 'nomal';
-        // this.trackParmas=null;
-        // this.trackEvent= null;
     }
+
+    autoRun = autorun(() => {
+        user.token ? (this.webView && this.webView.reload()):null
+    });
 
     componentDidMount() {
-        this.$NavigationBarResetTitle(this.state.title || '加载中...');
+        this.$NavigationBarResetTitle(this.state.title || "加载中...");
     }
 
-    // $NavigationBarDefaultLeftPressed = () => {
-    //     if (!this.canGoBack) {
-    //         // this.webView.goBack();
-    //         this.$navigateBack();
-    //     } else {
-    //         this.webView.goBack();
-    //     }
-    // };
-
-
-    // $renderSecondLeftItem() {
-    //     return (
-    //         <TouchableOpacity
-    //             style={{
-    //                 height: 44,
-    //                 width: 44,
-    //                 left: 50,
-    //                 top: ScreenUtils.statusBarHeight,
-    //                 position: 'absolute',
-    //                 justifyContent: 'center',
-    //             }}
-    //             onPress={this.$navigateBack.bind(this)}
-    //         >
-    //             <Image source={res.button.del_web} style ={{height: 22, width: 22}}/>
-    //         </TouchableOpacity>
-    //     );
-    // }
     _postMessage = (msg) => {
-        if (msg.action === 'share'){
+        if (msg.action === "share") {
             // this.webJson = msg.shareParmas;
-            this.setState({shareParmas: msg.shareParmas});
+            this.setState({ shareParmas: msg.shareParmas });
             this.shareModal.open();
             return;
         }
 
-        if (msg.action === 'backToHome')
-        {
+        if (msg.action === "backToHome") {
             this.$navigateBackToHome();
             return;
         }
-    }
+    };
 
     _render() {
-        let height = ScreenUtils.height - ScreenUtils.headerHeight ;
-        if(ScreenUtils.isAllScreenDevice && !ScreenUtils.getBarShow()){
-            height = ExtraDimensions.get('REAL_WINDOW_HEIGHT')-ScreenUtils.headerHeight;
-        }else if(ScreenUtils.isAllScreenDevice && ScreenUtils.getBarShow()){
-            if(ScreenUtils.getHasNotchScreen()){
-                height = ScreenUtils.height - 44;
-            }else {
-                height = ScreenUtils.height - 44 -ExtraDimensions.get('STATUS_BAR_HEIGHT');
-            }
-        }
         return (
-            <View style={{ height, overflow: 'hidden' }}>
+            <View style={{ flex: 1, overflow: "hidden" }}>
                 <WebViewBridge
                     style={{ flex: 1 }}
                     ref={(ref) => {
                         this.webView = ref;
                     }}
+                    originWhitelist={["(.*?)"]}
                     source={{ uri: this.state.uri }}
                     navigateAppPage={(r, p) => {
-                        if (r === 'login/login/LoginPage'){
-                            this.$navigate(r, {...p, callback: ()=>{
-                                    this.webView && this.webView.reload()}});
-                        } else {
+                            if (r.length > 0) {
+                                let routerKey = r.split("/").pop();
+                                r = RouterMap[routerKey] || r;
+                            }
                             this.$navigate(r, p);
-                        }
                     }}
                     onNavigationStateChange={event => {
                         this.canGoBack = event.canGoBack;
@@ -118,18 +85,20 @@ export default class RequestDetailPage extends BasePage {
                     }}
                     onError={event => {
                         this.canGoBack = event.canGoBack;
-                        this.$NavigationBarResetTitle('加载失败');
+                        this.$NavigationBarResetTitle("加载失败");
                     }}
 
                     // onLoadStart={() => this._onLoadStart()}
                     onLoadEnd={(event) => {
                         this.canGoBack = event.canGoBack;
                     }}
-                     postMessage={msg => this._postMessage(msg)}
+                    postMessage={msg => this._postMessage(msg)}
                 />
                 <CommShareModal
                     ref={(ref) => this.shareModal = ref}
-                    reloadWeb={()=> {this.webView && this.webView.reload()}}
+                    reloadWeb={() => {
+                        this.webView && this.webView.reload();
+                    }}
                     {...this.state.shareParmas}
                 />
             </View>

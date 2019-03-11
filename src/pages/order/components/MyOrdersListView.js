@@ -21,7 +21,7 @@ import {
 } from "../../../components/ui";
 import user from "../../../model/user";
 import RouterMap from "../../../navigation/RouterMap";
-
+import {payStatus, payment, payStatusMsg} from '../../payment/Payment'
 
 const emptyIcon = res.kongbeuye_dingdan;
 
@@ -228,8 +228,8 @@ export default class MyOrdersListView extends Component {
                         cancelTime: item.warehouseOrderDTOList[0].cancelTime,
                         outTradeNo: item.warehouseOrderDTOList[0].outTradeNo,
                         orderAmount: item.orderAmount,
-                        commentStatus: item.commentStatus
-
+                        commentStatus: item.commentStatus,
+                        platformOrderNo: item.platformOrderNo
                     });
 
                 } else {
@@ -246,7 +246,8 @@ export default class MyOrdersListView extends Component {
                             nowTime: resp.nowTime,
                             unSendProductInfoList: resp.unSendProductInfoList || [],
                             outTradeNo: resp.outTradeNo,
-                            commentStatus: resp.commentStatus
+                            commentStatus: resp.commentStatus,
+                            platformOrderNo: item.platformOrderNo
                         });
                     });
                 }
@@ -404,6 +405,7 @@ export default class MyOrdersListView extends Component {
          * */
         console.log(menu);
         this.setState({ menu: menu, index: index });
+        console.log('view data platformOrderNo', this.state.viewData[index])
         switch (menu.id) {
             case 1:
                 if (this.state.CONFIG.length > 0) {
@@ -415,24 +417,13 @@ export default class MyOrdersListView extends Component {
 
                 break;
             case 2:
-                console.log("payment/PaymentMethodPage2", this.state.viewData[index]);
-                this.props.nav("payment/PaymentMethodPage", {
-                    orderNum: this.state.viewData[index].outTradeNo,
-                    amounts: this.state.viewData[index].totalPrice
-                });
+                this._goToPay(index)
                 break;
             case 3:
-                console.log("payment/PaymentMethodPage3", this.state.viewData[index]);
-                this.props.nav("payment/PaymentMethodPage", {
-                    orderNum: this.state.viewData[index].outTradeNo,
-                    amounts: this.state.viewData[index].totalPrice
-                });
+                this._goToPay(index)
                 break;
             case 4:
-                this.props.nav("payment/PaymentMethodPage", {
-                    orderNo: this.state.viewData[index].orderNo,
-                    amounts: this.state.viewData[index].price
-                });
+                this._goToPay(index)
                 break;
             case 5:
                 if (this.state.viewData[index].expList.length === 0) {
@@ -558,6 +549,25 @@ export default class MyOrdersListView extends Component {
         }
 
     };
+
+    async _goToPay(index) {
+        let payData = this.state.viewData[index]
+        const {platformOrderNo, orderNo,  totalPrice, orderProduct} = payData
+        console.log('_goToPay', payData)
+        let result = await payment.checkOrderStatus(platformOrderNo)
+        if (result.code === payStatus.payNo) {
+            this.props.nav("payment/PaymentPage", {
+                orderNo: orderNo,
+                amounts: totalPrice,
+                platformOrderNo: platformOrderNo,
+                orderProductList:orderProduct
+            });
+        } else if (result.code === payStatus.payNeedThrid) {
+            this.props.nav('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
+        } else {
+            Toast.$toast(payStatusMsg[result.code])
+        }
+    }
 }
 
 const styles = StyleSheet.create({

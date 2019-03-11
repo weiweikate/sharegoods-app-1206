@@ -30,7 +30,7 @@ import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
 
 public class BannerLayout extends FrameLayout {
 
-    private int autoPlayDuration = 3000;//刷新间隔时间
+    private int autoPlayDuration = 5000;//刷新间隔时间
 
     private boolean showIndicator;//是否显示指示器
     private RecyclerView indicatorContainer;
@@ -50,11 +50,12 @@ public class BannerLayout extends FrameLayout {
     private boolean isPlaying = false;
 
     private boolean isAutoPlaying = true;
-    int itemSpace;
-    float centerScale;
-    float moveSpeed;
+    private int itemSpace;
+    private float centerScale;
+    private float moveSpeed;
     private OnPageSelected onPageSelected;
     private RecyclerView.Adapter adapter;
+    private boolean intercept;
 
     protected WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
         @Override
@@ -70,6 +71,11 @@ public class BannerLayout extends FrameLayout {
             return false;
         }
     });
+
+    public void scrollRightNow() {
+        mHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, 200);
+        isPlaying = true;
+    }
 
     public BannerLayout(Context context) {
         this(context, null);
@@ -87,8 +93,8 @@ public class BannerLayout extends FrameLayout {
     protected void initView(Context context, AttributeSet attrs) {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BannerLayout);
-        showIndicator = a.getBoolean(R.styleable.BannerLayout_showIndicator, true);
-        autoPlayDuration = a.getInt(R.styleable.BannerLayout_interval, 3000);
+        showIndicator = a.getBoolean(R.styleable.BannerLayout_showIndicator, false);
+        autoPlayDuration = a.getInt(R.styleable.BannerLayout_interval, 5000);
         isAutoPlaying = a.getBoolean(R.styleable.BannerLayout_autoPlaying, true);
         itemSpace = a.getInt(R.styleable.BannerLayout_itemSpace, 20);
         centerScale = a.getFloat(R.styleable.BannerLayout_centerScale, 1.0f);
@@ -138,19 +144,18 @@ public class BannerLayout extends FrameLayout {
         new CenterSnapHelper().attachToRecyclerView(mRecyclerView);
 
 
-        //指示器部分
-        indicatorContainer = new RecyclerView(context);
-        LinearLayoutManager indicatorLayoutManager = new LinearLayoutManager(context, orientation, false);
-        indicatorContainer.setLayoutManager(indicatorLayoutManager);
-        indicatorAdapter = new IndicatorAdapter();
-        indicatorContainer.setAdapter(indicatorAdapter);
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.BOTTOM | gravity;
-        params.setMargins(marginLeft, 0, marginRight, marginBottom);
-        addView(indicatorContainer, params);
-        if (!showIndicator) {
-            indicatorContainer.setVisibility(GONE);
+        if (showIndicator) {
+            //指示器部分
+            indicatorContainer = new RecyclerView(context);
+            LinearLayoutManager indicatorLayoutManager = new LinearLayoutManager(context, orientation, false);
+            indicatorContainer.setLayoutManager(indicatorLayoutManager);
+            indicatorAdapter = new IndicatorAdapter();
+            indicatorContainer.setAdapter(indicatorAdapter);
+            LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.BOTTOM | gravity;
+            params.setMargins(marginLeft, 0, marginRight, marginBottom);
+            addView(indicatorContainer, params);
         }
     }
 
@@ -166,12 +171,6 @@ public class BannerLayout extends FrameLayout {
 
     public boolean isPlaying() {
         return isPlaying;
-    }
-
-    //设置是否显示指示器
-    public void setShowIndicator(boolean showIndicator) {
-        this.showIndicator = showIndicator;
-        indicatorContainer.setVisibility(showIndicator ? VISIBLE : GONE);
     }
 
     //设置当前图片缩放系数
@@ -222,6 +221,19 @@ public class BannerLayout extends FrameLayout {
         }
     }
 
+    public RecyclerView.Adapter getAdapter() {
+        return this.adapter;
+    }
+
+    public void set2First() {
+        currentIndex = 0;
+        mRecyclerView.smoothScrollToPosition(0);
+    }
+
+    public void setBannerSize(RecyclerView.Adapter adapter) {
+        this.bannerSize = adapter.getItemCount();
+    }
+
     /**
      * 设置轮播数据集
      */
@@ -232,6 +244,10 @@ public class BannerLayout extends FrameLayout {
         bannerSize = adapter.getItemCount();
         mLayoutManager.setInfinite(bannerSize >= 1);
         setPlaying(true);
+        initScrollListener();
+    }
+
+    public void initScrollListener() {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -265,13 +281,17 @@ public class BannerLayout extends FrameLayout {
             // 开始翻页
             setPlaying(true);
         } else if (action == MotionEvent.ACTION_DOWN) {
-            getParent().requestDisallowInterceptTouchEvent(true);
+            getParent().requestDisallowInterceptTouchEvent(intercept);
             // 停止翻页
             if (isPlaying) {
                 setPlaying(false);
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    public void setIntercept(boolean intercept) {
+        this.intercept = intercept;
     }
 
     @Override
@@ -340,10 +360,12 @@ public class BannerLayout extends FrameLayout {
     /**
      * 改变导航的指示点
      */
-    protected synchronized void refreshIndicator() {
+    public synchronized void refreshIndicator() {
         if (bannerSize > 0) {
             int position = currentIndex % bannerSize;
-            onPageSelected.pageSelected(position);
+            if (onPageSelected != null) {
+                onPageSelected.pageSelected(position);
+            }
             if (showIndicator) {
                 indicatorAdapter.setPosition(position);
                 indicatorAdapter.notifyDataSetChanged();

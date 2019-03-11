@@ -38,7 +38,6 @@ class TotalTopicresultDataModel {
     get topicTitle() {
         return this.name || '专题';
     }
-
     @action
     setRefresh(statues){
         this.isRefresh = statues
@@ -132,9 +131,7 @@ class TotalTopicresultDataModel {
             tempArr.push(sections);
               // console.log(tempArr);
         }
-
         this.sectionDataList = tempArr;
-        console.log(tempArr);
     }
 
     /**
@@ -152,14 +149,12 @@ class TotalTopicresultDataModel {
         });
         this.topicNavTitleList = titleArr;
     }
-
     /**
      * 获取专题数据
      * @param topicID 专题id
      */
     @action
     loadTopicData(topicCode) {
-        
         this.setRefresh(false)
         TopicAPI.findTopicById({
             code: topicCode

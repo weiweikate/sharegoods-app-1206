@@ -129,7 +129,7 @@ export default class ShowDetailPage extends BasePage {
 
     _goToGoodsPage(good) {
         const { navigation } = this.props;
-        navigation.push('home/product/ProductDetailPage', {
+        navigation.push('product/ProductDetailPage', {
             productCode: good.code, preseat: '秀场详情'
         });
     }
@@ -175,9 +175,7 @@ export default class ShowDetailPage extends BasePage {
         });
     };
 
-    _onLongClickImage = (event) => {
-        alert(event.nativeEvent.url);
-    };
+
 
     _renderNormalTitle() {
         return <View style={styles.whiteNav} ref={(ref) => {
@@ -266,6 +264,15 @@ export default class ShowDetailPage extends BasePage {
             + 'px;'
             + '}'
             + 'p {word-break:break-all;}'
+            + 'table { border-collapse:collapse;}'
+            + 'table, td, th {border:1px solid #ddd;}'
+            + 'blockquote { display: block;' +
+            '    background: #f9f9f9;' +
+            '    border-left: 10px solid #ccc;' +
+            '    margin: 10px;' +
+            '    padding: 0px;' +
+            '    position: relative;' +
+            '    box-sizing: border-box;}'
             //  + Utils.NVL(this.props.webviewStyle, '')
             + '</style>'
             + '<script type="text/javascript">'
@@ -279,10 +286,6 @@ export default class ShowDetailPage extends BasePage {
             + 'myimg.width = maxwidth;'
             + '}'
             + '}'
-            + '}'
-            + 'function onLoadFn() {'
-            + 'window.location.hash = "#+document.body.clientHeight";document.title = document.height || document.body.clientHeight;'
-            + 'ResizeImages()'
             + '}'
             + '</script>'
             + '</head>'
@@ -314,21 +317,9 @@ export default class ShowDetailPage extends BasePage {
                         <Text style={styles.showName}
                               allowFontScaling={false}>{detail.userName ? detail.userName : ''}</Text>
                     </View>
-                    {/*<View style={styles.profileRight}>*/}
-                        {/*<Image source={res.button.see}/>*/}
-                        {/*<Text style={styles.number} allowFontScaling={false}>{number}</Text>*/}
-                    {/*</View>*/}
+
                 </View>
-                {/*<HTML html={content} imagesMaxWidth={width - px2dp(30)}*/}
-                {/*imagesInitialDimensions={{ width: width - px2dp(30), height: 0 }} containerStyle={{*/}
-                {/*backgroundColor: '#fff',*/}
-                {/*marginLeft: px2dp(15),*/}
-                {/*marginRight: px2dp(15)*/}
-                {/*}} baseFontStyle={{*/}
-                {/*lineHeight: px2dp(28),*/}
-                {/*color: DesignRule.textColor_mainTitle,*/}
-                {/*fontSize: px2dp(13)*/}
-                {/*}}/>*/}
+
                 <AutoHeightWebView source={{ html: html }}
                                    style={{ width: DesignRule.width-30,alignSelf:'center' }}
                                    scalesPageToFit={true}

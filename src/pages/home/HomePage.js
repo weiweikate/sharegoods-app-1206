@@ -7,23 +7,21 @@ import {
     Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
     RefreshControl, BackHandler
 } from 'react-native';
-import ImageLoad from '@mr/image-placeholder';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import { homeType } from './HomeTypes';
-import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView, { kHomeClassifyHeight } from './HomeClassifyView';
-import HomeTodayView, {todayHeight} from './HomeTodayView';
-import HomeRecommendView, {recommendHeight} from './HomeRecommendView';
+import HomeTodayView, { todayHeight } from './HomeTodayView';
+import HomeRecommendView, { recommendHeight } from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './HomeBannerView';
 import HomeAdView from './HomeAdView';
 import HomeGoodsView, { kHomeGoodsViewHeight } from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
-import HomeCategoryView, {categoryHeight} from './HomeCategoryView'
+import HomeCategoryView, { categoryHeight } from './HomeCategoryView';
 import Modal from '../../comm/components/CommModal';
 import XQSwiper from '../../components/ui/XGSwiper';
 import MessageApi from '../message/api/MessageApi';
@@ -36,14 +34,17 @@ import res from './res';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
-import { homeRegisterFirstManager } from './model/HomeRegisterFirstManager';
+import { homeTabManager } from './model/HomeTabManager';
 import { MRText as Text } from '../../components/ui';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
 import { adModules } from './HomeAdModel';
 import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
 import { subjectModule } from './HomeSubjectModel';
-import HomeTitleView from './HomeTitleView'
+import HomeTitleView from './HomeTitleView';
+import GuideModal from '../guide/GuideModal';
+import LuckyIcon from '../guide/LuckyIcon';
+
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -57,7 +58,8 @@ const home_notice_bg = res.home_notice_bg;
  * @email zhangjian@meeruu.com
  */
 
-const { px2dp, headerHeight } = ScreenUtils;
+const { px2dp, height, headerHeight } = ScreenUtils;
+const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
 
@@ -70,14 +72,12 @@ const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
 class HomePage extends BasePage {
 
     st = 0;
-    shadowOpacity = 0.4;
 
     $navigationBarOptions = {
         title: '',
         show: false
     };
 
-    headerH = headerHeight - (ScreenUtils.isIOSX ? 10 : 0);
     dataProvider = new DataProvider((r1, r2) => {
         return r1 !== r2;
     });
@@ -101,10 +101,10 @@ class HomePage extends BasePage {
                 dim.height = kHomeClassifyHeight;
                 break;
             case homeType.ad:
-                dim.height =  adModules.adHeight ;
+                dim.height = adModules.adHeight;
                 break;
             case homeType.today:
-                dim.height = todayList.length > 0 ?  todayHeight : 0;
+                dim.height = todayList.length > 0 ? todayHeight : 0;
                 break;
             case homeType.recommend:
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
@@ -126,8 +126,9 @@ class HomePage extends BasePage {
 
         }
     });
+
+
     state = {
-        isShow: true,
         showMessage: false,
         messageData: null,
         messageIndex: 0,
@@ -135,10 +136,7 @@ class HomePage extends BasePage {
         showUpdate: false,
         forceUpdate: false,
         apkExist: false,
-        shadowOpacity: this.shadowOpacity,
-        whiteIcon: true,
-        hasMessage: false,
-        showRegister: false
+        hasMessage: false
     };
 
     constructor(props) {
@@ -165,7 +163,8 @@ class HomePage extends BasePage {
                 console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
                     // this.shareTaskIcon.queryTask();
-                    this.setState({ isShow: true });
+                    this.guideModal.getUserRecord();
+                    this.luckyIcon.getLucky();
                 }
             }
         );
@@ -176,10 +175,7 @@ class HomePage extends BasePage {
                 this.homeFocused = false;
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
-                    this.setState({ isShow: false }, () => {
-                        // android状态栏黑色字体
-                        bridge.setLightMode();
-                    });
+                    this.guideModal.cancelUserRecord();
                 }
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
             }
@@ -195,60 +191,70 @@ class HomePage extends BasePage {
         );
     }
 
-    componentWillUnmount() {
-        this.willBlurSubscription && this.willBlurSubscription.remove();
-        this.willFocusSubscription && this.willFocusSubscription.remove();
-        this.didFocusSubscription && this.didFocusSubscription.remove();
-    }
-
     componentDidMount() {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
+        this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
+
         InteractionManager.runAfterInteractions(() => {
-            this.loadMessageCount();
             this._homeModaldata();
+            user.getToken().then(()=> {//让user初始化完成
+                    this.luckyIcon.getLucky();
+                    this.guideModal.getUserRecord();
+                    this.loadMessageCount();
+            })
         });
     }
 
     componentWillUnmount() {
+        this.willBlurSubscription && this.willBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
         this.listener && this.listener.remove();
         this.listenerMessage && this.listenerMessage.remove();
         this.listenerLogout && this.listenerLogout.remove();
+        this.listenerRetouchHome && this.listenerRetouchHome.remove();
     }
+
+    retouchHome = () => {
+        if (homeTabManager.aboveRecommend) {
+            this.recyclerListView && this.recyclerListView.scrollToTop(true);
+        }
+    };
 
     handleBackPress = () => {
         return this.state.forceUpdate;
     };
 
     _homeModaldata = () => {
-        InteractionManager.runAfterInteractions(() => {
-            TimerMixin.setTimeout(() => {
-                // 检测版本更新
-                // this.getVersion();
-                homeModalManager.getVersion().then((data) => {
-                    homeModalManager.getMessage().then(data => {
-                        if (!this.props.isFocused) {
-                            return;
-                        }
-                        this.showModal();
-                    });
+        TimerMixin.setTimeout(() => {
+            // 检测版本更新
+            // this.getVersion();
+            homeModalManager.getVersion().then((data) => {
+                homeModalManager.getMessage().then(data => {
+                    if (!this.props.isFocused) {
+                        return;
+                    }
+                    this.showModal();
                 });
-            }, 2500);
-        });
+            });
+        }, 2500);
     };
 
     loadMessageCount = () => {
         if (user.token) {
-            MessageApi.getNewNoticeMessageCount().then(result => {
-                if (!EmptyUtils.isEmpty(result.data)) {
+            InteractionManager.runAfterInteractions(() => {
+                MessageApi.getNewNoticeMessageCount().then(result => {
+                    if (!EmptyUtils.isEmpty(result.data)) {
+                        this.setState({
+                            hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                        });
+                    }
+                }).catch((error) => {
                     this.setState({
-                        hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                        hasMessage: false
                     });
-                }
-            }).catch((error) => {
-                this.setState({
-                    hasMessage: false
                 });
             });
         }
@@ -264,17 +270,9 @@ class HomePage extends BasePage {
     };
 
     _showMessageOrActivity = () => {
-        if (homeRegisterFirstManager.showRegisterModalUrl) {
-            //活动
-            this.setState({
-                showRegister: true
-            });
-            this.registerModal && this.registerModal.open();
-        } else {
-            //公告弹窗
-            if (!this.state.showUpdate) {
-                this.showMessageModal();
-            }
+        //公告弹窗
+        if (!this.state.showUpdate) {
+            this.showMessageModal();
         }
     };
 
@@ -338,20 +336,21 @@ class HomePage extends BasePage {
     }
 
     _keyExtractor = (item, index) => item.id + '';
+
     _renderItem = (type, item) => {
         let data = item;
         if (type === homeType.category) {
-            return <HomeCategoryView navigate={this.$navigate}/>
+            return <HomeCategoryView navigate={this.$navigate}/>;
         } else if (type === homeType.swiper) {
-            return <HomeBannerView navigate={this.$navigate}/>;
+            return <HomeBannerView navigate={this.$navigate} pageFocused={this.homeFocused}/>;
         } else if (type === homeType.classify) {
             return <HomeClassifyView navigate={this.$navigate}/>;
         } else if (type === homeType.ad) {
             return <HomeAdView navigate={this.$navigate}/>;
         } else if (type === homeType.today) {
-            return <HomeTodayView navigate={this.$navigate}/>;
+            return <HomeTodayView navigate={this.$navigate} pageFocused={this.homeFocused}/>;
         } else if (type === homeType.recommend) {
-            return <HomeRecommendView navigate={this.$navigate}/>;
+            return <HomeRecommendView navigate={this.$navigate} pageFocused={this.homeFocused}/>;
         } else if (type === homeType.subject) {
             return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
@@ -359,7 +358,13 @@ class HomePage extends BasePage {
         } else if (type === homeType.goods) {
             return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
-            return <View style={styles.titleView}><HomeTitleView title={'为你推荐'}/></View>;
+            return <View style={styles.titleView}
+                         ref={e => this.toGoods = e}
+                         onLayout={event => {
+                             // 保留，不能删除
+                         }}>
+                <HomeTitleView title={'为你推荐'}/>
+            </View>;
         }
         return <View/>;
     };
@@ -371,6 +376,9 @@ class HomePage extends BasePage {
     _onRefresh() {
         homeModule.loadHomeList(true);
         this.loadMessageCount();
+            this.luckyIcon.getLucky();
+            this.guideModal.getUserRecord();
+
     }
 
     getMessageData = () => {
@@ -381,8 +389,6 @@ class HomePage extends BasePage {
                 this.showModal();
             }
         });
-
-
     };
 
     messageModalRender() {
@@ -429,55 +435,6 @@ class HomePage extends BasePage {
             </Modal>
         );
     }
-
-    registerModalRender = () => {
-
-        return (
-            <Modal ref={(ref) => {
-                this.registerModal = ref;
-            }}
-                   onRequestClose={() => {
-                       this.setState({
-                           showRegister: false
-                       });
-                       homeRegisterFirstManager.setShowRegisterModalUrl(null);
-                   }}
-                   visible={this.state.showRegister}>
-                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.setState({
-                            showRegister: false
-                        });
-                        this.registerModal.close();
-                        homeRegisterFirstManager.setShowRegisterModalUrl(null);
-                    }}>
-                        <Image source={closeImg} style={styles.messageCloseStyle}/>
-                    </TouchableWithoutFeedback>
-                    {
-                        homeRegisterFirstManager.showRegisterModalUrl ?
-                            <TouchableWithoutFeedback onPress={() => {
-                                this.setState({
-                                    showRegister: false
-                                });
-                                this.registerModal.close();
-                                homeRegisterFirstManager.setShowRegisterModalUrl(null);
-                                this.$toastShow('领取成功！请到我的-优惠券中查看');
-                            }}>
-                                <View>
-                                    <ImageLoad source={{ uri: homeRegisterFirstManager.showRegisterModalUrl }}
-                                               resizeMode={'contain'}
-                                               style={styles.messageBgStyle}/>
-                                </View>
-                            </TouchableWithoutFeedback>
-                            : <View style={styles.messageBgStyle}/>
-                    }
-
-
-                </View>
-            </Modal>
-        );
-    };
-
 
     messageIndexRender() {
         if (EmptyUtils.isEmptyArr(this.state.messageData)) {
@@ -530,41 +487,64 @@ class HomePage extends BasePage {
         );
     }
 
+    _onListViewScroll = (event) => {
+        let offsetY = event.nativeEvent.contentOffset.y;
+        if (this.toGoods) {
+            this.toGoods.measure((fx, fy, width, height, left, top) => {
+                if (offsetY > ScreenUtils.height && top < scrollDist) {
+                    homeTabManager.setAboveRecommend(true);
+                } else {
+                    homeTabManager.setAboveRecommend(false);
+                }
+            });
+        } else {
+            homeTabManager.setAboveRecommend(false);
+        }
+    };
+
     render() {
-        console.log('getBanner render', adModules.adHeight) //千万别去掉
+        console.log('getBanner render', adModules.adHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
                 <HomeSearchView navigation={this.$navigate}
-                                whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
                                 hasMessage={this.state.hasMessage}
                                 pageFocused={this.homeFocused}
                 />
                 <RecyclerListView
+                    ref={(ref) => {
+                        this.recyclerListView = ref;
+                    }}
                     style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
+                    scrollEventThrottle={200}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
+                    onScrollBeginDrag={() => {
+                        this.luckyIcon.close();
+                    }}
                     showsVerticalScrollIndicator={false}
+                    onScroll={this._onListViewScroll}
                     renderFooter={() => <Footer
                         isFetching={homeModule.isFetching}
                         errorMsg={homeModule.errorMsg}
                         isEnd={homeModule.isEnd}/>
                     }
                 />
-                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
-                               ref={(ref) => {
-                                   this.shareTaskIcon = ref;
-                               }}
-                />
+                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}/>
+                <LuckyIcon ref={(ref) => {
+                    this.luckyIcon = ref;
+                }}/>
                 {this.messageModalRender()}
-                {this.registerModalRender()}
+                <GuideModal ref={(ref) => {
+                    this.guideModal = ref;
+                }}/>
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
                                     onRequestClose={() => {

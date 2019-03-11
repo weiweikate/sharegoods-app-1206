@@ -436,3 +436,13 @@ public static final int *;
 -keep class androidx.appcompat.app.ActionBar {*;}
 -keep class * extends android.support.v7.app.ActionBar {*;}
 -keep class * extends androidx.appcompat.app.ActionBar {*;}
+
+# number verify
+-keep class android.support.v4.** { *;}
+-keep class com.alibaba.fastjson.** {*;}
+-keep class cn.com.chinatelecom.** {*;}
+-keep class com.unicom.** {*;}
+-keep class com.cmic.** {*;}
+ -keep class com.alicom.phonenumberauthsdk.** {
+      *;
+  }

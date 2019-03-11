@@ -46,7 +46,7 @@
             "wxAppletKey": "gh_e0c6b86659cc",
             "miniProgramType": 0
         },
-        "openApi":{
+        "openApi": {
             "name": "openApi",
             "host": "http://devopenapi.sharegoodsmall.com/gateway",
             "h5": "https://testh5.sharegoodsmall.com",

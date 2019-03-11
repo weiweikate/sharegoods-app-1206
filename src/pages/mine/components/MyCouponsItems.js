@@ -138,11 +138,11 @@ export default class MyCouponsItems extends Component {
                                         color: DesignRule.textColor_mainTitle
                                     }}/> : null}
                                 </View>
-                                <Text style={{
+                                {item.timeStr?<Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction,
                                     marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
+                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>:null}
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
@@ -220,7 +220,7 @@ export default class MyCouponsItems extends Component {
                             <View style={styles.itemFirStyle}>
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                                     {
-                                        item.type === 3 || item.type === 4 || item.type === 12 ? null :
+                                        item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
                                             <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
                                                 <Text
                                                     style={{
@@ -270,11 +270,11 @@ export default class MyCouponsItems extends Component {
                                         color: DesignRule.textColor_mainTitle
                                     }}/> : null}
                                 </View>
-                                <Text style={{
+                                {item.timeStr?<Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction,
                                     marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
+                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>:null}
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
@@ -524,10 +524,14 @@ export default class MyCouponsItems extends Component {
         3、单产品、限iphone手机商品可用（产品名称，名称过长则超过6个字后...限iphone手机...商品可用）
         4、多产品、则直接显示，限指定商品可使用
         5、产品+分类的情况下，则显示，限指定商品可使用
+        6。如果产品是周期券，直接返回'限指定商品可使用'
     * */
     parseCoupon = (item) => {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
+        if(item.type === 5){
+            return "限商品：限指定商品可用";
+        }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
                 return "限商品：限指定商品可用";
@@ -553,7 +557,7 @@ export default class MyCouponsItems extends Component {
             return "全品类：全场通用券（特殊商品除外）";
         }
     };
-    parseData = (dataList) => {
+     parseData = (dataList) => {
         let arrData = [];
         console.log("parseData",this.dataSel,couponsModel.params);
         if (this.currentPage === 1) {//refresh
@@ -569,7 +573,7 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || couponsModel.params.type === null) {
+            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || (!this.props.fromOrder &&couponsModel.params.type === null)) {
                 API.queryCoupons({
                     status: this.state.pageStatus
                 }).then(result => {
@@ -614,7 +618,7 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0),
+                timeStr: item.startTime&&item.expireTime?this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0):null,
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,

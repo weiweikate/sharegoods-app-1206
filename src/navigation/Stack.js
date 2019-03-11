@@ -16,6 +16,7 @@ import { TabNav } from './Tab';
 // 业务模块
 import debug from '../pages/debug';
 import home from '../pages/home';
+import product from '../pages/product';
 import mine from '../pages/mine';
 import shopCart from '../pages/shopCart';
 import spellShop from '../pages/spellShop';
@@ -28,7 +29,7 @@ import topic from '../pages/topic';
 import show from '../pages/show/Index';
 import shareTask from '../pages/shareTask';
 
-import deepLinkPath from './DeepLinkPath'
+import deepLinkPath from './DeepLinkPath';
 
  // import WithdrawalAgreementPage from '../pages/mine/page/bankCard/WithdrawalAgreementPage'
 // import GongMallPage from '../pages/mine/page/userInformation/GongMallPage'
@@ -49,6 +50,7 @@ const PageKey = {};
 function getPathWithPageName(pageName) {
     return deepLinkPath[pageName];
 }
+
 // 添加模块内子路由配置
 function addSubModule(module, prefixPath) {
 
@@ -65,10 +67,10 @@ function addSubModule(module, prefixPath) {
             addSubModule(item, p);
         } else if (typeof item === 'function') {
             const path = `${p}/${pageName}`;
-            let  pathValue = getPathWithPageName(pageName)
+            let pathValue = getPathWithPageName(pageName);
             Router[path] = {
                 screen: item,
-                path:pathValue
+                path: pathValue
             };
 
             PageKey[pageName] = path;
@@ -80,6 +82,7 @@ function addSubModule(module, prefixPath) {
 addSubModule(debug);
 addSubModule(login);
 addSubModule(home);
+addSubModule(product);
 addSubModule(mine);
 addSubModule(shopCart);
 addSubModule(spellShop);
@@ -92,11 +95,11 @@ addSubModule(show);
 addSubModule(shareTask);
 console.log('Router', Object.keys(Router));
 console.log(Router);
-console.log('Path',Object.values(Router))
-Object.values(Router).map(value=>{
-    console.log(  value.path)
-})
+console.log('Path', Object.values(Router));
+Object.values(Router).map(value => {
+    console.log(value.path);
+});
 
-console.log('PageKey',Object.keys(PageKey))
+console.log('PageKey', Object.keys(PageKey));
 export { PageKey };
 export default Router;

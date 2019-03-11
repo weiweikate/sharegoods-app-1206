@@ -23,7 +23,6 @@ import UIText from '../../../components/ui/UIText';
 import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
-// import ImageLoad from '@mr/image-placeholder'
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
 import {MRText as Text} from '../../../components/ui'
@@ -133,7 +132,7 @@ export default class MentorDetailPage extends BasePage {
             code: mentorData.perfectNumberCode
         }).then(res => {
             this.$toastShow('选择成功');
-            homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
+            // homeRegisterFirstManager.setShowRegisterModalUrl(res.data.give);
             this.$navigateBackToHome()
         }).catch(res => {
             this.$toastShow(res.msg)

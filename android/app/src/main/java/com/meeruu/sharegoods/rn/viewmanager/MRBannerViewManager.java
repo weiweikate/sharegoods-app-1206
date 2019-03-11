@@ -2,6 +2,7 @@ package com.meeruu.sharegoods.rn.viewmanager;
 
 import android.support.annotation.Nullable;
 
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.module.annotations.ReactModule;
@@ -20,13 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 @ReactModule(name = MRBannerViewManager.REACT_CLASS)
-public class MRBannerViewManager extends SimpleViewManager<BannerLayout> implements BannerLayout.OnBannerItemClickListener {
+public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
     protected static final String REACT_CLASS = "MRBannerView";
     private EventDispatcher eventDispatcher;
     private onDidScrollToIndexEvent scrollToIndexEvent;
     private onDidSelectItemAtIndexEvent selectItemAtIndexEvent;
     private boolean pageFocus;
-    private BannerLayout banner;
+    private int mRaduis;
 
     @Override
     public String getName() {
@@ -36,42 +37,47 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     @Override
     protected BannerLayout createViewInstance(final ThemedReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-        banner = new BannerLayout(reactContext);
-        banner.setShowIndicator(false);
-        initBannerEvent(banner);
-        initLifeEvent();
+        BannerLayout banner = new BannerLayout(reactContext);
+        initBannerEvent(reactContext, banner);
+        initLifeEvent(banner);
         return banner;
     }
 
-    private void initBannerEvent(final BannerLayout banner) {
+    private void initBannerEvent(final ReactContext reactContext, final BannerLayout banner) {
         scrollToIndexEvent = new onDidScrollToIndexEvent();
         selectItemAtIndexEvent = new onDidSelectItemAtIndexEvent();
         banner.setOnPageSelected(new OnPageSelected() {
             @Override
             public void pageSelected(int position) {
-                if (eventDispatcher != null) {
-                    scrollToIndexEvent.init(banner.getId());
-                    scrollToIndexEvent.setIndex(position);
-                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
+                if (eventDispatcher == null) {
+                    eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
                 }
+                if (scrollToIndexEvent == null) {
+                    scrollToIndexEvent = new onDidScrollToIndexEvent();
+                }
+                scrollToIndexEvent.init(banner.getId());
+                scrollToIndexEvent.setIndex(position);
+                eventDispatcher.dispatchEvent(scrollToIndexEvent);
             }
         });
     }
 
-    private void initLifeEvent() {
+    private void initLifeEvent(final BannerLayout view) {
         ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
             @Override
             public void onBecameForeground() {
                 if (pageFocus) {
-                    if (banner != null && !banner.isPlaying()) {
-                        banner.setAutoPlaying(true);
+                    if (view != null && !view.isPlaying()) {
+                        view.setAutoPlaying(true);
                     }
                 }
             }
 
             @Override
             public void onBecameBackground() {
-                banner.setAutoPlaying(false);
+                if (view != null && view.isPlaying()) {
+                    view.setAutoPlaying(false);
+                }
             }
         });
     }
@@ -80,10 +86,50 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     public void setImgUrlArray(final BannerLayout view, ReadableArray urls) {
         if (urls != null) {
             final List datas = urls.toArrayList();
-            WebBannerAdapter webBannerAdapter = new WebBannerAdapter(view.getContext(), datas);
-            webBannerAdapter.setOnBannerItemClickListener(this);
-            view.setAdapter(webBannerAdapter);
+            final WebBannerAdapter adapter;
+            if (view.getAdapter() != null) {
+                view.setAutoPlaying(false);
+                view.set2First();
+                adapter = (WebBannerAdapter) view.getAdapter();
+                adapter.setUrlList(null);
+                view.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setUrlList(datas);
+                        view.setBannerSize(adapter);
+                        view.scrollRightNow();
+                    }
+                }, 500);
+            } else {
+                adapter = new WebBannerAdapter(view.getContext(), datas);
+                view.setAdapter(adapter);
+                if (!view.isPlaying()) {
+                    view.setAutoPlaying(true);
+                }
+            }
+            adapter.setRadius(mRaduis);
+            adapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    view.setAutoPlaying(false);
+                    selectItemAtIndexEvent.init(view.getId());
+                    selectItemAtIndexEvent.setIndex(position);
+                    eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
+                }
+            });
         }
+    }
+
+    @ReactProp(name = "itemWidth")
+    public void setItemWidth(BannerLayout view, Integer width) {
+        if (view.getAdapter() != null) {
+            ((WebBannerAdapter) view.getAdapter()).setItemWidth(DensityUtils.dip2px(width));
+        }
+    }
+
+    @ReactProp(name = "itemRadius")
+    public void setItemRadius(final BannerLayout view, final Integer radius) {
+        this.mRaduis = DensityUtils.dip2px(radius);
     }
 
     @ReactProp(name = "autoInterval")
@@ -100,15 +146,22 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
     public void setTittleArray(BannerLayout view, ReadableArray titles) {
     }
 
+    @ReactProp(name = "interceptTouchEvent")
+    public void setInterceptTouchEvent(BannerLayout view, boolean intercept) {
+        view.setIntercept(intercept);
+    }
+
     @ReactProp(name = "pageFocused")
-    public void pageFocused(BannerLayout view, Boolean focuse) {
+    public void pageFocused(BannerLayout view, boolean focuse) {
         this.pageFocus = focuse;
         if (focuse) {
             if (!view.isPlaying()) {
                 view.setAutoPlaying(true);
             }
         } else {
-            view.setAutoPlaying(false);
+            if (view.isPlaying()) {
+                view.setAutoPlaying(false);
+            }
         }
     }
 
@@ -135,25 +188,5 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> impleme
                                         "bubbled", "onDidSelectItemAtIndex")))
 
                 .build();
-    }
-
-    @Override
-    public void onDropViewInstance(BannerLayout view) {
-        view.removeAllViews();
-        if (eventDispatcher != null) {
-            eventDispatcher.onCatalystInstanceDestroyed();
-            eventDispatcher = null;
-        }
-        scrollToIndexEvent = null;
-        selectItemAtIndexEvent = null;
-        super.onDropViewInstance(view);
-    }
-
-    @Override
-    public void onItemClick(int position) {
-        banner.setAutoPlaying(false);
-        selectItemAtIndexEvent.init(banner.getId());
-        selectItemAtIndexEvent.setIndex(position);
-        eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
     }
 }

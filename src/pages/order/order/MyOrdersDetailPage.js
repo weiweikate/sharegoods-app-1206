@@ -559,7 +559,7 @@ export default class MyOrdersDetailPage extends BasePage {
         switch (orderDetailModel.productsList()[index].orderSubType) {
             case 1://秒杀
             case 2://降价拍
-                this.$navigate("home/product/ProductDetailPage", {
+                this.$navigate("product/ProductDetailPage", {
                     activityType: orderDetailModel.productsList()[index].orderSubType,
                     activityCode: orderDetailModel.productsList()[index].activityCode//
                 });
@@ -572,7 +572,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 });
                 break;
             default://普通商品
-                this.$navigate("home/product/ProductDetailPage", { productCode: orderDetailModel.productsList()[index].prodCode });
+                this.$navigate("product/ProductDetailPage", { productCode: orderDetailModel.productsList()[index].prodCode });
                 break;
         }
     };

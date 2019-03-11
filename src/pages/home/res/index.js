@@ -1,13 +1,11 @@
 import res from '../../../comm/res';
 import signIn from './signIn';
 import search from './search';
-import product from './product'
 
 const resHome = {
     arrowRight: require('./arrow_right.png'),
     goods: require('./goods.png'),
     home_icon_logo_red: require('./home_icon_logo_red.png'),
-    home_icon_logo_white: require('./home_icon_logo_white.png'),
     icon_search: require('./icon_search.png'),
     message: require('./message.png'),
     home_notice_bg:require('./home_notice_bg.png'),
@@ -25,9 +23,6 @@ const resHome = {
     },
     search: {
         ...search
-    },
-    product: {
-        ...product
     },
     ...res
 };

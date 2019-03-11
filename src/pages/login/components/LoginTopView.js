@@ -247,7 +247,6 @@ const Styles = StyleSheet.create(
             margin: 50,
             marginRight: 20,
             marginLeft: 20,
-            // height: 400,
             backgroundColor: '#fff'
         },
         switchBgStyle: {
