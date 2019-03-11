@@ -56,22 +56,12 @@ export default class MyCashAccountPage extends BasePage {
         this.currentPage = 0;
     }
 
-    // $NavBarRightPressed = () => {
-    //     this.$navigate('mine/bankCard/BankCardListPage')
-    // };
-    // $navigationBarOptions = {
-    //     title: '现金账户',
-    //     rightTitleStyle: { color: DesignRule.textColor_mainTitle_222,fontSize:12 },
-    //     rightNavTitle: '账户设置'
-    // };
     $NavBarRightPressed = () => {
         this.$navigate('mine/bankCard/BankCardListPage');
     };
     $navigationBarOptions = {
         title: '现金账户',
         show: false
-        // rightTitleStyle: { color: DesignRule.textColor_mainTitle_222, fontSize: 12 },
-        // rightNavTitle: "账户设置"
     };
 
     $isMonitorNetworkStatus() {
@@ -99,29 +89,6 @@ export default class MyCashAccountPage extends BasePage {
         );
     }
 
-    // renderHeader = () => {
-    //     return (
-    //         <View style={styles.container}>
-    //             <ImageBackground style={styles.imageBackgroundStyle}/>
-    //             <View style={styles.viewStyle}>
-    //                 <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 13, color: "white" }} allowFontScaling={false}>账户余额(元)</Text>
-    //                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-    //                     <View style={{ height: 44, justifyContent: "space-between", marginTop: 10 }}>
-    //                         <Text style={{
-    //                             marginLeft: 25,
-    //                             fontSize: 24,
-    //                             color: "white"
-    //                         }} allowFontScaling={false}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
-    //                     </View>
-    //                     <NoMoreClick style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-    //                         <Text style={{ fontSize: 15, color: "white" }} allowFontScaling={false}>提现</Text>
-    //                     </NoMoreClick>
-    //                 </View>
-    //             </View>
-    //         </View>
-    //
-    //     );
-    // };
 
     renderHeader = () => {
         return (
@@ -192,8 +159,17 @@ export default class MyCashAccountPage extends BasePage {
     };
 
     //**********************************BusinessPart******************************************
-    componentDidMount() {
-        this.onRefresh();
+    componentWillMount() {
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                this.onRefresh();
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     jumpToWithdrawCashPage = () => {
