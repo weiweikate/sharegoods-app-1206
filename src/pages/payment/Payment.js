@@ -27,7 +27,8 @@ export const payStatus = {
     PayError: 20806,
     paySuccess: 20807,
     payOutTime: 20808,
-    payWait: 20809
+    payWait: 20809,
+    payOut: 20801
 }
 
 export const payStatusMsg = {
@@ -35,7 +36,8 @@ export const payStatusMsg = {
     [payStatus.payClose]: '该订单已关闭，请重拍',
     [payStatus.payfail]: '支付失败',
     [payStatus.payNeedThrid]: '平台支付成功,需要三方支付',
-    [payStatus.PayError]: '订单状态异常'   
+    [payStatus.PayError]: '订单状态异常',
+    [payStatus.payOut]: '该订单已支付成功，请勿重拍'
 }
 
 
