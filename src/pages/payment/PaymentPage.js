@@ -44,6 +44,7 @@ export default class PaymentPage extends BasePage {
 
     goToPay =()=> {
         payment.checkOrderStatus().then(result => {
+            console.log('checkOrderStatus', result)
             if (result.code === payStatus.payNo) {
                 if (payment.amounts <= 0) {
                     this._zeroPay()
@@ -62,6 +63,9 @@ export default class PaymentPage extends BasePage {
                 }
             } else if (result.code === payStatus.payNeedThrid) {
                 this.$navigate('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
+            } else if (result.code === payStatus.payOut) {
+                Toast.$toast(payStatusMsg[result.code])
+                this._goToOrder(2)
             } else {
                 Toast.$toast(payStatusMsg[result.code])
             }
@@ -123,11 +127,11 @@ export default class PaymentPage extends BasePage {
         )
     }
 
-    _goToOrder() {
+    _goToOrder(index) {
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
             routeName: 'order/order/MyOrdersListPage',
-            params: { index: 1 }
+            params: { index: index ? index : 1 }
         });
         this.props.navigation.dispatch(replace);
     }
