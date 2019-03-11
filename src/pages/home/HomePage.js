@@ -35,11 +35,13 @@ import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview
 import { adModules } from './HomeAdModel';
 import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
+import { bannerModule } from './HomeBannerModel';
 import { subjectModule } from './HomeSubjectModel';
+import { categoryModule } from './HomeCategoryModel';
 import HomeTitleView from './HomeTitleView';
 import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModal from './HomeMessageModal'
+import HomeMessageModal from './HomeMessageModal';
 
 /**
  * @author zhangjian
@@ -80,13 +82,15 @@ class HomePage extends BasePage {
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
         const { subjectHeight } = subjectModule;
+        const { bannerList } = bannerModule;
+        const { categoryList } = categoryModule;
 
         switch (type) {
             case homeType.category:
-                dim.height = categoryHeight;
+                dim.height = categoryList.length > 0 ? categoryHeight : 0;
                 break;
             case homeType.swiper:
-                dim.height = bannerHeight;
+                dim.height = bannerList.length > 0 ? bannerHeight : 0;
                 break;
             case homeType.classify:
                 dim.height = kHomeClassifyHeight;
@@ -190,11 +194,11 @@ class HomePage extends BasePage {
 
         InteractionManager.runAfterInteractions(() => {
             this._homeModaldata();
-            user.getToken().then(()=> {//让user初始化完成
-                    this.luckyIcon.getLucky();
-                    this.guideModal.getUserRecord();
-                    this.loadMessageCount();
-            })
+            user.getToken().then(() => {//让user初始化完成
+                this.luckyIcon.getLucky();
+                this.guideModal.getUserRecord();
+                this.loadMessageCount();
+            });
         });
     }
 
@@ -367,8 +371,8 @@ class HomePage extends BasePage {
     _onRefresh() {
         homeModule.loadHomeList(true);
         this.loadMessageCount();
-            this.luckyIcon.getLucky();
-            this.guideModal.getUserRecord();
+        this.luckyIcon.getLucky();
+        this.guideModal.getUserRecord();
 
     }
 
@@ -436,11 +440,12 @@ class HomePage extends BasePage {
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
-                <HomeMessageModal messageData={this.state.messageData} showMessage={this.state.showMessage} onRequestClose={() => {
-                    this.setState({
-                        showMessage: false
-                    });
-                }}/>
+                <HomeMessageModal messageData={this.state.messageData} showMessage={this.state.showMessage}
+                                  onRequestClose={() => {
+                                      this.setState({
+                                          showMessage: false
+                                      });
+                                  }}/>
                 <GuideModal ref={(ref) => {
                     this.guideModal = ref;
                 }}
