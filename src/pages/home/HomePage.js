@@ -58,11 +58,10 @@ const home_notice_bg = res.home_notice_bg;
  * @email zhangjian@meeruu.com
  */
 
-const { px2dp, height } = ScreenUtils;
-const scrollDist = -0.5 * height;
+const { px2dp, height, headerHeight } = ScreenUtils;
+const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
 import bridge from '../../utils/bridge';
-import { ScrollEvent } from 'recyclerlistview/dist/reactnative/core/scrollcomponent/BaseScrollView';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -356,11 +355,9 @@ class HomePage extends BasePage {
             return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
             return <View style={styles.titleView}
-                         ref={(ref) => {
-                             this.point = ref;
-                         }}
+                         ref={e => this.toGoods = e}
                          onLayout={event => {
-                             // onLayout不用删除，否则measure失效
+                             // 保留，不能删除
                          }}>
                 <HomeTitleView title={'为你推荐'}/>
             </View>;
@@ -484,17 +481,16 @@ class HomePage extends BasePage {
         );
     }
 
-    _onListViewScroll = (rawEvent: ScrollEvent, offsetX: number, offsetY: number) => {
-        if (this.point) {
-            if (offsetY > ScreenUtils.height) {
-                this.point.measure((x, y, w, h, left, top) => {
-                    if (top < scrollDist) {
-                        homeTabManager.setAboveRecommend(true);
-                    } else {
-                        homeTabManager.setAboveRecommend(false);
-                    }
-                });
-            }
+    _onListViewScroll = (event) => {
+        let offsetY = event.nativeEvent.contentOffset.y;
+        if (this.toGoods) {
+            this.toGoods.measure((fx, fy, width, height, left, top) => {
+                if (offsetY > ScreenUtils.height && top < scrollDist) {
+                    homeTabManager.setAboveRecommend(true);
+                } else {
+                    homeTabManager.setAboveRecommend(false);
+                }
+            });
         } else {
             homeTabManager.setAboveRecommend(false);
         }
@@ -519,7 +515,7 @@ class HomePage extends BasePage {
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
-                    scrollEventThrottle={30}
+                    scrollEventThrottle={200}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
