@@ -142,6 +142,8 @@ export default class ConfirmOrderPage extends BasePage {
         confirmOrderModel.submitProduct(this.params.orderParamVO, {
             
             callback: (data) => {
+                console.log('submitProduct', data)
+
                 let replace = NavigationActions.replace({
                     key: this.props.navigation.state.key,
                     routeName: 'payment/PaymentPage',
@@ -150,7 +152,8 @@ export default class ConfirmOrderPage extends BasePage {
                         amounts: data.payAmount,
                         pageType: 0,
                         orderProductList: data.orderProductList,
-                        outTradeNo: data.orderNo
+                        outTradeNo: data.orderNo,
+                        platformOrderNo: data.platformOrderNo
                     },
                 });
                 this.props.navigation.dispatch(replace);

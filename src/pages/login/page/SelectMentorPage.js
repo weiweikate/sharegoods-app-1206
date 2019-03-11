@@ -54,11 +54,6 @@ export default class SelectMentorPage extends BasePage {
     static navigationOptions = {
         gesturesEnabled: false
     };
-
-    $NavBarLeftPressed = () => {
-        this.$toastShow("注册成功");
-        this.$navigateBackToHome();
-    };
     $navigationBarOptions = {
         title: "",
         show: true// false则隐藏导航
@@ -211,7 +206,7 @@ export default class SelectMentorPage extends BasePage {
                 style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    marginTop: px2dp(10),
+                    marginTop: px2dp(20),
                     alignItems: "center",
                     width: ScreenUtils.width - px2dp(100),
                     marginLeft: px2dp(50)

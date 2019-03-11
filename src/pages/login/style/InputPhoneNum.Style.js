@@ -12,6 +12,10 @@ const styles = StyleSheet.create(
             flex: 1,
             backgroundColor: DesignRule.color_fff
         },
+        contentStyle: {
+            marginTop: 84,
+            alignItems: "center"
+        },
         topTitleStyle: {
             marginTop: px2dp(15),
             fontSize: 23,
@@ -24,7 +28,7 @@ const styles = StyleSheet.create(
         },
         textInputStyle: {
             width: width - px2dp(80),
-            height: px2dp(35)
+            height: px2dp(38)
         },
         btnCanClickBgStyle: {
             marginTop: px2dp(64),
