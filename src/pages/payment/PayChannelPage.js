@@ -17,6 +17,8 @@ import { payment, paymentType, paymentTrack, payStatus } from './Payment'
 import PaymentResultView, { PaymentResult } from './PaymentResultView'
 import { track, trackEvent } from '../../utils/SensorsTrack'
 const { px2dp } = ScreenUtils;
+import Toast from '../../utils/bridge'
+import { NavigationActions } from 'react-navigation';
 
 @observer
 export default class ChannelPage extends BasePage {
@@ -26,20 +28,29 @@ export default class ChannelPage extends BasePage {
         show: true
     }
 
+    state = {
+        orderChecking: false,
+        showResult: false,
+        payResult: PaymentResult.none,
+        payMsg: ''
+    }
+
     constructor(props) {
         super(props)
-        this.state = {
-            orderChecking: false
-        }
         this.remainMoney = this.params.remainMoney
+        let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
+        let name = orderProduct && orderProduct.productName
+        if (name) {
+            payment.name = name
+        }
     }
 
     componentDidMount() {
-        AppState.addEventListener('change', (state) => this._handleAppStateChange(state));
+        AppState.addEventListener('change', this._handleAppStateChange);
     }
 
     componentWillUnmount() {
-        AppState.removeEventListener('change', (state) => this._handleAppStateChange(state));
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     $NavBarLeftPressed = () => {
@@ -47,15 +58,31 @@ export default class ChannelPage extends BasePage {
     }
 
     goToPay() {
+
+        if (payment.selctedPayType === paymentType.none) {
+            Toast.$toast('请选择支付方式')
+            return
+        }
+        
         if (payment.selctedPayType === paymentType.alipay) {
-            payment.alipay()
-        } else {
-            payment.appWXPay()
+            payment.alipay().catch(err => {
+                 Toast.$toast(err.message)
+                 payment.resetPayment()
+                 this._goToOrder()
+            })
+        }
+        
+        if (payment.selctedPayType === paymentType.wechat){
+            payment.appWXPay().catch(err => {
+                Toast.$toast(err.message)
+                payment.resetPayment()
+                this._goToOrder()
+            })
         }
     }
 
-    _handleAppStateChange(state) {
-        if (state !== 'active') {
+    _handleAppStateChange = (nextAppState) =>{
+        if (nextAppState !== 'active') {
             return
         }
         const { selctedPayType } = payment;
@@ -67,9 +94,9 @@ export default class ChannelPage extends BasePage {
         }
         if (payment.platformOrderNo && selctedPayType !== paymentType.none) {
             payment.isGoToPay = false
-            this.setState({ orderChecking: true });
             this.orderTime = (new Date().getTime()) / 1000;
             this._checkOrder();
+            this.setState({orderChecking: true})
         }
     }
 
@@ -87,27 +114,55 @@ export default class ChannelPage extends BasePage {
                 }, 1000);
                 return;
             }
-            this.setState({ orderChecking: false })
-            console.log('checkPayStatus', result, parseInt(result.data, 0) === payStatus.paySuccess)
-            if (parseInt(result.data, 0) === payStatus.paySuccess) {
+            let isSuccess = parseInt(result.data, 0) === payStatus.paySuccess
+            if (isSuccess) {
+                this.setState({
+                    showResult: true,
+                    orderChecking: false,
+                    payResult: PaymentResult.sucess
+                })
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
-                this.paymentResultView.show(PaymentResult.sucess);
                 payment.resetPayment()
-            }
-            if (result.data === payStatus.payOutTime) {
-                this.paymentResultView.show(PaymentResult.warning, '订单支付超时，下单金额已原路返回');
+            } else if (result.data === payStatus.payOutTime) {
+                this.setState({
+                    showPwd: false,
+                    showResult: true,
+                    payResult: PaymentResult.warning,
+                    payMsg: '订单支付超时，下单金额已原路返回'
+                })
+                payment.resetPayment()
             }
         }).catch(() => {
             this.setState({ orderChecking: false });
         });
     }
 
+    _goToOrder() {
+        let replace = NavigationActions.replace({
+            key: this.props.navigation.state.key,
+            routeName: 'order/order/MyOrdersListPage',
+            params: { index: 1 }
+        });
+        this.props.navigation.dispatch(replace);
+    }
+
+
     _selectedType(type) {
       payment.selectPayTypeAction(type)
     }
 
+    _closeResultView() {
+        this.setState({
+            showResult: false,
+            payResult: PaymentResult.none,
+            payMsg: ''
+        })
+        payment.resetPayment()
+    }
+
     _render() {
         const { selctedPayType, name } = payment
+        const { showResult, payResult, payMsg, orderChecking } = this.state
 
         return <View style={styles.container}>
             <View style={styles.content}>
@@ -144,15 +199,21 @@ export default class ChannelPage extends BasePage {
                 <Text style={styles.payText}>去支付</Text>
             </View>
             </TouchableWithoutFeedback>
-            <PaymentResultView
-                ref={(ref) => {
-                    this.paymentResultView = ref;
-                }}
-                navigation={this.props.navigation}
-                repay={() => this._repay()}
-            />
             {
-                this.state.orderChecking
+                showResult
+                ?
+                <PaymentResultView
+                    navigation={this.props.navigation}
+                    payResult={payResult}
+                    payMsg={payMsg}
+                    closeResultView={()=>{this._closeResultView()}}
+                />
+                :
+                null
+            }
+            
+            {
+                orderChecking
                     ?
                     <View style={styles.loadingView}>
                         <View style={styles.loading}>

@@ -72,6 +72,11 @@ public class BannerLayout extends FrameLayout {
         }
     });
 
+    public void scrollRightNow() {
+        mHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, 200);
+        isPlaying = true;
+    }
+
     public BannerLayout(Context context) {
         this(context, null);
     }
@@ -88,7 +93,7 @@ public class BannerLayout extends FrameLayout {
     protected void initView(Context context, AttributeSet attrs) {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BannerLayout);
-        showIndicator = a.getBoolean(R.styleable.BannerLayout_showIndicator, true);
+        showIndicator = a.getBoolean(R.styleable.BannerLayout_showIndicator, false);
         autoPlayDuration = a.getInt(R.styleable.BannerLayout_interval, 5000);
         isAutoPlaying = a.getBoolean(R.styleable.BannerLayout_autoPlaying, true);
         itemSpace = a.getInt(R.styleable.BannerLayout_itemSpace, 20);
@@ -139,19 +144,18 @@ public class BannerLayout extends FrameLayout {
         new CenterSnapHelper().attachToRecyclerView(mRecyclerView);
 
 
-        //指示器部分
-        indicatorContainer = new RecyclerView(context);
-        LinearLayoutManager indicatorLayoutManager = new LinearLayoutManager(context, orientation, false);
-        indicatorContainer.setLayoutManager(indicatorLayoutManager);
-        indicatorAdapter = new IndicatorAdapter();
-        indicatorContainer.setAdapter(indicatorAdapter);
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.BOTTOM | gravity;
-        params.setMargins(marginLeft, 0, marginRight, marginBottom);
-        addView(indicatorContainer, params);
-        if (!showIndicator) {
-            indicatorContainer.setVisibility(GONE);
+        if (showIndicator) {
+            //指示器部分
+            indicatorContainer = new RecyclerView(context);
+            LinearLayoutManager indicatorLayoutManager = new LinearLayoutManager(context, orientation, false);
+            indicatorContainer.setLayoutManager(indicatorLayoutManager);
+            indicatorAdapter = new IndicatorAdapter();
+            indicatorContainer.setAdapter(indicatorAdapter);
+            LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.BOTTOM | gravity;
+            params.setMargins(marginLeft, 0, marginRight, marginBottom);
+            addView(indicatorContainer, params);
         }
     }
 
@@ -167,12 +171,6 @@ public class BannerLayout extends FrameLayout {
 
     public boolean isPlaying() {
         return isPlaying;
-    }
-
-    //设置是否显示指示器
-    public void setShowIndicator(boolean showIndicator) {
-        this.showIndicator = showIndicator;
-        indicatorContainer.setVisibility(showIndicator ? VISIBLE : GONE);
     }
 
     //设置当前图片缩放系数
@@ -227,15 +225,13 @@ public class BannerLayout extends FrameLayout {
         return this.adapter;
     }
 
-    public void refreshBanner(int size) {
-        bannerSize = size;
-        mLayoutManager.setInfinite(bannerSize >= 1);
-        hasInit = true;
+    public void set2First() {
+        currentIndex = 0;
+        mRecyclerView.smoothScrollToPosition(0);
     }
 
-    public void setCurrentIndex(int currentIndex) {
-        hasInit = false;
-        this.currentIndex = currentIndex;
+    public void setBannerSize(RecyclerView.Adapter adapter) {
+        this.bannerSize = adapter.getItemCount();
     }
 
     /**
@@ -367,7 +363,9 @@ public class BannerLayout extends FrameLayout {
     public synchronized void refreshIndicator() {
         if (bannerSize > 0) {
             int position = currentIndex % bannerSize;
-            onPageSelected.pageSelected(position);
+            if (onPageSelected != null) {
+                onPageSelected.pageSelected(position);
+            }
             if (showIndicator) {
                 indicatorAdapter.setPosition(position);
                 indicatorAdapter.notifyDataSetChanged();
