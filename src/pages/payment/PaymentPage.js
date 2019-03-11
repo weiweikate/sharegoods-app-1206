@@ -90,6 +90,7 @@ export default class PaymentPage extends BasePage {
     _render() {
         const { selectedBalace, name } = payment
         const { showPwd } = this.state
+        let { availableBalance } = user
         return <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.row}>
@@ -101,12 +102,12 @@ export default class PaymentPage extends BasePage {
                     <Text style={styles.money}>￥{payment.amounts}</Text>
                 </View>
             </View>
-            <TouchableWithoutFeedback onPress={()=> this._selectedBalance()}>
+            <TouchableWithoutFeedback disabled={availableBalance === 0} onPress={()=> this._selectedBalance()}>
             <View style={styles.balanceContent}>
                 <Image style={styles.iconBalance} source={res.balance}/>
                 <Text style={styles.text}>现金账户</Text>
                 <View style={{flex: 1}}/>
-                <Text style={styles.name}>可用金额: {user.availableBalance}元</Text>
+                <Text style={styles.name}>可用金额: {availableBalance}元</Text>
                 <Image style={styles.iconCheck} source={selectedBalace ? res.check : res.uncheck}/>
             </View>
             </TouchableWithoutFeedback>
