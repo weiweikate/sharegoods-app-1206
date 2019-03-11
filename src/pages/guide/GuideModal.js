@@ -71,7 +71,6 @@ export default class GuideModal extends React.Component {
             step: 0,/** 新手引导第几步*/
             visible: false,
             isHome: false,
-            num: 98,
             rewardzData: {},
         };
         /** 每一步引导的数据*/
@@ -112,7 +111,7 @@ export default class GuideModal extends React.Component {
 
 
     open = () => {
-        this.setState({visible: true});
+        this.setState({visible: true, step: 0});
     }
     close = () => {
         this.setState({visible: false});
