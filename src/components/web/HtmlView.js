@@ -1,7 +1,7 @@
 import React from "react";
 import BasePage from "../../BasePage";
 import WebViewBridge from "@mr/webview";
-import { View } from "react-native";
+import { View } from 'react-native';
 import CommShareModal from "../../comm/components/CommShareModal";
 // import res from '../../comm/res';
 import apiEnvironment from "../../api/ApiEnvironment";
@@ -73,19 +73,11 @@ export default class RequestDetailPage extends BasePage {
                     originWhitelist={["(.*?)"]}
                     source={{ uri: this.state.uri }}
                     navigateAppPage={(r, p) => {
-                        if (r === "login/login/LoginPage") {
-                            this.$navigate(r, {
-                                ...p, callback: () => {
-                                    this.webView && this.webView.reload();
-                                }
-                            });
-                        } else {
                             if (r.length > 0) {
                                 let routerKey = r.split("/").pop();
                                 r = RouterMap[routerKey] || r;
                             }
                             this.$navigate(r, p);
-                        }
                     }}
                     onNavigationStateChange={event => {
                         this.canGoBack = event.canGoBack;

@@ -11,6 +11,7 @@ const myData = {
     thirNoSign_icon:require('./me_icon6_normal.png'),
     no_up2_standard:require('./me_icon7_normal.png'),
     xiugou_present:require('./me_icon8_normal.png'),
-    xiugou_punishment:require('./me_icon9_normal.png')
+    xiugou_punishment:require('./me_icon9_normal.png'),
+    xiugou_reword: require('./hdong_icon.png'),
 };
 export default myData;

@@ -18,6 +18,7 @@ import { netStatusTool } from "../../../api/network/NetStatusTool";
 import { TimeDownUtils } from "../../../utils/TimeDownUtils";
 import SMSTool from "../../../utils/SMSTool";
 import { registAction } from "../model/LoginActionModel";
+// import user from "../../../model/user";
 
 const { px2dp } = ScreenUtils;
 
@@ -46,39 +47,19 @@ export default class InputCode extends BasePage {
     _render() {
         const { phoneNum } = this.params;
         return (
-            <View
-                style={Styles.bgContent}
-            >
-                <View
-                    style={
-                        {
-                            marginTop: 84,
-                            alignItems: "center"
-                        }
-                    }
-                >
-                    <Text
-                        style={Styles.topTitleStyle}
-                    >
+            <View style={Styles.bgContent}>
+                <View style={Styles.contentStyle}>
+                    <Text style={Styles.topTitleStyle}>
                         请输入短信验证码
                     </Text>
-                    <Text
-                        style={Styles.topTipTitleStyle}
-                    >
+                    <Text style={Styles.topTipTitleStyle}>
                         我们已发送短信验证码到你的手机
                     </Text>
-
-                    <Text
-                        style={{ marginTop: 10 }}
-                    >
+                    <Text style={{ marginTop: 10 }}>
                         {StringUtils.encryptPhone(phoneNum)}
                     </Text>
 
-                    <View
-                        style={{
-                            alignItems: "center"
-                        }}
-                    >
+                    <View style={{ alignItems: "center" }}>
                         <VerifyCode onChangeText={
                             (text) => {
                                 this._finshInputCode(text);
@@ -86,18 +67,9 @@ export default class InputCode extends BasePage {
                         } verifyCodeLength={4}
                         />
 
-                        <View
-                            style={
-                                {
-                                    marginTop: px2dp(10),
-                                    flexDirection: "row"
-                                }}
-
-                        >
+                        <View style={{ marginTop: px2dp(10), flexDirection: "row" }}>
                             {this.state.downTime > 0 ?
-                                <Text
-                                    style={Styles.authHaveSendCodeBtnStyle}
-                                >
+                                <Text style={Styles.authHaveSendCodeBtnStyle}>
                                     {this.state.downTime}s后可点击
                                 </Text> :
                                 null
@@ -105,7 +77,7 @@ export default class InputCode extends BasePage {
                             <TouchableOpacity
                                 activeOpacity={1}
                                 style={{
-                                    paddingTop:px2dp(0),
+                                    paddingTop: px2dp(0),
                                     marginLeft: px2dp(5),
                                     justifyContent: "center"
                                 }}
@@ -154,16 +126,17 @@ export default class InputCode extends BasePage {
 
     _finshInputCode = (text) => {
         if (text.length === 4) {
-            const { phoneNum, nickname, headerImg } = this.params;
+            const { phoneNum, nickName, headerImg } = this.params;
             let params = {
                 ...this.params,
                 code: text,
                 phone: phoneNum,
-                nickName: nickname,
+                nickname: nickName,
                 headImg: headerImg
             };
             registAction(params, (res) => {
                 if (res.code === 10000) {
+                    // user.untiedWechat(nickName,this.params.appOpenid,this.params.unionid)
                     this.$navigate(RouterMap.InviteCodePage);
                 } else {
                     this.$toastShow(res.msg);

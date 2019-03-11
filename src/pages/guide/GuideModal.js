@@ -71,9 +71,9 @@ export default class GuideModal extends React.Component {
             step: 0,/** 新手引导第几步*/
             visible: false,
             isHome: false,
-            num: 98,
             rewardzData: {},
         };
+        this.isFinish=false;
         /** 每一步引导的数据*/
         this.data = [{image: discover, tip: tip_one, text: '秀场'},
             {image: OssHelper('/app/share11.png'), tip: tip_two, text: '升级'},
@@ -86,6 +86,9 @@ export default class GuideModal extends React.Component {
     }
 
     getUserRecord = () => {
+        if (this.state.isFinish == true){//用于记录本地是否完成新手引导
+            return;
+        }
         this.state.isHome = true;
         GuideApi.getUserRecord().then((data)=> {
             if(data.data === true){
@@ -112,7 +115,7 @@ export default class GuideModal extends React.Component {
 
 
     open = () => {
-        this.setState({visible: true});
+        this.setState({visible: true, step: 0});
     }
     close = () => {
         this.setState({visible: false});
@@ -304,6 +307,7 @@ export default class GuideModal extends React.Component {
     nextPress=()=>{
         if (this.state.step === 5){
             GuideApi.registerSend({});//完成了新手引导
+            this.isFinish = true; //防止请求失败，重复调用新手引导
         }
         this.setState({step: this.state.step + 1})   ;
     }

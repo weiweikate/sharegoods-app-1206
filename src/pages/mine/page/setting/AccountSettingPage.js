@@ -61,7 +61,7 @@ export default class AccountSettingPage extends BasePage {
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditWechat(user.unionid)}>
                     <UIText value={'微信账号'} style={[styles.blackText, { flex: 1 }]}/>
-                    <UIText value={StringUtils.isEmpty(user.unionid) ? '未绑定' : user.wechatName}
+                    <UIText value={StringUtils.isEmpty(user.unionid) ? '未绑定' : (user.wechatName||'无昵称')}
                             style={{ fontSize: 13, color: DesignRule.textColor_secondTitle, marginRight: 8 }}/>
                     <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>

@@ -16,7 +16,7 @@ const logoRed = res.home_icon_logo_red;
 const searchImg = res.icon_search;
 const messageImg = res.message;
 
-export default ({ navigation, whiteIcon, hasMessage, pageFocused }) =>
+export default ({ navigation, hasMessage, pageFocused }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
             <Image source={logoRed} style={styles.logo}/>
@@ -49,9 +49,6 @@ export default ({ navigation, whiteIcon, hasMessage, pageFocused }) =>
                 </View>
             </TouchableWithoutFeedback>
         </View>
-        {
-            whiteIcon ? null :
-                <View style={{ height: 0.5, backgroundColor: '#ccc' }}/>}
     </View>
 
 let styles = StyleSheet.create({

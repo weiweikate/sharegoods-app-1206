@@ -11,7 +11,6 @@ import { observable, computed, action } from 'mobx';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import LoginAPI from '../api/LoginApi';
-// import StringUtils from '../../../utils/StringUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';

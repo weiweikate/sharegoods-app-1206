@@ -70,7 +70,6 @@
 }
 
 - (void)tap{
-  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isNotFrist"];
   [UIView animateWithDuration:1.5 animations:^{
     self.alpha = 0;
     self.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
