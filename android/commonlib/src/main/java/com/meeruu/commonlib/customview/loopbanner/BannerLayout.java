@@ -72,11 +72,6 @@ public class BannerLayout extends FrameLayout {
         }
     });
 
-    public void scrollRightNow() {
-        mHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, 200);
-        isPlaying = true;
-    }
-
     public BannerLayout(Context context) {
         this(context, null);
     }
@@ -227,11 +222,13 @@ public class BannerLayout extends FrameLayout {
 
     public void set2First() {
         currentIndex = 0;
-        mRecyclerView.smoothScrollToPosition(0);
     }
 
     public void setBannerSize(RecyclerView.Adapter adapter) {
         this.bannerSize = adapter.getItemCount();
+        if (this.bannerSize > 0) {
+            mRecyclerView.smoothScrollToPosition(0);
+        }
     }
 
     /**
