@@ -56,9 +56,8 @@ export default class HomeAdView extends Component {
         banner.map((val, index) => {
             let url = val.imgUrl;
             items.push(
-                <TouchableWithoutFeedback onPress={() => this._adAction(val)}>
+                <TouchableWithoutFeedback onPress={() => this._adAction(val)} key={'banner' + index}>
                     <Image
-                        key={'banner' + index}
                         style={[styles.bannerImage, { height: adModules.adHeights.get(url) }]}
                         source={{ uri: url }}/>
                 </TouchableWithoutFeedback>

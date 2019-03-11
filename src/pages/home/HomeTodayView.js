@@ -30,7 +30,7 @@ export default class HomeTodayView extends Component {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
-        navigate(router, { ...params, preseat: 'home_recommend' });
+        navigate(router, { ...params, preseat: 'home_today' });
     }
 
     _onDidScrollToIndex(e) {
@@ -110,10 +110,10 @@ let styles = StyleSheet.create({
         width: ScreenUtil.width - px2dp(30),
         borderRadius: (5),
         overflow: 'hidden',
-        backgroundColor: '#fff'
+        backgroundColor: 'white'
     },
     flag: {
-        backgroundColor: '#FF0050',
+        backgroundColor: DesignRule.mainColor,
         width: px2dp(2),
         height: px2dp(8)
     },
@@ -164,14 +164,14 @@ let styles = StyleSheet.create({
         width: px2dp(10),
         height: px2dp(3),
         borderRadius: px2dp(1.5),
-        backgroundColor: '#FF0050',
+        backgroundColor: DesignRule.mainColor,
         margin: 2
     },
     index: {
         width: px2dp(5),
         height: px2dp(3),
         borderRadius: px2dp(1.5),
-        backgroundColor: '#E4E4E4',
+        backgroundColor: DesignRule.lineColor_inWhiteBg,
         margin: 2
     }
 });

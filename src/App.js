@@ -92,14 +92,6 @@ export default class App extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
-                ScreenUtils.isNavigationBarExist((data) => {
-                    ScreenUtils.setBarShow(data);
-                });
-
-                ScreenUtils.checkhasNotchScreen((data) => {
-                    ScreenUtils.setHasNotchScreen(data);
-                });
-
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
                     android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
@@ -110,7 +102,18 @@ export default class App extends Component {
                 }).catch((error) => {
                 });
             }, 200);
+            TimerMixin.setTimeout(() => {
+                ScreenUtils.isNavigationBarExist((data) => {
+                    ScreenUtils.setBarShow(data);
+                });
+
+                ScreenUtils.checkhasNotchScreen((data) => {
+                    ScreenUtils.setHasNotchScreen(data);
+                });
+
+            },3000)
         });
+
         //热更新
         hotUpdateUtil.checkUpdate();
         // 移除启动页

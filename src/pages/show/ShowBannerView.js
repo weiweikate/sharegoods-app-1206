@@ -185,15 +185,15 @@ let styles = StyleSheet.create({
     },
     activityIndex: {
         width: 14,
-        height: 6,
-        borderRadius: 3,
+        height: 5,
+        borderRadius: 2.5,
         backgroundColor: '#A9B4BC',
         margin: 3
     },
     index: {
-        width: 6,
-        height: 6,
-        borderRadius: 3,
+        width: 5,
+        height: 5,
+        borderRadius: 2.5,
         backgroundColor: '#DDE1E4',
         margin: 3
     }
