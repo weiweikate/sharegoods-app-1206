@@ -18,6 +18,7 @@ import PaymentResultView, { PaymentResult } from './PaymentResultView'
 import { track, trackEvent } from '../../utils/SensorsTrack'
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge'
+import { NavigationActions } from 'react-navigation';
 
 @observer
 export default class ChannelPage extends BasePage {
@@ -65,25 +66,17 @@ export default class ChannelPage extends BasePage {
         
         if (payment.selctedPayType === paymentType.alipay) {
             payment.alipay().catch(err => {
-                this.setState({
-                    showPwd: false,
-                    showResult: true,
-                    payResult: PaymentResult.fail,
-                    payMsg: err.message
-                 })
+                 Toast.$toast(err.message)
                  payment.resetPayment()
+                 this._goToOrder()
             })
-        } 
+        }
         
         if (payment.selctedPayType === paymentType.wechat){
             payment.appWXPay().catch(err => {
-                this.setState({
-                    showPwd: false,
-                    showResult: true,
-                    payResult: PaymentResult.fail,
-                    payMsg: err.message
-                 })
-                 payment.resetPayment()
+                Toast.$toast(err.message)
+                payment.resetPayment()
+                this._goToOrder()
             })
         }
     }
@@ -143,6 +136,16 @@ export default class ChannelPage extends BasePage {
             this.setState({ orderChecking: false });
         });
     }
+
+    _goToOrder() {
+        let replace = NavigationActions.replace({
+            key: this.props.navigation.state.key,
+            routeName: 'order/order/MyOrdersListPage',
+            params: { index: 1 }
+        });
+        this.props.navigation.dispatch(replace);
+    }
+
 
     _selectedType(type) {
       payment.selectPayTypeAction(type)

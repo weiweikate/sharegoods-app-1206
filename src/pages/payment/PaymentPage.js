@@ -45,7 +45,7 @@ export default class PaymentPage extends BasePage {
     goToPay =()=> {
         payment.checkOrderStatus().then(result => {
             if (result.code === payStatus.payNo) {
-                if (parseInt(payment.amounts, 0) === 0) {
+                if (payment.amounts <= 0) {
                     this._zeroPay()
                     return
                 }
