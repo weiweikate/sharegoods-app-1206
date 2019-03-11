@@ -45,19 +45,21 @@ export default class ShowBannerView extends Component {
         let index = e.nativeEvent.index;
         const { bannerList } = showBannerModules;
         let item = bannerList[index];
-        const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
-        let params = showBannerModules.paramsNavigate(item);
-        const { navigate } = this.props;
+        if (item) {
+            const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
+            let params = showBannerModules.paramsNavigate(item);
+            const { navigate } = this.props;
 
-        track(trackEvent.bannerClick, {
-            pageType: '秀场banner',
-            bannerLocation: '秀场精选热门',
-            bannerID: item.id,
-            bannerRank: item.rank,
-            url: item.imgUrl,
-            bannerName: item.linkTypeCode
-        });
-        navigate(router, { ...params, preseat: '秀场_banner' });
+            track(trackEvent.bannerClick, {
+                pageType: '秀场banner',
+                bannerLocation: '秀场精选热门',
+                bannerID: item.id,
+                bannerRank: item.rank,
+                url: item.imgUrl,
+                bannerName: item.linkTypeCode
+            });
+            navigate(router, { ...params, preseat: '秀场_banner' });
+        }
     }
 
     renderIndexView() {
@@ -80,17 +82,12 @@ export default class ShowBannerView extends Component {
         this.setState({ index: e.nativeEvent.index });
     }
 
-    _onDidChange(item, changeIndex) {
-        const { index } = this.state;
-        if (index !== changeIndex) {
-            this.setState({ index: changeIndex });
-        }
-    }
-
     render() {
         const { bannerList } = showBannerModules;
+
+        // 此处需返回null，否则指示器有问题
         if (!bannerList || bannerList.length <= 0) {
-            return <View/>;
+            return null;
         }
         let items = [];
         bannerList.map(value => {

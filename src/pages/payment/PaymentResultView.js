@@ -12,21 +12,16 @@ import res from './res';
 const failImg = res.fail;
 const warningImg = res.warning;
 export const PaymentResult = {
+    none: 0,
     sucess: 1,
     fail: 2,
     warning: 3,
 };
 export default class PaymentResultView extends Component {
-    state = {
-        modalVisible: false,
-        resultText: '',
-        result: 0,
-        message: ''
-    };
 
     _goToHome() {
+        this.props.closeResultView()
         const { navigation } = this.props;
-        this.dismiss();
         let resetAction = NavigationActions.reset({
             index: 0,
             actions: [
@@ -37,7 +32,7 @@ export default class PaymentResultView extends Component {
     }
 
     _goToOrder() {
-        this.dismiss();
+        this.props.closeResultView()
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
             routeName: 'order/order/MyOrdersListPage',
@@ -48,51 +43,37 @@ export default class PaymentResultView extends Component {
 
     show(result, message) {
 
-        let msg = ''
-        if (result === PaymentResult.sucess) {
-            msg = '支付成功'
-        } else if (result === PaymentResult.fail) {
-            msg = '支付失败'
-        }
-
-        this.setState({
-            modalVisible: true,
-            resultText: msg,
-            result: result,
-            message: message
-        });
-        // this.props.payment.isShowResult = true
-        // this.props.payment.paySuccessFul = result === PaymentResult.sucess
     }
 
     dismiss() {
+        this.props.closeResultView()
         this.setState({ modalVisible: false, message: '' });
-        // this.props.repay()
-        // this.props.payment.isShowResult = false
     }
 
     render() {
-        const { resultText, result, message } = this.state;
-
+        const { payResult, payMsg } = this.props
+        let resultText = ''
         let img = successImg
-        if (result === PaymentResult.sucess) {
+        if (payResult === PaymentResult.sucess) {
+            resultText = '支付成功'
             img = successImg
-        } else if (result === PaymentResult.fail) {
+        } else if (payResult === PaymentResult.fail) {
+            resultText = '支付失败'
             img = failImg
         } else {
             img = warningImg
         }
 
-        console.log('PaymentResultView message', message);
+        console.log('PaymentResultView message', payMsg, payResult);
         return (
             <Modal
                 focusable={false}
                 style={styles.container}
                 transparent={true}
                 animationType="fade"
-                visible={this.state.modalVisible}
+                visible={true}
                 onRequestClose={() => {
-                    this.setState({modalVisible:false})
+                    
                 }}>
                 <View style={styles.container}>
                     <View style={styles.content}>
@@ -106,15 +87,15 @@ export default class PaymentResultView extends Component {
                             null
                         }
                         {
-                            message
+                            payMsg
                                 ?
-                                <Text allowFontScaling={false}  style={styles.message}>{message}</Text>
+                                <Text allowFontScaling={false}  style={styles.message}>{payMsg}</Text>
                                 :
                                 null
                         }
                         <View style={{ flex: 1 }}/>
                         {
-                            result === PaymentResult.sucess || result === PaymentResult.warning
+                            payResult === PaymentResult.sucess || payResult === PaymentResult.warning
                                 ?
                                 <View style={styles.bottom}>
                                     <TouchableOpacity style={styles.button} onPress={() => this._goToHome()}>

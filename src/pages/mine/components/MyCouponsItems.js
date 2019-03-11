@@ -138,11 +138,11 @@ export default class MyCouponsItems extends Component {
                                         color: DesignRule.textColor_mainTitle
                                     }}/> : null}
                                 </View>
-                                <Text style={{
+                                {item.timeStr?<Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction,
                                     marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
+                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>:null}
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
@@ -270,11 +270,11 @@ export default class MyCouponsItems extends Component {
                                         color: DesignRule.textColor_mainTitle
                                     }}/> : null}
                                 </View>
-                                <Text style={{
+                                {item.timeStr?<Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction,
                                     marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
+                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>:null}
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
@@ -557,7 +557,7 @@ export default class MyCouponsItems extends Component {
             return "全品类：全场通用券（特殊商品除外）";
         }
     };
-    parseData = (dataList) => {
+     parseData = (dataList) => {
         let arrData = [];
         console.log("parseData",this.dataSel,couponsModel.params);
         if (this.currentPage === 1) {//refresh
@@ -573,7 +573,7 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || couponsModel.params.type === null) {
+            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || (!this.props.fromOrder &&couponsModel.params.type === null)) {
                 API.queryCoupons({
                     status: this.state.pageStatus
                 }).then(result => {
@@ -618,7 +618,7 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0),
+                timeStr: item.startTime&&item.expireTime?this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0):null,
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
