@@ -59,7 +59,6 @@ export default class PaymentPage extends BasePage {
                 Toast.$toast(payStatusMsg[result.code])
             }
         }).catch(err => {
-            console.log('checkOrderStatus page err', err)
             Toast.$toast(err.msg)
         })
     }
@@ -71,7 +70,7 @@ export default class PaymentPage extends BasePage {
     _finishedAction(password) {
         payment.platformPay(password).then((result) => {
             this.setState({ showPwd: false })
-            if (result.data === payStatus.payNeedThrid) {
+            if (result === payStatus.payNeedThrid) {
                 this.$navigate('payment/ChannelPage', {remainMoney: Math.floor((payment.amounts - user.availableBalance) * 100) / 100})
                 return
             }
@@ -97,7 +96,7 @@ export default class PaymentPage extends BasePage {
               {text: '继续支付', onPress: () => {}}
             ],
             { cancelable: false }
-          )
+        )
     }
 
     _goToOrder() {
@@ -124,7 +123,7 @@ export default class PaymentPage extends BasePage {
                     <Text style={styles.money}>￥{payment.amounts}</Text>
                 </View>
             </View>
-            <TouchableWithoutFeedback disabled={availableBalance === 0} onPress={()=> this._selectedBalance()}>
+            <TouchableWithoutFeedback disabled={parseInt(availableBalance, 0) === 0} onPress={()=> this._selectedBalance()}>
             <View style={styles.balanceContent}>
                 <Image style={styles.iconBalance} source={res.balance}/>
                 <Text style={styles.text}>现金账户</Text>
