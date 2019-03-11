@@ -184,11 +184,11 @@ export default class CouponsDetailPage extends BasePage {
                                         color: DesignRule.textColor_mainTitle
                                     }}/> : null}
                                 </View>
-                                <Text style={{
+                                {item.timeStr?<Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction,
                                     marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
+                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>:null}
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
@@ -285,11 +285,11 @@ export default class CouponsDetailPage extends BasePage {
                                         color: DesignRule.textColor_mainTitle
                                     }}/> : null}
                                 </View>
-                                <Text style={{
+                                {item.timeStr?<Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction,
                                     marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
+                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>:null}
                                 <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                         value={item.limit}/>
                             </View>
@@ -341,7 +341,7 @@ export default class CouponsDetailPage extends BasePage {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0),
+                timeStr: item.startTime&&item.expireTime?this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0):null,
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
