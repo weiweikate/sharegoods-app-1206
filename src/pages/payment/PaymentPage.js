@@ -23,7 +23,10 @@ export default class PaymentPage extends BasePage {
     };
 
     state = {
-        showPwd: false
+        showPwd: false,
+        showResult: false,
+        payResult: PaymentResult.none,
+        payMsg: ''
     }
 
     constructor(props) {
@@ -75,10 +78,17 @@ export default class PaymentPage extends BasePage {
                 return
             }
             payment.resetPayment()
-            this.paymentResultView.show(PaymentResult.sucess)
+            this.setState({
+                showResult: true,
+                payResult: PaymentResult.sucess
+            })
         }).catch(err => {
-            this.setState({ showPwd: false })
-            this.paymentResultView.show(PaymentResult.fail, err.msg)
+            this.setState({
+                showPwd: false,
+                showResult: true,
+                payResult: PaymentResult.fail,
+                payMsg: err.msg
+             })
         })
     }
 
@@ -108,9 +118,13 @@ export default class PaymentPage extends BasePage {
         this.props.navigation.dispatch(replace);
     }
 
+    _closeResultView() {
+        this.setState({showResult: false})
+    }
+
     _render() {
         const { selectedBalace, name } = payment
-        const { showPwd } = this.state
+        const { showPwd, showResult } = this.state
         let { availableBalance } = user
         return <View style={styles.container}>
             <View style={styles.content}>
@@ -146,14 +160,18 @@ export default class PaymentPage extends BasePage {
                 forgetAction={()=>{this._forgetPassword()}}
                 dismiss={()=>{this._cancelPay() }}
             /> : null}
-            <PaymentResultView
-                ref={(ref) => {
-                    this.paymentResultView = ref;
-                }}
-                navigation={this.props.navigation}
-                payment={this.payment}
-                repay={() => this._repay()}
-            />
+            {
+                showResult
+                ?
+                <PaymentResultView
+                    navigation={this.props.navigation}
+                    payResult={this.state.payResult}
+                    payMsg={this.state.payMsg}
+                    closeResultView={()=>{this._closeResultView()}}
+                />
+                :
+                null
+            }
         </View>;
     }
 }

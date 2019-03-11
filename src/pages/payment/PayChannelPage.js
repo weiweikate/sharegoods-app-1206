@@ -26,20 +26,29 @@ export default class ChannelPage extends BasePage {
         show: true
     }
 
+    state = {
+        orderChecking: false,
+        showResult: false,
+        payResult: PaymentResult.none,
+        payMsg: ''
+    }
+
     constructor(props) {
         super(props)
-        this.state = {
-            orderChecking: false
-        }
         this.remainMoney = this.params.remainMoney
+        let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
+        let name = orderProduct && orderProduct.productName
+        if (name) {
+            payment.name = name
+        }
     }
 
     componentDidMount() {
-        AppState.addEventListener('change', (state) => this._handleAppStateChange(state));
+        AppState.addEventListener('change', this._handleAppStateChange);
     }
 
     componentWillUnmount() {
-        AppState.removeEventListener('change', (state) => this._handleAppStateChange(state));
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     $NavBarLeftPressed = () => {
@@ -48,14 +57,28 @@ export default class ChannelPage extends BasePage {
 
     goToPay() {
         if (payment.selctedPayType === paymentType.alipay) {
-            payment.alipay()
+            payment.alipay().catch(err => {
+                this.setState({
+                    showPwd: false,
+                    showResult: true,
+                    payResult: PaymentResult.fail,
+                    payMsg: err.msg
+                 })
+            })
         } else {
-            payment.appWXPay()
+            payment.appWXPay().catch(err => {
+                this.setState({
+                    showPwd: false,
+                    showResult: true,
+                    payResult: PaymentResult.fail,
+                    payMsg: err.msg
+                 })
+            })
         }
     }
 
-    _handleAppStateChange(state) {
-        if (state !== 'active') {
+    _handleAppStateChange = (nextAppState) =>{
+        if (nextAppState !== 'active') {
             return
         }
         const { selctedPayType } = payment;
@@ -67,9 +90,9 @@ export default class ChannelPage extends BasePage {
         }
         if (payment.platformOrderNo && selctedPayType !== paymentType.none) {
             payment.isGoToPay = false
-            this.setState({ orderChecking: true });
             this.orderTime = (new Date().getTime()) / 1000;
             this._checkOrder();
+            this.setState({orderChecking: true})
         }
     }
 
@@ -87,14 +110,23 @@ export default class ChannelPage extends BasePage {
                 }, 1000);
                 return;
             }
-            this.setState({ orderChecking: false })
-            console.log('checkPayStatus', result, parseInt(result.data, 0) === payStatus.paySuccess)
-            if (parseInt(result.data, 0) === payStatus.paySuccess) {
-                this.paymentResultView.show(PaymentResult.sucess);
+            let isSuccess = parseInt(result.data, 0) === payStatus.paySuccess
+            console.log('checkPayStatus', result, isSuccess)
+            if (isSuccess) {
+                this.setState({
+                    showResult: true,
+                    orderChecking: false,
+                    payResult: PaymentResult.sucess
+                })
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
-                payment.resetPayment()   
+                payment.resetPayment()
             } else if (result.data === payStatus.payOutTime) {
-                this.paymentResultView.show(PaymentResult.warning, '订单支付超时，下单金额已原路返回');
+                this.setState({
+                    showPwd: false,
+                    showResult: true,
+                    payResult: PaymentResult.warning,
+                    payMsg: '订单支付超时，下单金额已原路返回'
+                })
             }
         }).catch(() => {
             this.setState({ orderChecking: false });
@@ -105,8 +137,17 @@ export default class ChannelPage extends BasePage {
       payment.selectPayTypeAction(type)
     }
 
+    _closeResultView() {
+        this.setState({
+            showResult: false,
+            payResult: PaymentResult.none,
+            payMsg: ''
+         })
+    }
+
     _render() {
         const { selctedPayType, name } = payment
+        const { showResult, payResult, payMsg, orderChecking } = this.state
 
         return <View style={styles.container}>
             <View style={styles.content}>
@@ -143,15 +184,21 @@ export default class ChannelPage extends BasePage {
                 <Text style={styles.payText}>去支付</Text>
             </View>
             </TouchableWithoutFeedback>
-            <PaymentResultView
-                ref={(ref) => {
-                    this.paymentResultView = ref;
-                }}
-                navigation={this.props.navigation}
-                repay={() => this._repay()}
-            />
             {
-                this.state.orderChecking
+                showResult
+                ?
+                <PaymentResultView
+                    navigation={this.props.navigation}
+                    payResult={payResult}
+                    payMsg={payMsg}
+                    closeResultView={()=>{this._closeResultView()}}
+                />
+                :
+                null
+            }
+            
+            {
+                orderChecking
                     ?
                     <View style={styles.loadingView}>
                         <View style={styles.loading}>
