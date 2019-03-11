@@ -81,13 +81,11 @@ export class Payment {
         try {
             Toast.showLoading()
             const result = yield PaymentApi.platformPay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo, password: password})
-            console.log('platformPay result', result)
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'success'})
             this.updateUserData()
             Toast.hiddenLoading()
             return result.data
         } catch (error) {
-            console.log('platformPay result error', error)
             Toast.hiddenLoading();
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', errorCause: error.msg})
             throw error
@@ -95,10 +93,10 @@ export class Payment {
     })
 
     //检查订单状态
-    @action checkOrderStatus = flow(function * (password) {
+    @action checkOrderStatus = flow(function * (pOrderNo) {
          try {
             Toast.showLoading()
-            const result = yield PaymentApi.check({platformOrderNo: this.platformOrderNo})
+            const result = yield PaymentApi.check({platformOrderNo: pOrderNo ? pOrderNo : this.platformOrderNo})
             Toast.hiddenLoading()
             return result.data
         } catch (error) {
@@ -113,7 +111,6 @@ export class Payment {
         track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'start'})
         try {
             Toast.showLoading()
-            console.log('payment alipay');
             const result = yield PaymentApi.alipay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo})
             Toast.hiddenLoading();
             this.isGoToPay = true
