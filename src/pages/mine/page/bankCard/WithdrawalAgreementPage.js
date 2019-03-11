@@ -45,7 +45,7 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
 
     _checkUserGongMallResult = () => {
         MineApi.gongmallResult().then((data) => {
-            if (!data) {
+            if (!data.data) {
                 this._getSignUrl();
             } else {
                 this.$navigate('mine/userInformation/WithdrawCashPage');
