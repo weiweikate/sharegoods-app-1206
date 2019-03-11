@@ -17,6 +17,7 @@ import { payment, paymentType, paymentTrack, payStatus } from './Payment'
 import PaymentResultView, { PaymentResult } from './PaymentResultView'
 import { track, trackEvent } from '../../utils/SensorsTrack'
 const { px2dp } = ScreenUtils;
+import Toast from '../../utils/bridge'
 
 @observer
 export default class ChannelPage extends BasePage {
@@ -56,23 +57,33 @@ export default class ChannelPage extends BasePage {
     }
 
     goToPay() {
+
+        if (payment.selctedPayType === paymentType.none) {
+            Toast.$toast('请选择支付方式')
+            return
+        }
+        
         if (payment.selctedPayType === paymentType.alipay) {
             payment.alipay().catch(err => {
                 this.setState({
                     showPwd: false,
                     showResult: true,
                     payResult: PaymentResult.fail,
-                    payMsg: err.msg
+                    payMsg: err.message
                  })
+                 payment.resetPayment()
             })
-        } else {
+        } 
+        
+        if (payment.selctedPayType === paymentType.wechat){
             payment.appWXPay().catch(err => {
                 this.setState({
                     showPwd: false,
                     showResult: true,
                     payResult: PaymentResult.fail,
-                    payMsg: err.msg
+                    payMsg: err.message
                  })
+                 payment.resetPayment()
             })
         }
     }
@@ -111,7 +122,6 @@ export default class ChannelPage extends BasePage {
                 return;
             }
             let isSuccess = parseInt(result.data, 0) === payStatus.paySuccess
-            console.log('checkPayStatus', result, isSuccess)
             if (isSuccess) {
                 this.setState({
                     showResult: true,
@@ -127,6 +137,7 @@ export default class ChannelPage extends BasePage {
                     payResult: PaymentResult.warning,
                     payMsg: '订单支付超时，下单金额已原路返回'
                 })
+                payment.resetPayment()
             }
         }).catch(() => {
             this.setState({ orderChecking: false });
@@ -142,7 +153,8 @@ export default class ChannelPage extends BasePage {
             showResult: false,
             payResult: PaymentResult.none,
             payMsg: ''
-         })
+        })
+        payment.resetPayment()
     }
 
     _render() {
