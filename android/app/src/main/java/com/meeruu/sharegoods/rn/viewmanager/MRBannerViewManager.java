@@ -97,15 +97,14 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                     public void run() {
                         adapter.setUrlList(datas);
                         view.setBannerSize(adapter);
-                        view.scrollRightNow();
                     }
                 }, 500);
             } else {
                 adapter = new WebBannerAdapter(view.getContext(), datas);
                 view.setAdapter(adapter);
-                if (!view.isPlaying()) {
-                    view.setAutoPlaying(true);
-                }
+            }
+            if (!view.isPlaying()) {
+                view.setAutoPlaying(true);
             }
             adapter.setRadius(mRaduis);
             adapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
