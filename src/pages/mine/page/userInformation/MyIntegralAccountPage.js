@@ -23,6 +23,7 @@ const singInImg = res.userInfoImg.qdaojianli_icon;
 const taskImg = res.userInfoImg.rwujianli_icon;
 const yiyuanImg = res.userInfoImg.xiudozhanghu_icon_xjaingquan;
 const zensong = res.userInfoImg.xiudozhanghu_icon_zengsong;
+const xiugou_reword = res.myData.xiugou_reword;
 
 @observer
 export default class MyIntegralAccountPage extends BasePage {
@@ -141,10 +142,10 @@ export default class MyIntegralAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励', '任务奖励','秀购赠送'];
+        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励', '任务奖励','秀购赠送','活动奖励'];
 
         let use_type_symbol = ['', '+', '-'];
-        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg, taskImg,zensong];
+        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg, taskImg,zensong,xiugou_reword];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if(this.currentPage>1){
             Toast.showLoading();

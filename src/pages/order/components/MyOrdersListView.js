@@ -21,7 +21,7 @@ import {
 } from "../../../components/ui";
 import user from "../../../model/user";
 import RouterMap from "../../../navigation/RouterMap";
-
+import {payStatus, payment, payStatusMsg} from '../../payment/Payment'
 
 const emptyIcon = res.kongbeuye_dingdan;
 
@@ -417,29 +417,13 @@ export default class MyOrdersListView extends Component {
 
                 break;
             case 2:
-                this.props.nav("payment/PaymentPage", {
-                    orderNum: this.state.viewData[index].outTradeNo,
-                    amounts: this.state.viewData[index].totalPrice,
-                    platformOrderNo: this.state.viewData[index].platformOrderNo,
-                    orderProductList: this.state.viewData[index].orderProduct
-
-                });
+                this._goToPay(index)
                 break;
             case 3:
-                this.props.nav("payment/PaymentPage", {
-                    orderNum: this.state.viewData[index].outTradeNo,
-                    amounts: this.state.viewData[index].totalPrice,
-                    platformOrderNo: this.state.viewData[index].platformOrderNo,
-                    orderProductList: this.state.viewData[index].orderProduct
-                });
+                this._goToPay(index)
                 break;
             case 4:
-                this.props.nav("payment/PaymentPage", {
-                    orderNo: this.state.viewData[index].orderNo,
-                    amounts: this.state.viewData[index].price,
-                    platformOrderNo: this.state.viewData[index].platformOrderNo,
-                    orderProductList: this.state.viewData[index].orderProduct
-                });
+                this._goToPay(index)
                 break;
             case 5:
                 if (this.state.viewData[index].expList.length === 0) {
@@ -565,6 +549,25 @@ export default class MyOrdersListView extends Component {
         }
 
     };
+
+    async _goToPay(index) {
+        let payData = this.state.viewData[index]
+        const {platformOrderNo, orderNo,  totalPrice, orderProduct} = payData
+        console.log('_goToPay', payData)
+        let result = await payment.checkOrderStatus(platformOrderNo)
+        if (result.code === payStatus.payNo) {
+            this.props.nav("payment/PaymentPage", {
+                orderNo: orderNo,
+                amounts: totalPrice,
+                platformOrderNo: platformOrderNo,
+                orderProductList:orderProduct
+            });
+        } else if (result.code === payStatus.payNeedThrid) {
+            this.props.nav('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
+        } else {
+            Toast.$toast(payStatusMsg[result.code])
+        }
+    }
 }
 
 const styles = StyleSheet.create({
