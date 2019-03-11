@@ -51,8 +51,6 @@ export default class InputPhoneNum extends BasePage {
                             placeholder='请输入手机号'
                             keyboardType='numeric'
                             maxLength={11}
-                            onEndEditing={() => {
-                            }}
                             placeholderTextColor={DesignRule.textColor_placeholder}
                         />
                         <View

@@ -156,7 +156,6 @@ export default class LoginPage extends BasePage {
             </View>
         );
     }
-
     /*忘记密码*/
     forgetPasswordClick = () => {
         this.$navigate("login/login/ForgetPasswordPage");
@@ -208,8 +207,7 @@ export default class LoginPage extends BasePage {
                     this.$toastShow("登录成功");
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
-                    // this.$navigateBack(-2);
-                    this.$navigate(RouterMap.InviteCodePage);
+                    this.$navigateBack(-2);
                 } else {
                     this.$loadingDismiss();
                     this.$toastShow(data.msg);
@@ -234,7 +232,6 @@ const Styles = StyleSheet.create(
         },
         otherLoginBgStyle: {
             width: ScreenUtils.width,
-            // position: "absolute",
             bottom: 10,
             height: 170,
             justifyContent: "center",
