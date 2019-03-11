@@ -56,10 +56,7 @@ export class Payment {
         this.orderName = ''
         this.selctedPayType = paymentType.none
         this.selectedBalace = false
-        this.orderNo = ''
-        this.platformOrderNo = ''
         this.isGoToPay = false
-        this.amounts = 0
     }
     
     //选择余额支付
@@ -74,9 +71,6 @@ export class Payment {
 
     //平台余额支付
     @action platformPay = flow(function * (password) {
-        if (!this.selectedBalace) {
-            return
-        }
         paymentTrack.paymentMethod = 'balance'
         let trackPoint = {...paymentTrack, paymentProgress: 'start'}
         track(trackEvent.payOrder, trackPoint)
@@ -121,7 +115,6 @@ export class Payment {
                 throw new Error(resultStr.msg)
             }
             return resultStr;
-            
         } catch(error) {
             Toast.hiddenLoading()
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
