@@ -64,7 +64,7 @@ export default class LocalNumLogin extends BasePage {
                 <View style={localNumberLoginStyles.middleBgViewStyle}>
                     <MRTextInput
                         style={InputStyle.textInputStyle}
-                        value={StringUtils.encryptPhone(this.state.phoneNumber)}
+                        value={this.state.phoneNumber}
                         onChangeText={text => this.setState({
                             phoneNumber: text
                         })}
