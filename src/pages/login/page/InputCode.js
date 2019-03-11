@@ -18,6 +18,7 @@ import { netStatusTool } from "../../../api/network/NetStatusTool";
 import { TimeDownUtils } from "../../../utils/TimeDownUtils";
 import SMSTool from "../../../utils/SMSTool";
 import { registAction } from "../model/LoginActionModel";
+// import user from "../../../model/user";
 
 const { px2dp } = ScreenUtils;
 
@@ -130,11 +131,12 @@ export default class InputCode extends BasePage {
                 ...this.params,
                 code: text,
                 phone: phoneNum,
-                nickName: nickName,
+                nickname: nickName,
                 headImg: headerImg
             };
             registAction(params, (res) => {
                 if (res.code === 10000) {
+                    // user.untiedWechat(nickName,this.params.appOpenid,this.params.unionid)
                     this.$navigate(RouterMap.InviteCodePage);
                 } else {
                     this.$toastShow(res.msg);
