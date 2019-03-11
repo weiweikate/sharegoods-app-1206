@@ -551,14 +551,16 @@ export default class MyOrdersListView extends Component {
     };
 
     async _goToPay(index) {
-        let platformOrderNo = this.state.viewData[index].platformOrderNo
+        let payData = this.state.viewData[index]
+        const {platformOrderNo, orderNo,  totalPrice, orderProduct} = payData
+        console.log('_goToPay', payData)
         let result = await payment.checkOrderStatus(platformOrderNo)
         if (result.code === payStatus.payNo) {
             this.props.nav("payment/PaymentPage", {
-                orderNo: this.state.viewData[index].orderNo,
-                amounts: this.state.viewData[index].price,
+                orderNo: orderNo,
+                amounts: totalPrice,
                 platformOrderNo: platformOrderNo,
-                orderProductList: this.state.viewData[index].orderProduct
+                orderProductList:orderProduct
             });
         } else if (result.code === payStatus.payNeedThrid) {
             this.props.nav('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
