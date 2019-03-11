@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import res from './res'
 import BasePage from '../../BasePage';
 import { observer } from 'mobx-react/native';
@@ -12,6 +12,7 @@ import PasswordView from './PayPasswordView'
 import PaymentResultView, { PaymentResult } from './PaymentResultView';
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge'
+import { NavigationActions } from 'react-navigation';
 
 @observer
 export default class PaymentPage extends BasePage {
@@ -87,6 +88,27 @@ export default class PaymentPage extends BasePage {
         this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
     };
 
+    _cancelPay = () => {
+        Alert.alert(
+            '确认要放弃付款？',
+            '订单会超时关闭，请尽快支付',
+            [
+              {text: '确认离开', onPress: () => {this.setState({showPwd: false}); this._goToOrder()}},
+              {text: '继续支付', onPress: () => {}}
+            ],
+            { cancelable: false }
+          )
+    }
+
+    _goToOrder() {
+        let replace = NavigationActions.replace({
+            key: this.props.navigation.state.key,
+            routeName: 'order/order/MyOrdersListPage',
+            params: { index: 2 }
+        });
+        this.props.navigation.dispatch(replace);
+    }
+
     _render() {
         const { selectedBalace, name } = payment
         const { showPwd } = this.state
@@ -123,7 +145,7 @@ export default class PaymentPage extends BasePage {
             {showPwd ? <PasswordView
                 finishedAction={(pwd)=> {this._finishedAction(pwd)}}
                 forgetAction={()=>{this._forgetPassword()}}
-                dismiss={()=>{this.setState({showPwd: false})}}
+                dismiss={()=>{this._cancelPay() }}
             /> : null}
             <PaymentResultView
                 ref={(ref) => {
