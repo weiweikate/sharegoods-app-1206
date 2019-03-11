@@ -10,7 +10,7 @@ import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
-import {homeTabManager} from '../pages/home/model/HomeTabManager'
+import { homeTabManager } from '../pages/home/model/HomeTabManager';
 import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -64,16 +64,19 @@ class SpellShopTab extends Component {
 @observer
 class HomeTab extends Component {
     render() {
-        const { focused, normalSource } = this.props;
-
-        if (homeTabManager.aboveRecommend) {
-            return <Tab focused={focused} normalSource={normalSource} activeSource={res.tab.home_top} title={'首页'}/>;
-        }else {
-            return <Tab focused={focused} normalSource={normalSource} activeSource={res.tab.home_s} title={'首页'}/>;
+        const { focused } = this.props;
+        if (!focused) {
+            return <Tab focused={focused} normalSource={res.tab.home_n}
+                        activeSource={res.tab.home_s} title={'首页'}/>;
         }
 
-        return <Tab focused={focused} normalSource={res.tab.home_n}
-                    activeSource={res.tab.home_s} title={'首页'}/>    }
+        if (homeTabManager.aboveRecommend) {
+            return <Image style={styles.store} source={res.tab.home_top}/>;
+        } else {
+            return <Image style={styles.store} source={res.tab.home_s}/>;
+        }
+
+    }
 }
 
 const ShowFlag = () => <View style={styles.shopFlag}>
@@ -127,14 +130,14 @@ export const TabNav = TabNavigator(
             navigationOptions: {
                 tabBarIcon: ({ focused }) => <HomeTab focused={focused} normalSource={res.tab.home_n} title={'首页'}/>,
                 tabBarOnPress: (tab) => {
-                    const { jumpToIndex, scene ,previousScene} = tab;
-                    if(previousScene.key !== 'HomePage'){
+                    const { jumpToIndex, scene, previousScene } = tab;
+                    if (previousScene.key !== 'HomePage') {
                         jumpToIndex(scene.index);
-                    }else {
+                    } else {
                         DeviceEventEmitter.emit('retouch_home');
                     }
                 }
-            },
+            }
 
 
         },
