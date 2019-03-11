@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "吴承骏",
+    "envType": "qa",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -46,7 +46,7 @@
             "wxAppletKey": "gh_e0c6b86659cc",
             "miniProgramType": 0
         },
-        "openApi":{
+        "openApi": {
             "name": "openApi",
             "host": "http://devopenapi.sharegoodsmall.com/gateway",
             "h5": "https://testh5.sharegoodsmall.com",

@@ -31,23 +31,23 @@ export default class MRBannerViewComponent extends Component {
         this.state = { index: 0 };
     }
 
-    _renderPageControl = () => {
+    _renderPageControl = (arrLen) => {
         const { modeStyle } = this.props;
         switch (modeStyle) {
             case 1:
-                return this._renderStyleOne();
+                return this._renderStyleOne(arrLen);
             case 2:
-                return this._renderStyleTwo();
+                return this._renderStyleTwo(arrLen);
             default:
                 return null;
         }
     };
 
-    _renderStyleOne = () => {
-        const bannerCount = this.props.imgUrlArray.length;
+    _renderStyleOne = (arrLen) => {
+        const { index } = this.state;
         let items = [];
-        for (let i = 0; i < bannerCount; i++) {
-            if (this.state.index === i) {
+        for (let i = 0; i < arrLen; i++) {
+            if (index === i) {
                 items.push(<View key={i} style={styles.activityIndex}/>);
             } else {
                 items.push(<View key={i} style={styles.index}/>);
@@ -58,21 +58,20 @@ export default class MRBannerViewComponent extends Component {
         </View>;
     };
 
-    _renderStyleTwo = () => {
-        const bannerCount = this.props.imgUrlArray.length;
+    _renderStyleTwo = (arrLen) => {
         return <View style={styles.indexViewTwo}>
-            <Text style={styles.text} allowFontScaling={false}>{this.state.index + 1} / {bannerCount}</Text>
+            <Text style={styles.text} allowFontScaling={false}>{this.state.index + 1} / {arrLen}</Text>
         </View>;
-    };
-    _onDidScrollToIndex = (e) => {
-        this.setState({
-            index: e.nativeEvent.index
-        });
     };
 
     _onDidSelectItemAtIndex = (e) => {
         this.props.onDidSelectItemAtIndex && this.props.onDidSelectItemAtIndex(e.nativeEvent.index);
     };
+
+    _onDidScrollToIndex(e) {
+        let index = e.nativeEvent.index;
+        this.setState({ index });
+    }
 
 
     render() {
@@ -81,7 +80,8 @@ export default class MRBannerViewComponent extends Component {
         return (
             <View>
                 {/*加一个0.5修正值*/}
-                <MRBannerView style={[{ height: bannerHeight, width: imgWidth }]}
+                <MRBannerView ref={(ref) => this.mr_banner = ref}
+                              style={[{ height: bannerHeight, width: imgWidth }]}
                               onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
                               imgUrlArray={imgUrlArray}
                               itemRadius={itemRadius}
@@ -91,7 +91,7 @@ export default class MRBannerViewComponent extends Component {
                               onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
                               autoLoop={autoLoop === false ? false : true}
                               autoInterval={autoInterval || (autoInterval === 0 ? 0 : 5)}/>
-                {this._renderPageControl()}
+                {this._renderPageControl(imgUrlArray.length)}
             </View>
         );
     }

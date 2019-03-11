@@ -26,10 +26,12 @@ export default class HomeRecommendView extends Component {
         let index = e.nativeEvent.index;
         const { recommendList } = recommendModule;
         let item = recommendList[index];
-        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-        const { navigate } = this.props;
-        let params = homeModule.paramsNavigate(item);
-        navigate(router, { ...params, preseat: 'home_recommend' });
+        if (item) {
+            let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
+            const { navigate } = this.props;
+            let params = homeModule.paramsNavigate(item);
+            navigate(router, { ...params, preseat: 'home_recommend' });
+        }
     }
 
     _onDidScrollToIndex(e) {
@@ -55,14 +57,16 @@ export default class HomeRecommendView extends Component {
     render() {
         const { recommendList } = recommendModule;
 
+        // 此处需返回null，否则指示器有问题
         if (recommendList.length === 0) {
-            return <View/>;
+            return null;
         }
 
         let items = [];
         recommendList.map((item, index) => {
             items.push(item.imgUrl);
         });
+
         return <View style={styles.container}>
             <HomeTitleView title={'精品推荐'}/>
             {
