@@ -46,7 +46,7 @@ import { subjectModule } from './HomeSubjectModel';
 import HomeTitleView from './HomeTitleView'
 import GuideModal from '../guide/GuideModal'
 import LuckyIcon from '../guide/LuckyIcon'
-
+// import HomeMessageModal from './HomeMessageModal'
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -546,6 +546,11 @@ class HomePage extends BasePage {
                 />
                 <LuckyIcon  ref={(ref) => {this.luckyIcon = ref;}}/>
                 {this.messageModalRender()}
+                {/*<HomeMessageModal messageData={this.state.messageData} showMessage={this.state.showMessage} onRequestClose={() => {*/}
+                    {/*this.setState({*/}
+                        {/*showMessage: false*/}
+                    {/*});*/}
+                {/*}}/>*/}
                 <GuideModal ref={(ref)=>{this.guideModal = ref}}/>
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
