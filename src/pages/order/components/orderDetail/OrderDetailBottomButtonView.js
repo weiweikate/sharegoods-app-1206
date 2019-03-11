@@ -114,7 +114,7 @@ export default class OrderDetailBottomButtonView extends Component {
                                 Toast.$toast("确认收货成功");
                                 this.props.nav('order/order/ConfirmReceiveGoodsPage',{
                                     orderNo: orderDetailModel.getOrderNo(),
-                                    callBack: this.props.loadPageData()
+                                    callBack: this.props.loadPageData
                                 })
                             }).catch(e => {
                                 Toast.hiddenLoading();
