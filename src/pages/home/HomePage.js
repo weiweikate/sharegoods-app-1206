@@ -2,9 +2,7 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    ImageBackground,
-    TouchableWithoutFeedback,
-    Image, Platform, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager,
+    Platform, AsyncStorage, DeviceEventEmitter, InteractionManager,
     RefreshControl, BackHandler
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -22,15 +20,12 @@ import HomeAdView from './HomeAdView';
 import HomeGoodsView, { kHomeGoodsViewHeight } from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import HomeCategoryView, { categoryHeight } from './HomeCategoryView';
-import Modal from '../../comm/components/CommModal';
-import XQSwiper from '../../components/ui/XGSwiper';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModal from './VersionUpdateModal';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from '../../constants/DesignRule';
 import TimerMixin from 'react-timer-mixin';
-import res from './res';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
@@ -44,11 +39,7 @@ import { subjectModule } from './HomeSubjectModel';
 import HomeTitleView from './HomeTitleView';
 import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
-
-
-const closeImg = res.button.cancel_white_circle;
-const messageUnselected = res.messageUnselected;
-const home_notice_bg = res.home_notice_bg;
+import HomeMessageModal from './HomeMessageModal'
 
 /**
  * @author zhangjian
@@ -391,102 +382,6 @@ class HomePage extends BasePage {
         });
     };
 
-    messageModalRender() {
-        return (
-            <Modal ref={(ref) => {
-                this.messageModal = ref;
-            }}
-                   onRequestClose={() => {
-                       this.setState({
-                           showMessage: false
-                       });
-                   }}
-                   visible={this.state.showMessage}>
-                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.setState({
-                            showMessage: false
-                        });
-                    }}>
-                        <Image source={closeImg} style={styles.messageCloseStyle}/>
-                    </TouchableWithoutFeedback>
-
-                    <ImageBackground source={home_notice_bg} style={styles.messageBgStyle}>
-                        <XQSwiper
-                            style={{
-                                alignSelf: 'center',
-                                marginTop: px2dp(145),
-                                width: px2dp(230),
-                                height: px2dp(211)
-                            }}
-                            height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
-                            dataSource={EmptyUtils.isEmptyArr(this.state.messageData) ? [] : this.state.messageData}
-                            loop={false}
-                            onDidChange={(item, index) => {
-                                this.setState({
-                                    messageIndex: index
-                                });
-                            }}
-                        />
-                        <View style={{ flex: 1 }}/>
-                        {this.messageIndexRender()}
-                    </ImageBackground>
-                </View>
-            </Modal>
-        );
-    }
-
-    messageIndexRender() {
-        if (EmptyUtils.isEmptyArr(this.state.messageData)) {
-            return null;
-        }
-        let indexs = [];
-        for (let i = 0; i < this.state.messageData.length; i++) {
-            let view = i === this.state.messageIndex ?
-                <View style={[styles.messageIndexStyle, { backgroundColor: '#FF427D' }]}/> :
-                <View source={messageUnselected} style={[styles.messageIndexStyle, { backgroundColor: '#f4d7e4' }]}/>;
-            indexs.push(view);
-        }
-        return (
-            <View style={{
-                flexDirection: 'row',
-                width: px2dp(12 * this.state.messageData.length),
-                justifyContent: this.state.messageData.length === 1 ? 'center' : 'space-between',
-                marginBottom: px2dp(12),
-                height: 12,
-                alignSelf: 'center'
-            }}>
-                {indexs}
-            </View>
-        );
-    }
-
-    messageRender(item, index) {
-        return (
-            <View onStartShouldSetResponder={() => true}>
-                <ScrollView showsVerticalScrollIndicator={false} style={{ showsVerticalScrollIndicator: false }}>
-                    <Text style={{
-                        color: DesignRule.textColor_mainTitle,
-                        fontSize: DesignRule.fontSize_secondTitle,
-                        alignSelf: 'center'
-                    }}>
-                        {item.title}
-                    </Text>
-                    <Text style={{
-                        width: px2dp(230),
-                        color: DesignRule.textColor_secondTitle,
-                        fontSize: DesignRule.fontSize_24,
-                        marginTop: 14,
-                        marginBottom: 10,
-                        height: 500
-                    }}>
-                        {item.content}
-                    </Text>
-                </ScrollView>
-            </View>
-        );
-    }
-
     _onListViewScroll = (event) => {
         let offsetY = event.nativeEvent.contentOffset.y;
         if (this.toGoods) {
@@ -541,7 +436,11 @@ class HomePage extends BasePage {
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
-                {this.messageModalRender()}
+                <HomeMessageModal messageData={this.state.messageData} showMessage={this.state.showMessage} onRequestClose={() => {
+                    this.setState({
+                        showMessage: false
+                    });
+                }}/>
                 <GuideModal ref={(ref) => {
                     this.guideModal = ref;
                 }}/>
