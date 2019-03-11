@@ -168,6 +168,8 @@ class User {
     @observable
     upCode = null;
 
+    finishGuide = false;
+
     //用户靓号
     @observable
     perfectNumberCode = null;
@@ -285,6 +287,7 @@ class User {
         this.levelCeil = info.levelCeil; //升级需要的经验值
         this.profile = info.profile;
         this.upCode = info.upCode;
+        this.finishGuide = false;
         //用户靓号
         this.perfectNumberCode = info.perfectNumberCode;
         if (saveToDisk) {
@@ -398,6 +401,7 @@ class User {
         this.levelFloor = null;
         this.profile = null; //简介
         this.upCode = null;
+        this.finishGuide = false;
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
         // AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
@@ -452,6 +456,10 @@ class User {
     }
     luckyDraw() {
         UserApi.luckyDraw();
+    }
+
+    @action finishGiudeAction() {
+        this.finishGuide = true;
     }
 }
 

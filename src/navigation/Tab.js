@@ -71,9 +71,9 @@ class HomeTab extends Component {
         }
 
         if (homeTabManager.aboveRecommend) {
-            return <Image style={styles.store} source={res.tab.home_top}/>;
+            return <Image style={styles.home} source={res.tab.home_top}/>;
         } else {
-            return <Image style={styles.store} source={res.tab.home_s}/>;
+            return <Image style={styles.home} source={res.tab.home_s}/>;
         }
 
     }
@@ -219,6 +219,10 @@ const styles = StyleSheet.create({
     tabBarIcon: {
         width: 24,
         height: 24
+    },
+    home: {
+        width: 44,
+        height: 44
     },
     store: {
         width: 40,

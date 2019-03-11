@@ -46,6 +46,7 @@ class XpDetailModel {
     * remarks 备注
     * effectiveDays 有效期
     * value 面值
+    * status 0失效 1未开始 2进行中 3已结束  4终止
     * */
     @observable coupon = {};
 
