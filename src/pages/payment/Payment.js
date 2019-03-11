@@ -50,6 +50,7 @@ export class Payment {
     @observable orderNo = ''
     @observable platformOrderNo = ''
     @observable isGoToPay = false
+    @observable amounts = 0
 
     @action resetPayment = () => {
         this.orderName = ''
@@ -58,6 +59,7 @@ export class Payment {
         this.orderNo = ''
         this.platformOrderNo = ''
         this.isGoToPay = false
+        this.amounts = 0
     }
     
     //选择余额支付

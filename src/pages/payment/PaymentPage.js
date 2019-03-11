@@ -45,6 +45,10 @@ export default class PaymentPage extends BasePage {
     goToPay =()=> {
         payment.checkOrderStatus().then(result => {
             if (result.code === payStatus.payNo) {
+                if (parseInt(payment.amounts, 0) === 0) {
+                    this._zeroPay()
+                    return
+                }
                 const {selectedBalace} = payment
                 if (!selectedBalace) {
                     this.$navigate('payment/ChannelPage')
@@ -66,11 +70,15 @@ export default class PaymentPage extends BasePage {
         })
     }
 
+    _zeroPay = () => {
+        this._platformPay()
+    }
+
     _selectedBalance() {
         payment.selectBalancePayment()
     }
 
-    _finishedAction(password) {
+    _platformPay(password) {
         payment.platformPay(password).then((result) => {
             this.setState({ showPwd: false })
             if (result === payStatus.payNeedThrid) {
@@ -89,7 +97,12 @@ export default class PaymentPage extends BasePage {
                 payResult: PaymentResult.fail,
                 payMsg: err.msg
              })
+             payment.resetPayment()
         })
+    }
+
+    _finishedAction(password) {
+        this._platformPay(password)
     }
 
     _forgetPassword = () => {
