@@ -71,6 +71,10 @@ export default class XpDetailActivityInfoModal extends Component {
             return <View style={styles.bgTopValueView}>
                 <Text style={styles.bgTopValueLText}>{`商品\n兑换`}</Text>
             </View>;
+        } else if (type === 5) {
+            return <View style={styles.bgTopValueView}>
+                <Text style={styles.bgTopValueLText}>{`兑换`}</Text>
+            </View>;
         } else if (type === 3) {
             return <View style={styles.bgTopValueView}>
                 <Text style={styles.bgTopValueRText}>{(value / 10) || ''}</Text>
@@ -87,7 +91,7 @@ export default class XpDetailActivityInfoModal extends Component {
     _renderItemCoupon = (item) => {
         const { name, type, useConditions } = item.coupon || {};
         let nameType, valueType;
-        //1: 满减 2:抵价 3:折扣 4:抵扣',
+        //1: 满减 2:抵价 3:折扣 4:抵扣 5周期券',
         switch (type) {
             case 1:
                 nameType = '满减券';
@@ -105,6 +109,10 @@ export default class XpDetailActivityInfoModal extends Component {
                 nameType = '抵扣券';
                 valueType = `限指定商品可用`;
                 break;
+            case 5:
+                nameType = '兑换券';
+                valueType = `限指定商品可用`;
+                break;
             default:
                 nameType = '';
                 valueType = '';
@@ -120,9 +128,11 @@ export default class XpDetailActivityInfoModal extends Component {
                         <View style={styles.bgBottomNameView}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={styles.bgBottomNameText}>{name || ''}</Text>
-                                <View style={styles.bgTopRightView}>
-                                    <Text style={styles.bgTopRightText}>{nameType || ''}</Text>
-                                </View>
+                                {
+                                    nameType ? <View style={styles.bgTopRightView}>
+                                        <Text style={styles.bgTopRightText}>{nameType}</Text>
+                                    </View> : null
+                                }
                             </View>
                             <Text style={styles.bgBottomRemarkText}>{valueType}</Text>
                         </View>
@@ -160,8 +170,10 @@ export default class XpDetailActivityInfoModal extends Component {
     render() {
         const { rules, startPrice, startCount, maxCount, coupon, contents } = this.state.xpDetailModel;
 
+        const { id, status } = coupon || {};
         let sectionListData;
-        if ((coupon || {}).id) {
+        //* status 0失效 1未开始 2进行中 3已结束  4终止
+        if (id && (status === 1 || status === 2)) {
             sectionListData = [
                 { headerTittle: '经验值', headerImg: xp_detail_xp, type: 'xp', data: rules || [] },
                 {
