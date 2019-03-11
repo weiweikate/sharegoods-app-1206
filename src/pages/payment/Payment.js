@@ -74,9 +74,6 @@ export class Payment {
 
     //平台余额支付
     @action platformPay = flow(function * (password) {
-        if (!this.selectedBalace) {
-            return
-        }
         paymentTrack.paymentMethod = 'balance'
         let trackPoint = {...paymentTrack, paymentProgress: 'start'}
         track(trackEvent.payOrder, trackPoint)
