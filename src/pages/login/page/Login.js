@@ -2,7 +2,7 @@ import React, {} from "react";
 import {
     View,
     Image,
-    Platform
+    Platform,
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/Login.style";
