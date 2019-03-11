@@ -30,12 +30,18 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
         this.urlList = urlList;
     }
 
-    public void setUrlList(List<String> urlList) {
-        if (this.urlList != null && this.urlList.size() > 0) {
-            this.urlList.clear();
-            this.urlList.addAll(urlList);
-            notifyDataSetChanged();
+    public void setUrlList(List<String> urls) {
+        if (this.urlList != null) {
+            if (this.urlList.size() >= 0) {
+                this.urlList.clear();
+                if (urls != null) {
+                    this.urlList.addAll(urls);
+                }
+            }
+        } else {
+            this.urlList = urls;
         }
+        notifyDataSetChanged();
     }
 
     public void setItemWidth(int itemWidth) {

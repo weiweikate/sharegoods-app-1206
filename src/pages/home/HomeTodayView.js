@@ -27,10 +27,12 @@ export default class HomeTodayView extends Component {
         let index = e.nativeEvent.index;
         const { todayList } = todayModule;
         let item = todayList[index];
-        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-        const { navigate } = this.props;
-        let params = homeModule.paramsNavigate(item);
-        navigate(router, { ...params, preseat: 'home_today' });
+        if (item) {
+            let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
+            const { navigate } = this.props;
+            let params = homeModule.paramsNavigate(item);
+            navigate(router, { ...params, preseat: 'home_today' });
+        }
     }
 
     _onDidScrollToIndex(e) {
@@ -56,14 +58,16 @@ export default class HomeTodayView extends Component {
     render() {
         const { todayList } = todayModule;
 
+        // 此处需返回null，否则指示器有问题
         if (todayList.length === 0) {
-            return <View/>;
+            return null;
         }
 
         let items = [];
         todayList.map((item, index) => {
             items.push(item.imgUrl);
         });
+
         return <View style={styles.container}>
             <View style={styles.titleView}>
                 <View style={styles.flag}/>
@@ -88,11 +92,11 @@ export default class HomeTodayView extends Component {
                         itemSpace={px2dp(10)}
                         itemRadius={5}
                         pageFocused={this.props.pageFocused}
-                        onDidSelectItemAtIndex={(index) => {
-                            this._onPressRow(index);
+                        onDidSelectItemAtIndex={(e) => {
+                            this._onPressRow(e);
                         }}
-                        onDidScrollToIndex={(index) => {
-                            this._onDidScrollToIndex(index);
+                        onDidScrollToIndex={(e) => {
+                            this._onDidScrollToIndex(e);
                         }}
                     />
             }
