@@ -217,6 +217,10 @@ class HomePage extends BasePage {
         InteractionManager.runAfterInteractions(() => {
             this.loadMessageCount();
             this._homeModaldata();
+            setTimeout(()=>{//延迟0.1秒，让user初始化完成
+                this.luckyIcon.getLucky();
+                this.guideModal.getUserRecord();
+            },100);
         });
     }
 
@@ -383,8 +387,10 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
-        this.luckyIcon.getLucky();
         this.loadMessageCount();
+            this.luckyIcon.getLucky();
+            this.guideModal.getUserRecord();
+
     }
 
     getMessageData = () => {
