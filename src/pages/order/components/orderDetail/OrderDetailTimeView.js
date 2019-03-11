@@ -37,7 +37,7 @@ export default class OrderDetailTimeView extends Component {
         return (
             <View style={{ backgroundColor: 'white',paddingTop:px2dp(10),marginTop:px2dp(10) }}>
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
-                    <UIText value={'订单编号：' + orderDetailModel.warehouseOrderDTOList[0].warehouseOrderNo}
+                    <UIText value={'订单编号：' + `${orderDetailModel.getOrderNo()}`}
                             style={[styles.textGoodsDownStyle,{marginTop:px2dp(10)}]}/>
                     <NoMoreClick style={styles.clipStyle} onPress={() => this.copyOrderNumToClipboard()}>
                         <Text style={{ paddingLeft: px2dp(10), paddingRight: px2dp(10) }} allowFontScaling={false}>复制</Text>

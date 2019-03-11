@@ -69,7 +69,7 @@ DEPENDENCIES:
   - QIYU_iOS_SDK (~> 4.9.0)
   - SandBoxPreviewTool (~> 1.1)
   - SDAutoLayout
-  - SDWebImage (~> 4.4.2)
+  - SDWebImage (~> 4.4.6)
   - SensorsAnalyticsSDK (~> 1.10.17)
   - TYCyclePagerView (~> 1.1.0)
   - UICKeyChainStore (~> 2.1.1)
@@ -129,6 +129,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: db0bb9eeb21fa3c1c35da5064a3f55b7d51aad34
+PODFILE CHECKSUM: 89bfdf7b6c8dacf921dc630248e85adc5f782598
 
 COCOAPODS: 1.6.1

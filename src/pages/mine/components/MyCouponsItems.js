@@ -557,7 +557,7 @@ export default class MyCouponsItems extends Component {
             return "全品类：全场通用券（特殊商品除外）";
         }
     };
-    parseData = (dataList) => {
+     parseData = (dataList) => {
         let arrData = [];
         console.log("parseData",this.dataSel,couponsModel.params);
         if (this.currentPage === 1) {//refresh
@@ -573,7 +573,7 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || couponsModel.params.type === null) {
+            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || (!this.props.fromOrder &&couponsModel.params.type === null)) {
                 API.queryCoupons({
                     status: this.state.pageStatus
                 }).then(result => {

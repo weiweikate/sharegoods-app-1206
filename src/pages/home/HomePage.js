@@ -198,8 +198,12 @@ class HomePage extends BasePage {
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
 
         InteractionManager.runAfterInteractions(() => {
-            this.loadMessageCount();
             this._homeModaldata();
+            user.getToken().then(()=> {//让user初始化完成
+                    this.luckyIcon.getLucky();
+                    this.guideModal.getUserRecord();
+                    this.loadMessageCount();
+            })
         });
     }
 
@@ -371,8 +375,10 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
-        this.luckyIcon.getLucky();
         this.loadMessageCount();
+            this.luckyIcon.getLucky();
+            this.guideModal.getUserRecord();
+
     }
 
     getMessageData = () => {
