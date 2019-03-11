@@ -52,6 +52,16 @@ export class Payment {
     @observable selectedBalace = false
     @observable orderNo = ''
     @observable platformOrderNo = ''
+    @observable isGoToPay = false
+
+    @action resetPayment = () => {
+        this.orderName = ''
+        this.selctedPayType = paymentType.none
+        this.selectedBalace = false
+        this.orderNo = ''
+        this.platformOrderNo = ''
+        this.isGoToPay = false
+    }
     
     //选择余额支付
     @action selectBalancePayment = () => {
@@ -90,12 +100,8 @@ export class Payment {
          try {
             Toast.showLoading()
             const result = yield PaymentApi.check({platformOrderNo: this.platformOrderNo})
-            if (result.code !== 10000) {
-                let error = new Error(result.msg)
-                throw error
-            }
             Toast.hiddenLoading()
-            return result
+            return result.data
         } catch (error) {
             Toast.hiddenLoading();
             throw error
@@ -163,7 +169,7 @@ export class Payment {
     //检查订单状态
     @action checkPayStatus = flow(function * (){
         try {
-            const result = yield PaymentApi.payStatus({platformOrderNo: this.platformOrderNo})
+            const result = yield PaymentApi.payStatus({platformOrderNo: this.platformOrderNo, payMethodCode: this.selctedPayType === paymentType.alipay ? 'alipay' : 'wxpay'})
             return result
         } catch (error) {
             throw error

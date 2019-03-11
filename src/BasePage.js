@@ -143,7 +143,9 @@ export default class BasePage extends Component {
                                                   rightPressed={() => (this.$NavBarRightPressed || this.$NavigationBarDefaultRightPressed).call(this)}
                                                   ref={(bar) => {
                                                       this.$navigatorBar = bar;
-                                                  }}/>
+                                                  }}
+
+                    />
                 }
                 {this.$isMonitorNetworkStatus() && netState.isConnected === false && this.viewDidLoad === false ?
                     this._renderDefaultNoNet() :

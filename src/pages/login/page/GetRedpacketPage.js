@@ -9,12 +9,10 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
-// import bridge from '../../../utils/bridge';
 import CommModal from '../../../comm/components/CommModal';
 import { NavigationActions } from 'react-navigation';
 import LoginAPI from '../api/LoginApi';
 import StringUtils from '../../../utils/StringUtils';
-// import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import {MRText as Text} from '../../../components/ui'
@@ -68,17 +66,7 @@ export default class GetRedpacketPage extends BasePage {
             </View>
         );
 
-        // let button = (
-        //     <TouchableWithoutFeedback onPress={this.getCoupon}>
-        //         <Text
-        //             style={{ position: 'absolute', top: px2dp(220), left: px2dp(115), color: '#80522A', fontSize: 14 }}>
-        //             {`立即\n领取`}
-        //         </Text>
-        //     </TouchableWithoutFeedback>
-        // );
-
         return (
-            // this.state.canGetCoupon
             <CommModal
                 ref={(ref) => {
                     this.modal = ref;
@@ -134,10 +122,7 @@ export default class GetRedpacketPage extends BasePage {
                             }} allowFontScaling={false}>
                                 红包抵扣金
                             </Text>
-                            {/*{this.state.hasGetCoupon ? null : button}*/}
-                            {/*{button}*/}
                             {view}
-                            {/*{this.state.hasGetCoupon ? view : null}*/}
                         </ImageBackground>
                         <TouchableWithoutFeedback onPress={() => {
                             this._closeModal();
