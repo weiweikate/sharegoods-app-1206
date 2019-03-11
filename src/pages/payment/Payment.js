@@ -80,7 +80,7 @@ export class Payment {
         track(trackEvent.payOrder, trackPoint)
         try {
             Toast.showLoading()
-            const result = yield PaymentApi.platformPay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo, password: password})
+            const result = yield PaymentApi.platformPay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo, password: password, userAmount: user.availableBalance})
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'success'})
             this.updateUserData()
             Toast.hiddenLoading()
