@@ -53,13 +53,11 @@ const Styles = StyleSheet.create(
             borderWidth: px2dp(0.5),
             borderColor: DesignRule.mainColor
         },
-
         touchableStyle: {
             flex: 1,
             justifyContent: "center",
             alignItems: "center"
         },
-
         bottomTipBtnBgStyle: {
             flexDirection: "row",
             justifyContent: "center",

@@ -16,7 +16,6 @@ import TotalTopicDataModel from './model/SubTopicModel';
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from '../../constants/DesignRule';
-// import ImageLoad from '@mr/image-placeholder'
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
 import { track } from '../../utils/SensorsTrack';
 import bridge from '../../utils/bridge';
@@ -94,14 +93,13 @@ export default class DownPricePage extends BasePage {
         const { linkTypeCode } = this.params;
         this.dataModel.loadTopicData(linkTypeCode);
     };
-
     /**
      * 渲染具体组
-     * @param section 组数据
+     * @param section
+     * @param sectionIndex
      * @returns {*}
      * @private
      */
-
     _renderSection = (section, sectionIndex) => {
         const sectionListData = section.data.slice() || [];
         return (
@@ -111,7 +109,6 @@ export default class DownPricePage extends BasePage {
                         flexDirection: 'row',//设置横向布局
                         flexWrap: 'wrap',  //设置换行显示
                         backgroundColor: DesignRule.bgColor,
-                        // backgroundColor:'red',
                         width: ScreenUtils.width - 20,
                         marginLeft: 10
                     }
