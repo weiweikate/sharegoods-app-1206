@@ -150,7 +150,7 @@ export default class ActivityView extends Component {
                 one = '当前价';
                 two = `${reseCount}人关注`;
                 three = (markdownPrice === floorPrice || status === 3) ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已拍完` : `还剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? `已拍完` : `仅剩${surplusNumber}件`}`;
             }
         } else {
             const { seckillPrice = '', subscribeCount = '' } = this.props.activityData;
@@ -170,7 +170,7 @@ export default class ActivityView extends Component {
                 one = '秒杀价';
                 two = `${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢完` : `还剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? `已抢完` : `仅剩${surplusNumber}件`}`;
             }
         }
 
