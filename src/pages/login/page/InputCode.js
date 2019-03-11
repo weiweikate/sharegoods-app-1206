@@ -103,6 +103,7 @@ export default class InputCode extends BasePage {
                                 null
                             }
                             <TouchableOpacity
+                                activeOpacity={1}
                                 style={{
                                     paddingTop:px2dp(0),
                                     marginLeft: px2dp(5),

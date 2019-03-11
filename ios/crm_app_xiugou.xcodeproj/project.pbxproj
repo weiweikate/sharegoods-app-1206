@@ -1589,7 +1589,6 @@
 				A4224B1E9D3BD9245B84DD24 /* Pods-crm_app_xiugou.debug.xcconfig */,
 				BBA2B7A1D54FA53B49740582 /* Pods-crm_app_xiugou.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
