@@ -64,7 +64,7 @@ export default class LocalNumLogin extends BasePage {
                 <View style={localNumberLoginStyles.middleBgViewStyle}>
                     <MRTextInput
                         style={InputStyle.textInputStyle}
-                        value={StringUtils.encryptPhone(this.state.phoneNumber)}
+                        value={this.state.phoneNumber}
                         onChangeText={text => this.setState({
                             phoneNumber: text
                         })}
@@ -113,7 +113,7 @@ export default class LocalNumLogin extends BasePage {
                     this.state.phoneNumber,
                     "如果您是双卡手机，请确保填写的号码是默认上网的手机号码",
                     [
-                        { text: "从新填写", onPress: () => console.log("Ask me later pressed") },
+                        { text: "重新填写", onPress: () => console.log("Ask me later pressed") },
 
                         {
                             text: "确定", onPress: () => {
@@ -132,8 +132,8 @@ export default class LocalNumLogin extends BasePage {
     _sureClick = () => {
         this.$loadingShow();
         if (Platform.OS === "android") {
+            this.$loadingDismiss();
             if (this.state.authenToken.length > 0) {
-                this.$loadingDismiss();
                 this._beginAuthen(this.state.phoneNumber, this.state.authenToken);
             } else {
                 this.$toastShow("本地号码一键登录失败，请尝试其他登录方式");

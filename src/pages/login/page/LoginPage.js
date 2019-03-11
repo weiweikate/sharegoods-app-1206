@@ -103,7 +103,7 @@ export default class LoginPage extends BasePage {
                 this.$navigateBack();
             }}>
                 <Image
-                    style={{paddingRight:5}}
+                    style={{ paddingRight: 5 }}
                     source={close_X}
                 />
             </TouchableOpacity>
@@ -156,7 +156,6 @@ export default class LoginPage extends BasePage {
             </View>
         );
     }
-
     /*忘记密码*/
     forgetPasswordClick = () => {
         this.$navigate("login/login/ForgetPasswordPage");
@@ -233,7 +232,6 @@ const Styles = StyleSheet.create(
         },
         otherLoginBgStyle: {
             width: ScreenUtils.width,
-            // position: "absolute",
             bottom: 10,
             height: 170,
             justifyContent: "center",

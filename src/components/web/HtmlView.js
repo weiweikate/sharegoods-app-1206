@@ -1,17 +1,21 @@
-import React from 'react';
-import BasePage from '../../BasePage';
-import WebViewBridge from '@mr/webview';
+import React from "react";
+import BasePage from "../../BasePage";
+import WebViewBridge from "@mr/webview";
 import { View } from 'react-native';
-import CommShareModal from '../../comm/components/CommShareModal';
+import CommShareModal from "../../comm/components/CommShareModal";
 // import res from '../../comm/res';
-import apiEnvironment from '../../api/ApiEnvironment';
-import RouterMap from '../../navigation/RouterMap';
+import apiEnvironment from "../../api/ApiEnvironment";
+import RouterMap from "../../navigation/RouterMap";
+import { autorun } from "mobx";
+import user from "../../model/user";
+import { observer } from "mobx-react";
 
+@observer
 export default class RequestDetailPage extends BasePage {
 
     // 页面配置
     $navigationBarOptions = {
-        title: this.params.title || '加载中...'
+        title: this.params.title || "加载中..."
     };
 
     constructor(props) {
@@ -19,13 +23,13 @@ export default class RequestDetailPage extends BasePage {
         const params = this.props.navigation.state.params || {};
         const { uri, title } = params;
         this.canGoBack = false;
-        let realUri = '';
-        if (uri && uri.indexOf('?') > 0) {
-            realUri = uri + '&ts=' + new Date().getTime();
+        let realUri = "";
+        if (uri && uri.indexOf("?") > 0) {
+            realUri = uri + "&ts=" + new Date().getTime();
         } else {
-            realUri = uri + '?ts=' + new Date().getTime();
+            realUri = uri + "?ts=" + new Date().getTime();
         }
-        if (realUri.indexOf('http') === -1) {
+        if (realUri.indexOf("http") === -1) {
             realUri = apiEnvironment.getCurrentH5Url() + realUri;
         }
         this.state = {
@@ -33,21 +37,26 @@ export default class RequestDetailPage extends BasePage {
             uri: realUri,
             shareParmas: {}
         };
+
     }
 
+    autoRun = autorun(() => {
+        user.token ? (this.webView && this.webView.reload()):null
+    });
+
     componentDidMount() {
-        this.$NavigationBarResetTitle(this.state.title || '加载中...');
+        this.$NavigationBarResetTitle(this.state.title || "加载中...");
     }
 
     _postMessage = (msg) => {
-        if (msg.action === 'share') {
+        if (msg.action === "share") {
             // this.webJson = msg.shareParmas;
             this.setState({ shareParmas: msg.shareParmas });
             this.shareModal.open();
             return;
         }
 
-        if (msg.action === 'backToHome') {
+        if (msg.action === "backToHome") {
             this.$navigateBackToHome();
             return;
         }
@@ -55,28 +64,20 @@ export default class RequestDetailPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex:1, overflow: 'hidden' }}>
+            <View style={{ flex: 1, overflow: "hidden" }}>
                 <WebViewBridge
                     style={{ flex: 1 }}
                     ref={(ref) => {
                         this.webView = ref;
                     }}
-                    originWhitelist={['(.*?)']}
+                    originWhitelist={["(.*?)"]}
                     source={{ uri: this.state.uri }}
                     navigateAppPage={(r, p) => {
-                        if (r === 'login/login/LoginPage') {
-                            this.$navigate(r, {
-                                ...p, callback: () => {
-                                    this.webView && this.webView.reload();
-                                }
-                            });
-                        } else {
                             if (r.length > 0) {
-                                let routerKey = r.split('/').pop();
+                                let routerKey = r.split("/").pop();
                                 r = RouterMap[routerKey] || r;
                             }
                             this.$navigate(r, p);
-                        }
                     }}
                     onNavigationStateChange={event => {
                         this.canGoBack = event.canGoBack;
@@ -84,7 +85,7 @@ export default class RequestDetailPage extends BasePage {
                     }}
                     onError={event => {
                         this.canGoBack = event.canGoBack;
-                        this.$NavigationBarResetTitle('加载失败');
+                        this.$NavigationBarResetTitle("加载失败");
                     }}
 
                     // onLoadStart={() => this._onLoadStart()}

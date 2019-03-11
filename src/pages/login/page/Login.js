@@ -2,7 +2,7 @@ import React, {} from "react";
 import {
     View,
     Image,
-    Platform
+    Platform,
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/Login.style";
@@ -11,9 +11,7 @@ import res from "../res";
 import RouterMap from "../../../navigation/RouterMap";
 import { isCanPhoneAuthen } from "../model/PhoneAuthenAction";
 import { wxLoginAction } from "../model/LoginActionModel";
-// import ProtocolView from "../components/Login.protocol.view";
-// import loginModel from "../model/LoginModel";
-// const { px2dp } = ScreenUtils;
+
 const {
     other: {
         tongyong_logo_nor
@@ -30,14 +28,16 @@ export default class Login extends BasePage {
             isSelectProtocol: true
         };
     }
+
     // 导航配置
     $navigationBarOptions = {
-        // title: '登录',
         gesturesEnabled: false
     };
+
     $isMonitorNetworkStatus() {
         return false;
     }
+
     componentDidMount() {
         if (Platform.OS === "android") {
             this.$loadingShow();
@@ -64,22 +64,16 @@ export default class Login extends BasePage {
             //ios平台主动开启
             this.setState({
                 canPhoneAuthen: true
-            })
+            });
         }
     }
 
     _render() {
         return (
-            <View
-                style={Styles.bgContent}
-            >
+            <View style={Styles.bgContent}>
                 {/*上部分视图*/}
-                <View
-                    style={Styles.topBgContent}
-                >
-                    <View
-                        style={Styles.topImageBgView}
-                    >
+                <View style={Styles.topBgContent}>
+                    <View style={Styles.topImageBgView}>
                         <Image
                             style={Styles.topImageView}
                             source={tongyong_logo_nor}
@@ -88,9 +82,7 @@ export default class Login extends BasePage {
                 </View>
 
                 {/*中部视图*/}
-                <View
-                    style={Styles.middleBgContent}
-                >
+                <View style={Styles.middleBgContent}>
                     {
                         createLoginButton(loginBtnType.localPhoneNumLoginType, "本机号码一键登录", () => {
                             this._clickAction(loginBtnType.localPhoneNumLoginType);
@@ -99,21 +91,19 @@ export default class Login extends BasePage {
                 </View>
 
                 {/*下部分视图*/}
-                <View
-                    style={Styles.bottomBgContent}
-                >
+                <View style={Styles.bottomBgContent}>
                     {
 
-                            createLoginButton(loginBtnType.wxLoginBtnType, "微信授权登录", () => {
-                                this._clickAction(loginBtnType.wxLoginBtnType);
-                            }) }
+                        createLoginButton(loginBtnType.wxLoginBtnType, "微信授权登录", () => {
+                            this._clickAction(loginBtnType.wxLoginBtnType);
+                        })}
                     {
-                            createLoginButton(loginBtnType.otherLoginBtnType, "其他登录方式", () => {
-                                this._clickAction(loginBtnType.otherLoginBtnType);
-                            })
+                        createLoginButton(loginBtnType.otherLoginBtnType, "其他登录方式", () => {
+                            this._clickAction(loginBtnType.otherLoginBtnType);
+                        })
                     }
                     {
-                        createBottomButton(['手动注册新账号'], (text) => {
+                        createBottomButton(["手动注册新账号"], (text) => {
                             if (text === "手动注册新账号") {
                                 this.$navigate(RouterMap.InputPhoneNum);
                             } else {
@@ -127,7 +117,6 @@ export default class Login extends BasePage {
     }
 
     _clickAction = (btnType) => {
-        console.log("执行了");
         if (!this.state.isSelectProtocol) {
             this.$toastShow("清先勾选用户协议");
             return;
@@ -148,7 +137,7 @@ export default class Login extends BasePage {
             if (code === 10000) {
                 this.$navigateBack(-1);
                 this.params.callback && this.params.callBack();
-            } else if(code === 34005) {
+            } else if (code === 34005) {
                 //绑定手机号
                 this.$navigate(RouterMap.InputPhoneNum, data);
             }

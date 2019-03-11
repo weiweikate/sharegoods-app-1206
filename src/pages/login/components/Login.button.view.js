@@ -23,18 +23,18 @@ const Styles = StyleSheet.create(
         },
         wxTextView: {
             color: DesignRule.textColor_instruction,
-            fontSize: 17
+            fontSize:px2dp(17)
         },
         localTextView:{
             color: DesignRule.color_fff,
-            fontSize: 17
+            fontSize: px2dp(17)
         },
         otherTextView: {
             color: DesignRule.textColor_instruction,
-            fontSize: 17
+            fontSize: px2dp(17)
         },
         otherLoginBgView: {
-            marginTop: px2dp(24),
+            marginTop: px2dp(20),
             marginLeft: px2dp(30),
             width: width - px2dp(60),
             height: px2dp(40),
@@ -53,13 +53,11 @@ const Styles = StyleSheet.create(
             borderWidth: px2dp(0.5),
             borderColor: DesignRule.mainColor
         },
-
         touchableStyle: {
             flex: 1,
             justifyContent: "center",
             alignItems: "center"
         },
-
         bottomTipBtnBgStyle: {
             flexDirection: "row",
             justifyContent: "center",
