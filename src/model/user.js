@@ -168,6 +168,8 @@ class User {
     @observable
     upCode = null;
 
+    finishGuide = false;
+
     //用户靓号
     @observable
     perfectNumberCode = null;
@@ -452,6 +454,10 @@ class User {
     }
     luckyDraw() {
         UserApi.luckyDraw();
+    }
+
+    @action finishGiudeAction() {
+        this.finishGuide = true;
     }
 }
 
