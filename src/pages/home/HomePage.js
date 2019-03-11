@@ -215,12 +215,12 @@ class HomePage extends BasePage {
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
 
         InteractionManager.runAfterInteractions(() => {
-            this.loadMessageCount();
             this._homeModaldata();
-            setTimeout(()=>{//延迟0.1秒，让user初始化完成
-                this.luckyIcon.getLucky();
-                this.guideModal.getUserRecord();
-            },100);
+            user.getToken().then(()=> {//让user初始化完成
+                    this.luckyIcon.getLucky();
+                    this.guideModal.getUserRecord();
+                    this.loadMessageCount();
+            })
         });
     }
 
