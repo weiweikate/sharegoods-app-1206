@@ -82,6 +82,7 @@ export default class PaymentPage extends BasePage {
         payment.platformPay(password).then((result) => {
             this.setState({ showPwd: false })
             if (result === payStatus.payNeedThrid) {
+                payment.selectedBalace = false
                 this.$navigate('payment/ChannelPage', {remainMoney: Math.floor((payment.amounts - user.availableBalance) * 100) / 100})
                 return
             }
@@ -126,7 +127,7 @@ export default class PaymentPage extends BasePage {
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
             routeName: 'order/order/MyOrdersListPage',
-            params: { index: 2 }
+            params: { index: 1 }
         });
         this.props.navigation.dispatch(replace);
     }
