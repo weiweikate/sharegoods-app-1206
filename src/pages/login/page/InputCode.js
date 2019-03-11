@@ -125,12 +125,12 @@ export default class InputCode extends BasePage {
 
     _finshInputCode = (text) => {
         if (text.length === 4) {
-            const { phoneNum, nickname, headerImg } = this.params;
+            const { phoneNum, nickName, headerImg } = this.params;
             let params = {
                 ...this.params,
                 code: text,
                 phone: phoneNum,
-                nickName: nickname,
+                nickName: nickName,
                 headImg: headerImg
             };
             registAction(params, (res) => {
