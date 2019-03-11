@@ -1,27 +1,20 @@
 import React from "react";
 import {
     StyleSheet, View, Image,FlatList,RefreshControl,ActivityIndicator,
-    ImageBackground
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "../../../../constants/DesignRule";
-import { MRText as Text, NoMoreClick,UIText} from "../../../../components/ui";
+import { MRText as Text, NoMoreClick} from "../../../../components/ui";
 import res from "./../../res";
 import API from "../../../../api";
 // import StringUtils from "../../../../utils/StringUtils";
 import bridge from "../../../../utils/bridge";
 import user from "../../../../model/user";
 import { formatDate } from "../../../../utils/DateUtils";
+import CouponExplainItem from "../../components/CouponExplainItem";
+import CouponNormalItem from "../../components/CouponNormalItem";
 const NoMessage = res.couponsImg.coupons_no_data;
-const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg_ex;
-const unUsedBg = res.couponsImg.youhuiquan_bg_unUsedBg;
-const unUsedBgExd = res.couponsImg.youhuiquan_bg_unUsedBg_exd;
-const usedBgex = res.couponsImg.youhuiquan_bg_usedBg_ex;
-const usedBg = res.couponsImg.youhuiquan_bg_usedBg;
-const useBgexd = res.couponsImg.youhuiquan_bg_usedBg_exd;
-const itemUp = res.couponsImg.youhuiquan_icon_smallUp;
-const itemDown = res.couponsImg.youhuiquan_icon_smallDown;
 
 
 const { px2dp } = ScreenUtils;
@@ -123,184 +116,12 @@ export default class CouponsDetailPage extends BasePage {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         if (item.remarks) {
             return (
-                <View style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 ,justifyContent:'center'}}>
-                    <ImageBackground style={{
-                        width: ScreenUtils.width - px2dp(30),
-                        height: item.tobeextend ? px2dp(94) : px2dp(118),
-                        margin: 2
-                    }}
-                                     source={item.status == 0 ? (item.levelimit?(item.tobeextend ? useBgexd : usedBgex):( item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
-                                     resizeMode='stretch'>
-                        <View style={{ flexDirection: "row", alignItems: "center", height: px2dp(94) }}>
-                            <View style={styles.itemFirStyle}>
-                                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                    {
-                                        item.type === 3 || item.type === 4 || item.type === 5 || item.type === 12 ? null :
-                                            <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                                        marginBottom: 4
-                                                    }} allowFontScaling={false}>￥</Text>
-                                            </View>}
-                                    <View>
-                                        <Text style={{
-                                            fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                            color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                        }} allowFontScaling={false}>{item.value}</Text>
-                                    </View>
-                                    {
-                                        item.type === 3 ?
-                                            <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                                        marginBottom: 4
-                                                    }} allowFontScaling={false}>折</Text>
-                                            </View> : null}
-                                </View>
-                            </View>
-
-                            <View style={{
-                                flex: 1,
-                                alignItems: "flex-start",
-                                marginLeft: 10,
-                                justifyContent: "space-between"
-                            }}>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={{
-                                        fontSize: 15,
-                                        color: DesignRule.textColor_mainTitle,
-                                        marginRight: 10
-                                    }} allowFontScaling={false}>
-                                        {item.name}{item.type !== 99 ? null : <UIText value={"（可叠加使用）"} style={{
-                                        fontSize: 11,
-                                        color: DesignRule.textColor_instruction
-                                    }}/>}</Text>
-                                    {item.type === 12 ? <UIText value={"x" + item.number} style={{
-                                        fontSize: 15,
-                                        color: DesignRule.textColor_mainTitle
-                                    }}/> : null}
-                                </View>
-                                <Text style={{
-                                    fontSize: 11,
-                                    color: DesignRule.textColor_instruction,
-                                    marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
-                                <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
-                                        value={item.limit}/>
-                            </View>
-                            {item.status=== 0?(item.levelimit?
-                                <UIText value={'等级受限'}
-                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:null):
-                                <UIText value={`${item.status===1?'已使用':(item.status===2?'已失效':'待激活')}`}
-                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> }
-                        </View>
-                        {!item.tobeextend?<NoMoreClick style={{ height: px2dp(24), justifyContent: "center", alignItems: "center" }}
-                                                       onPress={()=>this.pickUpData(item)}><Image style={{ width: 14, height: 7 }} source={itemDown}/>
-                        </NoMoreClick>:null }
-                    </ImageBackground>
-                    {item.tobeextend ?
-                        <View style={{
-                            backgroundColor: item.status === 0 ?(item.levelimit? DesignRule.color_ddd:DesignRule.white ): DesignRule.color_ddd,
-                            width: ScreenUtils.width - px2dp(30),
-                            marginLeft:1,borderRadius:5,marginTop:-2}}>
-                            <View style={{ marginTop: 10,marginLeft:10 }}>
-                                <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}
-                                      allowFontScaling={false}>使用说明:</Text>
-                                <Text style={{
-                                    marginTop: 5,
-                                    color: DesignRule.textColor_secondTitle,
-                                    lineHeight: 25
-
-                                }} allowFontScaling={false}>{item.remarks}</Text>
-                            </View>
-                            <NoMoreClick style={{ height: px2dp(24), justifyContent: "center", alignItems: "center" }}
-                                         onPress={()=>this.toExtendData(item)}><Image style={{ width: 14, height: 7 }} source={itemUp}/>
-                            </NoMoreClick>
-                        </View> : null}
-                </View>
+                <CouponExplainItem item={item} index={index} toExtendData={()=>this.toExtendData(item)}
+                                   pickUpData={()=>this.pickUpData(item)} clickItem={()=>{}}/>
             );
         } else {
             return (
-                <View style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}>
-                    <ImageBackground style={{
-                        width: ScreenUtils.width - px2dp(30),
-                        height: px2dp(94),
-                        margin: 2
-                    }} source={item.status == 0? (item.levelimit?usedBg : unUsedBg)  : usedBg} resizeMode='stretch'>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <View style={styles.itemFirStyle}>
-                                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                    {
-                                        item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
-                                            <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
-                                                        marginBottom: 4
-                                                    }} allowFontScaling={false}>￥</Text>
-                                            </View>}
-                                    <View>
-                                        <Text style={{
-                                            fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                            color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle
-                                        }} allowFontScaling={false}>{item.value}</Text>
-                                    </View>
-                                    {
-                                        item.type === 3 ?
-                                            <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
-                                                        marginBottom: 4
-                                                    }} allowFontScaling={false}>折</Text>
-                                            </View> : null}
-                                </View>
-                            </View>
-
-                            <View style={{
-                                flex: 1,
-                                alignItems: "flex-start",
-                                marginLeft: 10,
-                                justifyContent: "center",
-                                height: px2dp(94)
-                            }}>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={{
-                                        fontSize: 15,
-                                        color: DesignRule.textColor_mainTitle,
-                                        marginRight: 10
-                                    }} allowFontScaling={false}>
-                                        {item.name}{item.type !== 99 ? null : <UIText value={"（可叠加使用）"} style={{
-                                        fontSize: 11,
-                                        color: DesignRule.textColor_instruction
-                                    }}/>}</Text>
-                                    {item.type === 12 ? <UIText value={"x" + item.number} style={{
-                                        fontSize: 15,
-                                        color: DesignRule.textColor_mainTitle
-                                    }}/> : null}
-                                </View>
-                                <Text style={{
-                                    fontSize: 11,
-                                    color: DesignRule.textColor_instruction,
-                                    marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
-                                <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
-                                        value={item.limit}/>
-                            </View>
-                            {item.status=== 0?(item.levelimit?
-                                <UIText value={'等级受限'}
-                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/>:null):
-                                <UIText value={`${item.status===1?'已使用':(item.status===2?'已失效':'待激活')}`}
-                                        style={{fontSize:13,color:DesignRule.textColor_instruction,marginRight:15}}/> }
-                        </View>
-                    </ImageBackground>
-                </View>
+           <CouponNormalItem  item={item} index={index} clickItem={()=>{}}/>
             );
         }
 
@@ -341,7 +162,7 @@ export default class CouponsDetailPage extends BasePage {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0),
+                timeStr: item.startTime&&item.expireTime?this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0):null,
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
