@@ -123,6 +123,16 @@ export default class ChannelPage extends BasePage {
             return;
         }
         payment.checkPayStatus().then(result => {
+            if (result.data === payStatus.payCreate) {
+                this.setState({orderChecking: false})
+                return
+            }
+
+            if (result.data === payStatus.payThridClose) {
+                this.setState({orderChecking: false})
+                return
+            }
+
             if (result.data === payStatus.payWait) {
                 setTimeout(() => {
                     this._checkOrder();
@@ -134,7 +144,8 @@ export default class ChannelPage extends BasePage {
                 this.setState({
                     showResult: true,
                     orderChecking: false,
-                    payResult: PaymentResult.sucess
+                    payResult: PaymentResult.sucess,
+                    payMsg: ''
                 })
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
                 payment.resetPayment()
