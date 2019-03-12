@@ -14,6 +14,7 @@ import { homeTabManager } from '../pages/home/model/HomeTabManager';
 import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
 
 
@@ -66,9 +67,8 @@ class SpellShopTab extends Component {
 class HomeTab extends Component {
 
     render() {
-        const { focused } = this.props;
-        if (!focused) {
-            return <Tab focused={focused} normalSource={res.tab.home_n} title={'首页'}/>;
+        if (!homeTabManager.homeFocus) {
+            return <Tab normalSource={res.tab.home_n} title={'首页'}/>;
         }
         return (
             <ImageBackground style={styles.home} source={res.tab.home_s_bg}>
@@ -78,17 +78,17 @@ class HomeTab extends Component {
                     }}
                     style={styles.home}
                     loop={false}
-                    progress={homeTabManager.nowProgress}
-                    autoSize={true}
+                    progress={homeTabManager.aboveRecommend ? 7 / 17 : 1}
                     imageAssetsFolder={'lottie/home'}
                     source={require('./tab_to_top.json')}/>
             </ImageBackground>
         );
     }
 
-    componentWillReact() {
-        homeTabManager.aboveRecommend ? this.animation.play(0, 7) : this.animation.play(10, 17);
-    }
+    observeAboveRecommend = autorun(() => {
+        const { aboveRecommend } = homeTabManager;
+        this.animation && (aboveRecommend ? this.animation.play(0, 7) : this.animation.play(10, 17));
+    });
 }
 
 const ShowFlag = () => <View style={styles.shopFlag}>
@@ -140,7 +140,8 @@ export const TabNav = TabNavigator(
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <HomeTab focused={focused} normalSource={res.tab.home_n} title={'首页'}/>,
+                tabBarIcon: ({ focused }) => <HomeTab normalSource={res.tab.home_n}
+                                                      title={'首页'}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene, previousScene } = tab;
                     if (previousScene.key !== 'HomePage') {
