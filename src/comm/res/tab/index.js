@@ -1,5 +1,5 @@
 const tab = {
-    home_s: require('./home_s.png'),
+    home_s_bg: require('./home_s_bg.png'),
     home_n: require('./home_n.png'),
     home_top: require('./home_top.png'),
     mine_s: require('./mine_s.png'),
