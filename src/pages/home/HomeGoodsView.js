@@ -53,8 +53,8 @@ export default class GoodsCell extends Component {
 
     render() {
         const { data } = this.props;
-        if (!data) {
-            return <View/>;
+        if (!data || data.length === 0) {
+            return null;
         }
         return <View style={styles.cell}>
             {
