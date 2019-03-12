@@ -2,14 +2,13 @@ import React, {} from "react";
 import {
     View,
     Image,
-    Platform,
 } from "react-native";
 import BasePage from "../../../BasePage";
 import Styles from "../style/Login.style";
 import { createBottomButton, createLoginButton, loginBtnType } from "../components/Login.button.view";
 import res from "../res";
 import RouterMap from "../../../navigation/RouterMap";
-import { isCanPhoneAuthen } from "../model/PhoneAuthenAction";
+// import { isCanPhoneAuthen } from "../model/PhoneAuthenAction";
 import { wxLoginAction } from "../model/LoginActionModel";
 // import CommNavigation from "../../../comm/components/CommNavigation";
 // import { MRText } from "../../../components/ui";
@@ -27,7 +26,9 @@ export default class Login extends BasePage {
         super(props);
         this.state = {
             canPhoneAuthen: false,//是否可以本地号码一键登录 默认不可以
-            isSelectProtocol: true
+            isSelectProtocol: true,
+            tempPhone:"",
+            authenToken: ""
         };
     }
 
@@ -41,32 +42,10 @@ export default class Login extends BasePage {
     }
 
     componentDidMount() {
-        if (Platform.OS === "android") {
-            this.$loadingShow();
-            isCanPhoneAuthen().then(result => {
-                this.$loadingDismiss();
-                if (
-                    result.isCanAuthen === 1
-                ) {
-                    this.setState({
-                        canPhoneAuthen: true,
-                        tempPhone: result.phoneNum || "",
-                        authenToken: result.data || ""
-                    });
-                } else {
-                    this.setState({
-                        canPhoneAuthen: false
-                    });
-                }
-            }).catch(res => {
-                this.$loadingDismiss();
-            });
-        } else {
             //ios平台主动开启
             this.setState({
                 canPhoneAuthen: true
             });
-        }
     }
 
     _render() {
@@ -81,12 +60,12 @@ export default class Login extends BasePage {
                         />
                     </View>
                     {/*<CommNavigation>*/}
-                        {/*<MRText>*/}
-                            {/*value 1*/}
-                        {/*</MRText>*/}
-                        {/*<MRText>*/}
-                            {/*value 2*/}
-                        {/*</MRText>*/}
+                    {/*<MRText>*/}
+                    {/*value 1*/}
+                    {/*</MRText>*/}
+                    {/*<MRText>*/}
+                    {/*value 2*/}
+                    {/*</MRText>*/}
 
                     {/*</CommNavigation>*/}
                 </View>
