@@ -135,7 +135,9 @@ export default class GuideModal extends React.Component {
     renderContent = () => {
         let {step} = this.state;
         let data = this.data[step];
-        let _categoryHeight = categoryModule.length >0? categoryHeight: 0;
+        const { categoryList } = categoryModule;
+        let _categoryHeight = categoryList.length > 0? categoryHeight: 0;
+        console.log('categoryList.length'+categoryList.length+'@'+_categoryHeight);
         if (step < 6) {
             let bgStyle = {};
             let imageStyle = {};
