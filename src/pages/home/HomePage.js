@@ -449,7 +449,9 @@ class HomePage extends BasePage {
                 <GuideModal ref={(ref) => {
                     this.guideModal = ref;
                 }}
-                            callback={()=> {this.recyclerListView && this.recyclerListView.scrollToTop()}}
+                            callback={() => {
+                                this.recyclerListView && this.recyclerListView.scrollToTop();
+                            }}
                 />
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
