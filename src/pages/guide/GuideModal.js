@@ -36,7 +36,6 @@ import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { navigate } from '../../navigation/RouterMap';
 import { homeModule } from '../home/Modules';
-import { categoryModule } from '../home/HomeCategoryModel';
 import GuideApi from './GuideApi';
 const {
     tip_one,
@@ -135,9 +134,7 @@ export default class GuideModal extends React.Component {
     renderContent = () => {
         let {step} = this.state;
         let data = this.data[step];
-        const { categoryList } = categoryModule;
-        let _categoryHeight = categoryList.length > 0? categoryHeight: 0;
-        console.log('categoryList.length'+categoryList.length+'@'+_categoryHeight);
+        let _categoryHeight = categoryHeight;
         if (step < 6) {
             let bgStyle = {};
             let imageStyle = {};
