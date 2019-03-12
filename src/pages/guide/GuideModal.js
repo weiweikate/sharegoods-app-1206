@@ -36,8 +36,8 @@ import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { navigate } from '../../navigation/RouterMap';
 import { homeModule } from '../home/Modules';
-import GuideApi from './GuideApi';
 import { categoryModule } from '../home/HomeCategoryModel';
+import GuideApi from './GuideApi';
 const {
     tip_one,
     tip_two,
@@ -49,9 +49,9 @@ const {
     group,
     mine,
     next_btn,
-    button: {
-        cancel_white_circle
-    }
+    // button: {
+    //     cancel_white_circle
+    // }
 } = res;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const adWidth = (ScreenUtils.width - autoSizeWidth(35)) / 2
@@ -74,7 +74,6 @@ export default class GuideModal extends React.Component {
             isHome: false,
             rewardzData: {},
         };
-        this.isFinish=false;
         /** 每一步引导的数据*/
         this.data = [{image: discover, tip: tip_one, text: '秀场'},
             {image: OssHelper('/app/share11.png'), tip: tip_two, text: '升级'},
@@ -87,14 +86,16 @@ export default class GuideModal extends React.Component {
     }
 
     getUserRecord = () => {
-        if (this.state.isFinish == true){//用于记录本地是否完成新手引导
-            return;
-        }
+        console.log('user.finishGuide'+ user.finishGuide);
         this.state.isHome = true;
         GuideApi.getUserRecord().then((data)=> {
             if(data.data === true){
-                this.open();
-                this.getRewardzInfo();
+                if (user.finishGuide === true){
+                    GuideApi.registerSend({});
+                }else {
+                    this.open();
+                    this.getRewardzInfo();
+                }
             }
         }).catch(()=> {
         })
@@ -105,7 +106,7 @@ export default class GuideModal extends React.Component {
     }
 
 
-        getRewardzInfo = () => {
+    getRewardzInfo = () => {
         GuideApi.rewardzInfo({type: 17}).then((data)=> {
             data = data.data || [];
             if (data.length>0){
@@ -116,6 +117,7 @@ export default class GuideModal extends React.Component {
 
 
     open = () => {
+        this.props.callback &&  this.props.callback();
         this.setState({visible: true, step: 0});
     }
     close = () => {
@@ -133,8 +135,7 @@ export default class GuideModal extends React.Component {
     renderContent = () => {
         let {step} = this.state;
         let data = this.data[step];
-        const { categoryList } = categoryModule;
-        let _categoryHeight = categoryList.length > 0 ? categoryHeight : 0;
+        let _categoryHeight = categoryModule.length >0? categoryHeight: 0;
         if (step < 6) {
             let bgStyle = {};
             let imageStyle = {};
@@ -286,21 +287,21 @@ export default class GuideModal extends React.Component {
                     <View style={{flex: 1}}/>
                     <TouchableWithoutFeedback onPress={this.gotoPage}>
                         <View>
-                        <ImageLoad style={imageStyle}
-                                   source={{uri: this.state.rewardzData.imgUrl}}
-                                   resizeMode={'contain'}
-                        >
-                            {/*<MRText style={{fontSize: 17, color: '#FFECB6', marginBottom: 10}}>{this.state.num + '枚秀豆送给您'}</MRText>*/}
-                            {/*<TouchableOpacity onPress={this.gotoPage} style = {{marginBottom: autoSizeWidth(30), alignItems: 'center'}}>*/}
-                            {/*<Image source={btn} style={{height: autoSizeWidth(40), width: autoSizeWidth(145)}} resizeMode={'stretch'}/>*/}
-                            {/*</TouchableOpacity>*/}
-                        </ImageLoad>
+                            <ImageLoad style={imageStyle}
+                                       source={{uri: this.state.rewardzData.imgUrl}}
+                                       resizeMode={'contain'}
+                            >
+                                {/*<MRText style={{fontSize: 17, color: '#FFECB6', marginBottom: 10}}>{this.state.num + '枚秀豆送给您'}</MRText>*/}
+                                {/*<TouchableOpacity onPress={this.gotoPage} style = {{marginBottom: autoSizeWidth(30), alignItems: 'center'}}>*/}
+                                {/*<Image source={btn} style={{height: autoSizeWidth(40), width: autoSizeWidth(145)}} resizeMode={'stretch'}/>*/}
+                                {/*</TouchableOpacity>*/}
+                            </ImageLoad>
                         </View>
                     </TouchableWithoutFeedback>
                     <View style={{flex: 1}}>
-                        <TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>
-                        <Image source={cancel_white_circle} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>*/}
+                        {/*<Image source={cancel_white_circle} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                 </View>
             )
@@ -310,7 +311,7 @@ export default class GuideModal extends React.Component {
     nextPress=()=>{
         if (this.state.step === 5){
             GuideApi.registerSend({});//完成了新手引导
-            this.isFinish = true; //防止请求失败，重复调用新手引导
+            user.finishGiudeAction();//防止请求失败，重复调用新手引导
         }
         this.setState({step: this.state.step + 1})   ;
     }
