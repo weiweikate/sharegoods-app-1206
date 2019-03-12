@@ -131,10 +131,10 @@ export default class HomeSubjectView extends Component {
     render() {
         const { subjectList } = subjectModule;
         if (!subjectList) {
-            return <View/>;
+            return null;
         }
         if (subjectList.length <= 0) {
-            return <View/>;
+            return null;
         }
         let items = [];
         subjectList.map((item, index) => {
@@ -143,6 +143,9 @@ export default class HomeSubjectView extends Component {
                                          this._goodAction(good, item);
                                      }}/>);
         });
+        if (items.length === 0) {
+            return null;
+        }
         return <View style={styles.container}>
             <HomeTitleView title={'超值热卖'}/>
             {items}

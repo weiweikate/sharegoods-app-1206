@@ -36,6 +36,7 @@ export default class PaymentPage extends BasePage {
         payment.name = orderProduct && orderProduct.productName
         payment.orderNo = this.params.orderNum;
         payment.platformOrderNo = this.params.platformOrderNo;
+        user.updateUserData()
     }
 
     $NavBarLeftPressed = () => {
@@ -62,6 +63,9 @@ export default class PaymentPage extends BasePage {
                 }
             } else if (result.code === payStatus.payNeedThrid) {
                 this.$navigate('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
+            } else if (result.code === payStatus.payOut) {
+                Toast.$toast(payStatusMsg[result.code])
+                this._goToOrder(2)
             } else {
                 Toast.$toast(payStatusMsg[result.code])
             }
@@ -82,13 +86,15 @@ export default class PaymentPage extends BasePage {
         payment.platformPay(password).then((result) => {
             this.setState({ showPwd: false })
             if (result === payStatus.payNeedThrid) {
-                this.$navigate('payment/ChannelPage', {remainMoney: Math.floor((payment.amounts - user.availableBalance) * 100) / 100})
+                payment.selectedBalace = false
+                this.$navigate('payment/ChannelPage', {remainMoney: (payment.amounts - user.availableBalance).toFixed(2)})
                 return
             }
             payment.resetPayment()
             this.setState({
                 showResult: true,
-                payResult: PaymentResult.sucess
+                payResult: PaymentResult.sucess,
+                payMsg: ''
             })
         }).catch(err => {
             this.setState({
@@ -122,11 +128,11 @@ export default class PaymentPage extends BasePage {
         )
     }
 
-    _goToOrder() {
+    _goToOrder(index) {
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
             routeName: 'order/order/MyOrdersListPage',
-            params: { index: 2 }
+            params: { index: index ? index : 1 }
         });
         this.props.navigation.dispatch(replace);
     }
@@ -150,7 +156,7 @@ export default class PaymentPage extends BasePage {
                     <Text style={styles.money}>￥{payment.amounts}</Text>
                 </View>
             </View>
-            <TouchableWithoutFeedback disabled={parseInt(availableBalance, 0) === 0} onPress={()=> this._selectedBalance()}>
+            <TouchableWithoutFeedback disabled={availableBalance <= 0} onPress={()=> this._selectedBalance()}>
             <View style={styles.balanceContent}>
                 <Image style={styles.iconBalance} source={res.balance}/>
                 <Text style={styles.text}>现金账户</Text>

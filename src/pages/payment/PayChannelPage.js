@@ -13,7 +13,7 @@ import { observer } from 'mobx-react/native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
-import { payment, paymentType, paymentTrack, payStatus } from './Payment'
+import { payment, paymentType, paymentTrack, payStatus, payStatusMsg } from './Payment'
 import PaymentResultView, { PaymentResult } from './PaymentResultView'
 import { track, trackEvent } from '../../utils/SensorsTrack'
 const { px2dp } = ScreenUtils;
@@ -54,7 +54,10 @@ export default class ChannelPage extends BasePage {
     }
 
     $NavBarLeftPressed = () => {
-        this.$navigateBack();
+        const popAction = NavigationActions.pop({
+            n: 1,
+        });
+        this.props.navigation.dispatch(popAction);
     }
 
     goToPay() {
@@ -63,22 +66,42 @@ export default class ChannelPage extends BasePage {
             Toast.$toast('请选择支付方式')
             return
         }
+
+        payment.checkOrderStatus().then(result => {
+            console.log('checkOrderStatus', result)
+            if (result.code === payStatus.payNo || result.code === payStatus.payNeedThrid) {
+                if (payment.selctedPayType === paymentType.alipay) {
+                    payment.alipay().catch(err => {
+                        console.log('alipay err', err, err.code)
+                        if (err.code === 20002) {
+                            Toast.$toast(err.msg)
+                            return
+                        }
+                        payment.resetPayment()
+                        this._goToOrder()
+                    })
+                }
+                
+                if (payment.selctedPayType === paymentType.wechat){
+                    payment.appWXPay().catch(err => {
+                        if (err.code === 20002) {
+                            Toast.$toast(err.msg)
+                            return
+                        }
+                        payment.resetPayment()
+                        this._goToOrder()
+                    })
+                }
+            } else if (result.code === payStatus.payOut) {
+                Toast.$toast(payStatusMsg[result.code])
+                this._goToOrder(2)
+            } else {
+                Toast.$toast(payStatusMsg[result.code])
+            }
+        }).catch(err => {
+            Toast.$toast(err.msg)
+        })
         
-        if (payment.selctedPayType === paymentType.alipay) {
-            payment.alipay().catch(err => {
-                 Toast.$toast(err.message)
-                 payment.resetPayment()
-                 this._goToOrder()
-            })
-        }
-        
-        if (payment.selctedPayType === paymentType.wechat){
-            payment.appWXPay().catch(err => {
-                Toast.$toast(err.message)
-                payment.resetPayment()
-                this._goToOrder()
-            })
-        }
     }
 
     _handleAppStateChange = (nextAppState) =>{
@@ -108,6 +131,16 @@ export default class ChannelPage extends BasePage {
             return;
         }
         payment.checkPayStatus().then(result => {
+            if (result.data === payStatus.payCreate) {
+                this.setState({orderChecking: false})
+                return
+            }
+
+            if (result.data === payStatus.payThridClose) {
+                this.setState({orderChecking: false})
+                return
+            }
+
             if (result.data === payStatus.payWait) {
                 setTimeout(() => {
                     this._checkOrder();
@@ -119,7 +152,8 @@ export default class ChannelPage extends BasePage {
                 this.setState({
                     showResult: true,
                     orderChecking: false,
-                    payResult: PaymentResult.sucess
+                    payResult: PaymentResult.sucess,
+                    payMsg: ''
                 })
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
                 payment.resetPayment()
@@ -137,13 +171,13 @@ export default class ChannelPage extends BasePage {
         });
     }
 
-    _goToOrder() {
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
+    _goToOrder(index) {
+        this.props.navigation.dispatch({
+            key: 'order/order/MyOrdersListPage',
+            type: 'ReplacePayScreen',
             routeName: 'order/order/MyOrdersListPage',
-            params: { index: 1 }
+            params: { index: index ? index : 1 }
         });
-        this.props.navigation.dispatch(replace);
     }
 
 

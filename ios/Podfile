@@ -39,7 +39,9 @@ pod 'SensorsAnalyticsSDK', '~> 1.10.17'
 pod 'MJRefresh'
 pod 'SDAutoLayout'
 #pod 'SensorsAnalyticsSDK', :subspecs => ['ENABLE_REACT_NATIVE_APPCLICK']
-
+pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+pod 'React', path: '../node_modules/react-native'
+pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 ##绘图和icon
 #pod 'RNSVG', :path => '../node_modules/react-native-svg'
 #pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
