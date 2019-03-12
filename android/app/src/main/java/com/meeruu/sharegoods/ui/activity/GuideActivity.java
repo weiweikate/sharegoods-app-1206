@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.meeruu.commonlib.base.BaseActivity;
+import com.meeruu.commonlib.config.FrescoImagePipelineConfig;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
@@ -62,6 +64,10 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
     @Override
     protected void initViewAndData() {
         SPCacheUtils.put("hasGuide", true);
+        if (!Fresco.hasBeenInitialized()) {
+            Fresco.initialize(getApplicationContext(),
+                    FrescoImagePipelineConfig.getDefaultImagePipelineConfig(getApplicationContext()));
+        }
         // 加载ViewPager
         initViewPager();
         // 加载底部圆点
