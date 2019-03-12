@@ -34,9 +34,7 @@ import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview
 import { adModules } from './HomeAdModel';
 import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
-import { bannerModule } from './HomeBannerModel';
 import { subjectModule } from './HomeSubjectModel';
-import { categoryModule } from './HomeCategoryModel';
 import HomeTitleView from './HomeTitleView';
 import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
@@ -81,15 +79,15 @@ class HomePage extends BasePage {
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
         const { subjectHeight } = subjectModule;
-        const { bannerList } = bannerModule;
-        const { categoryList } = categoryModule;
+        // const { bannerList } = bannerModule;
+        // const { categoryList } = categoryModule;
 
         switch (type) {
             case homeType.category:
-                dim.height = categoryList.length > 0 ? categoryHeight : 0;
+                dim.height =  categoryHeight;
                 break;
             case homeType.swiper:
-                dim.height = bannerList.length > 0 ? bannerHeight : 0;
+                dim.height = bannerHeight;
                 break;
             case homeType.classify:
                 dim.height = kHomeClassifyHeight;
