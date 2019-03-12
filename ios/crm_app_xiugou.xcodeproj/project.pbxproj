@@ -808,7 +808,6 @@
 		CD3A8A0621F05DF3003B9803 /* MRLoadingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRLoadingView.m; sourceTree = "<group>"; };
 		CD3A8A0821F05E17003B9803 /* MRLoadingViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRLoadingViewManager.h; sourceTree = "<group>"; };
 		CD3A8A0921F05E17003B9803 /* MRLoadingViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRLoadingViewManager.m; sourceTree = "<group>"; };
-		CD45EE1A21C7885000846B39 /* liblottie-react-native.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "liblottie-react-native.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5EAF11221BEA9F007AAEE0 /* NetWorkTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkTool.m; sourceTree = "<group>"; };
 		CD5EAF12221BEA9F007AAEE0 /* NetWorkTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetWorkTool.h; sourceTree = "<group>"; };
 		CD5EAF49221BECA3007AAEE0 /* XG_Api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XG_Api.h; sourceTree = "<group>"; };
@@ -1157,7 +1156,6 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CD45EE1A21C7885000846B39 /* liblottie-react-native.a */,
 				101157C7219AB72A001F5E99 /* GLKit.framework */,
 				101157C5219AB715001F5E99 /* libc++.tbd */,
 				101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */,

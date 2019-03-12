@@ -54,7 +54,10 @@ export default class ChannelPage extends BasePage {
     }
 
     $NavBarLeftPressed = () => {
-        this.$navigateBack();
+        const popAction = NavigationActions.pop({
+            n: 1,
+        });
+        this.props.navigation.dispatch(popAction);
     }
 
     goToPay() {
@@ -169,12 +172,12 @@ export default class ChannelPage extends BasePage {
     }
 
     _goToOrder(index) {
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
+        this.props.navigation.dispatch({
+            key: 'order/order/MyOrdersListPage',
+            type: 'ReplacePayScreen',
             routeName: 'order/order/MyOrdersListPage',
             params: { index: index ? index : 1 }
         });
-        this.props.navigation.dispatch(replace);
     }
 
 
