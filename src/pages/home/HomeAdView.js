@@ -27,7 +27,6 @@ export default class HomeAdView extends Component {
             { borderBottomLeftRadius: radius, overflow: 'hidden' },
             { borderBottomRightRadius: radius, overflow: 'hidden' }
         ];
-        this.hasLoadImg = {};
     }
 
     _adAction(value) {
@@ -38,27 +37,17 @@ export default class HomeAdView extends Component {
     }
 
     _renderBanner() {
-        const { banner, notExistAdUrls } = adModules;
+        const { banner, adHeights } = adModules;
         if (banner.length === 0) {
             return null;
         }
         let items = [];
-        notExistAdUrls.map((url) => {
-            if (!this.hasLoadImg[url]) {
-                Image.getSize(url, (width, height) => {
-                    let h = (bannerWidth * height) / width;
-                    adModules.adHeights.set(url, h);
-                });
-                this.hasLoadImg[url] = true;
-            }
-        });
-
         banner.map((val, index) => {
             let url = val.imgUrl;
             items.push(
                 <TouchableWithoutFeedback onPress={() => this._adAction(val)} key={'banner' + index}>
                     <Image
-                        style={[styles.bannerImage, { height: adModules.adHeights.get(url) }]}
+                        style={[styles.bannerImage, { height: adHeights.get(url) }]}
                         source={{ uri: url }}/>
                 </TouchableWithoutFeedback>
             );

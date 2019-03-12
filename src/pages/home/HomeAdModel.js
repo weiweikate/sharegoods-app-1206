@@ -3,6 +3,7 @@ import HomeApi from './api/HomeAPI';
 import { homeType } from './HomeTypes';
 import { get, save } from '@mr/rn-store';
 import ScreenUtils from '../../utils/ScreenUtils';
+import { Image } from 'react-native';
 
 const kHomeAdStore = '@home/kHomeAdStore';
 const { px2dp } = ScreenUtils;
@@ -13,9 +14,8 @@ class AdModules {
     @observable ad = [];
     @observable banner = [];
     @observable adHeights = new Map();
-    @observable notExistAdUrls = [];
 
-    adUrls = [];
+    imgUrls = [];
 
     @computed get adHeight() {
         let h = kAdHeight * 2 + px2dp(15);
@@ -25,7 +25,7 @@ class AdModules {
             h -= px2dp(5);
         }
         this.adHeights.forEach((value, key, map) => {
-            if (value > 0) {
+            if (this.imgUrls.indexOf(key) >= 0 && value > 0) {
                 h += value + px2dp(15);
             }
         });
@@ -46,41 +46,23 @@ class AdModules {
             save(kHomeAdStore, res.data);
             const bannerRes = yield HomeApi.getBanner({ type: homeType.banner });
             this.banner = bannerRes.data;
-            if (this.banner.length === 0) {
-                this.adHeights.clear();
-                this.adUrls.length = 0;
-                this.notExistAdUrls.length = 0;
-            } else {
-                // 先清空
-                this.adUrls.length = 0;
-                // 再重新赋值
-                this.banner.map((data) => {
-                    this.adUrls.push(data.imgUrl);
+            this.imgUrls = [];
+            if (this.banner.length > 0) {
+                this.banner.map((val, index) => {
+                    let url = val.imgUrl;
+                    this.imgUrls.push(url);
+                    if (!this.adHeights.has(url)) {
+                        Image.getSize(url, (width, height) => {
+                            let h = (kAdWidth * height) / width;
+                            this.adHeights.set(url, h);
+                        });
+                    }
                 });
-                this.notExistAdUrls.length = 0;
-                // 赋值adHeights
-                this.deleteNotExist();
             }
         } catch (error) {
             console.log(error);
         }
     });
-
-    @action
-    deleteNotExist = () => {
-        let arrTemp = this.adHeights;
-        let notExist = this.adUrls;
-        arrTemp.forEach((value, key, map) => {
-            let urlIndex = this.adUrls.indexOf(key);
-            if (urlIndex === -1) {
-                // 不存在的，删除
-                this.adHeights.delete(key);
-            } else {
-                notExist.splice(urlIndex, 1);
-            }
-        });
-        this.notExistAdUrls = notExist;
-    };
 }
 
 export const adModules = new AdModules();
