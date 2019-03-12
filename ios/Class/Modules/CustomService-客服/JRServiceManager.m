@@ -32,7 +32,6 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  * systemVersion:手机系统版本
  */
 -(void)qiYUChat:(id)josnData{
-//  NSDictionary *jsonDic = [NSJSONSerialization  JSONObjectWithData:josnData options:NSJSONReadingMutableLeaves error:nil];
   NSDictionary *jsonDic = josnData;
   QYSource *source = [[QYSource alloc] init];
   source.title =  jsonDic[@"title"];
@@ -42,22 +41,21 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   self.sessionVC.sessionTitle = jsonDic[@"title"];
   self.sessionVC.source = source;
   
-  self.sessionVC.groupId = [jsonDic[@"groupId"] integerValue];
-  self.sessionVC.staffId = [jsonDic[@"staffId"] integerValue];
-  //设置当前用[JIRA] (XIUGOU-1360) 【老用户激活】修改客服电话户信息
-//  QYUserInfo * userInfo = [QYUserInfo alloc];
-//  userInfo.userId = jsonDic[@"userId"];
-//  NSArray * infoData = @[
-//                         @{@"userIcon":jsonDic[@"userIcon"]?jsonDic[@"userIcon"]:@""},
-//                         @{@"phoneNum":jsonDic[@"phoneNum"]?jsonDic[@"phoneNum"]:@""},
-//                         @{ @"nickName":jsonDic[@"nickName"]?jsonDic[@"nickName"]:@""},
-//                         @{@"device":jsonDic[@"device"]?jsonDic[@"device"]:@""},
-//                         @{@"systemVersion":jsonDic[@"systemVersion"]?jsonDic[@"systemVersion"]:@"",
-//                           @"version":
-//                           }
-//                        ];
-//  userInfo.data = [self arrToJsonString:infoData];
-//  [[QYSDK sharedSDK] setUserInfo:userInfo];
+  //1802229  专员
+  //264002225  组id
+  
+//  self.sessionVC.groupId = [jsonDic[@"groupId"] integerValue];
+//  self.sessionVC.staffId = [jsonDic[@"staffId"] integerValue];
+  
+  self.sessionVC.groupId = 264002225;
+  self.sessionVC.staffId = 1802229;
+  
+  [self.sessionVC changeHumanStaffWithStaffId:1802229 groupId:264002225 closetip:@"aa" closeCompletion:^(BOOL success, NSError *error) {
+    
+  } requestCompletion:^(BOOL success, NSError *error) {
+    
+  }];
+  
   
   QYUserInfo *userInfo = [[QYUserInfo alloc] init];
   userInfo.userId = jsonDic[@"userId"];
