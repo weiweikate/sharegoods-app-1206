@@ -44,17 +44,17 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   //1802229  专员
   //264002225  组id
   
-//  self.sessionVC.groupId = [jsonDic[@"groupId"] integerValue];
-//  self.sessionVC.staffId = [jsonDic[@"staffId"] integerValue];
+  self.sessionVC.groupId = [jsonDic[@"groupId"] integerValue];
+  self.sessionVC.staffId = [jsonDic[@"staffId"] integerValue];
   
-  self.sessionVC.groupId = 264002225;
-  self.sessionVC.staffId = 1802229;
-  
-  [self.sessionVC changeHumanStaffWithStaffId:1802229 groupId:264002225 closetip:@"aa" closeCompletion:^(BOOL success, NSError *error) {
-    
-  } requestCompletion:^(BOOL success, NSError *error) {
-    
-  }];
+//  self.sessionVC.groupId = 264002225;
+//  self.sessionVC.staffId = 1802229;
+//
+//  [self.sessionVC changeHumanStaffWithStaffId:1802229 groupId:264002225 closetip:@"aa" closeCompletion:^(BOOL success, NSError *error) {
+//
+//  } requestCompletion:^(BOOL success, NSError *error) {
+//
+//  }];
   
   
   QYUserInfo *userInfo = [[QYUserInfo alloc] init];
