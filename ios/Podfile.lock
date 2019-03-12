@@ -25,17 +25,9 @@ PODS:
   - JCore (1.2.6)
   - JPush (3.1.2):
     - JCore (~> 1.2.6)
-  - lottie-ios (2.5.3)
-  - lottie-react-native (2.5.10):
-    - lottie-ios
-    - React
   - MBProgressHUD (1.1.0)
   - MJRefresh (3.1.15.7)
   - QIYU_iOS_SDK (4.9.0)
-  - React (0.57.8):
-    - React/Core (= 0.57.8)
-  - React/Core (0.57.8):
-    - yoga (= 0.57.8.React)
   - SandBoxPreviewTool (1.1)
   - SDAutoLayout (2.2.1)
   - SDWebImage (4.4.6):
@@ -62,7 +54,6 @@ PODS:
     - UMCCommon
     - UMCShare/Core
   - WechatOpenSDK (1.8.4)
-  - yoga (0.57.8.React)
   - YYKit (1.0.9):
     - YYKit/no-arc (= 1.0.9)
   - YYKit/no-arc (1.0.9)
@@ -73,11 +64,9 @@ DEPENDENCIES:
   - CocoaLumberjack (~> 3.4.1)
   - IQKeyboardManager (~> 6.2.0)
   - JPush (~> 3.1.0)
-  - lottie-react-native (from `../node_modules/lottie-react-native`)
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
   - QIYU_iOS_SDK (~> 4.9.0)
-  - React (from `../node_modules/react-native`)
   - SandBoxPreviewTool (~> 1.1)
   - SDAutoLayout
   - SDWebImage (~> 4.4.6)
@@ -91,7 +80,6 @@ DEPENDENCIES:
   - UMCShare/Social/ReducedSina
   - UMCShare/Social/ReducedWeChat
   - WechatOpenSDK (~> 1.8.3)
-  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
   - YYKit (~> 1.0.9)
 
 SPEC REPOS:
@@ -102,7 +90,6 @@ SPEC REPOS:
     - IQKeyboardManager
     - JCore
     - JPush
-    - lottie-ios
     - MBProgressHUD
     - MJRefresh
     - QIYU_iOS_SDK
@@ -119,14 +106,6 @@ SPEC REPOS:
     - WechatOpenSDK
     - YYKit
 
-EXTERNAL SOURCES:
-  lottie-react-native:
-    :path: "../node_modules/lottie-react-native"
-  React:
-    :path: "../node_modules/react-native"
-  yoga:
-    :path: "../node_modules/react-native/ReactCommon/yoga"
-
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
@@ -134,12 +113,9 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   JCore: cae516dd2bf1a73b578ce6e1065abd49e709e0f7
   JPush: d0cead70ba223a6a3b52749899ebda830dfbc49a
-  lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  lottie-react-native: 589b0df6fcae154b46d96e7dd5b36c29e8be970e
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   QIYU_iOS_SDK: 7343f8366e56b92aa6b2da3ae8e92d5bd0e95c73
-  React: adbac0757ce35e92fbd447ab98c810209d27d9b0
   SandBoxPreviewTool: 2d837db4409c74c9a8047838f5b320c08161fad1
   SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
@@ -151,9 +127,8 @@ SPEC CHECKSUMS:
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   UMCShare: 552b29753f1b4da87b51d96545ed19e6263df397
   WechatOpenSDK: 9b721089507c895d05f997408c30bb6e6f5f9b60
-  yoga: 74cdf036c30820443b25ade59916236b1e95ee93
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 32d4b5b4b0fea696ba411f9dec709cbe08e9a369
+PODFILE CHECKSUM: 5b4f40a8a8758b562532482daeb2107358dfff20
 
 COCOAPODS: 1.6.1

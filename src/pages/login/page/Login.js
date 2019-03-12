@@ -47,7 +47,6 @@ export default class Login extends BasePage {
                 this.$loadingDismiss();
                 if (
                     result.isCanAuthen === 1
-                    && result.phoneNum.length > 0
                 ) {
                     this.setState({
                         canPhoneAuthen: true,
