@@ -17,7 +17,7 @@ import DesignRule from "../../../constants/DesignRule";
 import StringUtils from "../../../utils/StringUtils";
 import { MRTextInput } from "../../../components/ui";
 import ProtocolView from "../components/Login.protocol.view";
-import { startPhoneAuthen } from "../model/PhoneAuthenAction";
+import { isCanPhoneAuthen, startPhoneAuthen } from "../model/PhoneAuthenAction";
 import { oneClickLoginValidation } from "../model/LoginActionModel";
 
 const { px2dp } = ScreenUtils;
@@ -43,6 +43,23 @@ export default class LocalNumLogin extends BasePage {
         gesturesEnabled: false
 
     };
+
+    componentDidMount(){
+        if (Platform.OS === "android") {
+            this.$loadingShow();
+            isCanPhoneAuthen().then(result => {
+                this.$loadingDismiss();
+                if (result.isCanAuthen === 1) {
+                    this.setState({
+                        phoneNumber: result.phoneNum || "",
+                        authenToken: result.data || ""
+                    });
+                }
+            }).catch(res => {
+                this.$loadingDismiss();
+            });
+        }
+    }
 
     $isMonitorNetworkStatus() {
         return false;
