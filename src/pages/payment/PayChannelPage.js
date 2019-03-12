@@ -13,7 +13,7 @@ import { observer } from 'mobx-react/native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
-import { payment, paymentType, paymentTrack, payStatus } from './Payment'
+import { payment, paymentType, paymentTrack, payStatus, payStatusMsg } from './Payment'
 import PaymentResultView, { PaymentResult } from './PaymentResultView'
 import { track, trackEvent } from '../../utils/SensorsTrack'
 const { px2dp } = ScreenUtils;
@@ -63,22 +63,37 @@ export default class ChannelPage extends BasePage {
             Toast.$toast('请选择支付方式')
             return
         }
+
+        payment.checkOrderStatus().then(result => {
+            console.log('checkOrderStatus', result)
+            if (result.code === payStatus.payNo) {
+                if (payment.selctedPayType === paymentType.alipay) {
+                    payment.alipay().catch(err => {
+                         Toast.$toast(err.message)
+                         payment.resetPayment()
+                         this._goToOrder()
+                    })
+                }
+                
+                if (payment.selctedPayType === paymentType.wechat){
+                    payment.appWXPay().catch(err => {
+                        Toast.$toast(err.message)
+                        payment.resetPayment()
+                        this._goToOrder()
+                    })
+                }
+            } else if (result.code === payStatus.payNeedThrid) {
+                this.$navigate('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
+            } else if (result.code === payStatus.payOut) {
+                Toast.$toast(payStatusMsg[result.code])
+                this._goToOrder(2)
+            } else {
+                Toast.$toast(payStatusMsg[result.code])
+            }
+        }).catch(err => {
+            Toast.$toast(err.msg)
+        })
         
-        if (payment.selctedPayType === paymentType.alipay) {
-            payment.alipay().catch(err => {
-                 Toast.$toast(err.message)
-                 payment.resetPayment()
-                 this._goToOrder()
-            })
-        }
-        
-        if (payment.selctedPayType === paymentType.wechat){
-            payment.appWXPay().catch(err => {
-                Toast.$toast(err.message)
-                payment.resetPayment()
-                this._goToOrder()
-            })
-        }
     }
 
     _handleAppStateChange = (nextAppState) =>{
@@ -137,11 +152,11 @@ export default class ChannelPage extends BasePage {
         });
     }
 
-    _goToOrder() {
+    _goToOrder(index) {
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
             routeName: 'order/order/MyOrdersListPage',
-            params: { index: 1 }
+            params: { index: index ? index : 1 }
         });
         this.props.navigation.dispatch(replace);
     }

@@ -32,6 +32,7 @@ export default class OrderSearchResultPage extends BasePage {
                 <MyOrdersListView
                     nav={this.$navigate}
                     orderNum={this.state.keyWord}
+                    navigation={this.props.navigation}
                 />
             </View>
         );
