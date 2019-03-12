@@ -7,7 +7,8 @@ import { Image } from 'react-native';
 
 const kHomeAdStore = '@home/kHomeAdStore';
 const { px2dp } = ScreenUtils;
-const kAdWidth = (ScreenUtils.width - px2dp(35)) / 2;
+const bannerWidth = ScreenUtils.width;
+const kAdWidth = (ScreenUtils.width - px2dp(30)) / 2 - 0.5;
 const kAdHeight = kAdWidth * (160 / 340);
 
 class AdModules {
@@ -53,7 +54,7 @@ class AdModules {
                     this.imgUrls.push(url);
                     if (!this.adHeights.has(url)) {
                         Image.getSize(url, (width, height) => {
-                            let h = (kAdWidth * height) / width;
+                            let h = (bannerWidth * height) / width;
                             this.adHeights.set(url, h);
                         });
                     }

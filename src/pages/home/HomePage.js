@@ -25,7 +25,6 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModal from './VersionUpdateModal';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from '../../constants/DesignRule';
-// import TimerMixin from 'react-timer-mixin';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
@@ -147,6 +146,7 @@ class HomePage extends BasePage {
             'willFocus',
             payload => {
                 this.homeFocused = true;
+                homeTabManager.setHomeFocus(true);
                 const { state } = payload;
                 if (user.token) {
                     this.loadMessageCount();
@@ -168,6 +168,7 @@ class HomePage extends BasePage {
             'willBlur',
             payload => {
                 this.homeFocused = false;
+                homeTabManager.setHomeFocus(false);
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     this.guideModal.cancelUserRecord();
@@ -179,6 +180,7 @@ class HomePage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                homeTabManager.setHomeFocus(true);
                 this.homeFocused = true;
                 this.showModal();
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -223,19 +225,16 @@ class HomePage extends BasePage {
     };
 
     _homeModaldata = () => {
-        // TimerMixin.setTimeout(() => {
-            // 检测版本更新
-            // this.getVersion();
-            // alert(111);
-            homeModalManager.getVersion().then((data) => {
-                homeModalManager.getMessage().then(data => {
-                    if (!this.props.isFocused) {
-                        return;
-                    }
-                    this.showModal();
-                });
+        // 检测版本更新
+        // this.getVersion();
+        homeModalManager.getVersion().then((data) => {
+            homeModalManager.getMessage().then(data => {
+                if (!this.props.isFocused) {
+                    return;
+                }
+                this.showModal();
             });
-        // }, 2500);
+        });
     };
 
     loadMessageCount = () => {
@@ -388,18 +387,17 @@ class HomePage extends BasePage {
     };
 
     _onListViewScroll = (event) => {
-        let offsetY = event.nativeEvent.contentOffset.y;
-        if (this.toGoods) {
-            this.toGoods.measure((fx, fy, width, height, left, top) => {
-                if (offsetY > ScreenUtils.height && top < scrollDist) {
-                    homeTabManager.setAboveRecommend(true);
-                } else {
-                    homeTabManager.setAboveRecommend(false);
-                }
-            });
-        } else {
-            homeTabManager.setAboveRecommend(false);
+        if (!this.props.isFocused) {
+            return;
         }
+        let offsetY = event.nativeEvent.contentOffset.y;
+        this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
+            if (offsetY > height && top < scrollDist) {
+                homeTabManager.setAboveRecommend(true);
+            } else {
+                homeTabManager.setAboveRecommend(false);
+            }
+        });
     };
 
     render() {
@@ -421,7 +419,7 @@ class HomePage extends BasePage {
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
-                    scrollEventThrottle={200}
+                    scrollEventThrottle={100}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
@@ -450,7 +448,9 @@ class HomePage extends BasePage {
                 <GuideModal ref={(ref) => {
                     this.guideModal = ref;
                 }}
-                            callback={()=> {this.recyclerListView && this.recyclerListView.scrollToTop()}}
+                            callback={() => {
+                                this.recyclerListView && this.recyclerListView.scrollToTop();
+                            }}
                             versionUpdate={this.state.showUpdate}
                 />
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}

@@ -8,10 +8,8 @@ import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 
-const bannerWidth = ScreenUtils.width;
 const defaultBannerHeight = px2dp(10);
-
-const adWidth = (ScreenUtils.width - px2dp(35)) / 2;
+const adWidth = (ScreenUtils.width - px2dp(35)) / 2 - 0.5;
 const adHeight = adWidth * (160 / 340);
 
 const radius = (5);
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
         paddingTop: px2dp(10)
     },
     bannerImage: {
-        width: bannerWidth,
+        width: ScreenUtils.width,
         height: defaultBannerHeight,
         marginBottom: px2dp(15)
     },
