@@ -22,6 +22,7 @@ import {
 import user from "../../../model/user";
 import RouterMap from "../../../navigation/RouterMap";
 import {payStatus, payment, payStatusMsg} from '../../payment/Payment'
+import { NavigationActions } from 'react-navigation';
 
 const emptyIcon = res.kongbeuye_dingdan;
 
@@ -564,6 +565,14 @@ export default class MyOrdersListView extends Component {
             });
         } else if (result.code === payStatus.payNeedThrid) {
             this.props.nav('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
+        }  else if (result.code === payStatus.payOut) {
+            Toast.$toast(payStatusMsg[result.code])
+            let replace = NavigationActions.replace({
+                key: this.props.navigation.state.key,
+                routeName: 'order/order/MyOrdersListPage',
+                params: { index: 2 }
+            });
+            this.props.navigation.dispatch(replace);
         } else {
             Toast.$toast(payStatusMsg[result.code])
         }

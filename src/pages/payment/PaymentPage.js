@@ -62,6 +62,9 @@ export default class PaymentPage extends BasePage {
                 }
             } else if (result.code === payStatus.payNeedThrid) {
                 this.$navigate('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
+            } else if (result.code === payStatus.payOut) {
+                Toast.$toast(payStatusMsg[result.code])
+                this._goToOrder(2)
             } else {
                 Toast.$toast(payStatusMsg[result.code])
             }
@@ -82,13 +85,15 @@ export default class PaymentPage extends BasePage {
         payment.platformPay(password).then((result) => {
             this.setState({ showPwd: false })
             if (result === payStatus.payNeedThrid) {
+                payment.selectedBalace = false
                 this.$navigate('payment/ChannelPage', {remainMoney: Math.floor((payment.amounts - user.availableBalance) * 100) / 100})
                 return
             }
             payment.resetPayment()
             this.setState({
                 showResult: true,
-                payResult: PaymentResult.sucess
+                payResult: PaymentResult.sucess,
+                payMsg: ''
             })
         }).catch(err => {
             this.setState({
@@ -122,11 +127,11 @@ export default class PaymentPage extends BasePage {
         )
     }
 
-    _goToOrder() {
+    _goToOrder(index) {
         let replace = NavigationActions.replace({
             key: this.props.navigation.state.key,
             routeName: 'order/order/MyOrdersListPage',
-            params: { index: 2 }
+            params: { index: index ? index : 1 }
         });
         this.props.navigation.dispatch(replace);
     }
