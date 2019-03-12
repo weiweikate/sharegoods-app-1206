@@ -63,8 +63,8 @@ export default class InviteCodePage extends BasePage {
 
     $navigationBarOptions = {
         title: "",
-        show: true// false则隐藏导航
-
+        show: true,// false则隐藏导航
+        leftNavItemHidden:true,
     };
     _jump = () => {
         bridge.$toast("注册成功");
