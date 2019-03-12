@@ -13,10 +13,11 @@ export default StyleSheet.create({
     textInput: {
         // height: isIos ? 0 : getRealDP(1),
         height:0,
-        width: SW,
+        width: 0,
         position: 'absolute',
         bottom: 0,
-        left: 0
+        left: 0,
+        color:'#fff'
     },
     // 验证码输入框总容器
     verifyContainer: {
@@ -29,7 +30,8 @@ export default StyleSheet.create({
         borderBottomWidth: getRealDP(2),
         alignItems: 'center',
         justifyContent: 'center',
-        borderBottomColor: '#e4e4e4'
+        borderBottomColor: '#e4e4e4',
+
     },
     textInputItemIn: {
         width: getRealDP(120),
