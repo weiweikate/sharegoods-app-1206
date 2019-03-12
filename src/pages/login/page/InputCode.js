@@ -33,7 +33,8 @@ export default class InputCode extends BasePage {
 
     $navigationBarOptions = {
         title: "输入手机号",
-        show: true
+        show: true,
+
     };
 
     componentDidMount() {
