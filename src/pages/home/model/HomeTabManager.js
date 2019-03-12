@@ -5,13 +5,15 @@ class HomeTabManager {
     aboveRecommend = false;
     @observable
     homeFocus = true;
-    @observable
-    nowProgress = 1;
 
     @action
     setAboveRecommend(recommend) {
         this.aboveRecommend = recommend;
-        this.nowProgress = recommend ? 0.5 : 1;
+    }
+
+    @action
+    setHomeFocus(focus) {
+        this.homeFocus = focus;
     }
 }
 
