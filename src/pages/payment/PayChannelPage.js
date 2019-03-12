@@ -69,15 +69,22 @@ export default class ChannelPage extends BasePage {
             if (result.code === payStatus.payNo || result.code === payStatus.payNeedThrid) {
                 if (payment.selctedPayType === paymentType.alipay) {
                     payment.alipay().catch(err => {
-                         Toast.$toast(err.message)
-                         payment.resetPayment()
-                         this._goToOrder()
+                        console.log('alipay err', err, err.code)
+                        if (err.code === 20002) {
+                            Toast.$toast(err.msg)
+                            return
+                        }
+                        payment.resetPayment()
+                        this._goToOrder()
                     })
                 }
                 
                 if (payment.selctedPayType === paymentType.wechat){
                     payment.appWXPay().catch(err => {
-                        Toast.$toast(err.message)
+                        if (err.code === 20002) {
+                            Toast.$toast(err.msg)
+                            return
+                        }
                         payment.resetPayment()
                         this._goToOrder()
                     })
