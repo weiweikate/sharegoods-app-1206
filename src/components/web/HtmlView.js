@@ -1,7 +1,9 @@
 import React from "react";
 import BasePage from "../../BasePage";
 import WebViewBridge from "@mr/webview";
-import { View } from 'react-native';
+import { View,
+    Platform
+} from 'react-native';
 import CommShareModal from "../../comm/components/CommShareModal";
 // import res from '../../comm/res';
 import apiEnvironment from "../../api/ApiEnvironment";
@@ -9,6 +11,7 @@ import RouterMap from "../../navigation/RouterMap";
 import { autorun } from "mobx";
 import user from "../../model/user";
 import { observer } from "mobx-react";
+import DeviceInfo from 'react-native-device-info';
 
 @observer
 export default class RequestDetailPage extends BasePage {
@@ -24,11 +27,25 @@ export default class RequestDetailPage extends BasePage {
         const { uri, title } = params;
         this.canGoBack = false;
         let realUri = "";
+        let platform = Platform.OS;
+        let app_version = DeviceInfo.getVersion();
+        let app_name =  DeviceInfo.getBundleId();
+        let parmasString = "platform="+platform +
+            '&app_version='+app_version+
+            '&app_name='+app_name +
+            "&ts=" + new Date().getTime();
+         //拼参数
         if (uri && uri.indexOf("?") > 0) {
-            realUri = uri + "&ts=" + new Date().getTime();
+            if (uri.charAt(uri.length-1,1) !== '?') {
+                realUri = uri + "&"
+            }else {
+                realUri = uri;
+            }
         } else {
-            realUri = uri + "?ts=" + new Date().getTime();
+            realUri = uri + "?"
         }
+        realUri = realUri + parmasString;
+        //如果没有http，就加上当前h5的域名
         if (realUri.indexOf("http") === -1) {
             realUri = apiEnvironment.getCurrentH5Url() + realUri;
         }
@@ -73,11 +90,11 @@ export default class RequestDetailPage extends BasePage {
                     originWhitelist={["(.*?)"]}
                     source={{ uri: this.state.uri }}
                     navigateAppPage={(r, p) => {
-                            if (r.length > 0) {
-                                let routerKey = r.split("/").pop();
-                                r = RouterMap[routerKey] || r;
-                            }
-                            this.$navigate(r, p);
+                        if (r.length > 0) {
+                            let routerKey = r.split("/").pop();
+                            r = RouterMap[routerKey] || r;
+                        }
+                        this.$navigate(r, p);
                     }}
                     onNavigationStateChange={event => {
                         this.canGoBack = event.canGoBack;
