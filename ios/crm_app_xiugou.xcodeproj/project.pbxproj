@@ -17,6 +17,8 @@
 		0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; };
 		0347BAD62237CD0A0011184A /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC92237CC680011184A /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0347BAD92237CD120011184A /* libLottieReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0347BAC02237CC490011184A /* libLottieReactNative.a */; };
+		0347BB6C2237D1590011184A /* img_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0347BB312237D1590011184A /* img_1.png */; };
+		0347BB6D2237D1590011184A /* img_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 0347BB6B2237D1590011184A /* img_0.png */; };
 		037DBABE21B0E3030003DA18 /* money_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABC21B0E3030003DA18 /* money_0.png */; };
 		037DBABF21B0E3030003DA18 /* money_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABD21B0E3030003DA18 /* money_1.png */; };
 		0386E92E218C59CB00697612 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92D218C59CA00697612 /* libz.tbd */; };
@@ -617,6 +619,8 @@
 		033C66B721927ACB00433026 /* MRBannerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBannerViewManager.m; sourceTree = "<group>"; };
 		0347BABB2237CC480011184A /* LottieReactNative.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LottieReactNative.xcodeproj; path = "../node_modules/lottie-react-native/src/ios/LottieReactNative.xcodeproj"; sourceTree = "<group>"; };
 		0347BAC12237CC670011184A /* Lottie.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lottie.xcodeproj; path = "../node_modules/lottie-ios/Lottie.xcodeproj"; sourceTree = "<group>"; };
+		0347BB312237D1590011184A /* img_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_1.png; sourceTree = "<group>"; };
+		0347BB6B2237D1590011184A /* img_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_0.png; sourceTree = "<group>"; };
 		037DBABC21B0E3030003DA18 /* money_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_0.png; sourceTree = "<group>"; };
 		037DBABD21B0E3030003DA18 /* money_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_1.png; sourceTree = "<group>"; };
 		0386E92D218C59CA00697612 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -1088,6 +1092,8 @@
 		037DBA7C21B0CCD30003DA18 /* animationRes */ = {
 			isa = PBXGroup;
 			children = (
+				0347BB6B2237D1590011184A /* img_0.png */,
+				0347BB312237D1590011184A /* img_1.png */,
 				037DBABC21B0E3030003DA18 /* money_0.png */,
 				037DBABD21B0E3030003DA18 /* money_1.png */,
 			);
@@ -2621,6 +2627,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0347BB6D2237D1590011184A /* img_0.png in Resources */,
 				037DBABF21B0E3030003DA18 /* money_1.png in Resources */,
 				5068361321379B78001AB175 /* AlipaySDK.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -2634,6 +2641,7 @@
 				253FF86C82E44F8EA16F7C6C /* Foundation.ttf in Resources */,
 				037DBABE21B0E3030003DA18 /* money_0.png in Resources */,
 				8006D5FEB4F1442CAF868896 /* Ionicons.ttf in Resources */,
+				0347BB6C2237D1590011184A /* img_1.png in Resources */,
 				DF4AABE386544D87A6FBFFD0 /* MaterialCommunityIcons.ttf in Resources */,
 				69ACA7D3874C47C996A4953D /* MaterialIcons.ttf in Resources */,
 				A91F2FFEF0894EB68A6EC16C /* Octicons.ttf in Resources */,
