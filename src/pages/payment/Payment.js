@@ -23,7 +23,10 @@ export const payStatus = {
     paySuccess: 20807,
     payOutTime: 20808,
     payWait: 20809,
-    payOut: 20801
+    payOut: 20801,
+    payCreate: 20812,
+    payThridClose: 20815,
+    payBalanceChange: 20811
 }
 
 export const payStatusMsg = {
@@ -82,6 +85,9 @@ export class Payment {
             Toast.hiddenLoading()
             return result.data
         } catch (error) {
+            if (error.code === payStatus.payBalanceChange) {
+                payment.updateUserData()
+            }
             Toast.hiddenLoading();
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'errorCause', errorCause: error.msg})
             throw error
