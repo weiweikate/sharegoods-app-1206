@@ -155,7 +155,7 @@ export default class PaymentPage extends BasePage {
                     <Text style={styles.money}>￥{payment.amounts}</Text>
                 </View>
             </View>
-            <TouchableWithoutFeedback disabled={parseInt(availableBalance, 0) === 0} onPress={()=> this._selectedBalance()}>
+            <TouchableWithoutFeedback disabled={availableBalance <= 0} onPress={()=> this._selectedBalance()}>
             <View style={styles.balanceContent}>
                 <Image style={styles.iconBalance} source={res.balance}/>
                 <Text style={styles.text}>现金账户</Text>
