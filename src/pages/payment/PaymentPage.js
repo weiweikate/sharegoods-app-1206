@@ -44,7 +44,6 @@ export default class PaymentPage extends BasePage {
 
     goToPay =()=> {
         payment.checkOrderStatus().then(result => {
-            console.log('checkOrderStatus', result)
             if (result.code === payStatus.payNo) {
                 if (payment.amounts <= 0) {
                     this._zeroPay()
@@ -93,7 +92,8 @@ export default class PaymentPage extends BasePage {
             payment.resetPayment()
             this.setState({
                 showResult: true,
-                payResult: PaymentResult.sucess
+                payResult: PaymentResult.sucess,
+                payMsg: ''
             })
         }).catch(err => {
             this.setState({
