@@ -146,6 +146,7 @@ class HomePage extends BasePage {
             'willFocus',
             payload => {
                 this.homeFocused = true;
+                homeTabManager.setHomeFocus(true);
                 const { state } = payload;
                 if (user.token) {
                     this.loadMessageCount();
@@ -387,17 +388,13 @@ class HomePage extends BasePage {
 
     _onListViewScroll = (event) => {
         let offsetY = event.nativeEvent.contentOffset.y;
-        if (this.toGoods) {
-            this.toGoods.measure((fx, fy, width, height, left, top) => {
-                if (offsetY > ScreenUtils.height && top < scrollDist) {
-                    homeTabManager.setAboveRecommend(true);
-                } else {
-                    homeTabManager.setAboveRecommend(false);
-                }
-            });
-        } else {
-            homeTabManager.setAboveRecommend(false);
-        }
+        this.toGoods && this.toGoods.measure((fx, fy, width, height, left, top) => {
+            if (offsetY > ScreenUtils.height && top < scrollDist) {
+                homeTabManager.setAboveRecommend(true);
+            } else {
+                homeTabManager.setAboveRecommend(false);
+            }
+        });
     };
 
     render() {
