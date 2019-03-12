@@ -558,13 +558,18 @@ export default class MyOrdersListView extends Component {
         let result = await payment.checkOrderStatus(platformOrderNo)
         if (result.code === payStatus.payNo) {
             this.props.nav("payment/PaymentPage", {
-                orderNo: orderNo,
+                orderNum: orderNo,
                 amounts: totalPrice,
                 platformOrderNo: platformOrderNo,
                 orderProductList:orderProduct
             });
         } else if (result.code === payStatus.payNeedThrid) {
-            this.props.nav('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
+            this.props.nav('payment/ChannelPage', {
+                remainMoney: Math.floor(result.thirdPayAmount * 100) / 100,
+                orderNum: orderNo,
+                platformOrderNo: platformOrderNo,
+                orderProductList: orderProduct
+            })
         }  else if (result.code === payStatus.payOut) {
             Toast.$toast(payStatusMsg[result.code])
             let replace = NavigationActions.replace({

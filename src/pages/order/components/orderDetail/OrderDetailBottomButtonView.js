@@ -223,7 +223,9 @@ export default class OrderDetailBottomButtonView extends Component {
         } else if (result.code === payStatus.payNeedThrid) {
             this.props.nav('payment/ChannelPage', {
                 remainMoney: Math.floor(result.thirdPayAmount * 100) / 100,
-                orderProductList: orderDetailModel.warehouseOrderDTOList[0].products
+                orderProductList: orderDetailModel.warehouseOrderDTOList[0].products,
+                orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
+                platformOrderNo: orderDetailModel.platformOrderNo,
             })
         } else if (result.code === payStatus.payOut) {
             Toast.$toast(payStatusMsg[result.code])

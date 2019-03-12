@@ -43,6 +43,16 @@ export default class ChannelPage extends BasePage {
         if (name) {
             payment.name = name
         }
+
+        let platformOrderNo = this.params.platformOrderNo
+        if (platformOrderNo) {
+            payment.platformOrderNo = platformOrderNo
+        }
+
+        let orderNo = this.params.orderNo
+        if (orderNo) {
+            payment.orderNo = orderNo
+        }
     }
 
     componentDidMount() {
