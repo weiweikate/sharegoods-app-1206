@@ -86,7 +86,7 @@ export default class PaymentPage extends BasePage {
             this.setState({ showPwd: false })
             if (result === payStatus.payNeedThrid) {
                 payment.selectedBalace = false
-                this.$navigate('payment/ChannelPage', {remainMoney: Math.floor((payment.amounts - user.availableBalance) * 100) / 100})
+                this.$navigate('payment/ChannelPage', {remainMoney: (payment.amounts - user.availableBalance).toFixed(2)})
                 return
             }
             payment.resetPayment()

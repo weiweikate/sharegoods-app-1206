@@ -66,7 +66,7 @@ export default class ChannelPage extends BasePage {
 
         payment.checkOrderStatus().then(result => {
             console.log('checkOrderStatus', result)
-            if (result.code === payStatus.payNo) {
+            if (result.code === payStatus.payNo || result.code === payStatus.payNeedThrid) {
                 if (payment.selctedPayType === paymentType.alipay) {
                     payment.alipay().catch(err => {
                          Toast.$toast(err.message)
@@ -82,8 +82,6 @@ export default class ChannelPage extends BasePage {
                         this._goToOrder()
                     })
                 }
-            } else if (result.code === payStatus.payNeedThrid) {
-                this.$navigate('payment/ChannelPage', {remainMoney: Math.floor(result.thirdPayAmount * 100) / 100})
             } else if (result.code === payStatus.payOut) {
                 Toast.$toast(payStatusMsg[result.code])
                 this._goToOrder(2)
