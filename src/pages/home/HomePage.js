@@ -167,6 +167,7 @@ class HomePage extends BasePage {
             'willBlur',
             payload => {
                 this.homeFocused = false;
+                homeTabManager.setHomeFocus(false);
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
                     this.guideModal.cancelUserRecord();
@@ -178,6 +179,7 @@ class HomePage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
+                homeTabManager.setHomeFocus(true);
                 this.homeFocused = true;
                 this.showModal();
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
