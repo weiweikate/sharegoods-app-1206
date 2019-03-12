@@ -78,19 +78,27 @@ class MyOrdersListPage extends BasePage {
                 initialPage={parseInt(this.state.index)}>
                 <MyOrdersListView
                     tabLabel={'全部'} pageStatus={0} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
-                    nav={this.$navigate}/>
+                    nav={this.$navigate}
+                    navigation={this.props.navigation}
+                    />
                 <MyOrdersListView
                     tabLabel={'待付款'} pageStatus={1} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
-                    nav={this.$navigate}/>
+                    nav={this.$navigate}
+                    navigation={this.props.navigation}
+                    />
                 <MyOrdersListView
                     tabLabel={'待发货'} pageStatus={2} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
-                    nav={this.$navigate}/>
+                    nav={this.$navigate}
+                    navigation={this.props.navigation}
+                    />
                 <MyOrdersListView
                     tabLabel={'待收货'} pageStatus={3} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
-                    nav={this.$navigate}/>
+                    nav={this.$navigate}
+                    navigation={this.props.navigation}/>
                 <MyOrdersListView
                     tabLabel={'待晒单'} pageStatus={4} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
-                    nav={this.$navigate}/>
+                    nav={this.$navigate}
+                    navigation={this.props.navigation}/>
             </ScrollableTabView>
         );
     }

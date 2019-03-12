@@ -130,8 +130,7 @@ export default class ShowBannerView extends Component {
 let styles = StyleSheet.create({
     container: {
         height: px2dp(200),
-        marginTop: px2dp(10),
-        width: ScreenUtils.width
+        width: ScreenUtils.width,
     },
     scroll: {
         height: px2dp(175)
