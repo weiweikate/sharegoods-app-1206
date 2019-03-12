@@ -11,6 +11,8 @@ import res from "../res";
 import RouterMap from "../../../navigation/RouterMap";
 import { isCanPhoneAuthen } from "../model/PhoneAuthenAction";
 import { wxLoginAction } from "../model/LoginActionModel";
+// import CommNavigation from "../../../comm/components/CommNavigation";
+// import { MRText } from "../../../components/ui";
 
 const {
     other: {
@@ -45,7 +47,6 @@ export default class Login extends BasePage {
                 this.$loadingDismiss();
                 if (
                     result.isCanAuthen === 1
-                    && result.phoneNum.length > 0
                 ) {
                     this.setState({
                         canPhoneAuthen: true,
@@ -79,6 +80,15 @@ export default class Login extends BasePage {
                             source={tongyong_logo_nor}
                         />
                     </View>
+                    {/*<CommNavigation>*/}
+                        {/*<MRText>*/}
+                            {/*value 1*/}
+                        {/*</MRText>*/}
+                        {/*<MRText>*/}
+                            {/*value 2*/}
+                        {/*</MRText>*/}
+
+                    {/*</CommNavigation>*/}
                 </View>
 
                 {/*中部视图*/}

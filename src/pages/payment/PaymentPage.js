@@ -36,6 +36,7 @@ export default class PaymentPage extends BasePage {
         payment.name = orderProduct && orderProduct.productName
         payment.orderNo = this.params.orderNum;
         payment.platformOrderNo = this.params.platformOrderNo;
+        user.updateUserData()
     }
 
     $NavBarLeftPressed = () => {
@@ -86,7 +87,7 @@ export default class PaymentPage extends BasePage {
             this.setState({ showPwd: false })
             if (result === payStatus.payNeedThrid) {
                 payment.selectedBalace = false
-                this.$navigate('payment/ChannelPage', {remainMoney: Math.floor((payment.amounts - user.availableBalance) * 100) / 100})
+                this.$navigate('payment/ChannelPage', {remainMoney: (payment.amounts - user.availableBalance).toFixed(2)})
                 return
             }
             payment.resetPayment()
@@ -155,7 +156,7 @@ export default class PaymentPage extends BasePage {
                     <Text style={styles.money}>￥{payment.amounts}</Text>
                 </View>
             </View>
-            <TouchableWithoutFeedback disabled={parseInt(availableBalance, 0) === 0} onPress={()=> this._selectedBalance()}>
+            <TouchableWithoutFeedback disabled={availableBalance <= 0} onPress={()=> this._selectedBalance()}>
             <View style={styles.balanceContent}>
                 <Image style={styles.iconBalance} source={res.balance}/>
                 <Text style={styles.text}>现金账户</Text>

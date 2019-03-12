@@ -25,7 +25,6 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModal from './VersionUpdateModal';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from '../../constants/DesignRule';
-import TimerMixin from 'react-timer-mixin';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
@@ -223,18 +222,16 @@ class HomePage extends BasePage {
     };
 
     _homeModaldata = () => {
-        TimerMixin.setTimeout(() => {
-            // 检测版本更新
-            // this.getVersion();
-            homeModalManager.getVersion().then((data) => {
-                homeModalManager.getMessage().then(data => {
-                    if (!this.props.isFocused) {
-                        return;
-                    }
-                    this.showModal();
-                });
+        // 检测版本更新
+        // this.getVersion();
+        homeModalManager.getVersion().then((data) => {
+            homeModalManager.getMessage().then(data => {
+                if (!this.props.isFocused) {
+                    return;
+                }
+                this.showModal();
             });
-        }, 2500);
+        });
     };
 
     loadMessageCount = () => {
@@ -452,6 +449,7 @@ class HomePage extends BasePage {
                             callback={() => {
                                 this.recyclerListView && this.recyclerListView.scrollToTop();
                             }}
+                            versionUpdate={this.state.showUpdate}
                 />
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
