@@ -387,9 +387,12 @@ class HomePage extends BasePage {
     };
 
     _onListViewScroll = (event) => {
+        if (!this.props.isFocused) {
+            return;
+        }
         let offsetY = event.nativeEvent.contentOffset.y;
-        this.toGoods && this.toGoods.measure((fx, fy, width, height, left, top) => {
-            if (offsetY > ScreenUtils.height && top < scrollDist) {
+        this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
+            if (offsetY > height && top < scrollDist) {
                 homeTabManager.setAboveRecommend(true);
             } else {
                 homeTabManager.setAboveRecommend(false);
@@ -416,7 +419,7 @@ class HomePage extends BasePage {
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
-                    scrollEventThrottle={200}
+                    scrollEventThrottle={100}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}

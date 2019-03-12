@@ -71,7 +71,7 @@ class HomeTab extends Component {
             return <Tab normalSource={res.tab.home_n} title={'首页'}/>;
         }
         return (
-            <ImageBackground style={styles.home} source={res.tab.home_s_bg} focus={homeTabManager.homeFocus}>
+            <ImageBackground style={styles.home} source={res.tab.home_s_bg}>
                 <Animation
                     ref={animation => {
                         this.animation = animation;
@@ -85,13 +85,13 @@ class HomeTab extends Component {
     }
 
     observeAboveRecommend = autorun(() => {
-        const { aboveRecommend, homeFocus } = homeTabManager;
-        this.animation && (aboveRecommend && homeFocus ? this.animation.play(0, 7) : this.animation.play(10, 17));
+        const { aboveRecommend } = homeTabManager;
+        this.animation && (aboveRecommend ? this.animation.play(0, 7) : this.animation.play(10, 17));
     });
 
     componentDidUpdate(prevProps) {
         const { aboveRecommend } = homeTabManager;
-        this.animation && (aboveRecommend ? this.animation.play(7, 7) : this.animation.play(17, 17));
+        this.animation && (this.animation.setNativeProps({ progress: aboveRecommend ? 0.5 : 1 }));
     }
 }
 
