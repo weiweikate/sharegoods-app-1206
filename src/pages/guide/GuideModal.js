@@ -328,6 +328,7 @@ export default class GuideModal extends React.Component {
     render() {
         return (
             <CommModal
+                focusable={true}
                 ref={(ref) => {this.modal = ref}}
                 visible={this.state.visible && this.state.isHome}
             >
