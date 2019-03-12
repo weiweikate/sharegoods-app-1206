@@ -36,6 +36,7 @@ export default class PaymentPage extends BasePage {
         payment.name = orderProduct && orderProduct.productName
         payment.orderNo = this.params.orderNum;
         payment.platformOrderNo = this.params.platformOrderNo;
+        user.updateUserData()
     }
 
     $NavBarLeftPressed = () => {
