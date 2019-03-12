@@ -102,7 +102,7 @@ export default class MyHelperPage extends BasePage {
         console.log('renderBodyView', helperIcon)
         return (
             <View style={{ flex: 1 }}>
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ backgroundColor: DesignRule.bgColor }}>
                         <ImageLoad source={{ uri: helperIcon }}
                                    style={{ width: ScreenUtils.width, height: ScreenUtils.px2dp(71) }}
