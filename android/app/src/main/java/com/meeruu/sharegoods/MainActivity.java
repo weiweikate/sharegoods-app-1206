@@ -27,6 +27,7 @@ import com.facebook.imagepipeline.image.CloseableImage;
 import com.meeruu.commonlib.base.BaseActivity;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.Utils;
@@ -120,6 +121,7 @@ public class MainActivity extends BaseActivity {
             }
         }, 3000);
         String hostJson = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
+        LogUtils.d("json====" + hostJson);
         if (!TextUtils.isEmpty(hostJson)) {
             JSONObject object = JSON.parseObject(hostJson);
             ossHost = object.getString("oss");
@@ -184,6 +186,7 @@ public class MainActivity extends BaseActivity {
                         ((ViewStub) findViewById(R.id.vs_adv)).inflate();
                         ivAdv = findViewById(R.id.iv_adv);
                         String url = ossHost + "/app/start_adv.png?" + System.currentTimeMillis();
+                        LogUtils.d("url====" + url);
                         ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
                                 ScalingUtils.ScaleType.FIT_CENTER);
                         ivAdvBg = findViewById(R.id.iv_adv_bg);
