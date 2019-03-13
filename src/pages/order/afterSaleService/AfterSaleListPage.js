@@ -27,6 +27,7 @@ import {
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import RefreshFlatList from '../../../comm/components/RefreshFlatList';
+
 const {
     afterSaleService: {
         icon_refund,
@@ -88,7 +89,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
 
     renderItem({ item }) {
         return (
-            <View style={{height: 160}}>
+            <View style={{ height: 160 }}>
                 <View style={{ height: 10 }}/>
                 <GoodsGrayItem
                     uri={item.specImg}
@@ -96,7 +97,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     salePrice={StringUtils.formatMoneyString(item.unitPrice)}
                     category={item.spec}
                     goodsNum={item.quantity}
-                    style={{backgroundColor: DesignRule.white}}
+                    style={{ backgroundColor: DesignRule.white }}
                     // onPress={() => this.jumpToProductDetailPage()}
                 />
                 <View style={{
@@ -150,7 +151,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
     _render() {
         let params = {};
         if (this.params.type === 'search') {
-            params = { searchKey: this.params.condition};
+            params = { searchKey: this.params.condition };
         } else {
             params = {};
         }
@@ -162,8 +163,12 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     url={orderApi.afterSaleList}
                     renderItem={this.renderItem}
                     params={params}
-                    totalPageNum={(result)=> {return result.data.isMore ? 10 : 0}}
-                    handleRequestResult={(result)=>{return result.data.list}}
+                    totalPageNum={(result) => {
+                        return result.data.isMore ? 10 : 0;
+                    }}
+                    handleRequestResult={(result) => {
+                        return result.data.list;
+                    }}
                     // ref={(ref) => {this.list = ref}}
                 />
             </View>
@@ -185,8 +190,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 30,
         width: 80,
-        borderWidth: DesignRule.lineHeight,
-        borderColor: DesignRule.lineColor_inWhiteBg,
+        borderWidth: 0.5,
+        borderColor: DesignRule.lineColor_inGrayBg,
         borderRadius: 15,
         marginRight: 15
     },

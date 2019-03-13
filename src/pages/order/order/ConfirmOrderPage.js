@@ -140,15 +140,21 @@ export default class ConfirmOrderPage extends BasePage {
         }
         confirmOrderModel.canCommit = false;
         confirmOrderModel.submitProduct(this.params.orderParamVO, {
+            
             callback: (data) => {
+                console.log('submitProduct', data)
+
                 let replace = NavigationActions.replace({
                     key: this.props.navigation.state.key,
-                    routeName: 'payment/PaymentMethodPage',
+                    routeName: 'payment/PaymentPage',
                     params: {
                         orderNum: data.orderNo,
                         amounts: data.payAmount,
-                        pageType: 0
-                    }
+                        pageType: 0,
+                        orderProductList: data.orderProductList,
+                        outTradeNo: data.orderNo,
+                        platformOrderNo: data.platformOrderNo
+                    },
                 });
                 this.props.navigation.dispatch(replace);
             }
@@ -195,6 +201,7 @@ export default class ConfirmOrderPage extends BasePage {
                             this.loadPageData(params);
                         }, 0);
                     } else if (data === 'giveUp') {
+                        confirmOrderModel.giveUpCou= true;
                         confirmOrderModel.userCouponCode = null;
                         confirmOrderModel.couponName = null;
                         confirmOrderModel.tokenCoin = 0;

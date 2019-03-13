@@ -99,7 +99,7 @@ class AfterSaleServiceHomePage extends BasePage {
         console.log('renderSelect',this.params.pageData);
         let image = [refund, return_goods, exchange];
         let title = ['退款', '退货退款', '换货'];
-        let content = ['未收到货（包含未签收）', '已收到货，需要退换已收到的货物', '需要更换货'];
+        let content = ['未收到货', '已收到货，需要退换已收到的货物', '需要更换货'];
         // 1 2 4 8 16 分别代表不支持优惠券、一元、换货、退货
         // let status = [4, 16, 8];
         // let productData = this.params.pageData || {}
@@ -209,7 +209,7 @@ class AfterSaleServiceHomePage extends BasePage {
                 break;
 
             case 99://普通商品
-                this.$navigate('home/product/ProductDetailPage', { productId: productData.productId });
+                this.$navigate('product/ProductDetailPage', { productId: productData.productId });
                 break;
             default:
                 break;

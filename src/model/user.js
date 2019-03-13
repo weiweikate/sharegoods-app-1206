@@ -23,6 +23,12 @@ class User {
         return (this.realnameStatus + '') === '1';
     }
 
+    @computed
+    get userLevelNumber() {
+        return this.levelRemark;
+    }
+
+    @observable info = null;
     @observable
     unionid=null;
     @observable
@@ -108,6 +114,8 @@ class User {
     @observable
     storeCode = null;         //
     @observable
+    storeStatus = null;         //
+    @observable
     roleType = null;        //
     @observable
     level = null;           //
@@ -159,6 +167,8 @@ class User {
 
     @observable
     upCode = null;
+
+    finishGuide = false;
 
     //用户靓号
     @observable
@@ -216,6 +226,7 @@ class User {
         if (!info) {
             return;
         }
+        this.info = info;
         this.unionid = info.unionid;
         this.id = info.id;                          //用户id
         this.code = info.code;                      //授权码
@@ -256,6 +267,7 @@ class User {
         this.encryptionCount = info.encryptionCount;//加密次数
         this.pickedUp = info.pickedUp;              //
         this.storeCode = info.storeCode;                //
+        this.storeStatus = info.storeStatus;                //
         this.roleType = info.roleType;              //
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
@@ -275,6 +287,7 @@ class User {
         this.levelCeil = info.levelCeil; //升级需要的经验值
         this.profile = info.profile;
         this.upCode = info.upCode;
+        this.finishGuide = false;
         //用户靓号
         this.perfectNumberCode = info.perfectNumberCode;
         if (saveToDisk) {
@@ -369,6 +382,7 @@ class User {
         this.encryptionCount = 0;    //加密次数
         this.pickedUp = null;        //
         this.storeCode = null;         //
+        this.storeStatus = null;
         this.roleType = null;        //
         this.level = null;           //
         this.levelName = null;       //
@@ -387,6 +401,7 @@ class User {
         this.levelFloor = null;
         this.profile = null; //简介
         this.upCode = null;
+        this.finishGuide = false;
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
         // AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
@@ -442,10 +457,15 @@ class User {
     luckyDraw() {
         UserApi.luckyDraw();
     }
+
+    @action finishGiudeAction() {
+        this.finishGuide = true;
+    }
 }
 
 const user = new User();
 autorun(() => {
    user.token ? shopCartCacheTool.synchronousData() : null;
+
 });
 export default user;

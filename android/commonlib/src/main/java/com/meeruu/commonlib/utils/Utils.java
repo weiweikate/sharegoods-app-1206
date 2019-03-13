@@ -1,5 +1,7 @@
 package com.meeruu.commonlib.utils;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -137,5 +139,17 @@ public class Utils {
             context = ((ContextWrapper) context).getBaseContext();
         }
         return null;
+    }
+
+    /**
+     * 给CheckBox加点击动画，利用开源库nineoldandroids设置动画
+     */
+    public static void addAnimation(View view) {
+        float[] vaules = new float[]{0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.3f, 1.25f, 1.2f, 1.15f, 1.1f, 1.0f};
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(ObjectAnimator.ofFloat(view, "scaleX", vaules),
+                ObjectAnimator.ofFloat(view, "scaleY", vaules));
+        set.setDuration(150);
+        set.start();
     }
 }

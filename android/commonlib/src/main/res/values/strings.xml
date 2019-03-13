@@ -26,4 +26,7 @@
     <string name="pickerview_hours">时</string>
     <string name="pickerview_minutes">分</string>
     <string name="pickerview_seconds">秒</string>
+    <string name="choose_pic">选择图片</string>
+    <string name="move_and_zoom">移动和缩放</string>
+    <string name="take_photo">拍摄照片</string>
 </resources>

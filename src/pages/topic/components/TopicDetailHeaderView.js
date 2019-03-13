@@ -21,7 +21,7 @@ import {
 // const { px2dp } = ScreenUtils;
 import res from '../res';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
-import DetailHeaderScoreView from '../../home/product/components/DetailHeaderScoreView';
+import DetailHeaderScoreView from '../../product/components/DetailHeaderScoreView';
 import RES from '../../../comm/res';
 
 const xjt_03 = res.xjt_03;

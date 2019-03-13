@@ -2,7 +2,7 @@
  * 今日榜单
  */
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
@@ -10,80 +10,172 @@ import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import { todayModule } from './HomeTodayModel';
 import DesignRule from '../../constants/DesignRule';
-import ImageLoad from '@mr/image-placeholder';
+import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 import { MRText as Text } from '../../components/ui';
 
-const TodayItem = ({ item, press }) => <TouchableOpacity style={styles.item} onPress={() => press && press()}>
-    <ImageLoad style={styles.img} source={{ uri: item.imgUrl }}/>
-</TouchableOpacity>;
+
+export const todayHeight = px2dp(240);
 
 @observer
 export default class HomeTodayView extends Component {
-    _todayItemAction(item) {
-        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-        let params = homeModule.paramsNavigate(item);
-        const { navigate } = this.props;
-        navigate && navigate(router, { ...params, preseat: '今日榜单' });
+
+    state = {
+        index: 0
+    };
+
+    _onPressRow(e) {
+        let index = e.nativeEvent.index;
+        const { todayList } = todayModule;
+        let item = todayList[index];
+        if (item) {
+            let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
+            const { navigate } = this.props;
+            let params = homeModule.paramsNavigate(item);
+            navigate(router, { ...params, preseat: 'home_today' });
+        }
+    }
+
+    _onDidScrollToIndex(e) {
+        this.setState({ index: e.nativeEvent.index });
+    }
+
+    renderIndexView() {
+        const { index } = this.state;
+        const { todayList } = todayModule;
+        let items = [];
+        for (let i = 0; i < todayList.length; i++) {
+            if (index === i) {
+                items.push(<View key={i} style={styles.activityIndex}/>);
+            } else {
+                items.push(<View key={i} style={styles.index}/>);
+            }
+        }
+        return <View style={styles.indexView}>
+            {items}
+        </View>;
     }
 
     render() {
         const { todayList } = todayModule;
+
+        // 此处需返回null，否则指示器有问题
+        if (todayList.length === 0) {
+            return null;
+        }
+
         let items = [];
         todayList.map((item, index) => {
-            items.push(<TodayItem key={index} item={item} press={() => this._todayItemAction(item)}/>);
+            items.push(item.imgUrl);
         });
-        return <View>
+
+        return <View style={styles.container}>
+            <View style={styles.titleView}>
+                <View style={styles.flag}/>
+                <Text style={styles.title}>今日榜单</Text>
+            </View>
             {
-                items.length > 0
+                todayList.length === 1
                     ?
-                    <View style={styles.container}>
-                        <View style={styles.titleView}>
-                            <Text style={styles.title} allowFontScaling={false}>今日榜单</Text>
+                    <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(todayList[0])}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            {this.renderRow(todayList[0])}
                         </View>
-                        <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-                            <View style={{ width: px2dp(4) }}/>
-                            {items}
-                            <View style={styles.space}/>
-                        </ScrollView>
-                    </View>
+                    </TouchableWithoutFeedback>
                     :
-                    null
+                    <MRBannerView
+                        style={{
+                            height: px2dp(160),
+                            width: ScreenUtil.width - px2dp(30)
+                        }}
+                        imgUrlArray={items}
+                        itemWidth={px2dp(295)}
+                        itemSpace={px2dp(10)}
+                        itemRadius={5}
+                        pageFocused={this.props.pageFocused}
+                        onDidSelectItemAtIndex={(e) => {
+                            this._onPressRow(e);
+                        }}
+                        onDidScrollToIndex={(e) => {
+                            this._onDidScrollToIndex(e);
+                        }}
+                    />
             }
+            {this.renderIndexView()}
         </View>;
     }
 }
 
 let styles = StyleSheet.create({
     container: {
-        height: px2dp(243),
-        backgroundColor: '#fff',
-        width: ScreenUtil.width
+        height: px2dp(225),
+        marginTop: px2dp(15),
+        marginLeft: px2dp(15),
+        marginRight: px2dp(15),
+        width: ScreenUtil.width - px2dp(30),
+        borderRadius: (5),
+        overflow: 'hidden',
+        backgroundColor: 'white'
+    },
+    flag: {
+        backgroundColor: DesignRule.mainColor,
+        width: px2dp(2),
+        height: px2dp(8)
     },
     titleView: {
-        height: px2dp(53),
-        alignItems: 'center',
-        justifyContent: 'center'
+        height: px2dp(42),
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     title: {
-        color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(19),
+        color: DesignRule.textColor_secondTitle,
+        fontSize: px2dp(16),
+        marginLeft: px2dp(10),
         fontWeight: '600'
     },
     scroll: {
         height: px2dp(175)
     },
     img: {
-        width: px2dp(300),
-        height: px2dp(175)
+        width: px2dp(280),
+        height: px2dp(140)
+    },
+    imgView: {
+        width: px2dp(280),
+        height: px2dp(140),
+        borderRadius: px2dp(5),
+        overflow: 'hidden'
     },
     item: {
-        width: px2dp(300),
-        height: px2dp(175),
-        borderRadius: px2dp(5),
-        overflow: 'hidden',
+        width: px2dp(280),
+        height: px2dp(145),
         marginLeft: px2dp(10)
     },
     space: {
         width: px2dp(15)
+    },
+    text: {
+        color: DesignRule.textColor_secondTitle,
+        fontSize: px2dp(13),
+        marginTop: px2dp(10)
+    },
+    indexView: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: px2dp(10)
+    },
+    activityIndex: {
+        width: px2dp(10),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: DesignRule.mainColor,
+        margin: 2
+    },
+    index: {
+        width: px2dp(5),
+        height: px2dp(3),
+        borderRadius: px2dp(1.5),
+        backgroundColor: DesignRule.lineColor_inWhiteBg,
+        margin: 2
     }
 });
