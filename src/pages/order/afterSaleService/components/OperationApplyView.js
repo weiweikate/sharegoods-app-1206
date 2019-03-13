@@ -53,11 +53,11 @@ export default class OperationApplyView extends React.Component {
                     <TouchableOpacity onPress={cancelPress}
                                       style={[
                                           styles.borderButton,
-                                          { borderColor: DesignRule.textColor_secondTitle }]}>
+                                          { borderColor: DesignRule.textColor_instruction }]}>
                         <UIText value={'撤销申请'}
                                 style={{
                                     fontSize: 16,
-                                    color: DesignRule.textColor_secondTitle
+                                    color: DesignRule.textColor_instruction
                                 }}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={changePress}
@@ -78,16 +78,16 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         height: 110,
-        marginBottom: 10,
+        marginBottom: 10
     },
     title: {
         height: 45,
-        borderBottomWidth: 1,
-        borderBottomColor: DesignRule.lineColor_inGrayBg,
+        borderBottomWidth: 0.5,
+        borderBottomColor: DesignRule.lineColor_inWhiteBg,
         justifyContent: 'center'
     },
     borderButton: {
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: DesignRule.mainColor,
         borderRadius: 5,
         height: 30,
