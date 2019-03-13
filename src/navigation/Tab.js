@@ -78,7 +78,6 @@ class HomeTab extends Component {
                     }}
                     style={styles.home}
                     loop={false}
-                    progress={homeTabManager.aboveRecommend ? 7 / 17 : 1}
                     imageAssetsFolder={'lottie/home'}
                     source={require('./tab_to_top.json')}/>
             </ImageBackground>
@@ -89,6 +88,11 @@ class HomeTab extends Component {
         const { aboveRecommend } = homeTabManager;
         this.animation && (aboveRecommend ? this.animation.play(0, 7) : this.animation.play(10, 17));
     });
+
+    componentDidUpdate(prevProps) {
+        const { aboveRecommend } = homeTabManager;
+        this.animation && (this.animation.setNativeProps({ progress: aboveRecommend ? 0.5 : 1 }));
+    }
 }
 
 const ShowFlag = () => <View style={styles.shopFlag}>

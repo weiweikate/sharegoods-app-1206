@@ -34,9 +34,7 @@ import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview
 import { adModules } from './HomeAdModel';
 import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
-import { bannerModule } from './HomeBannerModel';
 import { subjectModule } from './HomeSubjectModel';
-import { categoryModule } from './HomeCategoryModel';
 import HomeTitleView from './HomeTitleView';
 import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
@@ -81,15 +79,15 @@ class HomePage extends BasePage {
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
         const { subjectHeight } = subjectModule;
-        const { bannerList } = bannerModule;
-        const { categoryList } = categoryModule;
+        // const { bannerList } = bannerModule;
+        // const { categoryList } = categoryModule;
 
         switch (type) {
             case homeType.category:
-                dim.height = categoryList.length > 0 ? categoryHeight : 0;
+                dim.height =  categoryHeight;
                 break;
             case homeType.swiper:
-                dim.height = bannerList.length > 0 ? bannerHeight : 0;
+                dim.height = bannerHeight;
                 break;
             case homeType.classify:
                 dim.height = kHomeClassifyHeight;
@@ -146,6 +144,7 @@ class HomePage extends BasePage {
             'willFocus',
             payload => {
                 this.homeFocused = true;
+                homeTabManager.setHomeFocus(true);
                 const { state } = payload;
                 if (user.token) {
                     this.loadMessageCount();
@@ -386,18 +385,17 @@ class HomePage extends BasePage {
     };
 
     _onListViewScroll = (event) => {
-        let offsetY = event.nativeEvent.contentOffset.y;
-        if (this.toGoods) {
-            this.toGoods.measure((fx, fy, width, height, left, top) => {
-                if (offsetY > ScreenUtils.height && top < scrollDist) {
-                    homeTabManager.setAboveRecommend(true);
-                } else {
-                    homeTabManager.setAboveRecommend(false);
-                }
-            });
-        } else {
-            homeTabManager.setAboveRecommend(false);
+        if (!this.props.isFocused) {
+            return;
         }
+        let offsetY = event.nativeEvent.contentOffset.y;
+        this.toGoods && this.toGoods.measure((fx, fy, w, h, left, top) => {
+            if (offsetY > height && top < scrollDist) {
+                homeTabManager.setAboveRecommend(true);
+            } else {
+                homeTabManager.setAboveRecommend(false);
+            }
+        });
     };
 
     render() {
@@ -419,7 +417,7 @@ class HomePage extends BasePage {
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
-                    scrollEventThrottle={200}
+                    scrollEventThrottle={100}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}

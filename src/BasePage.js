@@ -37,7 +37,7 @@ export default class BasePage extends Component {
 
     $navigationBarOptions = {
         title: '',
-        show: true
+        show: true,
     };
 
     componentDidMount() {
