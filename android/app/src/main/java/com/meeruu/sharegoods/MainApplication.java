@@ -10,7 +10,6 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -39,6 +38,7 @@ import com.psykar.cookiemanager.CookieManagerPackage;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.reactlibrary.RNGeolocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.request.MRNetStatePackage;
 import com.sensorsdata.analytics.RNSensorsAnalyticsPackage;
 import com.squareup.leakcanary.LeakCanary;
@@ -95,6 +95,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
     public void onCreate() {
         if (packageName.equals(getPackageName())) {
             super.onCreate();
+            Fresco.initialize(getApplicationContext(),
+                    FrescoImagePipelineConfig.getDefaultImagePipelineConfig(getApplicationContext()));
             // 延迟三方sdk初始化
             mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT_DELAY, 2000);
             // 检测内存泄漏
@@ -187,8 +189,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
      * do you init action here
      */
     private void performInit() {
-        Fresco.initialize(getApplicationContext(),
-                FrescoImagePipelineConfig.getDefaultImagePipelineConfig(getApplicationContext()));
         SoLoader.init(getApplicationContext(), /* native exopackage */ false);
         // umeng初始化
         String channel = WalleChannelReader.getChannel(getApplicationContext(), "guanwang");
