@@ -17,8 +17,10 @@ import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from '../../constants/DesignRule';
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
-import { track } from '../../utils/SensorsTrack';
+import { track } from "../../utils/SensorsTrack";
 import bridge from '../../utils/bridge';
+import { MRText } from "../../components/ui";
+import CommShareModal from "../../comm/components/CommShareModal";
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -32,13 +34,24 @@ export default class DownPricePage extends BasePage {
         super(props);
         this.dataModel = new TotalTopicDataModel();
         this.state = {
-            selectNav: 0
+            selectNav: 0,
         };
         //初次进入loading
         if (this.dataModel.isShowLoading) {
             bridge.showLoading('加载中');
             this.dataModel.isShowLoading = false;
         }
+    }
+    $NavBarRenderRightItem=()=>{
+        return(
+            <MRText
+                onPress={()=>{
+                    this.shareModal.open();
+                }}
+            >
+                分享
+            </MRText>
+        )
     }
 
     componentDidMount() {
@@ -231,6 +244,16 @@ export default class DownPricePage extends BasePage {
                 {
                     this._renderBottomListView(sectionData)
                 }
+
+
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                webJson={{
+                                    title: '分享好友免费领取福利',
+                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    linkUrl: 'http://172.16.10.131:9528/subject/ZT2018000002',
+                                    thumImage: 'logo.png'
+                                }}
+                />
             </ScrollView>
         );
     }

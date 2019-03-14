@@ -15,6 +15,7 @@ import DeviceInfo from "react-native-device-info/deviceinfo";
 import { DeviceEventEmitter } from "react-native";
 import RouterMap from "../../../navigation/RouterMap";
 import { NavigationActions } from "react-navigation";
+// import {track} from '../../../utils/SensorsTrack'
 
 /**
  * @param phone 校验手机号
@@ -101,6 +102,7 @@ const getWxUserInfo = (callback) => {
  * @param callBack
  */
 const wxLoginAction = (callBack) => {
+
     getWxUserInfo((data) => {
         LoginAPI.appWechatLogin({
             device: data.device,
