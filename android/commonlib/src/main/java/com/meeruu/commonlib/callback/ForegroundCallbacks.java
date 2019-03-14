@@ -53,18 +53,12 @@ public class ForegroundCallbacks implements Application.ActivityLifecycleCallbac
             if (appCtx instanceof Application) {
                 init((Application) appCtx);
             }
-            throw new IllegalStateException(
-                    "Foreground is not initialised and " +
-                            "cannot obtain the Application object");
         }
         return instance;
     }
 
     public static ForegroundCallbacks get() {
         if (instance == null) {
-            throw new IllegalStateException(
-                    "Foreground is not initialised - invoke " +
-                            "at least once with parameterised init/get");
         }
         return instance;
     }

@@ -94,8 +94,13 @@ export default class ChannelPage extends BasePage {
                 
                 if (payment.selctedPayType === paymentType.wechat){
                     payment.appWXPay().catch(err => {
+                        console.log('wexin err', err, err.code)
                         if (err.code === 20002) {
                             Toast.$toast(err.msg)
+                            return
+                        }
+                        if (err.message === '请安装微信后完成支付') {
+                            Toast.$toast(err.message)
                             return
                         }
                         payment.resetPayment()

@@ -84,7 +84,7 @@ class HomePage extends BasePage {
 
         switch (type) {
             case homeType.category:
-                dim.height =  categoryHeight;
+                dim.height = categoryHeight;
                 break;
             case homeType.swiper:
                 dim.height = bannerHeight;
@@ -417,7 +417,7 @@ class HomePage extends BasePage {
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
-                    scrollEventThrottle={100}
+                    scrollEventThrottle={200}
                     onEndReachedThreshold={ScreenUtils.height / 2}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}

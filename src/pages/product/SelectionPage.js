@@ -66,7 +66,8 @@ export default class SelectionPage extends Component {
             propData: propData,
             specMap: specMapTemp,
             priceList: priceListTemp,
-            tittleList: tittleList
+            tittleList: tittleList,
+            amount: 1
         }, () => {
             this._indexCanSelectedItems();
 

@@ -80,7 +80,7 @@ class ConfirmOrderModel {
                     orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
                     // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source: orderParamVO.source,//1.购物车 2.直接下单
-                    systemVersion:310,
+                    sgAppVersion:310,
                      // couponsId:orderParamVO.source===4?(this.giveUpCou||params.userCouponCode?null:orderParamVO.couponsId):null,
                     couponsId: orderParamVO.couponsId,
                     // source: 4,//1.购物车 2.直接下单,4 周期券
@@ -271,7 +271,7 @@ class ConfirmOrderModel {
                     orderType: 1,
                     source:  orderParamVO.source,
                     channel: 2,
-                    systemVersion:310,
+                    sgAppVersion:310,
                     couponsId: orderParamVO.couponsId,
                 };
                 OrderApi.submitOrder(paramsnor).then((response) => {
