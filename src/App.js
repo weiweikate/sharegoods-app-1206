@@ -65,12 +65,16 @@ class App extends Component {
     constructor(props) {
         super(props);
         if (Platform.OS !== 'ios') {
-            codePush.sync({
-                updateDialog: false,
-                installMode: codePush.InstallMode.ON_NEXT_RESTART,
+            bridge.getAPKChannel().then((data)=>{
+                if(data === '_360'){
+                    codePush.sync({
+                        updateDialog: false,
+                        installMode: codePush.InstallMode.ON_NEXT_RESTART,
+                    })
+                }
             })
         }
-    
+
         this.state = {
             load: false,
             showOldBtn: false,
