@@ -123,8 +123,8 @@ public class MainActivity extends BaseActivity {
         if (!TextUtils.isEmpty(hostJson)) {
             JSONObject object = JSON.parseObject(hostJson);
             ossHost = object.getString("oss");
-            Uri uri = Uri.parse(ossHost + "/app/start_adv_bg.png?" + System.currentTimeMillis());
-            LoadingAdv(uri);
+            String url = ossHost + "/app/start_adv_bg.png?" + System.currentTimeMillis();
+            LoadingAdv(url);
         } else {
             hasAdResp = true;
             mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
@@ -140,9 +140,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void LoadingAdv(Uri uri) {
+    private void LoadingAdv(final String url) {
         if (Fresco.hasBeenInitialized()) {
-            ImageLoadUtils.downloadImage(uri, new BaseBitmapDataSubscriber() {
+            ImageLoadUtils.downloadImage(Uri.parse(url), new BaseBitmapDataSubscriber() {
 
                 @Override
                 protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity {
                         return;
                     }
                     Message msg = Message.obtain();
-                    msg.obj = bitmap;
+                    msg.obj = url;
                     msg.what = ParameterUtils.TIMER_START;
                     mHandler.sendMessage(msg);
                 }
@@ -182,16 +182,14 @@ public class MainActivity extends BaseActivity {
                         //有广告时延迟时间增加
                         mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
                         ((ViewStub) findViewById(R.id.vs_adv)).inflate();
+                        ivAdvBg = findViewById(R.id.iv_adv_bg);
+                        tvGo = findViewById(R.id.tv_go);
+                        String bgUrl = (String) msg.obj;
+                        ImageLoadUtils.loadNetImage(bgUrl, ivAdvBg);
                         ivAdv = findViewById(R.id.iv_adv);
                         String url = ossHost + "/app/start_adv.png?" + System.currentTimeMillis();
                         ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
                                 ScalingUtils.ScaleType.FIT_CENTER);
-                        ivAdvBg = findViewById(R.id.iv_adv_bg);
-                        tvGo = findViewById(R.id.tv_go);
-                        Bitmap bmp = (Bitmap) msg.obj;
-                        if (bmp != null && !bmp.isRecycled()) {
-                            ivAdvBg.setImageBitmap((Bitmap) msg.obj);
-                        }
                         initAdvEvent();
                         startTimer();
                         break;
