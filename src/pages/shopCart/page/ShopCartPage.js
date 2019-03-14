@@ -63,44 +63,6 @@ export default class ShopCartPage extends BasePage {
         this.state = {
             showNav: false
         };
-
-        this.dataArr = [
-            {
-                title: 'Title1', key: 1, data: [
-                    {
-                        item: 'item1',
-                        key: 11
-                    },
-                    {
-                        item: 'item2',
-                        key: 12
-                    }
-
-                ]
-            },
-            {
-                title: 'Title2', key: 2, data: [
-                    {
-                        item: 'item1',
-                        key: 21
-                    },
-                    {
-                        item: 'item2',
-                        key: 22
-                    }]
-            },
-            {
-                title: 'Title3', key: 3, data: [
-                    {
-                        item: 'item1',
-                        key: 31
-                    },
-                    {
-                        item: 'item2',
-                        key: 32
-                    }]
-            }
-        ];
     }
 
     componentDidMount() {
@@ -132,9 +94,7 @@ export default class ShopCartPage extends BasePage {
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
-
-
-
+    
     handleBackPress = () => {
         if (this.$navigationBarOptions.leftNavItemHidden){
             this.$navigate('HomePage');
