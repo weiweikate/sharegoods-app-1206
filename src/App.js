@@ -13,6 +13,7 @@ import {
     Text,
     View,
     InteractionManager,
+    Platform
     // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -63,11 +64,13 @@ if (__DEV__) {
 class App extends Component {
     constructor(props) {
         super(props);
-        codePush.sync({
-            updateDialog: false,
-            installMode: codePush.InstallMode.ON_NEXT_RESTART,
-        })
-
+        if (Platform.OS !== 'ios') {
+            codePush.sync({
+                updateDialog: false,
+                installMode: codePush.InstallMode.ON_NEXT_RESTART,
+            })
+        }
+    
         this.state = {
             load: false,
             showOldBtn: false,
