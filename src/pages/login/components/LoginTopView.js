@@ -19,6 +19,7 @@ import UIText from '../../../components/ui/UIText';
 import { MRTextInput as TextInput } from '../../../components/ui';
 import loginModel from '../model/LoginModel';
 import oldUserLoginSingleModel from '../../../model/oldUserLoginModel';
+import { track } from "../../../utils/SensorsTrack";
 
 const {
     close_eye,
@@ -175,6 +176,7 @@ export default class LoginTopView extends Component {
         } else {
             bridge.$toast('手机格式不对');
         }
+        track("GetVerifySMS",{'pagePosition':3})
     };
     renderPasswordLogin = () => {
         return (

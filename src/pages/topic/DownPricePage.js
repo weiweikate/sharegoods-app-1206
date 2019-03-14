@@ -17,8 +17,6 @@ import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from '../../constants/DesignRule';
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
-import { track } from "../../utils/SensorsTrack";
-import bridge from '../../utils/bridge';
 import { MRText } from "../../components/ui";
 import CommShareModal from "../../comm/components/CommShareModal";
 
@@ -38,8 +36,10 @@ export default class DownPricePage extends BasePage {
         };
         //初次进入loading
         if (this.dataModel.isShowLoading) {
-            bridge.showLoading('加载中');
-            this.dataModel.isShowLoading = false;
+            setTimeout(()=>{
+                this.$loadingShow('加载中');
+                this.dataModel.isShowLoading = false;
+            })
         }
     }
     $NavBarRenderRightItem=()=>{
@@ -61,10 +61,11 @@ export default class DownPricePage extends BasePage {
             payload => {
                 const { linkTypeCode } = this.params;
                 console.log('-----' + linkTypeCode);
-                this.dataModel.loadTopicData(linkTypeCode);
+                setTimeout(()=>{
+                    this.dataModel.loadTopicData(linkTypeCode);
+                })
             }
         );
-        track('$AppViewScreen', { '$screen_name': 'DownPricePage', '$title': '专题' });
     }
 
     /**
