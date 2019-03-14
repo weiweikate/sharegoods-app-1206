@@ -18,6 +18,7 @@ import { netStatusTool } from "../../../api/network/NetStatusTool";
 import { TimeDownUtils } from "../../../utils/TimeDownUtils";
 import SMSTool from "../../../utils/SMSTool";
 import { registAction } from "../model/LoginActionModel";
+import {track} from '../../../utils/SensorsTrack'
 // import user from "../../../model/user";
 
 const { px2dp } = ScreenUtils;
@@ -106,6 +107,7 @@ export default class InputCode extends BasePage {
      * @private
      */
     _reSendClickAction = () => {
+        track("GetVerifySMS",{'pagePosition':2});
         const { phoneNum } = this.params;
         const { downTime } = this.state;
         if (downTime > 0) {
