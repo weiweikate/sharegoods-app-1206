@@ -62,6 +62,7 @@ export default class HomeAdView extends Component {
                 <View
                     style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : 0 }, this.adRadius[index]]}>
                     <ImageLoad source={{ uri: value.imgUrl }}
+                               type={'mfit'}
                                style={[styles.ad,
                                    { marginTop: adModules.banner.length === 0 ? 0 : ((index !== 0 && index !== 1) ? px2dp(5) : 0) }]}/>
                 </View>
