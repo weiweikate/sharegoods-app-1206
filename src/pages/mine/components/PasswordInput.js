@@ -23,7 +23,7 @@ export default class PasswordInput extends Component {
     };
 
     static defaultProps = {
-        autoFocus: true,
+        autoFocus: false,
         onChange: () => {
         },
         onEnd: () => {
@@ -71,7 +71,7 @@ export default class PasswordInput extends Component {
                         }}
                         ref='textInput'
                         maxLength={this.props.maxLength}
-                        autoFocus={false}
+                        autoFocus={this.props.autoFocus}
                         value={this.state.text}
                         keyboardType="numeric"
                         onChangeText={

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './Modules';
 import { adModules } from './HomeAdModel';
@@ -8,15 +8,25 @@ import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 
-const featureBox1Wdith = (ScreenUtils.width - px2dp(35)) * 46 / 85;
-const featureBox1Height = featureBox1Wdith * 100 / 97;
-const featureBox2Wdith = (ScreenUtils.width - px2dp(35)) * 39 / 85;
-const featureBox2Height = (featureBox1Height - px2dp(4.5)) / 2;
+const defaultBannerHeight = px2dp(10);
+const adWidth = (ScreenUtils.width - px2dp(35)) / 2 - 0.5;
+const adHeight = adWidth * (160 / 340);
 
-const  adViewHeight = featureBox1Height + 20 + px2dp(10);
-export {adViewHeight};
+const radius = (5);
+
 @observer
 export default class HomeAdView extends Component {
+
+    constructor(props) {
+        super(props);
+        this.adRadius = [
+            { borderTopLeftRadius: radius, overflow: 'hidden' },
+            { borderTopRightRadius: radius, overflow: 'hidden' },
+            { borderBottomLeftRadius: radius, overflow: 'hidden' },
+            { borderBottomRightRadius: radius, overflow: 'hidden' }
+        ];
+    }
+
     _adAction(value) {
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
@@ -24,111 +34,71 @@ export default class HomeAdView extends Component {
         navigate(router, { ...params, preseat: 'home_ad' });
     }
 
-    _loadingIndicator() {
-        return <View style={{ flex: 1, backgroundColor: '#f00' }}/>;
+    _renderBanner() {
+        const { banner, adHeights } = adModules;
+        if (banner.length === 0) {
+            return null;
+        }
+        let items = [];
+        banner.map((val, index) => {
+            let url = val.imgUrl;
+            items.push(
+                <TouchableWithoutFeedback onPress={() => this._adAction(val)} key={'banner' + index}>
+                    <Image
+                        style={[styles.bannerImage, { height: adHeights.get(url) }]}
+                        source={{ uri: url }}/>
+                </TouchableWithoutFeedback>
+            );
+        });
+        return <View>{items}</View>;
     }
 
-    render() {
+
+    _renderAd() {
         const { ad } = adModules;
         let items = [];
         ad.map((value, index) => {
-            if (index === 0) {
-                items.push(<TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
-                    <View style={[styles.featureBox1, styles.radius]}>
-                        <ImageLoad source={{ uri: value.imgUrl }} style={styles.featureBox1Image}/>
-                    </View>
-                </TouchableWithoutFeedback>);
-            } else if (index === 1) {
-                items.push(
-                    <TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
-                        <View style={[styles.featureBox2, styles.radius]}>
-                            <ImageLoad source={{ uri: value.imgUrl }} style={styles.featureBox2Image}/>
-                        </View>
-                    </TouchableWithoutFeedback>
-                );
-            } else {
-                items.push(<TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
-                    <View style={[styles.featureBox3, styles.radius]}>
-                        <ImageLoad source={{ uri: value.imgUrl }} style={styles.featureBox2Image}/>
-                    </View>
-                </TouchableWithoutFeedback>);
-            }
+            items.push(<TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
+                <View
+                    style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : 0 }, this.adRadius[index]]}>
+                    <ImageLoad source={{ uri: value.imgUrl }}
+                               style={[styles.ad,
+                                   { marginTop: adModules.banner.length === 0 ? 0 : ((index !== 0 && index !== 1) ? px2dp(5) : 0) }]}/>
+                </View>
+            </TouchableWithoutFeedback>);
         });
+        return <View style={styles.adrow}>
+            {items}
+        </View>;
+    }
+
+    render() {
         return <View style={styles.container}>
-            {
-                items.length > 0
-                    ?
-                    <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
-                        <View style={styles.featureBox}>
-                            {items}
-                        </View>
-                    </View>
-                    :
-                    null
-            }
+            {this._renderBanner()}
+            {this._renderAd()}
         </View>;
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
-        marginTop: ScreenUtils.px2dp(10),
+        width: ScreenUtils.width,
+        paddingTop: px2dp(10)
+    },
+    bannerImage: {
+        width: ScreenUtils.width,
+        height: defaultBannerHeight,
+        marginBottom: px2dp(15)
+    },
+    adrow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
         paddingLeft: px2dp(15),
-        paddingRight: px2dp(15),
-        width: ScreenUtils.width
+        paddingRight: px2dp(15)
     },
-    featureBox: {
-        position: 'relative',
-        height: featureBox1Height
-    },
-    featureBox1: {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: featureBox1Wdith,
-        height: featureBox1Height
-    },
-    radius: {
-        borderRadius: px2dp(5),
-        overflow: 'hidden'
-    },
-    featureBox1Image: {
-        width: featureBox1Wdith,
-        height: featureBox1Height
-    },
-    featureBox2: {
-        position: 'absolute',
-        right: 0,
-        top: 0,
-        width: featureBox2Wdith,
-        height: featureBox2Height
-    },
-    featureBox2Image: {
-        width: featureBox2Wdith,
-        height: featureBox2Height
-    },
-    featureBox3: {
-        position: 'absolute',
-        right: 0,
-        bottom: 0,
-        width: featureBox2Wdith,
-        height: featureBox2Height
-    },
-
-    // 行样式
-    rowCell: {
-        paddingLeft: 10,
-        minHeight: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        justifyContent: 'space-between'
-    },
-    eventRowsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flex: 1,
-        marginHorizontal: 15
+    ad: {
+        width: adWidth,
+        height: adHeight
     }
 });

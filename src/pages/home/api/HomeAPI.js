@@ -3,26 +3,6 @@ const api = {
     getKeywords: ['/product/getKeywords',{method:'get'}],
     // 产品列表页
     productList: '/product/productList',
-    // 根据code获取产品信息 杨小猛
-    getProductDetailByCode: ['/product/getProductDetailByCode',{method:'get'}],
-    // 获取产品获取活动信息 蒋大为
-    queryByProductCode: ['/operator/activity/queryByProductCode',{method:'get'}],
-
-    /**评论**/
-    //发布评论
-    appraise_publish:['/appraise/publish'],
-    //查询置顶晒单
-    appraise_queryByProdCode:['/appraise/queryByProdCode',{method:'get'}],
-    //商品详情晒单列表全部
-    appraise_list:['/appraise/list'],
-    //继续晒单
-    queryCommentByUserCode:['/appraise/queryCommentByUserCode',{method:'get'}],
-    /**经验值专区**/
-    act_exp_detail: ['/operator/act-exp/detail',{method:'get'}],
-
-    // 获取产品规格信息
-    getProductSpec: ['/product/getProductSpec',{method:'get'}],
-
 
     // 热门搜索
     queryHotName: ['/config/sysHotWord/queryHotName',{method:'get'}],
@@ -46,6 +26,8 @@ const api = {
     getAd: ['/config/advertisement/queryAdvertisementList'],
     //专题
     getSubject: ['/config/advertisement/queryAdvertisementList'],
+
+    getBanner: ['/config/advertisement/queryAdvertisementList'],
     //会员
     getMembers: ['/user/level/get', {method: 'get'}],
     //为你推荐

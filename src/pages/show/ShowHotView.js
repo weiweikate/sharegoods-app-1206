@@ -1,8 +1,8 @@
 /**
  * 精选热门
  */
-import React, { PureComponent } from 'react';
-import { View, StyleSheet,Platform } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Platform } from 'react-native';
 import ShowBannerView from './ShowBannerView';
 import ShowChoiceView from './ShowChoiceView';
 import {
@@ -18,7 +18,7 @@ import ShowGroundView from './components/ShowGroundView';
 
 
 @observer
-export default class ShowHotView extends PureComponent {
+export default class ShowHotView extends React.Component {
 
     state = {
         isEnd: false,
@@ -32,8 +32,8 @@ export default class ShowHotView extends PureComponent {
         this.firstLoad = true;
         this.recommendModules = new ShowRecommendModules();
         this.state = {
-            headerView:null
-        }
+            headerView: null
+        };
 
     }
 
@@ -54,9 +54,12 @@ export default class ShowHotView extends PureComponent {
 
     loadData() {
         showChoiceModules.loadChoiceList().then(data => {
-            this.setState({
-                headerView:this.renderHeader()
-            })
+
+            if (Platform.OS !== 'ios' && data) {
+                this.setState({
+                    headerView: this.renderHeader()
+                });
+            }
         });
         showBannerModules.loadBannerList();
     }
@@ -67,40 +70,47 @@ export default class ShowHotView extends PureComponent {
     }
 
     renderHeader = () => {
-        return (<View style={{backgroundColor: '#f5f5f5',  width: ScreenUtils.width}}>
+        return (<View style={{ backgroundColor: '#f5f5f5', width: ScreenUtils.width }}>
                 <ShowBannerView navigate={this.props.navigate} pageFocused={this.props.pageFocus}/>
-                <ShowChoiceView navigate={this.props.navigate} ref={(ref)=> {this.choiceView = ref}}/>
+                <ShowChoiceView navigate={this.props.navigate} ref={(ref) => {
+                    this.choiceView = ref;
+                }}/>
                 <View style={styles.titleView}>
                     <Text style={styles.recTitle} allowFontScaling={false}>推荐</Text>
                 </View>
             </View>
-        )
+        );
     };
 
     render() {
         return (
             <View style={styles.container}>
-                <ShowGroundView style={{flex:1}}
-                    uri={'/discover/query@GET'}
-                    renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
-                    onStartRefresh={()=> {}}
-                    params={{generalize: tag.Recommend + ''}}
-                    onStartScroll={()=> {
-                        console.log('_onChoiceAction star' )
-                       this.timer && clearTimeout(this.timer)
-                       this.choiceView && this.choiceView.changeIsScroll(true)
-                        // this.choiceView && this.choiceView.isScroll = true;
-                    }}
-                    onEndScroll={() => {
+                <ShowGroundView style={{ flex: 1 }}
+                                uri={'/discover/query@GET'}
+                                headerHeight={showBannerModules.bannerHeight + showChoiceModules.choiceHeight + px2dp(116)}
+                                renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
+                                onStartRefresh={() => {
+                                    this.loadData();
 
-                        console.log('_onChoiceAction end1' )
-                      this.timer = setTimeout(()=> {
-                            this.choiceView && this.choiceView.changeIsScroll(false)
-                        }, 500)
-                    }}
-                    onItemPress={({nativeEvent})=> {
-                        const { navigate } = this.props;
-                        navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
+                                }}
+                                params={{ generalize: tag.Recommend + '' }}
+                                onStartScroll={() => {
+                                    console.log('_onChoiceAction star');
+                                    this.timer && clearTimeout(this.timer);
+                                    this.choiceView && this.choiceView.changeIsScroll(true);
+                                    // this.choiceView && this.choiceView.isScroll = true;
+                                }}
+                                onEndScroll={() => {
+
+                                    console.log('_onChoiceAction end1');
+                                    this.timer = setTimeout(() => {
+                                        this.choiceView && this.choiceView.changeIsScroll(false);
+                                    }, 500);
+                                }}
+                                onItemPress={({ nativeEvent }) => {
+                                    const { navigate } = this.props;
+                                    navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });
+                                }}
                 />
             </View>
         );

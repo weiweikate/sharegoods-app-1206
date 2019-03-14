@@ -12,7 +12,8 @@ import Toast from "../../../../utils/bridge";
 import shopCartCacheTool from "../../../shopCart/model/ShopCartCacheTool";
 import { observer } from "mobx-react/native";
 import RouterMap from "../../../../navigation/RouterMap";
-
+import {payStatus, payment, payStatusMsg} from '../../../payment/Payment'
+import { NavigationActions } from 'react-navigation';
 
 const { px2dp } = ScreenUtils;
 import { MRText as Text, NoMoreClick } from "../../../../components/ui";
@@ -67,16 +68,10 @@ export default class OrderDetailBottomButtonView extends Component {
 
                 break;
             case 2:
-                this.props.nav("payment/PaymentMethodPage", {
-                    orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
-                    amounts: orderDetailModel.payAmount
-                });
+                this._goToPay();
                 break;
             case 3:
-                this.props.nav("payment/PaymentMethodPage", {
-                    orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
-                    amounts: orderDetailModel.payAmount
-                });
+                this._goToPay()
                 break;
             case 4:
                 break;
@@ -120,7 +115,7 @@ export default class OrderDetailBottomButtonView extends Component {
                                 Toast.$toast("确认收货成功");
                                 this.props.nav('order/order/ConfirmReceiveGoodsPage',{
                                     orderNo: orderDetailModel.getOrderNo(),
-                                    callBack: this.props.loadPageData()
+                                    callBack: this.props.loadPageData
                                 })
                             }).catch(e => {
                                 Toast.hiddenLoading();
@@ -214,6 +209,36 @@ export default class OrderDetailBottomButtonView extends Component {
                 break;
         }
     };
+
+    async _goToPay() {
+        let platformOrderNo = orderDetailModel.platformOrderNo
+        let result = await payment.checkOrderStatus(platformOrderNo)
+        if (result.code === payStatus.payNo) {
+            this.props.nav("payment/PaymentPage", {
+                orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
+                amounts: orderDetailModel.payAmount,
+                platformOrderNo: orderDetailModel.platformOrderNo,
+                orderProductList: orderDetailModel.warehouseOrderDTOList[0].products
+            });
+        } else if (result.code === payStatus.payNeedThrid) {
+            this.props.nav('payment/ChannelPage', {
+                remainMoney: Math.floor(result.thirdPayAmount * 100) / 100,
+                orderProductList: orderDetailModel.warehouseOrderDTOList[0].products,
+                orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
+                platformOrderNo: orderDetailModel.platformOrderNo,
+            })
+        } else if (result.code === payStatus.payOut) {
+            Toast.$toast(payStatusMsg[result.code])
+            let replace = NavigationActions.replace({
+                key: this.props.navigation.state.key,
+                routeName: 'order/order/MyOrdersListPage',
+                params: { index: 2 }
+            });
+            this.props.navigation.dispatch(replace);
+        } else {
+            Toast.$toast(payStatusMsg[result.code])
+        }
+    }
 }
 const styles = StyleSheet.create({
     containerStyle: {

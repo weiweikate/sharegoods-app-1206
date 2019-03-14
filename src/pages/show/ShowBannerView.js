@@ -4,14 +4,14 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
-import { track, trackEvent } from '../../utils/SensorsTrack'
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 @observer
 export default class ShowBannerView extends Component {
@@ -29,21 +29,37 @@ export default class ShowBannerView extends Component {
         const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
         let params = showBannerModules.paramsNavigate(item);
         const { navigate } = this.props;
-        track(trackEvent.bannerClick, {pageType: 'home', bannerLocation: 'home', bannerID: item.id, bannerRank: item.rank, url: item.imgUrl, bannerName: item.linkTypeCode})
+        track(trackEvent.bannerClick, {
+            pageType: 'home',
+            bannerLocation: 'home',
+            bannerID: item.id,
+            bannerRank: item.rank,
+            url: item.imgUrl,
+            bannerName: item.linkTypeCode
+        });
 
-        navigate(router, {...params, preseat:'秀场_banner'});
+        navigate(router, { ...params, preseat: '秀场_banner' });
     }
 
     _onPressRow(e) {
         let index = e.nativeEvent.index;
         const { bannerList } = showBannerModules;
         let item = bannerList[index];
-        const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
-        let params = showBannerModules.paramsNavigate(item);
-        const { navigate } = this.props;
+        if (item) {
+            const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
+            let params = showBannerModules.paramsNavigate(item);
+            const { navigate } = this.props;
 
-        track(trackEvent.bannerClick, {pageType: '秀场banner', bannerLocation: '秀场精选热门', bannerID: item.id, bannerRank: item.rank, url: item.imgUrl, bannerName: item.linkTypeCode})
-        navigate(router, {...params, preseat:'秀场_banner'});
+            track(trackEvent.bannerClick, {
+                pageType: '秀场banner',
+                bannerLocation: '秀场精选热门',
+                bannerID: item.id,
+                bannerRank: item.rank,
+                url: item.imgUrl,
+                bannerName: item.linkTypeCode
+            });
+            navigate(router, { ...params, preseat: '秀场_banner' });
+        }
     }
 
     renderIndexView() {
@@ -66,51 +82,47 @@ export default class ShowBannerView extends Component {
         this.setState({ index: e.nativeEvent.index });
     }
 
-    _onDidChange(item, changeIndex) {
-        const { index } = this.state;
-        if (index !== changeIndex) {
-            this.setState({ index: changeIndex });
-        }
-    }
-
     render() {
         const { bannerList } = showBannerModules;
+
+        // 此处需返回null，否则指示器有问题
         if (!bannerList || bannerList.length <= 0) {
-            return <View/>;
+            return null;
         }
         let items = [];
         bannerList.map(value => {
             items.push(value.imgUrl);
         });
         return <View style={styles.container}>
-        {
-            bannerList.length === 1
-            ?
-            <TouchableWithoutFeedback onPress={()=>this._onPressRowWithItem(bannerList[0])}>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                {this.renderRow(bannerList[0])}
-            </View>
-            </TouchableWithoutFeedback>
-            :
-            <MRBannerView
-                style={{
-                    height: px2dp(175),
-                    width: ScreenUtils.width
-                }}
-                imgUrlArray={items}
-                itemWidth={px2dp(300)}
-                itemSpace={px2dp(10)}
-                itemRadius={5}
-                pageFocused={this.props.pageFocused}
-                onDidSelectItemAtIndex={(index) => {
-                    this._onPressRow(index);
-                }}
-                onDidScrollToIndex={(index) => {
-                    this._onDidScrollToIndex(index);
-                }}
-            />
-        }
-        {this.renderIndexView()}
+            {
+                bannerList.length === 1
+                    ?
+                    <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(bannerList[0])}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            {this.renderRow(bannerList[0])}
+                        </View>
+                    </TouchableWithoutFeedback>
+                    :
+                    <MRBannerView
+                        style={{
+                            height: px2dp(175),
+                            width: ScreenUtils.width
+                        }}
+                        imgUrlArray={items}
+                        itemWidth={px2dp(300)}
+                        itemSpace={px2dp(10)}
+                        itemRadius={5}
+                        interceptTouchEvent={true}  //android端起作用，是否拦截touch事件
+                        pageFocused={this.props.pageFocused}
+                        onDidSelectItemAtIndex={(index) => {
+                            this._onPressRow(index);
+                        }}
+                        onDidScrollToIndex={(index) => {
+                            this._onDidScrollToIndex(index);
+                        }}
+                    />
+            }
+            {this.renderIndexView()}
         </View>;
     }
 }
@@ -118,8 +130,7 @@ export default class ShowBannerView extends Component {
 let styles = StyleSheet.create({
     container: {
         height: px2dp(200),
-        marginTop: px2dp(10),
-        width: ScreenUtils.width
+        width: ScreenUtils.width,
     },
     scroll: {
         height: px2dp(175)
@@ -170,15 +181,15 @@ let styles = StyleSheet.create({
     },
     activityIndex: {
         width: 14,
-        height: 6,
-        borderRadius: 3,
+        height: 5,
+        borderRadius: 2.5,
         backgroundColor: '#A9B4BC',
         margin: 3
     },
     index: {
-        width: 6,
-        height: 6,
-        borderRadius: 3,
+        width: 5,
+        height: 5,
+        borderRadius: 2.5,
         backgroundColor: '#DDE1E4',
         margin: 3
     }

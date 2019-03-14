@@ -34,6 +34,7 @@ import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from "react-native-code-push";
+import {SpellShopFlag} from './navigation/Tab';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
@@ -69,7 +70,8 @@ class App extends Component {
 
         this.state = {
             load: false,
-            showOldBtn: false
+            showOldBtn: false,
+            isShowShopFlag: true
         };
         user.readToken();
         if (user.isLogin) {
@@ -96,14 +98,6 @@ class App extends Component {
         InteractionManager.runAfterInteractions(() => {
 
             TimerMixin.setTimeout(() => {
-                ScreenUtils.isNavigationBarExist((data) => {
-                    ScreenUtils.setBarShow(data);
-                });
-
-                ScreenUtils.checkhasNotchScreen((data) => {
-                    ScreenUtils.setHasNotchScreen(data);
-                });
-
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
                     android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
@@ -114,6 +108,16 @@ class App extends Component {
                 }).catch((error) => {
                 });
             }, 200);
+            TimerMixin.setTimeout(() => {
+                ScreenUtils.isNavigationBarExist((data) => {
+                    ScreenUtils.setBarShow(data);
+                });
+
+                ScreenUtils.checkhasNotchScreen((data) => {
+                    ScreenUtils.setHasNotchScreen(data);
+                });
+
+            },3000)
         });
         // 移除启动页
         bridge.removeLaunch();
@@ -121,6 +125,7 @@ class App extends Component {
 
     render() {
         const prefix = 'meeruu://';
+        const {isShowShopFlag} = this.state
         return (
             <View style={styles.container}>
                 <Navigator
@@ -131,11 +136,12 @@ class App extends Component {
                     }}
                     onNavigationStateChange={(prevState, currentState) => {
                         let curRouteName = getCurrentRouteName(currentState);
-                        this.setState({ curRouteName });
                         // 拦截当前router的名称
-                        console.log(curRouteName);
                         global.$routes = currentState.routes;
-                    }}/>
+                        this.setState({ curRouteName, isShowShopFlag: currentState.routes.length === 1 });
+                    }}
+                />
+                <SpellShopFlag isShow={isShowShopFlag}/>
                 {
                     CONFIG.showDebugPanel ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text

@@ -155,9 +155,7 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <HotView navigate={this.$navigate} ref={(ref) => {
-                                this.showHotViewRef = ref;
-                            }} pageFocus={this.state.pageFocused}/>
+                            <HotView navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
                             :
                             null
                     }

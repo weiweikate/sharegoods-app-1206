@@ -11,7 +11,7 @@ inhibit_all_warnings!
 
 pod 'YYKit',   '~> 1.0.9'
 pod 'AFNetworking',   '~> 3.2.1'
-pod 'SDWebImage',   '~> 4.4.2'
+pod 'SDWebImage',   '~> 4.4.6'
 pod 'TYCyclePagerView',   '~> 1.1.0'
 pod 'CocoaLumberjack', '~> 3.4.1'
 pod 'UICKeyChainStore', '~> 2.1.1'
@@ -39,15 +39,13 @@ pod 'SensorsAnalyticsSDK', '~> 1.10.17'
 pod 'MJRefresh'
 pod 'SDAutoLayout'
 #pod 'SensorsAnalyticsSDK', :subspecs => ['ENABLE_REACT_NATIVE_APPCLICK']
-
 ##绘图和icon
 #pod 'RNSVG', :path => '../node_modules/react-native-svg'
 #pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 #  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
 
-
-#  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+ #  pod 'react-native-webview', :path => '../node_modules/@mr/react-native-webview'
 
 end
 

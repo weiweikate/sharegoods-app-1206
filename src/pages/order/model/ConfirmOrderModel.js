@@ -44,6 +44,10 @@ class ConfirmOrderModel {
     canCommit = true;
     @observable
     loadingState = PageLoadingState.success;
+    @observable
+    giveUpCou = false;
+    @observable
+    couponCount=0;
 
     @action clearData() {
         this.orderProductList = [];
@@ -64,6 +68,8 @@ class ConfirmOrderModel {
         this.netFailedInfo = null;
         this.loadingState = PageLoadingState.success;
         this.canCommit = true;
+        this.giveUpCou= false;
+        this.couponCount=0;
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
@@ -74,6 +80,10 @@ class ConfirmOrderModel {
                     orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
                     // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source: orderParamVO.source,//1.购物车 2.直接下单
+                    sgAppVersion:310,
+                     // couponsId:orderParamVO.source===4?(this.giveUpCou||params.userCouponCode?null:orderParamVO.couponsId):null,
+                    couponsId: orderParamVO.couponsId,
+                    // source: 4,//1.购物车 2.直接下单,4 周期券
                     channel: 2,//1.小程序 2.APP 3.H5
                     orderProductList: orderParamVO.orderProducts,
                     ...params
@@ -195,6 +205,7 @@ class ConfirmOrderModel {
         this.payAmount = data.payAmount;
         this.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         this.couponList = data.couponList ? data.couponList : null;
+        this.couponCount=data.couponCount;
         this.orderProductList.map((item) => {
             if ((item.restrictions & 1) === 1) {
                 this.canUseCou = true;
@@ -258,8 +269,10 @@ class ConfirmOrderModel {
                     orderProductList: orderParamVO.orderProducts,
                     // orderType: this.state.orderParam.orderType,
                     orderType: 1,
-                    source: orderParamVO.source,
-                    channel: 2
+                    source:  orderParamVO.source,
+                    channel: 2,
+                    sgAppVersion:310,
+                    couponsId: orderParamVO.couponsId,
                 };
                 OrderApi.submitOrder(paramsnor).then((response) => {
                     bridge.hiddenLoading();

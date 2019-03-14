@@ -1,6 +1,6 @@
 
 import React from "react";
-import { NativeModules, StyleSheet, TouchableOpacity, View ,Image} from "react-native";
+import { NativeModules, StyleSheet, TouchableOpacity, View ,Image,ImageBackground} from "react-native";
 import BasePage from "../../../BasePage";
 import { RefreshList, UIText, MRText as Text } from "../../../components/ui";
 import StringUtils from "../../../utils/StringUtils";
@@ -12,7 +12,7 @@ import res from "../res";
 // import UIImage from "@mr/image-placeholder";
 
 const logisticsTop = res.logisticsTop;
-const logisticsBottom = res.logisticsBottom;
+// const logisticsBottom = res.logisticsBottom;
 const copy = res.copy;
 // const logisticsIcon = res.dizhi;
 const Nowuliu = res.kongbeiye_wulian;
@@ -62,35 +62,23 @@ class LogisticsDetailsPage extends BasePage {
     renderBaiShiHuiTong = () => {
         return (
             <View>
-                <View style={{ position: "absolute", width: ScreenUtils.width, marginTop: 8 }}>
-                    <Image source={logisticsTop} style={{
+                <View style={{ width: ScreenUtils.width, marginTop: 8 }}>
+                    <ImageBackground source={logisticsTop} style={{
                         resizeMode: "stretch",
                         width: ScreenUtils.width - 20,
                         marginLeft: 10,
                         marginRight: 10
                     }}/>
                 </View>
-                <View style={{height: 20}}/>
-                {/*<View style={{ flexDirection: "row", paddingLeft: 15, height: 60, paddingTop: 5 }}>*/}
-                    {/*<Image source={logisticsIcon} style={{ width: 20, height: 23, marginLeft: 10, marginTop: 15 }} resizeMode={'contain'}/>*/}
-                    {/*<Text style={{*/}
-                        {/*fontSize: 13,*/}
-                        {/*color: DesignRule.textColor_mainTitle_222,*/}
-                        {/*marginTop: 15,*/}
-                        {/*marginLeft: 15*/}
-                    {/*}}>本数据由</Text>*/}
-                    {/*<Text style={{ fontSize: 13, color: DesignRule.deliveryIncludeBlue, marginTop: 15 }}>百世汇通</Text>*/}
-                    {/*<Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle_222, marginTop: 15 }}>提供</Text>*/}
-                {/*</View>*/}
-
             </View>
         );
     };
     renderFootder = () => {
         return (
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Image source={logisticsBottom}
-                         style={{ width: ScreenUtils.width - 20, resizeMode: "contain", marginTop: -2 }}/>
+                {/*<Image source={logisticsBottom}*/}
+                         {/*style={{ width: ScreenUtils.width - 20, resizeMode: "stretch", marginTop: -2, marginLeft: 10,*/}
+                             {/*marginRight: 10 }}/>*/}
             </View>
 
         );
@@ -104,7 +92,6 @@ class LogisticsDetailsPage extends BasePage {
     };
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity style={{ elevation: 2, backgroundColor: "white", marginLeft: 15, marginRight: 15 }}>
                 <LogisticsDetailItem
                     time={item.time}
                     middleImage={item.middleImage}
@@ -113,7 +100,6 @@ class LogisticsDetailsPage extends BasePage {
                     isTop={index === 0}
                     isBottom={index + 1 === this.state.viewData.length}
                 />
-            </TouchableOpacity>
         );
     };
 

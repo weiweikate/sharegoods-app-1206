@@ -73,7 +73,7 @@
     <application
         android:name=".application.SophixStubApplication"
         android:allowBackup="false"
-        android:hardwareAccelerated="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -245,6 +245,7 @@
         <activity
             android:name=".ui.activity.MainRNActivity"
             android:configChanges="screenLayout|screenSize|smallestScreenSize|orientation"
+            android:hardwareAccelerated="true"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:resizeableActivity="true"

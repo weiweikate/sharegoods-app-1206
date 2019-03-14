@@ -75,7 +75,7 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         int times = item.getClick();
         String seeTimes = "";
         if (times > 999999) {
-            seeTimes = times + "+";
+            seeTimes = 999999 + "+";
         } else {
             seeTimes = times + "";
         }

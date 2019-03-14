@@ -9,7 +9,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import StringUtils from '../../../../utils/StringUtils';
-import {MRTextInput as TextInput} from '../../../../components/ui';
+import { MRTextInput as TextInput } from '../../../../components/ui';
 
 const {
     button: {
@@ -36,13 +36,13 @@ export default class ResultSearchNav extends Component {
         this.setState({
             inputText: text
         }, () => {
-            text = StringUtils.trim(text)
+            text = StringUtils.trim(text);
             this.props.onChangeText(text);
         });
     };
 
     onSubmitEditing = (text) => {
-        text = StringUtils.trim(text)
+        text = StringUtils.trim(text);
         //把输入框中的文字传给父组件
         if (this.props.onSubmitEditing) {
             this.props.onSubmitEditing(text);
@@ -78,6 +78,7 @@ export default class ResultSearchNav extends Component {
                         <Image source={this.props.isHorizontal ? horizontalRow : verticalRow}/>
                     </TouchableOpacity>
                 </View>
+                <View style={styles.lineView}/>
             </View>);
     }
 
@@ -88,6 +89,9 @@ const styles = StyleSheet.create({
         height: ScreenUtils.headerHeight,
         width: ScreenUtils.width,
         backgroundColor: 'white'
+    },
+    lineView: {
+        height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg
     },
     contentView: {
         marginTop: ScreenUtils.statusBarHeight,

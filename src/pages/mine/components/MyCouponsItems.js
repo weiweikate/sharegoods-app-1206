@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import {
     FlatList,
     Image,
-    ImageBackground,
     StyleSheet,
     View,
-    NativeModules, RefreshControl, ActivityIndicator,
+    RefreshControl, ActivityIndicator,
     TouchableOpacity
 } from 'react-native';
-import { UIImage, UIText } from '../../../components/ui';
+import { UIImage } from '../../../components/ui';
 import Modal from '../../../comm/components/CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
@@ -21,20 +20,15 @@ import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../api/MineApi';
 import res from '../res';
 import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
+import couponsModel from '../model/CouponsModel';
+import CouponExplainItem from './CouponExplainItem';
+import CouponNormalItem from './CouponNormalItem';
 
 const NoMessage = res.couponsImg.coupons_no_data;
-const usedBg = res.couponsImg.youhuiquan_bg_zhihui;
-const unuesdBg = res.couponsImg.youhuiquan_bg_nor;
-const tobeActive = res.couponsImg.youhuiquan_icon_daijihuo_nor;
-const ActivedIcon = res.couponsImg.youhuiquan_icon_yishixiao_nor;
-const usedRIcon = res.couponsImg.youhuiquan_icon_yishiyong_nor;
-const limitIcon = res.couponsImg.youhuiquan_limit;
 const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
 const jianIcon = res.couponsImg.youhuiquan_icon_jian_nor;
 
-
 const { px2dp } = ScreenUtils;
-
 
 @observer
 export default class MyCouponsItems extends Component {
@@ -53,6 +47,7 @@ export default class MyCouponsItems extends Component {
         this.currentPage = 0;
         this.isLoadMore = false;
         this.isEnd = false;
+        this.dataSel = {};
     }
 
     componentDidMount() {
@@ -66,92 +61,18 @@ export default class MyCouponsItems extends Component {
 
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        let BG = item.status === 0 && !item.levelimit ? unuesdBg : usedBg;
-        let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 1 ? usedRIcon : ActivedIcon));
-        return (
-            <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor }}
-                              onPress={() => this.clickItem(index, item)}>
-                <ImageBackground style={{
-                    width: ScreenUtils.width - px2dp(30),
-                    height: px2dp(109),
-                    margin: 2
-                }} source={BG} resizeMode='stretch'>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(73) }}>
-                        <View style={{
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            width: px2dp(80)
-                        }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                {
-                                    item.type === 3 || item.type === 4 || item.type === 12 ? null :
-                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: DesignRule.textColor_mainTitle,
-                                                    marginBottom: 4
-                                                }} allowFontScaling={false}>￥</Text>
-                                        </View>}
-                                <View>
-                                    <Text style={{
-                                        fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                        color: DesignRule.textColor_mainTitle
-                                    }} allowFontScaling={false}>{item.value}</Text>
-                                </View>
-                                {
-                                    item.type === 3 ?
-                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                            <Text
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: DesignRule.textColor_mainTitle,
-                                                    marginBottom: 4
-                                                }} allowFontScaling={false}>折</Text>
-                                        </View> : null}
-                            </View>
-                        </View>
+        if (item.remarks) {
+            return (
+                <CouponExplainItem item={item} index={index} toExtendData={() => this.toExtendData(item)}
+                                   pickUpData={() => this.pickUpData(item)}
+                                   clickItem={() => this.clickItem(index, item)}/>
+            );
+        } else {
+            return (
+                <CouponNormalItem item={item} index={index} clickItem={() => this.clickItem(index, item)}/>
+            );
+        }
 
-                        <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 10 }}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{
-                                    fontSize: 15,
-                                    color: DesignRule.textColor_mainTitle,
-                                    marginRight: 10
-                                }} allowFontScaling={false}>
-                                    {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
-                                    fontSize: 11,
-                                    color: DesignRule.textColor_instruction
-                                }}/>}</Text>
-                                {item.type === 12 ? <UIText value={'x' + item.number} style={{
-                                    fontSize: 15,
-                                    color: DesignRule.textColor_mainTitle
-                                }}/> : null}
-                            </View>
-                            <Text style={{
-                                fontSize: 11,
-                                color: DesignRule.textColor_instruction,
-                                marginTop: 6
-                            }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>
-                        </View>
-                        <Image style={{ marginTop: -6 }} source={BGR}/>
-                        {item.type === 99 ?
-                            <UIText value={'x' + user.tokenCoin}
-                                    style={{
-                                        marginRight: 15,
-                                        marginTop: 15,
-                                        fontSize: 14,
-                                        color: DesignRule.textColor_mainTitle
-                                    }}/> : null}
-                    </View>
-
-                    <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
-                        <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction }} value={item.limit}/>
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
-        );
     };
     onRequestClose = () => {
         this.setState({ showDialogModal: false });
@@ -165,36 +86,20 @@ export default class MyCouponsItems extends Component {
                 onRequestClose={() => this.onRequestClose()}
                 visible={this.state.showDialogModal}>
                 <View style={styles.modalStyle}>
-                    {this.renderContent()}
+                    {this.renderModalContent()}
                 </View>
             </Modal>
         );
     }
 
-    renderContent = () => {
+    renderModalContent = () => {
         return (
-            <View style={{
-                marginRight: px2dp(44),
-                width: ScreenUtils.width - px2dp(88),
-                marginLeft: px2dp(44),
-                height: px2dp(165),
-                backgroundColor: '#FCFCFC',
-                borderRadius: 12,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                opacity: 0.8
-            }}>
+            <View style={styles.contentStyle}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={{
-                        width: px2dp(123),
-                        height: px2dp(24),
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
+                    <View style={styles.couNumStyle}>
                         <Text style={{ fontSize: px2dp(17), color: DesignRule.textColor_mainTitle }}
                               allowFontScaling={false}>请选择券数</Text>
                     </View>
-
                     <View style={{
                         marginTop: px2dp(18),
                         flexDirection: 'row',
@@ -218,15 +123,7 @@ export default class MyCouponsItems extends Component {
                                 value={this.state.tokenCoinNum}
                                 onChangeText={this._onChangeText}
                                 onFocus={this._onFocus}
-                                style={{
-                                    padding: 0,
-                                    paddingLeft: 5,
-                                    alignItems: 'center',
-                                    height: px2dp(24),
-                                    width: px2dp(136),
-                                    fontSize: px2dp(15),
-                                    color: DesignRule.textColor_mainTitle
-                                }}/>
+                                style={styles.tnStyle}/>
                         </View>
                         <UIImage source={plusIcon} style={{
                             width: px2dp(24),
@@ -281,7 +178,7 @@ export default class MyCouponsItems extends Component {
             this.setState({ tokenCoinNum: '' });
         }
         if (parseInt(num) > parseInt(this.props.justOne) || parseInt(num) > user.tokenCoin) {
-            NativeModules.commModule.toast(`1元券超出使用张数~`);
+            bridge.$toast(`1元券超出使用张数~`);
             this.setState({ tokenCoinNum: Math.min(parseInt(this.props.justOne), user.tokenCoin) });
         }
     };
@@ -313,16 +210,7 @@ export default class MyCouponsItems extends Component {
                         onPress={() => {
                             this._gotoLookAround();
                         }}>
-                        <View style={{
-                            marginTop: 22,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderColor: DesignRule.mainColor,
-                            borderWidth: 1,
-                            borderRadius: 18,
-                            width: 115,
-                            height: 36
-                        }}>
+                        <View style={styles.guangStyle}>
                             <Text style={{
                                 color: DesignRule.mainColor,
                                 fontSize: 15
@@ -340,6 +228,19 @@ export default class MyCouponsItems extends Component {
     _footer = () => {
         return (<View style={{ height: 50 }}/>);
     };
+    toExtendData = (item) => {
+        let index = this.state.viewData.indexOf(item);
+        let viewData = this.state.viewData;
+        viewData[index].tobeextend = false;
+        this.setState({ viewData: viewData });
+    };
+    pickUpData = (item) => {
+        let index = this.state.viewData.indexOf(item);
+        let viewData = this.state.viewData;
+        viewData[index].tobeextend = true;
+        this.setState({ viewData: viewData });
+
+    };
 
     _gotoLookAround = () => {
         this.props.nav.popToTop();
@@ -347,7 +248,6 @@ export default class MyCouponsItems extends Component {
     };
 
     render() {
-        console.log('this.state.viewDat' + this.state.viewData.length);
         return (
             <View style={styles.container}>
                 <FlatList
@@ -361,7 +261,7 @@ export default class MyCouponsItems extends Component {
                     showsVerticalScrollIndicator={false}
                     initialNumToRender={5}
                     refreshControl={<RefreshControl refreshing={false}
-                                                    onRefresh={this.onRefresh}
+                                                    onRefresh={() => this.onRefresh(this.dataSel)}
                                                     colors={[DesignRule.mainColor]}/>}
                 />
                 {this.renderDialogModal()}
@@ -370,13 +270,7 @@ export default class MyCouponsItems extends Component {
                         position: 'absolute',
                         bottom: 0, height: 48, borderTopColor: DesignRule.bgColor, borderTopWidth: 1
                     }}>
-                        <TouchableOpacity style={{
-                            width: ScreenUtils.width,
-                            height: 48,
-                            backgroundColor: 'white',
-                            borderStyle: 'solid'
-                            , alignItems: 'center', justifyContent: 'center'
-                        }} activeOpacity={0.5} onPress={() => {
+                        <TouchableOpacity style={styles.giveUpTouStyle} activeOpacity={1} onPress={() => {
                             bridge.showLoading('加载中...');
                             this.props.giveupUse();
                         }}>
@@ -397,10 +291,14 @@ export default class MyCouponsItems extends Component {
         3、单产品、限iphone手机商品可用（产品名称，名称过长则超过6个字后...限iphone手机...商品可用）
         4、多产品、则直接显示，限指定商品可使用
         5、产品+分类的情况下，则显示，限指定商品可使用
+        6。如果产品是周期券，直接返回'限指定商品可使用'
     * */
     parseCoupon = (item) => {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
+        if (item.type === 5) {
+            return '限商品：限指定商品可用';
+        }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
                 return '限商品：限指定商品可用';
@@ -428,8 +326,9 @@ export default class MyCouponsItems extends Component {
     };
     parseData = (dataList) => {
         let arrData = [];
+        console.log('parseData', this.dataSel, couponsModel.params);
         if (this.currentPage === 1) {//refresh
-            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
+            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder && !couponsModel.params.type) {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
@@ -441,10 +340,11 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            if (!this.props.fromOrder) {
+            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || (!this.props.fromOrder && couponsModel.params.type === null)) {
                 API.queryCoupons({
                     status: this.state.pageStatus
                 }).then(result => {
+                    this.isLoadMore = false;
                     let data = result.data || [];
                     data.forEach((item) => {
                         arrData.push({
@@ -456,7 +356,8 @@ export default class MyCouponsItems extends Component {
                             remarks: item.remarks,
                             type: item.type, //以type=99表示1元券
                             levelimit: false,
-                            number: item.number
+                            count: item.number || 0
+
                         });
                     });
                     this.handleList(dataList, arrData);
@@ -484,27 +385,24 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.expireTime),
-                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : item.value),
+                timeStr: item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
+                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
                 type: item.type,
-                levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false
+                levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false,
+                count: item.count || 0
             });
         });
     };
 
     // 1表示刷新，2代表加载
-    getDataFromNetwork = () => {
+    getDataFromNetwork = (par) => {
         let status = this.state.pageStatus;
         if (this.props.fromOrder && status === 0) {
             let arr = [];
             let params = {};
-            // if (this.props.orderParam.orderType == 3) {
-            //     this.parseData(arr);
-            //     return;
-            // }
             if (this.props.orderParam.orderType == 99 || this.props.orderParam.orderType == 98) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
@@ -532,14 +430,12 @@ export default class MyCouponsItems extends Component {
             this.isLoadMore = true;
             API.listAvailable({
                 page: this.currentPage, pageSize: 10,
+                sgAppVersion: 310,
                 ...params
             }).then(res => {
-                // this.setState({
-                //     isFirstLoad: false
-                // });
+                bridge.hiddenLoading();
                 let data = res.data || {};
                 let dataList = data.data || [];
-                console.log('dataList');
                 this.isLoadMore = false;
                 this.parseData(dataList);
                 if (dataList.length === 0) {
@@ -548,14 +444,16 @@ export default class MyCouponsItems extends Component {
                 }
 
             }).catch(result => {
+                bridge.hiddenLoading();
                 this.setState({
                     isFirstLoad: false, viewData: []
                 });
                 this.isLoadMore = false;
                 bridge.$toast(result.msg);
             });
-        } else if (this.props.justOne && status === 0) {
+        } else if (this.props.justOne && status === 0 || this.dataSel.type === 99) {
             let arrData = [];
+            bridge.hiddenLoading();
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
                     status: 0,
@@ -570,15 +468,20 @@ export default class MyCouponsItems extends Component {
             }
             this.setState({ viewData: arrData });
             this.isEnd = true;
-        } else {
+        } else if (this.dataSel.type === 7) {
+            bridge.hiddenLoading();
+            let dataList = [];
+            this.parseData(dataList);
+        }
+        else {
             API.userCouponList({
                 page: this.currentPage,
                 status,
-                pageSize: 10
+                pageSize: 10,
+                sgAppVersion: 310,
+                type: couponsModel.params.type
             }).then(result => {
-                // this.setState({
-                //     isFirstLoad: false
-                // });
+                bridge.hiddenLoading();
                 let data = result.data || {};
                 let dataList = data.data || [];
                 this.isLoadMore = false;
@@ -587,12 +490,8 @@ export default class MyCouponsItems extends Component {
                     this.isEnd = true;
                     return;
                 }
-                // if (dataList.length === 0&&!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 ) {
-                //     this.isEnd = true;
-                //     return;
-                // }
-
             }).catch(result => {
+                bridge.hiddenLoading();
                 this.setState({
                     isFirstLoad: false, viewData: []
                 });
@@ -604,23 +503,20 @@ export default class MyCouponsItems extends Component {
 
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectTab < 8) {
-            console.log(nextProps.selectTab + '=======================');
+        if (nextProps.selectTab != this.state.pageStatus) {
+            this.onRefresh(couponsModel.params);
         }
     }
 
-    onLoadNumber = () => {
-        this.props.onLoadNumber && this.props.onLoadTabNumber();
-    };
-
-    onRefresh = () => {
+    onRefresh = (params = {}) => {
+        this.dataSel = couponsModel.params || {};
         console.log('refresh');
         this.isEnd = false;
         this.currentPage = 1;
-        if (user.isLogin){
+        if (user.isLogin) {
             this.getUserInfo();
         }
-        this.getDataFromNetwork();
+        this.getDataFromNetwork(params);
     };
 
     getUserInfo() {
@@ -633,28 +529,28 @@ export default class MyCouponsItems extends Component {
     }
 
     onLoadMore = () => {
-        console.log('onLoadMore', this.isEnd);
+        console.log('onLoadMore', this.isLoadMore, this.isEnd, this.state.isFirstLoad);
         if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
-            this.getDataFromNetwork();
+            this.getDataFromNetwork(this.dataSel);
         }
     };
 
     clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        // 跳转时type = 99 表示一元券
-        // if (item.type === 99) {
-        //     // 一元券，弹出选择数量框
-        //     this.setModalVisible(true);
-        //     return;
-        // }
         if (this.props.fromOrder) {
             bridge.showLoading();
             this.props.useCoupons(item);
         } else if (this.props.justOne) {
             this.setState({ showDialogModal: true });
         } else {
-            this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
+            if (item.type < 99 && item.count > 1) {
+                this.props.nav.navigate('mine/coupons/CouponsDetailPage', {
+                    couponIds: [item.couponConfigId],
+                    status: item.status
+                });
+            }
+
         }
     };
 }
@@ -682,6 +578,67 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             flex: 1,
             justifyContent: 'center'
+        },
+        contentStyle: {
+            marginRight: px2dp(44),
+            width: ScreenUtils.width - px2dp(88),
+            marginLeft: px2dp(44),
+            height: px2dp(165),
+            backgroundColor: '#FCFCFC',
+            borderRadius: 12,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            opacity: 0.8
+        },
+        couNumStyle: {
+            width: px2dp(123),
+            height: px2dp(24),
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        itemFirStyle: {
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: px2dp(80)
+        },
+        xNumStyle: {
+            marginRight: 15,
+            marginTop: 15,
+            fontSize: 14,
+            color: DesignRule.textColor_mainTitle
+        },
+        guangStyle: {
+            marginTop: 22,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderColor: DesignRule.mainColor,
+            borderWidth: 1,
+            borderRadius: 18,
+            width: 115,
+            height: 36
+        },
+        tnStyle: {
+            padding: 0,
+            paddingLeft: 5,
+            alignItems: 'center',
+            height: px2dp(24),
+            width: px2dp(136),
+            fontSize: px2dp(15),
+            color: DesignRule.textColor_mainTitle
+        },
+        giveUpTouStyle: {
+            width: ScreenUtils.width,
+            height: 48,
+            backgroundColor: 'white',
+            borderStyle: 'solid'
+            , alignItems: 'center', justifyContent: 'center'
+        },
+        xNumsStyle: {
+            marginRight: 15,
+            marginBottom: 5,
+            fontSize: 13,
+            color: DesignRule.textColor_mainTitle_222
         }
     }
 );

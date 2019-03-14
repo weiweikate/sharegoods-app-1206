@@ -82,7 +82,7 @@ export default class OrderDetailStateView extends Component {
                                 <UIText value={orderDetailAfterServiceModel.totalAsList.sellerState} style={{
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: px2dp(15),
-                                    marginRight: px2dp(46)
+                                    marginRight: px2dp(10)
                                 }}/>
                                 {StringUtils.isNoEmpty(orderDetailAfterServiceModel.totalAsList.logisticsTime) ?
                                     <UIText style={{

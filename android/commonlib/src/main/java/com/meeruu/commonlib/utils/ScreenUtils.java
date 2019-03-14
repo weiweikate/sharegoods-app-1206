@@ -190,7 +190,6 @@ public class ScreenUtils {
                 || hasNotchAtVivo(activity) || isAndroidP(activity) != null){ //TODO 各种品牌
             return true;
         }
-
         return false;
     }
 
@@ -302,6 +301,4 @@ public class ScreenUtils {
     public static boolean hasNotchAtOPPO(Context context) {
         return  context.getPackageManager().hasSystemFeature("com.oppo.feature.screen.heteromorphism");
     }
-
-
 }

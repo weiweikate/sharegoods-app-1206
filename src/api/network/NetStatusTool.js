@@ -30,11 +30,11 @@ class NetStatusTool {
 
     startMonitorNetworkStatus() {
         //监听网络状态改变
-        NetInfo.addEventListener('change', this.setNetStatus);
+        NetInfo.addEventListener('connectionChange', this.setNetStatus);
     }
 
     endMonitorNetworkStatus() {
-        NetInfo.removeEventListener('change', this.setNetStatus);
+        NetInfo.removeEventListener('connectionChange', this.setNetStatus);
     }
 }
 

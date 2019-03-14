@@ -42,7 +42,7 @@ class Card extends Component {
 
         TimerMixin.setTimeout(() => {
             const { readNumber } = this.state
-            this.setState({readNumber: readNumber + 1})
+            this.setState({readNumber: readNumber + 5})
         }, 800)
     }
 
@@ -126,7 +126,7 @@ export default class ShowChoiceView extends Component {
 
 let styles = StyleSheet.create({
     container: {
-        marginTop: px2dp(10)
+        marginTop: px2dp(5)
     },
     scroll: {
         height: px2dp(175)

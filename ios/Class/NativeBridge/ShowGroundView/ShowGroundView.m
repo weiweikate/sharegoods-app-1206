@@ -63,6 +63,7 @@
   collectionView.showsHorizontalScrollIndicator = NO;
   collectionView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
   [collectionView registerClass:[ShowCollectionReusableView class] forSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView"];
+  [collectionView registerClass:[UICollectionReusableView  class] forSupplementaryViewOfKind: UICollectionElementKindSectionFooter withReuseIdentifier:@"UICollectionReusableView_footer"];
   
   collectionView.dataSource = self;
   collectionView.delegate = self;
@@ -125,13 +126,14 @@
   __weak ShowGroundView * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic  toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
     weakSelf.dataArr = [result.data mutableCopy];
-    [weakSelf.collectionView reloadData];
     [weakSelf.collectionView.mj_header endRefreshing];
     if(result.data.count < 10){
       [weakSelf.collectionView.mj_footer endRefreshingWithNoMoreData];
     }else{
       [weakSelf.collectionView.mj_footer resetNoMoreData];
     }
+    [weakSelf.collectionView reloadData];
+//    [weakSelf.collectionView.collectionViewLayout invalidateLayout];
     weakSelf.collectionView.mj_footer.hidden = NO;
   } failure:^(NSString *msg, NSInteger code) {
     [MBProgressHUD showSuccess:msg];
@@ -154,6 +156,7 @@
   [NetWorkTool requestWithURL:self.uri params:dic toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
     [weakSelf.dataArr addObjectsFromArray:result.data];
     [weakSelf.collectionView reloadData];
+//    [weakSelf.collectionView.collectionViewLayout invalidateLayout];
     if(result.data.count < 10){
       [weakSelf.collectionView.mj_footer endRefreshingWithNoMoreData];
     }else{
@@ -192,15 +195,15 @@
   //section header
   if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
     ShowCollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView" forIndexPath:indexPath];
+
     //    view.backgroundColor = [UIColor redColor];
-    
     [view removeAllSubviews];
     [view addSubview:self.headerView];
-    
+
     return view;
   }else{
     //section footer
-    ShowCollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"ShowCollectionReusableView" forIndexPath:indexPath];
+    UICollectionReusableView * view = [collectionView dequeueReusableSupplementaryViewOfKind: UICollectionElementKindSectionFooter withReuseIdentifier:@"UICollectionReusableView_footer" forIndexPath:indexPath];
     return view;
   }
 }
@@ -210,15 +213,27 @@
 {
   if (_onItemPress) {
     _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
-    self.dataArr[indexPath.item].click++ ;
+    self.dataArr[indexPath.item].click = self.dataArr[indexPath.item].click + 5;
     [collectionView reloadData];
   }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(WHCWaterfallFlowLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-  return CGSizeMake(self.width, self.headerView.height);
+  return CGSizeMake(self.width, self.headerHeight);
 }
+
+- (void)setHeaderHeight:(NSInteger)headerHeight
+{
+  _headerHeight  = headerHeight;
+  [self.collectionView reloadData];
+}
+
+// - (CGSize)collectionView:(UICollectionView *)collectionView layout:(WHCWaterfallFlowLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+//{
+//  return CGSizeMake(self.width, 0.1);
+//}
+
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(WHCWaterfallFlowLayout*)collectionViewLayout heightForWidth:(CGFloat)width atIndexPath:(NSIndexPath*)indexPath
 {
@@ -232,6 +247,7 @@
     if ([view isKindOfClass:[ShowHeaderView class]]) {
       self.headerView = view;
       [self.collectionView reloadData];
+//      [self.collectionView.collectionViewLayout invalidateLayout];
     }
   }
 }

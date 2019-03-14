@@ -2,16 +2,17 @@ export const homeType = {
   swiper: 1,           //轮播
   ad: 2,       //推荐
   subject: 6,         //专题
-  starShop: 3,       //明星店铺
   today: 4,             //今日榜单
   recommend: 5,     //精品推荐
   goods: 8,
   other: 'other',
   classify: 'classify',
+  category: 'category',
   goodsTitle: 'goodsTitle',
   user: 'user',
   show: 11,            //秀场
-  web: 10
+  web: 10,
+  banner: 14
 }
 
 
@@ -28,7 +29,7 @@ export const homeLinkType = {
 };
 
 export const homeRoute = {
-  [homeLinkType.good]: 'home/product/ProductDetailPage',
+  [homeLinkType.good]: 'product/ProductDetailPage',
   [homeLinkType.subject]: 'topic/DownPricePage',
   [homeLinkType.down]: 'topic/TopicDetailPage',
   [homeLinkType.spike]: 'topic/TopicDetailPage',
@@ -36,5 +37,5 @@ export const homeRoute = {
   [homeLinkType.store]: 'spellShop/MyShop_RecruitPage',
   [homeLinkType.web]: 'HtmlPage',
   [homeLinkType.show]: 'show/ShowDetailPage',
-  [homeLinkType.exp]: 'home/product/xpProduct/XpDetailPage'
+  [homeLinkType.exp]: 'product/xpProduct/XpDetailPage'
 };

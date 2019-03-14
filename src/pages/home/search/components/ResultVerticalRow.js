@@ -41,7 +41,7 @@ export default class ResultVerticalRow extends Component {
             }}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
-                        <UIImage style={styles.img} source={{ uri: imgUrl || '' }}/>
+                        <ReuserImage style={styles.img} source={{ uri: imgUrl || '' }} borderRadius={5}/>
                         <View style={styles.textContentView}>
                             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                   numberOfLines={2} allowFontScaling={false}>{`${name || ''}`}</Text>
@@ -77,6 +77,45 @@ export default class ResultVerticalRow extends Component {
 
 }
 
+class ReuserImage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            imagePath: this.props.source.uri
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.source && nextProps.source &&
+            this.props.source.uri !== nextProps.source.uri
+        ) {
+            this.fetchImage(nextProps.source.uri);
+        }
+    }
+
+    fetchImage(url) {
+        this.setState({
+            imagePath: ''
+        }, () => {
+            this.setState({
+                imagePath: url
+            });
+        });
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.imagePath !== nextState.imagePath;
+    }
+
+    render() {
+        return <UIImage
+            {...this.props}
+            source={{ uri: this.state.imagePath }}
+            showPlaceholder={false}
+        />;
+    }
+}
+
 const styles = StyleSheet.create({
     container: {
         marginTop: 10,
@@ -85,6 +124,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     img: {
+        borderRadius:5,
         backgroundColor: DesignRule.lineColor_inColorBg,
         height: 120,
         width: 120
