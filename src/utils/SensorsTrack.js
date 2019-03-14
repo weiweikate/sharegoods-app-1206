@@ -1,5 +1,6 @@
 import { NativeModules } from 'react-native';
 
+
 const {
     track,
     trackTimerStart,
@@ -11,9 +12,12 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
+const huchao = {
 
+}
 /** 订单相关的埋点事件名称*/
 const trackEvent = {
+    ...huchao,
     bannerClick: 'BannerClick',//banner点击
     login: 'Login',//登录
     signUp: 'SignUp',//注册
@@ -50,6 +54,27 @@ const trackEvent = {
     QrcodeShareto: 'QrcodeShareto',//分享二维码
 };
 
+function trackUtil(p) {
+    /** {key:{subkey},key2:{subkey2}} -》 {subkey, subkey2}*/
+    let keys = Object.keys(p);
+    const count = keys.length;
+    let newp = {};
+    for (let i = 0; i< count; i++) {
+        newp = {...newp, ...p[keys[i]]}
+    }
+    /** 转成方法*/
+    let arr = {};
+    let keys2 = Object.keys(newp);
+    const count2 = keys2.length;
+    for (let i = 0; i< count2; i++) {
+        let key = keys2[i];
+        let value = newp[key]
+        arr[key]= (s) => {
+            track(value.name, {...value.param,...s})
+        }
+    }
+    return arr;
+}
 
 export {
     track,
@@ -58,7 +83,8 @@ export {
     trackViewScreen,
     logout,
     login,
-    trackEvent
+    trackEvent,
+    trackUtil
 };
 
 /**
