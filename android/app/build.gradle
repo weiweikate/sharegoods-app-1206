@@ -89,6 +89,8 @@ android {
             buildConfigField "String", "CODEPUSH_KEY", '"WU671PqR4MNz7Gs9Rn-KAPuSjJJN4619a06a-47ab-4a6f-a3b6-7acb423467c6"'
         }
     }
+
+
     repositories {
         maven {
             url "http://maven.aliyun.com/nexus/content/repositories/releases"
