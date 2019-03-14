@@ -18,7 +18,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <SandBoxPreviewTool/SuspensionButton.h>
 #import <SandBoxPreviewTool/SandBoxPreviewTool.h>
-#import <CodePush/CodePush.h>
+//#import <CodePush/CodePush.h>
 
 
 @implementation AppDelegate (ConfigVC)
@@ -26,14 +26,12 @@
 -(void)JR_ConfigVC:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   
-  //TODO: 应用根控制器的view指向了RCTRootView。但RCTRootView加载jsCodeLocation对应的js代码是耗时操作。
-  //未了避免白屏，可以添加launchscreen一样的view强行覆盖window.等待js代码被真正执行时，再出发native移除此view.
   NSURL *jsCodeLocation;
-  #if DEBUG
+//  #if DEBUG
    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  #else 
-    jsCodeLocation = [CodePush bundleURL];
-  #endif
+//  #else
+//    jsCodeLocation = [CodePush bundleURL];
+//  #endif
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"sharegoods"
                                                initialProperties:@{@"statusBarHeight":[NSNumber numberWithFloat:kStatusBarHeight]}
