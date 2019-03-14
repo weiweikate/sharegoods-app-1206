@@ -79,8 +79,6 @@ class HomePage extends BasePage {
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
         const { subjectHeight } = subjectModule;
-        // const { bannerList } = bannerModule;
-        // const { categoryList } = categoryModule;
 
         switch (type) {
             case homeType.category:
