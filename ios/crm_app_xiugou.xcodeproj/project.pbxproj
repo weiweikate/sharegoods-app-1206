@@ -29,6 +29,7 @@
 		101157C4219AB6FD001F5E99 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */; };
 		101157C6219AB715001F5E99 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C5219AB715001F5E99 /* libc++.tbd */; };
 		101157C8219AB72A001F5E99 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 101157C7219AB72A001F5E99 /* GLKit.framework */; };
+		104548842239FB5D00E73EF8 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 104548492239FB4800E73EF8 /* libCodePush.a */; };
 		105CAD0421BE369F00F4746D /* UMAnalyticsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 105CACD221BE369F00F4746D /* UMAnalyticsModule.m */; };
 		1073EFBE21798F5800C202AC /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1073EFBA21798F4900C202AC /* libRNDeviceInfo.a */; };
 		10BDD7F8219D6F3E00B56251 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 10BDD7F4219D6F3100B56251 /* libRNFetchBlob.a */; };
@@ -263,6 +264,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNReactNativeRequest;
+		};
+		104548482239FB4800E73EF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 104548412239FB4800E73EF8 /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = CodePush;
+		};
+		1045484A2239FB4800E73EF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 104548412239FB4800E73EF8 /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F886647B1F4ADB500036D01B;
+			remoteInfo = "CodePush-tvOS";
 		};
 		1073EFB921798F4900C202AC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -635,6 +650,7 @@
 		101157C3219AB6FD001F5E99 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		101157C5219AB715001F5E99 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		101157C7219AB72A001F5E99 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		104548412239FB4800E73EF8 /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		105CACD121BE369F00F4746D /* UMAnalyticsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMAnalyticsModule.h; sourceTree = "<group>"; };
 		105CACD221BE369F00F4746D /* UMAnalyticsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMAnalyticsModule.m; sourceTree = "<group>"; };
 		1073EF8D21798F4900C202AC /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
@@ -930,6 +946,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				104548842239FB5D00E73EF8 /* libCodePush.a in Frameworks */,
 				0347BAD92237CD120011184A /* libLottieReactNative.a in Frameworks */,
 				0409D925222F7725003A53EC /* libRNCWebView.a in Frameworks */,
 				CD15545622126AB4004C75FB /* libRCTCameraRoll.a in Frameworks */,
@@ -1134,6 +1151,15 @@
 			isa = PBXGroup;
 			children = (
 				1016E32621F98FD3003227E7 /* libRNReactNativeRequest.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		104548422239FB4800E73EF8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				104548492239FB4800E73EF8 /* libCodePush.a */,
+				1045484B2239FB4800E73EF8 /* libCodePush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1690,6 +1716,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				104548412239FB4800E73EF8 /* CodePush.xcodeproj */,
 				0347BAC12237CC670011184A /* Lottie.xcodeproj */,
 				0347BABB2237CC480011184A /* LottieReactNative.xcodeproj */,
 				0409D8EA222F7706003A53EC /* RNCWebView.xcodeproj */,
@@ -2095,6 +2122,10 @@
 					ProjectRef = BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */;
 				},
 				{
+					ProductGroup = 104548422239FB4800E73EF8 /* Products */;
+					ProjectRef = 104548412239FB4800E73EF8 /* CodePush.xcodeproj */;
+				},
+				{
 					ProductGroup = 10DC35522223C0590053894C /* Products */;
 					ProjectRef = 10DC35512223C0590053894C /* CodePush.xcodeproj */;
 				},
@@ -2299,6 +2330,20 @@
 			fileType = archive.ar;
 			path = libRNReactNativeRequest.a;
 			remoteRef = 1016E32521F98FD3003227E7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		104548492239FB4800E73EF8 /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = 104548482239FB4800E73EF8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1045484B2239FB4800E73EF8 /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = 1045484A2239FB4800E73EF8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1073EFBA21798F4900C202AC /* libRNDeviceInfo.a */ = {
@@ -3162,7 +3207,12 @@
 					"$(PROJECT_DIR)/crm_app_xiugou/Vendor",
 					"$(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = "$(inherited) $(PROJECT_DIR)/Class/libs/AliPay $(PROJECT_DIR)/crm_app_xiugou/Vendor $(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios";
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Class/libs/AliPay",
+					"$(PROJECT_DIR)/crm_app_xiugou/Vendor",
+					"$(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Class/Macros/Jure.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
