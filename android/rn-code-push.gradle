@@ -1,1 +1,37 @@
-apply from: '../../../android/rn-code-push.gradle' //node.js
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    defaultConfig {
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+    buildTypes {
+        release {}
+        releaseStaging {}
+    }
+}
+
+repositories {
+    maven {
+        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        url "$rootDir/../node_modules/react-native/android"
+    }
+}
+
+dependencies {
+    implementation 'com.nimbusds:nimbus-jose-jwt:5.1'
+    api rootProject.ext.dependencies.support
+    api(rootProject.ext.dependencies.rn) {
+        exclude group: 'com.android.support'
+    }
+}

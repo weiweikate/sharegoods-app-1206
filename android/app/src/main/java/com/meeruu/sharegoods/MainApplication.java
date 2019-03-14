@@ -11,7 +11,6 @@ import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import com.microsoft.codepush.react.CodePush;
-import org.reactnative.camera.RNCameraPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -56,8 +55,6 @@ import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 //import cn.reactnative.modules.update.UpdateContext;
 //import cn.reactnative.modules.update.UpdatePackage;
 import cn.jpush.android.api.JPushInterface;
-import cn.reactnative.modules.update.UpdateContext;
-import cn.reactnative.modules.update.UpdatePackage;
 import static com.meeruu.commonlib.config.QiyuConfig.options;
 
 /**
@@ -143,7 +140,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),
                     new CodePush(BuildConfig.CODEPUSH_KEY,MainApplication.this,BuildConfig.DEBUG),
-                    new RNCameraPackage()
                     new RNCWebViewPackage()
             );
         }

@@ -58,6 +58,12 @@ android {
             storeFile file(STORE_FILE)
             storePassword KEYSTORE_PASSWORD
         }
+        releaseStaging  {
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+            storeFile file(STORE_FILE)
+            storePassword KEYSTORE_PASSWORD
+        }
         debug {
             keyAlias KEY_ALIAS
             keyPassword KEY_PASSWORD
@@ -71,7 +77,8 @@ android {
             buildConfigField "String", "CODEPUSH_KEY", '""'
         }
         releaseStaging {
-            buildConfigField "String", "CODEPUSH_KEY", "\"${releaseStagingKey}\""
+            signingConfig signingConfigs.release
+            buildConfigField "String", "CODEPUSH_KEY", '"2Guewzu9U_22k4bLQ8NduWMVM1RA4619a06a-47ab-4a6f-a3b6-7acb423467c6"'
         }
         release {
             minifyEnabled true
@@ -79,7 +86,7 @@ android {
             zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "CODEPUSH_KEY", "\"${releaseKey}\""
+            buildConfigField "String", "CODEPUSH_KEY", '"WU671PqR4MNz7Gs9Rn-KAPuSjJJN4619a06a-47ab-4a6f-a3b6-7acb423467c6"'
         }
     }
     repositories {
@@ -97,8 +104,6 @@ sensorsAnalytics {
 }
 
 dependencies {
-    api project(':react-native-extra-dimensions-android')
-    compile project(':react-native-webview')
     api fileTree(include: ['*.jar'], dir: 'libs')
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.3') {
         exclude(module: 'support-core-utils')
@@ -106,6 +111,11 @@ dependencies {
     releaseImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.6.3') {
         exclude(module: 'support-core-utils')
     }
+
+    releaseStagingImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.6.3') {
+        exclude(module: 'support-core-utils')
+    }
+
     // Optional, if you use support library fragments:
     debugImplementation('com.squareup.leakcanary:leakcanary-support-fragment:1.6.3') {
         exclude(module: 'support-core-utils')
@@ -118,9 +128,7 @@ dependencies {
     api rootProject.ext.dependencies.recyclerview
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
-    api project(':react-native-code-push')
     api(name: 'alicom-number-verification-android-2.0.0-20190219-release',ext: 'aar')
-    api project(':react-native-update')
     api project(':react-native-video')
     api project(':react-native-vector-icons')
     api project(':react-native-svg')
@@ -138,4 +146,7 @@ dependencies {
     api project(':lottie')
     api project(':base_adapter')
     api project(':react-native-extra-dimensions-android')
+    api project(':react-native-extra-dimensions-android')
+    api project(':react-native-webview')
+    api project(':react-native-code-push')
 }
