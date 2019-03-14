@@ -70,6 +70,7 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
+    public static final String CHANNEL_KEY = "channel";
 
     /**
      * 构造方法必须实现
@@ -506,5 +507,11 @@ public class CommModule extends ReactContextBaseJavaModule {
                 promise.reject("下载失败");
             }
         }, CallerThreadExecutor.getInstance());
+    }
+
+    @ReactMethod
+    public void getAPKChannel(Promise promise){
+        String channel = AppUtils.getAppMetaData(mContext,CHANNEL_KEY);
+        promise.resolve(channel);
     }
 }
