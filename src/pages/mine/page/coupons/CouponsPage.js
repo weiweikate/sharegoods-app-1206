@@ -25,7 +25,7 @@ export default class CouponsPage extends BasePage {
         super(props);
         this.state = {
             modalVisible: false,
-            titleName: "优惠券",
+            titleName: "我的优惠券",
             CONFIG: [{ name: "全部", type: null }, { name: "1元代金券", type: 99 }, { name: "满减券", type: 1 },
                 { name: "抵价券", type: 2 }, { name: "折扣券", type: 3 }, { name: "抵扣券", type: 4 },
                 { name: "兑换券", type: 5 }, { name: "靓号券", type: 7 }],
@@ -36,7 +36,7 @@ export default class CouponsPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: "优惠券",
+        title: "我的优惠券",
         show: true // false则隐藏导航
     };
 
@@ -119,7 +119,7 @@ export default class CouponsPage extends BasePage {
     selectCouType = (item, i) => {
         this.setState({
             modalVisible: false,
-            titleName: (i === 0 ? "优惠券" : item.name),
+            titleName: (i === 0 ? "我的优惠券" : item.name),
             selectIndex: i
         });
         couponsModel.changeType(item);

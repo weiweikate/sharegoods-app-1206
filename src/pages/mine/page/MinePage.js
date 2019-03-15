@@ -477,7 +477,7 @@ export default class MinePage extends BasePage {
                     {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '余额', () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆', () => {
+                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '我的秀豆', () => {
                         this.go2CashDetailPage(2);
                     })}
                     {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0.00', false), '待入账', () => {
@@ -713,7 +713,7 @@ export default class MinePage extends BasePage {
             }
         };
         let coupon = {
-            text: '优惠券',
+            text: '我的优惠券',
             icon: mine_coupon_icon,
             onPress: () => {
                 track(trackEvent.ViewCoupon,{couponModuleSource:1})
@@ -721,7 +721,7 @@ export default class MinePage extends BasePage {
             }
         };
         let data = {
-            text: '我的资料',
+            text: '我的经验值',
             icon: mine_icon_data,
             onPress: () => {
                 this.$navigate(RouterMap.MyPromotionPage);

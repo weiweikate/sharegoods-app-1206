@@ -14,6 +14,7 @@ import { observer } from "mobx-react/native";
 import RouterMap from "../../../../navigation/RouterMap";
 import {payStatus, payment, payStatusMsg} from '../../../payment/Payment'
 import { NavigationActions } from 'react-navigation';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 import { MRText as Text, NoMoreClick } from "../../../../components/ui";
@@ -154,6 +155,7 @@ export default class OrderDetailBottomButtonView extends Component {
                 break;
             case 8:
                 let cartData = [];
+                let trackData = [];
                 orderDetailModel.warehouseOrderDTOList[0].products.map((item, index) => {
                     cartData.push({
                         spuCode: item.prodCode,
@@ -162,6 +164,18 @@ export default class OrderDetailBottomButtonView extends Component {
                         amount: item.quantity
                     });
                 });
+                orderDetailModel.warehouseOrderDTOList[0].products.map((item, index) => {
+                    trackData.push({
+                        orderID:orderDetailModel.getOrderNo(),
+                        skuID: item.skuCode,
+                        spuAmount: item.num,
+                        spuID: item.prodCode,
+                        spuName:item.productName
+                    });
+                });
+                track(trackEvent.OrderAgain,{
+                    orderID:orderDetailModel.getOrderNo(),
+                    ...trackData})
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav("shopCart/ShopCart", { hiddeLeft: false });
                 break;

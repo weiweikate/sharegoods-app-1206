@@ -45,7 +45,7 @@ export default class MyIntegralAccountPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '秀豆账户',
+        title: '我的秀豆',
 
         show: true // false则隐藏导航
     };

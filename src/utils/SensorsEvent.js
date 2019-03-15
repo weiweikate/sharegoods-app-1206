@@ -42,7 +42,17 @@ const   ProductModular = {
 //    公用模块
 const   CommModular = {
 
-}
+};
+const OrderModular = {
+    "SubmitOrder":{
+        "des":"提交订单",
+        "name":"SubmitOrder",//  提交订单
+        "params":{
+            "loginMethod":3
+        }
+    }
+
+};
 
 
 
@@ -52,6 +62,7 @@ const event = {
     ...ShopCartModular,
     ...ProductModular,
     ...CommModular,
+    ...OrderModular,
 }
 
 

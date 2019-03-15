@@ -335,7 +335,8 @@ export default class TopicDetailPage extends BasePage {
             skuCode: skuCode,
             num: amount,
             code: this.state.activityData.activityCode,
-            productCode: this.state.activityData.prodCode
+            productCode: this.state.activityData.prodCode,
+            spuName:this.state.data.name
         });
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
