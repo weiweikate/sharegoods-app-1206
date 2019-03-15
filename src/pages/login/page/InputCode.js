@@ -18,6 +18,7 @@ import { netStatusTool } from "../../../api/network/NetStatusTool";
 import { TimeDownUtils } from "../../../utils/TimeDownUtils";
 import SMSTool from "../../../utils/SMSTool";
 import { registAction } from "../model/LoginActionModel";
+import { track, TrackApi } from "../../../utils/SensorsTrack";
 // import user from "../../../model/user";
 
 const { px2dp } = ScreenUtils;
@@ -33,7 +34,7 @@ export default class InputCode extends BasePage {
 
     $navigationBarOptions = {
         title: "输入手机号",
-        show: true,
+        show: true
 
     };
 
@@ -106,6 +107,7 @@ export default class InputCode extends BasePage {
      * @private
      */
     _reSendClickAction = () => {
+        track("GetVerifySMS", { "pagePosition": 2 });
         const { phoneNum } = this.params;
         const { downTime } = this.state;
         if (downTime > 0) {
@@ -123,6 +125,8 @@ export default class InputCode extends BasePage {
             });
         });
         SMSTool.sendVerificationCode(1, phoneNum);
+
+        TrackApi.registGetVerifySMS();
     };
 
     _finshInputCode = (text) => {
@@ -139,6 +143,8 @@ export default class InputCode extends BasePage {
                 if (res.code === 10000) {
                     // user.untiedWechat(nickName,this.params.appOpenid,this.params.unionid)
                     this.$navigate(RouterMap.InviteCodePage);
+
+                    TrackApi.phoneSignUpSuccess({ "signUpPhone": phoneNum });
                 } else {
                     this.$toastShow(res.msg);
                 }

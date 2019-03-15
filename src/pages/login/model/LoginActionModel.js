@@ -9,12 +9,13 @@ import LoginAPI from "../api/LoginApi";
 import bridge from "../../../utils/bridge";
 import { homeModule } from "../../home/Modules";
 import UserModel from "../../../model/user";
-import { login } from "../../../utils/SensorsTrack";
+import { login, TrackApi } from "../../../utils/SensorsTrack";
 import JPushUtils from "../../../utils/JPushUtils";
 import DeviceInfo from "react-native-device-info/deviceinfo";
 import { DeviceEventEmitter } from "react-native";
 import RouterMap from "../../../navigation/RouterMap";
 import { NavigationActions } from "react-navigation";
+import { track } from "../../../utils/SensorsTrack";
 
 /**
  * @param phone 校验手机号
@@ -24,15 +25,15 @@ import { NavigationActions } from "react-navigation";
  */
 const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack) => {
     LoginAPI.oneClickLoginValidation({
-        phone:phone,
-        token:authenToken
+        phone: phone,
+        token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
-        if (result.unionid == null){
+        if (result.unionid == null) {
             //未绑定微信
             phoneBindWx();
         }
-        if (result.data.regNow){
+        if (result.data.regNow) {
             //新用户
             navigation.navigate(RouterMap.InviteCodePage);
         } else {
@@ -49,7 +50,7 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         bridge.$toast(error.msg);
     });
 };
-const gobackPage=(navigation)=>{
+const gobackPage = (navigation) => {
     // //老用户登录成功后直接退出原界面
     try {
         let $routes = global.$routes || [];
@@ -60,7 +61,7 @@ const gobackPage=(navigation)=>{
     } catch (e) {
         navigation.popToTop();
     }
-}
+};
 /**
  * 一键登录后未绑定微信去绑定微信
  */
@@ -69,15 +70,15 @@ const phoneBindWx = () => {
         console.log(wxInfo);
         //去绑定微信，成功与否不管
         LoginAPI.phoneBindWx({
-            unionId:wxInfo.unionid,
-            appOpenid:wxInfo.appOpenid,
-            headImg:wxInfo.headerImg,
-            nickname:wxInfo.nickName
+            unionId: wxInfo.unionid,
+            appOpenid: wxInfo.appOpenid,
+            headImg: wxInfo.headerImg,
+            nickname: wxInfo.nickName
         }).then(result => {
             // bridge.$toast('微信绑定成功');
-        }).catch(error=>{
+        }).catch(error => {
             bridge.$toast(error.msg);
-        })
+        });
     });
 };
 /**
@@ -116,10 +117,12 @@ const wxLoginAction = (callBack) => {
             if (res.code === 34005) {
                 data.title = "绑定手机号";
                 callBack && callBack(res.code, data);
+                TrackApi.wxSignUpSuccess()
             } else if (res.code === 10000) {
                 callBack && callBack(res.code, data);
                 UserModel.saveUserInfo(res.data);
                 UserModel.saveToken(res.data.token);
+                TrackApi.wxLoginSuccess();
                 bridge.$toast("登录成功");
                 console.log(UserModel);
                 homeModule.loadHomeList();
@@ -131,6 +134,7 @@ const wxLoginAction = (callBack) => {
             if (error.code === 34005) {
                 data.title = "绑定手机号";
                 callBack && callBack(error.code, data);
+                TrackApi.wxSignUpSuccess();
             }
             bridge.$toast(data.msg);
         });
@@ -156,6 +160,8 @@ const codeLoginAction = (LoginParam, callBack) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
+        track("LoginSuccess", { "loginMethod": 2 });
+        TrackApi.codeLoginSuccess();
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit("homePage_message", null);
         DeviceEventEmitter.emit("contentViewed", null);
@@ -190,6 +196,7 @@ const pwdLoginAction = (LoginParam, callBack) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
+        TrackApi.pwdLoginSuccess();
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit("homePage_message", null);
         DeviceEventEmitter.emit("contentViewed", null);
@@ -225,6 +232,7 @@ const registAction = (params, callback) => {
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
             homeModule.loadHomeList();
+            track("SignUpSuccess", { "signUpMethod": 2, "signUpPhone": params.phone, "signUpPlatform": 1 });
             bridge.setCookies(data.data);
             DeviceEventEmitter.emit("homePage_message", null);
             DeviceEventEmitter.emit("contentViewed", null);
