@@ -254,6 +254,14 @@ class HomeModule {
             console.log(error);
         }
     });
+
+    bannerPoint = (item) => ({
+        bannerName: item.imgUrl,
+        bannerId: item.id,
+        bannerRank:item.rank,
+        bannerType:item.linkType,
+        bannerContent:item.linkTypeCode
+    })
 }
 
 export const homeModule = new HomeModule();

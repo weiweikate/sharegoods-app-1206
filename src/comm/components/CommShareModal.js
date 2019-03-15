@@ -34,6 +34,7 @@
     url: '',
     methods: 'GET',
     params: {}
+    luckyDraw: bool, //ture 分享成功后是否调用增加抽奖码的接口
 }
  trackParmas={}埋点
  trackEvent= ''
@@ -78,6 +79,21 @@ import { getSource } from '@mr/image-placeholder/oos';
 import apiEnvironment from '../../api/ApiEnvironment';
 import HttpUtils from '../../api/network/HttpUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
+// 0：未知
+// 1：微信好友2：微信朋友圈3：qq好友4：qq空间5：微博6：复制链接7：分享图片
+// 100：其他
+
+const TrackShareType = {
+    unknown : 0,
+    wx : 1, //微信好友
+    wxTimeline : 2, //微信朋友圈
+    qq : 3, //qq好友
+    qqSpace : 4, //qq空间
+    weibo : 5, // 微博
+    copyLink : 6, //复制链接
+    saveImage : 7, //分享图片
+    other : 100,//其他
+}
 
 export default class CommShareModal extends React.Component {
 
@@ -201,7 +217,7 @@ export default class CommShareModal extends React.Component {
         }
         if (this.props.trackEvent) {
             let p = this.props.trackParmas || {};
-            let shareMethod = ['微信好友', '朋友圈', 'QQ好友', 'QQ空间', '微博'][platformType];
+            let shareMethod = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][platformType];
             track(this.props.trackEvent, { shareMethod, ...p });
         }
         bridge.share(params, () => {
@@ -241,7 +257,7 @@ export default class CommShareModal extends React.Component {
 
     saveImage(path) {
         if (this.props.trackEvent) {
-            track(this.props.trackEvent, { shareMethod: '保存图片', ...this.props.trackParmas });
+            track(this.props.trackEvent, { shareMethod: TrackShareType.saveImage, ...this.props.trackParmas });
         }
         bridge.saveImage(path);
         this.close();
@@ -249,7 +265,7 @@ export default class CommShareModal extends React.Component {
 
     copyUrl() {
         if (this.props.trackEvent) {
-            track(this.props.trackEvent, { shareMethod: '复制链接', ...this.props.trackParmas });
+            track(this.props.trackEvent, { shareMethod: TrackShareType.copyLink, ...this.props.trackParmas });
         }
         Clipboard.setString(this.props.webJson.linkUrl);
         NativeModules.commModule.toast('复制链接成功');

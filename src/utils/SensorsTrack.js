@@ -11,13 +11,19 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
-const huchao = {
-
-}
 /** 订单相关的埋点事件名称*/
+const inviteEvent = {
+    QrcodeShareto: 'QrCodeShareto',//分享二维码
+}
 const trackEvent = {
-    ...huchao,
-    bannerClick: 'BannerClick',//banner点击
+    ...inviteEvent,
+    bannerClick: 'AdBannerClick',//banner点击
+    bannerSwiper: 'AdBannerShow',//banner滑动
+    recommanderBannerClick: 'RecommanderBannerClick', //推荐为banner点击
+    billboardBannerClick: 'BillboardBannerClick', //今日榜单
+    selectedBannerClick: 'SelectedBannerClick', //精品推荐
+    hotsellBannerClick: 'HotsellBannerClick', //app首页超值热卖专题广告位
+    recommendedForYouBannerClick: 'RecommendedForYouBannerClick', //app首页为你推荐广告位
     login: 'Login',//登录
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索

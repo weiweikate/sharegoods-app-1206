@@ -14,7 +14,7 @@ import LoginAPI from "../api/LoginApi";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import DesignRule from "../../../constants/DesignRule";
 import res from "../res";
-import { track, trackEvent } from "../../../utils/SensorsTrack";
+import { track, TrackApi, trackEvent } from "../../../utils/SensorsTrack";
 import oldUserLoginSingleModel from "../../../model/oldUserLoginModel";
 import RouterMap from "../../../navigation/RouterMap";
 import { wxLoginAction, codeLoginAction, pwdLoginAction } from "../model/LoginActionModel";
@@ -124,6 +124,8 @@ export default class LoginPage extends BasePage {
 
         });
         oldUserLoginSingleModel.checkIsShowOrNot(false);
+
+        TrackApi.passLoginPage();
     }
 
     $NavBarLeftPressed = () => {

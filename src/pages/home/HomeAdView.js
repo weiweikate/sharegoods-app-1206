@@ -5,6 +5,7 @@ import { homeModule } from './Modules';
 import { adModules } from './HomeAdModel';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 
@@ -28,6 +29,7 @@ export default class HomeAdView extends Component {
     }
 
     _adAction(value) {
+        track(trackEvent.recommanderBannerClick, homeModule.bannerPoint(value));
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
