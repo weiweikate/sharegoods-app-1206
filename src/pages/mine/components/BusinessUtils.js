@@ -62,7 +62,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
             //     image: {uri: image.path, width: image.width, height: image.height},
             //     images: null
             // });
-            Utiles.upload([image.path], [image.size + ''], callBack)
+            Utiles.upload([image.path], [image.size + ''], callBack, true)
         }).catch(e => {});
     },
     pickSingle(cropit, circular=false, callBack) {
@@ -103,7 +103,7 @@ import ImagePicker from '@mr/rn-image-crop-picker'
              Utiles.upload(images.map(item => item.path), images.map(item => item.size + ''), callBack)
          }).catch(e => {});
      },
-     upload(paths, sizes, callBack) {
+     upload(paths, sizes, callBack, camera=false) {
         for (let i = 0; i < paths.length; i ++)
          {
              let uri = paths[i];
@@ -154,7 +154,8 @@ import ImagePicker from '@mr/rn-image-crop-picker'
                  callBack({
                      ok: true,
                      imageUrl: res,
-                     imageThumbUrl: res
+                     imageThumbUrl: res,
+                     camera: camera
                  });
              }).catch(error => {
                  Toast.hiddenLoading();
