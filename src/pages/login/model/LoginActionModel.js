@@ -9,7 +9,7 @@ import LoginAPI from "../api/LoginApi";
 import bridge from "../../../utils/bridge";
 import { homeModule } from "../../home/Modules";
 import UserModel from "../../../model/user";
-import { login } from "../../../utils/SensorsTrack";
+import { login, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from "../../../utils/JPushUtils";
 import DeviceInfo from "react-native-device-info/deviceinfo";
 import { DeviceEventEmitter } from "react-native";
@@ -122,6 +122,7 @@ const wxLoginAction = (callBack) => {
                 UserModel.saveUserInfo(res.data);
                 UserModel.saveToken(res.data.token);
                 track("LoginSuccess",{'loginMethod':1});
+                TrackApi.wxLoginSuccess({});
                 bridge.$toast("登录成功");
                 console.log(UserModel);
                 homeModule.loadHomeList();

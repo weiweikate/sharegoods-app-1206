@@ -15,7 +15,7 @@ import judgePhoneModel from '../../model/JudgePhoneModel';
 import { observer } from 'mobx-react';
 
 @observer
-export default class JudgePhoneNumPage extends BasePage {
+export default class JudgePhonePage extends BasePage {
 
     // 构造
     constructor(props) {
@@ -148,8 +148,8 @@ export default class JudgePhoneNumPage extends BasePage {
                 phone: tel
             }).then((data) => {
                 this.isLoadding = false;
-                if (user.hadSalePassword) {
-                    if (user.idcard) {
+                if (user.hadSalePassword) {//设置过交易密码， 修改支付密码
+                    if (user.idcard) {//认证过身份证
                         this.$navigate('mine/account/JudgeIDCardPage');
                     } else {
                         // 跳转到实名认证页面
@@ -158,7 +158,7 @@ export default class JudgePhoneNumPage extends BasePage {
                         });
                     }
                 } else {
-                    // 直接设置交易密码
+                    // 第一次设置交易密码
                     this.$navigate('mine/account/SetOrEditPayPwdPage', {
                         title: '设置交易密码',
                         tips: '请设置6位纯数字交易支付密码',
