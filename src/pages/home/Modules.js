@@ -255,13 +255,12 @@ class HomeModule {
         }
     });
 
-    bannerPoint = (data) => ({
-        bannerName: data.linkTypeCode,
-        bannerId: data.id,
-        url: data.imgUrl,
-        bannerRank: data.rank,
-        bannerType: data.linkType,
-        bannerContent: data.remark
+    bannerPoint = (item) => ({
+        bannerName: item.imgUrl,
+        bannerId: item.id,
+        bannerRank:item.rank,
+        bannerType:item.linkType,
+        bannerContent:item.linkTypeCode
     })
 }
 
