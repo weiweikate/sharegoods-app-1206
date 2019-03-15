@@ -16,6 +16,7 @@ import MRBannerViewComponent from '../../components/ui/bannerView/MRBannerViewCo
 
 import { track, trackEvent } from '../../utils/SensorsTrack';
 
+
 @observer
 export default class HomeBannerView extends Component {
 
@@ -28,40 +29,48 @@ export default class HomeBannerView extends Component {
                 break;
             }
         }
+        console.log('_onPressRowWithItem', data)
         if (data) {
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
-            track(trackEvent.bannerClick, {
-                pageType: '主页banner',
-                bannerLocation: '主页',
-                bannerID: data.id,
-                bannerRank: data.rank,
-                url: data.imgUrl,
-                bannerName: data.linkTypeCode
-            });
+
+            track(trackEvent.bannerClick, this._bannerPoint(data));
             navigate(router, { ...params, preseat: 'home_banner' });
+        }
+    }
+
+    //banner埋点
+    _bannerPoint(data) {
+        return {
+            bannerName: data.linkTypeCode,
+            bannerId: data.id,
+            url: data.imgUr,
+            bannerRank: data.rank,
+            bannerType: data.linkType,
+            bannerContent: data.remark
         }
     }
 
     _onPressRow = (index) => {
         const { bannerList } = bannerModule;
         let data = bannerList[index];
+        
         if (data) {
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
-            track(trackEvent.bannerClick, {
-                pageType: 'home',
-                bannerLocation: 'home',
-                bannerID: data.id,
-                bannerRank: data.rank,
-                url: data.imgUrl,
-                bannerName: data.linkTypeCode
-            });
+
+            track(trackEvent.bannerClick, this._bannerPoint(data));
             navigate(router, { ...params, preseat: 'home_banner' });
         }
     };
+
+    _onDidScrollToIndex(index) {
+        const { bannerList } = bannerModule;
+        let data = bannerList[index];
+        track(trackEvent.bannerSwiper, this._bannerPoint(data));
+    }
 
     render() {
         const { bannerList } = bannerModule;
@@ -80,6 +89,7 @@ export default class HomeBannerView extends Component {
                                    bannerHeight={bannerHeight}
                                    modeStyle={1} autoInterval={5}
                                    pageFocused={this.props.pageFocused}
+                                   onDidScrollToIndex={(i)=> {this._onDidScrollToIndex(i)}}
                                    onDidSelectItemAtIndex={(i) => {
                                        this._onPressRow(i);
                                    }}/>

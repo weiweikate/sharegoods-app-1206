@@ -17,7 +17,8 @@ const huchao = {
 /** 订单相关的埋点事件名称*/
 const trackEvent = {
     ...huchao,
-    bannerClick: 'BannerClick',//banner点击
+    bannerClick: 'AdBannerClick',//banner点击
+    bannerSwiper: 'AdBannerShow',
     login: 'Login',//登录
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
