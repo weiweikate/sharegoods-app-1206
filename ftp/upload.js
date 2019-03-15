@@ -18,8 +18,7 @@ var currDate = new Date();
 var dirName = `/${currDate.getFullYear()}.${currDate.getMonth()+1}.${currDate.getDate()}-${currDate.getHours()}.${currDate.getMinutes()}.${currDate.getMinutes()}`;
 var dir = remoatPath+dirName;
 
-// var localfile = '../android/app/build/outputs/apk/release/app-release.apk';
-var localfile = '/Users/mac/Library/Android/sdk/build-tools/28.0.3/app-release.sign_360.apk ';
+var localfile = '../android/app/build/outputs/apk/releaseStaging/app-releaseStaging.apk';
 
 function cdRemoteDir() {
     c.cwd(dir,function(error,currDir) {
