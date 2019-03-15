@@ -17,15 +17,15 @@ export const homeType = {
 
 
 export const homeLinkType = {
-  good: 1,
-  subject: 2,
-  down: 3,
-  spike: 4,
-  package: 5,
-  exp: 6, //经验值
-  store: 8,
-  web: 10,
-  show: 11
+  good: 1,      //普通商品
+  subject: 2,   //专题
+  down: 3,      //降价拍
+  spike: 4,     //秒杀
+  package: 5,   //礼包
+  exp: 6,       //经验值
+  store: 8,     //店铺
+  web: 10,      //web连接
+  show: 11      //秀场
 };
 
 export const homeRoute = {
