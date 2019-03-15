@@ -35,6 +35,7 @@ import {
 } from './components';
 import { observer } from 'mobx-react';
 import res from '../res';
+import RouterMap from '../../../navigation/RouterMap';
 
 const netError = res.placeholder.netError;
 
@@ -148,7 +149,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (pageType === 0 && (status === 1 || status === 5) ||
             pageType === 1 && (status === 1 || status === 5)
         ) {
-                isShow_refuseReasonView = true;
+            isShow_refuseReasonView = true;
 
             /** 只要是被拒绝就显示拒绝理由*/
         } else if (status === 6) {
@@ -344,11 +345,24 @@ class ExchangeGoodsDetailPage extends BasePage {
             this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
             return;
         }
-        this.$navigate('order/logistics/LogisticsDetailsPage', {
-            expressNo: expressNo
-        });
+        this.logisticsDetailsPage()
     };
 
+    logisticsDetailsPage = (expressNo) => {
+        OrderApi.return_express({expressNo: expressNo}).then((data)=>{
+            if (data&&data.length>1){//有多个物流
+                this.$navigate(RouterMap.AfterLogisticsListView, {
+                    serviceNo: this.params.serviceNo
+                });
+            }else {
+                this.$navigate('order/logistics/LogisticsDetailsPage', {
+                    expressNo: expressNo
+                });
+            }
+        }).catch(err=>{
+            this.$toastShow(err.msg);
+        });
+    }
 
     /**
      * 撤销、修改
