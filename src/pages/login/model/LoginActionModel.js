@@ -121,8 +121,10 @@ const wxLoginAction = (callBack) => {
                 callBack && callBack(res.code, data);
                 UserModel.saveUserInfo(res.data);
                 UserModel.saveToken(res.data.token);
+
                 track("LoginSuccess",{'loginMethod':1});
                 TrackApi.wxLoginSuccess({});
+
                 bridge.$toast("登录成功");
                 console.log(UserModel);
                 homeModule.loadHomeList();
