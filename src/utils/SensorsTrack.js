@@ -11,12 +11,12 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
-const huchao = {
-
-}
 /** 订单相关的埋点事件名称*/
+const inviteEvent = {
+    QrcodeShareto: 'QrCodeShareto',//分享二维码
+}
 const trackEvent = {
-    ...huchao,
+    ...inviteEvent,
     bannerClick: 'BannerClick',//banner点击
     login: 'Login',//登录
     signUp: 'SignUp',//注册
@@ -50,7 +50,7 @@ const trackEvent = {
     Dropout: 'Dropout',//请出拼店
     ReceiveDividents: 'ReceiveDividents',//收到分红
     VIPChange: 'VIPChange',//会员流转
-    QrcodeShareto: 'QrcodeShareto',//分享二维码
+    QrcodeShareto: 'QrCodeShareto',//分享二维码
 };
 
 function trackUtil(p) {
