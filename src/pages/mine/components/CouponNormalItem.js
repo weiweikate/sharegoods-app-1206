@@ -36,14 +36,14 @@ export default class CouponNormalItem extends Component{
                                             <Text
                                                 style={{
                                                     fontSize: 14,
-                                                    color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                                    color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
                                                     marginBottom: 4
                                                 }} allowFontScaling={false}>￥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
                                         fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                        color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle
+                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
                                     }} allowFontScaling={false}>{item.value}</Text>
                                 </View>
                                 {
@@ -52,7 +52,7 @@ export default class CouponNormalItem extends Component{
                                             <Text
                                                 style={{
                                                     fontSize: 14,
-                                                    color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                                    color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
                                                     marginBottom: 4
                                                 }} allowFontScaling={false}>折</Text>
                                         </View> : null}

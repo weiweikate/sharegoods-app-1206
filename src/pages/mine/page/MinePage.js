@@ -31,6 +31,8 @@ import UIImage from '../../../components/ui/UIImage';
 import { MRText as Text, AvatarImage } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 import CommModal from '../../../comm/components/CommModal';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+
 
 const {
     mine_header_bg,
@@ -714,6 +716,7 @@ export default class MinePage extends BasePage {
             text: '优惠券',
             icon: mine_coupon_icon,
             onPress: () => {
+                track(trackEvent.ViewCoupon,{couponModuleSource:1})
                 this.$navigate(RouterMap.CouponsPage);
             }
         };
@@ -847,6 +850,7 @@ export default class MinePage extends BasePage {
             this.$navigate('login/login/LoginPage');
             return;
         }
+        track(trackEvent.ViewMyOrder,{myOrderModuleSource:1})
         switch (index) {
             case 0:
                 this.$navigate('order/order/MyOrdersListPage', { index: 1 });
@@ -876,6 +880,7 @@ export default class MinePage extends BasePage {
                 this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: user.userScore ? user.userScore : 0 });
                 break;
             case 3:
+                track(trackEvent.ViewWaitToRecord,{recordModuleSource:1})
                 this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
                 break;
             default:

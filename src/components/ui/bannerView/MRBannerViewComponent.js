@@ -23,7 +23,8 @@ export default class MRBannerViewComponent extends Component {
         autoInterval: PropTypes.number,
         //是否轮播 默认true
         autoLoop: PropTypes.bool,
-        itemRadius: PropTypes.number
+        itemRadius: PropTypes.number,
+        onDidScrollToIndex: PropTypes.func
     };
 
     constructor(props) {
@@ -71,6 +72,7 @@ export default class MRBannerViewComponent extends Component {
     _onDidScrollToIndex(e) {
         let index = e.nativeEvent.index;
         this.setState({ index });
+        this.props.onDidScrollToIndex(index)
     }
 
 
