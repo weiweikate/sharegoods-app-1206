@@ -19,6 +19,7 @@ import DesignRule from '../../constants/DesignRule';
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
 import { MRText } from "../../components/ui";
 import CommShareModal from "../../comm/components/CommShareModal";
+import apiEnvironment from "../../api/ApiEnvironment";
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -166,23 +167,6 @@ export default class DownPricePage extends BasePage {
      * @private
      */
     _itemActionClick = (itemData) => {
-        // if (itemData.productType === 99) {
-        //     this.$navigate('home/product/ProductDetailPage', {
-        //         productId: itemData.productId,
-        //         productCode: itemData.prodCode,
-        //         preseat:'专题列表页'
-        //     });
-        // } else if (itemData.productType === 1 || itemData.productType === 2 || itemData.productType === 3) {
-        //     this.$navigate('topic/TopicDetailPage', {
-        //         activityCode: itemData.prodCode,
-        //         activityType: itemData.productType,
-        //         preseat:'专题列表页'
-        //     });
-        // } else if (itemData.productType === 5) {
-        //     this.$navigate('topic/DownPricePage', {
-        //         linkTypeCode: itemData.prodCode
-        //     });
-        // }
         const pageObj = getTopicJumpPageParam(itemData);
         this.$navigate(pageObj.pageRoute, pageObj.params);
     };
@@ -194,6 +178,7 @@ export default class DownPricePage extends BasePage {
             sectionData = sectionList[this.state.selectNav].sectionDataList || [];
         }
         const { imgUrl } = this.dataModel;
+        const { linkTypeCode } = this.params;
         this.$NavigationBarResetTitle(this.dataModel.name);
         return (
             <ScrollView
@@ -244,14 +229,15 @@ export default class DownPricePage extends BasePage {
                 }
                 {
                     this._renderBottomListView(sectionData)
+
                 }
 
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 webJson={{
-                                    title: '分享好友免费领取福利',
+                                    title: this.dataModel.topicTitle,
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
-                                    linkUrl: 'http://172.16.10.131:9528/subject/ZT2018000002',
+                                    linkUrl: apiEnvironment.getCurrentHostUrl()+'/subject/'+linkTypeCode,
                                     thumImage: 'logo.png'
                                 }}
                 />
