@@ -11,7 +11,6 @@ const KEY_HostJson = "HostJson";
 const KEY_DefaultFetchTimeout = "DefaultFetchTimeout";
 // HOST配置
 const ApiConfig = config.env;
-
 class ApiEnvironment {
 
     constructor() {

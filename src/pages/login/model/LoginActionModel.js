@@ -9,12 +9,13 @@ import LoginAPI from "../api/LoginApi";
 import bridge from "../../../utils/bridge";
 import { homeModule } from "../../home/Modules";
 import UserModel from "../../../model/user";
-import { login } from "../../../utils/SensorsTrack";
+import { login, TrackApi } from '../../../utils/SensorsTrack';
 import JPushUtils from "../../../utils/JPushUtils";
 import DeviceInfo from "react-native-device-info/deviceinfo";
 import { DeviceEventEmitter } from "react-native";
 import RouterMap from "../../../navigation/RouterMap";
 import { NavigationActions } from "react-navigation";
+import {track} from '../../../utils/SensorsTrack'
 
 /**
  * @param phone 校验手机号
@@ -120,6 +121,10 @@ const wxLoginAction = (callBack) => {
                 callBack && callBack(res.code, data);
                 UserModel.saveUserInfo(res.data);
                 UserModel.saveToken(res.data.token);
+
+                track("LoginSuccess",{'loginMethod':1});
+                TrackApi.wxLoginSuccess({});
+
                 bridge.$toast("登录成功");
                 console.log(UserModel);
                 homeModule.loadHomeList();
@@ -156,6 +161,7 @@ const codeLoginAction = (LoginParam, callBack) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
+        track("LoginSuccess",{'loginMethod':2});
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit("homePage_message", null);
         DeviceEventEmitter.emit("contentViewed", null);
@@ -190,6 +196,7 @@ const pwdLoginAction = (LoginParam, callBack) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
+        track("LoginSuccess",{'loginMethod':3,});
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit("homePage_message", null);
         DeviceEventEmitter.emit("contentViewed", null);
@@ -225,6 +232,7 @@ const registAction = (params, callback) => {
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
             homeModule.loadHomeList();
+            track("SignUpSuccess",{'signUpMethod':2,'signUpPhone':params.phone,'signUpPlatform':1});
             bridge.setCookies(data.data);
             DeviceEventEmitter.emit("homePage_message", null);
             DeviceEventEmitter.emit("contentViewed", null);

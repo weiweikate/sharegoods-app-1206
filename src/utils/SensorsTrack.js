@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
-
+import SensorsEvent from './SensorsEvent'
 const {
     track,
     trackTimerStart,
@@ -11,9 +11,12 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
+const huchao = {
 
+}
 /** 订单相关的埋点事件名称*/
 const trackEvent = {
+    ...huchao,
     bannerClick: 'BannerClick',//banner点击
     login: 'Login',//登录
     signUp: 'SignUp',//注册
@@ -56,6 +59,21 @@ const trackEvent = {
     ViewMyOrder:'ViewMyOrder',//查看-我的订单
 
 };
+function trackUtil(p) {
+    let arr = {};
+    let keys = Object.keys(p);
+    const count = keys.length;
+    for (let i = 0; i< count; i++) {
+        let key = keys[i];
+        let value = p[key]
+        arr[key]= (s) => {
+            track(value.name, {...value.params,...s})
+        }
+    }
+    return arr;
+}
+
+const TrackApi = trackUtil(SensorsEvent)
 
 export {
     track,
@@ -64,7 +82,9 @@ export {
     trackViewScreen,
     logout,
     login,
-    trackEvent
+    trackEvent,
+    trackUtil,
+    TrackApi
 };
 
 /**

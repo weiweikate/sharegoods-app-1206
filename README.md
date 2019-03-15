@@ -1,4 +1,16 @@
 # 秀购
+##关于埋点
+在 SensorsEvent.js 文件中编辑相关埋点事件
+如       //微信登录
+        "wxLoginSuccess":{
+            "des":"微信登录成功埋点",
+            "name":"LoginSuccess",
+            "params":{
+                "loginMethod":1
+            }
+        },
+在具体埋点初 引入   import { TrackApi } from '../../../utils/SensorsTrack';
+调用    TrackApi.wxLoginSuccess({}); 即可  函数所接收的参数为动态参数，有的埋点没有动态参数就不需要了
 
 ## 关于数据加签
 配置文件目录：`src/api/network/rsa_config.js`
