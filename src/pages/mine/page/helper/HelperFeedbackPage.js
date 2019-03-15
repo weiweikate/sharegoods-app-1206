@@ -31,6 +31,7 @@ const {
 const rightIcon = res.button.tongyon_icon_check_green;
 import DesignRule from '../../../../constants/DesignRule';
 import NavigatorBar from '../../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 /**
  * @author chenxiang
@@ -135,6 +136,9 @@ export default class HelperFeedbackPage extends BasePage {
         }).then(res => {
             this.disabled = true;
             this.setState({ isShowFinishModal: true });
+            track(trackEvent.ProblemFeedback,{
+                problemType:this.state.course
+            });
             this.finishModal && this.finishModal.open();
         }).catch(err => {
             this.disabled = false;
