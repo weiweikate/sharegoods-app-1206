@@ -1,6 +1,5 @@
 import { NativeModules } from 'react-native';
-
-
+import SensorsEvent from './SensorsEvent'
 const {
     track,
     trackTimerStart,
@@ -55,26 +54,20 @@ const trackEvent = {
 };
 
 function trackUtil(p) {
-    /** {key:{subkey},key2:{subkey2}} -》 {subkey, subkey2}*/
+    let arr = {};
     let keys = Object.keys(p);
     const count = keys.length;
-    let newp = {};
     for (let i = 0; i< count; i++) {
-        newp = {...newp, ...p[keys[i]]}
-    }
-    /** 转成方法*/
-    let arr = {};
-    let keys2 = Object.keys(newp);
-    const count2 = keys2.length;
-    for (let i = 0; i< count2; i++) {
-        let key = keys2[i];
-        let value = newp[key]
+        let key = keys[i];
+        let value = p[key]
         arr[key]= (s) => {
-            track(value.name, {...value.param,...s})
+            track(value.name, {...value.params,...s})
         }
     }
     return arr;
 }
+
+const TrackApi = trackUtil(SensorsEvent)
 
 export {
     track,
@@ -84,7 +77,8 @@ export {
     logout,
     login,
     trackEvent,
-    trackUtil
+    trackUtil,
+    TrackApi
 };
 
 /**
