@@ -47,9 +47,15 @@ const trackEvent = {
     Dropout: 'Dropout',//请出拼店
     ReceiveDividents: 'ReceiveDividents',//收到分红
     VIPChange: 'VIPChange',//会员流转
-    QrcodeShareto: 'QrcodeShareto',//分享二维码
-};
+    QrcodeShareto: 'QrcodeShareto',//分享二维码,
+    ProblemFeedback:'ProblemFeedback',//点击问题反馈,
+    ClickContactCustomerService:'ClickContactCustomerService',//点击联系客服
+    ViewCoupon:'ViewCoupon',//点击查看优惠券点击查看优惠券
+    ViewWaitToRecord:'ViewWaitToRecord',//点击查看待入帐
+    ModifuAvatarSuccess:'ModifuAvatarSuccess',//修改头像
+    ViewMyOrder:'ViewMyOrder',//查看-我的订单
 
+};
 
 export {
     track,

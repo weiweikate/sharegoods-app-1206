@@ -47,19 +47,23 @@ export default class CouponsPage extends BasePage {
     }
 
     $NavBarRenderTitle = () => {
-        return (
-            <TouchableOpacity style={{ flexDirection: "row", alignItems: "center" }} onPress={() => {
-                this.setState({ modalVisible: true });
-            }} disabled={!!this.params.fromOrder || !!this.params.justOne}>
-                <Text style={{
-                    fontSize: 18,
-                    color: DesignRule.textColor_mainTitle,
-                    backgroundColor: "transparent"
-                }}>{this.state.titleName}</Text>
-                <Image source={this.state.modalVisible ? topDown : topUp}
-                       style={{ width: 10, height: 6, marginLeft: 2 }} resizeMode={"contain"}/>
-            </TouchableOpacity>
-        );
+        if(!!this.params.fromOrder || !!this.params.justOne){
+            return <Text style={[styles.title]} allowFontScaling={false} numberOfLines={1}>优惠券</Text>
+        }else{
+            return (
+                <TouchableOpacity style={{ flexDirection: "row", alignItems: "center" }} onPress={() => {
+                    this.setState({ modalVisible: true });
+                }} disabled={!!this.params.fromOrder || !!this.params.justOne}>
+                    <Text style={{
+                        fontSize: 18,
+                        color: DesignRule.textColor_mainTitle,
+                        backgroundColor: "transparent"
+                    }}>{this.state.titleName}</Text>
+                    <Image source={this.state.modalVisible ? topDown : topUp}
+                           style={{ width: 10, height: 6, marginLeft: 2 }} resizeMode={"contain"}/>
+                </TouchableOpacity>
+            );
+        }
     };
 
     renderModals() {
@@ -214,5 +218,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         justifyContent: "center",
         alignItems: "center"
-    }
+    },
+    title: {
+        fontSize: 18,
+        color: DesignRule.textColor_mainTitle,
+        backgroundColor: 'transparent'
+    },
 });
