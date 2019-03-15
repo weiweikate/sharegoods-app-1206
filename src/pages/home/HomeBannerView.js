@@ -9,11 +9,8 @@ const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import { bannerModule } from './HomeBannerModel';
-
 export const bannerHeight = px2dp(120);
-
 import MRBannerViewComponent from '../../components/ui/bannerView/MRBannerViewComponent';
-
 import { track, trackEvent } from '../../utils/SensorsTrack';
 
 
@@ -35,20 +32,8 @@ export default class HomeBannerView extends Component {
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
-            track(trackEvent.bannerClick, this._bannerPoint(data));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data));
             navigate(router, { ...params, preseat: 'home_banner' });
-        }
-    }
-
-    //banner埋点
-    _bannerPoint(data) {
-        return {
-            bannerName: data.linkTypeCode,
-            bannerId: data.id,
-            url: data.imgUr,
-            bannerRank: data.rank,
-            bannerType: data.linkType,
-            bannerContent: data.remark
         }
     }
 
@@ -61,7 +46,7 @@ export default class HomeBannerView extends Component {
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
-            track(trackEvent.bannerClick, this._bannerPoint(data));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data));
             navigate(router, { ...params, preseat: 'home_banner' });
         }
     };
@@ -69,7 +54,7 @@ export default class HomeBannerView extends Component {
     _onDidScrollToIndex(index) {
         const { bannerList } = bannerModule;
         let data = bannerList[index];
-        track(trackEvent.bannerSwiper, this._bannerPoint(data));
+        track(trackEvent.bannerSwiper, homeModule.bannerPoint(data));
     }
 
     render() {

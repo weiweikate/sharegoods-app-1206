@@ -254,6 +254,15 @@ class HomeModule {
             console.log(error);
         }
     });
+
+    bannerPoint = (data) => ({
+        bannerName: data.linkTypeCode,
+        bannerId: data.id,
+        url: data.imgUr,
+        bannerRank: data.rank,
+        bannerType: data.linkType,
+        bannerContent: data.remark
+    })
 }
 
 export const homeModule = new HomeModule();
