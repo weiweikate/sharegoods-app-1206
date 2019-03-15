@@ -258,7 +258,7 @@ class HomeModule {
     bannerPoint = (data) => ({
         bannerName: data.linkTypeCode,
         bannerId: data.id,
-        url: data.imgUr,
+        url: data.imgUrl,
         bannerRank: data.rank,
         bannerType: data.linkType,
         bannerContent: data.remark
