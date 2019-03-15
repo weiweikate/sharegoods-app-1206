@@ -66,6 +66,177 @@ const HomeModular = {};
 const ShopCartModular = {};
 //    产品详情模块
 const ProductModular = {};
+//    秀场模块
+const ShowModular = {
+    "ShowBannerRecommandClick":{
+        "des":'秀场banner推荐图展示',
+        "name":"ShowBannerRecommandClick",
+        "params":{}
+    },
+    "ShowBannerClick":{
+        "des":'秀场banner推荐图点击',
+        "name":"ShowBannerClick",
+        "params":{}
+    },
+    "WatchXiuChang":{
+        "des":'浏览秀场-精选热门/最新秀场',
+        "name":"WatchXiuChang",
+        "params":{}
+    },
+    "XiuChangDetails":{
+        "des":'秀场文章详情查看',
+        "name":"XiuChangDetails",
+        "params":{}
+    },
+    "ArticleShare":{
+        "des":'文章分享',
+        "name":"ArticleShare",
+        "params":{}
+    },
+    "CollectingArticle":{
+        "des":'文章收藏',
+        "name":"CollectingArticle",
+        "params":{}
+    },
+    "CancelArticleCollection":{
+        "des":'文章取消收藏',
+        "name":"CancelArticleCollection",
+        "params":{}
+    },
+}
+//    签到模块
+const SignUpModular = {
+    "SignUpFeedback":{
+        "des":'签到成功反馈',
+        "name":"SignUpFeedback",
+        "params":{}
+    },
+}
+//     订单模块
+const OrderModular = {
+    "ViewMyOrder":{
+        "des":'查看-我的订单',
+        "name":"ViewMyOrder",
+        "params":{}
+    },
+}
+
+//     消息模块
+const MessageModular = {
+    "ViewMyMessage":{
+        "des":'查看-信息通知',
+        "name":"ViewMyMessage",
+        "params":{}
+    },
+    "ViewNotice":{
+        "des":'查看通知',
+        "name":"ViewNotice",
+        "params":{}
+    },
+    "ViewNoticeContent":{
+        "des":'查看通知详细信息',
+        "name":"ViewNoticeContent",
+        "params":{}
+    },
+    "ViewMessage":{
+        "des":'查看消息',
+        "name":"ViewMessage",
+        "params":{}
+    },
+    "ViewMessageContent":{
+        "des":'查看消息内详细信息',
+        "name":"ViewMessageContent",
+        "params":{}
+    },
+    "ViewPinMessage":{
+        "des":'查看拼店消息',
+        "name":"ViewMessage",
+        "params":{}
+    },
+    "ViewPinMessageContent":{
+        "des":'查看拼店内详细信息',
+        "name":"ViewPinMessageContent",
+        "params":{}
+    }
+}
+//  我的模块
+const MineModular = {
+    "ViewPersonalInfo":{
+        "des":'查看个人资料',
+        "name":"ViewPersonalInfo",
+        "params":{}
+    },
+    "ViewLevelInterest":{
+        "des":'查看等级权益',
+        "name":"ViewLevelInterest",
+        "params":{}
+    },
+    "ViewHowTo":{
+        "des":'点击查看“如何玩转秀购”',
+        "name":"ViewHowTo",
+        "params":{}
+    },
+    "ViewAccountBalance":{
+        "des":'点击查看账户余额',
+        "name":"ViewAccountBalance",
+        "params":{}
+    },
+    "ViewShowDou":{
+        "des":'点击查看秀豆',
+        "name":"ViewShowDou",
+        "params":{}
+    },
+    "ViewWaitToRecord":{
+        "des":'点击查看待入帐',
+        "name":"ViewWaitToRecord",
+        "params":{}
+    },
+    "ViewCoupon":{
+        "des":'点击查看优惠券',
+        "name":"ViewCoupon",
+        "params":{}
+    },
+    "ViewMyInfos":{
+        "des":'点击查看我的资料',
+        "name":"ViewMyInfos",
+        "params":{}
+    },
+    "ViewMyPinCollection":{
+        "des":'点击查看收藏店铺',
+        "name":"ViewMyPinCollection",
+        "params":{}
+    },
+    "ViewMyXiuCollection":{
+        "des":'点击查看秀场收藏',
+        "name":"ViewMyXiuCollection",
+        "params":{}
+    },
+    "ViewMyFans":{
+        "des":'点击查看我的秀迷',
+        "name":"ViewMyFans",
+        "params":{}
+    },
+    "ViewMyAdviser":{
+        "des":'点击查看服务顾问',
+        "name":"ViewMyAdviser",
+        "params":{}
+    },
+    "ClickCustomerService":{
+        "des":'点击帮助与客服',
+        "name":"ClickCustomerService",
+        "params":{}
+    },
+    "ClickContactCustomerService":{
+        "des":'点击联系客服',
+        "name":"ClickContactCustomerService",
+        "params":{}
+    },
+    "ClickCustomerService":{
+        "des":'点击帮助与客服',
+        "name":"ClickCustomerService",
+        "params":{}
+    },
+}
 
 //    公用模块
 const CommModular = {};
@@ -76,7 +247,12 @@ const event = {
     ...HomeModular,
     ...ShopCartModular,
     ...ProductModular,
-    ...CommModular
+    ...CommModular,
+    ...ShowModular,
+    ...SignUpModular,
+    ...OrderModular,
+    ...MessageModular,
+    ...MineModular
 };
 
 
