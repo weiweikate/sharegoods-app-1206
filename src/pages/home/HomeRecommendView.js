@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
@@ -27,6 +28,7 @@ export default class HomeRecommendView extends Component {
         const { recommendList } = recommendModule;
         let item = recommendList[index];
         if (item) {
+            track(trackEvent.selectedBannerClick, homeModule.bannerPoint(item))
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);
