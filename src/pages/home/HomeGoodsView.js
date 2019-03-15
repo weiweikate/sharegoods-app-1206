@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
-
+import { track, trackEvent } from '../../utils/SensorsTrack';
 const { px2dp } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
@@ -45,6 +45,7 @@ const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => pre
 
 export default class GoodsCell extends Component {
     _goodsAction(data) {
+        track(trackEvent.recommendedForYouBannerClick, homeModule.bannerPoint(data))
         let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(data);
