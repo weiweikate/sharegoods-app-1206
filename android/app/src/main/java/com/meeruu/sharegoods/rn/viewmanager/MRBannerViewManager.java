@@ -154,7 +154,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
 
     @ReactProp(name = "pageFocused")
     public void pageFocused(BannerLayout view, boolean focuse) {
-//        this.pageFocus = focuse;
+        this.pageFocus = focuse;
         if (focuse) {
             if (!view.isPlaying()) {
                 view.setAutoPlaying(true);

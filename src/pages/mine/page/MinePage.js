@@ -748,7 +748,6 @@ export default class MinePage extends BasePage {
             onPress: () => {
                 TrackApi.ClickCustomerService();
                 TrackApi.ClickContactCustomerService({
-                    questionType:'',
                     customerServiceModuleSource:1
                 })
                 this.$navigate(RouterMap.MyHelperPage);
