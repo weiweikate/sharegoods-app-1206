@@ -1,7 +1,7 @@
 {
 //    登录模块
     "LoginModular":{
-        //微信登录
+
         "wxLoginSuccess":{
             "name":"LoginSuccess",
             "params":{
@@ -26,14 +26,23 @@
 
         }
     },
+
+
+
 //    home 模块
     "HomeModular":{
 
     },
+
+
+
 //    购物车 模块
     "ShopCartModular":{
 
     },
+
+
+
 //    产品详情模块
     "ProductModular":{
 

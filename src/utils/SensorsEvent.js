@@ -2,6 +2,7 @@
 const LoginModular = {
     //微信登录
     "wxLoginSuccess":{
+        "des":"微信登录成功埋点",
         "name":"LoginSuccess",
         "params":{
             "loginMethod":1
@@ -9,6 +10,7 @@ const LoginModular = {
     },
 
     "codeLoginSuccess":{
+        "des":"验证码登录成功埋点",
         "name":"LoginSuccess",//  验证码登录
         "params":{
             "loginMethod":2
@@ -16,6 +18,7 @@ const LoginModular = {
     },
 
     "pwdLoginSuccess":{
+        "des":"密码登录成功埋点",//埋点解释 可不写
         "name":"LoginSuccess",
         "params":{
             "loginMethod":3
