@@ -91,7 +91,6 @@ sensorsAnalytics {
 }
 
 dependencies {
-    compile project(':react-native-webview')
     api fileTree(include: ['*.jar'], dir: 'libs')
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.3') {
         exclude(module: 'support-core-utils')
@@ -130,4 +129,5 @@ dependencies {
     api project(':lottie')
     api project(':base_adapter')
     api project(':react-native-extra-dimensions-android')
+    api project(':react-native-webview')
 }

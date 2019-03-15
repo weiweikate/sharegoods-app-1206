@@ -23,6 +23,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import MessageUtils from './utils/MessageUtils';
 import DesignRule from '../../constants/DesignRule';
 import RES from './res';
+import { TrackApi } from '../../utils/SensorsTrack';
 
 const emptyIcon = RES.message_empty;
 export default class ShopMessagePage extends BasePage {
@@ -104,6 +105,7 @@ export default class ShopMessagePage extends BasePage {
 
                 <TouchableWithoutFeedback onPress={() => {
                     MessageUtils.goDetailPage(this.$navigate, item.paramType, item.param);
+                    TrackApi.ViewPinMessageContent({messageType:item.paramType});
                 }}>
                     <View style={{
                         height: px2dp(33),
