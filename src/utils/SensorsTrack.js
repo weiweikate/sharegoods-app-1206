@@ -1,5 +1,5 @@
-import { NativeModules } from "react-native";
-
+import { NativeModules } from 'react-native';
+import SensorsEvent from './SensorsEvent'
 const {
     track,
     trackTimerStart,
@@ -11,68 +11,63 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
+const huchao = {
 
-const LoginModule = {
-    //验证码登录
-    codeLoginSuccess: {
-        name: "LoginSuccess",
-        params: { "loginMethod": 2 }
-    },
-    //微信登录成功
-    wxLoginSuccess: {
-        name: "LoginSuccess",
-        params: { "loginMethod": 1 }
-    },
-    //密码登录成功
-    pwdLoginSuccess: {
-        name: "LoginSuccess",
-        params: { "loginMethod": 3 }
-    },
-    //注册成功
-    SignUpSuccess: {
-        name: "SignUpSuccess"
-    }
-};
-
+}
 /** 订单相关的埋点事件名称*/
 const trackEvent = {
-    ...LoginModule,
-    bannerClick: "BannerClick",//banner点击
-    login: "Login",//登录
-    signUp: "SignUp",//注册
-    search: "Search",//商品搜索
-    commodityDetail: "CommodityDetail",//浏览商品详情页
-    addToShoppingcart: "AddToShoppingcart",//加入购物车
-    submitOrder: "SubmitOrder",//提交订单
-    submitOrderDetail: "SubmitOrderDetail",//提交订单详情
-    payOrder: "PayOrder",//支付订单
-    payOrderDetail: "PayOrderDetail",//支付订单详情
-    cancelPayOrder: "CancelPayOrder",//取消订单
-    applyReturn: "ApplyReturn",//申请退货
-    receiveDiscount: "ReceiveCoupons",//领取优惠券
-    receiveOneyuan: "ReceiveOneyuan",//领一元券
-    receiveExp: "ReceiveExp",//经验值变动
-    receiveshowDou: "ReceiveshowDou",//秀豆变动
-    share: "Share",//分享商品
-    contact: "Contact",//联系客服
-    ArticleDisplay: "ArticleDisplay",//文章浏览
-    ArticleShare: "ArticleShare",// 文章分享
-    applyJoinPin: "ApplyJoinPin",//加入拼店
-    applyPin: "ApplyPin",//申请开店
-    dismissPin: "DismissPin",//解散拼店
-    SharePin: "SharePin",//分享拼店
-    QuitPin: "QuitPin",//退出拼店
-    BuyGiftSubmit: "BuyGiftSubmit",//购买礼包
-    MesInviteJoinPin: "MesInviteJoinPin",//邀请加入拼店
-    MesInviteJoinPinResult: "MesInviteJoinPinResult",//邀请加入拼店—结果反馈
-    MesApplyJoinPin: "MesApplyJoinPin",//申请加入拼店
-    MesApplyJoinPinResult: "MesApplyJoinPinResult",//申请加入店铺——结果反馈
-    Dropout: "Dropout",//请出拼店
-    ReceiveDividents: "ReceiveDividents",//收到分红
-    VIPChange: "VIPChange",//会员流转
-    QrcodeShareto: "QrcodeShareto"//分享二维码
+    ...huchao,
+    bannerClick: 'BannerClick',//banner点击
+    login: 'Login',//登录
+    signUp: 'SignUp',//注册
+    search: 'Search',//商品搜索
+    commodityDetail: 'CommodityDetail',//浏览商品详情页
+    addToShoppingcart: 'AddToShoppingcart',//加入购物车
+    submitOrder: 'SubmitOrder',//提交订单
+    submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
+    payOrder: 'PayOrder',//支付订单
+    payOrderDetail: 'PayOrderDetail',//支付订单详情
+    cancelPayOrder: 'CancelPayOrder',//取消订单
+    applyReturn: 'ApplyReturn',//申请退货
+    receiveDiscount: 'ReceiveCoupons',//领取优惠券
+    receiveOneyuan: 'ReceiveOneyuan',//领一元券
+    receiveExp: 'ReceiveExp',//经验值变动
+    receiveshowDou: 'ReceiveshowDou',//秀豆变动
+    share: 'Share',//分享商品
+    contact: 'Contact',//联系客服
+    ArticleDisplay: 'ArticleDisplay',//文章浏览
+    ArticleShare: 'ArticleShare',// 文章分享
+    applyJoinPin: 'ApplyJoinPin',//加入拼店
+    applyPin: 'ApplyPin',//申请开店
+    dismissPin: 'DismissPin',//解散拼店
+    SharePin: 'SharePin',//分享拼店
+    QuitPin: 'QuitPin',//退出拼店
+    BuyGiftSubmit: 'BuyGiftSubmit',//购买礼包
+    MesInviteJoinPin: 'MesInviteJoinPin',//邀请加入拼店
+    MesInviteJoinPinResult: 'MesInviteJoinPinResult',//邀请加入拼店—结果反馈
+    MesApplyJoinPin: 'MesApplyJoinPin',//申请加入拼店
+    MesApplyJoinPinResult: 'MesApplyJoinPinResult',//申请加入店铺——结果反馈
+    Dropout: 'Dropout',//请出拼店
+    ReceiveDividents: 'ReceiveDividents',//收到分红
+    VIPChange: 'VIPChange',//会员流转
+    QrcodeShareto: 'QrcodeShareto',//分享二维码
 };
 
+function trackUtil(p) {
+    let arr = {};
+    let keys = Object.keys(p);
+    const count = keys.length;
+    for (let i = 0; i< count; i++) {
+        let key = keys[i];
+        let value = p[key]
+        arr[key]= (s) => {
+            track(value.name, {...value.params,...s})
+        }
+    }
+    return arr;
+}
+
+const TrackApi = trackUtil(SensorsEvent)
 
 export {
     track,
@@ -81,7 +76,9 @@ export {
     trackViewScreen,
     logout,
     login,
-    trackEvent
+    trackEvent,
+    trackUtil,
+    TrackApi
 };
 
 /**
