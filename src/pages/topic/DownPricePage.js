@@ -20,6 +20,7 @@ import { getTopicJumpPageParam } from './model/TopicMudelTool';
 import { MRText } from "../../components/ui";
 import CommShareModal from "../../comm/components/CommShareModal";
 import apiEnvironment from "../../api/ApiEnvironment";
+import user from '../../model/user'
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -27,26 +28,29 @@ export default class DownPricePage extends BasePage {
 
     $navigationBarOptions = {
         show: true
+
     };
 
     constructor(props) {
         super(props);
+
         this.dataModel = new TotalTopicDataModel();
         this.state = {
-            selectNav: 0,
+            selectNav: 0
         };
         //初次进入loading
         if (this.dataModel.isShowLoading) {
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.$loadingShow('加载中');
                 this.dataModel.isShowLoading = false;
             })
         }
     }
-    $NavBarRenderRightItem=()=>{
-        return(
+
+    $NavBarRenderRightItem = () => {
+        return (
             <MRText
-                onPress={()=>{
+                onPress={() => {
                     this.shareModal.open();
                 }}
             >
@@ -62,7 +66,7 @@ export default class DownPricePage extends BasePage {
             payload => {
                 const { linkTypeCode } = this.params;
                 console.log('-----' + linkTypeCode);
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
                 })
             }
@@ -72,7 +76,7 @@ export default class DownPricePage extends BasePage {
     /**
      * 去掉loading
      */
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.$loadingDismiss();
     }
 
@@ -234,11 +238,18 @@ export default class DownPricePage extends BasePage {
 
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'miniProgram'}
                                 webJson={{
                                     title: this.dataModel.topicTitle,
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
-                                    linkUrl: apiEnvironment.getCurrentHostUrl()+'/subject/'+linkTypeCode,
+                                    linkUrl: apiEnvironment.getCurrentH5Url() + '/subject/' + linkTypeCode,
                                     thumImage: 'logo.png'
+                                }}
+                                miniProgramJson={{
+                                    title: this.dataModel.topicTitle,
+                                    thumImage: 'logo.png',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                    miniProgramPath: `/pages/topic/topic?code=${linkTypeCode}&inviteId=${user.code || ''}`
                                 }}
                 />
             </ScrollView>

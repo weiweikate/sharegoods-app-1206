@@ -29,36 +29,37 @@ const LoginModular = {
         "name": "PassLoginPage",
         "params": {}
     },
-    "codeGetVerifySMS":{
-        "des":'获取手机号验证码,手机号登录',
-        "name":"GetVerifySMS",
-        "params":{ "pagePosition":3 }
+    "codeGetVerifySMS": {
+        "des": '获取手机号验证码,手机号登录',
+        "name": "GetVerifySMS",
+        "params": { "pagePosition": 3 }
     },
-    "registGetVerifySMS":{
-        "des":'获取手机号验证码,注册验证码',
-        "name":"GetVerifySMS",
-        "params":{ "pagePosition":2 }
+    "registGetVerifySMS": {
+        "des": '获取手机号验证码,注册验证码',
+        "name": "GetVerifySMS",
+        "params": { "pagePosition": 2 }
     },
-    "otherGetVerifySMS":{
-        "des":'其他验证码',
-        "name":"GetVerifySMS",
-        "params":{ "pagePosition":100 }
+    "otherGetVerifySMS": {
+        "des": '其他验证码',
+        "name": "GetVerifySMS",
+        "params": { "pagePosition": 100 }
     },
-    "phoneSignUpSuccess":{
-        "des":'手机号注册',
-        "name":"SignUpSuccess",
-        "params":{ "signUpMethod":2, "signUpPlatform":1,
+    "phoneSignUpSuccess": {
+        "des": '手机号注册',
+        "name": "SignUpSuccess",
+        "params": {
+            "signUpMethod": 2, "signUpPlatform": 1
             //signUpPhone 动态参数注册手机号
         }
     },
-    "wxSignUpSuccess":{
-        "des":'微信注册',
-        "name":"SignUpSuccess",
-        "params":{
-            "signUpMethod":1,
-            "signUpPlatform":1,
+    "wxSignUpSuccess": {
+        "des": '微信注册',
+        "name": "SignUpSuccess",
+        "params": {
+            "signUpMethod": 1,
+            "signUpPlatform": 1
         }
-    },
+    }
 };
 //    home 模块
 const HomeModular = {};
