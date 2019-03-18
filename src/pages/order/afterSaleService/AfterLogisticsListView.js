@@ -15,7 +15,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-TouchableOpacity,
+    TouchableOpacity,
     Image
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -43,9 +43,9 @@ export default class AfterLogisticsListView extends BasePage {
         let { quantity,product, expNO, expName} = item;
         let {productName, specImg, payAmount, spec} = product
         return(
-            <View>
+            <View style={{paddingBottom: 10}}>
                 <TouchableOpacity
-                    style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: "center", marginBottom: 1, marginTop: 10}}
+                    style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: "center", marginBottom: 1}}
                     onPress={()=>{this.$navigate('order/logistics/LogisticsDetailsPage', {
                         expressNo: expNO
                     })}}>
@@ -76,12 +76,15 @@ export default class AfterLogisticsListView extends BasePage {
             return <View />;
         }
         return(
-            <View style={{height: 50, flexDirection: 'row', alignItems: 'center'}}>
-                <View style={{flex: 1}}/>
-                <View style={{flex: 1, height: 1, backgroundColor: '#D9D9D9'}}/>
-                <MRText style={{color: '#999999', fontSize: 12, paddingHorizontal: 10}}>{'以下商品被拆分成'+data.length + '个包裹'}</MRText>
-                <View style={{flex: 1, height: 1, backgroundColor: '#D9D9D9'}}/>
-                <View style={{flex: 1}}/>
+            <View style={{alignItems: 'center'}}>
+                <MRText style={{color: 'white', fontSize: 12, paddingHorizontal: 10}}>{data.length + '个包裹已发出'}</MRText>
+                <View style={{height: 50, flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flex: 1}}/>
+                    <View style={{flex: 1, height: 1, backgroundColor: '#D9D9D9'}}/>
+                    <MRText style={{color: '#999999', fontSize: 12, paddingHorizontal: 10}}>{'以下商品被拆分成'+data.length + '个包裹'}</MRText>
+                    <View style={{flex: 1, height: 1, backgroundColor: '#D9D9D9'}}/>
+                    <View style={{flex: 1}}/>
+                </View>
             </View>
         )
     }

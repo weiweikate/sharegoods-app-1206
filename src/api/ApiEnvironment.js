@@ -72,6 +72,7 @@ class ApiEnvironment {
             const [[, envType], [, defaultTimeout]] = await AsyncStorage.multiGet([KEY_ApiEnvironment, KEY_DefaultFetchTimeout]);
             if (envType && Object.keys(ApiConfig).indexOf(envType) >= 0) {
                 this.envType = envType;
+                if (ApiConfig[envType]) { await AsyncStorage.setItem(KEY_HostJson, JSON.stringify(ApiConfig[envType]));}
             }else {
                 this.saveEnv(this.envType);
             }

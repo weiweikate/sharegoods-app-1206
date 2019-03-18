@@ -28,7 +28,7 @@ import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
 import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeLinkType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/Modules';
 
@@ -221,7 +221,8 @@ export default class RecommendPage extends BasePage {
 
     // 点击轮播图广告
     _clickItem = (item) => {
-        track(trackEvent.IndexStoreBannerClick, homeModule.bannerPoint(item));
+        let trackDic = homeModule.bannerPoint(item) || {};
+        TrackApi.BannerClick({ bannerLocation: 21, ...trackDic });
         if (item.linkType === homeLinkType.good) {
             this.$navigate('product/ProductDetailPage', {
                 productCode: item.linkTypeCode

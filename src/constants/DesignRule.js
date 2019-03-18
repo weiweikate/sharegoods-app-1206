@@ -94,14 +94,14 @@ const styles = {
         justifyContent: 'center'
     },
     style_bigRedBtn: {//大的红色背景按钮
-        bgColor: colors.bgColor_btn,
+        backgroundColor: colors.bgColor_btn,
         height: sizes.height_bigBtn,
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: sizes.margin_page
     },
     style_bigRedRadiusBtn: {//大的红色背景按钮带圆角
-        bgColor: colors.bgColor_btn,
+        backgroundColor: colors.bgColor_btn,
         height: sizes.height_bigBtn,
         alignItems: 'center',
         justifyContent: 'center',
