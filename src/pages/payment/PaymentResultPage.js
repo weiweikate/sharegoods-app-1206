@@ -42,8 +42,10 @@ export default class PaymentResultPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            payResult: PaymentResult.loading
+            payResult: this.params.payResult,
+            payMsg: this.params.payMsg
         };
+        console.log('PaymentResultPage', this.params.payResult, this.state.payResult)
     }
 
     $navigationBarOptions = {
@@ -63,7 +65,7 @@ export default class PaymentResultPage extends BasePage {
 
     /** 重新支付*/
     payAgain = () => {
-
+        this.props.navigation.goBack()
     }
 
     renderContent=() =>{
@@ -111,7 +113,7 @@ export default class PaymentResultPage extends BasePage {
                     <View style={styles.content}>
                         <Image source={pay_result_fail} style={styles.image}/>
                         <Text style={styles.title}>支付失败</Text>
-                        <Text style={[styles.detail_66,{marginTop:autoSizeWidth(10)}]}>{'原因:'}</Text>
+                        <Text style={[styles.detail_66,{marginTop:autoSizeWidth(10)}]}>{`原因: ${this.state.payMsg}`}</Text>
                         <View style={{marginTop: autoSizeWidth(50), flexDirection: 'row'}}>
                             <TouchableOpacity style={styles.red_border} onPress={()=> {this.payAgain()}}>
                                 <Text style={styles.red_btn_text}>重新支付</Text>
