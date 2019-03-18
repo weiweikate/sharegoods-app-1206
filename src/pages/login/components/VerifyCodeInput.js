@@ -3,7 +3,7 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
 } from 'react-native';
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
@@ -65,7 +65,7 @@ class VerifyCode extends PureComponent {
             <View style={styles.verifyContainer}>
                 {this.renderVerifyCode(verifyCode)}
                 <TextInput
-                    ref={(ref) => { this.textInput = ref; }}
+                    ref={(ref) => { this.textInput = ref }}
                     underlineColorAndroid="transparent"
                     caretHidden
                     style={styles.textInput}

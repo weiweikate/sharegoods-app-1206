@@ -26,7 +26,7 @@ import MineApi from '../../mine/api/MineApi';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import apiEnvironment from '../../../api/ApiEnvironment';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 // import {track,trackEvent}from '../../../utils/SensorsTrack'
 
 import { MRText as Text } from '../../../components/ui';
@@ -147,7 +147,13 @@ export default class SignInPage extends BasePage {
             return;
         }
         this.signinRequesting = true;
-        track(trackEvent.receiveshowDou, { showDouGet: 'scqd', showDouAmount: this.state.signInData[3].canReward });
+        let count;
+        if (this.state.signInData[3].continuous) {
+            count = this.state.signInData[3].continuous;
+        } else {
+            count = this.state.signInData[2].continuous ? this.state.signInData[2].continuous : 0;
+        }
+        TrackApi.SignUpFeedback({continuousSignNumber:count,signRewardType:1,signRewardAmount:this.state.signInData[3].canReward});
         HomeAPI.userSign().then((data) => {
             this.signinRequesting = false;
             this.$toastShow(`签到成功 +${this.state.signInData[3].canReward}秀豆`);

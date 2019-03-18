@@ -11,12 +11,12 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
-const huchao = {
-
-}
 /** 订单相关的埋点事件名称*/
+const inviteEvent = {
+    QrcodeShareto: 'QrCodeShareto',//分享二维码
+}
 const trackEvent = {
-    ...huchao,
+    ...inviteEvent,
     bannerClick: 'AdBannerClick',//banner点击
     bannerSwiper: 'AdBannerShow',//banner滑动
     recommanderBannerClick: 'RecommanderBannerClick', //推荐为banner点击
