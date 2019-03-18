@@ -393,7 +393,6 @@ export default class ShopCartPage extends BasePage {
         this.$navigate('product/ProductDetailPage', {
             productId: itemData.productId,
             productCode: itemData.spuCode,
-            preseat: '购物车'
         });
     };
     _selectAll = () => {

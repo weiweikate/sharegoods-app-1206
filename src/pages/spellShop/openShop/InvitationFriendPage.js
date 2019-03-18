@@ -20,6 +20,7 @@ import UIImage from '@mr/image-placeholder';
 import {
     MRText as Text
 } from '../../../components/ui';
+import { trackEvent } from '../../../utils/SensorsTrack';
 
 
 const Banner = res.openShop.yqhy_03;
@@ -100,6 +101,8 @@ export default class InvitationToShopPage extends BasePage {
         let imgHeight = ScreenUtils.height - ScreenUtils.headerHeight;
         let minHeight = ScreenUtils.autoSizeHeight(171) + ScreenUtils.autoSizeWidth(35 + 8 + 380) + 8;
         imgHeight = imgHeight < minHeight ? minHeight : imgHeight;
+
+        const { name, headUrl, profile, storeNumber } = shareInfo;
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -163,11 +166,16 @@ export default class InvitationToShopPage extends BasePage {
                     </View>
                 </ScrollView>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
+                                trackParmas={{
+                                    pinSummary: profile,
+                                    pinCode: storeNumber
+                                }}
+                                trackEvent={trackEvent.SharePin}
                                 webJson={{
-                                    title: `加入店铺:${shareInfo.name}`,
+                                    title: `加入店铺:${name}`,
                                     dec: '店铺',
                                     linkUrl: this.state.codeString,
-                                    thumImage: `${shareInfo.headUrl}`
+                                    thumImage: `${headUrl}`
                                 }}/>
             </View>
         );
