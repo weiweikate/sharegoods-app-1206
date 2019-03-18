@@ -62,18 +62,17 @@ export default class HomeBannerView extends Component {
         const { bannerList } = bannerModule;
 
         let items = [];
-        let len = bannerList.length;
-        if (len > 0) {
-            bannerList.map(value => {
-                items.push(value.imgUrl);
-            });
-        }
-
+        bannerList.map(value => {
+            items.push(value.imgUrl);
+        });
+        let len = items.length;
         return <View style={styles.banner}>
-            {len === 0 ? <View style={styles.defaultImg}/> :
+            {len === 0 ?
+                <View style={styles.defaultImg}/> :
                 <MRBannerViewComponent itemRadius={px2dp(5)} imgUrlArray={items}
                                        bannerHeight={bannerHeight}
-                                       modeStyle={1} autoInterval={homeModule.isFocused ? 5 : 0}
+                                       modeStyle={1}
+                                       autoInterval={homeModule.isFocused ? 5 : 0}
                                        pageFocused={homeModule.isFocused}
                                        onDidScrollToIndex={(i) => {
                                            this._onDidScrollToIndex(i);
