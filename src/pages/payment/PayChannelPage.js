@@ -188,7 +188,7 @@ export default class ChannelPage extends BasePage {
 
     _goToOrder(index) {
         this.props.navigation.dispatch({
-            key: 'order/order/MyOrdersListPage',
+            key: this.props.navigation.state.key,
             type: 'ReplacePayScreen',
             routeName: 'order/order/MyOrdersListPage',
             params: { index: index ? index : 1 }

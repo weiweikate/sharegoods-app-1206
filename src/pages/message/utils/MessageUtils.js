@@ -78,6 +78,9 @@ const MessageUtils = {
                 pagParams = {storeCode:params};
                 navigation("spellShop/MyShop_RecruitPage", pagParams);
                 break;
+            case 300://工猫合同详情
+                pagParams = {url:params};
+                navigation(RouterMap.GongMallContractPage,pagParams);
             default:
                 break;
 

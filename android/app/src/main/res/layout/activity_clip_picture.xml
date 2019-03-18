@@ -9,7 +9,7 @@
         android:id="@+id/my_top_clip"
         layout="@layout/app_top_default" />
 
-    <com.smartstudy.commonlib.ui.customview.clipimagelayout.ClipImageLayout
+    <com.meeruu.commonlib.customview.clipimagelayout.ClipImageLayout
         android:id="@+id/id_clipImageLayout_circle"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -17,7 +17,7 @@
         android:tag="circle"
         android:visibility="gone" />
 
-    <com.smartstudy.commonlib.ui.customview.clipimagelayout.ClipImageLayout
+    <com.meeruu.commonlib.customview.clipimagelayout.ClipImageLayout
         android:id="@+id/id_clipImageLayout_square"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
