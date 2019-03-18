@@ -284,7 +284,6 @@ const event = {
     ...ShopCartModular,
     ...ProductModular,
     ...CommModular,
-    ...OrderModular,
     ...ShowModular,
     ...SignUpModular,
     ...MessageModular,
