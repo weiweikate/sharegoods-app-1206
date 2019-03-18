@@ -63,8 +63,7 @@ export default class PaymentResultView extends Component {
         } else {
             img = warningImg
         }
-
-        console.log('PaymentResultView message', payMsg, payResult);
+        
         return (
             <Modal
                 focusable={false}
