@@ -156,7 +156,11 @@ const MessageModular = {
 
 //    公用模块
 const   CommModular = {
-
+    "BannerClick":{
+        "des":"banner广告位点击",
+        "name":"BannerClick",//  提交订单
+        "params":{}
+    },
 };
 const OrderModular = {
     "SubmitOrder":{
