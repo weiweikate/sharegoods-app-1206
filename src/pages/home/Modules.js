@@ -67,6 +67,7 @@ class HomeModule {
     @observable homeList = [];
     @observable selectedTypeCode = null;
     @observable isRefreshing = false;
+    @observable isFocused = false
     isFetching = false;
     isEnd = false;
     page = 1;
@@ -262,6 +263,10 @@ class HomeModule {
         bannerType:item.linkType,
         bannerContent:item.linkTypeCode
     })
+
+    @action homeFocused = (focuse) => {
+        this.isFocused = focuse
+    }
 }
 
 export const homeModule = new HomeModule();

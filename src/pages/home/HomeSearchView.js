@@ -16,7 +16,7 @@ const logoRed = res.home_icon_logo_red;
 const searchImg = res.icon_search;
 const messageImg = res.message;
 
-export default ({ navigation, hasMessage, pageFocused }) =>
+export default ({ navigation, hasMessage }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
             <Image source={logoRed} style={styles.logo}/>
