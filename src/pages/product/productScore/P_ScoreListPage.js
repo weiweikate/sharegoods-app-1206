@@ -243,6 +243,7 @@ export default class P_ScoreListPage extends BasePage {
                          keyExtractor={this._keyExtractor}
                          onEndReached={this._onEndReached}
                          onEndReachedThreshold={0.3}
+                         showsVerticalScrollIndicator={false}
                          ListFooterComponent={this._ListFooterComponent}/>;
     };
 

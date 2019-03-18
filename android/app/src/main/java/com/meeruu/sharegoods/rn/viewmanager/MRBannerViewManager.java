@@ -63,23 +63,25 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
     }
 
     private void initLifeEvent(final BannerLayout view) {
-        ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
-            @Override
-            public void onBecameForeground() {
-                if (pageFocus) {
-                    if (view != null && !view.isPlaying()) {
-                        view.setAutoPlaying(true);
+        if (ForegroundCallbacks.get() != null) {
+            ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
+                @Override
+                public void onBecameForeground() {
+                    if (pageFocus) {
+                        if (view != null && !view.isPlaying()) {
+                            view.setAutoPlaying(true);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onBecameBackground() {
-                if (view != null && view.isPlaying()) {
-                    view.setAutoPlaying(false);
+                @Override
+                public void onBecameBackground() {
+                    if (view != null && view.isPlaying()) {
+                        view.setAutoPlaying(false);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @ReactProp(name = "imgUrlArray")
@@ -97,15 +99,14 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                     public void run() {
                         adapter.setUrlList(datas);
                         view.setBannerSize(adapter);
-                        view.scrollRightNow();
                     }
                 }, 500);
             } else {
                 adapter = new WebBannerAdapter(view.getContext(), datas);
                 view.setAdapter(adapter);
-                if (!view.isPlaying()) {
-                    view.setAutoPlaying(true);
-                }
+            }
+            if (!view.isPlaying()) {
+                view.setAutoPlaying(true);
             }
             adapter.setRadius(mRaduis);
             adapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {

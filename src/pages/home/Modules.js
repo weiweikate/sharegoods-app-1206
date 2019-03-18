@@ -1,4 +1,4 @@
-import { observable, computed, action, flow } from 'mobx';
+import { observable, action, flow } from 'mobx';
 import HomeApi from './api/HomeAPI';
 import { homeType, homeRoute } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
@@ -6,9 +6,9 @@ import { adModules } from './HomeAdModel';
 import { todayModule } from './HomeTodayModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
-import { categoryModule } from './HomeCategoryModel'
+import { categoryModule } from './HomeCategoryModel';
 import res from './res';
-import OssHelper from '../../utils/OssHelper'
+import OssHelper from '../../utils/OssHelper';
 
 const {
     school: schoolImg,
@@ -24,10 +24,10 @@ class ClassifyModules {
         this.classifyList = [{
             icon: shareImg,
             img: OssHelper('/app/share11.png'),
-            name: '升级',
+            name: '上新',
             id: 1,
-            route: 'product/xpProduct/XpDetailPage',
-            linkTypeCode: 'JF201901250002'
+            route: 'topic/DownPricePage',
+            linkTypeCode: 'ZT2019000029'
         }, {
             icon: showImg,
             img: OssHelper('/app/show11.png'),
@@ -77,7 +77,7 @@ class HomeModule {
         this.selectedTypeCode = linkTypeCode;
         return homeRoute[linkType];
     };
-   //获取参数
+    //获取参数
     @action paramsNavigate = (data) => {
         const { topicBannerProductDTOList } = data;
         let product = null;
@@ -122,13 +122,13 @@ class HomeModule {
         classifyModules.loadClassifyList();
         subjectModule.loadSubjectList(this.firstLoad);
         recommendModule.loadRecommendList(this.firstLoad);
-        categoryModule.loadCategoryList()
+        categoryModule.loadCategoryList();
         this.page = 1;
         this.isEnd = false;
         this.homeList = [{
             id: 0,
             type: homeType.category
-        },{
+        }, {
             id: 1,
             type: homeType.swiper
         }, {
@@ -254,41 +254,17 @@ class HomeModule {
             console.log(error);
         }
     });
+
+    bannerPoint = (item) => ({
+        bannerName: item.imgUrl,
+        bannerId: item.id,
+        bannerRank:item.rank,
+        bannerType:item.linkType,
+        bannerContent:item.linkTypeCode
+    })
 }
 
 export const homeModule = new HomeModule();
-
-export class MemberModule {
-    @observable memberLevel = '';
-    @observable memberLevels = [];
-
-    @computed get levelCount() {
-        return this.memberLevels.length;
-    }
-
-    @computed get totalExp() {
-        let exp = 0;
-        if (this.memberLevels.length > 0) {
-            let lastLevel = this.memberLevels[this.memberLevels.length - 1];
-            exp = lastLevel.upgradeExp;
-            console.log('MemberModule', exp);
-        }
-        return exp;
-    }
-
-    @computed get levelNumber() {
-        let level = [];
-        if (this.memberLevels.length > 0) {
-            let lastLevel = 0;
-            this.memberLevels.map(value => {
-                lastLevel = value.upgradeExp - lastLevel;
-                level.push(lastLevel);
-                lastLevel = value.upgradeExp;
-            });
-        }
-        return level;
-    }
-}
 
 
 

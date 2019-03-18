@@ -30,16 +30,16 @@
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
   [self initSensorsAnalyticsWithLaunchOptions:launchOptions];
-//  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNotFrist"]) {
-//
-//  }else{
-//    [self addWelcomeView];
-//  }
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNotFrist"]) {
+    //添加广告页
+    AdView *adView = [AdView new];
+    [adView addToWindow];
+    self.adView = adView;
+  }else{
+    [self addWelcomeView];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isNotFrist"];
+  }
   [self configureUserAgent];
-  //添加广告页
-  AdView *adView = [AdView new];
-  [adView addToWindow];
-  self.adView = adView;
   return YES;
 }
 

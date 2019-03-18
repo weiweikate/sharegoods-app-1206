@@ -1,41 +1,32 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     FlatList,
     Image,
-    ImageBackground,
     StyleSheet,
     View,
     RefreshControl, ActivityIndicator,
     TouchableOpacity
-} from "react-native";
-import { UIImage, UIText } from "../../../components/ui";
-import Modal from "../../../comm/components/CommModal";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import { formatDate } from "../../../utils/DateUtils";
-import API from "../../../api";
-import bridge from "../../../utils/bridge";
-import { observer } from "mobx-react";
-import StringUtils from "../../../utils/StringUtils";
-import user from "../../../model/user";
-import DesignRule from "../../../constants/DesignRule";
-import MineApi from "../api/MineApi";
-import res from "../res";
-import { MRText as Text, MRTextInput as TextInput } from "../../../components/ui";
-import NoMoreClick from "../../../components/ui/NoMoreClick";
-import couponsModel from "../model/CouponsModel";
+} from 'react-native';
+import { UIImage } from '../../../components/ui';
+import Modal from '../../../comm/components/CommModal';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import { formatDate } from '../../../utils/DateUtils';
+import API from '../../../api';
+import bridge from '../../../utils/bridge';
+import { observer } from 'mobx-react';
+import StringUtils from '../../../utils/StringUtils';
+import user from '../../../model/user';
+import DesignRule from '../../../constants/DesignRule';
+import MineApi from '../api/MineApi';
+import res from '../res';
+import { MRText as Text, MRTextInput as TextInput } from '../../../components/ui';
+import couponsModel from '../model/CouponsModel';
+import CouponExplainItem from './CouponExplainItem';
+import CouponNormalItem from './CouponNormalItem';
 
 const NoMessage = res.couponsImg.coupons_no_data;
-const unUsedBgex = res.couponsImg.youhuiquan_bg_unUsedBg_ex;
-const unUsedBg = res.couponsImg.youhuiquan_bg_unUsedBg;
-const unUsedBgExd = res.couponsImg.youhuiquan_bg_unUsedBg_exd;
-const usedBgex = res.couponsImg.youhuiquan_bg_usedBg_ex;
-const usedBg = res.couponsImg.youhuiquan_bg_usedBg;
-const useBgexd = res.couponsImg.youhuiquan_bg_usedBg_exd;
 const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
 const jianIcon = res.couponsImg.youhuiquan_icon_jian_nor;
-const itemUp = res.couponsImg.youhuiquan_icon_smallUp;
-const itemDown = res.couponsImg.youhuiquan_icon_smallDown;
-
 
 const { px2dp } = ScreenUtils;
 
@@ -64,245 +55,21 @@ export default class MyCouponsItems extends Component {
     }
 
     fmtDate(obj) {
-        return formatDate(obj, "yyyy.MM.dd");
+        return formatDate(obj, 'yyyy.MM.dd');
     }
 
 
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        // let BG = item.status === 0 && !item.remarks ? unUsedBg : unUsedBgex;
-        // let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 1 ? usedRIcon : ActivedIcon));
-        //  let BGR = item.status>0 && !item.remarks ? usedBg:usedBgex;
         if (item.remarks) {
             return (
-                <TouchableOpacity
-                    style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5, justifyContent: "center" }}
-                    onPress={() => this.clickItem(index, item)}>
-                    <ImageBackground style={{
-                        width: ScreenUtils.width - px2dp(30),
-                        height: item.tobeextend ? px2dp(94) : px2dp(118),
-                        margin: 2
-                    }}
-                                     source={item.status == 0 ? (item.levelimit ? (item.tobeextend ? useBgexd : usedBgex) : (item.tobeextend ? unUsedBgExd : unUsedBgex)) : (item.tobeextend ? useBgexd : usedBgex)}
-                                     resizeMode='stretch'>
-                        <View style={{ flexDirection: "row", alignItems: "center", height: px2dp(94) }}>
-                            <View style={styles.itemFirStyle}>
-                                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                    {
-                                        item.type === 3 || item.type === 4 || item.type === 5 || item.type === 12 ? null :
-                                            <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                                        marginBottom: 4
-                                                    }} allowFontScaling={false}>￥</Text>
-                                            </View>}
-                                    <View>
-                                        <Text style={{
-                                            fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                            color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                        }} allowFontScaling={false}>{item.value}</Text>
-                                    </View>
-                                    {
-                                        item.type === 3 ?
-                                            <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: item.status === 0 ? (item.levelimit ? DesignRule.textColor_mainTitle : DesignRule.mainColor) : DesignRule.textColor_mainTitle,
-                                                        marginBottom: 4
-                                                    }} allowFontScaling={false}>折</Text>
-                                            </View> : null}
-                                </View>
-                            </View>
-
-                            <View style={{
-                                flex: 1,
-                                alignItems: "flex-start",
-                                marginLeft: 10,
-                                justifyContent: "space-between"
-                            }}>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={{
-                                        fontSize: 15,
-                                        color: DesignRule.textColor_mainTitle,
-                                        marginRight: 10
-                                    }} allowFontScaling={false}>
-                                        {item.name}{item.type !== 99 ? null : <UIText value={"（可叠加使用）"} style={{
-                                        fontSize: 11,
-                                        color: DesignRule.textColor_instruction
-                                    }}/>}</Text>
-                                    {item.type === 12 ? <UIText value={"x" + item.number} style={{
-                                        fontSize: 15,
-                                        color: DesignRule.textColor_mainTitle
-                                    }}/> : null}
-                                </View>
-                                {item.timeStr?<Text style={{
-                                    fontSize: 11,
-                                    color: DesignRule.textColor_instruction,
-                                    marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>:null}
-                                <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
-                                        value={item.limit}/>
-                            </View>
-                            {item.status == 0 ?
-                                (
-                                    item.type === 99 ?
-                                        <UIText value={"x" + user.tokenCoin}
-                                                style={styles.xNumStyle}/> : (item.levelimit ?
-                                        <View
-                                            style={{ marginRight: 15, justifyContent: "center", alignItems: "center" }}>
-                                            {item.count > 1 ? <UIText value={"x" + item.count}
-                                                                      style={styles.xNumsStyle}/> : null}
-                                            <UIText value={"等级受限"}
-                                                    style={{
-                                                        fontSize: 13,
-                                                        color: DesignRule.textColor_instruction,
-                                                    }}/>
-                                        </View>
-                                        : (item.count>1?<UIText value={"x" + item.count}
-                                                                style={styles.xNumsStyle}/>:null)))
-
-                                : <View style={{ marginRight: 15, justifyContent: "center", alignItems: "center" }}>
-                                    {item.count > 1 ? <UIText value={"x" + item.count}
-                                                              style={styles.xNumsStyle}/> : null}
-                                    <UIText value={`${item.status === 1 ? "已使用" : (item.status === 2 ? "已失效" : "待激活")}`}
-                                            style={{
-                                                fontSize: 13,
-                                                color: DesignRule.textColor_instruction,
-                                                marginRight: 15
-                                            }}/>
-                                </View>}
-                        </View>
-                        {!item.tobeextend ?
-                            <NoMoreClick style={{ height: px2dp(24), justifyContent: "center", alignItems: "center" }}
-                                         onPress={() => this.pickUpData(item)}><Image style={{ width: 14, height: 7 }}
-                                                                                      source={itemDown}/>
-                            </NoMoreClick> : null}
-                    </ImageBackground>
-                    {item.tobeextend ?
-                        <View style={{
-                            backgroundColor: item.status === 0 ? (item.levelimit ? DesignRule.color_ddd : DesignRule.white) : DesignRule.color_ddd,
-                            width: ScreenUtils.width - px2dp(30),
-                            marginLeft: 1,
-                            borderRadius: 5,
-                            marginTop: -2
-                        }}>
-                            <View style={{ marginTop: 10, marginLeft: 10 }}>
-                                <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}
-                                      allowFontScaling={false}>使用说明:</Text>
-                                <Text style={{
-                                    marginTop: 5,
-                                    color: DesignRule.textColor_secondTitle,
-                                    lineHeight: 25,
-                                    fontSize: 12
-
-                                }} allowFontScaling={false}>{item.remarks}</Text>
-                            </View>
-                            <NoMoreClick style={{ height: px2dp(24), justifyContent: "center", alignItems: "center" }}
-                                         onPress={() => this.toExtendData(item)}><Image style={{ width: 14, height: 7 }}
-                                                                                        source={itemUp}/>
-                            </NoMoreClick>
-                        </View> : null}
-                </TouchableOpacity>
+                <CouponExplainItem item={item} index={index} toExtendData={() => this.toExtendData(item)}
+                                   pickUpData={() => this.pickUpData(item)}
+                                   clickItem={() => this.clickItem(index, item)}/>
             );
         } else {
             return (
-                <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor, marginBottom: 5 }}
-                                  onPress={() => this.clickItem(index, item)}>
-                    <ImageBackground style={{
-                        width: ScreenUtils.width - px2dp(30),
-                        height: px2dp(94),
-                        margin: 2
-                    }} source={item.status == 0 ? (item.levelimit ? usedBg : unUsedBg) : usedBg} resizeMode='stretch'>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <View style={styles.itemFirStyle}>
-                                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                    {
-                                        item.type === 3 || item.type === 4 ||  item.type === 5 || item.type === 12 ? null :
-                                            <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
-                                                        marginBottom: 4
-                                                    }} allowFontScaling={false}>￥</Text>
-                                            </View>}
-                                    <View>
-                                        <Text style={{
-                                            fontSize: item.type === 4 ? 20 : (item.value && item.value.length < 3 ? 33 : 26),
-                                            color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle
-                                        }} allowFontScaling={false}>{item.value}</Text>
-                                    </View>
-                                    {
-                                        item.type === 3 ?
-                                            <View style={{ alignSelf: "flex-end", marginBottom: 2 }}>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: item.status === 0 ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
-                                                        marginBottom: 4
-                                                    }} allowFontScaling={false}>折</Text>
-                                            </View> : null}
-                                </View>
-                            </View>
-
-                            <View style={{
-                                flex: 1,
-                                alignItems: "flex-start",
-                                marginLeft: 10,
-                                justifyContent: "center",
-                                height: px2dp(94)
-                            }}>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={{
-                                        fontSize: 15,
-                                        color: DesignRule.textColor_mainTitle,
-                                        marginRight: 10
-                                    }} allowFontScaling={false}>
-                                        {item.name}{item.type !== 99 ? null : <UIText value={"（可叠加使用）"} style={{
-                                        fontSize: 11,
-                                        color: DesignRule.textColor_instruction
-                                    }}/>}</Text>
-                                    {item.type === 12 ? <UIText value={"x" + item.number} style={{
-                                        fontSize: 15,
-                                        color: DesignRule.textColor_mainTitle
-                                    }}/> : null}
-                                </View>
-                                {item.timeStr?<Text style={{
-                                    fontSize: 11,
-                                    color: DesignRule.textColor_instruction,
-                                    marginTop: 6
-                                }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>:null}
-                                <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
-                                        value={item.limit}/>
-                            </View>
-                            {item.status === 0 ? (item.levelimit ?
-                                <View style={{ marginRight: 15, justifyContent: "center", alignItems: "center" }}>
-                                    {item.count > 1 ? <UIText value={"x" + item.count}
-                                                              style={styles.xNumsStyle}/> : null}
-                                    <UIText value={"等级受限"}
-                                            style={{
-                                                fontSize: 13,
-                                                color: DesignRule.textColor_instruction,
-                                                marginRight: 15
-                                            }}/>
-                                </View> : (item.count>1?<UIText value={"x" + item.count}
-                                                   style={styles.xNumsStyle}/>:null)) :
-                                <View style={{ marginRight: 15, justifyContent: "center", alignItems: "center" }}>
-                                    {item.count > 1 ? <UIText value={"x" + item.count}
-                                                              style={styles.xNumsStyle}/> : null}
-                                    <UIText value={`${item.status === 1 ? "已使用" : (item.status === 2 ? "已失效" : "待激活")}`}
-                                            style={{
-                                                fontSize: 13,
-                                                color: DesignRule.textColor_instruction,
-                                                marginRight: 15
-                                            }}/>
-                                </View>}
-                        </View>
-                    </ImageBackground>
-                </TouchableOpacity>
+                <CouponNormalItem item={item} index={index} clickItem={() => this.clickItem(index, item)}/>
             );
         }
 
@@ -328,22 +95,22 @@ export default class MyCouponsItems extends Component {
     renderModalContent = () => {
         return (
             <View style={styles.contentStyle}>
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.couNumStyle}>
                         <Text style={{ fontSize: px2dp(17), color: DesignRule.textColor_mainTitle }}
                               allowFontScaling={false}>请选择券数</Text>
                     </View>
                     <View style={{
                         marginTop: px2dp(18),
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center"
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }}>
                         <UIImage source={jianIcon} style={{
                             width: px2dp(24),
                             height: px2dp(24),
                             marginLeft: px2dp(39)
-                        }} resizeMode={"contain"} onPress={this.reduceTokenCoin}/>
+                        }} resizeMode={'contain'} onPress={this.reduceTokenCoin}/>
                         <View style={{
                             borderWidth: 0.5, marginLeft: 5,
                             marginRight: 5, borderColor: DesignRule.textColor_placeholder,
@@ -362,20 +129,20 @@ export default class MyCouponsItems extends Component {
                             width: px2dp(24),
                             height: px2dp(24),
                             marginRight: px2dp(39)
-                        }} onPress={this.plusTokenCoin} resizeMode={"contain"}/>
+                        }} onPress={this.plusTokenCoin} resizeMode={'contain'}/>
                     </View>
                 </View>
 
-                <View style={{ width: "100%", height: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
-                <View style={{ height: px2dp(43), flexDirection: "row", alignItems: "center" }}>
-                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
+                <View style={{ width: '100%', height: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
+                <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                       onPress={this.quitTokenCoin}>
-                        <Text style={{ color: "#0076FF", fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
+                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>取消</Text>
                     </TouchableOpacity>
-                    <View style={{ height: "100%", width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
-                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
+                    <View style={{ height: '100%', width: 0.5, backgroundColor: DesignRule.textColor_placeholder }}/>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
                                       onPress={this.commitTokenCoin}>
-                        <Text style={{ color: "#0076FF", fontSize: px2dp(17) }} allowFontScaling={false}>确定</Text>
+                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }} allowFontScaling={false}>确定</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -403,12 +170,12 @@ export default class MyCouponsItems extends Component {
         }
     };
     _onChangeText = (num) => {
-        console.log("coupons", num);
+        console.log('coupons', num);
         if ((parseInt(num) >= 0) && (parseInt(num) <= parseInt(this.props.justOne)) && (num <= user.tokenCoin)) {
             this.setState({ tokenCoinNum: parseInt(num) });
         }
-        if (num === "") {
-            this.setState({ tokenCoinNum: "" });
+        if (num === '') {
+            this.setState({ tokenCoinNum: '' });
         }
         if (parseInt(num) > parseInt(this.props.justOne) || parseInt(num) > user.tokenCoin) {
             bridge.$toast(`1元券超出使用张数~`);
@@ -433,7 +200,7 @@ export default class MyCouponsItems extends Component {
             );
         } else {
             return (
-                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
                     <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
                           allowFontScaling={false}>还没有优惠券哦</Text>
@@ -477,7 +244,7 @@ export default class MyCouponsItems extends Component {
 
     _gotoLookAround = () => {
         this.props.nav.popToTop();
-        this.props.nav.navigate("HomePage");
+        this.props.nav.navigate('HomePage');
     };
 
     render() {
@@ -500,11 +267,11 @@ export default class MyCouponsItems extends Component {
                 {this.renderDialogModal()}
                 {this.props.isgiveup ?
                     <View style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: 0, height: 48, borderTopColor: DesignRule.bgColor, borderTopWidth: 1
                     }}>
                         <TouchableOpacity style={styles.giveUpTouStyle} activeOpacity={1} onPress={() => {
-                            bridge.showLoading("加载中...");
+                            bridge.showLoading('加载中...');
                             this.props.giveupUse();
                         }}>
                             <Text style={{
@@ -529,20 +296,20 @@ export default class MyCouponsItems extends Component {
     parseCoupon = (item) => {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
-        if(item.type === 5){
-            return "限商品：限指定商品可用";
+        if (item.type === 5) {
+            return '限商品：限指定商品可用';
         }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
-                return "限商品：限指定商品可用";
+                return '限商品：限指定商品可用';
             }
             if (products.length > 1) {
-                return "限商品：限指定商品可用";
+                return '限商品：限指定商品可用';
             }
             if (products.length === 1) {
                 let productStr = products[0];
                 if (productStr.length > 15) {
-                    productStr = productStr.substring(0, 15) + "...";
+                    productStr = productStr.substring(0, 15) + '...';
                 }
                 return `限商品：限${productStr}商品可用`;
             }
@@ -554,26 +321,26 @@ export default class MyCouponsItems extends Component {
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
             return `限品类：限指定品类商品可用`;
         } else {
-            return "全品类：全场通用券（特殊商品除外）";
+            return '全品类：全场通用券（特殊商品除外）';
         }
     };
-     parseData = (dataList) => {
+    parseData = (dataList) => {
         let arrData = [];
-        console.log("parseData",this.dataSel,couponsModel.params);
+        console.log('parseData', this.dataSel, couponsModel.params);
         if (this.currentPage === 1) {//refresh
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder && !couponsModel.params.type) {
                 arrData.push({
                     status: 0,
-                    name: "1元现金券",
-                    timeStr: "无时间限制",
+                    name: '1元现金券',
+                    timeStr: '无时间限制',
                     value: 1,
-                    limit: "全品类：无金额门槛",
-                    remarks: "1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品",
+                    limit: '全品类：无金额门槛',
+                    remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
                     type: 99, //以type=99表示1元券
                     levelimit: false
                 });
             }
-            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || (!this.props.fromOrder &&couponsModel.params.type === null)) {
+            if (!this.props.fromOrder && ((couponsModel.params.type || 0) > 6) || (!this.props.fromOrder && couponsModel.params.type === null)) {
                 API.queryCoupons({
                     status: this.state.pageStatus
                 }).then(result => {
@@ -583,13 +350,13 @@ export default class MyCouponsItems extends Component {
                         arrData.push({
                             status: item.status,
                             name: item.name,
-                            timeStr: "敬请期待",
-                            value: item.type === 11 ? item.value : "拼店",
-                            limit: item.type === 11 ? "兑换券：靓号代金券" : "全场券：全场通用券（特殊商品除外）",
+                            timeStr: '敬请期待',
+                            value: item.type === 11 ? item.value : '拼店',
+                            limit: item.type === 11 ? '兑换券：靓号代金券' : '全场券：全场通用券（特殊商品除外）',
                             remarks: item.remarks,
                             type: item.type, //以type=99表示1元券
                             levelimit: false,
-                            count: item.number||0
+                            count: item.number || 0
 
                         });
                     });
@@ -618,8 +385,8 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: item.startTime&&item.expireTime?this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0):null,
-                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
+                timeStr: item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
+                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
@@ -663,7 +430,7 @@ export default class MyCouponsItems extends Component {
             this.isLoadMore = true;
             API.listAvailable({
                 page: this.currentPage, pageSize: 10,
-                systemVersion: 310,
+                sgAppVersion: 310,
                 ...params
             }).then(res => {
                 bridge.hiddenLoading();
@@ -690,20 +457,20 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
                     status: 0,
-                    name: "1元现金券",
-                    timeStr: "无时间限制",
+                    name: '1元现金券',
+                    timeStr: '无时间限制',
                     value: 1,
-                    limit: "全品类：无金额门槛",
-                    remarks: "1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品",
+                    limit: '全品类：无金额门槛',
+                    remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
                     type: 99,//以type=99表示1元券
                     levelimit: false
                 });
             }
             this.setState({ viewData: arrData });
             this.isEnd = true;
-        } else if (this.dataSel.type === 7){
+        } else if (this.dataSel.type === 7) {
             bridge.hiddenLoading();
-            let dataList =  [];
+            let dataList = [];
             this.parseData(dataList);
         }
         else {
@@ -711,7 +478,7 @@ export default class MyCouponsItems extends Component {
                 page: this.currentPage,
                 status,
                 pageSize: 10,
-                systemVersion: 310,
+                sgAppVersion: 310,
                 type: couponsModel.params.type
             }).then(result => {
                 bridge.hiddenLoading();
@@ -736,14 +503,14 @@ export default class MyCouponsItems extends Component {
 
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
-        if(nextProps.selectTab != this.state.pageStatus){
+        if (nextProps.selectTab != this.state.pageStatus) {
             this.onRefresh(couponsModel.params);
         }
     }
 
     onRefresh = (params = {}) => {
         this.dataSel = couponsModel.params || {};
-        console.log("refresh");
+        console.log('refresh');
         this.isEnd = false;
         this.currentPage = 1;
         if (user.isLogin) {
@@ -762,7 +529,7 @@ export default class MyCouponsItems extends Component {
     }
 
     onLoadMore = () => {
-        console.log("onLoadMore", this.isLoadMore, this.isEnd, this.state.isFirstLoad);
+        console.log('onLoadMore', this.isLoadMore, this.isEnd, this.state.isFirstLoad);
         if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
             this.getDataFromNetwork(this.dataSel);
@@ -778,7 +545,10 @@ export default class MyCouponsItems extends Component {
             this.setState({ showDialogModal: true });
         } else {
             if (item.type < 99 && item.count > 1) {
-                this.props.nav.navigate("mine/coupons/CouponsDetailPage", { couponIds: [item.couponConfigId], status:item.status});
+                this.props.nav.navigate('mine/coupons/CouponsDetailPage', {
+                    couponIds: [item.couponConfigId],
+                    status: item.status
+                });
             }
 
         }
@@ -790,8 +560,8 @@ const styles = StyleSheet.create(
         container: {
             paddingTop: 15,
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             backgroundColor: DesignRule.bgColor
         },
         imgBg: {
@@ -801,35 +571,35 @@ const styles = StyleSheet.create(
         },
         couponHeader: {
             width: px2dp(105),
-            alignItems: "center"
+            alignItems: 'center'
         },
         modalStyle: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            alignItems: "center",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            alignItems: 'center',
             flex: 1,
-            justifyContent: "center"
+            justifyContent: 'center'
         },
         contentStyle: {
             marginRight: px2dp(44),
             width: ScreenUtils.width - px2dp(88),
             marginLeft: px2dp(44),
             height: px2dp(165),
-            backgroundColor: "#FCFCFC",
+            backgroundColor: '#FCFCFC',
             borderRadius: 12,
-            justifyContent: "flex-end",
-            alignItems: "center",
+            justifyContent: 'flex-end',
+            alignItems: 'center',
             opacity: 0.8
         },
         couNumStyle: {
             width: px2dp(123),
             height: px2dp(24),
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         itemFirStyle: {
-            alignItems: "center",
-            flexDirection: "row",
-            justifyContent: "center",
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'center',
             width: px2dp(80)
         },
         xNumStyle: {
@@ -840,8 +610,8 @@ const styles = StyleSheet.create(
         },
         guangStyle: {
             marginTop: 22,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             borderColor: DesignRule.mainColor,
             borderWidth: 1,
             borderRadius: 18,
@@ -851,7 +621,7 @@ const styles = StyleSheet.create(
         tnStyle: {
             padding: 0,
             paddingLeft: 5,
-            alignItems: "center",
+            alignItems: 'center',
             height: px2dp(24),
             width: px2dp(136),
             fontSize: px2dp(15),
@@ -860,9 +630,9 @@ const styles = StyleSheet.create(
         giveUpTouStyle: {
             width: ScreenUtils.width,
             height: 48,
-            backgroundColor: "white",
-            borderStyle: "solid"
-            , alignItems: "center", justifyContent: "center"
+            backgroundColor: 'white',
+            borderStyle: 'solid'
+            , alignItems: 'center', justifyContent: 'center'
         },
         xNumsStyle: {
             marginRight: 15,

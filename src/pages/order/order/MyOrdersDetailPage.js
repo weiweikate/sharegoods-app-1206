@@ -189,6 +189,7 @@ export default class MyOrdersDetailPage extends BasePage {
                     <OrderDetailBottomButtonView
                         goBack={() => this.$navigateBack()}
                         nav={this.$navigate}
+                        navigation={this.props.navigation}
                         callBack={this.params.callBack && (()=>this.params.callBack())}
                         loadPageData={() => this.loadPageData()}/>
                 </View>

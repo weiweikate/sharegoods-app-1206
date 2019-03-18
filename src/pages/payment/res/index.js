@@ -10,6 +10,10 @@ const index = {
     warning: require('./warning.png'),
     uncheck: require('./uncheck.png'),
     check: require('./check.png'),
-    back: require('./back.png')
+    back: require('./back.png'),
+    pay_result_fail: require('./pay_result_fail.png'),
+    pay_result_loading: require('./pay_result_loading.png'),
+    pay_result_success: require('./pay_result_success.png'),
+    pay_result_timeout: require('./pay_result_timeout.png'),
 };
 export default index;

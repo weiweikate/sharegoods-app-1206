@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
-
+import SensorsEvent from './SensorsEvent'
 const {
     track,
     trackTimerStart,
@@ -11,10 +11,19 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
-
 /** 订单相关的埋点事件名称*/
+const inviteEvent = {
+    QrcodeShareto: 'QrCodeShareto',//分享二维码
+}
 const trackEvent = {
-    bannerClick: 'BannerClick',//banner点击
+    ...inviteEvent,
+    bannerClick: 'AdBannerClick',//banner点击
+    bannerSwiper: 'AdBannerShow',//banner滑动
+    recommanderBannerClick: 'RecommanderBannerClick', //推荐为banner点击
+    billboardBannerClick: 'BillboardBannerClick', //今日榜单
+    selectedBannerClick: 'SelectedBannerClick', //精品推荐
+    hotsellBannerClick: 'HotsellBannerClick', //app首页超值热卖专题广告位
+    recommendedForYouBannerClick: 'RecommendedForYouBannerClick', //app首页为你推荐广告位
     login: 'Login',//登录
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
@@ -47,9 +56,30 @@ const trackEvent = {
     Dropout: 'Dropout',//请出拼店
     ReceiveDividents: 'ReceiveDividents',//收到分红
     VIPChange: 'VIPChange',//会员流转
-    QrcodeShareto: 'QrcodeShareto',//分享二维码
-};
+    QrcodeShareto: 'QrcodeShareto',//分享二维码,
+    ProblemFeedback:'ProblemFeedback',//点击问题反馈,
+    ClickContactCustomerService:'ClickContactCustomerService',//点击联系客服
+    ViewCoupon:'ViewCoupon',//点击查看优惠券点击查看优惠券
+    ViewWaitToRecord:'ViewWaitToRecord',//点击查看待入帐
+    ModifuAvatarSuccess:'ModifuAvatarSuccess',//修改头像
+    ViewMyOrder:'ViewMyOrder',//查看-我的订单
 
+};
+function trackUtil(p) {
+    let arr = {};
+    let keys = Object.keys(p);
+    const count = keys.length;
+    for (let i = 0; i< count; i++) {
+        let key = keys[i];
+        let value = p[key]
+        arr[key]= (s) => {
+            track(value.name, {...value.params,...s})
+        }
+    }
+    return arr;
+}
+
+const TrackApi = trackUtil(SensorsEvent)
 
 export {
     track,
@@ -58,7 +88,9 @@ export {
     trackViewScreen,
     logout,
     login,
-    trackEvent
+    trackEvent,
+    trackUtil,
+    TrackApi
 };
 
 /**

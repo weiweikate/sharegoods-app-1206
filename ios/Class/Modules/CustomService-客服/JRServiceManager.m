@@ -32,7 +32,6 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  * systemVersion:手机系统版本
  */
 -(void)qiYUChat:(id)josnData{
-//  NSDictionary *jsonDic = [NSJSONSerialization  JSONObjectWithData:josnData options:NSJSONReadingMutableLeaves error:nil];
   NSDictionary *jsonDic = josnData;
   QYSource *source = [[QYSource alloc] init];
   source.title =  jsonDic[@"title"];
@@ -42,22 +41,22 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   self.sessionVC.sessionTitle = jsonDic[@"title"];
   self.sessionVC.source = source;
   
+  //1802229  专员
+  //264002225  组id
+  
   self.sessionVC.groupId = [jsonDic[@"groupId"] integerValue];
   self.sessionVC.staffId = [jsonDic[@"staffId"] integerValue];
-  //设置当前用[JIRA] (XIUGOU-1360) 【老用户激活】修改客服电话户信息
-//  QYUserInfo * userInfo = [QYUserInfo alloc];
-//  userInfo.userId = jsonDic[@"userId"];
-//  NSArray * infoData = @[
-//                         @{@"userIcon":jsonDic[@"userIcon"]?jsonDic[@"userIcon"]:@""},
-//                         @{@"phoneNum":jsonDic[@"phoneNum"]?jsonDic[@"phoneNum"]:@""},
-//                         @{ @"nickName":jsonDic[@"nickName"]?jsonDic[@"nickName"]:@""},
-//                         @{@"device":jsonDic[@"device"]?jsonDic[@"device"]:@""},
-//                         @{@"systemVersion":jsonDic[@"systemVersion"]?jsonDic[@"systemVersion"]:@"",
-//                           @"version":
-//                           }
-//                        ];
-//  userInfo.data = [self arrToJsonString:infoData];
-//  [[QYSDK sharedSDK] setUserInfo:userInfo];
+  
+//  self.sessionVC.groupId = 264002225;
+//  self.sessionVC.staffId = 1802229;
+//
+//切换客服
+//  [self.sessionVC changeHumanStaffWithStaffId:1802229 groupId:264002225 closetip:@"aa" closeCompletion:^(BOOL success, NSError *error) {
+//
+//  } requestCompletion:^(BOOL success, NSError *error) {
+//
+//  }];
+  
   
   QYUserInfo *userInfo = [[QYUserInfo alloc] init];
   userInfo.userId = jsonDic[@"userId"];
@@ -110,6 +109,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain
                                   target:self action:@selector(onBack:)];
   [KRootVC presentViewController:nav animated:YES completion:nil];
+//  [self sendMsg];
 }
 -(void)startServiceWithGroupId:(int64_t)groupId andStaffId:(int64_t)staffId andTitle:(NSString *)title{
   QYSource *source = [[QYSource alloc] init];
@@ -133,11 +133,20 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 {
   [KRootVC dismissViewControllerAnimated:self.sessionVC completion:nil];
 }
+-(void)sendMsg{
+  QYCommodityInfo *commodityInfo = [[QYCommodityInfo alloc] init];
+  commodityInfo.title = @"网易七鱼";
+  commodityInfo.desc = @"网易七鱼是网易旗下一款专注于解决企业与客户沟通的客服系统产品。";
+  commodityInfo.pictureUrlString = @"http://qiyukf.com/main/res/img/index/barcode.png";
+  commodityInfo.urlString = @"http://qiyukf.com/";
+  commodityInfo.note = @"￥10000";
+  commodityInfo.show = YES;
+  [self.sessionVC sendCommodityInfo:commodityInfo];
+}
 -(QYSessionViewController *)sessionVC{
   if (!_sessionVC) {
     _sessionVC = [[QYSDK sharedSDK]sessionViewController];
-    _sessionVC.groupId = 0;
-    _sessionVC.staffId = 0;
+  
   }
   return _sessionVC;
 }

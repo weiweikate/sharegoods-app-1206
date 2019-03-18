@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import XGSwiper from '../../../../components/ui/XGSwiper';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import UIImage from "@mr/image-placeholder";
+import UIImage from '@mr/image-placeholder';
 
 export class RecommendBanner extends Component {
     constructor(props) {
@@ -36,8 +36,8 @@ export class RecommendBanner extends Component {
         const { imgUrl } = item;
         return (
             <UIImage style={{ width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(230) }}
-                   source={{ uri: imgUrl }}
-                   resizeMode="cover"
+                     source={{ uri: imgUrl }}
+                     resizeMode="cover"
             />);
     };
 
@@ -74,16 +74,16 @@ const styles = StyleSheet.create({
     },
     activityIndex: {
         width: 24,
-        height: 6,
-        borderRadius: 3,
+        height: 5,
+        borderRadius: 2.5,
         backgroundColor: '#eee',
         marginLeft: 2.5,
         marginRight: 2.5
     },
     index: {
-        width: 6,
-        height: 6,
-        borderRadius: 3,
+        width: 5,
+        height: 5,
+        borderRadius: 2.5,
         backgroundColor: '#eee',
         marginLeft: 2.5,
         marginRight: 2.5

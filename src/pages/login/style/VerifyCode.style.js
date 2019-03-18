@@ -1,6 +1,6 @@
-import { StyleSheet, PixelRatio, Dimensions } from 'react-native';
+import { StyleSheet, PixelRatio, Dimensions ,Platform} from 'react-native';
 
-// const isIos = Platform.OS === 'ios';
+const isIos = Platform.OS === 'ios';
 const SW = Dimensions.get('window').width - 80;
 
 function getRealDP(designPx) {
@@ -11,12 +11,12 @@ function getRealDP(designPx) {
 export default StyleSheet.create({
     // textInput样式
     textInput: {
-        // height: isIos ? 0 : getRealDP(1),
-        height:0,
-        width: SW,
+        height: isIos ? 0 : getRealDP(1),
+        width: 0,
         position: 'absolute',
         bottom: 0,
-        left: 0
+        left: 0,
+        color:'#fff'
     },
     // 验证码输入框总容器
     verifyContainer: {
@@ -29,7 +29,8 @@ export default StyleSheet.create({
         borderBottomWidth: getRealDP(2),
         alignItems: 'center',
         justifyContent: 'center',
-        borderBottomColor: '#e4e4e4'
+        borderBottomColor: '#e4e4e4',
+
     },
     textInputItemIn: {
         width: getRealDP(120),
@@ -52,6 +53,6 @@ export default StyleSheet.create({
         paddingHorizontal: getRealDP(74),
         position: 'absolute',
         left: 0,
-        top: 0
+        top: 0,
     }
 });

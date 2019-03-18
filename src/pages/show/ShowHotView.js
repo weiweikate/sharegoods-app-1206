@@ -15,6 +15,7 @@ import DesignRule from '../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ShowGroundView from './components/ShowGroundView';
+import { TrackApi } from '../../utils/SensorsTrack';
 
 
 @observer
@@ -109,6 +110,7 @@ export default class ShowHotView extends React.Component {
                                 }}
                                 onItemPress={({ nativeEvent }) => {
                                     const { navigate } = this.props;
+                                    TrackApi.XiuChangDetails({articleCode:nativeEvent.code,author:nativeEvent.userName,collectionCount:nativeEvent.collectCount})
                                     navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });
                                 }}
                 />

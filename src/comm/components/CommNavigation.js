@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import {
-    ScrollView,
+    ScrollView
 } from "react-native";
 
 class CommNavigation extends Component {
 
     constructor(props) {
-        super(props)
-
+        super(props);
     }
 
     render() {
@@ -18,9 +17,15 @@ class CommNavigation extends Component {
                 }
             >
                 {
-                    React.Children.map(this.props.children,(child,index)=>{
-                        console.log('child 索引'+index);
-                        return(child)
+                    React.Children.map(this.props.children, (child, index) => {
+                        let newChild;
+                        if (index === 0) {
+                            newChild = React.cloneElement(child, { style: { backgroundColor: "red" } });
+                        } else {
+                            newChild = React.cloneElement(child);
+                        }
+                        return newChild;
+
                     })
                 }
             </ScrollView>

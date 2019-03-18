@@ -17,8 +17,10 @@ import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from '../../constants/DesignRule';
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
-import { track } from '../../utils/SensorsTrack';
-import bridge from '../../utils/bridge';
+import { MRText } from "../../components/ui";
+import CommShareModal from "../../comm/components/CommShareModal";
+import apiEnvironment from "../../api/ApiEnvironment";
+import user from '../../model/user'
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -26,19 +28,35 @@ export default class DownPricePage extends BasePage {
 
     $navigationBarOptions = {
         show: true
+
     };
 
     constructor(props) {
         super(props);
+
         this.dataModel = new TotalTopicDataModel();
         this.state = {
             selectNav: 0
         };
         //初次进入loading
         if (this.dataModel.isShowLoading) {
-            bridge.showLoading('加载中');
-            this.dataModel.isShowLoading = false;
+            setTimeout(() => {
+                this.$loadingShow('加载中');
+                this.dataModel.isShowLoading = false;
+            })
         }
+    }
+
+    $NavBarRenderRightItem = () => {
+        return (
+            <MRText
+                onPress={() => {
+                    this.shareModal.open();
+                }}
+            >
+                分享
+            </MRText>
+        )
     }
 
     componentDidMount() {
@@ -48,16 +66,17 @@ export default class DownPricePage extends BasePage {
             payload => {
                 const { linkTypeCode } = this.params;
                 console.log('-----' + linkTypeCode);
-                this.dataModel.loadTopicData(linkTypeCode);
+                setTimeout(() => {
+                    this.dataModel.loadTopicData(linkTypeCode);
+                })
             }
         );
-        track('$AppViewScreen', { '$screen_name': 'DownPricePage', '$title': '专题' });
     }
 
     /**
      * 去掉loading
      */
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.$loadingDismiss();
     }
 
@@ -152,23 +171,6 @@ export default class DownPricePage extends BasePage {
      * @private
      */
     _itemActionClick = (itemData) => {
-        // if (itemData.productType === 99) {
-        //     this.$navigate('home/product/ProductDetailPage', {
-        //         productId: itemData.productId,
-        //         productCode: itemData.prodCode,
-        //         preseat:'专题列表页'
-        //     });
-        // } else if (itemData.productType === 1 || itemData.productType === 2 || itemData.productType === 3) {
-        //     this.$navigate('topic/TopicDetailPage', {
-        //         activityCode: itemData.prodCode,
-        //         activityType: itemData.productType,
-        //         preseat:'专题列表页'
-        //     });
-        // } else if (itemData.productType === 5) {
-        //     this.$navigate('topic/DownPricePage', {
-        //         linkTypeCode: itemData.prodCode
-        //     });
-        // }
         const pageObj = getTopicJumpPageParam(itemData);
         this.$navigate(pageObj.pageRoute, pageObj.params);
     };
@@ -180,6 +182,7 @@ export default class DownPricePage extends BasePage {
             sectionData = sectionList[this.state.selectNav].sectionDataList || [];
         }
         const { imgUrl } = this.dataModel;
+        const { linkTypeCode } = this.params;
         this.$NavigationBarResetTitle(this.dataModel.name);
         return (
             <ScrollView
@@ -230,7 +233,25 @@ export default class DownPricePage extends BasePage {
                 }
                 {
                     this._renderBottomListView(sectionData)
+
                 }
+
+
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'miniProgram'}
+                                webJson={{
+                                    title: this.dataModel.topicTitle,
+                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    linkUrl: apiEnvironment.getCurrentH5Url() + '/subject/' + linkTypeCode,
+                                    thumImage: 'logo.png'
+                                }}
+                                miniProgramJson={{
+                                    title: this.dataModel.topicTitle,
+                                    thumImage: 'logo.png',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                    miniProgramPath: `/pages/topic/topic?code=${linkTypeCode}&inviteId=${user.code || ''}`
+                                }}
+                />
             </ScrollView>
         );
     }

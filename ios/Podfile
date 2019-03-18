@@ -39,7 +39,6 @@ pod 'SensorsAnalyticsSDK', '~> 1.10.17'
 pod 'MJRefresh'
 pod 'SDAutoLayout'
 #pod 'SensorsAnalyticsSDK', :subspecs => ['ENABLE_REACT_NATIVE_APPCLICK']
-
 ##绘图和icon
 #pod 'RNSVG', :path => '../node_modules/react-native-svg'
 #pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'

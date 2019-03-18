@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
-
+import { track, trackEvent } from '../../utils/SensorsTrack';
 const { px2dp, onePixel } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
@@ -106,6 +106,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
 @observer
 export default class HomeSubjectView extends Component {
     _subjectActions(item) {
+        track(trackEvent.hotsellBannerClick, homeModule.bannerPoint(item))
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
@@ -131,10 +132,10 @@ export default class HomeSubjectView extends Component {
     render() {
         const { subjectList } = subjectModule;
         if (!subjectList) {
-            return <View/>;
+            return null;
         }
         if (subjectList.length <= 0) {
-            return <View/>;
+            return null;
         }
         let items = [];
         subjectList.map((item, index) => {
@@ -143,6 +144,9 @@ export default class HomeSubjectView extends Component {
                                          this._goodAction(good, item);
                                      }}/>);
         });
+        if (items.length === 0) {
+            return null;
+        }
         return <View style={styles.container}>
             <HomeTitleView title={'超值热卖'}/>
             {items}

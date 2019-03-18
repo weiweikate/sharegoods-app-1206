@@ -5,13 +5,12 @@ import { homeModule } from './Modules';
 import { adModules } from './HomeAdModel';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 
-const bannerWidth = ScreenUtils.width;
 const defaultBannerHeight = px2dp(10);
-
-const adWidth = (ScreenUtils.width - px2dp(35)) / 2;
+const adWidth = (ScreenUtils.width - px2dp(35)) / 2 - 0.5;
 const adHeight = adWidth * (160 / 340);
 
 const radius = (5);
@@ -27,10 +26,10 @@ export default class HomeAdView extends Component {
             { borderBottomLeftRadius: radius, overflow: 'hidden' },
             { borderBottomRightRadius: radius, overflow: 'hidden' }
         ];
-        this.hasLoadImg = {};
     }
 
     _adAction(value) {
+        track(trackEvent.recommanderBannerClick, homeModule.bannerPoint(value));
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
@@ -38,27 +37,17 @@ export default class HomeAdView extends Component {
     }
 
     _renderBanner() {
-        const { banner, notExistAdUrls } = adModules;
+        const { banner, adHeights } = adModules;
         if (banner.length === 0) {
             return null;
         }
         let items = [];
-        notExistAdUrls.map((url) => {
-            if (!this.hasLoadImg[url]) {
-                Image.getSize(url, (width, height) => {
-                    let h = (bannerWidth * height) / width;
-                    adModules.adHeights.set(url, h);
-                });
-                this.hasLoadImg[url] = true;
-            }
-        });
-
         banner.map((val, index) => {
             let url = val.imgUrl;
             items.push(
                 <TouchableWithoutFeedback onPress={() => this._adAction(val)} key={'banner' + index}>
                     <Image
-                        style={[styles.bannerImage, { height: adModules.adHeights.get(url) }]}
+                        style={[styles.bannerImage, { height: adHeights.get(url) }]}
                         source={{ uri: url }}/>
                 </TouchableWithoutFeedback>
             );
@@ -99,7 +88,7 @@ const styles = StyleSheet.create({
         paddingTop: px2dp(10)
     },
     bannerImage: {
-        width: bannerWidth,
+        width: ScreenUtils.width,
         height: defaultBannerHeight,
         marginBottom: px2dp(15)
     },

@@ -14,6 +14,8 @@ import { homeTabManager } from '../pages/home/model/HomeTabManager';
 import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
+import Animation from 'lottie-react-native';
 
 
 const NormalTab = ({ source, title }) => {
@@ -63,19 +65,33 @@ class SpellShopTab extends Component {
 
 @observer
 class HomeTab extends Component {
+
     render() {
-        const { focused } = this.props;
-        if (!focused) {
-            return <Tab focused={focused} normalSource={res.tab.home_n}
-                        activeSource={res.tab.home_s} title={'首页'}/>;
+        if (!homeTabManager.homeFocus) {
+            return <Tab normalSource={res.tab.home_n} title={'首页'}/>;
         }
+        return (
+            <ImageBackground style={styles.home} source={res.tab.home_s_bg}>
+                <Animation
+                    ref={animation => {
+                        this.animation = animation;
+                    }}
+                    style={styles.home}
+                    loop={false}
+                    imageAssetsFolder={'lottie/home'}
+                    source={require('./tab_to_top.json')}/>
+            </ImageBackground>
+        );
+    }
 
-        if (homeTabManager.aboveRecommend) {
-            return <Image style={styles.home} source={res.tab.home_top}/>;
-        } else {
-            return <Image style={styles.home} source={res.tab.home_s}/>;
-        }
+    observeAboveRecommend = autorun(() => {
+        const { aboveRecommend } = homeTabManager;
+        this.animation && (aboveRecommend ? this.animation.play(0, 7) : this.animation.play(10, 17));
+    });
 
+    componentDidUpdate(prevProps) {
+        const { aboveRecommend } = homeTabManager;
+        this.animation && (this.animation.setNativeProps({ progress: aboveRecommend ? 0.5 : 1 }));
     }
 }
 
@@ -128,7 +144,8 @@ export const TabNav = TabNavigator(
         HomePage: {
             screen: Home,
             navigationOptions: {
-                tabBarIcon: ({ focused }) => <HomeTab focused={focused} normalSource={res.tab.home_n} title={'首页'}/>,
+                tabBarIcon: ({ focused }) => <HomeTab normalSource={res.tab.home_n}
+                                                      title={'首页'}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene, previousScene } = tab;
                     if (previousScene.key !== 'HomePage') {
