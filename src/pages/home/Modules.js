@@ -20,6 +20,7 @@ const {
 
 class ClassifyModules {
     @observable classifyList = [];
+
     @action loadClassifyList = () => {
         this.classifyList = [{
             icon: shareImg,
@@ -67,7 +68,7 @@ class HomeModule {
     @observable homeList = [];
     @observable selectedTypeCode = null;
     @observable isRefreshing = false;
-    @observable isFocused = false
+    @observable isFocused = false;
     isFetching = false;
     isEnd = false;
     page = 1;
@@ -117,13 +118,13 @@ class HomeModule {
         setTimeout(() => {
             this.isRefreshing = false;
         }, 2000);
+        categoryModule.loadCategoryList();
         bannerModule.loadBannerList(this.firstLoad);
         todayModule.loadTodayList(this.firstLoad);
         adModules.loadAdList(this.firstLoad);
         classifyModules.loadClassifyList();
         subjectModule.loadSubjectList(this.firstLoad);
         recommendModule.loadRecommendList(this.firstLoad);
-        categoryModule.loadCategoryList();
         this.page = 1;
         this.isEnd = false;
         this.homeList = [{
@@ -196,10 +197,12 @@ class HomeModule {
             this.isRefreshing = false;
             this.page++;
             this.firstLoad = false;
+            this.errorMsg = '';
         } catch (error) {
             console.log(error);
             this.isFetching = false;
             this.isRefreshing = false;
+            this.errorMsg = error.msg;
         }
     });
 
@@ -248,8 +251,8 @@ class HomeModule {
             }
             this.homeList = this.homeList.concat(home);
             this.page++;
-            // this.isFetching = false;
-            // this.isEnd = false;
+            this.isFetching = false;
+            this.errorMsg = '';
         } catch (error) {
             this.isFetching = false;
             this.isRefreshing = false;
@@ -261,14 +264,14 @@ class HomeModule {
     bannerPoint = (item) => ({
         bannerName: item.imgUrl,
         bannerId: item.id,
-        bannerRank:item.rank,
-        bannerType:item.linkType,
-        bannerContent:item.linkTypeCode
-    })
+        bannerRank: item.rank,
+        bannerType: item.linkType,
+        bannerContent: item.linkTypeCode
+    });
 
     @action homeFocused = (focuse) => {
-        this.isFocused = focuse
-    }
+        this.isFocused = focuse;
+    };
 }
 
 export const homeModule = new HomeModule();

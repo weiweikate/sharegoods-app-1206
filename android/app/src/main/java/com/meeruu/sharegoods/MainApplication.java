@@ -47,7 +47,6 @@ import cn.reactnative.modules.update.UpdatePackage;
 public class MainApplication extends BaseApplication implements ReactApplication {
 
     private String packageName = "";
-    private int patchStatus;
 
     @Override
     protected void attachBaseContext(Context base) {
