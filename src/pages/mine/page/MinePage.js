@@ -533,7 +533,8 @@ export default class MinePage extends BasePage {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginTop:px2dp(10)
+                    marginTop:px2dp(10),
+                    marginBottom:px2dp(10)
                 }}>
                     <View style={{ flexDirection: 'row', marginLeft: 15, alignItems: 'center' }}>
                         <UIText value={'我的订单'}
