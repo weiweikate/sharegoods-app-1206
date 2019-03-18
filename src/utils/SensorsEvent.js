@@ -113,14 +113,7 @@ const SignUpModular = {
         "params":{}
     },
 }
-//     订单模块
-const OrderModular = {
-    "ViewMyOrder":{
-        "des":'查看-我的订单',
-        "name":"ViewMyOrder",
-        "params":{}
-    },
-}
+
 
 //     消息模块
 const MessageModular = {
@@ -165,6 +158,22 @@ const MessageModular = {
 const   CommModular = {
 
 };
+const OrderModular = {
+    "SubmitOrder":{
+        "des":"提交订单",
+        "name":"SubmitOrder",//  提交订单
+        "params":{
+            "loginMethod":3
+        }
+    },
+    "ViewMyOrder":{
+        "des":'查看-我的订单',
+        "name":"ViewMyOrder",
+        "params":{}
+    },
+};
+
+
 
 //    我的模块
 const MineModular = {
