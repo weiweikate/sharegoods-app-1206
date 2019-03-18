@@ -40,6 +40,13 @@ export default class DownPricePage extends BasePage {
             selectNav: 0
         };
 
+        InteractionManager.runAfterInteractions(() => {
+            //初次进入loading
+            if (this.dataModel.isShowLoading) {
+                this.$loadingShow('加载中');
+                this.dataModel.isShowLoading = false;
+            }
+        });
     }
 
     $NavBarRenderRightItem = () => {
@@ -55,13 +62,7 @@ export default class DownPricePage extends BasePage {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
-            //初次进入loading
-            if (this.dataModel.isShowLoading) {
-                this.$loadingShow('加载中');
-                this.dataModel.isShowLoading = false;
-            }
-        });
+
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -73,14 +74,9 @@ export default class DownPricePage extends BasePage {
             }
         );
     }
-
-    /**
-     * 去掉loading
-     */
     componentWillUnmount() {
         this.$loadingDismiss();
     }
-
     /**
      * 渲染底部组列表
      * @param sections 所有组数据

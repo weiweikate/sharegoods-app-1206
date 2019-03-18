@@ -31,7 +31,7 @@ export default class HomeBannerView extends Component {
             const { navigate } = this.props;
 
             track(trackEvent.bannerClick, homeModule.bannerPoint(data));
-            navigate(router, { ...params, preseat: 'home_banner' });
+            navigate(router, { ...params });
         }
     }
 
@@ -45,7 +45,7 @@ export default class HomeBannerView extends Component {
             const { navigate } = this.props;
 
             track(trackEvent.bannerClick, homeModule.bannerPoint(data));
-            navigate(router, { ...params, preseat: 'home_banner' });
+            navigate(router, { ...params });
         }
     };
 

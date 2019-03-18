@@ -194,14 +194,13 @@ export default class TopicDetailPage extends BasePage {
                         loadingState: PageLoadingState.success
                     }, () => {
                         /*商品详情埋点*/
-                        const { packageCode, name, firstCategoryId, secCategoryId, levelPrice } = this.state.data;
-                        track(trackEvent.commodityDetail, {
-                            preSeat: this.params.preseat || '',
-                            commodityID: packageCode,
-                            commodityName: name,
-                            firstCommodity: firstCategoryId,
-                            secondCommodity: secCategoryId,
-                            pricePerCommodity: levelPrice
+                        const { packageCode, name, originalPrice, groupPrice, priceType } = this.state.data;
+                        track(trackEvent.ProductDetail, {
+                            spuCode: packageCode,
+                            spuName: name,
+                            priceShareStore: groupPrice,
+                            pricePerCommodity: originalPrice,
+                            priceType: priceType === 2 ? 100 : user.levelRemark
                         });
 
                         //礼包弹框去掉
@@ -248,8 +247,7 @@ export default class TopicDetailPage extends BasePage {
             this.__timer__ = setTimeout(() => {
                 this.havePushDone = true;
                 this.$navigate('product/ProductDetailPage', {
-                    productCode: this.state.activityData.prodCode,
-                    preseat: '活动结束跳转'
+                    productCode: this.state.activityData.prodCode
                 });
             }, 5000);
         }
@@ -288,14 +286,13 @@ export default class TopicDetailPage extends BasePage {
                         data: data.data || {}
                     }, () => {
                         /*商品详情埋点*/
-                        const { name, firstCategoryId, secCategoryId, minPrice } = data.data || {};
-                        track(trackEvent.commodityDetail, {
-                            preSeat: this.params.preseat || '',
-                            commodityID: prodCode,
-                            commodityName: name,
-                            firstCommodity: firstCategoryId,
-                            secondCommodity: secCategoryId,
-                            pricePerCommodity: minPrice
+                        const { prodCode, name, priceType, originalPrice, groupPrice } = data.data || {};
+                        track(trackEvent.ProductDetail, {
+                            spuCode: prodCode,
+                            spuName: name,
+                            priceShareStore: groupPrice,
+                            pricePerCommodity: originalPrice,
+                            priceType: priceType === 2 ? 100 : user.levelRemark
                         });
 
                         this._needPushToNormal();
@@ -642,23 +639,19 @@ export default class TopicDetailPage extends BasePage {
             colorType = 0;
         }
 
-        let productPrice, productName, productImgUrl, firstCategoryId, secCategoryId, originalPrice, groupPrice,
+        let productName, productImgUrl, originalPrice, groupPrice,
             v0Price;
         if (this.state.activityType === 3) {
-            const { name, levelPrice, imgUrl } = this.state.data || {};
-            productPrice = levelPrice || '';
+            const { name, imgUrl } = this.state.data || {};
             productName = name || '';
             productImgUrl = imgUrl;
             v0Price = (this.state.data || {}).v1 || '';
         } else {
-            const { minPrice, name, imgUrl } = this.state.data || {};
-            productPrice = minPrice || '';
+            const { name, imgUrl } = this.state.data || {};
             productName = name || '';
             productImgUrl = imgUrl;
             v0Price = (this.state.data || {}).v0Price || '';
         }
-        firstCategoryId = (this.state.data || {}).firstCategoryId;
-        secCategoryId = (this.state.data || {}).secCategoryId;
         originalPrice = (this.state.data || {}).originalPrice || '';
         groupPrice = (this.state.data || {}).groupPrice || '';
 
@@ -745,13 +738,10 @@ export default class TopicDetailPage extends BasePage {
                 {/*分享*/}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{
-                                    commodityID: this.params.activityCode,
-                                    commodityName: productName,
-                                    firstCommodity: firstCategoryId,
-                                    secondCommodity: secCategoryId,
-                                    pricePerCommodity: productPrice
+                                    spuCode: this.params.activityCode,
+                                    spuName: productName
                                 }}
-                                trackEvent={trackEvent.share}
+                                trackEvent={trackEvent.Share}
                                 type={'Image'}
                                 imageJson={{
                                     imageUrlStr: productImgUrl,

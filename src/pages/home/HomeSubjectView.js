@@ -124,7 +124,7 @@ export default class HomeSubjectView extends Component {
                 navigate(router, { productCode: good.prodCode });
             }
         } else {
-            const pageObj = getTopicJumpPageParam(good, '首页');
+            const pageObj = getTopicJumpPageParam(good);
             navigate(pageObj.pageRoute, { ...pageObj.params });
         }
     }
