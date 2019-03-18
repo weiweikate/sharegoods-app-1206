@@ -9,7 +9,7 @@
 * */
 // 基础模块
 import { TabNav } from './Tab';
-//  import  TabNav  from './pages/payment/PaymentMethodPage';
+//  import  TabNav  from '../pages/mine/page/myaccount/SetPayPwdSuccessPage';
 //  import  TabNav  from './pages/home/product/ProductDetailPage';
 //   import  TabNav  from '../pages/order/afterSaleService/AfterSaleServicePage';
 //   import  TabNav  from './Dome';
