@@ -252,6 +252,7 @@ export class XpDetailPage extends BasePage {
 
     _render() {
         const { activityCode } = this.params;
+        const { name, bannerUrl } = this.xpDetailModel;
         return (
             <View style={styles.container}>
                 {/*页面状态*/}
@@ -270,11 +271,12 @@ export class XpDetailPage extends BasePage {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'miniProgram'}
                                 webJson={{
-                                    title: `经验值专区`,
+                                    title: `${name}`,
+                                    thumImage: `${bannerUrl}`,
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&upuserid=${user.code || ''}`
                                 }}
                                 miniProgramJson={{
-                                    title: `经验值专区`,
+                                    title: `${name}`,
                                     thumImage: 'logo.png',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&&upuserid=${user.code || ''}`,
                                     miniProgramPath: `/pages/experience/experience?activityCode=${activityCode}&inviteId=${user.code || ''}`
