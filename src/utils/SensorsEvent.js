@@ -164,7 +164,7 @@ const MessageModular = {
 //    公用模块
 const   CommModular = {
 
-}
+};
 
 //    我的模块
 const MineModular = {
@@ -286,7 +286,6 @@ const event = {
     ...CommModular,
     ...ShowModular,
     ...SignUpModular,
-    ...OrderModular,
     ...MessageModular,
     ...MineModular
 

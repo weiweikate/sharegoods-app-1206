@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="5dp">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/id_dir_item_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -41,7 +41,7 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_select_dirs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
