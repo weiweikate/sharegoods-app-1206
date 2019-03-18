@@ -143,21 +143,6 @@ export default class MyOrdersListView extends Component {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 Toast.$toast('订单已取消');
-                                // track(trackEvent.cancelPayOrder, {
-                                //     orderID: this.state.allData[this.state.index].orderNo,
-                                //     orderAmount: this.state.allData[this.state.index].orderAmount
-                                //     ,
-                                //     actualPaymentAmount: this.state.allData[this.state.index].payAmount,
-                                //     paymentMethod: null,
-                                //     ifUseYiYuan: this.state.allData[this.state.index].tokenCoinAmount > 0 ? true : false,
-                                //     ifUseCoupons: this.state.allData[this.state.index].couponAmount > 0 ? true : false,
-                                //     couponsName: '',
-                                //     couponsAmount: this.state.allData[this.state.index].couponAmount,
-                                //     yiYuanCouponsAmount: this.state.allData[this.state.index].tokenCoinAmount,
-                                //     transportationCosts: this.state.allData[this.state.index].freightAmount,
-                                //     deliveryMethod: '',
-                                //     storeCode: user.storeCode ? user.storeCode : ''
-                                // });
                                 index = -1;
                                 this.onRefresh();
                             } else {
@@ -495,7 +480,6 @@ export default class MyOrdersListView extends Component {
                 break;
             case 8:
                 let cartData = [];
-                let trackData=[];
                 data.orderProduct.map((item, index) => {
                     cartData.push({
                         productCode: item.prodCode,
@@ -504,18 +488,8 @@ export default class MyOrdersListView extends Component {
                         spuCode: item.prodCode
                     });
                 });
-                data.orderProduct.map((item, index) => {
-                    trackData.push({
-                        orderID:data.orderNo,
-                        skuID: item.skuCode,
-                        spuAmount: item.num,
-                        spuID: item.prodCode,
-                        spuName:item.productName
-                    });
-                });
                 track(trackEvent.OrderAgain,{
-                    orderID:data.orderNo,
-                    ...trackData})
+                    orderId:data.orderNo, })
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
                 break;

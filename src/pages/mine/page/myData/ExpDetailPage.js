@@ -154,7 +154,7 @@ export default class ExpDetailPage extends BasePage{
     };
     getDataFromNetwork = () => {
         console.log("getDataFromNetwork",this.params.experience)
-        let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励","其他","秀购赠送","秀购惩罚","活动奖励"];
+        let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励","30天未登录扣除","秀购赠送","秀购惩罚","活动奖励"];
         let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,share_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon,activity_icon,xiugou_present,xiugou_punishment,xiugou_reword ];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         MineApi.expDetail({
