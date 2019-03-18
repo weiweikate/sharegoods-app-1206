@@ -19,7 +19,7 @@ const Nowuliu = res.kongbeiye_wulian;
 
 // import {PageLoadingState} from 'PageState';
 
-class LogisticsDetailsPage extends BasePage {
+export default class LogisticsDetailsPage extends BasePage {
 
     $getPageStateOptions = () => {
         return {
@@ -94,7 +94,6 @@ class LogisticsDetailsPage extends BasePage {
         return (
                 <LogisticsDetailItem
                     time={item.time}
-                    middleImage={item.middleImage}
                     title={item.title}
                     content1={item.content1}
                     isTop={index === 0}
@@ -195,7 +194,8 @@ class LogisticsDetailsPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: DesignRule.bgColor
+        flex: 1, backgroundColor: DesignRule.bgColor,
+        marginBottom: ScreenUtils.safeBottom
     }, logisticsNumber: {
         marginLeft: 15,
         marginRight: 15,
@@ -209,5 +209,3 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     }
 });
-
-export default LogisticsDetailsPage;

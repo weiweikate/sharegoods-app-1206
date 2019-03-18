@@ -79,9 +79,7 @@ export default class SearchResultPage extends BasePage {
 
             onFocus: false,
             textInput: this.params.keywords || this.params.name || '',
-            keywordsArr: [],//列表搜索关键词
-
-            prodCode: ''//选择规格确定时使用
+            keywordsArr: []//列表搜索关键词
         };
     }
 
@@ -151,8 +149,8 @@ export default class SearchResultPage extends BasePage {
             let dataArr = data.data || [];
 
             /*搜索埋点*/
-            needTrack && track(trackEvent.search, {
-                keyWord: this.params.keywords,
+            needTrack && track(trackEvent.Search, {
+                keyWord: this.state.textInput,
                 hasResult: dataArr.length !== 0,
                 isHistory: this.params.isHistory,
                 isRecommend: StringUtils.isNoEmpty(this.params.hotWordId)
@@ -233,7 +231,6 @@ export default class SearchResultPage extends BasePage {
     };
 
     _storeProduct = (item) => {
-        this.state.prodCode = item.prodCode;
         this.productItem = item;
         this.SelectionPage.show(item, this._selectionViewConfirm, { needUpdate: true });
     };
@@ -258,28 +255,41 @@ export default class SearchResultPage extends BasePage {
         this._emptyRequest();
     };
 
-    _onPressAtIndex = (prodCode) => {
-        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode, preseat: '搜索结果' });
+    _onPressAtIndex = (item) => {
+        //埋点
+        const { prodCode, name } = item || {};
+        let productIndex;
+        this.state.productList.forEach((item1, index) => {
+            if (item1.prodCode === prodCode) {
+                productIndex = index;
+            }
+        });
+        track(trackEvent.ProductListClick, {
+            keyWord: this.state.textInput,
+            productIndex: productIndex,
+            spuCode: prodCode,
+            spuName: name
+        });
+        this.$navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
     };
 
     //选择规格确认
     _selectionViewConfirm = (amount, skuCode) => {
+        /*加入购物车埋点*/
+        const { prodCode, name, originalPrice } = this.productItem || {};
+        track(trackEvent.AddToShoppingcart, {
+            spuCode: prodCode,
+            skuCode: skuCode,
+            spuName: name,
+            pricePerCommodity: originalPrice,
+            spuAmount: amount,
+            shoppingcartEntrance: 3
+        });
         let temp = {
             'amount': amount,
             'skuCode': skuCode,
-            'productCode': this.state.prodCode
+            'productCode': prodCode
         };
-        /*加入购物车埋点*/
-        const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.productItem || {};
-        track(trackEvent.addToShoppingcart, {
-            shoppingCartEntrance: '搜索页面',
-            commodityNumber: amount,
-            commodityID: prodCode,
-            commodityName: name,
-            firstCommodity: firstCategoryId,
-            secondCommodity: secCategoryId,
-            pricePerCommodity: minPrice
-        });
         shopCartCacheTool.addGoodItem(temp);
     };
 

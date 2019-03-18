@@ -34,10 +34,10 @@ export default class ResultHorizontalRow extends Component {
     }
 
     render() {
-        let { minPrice, name, imgUrl, prodCode } = this.props.itemData || {};
+        let { minPrice, name, imgUrl } = this.props.itemData || {};
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.onPressAtIndex(prodCode);
+                this.props.onPressAtIndex(this.props.itemData || {});
             }}>
                 <View style={[styles.container, this.props.style]}>
                     <ReuserImage style={styles.img} source={{ uri: imgUrl }}/>
@@ -124,8 +124,8 @@ class ReuserImage extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        overflow:'hidden',
-        borderRadius:5,
+        overflow: 'hidden',
+        borderRadius: 5,
         marginTop: 5,
         height: imgHeight + 82,
         backgroundColor: 'white',

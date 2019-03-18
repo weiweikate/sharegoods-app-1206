@@ -173,6 +173,8 @@ const OrderModular = {
     },
 };
 
+
+
 //    我的模块
 const MineModular = {
     //点击修改头像
@@ -293,9 +295,9 @@ const event = {
     ...CommModular,
     ...ShowModular,
     ...SignUpModular,
-    ...OrderModular,
     ...MessageModular,
-    ...MineModular
+    ...MineModular,
+    ...OrderModular
 
 };
 

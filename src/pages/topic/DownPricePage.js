@@ -5,7 +5,8 @@ import {
     View,
     StyleSheet,
     ScrollView,
-    RefreshControl
+    RefreshControl,
+    InteractionManager
 } from 'react-native';
 import { observer } from 'mobx-react';
 import { ActivityOneView, TopBannerView } from './components/SbSectiontHeaderView';
@@ -38,13 +39,14 @@ export default class DownPricePage extends BasePage {
         this.state = {
             selectNav: 0
         };
-        //初次进入loading
-        if (this.dataModel.isShowLoading) {
-            setTimeout(() => {
+
+        InteractionManager.runAfterInteractions(() => {
+            //初次进入loading
+            if (this.dataModel.isShowLoading) {
                 this.$loadingShow('加载中');
                 this.dataModel.isShowLoading = false;
-            })
-        }
+            }
+        });
     }
 
     $NavBarRenderRightItem = () => {
@@ -60,7 +62,7 @@ export default class DownPricePage extends BasePage {
     }
 
     componentDidMount() {
-        // this.$NavigationBarResetTitle(this.dataModel.name)
+
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -72,14 +74,9 @@ export default class DownPricePage extends BasePage {
             }
         );
     }
-
-    /**
-     * 去掉loading
-     */
     componentWillUnmount() {
         this.$loadingDismiss();
     }
-
     /**
      * 渲染底部组列表
      * @param sections 所有组数据

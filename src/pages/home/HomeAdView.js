@@ -33,7 +33,7 @@ export default class HomeAdView extends Component {
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
-        navigate(router, { ...params, preseat: 'home_ad' });
+        navigate(router, { ...params });
     }
 
     _renderBanner() {
