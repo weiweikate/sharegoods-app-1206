@@ -28,7 +28,8 @@ export default class PasswordInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: ''
+            text: '',
+            borderColor: null,
         };
     }
 
@@ -48,13 +49,17 @@ export default class PasswordInput extends Component {
         }
     }
 
+    changeRedBorderColor = () => {
+        this.setState({borderColor: DesignRule.mainColor})
+    }
+
     render() {
         return (
             <TouchableHighlight
                 onPress={this._onPress.bind(this)}
                 activeOpacity={1}
                 underlayColor='transparent'>
-                <View style={[styles.container, this.props.style]}>
+                <View style={[styles.container, this.props.style, {borderColor: this.state.borderColor}]}>
                     {
                         this._getInputItem()
                     }
@@ -74,7 +79,7 @@ export default class PasswordInput extends Component {
                                 if (this.state.text.length - newText.length > 1){
                                     newText = this.state.text.slice(0, -1);
                                 }
-                                this.setState({ text: newText });
+                                this.setState({ text: newText ,borderColor: null});
                                 this.props.onChange(newText);
                                 if (newText.length === this.props.maxLength) {
                                     this.props.onEnd(newText);
@@ -102,7 +107,7 @@ export default class PasswordInput extends Component {
             else {
                 inputItem.push(
                     <View key={i}
-                          style={[styles.inputItem, styles.inputItemBorderLeftWidth, this.props.inputItemStyle]}>
+                          style={[styles.inputItem, styles.inputItemBorderLeftWidth, this.props.inputItemStyle, {borderColor: this.state.borderColor}]}>
                         {i < text.length ?
                             <View style={[styles.iconStyle, this.props.iconStyle]}/> : null}
                     </View>);

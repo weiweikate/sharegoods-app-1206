@@ -12,7 +12,7 @@
 #import "MBProgressHUD+PD.h"
 #import "StorageFromRN.h"
 static  NSString * constTile = @"公猫认证";
-static  NSString * web_back_mark = @"/gongmall/contract/notify";
+//static  NSString * web_back_mark = @"/gongmall/contract/notify";
 @interface GongMaoVC ()<WKNavigationDelegate>
 @property(nonatomic, strong)WKWebView *webView;
 @end
@@ -73,8 +73,8 @@ static  NSString * web_back_mark = @"/gongmall/contract/notify";
 {
   NSURL * navi_url = navigationAction.request.URL;
   NSString *url_str = navi_url.absoluteString;
-  NSLog(@"%@",url_str);
-  NSString *mark = [NSString stringWithFormat:@"https://testapi.sharegoodsmall.com/gateway%@", web_back_mark];
+  NSLog(@"@@@@@%@",url_str);
+  NSString *mark = [StorageFromRN getGongMao];
   if ([mark isEqualToString:url_str]) {
     decisionHandler(WKNavigationActionPolicyCancel);
     [self.navigationController popViewControllerAnimated:YES];
