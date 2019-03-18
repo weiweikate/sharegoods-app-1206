@@ -136,10 +136,11 @@ export default class SearchPage extends BasePage {
             this.forceUpdate();
         }
 
+        /*searchType 1：手动输入搜索2：使用历史词3：使用热门搜索词*/
         this.$navigate(RouterMap.SearchResultPage, {
             keywords: text,
             hotWordId: hotWordId,
-            isHistory: index !== undefined && !hotWordId
+            searchType: hotWordId ? 3 : (StringUtils.isNoEmpty(index) ? 2 : 1)//
         });
     };
 

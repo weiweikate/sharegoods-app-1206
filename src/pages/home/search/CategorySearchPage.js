@@ -372,7 +372,7 @@ export default class CategorySearchPage extends BasePage {
     };
 
     go2ResultPage(categoryId, name) {
-        this.$navigate('home/search/SearchResultPage', { categoryId, name });
+        this.$navigate('home/search/SearchResultPage', { categoryId, keywords: name, searchType: 11 });
     }
 }
 const styles = StyleSheet.create({

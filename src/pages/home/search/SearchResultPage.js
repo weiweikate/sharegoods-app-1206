@@ -78,7 +78,7 @@ export default class SearchResultPage extends BasePage {
             selectionData: {},//规格数据
 
             onFocus: false,
-            textInput: this.params.keywords || this.params.name || '',
+            textInput: this.params.keywords || '',
             keywordsArr: []//列表搜索关键词
         };
     }
@@ -152,8 +152,7 @@ export default class SearchResultPage extends BasePage {
             needTrack && track(trackEvent.Search, {
                 keyWord: this.state.textInput,
                 hasResult: dataArr.length !== 0,
-                isHistory: this.params.isHistory,
-                isRecommend: StringUtils.isNoEmpty(this.params.hotWordId)
+                searchType: this.params.searchType || 100//100其他
             });
             this.setState({
                 refreshing: false,
@@ -266,7 +265,7 @@ export default class SearchResultPage extends BasePage {
         });
         track(trackEvent.ProductListClick, {
             keyWord: this.state.textInput,
-            productIndex: productIndex,
+            productIndex: productIndex + 1,
             spuCode: prodCode,
             spuName: name
         });
@@ -320,7 +319,7 @@ export default class SearchResultPage extends BasePage {
             this.$toastShow('搜索内容不能为空');
             return;
         }
-        this.params.isHistory = false;
+        this.params.searchType = 1;
         this.params.categoryId = undefined;
         this.params.hotWordId = undefined;
         this.setState({ onFocus: false, textInput: text }, () => {
