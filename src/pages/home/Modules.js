@@ -250,6 +250,8 @@ class HomeModule {
             // this.isFetching = false;
             // this.isEnd = false;
         } catch (error) {
+            this.isFetching = false;
+            this.isRefreshing = false;
             this.errorMsg = error.msg;
             console.log(error);
         }

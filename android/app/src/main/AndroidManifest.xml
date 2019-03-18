@@ -224,6 +224,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppSplashTheme"
+            android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -311,7 +312,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
 
         <!--&lt;!&ndash;高德地图定位&ndash;&gt;-->
         <!--<meta-data android:name="com.amap.api.v2.apikey" android:value="4a3ff7c2164aaf7d67a98fb9b88ae0e6">-->
