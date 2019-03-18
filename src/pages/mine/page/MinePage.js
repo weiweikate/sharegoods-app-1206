@@ -456,22 +456,14 @@ export default class MinePage extends BasePage {
             <ImageBackground source={mine_account_bg} style={{
                 marginTop: px2dp(41),
                 marginHorizontal: px2dp(15),
-                borderRadius: 5,
+                borderRadius: px2dp(10),
                 overflow: 'hidden'
             }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
-                    <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.white }}>
+                    <Text style={{ fontSize: DesignRule.fontSize_threeTitle, color: DesignRule.white,fontWeight:'bold' }}>
                         我的账户
                     </Text>
                 </View>
-                <View
-                    style={{
-                        backgroundColor: DesignRule.lineColor_inColorBg,
-                        width: ScreenUtils.width - px2dp(30),
-                        height: ScreenUtils.onePixel,
-                        alignSelf: 'center',
-                        opacity: 0.7
-                    }}/>
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between'
@@ -507,8 +499,8 @@ export default class MinePage extends BasePage {
                     width: px2dp(110),
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginTop: px2dp(16),
-                    marginBottom: px2dp(27)
+                    marginTop: px2dp(10),
+                    marginBottom: px2dp(15)
                 }}>
                     <Text allowFontScaling={true} style={{
                         textAlign: 'center',
@@ -535,19 +527,21 @@ export default class MinePage extends BasePage {
                 backgroundColor: 'white',
                 marginTop: DesignRule.margin_listGroup,
                 marginHorizontal: DesignRule.margin_page,
-                borderRadius: px2dp(5)
+                borderRadius: px2dp(10)
             }}>
                 <View style={{
-                    height: px2dp(44),
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    marginTop:px2dp(10),
+                    marginBottom:px2dp(10)
                 }}>
                     <View style={{ flexDirection: 'row', marginLeft: 15, alignItems: 'center' }}>
                         <UIText value={'我的订单'}
                                 style={{
-                                    fontSize: DesignRule.fontSize_secondTitle,
-                                    color: DesignRule.textColor_mainTitle
+                                    fontSize: DesignRule.fontSize_threeTitle,
+                                    color: DesignRule.textColor_mainTitle,
+                                    fontWeight:'bold'
                                 }}/>
                     </View>
                     <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
@@ -562,14 +556,8 @@ export default class MinePage extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
-                <View style={{
-                    backgroundColor: DesignRule.lineColor_inWhiteBg,
-                    width: ScreenUtils.width - DesignRule.margin_page * 2,
-                    height: ScreenUtils.onePixel,
-                    alignSelf: 'center'
-                }}/>
                 <ScrollView style={{width:DesignRule.width-DesignRule.margin_page*2,}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(28) }}>
+                <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
                     {this.renderOrderStates()}
                 </View>
                 </ScrollView>
@@ -589,22 +577,18 @@ export default class MinePage extends BasePage {
                 borderRadius: px2dp(5)
             }}>
                 <View
-                    style={{ height: px2dp(44), paddingHorizontal: DesignRule.margin_page, justifyContent: 'center' }}>
+                    style={{paddingHorizontal: DesignRule.margin_page, justifyContent: 'center' ,marginTop:px2dp(10)}}>
                     <Text
                         style={{
+                            includeFontPadding: false,
+                            fontSize: DesignRule.fontSize_threeTitle,
                             color: DesignRule.textColor_mainTitle,
-                            fontSize: DesignRule.fontSize_secondTitle,
-                            includeFontPadding: false
+                            fontWeight:'bold',
+                            width: ScreenUtils.width - DesignRule.margin_page * 2,
                         }}>
                         常用工具
                     </Text>
                 </View>
-                <View style={{
-                    backgroundColor: DesignRule.lineColor_inWhiteBg,
-                    width: ScreenUtils.width - DesignRule.margin_page * 2,
-                    height: ScreenUtils.onePixel,
-                    marginBottom: px2dp(24)
-                }}/>
                 {this.renderMenu()}
             </View>
         );
@@ -673,7 +657,7 @@ export default class MinePage extends BasePage {
             ) : null;
 
             arr.push(
-                <NoMoreClick style={{ width, justifyContent: 'center', alignItems: 'center', paddingTop: px2dp(30) }}
+                <NoMoreClick style={{ width, justifyContent: 'center', alignItems: 'center', paddingTop: px2dp(15) }}
                              onPress={() => this.jumpToOrderAccordingStates(i)} key={i}>
                     <ImageBackground source={statesImage[i]}
                                      style={{ height: 18, width: 20, marginBottom: 10, overflow: 'visible' }}>
@@ -825,8 +809,8 @@ export default class MinePage extends BasePage {
                     width: '25%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: 10,
-                    marginBottom: 10
+                    marginTop: px2dp(12),
+                    marginBottom: px2dp(15)
                 }} onPress={menu[i].onPress} key={i}>
                     <View style={{ paddingTop: 7, paddingLeft: 8, paddingRight: 8, paddingBottom: 0 }}>
                         <UIImage source={menu[i].icon}

@@ -33,7 +33,7 @@ export default class HomeAdView extends Component {
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
-        navigate(router, { ...params, preseat: 'home_ad' });
+        navigate(router, { ...params });
     }
 
     _renderBanner() {
@@ -64,6 +64,7 @@ export default class HomeAdView extends Component {
                 <View
                     style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : 0 }, this.adRadius[index]]}>
                     <ImageLoad source={{ uri: value.imgUrl }}
+                               type={'mfit'}
                                style={[styles.ad,
                                    { marginTop: adModules.banner.length === 0 ? 0 : ((index !== 0 && index !== 1) ? px2dp(5) : 0) }]}/>
                 </View>

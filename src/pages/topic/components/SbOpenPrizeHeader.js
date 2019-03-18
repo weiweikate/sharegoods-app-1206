@@ -154,6 +154,7 @@ export default class SbOpenPrizeHeader extends Component {
         this.setState({
             selectSate: index
         });
+
         if (index > 2) {
             let offsetX = index * (ScreenUtils.width / 5) - (ScreenUtils.width * 2 / 5);
             this.refs.scroll && this.refs.scroll.scrollTo({ x: offsetX, y: 0, animated: true });

@@ -15,6 +15,8 @@ class XpDetailModel {
      * 状态（0：删除1：未开始 2：进行中3：已结束）
      */
     @observable status;
+    @observable name;
+    @observable bannerUrl;
 
     /*起始金额，送优惠券*/
     @observable startPrice = '';
@@ -130,6 +132,8 @@ class XpDetailModel {
         this.basePageState = PageLoadingState.success;
         data = data || {};
         this.status = data.status;
+        this.name = data.name || '';
+        this.bannerUrl = data.bannerUrl || '';
         this.startPrice = data.startPrice || '';
         this.startCount = data.startCount || '';
         this.maxCount = data.maxCount || '';

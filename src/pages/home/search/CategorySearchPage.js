@@ -12,6 +12,8 @@ import res from '../../order/res';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui';
 import { homeLinkType } from '../HomeTypes';
+import { TrackApi } from '../../../utils/SensorsTrack';
+import { homeModule } from '../Modules';
 
 const icon_search = res.search;
 
@@ -203,9 +205,11 @@ export default class CategorySearchPage extends BasePage {
 
     clickBanner = (item) => {
         // banner点击跳转
+        let trackDic = homeModule.bannerPoint(item) || {};
+        TrackApi.BannerClick({ bannerLocation: 31, ...trackDic });
         if (item.linkType === homeLinkType.good) {
             this.$navigate('product/ProductDetailPage', {
-                productCode: item.linkTypeCode, preseat: '类目banner'
+                productCode: item.linkTypeCode
             });
         } else if (item.linkType === homeLinkType.subject) {
             this.$navigate('topic/DownPricePage', {
@@ -220,7 +224,7 @@ export default class CategorySearchPage extends BasePage {
             let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
-                activityType: type, preseat: '类目banner'
+                activityType: type
             });
         } else if (item.linkType === homeLinkType.show) {
             this.$navigate('show/ShowDetailPage', {
@@ -368,7 +372,7 @@ export default class CategorySearchPage extends BasePage {
     };
 
     go2ResultPage(categoryId, name) {
-        this.$navigate('home/search/SearchResultPage', { categoryId, name });
+        this.$navigate('home/search/SearchResultPage', { categoryId, keywords: name, searchType: 11 });
     }
 }
 const styles = StyleSheet.create({

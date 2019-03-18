@@ -35,4 +35,8 @@
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application>
+        <service android:name=".service.InitializeService" />
+    </application>
 </manifest>

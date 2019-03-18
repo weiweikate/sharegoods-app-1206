@@ -63,25 +63,23 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
     }
 
     private void initLifeEvent(final BannerLayout view) {
-        if (ForegroundCallbacks.get() != null) {
-            ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
-                @Override
-                public void onBecameForeground() {
-                    if (pageFocus) {
-                        if (view != null && !view.isPlaying()) {
-                            view.setAutoPlaying(true);
-                        }
+        ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
+            @Override
+            public void onBecameForeground() {
+                if (pageFocus) {
+                    if (view != null && !view.isPlaying()) {
+                        view.setAutoPlaying(true);
                     }
                 }
+            }
 
-                @Override
-                public void onBecameBackground() {
-                    if (view != null && view.isPlaying()) {
-                        view.setAutoPlaying(false);
-                    }
+            @Override
+            public void onBecameBackground() {
+                if (view != null && view.isPlaying()) {
+                    view.setAutoPlaying(false);
                 }
-            });
-        }
+            }
+        });
     }
 
     @ReactProp(name = "imgUrlArray")

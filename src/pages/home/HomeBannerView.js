@@ -9,14 +9,15 @@ const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import { bannerModule } from './HomeBannerModel';
+
 export const bannerHeight = px2dp(120);
 import MRBannerViewComponent from '../../components/ui/bannerView/MRBannerViewComponent';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+import DesignRule from '../../constants/DesignRule';
 
 
 @observer
 export default class HomeBannerView extends Component {
-
     _onPressRowWithItem(item) {
         const { bannerCount, bannerList } = bannerModule;
         let data = null;
@@ -26,32 +27,32 @@ export default class HomeBannerView extends Component {
                 break;
             }
         }
-        console.log('_onPressRowWithItem', data)
         if (data) {
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
             track(trackEvent.bannerClick, homeModule.bannerPoint(data));
-            navigate(router, { ...params, preseat: 'home_banner' });
+            navigate(router, { ...params });
         }
     }
 
     _onPressRow = (index) => {
         const { bannerList } = bannerModule;
         let data = bannerList[index];
-        
+
         if (data) {
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
             track(trackEvent.bannerClick, homeModule.bannerPoint(data));
-            navigate(router, { ...params, preseat: 'home_banner' });
+            navigate(router, { ...params });
         }
     };
 
     _onDidScrollToIndex(index) {
+        console.log('_onDidScrollToIndex', index);
         const { bannerList } = bannerModule;
         let data = bannerList[index];
         track(trackEvent.bannerSwiper, homeModule.bannerPoint(data));
@@ -60,24 +61,27 @@ export default class HomeBannerView extends Component {
     render() {
         const { bannerList } = bannerModule;
 
-        // 此处需返回null，否则指示器有问题
-        if (bannerList.length === 0) {
-            return null;
+        let items = [];
+        let len = bannerList.length;
+        if (len > 0) {
+            bannerList.map(value => {
+                items.push(value.imgUrl);
+            });
         }
 
-        let items = [];
-        bannerList.map(value => {
-            items.push(value.imgUrl);
-        });
         return <View style={styles.banner}>
-            <MRBannerViewComponent itemRadius={px2dp(5)} imgUrlArray={items}
-                                   bannerHeight={bannerHeight}
-                                   modeStyle={1} autoInterval={5}
-                                   pageFocused={this.props.pageFocused}
-                                   onDidScrollToIndex={(i)=> {this._onDidScrollToIndex(i)}}
-                                   onDidSelectItemAtIndex={(i) => {
-                                       this._onPressRow(i);
-                                   }}/>
+            {len === 0 ? <View style={styles.defaultImg}/> :
+                <MRBannerViewComponent itemRadius={px2dp(5)} imgUrlArray={items}
+                                       bannerHeight={bannerHeight}
+                                       modeStyle={1} autoInterval={homeModule.isFocused ? 5 : 0}
+                                       pageFocused={homeModule.isFocused}
+                                       onDidScrollToIndex={(i) => {
+                                           this._onDidScrollToIndex(i);
+                                       }}
+                                       onDidSelectItemAtIndex={(i) => {
+                                           this._onPressRow(i);
+                                       }}/>
+            }
         </View>;
     }
 
@@ -88,7 +92,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: px2dp(15),
         height: bannerHeight,
         width: ScreenUtils.width,
-        borderRadius: (5),
         backgroundColor: 'white'
+    },
+    defaultImg: {
+        flex: 1,
+        borderRadius: px2dp(5),
+        backgroundColor: DesignRule.lineColor_inColorBg
     }
 });

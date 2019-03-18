@@ -113,14 +113,7 @@ const SignUpModular = {
         "params":{}
     },
 }
-//     订单模块
-const OrderModular = {
-    "ViewMyOrder":{
-        "des":'查看-我的订单',
-        "name":"ViewMyOrder",
-        "params":{}
-    },
-}
+
 
 //     消息模块
 const MessageModular = {
@@ -163,8 +156,28 @@ const MessageModular = {
 
 //    公用模块
 const   CommModular = {
-
+    "BannerClick":{
+        "des":"banner广告位点击",
+        "name":"BannerClick",//  提交订单
+        "params":{}
+    },
 };
+const OrderModular = {
+    "SubmitOrder":{
+        "des":"提交订单",
+        "name":"SubmitOrder",//  提交订单
+        "params":{
+            "loginMethod":3
+        }
+    },
+    "ViewMyOrder":{
+        "des":'查看-我的订单',
+        "name":"ViewMyOrder",
+        "params":{}
+    },
+};
+
+
 
 //    我的模块
 const MineModular = {
@@ -289,6 +302,7 @@ const event = {
     ...MessageModular,
     ...MineModular,
     ...OrderModular,
+
 
 };
 

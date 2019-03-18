@@ -25,4 +25,15 @@ public class HttpUrlUtils {
         }
         return SERVER + url;
     }
+
+    /*********获取工猫回调url***********/
+    public static String getGongmaoUrl() {
+        String SERVER = "https://api.sharegoodsmall.com/gateway/gongmall/contract/reback";
+        String jsonStr = (String) SPCacheUtils.get(ParameterUtils.API_SERVER, "");
+        if (!TextUtils.isEmpty(jsonStr)) {
+            JSONObject object = JSON.parseObject(jsonStr);
+            SERVER = object.getString("gongmao");
+        }
+        return SERVER;
+    }
 }

@@ -6,6 +6,8 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.service.InitializeService;
 import com.meeruu.commonlib.utils.AppUtils;
 
 public class BaseApplication extends MultiDexApplication {
@@ -46,6 +48,8 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         appContext = this;
+        ForegroundCallbacks.init(this);
+        InitializeService.init(this);
     }
 
     @Override

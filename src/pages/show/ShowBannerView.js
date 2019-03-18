@@ -11,7 +11,7 @@ import { observer } from 'mobx-react';
 import { showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
-import { track, TrackApi, trackEvent } from '../../utils/SensorsTrack';
+import { TrackApi } from '../../utils/SensorsTrack';
 
 @observer
 export default class ShowBannerView extends Component {
@@ -30,15 +30,16 @@ export default class ShowBannerView extends Component {
         let params = showBannerModules.paramsNavigate(item);
         const { navigate } = this.props;
 
-        TrackApi.ShowBannerClick({
+        TrackApi.BannerClick({
             bannerName: item.imgUrl,
             bannerId: item.id,
             bannerRank:item.rank,
             bannerType:item.linkType,
-            bannerContent:item.linkTypeCode
+            bannerContent:item.linkTypeCode,
+            bannerLocation:32
         });
 
-        navigate(router, { ...params, preseat: '秀场_banner' });
+        navigate(router, { ...params });
     }
 
     _onPressRow(e) {
@@ -49,16 +50,15 @@ export default class ShowBannerView extends Component {
             const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
             let params = showBannerModules.paramsNavigate(item);
             const { navigate } = this.props;
-
-            track(trackEvent.bannerClick, {
-                pageType: '秀场banner',
-                bannerLocation: '秀场精选热门',
-                bannerID: item.id,
-                bannerRank: item.rank,
-                url: item.imgUrl,
-                bannerName: item.linkTypeCode
+            TrackApi.BannerClick({
+                bannerName: item.imgUrl,
+                bannerId: item.id,
+                bannerRank:item.rank,
+                bannerType:item.linkType,
+                bannerContent:item.linkTypeCode,
+                bannerLocation:32
             });
-            navigate(router, { ...params, preseat: '秀场_banner' });
+            navigate(router, { ...params });
         }
     }
 

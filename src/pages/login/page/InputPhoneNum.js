@@ -26,7 +26,8 @@ export default class InputPhoneNum extends BasePage {
         super(props);
         this.state = {
             isSelectProtocol: true,
-            phoneNum: ""
+            phoneNum: "",
+            showKeyBoard:false
         };
     }
 
@@ -94,6 +95,7 @@ export default class InputPhoneNum extends BasePage {
     }
 
     _btnClickAction = () => {
+
         if (StringUtils.isEmpty(this.state.phoneNum.trim())) {
             this.$toastShow("请输入手机号");
         } else {
