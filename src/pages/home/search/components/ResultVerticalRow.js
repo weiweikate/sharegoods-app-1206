@@ -34,10 +34,10 @@ export default class ResultVerticalRow extends Component {
 
 
     render() {
-        let { minPrice, imgUrl, name, prodCode } = this.props.itemData || {};
+        let { minPrice, imgUrl, name } = this.props.itemData || {};
         return (
             <TouchableWithoutFeedback onPress={() => {
-                this.props.onPressAtIndex(prodCode);
+                this.props.onPressAtIndex(this.props.itemData || {});
             }}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     img: {
-        borderRadius:5,
+        borderRadius: 5,
         backgroundColor: DesignRule.lineColor_inColorBg,
         height: 120,
         width: 120

@@ -130,7 +130,7 @@ export default class ShowDetailPage extends BasePage {
     _goToGoodsPage(good) {
         const { navigation } = this.props;
         navigation.push('product/ProductDetailPage', {
-            productCode: good.code, preseat: '秀场详情'
+            productCode: good.code
         });
     }
 
@@ -387,6 +387,8 @@ export default class ShowDetailPage extends BasePage {
             </View>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
+                            trackEvent={'ArticleShare'}
+                            trackParmas={{articeCode:detail.code,articleTitle:detail.title}}
                             miniProgramJson={{
                                 title: detail.title,
                                 dec: '分享小程序子标题',

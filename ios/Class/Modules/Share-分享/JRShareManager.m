@@ -174,6 +174,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
  
   [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
     if(error){
+      [JRLoadingAndToastTool showToast:@"授权失败" andDelyTime:0.5];
       return;
     }
     UMSocialUserInfoResponse * res = result;

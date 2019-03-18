@@ -132,6 +132,7 @@ export default class RefreshList extends Component {
                     extraData={extraData}
                     onEndReachedThreshold={0.1}
                     ListFooterComponent={this.renderFooter}
+                    ListHeaderComponent={this.props.ListHeaderComponent}
                     keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
                     refreshControl={<RefreshControl refreshing={this.state.refreshing}
                                                     onRefresh={onRefresh ? this.refresh : null}

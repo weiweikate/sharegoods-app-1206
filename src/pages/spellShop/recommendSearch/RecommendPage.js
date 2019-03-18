@@ -30,6 +30,7 @@ import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { homeLinkType } from '../../home/HomeTypes';
+import { homeModule } from '../../home/Modules';
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
@@ -220,17 +221,10 @@ export default class RecommendPage extends BasePage {
 
     // 点击轮播图广告
     _clickItem = (item) => {
-        track(trackEvent.bannerClick, {
-            pageType: '拼店banner',
-            bannerLocation: '拼店',
-            bannerID: item.id,
-            bannerRank: item.rank,
-            url: item.imgUrl,
-            bannerName: item.linkTypeCode
-        });
+        track(trackEvent.IndexStoreBannerClick, homeModule.bannerPoint(item));
         if (item.linkType === homeLinkType.good) {
             this.$navigate('product/ProductDetailPage', {
-                productCode: item.linkTypeCode, preseat: '拼店推荐banner'
+                productCode: item.linkTypeCode
             });
         } else if (item.linkType === homeLinkType.subject) {
             this.$navigate('topic/DownPricePage', {
@@ -245,7 +239,7 @@ export default class RecommendPage extends BasePage {
             let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
-                activityType: type, preseat: '拼店推荐banner'
+                activityType: type
             });
         } else if (item.linkType === homeLinkType.show) {
             this.$navigate('show/ShowDetailPage', {

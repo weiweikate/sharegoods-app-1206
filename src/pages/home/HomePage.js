@@ -141,14 +141,13 @@ class HomePage extends BasePage {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
-                this.homeFocused = true;
                 homeTabManager.setHomeFocus(true);
                 const { state } = payload;
                 if (user.token) {
                     this.loadMessageCount();
                 } else {
                     this.setState({
-                        hasMessage: false
+                        hasMessage: false,
                     });
                 }
                 console.log('willFocusSubscription', state);
@@ -163,7 +162,7 @@ class HomePage extends BasePage {
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
-                this.homeFocused = false;
+                homeModule.homeFocused(false)
                 homeTabManager.setHomeFocus(false);
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
@@ -177,7 +176,7 @@ class HomePage extends BasePage {
             'didFocus',
             payload => {
                 homeTabManager.setHomeFocus(true);
-                this.homeFocused = true;
+                homeModule.homeFocused(true)
                 this.showModal();
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             }
@@ -333,15 +332,15 @@ class HomePage extends BasePage {
         if (type === homeType.category) {
             return <HomeCategoryView navigate={this.$navigate}/>;
         } else if (type === homeType.swiper) {
-            return <HomeBannerView navigate={this.$navigate} pageFocused={this.homeFocused}/>;
+            return <HomeBannerView navigate={this.$navigate}/>;
         } else if (type === homeType.classify) {
             return <HomeClassifyView navigate={this.$navigate}/>;
         } else if (type === homeType.ad) {
             return <HomeAdView navigate={this.$navigate}/>;
         } else if (type === homeType.today) {
-            return <HomeTodayView navigate={this.$navigate} pageFocused={this.homeFocused}/>;
+            return <HomeTodayView navigate={this.$navigate}/>;
         } else if (type === homeType.recommend) {
-            return <HomeRecommendView navigate={this.$navigate} pageFocused={this.homeFocused}/>;
+            return <HomeRecommendView navigate={this.$navigate}/>;
         } else if (type === homeType.subject) {
             return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
@@ -404,7 +403,6 @@ class HomePage extends BasePage {
             <View style={[styles.container, { minHeight: ScreenUtils.headerHeight, minWidth: 1 }]}>
                 <HomeSearchView navigation={this.$navigate}
                                 hasMessage={this.state.hasMessage}
-                                pageFocused={this.homeFocused}
                 />
                 <RecyclerListView
                     ref={(ref) => {

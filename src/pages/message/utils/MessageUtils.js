@@ -28,13 +28,13 @@ const MessageUtils = {
             case 107://秒杀
                 navigation("topic/TopicDetailPage", {
                     activityCode: params,
-                    activityType: 1,preseat:'消息'
+                    activityType: 1
                 });
                 break;
             case 108://降价拍
                 navigation("topic/TopicDetailPage", {
                     activityCode: params,
-                    activityType: 2,preseat:'消息'
+                    activityType: 2
                 });
                 break;
             case 104://订单超时
@@ -78,6 +78,9 @@ const MessageUtils = {
                 pagParams = {storeCode:params};
                 navigation("spellShop/MyShop_RecruitPage", pagParams);
                 break;
+            case 300://工猫合同详情
+                pagParams = {url:params};
+                navigation(RouterMap.GongMallContractPage,pagParams);
             default:
                 break;
 

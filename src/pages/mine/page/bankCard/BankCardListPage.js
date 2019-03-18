@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
+    MRText,
     UIText
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
@@ -32,8 +33,8 @@ const {
     bankCard3,
     bankCard4,
     bankCard5,
-    add_bank_button,
-    add_bank_disable
+    // add_bank_button,
+    // add_bank_disable
 } = res.bankCard;
 
 const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
@@ -56,21 +57,29 @@ export default class BankCardListPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '银行卡',
+        title: '提现银行卡管理',
         show: true,
-        headerStyle: {
-            backgroundColor: DesignRule.textColor_mainTitle
-        },
-        leftNavImage: res.button.white_back,
-        leftImageStyle: {
-            width: 9, height: 15
-        },
-        titleStyle: {
-            color: 'white'
-        }
+        // headerStyle: {
+        //     backgroundColor: DesignRule.textColor_mainTitle
+        // },
+        // leftNavImage: res.button.white_back,
+        // leftImageStyle: {
+        //     width: 9, height: 15
+        // },
+        // titleStyle: {
+        //     color: 'white'
+        // }
 
 
     };
+
+    $NavBarRenderRightItem = ()=>{
+        return(
+            <TouchableWithoutFeedback onPress={this.addBankCard}>
+                <MRText style={styles.rightStyle}>添加银行卡</MRText>
+            </TouchableWithoutFeedback>
+        )
+    }
 
     $isMonitorNetworkStatus() {
         return true;
@@ -99,6 +108,7 @@ export default class BankCardListPage extends BasePage {
     //**********************************ViewPart******************************************
     _render = () => {
         return (
+            <View style={{flex:1}}>
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl
@@ -112,24 +122,24 @@ export default class BankCardListPage extends BasePage {
                             />}>
                 <View style={{ alignItems: 'center' }}>
                     {this.renderList()}
-                    <TouchableOpacity
-                        disabled={(this.state.viewData && this.state.viewData.length === 5)}
-                        style={[styles.addBankCardView, { marginTop: this.state.viewData.length === 0 ? 76 : 47 }]}
-                        onPress={() => this.addBankCard()}>
-                        <ImageBackground
-                            source={(this.state.viewData && this.state.viewData.length === 5) ? add_bank_disable : add_bank_button}
-                            style={{
-                                height: 48, width: 290, justifyContent: 'center',
-                                alignItems: 'center'
-                            }} resizeMode={'stretch'}>
-                            <UIText
-                                value={(this.state.viewData && this.state.viewData.length === 5) ? '+  最多添加5张银行卡' : '+  点击添加银行卡'}
-                                style={{
-                                    fontSize: 16,
-                                    color: (this.state.viewData && this.state.viewData.length === 5) ? '#8f8f8f' : 'white'
-                                }}/>
-                        </ImageBackground>
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity*/}
+                        {/*disabled={(this.state.viewData && this.state.viewData.length === 5)}*/}
+                        {/*style={[styles.addBankCardView, { marginTop: this.state.viewData.length === 0 ? 76 : 47 }]}*/}
+                        {/*onPress={() => this.addBankCard()}>*/}
+                        {/*<ImageBackground*/}
+                            {/*source={(this.state.viewData && this.state.viewData.length === 5) ? add_bank_disable : add_bank_button}*/}
+                            {/*style={{*/}
+                                {/*height: 48, width: 290, justifyContent: 'center',*/}
+                                {/*alignItems: 'center'*/}
+                            {/*}} resizeMode={'stretch'}>*/}
+                            {/*<UIText*/}
+                                {/*value={(this.state.viewData && this.state.viewData.length === 5) ? '+  最多添加5张银行卡' : '+  点击添加银行卡'}*/}
+                                {/*style={{*/}
+                                    {/*fontSize: 16,*/}
+                                    {/*color: (this.state.viewData && this.state.viewData.length === 5) ? '#8f8f8f' : 'white'*/}
+                                {/*}}/>*/}
+                        {/*</ImageBackground>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
                 {this.renderBankModal()}
                 <BankTradingModal
@@ -151,6 +161,8 @@ export default class BankCardListPage extends BasePage {
                     message={'绑定银行卡'}
                 />
             </ScrollView>
+                <MRText style={styles.tipStyle}>注：请绑定本人有效储蓄卡，信用卡将无法提现</MRText>
+            </View>
 
         );
     };
@@ -215,7 +227,7 @@ export default class BankCardListPage extends BasePage {
         const tempArr = this.ds.cloneWithRows(this.state.viewData);
 
         return (<SwipeListView
-            style={{ backgroundColor: DesignRule.textColor_mainTitle }}
+            style={{ backgroundColor: DesignRule.white }}
             dataSource={tempArr}
             disableRightSwipe={true}
             // renderRow={ data => (
@@ -389,7 +401,7 @@ export default class BankCardListPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: DesignRule.textColor_mainTitle, marginTop: -1
+        flex: 1, backgroundColor: DesignRule.bgColor, marginTop: -1
     }, bankCardView: {
         height: 110,
         width: ScreenUtils.width - 30,
@@ -430,6 +442,17 @@ const styles = StyleSheet.create({
         marginBottom: 40,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    rightStyle:{
+        color:DesignRule.textColor_secondTitle,
+        fontSize:DesignRule.fontSize_threeTitle
+    },
+    tipStyle:{
+        color:DesignRule.textColor_instruction,
+        fontSize:DesignRule.fontSize_threeTitle,
+        alignSelf:'center',
+        marginTop:15,
+        marginBottom:30
     }
 });
 

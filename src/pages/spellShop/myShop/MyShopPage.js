@@ -41,6 +41,7 @@ import user from '../../../model/user';
 // import bridge from '../../../utils/bridge';
 import resCommon from '../../../comm/res';
 import LinearGradient from 'react-native-linear-gradient';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = resCommon.button.white_back;
@@ -173,13 +174,16 @@ export default class MyShopPage extends BasePage {
         //店铺信息
         SpellShopApi.getById({ storeCode: this.state.storeCode }).then((data) => {
             let dataTemp = data.data || {};
-            const { userStatus } = dataTemp;
+            const { userStatus, storeNumber } = dataTemp;
             this.setState({
                 loadingState: PageLoadingState.success,
                 isRefresh: false,
                 storeData: dataTemp,
-                storeCode: dataTemp.storeNumber,
+                storeCode: storeNumber,
                 tittle: userStatus === 1 ? '我的店铺' : '店铺详情'
+            });
+            track(trackEvent.SeePingdian, {
+                pinCode: storeNumber
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -502,6 +506,7 @@ export default class MyShopPage extends BasePage {
     };
 
     _render() {
+        const { name, headUrl, profile, storeNumber } = this.state.storeData || {};
         return (
             <View style={styles.container}>
                 <LinearGradient colors={['#FF1C89', '#FF156E']}
@@ -517,11 +522,16 @@ export default class MyShopPage extends BasePage {
                 }}/>
                 {/*<ConfirmAlert ref={(ref) => this.delAlert = ref}/>*/}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
+                                trackParmas={{
+                                    pinSummary: profile,
+                                    pinCode: storeNumber
+                                }}
+                                trackEvent={trackEvent.SharePin}
                                 webJson={{
-                                    title: `加入店铺:${this.state.storeData.name}`,
+                                    title: `加入店铺:${name}`,
                                     dec: '店铺',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.code || ''}`,
-                                    thumImage: `${this.state.storeData.headUrl}`
+                                    thumImage: `${headUrl}`
                                 }}/>
             </View>
         );

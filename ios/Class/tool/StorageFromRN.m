@@ -7,6 +7,7 @@
 //
 
 #import "StorageFromRN.h"
+#import "NSDictionary+Util.h"
 
 static NSString *const RCTStorageDirectory = @"RCTAsyncLocalStorage_V1";
 static NSString *const RCTManifestFileName = @"manifest.json";
@@ -35,5 +36,35 @@ static NSString *RCTGetStorageDirectory()
     return dic[key];
   }
   return nil;
+}
+
++ (NSDictionary *)configDic
+{
+  NSString * HostJson = [StorageFromRN getItem:@"HostJson"];
+  NSDictionary *dic = @{};
+  if (HostJson) {
+    dic =  [NSDictionary dictionaryWithJsonString:HostJson];
+  }
+  return dic;
+}
+
++(NSString *)getHost
+{
+  NSDictionary *dic = [self configDic];
+  NSString * path = dic[@"host"];
+  if (path==nil || path.length == 0) {
+    path = @"https://api.sharegoodsmall.com/gateway";
+  }
+  return path;
+}
+
++(NSString *)getGongMao
+{
+  NSDictionary *dic = [self configDic];
+  NSString * path = dic[@"gongmao"];
+  if (path==nil || path.length == 0) {
+    path = @"https://api.sharegoodsmall.com/gateway/gongmall/contract/reback";
+  }
+  return path;
 }
 @end
