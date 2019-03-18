@@ -45,7 +45,6 @@ export default class PaymentResultPage extends BasePage {
             payResult: this.params.payResult,
             payMsg: this.params.payMsg
         };
-        console.log('PaymentResultPage', this.params.payResult, this.state.payResult)
     }
 
     $navigationBarOptions = {
