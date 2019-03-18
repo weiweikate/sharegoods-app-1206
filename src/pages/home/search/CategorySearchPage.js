@@ -12,7 +12,7 @@ import res from '../../order/res';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui';
 import { homeLinkType } from '../HomeTypes';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
+import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeModule } from '../Modules';
 
 const icon_search = res.search;
@@ -205,7 +205,8 @@ export default class CategorySearchPage extends BasePage {
 
     clickBanner = (item) => {
         // banner点击跳转
-        track(trackEvent.CategorySearchBannerClick, homeModule.bannerPoint(item));
+        let trackDic = homeModule.bannerPoint(item) || {};
+        TrackApi.BannerClick({ bannerLocation: 31, ...trackDic });
         if (item.linkType === homeLinkType.good) {
             this.$navigate('product/ProductDetailPage', {
                 productCode: item.linkTypeCode
