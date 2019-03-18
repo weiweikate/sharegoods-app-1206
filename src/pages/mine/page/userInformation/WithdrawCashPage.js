@@ -9,14 +9,12 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
-    UIText, UIImage, UIButton
+    UIText, UIImage, UIButton, MRText
 } from '../../../../components/ui';
 import { MRText as Text, MRTextInput as RNTextInput } from '../../../../components/ui';
 
-
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-// import MineApi from '../../api/MineApi';
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
 import DesignRule from '../../../../constants/DesignRule';
@@ -69,7 +67,10 @@ export default class WithdrawCashPage extends BasePage {
             fixedFee: null,  //低于金额收取手续费
             whenLessAmount: null, //低于金额
             loadingState: PageLoadingState.loading,
-            showFinishModal: false
+            showFinishModal: false,
+            startDay: null,
+            endDay: null,
+            balance: null
         };
         this.rate = null;
         this.minCount = null;
@@ -158,7 +159,7 @@ export default class WithdrawCashPage extends BasePage {
             this.getRateSuccess = true;
 
             if (data) {
-                let arr = data.data;
+                let arr = data.data.list;
                 for (let i = 0; i < arr.length; i++) {
                     let item = arr[i];
                     switch (item.code) {
@@ -189,7 +190,10 @@ export default class WithdrawCashPage extends BasePage {
                 rate: this.rate,
                 minCount: this.minCount,
                 fixedFee: this.fixedFee,
-                whenLessAmount: this.whenLessAmount
+                whenLessAmount: this.whenLessAmount,
+                startDay: data.startDay,
+                endDay: data.endDay,
+                balance: data.balance
             });
 
             if (this.getLastBankInfoSuccess && this.getRateSuccess) {
@@ -274,6 +278,26 @@ export default class WithdrawCashPage extends BasePage {
                 onPress={() => this.commit()}/>
         );
     };
+
+    renderTip = () => {
+        return (
+            <View style={{ flexDirection: 'row', marginLeft: DesignRule.margin_page,marginTop:5 }}>
+                <MRText style={styles.tipTextStyle}>
+                    {'提示: '}
+                </MRText>
+                <View>
+                    <MRText style={styles.tipTextStyle}>
+                        {`1.本月剩余提现额度￥${this.state.balance}`}
+                    </MRText>
+
+                    <MRText style={styles.tipTextStyle}>
+                        {`2.每月额度计算上月${this.state.startDay}号-本月${this.state.endDay}号`}
+                    </MRText>
+                </View>
+            </View>
+        );
+    };
+
     renderWithdrawMoney = () => {
         let tip = '';
         if (!EmptyUtils.isEmpty(this.state.rate)) {
@@ -284,9 +308,6 @@ export default class WithdrawCashPage extends BasePage {
         if (!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee)) {
             tip = tip + `提现金额不满${this.state.whenLessAmount}元，则扣除${this.state.fixedFee}元手续费`;
         }
-        // if (!EmptyUtils.isEmpty(this.state.minCount)) {
-        //     tip = tip + `最低提现金额为${this.state.minCount}元`;
-        // }
 
         let tip2 = (parseFloat(this.state.money) > parseFloat(user.availableBalance)) ? (<Text>
             金额已超出可提现金额
@@ -343,15 +364,6 @@ export default class WithdrawCashPage extends BasePage {
                     justifyContent: 'space-between',
                     paddingHorizontal: DesignRule.margin_page
                 }}>
-                    {/*<Text*/}
-                    {/*style={{*/}
-                    {/*color: (parseFloat(this.state.money) > parseFloat(user.availableBalance)) ? DesignRule.mainColor : DesignRule.textColor_instruction,*/}
-                    {/*fontSize: 13,*/}
-                    {/*marginTop: 10,*/}
-                    {/*height: 30*/}
-                    {/*}}>*/}
-                    {/*{(parseFloat(this.state.money) > parseFloat(user.availableBalance)) ? "金额已超出可提现金额" : "可用余额" + StringUtils.formatMoneyString(user.availableBalance, false) + "元"}*/}
-                    {/*</Text>*/}
                     {tip2}
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({ money: user.availableBalance });
@@ -373,6 +385,7 @@ export default class WithdrawCashPage extends BasePage {
                                 marginLeft: 15,
                                 marginTop: 10
                             }}/>
+                    {this.renderTip()}
                 </View>
             </View>
         );
@@ -470,34 +483,6 @@ export default class WithdrawCashPage extends BasePage {
             }]);
             return;
         }
-        // if (StringUtils.isEmpty(this.state.id)) {
-        //     NativeModules.commModule.toast('请先选择银行卡');
-        //     return;
-        // }
-        // if ((this.state.availableBalance + '') == '0') {
-        //     NativeModules.commModule.toast('可提现金额不够');
-        //     return;
-        // }
-        // if ((this.state.money + '') == '0') {
-        //     NativeModules.commModule.toast('请输入金额');
-        //     return;
-        // }
-        // MineApi.addWithdrawMoney({ bankId: this.state.id, withdrawBlance: this.state.money }).then((response) => {
-        //     if (response.ok) {
-        //         this.loadPageData();
-        //         NativeModules.commModule.toast('提现成功');
-        //     } else {
-        //         NativeModules.commModule.toast(response.msg);
-        //     }
-        // });
-        // {
-        //     "bankId": 0,
-        //     "bankName": "string",
-        //     "cardNo": "string",
-        //     "payPassword": "string",
-        //     "withdrawBalance": 0
-        // }
-
 
         this.setState({
             isShowModal: true
@@ -530,8 +515,8 @@ export default class WithdrawCashPage extends BasePage {
         };
         MineAPI.userWithdrawApply(params).then((data) => {
             this.setState({
-                showFinishModal:true
-            })
+                showFinishModal: true
+            });
         }).catch((err) => {
             this.$toastShow(err.msg);
         });
@@ -541,6 +526,10 @@ export default class WithdrawCashPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: DesignRule.bgColor
+    },
+    tipTextStyle:{
+        color:DesignRule.textColor_instruction,
+        fontSize:DesignRule.fontSize_22
     }
 });
 
