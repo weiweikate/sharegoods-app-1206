@@ -30,10 +30,14 @@ const productTrack = {
     Share:'Share',//分享商品
 }
 /** 订单相关的埋点事件名称*/
+const inviteEvent = {
+    QrcodeShareto: 'QrCodeShareto',//分享二维码
+}
 const trackEvent = {
     ...huchao,
     ...spellShopTrack,
     ...productTrack,
+    ...inviteEvent,
     bannerClick: 'AdBannerClick',//banner点击
     bannerSwiper: 'AdBannerShow',//banner滑动
     recommanderBannerClick: 'RecommanderBannerClick', //推荐为banner点击
@@ -44,8 +48,6 @@ const trackEvent = {
     login: 'Login',//登录
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
-    commodityDetail: 'CommodityDetail',//浏览商品详情页
-    submitOrder: 'SubmitOrder',//提交订单
     submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
     payOrder: 'PayOrder',//支付订单
     payOrderDetail: 'PayOrderDetail',//支付订单详情
@@ -58,26 +60,23 @@ const trackEvent = {
     contact: 'Contact',//联系客服
     ArticleDisplay: 'ArticleDisplay',//文章浏览
     ArticleShare: 'ArticleShare',// 文章分享
-    applyJoinPin: 'ApplyJoinPin',//加入拼店
-    applyPin: 'ApplyPin',//申请开店
-    dismissPin: 'DismissPin',//解散拼店
-    QuitPin: 'QuitPin',//退出拼店
     BuyGiftSubmit: 'BuyGiftSubmit',//购买礼包
     MesInviteJoinPin: 'MesInviteJoinPin',//邀请加入拼店
     MesInviteJoinPinResult: 'MesInviteJoinPinResult',//邀请加入拼店—结果反馈
     MesApplyJoinPin: 'MesApplyJoinPin',//申请加入拼店
     MesApplyJoinPinResult: 'MesApplyJoinPinResult',//申请加入店铺——结果反馈
-    Dropout: 'Dropout',//请出拼店
     ReceiveDividents: 'ReceiveDividents',//收到分红
     VIPChange: 'VIPChange',//会员流转
     QrcodeShareto: 'QrcodeShareto',//分享二维码,
+
     ProblemFeedback:'ProblemFeedback',//点击问题反馈,
     ClickContactCustomerService:'ClickContactCustomerService',//点击联系客服
     ViewCoupon:'ViewCoupon',//点击查看优惠券点击查看优惠券
     ViewWaitToRecord:'ViewWaitToRecord',//点击查看待入帐
     ModifuAvatarSuccess:'ModifuAvatarSuccess',//修改头像
     ViewMyOrder:'ViewMyOrder',//查看-我的订单
-
+    OrderAgain:"OrderAgain",//再次购买
+    submitOrder: 'SubmitOrder',//提交订单
 };
 function trackUtil(p) {
     let arr = {};

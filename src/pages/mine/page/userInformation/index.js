@@ -6,7 +6,9 @@ import MyIntegralAccountPage from './MyIntegralAccountPage';
 import WithdrawCashPage from './WithdrawCashPage';
 import IDVertify2Page from './IDVertify2Page';
 import WaitingForWithdrawCashPage from './WaitingForWithdrawCashPage';
-import ProfileEditPage from './ProfileEditPage'
+import ProfileEditPage from './ProfileEditPage';
+import GongMallContractPage from './GongMallContractPage';
+
 
 
 export default {
@@ -19,6 +21,7 @@ export default {
         WithdrawCashPage,
         IDVertify2Page,
         WaitingForWithdrawCashPage,
-        ProfileEditPage
+        ProfileEditPage,
+        GongMallContractPage
     }
 };

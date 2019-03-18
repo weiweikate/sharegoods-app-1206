@@ -37,6 +37,6 @@ export default {
         MyMentorPage,
         MyShowFansPage,
         ExpDetailPage,
-        SetMentorPage
+        SetMentorPage,
     }
 };

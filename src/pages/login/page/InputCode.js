@@ -124,7 +124,9 @@ export default class InputCode extends BasePage {
                 downTime: time
             });
         });
-        SMSTool.sendVerificationCode(1, phoneNum);
+        SMSTool.sendVerificationCode(1, phoneNum).catch(error => {
+            this.$toastShow(error.msg);
+        });
 
         TrackApi.registGetVerifySMS();
     };

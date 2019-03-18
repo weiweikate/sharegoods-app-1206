@@ -35,6 +35,7 @@ export default class InputPhoneNum extends BasePage {
         show: true,
         leftNavTitle: "取消"
     };
+
     _render() {
         return (
             <View style={Styles.bgContent}>
@@ -113,7 +114,9 @@ export default class InputPhoneNum extends BasePage {
      */
     _sendAutherCode = () => {
         //发送验证码
-        SMSTool.sendVerificationCode(1, this.state.phoneNum);
+        SMSTool.sendVerificationCode(1, this.state.phoneNum).catch(error => {
+            this.$toastShow(error.msg);
+        });
         let params = {
             ...this.params,
             phoneNum: this.state.phoneNum

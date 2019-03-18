@@ -20,7 +20,7 @@
         "src/**/*.js": "eslint"
     },
     "dependencies": {
-        "@mr/cookies": "0.0.6",
+        "@mr/cookies": "0.0.7",
         "@mr/image-placeholder": "0.1.28",
         "@mr/react-native-autoheight-webview": "^1.0.4",
         "@mr/react-native-webview": "^5.2.4",

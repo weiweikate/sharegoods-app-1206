@@ -333,7 +333,8 @@ export default class ProductDetailPage extends BasePage {
             orderProducts.push({
                 skuCode: skuCode,
                 quantity: amount,
-                productCode: this.state.data.prodCode
+                productCode: this.state.data.prodCode,
+                spuName:this.state.data.name
             });
             console.log('ConfirOrderPage', this.params);
             this.$navigate('order/order/ConfirOrderPage', {
