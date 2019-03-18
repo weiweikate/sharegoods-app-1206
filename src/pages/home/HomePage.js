@@ -147,7 +147,7 @@ class HomePage extends BasePage {
                     this.loadMessageCount();
                 } else {
                     this.setState({
-                        hasMessage: false,
+                        hasMessage: false
                     });
                 }
                 console.log('willFocusSubscription', state);
@@ -162,7 +162,7 @@ class HomePage extends BasePage {
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
-                homeModule.homeFocused(false)
+                homeModule.homeFocused(false);
                 homeTabManager.setHomeFocus(false);
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
@@ -176,7 +176,7 @@ class HomePage extends BasePage {
             'didFocus',
             payload => {
                 homeTabManager.setHomeFocus(true);
-                homeModule.homeFocused(true)
+                homeModule.homeFocused(true);
                 this.showModal();
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             }
