@@ -64,7 +64,7 @@ const trackEvent = {
     ModifuAvatarSuccess:'ModifuAvatarSuccess',//修改头像
     ViewMyOrder:'ViewMyOrder',//查看-我的订单
     OrderAgain:"OrderAgain",//再次购买
-    SubmitOrder: 'SubmitOrder',//提交订单
+    submitOrder: 'SubmitOrder',//提交订单
 };
 function trackUtil(p) {
     let arr = {};
