@@ -1,6 +1,6 @@
-import { StyleSheet, PixelRatio, Dimensions } from 'react-native';
+import { StyleSheet, PixelRatio, Dimensions ,Platform} from 'react-native';
 
-// const isIos = Platform.OS === 'ios';
+const isIos = Platform.OS === 'ios';
 const SW = Dimensions.get('window').width - 80;
 
 function getRealDP(designPx) {
@@ -11,8 +11,7 @@ function getRealDP(designPx) {
 export default StyleSheet.create({
     // textInput样式
     textInput: {
-        // height: isIos ? 0 : getRealDP(1),
-        height:0,
+        height: isIos ? 0 : getRealDP(1),
         width: 0,
         position: 'absolute',
         bottom: 0,
@@ -54,6 +53,6 @@ export default StyleSheet.create({
         paddingHorizontal: getRealDP(74),
         position: 'absolute',
         left: 0,
-        top: 0
+        top: 0,
     }
 });
