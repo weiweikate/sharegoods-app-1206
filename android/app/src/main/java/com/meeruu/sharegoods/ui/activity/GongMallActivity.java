@@ -46,14 +46,12 @@ import java.util.List;
 
 public class GongMallActivity extends BaseActivity {
     private WebView webView;
-    private ProgressBar progressBar;
     private ValueCallback<Uri> mUploadMessage;
     public static final int REQUEST_SELECT_FILE = 100;
     public ValueCallback<Uri[]> uploadMessageAboveL;
     private static final int FILECHOOSER_RESULTCODE = 2;
     private String url ;
     public static final int SIGN_OK = 889;
-    private static final String callBackUrl = "https://testapi.sharegoodsmall.com/gateway/gongmall/contract/notify";
 
     //WebViewClient主要帮助WebView处理各种通知、请求事件
     private WebViewClient webViewClient = new WebViewClient() {
@@ -69,9 +67,7 @@ public class GongMallActivity extends BaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.e("sssss",url);
-            if (url.equals(callBackUrl)) {
-//            if (url.equals(HttpUrlUtils.getUrl(HttpUrlUtils.URL_GONGMAO))) {
+            if (url.equals(HttpUrlUtils.getGongmaoUrl())) {
                 setResult(SIGN_OK);
                 finish();
                 return true;//表示我已经处理过了
