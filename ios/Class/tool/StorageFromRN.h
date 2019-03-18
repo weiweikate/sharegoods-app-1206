@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface StorageFromRN : NSObject
 +(NSString *)getItem:(NSString *)key;
+
++(NSString *)getHost;
 @end
 
 NS_ASSUME_NONNULL_END

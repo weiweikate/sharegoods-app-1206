@@ -31,6 +31,8 @@ import shareTask from '../pages/shareTask';
 
 import deepLinkPath from './DeepLinkPath';
 
+ // import WithdrawalAgreementPage from '../pages/mine/page/bankCard/WithdrawalAgreementPage'
+// import GongMallPage from '../pages/mine/page/userInformation/GongMallPage'
 
 const Router = {
     Tab: {

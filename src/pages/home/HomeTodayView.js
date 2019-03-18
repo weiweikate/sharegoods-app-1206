@@ -32,7 +32,7 @@ export default class HomeTodayView extends Component {
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);
-            navigate(router, { ...params, preseat: 'home_today' });
+            navigate(router, { ...params });
         }
     }
 

@@ -16,7 +16,6 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 
 @observer
 export default class HomeBannerView extends Component {
-
     _onPressRowWithItem(item) {
         const { bannerCount, bannerList } = bannerModule;
         let data = null;
@@ -26,14 +25,13 @@ export default class HomeBannerView extends Component {
                 break;
             }
         }
-        console.log('_onPressRowWithItem', data)
         if (data) {
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
             track(trackEvent.bannerClick, homeModule.bannerPoint(data));
-            navigate(router, { ...params, preseat: 'home_banner' });
+            navigate(router, { ...params });
         }
     }
 
@@ -47,15 +45,9 @@ export default class HomeBannerView extends Component {
             const { navigate } = this.props;
 
             track(trackEvent.bannerClick, homeModule.bannerPoint(data));
-            navigate(router, { ...params, preseat: 'home_banner' });
+            navigate(router, { ...params });
         }
     };
-
-    _onDidScrollToIndex(index) {
-        const { bannerList } = bannerModule;
-        let data = bannerList[index];
-        track(trackEvent.bannerSwiper, homeModule.bannerPoint(data));
-    }
 
     render() {
         const { bannerList } = bannerModule;
@@ -72,9 +64,8 @@ export default class HomeBannerView extends Component {
         return <View style={styles.banner}>
             <MRBannerViewComponent itemRadius={px2dp(5)} imgUrlArray={items}
                                    bannerHeight={bannerHeight}
-                                   modeStyle={1} autoInterval={5}
-                                   pageFocused={this.props.pageFocused}
-                                   onDidScrollToIndex={(i)=> {this._onDidScrollToIndex(i)}}
+                                   modeStyle={1} autoInterval={homeModule.isFocused ? 5 : 0}
+                                   pageFocused={homeModule.isFocused}
                                    onDidSelectItemAtIndex={(i) => {
                                        this._onPressRow(i);
                                    }}/>

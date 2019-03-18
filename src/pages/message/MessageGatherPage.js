@@ -21,6 +21,7 @@ import DesignRule from '../../constants/DesignRule';
 import RES from './res';
 const emptyIcon = RES.message_empty;
 import {MRText as Text} from '../../components/ui'
+import { TrackApi } from '../../utils/SensorsTrack';
 
 export default class MessageGatherPage extends BasePage {
     constructor(props) {
@@ -77,7 +78,10 @@ export default class MessageGatherPage extends BasePage {
 
     renderItem = ({item, index})=> {
         let btn = (
-            <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.$navigate,item.paramType,item.param,item.displayTime)}}>
+            <TouchableWithoutFeedback onPress={()=>{
+                MessageUtils.goDetailPage(this.$navigate,item.paramType,item.param,item.displayTime);
+                TrackApi.ViewMessageContent({messageType:item.paramType});
+            }}>
                 <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white',borderTopColor: DesignRule.lineColor_inGrayBg,borderTopWidth:ScreenUtils.onePixel}}>
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:px2dp(13)}}>
                         查看详情>>

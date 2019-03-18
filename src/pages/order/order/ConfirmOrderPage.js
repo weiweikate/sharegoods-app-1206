@@ -140,7 +140,7 @@ export default class ConfirmOrderPage extends BasePage {
         }
         confirmOrderModel.canCommit = false;
         confirmOrderModel.submitProduct(this.params.orderParamVO, {
-            
+
             callback: (data) => {
                 console.log('submitProduct', data)
 
@@ -187,6 +187,7 @@ export default class ConfirmOrderPage extends BasePage {
                 fromOrder: 1,
                 orderParam: confirmOrderModel.orderParamVO, callBack: (data) => {
                     console.log('CouponsPage', data);
+                    confirmOrderModel.couponData=data;
                     if (data && data.id) {
                         let params = {
                             userCouponCode: data.code,

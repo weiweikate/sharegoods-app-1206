@@ -45,7 +45,7 @@ export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {
         show: false, // false则隐藏导航
-        title: '我的晋升'
+        title: '我的经验值'
     };
     $getPageStateOptions = () => {
         return {
@@ -306,7 +306,7 @@ export default class MyPromotionPage extends BasePage {
             alignSelf: 'center',
             fontSize: 17,
             includeFontPadding: false
-        }} allowFontScaling={false}>我的晋升</Text> : null;
+        }} allowFontScaling={false}>我的经验值</Text> : null;
         return (
             <View style={{
                 width: SCREEN_WIDTH,

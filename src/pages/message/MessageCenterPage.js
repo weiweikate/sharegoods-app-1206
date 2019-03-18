@@ -17,6 +17,7 @@ import MessageApi from './api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from '../../constants/DesignRule';
 import res from './res';
+import { TrackApi } from '../../utils/SensorsTrack';
 
 const {
     icon_03: noticeIcon,
@@ -82,12 +83,15 @@ export default class MessageCenterPage extends BasePage {
         switch (i) {
             case 0:
                 this.$navigate('message/NotificationPage');
+                TrackApi.ViewNotice();
                 break;
             case 1:
+                TrackApi.ViewMessage();
                 this.$navigate('message/MessageGatherPage');
                 break;
 
             case 2:
+                TrackApi.ViewPinMessage();
                 this.$navigate('message/ShopMessagePage');
                 break;
         }

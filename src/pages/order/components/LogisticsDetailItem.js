@@ -2,9 +2,9 @@ import React from "react";
 import {
     View
 } from 'react-native';
-// import { color } from '../../../constants/Theme';
+import ScreenUtils from "../../../utils/ScreenUtils";
 import {
-    UIText, UIImage
+    UIText
 } from "../../../components/ui";
 import DesignRule from '../../../constants/DesignRule';
 
@@ -12,7 +12,6 @@ import DesignRule from '../../../constants/DesignRule';
 const LogisticsDetailItem = props => {
     const {
         time,
-        middleImage,
         title,
         content1,
         isTop,
@@ -34,9 +33,8 @@ const LogisticsDetailItem = props => {
         );
     };
     this.renderMiddleImage = () => {
-        return (!middleImage ?
-                <UIText value={"·"} style={{ fontSize: 40, marginLeft: 40, marginTop:-20}}/> :
-                <UIImage source={middleImage} style={{ width: 28, height: 28, marginLeft: 30, opacity: 1 }}/>
+        return (
+                <UIText value={"·"} style={{ fontSize: 40, marginTop:-20}}/>
         );
     };
     this.renderMiddleLine = () => {
@@ -44,15 +42,15 @@ const LogisticsDetailItem = props => {
                 <View style={{
                     width: 1,
                     backgroundColor: DesignRule.color_ddd,
-                    marginLeft: 5,
-                    marginRight: 5,
+                    // marginLeft: 5,
+                    // marginRight: 5,
                     marginTop: isTop ? 21 : 0
                 }}/> :
                 <View style={{
                     width: 1,
                     backgroundColor: DesignRule.color_ddd,
-                    marginLeft: 5,
-                    marginRight: 5,
+                    // marginLeft: 5,
+                    // marginRight: 5,
                     marginTop: isTop ? 21 : 0,
                     height: 20
                 }}/>
@@ -66,20 +64,20 @@ const LogisticsDetailItem = props => {
     return (
         <View style={{marginRight:15,marginLeft:15,borderTopLeftRadius:isTop?10:0,borderTopRightRadius:isTop?10:0 ,backgroundColor:'white',
             borderBottomLeftRadius:isBottom?10:0,borderBottomRightRadius:isBottom?10:0}}>
-        <View style={{ paddingLeft: 15, paddingRight: 15, flexDirection: "row",marginBottom:isBottom?5:0}}>
-            <View style={{width: 40, marginTop: 10}}>
-                <UIText value={time.substr(5,5)} style={{ fontSize: 14, color: DesignRule.textColor_mainTitle_222,textAlign:'right'}}/>
-            <UIText value={time.substr(10,6)} style={{ fontSize: 11, color: DesignRule.textColor_mainTitle_222,marginTop:-10 ,textAlign:'right' }}/>
+        <View style={{ flexDirection: "row",marginBottom:isBottom?5:0,paddingLeft: 15,paddingRight:15}}>
+            <View style={{width: 40, marginTop: 10,marginRight:5}}>
+                <UIText value={time.substr(5,5)} style={{ fontSize: 14, color: DesignRule.textColor_mainTitle_222,textAlign:'right',marginRight:-1}}/>
+            <UIText value={time.substr(10,6)} style={{ fontSize: 11, color: DesignRule.textColor_mainTitle_222,marginTop:-15 ,textAlign:'right' }}/>
             </View>
             {this.renderMiddleLine()}
+            <View style={{ position: "absolute", left:ScreenUtils.isIphoneMax?50:55, top: 20 }}>
+                {this.renderMiddleImage()}
+            </View>
             <View style={{ marginTop: 15 }}>
                 {this.renderTitle()}
                 <View style={{ flex: 1, flexDirection: "row", paddingLeft: 15, paddingRight: 48, flexWrap: "wrap" }}>
                     <UIText value={content1} style={{ fontSize: 12, color: DesignRule.textColor_mainTitle_222 }}/>
                 </View>
-            </View>
-            <View style={{ position: "absolute", marginLeft: 16, marginTop: 20 }}>
-                {this.renderMiddleImage()}
             </View>
         </View>
             {isBottom?null:<View style={{height:0.5,backgroundColor:DesignRule.lineColor_inWhiteBg}}/>}
