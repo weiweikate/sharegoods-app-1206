@@ -480,7 +480,7 @@ export default class MinePage extends BasePage {
                         this.go2CashDetailPage(1);
                         TrackApi.ViewAccountBalance();
                     })}
-                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆', () => {
+                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '我的秀豆', () => {
                         this.go2CashDetailPage(2);
                         TrackApi.ViewShowDou();
                     })}
@@ -719,7 +719,7 @@ export default class MinePage extends BasePage {
             }
         };
         let coupon = {
-            text: '优惠券',
+            text: '我的优惠券',
             icon: mine_coupon_icon,
             onPress: () => {
                 TrackApi.ViewCoupon({couponModuleSource:1});
@@ -727,7 +727,7 @@ export default class MinePage extends BasePage {
             }
         };
         let data = {
-            text: '我的资料',
+            text: '我的经验值',
             icon: mine_icon_data,
             onPress: () => {
                 TrackApi.ViewMyInfos();

@@ -29,7 +29,6 @@ const trackEvent = {
     search: 'Search',//商品搜索
     commodityDetail: 'CommodityDetail',//浏览商品详情页
     addToShoppingcart: 'AddToShoppingcart',//加入购物车
-    submitOrder: 'SubmitOrder',//提交订单
     submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
     payOrder: 'PayOrder',//支付订单
     payOrderDetail: 'PayOrderDetail',//支付订单详情
@@ -57,13 +56,15 @@ const trackEvent = {
     ReceiveDividents: 'ReceiveDividents',//收到分红
     VIPChange: 'VIPChange',//会员流转
     QrcodeShareto: 'QrcodeShareto',//分享二维码,
+
     ProblemFeedback:'ProblemFeedback',//点击问题反馈,
     ClickContactCustomerService:'ClickContactCustomerService',//点击联系客服
     ViewCoupon:'ViewCoupon',//点击查看优惠券点击查看优惠券
     ViewWaitToRecord:'ViewWaitToRecord',//点击查看待入帐
     ModifuAvatarSuccess:'ModifuAvatarSuccess',//修改头像
     ViewMyOrder:'ViewMyOrder',//查看-我的订单
-
+    OrderAgain:"OrderAgain",//再次购买
+    submitOrder: 'SubmitOrder',//提交订单
 };
 function trackUtil(p) {
     let arr = {};
