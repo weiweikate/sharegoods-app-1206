@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.RelativeLayout;
 
+import com.facebook.react.bridge.UiThreadUtil;
+
 public class ClipImageLayout extends RelativeLayout {
 
     public static final String CIRCLE = "circle";
@@ -49,8 +51,14 @@ public class ClipImageLayout extends RelativeLayout {
         return mZoomImageView.clip();
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        mZoomImageView.setImageBitmap(bitmap);
+    public void setBitmap(final Bitmap bitmap) {
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mZoomImageView.setImageBitmap(bitmap);
+            }
+        });
+
     }
 
     public int getmClipStyle() {
