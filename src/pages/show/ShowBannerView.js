@@ -38,7 +38,7 @@ export default class ShowBannerView extends Component {
             bannerName: item.linkTypeCode
         });
 
-        navigate(router, { ...params, preseat: '秀场_banner' });
+        navigate(router, { ...params });
     }
 
     _onPressRow(e) {
@@ -58,7 +58,7 @@ export default class ShowBannerView extends Component {
                 url: item.imgUrl,
                 bannerName: item.linkTypeCode
             });
-            navigate(router, { ...params, preseat: '秀场_banner' });
+            navigate(router, { ...params });
         }
     }
 

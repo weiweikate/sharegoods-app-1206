@@ -14,9 +14,26 @@ const {
 const huchao = {
 
 }
+
+const spellShopTrack = {
+    IndexStoreBannerClick:'IndexStoreBannerClick',//拼店首页banner推荐位
+    SharePin:'SharePin',//分享拼店
+    SeePingdian:'SeePingdian',//查看拼店
+}
+
+const productTrack = {
+    CategorySearchBannerClick:'CategorySearchBannerClick',//类目搜索banner广告位
+    ProductListClick:'ProductListClick',//搜索页-商品列表页点击
+    Search:'Search',//搜索
+    ProductDetail:'ProductDetail',//浏览商品详情页,
+    AddToShoppingcart:'AddToShoppingcart',//加入购物车
+    Share:'Share',//分享商品
+}
 /** 订单相关的埋点事件名称*/
 const trackEvent = {
     ...huchao,
+    ...spellShopTrack,
+    ...productTrack,
     bannerClick: 'AdBannerClick',//banner点击
     bannerSwiper: 'AdBannerShow',//banner滑动
     recommanderBannerClick: 'RecommanderBannerClick', //推荐为banner点击
@@ -28,7 +45,6 @@ const trackEvent = {
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
     commodityDetail: 'CommodityDetail',//浏览商品详情页
-    addToShoppingcart: 'AddToShoppingcart',//加入购物车
     submitOrder: 'SubmitOrder',//提交订单
     submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
     payOrder: 'PayOrder',//支付订单
@@ -39,14 +55,12 @@ const trackEvent = {
     receiveOneyuan: 'ReceiveOneyuan',//领一元券
     receiveExp: 'ReceiveExp',//经验值变动
     receiveshowDou: 'ReceiveshowDou',//秀豆变动
-    share: 'Share',//分享商品
     contact: 'Contact',//联系客服
     ArticleDisplay: 'ArticleDisplay',//文章浏览
     ArticleShare: 'ArticleShare',// 文章分享
     applyJoinPin: 'ApplyJoinPin',//加入拼店
     applyPin: 'ApplyPin',//申请开店
     dismissPin: 'DismissPin',//解散拼店
-    SharePin: 'SharePin',//分享拼店
     QuitPin: 'QuitPin',//退出拼店
     BuyGiftSubmit: 'BuyGiftSubmit',//购买礼包
     MesInviteJoinPin: 'MesInviteJoinPin',//邀请加入拼店
