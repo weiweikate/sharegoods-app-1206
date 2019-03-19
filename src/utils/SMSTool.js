@@ -1,4 +1,5 @@
 import ApiUtils from '../api/network/ApiUtils';
+import { TrackApi } from './SensorsTrack'
 
 const SMSInterface = {
     // 登陆验证码
@@ -41,42 +42,50 @@ const SMSTool = {
     sendVerificationCode: function(sendType, phoneNumber) {
         switch (sendType) {
             case this.SMSType.LoginType:
+                TrackApi.codeGetVerifySMS();
                 return SMSAPI.SMSLogin({
                     phone: phoneNumber
                 });
                 break;
             case this.SMSType.RegType:
+                TrackApi.registGetVerifySMS()
                 return SMSAPI.SMSReg({
                     phone: phoneNumber
                 });
                 break;
             case this.SMSType.OldPhoneType:
+                TrackApi.otherGetVerifySMS()
                 return SMSAPI.SMSOldPhone({
                     phone: phoneNumber
                 });
                 break;
             case this.SMSType.NewPhoneType:
+                TrackApi.otherGetVerifySMS()
                 return SMSAPI.SMSNewPhone({
                     phone: phoneNumber
                 });
                 break;
             case this.SMSType.SalePwdType:
+                TrackApi.otherGetVerifySMS()
                 return SMSAPI.SMSSalePhone({
                     phone: phoneNumber
                 });
                 break;
 
             case this.SMSType.SetSaleType:
+                TrackApi.otherGetVerifySMS()
                 return SMSAPI.SMSSetSalePhone({
                     phone: phoneNumber
                 });
                 break;
             case this.SMSType.ForgetSaleType:
+                TrackApi.otherGetVerifySMS()
                 return SMSAPI.SMSForgetSalePhone({
                     phone: phoneNumber
                 });
                 break;
             case this.SMSType.ForgetPasswordType:
+                TrackApi.otherGetVerifySMS()
                 return SMSAPI.SMSForgetLoginPassword({
                     phone: phoneNumber
                 });
