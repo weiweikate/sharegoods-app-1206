@@ -176,6 +176,16 @@ const OrderModular = {
         "name":"ViewMyOrder",
         "params":{}
     },
+    //申请退货
+    "ApplyReturn":{
+        "name":"ApplyReturn",
+        "params":{}
+    },
+    //申请退货详情
+    "ApplyReturnDetail": {
+        "name":"ApplyReturnDetail",
+        "params":{}
+    }
 };
 
 

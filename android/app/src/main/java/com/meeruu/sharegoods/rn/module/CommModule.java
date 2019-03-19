@@ -75,6 +75,7 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
+    public static final String CHANNEL_KEY = "channel";
     private static final int GONGMAOCODE = 888;
     private Promise gongMao ;
 
@@ -530,6 +531,12 @@ public class CommModule extends ReactContextBaseJavaModule {
 
 
         }, CallerThreadExecutor.getInstance());
+    }
+
+    @ReactMethod
+    public void getAPKChannel(Promise promise){
+        String channel = AppUtils.getAppMetaData(mContext,CHANNEL_KEY);
+        promise.resolve(channel);
     }
    @ReactMethod
     public void goGongmallPage(String url,Promise promise){

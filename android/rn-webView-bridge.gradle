@@ -11,6 +11,9 @@ android {
     lintOptions {
         abortOnError false
     }
+    buildTypes {
+        releaseStaging {}
+    }
 }
 
 dependencies {
