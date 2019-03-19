@@ -92,9 +92,13 @@ export default class CustomNumKeyBoard extends Component {
         }
     }
 
+    // shouldComponentUpdate(){
+    //     return false;
+    // }
+
     _closeNumKeyBoard = () => {
         const { closeAction } = this.props
-        closeAction && closeAction(false);
+        closeAction && closeAction();
         this.setState({
             visible: false
         })
@@ -120,8 +124,8 @@ export default class CustomNumKeyBoard extends Component {
                     <View style={styles.contentStyle}>
                         <View style={styles.keyBoardBgStyle}>
                             {
-                                numArr.map((item, index) => {
-                                    return this._getNumViewItem(index, item)
+                                numArr.map((item) => {
+                                    return this._getNumViewItem(item)
                                 })
                             }
                         </View>
@@ -131,10 +135,10 @@ export default class CustomNumKeyBoard extends Component {
         )
     }
 
-    _getNumViewItem = (index, itemText) => {
+    _getNumViewItem = (itemText) => {
         return (
             <TouchableOpacity onPress={() => {
-                this._itemClick(index, itemText)
+                this._itemClick( itemText)
             }}>
                 <View style={styles.numItemBgStyle}>
                     <MRText style={styles.numTextStyle}>
@@ -150,7 +154,7 @@ export default class CustomNumKeyBoard extends Component {
      * @param itemText
      * @private
      */
-    _itemClick = (index, itemText) => {
+    _itemClick = (itemText) => {
         const { itemClick, isSaveCurrentInputState,maxNumLength } = this.props;
         let currentNum = this.state.numString;
         let numLength = this.state.numString.length;

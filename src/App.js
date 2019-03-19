@@ -28,14 +28,10 @@ import TimerMixin from 'react-timer-mixin';
 import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
-// import LoginAPI from './pages/login/api/LoginApi';
-// import OldImag from './home_icon.png';
-import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
-import codePush from 'react-native-code-push';
-import { SpellShopFlag } from './navigation/Tab';
-// import { olduser } from './pages/home/model/HomeRegisterFirstManager';
+import codePush from "react-native-code-push";
+import {SpellShopFlag} from './navigation/Tab';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -148,9 +144,6 @@ class App extends Component {
         );
     }
 
-    gotoLogin = () => {
-        oldUserLoginSingleModel.JumpToLogin(RouterMap.LoginPage);
-    };
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage
