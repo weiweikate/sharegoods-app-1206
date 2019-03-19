@@ -138,6 +138,10 @@ export default class PaymentPage extends BasePage {
         const { selectedBalace, name } = payment
         const { showPwd } = this.state
         let { availableBalance } = user
+        let channelAmount = (payment.amounts).toFixed(2)
+        if (selectedBalace) {
+            channelAmount = (payment.amounts - availableBalance) <= 0 ? 0.00 : (payment.amounts - availableBalance).toFixed(2)
+        }
         return <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.row}>
@@ -159,8 +163,8 @@ export default class PaymentPage extends BasePage {
             </View>
             </TouchableWithoutFeedback>
             <View style={styles.needView}>
-            <Text style={styles.need}>需付金额</Text>
-            <Text style={styles.amount}>￥{payment.amounts}</Text>
+            <Text style={styles.need}>三方需付金额</Text>
+            <Text style={styles.amount}>￥{channelAmount}</Text>
             </View>
             <TouchableWithoutFeedback onPress={() => {this.goToPay()}}>
             <View style={styles.payBtn}>
