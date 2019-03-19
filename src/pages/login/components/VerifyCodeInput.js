@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import {
     Text,
-    TextInput,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
@@ -12,11 +11,14 @@ import styles from '../style/VerifyCode.style';
 const propTypes = {
     onChangeText: PropTypes.func.isRequired, // 验证码实时变化值
     verifyCodeLength: PropTypes.number.isRequired, // 验证码数
+    verifyCode: PropTypes.string,
+    onTouchInput: PropTypes.func.isRequired
 };
 
 const defaultProps = {
-    onChangeText: () => {},
-    verifyCodeLength: 6, // 默认6位
+    onChangeText: () => {
+    },
+    verifyCodeLength: 6 // 默认6位
 };
 
 // 验证码组件
@@ -24,15 +26,23 @@ class VerifyCode extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            verifyCode: '', // 验证码
+            verifyCode: props.verifyCode || '' // 验证码
         };
         this.onTouchInput = this.onTouchInput.bind(this);
     }
 
     onTouchInput() {
-        const isFocused = this.textInput.isFocused();
-        if (!isFocused) {
-            this.textInput.focus();
+        const { onTouchInput } = this.props;
+        onTouchInput && onTouchInput();
+    }
+
+    componentWillReceiveProps(props){
+        const {verifyCode} = props
+        if (verifyCode !== this.state.verifyCode)
+        {
+            this.setState({
+                verifyCode:props.verifyCode
+            })
         }
     }
 
@@ -60,27 +70,10 @@ class VerifyCode extends PureComponent {
 
     render() {
         const { verifyCode } = this.state;
-        const { onChangeText, verifyCodeLength } = this.props;
+        // const { onChangeText, verifyCodeLength } = this.props;
         return (
             <View style={styles.verifyContainer}>
                 {this.renderVerifyCode(verifyCode)}
-                <TextInput
-                    ref={(ref) => { this.textInput = ref }}
-                    underlineColorAndroid="transparent"
-                    caretHidden
-                    style={styles.textInput}
-                    autoFocus={true}
-                    keyboardType={'numeric'}
-                    maxLength={verifyCodeLength}
-                    onChangeText={(text) => {
-                        const reg = /^[0-9]*$/;
-                        if (reg.test(text)) {
-                            this.setState({ verifyCode: text });
-                            onChangeText(text);
-                        }
-                    }}
-                    value={verifyCode}
-                />
             </View>
         );
     }

@@ -1,6 +1,7 @@
 apply plugin: rootProject.ext.plugins.application
 //添加 com.sensorsdata.analytics.android 插件
 apply plugin: 'com.sensorsdata.analytics.android'
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 project.ext.react = [
         entryFile: "index.js"
@@ -20,8 +21,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
+        versionCode 10103
+        versionName "1.1.3"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -57,6 +58,12 @@ android {
             storeFile file(STORE_FILE)
             storePassword KEYSTORE_PASSWORD
         }
+        releaseStaging  {
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+            storeFile file(STORE_FILE)
+            storePassword KEYSTORE_PASSWORD
+        }
         debug {
             keyAlias KEY_ALIAS
             keyPassword KEY_PASSWORD
@@ -67,6 +74,11 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.release
+            buildConfigField "String", "CODEPUSH_KEY", '""'
+        }
+        releaseStaging {
+            signingConfig signingConfigs.release
+            buildConfigField "String", "CODEPUSH_KEY", '"HKzEg3HP45t9OtM1gJFYCxWkTelu6783993f-12ef-4196-b554-7a1aede160dd"'
         }
         release {
             minifyEnabled true
@@ -74,8 +86,11 @@ android {
             zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "CODEPUSH_KEY", '"iZdb5VLxosx59xBg3emyav97bwgw6783993f-12ef-4196-b554-7a1aede160dd"'
         }
     }
+
+
     repositories {
         maven {
             url "http://maven.aliyun.com/nexus/content/repositories/releases"
@@ -98,6 +113,11 @@ dependencies {
     releaseImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.6.3') {
         exclude(module: 'support-core-utils')
     }
+
+    releaseStagingImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.6.3') {
+        exclude(module: 'support-core-utils')
+    }
+
     // Optional, if you use support library fragments:
     debugImplementation('com.squareup.leakcanary:leakcanary-support-fragment:1.6.3') {
         exclude(module: 'support-core-utils')
@@ -111,7 +131,6 @@ dependencies {
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api(name: 'alicom-number-verification-android-2.0.0-20190219-release',ext: 'aar')
-    api project(':react-native-update')
     api project(':react-native-video')
     api project(':react-native-vector-icons')
     api project(':react-native-svg')
@@ -128,6 +147,7 @@ dependencies {
     api project(':qrcode')
     api project(':lottie')
     api project(':base_adapter')
-    api project(':react-native-extra-dimensions-android')
     api project(':react-native-webview')
+    api project(':react-native-extra-dimensions-android')
+    api project(':react-native-code-push')
 }
