@@ -14,6 +14,7 @@ export const bannerHeight = px2dp(120);
 import MRBannerViewComponent from '../../components/ui/bannerView/MRBannerViewComponent';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import DesignRule from '../../constants/DesignRule';
+import { homePoint } from './HomeTypes';
 
 
 @observer
@@ -32,7 +33,7 @@ export default class HomeBannerView extends Component {
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
-            track(trackEvent.bannerClick, homeModule.bannerPoint(data));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner ));
             navigate(router, { ...params });
         }
     }
@@ -46,7 +47,7 @@ export default class HomeBannerView extends Component {
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
-            track(trackEvent.bannerClick, homeModule.bannerPoint(data));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner));
             navigate(router, { ...params });
         }
     };
@@ -54,7 +55,7 @@ export default class HomeBannerView extends Component {
     _onDidScrollToIndex(index) {
         const { bannerList } = bannerModule;
         let data = bannerList[index];
-        track(trackEvent.bannerSwiper, homeModule.bannerPoint(data));
+        track(trackEvent.bannerShow, homeModule.bannerPoint(data, homePoint.homeBanner));
     }
 
     render() {

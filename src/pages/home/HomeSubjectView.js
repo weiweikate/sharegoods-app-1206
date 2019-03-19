@@ -9,7 +9,7 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 const { px2dp, onePixel } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
-import { homeLinkType, homeRoute } from './HomeTypes';
+import { homeLinkType, homeRoute, homePoint } from './HomeTypes';
 import { subjectModule } from './HomeSubjectModel';
 import DesignRule from '../../constants/DesignRule';
 import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTool';
@@ -106,7 +106,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
 @observer
 export default class HomeSubjectView extends Component {
     _subjectActions(item) {
-        track(trackEvent.hotsellBannerClick, homeModule.bannerPoint(item))
+        track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeSubject))
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
