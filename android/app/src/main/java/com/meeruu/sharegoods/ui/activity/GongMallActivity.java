@@ -3,22 +3,12 @@ package com.meeruu.sharegoods.ui.activity;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Parcelable;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,20 +19,13 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.meeruu.commonlib.base.BaseActivity;
-import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.permissions.Permission;
-import com.meeruu.permissions.PermissionUtil;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class GongMallActivity extends BaseActivity {
     private WebView webView;
@@ -50,7 +33,7 @@ public class GongMallActivity extends BaseActivity {
     public static final int REQUEST_SELECT_FILE = 100;
     public ValueCallback<Uri[]> uploadMessageAboveL;
     private static final int FILECHOOSER_RESULTCODE = 2;
-    private String url ;
+    private String url;
     public static final int SIGN_OK = 889;
 
     //WebViewClient主要帮助WebView处理各种通知、请求事件
@@ -99,7 +82,6 @@ public class GongMallActivity extends BaseActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-//            Log.i("ansen", "网页标题:" + title);
         }
 
         //加载进度回调
@@ -142,6 +124,7 @@ public class GongMallActivity extends BaseActivity {
         intent.putExtra("singlePic", true);
         startActivityForResult(intent, FILECHOOSER_RESULTCODE);
     }
+
     /*
      * 图片选择完成操作
      *
@@ -163,7 +146,7 @@ public class GongMallActivity extends BaseActivity {
         switch (requestCode) {
             case REQUEST_SELECT_FILE:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (uploadMessageAboveL == null){
+                    if (uploadMessageAboveL == null) {
                         return;
                     }
                     uploadMessageAboveL.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
@@ -172,21 +155,21 @@ public class GongMallActivity extends BaseActivity {
                 break;
             case FILECHOOSER_RESULTCODE:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (uploadMessageAboveL == null){
+                    if (uploadMessageAboveL == null) {
                         return;
                     }
                     String filePath = intent.getStringExtra("path");
-                    Uri  imageUri = Uri.fromFile(new File(filePath));
+                    Uri imageUri = Uri.fromFile(new File(filePath));
                     Uri[] results = null;
                     results = new Uri[]{imageUri};
                     uploadMessageAboveL.onReceiveValue(results);
                     uploadMessageAboveL = null;
                 } else {
-                    if (mUploadMessage == null){
+                    if (mUploadMessage == null) {
                         return;
                     }
                     String filePath = intent.getStringExtra("path");
-                    Uri  imageUri = Uri.fromFile(new File(filePath));
+                    Uri imageUri = Uri.fromFile(new File(filePath));
                     mUploadMessage.onReceiveValue(imageUri);
                     mUploadMessage = null;
                 }
@@ -200,7 +183,6 @@ public class GongMallActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.i("ansen", "是否有上一个页面:" + webView.canGoBack());
         if (webView.canGoBack() && keyCode == KeyEvent.KEYCODE_BACK) {//点击返回按钮的时候判断有没有上一页
             webView.goBack(); // goBack()表示返回webView的上一页面
             return true;
@@ -216,7 +198,6 @@ public class GongMallActivity extends BaseActivity {
      */
     @JavascriptInterface
     public void getClient(String str) {
-        Log.i("ansen", "html调用客户端:" + str);
     }
 
     @Override
@@ -242,7 +223,7 @@ public class GongMallActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gongmao);
         this.url = getIntent().getStringExtra("url");
-        if(TextUtils.isEmpty(this.url)){
+        if (TextUtils.isEmpty(this.url)) {
             finish();
         }
         webView = (WebView) findViewById(R.id.webView);
