@@ -9,6 +9,7 @@ import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.service.InitializeService;
 import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.SensorsUtils;
 
 public class BaseApplication extends MultiDexApplication {
 
@@ -48,7 +49,10 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         appContext = this;
+        // 监听应用前后台
         ForegroundCallbacks.init(this);
+        // 神策初始化
+        SensorsUtils.init(this);
         InitializeService.init(this);
     }
 
