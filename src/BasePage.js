@@ -49,6 +49,11 @@ export default class BasePage extends Component {
     $refreshData() {
     }
 
+    $renderSuperView = () => {
+        this.setState({});
+    }
+
+
     $isMonitorNetworkStatus() {
         return false;
     }
