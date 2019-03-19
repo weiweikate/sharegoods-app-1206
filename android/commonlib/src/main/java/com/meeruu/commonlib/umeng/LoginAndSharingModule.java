@@ -191,42 +191,49 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
                 if (params.hasKey("hdImageURL")) {
                     image = fixThumImage(params.getString("hdImageURL"));
-
                 } else {
                     image = fixThumImage(params.getString("thumImage"));
                 }
 
                 UMWeb web = new UMWeb(params.getString("linkUrl"));
-                web.setTitle(params.getString("title"));//标题
+                if (params.hasKey("title")) {
+                    web.setTitle(params.getString("title"));//标题
+                }
                 web.setThumb(image);  //缩略图
-                web.setDescription(params.getString("dec"));//描述
+                String dec = null;
+                if (params.hasKey("dec")) {
+                    dec = params.getString("dec");
+                    web.setDescription(dec);//描述
+                }
                 new ShareAction(getCurrentActivity()).setPlatform(platform)//传入平台
-                        .withMedia(web).withText(params.getString("dec"))//分享内容
+                        .withMedia(web).withText(dec)//分享内容
                         .setCallback(umShareListener)//回调监听器
                         .share();
                 break;
             case 2:
                 UMMin umMin = new UMMin(params.getString("linkUrl"));
-//                image = fixThumImage(params.getString("thumImage"));
-                image = fixThumImage(params.getString("hdImageURL"));
-                //兼容低版本的网页链接
+                if (params.hasKey("hdImageURL")) {
+                    image = fixThumImage(params.getString("hdImageURL"));
+                } else {
+                    image = fixThumImage(params.getString("thumImage"));
+                }
                 umMin.setThumb(image);
-                // 小程序消息封面图片
-                umMin.setTitle(params.getString("title"));
-                // 小程序消息title
-                umMin.setDescription(params.getString("dec"));
-                // 小程序消息描述
-                umMin.setPath(params.getString("miniProgramPath"));
-                //小程序页面路径
-                umMin.setUserName(params.getString("userName"));
-                // 小程序原始id,在微信平台查询
+                if (params.hasKey("title")) {
+                    umMin.setTitle(params.getString("title"));
+                }
+
+                if (params.hasKey("dec")) {
+                    umMin.setDescription(params.getString("dec"));
+                }
+                if (params.hasKey("miniProgramPath")) {
+                    umMin.setPath(params.getString("miniProgramPath"));
+                }
+                if (params.hasKey("userName")) {
+                    umMin.setUserName(params.getString("userName"));
+                }
                 new ShareAction(mContext.getCurrentActivity()).withMedia(umMin).setPlatform(platform).setCallback(umShareListener).share();
 
         }
-    }
-
-    private void downLoadImageAndompress() {
-
     }
 
     //本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
@@ -951,8 +958,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
         long date = System.currentTimeMillis();
-        String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath()
-                + File.separator + "screenshotImage.png_" + date;
+        String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath() + File.separator + "screenshotImage.png_" + date;
 
         File file = new File(storePath);
         if (bmp != null) {

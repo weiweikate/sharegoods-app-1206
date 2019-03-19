@@ -205,5 +205,6 @@ export default {
     },
     isApkExist: (version, onSuccess) => {
         NativeModules.commModule.apkExist(version, onSuccess);
-    }
+    },
+    getAPKChannel:NativeModules.commModule.getAPKChannel
 };

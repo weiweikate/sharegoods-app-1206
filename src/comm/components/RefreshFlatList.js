@@ -70,7 +70,8 @@ export default class RefreshFlatList extends React.Component {
         params: {},
         defaultEmptyImage: res.placeholder.no_data,
         defaultEmptyText: '暂无数据~',
-        defaultData: []
+        defaultData: [],
+        renderHeader: ()=>{return null}
     };
 
     constructor(props) {
@@ -263,7 +264,7 @@ export default class RefreshFlatList extends React.Component {
                 renderItem={this.props.renderItem}
                 onEndReached={this._onLoadMore.bind(this)}
                 onEndReachedThreshold={0.1}
-                ListHeaderComponent={()=> { return this.props.renderHeader(this.state.data)}}
+                ListHeaderComponent={()=> { return   this.props.renderHeader(this.state.data)}}
                 // onRefresh={this._onRefresh.bind(this)}
                 // refreshing={this.state.refreshing}
                 //onLayout={this.onLayout.bind(this)}
