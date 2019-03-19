@@ -7,18 +7,21 @@ import {
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
 import styles from '../style/VerifyCode.style';
+import CustomNumKeyBoard from '../../../comm/components/CustomNumKeyBoard'
+
 
 const propTypes = {
     onChangeText: PropTypes.func.isRequired, // 验证码实时变化值
     verifyCodeLength: PropTypes.number.isRequired, // 验证码数
     verifyCode: PropTypes.string,
-    onTouchInput: PropTypes.func.isRequired
+    onTouchInput: PropTypes.func.isRequired,
+    showKeyBoard: PropTypes.bool.isRequired
 };
 
 const defaultProps = {
     onChangeText: () => {
     },
-    verifyCodeLength: 6 // 默认6位
+    verifyCodeLength: 4 // 默认6位
 };
 
 // 验证码组件
@@ -26,24 +29,18 @@ class VerifyCode extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            verifyCode: props.verifyCode || '' // 验证码
+            verifyCode: '', // 验证码
+            showKeyBoard: true
         };
         this.onTouchInput = this.onTouchInput.bind(this);
     }
 
-    onTouchInput() {
+    onTouchInput(flag) {
         const { onTouchInput } = this.props;
-        onTouchInput && onTouchInput();
-    }
-
-    componentWillReceiveProps(props){
-        const {verifyCode} = props
-        if (verifyCode !== this.state.verifyCode)
-        {
-            this.setState({
-                verifyCode:props.verifyCode
-            })
-        }
+        onTouchInput && onTouchInput(flag);
+        this.setState({
+            showKeyBoard: !this.state.showKeyBoard
+        })
     }
 
     renderVerifyCode(value) {
@@ -69,13 +66,52 @@ class VerifyCode extends PureComponent {
     }
 
     render() {
-        const { verifyCode } = this.state;
-        // const { onChangeText, verifyCodeLength } = this.props;
         return (
             <View style={styles.verifyContainer}>
-                {this.renderVerifyCode(verifyCode)}
+                {this.renderVerifyCode(this.state.verifyCode)}
+                <CustomNumKeyBoard
+                    itemClick={
+                        (text) => {
+                            this._keyBoardKeyClick(text)
+                        }
+                    }
+                    closeAction={() => {
+                        this.setState({
+                            showKeyBoard: false
+                        })
+                    }}
+                    maxNumLength={4}
+                    visible={this.state.showKeyBoard}
+                    transparent={true}
+                    isSaveCurrentInputState={false}
+                />
             </View>
         );
+    }
+
+    _keyBoardKeyClick = (text) => {
+        const { onChangeText, verifyCodeLength } = this.props;
+        if (text !== '回退') {
+            if (this.state.verifyCode.length >= verifyCodeLength) {
+            } else {
+                let currentVerifyCode = this.state.verifyCode;
+                currentVerifyCode = currentVerifyCode + text;
+                this.setState({
+                    verifyCode: currentVerifyCode
+                })
+                if (currentVerifyCode.length === 4) {
+                    this.setState({
+                        showKeyBoard: false
+                    }, () => {
+                        onChangeText(currentVerifyCode);
+                    })
+                }
+            }
+        } else {
+            this.setState({
+                verifyCode: this.state.verifyCode.substr(0, this.state.verifyCode.length - 1)
+            })
+        }
     }
 }
 
