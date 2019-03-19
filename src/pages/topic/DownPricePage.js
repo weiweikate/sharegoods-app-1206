@@ -232,7 +232,7 @@ export default class DownPricePage extends BasePage {
                     this._renderBottomListView(sectionData)
                 }
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'miniProgram'}
+                                type={'miniProgramWithCopyUrl'}
                                 webJson={{
                                     hdImageURL:this.dataModel.imgUrl || '',
                                     title: this.dataModel.topicTitle,
