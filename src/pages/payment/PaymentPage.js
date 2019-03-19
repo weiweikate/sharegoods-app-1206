@@ -24,6 +24,7 @@ export default class PaymentPage extends BasePage {
 
     state = {
         showPwd: false,
+        showPwdMsg: '',
         showResult: false,
         payResult: PaymentResult.none,
         payMsg: ''
@@ -99,14 +100,7 @@ export default class PaymentPage extends BasePage {
             this.props.navigation.dispatch(replace);
             payment.resetPayment()
         }).catch(err => {
-            this.$navigate('payment/PaymentResultPage', {
-                payResult: PaymentResult.fail,
-                payMsg: err.msg
-            })
-            this.setState({
-                showPwd: false
-             })
-             payment.resetPayment()
+            this.setState({ showPwdMsg: err.msg })
         })
     }
 
@@ -177,6 +171,7 @@ export default class PaymentPage extends BasePage {
                 finishedAction={(pwd)=> {this._finishedAction(pwd)}}
                 forgetAction={()=>{this._forgetPassword()}}
                 dismiss={()=>{this._cancelPay() }}
+                showPwdMsg={this.state.showPwdMsg}
             /> : null}
         </View>;
     }
