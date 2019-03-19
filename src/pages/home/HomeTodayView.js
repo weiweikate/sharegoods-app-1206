@@ -12,6 +12,7 @@ import { todayModule } from './HomeTodayModel';
 import DesignRule from '../../constants/DesignRule';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 import { MRText as Text } from '../../components/ui';
+import { homePoint } from './HomeTypes';
 
 
 export const todayHeight = px2dp(240);
@@ -28,7 +29,7 @@ export default class HomeTodayView extends Component {
         const { todayList } = todayModule;
         let item = todayList[index];
         if (item) {
-            track(trackEvent.recommanderBannerClick, homeModule.bannerPoint(item));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeToday));
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);

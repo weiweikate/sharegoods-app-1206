@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './Modules';
+import { homePoint } from './HomeTypes'
 import { adModules } from './HomeAdModel';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
@@ -34,7 +35,7 @@ export default class HomeAdView extends Component {
             bridge.$toast('获取数据失败！');
             return;
         }
-        track(trackEvent.recommanderBannerClick, homeModule.bannerPoint(value));
+        track(trackEvent.bannerClick, homeModule.bannerPoint(value, homePoint.homeAd));
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);

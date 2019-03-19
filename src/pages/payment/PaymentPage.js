@@ -24,6 +24,7 @@ export default class PaymentPage extends BasePage {
 
     state = {
         showPwd: false,
+        showPwdMsg: '',
         showResult: false,
         payResult: PaymentResult.none,
         payMsg: ''
@@ -99,14 +100,7 @@ export default class PaymentPage extends BasePage {
             this.props.navigation.dispatch(replace);
             payment.resetPayment()
         }).catch(err => {
-            this.$navigate('payment/PaymentResultPage', {
-                payResult: PaymentResult.fail,
-                payMsg: err.msg
-            })
-            this.setState({
-                showPwd: false
-             })
-             payment.resetPayment()
+            this.setState({ showPwdMsg: err.msg })
         })
     }
 
@@ -144,6 +138,10 @@ export default class PaymentPage extends BasePage {
         const { selectedBalace, name } = payment
         const { showPwd } = this.state
         let { availableBalance } = user
+        let channelAmount = (payment.amounts).toFixed(2)
+        if (selectedBalace) {
+            channelAmount = (payment.amounts - availableBalance) <= 0 ? 0.00 : (payment.amounts - availableBalance).toFixed(2)
+        }
         return <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.row}>
@@ -165,8 +163,8 @@ export default class PaymentPage extends BasePage {
             </View>
             </TouchableWithoutFeedback>
             <View style={styles.needView}>
-            <Text style={styles.need}>需付金额</Text>
-            <Text style={styles.amount}>￥{payment.amounts}</Text>
+            <Text style={styles.need}>三方需付金额</Text>
+            <Text style={styles.amount}>￥{channelAmount}</Text>
             </View>
             <TouchableWithoutFeedback onPress={() => {this.goToPay()}}>
             <View style={styles.payBtn}>
@@ -177,6 +175,7 @@ export default class PaymentPage extends BasePage {
                 finishedAction={(pwd)=> {this._finishedAction(pwd)}}
                 forgetAction={()=>{this._forgetPassword()}}
                 dismiss={()=>{this._cancelPay() }}
+                showPwdMsg={this.state.showPwdMsg}
             /> : null}
         </View>;
     }
