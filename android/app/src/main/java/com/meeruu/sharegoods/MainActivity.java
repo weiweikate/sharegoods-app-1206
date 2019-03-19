@@ -1,13 +1,11 @@
 package com.meeruu.sharegoods;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -17,12 +15,10 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.facebook.common.references.CloseableReference;
-import com.facebook.datasource.DataSource;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
-import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.listener.BaseRequestListener;
+import com.facebook.imagepipeline.request.ImageRequest;
 import com.meeruu.commonlib.base.BaseActivity;
 import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
@@ -140,24 +136,20 @@ public class MainActivity extends BaseActivity {
     }
 
     private void LoadingAdv(final String url) {
-        ImageLoadUtils.downloadImage(Uri.parse(url), new BaseBitmapDataSubscriber() {
-
+        ImageLoadUtils.isImageExist(Uri.parse(url), new BaseRequestListener() {
             @Override
-            protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+            public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                super.onRequestSuccess(request, requestId, isPrefetch);
                 hasAdResp = true;
-                if (bitmap != null && !bitmap.isRecycled()) {
-                    Message msg = Message.obtain();
-                    msg.obj = url;
-                    msg.what = ParameterUtils.TIMER_START;
-                    mHandler.sendMessage(msg);
-                } else {
-                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
-                    return;
-                }
+                Message msg = Message.obtain();
+                msg.obj = url;
+                msg.what = ParameterUtils.TIMER_START;
+                mHandler.sendMessage(msg);
             }
 
             @Override
-            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+            public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
+                super.onRequestFailure(request, requestId, throwable, isPrefetch);
                 hasAdResp = true;
                 mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
             }
