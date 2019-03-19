@@ -19,15 +19,14 @@ import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../../../comm/res';
-import openShopRes from '../res';
 import {
     MRText as Text, MRTextInput as TextInput
 } from '../../../components/ui';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
+import AvatarImage from '../../../components/ui/AvatarImage';
 
 const { px2dp } = ScreenUtils;
 const arrow_right = res.button.arrow_right_black;
-const { openShop_image_pre } = openShopRes.openShop;
 
 export default class SetShopNamePage extends BasePage {
 
@@ -199,7 +198,7 @@ export default class SetShopNamePage extends BasePage {
         const uri = this.state.storeHeadUrlOrigin;
         if (this.params.storeData) {
             return <TouchableOpacity style={styles.updateWhite} onPress={this._clickHeader}>
-                <Image source={uri ? { uri } : openShop_image_pre} style={styles.updateImg}/>
+                <AvatarImage style={styles.updateImg} source={{ uri: uri }} borderRadius={px2dp(20)}/>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.updateText} allowFontScaling={false}>修改头像</Text>
                     <Image source={arrow_right} style={styles.arrowImg}/>
@@ -208,7 +207,7 @@ export default class SetShopNamePage extends BasePage {
         } else {
             return <View style={styles.whitePanel}>
                 <TouchableOpacity onPress={this._clickHeader}>
-                    <Image source={uri ? { uri } : openShop_image_pre} style={styles.headerImg}/>
+                    <AvatarImage style={styles.headerImg} source={{ uri: uri }} borderRadius={px2dp(40)}/>
                 </TouchableOpacity>
             </View>;
         }

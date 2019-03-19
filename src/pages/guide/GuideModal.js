@@ -19,7 +19,8 @@ import {
     View,
     Image,
     TouchableOpacity,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native';
 import CommModal from '../../comm/components/CommModal';
 import res from './res';
@@ -72,6 +73,7 @@ export default class GuideModal extends React.Component {
             visible: false,
             isHome: false,
             rewardzData: {},
+            showActivityIndicator: true
         };
         /** 每一步引导的数据*/
         this.data = [{image: discover, tip: tip_one, text: '秀场'},
@@ -117,7 +119,7 @@ export default class GuideModal extends React.Component {
 
     open = () => {
         this.props.callback &&  this.props.callback();
-        this.setState({visible: true, step: 0});
+        this.setState({visible: true, step: 0, showActivityIndicator: true});
     }
     close = () => {
         this.setState({visible: false});
@@ -289,11 +291,20 @@ export default class GuideModal extends React.Component {
                             <ImageLoad style={imageStyle}
                                        source={{uri: this.state.rewardzData.imgUrl}}
                                        resizeMode={'contain'}
+                                       onError={()=>{this.setState({showActivityIndicator: false})}}
+                                       onLoadEnd={()=>{this.setState({showActivityIndicator: false})}}
                             >
-                                {/*<MRText style={{fontSize: 17, color: '#FFECB6', marginBottom: 10}}>{this.state.num + '枚秀豆送给您'}</MRText>*/}
-                                {/*<TouchableOpacity onPress={this.gotoPage} style = {{marginBottom: autoSizeWidth(30), alignItems: 'center'}}>*/}
-                                {/*<Image source={btn} style={{height: autoSizeWidth(40), width: autoSizeWidth(145)}} resizeMode={'stretch'}/>*/}
-                                {/*</TouchableOpacity>*/}
+                                {
+                                    this.state.showActivityIndicator === true ? <ActivityIndicator
+                                        color="#aaaaaa"
+                                        style={{
+                                            position: 'absolute',
+                                            width: 10,
+                                            height: 10,
+                                            top: autoSizeWidth(375)/ 2.0 - 5,
+                                            left: autoSizeWidth(315) / 2.0 - 5
+                                        }}/> : null
+                                }
                             </ImageLoad>
                         </View>
                     </TouchableWithoutFeedback>

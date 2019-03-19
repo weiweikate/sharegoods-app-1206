@@ -195,7 +195,7 @@ export default class LogisticsDetailsPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: DesignRule.bgColor,
-        marginBottom: ScreenUtils.safeBottom
+        marginBottom: 20
     }, logisticsNumber: {
         marginLeft: 15,
         marginRight: 15,

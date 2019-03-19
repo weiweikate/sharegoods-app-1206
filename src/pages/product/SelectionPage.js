@@ -13,7 +13,7 @@ import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
 import Modal from '../../comm/components/CommModal';
 import DesignRule from '../../constants/DesignRule';
-import {MRText as Text} from '../../components/ui/index';
+import { MRText as Text } from '../../components/ui/index';
 
 export default class SelectionPage extends Component {
 
@@ -224,7 +224,7 @@ export default class SelectionPage extends Component {
             return;
         }
         this.setState({ modalVisible: false }, () => {
-            this.state.callBack(this.state.amount, itemData.skuCode, itemData.propertyValues, itemData.specImg);
+            this.state.callBack(this.state.amount, itemData.skuCode, itemData);
         });
     };
 
@@ -261,7 +261,7 @@ export default class SelectionPage extends Component {
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
-                                <SelectionAmountView style={{ marginVertical: 30}}
+                                <SelectionAmountView style={{ marginVertical: 30 }}
                                                      amountClickAction={this._amountClickAction}
                                                      maxCount={this.state.maxStock} afterAmount={afterAmount}
                                                      type={type}/>

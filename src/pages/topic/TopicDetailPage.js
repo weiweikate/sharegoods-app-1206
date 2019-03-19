@@ -194,12 +194,12 @@ export default class TopicDetailPage extends BasePage {
                         loadingState: PageLoadingState.success
                     }, () => {
                         /*商品详情埋点*/
-                        const { packageCode, name, originalPrice, groupPrice, priceType } = this.state.data;
+                        const { packageCode, name, levelPrice, groupPrice, priceType } = this.state.data;
                         track(trackEvent.ProductDetail, {
                             spuCode: packageCode,
                             spuName: name,
                             priceShareStore: groupPrice,
-                            pricePerCommodity: originalPrice,
+                            pricePerCommodity: levelPrice,
                             priceType: priceType === 2 ? 100 : user.levelRemark
                         });
 
@@ -286,12 +286,12 @@ export default class TopicDetailPage extends BasePage {
                         data: data.data || {}
                     }, () => {
                         /*商品详情埋点*/
-                        const { prodCode, name, priceType, originalPrice, groupPrice } = data.data || {};
+                        const { prodCode, name, priceType, minPrice, maxPrice, groupPrice } = data.data || {};
                         track(trackEvent.ProductDetail, {
                             spuCode: prodCode,
                             spuName: name,
                             priceShareStore: groupPrice,
-                            pricePerCommodity: originalPrice,
+                            pricePerCommodity: minPrice !== maxPrice ? `${minPrice}-${maxPrice}` : `${minPrice}`,
                             priceType: priceType === 2 ? 100 : user.levelRemark
                         });
 
@@ -333,7 +333,7 @@ export default class TopicDetailPage extends BasePage {
             num: amount,
             code: this.state.activityData.activityCode,
             productCode: this.state.activityData.prodCode,
-            spuName:this.state.data.name
+            spuName: this.state.data.name
         });
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {

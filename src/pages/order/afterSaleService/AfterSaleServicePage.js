@@ -31,7 +31,7 @@ import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
-import { trackEvent, track } from '../../../utils/SensorsTrack';
+import { trackEvent, track, TrackApi } from '../../../utils/SensorsTrack';
 import ProductApi from '../../product/api/ProductApi';
 
 const { arrow_right } = res;
@@ -379,11 +379,11 @@ class AfterSaleServicePage extends BasePage {
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, priceId, exchangeSpec, exchangeSpecImg) => {
+    _selectionViewConfirm = (amount, priceId, itemData) => {
         this.setState({
             exchangePriceId: priceId,
-            exchangeSpec: exchangeSpec,
-            exchangeSpecImg: exchangeSpecImg
+            exchangeSpec: itemData.propertyValues,
+            exchangeSpecImg: itemData.specImg
         });
     };
 
@@ -522,7 +522,7 @@ class AfterSaleServicePage extends BasePage {
         }
         let text = ['退款', '退货', '换货'][pageType];
         if (StringUtils.isEmpty(returnReason)) {
-            NativeModules.commModule.toast('请选择'+ text +  '原因');
+            NativeModules.commModule.toast('请选择' + text + '原因');
             return;
         }
 
@@ -531,7 +531,7 @@ class AfterSaleServicePage extends BasePage {
             NativeModules.commModule.toast('请填写退款的金额');
             return;
         }
-        if (this.state.editable && parseFloat(applyRefundAmount) <= 0 && pageType !== 2){
+        if (this.state.editable && parseFloat(applyRefundAmount) <= 0 && pageType !== 2) {
             NativeModules.commModule.toast('请填写退款金额大于0');
             return;
         }
@@ -567,6 +567,13 @@ class AfterSaleServicePage extends BasePage {
                     commodityID: prodCode,
                     applyReturnCause: returnReason
                 });
+            TrackApi.ApplyReturn({
+                applicationCode: this.state.productData.warehouseOrderNo,//申请单号
+                orderId: orderProductNo, //订单id
+                orderAmount: applyRefundAmount,
+                actualPaymentAmount: payAmount,
+                applyReturnCause: returnReason
+            });
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;
             this.$loadingShow();
