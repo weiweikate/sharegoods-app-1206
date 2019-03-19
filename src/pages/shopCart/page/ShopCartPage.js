@@ -7,9 +7,8 @@ import {
     Image,
     TouchableOpacity,
     ListView,
-    RefreshControl, BackHandler
-    // ScrollView
-    // requireNativeComponent
+    RefreshControl,
+    BackHandler
 } from 'react-native';
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
@@ -21,24 +20,14 @@ import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import DesignRule from '../../../constants/DesignRule';
-// import { activityString, statueImage, getSelectImage } from '../model/ShopCartMacro';
-// import { renderShopCartCell } from './ShopCartCell';
-
-// import Cell from '../NativeUI/MRShopCartCell';
 const dismissKeyboard = require('dismissKeyboard');
 import ShopCartEmptyView from '../components/ShopCartEmptyView';
-// import ShopCartHeaderView from '../components/ListHeaderView';
-// const CartListView = requireNativeComponent('ShopCartListView');
 import ShopCartCell from '../components/ShopCartCell';
 import SectionHeaderView from '../components/SectionHeaderView';
 import RouterMap from '../../../navigation/RouterMap';
 import user from '../../../model/user';
 import StringUtils from '../../../utils/StringUtils';
-// import ShopCartSectionHeaderView from '../components/ShopCartSectionHeaderView';
-// import { track } from '../../../utils/SensorsTrack';
-// import TempShopCartCell from '../components/TempShopCartCell';
-// import  NavHeaderView from '../components/ShopCartNavHeaderView'
-// import HeaderView from '../../order/afterSaleService/components/HeaderView';
+
 
 @observer
 export default class ShopCartPage extends BasePage {
@@ -63,48 +52,9 @@ export default class ShopCartPage extends BasePage {
         this.state = {
             showNav: false
         };
-
-        this.dataArr = [
-            {
-                title: 'Title1', key: 1, data: [
-                    {
-                        item: 'item1',
-                        key: 11
-                    },
-                    {
-                        item: 'item2',
-                        key: 12
-                    }
-
-                ]
-            },
-            {
-                title: 'Title2', key: 2, data: [
-                    {
-                        item: 'item1',
-                        key: 21
-                    },
-                    {
-                        item: 'item2',
-                        key: 22
-                    }]
-            },
-            {
-                title: 'Title3', key: 3, data: [
-                    {
-                        item: 'item1',
-                        key: 31
-                    },
-                    {
-                        item: 'item2',
-                        key: 32
-                    }]
-            }
-        ];
     }
 
     componentDidMount() {
-        // this.contentList && this.contentList._updateVisibleRows();
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -133,8 +83,6 @@ export default class ShopCartPage extends BasePage {
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
-
-
     handleBackPress = () => {
         if (this.$navigationBarOptions.leftNavItemHidden){
             this.$navigate('HomePage');
@@ -147,8 +95,6 @@ export default class ShopCartPage extends BasePage {
     _render() {
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
-                {/*{shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}*/}
-                {/*{shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}*/}
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
             </View>
@@ -169,8 +115,6 @@ export default class ShopCartPage extends BasePage {
         if (!this.pageFocus) {
             return;
         }
-        // const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
-        // const tempArr = this.ds.cloneWithRows(this.dataArr);
         const { statusBarHeight } = ScreenUtils;
         return (
 
@@ -181,7 +125,6 @@ export default class ShopCartPage extends BasePage {
                     alignItems: 'center',
                     flex: 1
                 }}>
-                {/*{this.state.showNav?this._renderNavHeaderView():null}*/}
 
                 <SwipeListView
                     extraData={this.state}
@@ -450,7 +393,6 @@ export default class ShopCartPage extends BasePage {
         this.$navigate('product/ProductDetailPage', {
             productId: itemData.productId,
             productCode: itemData.spuCode,
-            preseat: '购物车'
         });
     };
     _selectAll = () => {

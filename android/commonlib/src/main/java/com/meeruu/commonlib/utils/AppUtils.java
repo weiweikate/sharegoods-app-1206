@@ -23,6 +23,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import static com.umeng.socialize.utils.ContextUtil.getPackageName;
+
 /**
  * 跟App相关的辅助类
  * Created by louis on 2017/3/4.
@@ -253,7 +255,7 @@ public class AppUtils {
         }
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(context, "com.smartstudy.xxd.fileProvider", file);
+            uri = FileProvider.getUriForFile(context,  "com.meeruu.sharegoods.fileProvider", file);
         } else {
             uri = Uri.fromFile(file);
         }

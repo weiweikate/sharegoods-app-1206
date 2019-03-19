@@ -13,4 +13,6 @@
     <string name="no_external_storage">暂无外部存储</string>
     <string name="picture_load_failure">图片加载失败</string>
     <string name="picture_max">最多只能同时上传9张图片</string>
+    <string name="take_photo">拍摄照片</string>
+    <string name="choose_pic">选择图片</string>
 </resources>

@@ -14,6 +14,7 @@ import StringUtils from "../../../utils/StringUtils";
 import RouterMap from "../../../navigation/RouterMap";
 import ProtocolView from "../components/Login.protocol.view";
 import SMSTool from "../../../utils/SMSTool";
+import { TrackApi } from "../../../utils/SensorsTrack";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -25,7 +26,8 @@ export default class InputPhoneNum extends BasePage {
         super(props);
         this.state = {
             isSelectProtocol: true,
-            phoneNum: ""
+            phoneNum: "",
+            showKeyBoard:false
         };
     }
 
@@ -34,6 +36,7 @@ export default class InputPhoneNum extends BasePage {
         show: true,
         leftNavTitle: "取消"
     };
+
     _render() {
         return (
             <View style={Styles.bgContent}>
@@ -92,6 +95,7 @@ export default class InputPhoneNum extends BasePage {
     }
 
     _btnClickAction = () => {
+
         if (StringUtils.isEmpty(this.state.phoneNum.trim())) {
             this.$toastShow("请输入手机号");
         } else {
@@ -112,12 +116,15 @@ export default class InputPhoneNum extends BasePage {
      */
     _sendAutherCode = () => {
         //发送验证码
-        SMSTool.sendVerificationCode(1, this.state.phoneNum);
+        SMSTool.sendVerificationCode(1, this.state.phoneNum).catch(error => {
+            this.$toastShow(error.msg);
+        });
         let params = {
             ...this.params,
             phoneNum: this.state.phoneNum
         };
         this.$navigate(RouterMap.InputCode, params);
+        TrackApi.registGetVerifySMS();
     };
 
 }

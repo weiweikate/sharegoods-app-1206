@@ -5,6 +5,8 @@ import { homeModule } from './Modules';
 import { adModules } from './HomeAdModel';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
+import { track, trackEvent } from '../../utils/SensorsTrack';
+import bridge from '../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 
@@ -28,10 +30,15 @@ export default class HomeAdView extends Component {
     }
 
     _adAction(value) {
+        if (!value) {
+            bridge.$toast('获取数据失败！');
+            return;
+        }
+        track(trackEvent.recommanderBannerClick, homeModule.bannerPoint(value));
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);
-        navigate(router, { ...params, preseat: 'home_ad' });
+        navigate(router, { ...params });
     }
 
     _renderBanner() {
@@ -56,17 +63,23 @@ export default class HomeAdView extends Component {
 
     _renderAd() {
         const { ad } = adModules;
+        let len = 4;
+        if (ad.length > 0) {
+            len = ad.length;
+        }
         let items = [];
-        ad.map((value, index) => {
-            items.push(<TouchableWithoutFeedback key={index} onPress={() => this._adAction(value)}>
+        for (let i = 0; i < len; i++) {
+            items.push(<TouchableWithoutFeedback key={i} onPress={() => this._adAction(ad[i])}>
                 <View
-                    style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : 0 }, this.adRadius[index]]}>
-                    <ImageLoad source={{ uri: value.imgUrl }}
+                    style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : 0 }, this.adRadius[i]]}>
+                    <ImageLoad source={{ uri: ad[i] ? ad[i].imgUrl : '' }}
+                               showPlaceholder={false}
+                               type={'mfit'}
                                style={[styles.ad,
-                                   { marginTop: adModules.banner.length === 0 ? 0 : ((index !== 0 && index !== 1) ? px2dp(5) : 0) }]}/>
+                                   { marginTop: adModules.banner.length === 0 ? 0 : ((i !== 0 && i !== 1) ? px2dp(5) : 0) }]}/>
                 </View>
             </TouchableWithoutFeedback>);
-        });
+        }
         return <View style={styles.adrow}>
             {items}
         </View>;
@@ -99,6 +112,7 @@ const styles = StyleSheet.create({
     },
     ad: {
         width: adWidth,
-        height: adHeight
+        height: adHeight,
+        backgroundColor: 'white'
     }
 });

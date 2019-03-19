@@ -11,6 +11,7 @@ import {
     MRText as Text
 } from '../../components/ui';
 import ShowGroundView from './components/ShowGroundView';
+import { TrackApi } from '../../utils/SensorsTrack';
 @observer
 export default class ShowListPage extends BasePage {
 
@@ -155,7 +156,7 @@ export default class ShowListPage extends BasePage {
                     {
                         needsExpensive
                             ?
-                            <HotView navigate={this.$navigate} pageFocus={this.state.pageFocused}/>
+                            <HotView navigate={this.$navigate} pageFocus={this.props.isFocused}/>
                             :
                             null
                     }
@@ -168,7 +169,7 @@ export default class ShowListPage extends BasePage {
                             <ShowGroundView style={{flex:1}}
                                             uri={'/discover/query@GET'}
                                             onItemPress={({nativeEvent})=> {
-
+                                                TrackApi.XiuChangDetails({articleCode:nativeEvent.code,author:nativeEvent.userName,collectionCount:nativeEvent.collectCount})
                                                 that.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
                             />
                             :

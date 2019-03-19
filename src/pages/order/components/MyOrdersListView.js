@@ -19,7 +19,7 @@ import res from '../res';
 import {
     MRText as Text
 } from '../../../components/ui';
-import user from '../../../model/user';
+// import user from '../../../model/user';
 import RouterMap from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
 import { NavigationActions } from 'react-navigation';
@@ -143,21 +143,6 @@ export default class MyOrdersListView extends Component {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 Toast.$toast('订单已取消');
-                                track(trackEvent.cancelPayOrder, {
-                                    orderID: this.state.allData[this.state.index].orderNo,
-                                    orderAmount: this.state.allData[this.state.index].orderAmount
-                                    ,
-                                    actualPaymentAmount: this.state.allData[this.state.index].payAmount,
-                                    paymentMethod: null,
-                                    ifUseYiYuan: this.state.allData[this.state.index].tokenCoinAmount > 0 ? true : false,
-                                    ifUseCoupons: this.state.allData[this.state.index].couponAmount > 0 ? true : false,
-                                    couponsName: '',
-                                    couponsAmount: this.state.allData[this.state.index].couponAmount,
-                                    yiYuanCouponsAmount: this.state.allData[this.state.index].tokenCoinAmount,
-                                    transportationCosts: this.state.allData[this.state.index].freightAmount,
-                                    deliveryMethod: '',
-                                    storeCode: user.storeCode ? user.storeCode : ''
-                                });
                                 index = -1;
                                 this.onRefresh();
                             } else {
@@ -257,7 +242,6 @@ export default class MyOrdersListView extends Component {
         } else {
             this.noMoreData = true;
         }
-        // this.setState({ viewData: arrData }, this.timeDown);
         this.setState({ viewData: arrData });
     };
 
@@ -275,8 +259,6 @@ export default class MyOrdersListView extends Component {
             this.getDataFromNetwork();
         }
         this.getCancelOrder();
-        // DeviceEventEmitter.addListener("OrderNeedRefresh", () => this.onRefresh());
-        // this.timeDown();
     }
 
     getCancelOrder() {
@@ -506,6 +488,8 @@ export default class MyOrdersListView extends Component {
                         spuCode: item.prodCode
                     });
                 });
+                track(trackEvent.OrderAgain,{
+                    orderId:data.orderNo, })
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
                 break;

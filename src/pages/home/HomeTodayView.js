@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
-
+import { track, trackEvent } from '../../utils/SensorsTrack';
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
@@ -28,10 +28,11 @@ export default class HomeTodayView extends Component {
         const { todayList } = todayModule;
         let item = todayList[index];
         if (item) {
+            track(trackEvent.recommanderBannerClick, homeModule.bannerPoint(item));
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);
-            navigate(router, { ...params, preseat: 'home_today' });
+            navigate(router, { ...params });
         }
     }
 

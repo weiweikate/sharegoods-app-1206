@@ -19,7 +19,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
@@ -74,9 +73,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (hasBasePer) {
+//        if (hasBasePer) {
 //            splashP.getAdInfo();
-        }
+//        }
         if (isFirst) {
             isFirst = false;
 //            String imgUrl = (String) SPCacheUtils.get("adImg", "");
@@ -129,7 +128,7 @@ public class MainActivity extends BaseActivity {
             hasAdResp = true;
             mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
         }
-        /**在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
+        /** 在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
             return;
@@ -141,29 +140,28 @@ public class MainActivity extends BaseActivity {
     }
 
     private void LoadingAdv(final String url) {
-        if (Fresco.hasBeenInitialized()) {
-            ImageLoadUtils.downloadImage(Uri.parse(url), new BaseBitmapDataSubscriber() {
+        ImageLoadUtils.downloadImage(Uri.parse(url), new BaseBitmapDataSubscriber() {
 
-                @Override
-                protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
-                    hasAdResp = true;
-                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
-                }
-
-                @Override
-                protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                    hasAdResp = true;
-                    if (bitmap == null) {
-                        mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
-                        return;
-                    }
+            @Override
+            protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                hasAdResp = true;
+                if (bitmap != null && !bitmap.isRecycled()) {
                     Message msg = Message.obtain();
                     msg.obj = url;
                     msg.what = ParameterUtils.TIMER_START;
                     mHandler.sendMessage(msg);
+                } else {
+                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+                    return;
                 }
-            });
-        }
+            }
+
+            @Override
+            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                hasAdResp = true;
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+            }
+        });
     }
 
     @Override
@@ -184,8 +182,7 @@ public class MainActivity extends BaseActivity {
                         ((ViewStub) findViewById(R.id.vs_adv)).inflate();
                         ivAdvBg = findViewById(R.id.iv_adv_bg);
                         tvGo = findViewById(R.id.tv_go);
-                        String bgUrl = (String) msg.obj;
-                        ImageLoadUtils.loadNetImage(bgUrl, ivAdvBg);
+                        ImageLoadUtils.loadNetImage((String) msg.obj, ivAdvBg);
                         ivAdv = findViewById(R.id.iv_adv);
                         String url = ossHost + "/app/start_adv.png?" + System.currentTimeMillis();
                         ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,

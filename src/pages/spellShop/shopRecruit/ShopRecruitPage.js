@@ -33,6 +33,7 @@ import resCommon from '../../../comm/res';
 import user from '../../../model/user';
 import LinearGradient from 'react-native-linear-gradient';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const NavLeft = resCommon.button.white_back;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
@@ -128,14 +129,17 @@ export default class ShopRecruitPage extends BasePage {
     _loadPageData = () => {
         SpellShopApi.getById({ storeCode: this.state.storeCode }).then((data) => {
             let dataTemp = data.data || {};
-            const { userCount } = dataTemp;
+            const { userCount, storeNumber, maxUser } = dataTemp;
             this.setState({
                 loadingState: PageLoadingState.success,
                 refreshing: false,
 
                 storeData: dataTemp,
-                storeCode: dataTemp.storeNumber,
-                canOpen: dataTemp.maxUser && dataTemp.maxUser <= userCount
+                storeCode: storeNumber,
+                canOpen: maxUser && maxUser <= userCount
+            });
+            track(trackEvent.SeePingdian, {
+                pinCode: storeNumber
             });
         }).catch((error) => {
             this.setState({
@@ -365,6 +369,7 @@ export default class ShopRecruitPage extends BasePage {
     };
 
     _render() {
+        const { name, headUrl, profile, storeNumber } = this.state.storeData || {};
         return (
             <View style={styles.container}>
                 <LinearGradient colors={['#FF1C89', '#FF156E']}
@@ -396,11 +401,16 @@ export default class ShopRecruitPage extends BasePage {
                 {/*<ConfirmAlert ref="delAlert"/>*/}
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
+                                trackParmas={{
+                                    pinSummary: profile,
+                                    pinCode: storeNumber
+                                }}
+                                trackEvent={trackEvent.SharePin}
                                 webJson={{
-                                    title: `加入店铺:${this.state.storeData.name}`,
+                                    title: `加入店铺:${name}`,
                                     dec: '店铺',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.code || ''}`,
-                                    thumImage: `${this.state.storeData.headUrl}`
+                                    thumImage: `${headUrl}`
                                 }}/>
             </View>
         );

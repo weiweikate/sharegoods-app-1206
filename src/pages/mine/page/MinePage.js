@@ -31,6 +31,8 @@ import UIImage from '../../../components/ui/UIImage';
 import { MRText as Text, AvatarImage } from '../../../components/ui';
 import LoginAPI from '../../login/api/LoginApi';
 import CommModal from '../../../comm/components/CommModal';
+import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
+
 
 const {
     mine_header_bg,
@@ -229,6 +231,7 @@ export default class MinePage extends BasePage {
             this.gotoLoginPage();
             return;
         }
+        TrackApi.ViewPersonalInfo();
         this.$navigate('mine/userInformation/UserInformationPage');
     };
 
@@ -398,6 +401,7 @@ export default class MinePage extends BasePage {
                                   }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.$navigate(RouterMap.MyPromotionPage);
+                            TrackApi.ViewLevelInterest({moduleSource:2})
                         }}>
                             <View style={{
                                 justifyContent: 'space-between',
@@ -452,34 +456,29 @@ export default class MinePage extends BasePage {
             <ImageBackground source={mine_account_bg} style={{
                 marginTop: px2dp(41),
                 marginHorizontal: px2dp(15),
-                borderRadius: 5,
+                borderRadius: px2dp(10),
                 overflow: 'hidden'
             }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
-                    <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.white }}>
+                    <Text style={{ fontSize: DesignRule.fontSize_threeTitle, color: DesignRule.white,fontWeight:'bold' }}>
                         我的账户
                     </Text>
                 </View>
-                <View
-                    style={{
-                        backgroundColor: DesignRule.lineColor_inColorBg,
-                        width: ScreenUtils.width - px2dp(30),
-                        height: ScreenUtils.onePixel,
-                        alignSelf: 'center',
-                        opacity: 0.7
-                    }}/>
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
                     {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : '0.00', false), '余额', () => {
                         this.go2CashDetailPage(1);
+                        TrackApi.ViewAccountBalance();
                     })}
-                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '秀豆', () => {
+                    {this.accountItemView(user.userScore ? user.userScore + '' : '0', '我的秀豆', () => {
                         this.go2CashDetailPage(2);
+                        TrackApi.ViewShowDou();
                     })}
                     {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0.00', false), '待入账', () => {
                         this.go2CashDetailPage(3);
+                        TrackApi.ViewWaitToRecord();
                     })}
                 </View>
             </ImageBackground>
@@ -500,8 +499,8 @@ export default class MinePage extends BasePage {
                     width: px2dp(110),
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginTop: px2dp(16),
-                    marginBottom: px2dp(27)
+                    marginTop: px2dp(10),
+                    marginBottom: px2dp(15)
                 }}>
                     <Text allowFontScaling={true} style={{
                         textAlign: 'center',
@@ -528,19 +527,21 @@ export default class MinePage extends BasePage {
                 backgroundColor: 'white',
                 marginTop: DesignRule.margin_listGroup,
                 marginHorizontal: DesignRule.margin_page,
-                borderRadius: px2dp(5)
+                borderRadius: px2dp(10)
             }}>
                 <View style={{
-                    height: px2dp(44),
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    marginTop:px2dp(10),
+                    marginBottom:px2dp(10)
                 }}>
                     <View style={{ flexDirection: 'row', marginLeft: 15, alignItems: 'center' }}>
                         <UIText value={'我的订单'}
                                 style={{
-                                    fontSize: DesignRule.fontSize_secondTitle,
-                                    color: DesignRule.textColor_mainTitle
+                                    fontSize: DesignRule.fontSize_threeTitle,
+                                    color: DesignRule.textColor_mainTitle,
+                                    fontWeight:'bold'
                                 }}/>
                     </View>
                     <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
@@ -555,14 +556,8 @@ export default class MinePage extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
-                <View style={{
-                    backgroundColor: DesignRule.lineColor_inWhiteBg,
-                    width: ScreenUtils.width - DesignRule.margin_page * 2,
-                    height: ScreenUtils.onePixel,
-                    alignSelf: 'center'
-                }}/>
                 <ScrollView style={{width:DesignRule.width-DesignRule.margin_page*2,}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(28) }}>
+                <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
                     {this.renderOrderStates()}
                 </View>
                 </ScrollView>
@@ -582,22 +577,18 @@ export default class MinePage extends BasePage {
                 borderRadius: px2dp(5)
             }}>
                 <View
-                    style={{ height: px2dp(44), paddingHorizontal: DesignRule.margin_page, justifyContent: 'center' }}>
+                    style={{paddingHorizontal: DesignRule.margin_page, justifyContent: 'center' ,marginTop:px2dp(10)}}>
                     <Text
                         style={{
+                            includeFontPadding: false,
+                            fontSize: DesignRule.fontSize_threeTitle,
                             color: DesignRule.textColor_mainTitle,
-                            fontSize: DesignRule.fontSize_secondTitle,
-                            includeFontPadding: false
+                            fontWeight:'bold',
+                            width: ScreenUtils.width - DesignRule.margin_page * 2,
                         }}>
                         常用工具
                     </Text>
                 </View>
-                <View style={{
-                    backgroundColor: DesignRule.lineColor_inWhiteBg,
-                    width: ScreenUtils.width - DesignRule.margin_page * 2,
-                    height: ScreenUtils.onePixel,
-                    marginBottom: px2dp(24)
-                }}/>
                 {this.renderMenu()}
             </View>
         );
@@ -632,6 +623,7 @@ export default class MinePage extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.$navigate(RouterMap.ShowDetailPage, { fromHome: false, id: 1 });
+                TrackApi.ViewHowTo();
 
             }}>
                 <UIImage style={styles.makeMoneyMoreBackground} resizeMode={'stretch'} source={profile_banner}/>
@@ -665,7 +657,7 @@ export default class MinePage extends BasePage {
             ) : null;
 
             arr.push(
-                <NoMoreClick style={{ width, justifyContent: 'center', alignItems: 'center', paddingTop: px2dp(30) }}
+                <NoMoreClick style={{ width, justifyContent: 'center', alignItems: 'center', paddingTop: px2dp(15) }}
                              onPress={() => this.jumpToOrderAccordingStates(i)} key={i}>
                     <ImageBackground source={statesImage[i]}
                                      style={{ height: 18, width: 20, marginBottom: 10, overflow: 'visible' }}>
@@ -711,16 +703,18 @@ export default class MinePage extends BasePage {
             }
         };
         let coupon = {
-            text: '优惠券',
+            text: '我的优惠券',
             icon: mine_coupon_icon,
             onPress: () => {
+                TrackApi.ViewCoupon({couponModuleSource:1});
                 this.$navigate(RouterMap.CouponsPage);
             }
         };
         let data = {
-            text: '我的资料',
+            text: '我的经验值',
             icon: mine_icon_data,
             onPress: () => {
+                TrackApi.ViewMyInfos();
                 this.$navigate(RouterMap.MyPromotionPage);
             }
         };
@@ -728,6 +722,7 @@ export default class MinePage extends BasePage {
             text: '收藏店铺',
             icon: mine_icon_favorite_shop,
             onPress: () => {
+                TrackApi.ViewMyPinCollection();
                 this.$navigate(RouterMap.MyCollectPage);
             }
         };
@@ -735,6 +730,10 @@ export default class MinePage extends BasePage {
             text: '帮助与客服',
             icon: mine_icon_help_service,
             onPress: () => {
+                TrackApi.ClickCustomerService();
+                TrackApi.ClickContactCustomerService({
+                    customerServiceModuleSource:1
+                })
                 this.$navigate(RouterMap.MyHelperPage);
             }
         };
@@ -749,6 +748,7 @@ export default class MinePage extends BasePage {
             text: '秀场收藏',
             icon: mine_icon_discollect,
             onPress: () => {
+                TrackApi.ViewMyXiuCollection();
                 this.$navigate(RouterMap.ShowConnectPage);
             }
         };
@@ -757,6 +757,7 @@ export default class MinePage extends BasePage {
             icon: mine_icon_fans,
             onPress: () => {
                 if (this.state.hasFans) {
+                    TrackApi.ViewMyFans();
                     this.$navigate(RouterMap.MyShowFansPage);
                 }
             }
@@ -767,6 +768,7 @@ export default class MinePage extends BasePage {
             icon: mine_icon_mentor,
             onPress: () => {
                 if (user.upUserCode) {
+                    TrackApi.ViewMyAdviser();
                     this.$navigate(RouterMap.MyMentorPage);
                 }
             }
@@ -807,8 +809,8 @@ export default class MinePage extends BasePage {
                     width: '25%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: 10,
-                    marginBottom: 10
+                    marginTop: px2dp(12),
+                    marginBottom: px2dp(15)
                 }} onPress={menu[i].onPress} key={i}>
                     <View style={{ paddingTop: 7, paddingLeft: 8, paddingRight: 8, paddingBottom: 0 }}>
                         <UIImage source={menu[i].icon}
@@ -847,6 +849,7 @@ export default class MinePage extends BasePage {
             this.$navigate('login/login/LoginPage');
             return;
         }
+        track(trackEvent.ViewMyOrder,{myOrderModuleSource:1})
         switch (index) {
             case 0:
                 this.$navigate('order/order/MyOrdersListPage', { index: 1 });
@@ -876,6 +879,7 @@ export default class MinePage extends BasePage {
                 this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: user.userScore ? user.userScore : 0 });
                 break;
             case 3:
+                track(trackEvent.ViewWaitToRecord,{recordModuleSource:1})
                 this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
                 break;
             default:
@@ -897,6 +901,7 @@ export default class MinePage extends BasePage {
             return;
         }
         this.$navigate('message/MessageCenterPage');
+        TrackApi.ViewMyMessage();
     };
 
     jumpToSettingPage = () => {

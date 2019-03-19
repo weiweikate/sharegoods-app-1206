@@ -14,7 +14,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 import { payment, paymentType, paymentTrack, payStatus, payStatusMsg } from './Payment'
-import PaymentResultView, { PaymentResult } from './PaymentResultView'
+import { PaymentResult } from './PaymentResultPage'
 import { track, trackEvent } from '../../utils/SensorsTrack'
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge'
@@ -30,9 +30,6 @@ export default class ChannelPage extends BasePage {
 
     state = {
         orderChecking: false,
-        showResult: false,
-        payResult: PaymentResult.none,
-        payMsg: ''
     }
 
     constructor(props) {
@@ -165,18 +162,20 @@ export default class ChannelPage extends BasePage {
             let isSuccess = parseInt(result.data, 0) === payStatus.paySuccess
             if (isSuccess) {
                 this.setState({
-                    showResult: true,
                     orderChecking: false,
-                    payResult: PaymentResult.sucess,
-                    payMsg: ''
                 })
+                this.props.navigation.dispatch({
+                    key: this.props.navigation.state.key,
+                    type: 'ReplacePayScreen',
+                    routeName: 'payment/PaymentResultPage',
+                    params: {payResult: PaymentResult.success}
+                });
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: 'success' });
                 payment.resetPayment()
             } else if (result.data === payStatus.payOutTime) {
-                this.setState({
-                    showPwd: false,
-                    showResult: true,
-                    payResult: PaymentResult.warning,
+                this.setState({orderChecking: false})
+                this.$navigate('payment/PaymentResultPage', {
+                    payResult: PaymentResult.timeout,
                     payMsg: '订单支付超时，下单金额已原路返回'
                 })
                 payment.resetPayment()
@@ -188,7 +187,7 @@ export default class ChannelPage extends BasePage {
 
     _goToOrder(index) {
         this.props.navigation.dispatch({
-            key: 'order/order/MyOrdersListPage',
+            key: this.props.navigation.state.key,
             type: 'ReplacePayScreen',
             routeName: 'order/order/MyOrdersListPage',
             params: { index: index ? index : 1 }
@@ -211,7 +210,7 @@ export default class ChannelPage extends BasePage {
 
     _render() {
         const { selctedPayType, name } = payment
-        const { showResult, payResult, payMsg, orderChecking } = this.state
+        const { orderChecking } = this.state
 
         return <View style={styles.container}>
             <View style={styles.content}>
@@ -248,18 +247,6 @@ export default class ChannelPage extends BasePage {
                 <Text style={styles.payText}>去支付</Text>
             </View>
             </TouchableWithoutFeedback>
-            {
-                showResult
-                ?
-                <PaymentResultView
-                    navigation={this.props.navigation}
-                    payResult={payResult}
-                    payMsg={payMsg}
-                    closeResultView={()=>{this._closeResultView()}}
-                />
-                :
-                null
-            }
             
             {
                 orderChecking

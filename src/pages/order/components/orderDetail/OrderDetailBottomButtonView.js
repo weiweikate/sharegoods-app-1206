@@ -14,6 +14,7 @@ import { observer } from "mobx-react/native";
 import RouterMap from "../../../../navigation/RouterMap";
 import {payStatus, payment, payStatusMsg} from '../../../payment/Payment'
 import { NavigationActions } from 'react-navigation';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
 import { MRText as Text, NoMoreClick } from "../../../../components/ui";
@@ -162,6 +163,9 @@ export default class OrderDetailBottomButtonView extends Component {
                         amount: item.quantity
                     });
                 });
+                track(trackEvent.OrderAgain,{
+                    orderId:orderDetailModel.getOrderNo(),
+                   })
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav("shopCart/ShopCart", { hiddeLeft: false });
                 break;

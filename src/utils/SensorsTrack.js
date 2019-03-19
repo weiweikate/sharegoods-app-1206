@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
-
+import SensorsEvent from './SensorsEvent'
 const {
     track,
     trackTimerStart,
@@ -11,16 +11,43 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
+const huchao = {
 
+}
+
+const spellShopTrack = {
+    IndexStoreBannerClick:'IndexStoreBannerClick',//拼店首页banner推荐位
+    SharePin:'SharePin',//分享拼店
+    SeePingdian:'SeePingdian',//查看拼店
+}
+
+const productTrack = {
+    CategorySearchBannerClick:'CategorySearchBannerClick',//类目搜索banner广告位
+    ProductListClick:'ProductListClick',//搜索页-商品列表页点击
+    Search:'Search',//搜索
+    ProductDetail:'ProductDetail',//浏览商品详情页,
+    AddToShoppingcart:'AddToShoppingcart',//加入购物车
+    Share:'Share',//分享商品
+}
 /** 订单相关的埋点事件名称*/
+const inviteEvent = {
+    QrcodeShareto: 'QrCodeShareto',//分享二维码
+}
 const trackEvent = {
-    bannerClick: 'BannerClick',//banner点击
+    ...huchao,
+    ...spellShopTrack,
+    ...productTrack,
+    ...inviteEvent,
+    bannerClick: 'AdBannerClick',//banner点击
+    bannerSwiper: 'AdBannerShow',//banner滑动
+    recommanderBannerClick: 'RecommanderBannerClick', //推荐为banner点击
+    billboardBannerClick: 'BillboardBannerClick', //今日榜单
+    selectedBannerClick: 'SelectedBannerClick', //精品推荐
+    hotsellBannerClick: 'HotsellBannerClick', //app首页超值热卖专题广告位
+    recommendedForYouBannerClick: 'RecommendedForYouBannerClick', //app首页为你推荐广告位
     login: 'Login',//登录
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
-    commodityDetail: 'CommodityDetail',//浏览商品详情页
-    addToShoppingcart: 'AddToShoppingcart',//加入购物车
-    submitOrder: 'SubmitOrder',//提交订单
     submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
     payOrder: 'PayOrder',//支付订单
     payOrderDetail: 'PayOrderDetail',//支付订单详情
@@ -30,26 +57,43 @@ const trackEvent = {
     receiveOneyuan: 'ReceiveOneyuan',//领一元券
     receiveExp: 'ReceiveExp',//经验值变动
     receiveshowDou: 'ReceiveshowDou',//秀豆变动
-    share: 'Share',//分享商品
     contact: 'Contact',//联系客服
     ArticleDisplay: 'ArticleDisplay',//文章浏览
     ArticleShare: 'ArticleShare',// 文章分享
-    applyJoinPin: 'ApplyJoinPin',//加入拼店
-    applyPin: 'ApplyPin',//申请开店
-    dismissPin: 'DismissPin',//解散拼店
-    SharePin: 'SharePin',//分享拼店
-    QuitPin: 'QuitPin',//退出拼店
     BuyGiftSubmit: 'BuyGiftSubmit',//购买礼包
     MesInviteJoinPin: 'MesInviteJoinPin',//邀请加入拼店
     MesInviteJoinPinResult: 'MesInviteJoinPinResult',//邀请加入拼店—结果反馈
     MesApplyJoinPin: 'MesApplyJoinPin',//申请加入拼店
     MesApplyJoinPinResult: 'MesApplyJoinPinResult',//申请加入店铺——结果反馈
-    Dropout: 'Dropout',//请出拼店
     ReceiveDividents: 'ReceiveDividents',//收到分红
     VIPChange: 'VIPChange',//会员流转
-    QrcodeShareto: 'QrcodeShareto',//分享二维码
-};
+    QrcodeShareto: 'QrcodeShareto',//分享二维码,
 
+    ProblemFeedback:'ProblemFeedback',//点击问题反馈,
+    ClickContactCustomerService:'ClickContactCustomerService',//点击联系客服
+    ViewCoupon:'ViewCoupon',//点击查看优惠券点击查看优惠券
+    ViewWaitToRecord:'ViewWaitToRecord',//点击查看待入帐
+    ModifuAvatarSuccess:'ModifuAvatarSuccess',//修改头像
+    ViewMyOrder:'ViewMyOrder',//查看-我的订单
+    OrderAgain:"OrderAgain",//再次购买
+    submitOrder: 'SubmitOrder',//提交订单,
+    SubmitOrderDetail:'SubmitOrderDetail',//提交订单详情
+};
+function trackUtil(p) {
+    let arr = {};
+    let keys = Object.keys(p);
+    const count = keys.length;
+    for (let i = 0; i< count; i++) {
+        let key = keys[i];
+        let value = p[key]
+        arr[key]= (s) => {
+            track(value.name, {...value.params,...s})
+        }
+    }
+    return arr;
+}
+
+const TrackApi = trackUtil(SensorsEvent)
 
 export {
     track,
@@ -58,7 +102,9 @@ export {
     trackViewScreen,
     logout,
     login,
-    trackEvent
+    trackEvent,
+    trackUtil,
+    TrackApi
 };
 
 /**
