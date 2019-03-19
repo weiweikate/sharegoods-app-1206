@@ -72,18 +72,6 @@ export default class OldUserLoginPage extends BasePage {
     $navigationBarOptions = {
         title: '老用户激活'
     };
-    /*render右上角*/
-    // $NavBarRenderRightItem = () => {
-    //     return (
-    //         <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
-    //             注册
-    //         </Text>
-    //     );
-    // };
-    /*注册事件*/
-    registBtnClick = () => {
-        this.$navigate('login/login/RegistPage');
-    };
 
     $isMonitorNetworkStatus() {
         return false;
@@ -145,50 +133,7 @@ export default class OldUserLoginPage extends BasePage {
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    {/*<Text*/}
-                        {/*style={*/}
-                            {/*[Styles.bottomTimeStyle,*/}
-                                {/*{*/}
-                                    {/*marginTop: 20,*/}
-                                    {/*fontSize: 13,*/}
-                                    {/*color:'#000'*/}
-                                {/*}*/}
-                            {/*]*/}
-                        {/*}*/}
-                    {/*>*/}
-                        {/*朵女郎激活时间: 2018.12.30-2019.1.10*/}
-                    {/*</Text>*/}
-                    {/*<Text*/}
-                        {/*style={*/}
-                            {/*Styles.bottomTimeStyle*/}
-                        {/*}*/}
-                    {/*>*/}
-                        {/*激活后可免费领取惊喜大礼包及其他朵粉专享福利*/}
-                    {/*</Text>*/}
-                    {/*<Text*/}
-                        {/*style={*/}
-                            {/*Styles.bottomTimeStyle*/}
-                        {/*}*/}
-                    {/*>*/}
-                        {/*逾期激活将取消朵粉所有专享福利*/}
-                    {/*</Text>*/}
-                    {/*<Text*/}
-                        {/*style={*/}
-                            {/*Styles.bottomTimeStyle*/}
-                        {/*}*/}
-                    {/*>*/}
-                        {/*且后期只能以新用户注册*/}
-                    {/*</Text>*/}
                 </View>
-                {/*<Image*/}
-                {/*style={{*/}
-                {/*width: ScreenUtils.width,*/}
-                {/*position: 'absolute',*/}
-                {/*bottom: 0,*/}
-                {/*height: 80*/}
-                {/*}}*/}
-                {/*source={loginAndRegistRes.loginBottomImage}*/}
-                {/*resizeMode='cover'/>*/}
                 <Text
                     style={
                         Styles.bottomKeFuTextStyle
@@ -234,7 +179,6 @@ export default class OldUserLoginPage extends BasePage {
                 this.$toast(data.msg);
             });
         }
-        // this.$navigate("login/login/SetPasswordPage");
     };
 
 }
