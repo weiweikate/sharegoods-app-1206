@@ -20,7 +20,6 @@ import SMSTool from "../../../utils/SMSTool";
 import { registAction } from "../model/LoginActionModel";
 import { track, TrackApi } from "../../../utils/SensorsTrack";
 import CustomNumKeyBoard from '../../../comm/components/CustomNumKeyBoard'
-// import user from "../../../model/user";
 
 const { px2dp } = ScreenUtils;
 
@@ -30,7 +29,7 @@ export default class InputCode extends BasePage {
         super(props);
         this.state = {
             downTime: 60,
-            verifyCode:'',
+            verifyCode: '',
             showKeyBoard: true
         };
     }
@@ -43,7 +42,7 @@ export default class InputCode extends BasePage {
     componentDidMount() {
         (new TimeDownUtils()).startDown((time) => {
             this.setState({
-                downTime: time,
+                downTime: time
             });
         });
     }
@@ -109,19 +108,34 @@ export default class InputCode extends BasePage {
                 <CustomNumKeyBoard
                     visible={this.state.showKeyBoard}
                     transparent={true}
-                    isSaveCurrentInputState={true}
+                    isSaveCurrentInputState={false}
                     itemClick={(text) => {
-                        this.setState({
-                            verifyCode: text
-                        })
+                        if (text !== '回退'){
+                            if (this.state.verifyCode.length >= 4){
 
-                        if (text.length === 4) {
-                            this._finshInputCode(text)
+                            } else {
+                                let currentVerifyCode = this.state.verifyCode;
+                                currentVerifyCode = currentVerifyCode + text;
+                                this.setState({
+                                    verifyCode:currentVerifyCode
+                                })
+                                if (currentVerifyCode.length === 4){
+                                    this.setState({
+                                        showKeyBoard:false
+                                    },()=>{
+                                        this._finshInputCode(currentVerifyCode);
+                                    })
+                                }
+                            }
+                        } else {
+                            this.setState({
+                                verifyCode:this.state.verifyCode.substr(0,this.state.verifyCode.length - 1)
+                            })
                         }
                     }}
-                    closeAction={(flag)=>{
+                    closeAction={(flag) => {
                         this.setState({
-                            showKeyBoard:false
+                            showKeyBoard: false
                         })
                     }}
                 />

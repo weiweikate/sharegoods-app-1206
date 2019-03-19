@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
     Text,
-    // TextInput,
     TouchableOpacity,
     View
 } from 'react-native';
@@ -33,10 +32,6 @@ class VerifyCode extends PureComponent {
     }
 
     onTouchInput() {
-        // const isFocused = this.textInput.isFocused();
-        // if (!isFocused) {
-        //     this.textInput.focus();
-        // }
         const { onTouchInput } = this.props;
         onTouchInput && onTouchInput();
     }
@@ -79,25 +74,6 @@ class VerifyCode extends PureComponent {
         return (
             <View style={styles.verifyContainer}>
                 {this.renderVerifyCode(verifyCode)}
-                {/*<TextInput*/}
-                    {/*ref={(ref) => {*/}
-                        {/*this.textInput = ref*/}
-                    {/*}}*/}
-                    {/*underlineColorAndroid="transparent"*/}
-                    {/*caretHidden*/}
-                    {/*style={styles.textInput}*/}
-                    {/*autoFocus={true}*/}
-                    {/*keyboardType={'numeric'}*/}
-                    {/*maxLength={verifyCodeLength}*/}
-                    {/*onChangeText={(text) => {*/}
-                        {/*const reg = /^[0-9]*$/;*/}
-                        {/*if (reg.test(text)) {*/}
-                            {/*this.setState({ verifyCode: text });*/}
-                            {/*onChangeText(text);*/}
-                        {/*}*/}
-                    {/*}}*/}
-                    {/*value={verifyCode}*/}
-                {/*/>*/}
             </View>
         );
     }
