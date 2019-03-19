@@ -4,6 +4,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
 import { categoryModule } from './HomeCategoryModel';
 import DesignRule from '../../constants/DesignRule';
+import bridge from '../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 
@@ -19,6 +20,10 @@ const CategoryItem = ({ text, press, left }) => <TouchableWithoutFeedback onPres
 export default class HomeCategoryView extends Component {
 
     _adAction(data) {
+        if (!data) {
+            bridge.$toast('数据加载失败！');
+            return;
+        }
         const { navigate } = this.props;
         navigate(data.route, {
             fromHome: true,
@@ -33,21 +38,23 @@ export default class HomeCategoryView extends Component {
 
     render() {
         const { categoryList } = categoryModule;
-        if (categoryList.length === 0) {
-            return <View/>;
+        let len = 5;
+        if (categoryList.length > 0) {
+            len = categoryList.length;
         }
-
         let itemsArr = [];
-        categoryList.map((value, index) => {
+        for (let i = 0; i < len; i++) {
             itemsArr.push(
                 <CategoryItem
-                    text={value.name}
-                    key={'category' + index}
-                    left={index === 0 ? 0 : px2dp(6)}
-                    press={() => this._adAction(value)}
+                    text={categoryList[i] ? categoryList[i].name : ' '}
+                    key={'category' + i}
+                    left={i === 0 ? 0 : px2dp(6)}
+                    press={() => {
+                        this._adAction(categoryList[i]);
+                    }}
                 />
             );
-        });
+        }
         return <View style={styles.container}>
             {itemsArr}
         </View>;

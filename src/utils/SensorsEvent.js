@@ -301,7 +301,8 @@ const event = {
     ...SignUpModular,
     ...MessageModular,
     ...MineModular,
-    ...OrderModular
+    ...OrderModular,
+
 
 };
 

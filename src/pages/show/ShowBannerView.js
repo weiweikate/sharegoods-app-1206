@@ -30,7 +30,7 @@ export default class ShowBannerView extends Component {
         let params = showBannerModules.paramsNavigate(item);
         const { navigate } = this.props;
 
-        TrackApi.ShowBannerClick({
+        TrackApi.BannerClick({
             bannerName: item.imgUrl,
             bannerId: item.id,
             bannerRank:item.rank,
@@ -50,7 +50,7 @@ export default class ShowBannerView extends Component {
             const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
             let params = showBannerModules.paramsNavigate(item);
             const { navigate } = this.props;
-            TrackApi.ShowBannerClick({
+            TrackApi.BannerClick({
                 bannerName: item.imgUrl,
                 bannerId: item.id,
                 bannerRank:item.rank,

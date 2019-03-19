@@ -9,7 +9,7 @@ import { MRText as Text } from '../../components/ui';
 import user from '../../model/user';
 import { payment, payStatus, payStatusMsg } from './Payment'
 import PasswordView from './PayPasswordView'
-import PaymentResultView, { PaymentResult } from './PaymentResultView';
+import { PaymentResult } from './PaymentResultPage';
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge'
 import { NavigationActions } from 'react-navigation';
@@ -90,18 +90,21 @@ export default class PaymentPage extends BasePage {
                 this.$navigate('payment/ChannelPage', {remainMoney: (payment.amounts - user.availableBalance).toFixed(2)})
                 return
             }
+
+            let replace = NavigationActions.replace({
+                key: this.props.navigation.state.key,
+                routeName: 'payment/PaymentResultPage',
+                params: {payResult: PaymentResult.success}
+            });
+            this.props.navigation.dispatch(replace);
             payment.resetPayment()
-            this.setState({
-                showResult: true,
-                payResult: PaymentResult.sucess,
-                payMsg: ''
-            })
         }).catch(err => {
-            this.setState({
-                showPwd: false,
-                showResult: true,
+            this.$navigate('payment/PaymentResultPage', {
                 payResult: PaymentResult.fail,
                 payMsg: err.msg
+            })
+            this.setState({
+                showPwd: false
              })
              payment.resetPayment()
         })
@@ -137,13 +140,9 @@ export default class PaymentPage extends BasePage {
         this.props.navigation.dispatch(replace);
     }
 
-    _closeResultView() {
-        this.setState({showResult: false})
-    }
-
     _render() {
         const { selectedBalace, name } = payment
-        const { showPwd, showResult } = this.state
+        const { showPwd } = this.state
         let { availableBalance } = user
         return <View style={styles.container}>
             <View style={styles.content}>
@@ -179,18 +178,6 @@ export default class PaymentPage extends BasePage {
                 forgetAction={()=>{this._forgetPassword()}}
                 dismiss={()=>{this._cancelPay() }}
             /> : null}
-            {
-                showResult
-                ?
-                <PaymentResultView
-                    navigation={this.props.navigation}
-                    payResult={this.state.payResult}
-                    payMsg={this.state.payMsg}
-                    closeResultView={()=>{this._closeResultView()}}
-                />
-                :
-                null
-            }
         </View>;
     }
 }

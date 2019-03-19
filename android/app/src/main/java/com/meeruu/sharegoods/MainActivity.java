@@ -19,7 +19,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
@@ -141,30 +140,28 @@ public class MainActivity extends BaseActivity {
     }
 
     private void LoadingAdv(final String url) {
-        if (Fresco.hasBeenInitialized()) {
-            ImageLoadUtils.downloadImage(Uri.parse(url), new BaseBitmapDataSubscriber() {
+        ImageLoadUtils.downloadImage(Uri.parse(url), new BaseBitmapDataSubscriber() {
 
-                @Override
-                protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                    hasAdResp = true;
-                    if (bitmap != null && !bitmap.isRecycled()) {
-                        Message msg = Message.obtain();
-                        msg.obj = url;
-                        msg.what = ParameterUtils.TIMER_START;
-                        mHandler.sendMessage(msg);
-                    } else {
-                        mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
-                        return;
-                    }
-                }
-
-                @Override
-                protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
-                    hasAdResp = true;
+            @Override
+            protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                hasAdResp = true;
+                if (bitmap != null && !bitmap.isRecycled()) {
+                    Message msg = Message.obtain();
+                    msg.obj = url;
+                    msg.what = ParameterUtils.TIMER_START;
+                    mHandler.sendMessage(msg);
+                } else {
                     mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+                    return;
                 }
-            });
-        }
+            }
+
+            @Override
+            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                hasAdResp = true;
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2600);
+            }
+        });
     }
 
     @Override

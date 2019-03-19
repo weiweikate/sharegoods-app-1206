@@ -155,7 +155,6 @@ export default class OrderDetailBottomButtonView extends Component {
                 break;
             case 8:
                 let cartData = [];
-                let trackData = [];
                 orderDetailModel.warehouseOrderDTOList[0].products.map((item, index) => {
                     cartData.push({
                         spuCode: item.prodCode,
@@ -164,18 +163,9 @@ export default class OrderDetailBottomButtonView extends Component {
                         amount: item.quantity
                     });
                 });
-                orderDetailModel.warehouseOrderDTOList[0].products.map((item, index) => {
-                    trackData.push({
-                        orderID:orderDetailModel.getOrderNo(),
-                        skuID: item.skuCode,
-                        spuAmount: item.num,
-                        spuID: item.prodCode,
-                        spuName:item.productName
-                    });
-                });
                 track(trackEvent.OrderAgain,{
-                    orderID:orderDetailModel.getOrderNo(),
-                    ...trackData})
+                    orderId:orderDetailModel.getOrderNo(),
+                   })
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav("shopCart/ShopCart", { hiddeLeft: false });
                 break;

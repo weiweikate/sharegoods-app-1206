@@ -293,7 +293,7 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         actualPaymentAmount:data.totalFreightFee,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
@@ -304,19 +304,19 @@ class ConfirmOrderModel {
                         receiverAddress: data.userAddressDTO.address,
                         ifUseCoupon:!!this.tokenCoinText,
                         couponType:this.couponData.type,
-                        couponID:this.couponData.id,
+                        couponCode:this.couponData.id,
                         couponName: this.tokenCoinText,
                         couponAmount: 1,
                         ifUseYiYuan: !!this.tokenCoin,
                         yiYuanCouponsAmount: this.tokenCoin,
                         isInActivity:orderParamVO.source===4?1:0,
-                        promotionID:"",
+                        promotionCode:"",
                         promotionName:orderParamVO.source===4?"兑换专区":null,
                         discountAmount:null,
                         isInPingDian:user.storeCode ?1:0,
                         pinID: user.storeCode ? user.storeCode : '',
-                        ...arrs
                     });
+                    track(trackEvent.SubmitOrderDetail,{...arrs, orderId: data.orderNo})
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -339,7 +339,7 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         actualPaymentAmount:data.totalFreightFee,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
@@ -350,19 +350,19 @@ class ConfirmOrderModel {
                         receiverAddress: data.userAddressDTO.address,
                         ifUseCoupon:!!this.tokenCoinText,
                         couponType:this.couponData.type,
-                        couponID:this.couponData.id,
+                        couponCode:this.couponData.id,
                         couponName: this.tokenCoinText,
                         couponAmount: 1,
                         ifUseYiYuan: !!this.tokenCoin,
                         yiYuanCouponsAmount: this.tokenCoin,
                         isInActivity:1,
-                        promotionID:"",
+                        promotionCode:"",
                         promotionName:"经验值专区",
                         discountAmount:null,
                         isInPingDian:user.storeCode ?1:0,
                         pinID: user.storeCode ? user.storeCode : '',
-                        ...arrs
                     });
+                    track(trackEvent.SubmitOrderDetail,{...arrs, orderId: data.orderNo})
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -385,7 +385,7 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         actualPaymentAmount:data.totalFreightFee,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
@@ -396,19 +396,19 @@ class ConfirmOrderModel {
                         receiverAddress: data.userAddress.address,
                         ifUseCoupon:!!this.tokenCoinText,
                         couponType:this.couponData.type,
-                        couponID:this.couponData.id,
+                        couponCode:this.couponData.id,
                         couponName: this.tokenCoinText,
                         couponAmount: 1,
                         ifUseYiYuan: !!this.tokenCoin,
                         yiYuanCouponsAmount: this.tokenCoin,
                         isInActivity:1,
-                        promotionID:orderParamVO.orderProducts.code,
+                        promotionCode:orderParamVO.orderProducts.code,
                         promotionName:"秒杀专区",
                         discountAmount:null,
                         isInPingDian:user.storeCode ?1:0,
                         pinID: user.storeCode ? user.storeCode : '',
-                        ...arrs
                     });
+                    track(trackEvent.SubmitOrderDetail,{...arrs, orderId: data.orderNo})
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -431,7 +431,7 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         actualPaymentAmount:data.totalFreightFee,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
@@ -442,19 +442,19 @@ class ConfirmOrderModel {
                         receiverAddress: data.userAddress.address,
                         ifUseCoupon:!!this.tokenCoinText,
                         couponType:this.couponData.type,
-                        couponID:this.couponData.id,
+                        couponCode:this.couponData.id,
                         couponName: this.tokenCoinText,
                         couponAmount: 1,
                         ifUseYiYuan: !!this.tokenCoin,
                         yiYuanCouponsAmount: this.tokenCoin,
                         isInActivity:1,
-                        promotionID:orderParamVO.orderProducts.code,
+                        promotionCode:orderParamVO.orderProducts.code,
                         promotionName:"降价拍专区",
                         discountAmount:null,
                         isInPingDian:user.storeCode ?1:0,
-                        pinID: user.storeCode ? user.storeCode : '',
-                        ...arrs
+                        pinCode: user.storeCode ? user.storeCode : '',
                     });
+                    track(trackEvent.SubmitOrderDetail,{...arrs, orderId: data.orderNo})
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
@@ -480,7 +480,7 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
+                        orderId: data.orderNo,
                         actualPaymentAmount:data.totalFreightFee,
                         orderAmount: data.payAmount,
                         transportationCosts: data.totalFreightFee,
@@ -491,19 +491,19 @@ class ConfirmOrderModel {
                         receiverAddress: data.userAddress.address,
                         ifUseCoupon:!!this.tokenCoinText,
                         couponType:this.couponData.type,
-                        couponID:this.couponData.id,
+                        couponCode:this.couponData.id,
                         couponName: this.tokenCoinText,
                         couponAmount: 1,
                         ifUseYiYuan: !!this.tokenCoin,
                         yiYuanCouponsAmount: this.tokenCoin,
                         isInActivity:1,
-                        promotionID:orderParamVO.orderProducts.code||"",
+                        promotionCode:orderParamVO.orderProducts.code||"",
                         promotionName:"礼包专区",
                         discountAmount:null,
                         isInPingDian:user.storeCode ?1:0,
-                        pinID: user.storeCode ? user.storeCode : '',
-                        ...arrs
+                        pinCode: user.storeCode ? user.storeCode : '',
                     });
+                    track(trackEvent.SubmitOrderDetail,{...arrs, orderId: data.orderNo})
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
