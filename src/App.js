@@ -12,7 +12,8 @@ import {
     StyleSheet,
     Text,
     View,
-    InteractionManager
+    InteractionManager,
+    Platform
     // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -24,7 +25,6 @@ import CONFIG from '../config';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
-import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
@@ -34,6 +34,7 @@ import Storage from './utils/storage';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
+import codePush from "react-native-code-push";
 import {SpellShopFlag} from './navigation/Tab';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
@@ -60,9 +61,20 @@ if (__DEV__) {
 }
 
 @observer
-export default class App extends Component {
+class App extends Component {
     constructor(props) {
         super(props);
+        if (Platform.OS !== 'ios') {
+            bridge.getAPKChannel().then((data)=>{
+                if(data === '_360'){
+                    codePush.sync({
+                        updateDialog: false,
+                        installMode: codePush.InstallMode.ON_NEXT_RESTART,
+                    })
+                }
+            })
+        }
+
         this.state = {
             load: false,
             showOldBtn: false,
@@ -91,6 +103,7 @@ export default class App extends Component {
         //初始化init  定位存储  和app变活跃 会定位
 
         InteractionManager.runAfterInteractions(() => {
+
             TimerMixin.setTimeout(() => {
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
@@ -113,9 +126,6 @@ export default class App extends Component {
 
             },3000)
         });
-
-        //热更新
-        hotUpdateUtil.checkUpdate();
         // 移除启动页
         bridge.removeLaunch();
     }
@@ -158,6 +168,8 @@ export default class App extends Component {
         global.$navigator.dispatch(navigationAction);
     };
 }
+
+export default codePush(App);
 
 const styles = StyleSheet.create({
     container: {
