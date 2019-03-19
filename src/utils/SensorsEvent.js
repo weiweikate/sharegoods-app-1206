@@ -175,57 +175,13 @@ const OrderModular = {
         "name":"ViewMyOrder",
         "params":{}
     },
-    //申请退货
-    "ApplyReturn":{
-        "name":"ApplyReturn",
-        "params":{}
-    },
-    //申请退货详情
-    "ApplyReturnDetail": {
-        "name":"ApplyReturnDetail",
-        "params":{}
-    }
 };
 
 
 
 //    我的模块
 const MineModular = {
-    //点击修改头像
-    "ClickModifyAvatar":{
-        "name":"ClickModifyAvatar"
-    },
-    //修改头像成功
-    "ModifuAvatarSuccess_camera":{
-        "name":"ModifuAvatarSuccess",
-        "params":{
-            "modificationMode":1//拍照
-        }
-    },
 
-    "ModifuAvatarSuccess_photo":{
-        "name":"ModifuAvatarSuccess",
-        "params":{
-            "modificationMode":2//相册
-        }
-
-    },
-    //点击修改昵称
-    "ClickModifyNickName":{
-        "name":"ClickModifyNickName"
-    },
-    //修改昵称成功
-    "ModifyNickNameSuccess":{
-        "name":"ModifyNickNameSuccess"
-    },
-    //点击实名认证
-    "ClickRealCodeentityVerify":{
-        "name":"ClickRealCodeentityVerify"
-    },
-    //实名认证成功
-    "ReadCodeentityVerifySuccss":{
-        "name":"ReadCodeentityVerifySuccss"
-    },
     "ViewPersonalInfo":{
         "des":'查看个人资料',
         "name":"ViewPersonalInfo",

@@ -31,7 +31,7 @@ import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
-import { trackEvent, track, TrackApi } from '../../../utils/SensorsTrack';
+import { trackEvent, track } from '../../../utils/SensorsTrack';
 import ProductApi from '../../product/api/ProductApi';
 
 const { arrow_right } = res;
@@ -535,7 +535,7 @@ class AfterSaleServicePage extends BasePage {
             NativeModules.commModule.toast('请填写退款金额大于0');
             return;
         }
-        let { productName, warehouseOrderNo, payAmount, prodCode } = this.state.productData;
+        let { payAmount } = this.state.productData;
 
         /** 修改申请*/
         if (this.params.isEdit) {
@@ -550,30 +550,12 @@ class AfterSaleServicePage extends BasePage {
                 bridge.$toast(e.msg);
             });
         } else {
-            // applicationIDorderID	申请单号订单ID
-            // commodityID	商品ID
-            // commodityName	商品名称
-            // firstCommodity	商品一级分类
-            // secondCommodity	商品二级分类
-            // commodityAmount	支付商品全额
-            // PartlyReturn	是否部分退款
-            track(trackEvent.applyReturn,
-                {
-                    orderID: warehouseOrderNo,
-                    applicationIDorderID: orderProductNo,
-                    commodityName: productName,
-                    commodityAmount: payAmount,
-                    partlyReturn: payAmount !== applyRefundAmount,
-                    commodityID: prodCode,
-                    applyReturnCause: returnReason
-                });
-            TrackApi.ApplyReturn({
+            track(trackEvent.ApplyReturn, {
                 applicationCode: this.state.productData.warehouseOrderNo,//申请单号
                 orderId: orderProductNo, //订单id
-                orderAmount: applyRefundAmount,
-                actualPaymentAmount:  payAmount,
-                applyReturnCause: returnReason
-            })
+                returnType: pageType + 1,//退款类型
+                actualPaymentAmount:  payAmount,// 用户实际支付金额
+            });
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;
             this.$loadingShow();

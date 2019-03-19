@@ -31,13 +31,22 @@ const productTrack = {
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {
-    QrcodeShareto: 'QrCodeShareto',//分享二维码
+    QrCodeShareto: 'QrCodeShareto',//分享二维码
+}
+
+const mineEvent = {
+    ClickModifyAvatar: 'ClickModifyAvatar', //点击修改头像
+    ModifuAvatarSuccess: 'ModifuAvatarSuccess', // 修改头像成功
+    ClickModifyNickName: 'ClickModifyNickName', // 点击修改昵称
+    ModifyNickNameSuccess: 'ModifyNickNameSuccess', //修改昵称成功
+    ClickRealCodeentityVerify: 'ClickRealCodeentityVerify', //点击实名认证
+    ReadCodeentityVerifySuccss: 'ReadCodeentityVerifySuccss', //实名认证成功
+}
+
+const afterEvent = {
+    ApplyReturn: 'ApplyReturn' // 0：未知 1：仅退款 2：退货退款 3：换货
 }
 const trackEvent = {
-    ...huchao,
-    ...spellShopTrack,
-    ...productTrack,
-    ...inviteEvent,
     bannerClick: 'AdBannerClick',//banner点击
     bannerSwiper: 'AdBannerShow',//banner滑动
     recommanderBannerClick: 'RecommanderBannerClick', //推荐为banner点击
@@ -78,6 +87,12 @@ const trackEvent = {
     OrderAgain:"OrderAgain",//再次购买
     submitOrder: 'SubmitOrder',//提交订单,
     SubmitOrderDetail:'SubmitOrderDetail',//提交订单详情
+    ...huchao,
+    ...spellShopTrack,
+    ...productTrack,
+    ...inviteEvent,
+    ...mineEvent,
+    ...afterEvent,
 };
 function trackUtil(p) {
     let arr = {};
