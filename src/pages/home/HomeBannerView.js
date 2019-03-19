@@ -59,7 +59,7 @@ export default class HomeBannerView extends Component {
 
     render() {
         const { bannerList } = bannerModule;
-
+        const isFocused = homeModule.isFocused;
         let items = [];
         bannerList.map(value => {
             items.push(value.imgUrl);
@@ -68,17 +68,18 @@ export default class HomeBannerView extends Component {
         return <View style={styles.banner}>
             {len === 0 ?
                 <View style={styles.defaultImg}/> :
-                <MRBannerViewComponent itemRadius={px2dp(5)} imgUrlArray={items}
-                                       bannerHeight={bannerHeight}
-                                       modeStyle={1}
-                                       autoInterval={homeModule.isFocused ? 5 : 0}
-                                       pageFocused={homeModule.isFocused}
-                                       onDidScrollToIndex={(i) => {
-                                           this._onDidScrollToIndex(i);
-                                       }}
-                                       onDidSelectItemAtIndex={(i) => {
-                                           this._onPressRow(i);
-                                       }}/>
+                <MRBannerViewComponent
+                    itemRadius={px2dp(5)} imgUrlArray={items}
+                    bannerHeight={bannerHeight}
+                    modeStyle={1}
+                    autoLoop={isFocused ? true : false}
+                    pageFocused={isFocused}
+                    onDidScrollToIndex={(i) => {
+                        this._onDidScrollToIndex(i);
+                    }}
+                    onDidSelectItemAtIndex={(i) => {
+                        this._onPressRow(i);
+                    }}/>
             }
         </View>;
     }
