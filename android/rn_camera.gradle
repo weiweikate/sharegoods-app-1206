@@ -12,6 +12,9 @@ android {
         abortOnError false
         warning 'InvalidPackage'
     }
+    buildTypes {
+        releaseStaging {}
+    }
 }
 
 dependencies {

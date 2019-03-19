@@ -30,7 +30,7 @@ export default class HomeCategoryView extends Component {
             id: 1,
             linkTypeCode: data.linkTypeCode,
             code: data.linkTypeCode,
-            name: data.name,
+            keywords: data.name,
             categoryId: data.id,
             activityCode: data.linkTypeCode
         });

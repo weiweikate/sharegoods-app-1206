@@ -11,11 +11,13 @@ android {
     lintOptions {
         abortOnError false
     }
-    sourceSets {
-        main {
-            // let gradle pack the shared library into apk
-            jniLibs.srcDirs = ['./lib']
-        }
+
+    defaultConfig {
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+    buildTypes {
+        release {}
+        releaseStaging {}
     }
 }
 
@@ -27,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.nimbusds:nimbus-jose-jwt:5.1'
     api rootProject.ext.dependencies.support
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
