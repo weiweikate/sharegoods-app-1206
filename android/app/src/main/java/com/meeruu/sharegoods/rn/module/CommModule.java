@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -55,14 +54,12 @@ import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.ui.activity.GongMallActivity;
+import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 
@@ -77,7 +74,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     public static final String MODULE_NAME = "commModule";
     public static final String CHANNEL_KEY = "channel";
     private static final int GONGMAOCODE = 888;
-    private Promise gongMao ;
+    private Promise gongMao;
 
     /**
      * 构造方法必须实现
@@ -90,7 +87,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         this.mContext.addActivityEventListener(new ActivityEventListener() {
             @Override
             public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-                if(gongMao != null && requestCode == GONGMAOCODE && resultCode == SIGN_OK){
+                if (gongMao != null && requestCode == GONGMAOCODE && resultCode == SIGN_OK) {
                     gongMao.resolve(null);
                 }
             }
@@ -508,12 +505,12 @@ public class CommModule extends ReactContextBaseJavaModule {
                         String filename = FileUtils.getFileNameNoEx(file.getName());
                         String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
                         try {
-                            FileUtils.copyFile(file.getAbsolutePath(),storePath);
-                        }catch (Exception e){
+                            FileUtils.copyFile(file.getAbsolutePath(), storePath);
+                        } catch (Exception e) {
                             promise.reject("文件操作失败");
                             return;
                         }
-                        Uri uri = Uri.parse("file://"+storePath);
+                        Uri uri = Uri.parse("file://" + storePath);
                         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                         intent.setData(uri);
                         mContext.sendBroadcast(intent);
@@ -521,30 +518,28 @@ public class CommModule extends ReactContextBaseJavaModule {
                     }
                 });
             }
+
             @Override
             public void onFailureImpl(DataSource dataSource) {
                 promise.reject("下载失败");
             }
 
 
-
-
-
         }, CallerThreadExecutor.getInstance());
     }
 
     @ReactMethod
-    public void getAPKChannel(Promise promise){
-        String channel = AppUtils.getAppMetaData(mContext,CHANNEL_KEY);
+    public void getAPKChannel(Promise promise) {
+        String channel = WalleChannelReader.getChannel(mContext, "guanwang");
         promise.resolve(channel);
     }
-   @ReactMethod
-    public void goGongmallPage(String url,Promise promise){
+
+    @ReactMethod
+    public void goGongmallPage(String url, Promise promise) {
         this.gongMao = promise;
         Intent intent = new Intent(getCurrentActivity(), GongMallActivity.class);
-        intent.putExtra("url",url);
-//        getCurrentActivity().startActivity(intent);
-        getCurrentActivity().startActivityForResult(intent,GONGMAOCODE);
+        intent.putExtra("url", url);
+        getCurrentActivity().startActivityForResult(intent, GONGMAOCODE);
     }
 
 

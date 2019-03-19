@@ -12,8 +12,7 @@ import {
     StyleSheet,
     Text,
     View,
-    InteractionManager,
-    Platform
+    InteractionManager
     // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -34,8 +33,8 @@ import Storage from './utils/storage';
 import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
-import codePush from "react-native-code-push";
-import {SpellShopFlag} from './navigation/Tab';
+import codePush from 'react-native-code-push';
+import { SpellShopFlag } from './navigation/Tab';
 // import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
@@ -55,25 +54,18 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
-
-    // grab this text blob, and put it in a file named packager/moduleNames.js
-    // console.log(`module.exports = ${JSON.stringify(loadedModuleNames.sort())};`);
 }
 
 @observer
 class App extends Component {
     constructor(props) {
         super(props);
-        if (Platform.OS !== 'ios') {
-            bridge.getAPKChannel().then((data)=>{
-                if(data === '_360'){
-                    codePush.sync({
-                        updateDialog: false,
-                        installMode: codePush.InstallMode.ON_NEXT_RESTART,
-                    })
-                }
-            })
-        }
+
+        // codepush
+        codePush.sync({
+            updateDialog: false,
+            installMode: codePush.InstallMode.ON_NEXT_RESTART
+        });
 
         this.state = {
             load: false,
@@ -86,8 +78,6 @@ class App extends Component {
             logout();
             login(user.code);
         }
-        //检测是否老用户登陆
-        oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
 
     async componentWillMount() {
@@ -124,7 +114,7 @@ class App extends Component {
                     ScreenUtils.setHasNotchScreen(data);
                 });
 
-            },3000)
+            }, 3000);
         });
         // 移除启动页
         bridge.removeLaunch();
@@ -132,7 +122,7 @@ class App extends Component {
 
     render() {
         const prefix = 'meeruu://';
-        const {isShowShopFlag} = this.state
+        const { isShowShopFlag } = this.state;
         return (
             <View style={styles.container}>
                 <Navigator
