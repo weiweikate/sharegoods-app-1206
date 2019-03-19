@@ -56,8 +56,6 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 //  } requestCompletion:^(BOOL success, NSError *error) {
 //
 //  }];
-  
-  
   QYUserInfo *userInfo = [[QYUserInfo alloc] init];
   userInfo.userId = jsonDic[@"userId"];
   NSMutableArray *array = [NSMutableArray new];
@@ -146,7 +144,6 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 -(QYSessionViewController *)sessionVC{
   if (!_sessionVC) {
     _sessionVC = [[QYSDK sharedSDK]sessionViewController];
-  
   }
   return _sessionVC;
 }
@@ -160,6 +157,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  *  @param count 未读数
  */
 - (void)onUnreadCountChanged:(NSInteger)count{
+  
 }
 /**
  *  会话列表变化；非平台电商用户，只有一个会话项，平台电商用户，有多个会话项

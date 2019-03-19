@@ -169,8 +169,6 @@ export default class InputCode extends BasePage {
         SMSTool.sendVerificationCode(1, phoneNum).catch(error => {
             this.$toastShow(error.msg);
         });
-
-        TrackApi.registGetVerifySMS();
     };
 
     _finshInputCode = (text) => {

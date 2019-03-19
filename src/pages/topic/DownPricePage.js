@@ -230,23 +230,23 @@ export default class DownPricePage extends BasePage {
                 }
                 {
                     this._renderBottomListView(sectionData)
-
                 }
-
-
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'miniProgram'}
                                 webJson={{
+                                    hdImageURL:this.dataModel.imgUrl || '',
                                     title: this.dataModel.topicTitle,
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
                                     linkUrl: apiEnvironment.getCurrentH5Url() + '/subject/' + linkTypeCode,
                                     thumImage: 'logo.png'
                                 }}
                                 miniProgramJson={{
+                                    hdImageURL:this.dataModel.imgUrl || '',
                                     title: this.dataModel.topicTitle,
+                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
                                     thumImage: 'logo.png',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
-                                    miniProgramPath: `/pages/topic/topic?code=${linkTypeCode}&inviteId=${user.code || ''}`
+                                    miniProgramPath: `/pages/index/index?type=5&id=${linkTypeCode}&inviteId=${user.code || ''}`
                                 }}
                 />
             </ScrollView>
