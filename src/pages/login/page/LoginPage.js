@@ -138,7 +138,6 @@ export default class LoginPage extends BasePage {
             </View>
         );
     }
-
     /*忘记密码*/
     forgetPasswordClick = () => {
         this.$navigate("login/login/ForgetPasswordPage");
