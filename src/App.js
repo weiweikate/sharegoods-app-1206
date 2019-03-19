@@ -12,8 +12,7 @@ import {
     StyleSheet,
     Text,
     View,
-    InteractionManager,
-    Platform
+    InteractionManager
     // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -51,25 +50,18 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
-
-    // grab this text blob, and put it in a file named packager/moduleNames.js
-    // console.log(`module.exports = ${JSON.stringify(loadedModuleNames.sort())};`);
 }
 
 @observer
 class App extends Component {
     constructor(props) {
         super(props);
-        if (Platform.OS !== 'ios') {
-            bridge.getAPKChannel().then((data)=>{
-                if(data === '_360'){
-                    codePush.sync({
-                        updateDialog: false,
-                        installMode: codePush.InstallMode.ON_NEXT_RESTART,
-                    })
-                }
-            })
-        }
+
+        // codepush
+        codePush.sync({
+            updateDialog: false,
+            installMode: codePush.InstallMode.ON_NEXT_RESTART
+        });
 
         this.state = {
             load: false,
@@ -118,7 +110,7 @@ class App extends Component {
                     ScreenUtils.setHasNotchScreen(data);
                 });
 
-            },3000)
+            }, 3000);
         });
         // 移除启动页
         bridge.removeLaunch();
@@ -126,7 +118,7 @@ class App extends Component {
 
     render() {
         const prefix = 'meeruu://';
-        const {isShowShopFlag} = this.state
+        const { isShowShopFlag } = this.state;
         return (
             <View style={styles.container}>
                 <Navigator

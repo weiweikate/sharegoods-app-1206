@@ -15,5 +15,5 @@
     <!-- 选项文字大小 -->
     <dimen name="pickerview_textsize">20sp</dimen>
     <!-- 引导页按钮距底部高度 -->
-    <dimen name="start_page_marginb">65dp</dimen>
+    <dimen name="start_page_marginb">45dp</dimen>
 </resources>
