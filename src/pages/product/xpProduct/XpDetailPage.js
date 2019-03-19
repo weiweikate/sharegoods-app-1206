@@ -269,7 +269,7 @@ export class XpDetailPage extends BasePage {
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'miniProgram'}
+                                type={'miniProgramWithCopyUrl'}
                                 webJson={{
                                     title: `${name}`,
                                     thumImage: `${bannerUrl}`,
@@ -279,7 +279,7 @@ export class XpDetailPage extends BasePage {
                                     title: `${name}`,
                                     thumImage: 'logo.png',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&&upuserid=${user.code || ''}`,
-                                    miniProgramPath: `/pages/experience/experience?activityCode=${activityCode}&inviteId=${user.code || ''}`
+                                    miniProgramPath: `/pages/index/index?type=6&id=${activityCode}&inviteId=${user.code || ''}`
                                 }}/>
             </View>
         );

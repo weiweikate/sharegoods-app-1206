@@ -6,7 +6,7 @@
  * @flow
  * @format
  * Created by huchao on 2018/10/15.
- * props type 'Image'(有分享图片和web) 'nomal'（分享web） 'miniProgram'小程序 task 任务 promotionShare 推广分享
+ * props type 'Image'(有分享图片和web) 'nomal'（分享web） 'miniProgram'小程序 task 任务 promotionShare 推广分享 miniProgramWithCopyUrl小程序带链接
  *
  *     imageJson:{
  *     imageUrlStr: 'http//：xxxx.png',
@@ -84,23 +84,23 @@ import EmptyUtils from '../../utils/EmptyUtils';
 // 100：其他
 
 const TrackShareType = {
-    unknown : 0,
-    wx : 1, //微信好友
-    wxTimeline : 2, //微信朋友圈
-    qq : 3, //qq好友
-    qqSpace : 4, //qq空间
-    weibo : 5, // 微博
-    copyLink : 6, //复制链接
-    saveImage : 7, //分享图片
-    other : 100,//其他
-}
+    unknown: 0,
+    wx: 1, //微信好友
+    wxTimeline: 2, //微信朋友圈
+    qq: 3, //qq好友
+    qqSpace: 4, //qq空间
+    weibo: 5, // 微博
+    copyLink: 6, //复制链接
+    saveImage: 7, //分享图片
+    other: 100//其他
+};
 
 export default class CommShareModal extends React.Component {
 
     constructor(props) {
         super(props);
         this._bind();
-        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare') ? 2 : 1;
+        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare' || props.type === 'miniProgramWithCopyUrl') ? 2 : 1;
 
         this.state = {
             modalVisible: false,
@@ -183,7 +183,7 @@ export default class CommShareModal extends React.Component {
     /**
      jsonData 参数
      info:包含截屏参数
-     shareType : 0图片分享 1 图文链接分享 3小程序
+     shareType : 0图片分享 1 图文链接分享 2小程序
      platformType: 0 朋友圈 1 会话
      title:分享标题(当为图文分享时候使用)
      dec:内容(当为图文分享时候使用)
@@ -288,6 +288,16 @@ export default class CommShareModal extends React.Component {
     }
 
     render() {
+        const { type } = this.props;
+        const { shareType } = this.state;
+
+        this.imageHeight = autoSizeWidth(350);
+        this.imageWidth = autoSizeWidth(250);
+        if (this.props.type === 'promotionShare') {
+            this.imageHeight = autoSizeWidth(348);
+            this.imageWidth = autoSizeWidth(279);
+        }
+
         let array = [];
         array.push({
             image: res.share.wechat, title: '微信好友', onPress: () => {
@@ -315,15 +325,8 @@ export default class CommShareModal extends React.Component {
             }
         });
 
-        this.imageHeight = autoSizeWidth(350);
-        this.imageWidth = autoSizeWidth(250);
-        if (this.props.type === 'promotionShare') {
-            this.imageHeight = autoSizeWidth(348);
-            this.imageWidth = autoSizeWidth(279);
-        }
-
-        if (this.props.type === 'Image' || this.props.type === 'promotionShare') {
-            if (this.state.shareType === 2 || this.state.shareType === 1) {
+        if (type === 'Image' || type === 'promotionShare') {
+            if (shareType === 2 || shareType === 1) {
                 array.push({
                     image: res.share.copyURL, title: '复制链接', onPress: () => {
                         this.copyUrl();
@@ -338,17 +341,20 @@ export default class CommShareModal extends React.Component {
                         });
                     }
                 });
-            }
-            if (this.state.shareType === 0) {
+            } else if (shareType === 0) {
                 array.push({
                     image: res.share.download, title: '下载图片', onPress: () => {
                         this.saveImage(this.state.path);
                     }
                 });
             }
-        }
-
-        if (this.props.type === 'task') {
+        } else if (type === 'miniProgramWithCopyUrl') {
+            array.push({
+                image: res.share.copyURL, title: '复制链接', onPress: () => {
+                    this.copyUrl();
+                }
+            });
+        } else if (type === 'task') {
             array = [{
                 image: res.share.weiXin, title: '微信好友', onPress: () => {
                     this.share(0);
