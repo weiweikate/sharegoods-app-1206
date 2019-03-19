@@ -28,14 +28,14 @@ import RouterMap from '../../../navigation/RouterMap';
 import user from '../../../model/user';
 import StringUtils from '../../../utils/StringUtils';
 
+const {px2dp} = ScreenUtils
+
 
 @observer
 export default class ShopCartPage extends BasePage {
-    // 导航配置
     $navigationBarOptions = {
         title: '购物车',
         leftNavItemHidden: true
-        // show:false
     };
 
     constructor(props) {
@@ -84,7 +84,7 @@ export default class ShopCartPage extends BasePage {
     }
 
     handleBackPress = () => {
-        if (this.$navigationBarOptions.leftNavItemHidden){
+        if (this.$navigationBarOptions.leftNavItemHidden) {
             this.$navigate('HomePage');
             return true;
         } else {
@@ -134,7 +134,6 @@ export default class ShopCartPage extends BasePage {
                     sections={shopCartStore.cartData}
                     useSectionList={true}
                     disableRightSwipe={true}
-                    // sections={this.dataArr}
                     renderItem={(rowData, rowMap) => (
                         this._renderValidItem(rowData, rowMap)
                     )}
@@ -142,7 +141,6 @@ export default class ShopCartPage extends BasePage {
                         this._renderRowHiddenComponent(data, rowMap)
                     )}
                     renderHeaderView={(sectionData) => {
-                        console.log('section_header');
                         console.log(sectionData.section);
                         return (
                             <SectionHeaderView
@@ -174,12 +172,6 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     };
-
-    /**
-     * 去凑单
-     * @param sectionData
-     * @private
-     */
     _gotoCollectBills = (sectionData) => {
         if (!StringUtils.isEmpty(sectionData.activityCode)) {
             this.$navigate(RouterMap.XpDetailPage, {
@@ -190,15 +182,6 @@ export default class ShopCartPage extends BasePage {
         }
 
     };
-    /**
-     * 渲染每行的隐藏组件
-     * @param data
-     * @param secId
-     * @param rowId
-     * @param rowMap
-     * @return {*}
-     * @private
-     */
     _renderRowHiddenComponent = (data, rowMap) => {
         return (
             <TouchableOpacity
@@ -235,7 +218,6 @@ export default class ShopCartPage extends BasePage {
             </TouchableOpacity>
         );
     };
-
     _renderShopCartBottomMenu = () => {
         if (!this.pageFocus) {
             return;
@@ -311,19 +293,12 @@ export default class ShopCartPage extends BasePage {
                               }}/>
         );
     };
-    /**
-     * 下拉刷新
-     * @param itemData
-     * @private
-     */
+
     _refreshFun = () => {
         shopCartStore.setRefresh(true);
         shopCartCacheTool.getShopCartGoodsListData();
     };
-    /**
-     * 前往结算
-     * @private
-     */
+
     _toBuyImmediately = () => {
         dismissKeyboard();
         if (!user.isLogin) {
@@ -380,7 +355,6 @@ export default class ShopCartPage extends BasePage {
     _jumpToProductDetailPage = (itemData) => {
 
         if (itemData.productStatus === 0) {
-            //失效商品不可进入详情
             return;
         }
         if (itemData.sectionType === 8) {
@@ -389,10 +363,9 @@ export default class ShopCartPage extends BasePage {
             });
             return;
         }
-        //跳转产品详情
         this.$navigate('product/ProductDetailPage', {
             productId: itemData.productId,
-            productCode: itemData.spuCode,
+            productCode: itemData.spuCode
         });
     };
     _selectAll = () => {
@@ -412,7 +385,6 @@ export default class ShopCartPage extends BasePage {
 const styles = StyleSheet.create({
     standaloneRowBack: {
         alignItems: 'center',
-        // backgroundColor: DesignRule.bgColor,
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end'
@@ -421,76 +393,75 @@ const styles = StyleSheet.create({
     backUITextWhite: {
         marginRight: 0,
         color: 'white',
-        fontSize: 17
+        fontSize: px2dp(17)
     },
     addOrReduceBtnStyle: {
-        fontSize: 13,
+        fontSize: px2dp(13),
         color: DesignRule.textColor_mainTitle
     },
     validItemContainer: {
-        height: 140,
+        height: px2dp(140),
         flexDirection: 'row',
         backgroundColor: DesignRule.bgColor
     },
     validProductImg: {
-        width: 80,
-        height: 80,
-        marginLeft: 16,
-        marginRight: 16
-        // marginBottom: 10
+        width: px2dp(80),
+        height: px2dp(80),
+        marginLeft: px2dp(16),
+        marginRight: px2dp(16)
     },
     validConUITextContainer: {
         flex: 1,
-        height: 100,
+        height: px2dp(100),
         justifyContent: 'space-between',
-        marginTop: 10,
-        paddingRight: 15
+        marginTop: px2dp(10),
+        paddingRight: px2dp(15)
     },
     invalidItemContainer: {
-        height: 100,
+        height: px2dp(100),
         flexDirection: 'row',
         backgroundColor: 'white'
     },
     invalidUITextInvalid: {
-        width: 38,
-        height: 20,
-        borderRadius: 10,
+        width: px2dp(38),
+        height: px2dp(20),
+        borderRadius: px2dp(10),
         backgroundColor: DesignRule.textColor_instruction,
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 12
+        marginLeft: px2dp(12)
     },
     invalidProductImg: {
-        width: 80,
-        height: 80,
-        marginLeft: 7,
-        marginRight: 16
+        width: px2dp(80),
+        height: px2dp(80),
+        marginLeft: px2dp(7),
+        marginRight: px2dp(15)
     },
     invalidUITextContainer: {
         flex: 1,
-        height: 100,
+        height: px2dp(100),
         justifyContent: 'space-between',
-        marginTop: 30,
-        paddingRight: 15
+        marginTop: px2dp(30),
+        paddingRight: px2dp(15)
     },
 
     CartBottomContainer: {
         width: ScreenUtils.width,
-        height: 49,
+        height: px2dp(49),
         backgroundColor: 'white',
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center'
     },
     totalPrice: {
-        fontSize: 13,
+        fontSize: px2dp(13),
         color: DesignRule.mainColor,
-        marginLeft: 10,
-        marginRight: 10
+        marginLeft: px2dp(10),
+        marginRight: px2dp(10)
     },
     selectGoodsNum: {
-        width: 110,
-        height: 49,
+        width: px2dp(110),
+        height: px2dp(49),
         backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
@@ -498,10 +469,10 @@ const styles = StyleSheet.create({
 
     TextInputStyle: {
         padding: 0,
-        paddingTop: 5,
-        height: 30,
-        width: 46,
-        fontSize: 11,
+        paddingTop: px2dp(5),
+        height: px2dp(30),
+        width: px2dp(46),
+        fontSize: px2dp(11),
         color: DesignRule.textColor_mainTitle,
         alignSelf: 'center',
         justifyContent: 'center',
@@ -510,9 +481,9 @@ const styles = StyleSheet.create({
     },
     validContextContainer: {
         flex: 1,
-        height: 100,
+        height: px2dp(100),
         justifyContent: 'space-between',
-        marginTop: 10,
-        paddingRight: 15
+        marginTop: px2dp(10),
+        paddingRight: px2dp(15)
     }
 });
