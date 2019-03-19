@@ -293,6 +293,10 @@ export default class WithdrawCashPage extends BasePage {
                     <MRText style={styles.tipTextStyle}>
                         {`2.每月额度计算上月${this.state.startDay}号-本月${this.state.endDay}号`}
                     </MRText>
+
+                    {this.state.minCount ? <MRText style={styles.tipTextStyle}>
+                        {`3.提现为￥${this.state.minCount}起以及￥${this.state.minCount}的倍数`}
+                    </MRText> : null}
                 </View>
             </View>
         );

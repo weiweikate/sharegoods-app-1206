@@ -12,21 +12,33 @@ import { MRText } from '../../components/ui'
 import DesignRule from '../../constants/DesignRule'
 
 const { px2dp } = ScreenUtils
+const propTypes = {
+    //是否显示键盘
+    visible: PropTypes.bool,
+    //是否背景为透明色 默认透明
+    transparent: PropTypes.bool,
+    //字符回调函数
+    itemClick: PropTypes.func.isRequired,
+    /**
+     * 是否保存当前键盘出现一次所输入的所有状态，如果设置true，则键盘每次点击回调本次键盘出现输入的所有存储字符
+     * 默认false
+     */
+    isSaveCurrentInputState: PropTypes.bool,
+    /**
+     * 关闭的回调函数
+     */
+    closeAction: PropTypes.func.isRequired,
+    /**
+     * 键盘输出的最大长度，当 isSaveCurrentInputState 为true时候有效
+     * 默认-1 无限制
+     */
+    maxNumLength: PropTypes.number.isRequired
+}
 
-const numArr = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '-',
-    '0',
-    '回退'
-];
+const defaultProp = {
+    maxNumLength: -1
+}
+const numArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '0', '回退'];
 
 let numViewWidth = ScreenUtils.width / 3 - px2dp(12);
 let numViewHeight = px2dp(40);
@@ -58,29 +70,30 @@ const styles = StyleSheet.create({
 
 })
 export default class CustomNumKeyBoard extends Component {
-
     constructor(props) {
         super(props)
         this.modal = null
         this.state = {
             visible: false,
             isSaveCurrentInputState: false,
-            numString: ''
+            numString: '',
+            maxNumLength:-1,
         }
     }
-    componentWillReceiveProps(props){
-        const {visible,isSaveCurrentInputState} = props
+    componentWillReceiveProps(props) {
+        const { visible, isSaveCurrentInputState } = props
         if (visible !== this.state.visible ||
-            isSaveCurrentInputState !== this.state.isSaveCurrentInputState)
-        {
+            isSaveCurrentInputState !== this.state.isSaveCurrentInputState
+        ) {
             this.setState({
-                visible:visible,
-                isSaveCurrentInputState:isSaveCurrentInputState
+                visible: visible,
+                isSaveCurrentInputState: isSaveCurrentInputState
             })
         }
     }
+
     _closeNumKeyBoard = () => {
-        const {closeAction } = this.props
+        const { closeAction } = this.props
         closeAction && closeAction(false);
         this.setState({
             visible: false
@@ -138,45 +151,34 @@ export default class CustomNumKeyBoard extends Component {
      * @private
      */
     _itemClick = (index, itemText) => {
-        const { itemClick, isSaveCurrentInputState } = this.props;
+        const { itemClick, isSaveCurrentInputState,maxNumLength } = this.props;
         let currentNum = this.state.numString;
         let numLength = this.state.numString.length;
         if (isSaveCurrentInputState) {
-            if (/^[0-9]+$/.test(itemText)) {
-                currentNum = currentNum + itemText;
-                this.setState({
-                    numString: currentNum
-                })
+            if (maxNumLength !== -1 && numLength >= maxNumLength && itemText !== '回退') {
                 itemClick && itemClick(currentNum);
-            } else if (itemText === '回退') {
-                currentNum = currentNum.substr(0, numLength - 1)
-                this.setState({
-                    numString: currentNum
-                })
-                itemClick && itemClick(currentNum);
+            }else {
+                if (/^[0-9]+$/.test(itemText)) {
+                    currentNum = currentNum + itemText;
+                    this.setState({
+                        numString: currentNum
+                    })
+                    itemClick && itemClick(currentNum);
+                } else if (itemText === '回退') {
+                    currentNum = currentNum.substr(0, numLength - 1)
+                    this.setState({
+                        numString: currentNum
+                    })
+                    itemClick && itemClick(currentNum);
+                }
             }
         } else {
             if (/^[0-9]+$/.test(itemText) || itemText === '回退') {
-                itemClick && itemClick(itemText)
+                    itemClick && itemClick(itemText)
             }
         }
     }
 }
 
-CustomNumKeyBoard.proTypes = {
-    //是否显示键盘
-    visible: PropTypes.bool,
-    //是否背景为透明色 默认透明
-    transparent: PropTypes.bool,
-    //字符回调函数
-    itemClick: PropTypes.func.isRequired,
-    /**
-     * 是否保存当前键盘出现一次所输入的所有状态，如果设置true，则键盘每次点击回调本次键盘出现输入的所有存储字符
-     * 默认false
-     */
-    isSaveCurrentInputState: PropTypes.bool,
-    /**
-     * 关闭的回调函数
-     */
-    closeAction:PropTypes.func.isRequired,
-}
+CustomNumKeyBoard.propTypes = propTypes;
+CustomNumKeyBoard.defaultProps = defaultProp;
