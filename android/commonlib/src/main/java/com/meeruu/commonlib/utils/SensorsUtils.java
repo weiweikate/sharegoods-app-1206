@@ -3,6 +3,7 @@ package com.meeruu.commonlib.utils;
 import android.content.Context;
 import android.webkit.WebView;
 
+import com.meituan.android.walle.WalleChannelReader;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import org.json.JSONObject;
@@ -19,7 +20,18 @@ import java.util.List;
  */
 public class SensorsUtils {
 
-    public static void initDebugMode(Context context, String channel) {
+    public static void init(Context context) {
+        String channel = WalleChannelReader.getChannel(context, "guanwang");
+        if (Utils.isApkInDebug()) {
+            // 初始化 Sensors SDK
+            SensorsUtils.initDebugMode(context, channel);
+        } else {
+            // 初始化 Sensors SDK
+            SensorsUtils.initReleaseMode(context, channel);
+        }
+    }
+
+    private static void initDebugMode(Context context, String channel) {
         SensorsDataAPI.sharedInstance(context, "https://stat.sharegoodsmall.com/sa?project=default",
                 SensorsDataAPI.DebugMode.DEBUG_OFF);
         //开启调试日志（ true 表示开启调试日志）
@@ -27,7 +39,7 @@ public class SensorsUtils {
         initConfig(context, channel);
     }
 
-    public static void initReleaseMode(Context context, String channel) {
+    private static void initReleaseMode(Context context, String channel) {
         // 初始化
         SensorsDataAPI.sharedInstance(context, "https://stat.sharegoodsmall.com/sa?project=production",
                 SensorsDataAPI.DebugMode.DEBUG_OFF);
