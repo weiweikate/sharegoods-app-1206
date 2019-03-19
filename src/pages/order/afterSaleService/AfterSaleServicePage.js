@@ -31,7 +31,7 @@ import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
-import { trackEvent, track } from '../../../utils/SensorsTrack';
+import { trackEvent, track, TrackApi } from '../../../utils/SensorsTrack';
 import ProductApi from '../../product/api/ProductApi';
 
 const { arrow_right } = res;
@@ -567,6 +567,13 @@ class AfterSaleServicePage extends BasePage {
                     commodityID: prodCode,
                     applyReturnCause: returnReason
                 });
+            TrackApi.ApplyReturn({
+                applicationCode: this.state.productData.warehouseOrderNo,//申请单号
+                orderId: orderProductNo, //订单id
+                orderAmount: applyRefundAmount,
+                actualPaymentAmount:  payAmount,
+                applyReturnCause: returnReason
+            })
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;
             this.$loadingShow();
