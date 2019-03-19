@@ -8,10 +8,7 @@ import Styles from "../style/Login.style";
 import { createBottomButton, createLoginButton, loginBtnType } from "../components/Login.button.view";
 import res from "../res";
 import RouterMap from "../../../navigation/RouterMap";
-// import { isCanPhoneAuthen } from "../model/PhoneAuthenAction";
 import { wxLoginAction } from "../model/LoginActionModel";
-// import CommNavigation from "../../../comm/components/CommNavigation";
-// import { MRText } from "../../../components/ui";
 
 const {
     other: {

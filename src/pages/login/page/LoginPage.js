@@ -1,6 +1,5 @@
 import React from "react";
 import LoginTopView from "../components/LoginTopView";
-// import UserModel from "../../../model/user";
 import {
     View,
     StyleSheet,
@@ -15,7 +14,6 @@ import ScreenUtils from "../../../utils/ScreenUtils";
 import DesignRule from "../../../constants/DesignRule";
 import res from "../res";
 import { track, TrackApi, trackEvent } from "../../../utils/SensorsTrack";
-import oldUserLoginSingleModel from "../../../model/oldUserLoginModel";
 import RouterMap from "../../../navigation/RouterMap";
 import { wxLoginAction, codeLoginAction, pwdLoginAction } from "../model/LoginActionModel";
 import ProtocolView from "../components/Login.protocol.view";
@@ -31,50 +29,33 @@ const {
 } = res;
 
 const rendOtherLoginView = (isShow, wxLoginClick, protocolClick) => {
-    return (isShow
-            ?
-            <View style={Styles.otherLoginBgStyle}>
-                <View style={Styles.lineBgStyle}>
-                    <CommSpaceLine style={{ width: 80 }}/>
-                    <Text style={Styles.otherLoginTextStyle}>
-                        其他登录方式
-                    </Text>
-                    <CommSpaceLine style={{ width: 80, marginLeft: 5 }}/>
-                </View>
-                <View style={Styles.wxImageBgStyle}>
-                    <TouchableOpacity onPress={() => {
-                        wxLoginClick && wxLoginClick();
-                    }}>
-                        <Image style={{ width: 50, height: 50 }} source={weiXin}/>
-                    </TouchableOpacity>
-                </View>
-                <ProtocolView
-                    textClick={(htmlUrl) => {
-                        protocolClick && protocolClick({
-                            title: "用户协议内容",
-                            uri: htmlUrl
-                        });
-                    }}
-                    selectImageClick={(isSelect) => {
-                        loginModel.saveIsSelectProtocol(isSelect);
-                    }}
-                />
+    return (<View style={Styles.otherLoginBgStyle}>
+            <View style={Styles.lineBgStyle}>
+                <CommSpaceLine style={{ width: 80 }}/>
+                <Text style={Styles.otherLoginTextStyle}>
+                    其他登录方式
+                </Text>
+                <CommSpaceLine style={{ width: 80, marginLeft: 5 }}/>
             </View>
-            :
-            <View style={Styles.otherLoginBgStyle}>
-                <ProtocolView
-                    textClick={(htmlUrl) => {
-                        this.navigate(RouterMap.HtmlPage, {
-                            title: "用户协议内容",
-                            uri: htmlUrl
-                        });
-                    }
-                    }
-                    selectImageClick={(isSelect) => {
-                        loginModel.saveIsSelectProtocol(isSelect);
-                    }}
-                />
+            <View style={Styles.wxImageBgStyle}>
+                <TouchableOpacity onPress={() => {
+                    wxLoginClick && wxLoginClick();
+                }}>
+                    <Image style={{ width: 50, height: 50 }} source={weiXin}/>
+                </TouchableOpacity>
             </View>
+            <ProtocolView
+                textClick={(htmlUrl) => {
+                    protocolClick && protocolClick({
+                        title: "用户协议内容",
+                        uri: htmlUrl
+                    });
+                }}
+                selectImageClick={(isSelect) => {
+                    loginModel.saveIsSelectProtocol(isSelect);
+                }}
+            />
+        </View>
     );
 };
 /**
@@ -123,7 +104,6 @@ export default class LoginPage extends BasePage {
         }).catch((error) => {
 
         });
-        oldUserLoginSingleModel.checkIsShowOrNot(false);
 
         TrackApi.passLoginPage();
     }
@@ -148,7 +128,7 @@ export default class LoginPage extends BasePage {
                 />
 
                 {
-                    rendOtherLoginView(oldUserLoginSingleModel.isShowReg, () => {
+                    rendOtherLoginView(true, () => {
                         this.weChatLoginClick();
                     }, (htmlParams) => {
                         this.$navigate("HtmlPage", htmlParams);
@@ -165,26 +145,17 @@ export default class LoginPage extends BasePage {
     /*微信登陆*/
     weChatLoginClick = () => {
         track(trackEvent.login, { loginMethod: "微信登录用" });
-        oldUserLoginSingleModel.isCanLoginWithWx((flag) => {
-            if (flag) {
-                wxLoginAction((code, data) => {
-                    if (code == 10000) {
-                        this.params.callback && this.params.callBack();
-                        this.$navigateBack(-2);
-                    } else if (code === 34005) {
-                        this.$navigate(RouterMap.InputPhoneNum, data);
-                    }
-                });
+        wxLoginAction((code, data) => {
+            if (code == 10000) {
+                this.params.callback && this.params.callBack();
+                this.$navigateBack(-2);
+            } else if (code === 34005) {
+                this.$navigate(RouterMap.InputPhoneNum, data);
             }
         });
     };
     /*老用户登陆*/
     oldUserLoginClick = () => {
-        oldUserLoginSingleModel.JumpToLogin(RouterMap.OldUserLoginPage);
-    };
-    /*注册*/
-    registBtnClick = () => {
-        oldUserLoginSingleModel.isCanTopRegist(RouterMap.RegistPage);
     };
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
