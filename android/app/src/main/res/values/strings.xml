@@ -1,4 +1,5 @@
 <resources>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey"></string>
     <string name="app_name">秀购</string>
     <string name="install_allow">安装apk需要权限，请设置允许安装秀购！</string>
     <string name="ad_loop">跳过 %1$d</string>

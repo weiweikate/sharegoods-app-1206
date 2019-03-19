@@ -5,7 +5,6 @@
 
 var Client = require('ftp');
 var fs = require("fs");
-
 var c = new Client();
 var config = {
     host:'172.16.10.253',
@@ -13,12 +12,14 @@ var config = {
     user:'ziming.x',
     password:'XIEziming123.'
 }
-var remoatPath = '/package/test/android';
+var args = process.argv.splice(2);
+var type = args[0]? args[0] : 'test';
+var remoatPath = `/package/${type}/android`;
 var currDate = new Date();
 var dirName = `/${currDate.getFullYear()}.${currDate.getMonth()+1}.${currDate.getDate()}-${currDate.getHours()}.${currDate.getMinutes()}.${currDate.getMinutes()}`;
 var dir = remoatPath+dirName;
 
-var localfile = '../android/app/build/outputs/apk/release/app-release.apk';
+var localfile = '../android/app/build/outputs/apk/releaseStaging/app-releaseStaging.apk';
 
 function cdRemoteDir() {
     c.cwd(dir,function(error,currDir) {
@@ -57,10 +58,8 @@ function makeDir (){
         })
     })
 }
-
 c.on('ready',function() {
     makeDir();
 });
 c.connect(config);
-
 
