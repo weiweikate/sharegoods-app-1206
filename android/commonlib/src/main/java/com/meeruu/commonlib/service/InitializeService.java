@@ -78,16 +78,12 @@ public class InitializeService extends IntentService {
             UApp.debug();
             // 禁止极光捕获crash
             JPushInterface.stopCrashHandler(getApplicationContext());
-            // 初始化 Sensors SDK
-            SensorsUtils.initDebugMode(getApplicationContext(), channel);
         } else {
             JPushInterface.setDebugMode(false);
             JPushInterface.initCrashHandler(getApplicationContext());
             JPushInterface.setChannel(getApplicationContext(), channel);
             // 捕获闪退日志
             CrashHandler.getInstance().init(getApplicationContext());
-            // 初始化 Sensors SDK
-            SensorsUtils.initReleaseMode(getApplicationContext(), channel);
         }
 
     }
