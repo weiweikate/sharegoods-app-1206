@@ -8,6 +8,8 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.microsoft.codepush.react.CodePush;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -33,9 +35,10 @@ import com.squareup.leakcanary.LeakCanary;
 import java.util.Arrays;
 import java.util.List;
 
-import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
-import cn.reactnative.modules.update.UpdateContext;
-import cn.reactnative.modules.update.UpdatePackage;
+//import cn.reactnative.modules.update.UpdateContext;
+//import cn.reactnative.modules.update.UpdatePackage;
+import cn.jpush.android.api.JPushInterface;
+import static com.meeruu.commonlib.config.QiyuConfig.options;
 
 /**
  * @author louis
@@ -72,7 +75,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
 
         @Override
         protected String getJSBundleFile() {
-            return UpdateContext.getBundleUrl(MainApplication.this);
+            return CodePush.getJSBundleFile();
         }
 
         @Override
@@ -90,7 +93,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new MainReactPackage(builder.build()),
                     new ReactVideoPackage(),
                     new VectorIconsPackage(),
-                    new UpdatePackage(),
                     new SvgPackage(),
                     new RNDeviceInfo(),
                     new RNGeolocationPackage(),
@@ -103,6 +105,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),
+                    new CodePush(BuildConfig.CODEPUSH_KEY,MainApplication.this,BuildConfig.DEBUG),
                     new RNCWebViewPackage()
             );
         }

@@ -12,6 +12,10 @@ android {
         versionName '4.9.1'
     }
 
+    buildTypes {
+        releaseStaging {}
+    }
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
