@@ -147,7 +147,6 @@ dependencies {
     api project(':qrcode')
     api project(':lottie')
     api project(':base_adapter')
-    api project(':react-native-extra-dimensions-android')
     api project(':react-native-webview')
     api project(':react-native-extra-dimensions-android')
     api project(':react-native-code-push')

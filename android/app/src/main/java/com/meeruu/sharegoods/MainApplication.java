@@ -35,10 +35,6 @@ import com.squareup.leakcanary.LeakCanary;
 import java.util.Arrays;
 import java.util.List;
 
-import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
-import cn.reactnative.modules.update.UpdateContext;
-import cn.reactnative.modules.update.UpdatePackage;
-
 //import cn.reactnative.modules.update.UpdateContext;
 //import cn.reactnative.modules.update.UpdatePackage;
 import cn.jpush.android.api.JPushInterface;
