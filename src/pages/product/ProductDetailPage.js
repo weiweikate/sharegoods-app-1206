@@ -234,12 +234,12 @@ export default class ProductDetailPage extends BasePage {
                 data: data
             }, () => {
                 /*商品详情埋点*/
-                const { prodCode, name, priceType, originalPrice, groupPrice } = data || {};
+                const { prodCode, name, priceType, minPrice, maxPrice, groupPrice } = data || {};
                 track(trackEvent.ProductDetail, {
                     spuCode: prodCode,
                     spuName: name,
                     priceShareStore: groupPrice,
-                    pricePerCommodity: originalPrice,
+                    pricePerCommodity: minPrice !== maxPrice ? `${minPrice}-${maxPrice}` : `${minPrice}`,
                     priceType: priceType === 2 ? 100 : user.levelRemark
                 });
                 this._getQueryByProductId();
@@ -334,7 +334,7 @@ export default class ProductDetailPage extends BasePage {
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: this.state.data.prodCode,
-                spuName:this.state.data.name
+                spuName: this.state.data.name
             });
             console.log('ConfirOrderPage', this.params);
             this.$navigate('order/order/ConfirOrderPage', {
