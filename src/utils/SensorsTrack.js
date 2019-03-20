@@ -1,5 +1,6 @@
 import { NativeModules } from 'react-native';
-import SensorsEvent from './SensorsEvent'
+// import SensorsEvent from './SensorsEvent'
+import SensorsEvent from './TrackEvent'
 const {
     track,
     trackTimerStart,
