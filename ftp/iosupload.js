@@ -53,13 +53,20 @@ function cdRemoteDir() {
                 console.error(error);
                 return;
             }
-            upload();
+            upload(endDir);
         })
     })
 }
 
-function upload() {
-    let remoteFile = 'release.ipa';
+function upload(endDir) {
+
+    var dirArr = endDir.split('/');
+    var remoteFile = '';
+    if (dirArr.length > 0) {
+        remoteFile = dirArr[dirArr.length - 1]
+    } else {
+        remoteFile = 'release.ipa';
+    }
     c.put(localfile, remoteFile, function(error) {
         if (error) {
             console.error(error);
