@@ -82,7 +82,7 @@ export default class RequestDetailPage extends BasePage {
 
     };
     showMore = ()=> {
-        this.webView && this.webView.sendToBridge('clickRightItem');
+        this.webView && this.webView.sendToBridge(JSON.stringify({action: 'clickRightItem'}));
     }
 
     autoRun = autorun(() => {

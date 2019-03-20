@@ -110,7 +110,6 @@ export default class ShowHotView extends React.Component {
                                 }}
                                 onItemPress={({ nativeEvent }) => {
                                     const { navigate } = this.props;
-                                    TrackApi.XiuChangDetails({articleCode:nativeEvent.code,author:nativeEvent.userName,collectionCount:nativeEvent.collectCount})
                                     navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });
                                 }}
                 />

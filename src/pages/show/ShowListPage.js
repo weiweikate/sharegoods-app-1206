@@ -169,7 +169,6 @@ export default class ShowListPage extends BasePage {
                             <ShowGroundView style={{flex:1}}
                                             uri={'/discover/query@GET'}
                                             onItemPress={({nativeEvent})=> {
-                                                TrackApi.XiuChangDetails({articleCode:nativeEvent.code,author:nativeEvent.userName,collectionCount:nativeEvent.collectCount})
                                                 that.$navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });}}
                             />
                             :
