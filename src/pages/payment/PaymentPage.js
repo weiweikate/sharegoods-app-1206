@@ -32,7 +32,7 @@ export default class PaymentPage extends BasePage {
 
     constructor(props) {
         super(props);
-        payment.amounts = this.params.amounts ? this.params.amounts : 0
+        payment.amounts = this.params.amounts ? parseFloat(this.params.amounts) : 0.0
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         payment.name = orderProduct && orderProduct.productName
         payment.orderNo = this.params.orderNum;
