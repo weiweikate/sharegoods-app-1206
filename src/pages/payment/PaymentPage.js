@@ -32,7 +32,7 @@ export default class PaymentPage extends BasePage {
 
     constructor(props) {
         super(props);
-        payment.amounts = this.params.amounts ? this.params.amounts : 0
+        payment.amounts = this.params.amounts ? parseFloat(this.params.amounts) : 0.0
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         payment.name = orderProduct && orderProduct.productName
         payment.orderNo = this.params.orderNum;
@@ -114,16 +114,19 @@ export default class PaymentPage extends BasePage {
     };
 
     _cancelPay = () => {
-        this.setState({showPwd: false});
-        Alert.alert(
-            '确认要放弃付款？',
-            '订单会超时关闭，请尽快支付',
-            [
-              {text: '确认离开', onPress: () => {this.setState({showPwd: false}); this._goToOrder()}},
-              {text: '继续支付', onPress: () => {this.setState({showPwd: true});}}
-            ],
-            { cancelable: false }
-        )
+        this.setState({showPwd: false})
+        setTimeout(() => {
+            Alert.alert(
+                '确认要放弃付款？',
+                '订单会超时关闭，请尽快支付',
+                [
+                  {text: '确认离开', onPress: () => {this.setState({showPwd: false}); this._goToOrder()}},
+                  {text: '继续支付', onPress: () => {this.setState({showPwd: true});}}
+                ],
+                { cancelable: false }
+            )
+        }, 600)
+        
     }
 
     _goToOrder(index) {
