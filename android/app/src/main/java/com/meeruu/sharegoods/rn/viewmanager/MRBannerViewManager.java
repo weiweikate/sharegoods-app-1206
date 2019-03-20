@@ -11,6 +11,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.customview.loopbanner.BannerLayout;
 import com.meeruu.commonlib.customview.loopbanner.OnPageSelected;
@@ -175,7 +176,9 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
 
     @ReactProp(name = "itemSpace")
     public void setItemSpace(BannerLayout view, Integer space) {
-        view.setItemSpace(DensityUtils.dip2px(space));
+        if (BaseApplication.appContext != null) {
+            view.setItemSpace(DensityUtils.dip2px(space));
+        }
     }
 
     @Nullable
