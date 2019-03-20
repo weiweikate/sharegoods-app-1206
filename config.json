@@ -1,4 +1,5 @@
 {
+    "Version":"1.2.1.6",
     "showDebugPanel": true,
     "envType": "qa",
     "isDevHotUpdate": false,
@@ -15,7 +16,6 @@
             "h5": "https://devh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
-            //"gh_a7c8f565ea2e" uat
         },
         "qa": {
             "name": "测试",
