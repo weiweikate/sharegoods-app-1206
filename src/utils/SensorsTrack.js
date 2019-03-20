@@ -11,9 +11,6 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
-const huchao = {
-
-}
 
 const spellShopTrack = {
     IndexStoreBannerClick:'IndexStoreBannerClick',//拼店首页banner推荐位
@@ -31,13 +28,31 @@ const productTrack = {
 }
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {
-    QrcodeShareto: 'QrCodeShareto',//分享二维码
+    QrCodeShareto: 'QrCodeShareto',//分享二维码
+}
+
+const mineEvent = {
+    ClickModifyAvatar: 'ClickModifyAvatar', //点击修改头像
+    ModifuAvatarSuccess: 'ModifuAvatarSuccess', // 修改头像成功
+    ClickModifyNickName: 'ClickModifyNickName', // 点击修改昵称
+    ModifyNickNameSuccess: 'ModifyNickNameSuccess', //修改昵称成功
+    ClickRealCodeentityVerify: 'ClickRealCodeentityVerify', //点击实名认证
+    ReadCodeentityVerifySuccss: 'ReadCodeentityVerifySuccss', //实名认证成功
+    ClickOnlineCustomerService: 'ClickOnlineCustomerService', //点击在线客服 0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
+    ClickPhoneCustomerService: 'ClickPhoneCustomerService' //点击客服电话    0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
+}
+
+const afterEvent = {
+    ApplyReturn: 'ApplyReturn' // 0：未知 1：仅退款 2：退货退款 3：换货
 }
 const trackEvent = {
-    ...huchao,
-    ...spellShopTrack,
-    ...productTrack,
-    ...inviteEvent,
+    bannerClick: 'AdBannerClick',//banner点击
+    bannerSwiper: 'AdBannerShow',//banner滑动
+    recommanderBannerClick: 'RecommanderBannerClick', //推荐为banner点击
+    billboardBannerClick: 'BillboardBannerClick', //今日榜单
+    selectedBannerClick: 'SelectedBannerClick', //精品推荐
+    hotsellBannerClick: 'HotsellBannerClick', //app首页超值热卖专题广告位
+    recommendedForYouBannerClick: 'RecommendedForYouBannerClick', //app首页为你推荐广告位
     BannerShow: 'BannerShow', //首页埋点
     BannerClick: 'BannerClick',
     login: 'Login',//登录
@@ -73,6 +88,11 @@ const trackEvent = {
     OrderAgain:"OrderAgain",//再次购买
     submitOrder: 'SubmitOrder',//提交订单,
     SubmitOrderDetail:'SubmitOrderDetail',//提交订单详情
+    ...spellShopTrack,
+    ...productTrack,
+    ...inviteEvent,
+    ...mineEvent,
+    ...afterEvent,
 };
 function trackUtil(p) {
     let arr = {};

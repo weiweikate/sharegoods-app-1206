@@ -92,7 +92,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
         if (user && user.headImg && user.headImg.length > 4) {
             logo = user.headImg;
         }
-        track(trackEvent.QrcodeShareto, { qrCodeID: this.linkUrl, shareMethod: '保存图片' });
+        // track(trackEvent.QrcodeShareto, { qrCodeID: this.linkUrl, shareMethod: '保存图片' });
         this.setState({
             disable: true
         }, () => {
@@ -244,7 +244,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     //     userName: 'gh_3ac2059ac66f',
                     //     miniProgramPath: 'pages/index/index'}}
                                 trackParmas={{ QrCodeID: this.linkUrl }}
-                                trackEvent={trackEvent.QrcodeShareto}
+                                trackEvent={trackEvent.QrCodeShareto}
                                 // luckyDraw={true}
                 />
             </View>
