@@ -105,12 +105,12 @@ export default class JudgePhonePage extends BasePage {
         //获取验证码
         let that = this;
         if (StringUtils.checkPhone(tel)) {
-            this.setState({downTime: 60});
-            bridge.$toast('验证码已发送请注意查收');
-            (new TimeDownUtils()).startDown((time) => {
-                that.setState({downTime: time});
-            });
             SMSTool.sendVerificationCode(this.params.title === '设置交易密码' ? SMSTool.SMSType.SetSaleType : SMSTool.SMSType.ForgetSaleType, tel).then((data) => {
+                that.setState({downTime: 60});
+                bridge.$toast('验证码已发送请注意查收');
+                (new TimeDownUtils()).startDown((time) => {
+                    that.setState({downTime: time});
+                });
             }).catch((data) => {
                 that.setState({downTime: 0});
                 bridge.$toast(data.msg);

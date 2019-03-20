@@ -41,7 +41,7 @@ public class SensorsUtils {
 
     private static void initReleaseMode(Context context, String channel) {
         // 初始化
-        SensorsDataAPI.sharedInstance(context, "https://stat.sharegoodsmall.com/sa?project=production",
+        SensorsDataAPI.sharedInstance(context, "https://track.sharegoodsmall.com/sa?project=production",
                 SensorsDataAPI.DebugMode.DEBUG_OFF);
         initConfig(context, channel);
     }
