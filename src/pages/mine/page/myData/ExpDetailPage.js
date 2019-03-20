@@ -29,6 +29,34 @@ import StringUtils from "../../../../utils/StringUtils";
      xiugou_punishment,
      xiugou_reword,
  } =res.myData;
+//  const detailData ={
+//     1:{title:"邀请注册奖励",icon:''},
+//     2:{title:"邀请注册奖励",icon:''},
+//      3:{title:"交易奖励",icon:''},
+//     4:{title:"交易奖励",icon:''},
+//     5:{title:"交易奖励",icon:''},
+// // 11
+//      6:{title:"交易奖励",icon:''},
+//      7:{title:"交易奖励",icon:''},
+//      8:{title:"交易奖励",icon:''},
+//      9:{title:"签到奖励",icon:''},
+//      10:{title:"分享奖励",icon:''},
+//      11:{title:"分享奖励",icon:''},
+//      12:{title:"会员奖励",icon:''},
+    // GRJLJ(12,"个人奖励金","会员奖励"),
+    // GMLB(13,"礼包获取","交易奖励"),
+    // EXPZQ(14,"经验值专区","交易奖励"),
+    // OTHER(15,"其他","其他"),
+    //
+    // PROFIT(16,"店铺分红","其他"),
+    // GIVE(17,"运营发放","秀购奖励"),
+    // PUNISHMENT(18,"运营扣除","秀购惩罚"),
+    // LOTTERY(19,"抽奖奖励","抽奖奖励"),
+    //
+    // /** 扣除经验的枚举字段 **/
+    // NOTLOGGED(30,"30天未登录扣除","30天未登录扣除"),
+    // NZJYE(31,"周交易额未达标扣除","周交易额未达标扣除");
+ // }
 export default class ExpDetailPage extends BasePage{
     constructor(props){
         super(props);
