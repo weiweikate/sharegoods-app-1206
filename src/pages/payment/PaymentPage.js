@@ -114,12 +114,13 @@ export default class PaymentPage extends BasePage {
     };
 
     _cancelPay = () => {
+        this.setState({showPwd: false});
         Alert.alert(
             '确认要放弃付款？',
             '订单会超时关闭，请尽快支付',
             [
               {text: '确认离开', onPress: () => {this.setState({showPwd: false}); this._goToOrder()}},
-              {text: '继续支付', onPress: () => {}}
+              {text: '继续支付', onPress: () => {this.setState({showPwd: true});}}
             ],
             { cancelable: false }
         )
