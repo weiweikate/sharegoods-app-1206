@@ -2,7 +2,9 @@ import React from "react";
 import BasePage from "../../BasePage";
 import WebViewBridge from "@mr/webview";
 import { View,
-    Platform
+    Platform,
+    Image,
+    TouchableOpacity
 } from 'react-native';
 import CommShareModal from "../../comm/components/CommShareModal";
 // import res from '../../comm/res';
@@ -12,6 +14,9 @@ import { autorun } from "mobx";
 import user from "../../model/user";
 import { observer } from "mobx-react";
 import DeviceInfo from 'react-native-device-info';
+import res from '../../comm/res'
+import ScreenUtils from '../../utils/ScreenUtils';
+const moreIcon = res.button.message_three;
 
 @observer
 export default class RequestDetailPage extends BasePage {
@@ -49,12 +54,35 @@ export default class RequestDetailPage extends BasePage {
         if (realUri.indexOf("http") === -1) {
             realUri = apiEnvironment.getCurrentH5Url() + realUri;
         }
+
         this.state = {
             title: title,
             uri: realUri,
-            shareParmas: {}
+            shareParmas: {},
+            hasRightItem: false,
         };
 
+    }
+
+    $NavBarRenderRightItem = () => {
+        if (this.state.hasRightItem === true) {
+            return (
+                <TouchableOpacity onPress={this.showMore} style={{
+                    width: ScreenUtils.px2dp(40),
+                    height: ScreenUtils.px2dp(44),
+                    alignItems: "center",
+                    justifyContent: "center"
+                }}>
+                    <Image source={moreIcon}/>
+                </TouchableOpacity>
+            );
+        }else {
+        return <View />
+    }
+
+    };
+    showMore = ()=> {
+        this.webView && this.webView.sendToBridge('clickRightItem');
     }
 
     autoRun = autorun(() => {
@@ -75,6 +103,12 @@ export default class RequestDetailPage extends BasePage {
 
         if (msg.action === "backToHome") {
             this.$navigateBackToHome();
+            return;
+        }
+
+        if (msg.action === "showRightItem") {
+            this.state.hasRightItem=true;
+            this.$renderSuperView();//为了触发render
             return;
         }
     };
