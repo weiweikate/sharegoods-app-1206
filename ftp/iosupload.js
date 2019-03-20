@@ -19,7 +19,7 @@ var dirName = `/feng${currDate.getFullYear()}.${currDate.getMonth() + 1}.${currD
 var localfile = '/Users/mac/Desktop/ipa/crm_app_xiugou.ipa';
 
 function getEnviroment(callBack) {
-    fs.readFile('./config.json', function(err, data) {
+    fs.readFile('/Users/mac/.jenkins/workspace/sharegood-ios/config.json', function(err, data) {
         if (err) {
             return console.error(err);
         }
