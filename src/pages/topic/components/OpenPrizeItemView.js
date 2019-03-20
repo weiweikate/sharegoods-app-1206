@@ -107,7 +107,6 @@ export default class OpenPrizeItemView extends Component {
                         <Text
                             style={ItemStyles.itemBottomTextStyle}
                             numberOfLines={2}
-                            // value=
                             >
                             {itemData.productName}
                         </Text>
