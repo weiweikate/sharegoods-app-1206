@@ -106,7 +106,6 @@ sensorsAnalytics {
 }
 
 dependencies {
-    compile project(':react-native-code-push')
     api fileTree(include: ['*.jar'], dir: 'libs')
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.3') {
         exclude(module: 'support-core-utils')
