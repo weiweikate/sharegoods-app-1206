@@ -73,16 +73,7 @@ export default class LogisticsDetailsPage extends BasePage {
             </View>
         );
     };
-    renderFootder = () => {
-        return (
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-                {/*<Image source={logisticsBottom}*/}
-                         {/*style={{ width: ScreenUtils.width - 20, resizeMode: "stretch", marginTop: -2, marginLeft: 10,*/}
-                             {/*marginRight: 10 }}/>*/}
-            </View>
 
-        );
-    };
     renderHeader = () => {
         return (
             <View>
@@ -94,7 +85,6 @@ export default class LogisticsDetailsPage extends BasePage {
         return (
                 <LogisticsDetailItem
                     time={item.time}
-                    title={item.title}
                     content1={item.content1}
                     isTop={index === 0}
                     isBottom={index + 1 === this.state.viewData.length}
@@ -126,11 +116,9 @@ export default class LogisticsDetailsPage extends BasePage {
                 {this.renderLogisticsNumber()}
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
-                    ListFooterComponent={this.renderFootder}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
                     emptyTip={"暂无数据"}
@@ -139,21 +127,12 @@ export default class LogisticsDetailsPage extends BasePage {
         );
     }
 
-    renderLine = () => {
-        return (
-            <View style={{
-                height: 1,
-                backgroundColor: DesignRule.lineColor_inColorBg,
-                marginLeft: 48,
-                marginRight: 48
-            }}/>
-        );
-    };
-
     componentDidMount() {
         this.loadPageData();
     }
-
+    onRefresh=()=>{
+        this.loadPageData();
+    }
     //**********************************BusinessPart******************************************
     loadPageData() {
         console.log(this.params);
@@ -194,7 +173,8 @@ export default class LogisticsDetailsPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: DesignRule.bgColor,
+        flex: 1,
+        backgroundColor: DesignRule.bgColor,
         marginBottom: 20
     }, logisticsNumber: {
         marginLeft: 15,
@@ -205,7 +185,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         height: 48,
         borderColor: "white",
-        elevation: 2,
         justifyContent: "center"
     }
 });

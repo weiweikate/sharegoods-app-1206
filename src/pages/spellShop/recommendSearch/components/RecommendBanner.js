@@ -47,6 +47,7 @@ export class RecommendBanner extends Component {
             <View>
                 <XGSwiper height={ScreenUtils.autoSizeWidth(230)} width={ScreenUtils.width}
                           renderRow={this._renderViewPageItem}
+                          autoplayTimeout={(bannerList || []).length > 1 ? 5 : 0}
                           dataSource={EmptyUtils.isEmptyArr(bannerList) ? [] : bannerList}
                           onDidChange={(item, index) => {
                               if (this.state.messageIndex !== index) {
