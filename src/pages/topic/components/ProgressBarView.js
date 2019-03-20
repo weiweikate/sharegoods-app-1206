@@ -18,6 +18,7 @@ const statues = {
     timeOver: 4,
     handOver: 5
 };
+
 export default class ProgressBarView extends Component {
     constructor(props) {
         super(props);
@@ -26,10 +27,7 @@ export default class ProgressBarView extends Component {
             [statues.deleteStatue]: null,
             [statues.noBegin]: this._noBeginTextRender,
             [statues.isBeginning]: this._renderProgress,
-            //进度条去掉
-            // [statues.isBeginning]: null,
             [statues.haveSoldOut]: this._renderHaveSoltOut, //将抢光视图去掉
-            // [statues.haveSoldOut]: null,
             [statues.timeOver]: this._renderHaveSoltOut,
             [statues.handOver]: this._renderHaveSoltOut
         };
@@ -41,48 +39,23 @@ export default class ProgressBarView extends Component {
     }
 
     render() {
-        const { statue } = this.props;
+        const { statue, itemData } = this.props;
         return (
-            this.statueRender[statue] ? this.statueRender[statue]() : null
+            itemData.productType === 2 ? (this.statueRender[statue] ? this.statueRender[statue]() : null) : null
         );
     }
 
     _renderProgress = () => {
-        // const { progressValue, haveRobNum } = this.props;
-        // const { progressValue } = this.props;
+        const { progressValue, haveRobNum } = this.props;
         return (
-            <View style={{
-                width: ScreenUtils.width / 2 - 40,
-                height: 12,
-                borderRadius: 6,
-                // backgroundColor: 'rgba(230, 0, 18, 0.3)'
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 5
-            }}>
-                {/*<View style={{*/}
-                    {/*width: progressValue * (ScreenUtils.width / 2 - 40),*/}
-                    {/*height: 12,*/}
-                    {/*borderRadius: 6,*/}
-                    {/*backgroundColor: DesignRule.mainColor,*/}
-                    {/*alignItems: 'flex-start',*/}
-                    {/*justifyContent: 'center',*/}
-                    {/*position: 'absolute'*/}
-                {/*}}/>*/}
-                {/*<Text style={{ fontSize: 11, marginLeft: 5, color: 'white' }}>*/}
-                    {/*/!*{'已抢' + haveRobNum + '件'}*!/*/}
-                {/*</Text>*/}
-                {/*<Text style={{*/}
-                    {/*fontSize: 11,*/}
-                    {/*marginRight: 5,*/}
-                    {/*color: 'white'*/}
-                {/*}}>*/}
-
-                    {/*{(progressValue * 100).toFixed(0) + '%'}*/}
-
-                {/*</Text>*/}
-
+            <View style={Styles.progressBgStyle}>
+                <View style={[Styles.progressContentStyle,{ width: progressValue * (ScreenUtils.width / 2 - 40)}]}/>
+                <Text style={Styles.haveRobTextStyle}>
+                    {'已抢' + haveRobNum + '件'}
+                </Text>
+                <Text style={Styles.progressNumTextStyle}>
+                    {(progressValue * 100).toFixed(0) + '%'}
+                </Text>
             </View>
         );
 
@@ -97,14 +70,13 @@ export default class ProgressBarView extends Component {
                     number={1}
                 >
                     {itemData.reseCount + '人已关注'}
-                    {/*{itemData.notifyFlag + '人已关注'}*/}
                 </Text>
             </View>
 
         );
     };
     _renderHaveSoltOut = () => {
-        // const { itemData } = this.props;
+        const { itemData } = this.props;
         return (
             <Text
                 style={[Styles.normalTextStyle,
@@ -112,15 +84,9 @@ export default class ProgressBarView extends Component {
                 ]}
                 number={1}
             >
-                {/*{'抢光了' + (parseInt(itemData.totalNumber) - parseInt(itemData.surplusNumber)) + '件'}*/}
+                {'抢光了' + (parseInt(itemData.totalNumber) - parseInt(itemData.surplusNumber)) + '件'}
             </Text>
         );
-        // return(
-        //     <View
-        //     style={Styles.normalTextStyle}
-        //     />
-        // )
-
     };
 }
 const Styles = StyleSheet.create({
@@ -129,7 +95,33 @@ const Styles = StyleSheet.create({
         fontSize: 11,
         marginTop: 5,
         marginLeft: 0,
-        marginRight: 10,
+        marginRight: 10
+    },
+    progressBgStyle: {
+        width: ScreenUtils.width / 2 - 40,
+        height: 12,
+        borderRadius: 6,
+        backgroundColor: 'rgba(230, 0, 18, 0.3)',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 5
+    },
+    progressContentStyle: {
+        height: 12,
+        borderRadius: 6,
+        backgroundColor: DesignRule.mainColor,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        position: 'absolute'
+    },
+    haveRobTextStyle: {
+        fontSize: 11, marginLeft: 5, color: 'white'
+    },
+    progressNumTextStyle:{
+        fontSize: 11,
+        marginRight: 5,
+        color: 'white'
     }
 });
 
