@@ -1,6 +1,6 @@
 # 秀购
 ##关于埋点
-在 SensorsEvent.js 文件中编辑相关埋点事件
+在 util/TrackEvent/ 相关模块下编辑相关埋点事件
 如       //微信登录
         "wxLoginSuccess":{
             "des":"微信登录成功埋点",
