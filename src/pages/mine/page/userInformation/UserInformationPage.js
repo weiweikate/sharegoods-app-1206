@@ -16,7 +16,7 @@ import MineApi from '../../api/MineApi';
 import RouterMap from '../../../../navigation/RouterMap';
 import CommModal from '../../../../comm/components/CommModal';
 import { MRText as Text } from '../../../../components/ui';
-import { TrackApi } from '../../../../utils/SensorsTrack';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 /**
  * @author chenxiang
@@ -191,7 +191,7 @@ export default class UserInformationPage extends BasePage {
     }
 
     takePhoto = () => {
-        TrackApi.ClickModifyAvatar({});
+        track(trackEvent.ClickModifyAvatar,{});
         BusinessUtils.getImagePicker(callback => {
             this.$loadingShow();
             MineApi.updateUserById({ headImg: callback.imageUrl[0], type: 1 }).then((response) => {
@@ -201,9 +201,9 @@ export default class UserInformationPage extends BasePage {
                     user.headImg = callback.imageUrl[0];
                     this.$toastShow('头像修改成功');
                     if (callback.camera === true){
-                        TrackApi.ModifuAvatarSuccess_camera({});
+                        track(trackEvent.ModifuAvatarSuccess, {modificationMode:1});
                     } else {
-                        TrackApi.ModifuAvatarSuccess_photo({});
+                        track(trackEvent.ModifuAvatarSuccess, {modificationMode:2});
                     }
                 }
             }).catch(err => {
@@ -217,12 +217,12 @@ export default class UserInformationPage extends BasePage {
     };
     jumpToIDVertify2Page = () => {
         if (!user.realname) {
-            TrackApi.ClickRealCodeentityVerify({});
+            track(trackEvent.ClickRealCodeentityVerify, {});
             this.$navigate('mine/userInformation/IDVertify2Page');
         }
     };
     jumpToNickNameModifyPage = () => {
-        TrackApi.ClickModifyNickName({});
+        track(trackEvent.ClickModifyNickName, {});
         this.$navigate('mine/userInformation/NickNameModifyPage', { oldNickName: user.nickname });
     };
     renderGetCityPicker = () => {

@@ -31,7 +31,7 @@ import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
-import { trackEvent, track, TrackApi } from '../../../utils/SensorsTrack';
+import { trackEvent, track } from '../../../utils/SensorsTrack';
 import ProductApi from '../../product/api/ProductApi';
 
 const { arrow_right } = res;
@@ -379,11 +379,11 @@ class AfterSaleServicePage extends BasePage {
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, priceId, itemData) => {
+    _selectionViewConfirm = (amount, priceId, exchangeSpec, exchangeSpecImg) => {
         this.setState({
             exchangePriceId: priceId,
-            exchangeSpec: itemData.propertyValues,
-            exchangeSpecImg: itemData.specImg
+            exchangeSpec: exchangeSpec,
+            exchangeSpecImg: exchangeSpecImg
         });
     };
 
@@ -522,7 +522,7 @@ class AfterSaleServicePage extends BasePage {
         }
         let text = ['退款', '退货', '换货'][pageType];
         if (StringUtils.isEmpty(returnReason)) {
-            NativeModules.commModule.toast('请选择' + text + '原因');
+            NativeModules.commModule.toast('请选择'+ text +  '原因');
             return;
         }
 
@@ -531,11 +531,11 @@ class AfterSaleServicePage extends BasePage {
             NativeModules.commModule.toast('请填写退款的金额');
             return;
         }
-        if (this.state.editable && parseFloat(applyRefundAmount) <= 0 && pageType !== 2) {
+        if (this.state.editable && parseFloat(applyRefundAmount) <= 0 && pageType !== 2){
             NativeModules.commModule.toast('请填写退款金额大于0');
             return;
         }
-        let { productName, warehouseOrderNo, payAmount, prodCode } = this.state.productData;
+        let { payAmount } = this.state.productData;
 
         /** 修改申请*/
         if (this.params.isEdit) {
@@ -550,29 +550,11 @@ class AfterSaleServicePage extends BasePage {
                 bridge.$toast(e.msg);
             });
         } else {
-            // applicationIDorderID	申请单号订单ID
-            // commodityID	商品ID
-            // commodityName	商品名称
-            // firstCommodity	商品一级分类
-            // secondCommodity	商品二级分类
-            // commodityAmount	支付商品全额
-            // PartlyReturn	是否部分退款
-            track(trackEvent.applyReturn,
-                {
-                    orderID: warehouseOrderNo,
-                    applicationIDorderID: orderProductNo,
-                    commodityName: productName,
-                    commodityAmount: payAmount,
-                    partlyReturn: payAmount !== applyRefundAmount,
-                    commodityID: prodCode,
-                    applyReturnCause: returnReason
-                });
-            TrackApi.ApplyReturn({
+            track(trackEvent.ApplyReturn, {
                 applicationCode: this.state.productData.warehouseOrderNo,//申请单号
                 orderId: orderProductNo, //订单id
-                orderAmount: applyRefundAmount,
-                actualPaymentAmount: payAmount,
-                applyReturnCause: returnReason
+                returnType: pageType + 1,//退款类型
+                actualPaymentAmount:  payAmount,// 用户实际支付金额
             });
             /** 提交申请、提交申请成功要通知订单刷新*/
             params.orderProductNo = orderProductNo;

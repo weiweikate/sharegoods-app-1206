@@ -47,7 +47,7 @@ export default class CustomerServiceView extends React.Component {
 
     /** 打电话*/
     callPhone = () => {
-        track(trackEvent.contact, {questionType: "售后", origin: "热线"});
+        track(trackEvent.ClickPhoneCustomerService, {customerServiceModuleSource: 4});
         if ("400-9696-365") {
             BusinessUtils.callPhone("4009696365");
         } else {
@@ -56,7 +56,7 @@ export default class CustomerServiceView extends React.Component {
     };
     /** 七鱼客服*/
     contactSeller = () => {
-        track(trackEvent.contact, {questionType: "售后", origin: "在线"});
+        track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 4});
         QYChatUtil.qiYUChat();
     };
 
