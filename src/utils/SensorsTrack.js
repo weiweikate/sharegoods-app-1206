@@ -11,9 +11,6 @@ const {
 // track("event_name",parmas)
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
-const huchao = {
-
-}
 
 const spellShopTrack = {
     IndexStoreBannerClick:'IndexStoreBannerClick',//拼店首页banner推荐位
@@ -41,6 +38,8 @@ const mineEvent = {
     ModifyNickNameSuccess: 'ModifyNickNameSuccess', //修改昵称成功
     ClickRealCodeentityVerify: 'ClickRealCodeentityVerify', //点击实名认证
     ReadCodeentityVerifySuccss: 'ReadCodeentityVerifySuccss', //实名认证成功
+    ClickOnlineCustomerService: 'ClickOnlineCustomerService', //点击在线客服 0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
+    ClickPhoneCustomerService: 'ClickPhoneCustomerService' //点击客服电话    0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
 }
 
 const afterEvent = {
@@ -87,7 +86,6 @@ const trackEvent = {
     OrderAgain:"OrderAgain",//再次购买
     submitOrder: 'SubmitOrder',//提交订单,
     SubmitOrderDetail:'SubmitOrderDetail',//提交订单详情
-    ...huchao,
     ...spellShopTrack,
     ...productTrack,
     ...inviteEvent,
