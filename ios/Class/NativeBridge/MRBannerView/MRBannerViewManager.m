@@ -30,9 +30,11 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 
 @end
 
+static CGFloat initAutoInterval = 0;
 
 @interface MRBannerView()<TYCyclePagerViewDataSource,TYCyclePagerViewDelegate>
 @property (nonatomic,strong) TYCyclePagerView* pgView;
+
 @end
 
 @implementation MRBannerView
@@ -63,10 +65,11 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 
 - (void)setAutoInterval:(CGFloat)autoInterval{
   _pgView.autoScrollInterval = autoInterval;
+  initAutoInterval = autoInterval;
 }
 
 - (void)setAutoLoop:(BOOL)autoLoop{
-  _pgView.isInfiniteLoop = autoLoop;
+  _pgView.autoScrollInterval = autoLoop && initAutoInterval ? initAutoInterval : 0;
 }
 
 - (NSInteger)numberOfItemsInPagerView:(TYCyclePagerView *)pageView{

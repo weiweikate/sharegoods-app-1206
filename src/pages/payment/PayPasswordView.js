@@ -78,6 +78,7 @@ export default class PasswordView extends Component {
         return  <Modal
         animation='fade'
         visible={true}
+        onRequestClose={()=>this._dismiss()}
         >
         <View style={styles.container}>
             <View style={{flex: 1}}/>
