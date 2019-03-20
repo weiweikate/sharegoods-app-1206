@@ -20,8 +20,8 @@
         "bulid_path": "../node_modules/@mr/rn-webview-bridge/android/build.gradle"
     },
     "fetch-blob": {
-        "content": "apply from: '../../../android/rn-fetch-blob.gradle'",
-        "bulid_path": "../node_modules/react-native-fetch-blob/android/build.gradle"
+        "content": "apply from: '../../../../android/rn-fetch-blob.gradle'",
+        "bulid_path": "../node_modules/@mr/rn-fetch-blob/android/build.gradle"
     },
     "linear-gradien": {
         "content": "apply from: '../../../android/rn-gradient.gradle'",

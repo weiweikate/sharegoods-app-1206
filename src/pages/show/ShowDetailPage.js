@@ -31,6 +31,7 @@ import {
 import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
+import { TrackApi } from '../../utils/SensorsTrack';
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -79,6 +80,8 @@ export default class ShowDetailPage extends BasePage {
                     Toast.showLoading();
                     if (this.params.code) {
                         this.showDetailModule.showDetailCode(this.params.code || this.params.id).then(() => {
+                            const {detail} = this.showDetailModule;
+                            TrackApi.XiuChangDetails({articleCode:detail.code,author:detail.userName,collectionCount:detail.collectCount});
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
@@ -96,6 +99,8 @@ export default class ShowDetailPage extends BasePage {
                         });
                     } else {
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
+                            const {detail} = this.showDetailModule;
+                            TrackApi.XiuChangDetails({articleCode:detail.code,author:detail.userName,collectionCount:detail.collectCount});
                             this.setState({
                                 pageState: PageLoadingState.success
                             });

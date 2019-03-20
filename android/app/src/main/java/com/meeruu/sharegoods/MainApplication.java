@@ -58,10 +58,10 @@ public class MainApplication extends BaseApplication implements ReactApplication
     @Override
     public void onCreate() {
         if (packageName.equals(getPackageName())) {
-            super.onCreate();
             SoLoader.init(getApplicationContext(), /* native exopackage */ false);
             Fresco.initialize(getApplicationContext(),
                     FrescoImagePipelineConfig.getDefaultImagePipelineConfig(getApplicationContext()));
+            super.onCreate();
             // 检测内存泄漏
             LeakCanary.install(this);
         }
