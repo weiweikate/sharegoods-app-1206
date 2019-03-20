@@ -20,13 +20,13 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 
-const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
-const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
-const storeShareBonus = res.userInfoImg.xiangjzhanghu_icon03_06;
-const shouyi = res.userInfoImg.xiangjzhanghu_icon03_10;
-const xiaofei = res.userInfoImg.xiangjzhanghu_icon03_12;
+// const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
+// const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
+// const storeShareBonus = res.userInfoImg.xiangjzhanghu_icon03_06;
+// const shouyi = res.userInfoImg.xiangjzhanghu_icon03_10;
+// const xiaofei = res.userInfoImg.xiangjzhanghu_icon03_12;
 const salesCommissions = res.userInfoImg.xiangjzhanghu_icon03_08;
-const renwu = res.userInfoImg.xiangjzhanghu_icon03_16;
+// const renwu = res.userInfoImg.xiangjzhanghu_icon03_16;
 const questionImage_white = res.userInfoImg.questionImage_white;
 /** 先放在，不改*/
 import topicShow from '../../../topic/res/topicShow.png';
@@ -272,9 +272,9 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '服务顾问管理费', '品牌分红奖励', '品牌推广奖励', '现金红包', '任务奖励'];
+        // let use_type = ['', '用户收益', '提现支出', '消费支出', '服务顾问管理费', '品牌分红奖励', '品牌推广奖励', '现金红包', '任务奖励'];
         let use_type_symbol = ['', '+', '-'];
-        let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
+        // let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         if(this.currentPage>1){
             Toast.showLoading();
         }
@@ -287,10 +287,10 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
-                            type: use_type[item.useType],
+                            type: "品牌推广奖励金",
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             capital: use_type_symbol[item.biType] + item.balance,
-                            iconImage: useLeftImg[item.useType],
+                            iconImage: salesCommissions,
                             realBalance: item.realBalance
                         });
                     });

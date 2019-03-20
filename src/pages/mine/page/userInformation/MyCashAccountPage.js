@@ -216,7 +216,7 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '服务顾问管理费', '品牌分红奖励', '品牌推广奖励', '现金红包', '任务奖励', '消费退款', '提现退回'];
+        let use_type = ['', '其他', '提现支出', '消费支出', '导师管理费', '额外品牌分红奖励', '品牌推广奖励金', '其他', '任务奖励', '消费退款', '提现退款'];
         let use_type_symbol = ['', '+', '-'];
         let useLeftImg = ['', renwu, tixiang, xiaofei, daoshi, fenhong, tuiguang, hongbao, renwu, xiaofeitk, tixiantk];
         if (this.currentPage > 1) {
