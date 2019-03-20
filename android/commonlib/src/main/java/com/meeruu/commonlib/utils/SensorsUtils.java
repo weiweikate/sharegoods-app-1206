@@ -33,7 +33,7 @@ public class SensorsUtils {
 
     private static void initDebugMode(Context context, String channel) {
         SensorsDataAPI.sharedInstance(context, "https://stat.sharegoodsmall.com/sa?project=default",
-                SensorsDataAPI.DebugMode.DEBUG_OFF);
+                SensorsDataAPI.DebugMode.DEBUG_AND_TRACK);
         //开启调试日志（ true 表示开启调试日志）
         SensorsDataAPI.sharedInstance().enableLog(false);
         initConfig(context, channel);
