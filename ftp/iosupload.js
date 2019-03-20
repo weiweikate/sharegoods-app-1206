@@ -13,6 +13,7 @@ var config = {
     user: 'yufeng.h',
     password: 'Hyf*123456'
 }
+console.log(__dirname)
 var currDate = new Date();
 var dirName = `/feng${currDate.getFullYear()}.${currDate.getMonth() + 1}.${currDate.getDate()}-${currDate.getHours()}.${currDate.getMinutes()}.${currDate.getMinutes()}`;
 var localfile = '/Users/mac/Desktop/ipa/crm_app_xiugou.ipa';
@@ -23,19 +24,17 @@ function getEnviroment(callBack) {
             return console.error(err);
         }
         var config = JSON.parse(data);//将字符串转换为json对象
-        callBack && callBack(config.envType,config.Version)
+        callBack && callBack(config.envType, config.Version)
     })
 }
 
 
-
-
 function getRemoatPath(callBack) {
-    getEnviroment((evnTyp,dirName) => {
+    getEnviroment((evnTyp, dirName) => {
         console.log(config.envType)
         var endDir = '';
         if (evnTyp === 'qa') {
-            endDir = '/package/test/ios/'+dirName;
+            endDir = '/package/test/ios/' + dirName;
         } else if (evnTyp === 'pre_release') {
             endDir = '/package/uat/ios/' + dirName;
         } else if (evnTyp === 'garyTest') {
@@ -48,7 +47,7 @@ function getRemoatPath(callBack) {
 }
 
 function cdRemoteDir() {
-    getRemoatPath((endDir)=>{
+    getRemoatPath((endDir) => {
         c.cwd(endDir, function(error, currDir) {
             if (error) {
                 console.error(error);
@@ -75,9 +74,10 @@ function upload() {
 
 function makeDir() {
     console.log(localfile);
-    getRemoatPath((endDir)=>{
-        console.log('远程地址'+endDir);
-        console.log('本地地址'+localfile)
+
+    getRemoatPath((endDir) => {
+        console.log('远程地址' + endDir);
+        console.log('本地地址' + localfile)
         console.log(__dirname)
         c.mkdir(endDir, function() {
             fs.exists(localfile, function(exists) {
