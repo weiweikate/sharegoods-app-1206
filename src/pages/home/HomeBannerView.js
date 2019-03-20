@@ -53,7 +53,6 @@ export default class HomeBannerView extends Component {
     };
 
     _onDidScrollToIndex(index) {
-        console.log('_onDidScrollToIndex', index)
         const { bannerList } = bannerModule;
         let data = bannerList[index];
         track(trackEvent.bannerShow, homeModule.bannerPoint(data, homePoint.homeBanner));
