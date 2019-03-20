@@ -53,6 +53,8 @@ const trackEvent = {
     selectedBannerClick: 'SelectedBannerClick', //精品推荐
     hotsellBannerClick: 'HotsellBannerClick', //app首页超值热卖专题广告位
     recommendedForYouBannerClick: 'RecommendedForYouBannerClick', //app首页为你推荐广告位
+    BannerShow: 'BannerShow', //首页埋点
+    BannerClick: 'BannerClick',
     login: 'Login',//登录
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
