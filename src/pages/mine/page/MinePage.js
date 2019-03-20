@@ -749,6 +749,7 @@ export default class MinePage extends BasePage {
             icon: mine_icon_discollect,
             onPress: () => {
                 TrackApi.ViewMyXiuCollection();
+                TrackApi.WatchXiuChang({moduleSource:3});
                 this.$navigate(RouterMap.ShowConnectPage);
             }
         };
