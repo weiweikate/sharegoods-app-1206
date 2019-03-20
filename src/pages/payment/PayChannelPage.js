@@ -211,7 +211,8 @@ export default class ChannelPage extends BasePage {
     _render() {
         const { selctedPayType, name } = payment
         const { orderChecking } = this.state
-
+        let payMoney = this.remainMoney  ? this.remainMoney  : payment.amounts
+        
         return <View style={styles.container}>
             <View style={styles.content}>
             <View style={styles.row}>
@@ -220,7 +221,7 @@ export default class ChannelPage extends BasePage {
             </View>
             <View style={styles.needView}>
             <Text style={styles.need}>支付金额</Text>
-            <Text style={styles.amount}>￥{this.remainMoney  ? this.remainMoney  : payment.amounts}</Text>
+            <Text style={styles.amount}>￥{payMoney.toFixed(2)}</Text>
             </View>
             <View style={styles.channelView}>
             <TouchableWithoutFeedback onPress={()=> this._selectedType(paymentType.wechat)}>

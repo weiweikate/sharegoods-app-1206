@@ -237,7 +237,7 @@ export default class DownPricePage extends BasePage {
                                     hdImageURL:this.dataModel.imgUrl || '',
                                     title: this.dataModel.topicTitle,
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
-                                    linkUrl: apiEnvironment.getCurrentH5Url() + '/subject/' + linkTypeCode,
+                                    linkUrl:  `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
                                     thumImage: 'logo.png'
                                 }}
                                 miniProgramJson={{

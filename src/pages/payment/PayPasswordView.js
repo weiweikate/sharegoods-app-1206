@@ -1,22 +1,34 @@
 import React, {Component} from 'react'
 import { StyleSheet, View, TouchableOpacity, Image, Platform, Keyboard} from 'react-native'
-import PasswordInput from '../mine/components/PasswordInput'
+import PasswordInput from '../../components/ui/PasswordInput'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
 import PropTypes from 'prop-types';
 import res from './res';
 import {MRText as Text} from '../../components/ui'
 import Modal from '../../comm/components/CommModal'
+import DesignRule from '../../constants/DesignRule'
 
 export default class PasswordView extends Component {
     static propTypes = {
         finishedAction: PropTypes.func,
         forgetAction: PropTypes.func.isRequired,
-        closeAction: PropTypes.func
+        closeAction: PropTypes.func,
+        showPwdMsg: PropTypes.string
     };
 
     state = {
-        keyboardHeight: px2dp(448) + ScreenUtils.safeBottom
+        keyboardHeight: px2dp(448) + ScreenUtils.safeBottom,
+        pwdMsg: ''
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('PasswordView componentWillReceiveProps', nextProps)
+        const { showPwdMsg } = nextProps
+        if (showPwdMsg) {
+            this.passwordInput && this.passwordInput.changeRedBorderColor()
+            this.state.pwdMsg = showPwdMsg
+        }
     }
 
     componentWillMount() {
@@ -44,9 +56,7 @@ export default class PasswordView extends Component {
     }
 
     inputText(value) {
-        if (value.length === 6) {
-            this.props.finishedAction(value)
-        }
+        this.props.finishedAction(value)
     }
 
     forgetAction() {
@@ -57,8 +67,14 @@ export default class PasswordView extends Component {
         this.props.dismiss()
     }
 
+    _onChange() {
+        this.setState({
+            pwdMsg: ''
+        })
+    }
+
     render() {
-        const { keyboardHeight } = this.state
+        const { keyboardHeight, pwdMsg } = this.state
         return  <Modal
         animation='fade'
         visible={true}
@@ -76,13 +92,26 @@ export default class PasswordView extends Component {
                 </View>
                 <View style={styles.right}/>
             </View>
-            <PasswordInput
+            <View style={styles.msgView}>
+            {
+                pwdMsg
+                ?
+                <Text style={styles.showPwdMsg}>{pwdMsg}</Text>
+                :
+                null
+            }
+            </View>
+            <PasswordInput maxLength={6} style={styles.password}
+                      onEnd={(pwd) => this.inputText(pwd)} ref={(ref)=> {this.passwordInput = ref}}
+                      onChange={(pwd) => this._onChange(pwd)}
+                      />
+            {/* <PasswordInput
                 ref={(ref)=>{this.passwordInput = ref}}
                 style={styles.password}
                 maxLength={6}
                 onChange={value => this.inputText(value)}
                 autoFocus = {true}
-            />
+            /> */}
             <TouchableOpacity style={styles.forget} onPress={()=>this.forgetAction()}>
                 <Text style={styles.forgetText} allowFontScaling={false}>忘记密码</Text>
             </TouchableOpacity>
@@ -129,8 +158,7 @@ const styles = StyleSheet.create({
         width:ScreenUtils.width - px2dp(30),
         height: px2dp(57),
         marginRight: px2dp(15),
-        marginLeft: px2dp(15),
-        marginTop: px2dp(49)
+        marginLeft: px2dp(15)
     },
     titleView: {
         flex: 1,
@@ -160,5 +188,14 @@ const styles = StyleSheet.create({
     forgetText: {
         color: '#00A7F5',
         fontSize: px2dp(12)
+    },
+    msgView: {
+        height: px2dp(49),
+        alignItems: 'center',
+        paddingTop: px2dp(18)
+    },
+    showPwdMsg: {
+        color: DesignRule.mainColor,
+        fontSize: px2dp(15)
     }
 })

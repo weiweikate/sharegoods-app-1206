@@ -50,7 +50,9 @@ export default class PasswordInput extends Component {
     }
 
     changeRedBorderColor = () => {
-        this.setState({borderColor: DesignRule.mainColor})
+        this.setState({borderColor: DesignRule.mainColor, text: ''})
+        this.refs.textInput && this.refs.textInput.clear()
+        
     }
 
     render() {
