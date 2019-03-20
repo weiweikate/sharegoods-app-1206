@@ -10,7 +10,6 @@ import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.commonlib.utils.SensorsUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
@@ -61,7 +60,6 @@ public class InitializeService extends IntentService {
             // 延迟2s执行
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
         }
         // umeng初始化
         String channel = WalleChannelReader.getChannel(getApplicationContext(), "guanwang");
