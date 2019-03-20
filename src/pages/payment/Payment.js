@@ -148,7 +148,7 @@ export class Payment {
             payInfo.appid = payInfo.appId
             const resultStr = yield PayUtil.appWXPay(payInfo);
             console.log(JSON.stringify(resultStr));
-            if (parseInt(resultStr.sdkCode, 0) !== 0) {
+            if (parseInt(resultStr.code, 0) !== 0) {
                     // ref && ref.show(2, resultStr.msg)
                 throw new Error(resultStr.msg)
             }

@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         height: 48,
         borderColor: "white",
-        elevation: 2,
         justifyContent: "center"
     }
 });
