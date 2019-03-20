@@ -16,47 +16,29 @@ import AccountItem from '../../components/AccountItem';
 import res from "../../res";
 import user from "../../../../model/user";
 import StringUtils from "../../../../utils/StringUtils";
-// import Toast from "../../../../utils/bridge";
- const {
-     jdt_05,
-     invite_icon,
-     trading_icon,
-     signIn_icon,
-     share_icon,
-     members_icon,
-     activity_icon,
-     xiugou_present,
-     xiugou_punishment,
-     xiugou_reword,
- } =res.myData;
-//  const detailData ={
-//     1:{title:"邀请注册奖励",icon:''},
-//     2:{title:"邀请注册奖励",icon:''},
-//      3:{title:"交易奖励",icon:''},
-//     4:{title:"交易奖励",icon:''},
-//     5:{title:"交易奖励",icon:''},
-// // 11
-//      6:{title:"交易奖励",icon:''},
-//      7:{title:"交易奖励",icon:''},
-//      8:{title:"交易奖励",icon:''},
-//      9:{title:"签到奖励",icon:''},
-//      10:{title:"分享奖励",icon:''},
-//      11:{title:"分享奖励",icon:''},
-//      12:{title:"会员奖励",icon:''},
-    // GRJLJ(12,"个人奖励金","会员奖励"),
-    // GMLB(13,"礼包获取","交易奖励"),
-    // EXPZQ(14,"经验值专区","交易奖励"),
-    // OTHER(15,"其他","其他"),
-    //
-    // PROFIT(16,"店铺分红","其他"),
-    // GIVE(17,"运营发放","秀购奖励"),
-    // PUNISHMENT(18,"运营扣除","秀购惩罚"),
-    // LOTTERY(19,"抽奖奖励","抽奖奖励"),
-    //
-    // /** 扣除经验的枚举字段 **/
-    // NOTLOGGED(30,"30天未登录扣除","30天未登录扣除"),
-    // NZJYE(31,"周交易额未达标扣除","周交易额未达标扣除");
- // }
+ const detailData ={
+    1:{title:"邀请注册奖励",icon:res.myData.invite_icon},
+    2:{title:"邀请注册奖励",icon:res.myData.invite_icon},
+     3:{title:"交易奖励",icon:res.myData.trading_icon},
+    4:{title:"交易奖励",icon:res.myData.trading_icon},
+    5:{title:"交易奖励",icon:res.myData.trading_icon},
+     6:{title:"交易奖励",icon:res.myData.trading_icon},
+     7:{title:"交易奖励",icon:res.myData.trading_icon},
+     8:{title:"交易奖励",icon:res.myData.trading_icon},
+     9:{title:"签到奖励",icon:res.myData.signIn_icon},
+     10:{title:"分享奖励",icon:res.myData.share_icon},
+     11:{title:"分享奖励",icon:res.myData.share_icon},
+     12:{title:"会员奖励",icon:res.myData.members_icon},
+     13:{title:"交易奖励",icon:res.myData.trading_icon},
+     14:{title:"交易奖励",icon:res.myData.trading_icon},
+     15:{title:"其他",icon:res.myData.activity_icon},
+     16:{title:"其他",icon:res.myData.activity_icon},
+     17:{title:"秀购奖励",icon:res.myData.xiugou_present},
+     18:{title:"秀购惩罚",icon:res.myData.xiugou_punishment},
+     19:{title:"抽奖奖励",icon:res.myData.xiugou_reword},
+     30:{title:"30天未登录扣除",icon:res.myData.xiugou_punishment},
+     31:{title:"周交易额未达标扣除",icon:res.myData.xiugou_punishment},
+ }
 export default class ExpDetailPage extends BasePage{
     constructor(props){
         super(props);
@@ -114,7 +96,7 @@ export default class ExpDetailPage extends BasePage{
                        /{this.state.levelExperience}
                    </Text></Text>
 
-                   <ImageBackground source={jdt_05} style={{
+                   <ImageBackground source={res.myData.jdt_05} style={{
                        overflow: "hidden",
                        marginTop: 5,
                        height: 8,
@@ -182,8 +164,8 @@ export default class ExpDetailPage extends BasePage{
     };
     getDataFromNetwork = () => {
         console.log("getDataFromNetwork",this.params.experience)
-        let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励","30天未登录扣除","秀购赠送","秀购惩罚","活动奖励"];
-        let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,share_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon,activity_icon,xiugou_present,xiugou_punishment,xiugou_reword ];
+        // let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励","30天未登录扣除","秀购赠送","秀购惩罚","活动奖励"];
+        // let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,share_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon,activity_icon,xiugou_present,xiugou_punishment,xiugou_reword ];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         MineApi.expDetail({
             page: this.currentPage,
@@ -193,10 +175,10 @@ export default class ExpDetailPage extends BasePage{
                 let data = response.data;
                 data.data.map((item, index) => {
                     arrData.push({
-                        type: use_type[parseInt(item.sourceCode)],
+                        type: detailData[parseInt(item.sourceCode)].title,
                         time: item.createTime,
                         capital: `${parseInt(item.sourceType)===1?"+":"-"}${item.experience}`,
-                        iconImage: use_let_img[parseInt(item.sourceCode)],
+                        iconImage: detailData[parseInt(item.sourceCode)].icon,
                         capitalRed:parseInt(item.sourceType)===1
 
                     });

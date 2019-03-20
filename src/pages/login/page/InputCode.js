@@ -19,7 +19,7 @@ import { TimeDownUtils } from "../../../utils/TimeDownUtils";
 import SMSTool from "../../../utils/SMSTool";
 import { registAction } from "../model/LoginActionModel";
 import { track, TrackApi } from "../../../utils/SensorsTrack";
-import CustomNumKeyBoard from '../../../comm/components/CustomNumKeyBoard'
+// import CustomNumKeyBoard from '../../../comm/components/CustomNumKeyBoard'
 
 const { px2dp } = ScreenUtils;
 
@@ -30,7 +30,7 @@ export default class InputCode extends BasePage {
         this.state = {
             downTime: 60,
             verifyCode: '',
-            showKeyBoard: true
+            // showKeyBoard: true
         };
     }
 
@@ -68,12 +68,6 @@ export default class InputCode extends BasePage {
                                 this._finshInputCode(text);
                             }}
                             verifyCodeLength={4}
-                            onTouchInput={() => {
-                                this.setState({
-                                    showKeyBoard: true
-                                })
-                            }}
-                            verifyCode={this.state.verifyCode}
                         />
 
                         <View style={{ marginTop: px2dp(10), flexDirection: "row" }}>
@@ -105,40 +99,6 @@ export default class InputCode extends BasePage {
                         </View>
                     </View>
                 </View>
-                <CustomNumKeyBoard
-                    visible={this.state.showKeyBoard}
-                    transparent={true}
-                    isSaveCurrentInputState={false}
-                    itemClick={(text) => {
-                        if (text !== '回退'){
-                            if (this.state.verifyCode.length >= 4){
-
-                            } else {
-                                let currentVerifyCode = this.state.verifyCode;
-                                currentVerifyCode = currentVerifyCode + text;
-                                this.setState({
-                                    verifyCode:currentVerifyCode
-                                })
-                                if (currentVerifyCode.length === 4){
-                                    this.setState({
-                                        showKeyBoard:false
-                                    },()=>{
-                                        this._finshInputCode(currentVerifyCode);
-                                    })
-                                }
-                            }
-                        } else {
-                            this.setState({
-                                verifyCode:this.state.verifyCode.substr(0,this.state.verifyCode.length - 1)
-                            })
-                        }
-                    }}
-                    closeAction={(flag) => {
-                        this.setState({
-                            showKeyBoard: false
-                        })
-                    }}
-                />
             </View>
         );
     }

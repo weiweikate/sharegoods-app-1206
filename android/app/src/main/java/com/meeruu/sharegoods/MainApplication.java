@@ -8,9 +8,6 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
-import com.microsoft.codepush.react.CodePush;
-import com.microsoft.codepush.react.CodePush;
-import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -24,6 +21,7 @@ import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
+import com.microsoft.codepush.react.CodePush;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.reactlibrary.RNGeolocationPackage;
@@ -36,10 +34,7 @@ import com.squareup.leakcanary.LeakCanary;
 import java.util.Arrays;
 import java.util.List;
 
-//import cn.reactnative.modules.update.UpdateContext;
-//import cn.reactnative.modules.update.UpdatePackage;
-import cn.jpush.android.api.JPushInterface;
-import static com.meeruu.commonlib.config.QiyuConfig.options;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 
 /**
  * @author louis
@@ -106,7 +101,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new RNSensorsAnalyticsPackage(),
                     new PickerPackage(),
                     new ExtraDimensionsPackage(),
-                    new CodePush(BuildConfig.CODEPUSH_KEY,MainApplication.this,BuildConfig.DEBUG),
+                    new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG),
                     new RNCWebViewPackage()
             );
         }
