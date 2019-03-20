@@ -176,7 +176,6 @@ export default class ShowDetailPage extends BasePage {
     };
 
 
-
     _renderNormalTitle() {
         return <View style={styles.whiteNav} ref={(ref) => {
             this._whiteNavRef = ref;
@@ -206,9 +205,9 @@ export default class ShowDetailPage extends BasePage {
         });
     }
 
-    _onLongClickImage = (event)=>{
+    _onLongClickImage = (event) => {
         let url = event.nativeEvent.url;
-        Alert.alert('保存图片','', [
+        Alert.alert('保存图片', '', [
             {
                 text: '取消', onPress: () => {
 
@@ -216,14 +215,14 @@ export default class ShowDetailPage extends BasePage {
             },
             {
                 text: '保存到相册', onPress: () => {
-                    NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url).then(()=>{
-                        this.$toastShow('保存成功!')
-                    }).catch((error)=>{
+                    NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url).then(() => {
+                        this.$toastShow('保存成功!');
+                    }).catch((error) => {
 
                     });
                 }
             }]);
-    }
+    };
 
     _render() {
 
@@ -321,7 +320,7 @@ export default class ShowDetailPage extends BasePage {
                 </View>
 
                 <AutoHeightWebView source={{ html: html }}
-                                   style={{ width: DesignRule.width-30,alignSelf:'center' }}
+                                   style={{ width: DesignRule.width - 30, alignSelf: 'center' }}
                                    scalesPageToFit={true}
                                    javaScriptEnabled={true}
                                    cacheEnabled={true}
@@ -388,7 +387,7 @@ export default class ShowDetailPage extends BasePage {
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}
-                            trackParmas={{articeCode:detail.code,articleTitle:detail.title}}
+                            trackParmas={{ articeCode: detail.code, articleTitle: detail.title }}
                             miniProgramJson={{
                                 title: detail.title,
                                 dec: '分享小程序子标题',
@@ -522,7 +521,7 @@ let styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom:px2dp(15)
+        marginBottom: px2dp(15)
     },
     leftButton: {
         justifyContent: 'center',
@@ -530,7 +529,7 @@ let styles = StyleSheet.create({
         backgroundColor: DesignRule.mainColor,
         flexDirection: 'row',
         height: px2dp(50),
-        flex:1
+        flex: 1
     },
     text: {
         color: '#fff',
@@ -544,7 +543,7 @@ let styles = StyleSheet.create({
         top: 0,
         left: 0,
         width: ScreenUtils.width,
-        height: px2dp(44) + ScreenUtils.statusBarHeight,
+        height: ScreenUtils.headerHeight,
         paddingTop: ScreenUtils.statusBarHeight
     },
     whiteNav: {
@@ -552,7 +551,7 @@ let styles = StyleSheet.create({
         top: 0,
         left: 0,
         width: ScreenUtils.width,
-        height: px2dp(44) + ScreenUtils.statusBarHeight,
+        height: ScreenUtils.headerHeight,
         paddingTop: ScreenUtils.statusBarHeight,
         backgroundColor: '#fff'
     },
@@ -583,15 +582,15 @@ let styles = StyleSheet.create({
         color: '#333',
         fontSize: px2dp(17)
     },
-    showTimesWrapper:{
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center',
-        flex:1
+    showTimesWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1
     },
-    seeImgStyle:{
-        width:px2dp(20),
-        height:px2dp(12)
+    seeImgStyle: {
+        width: px2dp(20),
+        height: px2dp(12)
     }
 });
 

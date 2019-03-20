@@ -17,7 +17,7 @@ default_platform(:ios)
 
 platform :ios do
   desc "Push a new beta build to pgyer"
-  lane :to_pgyer do
+  lane :to_ipa do
     # 如果你没有申请adhoc证书，sigh会自动帮你申请，并且添加到Xcode里
     sigh(
      app_identifier: 'com.meeruu.sharegoods',
@@ -32,12 +32,10 @@ platform :ios do
     gym(
       scheme: 'crm_app_xiugou',
       workspace: 'crm_app_xiugou.xcworkspace',
-      output_directory: './pgyer',
+      output_directory: '~/Desktop/ipa',
       export_options: {
         method: "ad-hoc", # 这可以不指定
       }
     )
-    # 上传ipa到蒲公英服务器
-    pgyer(api_key: "f8fd88e52443f483f4bb5d7dfb857e02", user_key: "0ceec8de7f57ef87ef2a7ad14bb728ab")
   end
 end

@@ -12,8 +12,7 @@ import {
     StyleSheet,
     Text,
     View,
-    InteractionManager,
-    Platform
+    InteractionManager
     // Image
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -29,14 +28,10 @@ import TimerMixin from 'react-timer-mixin';
 import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
-// import LoginAPI from './pages/login/api/LoginApi';
-// import OldImag from './home_icon.png';
-import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from "react-native-code-push";
 import {SpellShopFlag} from './navigation/Tab';
-// import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -55,25 +50,18 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
-
-    // grab this text blob, and put it in a file named packager/moduleNames.js
-    // console.log(`module.exports = ${JSON.stringify(loadedModuleNames.sort())};`);
 }
 
 @observer
 class App extends Component {
     constructor(props) {
         super(props);
-        if (Platform.OS !== 'ios') {
-            bridge.getAPKChannel().then((data)=>{
-                if(data === '_360'){
-                    codePush.sync({
-                        updateDialog: false,
-                        installMode: codePush.InstallMode.ON_NEXT_RESTART,
-                    })
-                }
-            })
-        }
+
+        // codepush
+        codePush.sync({
+            updateDialog: false,
+            installMode: codePush.InstallMode.ON_NEXT_RESTART
+        });
 
         this.state = {
             load: false,
@@ -86,8 +74,6 @@ class App extends Component {
             logout();
             login(user.code);
         }
-        //检测是否老用户登陆
-        oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
 
     async componentWillMount() {
@@ -124,7 +110,7 @@ class App extends Component {
                     ScreenUtils.setHasNotchScreen(data);
                 });
 
-            },3000)
+            }, 3000);
         });
         // 移除启动页
         bridge.removeLaunch();
@@ -132,7 +118,7 @@ class App extends Component {
 
     render() {
         const prefix = 'meeruu://';
-        const {isShowShopFlag} = this.state
+        const { isShowShopFlag } = this.state;
         return (
             <View style={styles.container}>
                 <Navigator
@@ -158,9 +144,6 @@ class App extends Component {
         );
     }
 
-    gotoLogin = () => {
-        oldUserLoginSingleModel.JumpToLogin(RouterMap.LoginPage);
-    };
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage

@@ -261,12 +261,13 @@ class HomeModule {
         }
     });
 
-    bannerPoint = (item) => ({
+    bannerPoint = (item, location) => ({
         bannerName: item.imgUrl,
         bannerId: item.id,
         bannerRank: item.rank,
         bannerType: item.linkType,
-        bannerContent: item.linkTypeCode
+        bannerContent: item.linkTypeCode,
+        bannerLocation: location ? location : 0
     });
 
     @action homeFocused = (focuse) => {

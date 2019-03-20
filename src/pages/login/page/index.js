@@ -3,7 +3,6 @@ import LoginPage from './Login'
 import InputPhoneNum from './InputPhoneNum'
 import InputCode from './InputCode'
 
-import OldUserLoginPage from './OldUserLoginPage';
 import SetPasswordPage from './SetPasswordPage';
 import RegistPage from './RegistPage';
 import ForgetPasswordPage from './ForgetPasswordPage';
@@ -23,7 +22,6 @@ export default {
         OtherLoginPage,
 
         LoginPage,
-        OldUserLoginPage,
         SetPasswordPage,
         RegistPage,
         ForgetPasswordPage,
