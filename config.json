@@ -1,5 +1,6 @@
 {
-    "showDebugPanel": false,
+    "Version":"5555",
+    "showDebugPanel": true,
     "envType": "qa",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
@@ -15,7 +16,6 @@
             "h5": "https://devh5.sharegoodsmall.com",
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "http://testsop.sharegoodsmall.com/gateway/gongmall/contract/reback"
-            //"gh_a7c8f565ea2e" uat
         },
         "qa": {
             "name": "测试",
