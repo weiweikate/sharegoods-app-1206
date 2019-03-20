@@ -44,6 +44,7 @@ const LoginModular = {
         "name": "GetVerifySMS",
         "params": { "pagePosition": 100 }
     },
+
     "phoneSignUpSuccess": {
         "des": '手机号注册',
         "name": "SignUpSuccess",

@@ -18,8 +18,6 @@ import res from "../res";
 import UIText from "../../../components/ui/UIText";
 import { MRTextInput as TextInput } from "../../../components/ui";
 import loginModel from "../model/LoginModel";
-import oldUserLoginSingleModel from "../../../model/oldUserLoginModel";
-import { TrackApi } from "../../../utils/SensorsTrack";
 
 const {
     close_eye,
@@ -30,7 +28,6 @@ const dismissKeyboard = require("dismissKeyboard");
 @observer
 export default class LoginTopView extends Component {
     LoginModel = loginModel;
-
     constructor(props) {
         super(props);
     }
@@ -101,28 +98,11 @@ export default class LoginTopView extends Component {
 
                     </View>
                 </TouchableOpacity>
-                {
-                    oldUserLoginSingleModel.isShowOldBtn ?
-                        <View style={Styles.oldUserLoginBgStyle}>
-                            <TouchableOpacity onPress={this.props.oldUserLoginClick}>
-                                <Image
-                                    source={res.oldLoginBanner}
-                                    style={{
-                                        width: ScreenUtils.width - 40,
-                                        height: ScreenUtils.width / 750 * 245
-                                    }}
-                                    resizeMode={"contain"}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        : null
-                }
             </View>
         );
     }
 
     switchBtnClick = (index) => {
-        // dismissKeyboard();
         loginModel.selectIndex = index;
     };
     renderCodeLogin = () => {
@@ -178,7 +158,6 @@ export default class LoginTopView extends Component {
         } else {
             bridge.$toast("手机格式不对");
         }
-        TrackApi.codeGetVerifySMS();
     };
     renderPasswordLogin = () => {
         return (
