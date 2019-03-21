@@ -59,7 +59,7 @@ class MyOrdersListPage extends BasePage {
                 console.log('willFocusSubscriptionOrdersList', payload);
                 if (state && state.routeName === 'order/order/MyOrdersListPage') {
                     if(i>1){
-                        this.reLoads.onRefresh();
+                        this.reLoads && this.reLoads.onRefresh();
                     }
 
                 }
