@@ -1,7 +1,6 @@
 package com.meeruu.commonlib.rn;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,6 +16,7 @@ import com.facebook.imagepipeline.image.CloseableBitmap;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.meeruu.commonlib.base.BaseApplication;
 import com.qiyukf.unicorn.api.ImageLoaderListener;
 import com.qiyukf.unicorn.api.UnicornImageLoader;
 
@@ -24,11 +24,6 @@ import javax.annotation.Nullable;
 
 @SuppressLint("StaticFieldLeak")
 public class QiyuImageLoader implements UnicornImageLoader {
-    private Context context;
-
-    public QiyuImageLoader(Context context) {
-        this.context = context.getApplicationContext();
-    }
 
     @Override
     public Bitmap loadImageSync(String uri, int width, int height) {
@@ -44,7 +39,7 @@ public class QiyuImageLoader implements UnicornImageLoader {
             }
             ImageRequest imageRequest = builder.build();
             DataSource<CloseableReference<CloseableImage>> dataSource =
-                    imagePipeline.fetchImageFromBitmapCache(imageRequest, context);
+                    imagePipeline.fetchImageFromBitmapCache(imageRequest, BaseApplication.appContext);
             CloseableReference<CloseableImage> imageReference = dataSource.getResult();
             try {
                 if (imageReference != null) {
@@ -78,7 +73,7 @@ public class QiyuImageLoader implements UnicornImageLoader {
         ImageRequest imageRequest = builder.build();
 
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
-        DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, context);
+        DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, BaseApplication.appContext);
         try {
             BaseBitmapDataSubscriber subscriber = new BaseBitmapDataSubscriber() {
                 @Override

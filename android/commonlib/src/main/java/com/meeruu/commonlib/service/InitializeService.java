@@ -39,7 +39,7 @@ public class InitializeService extends IntentService {
                     case ParameterUtils.QIYU_IMG:
                         // 七鱼初始化
                         Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", options(),
-                                new QiyuImageLoader(getApplicationContext()));
+                                new QiyuImageLoader());
                         break;
                 }
                 return false;
