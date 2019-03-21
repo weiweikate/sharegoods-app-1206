@@ -25,7 +25,7 @@ platform :ios do
     )
     # time = Time.new
     # timeString = (time.year).to_s + (time.month).to_s + (time.day).to_s + (time.hour).to_s + (time.min).to_s + (time.sec).to_s 
-    out_name = version + '-' + options[:env] + 'sg.ipa'
+    out_name = version + '-' + options[:env] + '.ipa'
     sigh(
      app_identifier: 'com.meeruu.sharegoods',
      adhoc: true

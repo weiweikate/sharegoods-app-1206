@@ -15,7 +15,7 @@ var config = {
 }
 console.log(__dirname)
 var currDate = new Date();
-var dirName = `/feng${currDate.getFullYear()}.${currDate.getMonth() + 1}.${currDate.getDate()}-${currDate.getHours()}.${currDate.getMinutes()}.${currDate.getMinutes()}`;
+// var dirName = `/feng${currDate.getFullYear()}.${currDate.getMonth() + 1}.${currDate.getDate()}-${currDate.getHours()}.${currDate.getMinutes()}.${currDate.getMinutes()}`;
 var localfile = '/Users/mac/Desktop/ipa/crm_app_xiugou.ipa';
 
 function getEnviroment(callBack) {

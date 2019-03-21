@@ -752,14 +752,14 @@ export default class TopicDetailPage extends BasePage {
                                     QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`
                                 }}
                                 webJson={{
-                                    title: productName,
-                                    dec: '商品详情',
+                                    title: activityType === 1 ? '超值秒杀!' : activityType === 2 ? '秀一秀,赚到够!' : productName,
+                                    dec: activityType === 3 ? '商品详情' : '[秀购]发现一个很给力的活动,快去看看!',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`,
                                     thumImage: productImgUrl
                                 }}
                                 miniProgramJson={{
-                                    title: productName,
-                                    dec: '商品详情',
+                                    title: activityType === 1 ? '超值秒杀!' : activityType === 2 ? '秀一秀,赚到够!' : productName,
+                                    dec: activityType === 3 ? '商品详情' : '[秀购]发现一个很给力的活动,快去看看!',
                                     thumImage: 'logo.png',
                                     hdImageURL: productImgUrl,
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.code || ''}`,
