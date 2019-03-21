@@ -47,15 +47,8 @@ const afterEvent = {
     ApplyReturn: 'ApplyReturn' // 0：未知 1：仅退款 2：退货退款 3：换货
 }
 const trackEvent = {
-    bannerClick: 'AdBannerClick',//banner点击
-    bannerSwiper: 'AdBannerShow',//banner滑动
-    recommanderBannerClick: 'RecommanderBannerClick', //推荐为banner点击
-    billboardBannerClick: 'BillboardBannerClick', //今日榜单
-    selectedBannerClick: 'SelectedBannerClick', //精品推荐
-    hotsellBannerClick: 'HotsellBannerClick', //app首页超值热卖专题广告位
-    recommendedForYouBannerClick: 'RecommendedForYouBannerClick', //app首页为你推荐广告位
-    BannerShow: 'BannerShow', //首页埋点
-    BannerClick: 'BannerClick',
+    bannerShow: 'BannerShow', //首页埋点
+    bannerClick: 'BannerClick',
     login: 'Login',//登录
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
