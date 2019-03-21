@@ -25,7 +25,7 @@ class ClassifyModules {
         this.classifyList = [{
             icon: shareImg,
             img: OssHelper('/app/share11.png'),
-            name: '上新',
+            name: '升级',
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2019000029'

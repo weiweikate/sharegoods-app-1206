@@ -53,7 +53,7 @@
                 android:fadingEdge="none"
                 android:focusable="false"
                 android:listSelector="@android:color/transparent"
-                android:scrollbars="vertical" />
+                android:scrollbars="none" />
             <ListView
                 android:id="@+id/ysf_quick_reply_list_view"
                 android:layout_width="match_parent"
