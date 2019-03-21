@@ -6,7 +6,9 @@ import {
     StyleSheet,
     ScrollView,
     RefreshControl,
-    InteractionManager
+    InteractionManager,
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import { observer } from 'mobx-react';
 import { ActivityOneView, TopBannerView } from './components/SbSectiontHeaderView';
@@ -18,10 +20,17 @@ import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from '../../constants/DesignRule';
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
-import { MRText } from "../../components/ui";
 import CommShareModal from "../../comm/components/CommShareModal";
 import apiEnvironment from "../../api/ApiEnvironment";
 import user from '../../model/user'
+
+import res from '../../comm/res'
+
+const {
+    button:{
+        message_three
+    }
+} = res
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -51,13 +60,14 @@ export default class DownPricePage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return (
-            <MRText
-                onPress={() => {
-                    this.shareModal.open();
-                }}
+
+            <TouchableOpacity
+            onPress={() => {
+                    this.shareModal.open();}}
             >
-                分享
-            </MRText>
+
+                <Image source={message_three}/>
+            </TouchableOpacity>
         )
     }
 
