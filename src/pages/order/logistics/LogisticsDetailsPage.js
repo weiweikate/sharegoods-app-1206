@@ -1,6 +1,6 @@
 
 import React from "react";
-import { NativeModules, StyleSheet, TouchableOpacity, View ,Image,ImageBackground} from "react-native";
+import { NativeModules, StyleSheet, TouchableOpacity, View ,Image} from "react-native";
 import BasePage from "../../../BasePage";
 import { RefreshList, UIText, MRText as Text } from "../../../components/ui";
 import StringUtils from "../../../utils/StringUtils";
@@ -11,7 +11,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from "../res";
 // import UIImage from "@mr/image-placeholder";
 
-const logisticsTop = res.logisticsTop;
+// const logisticsTop = res.logisticsTop;
 // const logisticsBottom = res.logisticsBottom;
 const copy = res.copy;
 // const logisticsIcon = res.dizhi;
