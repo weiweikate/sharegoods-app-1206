@@ -76,8 +76,10 @@ export default class AfterLogisticsListView extends BasePage {
             return <View />;
         }
         return(
-            <View style={{alignItems: 'center'}}>
+            <View style={{}}>
+                <View style ={{backgroundColor: DesignRule.mainColor, alignItems: 'center'}}>
                 <MRText style={{color: 'white', fontSize: 12, paddingHorizontal: 10}}>{data.length + '个包裹已发出'}</MRText>
+                </View>
                 <View style={{height: 50, flexDirection: 'row', alignItems: 'center'}}>
                     <View style={{flex: 1}}/>
                     <View style={{flex: 1, height: 1, backgroundColor: '#D9D9D9'}}/>
