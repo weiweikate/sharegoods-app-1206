@@ -82,16 +82,17 @@ public class QiyuImageLoader implements UnicornImageLoader {
                         new AsyncTask<Bitmap, Void, Bitmap>() {
                             @Override
                             protected Bitmap doInBackground(Bitmap... params) {
-                                Bitmap result = null;
                                 try {
-                                    Thread.sleep(200);
+                                    Thread.sleep(30);
+                                    Bitmap result = null;
                                     Bitmap bitmap = params[0];
                                     if (bitmap != null && !bitmap.isRecycled()) {
                                         result = bitmap.copy(Bitmap.Config.RGB_565, false);
                                     }
+                                    return result;
                                 } catch (Exception e) {
                                 }
-                                return result;
+                                return null;
                             }
 
                             @Override
