@@ -1,7 +1,7 @@
 {
     "Version":"1.2.1.5",
-    "showDebugPanel": true,
-    "envType": "qa",
+    "showDebugPanel": false,
+    "envType": "pre_release",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
