@@ -35,7 +35,7 @@ export default class ChannelPage extends BasePage {
 
     constructor(props) {
         super(props)
-        this.remainMoney = this.params.remainMoney
+        this.remainMoney = parseFloat(this.params.remainMoney)
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         let name = orderProduct && orderProduct.productName
         if (name) {

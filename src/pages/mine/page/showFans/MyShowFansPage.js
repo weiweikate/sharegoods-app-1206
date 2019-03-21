@@ -25,6 +25,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import MineAPI from '../../api/MineApi';
 import res from '../../res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
+import { TrackApi } from '../../../../utils/SensorsTrack';
 const {
     bg_fans_item
 } = res.homeBaseImg;
@@ -92,6 +93,8 @@ export default class MyShowFansPage extends BasePage<Props> {
                         this.setState({
                             fansNum: result.data.totalNum
                         });
+                        TrackApi.ViewMyFans({fanAmount:result.data.totalNum});
+
                         return result.data.data;
                     }}
 
