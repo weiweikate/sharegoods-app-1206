@@ -6,7 +6,7 @@ import {
     StyleSheet
 } from "react-native";
 import SearchIcon from "./ss_03.png";
-import { MRTextInput as TextInput} from '../../../components/ui';
+import { MRTextInput as TextInput} from '../../../components/ui/UIText';
 
 export default class SearchBar extends Component {
 
