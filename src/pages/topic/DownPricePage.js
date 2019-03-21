@@ -235,15 +235,15 @@ export default class DownPricePage extends BasePage {
                                 type={'miniProgramWithCopyUrl'}
                                 webJson={{
                                     hdImageURL:this.dataModel.imgUrl || '',
-                                    title: this.dataModel.topicTitle,
-                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    title: '秀一秀，赚到够',
+                                    dec: '[秀购]发现一个很给力的活动快去看看',
                                     linkUrl:  `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
                                     thumImage: 'logo.png'
                                 }}
                                 miniProgramJson={{
                                     hdImageURL:this.dataModel.imgUrl || '',
-                                    title: this.dataModel.topicTitle,
-                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    title: '秀一秀，赚到够',
+                                    dec: '[秀购]发现一个很给力的活动快去看看',
                                     thumImage: 'logo.png',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
                                     miniProgramPath: `/pages/index/index?type=5&id=${linkTypeCode}&inviteId=${user.code || ''}`

@@ -1,6 +1,6 @@
 {
-    "Version":"5555",
-    "showDebugPanel": false,
+    "Version":"1.2.1.5",
+    "showDebugPanel": true,
     "envType": "qa",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
@@ -30,7 +30,7 @@
             "host": "https://uatapi.sharegoodsmall.com/gateway",
             "h5": "https://uath5.sharegoodsmall.com",
             "oss": "https://uatcdn.sharegoodsmall.com",
-            "wxAppletKey": "gh_aa91c3ea0f6c",
+            "wxAppletKey": "gh_79831bdd94dd",
             "gongmao": "https://api.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
         "online": {
