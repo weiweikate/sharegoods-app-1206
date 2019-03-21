@@ -271,12 +271,15 @@ export class XpDetailPage extends BasePage {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'miniProgramWithCopyUrl'}
                                 webJson={{
-                                    title: `${name}`,
+                                    title: `经验值大礼包`,
+                                    dec: `快速升级会员等级,更多权益享不停!`,
                                     thumImage: `${bannerUrl}`,
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&upuserid=${user.code || ''}`
                                 }}
                                 miniProgramJson={{
-                                    title: `${name}`,
+                                    title: `经验值大礼包`,
+                                    dec: `快速升级会员等级,更多权益享不停!`,
+                                    hdImageURL: `${bannerUrl}`,
                                     thumImage: 'logo.png',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&&upuserid=${user.code || ''}`,
                                     miniProgramPath: `/pages/index/index?type=6&id=${activityCode}&inviteId=${user.code || ''}`
