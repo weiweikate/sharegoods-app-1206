@@ -1,9 +1,10 @@
 package com.meeruu.commonlib.rn;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Looper;
 
 import com.facebook.common.executors.UiThreadImmediateExecutorService;
 import com.facebook.common.references.CloseableReference;
@@ -16,13 +17,22 @@ import com.facebook.imagepipeline.image.CloseableBitmap;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.meeruu.commonlib.handler.WeakHandler;
+import com.meeruu.commonlib.utils.BitmapUtils;
 import com.qiyukf.unicorn.api.ImageLoaderListener;
 import com.qiyukf.unicorn.api.UnicornImageLoader;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import javax.annotation.Nullable;
 
+@SuppressLint("StaticFieldLeak")
 public class QiyuImageLoader implements UnicornImageLoader {
     private Context context;
+    private ExecutorService executeBackgroundTask = Executors.newSingleThreadExecutor();
 
     public QiyuImageLoader(Context context) {
         this.context = context.getApplicationContext();
@@ -61,51 +71,80 @@ public class QiyuImageLoader implements UnicornImageLoader {
     }
 
     @Override
-    public void loadImage(String uri, int width, int height, final ImageLoaderListener listener) {
-        ImageRequestBuilder builder = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uri));
+    public void loadImage(String url, int width, int height, final ImageLoaderListener listener) {
+        Uri uri = Uri.parse(url);
+        ImageRequestBuilder requestBuilder = ImageRequestBuilder.newBuilderWithSource(uri);
         if (width > 0 && height > 0) {
-            builder.setResizeOptions(new ResizeOptions(width, height));
+            requestBuilder.setResizeOptions(new ResizeOptions(width, height));
+        } else {
+            requestBuilder.setResizeOptions(new ResizeOptions(100, 100));
         }
-        ImageRequest imageRequest = builder.build();
-
-        ImagePipeline imagePipeline = Fresco.getImagePipeline();
-        DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, context);
-
-        BaseBitmapDataSubscriber subscriber = new BaseBitmapDataSubscriber() {
-            @Override
-            public void onNewResultImpl(@Nullable Bitmap bitmap) {
-                if (listener != null) {
-                    new AsyncTask<Bitmap, Void, Bitmap>() {
-                        @Override
-                        protected Bitmap doInBackground(Bitmap... params) {
-                            Bitmap bitmap = params[0];
-                            Bitmap result = null;
-                            if (bitmap != null && !bitmap.isRecycled()) {
-                                result = bitmap.copy(Bitmap.Config.RGB_565, false);
-                            }
-                            return result;
+        ImageRequest imageRequest = requestBuilder
+                .setLocalThumbnailPreviewsEnabled(true)
+                .build();
+        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, null);
+        dataSource.subscribe(
+                new BaseBitmapDataSubscriber() {
+                    @Override
+                    public void onNewResultImpl(@Nullable final Bitmap bitmap) {
+                        if (listener == null) {
+                            return;
                         }
-
-                        @Override
-                        protected void onPostExecute(Bitmap bitmap) {
-                            if (bitmap != null) {
-                                listener.onLoadComplete(bitmap);
-                            } else {
-                                listener.onLoadFailed(null);
-                            }
+                        if (bitmap != null && !bitmap.isRecycled()) {
+                            handlerBackgroundTask(new Callable<Bitmap>() {
+                                @Override
+                                public Bitmap call() {
+                                    final Bitmap resultBitmap = bitmap.copy(Bitmap.Config.RGB_565, false);
+                                    if (resultBitmap != null && !resultBitmap.isRecycled()) {
+                                        postResult(resultBitmap, listener);
+                                    }
+                                    return resultBitmap;
+                                }
+                            });
                         }
-                    }.execute(bitmap);
-                }
-            }
+                    }
 
-            @Override
-            public void onFailureImpl(DataSource dataSource) {
-                if (listener != null) {
-                    listener.onLoadFailed(dataSource.getFailureCause());
-                }
-            }
-        };
+                    @Override
+                    public void onFailureImpl(DataSource dataSource) {
+                        if (listener == null) {
+                            return;
+                        }
+                        Throwable throwable = null;
+                        if (dataSource != null) {
+                            throwable = dataSource.getFailureCause();
+                        }
+                        listener.onLoadFailed(throwable);
+                    }
+                }, UiThreadImmediateExecutorService.getInstance());
+    }
 
-        dataSource.subscribe(subscriber, UiThreadImmediateExecutorService.getInstance());
+    /**
+     * @param callable Callable
+     * @param <T>      T
+     * @return Future
+     */
+    private <T> Future<T> handlerBackgroundTask(Callable<T> callable) {
+        return executeBackgroundTask.submit(callable);
+    }
+
+    /**
+     * 回调UI线程中去
+     *
+     * @param result   result
+     * @param callback FrescoBitmapCallback
+     * @param <T>      T
+     */
+    private <T> void postResult(final T result, final ImageLoaderListener callback) {
+        final Bitmap bmp = BitmapUtils.compressBitmap((Bitmap) result, 200);
+        if (bmp != null && !bmp.isRecycled()) {
+            new WeakHandler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    callback.onLoadComplete(bmp);
+                }
+            });
+        } else {
+            callback.onLoadFailed(null);
+        }
     }
 }
