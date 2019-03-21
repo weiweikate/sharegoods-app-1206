@@ -62,6 +62,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 eventDispatcher.dispatchEvent(scrollToIndexEvent);
             }
         });
+
     }
 
     static class MRListener implements ForegroundCallbacks.Listener {

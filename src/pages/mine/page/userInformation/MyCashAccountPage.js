@@ -2,7 +2,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    // ImageBackground,
+    ImageBackground,
     // TouchableOpacity,
     Alert,
     Image,
@@ -32,6 +32,7 @@ import { MRText as Text } from '../../../../components/ui';
     const tixiantk= res.cashAccount.tixiantk;
     const xiaofei= res.cashAccount.xiaofei;
     const xiaofeitk= res.cashAccount.xiaofeitk;
+    const account_bg= res.bankCard.account_bg;
 
 @observer
 export default class MyCashAccountPage extends BasePage {
@@ -92,7 +93,7 @@ export default class MyCashAccountPage extends BasePage {
 
     renderHeader = () => {
         return (
-            <View style={styles.container}>
+            <ImageBackground source={account_bg} style={styles.container}>
                 <View style={styles.headerWrapper}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
@@ -114,7 +115,7 @@ export default class MyCashAccountPage extends BasePage {
                     {/*</NoMoreClick>*/}
                 </View>
                 <Text style={{color:DesignRule.white,fontSize:48,marginLeft:DesignRule.margin_page,marginTop:15,marginBottom:30}}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
-            </View>
+            </ImageBackground>
         );
     };
 
