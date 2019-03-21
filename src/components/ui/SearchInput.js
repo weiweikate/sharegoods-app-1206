@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import close_input_img from './searchBar/input_clear.png';
 import search_img from '../../pages/order/res/search_icon.png';
-import {
-    UIText, UIImage, MRTextInput as TextInput
-} from '../../components/ui';
+import
+    UIText,{MRTextInput as TextInput,MRText as Text}
+ from '../../components/ui/UIText';
+import UIImage from '../../components/ui/UIImage';
 import left_arrow from '../../comm/res/button/icon_header_back.png';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-import {MRText as Text}from './UIText';
 
 /**
  * 搜索输入框组件

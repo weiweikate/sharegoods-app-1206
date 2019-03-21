@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.qiyukf.unicorn.R;
 import com.meeruu.qiyu.ScreenUtils;
 import com.meeruu.qiyu.SoftKeyboardFixerForFullscreen;
 import com.meeruu.qiyu.StatusBarUtils;
+import com.qiyukf.unicorn.R;
 import com.qiyukf.unicorn.ui.activity.ServiceMessageActivity;
 
 public class QiyuServiceMessageActivity extends ServiceMessageActivity {
