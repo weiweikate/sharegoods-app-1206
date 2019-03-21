@@ -64,6 +64,7 @@ export class XpDetailPage extends BasePage {
                     break;
                 case 3:
                     setTimeout(() => {
+                        track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
                         QYChatUtil.qiYUChat();
                     }, 100);
                     break;
@@ -252,7 +253,7 @@ export class XpDetailPage extends BasePage {
 
     _render() {
         const { activityCode } = this.params;
-        const { name, bannerUrl } = this.xpDetailModel;
+        const { bannerUrl } = this.xpDetailModel;
         return (
             <View style={styles.container}>
                 {/*页面状态*/}
