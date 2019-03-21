@@ -585,6 +585,7 @@ export default class ProductDetailPage extends BasePage {
                                            break;
                                        case 3:
                                            setTimeout(() => {
+                                               track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
                                                QYChatUtil.qiYUChat();
                                            }, 100);
                                            break;
