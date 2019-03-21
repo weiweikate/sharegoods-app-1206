@@ -29,9 +29,9 @@ export default class JudgePhonePage extends BasePage {
 
     componentDidMount() {
 
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
            this._onGetCode();
-        });
+        // });
     }
 
     _render() {

@@ -21,8 +21,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 1217
-        versionName "1.2.1.7"
+        versionCode 10201
+        versionName "1.2.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -139,7 +139,6 @@ dependencies {
     api project(':rn-image-crop-picker')
     api project(':rn_deviceinfo')
     api project(':rn-webview-bridge')
-    api project(':react-native-sensors-analytics')
     api project(':rn-request')
     api project(':cookies')
     api project(':rn-geolocation')
@@ -150,4 +149,5 @@ dependencies {
     api project(':react-native-webview')
     api project(':react-native-extra-dimensions-android')
     api project(':react-native-code-push')
+    api rootProject.ext.dependencies.sensors
 }

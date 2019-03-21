@@ -21,6 +21,7 @@ import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.meeruu.sharegoods.rn.lottie.LottiePackage;
+import com.meeruu.sharegoods.rn.sensors.RNSensorsAnalyticsPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
@@ -28,7 +29,6 @@ import com.reactlibrary.RNGeolocationPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.request.MRNetStatePackage;
-import com.sensorsdata.analytics.RNSensorsAnalyticsPackage;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.Arrays;
