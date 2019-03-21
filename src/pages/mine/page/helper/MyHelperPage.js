@@ -109,7 +109,7 @@ export default class MyHelperPage extends BasePage {
                                    resizeMode={'contain'}/>
                     </View>
                     {this.renderHotQuestionList()}
-                    <View style={{ height: 1, backgroundColor: DesignRule.bgColor, marginTop: -0.5 }}/>
+                    <View style={{ height: 0.1, backgroundColor: DesignRule.white,  }}/>
                     <View style={{
                         alignItems: 'center',
                         height: 87,

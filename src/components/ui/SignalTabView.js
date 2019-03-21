@@ -8,7 +8,7 @@ import React from 'react';
 import {
     View
 } from 'react-native';
-import { UIText } from './index';
+import  UIText  from './UIText';
 import DesignRule from '../../constants/DesignRule';
 
 const SignalTabView = props => {
