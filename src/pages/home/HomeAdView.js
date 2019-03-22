@@ -72,12 +72,11 @@ export default class HomeAdView extends Component {
         for (let i = 0; i < len; i++) {
             items.push(<TouchableWithoutFeedback key={i} onPress={() => this._adAction(ad[i])}>
                 <View
-                    style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : 0 }, this.adRadius[i]]}>
+                    style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : ((i === 0 || i === 1) ? 0 : px2dp(5)) }, this.adRadius[i]]}>
                     <ImageLoad source={{ uri: ad[i] ? ad[i].imgUrl : '' }}
                                showPlaceholder={false}
                                type={'mfit'}
-                               style={[styles.ad,
-                                   { marginTop: adModules.banner.length === 0 ? 0 : ((i !== 0 && i !== 1) ? px2dp(5) : 0) }]}/>
+                               style={styles.ad}/>
                 </View>
             </TouchableWithoutFeedback>);
         }
