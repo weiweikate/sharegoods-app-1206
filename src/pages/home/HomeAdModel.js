@@ -22,6 +22,8 @@ class AdModules {
         let h = kAdHeight * 2;
         if (this.banner.length === 0) {
             h += px2dp(10);
+        } else {
+            h += px2dp(5);
         }
         this.adHeights.forEach((value, key, map) => {
             if (this.imgUrls.indexOf(key) >= 0 && value > 0) {
