@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './Modules';
-import { homePoint } from './HomeTypes'
+import { homePoint } from './HomeTypes';
 import { adModules } from './HomeAdModel';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
@@ -13,7 +13,7 @@ const { px2dp } = ScreenUtils;
 
 const defaultBannerHeight = px2dp(10);
 const adWidth = (ScreenUtils.width - px2dp(35)) / 2 - 0.5;
-const adHeight = adWidth * (160 / 340);
+const adHeight = adWidth * (80 / 170);
 
 const radius = (5);
 
@@ -96,8 +96,7 @@ export default class HomeAdView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: ScreenUtils.width,
-        paddingTop: px2dp(10)
+        width: ScreenUtils.width
     },
     bannerImage: {
         width: ScreenUtils.width,
