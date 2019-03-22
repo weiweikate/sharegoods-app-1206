@@ -24,7 +24,7 @@ const MoneyItems = ({ money }) => {
     return <Text style={styles.unit}>{unitStr}<Text style={styles.money}>{moneyStr}</Text> 起</Text>;
 };
 
-const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
+export const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
         <View style={styles.image}>
             <ReuserImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
@@ -55,25 +55,16 @@ export default class GoodsCell extends Component {
 
     render() {
         const { data } = this.props;
+        const {itemData, goodsIndex} = data
+        let cellStyle = {paddingRight: px2dp(15)}
+        if (goodsIndex % 2 === 0 ) {
+            cellStyle = {paddingLeft: px2dp(15)}
+        }
         if (!data || data.length === 0) {
             return null;
         }
-        return <View style={styles.cell}>
-            {
-                data[0]
-                    ?
-                    <Goods goods={data[0]} press={() => this._goodsAction(data[0])}/>
-                    :
-                    null
-            }
-            <View style={styles.space}/>
-            {
-                data[1]
-                    ?
-                    <Goods goods={data[1]} press={() => this._goodsAction(data[1])}/>
-                    :
-                    <View style={styles.uncontainer}/>
-            }
+        return <View style={[styles.cell, cellStyle]}>
+            <Goods goods={itemData} press={() => this._goodsAction(data)}/>
         </View>;
     }
 }
@@ -125,10 +116,6 @@ let styles = StyleSheet.create({
         borderRadius: px2dp(5),
         overflow: 'hidden'
     },
-    uncontainer: {
-        height: px2dp(240),
-        width: goodsWidth
-    },
     image: {
         height: goodsWidth,
         width: goodsWidth
@@ -150,20 +137,15 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(7),
         marginRight: px2dp(7)
     },
+    cell: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     title: {
         color: '#fff',
         fontSize: px2dp(12),
         marginLeft: px2dp(5),
         marginRight: px2dp(5)
-    },
-    cell: {
-        width: ScreenUtils.width,
-        height: kHomeGoodsViewHeight,
-        flexDirection: 'row',
-        paddingRight: px2dp(15),
-        paddingLeft: px2dp(15),
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     space: {
         width: px2dp(5)
