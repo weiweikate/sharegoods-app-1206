@@ -3,7 +3,6 @@ import OrderApi from '../api/orderApi';
 import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import bridge from '../../../utils/bridge';
-import user from '../../../model/user';
 import API from '../../../api';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
@@ -48,6 +47,8 @@ class ConfirmOrderModel {
     giveUpCou = false;
     @observable
     couponCount=0;
+    @observable
+    couponData={}
 
     @action clearData() {
         this.orderProductList = [];
@@ -70,6 +71,7 @@ class ConfirmOrderModel {
         this.canCommit = true;
         this.giveUpCou= false;
         this.couponCount=0;
+        this.couponData={};
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
@@ -81,7 +83,6 @@ class ConfirmOrderModel {
                     // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
                     source: orderParamVO.source,//1.购物车 2.直接下单
                     sgAppVersion:310,
-                     // couponsId:orderParamVO.source===4?(this.giveUpCou||params.userCouponCode?null:orderParamVO.couponsId):null,
                     couponsId: orderParamVO.couponsId,
                     // source: 4,//1.购物车 2.直接下单,4 周期券
                     channel: 2,//1.小程序 2.APP 3.H5
@@ -260,7 +261,7 @@ class ConfirmOrderModel {
             message: this.message,
             tokenCoin: this.tokenCoin,
             userCouponCode: this.userCouponCode,
-            addressId: this.addressId
+            addressId: this.addressId,
         };
         switch (orderParamVO.orderType) {
             case 99:
@@ -282,19 +283,8 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
-                        orderAmount: data.payAmount,
-                        transportationCosts: data.totalFreightFee,
-                        receiverName: data.userAddressDTO.receiver,
-                        receiverProvince: data.userAddressDTO.province,
-                        receiverCity: data.userAddressDTO.city,
-                        receiverArea: data.userAddressDTO.area,
-                        receiverAddress: data.userAddressDTO.address,
-                        discountName: this.tokenCoinText,
-                        discountAmount: 1,
-                        ifUseYiYuan: !!this.tokenCoin,
-                        yiYuanCouponsAmount: this.tokenCoin,
-                        storeCode: user.storeCode ? user.storeCode : ''
+                        orderId: data.orderNo,
+                        orderSubmitPage:orderParamVO.source==1?11:1
                     });
                 }).catch(err => {
                     this.canCommit = true;
@@ -318,19 +308,8 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
-                        orderAmount: data.payAmount,
-                        transportationCosts: data.totalFreightFee,
-                        receiverName: data.userAddressDTO.receiver,
-                        receiverProvince: data.userAddressDTO.province,
-                        receiverCity: data.userAddressDTO.city,
-                        receiverArea: data.userAddressDTO.area,
-                        receiverAddress: data.userAddressDTO.address,
-                        discountName: this.tokenCoinText,
-                        discountAmount: 1,
-                        ifUseYiYuan: !!this.tokenCoin,
-                        yiYuanCouponsAmount: this.tokenCoin,
-                        storeCode: user.storeCode ? user.storeCode : ''
+                        orderId: data.orderNo,
+                        orderSubmitPage: orderParamVO.source == 1 ? 11 : 1
                     });
                 }).catch(err => {
                     this.canCommit = true;
@@ -354,19 +333,8 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
-                        orderAmount: data.payAmount,
-                        transportationCosts: data.totalFreightFee,
-                        receiverName: data.userAddress.receiver,
-                        receiverProvince: data.userAddress.province,
-                        receiverCity: data.userAddress.city,
-                        receiverArea: data.userAddress.area,
-                        receiverAddress: data.userAddress.address,
-                        discountName: this.tokenCoinText,
-                        discountAmount: 1,
-                        ifUseYiYuan: !!this.tokenCoin,
-                        yiYuanCouponsAmount: this.tokenCoin,
-                        storeCode: user.storeCode ? user.storeCode : ''
+                        orderId: data.orderNo,
+                        orderSubmitPage: 1,
                     });
                 }).catch(err => {
                     this.canCommit = true;
@@ -390,19 +358,8 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
-                        orderAmount: data.payAmount,
-                        transportationCosts: data.totalFreightFee,
-                        receiverName: data.userAddress.receiver,
-                        receiverProvince: data.userAddress.province,
-                        receiverCity: data.userAddress.city,
-                        receiverArea: data.userAddress.area,
-                        receiverAddress: data.userAddress.address,
-                        discountName: this.tokenCoinText,
-                        discountAmount: 1,
-                        ifUseYiYuan: !!this.tokenCoin,
-                        yiYuanCouponsAmount: this.tokenCoin,
-                        storeCode: user.storeCode ? user.storeCode : ''
+                        orderId: data.orderNo,
+                        orderSubmitPage: 1
                     });
                 }).catch(err => {
                     this.canCommit = true;
@@ -429,19 +386,8 @@ class ConfirmOrderModel {
                     callback(data);
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
-                        orderID: data.orderNo,
-                        orderAmount: data.payAmount,
-                        transportationCosts: data.totalFreightFee,
-                        receiverName: data.userAddress.receiver,
-                        receiverProvince: data.userAddress.province,
-                        receiverCity: data.userAddress.city,
-                        receiverArea: data.userAddress.area,
-                        receiverAddress: data.userAddress.address,
-                        discountName: this.tokenCoinText,
-                        discountAmount: 1,
-                        ifUseYiYuan: !!this.tokenCoin,
-                        yiYuanCouponsAmount: this.tokenCoin,
-                        storeCode: user.storeCode ? user.storeCode : ''
+                        orderId: data.orderNo,
+                        orderSubmitPage: 1
                     });
                 }).catch(err => {
                     this.canCommit = true;

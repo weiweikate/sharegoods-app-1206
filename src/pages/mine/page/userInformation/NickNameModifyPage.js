@@ -9,6 +9,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 
 export default class NickNameModifyPage extends BasePage {
@@ -75,6 +76,7 @@ export default class NickNameModifyPage extends BasePage {
             //     return;
             // }
             user.nickname = this.state.nickName;
+            track(trackEvent.ModifyNickNameSuccess, {});
             this.$navigateBack();
         }).catch(err => {
             this.$toastShow(err.msg);

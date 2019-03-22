@@ -11,14 +11,14 @@ import { homeModule } from './Modules';
 import { bannerModule } from './HomeBannerModel';
 
 export const bannerHeight = px2dp(120);
-
 import MRBannerViewComponent from '../../components/ui/bannerView/MRBannerViewComponent';
-
 import { track, trackEvent } from '../../utils/SensorsTrack';
+import DesignRule from '../../constants/DesignRule';
+import { homePoint } from './HomeTypes';
+
 
 @observer
 export default class HomeBannerView extends Component {
-
     _onPressRowWithItem(item) {
         const { bannerCount, bannerList } = bannerModule;
         let data = null;
@@ -32,57 +32,56 @@ export default class HomeBannerView extends Component {
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
-            track(trackEvent.bannerClick, {
-                pageType: '主页banner',
-                bannerLocation: '主页',
-                bannerID: data.id,
-                bannerRank: data.rank,
-                url: data.imgUrl,
-                bannerName: data.linkTypeCode
-            });
-            navigate(router, { ...params, preseat: 'home_banner' });
+
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner ));
+            navigate(router, { ...params });
         }
     }
 
     _onPressRow = (index) => {
         const { bannerList } = bannerModule;
         let data = bannerList[index];
+
         if (data) {
             const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
-            track(trackEvent.bannerClick, {
-                pageType: 'home',
-                bannerLocation: 'home',
-                bannerID: data.id,
-                bannerRank: data.rank,
-                url: data.imgUrl,
-                bannerName: data.linkTypeCode
-            });
-            navigate(router, { ...params, preseat: 'home_banner' });
+
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner));
+            navigate(router, { ...params });
         }
     };
 
+    _onDidScrollToIndex(index) {
+        const { bannerList } = bannerModule;
+        let data = bannerList[index];
+        track(trackEvent.bannerShow, homeModule.bannerPoint(data, homePoint.homeBanner));
+    }
+
     render() {
         const { bannerList } = bannerModule;
-
-        // 此处需返回null，否则指示器有问题
-        if (bannerList.length === 0) {
-            return null;
-        }
-
+        const isFocused = homeModule.isFocused;
         let items = [];
         bannerList.map(value => {
             items.push(value.imgUrl);
         });
+        let len = items.length;
         return <View style={styles.banner}>
-            <MRBannerViewComponent itemRadius={px2dp(5)} imgUrlArray={items}
-                                   bannerHeight={bannerHeight}
-                                   modeStyle={1} autoInterval={5}
-                                   pageFocused={this.props.pageFocused}
-                                   onDidSelectItemAtIndex={(i) => {
-                                       this._onPressRow(i);
-                                   }}/>
+            {len === 0 ?
+                <View style={styles.defaultImg}/> :
+                <MRBannerViewComponent
+                    itemRadius={px2dp(5)} imgUrlArray={items}
+                    bannerHeight={bannerHeight}
+                    modeStyle={1}
+                    autoLoop={isFocused ? true : false}
+                    pageFocused={isFocused}
+                    onDidScrollToIndex={(i) => {
+                        this._onDidScrollToIndex(i);
+                    }}
+                    onDidSelectItemAtIndex={(i) => {
+                        this._onPressRow(i);
+                    }}/>
+            }
         </View>;
     }
 
@@ -93,7 +92,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: px2dp(15),
         height: bannerHeight,
         width: ScreenUtils.width,
-        borderRadius: (5),
         backgroundColor: 'white'
+    },
+    defaultImg: {
+        flex: 1,
+        borderRadius: px2dp(5),
+        backgroundColor: DesignRule.lineColor_inColorBg
     }
 });

@@ -2,6 +2,7 @@ import { observable, computed, action, flow } from 'mobx';
 import ShowApi from './ShowApi';
 import Toast from '../../utils/bridge'
 import ScreenUtil from '../../utils/ScreenUtils';
+import { TrackApi } from '../../utils/SensorsTrack';
 const { px2dp } = ScreenUtil;
 
 //推广 1：精选 2：热门 3：推荐 4：最新 全部则不传
@@ -391,8 +392,10 @@ export class ShowDetail {
             if (parseInt(result.code, 0) === 10000) {
                 if (this.detail.hadCollect) {
                     this.detail.collectCount -= 1;
+                    TrackApi.CancelArticleCollection({articeCode:this.detail.code,articleTitle:this.detail.title});
                 } else {
                     this.detail.collectCount += 1;
+                    TrackApi.CollectingArticle({articeCode:this.detail.code,articleTitle:this.detail.title});
                 }
                 this.detail.hadCollect = !this.detail.hadCollect;
             }

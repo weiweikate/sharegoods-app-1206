@@ -5,11 +5,11 @@
 import React, { Component } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
-
+import { track, trackEvent } from '../../utils/SensorsTrack';
 const { px2dp, onePixel } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
-import { homeLinkType, homeRoute } from './HomeTypes';
+import { homeLinkType, homeRoute, homePoint } from './HomeTypes';
 import { subjectModule } from './HomeSubjectModel';
 import DesignRule from '../../constants/DesignRule';
 import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTool';
@@ -106,6 +106,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
 @observer
 export default class HomeSubjectView extends Component {
     _subjectActions(item) {
+        track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeSubject))
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
@@ -123,7 +124,7 @@ export default class HomeSubjectView extends Component {
                 navigate(router, { productCode: good.prodCode });
             }
         } else {
-            const pageObj = getTopicJumpPageParam(good, '首页');
+            const pageObj = getTopicJumpPageParam(good);
             navigate(pageObj.pageRoute, { ...pageObj.params });
         }
     }

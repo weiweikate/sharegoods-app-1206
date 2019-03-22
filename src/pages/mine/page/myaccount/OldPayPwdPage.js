@@ -7,6 +7,7 @@ import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 
 export default class OldPayPwdPage extends BasePage {
 
@@ -20,15 +21,18 @@ export default class OldPayPwdPage extends BasePage {
         super(props);
         const { tips } = this.props.navigation.state.params;
         this.state = {
-            tips: tips
+            tips: tips,
+            msg: null
         };
     }
 
     _render() {
         return <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <UIText value={this.state.tips} style={{ fontSize: 17, color: DesignRule.textColor_mainTitle, marginTop: 120 }}/>
-            <Password maxLength={6} style={{ width: 345, marginTop: 30 }}
-                      onEnd={(pwd) => this._onext(pwd)} />
+            <Password maxLength={6} style={{width: ScreenUtils.autoSizeWidth(345), marginTop: 30 , height:ScreenUtils.autoSizeWidth(45)}}
+                      onEnd={(pwd) => this._onext(pwd)} ref={(ref)=> {this.paw = ref}}/>
+            <UIText value={this.state.msg}
+                    style={{ fontSize: 15, color: DesignRule.mainColor, marginTop: 15 }}/>
         </View>;
     }
 
@@ -45,8 +49,10 @@ export default class OldPayPwdPage extends BasePage {
                     oldPwd: pwd,
                     tips: '请输入新的支付密码'
                 });
+                this.setState({msg: ''});
             }).catch((data) => {
-                bridge.$toast(data.msg);
+                this.paw && this.paw.changeRedBorderColor();
+                this.setState({msg: data.msg});
             });
         } else {
             if (oldPwd === pwd) {
@@ -61,7 +67,8 @@ export default class OldPayPwdPage extends BasePage {
                 bridge.$toast('修改成功');
                 this.$navigateBack(-2);
             }).catch((data) => {
-                bridge.$toast(data.msg);
+                this.paw && this.paw.changeRedBorderColor();
+                this.setState({msg: data.msg});
             });
         }
     };

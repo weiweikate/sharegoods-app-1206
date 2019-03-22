@@ -45,7 +45,7 @@ export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {
         show: false, // false则隐藏导航
-        title: '我的晋升'
+        title: '我的经验值'
     };
     $getPageStateOptions = () => {
         return {
@@ -152,8 +152,6 @@ export default class MyPromotionPage extends BasePage {
                                 fontSize: 15,
                                 color: 'white'
                             }} allowFontScaling={false}>{this.state.levelName ? `${this.state.levelName}品鉴官` : ''}</Text>
-                            {parseInt(this.state.experience)<1?null
-                                :
                                 <NoMoreClick style={{backgroundColor:'white',width:65,height:19,borderRadius:9,alignItems:'center',justifyContent:'center',flexDirection:'row'}}
                                              onPress={()=>this.$navigate('mine/ExpDetailPage',{
                                                  experience:this.state.experience,
@@ -162,8 +160,6 @@ export default class MyPromotionPage extends BasePage {
                                     <Text style={{fontSize:10,color:"#000000",marginRight:4}}>经验明细</Text>
                                     <Image source={arrowRightImg}/>
                                 </NoMoreClick>
-                            }
-
                         </View>
 
                         <ImageBackground style={{
@@ -306,7 +302,7 @@ export default class MyPromotionPage extends BasePage {
             alignSelf: 'center',
             fontSize: 17,
             includeFontPadding: false
-        }} allowFontScaling={false}>我的晋升</Text> : null;
+        }} allowFontScaling={false}>我的经验值</Text> : null;
         return (
             <View style={{
                 width: SCREEN_WIDTH,

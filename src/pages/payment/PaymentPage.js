@@ -9,7 +9,7 @@ import { MRText as Text } from '../../components/ui';
 import user from '../../model/user';
 import { payment, payStatus, payStatusMsg } from './Payment'
 import PasswordView from './PayPasswordView'
-import PaymentResultView, { PaymentResult } from './PaymentResultView';
+import { PaymentResult } from './PaymentResultPage';
 const { px2dp } = ScreenUtils;
 import Toast from '../../utils/bridge'
 import { NavigationActions } from 'react-navigation';
@@ -24,6 +24,7 @@ export default class PaymentPage extends BasePage {
 
     state = {
         showPwd: false,
+        showPwdMsg: '',
         showResult: false,
         payResult: PaymentResult.none,
         payMsg: ''
@@ -31,7 +32,7 @@ export default class PaymentPage extends BasePage {
 
     constructor(props) {
         super(props);
-        payment.amounts = this.params.amounts ? this.params.amounts : 0
+        payment.amounts = this.params.amounts ? parseFloat(this.params.amounts) : 0.0
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         payment.name = orderProduct && orderProduct.productName
         payment.orderNo = this.params.orderNum;
@@ -90,20 +91,16 @@ export default class PaymentPage extends BasePage {
                 this.$navigate('payment/ChannelPage', {remainMoney: (payment.amounts - user.availableBalance).toFixed(2)})
                 return
             }
+
+            let replace = NavigationActions.replace({
+                key: this.props.navigation.state.key,
+                routeName: 'payment/PaymentResultPage',
+                params: {payResult: PaymentResult.success}
+            });
+            this.props.navigation.dispatch(replace);
             payment.resetPayment()
-            this.setState({
-                showResult: true,
-                payResult: PaymentResult.sucess,
-                payMsg: ''
-            })
         }).catch(err => {
-            this.setState({
-                showPwd: false,
-                showResult: true,
-                payResult: PaymentResult.fail,
-                payMsg: err.msg
-             })
-             payment.resetPayment()
+            this.setState({ showPwdMsg: err.msg })
         })
     }
 
@@ -117,15 +114,19 @@ export default class PaymentPage extends BasePage {
     };
 
     _cancelPay = () => {
-        Alert.alert(
-            '确认要放弃付款？',
-            '订单会超时关闭，请尽快支付',
-            [
-              {text: '确认离开', onPress: () => {this.setState({showPwd: false}); this._goToOrder()}},
-              {text: '继续支付', onPress: () => {}}
-            ],
-            { cancelable: false }
-        )
+        this.setState({showPwd: false})
+        setTimeout(() => {
+            Alert.alert(
+                '确认要放弃付款？',
+                '订单会超时关闭，请尽快支付',
+                [
+                  {text: '确认离开', onPress: () => {this.setState({showPwd: false}); this._goToOrder()}},
+                  {text: '继续支付', onPress: () => {this.setState({showPwd: true});}}
+                ],
+                { cancelable: false }
+            )
+        }, 600)
+        
     }
 
     _goToOrder(index) {
@@ -137,14 +138,14 @@ export default class PaymentPage extends BasePage {
         this.props.navigation.dispatch(replace);
     }
 
-    _closeResultView() {
-        this.setState({showResult: false})
-    }
-
     _render() {
         const { selectedBalace, name } = payment
-        const { showPwd, showResult } = this.state
+        const { showPwd } = this.state
         let { availableBalance } = user
+        let channelAmount = (payment.amounts).toFixed(2)
+        if (selectedBalace) {
+            channelAmount = (payment.amounts - availableBalance) <= 0 ? 0.00 : (payment.amounts - availableBalance).toFixed(2)
+        }
         return <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.row}>
@@ -166,8 +167,8 @@ export default class PaymentPage extends BasePage {
             </View>
             </TouchableWithoutFeedback>
             <View style={styles.needView}>
-            <Text style={styles.need}>需付金额</Text>
-            <Text style={styles.amount}>￥{payment.amounts}</Text>
+            <Text style={styles.need}>三方需付金额</Text>
+            <Text style={styles.amount}>￥{channelAmount}</Text>
             </View>
             <TouchableWithoutFeedback onPress={() => {this.goToPay()}}>
             <View style={styles.payBtn}>
@@ -178,19 +179,8 @@ export default class PaymentPage extends BasePage {
                 finishedAction={(pwd)=> {this._finishedAction(pwd)}}
                 forgetAction={()=>{this._forgetPassword()}}
                 dismiss={()=>{this._cancelPay() }}
+                showPwdMsg={this.state.showPwdMsg}
             /> : null}
-            {
-                showResult
-                ?
-                <PaymentResultView
-                    navigation={this.props.navigation}
-                    payResult={this.state.payResult}
-                    payMsg={this.state.payMsg}
-                    closeResultView={()=>{this._closeResultView()}}
-                />
-                :
-                null
-            }
         </View>;
     }
 }

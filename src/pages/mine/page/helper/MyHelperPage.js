@@ -109,7 +109,7 @@ export default class MyHelperPage extends BasePage {
                                    resizeMode={'contain'}/>
                     </View>
                     {this.renderHotQuestionList()}
-                    <View style={{ height: 1, backgroundColor: DesignRule.bgColor, marginTop: -0.5 }}/>
+                    <View style={{ height: 0.1, backgroundColor: DesignRule.white,  }}/>
                     <View style={{
                         alignItems: 'center',
                         height: 87,
@@ -187,12 +187,12 @@ export default class MyHelperPage extends BasePage {
         );
     };
     jumpQYIMPage = () => {
-        track(trackEvent.contact, { questionType: '在线', origin: '在线' });
+        track(trackEvent.ClickContactCustomerService, { customerServiceModuleSource: 1 });
         QYChatUtil.qiYUChat();
     };
 
     jump2Telephone() {
-        track(trackEvent.contact, { questionType: '在线', origin: '热线' });
+        track(trackEvent.ClickContactCustomerService, { customerServiceModuleSource: 1 });
         Linking.openURL('tel:' + '400-9696-365').catch(e => console.log(e));
     }
 

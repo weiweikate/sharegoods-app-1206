@@ -5,7 +5,10 @@ import {
     View,
     StyleSheet,
     ScrollView,
-    RefreshControl
+    RefreshControl,
+    InteractionManager,
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import { observer } from 'mobx-react';
 import { ActivityOneView, TopBannerView } from './components/SbSectiontHeaderView';
@@ -17,8 +20,17 @@ import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from '../../constants/DesignRule';
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
-import { track } from '../../utils/SensorsTrack';
-import bridge from '../../utils/bridge';
+import CommShareModal from "../../comm/components/CommShareModal";
+import apiEnvironment from "../../api/ApiEnvironment";
+import user from '../../model/user'
+
+import res from '../../comm/res'
+
+const {
+    button:{
+        message_three
+    }
+} = res
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -26,41 +38,55 @@ export default class DownPricePage extends BasePage {
 
     $navigationBarOptions = {
         show: true
+
     };
 
     constructor(props) {
         super(props);
+
         this.dataModel = new TotalTopicDataModel();
         this.state = {
             selectNav: 0
         };
-        //初次进入loading
-        if (this.dataModel.isShowLoading) {
-            bridge.showLoading('加载中');
-            this.dataModel.isShowLoading = false;
-        }
+
+        InteractionManager.runAfterInteractions(() => {
+            //初次进入loading
+            if (this.dataModel.isShowLoading) {
+                this.$loadingShow('加载中');
+                this.dataModel.isShowLoading = false;
+            }
+        });
+    }
+
+    $NavBarRenderRightItem = () => {
+        return (
+
+            <TouchableOpacity
+            onPress={() => {
+                    this.shareModal.open();}}
+            >
+
+                <Image source={message_three}/>
+            </TouchableOpacity>
+        )
     }
 
     componentDidMount() {
-        // this.$NavigationBarResetTitle(this.dataModel.name)
+
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
                 const { linkTypeCode } = this.params;
                 console.log('-----' + linkTypeCode);
-                this.dataModel.loadTopicData(linkTypeCode);
+                setTimeout(() => {
+                    this.dataModel.loadTopicData(linkTypeCode);
+                })
             }
         );
-        track('$AppViewScreen', { '$screen_name': 'DownPricePage', '$title': '专题' });
     }
-
-    /**
-     * 去掉loading
-     */
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.$loadingDismiss();
     }
-
     /**
      * 渲染底部组列表
      * @param sections 所有组数据
@@ -152,23 +178,6 @@ export default class DownPricePage extends BasePage {
      * @private
      */
     _itemActionClick = (itemData) => {
-        // if (itemData.productType === 99) {
-        //     this.$navigate('home/product/ProductDetailPage', {
-        //         productId: itemData.productId,
-        //         productCode: itemData.prodCode,
-        //         preseat:'专题列表页'
-        //     });
-        // } else if (itemData.productType === 1 || itemData.productType === 2 || itemData.productType === 3) {
-        //     this.$navigate('topic/TopicDetailPage', {
-        //         activityCode: itemData.prodCode,
-        //         activityType: itemData.productType,
-        //         preseat:'专题列表页'
-        //     });
-        // } else if (itemData.productType === 5) {
-        //     this.$navigate('topic/DownPricePage', {
-        //         linkTypeCode: itemData.prodCode
-        //     });
-        // }
         const pageObj = getTopicJumpPageParam(itemData);
         this.$navigate(pageObj.pageRoute, pageObj.params);
     };
@@ -180,6 +189,7 @@ export default class DownPricePage extends BasePage {
             sectionData = sectionList[this.state.selectNav].sectionDataList || [];
         }
         const { imgUrl } = this.dataModel;
+        const { linkTypeCode } = this.params;
         this.$NavigationBarResetTitle(this.dataModel.name);
         return (
             <ScrollView
@@ -231,6 +241,24 @@ export default class DownPricePage extends BasePage {
                 {
                     this._renderBottomListView(sectionData)
                 }
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'miniProgramWithCopyUrl'}
+                                webJson={{
+                                    hdImageURL:this.dataModel.imgUrl || '',
+                                    title: '秀一秀，赚到够',
+                                    dec: '[秀购]发现一个很给力的活动快去看看',
+                                    linkUrl:  `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                    thumImage: 'logo.png'
+                                }}
+                                miniProgramJson={{
+                                    hdImageURL:this.dataModel.imgUrl || '',
+                                    title: '秀一秀，赚到够',
+                                    dec: '[秀购]发现一个很给力的活动快去看看',
+                                    thumImage: 'logo.png',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                    miniProgramPath: `/pages/index/index?type=5&id=${linkTypeCode}&inviteId=${user.code || ''}`
+                                }}
+                />
             </ScrollView>
         );
     }

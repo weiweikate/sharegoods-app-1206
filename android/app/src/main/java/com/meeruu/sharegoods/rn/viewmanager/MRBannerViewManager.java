@@ -11,12 +11,14 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.customview.loopbanner.BannerLayout;
 import com.meeruu.commonlib.customview.loopbanner.OnPageSelected;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.sharegoods.ui.adapter.WebBannerAdapter;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +28,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
     private EventDispatcher eventDispatcher;
     private onDidScrollToIndexEvent scrollToIndexEvent;
     private onDidSelectItemAtIndexEvent selectItemAtIndexEvent;
-    private boolean pageFocus;
+    private static boolean pageFocus;
     private int mRaduis;
 
     @Override
@@ -39,7 +41,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         BannerLayout banner = new BannerLayout(reactContext);
         initBannerEvent(reactContext, banner);
-        initLifeEvent(banner);
+        ForegroundCallbacks.get().addListener(new MRListener(banner));
         return banner;
     }
 
@@ -60,27 +62,34 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 eventDispatcher.dispatchEvent(scrollToIndexEvent);
             }
         });
+
     }
 
-    private void initLifeEvent(final BannerLayout view) {
-        if (ForegroundCallbacks.get() != null) {
-            ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
-                @Override
-                public void onBecameForeground() {
-                    if (pageFocus) {
-                        if (view != null && !view.isPlaying()) {
-                            view.setAutoPlaying(true);
-                        }
-                    }
-                }
+    static class MRListener implements ForegroundCallbacks.Listener {
 
-                @Override
-                public void onBecameBackground() {
-                    if (view != null && view.isPlaying()) {
-                        view.setAutoPlaying(false);
-                    }
+        private WeakReference<BannerLayout> reference;
+
+
+        public MRListener(BannerLayout view) {
+            reference = new WeakReference<>(view);
+        }
+
+        @Override
+        public void onBecameForeground() {
+            if (pageFocus) {
+                BannerLayout view = reference.get();
+                if (view != null && !view.isPlaying()) {
+                    view.setAutoPlaying(true);
                 }
-            });
+            }
+        }
+
+        @Override
+        public void onBecameBackground() {
+            BannerLayout view = reference.get();
+            if (view != null && view.isPlaying()) {
+                view.setAutoPlaying(false);
+            }
         }
     }
 
@@ -168,7 +177,9 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
 
     @ReactProp(name = "itemSpace")
     public void setItemSpace(BannerLayout view, Integer space) {
-        view.setItemSpace(DensityUtils.dip2px(space));
+        if (BaseApplication.appContext != null) {
+            view.setItemSpace(DensityUtils.dip2px(space));
+        }
     }
 
     @Nullable

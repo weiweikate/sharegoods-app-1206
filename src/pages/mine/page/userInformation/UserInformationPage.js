@@ -16,6 +16,7 @@ import MineApi from '../../api/MineApi';
 import RouterMap from '../../../../navigation/RouterMap';
 import CommModal from '../../../../comm/components/CommModal';
 import { MRText as Text } from '../../../../components/ui';
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 /**
  * @author chenxiang
@@ -190,6 +191,7 @@ export default class UserInformationPage extends BasePage {
     }
 
     takePhoto = () => {
+        track(trackEvent.ClickModifyAvatar,{});
         BusinessUtils.getImagePicker(callback => {
             this.$loadingShow();
             MineApi.updateUserById({ headImg: callback.imageUrl[0], type: 1 }).then((response) => {
@@ -198,6 +200,11 @@ export default class UserInformationPage extends BasePage {
                 if (response.code === 10000) {
                     user.headImg = callback.imageUrl[0];
                     this.$toastShow('头像修改成功');
+                    if (callback.camera === true){
+                        track(trackEvent.ModifuAvatarSuccess, {modificationMode:1});
+                    } else {
+                        track(trackEvent.ModifuAvatarSuccess, {modificationMode:2});
+                    }
                 }
             }).catch(err => {
 
@@ -210,10 +217,12 @@ export default class UserInformationPage extends BasePage {
     };
     jumpToIDVertify2Page = () => {
         if (!user.realname) {
+            track(trackEvent.ClickRealCodeentityVerify, {});
             this.$navigate('mine/userInformation/IDVertify2Page');
         }
     };
     jumpToNickNameModifyPage = () => {
+        track(trackEvent.ClickModifyNickName, {});
         this.$navigate('mine/userInformation/NickNameModifyPage', { oldNickName: user.nickname });
     };
     renderGetCityPicker = () => {

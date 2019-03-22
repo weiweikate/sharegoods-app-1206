@@ -1,4 +1,6 @@
 rootProject.name = 'sharegoods'
+include ':react-native-code-push'
+project(':react-native-code-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-code-push/android/app')
 include ':react-native-webview'
 project(':react-native-webview').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/react-native-webview/android')
 include ':react-native-extra-dimensions-android'
@@ -6,19 +8,15 @@ project(':react-native-extra-dimensions-android').projectDir = new File(rootProj
 include ':react-native-linear-gradient'
 project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
 include ':react-native-fetch-blob'
-project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fetch-blob/android')
+project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-fetch-blob/android')
 include ':rn-webview-bridge'
 project(':rn-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-webview-bridge/android')
 include ':react-native-video'
 project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android-exoplayer')
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
-include ':react-native-update'
-project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
 include ':react-native-svg'
 project(':react-native-svg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-svg/android')
-include ':react-native-sensors-analytics'
-project(':react-native-sensors-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/@sensors.data/react-native-sensors-analytics/android')
 include ':rn-request'
 project(':rn-request').projectDir = new File(rootProject.projectDir, '../node_modules/@mr/rn-request/android')
 include ':cookies'

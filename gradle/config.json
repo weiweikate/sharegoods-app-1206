@@ -20,8 +20,8 @@
         "bulid_path": "../node_modules/@mr/rn-webview-bridge/android/build.gradle"
     },
     "fetch-blob": {
-        "content": "apply from: '../../../android/rn-fetch-blob.gradle'",
-        "bulid_path": "../node_modules/react-native-fetch-blob/android/build.gradle"
+        "content": "apply from: '../../../../android/rn-fetch-blob.gradle'",
+        "bulid_path": "../node_modules/@mr/rn-fetch-blob/android/build.gradle"
     },
     "linear-gradien": {
         "content": "apply from: '../../../android/rn-gradient.gradle'",
@@ -31,10 +31,6 @@
         "content": "apply from: '../../../android/rn-svg.gradle'",
         "bulid_path": "../node_modules/react-native-svg/android/build.gradle"
     },
-    "update": {
-        "content": "apply from: '../../../android/rn-update.gradle'",
-        "bulid_path": "../node_modules/react-native-update/android/build.gradle"
-    },
     "icons": {
         "content": "apply from: '../../../android/rn-vector-icons.gradle'",
         "bulid_path": "../node_modules/react-native-vector-icons/android/build.gradle"
@@ -43,10 +39,6 @@
         "content": "apply from: '../../../android/rn-video.gradle'",
         "bulid_path": "../node_modules/react-native-video/android-exoplayer/build.gradle"
     },
-    "sensors": {
-        "content": "apply from: '../../../../android/rn-sensors.gradle'",
-        "bulid_path": "../node_modules/@sensors.data/react-native-sensors-analytics/android/build.gradle"
-    },
     "extra_dimensions": {
         "content": "apply from: '../../../android/rn_extra_dimensions.gradle'",
         "bulid_path": "../node_modules/react-native-extra-dimensions-android/android/build.gradle"
@@ -54,5 +46,9 @@
     "rn-webview": {
         "content": "apply from: '../../../../android/rn-webView.gradle'",
         "bulid_path": "../node_modules/@mr/react-native-webview/android/build.gradle"
+    },
+    "rn-code-push": {
+        "content": "apply from: '../../../../android/rn-code-push.gradle'",
+        "bulid_path": "../node_modules/react-native-code-push/android/app/build.gradle"
     }
 }

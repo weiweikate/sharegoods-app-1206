@@ -142,15 +142,14 @@ export default class P_ScoreListPage extends BasePage {
                 'productCode': pData.prodCode
             };
             /*加入购物车埋点*/
-            const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = pData || {};
-            track(trackEvent.addToShoppingcart, {
-                shoppingCartEntrance: '详情页面',
-                commodityNumber: amount,
-                commodityID: prodCode,
-                commodityName: name,
-                firstCommodity: firstCategoryId,
-                secondCommodity: secCategoryId,
-                pricePerCommodity: minPrice
+            const { prodCode, name, originalPrice } = pData || {};
+            track(trackEvent.AddToShoppingcart, {
+                spuCode: prodCode,
+                skuCode: skuCode,
+                spuName: name,
+                pricePerCommodity: originalPrice,
+                spuAmount: amount,
+                shoppingcartEntrance: 1
             });
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
@@ -249,7 +248,7 @@ export default class P_ScoreListPage extends BasePage {
 
     _render() {
         const { pData, messageCount } = this.params;
-        const { minPrice, name, imgUrl, prodCode, firstCategoryId, secCategoryId, originalPrice, groupPrice, v0Price, shareMoney } = pData || {};
+        const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, shareMoney } = pData || {};
         return (
             <View style={styles.container}>
                 <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -282,6 +281,7 @@ export default class P_ScoreListPage extends BasePage {
                                                break;
                                            case 3:
                                                setTimeout(() => {
+                                                   track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
                                                    QYChatUtil.qiYUChat();
                                                }, 100);
                                                break;
@@ -295,13 +295,10 @@ export default class P_ScoreListPage extends BasePage {
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 trackParmas={{
-                                    commodityID: prodCode,
-                                    commodityName: name,
-                                    firstCommodity: firstCategoryId,
-                                    secondCommodity: secCategoryId,
-                                    pricePerCommodity: minPrice
+                                    spuCode: prodCode,
+                                    spuName: name
                                 }}
-                                trackEvent={trackEvent.share}
+                                trackEvent={trackEvent.Share}
                                 type={'Image'}
                                 imageJson={{
                                     imageUrlStr: imgUrl,

@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
+import { track, trackEvent } from '../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
@@ -12,6 +13,7 @@ import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
 import { recommendModule } from './HomeRecommendModel';
 import HomeTitleView from './HomeTitleView';
+import { homePoint } from './HomeTypes';
 
 export const recommendHeight = px2dp(240);
 
@@ -27,10 +29,11 @@ export default class HomeRecommendView extends Component {
         const { recommendList } = recommendModule;
         let item = recommendList[index];
         if (item) {
+            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeRecommad))
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);
-            navigate(router, { ...params, preseat: 'home_recommend' });
+            navigate(router, { ...params });
         }
     }
 

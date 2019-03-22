@@ -16,6 +16,7 @@ import ConfirmAddressView from '../components/confirmOrder/ConfirmAddressView';
 import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
 import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
 import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 @observer
 export default class ConfirmOrderPage extends BasePage {
@@ -140,7 +141,7 @@ export default class ConfirmOrderPage extends BasePage {
         }
         confirmOrderModel.canCommit = false;
         confirmOrderModel.submitProduct(this.params.orderParamVO, {
-            
+
             callback: (data) => {
                 console.log('submitProduct', data)
 
@@ -183,10 +184,12 @@ export default class ConfirmOrderPage extends BasePage {
                 }
             });
         } else {
+            track(trackEvent.ViewCoupon,{couponModuleSource:3});
             this.$navigate('mine/coupons/CouponsPage', {
                 fromOrder: 1,
                 orderParam: confirmOrderModel.orderParamVO, callBack: (data) => {
                     console.log('CouponsPage', data);
+                    confirmOrderModel.couponData=data;
                     if (data && data.id) {
                         let params = {
                             userCouponCode: data.code,

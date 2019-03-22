@@ -28,7 +28,8 @@ export default class PasswordInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: ''
+            text: '',
+            borderColor: null,
         };
     }
 
@@ -48,18 +49,25 @@ export default class PasswordInput extends Component {
         }
     }
 
+    changeRedBorderColor = () => {
+        this.setState({borderColor: DesignRule.mainColor, text: ''})
+        this.refs.textInput && this.refs.textInput.clear()
+
+    }
+
     render() {
         return (
             <TouchableHighlight
                 onPress={this._onPress.bind(this)}
                 activeOpacity={1}
                 underlayColor='transparent'>
-                <View style={[styles.container, this.props.style]}>
+                <View style={this.props.style}>
+                <View style={[styles.container, {borderColor: this.state.borderColor}]}>
                     {
                         this._getInputItem()
                     }
                     <TextInput
-                        style={{ height: 45, zIndex: 99, position: 'absolute', width: 57 * 6, opacity: 0 }}
+                        style={{ top: 0, zIndex: 99, position: 'absolute', bottom: 0, left: 0, right: 0, opacity: 0 }}
                         ref='textInput'
                         maxLength={this.props.maxLength}
                         autoFocus={false}
@@ -74,7 +82,7 @@ export default class PasswordInput extends Component {
                                 if (this.state.text.length - newText.length > 1){
                                     newText = this.state.text.slice(0, -1);
                                 }
-                                this.setState({ text: newText });
+                                this.setState({ text: newText ,borderColor: null});
                                 this.props.onChange(newText);
                                 if (newText.length === this.props.maxLength) {
                                     this.props.onEnd(newText);
@@ -82,6 +90,7 @@ export default class PasswordInput extends Component {
                             }
                         }
                     />
+                </View>
                 </View>
             </TouchableHighlight>
         );
@@ -95,14 +104,14 @@ export default class PasswordInput extends Component {
         for (let i = 0; i < maxLen; i++) {
             if (i === 0) {
                 inputItem.push(
-                    <View key={i} style={[styles.inputItem, this.props.inputItemStyle]}>
+                    <View key={i} style={[styles.inputItem,styles.inputItemBorderLeftWidth, this.props.inputItemStyle]}>
                         {i < text.length ? <View style={[styles.iconStyle, this.props.iconStyle]}/> : null}
                     </View>);
             }
             else {
                 inputItem.push(
                     <View key={i}
-                          style={[styles.inputItem, styles.inputItemBorderLeftWidth, this.props.inputItemStyle]}>
+                          style={[styles.inputItem, styles.inputItemBorderLeftWidth, this.props.inputItemStyle, {borderColor: this.state.borderColor}]}>
                         {i < text.length ?
                             <View style={[styles.iconStyle, this.props.iconStyle]}/> : null}
                     </View>);
@@ -120,18 +129,21 @@ export default class PasswordInput extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
         flexDirection: 'row',
         borderWidth: 0.5,
         borderRadius: 5,
         borderColor: '#ddd',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0
     },
     inputItem: {
-        height: 50,
-        width: 57,
+        flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     inputItemBorderLeftWidth: {
         borderLeftWidth: 0.5,

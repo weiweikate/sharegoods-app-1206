@@ -45,7 +45,7 @@ export default class MyIntegralAccountPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '秀豆账户',
+        title: '我的秀豆',
 
         show: true // false则隐藏导航
     };
@@ -142,10 +142,10 @@ export default class MyIntegralAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励', '任务奖励','秀购赠送','活动奖励'];
+        let use_type = ['', '注册赠送', '活动赠送', '其他', '兑换1元现金券', '签到奖励', '任务奖励','秀购奖励','抽奖奖励','秀购奖励'];
 
         let use_type_symbol = ['', '+', '-'];
-        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg, taskImg,zensong,xiugou_reword];
+        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg, taskImg,zensong,xiugou_reword,zensong];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if(this.currentPage>1){
             Toast.showLoading();

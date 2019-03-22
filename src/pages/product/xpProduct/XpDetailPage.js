@@ -23,6 +23,8 @@ import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import user from '../../../model/user';
 import RouterMap from '../../../navigation/RouterMap';
 import DetailHeaderScoreView from '../components/DetailHeaderScoreView';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import CommShareModal from '../../../comm/components/CommShareModal';
 
 const { arrow_right_black } = productRes.button;
 const { detail_more_down } = productRes.detailNavView;
@@ -57,13 +59,17 @@ export class XpDetailPage extends BasePage {
                 case 1:
                     this.$navigate('home/search/SearchPage');
                     break;
+                case 2:
+                    this.shareModal.open();
+                    break;
                 case 3:
                     setTimeout(() => {
+                        track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
                         QYChatUtil.qiYUChat();
                     }, 100);
                     break;
             }
-        }, true);
+        });
     };
 
     _getBasePageStateOptions = () => {
@@ -144,15 +150,14 @@ export class XpDetailPage extends BasePage {
             shopCartCacheTool.addGoodItem(temp);
 
             /*加入购物车埋点*/
-            const { prodCode, name, firstCategoryId, secCategoryId, minPrice } = this.xpDetailModel.pData;
-            track(trackEvent.addToShoppingcart, {
-                shoppingcartEntrance: '详情页面',
-                commodityNumber: amount,
-                commodityID: prodCode,
-                commodityName: name,
-                firstCommodity: firstCategoryId,
-                secondCommodity: secCategoryId,
-                pricePerCommodity: minPrice
+            const { prodCode, name, originalPrice } = this.xpDetailModel.pData;
+            track(trackEvent.AddToShoppingcart, {
+                spuCode: prodCode,
+                skuCode: skuCode,
+                spuName: name,
+                pricePerCommodity: originalPrice,
+                spuAmount: amount,
+                shoppingcartEntrance: 4
             });
         } else if (this.goType === 'buy') {
             //订单延签卡  加个菊花
@@ -247,6 +252,8 @@ export class XpDetailPage extends BasePage {
     };
 
     _render() {
+        const { activityCode } = this.params;
+        const { bannerUrl } = this.xpDetailModel;
         return (
             <View style={styles.container}>
                 {/*页面状态*/}
@@ -261,6 +268,23 @@ export class XpDetailPage extends BasePage {
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 {/*nav更多跳转*/}
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'miniProgramWithCopyUrl'}
+                                webJson={{
+                                    title: `经验值大礼包`,
+                                    dec: `快速升级会员等级,更多权益享不停!`,
+                                    thumImage: `${bannerUrl}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&upuserid=${user.code || ''}`
+                                }}
+                                miniProgramJson={{
+                                    title: `经验值大礼包`,
+                                    dec: `快速升级会员等级,更多权益享不停!`,
+                                    hdImageURL: `${bannerUrl}`,
+                                    thumImage: 'logo.png',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&&upuserid=${user.code || ''}`,
+                                    miniProgramPath: `/pages/index/index?type=6&id=${activityCode}&inviteId=${user.code || ''}`
+                                }}/>
             </View>
         );
     }

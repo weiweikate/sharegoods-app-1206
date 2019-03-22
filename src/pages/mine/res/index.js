@@ -10,6 +10,7 @@ import myData from './myData';
 import userInfoImg from './userInfoImg';
 import collectShop from './collectShop';
 import mentor from './mentor';
+import cashAccount from './userInfoImg/cashAccountImg';
 const index = {
     collectShop: {
         ...collectShop
@@ -43,6 +44,9 @@ const index = {
     },
     mentor:{
         ...mentor
+    },
+    cashAccount:{
+        ...cashAccount
     },
     ...res
 };

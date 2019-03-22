@@ -113,11 +113,11 @@ const api = {
     findTutor:['/user/findTutor',{method:'get'}],
     //绑定顾问
     bindTutor:['/user/bindTutor',{method:'get'}],
-    getDays:['/user/getDays',{method:'get'}]
-
-
-
-
+    getDays:['/user/getDays',{method:'get'}],
+    //电签合同入口
+    gongmallEnter:['/gongmall/contract',{method:'get'}],
+    //电签结果查询接口
+    gongmallResult:['/gongmall/query',{method:'get'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

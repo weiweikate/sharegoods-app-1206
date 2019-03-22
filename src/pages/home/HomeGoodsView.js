@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
-
+import { track, trackEvent } from '../../utils/SensorsTrack';
 const { px2dp } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
 import ImageLoader from '@mr/image-placeholder';
 import { MRText as Text } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
+import { homePoint } from './HomeTypes';
 
 export const kHomeGoodsViewHeight = px2dp(246);
 const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;
@@ -45,6 +46,7 @@ const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => pre
 
 export default class GoodsCell extends Component {
     _goodsAction(data) {
+        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeForyou))
         let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(data);

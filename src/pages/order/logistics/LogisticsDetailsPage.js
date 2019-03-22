@@ -1,6 +1,6 @@
 
 import React from "react";
-import { NativeModules, StyleSheet, TouchableOpacity, View ,Image,ImageBackground} from "react-native";
+import { NativeModules, StyleSheet, TouchableOpacity, View ,Image} from "react-native";
 import BasePage from "../../../BasePage";
 import { RefreshList, UIText, MRText as Text } from "../../../components/ui";
 import StringUtils from "../../../utils/StringUtils";
@@ -11,7 +11,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from "../res";
 // import UIImage from "@mr/image-placeholder";
 
-const logisticsTop = res.logisticsTop;
+// const logisticsTop = res.logisticsTop;
 // const logisticsBottom = res.logisticsBottom;
 const copy = res.copy;
 // const logisticsIcon = res.dizhi;
@@ -19,7 +19,7 @@ const Nowuliu = res.kongbeiye_wulian;
 
 // import {PageLoadingState} from 'PageState';
 
-class LogisticsDetailsPage extends BasePage {
+export default class LogisticsDetailsPage extends BasePage {
 
     $getPageStateOptions = () => {
         return {
@@ -47,8 +47,13 @@ class LogisticsDetailsPage extends BasePage {
         title: "物流详情",
         show: true// false则隐藏导航
     };
-    //**********************************ViewPart******************************************
-    renderLogisticsNumber = () => {
+    renderFooter = () => {
+        return(
+            <View style={{height:20,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
+        )
+    }
+
+    renderHeader = () => {
         return (
             <TouchableOpacity style={styles.logisticsNumber} onPress={() => this.copyToClipboard()}>
                 <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
@@ -59,43 +64,10 @@ class LogisticsDetailsPage extends BasePage {
             </TouchableOpacity>
         );
     };
-    renderBaiShiHuiTong = () => {
-        return (
-            <View>
-                <View style={{ width: ScreenUtils.width, marginTop: 8 }}>
-                    <ImageBackground source={logisticsTop} style={{
-                        resizeMode: "stretch",
-                        width: ScreenUtils.width - 20,
-                        marginLeft: 10,
-                        marginRight: 10
-                    }}/>
-                </View>
-            </View>
-        );
-    };
-    renderFootder = () => {
-        return (
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-                {/*<Image source={logisticsBottom}*/}
-                         {/*style={{ width: ScreenUtils.width - 20, resizeMode: "stretch", marginTop: -2, marginLeft: 10,*/}
-                             {/*marginRight: 10 }}/>*/}
-            </View>
-
-        );
-    };
-    renderHeader = () => {
-        return (
-            <View>
-                {this.renderBaiShiHuiTong()}
-            </View>
-        );
-    };
     renderItem = ({ item, index }) => {
         return (
                 <LogisticsDetailItem
                     time={item.time}
-                    middleImage={item.middleImage}
-                    title={item.title}
                     content1={item.content1}
                     isTop={index === 0}
                     isBottom={index + 1 === this.state.viewData.length}
@@ -124,14 +96,12 @@ class LogisticsDetailsPage extends BasePage {
     renderSuccess() {
         return (
             <View style={styles.container}>
-                {this.renderLogisticsNumber()}
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
-                    ListFooterComponent={this.renderFootder}
+                    ListFooterComponent={this.renderFooter}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
                     emptyTip={"暂无数据"}
@@ -140,21 +110,12 @@ class LogisticsDetailsPage extends BasePage {
         );
     }
 
-    renderLine = () => {
-        return (
-            <View style={{
-                height: 1,
-                backgroundColor: DesignRule.lineColor_inColorBg,
-                marginLeft: 48,
-                marginRight: 48
-            }}/>
-        );
-    };
-
     componentDidMount() {
         this.loadPageData();
     }
-
+    onRefresh=()=>{
+        this.loadPageData();
+    }
     //**********************************BusinessPart******************************************
     loadPageData() {
         console.log(this.params);
@@ -195,19 +156,18 @@ class LogisticsDetailsPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: DesignRule.bgColor
+        flex: 1,
+        backgroundColor: DesignRule.bgColor,
     }, logisticsNumber: {
         marginLeft: 15,
         marginRight: 15,
         marginTop: 10,
+        marginBottom: 10,
         backgroundColor: "white",
         borderWidth: 1,
         borderRadius: 10,
         height: 48,
         borderColor: "white",
-        elevation: 2,
         justifyContent: "center"
     }
 });
-
-export default LogisticsDetailsPage;

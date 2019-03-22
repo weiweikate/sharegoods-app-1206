@@ -57,8 +57,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
         context.addLifecycleEventListener(this);
         mHostView = new DialogRootViewGroup(context);
-        eventDispatcher =
-                context.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        eventDispatcher = context.getNativeModule(UIManagerModule.class).getEventDispatcher();
     }
 
     public boolean isShow() {
@@ -163,22 +162,19 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
     public static boolean isAppOnForeground(Context context) {
 
-        ActivityManager activityManager = (ActivityManager) context.getApplicationContext()
-                .getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager activityManager = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
         String packageName = context.getApplicationContext().getPackageName();
         /**
          * 获取Android设备中所有正在运行的App
          */
-        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
-                .getRunningAppProcesses();
-        if (appProcesses == null){
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
             return false;
         }
 
         for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
             // The name of the process that this object is associated with.
-            if (appProcess.processName.equals(packageName)
-                    && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+            if (appProcess.processName.equals(packageName) && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 return true;
             }
         }
@@ -195,43 +191,49 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     public void showOrUpdate() {
         // If the existing Dialog is currently up, we may need to redraw it or we may be able to update
         // the property without having to recreate the dialog
+        final Activity currentActivity = getCurrentActivity();
+        if (currentActivity == null) {
+            return;
+        }
+
         final boolean curFocus = this.focus;
+
+        if (popupWindow != null) {
+            UiThreadUtil.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    fitPopupWindowOverStatusBar(popupWindow, true);
+                    popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+                }
+            });
+            return;
+        }
+        popupWindow = new PopupWindow(currentActivity);
+        popupWindow.setTouchable(false);
+
+        popupWindow.setFocusable(curFocus);
+
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (popupWindow != null) {
-                    fitPopupWindowOverStatusBar(popupWindow, true);
-                    popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
-                    return;
-                }
-
-                Activity currentActivity = getCurrentActivity();
-                if (currentActivity == null) {
-                    return;
-                }
-                popupWindow = new PopupWindow(currentActivity);
-
-                popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(!isAppOnForeground(getContext())){
-                                    return;
-                                }
-                                eventDispatcher.dispatchEvent(
-                                        new PopModalDismissEvent(
-                                                PopModal.this.getId()));
-                            }
-                        }, 200);
-
-                    }
-                });
-
-
                 if (Build.VERSION.SDK_INT >= 24) {
+                    popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                        @Override
+                        public void onDismiss() {
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!isAppOnForeground(getContext())) {
+                                        return;
+                                    }
+                                    eventDispatcher.dispatchEvent(new PopModalDismissEvent(PopModal.this.getId()));
+                                }
+                            }, 200);
+
+                        }
+                    });
+
                     if (rect == null) {
                         rect = new Rect();
                     }
@@ -239,7 +241,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
                     int h = mHostView.getResources().getDisplayMetrics().heightPixels - rect.bottom;
                     popupWindow.setHeight(h);
                 }
-                popupWindow.setFocusable(curFocus);
+
                 popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
                 popupWindow.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
@@ -255,12 +257,13 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
                 }
             }
         });
-    }
 
-    public void setFocus(boolean focus){
+    }
+    
+    public void setFocus(boolean focus) {
         this.focus = focus;
-        if(popupWindow != null){
-            popupWindow.setFocusable(true);
+        if (popupWindow != null) {
+            popupWindow.setFocusable(focus);
         }
     }
 
@@ -342,14 +345,12 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
                 final int viewTag = getChildAt(0).getId();
                 final ReactContext context = mContext.get();
                 if (context != null) {
-                    context.runOnNativeModulesQueueThread(
-                            new GuardedRunnable(context) {
-                                @Override
-                                public void runGuarded() {
-                                    context.getNativeModule(UIManagerModule.class)
-                                            .updateNodeSize(viewTag, w, h);
-                                }
-                            });
+                    context.runOnNativeModulesQueueThread(new GuardedRunnable(context) {
+                        @Override
+                        public void runGuarded() {
+                            context.getNativeModule(UIManagerModule.class).updateNodeSize(viewTag, w, h);
+                        }
+                    });
                 }
 
             }

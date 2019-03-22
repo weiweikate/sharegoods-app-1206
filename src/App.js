@@ -24,18 +24,14 @@ import CONFIG from '../config';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 import TimerMixin from 'react-timer-mixin';
-import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import geolocation from '@mr/rn-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 import Storage from './utils/storage';
-// import LoginAPI from './pages/login/api/LoginApi';
-// import OldImag from './home_icon.png';
-import oldUserLoginSingleModel from './model/oldUserLoginModel';
 import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
+import codePush from "react-native-code-push";
 import {SpellShopFlag} from './navigation/Tab';
-// import { olduser } from './pages/home/model/HomeRegisterFirstManager';
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -54,15 +50,19 @@ if (__DEV__) {
         'waiting:',
         waitingModuleNames.length
     );
-
-    // grab this text blob, and put it in a file named packager/moduleNames.js
-    // console.log(`module.exports = ${JSON.stringify(loadedModuleNames.sort())};`);
 }
 
 @observer
-export default class App extends Component {
+class App extends Component {
     constructor(props) {
         super(props);
+
+        // codepush
+        codePush.sync({
+            updateDialog: false,
+            installMode: codePush.InstallMode.ON_NEXT_RESTART
+        });
+
         this.state = {
             load: false,
             showOldBtn: false,
@@ -74,8 +74,6 @@ export default class App extends Component {
             logout();
             login(user.code);
         }
-        //检测是否老用户登陆
-        oldUserLoginSingleModel.checkIsShowOrNot(false);
     }
 
     async componentWillMount() {
@@ -91,6 +89,7 @@ export default class App extends Component {
         //初始化init  定位存储  和app变活跃 会定位
 
         InteractionManager.runAfterInteractions(() => {
+
             TimerMixin.setTimeout(() => {
                 geolocation.init({
                     ios: 'f85b644981f8642aef08e5a361e9ab6b',
@@ -111,18 +110,16 @@ export default class App extends Component {
                     ScreenUtils.setHasNotchScreen(data);
                 });
 
-            },3000)
+            }, 3000);
         });
-
-        //热更新
-        hotUpdateUtil.checkUpdate();
         // 移除启动页
         bridge.removeLaunch();
     }
 
     render() {
         const prefix = 'meeruu://';
-        const {isShowShopFlag} = this.state
+        const { isShowShopFlag } = this.state;
+        const showDebugPanel = String(CONFIG.showDebugPanel)
         return (
             <View style={styles.container}>
                 <Navigator
@@ -140,7 +137,7 @@ export default class App extends Component {
                 />
                 <SpellShopFlag isShow={isShowShopFlag}/>
                 {
-                    CONFIG.showDebugPanel ?
+                    showDebugPanel === 'true' ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
@@ -148,9 +145,6 @@ export default class App extends Component {
         );
     }
 
-    gotoLogin = () => {
-        oldUserLoginSingleModel.JumpToLogin(RouterMap.LoginPage);
-    };
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage
@@ -158,6 +152,8 @@ export default class App extends Component {
         global.$navigator.dispatch(navigationAction);
     };
 }
+
+export default codePush(App);
 
 const styles = StyleSheet.create({
     container: {

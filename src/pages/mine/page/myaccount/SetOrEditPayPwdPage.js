@@ -8,6 +8,7 @@ import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 
 export default class SetOrEditPayPwdPage extends BasePage {
 
@@ -17,7 +18,8 @@ export default class SetOrEditPayPwdPage extends BasePage {
         const { tips, title } = this.props.navigation.state.params;
         this.$navigationBarOptions.title = title;
         this.state = {
-            tips: tips
+            tips: tips,
+            msg: null
         };
     }
 
@@ -25,8 +27,10 @@ export default class SetOrEditPayPwdPage extends BasePage {
         return <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <UIText value={this.state.tips}
                     style={{ fontSize: 17, color: DesignRule.textColor_mainTitle, marginTop: 120 }}/>
-            <Password maxLength={6} style={{ width: 345, marginTop: 30 }}
-                      onEnd={(pwd) => this._onext(pwd)}/>
+            <Password maxLength={6} style={{ width: ScreenUtils.autoSizeWidth(345), marginTop: 30 , height:ScreenUtils.autoSizeWidth(45)}}
+                      onEnd={(pwd) => this._onext(pwd)} ref={(ref)=> {this.paw = ref}}/>
+            <UIText value={this.state.msg}
+                    style={{ fontSize: 15, color: DesignRule.mainColor, marginTop: 15 }}/>
         </View>;
     }
 
@@ -55,7 +59,8 @@ export default class SetOrEditPayPwdPage extends BasePage {
             }
         } else {
             if (oldPwd !== pwd) {
-                bridge.$toast('两次输入的密码不一致');
+                this.paw && this.paw.changeRedBorderColor();
+                this.setState({msg: '两次输入的密码不一致,请重新输入'});
                 return;
             } else {
                 if (from === 'edit') {
@@ -68,19 +73,21 @@ export default class SetOrEditPayPwdPage extends BasePage {
                         bridge.$toast('修改成功');
                         this.$navigateBack(-4);
                     }).catch((data) => {
-                        bridge.$toast(data.msg);
+                        this.paw && this.paw.changeRedBorderColor();
+                        this.setState({msg: data.msg});
                     });
                 } else {
                     MineAPI.initSalesPassword({
                         verificationCode: code,
                         newPassword: pwd
                     }).then((response) => {
-                        // 修改成功
-                        user.setHadSalePassword(true);
-                        bridge.$toast('设置成功');
-                        this.$navigateBack(-3);
-                    }).catch((data) => {
-                        bridge.$toast(data.msg);
+                            // 设置支付密码成功成功,跳转成功页面
+                            user.setHadSalePassword(true);
+                            this.$navigate('mine/account/SetPayPwdSuccessPage');
+                        }
+                    ).catch((data) => {
+                        this.paw && this.paw.changeRedBorderColor();
+                        this.setState({msg: data.msg});
                     });
                 }
             }

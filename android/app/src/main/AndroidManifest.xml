@@ -73,7 +73,6 @@
     <application
         android:name=".application.SophixStubApplication"
         android:allowBackup="false"
-        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -223,6 +222,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".MainActivity"
+            android:hardwareAccelerated="true"
             android:theme="@style/AppSplashTheme"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden">
             <intent-filter>
@@ -260,6 +260,22 @@
                 <data android:scheme="meeruu" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.activity.GongMallActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ui.activity.ClipPictureActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ui.activity.SelectMyPhotoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
             android:screenOrientation="portrait" />
@@ -311,7 +327,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
 
         <!--&lt;!&ndash;高德地图定位&ndash;&gt;-->
         <!--<meta-data android:name="com.amap.api.v2.apikey" android:value="4a3ff7c2164aaf7d67a98fb9b88ae0e6">-->

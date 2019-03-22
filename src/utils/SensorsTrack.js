@@ -1,5 +1,6 @@
 import { NativeModules } from 'react-native';
-
+// import SensorsEvent from './SensorsEvent'
+import SensorsEvent from './TrackEvent'
 const {
     track,
     trackTimerStart,
@@ -12,15 +13,45 @@ const {
 // trackTimerStart("event_name")
 // trackTimerEnd("event_name",parmas)
 
+const spellShopTrack = {
+    IndexStoreBannerClick:'IndexStoreBannerClick',//拼店首页banner推荐位
+    SharePin:'SharePin',//分享拼店
+    SeePingdian:'SeePingdian',//查看拼店
+}
+
+const productTrack = {
+    CategorySearchBannerClick:'CategorySearchBannerClick',//类目搜索banner广告位
+    ProductListClick:'ProductListClick',//搜索页-商品列表页点击
+    Search:'Search',//搜索
+    ProductDetail:'ProductDetail',//浏览商品详情页,
+    AddToShoppingcart:'AddToShoppingcart',//加入购物车
+    Share:'Share',//分享商品
+}
 /** 订单相关的埋点事件名称*/
+const inviteEvent = {
+    QrCodeShareto: 'QrCodeShareto',//分享二维码
+}
+
+const mineEvent = {
+    ClickModifyAvatar: 'ClickModifyAvatar', //点击修改头像
+    ModifuAvatarSuccess: 'ModifuAvatarSuccess', // 修改头像成功
+    ClickModifyNickName: 'ClickModifyNickName', // 点击修改昵称
+    ModifyNickNameSuccess: 'ModifyNickNameSuccess', //修改昵称成功
+    ClickRealCodeentityVerify: 'ClickRealCodeentityVerify', //点击实名认证
+    ReadCodeentityVerifySuccss: 'ReadCodeentityVerifySuccss', //实名认证成功
+    ClickOnlineCustomerService: 'ClickOnlineCustomerService', //点击在线客服 0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
+    ClickPhoneCustomerService: 'ClickPhoneCustomerService' //点击客服电话    0：未知 1：tab我的-帮助与客服 2：商品详情页3：我的订单 4：售后详情页 100：其他
+}
+
+const afterEvent = {
+    ApplyReturn: 'ApplyReturn' // 0：未知 1：仅退款 2：退货退款 3：换货
+}
 const trackEvent = {
-    bannerClick: 'BannerClick',//banner点击
+    bannerShow: 'BannerShow', //首页埋点
+    bannerClick: 'BannerClick',
     login: 'Login',//登录
     signUp: 'SignUp',//注册
     search: 'Search',//商品搜索
-    commodityDetail: 'CommodityDetail',//浏览商品详情页
-    addToShoppingcart: 'AddToShoppingcart',//加入购物车
-    submitOrder: 'SubmitOrder',//提交订单
     submitOrderDetail: 'SubmitOrderDetail',//提交订单详情
     payOrder: 'PayOrder',//支付订单
     payOrderDetail: 'PayOrderDetail',//支付订单详情
@@ -30,26 +61,48 @@ const trackEvent = {
     receiveOneyuan: 'ReceiveOneyuan',//领一元券
     receiveExp: 'ReceiveExp',//经验值变动
     receiveshowDou: 'ReceiveshowDou',//秀豆变动
-    share: 'Share',//分享商品
     contact: 'Contact',//联系客服
     ArticleDisplay: 'ArticleDisplay',//文章浏览
     ArticleShare: 'ArticleShare',// 文章分享
-    applyJoinPin: 'ApplyJoinPin',//加入拼店
-    applyPin: 'ApplyPin',//申请开店
-    dismissPin: 'DismissPin',//解散拼店
-    SharePin: 'SharePin',//分享拼店
-    QuitPin: 'QuitPin',//退出拼店
     BuyGiftSubmit: 'BuyGiftSubmit',//购买礼包
     MesInviteJoinPin: 'MesInviteJoinPin',//邀请加入拼店
     MesInviteJoinPinResult: 'MesInviteJoinPinResult',//邀请加入拼店—结果反馈
     MesApplyJoinPin: 'MesApplyJoinPin',//申请加入拼店
     MesApplyJoinPinResult: 'MesApplyJoinPinResult',//申请加入店铺——结果反馈
-    Dropout: 'Dropout',//请出拼店
     ReceiveDividents: 'ReceiveDividents',//收到分红
     VIPChange: 'VIPChange',//会员流转
-    QrcodeShareto: 'QrcodeShareto',//分享二维码
-};
+    QrcodeShareto: 'QrcodeShareto',//分享二维码,
 
+    ProblemFeedback:'ProblemFeedback',//点击问题反馈,
+    ClickContactCustomerService:'ClickContactCustomerService',//点击联系客服
+    ViewCoupon:'ViewCoupon',//点击查看优惠券点击查看优惠券
+    ViewWaitToRecord:'ViewWaitToRecord',//点击查看待入帐
+    ModifuAvatarSuccess:'ModifuAvatarSuccess',//修改头像
+    ViewMyOrder:'ViewMyOrder',//查看-我的订单
+    OrderAgain:"OrderAgain",//再次购买
+    submitOrder: 'SubmitOrder',//提交订单,
+    SubmitOrderDetail:'SubmitOrderDetail',//提交订单详情
+    ...spellShopTrack,
+    ...productTrack,
+    ...inviteEvent,
+    ...mineEvent,
+    ...afterEvent,
+};
+function trackUtil(p) {
+    let arr = {};
+    let keys = Object.keys(p);
+    const count = keys.length;
+    for (let i = 0; i< count; i++) {
+        let key = keys[i];
+        let value = p[key]
+        arr[key]= (s) => {
+            track(value.name, {...value.params,...s})
+        }
+    }
+    return arr;
+}
+
+const TrackApi = trackUtil(SensorsEvent)
 
 export {
     track,
@@ -58,7 +111,9 @@ export {
     trackViewScreen,
     logout,
     login,
-    trackEvent
+    trackEvent,
+    trackUtil,
+    TrackApi
 };
 
 /**

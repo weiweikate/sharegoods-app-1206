@@ -22,6 +22,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from "../../res";
 import {MRText as Text, MRTextInput as RNTextInput} from '../../../../components/ui'
 import apiEnvironment from "../../../../api/ApiEnvironment";
+import { track, trackEvent } from '../../../../utils/SensorsTrack';
 
 const IDcard_country = res.userInfoImg.IDcard_country;
 const IDcard_persion = res.userInfoImg.IDcard_persion;
@@ -203,7 +204,7 @@ export default class IDVertify2Page extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     renderWideLine = () => {
@@ -287,6 +288,7 @@ export default class IDVertify2Page extends BasePage {
             NativeModules.commModule.toast('实名认证成功');
             MineApi.getUser().then(resp => {
                 let data = resp.data;
+                track(trackEvent.ReadCodeentityVerifySuccss, {});
                 user.saveUserInfo(data);
             }).catch(err => {
                 if (err.code === 10009) {

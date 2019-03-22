@@ -19,6 +19,7 @@ import { MRTextInput } from "../../../components/ui";
 import ProtocolView from "../components/Login.protocol.view";
 import { isCanPhoneAuthen, startPhoneAuthen } from "../model/PhoneAuthenAction";
 import { oneClickLoginValidation } from "../model/LoginActionModel";
+import { TrackApi } from "../../../utils/SensorsTrack";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -59,6 +60,8 @@ export default class LocalNumLogin extends BasePage {
                 this.$loadingDismiss();
             });
         }
+        //埋点
+        TrackApi.onKeyLoginPage();
     }
 
     $isMonitorNetworkStatus() {

@@ -16,6 +16,7 @@ import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
+import { TrackApi } from '../utils/SensorsTrack';
 
 
 const NormalTab = ({ source, title }) => {
@@ -163,7 +164,14 @@ export const TabNav = TabNavigator(
             navigationOptions: {
                 tabBarLabel: '秀场',
                 tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.discover_n}
-                                                  activeSource={res.tab.discover_s} title={'秀场'}/>
+                                                  activeSource={res.tab.discover_s} title={'秀场'}/>,
+                tabBarOnPress: (tab) => {
+                    const { jumpToIndex, scene, previousScene } = tab;
+                    if (previousScene.key !== 'ShowListPage') {
+                        jumpToIndex(scene.index);
+                        TrackApi.WatchXiuChang({moduleSource:1})
+                    }
+                }
             }
         },
         MyShop_RecruitPage: {
