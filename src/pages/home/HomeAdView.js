@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { homeModule } from './Modules';
-import { homePoint } from './HomeTypes'
+import { homePoint } from './HomeTypes';
 import { adModules } from './HomeAdModel';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
@@ -13,7 +13,7 @@ const { px2dp } = ScreenUtils;
 
 const defaultBannerHeight = px2dp(10);
 const adWidth = (ScreenUtils.width - px2dp(35)) / 2 - 0.5;
-const adHeight = adWidth * (160 / 340);
+const adHeight = adWidth * (80 / 170);
 
 const radius = (5);
 
@@ -72,12 +72,11 @@ export default class HomeAdView extends Component {
         for (let i = 0; i < len; i++) {
             items.push(<TouchableWithoutFeedback key={i} onPress={() => this._adAction(ad[i])}>
                 <View
-                    style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : 0 }, this.adRadius[i]]}>
+                    style={[styles.ad, { marginTop: adModules.banner.length === 0 ? px2dp(5) : ((i === 0 || i === 1) ? 0 : px2dp(5)) }, this.adRadius[i]]}>
                     <ImageLoad source={{ uri: ad[i] ? ad[i].imgUrl : '' }}
                                showPlaceholder={false}
                                type={'mfit'}
-                               style={[styles.ad,
-                                   { marginTop: adModules.banner.length === 0 ? 0 : ((i !== 0 && i !== 1) ? px2dp(5) : 0) }]}/>
+                               style={styles.ad}/>
                 </View>
             </TouchableWithoutFeedback>);
         }
@@ -96,8 +95,7 @@ export default class HomeAdView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: ScreenUtils.width,
-        paddingTop: px2dp(10)
+        width: ScreenUtils.width
     },
     bannerImage: {
         width: ScreenUtils.width,
