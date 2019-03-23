@@ -74,6 +74,7 @@ class HomeModule {
     page = 1;
     firstLoad = true;
     errorMsg = '';
+    goodsIndex = 0
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
@@ -160,9 +161,9 @@ class HomeModule {
         }
         try {
             this.isFetching = true;
+            this.goodsIndex = 0
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             let list = result.data.data;
-            console.log('loadhomelist', list);
             let home = [];
             if (list.length > 0) {
                 home.push({
@@ -170,26 +171,12 @@ class HomeModule {
                     type: homeType.goodsTitle
                 });
             }
-            let itemData = [];
             for (let i = 0; i < list.length; i++) {
-                if (i % 2 === 1) {
-                    let good = list[i];
-                    itemData.push(good);
-                    home.push({
-                        itemData: itemData,
-                        type: homeType.goods,
-                        id: 'goods' + i
-                    });
-                    itemData = [];
-                } else {
-                    itemData.push(list[i]);
-                }
-            }
-            if (itemData.length > 0) {
                 home.push({
-                    itemData: itemData,
+                    itemData: list[i],
                     type: homeType.goods,
-                    id: 'goods'
+                    id: 'goods' + i,
+                    goodsIndex: this.goodsIndex ++
                 });
             }
             this.homeList = [...this.homeList, ...home];
@@ -223,30 +210,18 @@ class HomeModule {
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             this.isFetching = false;
             let list = result.data.data;
-            if (list.length < 10) {
+            console.log('home list is', list)
+            if (list.length <= 0) {
+                console.log('home list is end')
                 this.isEnd = true;
             }
-            let itemData = [];
             let home = [];
             for (let i = 0; i < list.length; i++) {
-                if (i % 2 === 1) {
-                    let good = list[i];
-                    itemData.push(good);
-                    home.push({
-                        itemData: itemData,
-                        type: homeType.goods,
-                        id: 'goods' + good.linkTypeCode + i + timeStamp
-                    });
-                    itemData = [];
-                } else {
-                    itemData.push(list[i]);
-                }
-            }
-            if (itemData.length > 0) {
                 home.push({
-                    itemData: itemData,
+                    itemData: list[i],
                     type: homeType.goods,
-                    id: 'goods'
+                    id: 'goods' + i + timeStamp,
+                    goodsIndex:  this.goodsIndex ++
                 });
             }
             this.homeList = this.homeList.concat(home);
@@ -257,7 +232,6 @@ class HomeModule {
             this.isFetching = false;
             this.isRefreshing = false;
             this.errorMsg = error.msg;
-            console.log(error);
         }
     });
 
