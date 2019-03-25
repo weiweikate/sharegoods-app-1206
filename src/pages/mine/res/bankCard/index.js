@@ -14,6 +14,7 @@ const bankCard = {
     delete_icon:require('./delete_icon.png'),
     close:require('./close.png'),
     bounced:require('./bounced.png'),
-    account_bg:require('./account_bg.png')
+    account_bg:require('./account_bg.png'),
+    account_bg_white:require('./account_bg_white.png')
 };
 export default bankCard;
