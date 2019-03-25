@@ -1,24 +1,24 @@
 /**
  验证码输入页面
  **/
-import React, {} from "react";
+import React, {} from 'react';
 import {
     View,
     TouchableOpacity,
     Text
-} from "react-native";
-import BasePage from "../../../BasePage";
-import Styles from "../style/InputPhoneNum.Style";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import bridge from "../../../utils/bridge";
-import StringUtils from "../../../utils/StringUtils";
-import VerifyCode from "../components/VerifyCodeInput";
-import RouterMap from "../../../navigation/RouterMap";
-import { netStatusTool } from "../../../api/network/NetStatusTool";
-import { TimeDownUtils } from "../../../utils/TimeDownUtils";
-import SMSTool from "../../../utils/SMSTool";
-import { registAction } from "../model/LoginActionModel";
-import { track, TrackApi } from "../../../utils/SensorsTrack";
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import Styles from '../style/InputPhoneNum.Style';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import bridge from '../../../utils/bridge';
+import StringUtils from '../../../utils/StringUtils';
+import VerifyCode from '../components/VerifyCodeInput';
+import RouterMap from '../../../navigation/RouterMap';
+import { netStatusTool } from '../../../api/network/NetStatusTool';
+import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import SMSTool from '../../../utils/SMSTool';
+import { registAction } from '../model/LoginActionModel';
+import { track, TrackApi } from '../../../utils/SensorsTrack';
 // import CustomNumKeyBoard from '../../../comm/components/CustomNumKeyBoard'
 
 const { px2dp } = ScreenUtils;
@@ -29,13 +29,13 @@ export default class InputCode extends BasePage {
         super(props);
         this.state = {
             downTime: 60,
-            verifyCode: '',
+            verifyCode: ''
             // showKeyBoard: true
         };
     }
 
     $navigationBarOptions = {
-        title: "输入手机号",
+        title: '输入手机号',
         show: true
     };
 
@@ -62,7 +62,7 @@ export default class InputCode extends BasePage {
                         {StringUtils.encryptPhone(phoneNum)}
                     </Text>
 
-                    <View style={{ alignItems: "center" }}>
+                    <View style={{ alignItems: 'center' }}>
                         <VerifyCode
                             onChangeText={(text) => {
                                 this._finshInputCode(text);
@@ -70,7 +70,7 @@ export default class InputCode extends BasePage {
                             verifyCodeLength={4}
                         />
 
-                        <View style={{ marginTop: px2dp(10), flexDirection: "row" }}>
+                        <View style={{ marginTop: px2dp(10), flexDirection: 'row' }}>
                             {this.state.downTime > 0 ?
                                 <Text style={Styles.authHaveSendCodeBtnStyle}>
                                     {this.state.downTime}s后可点击
@@ -82,7 +82,7 @@ export default class InputCode extends BasePage {
                                 style={{
                                     paddingTop: px2dp(0),
                                     marginLeft: px2dp(5),
-                                    justifyContent: "center"
+                                    justifyContent: 'center'
                                 }}
                                 onPress={() => {
                                     this._reSendClickAction();
@@ -90,7 +90,7 @@ export default class InputCode extends BasePage {
                             >
                                 <Text
                                     style={this.state.downTime > 0 ?
-                                        [Styles.authHaveSendCodeBtnStyle, { textDecorationLine: "underline" }]
+                                        [Styles.authHaveSendCodeBtnStyle, { textDecorationLine: 'underline' }]
                                         : [Styles.authReSendCodeStyle]}
                                 >
                                     重新发送
@@ -109,26 +109,29 @@ export default class InputCode extends BasePage {
      */
     _reSendClickAction = () => {
 
-        track("GetVerifySMS", { "pagePosition": 2 });
+        track('GetVerifySMS', { 'pagePosition': 2 });
         const { phoneNum } = this.params;
         const { downTime } = this.state;
         if (downTime > 0) {
             return;
         }
         if (!netStatusTool.isConnected) {
-            bridge.$toast("请检查网络是否连接");
+            bridge.$toast('请检查网络是否连接');
             return;
         }
-        bridge.$toast("验证码发送成功,注意查收");
-
+        bridge.$toast('验证码发送，请稍后...');
         (new TimeDownUtils()).startDown((time) => {
             this.setState({
                 downTime: time
             });
         });
-        SMSTool.sendVerificationCode(1, phoneNum).catch(error => {
-            this.$toastShow(error.msg);
-        });
+        SMSTool.sendVerificationCode(1, phoneNum)
+            .then((resp) => {
+                bridge.$toast('验证码发送成功,请注意查收');
+            })
+            .catch(error => {
+                this.$toastShow(error.msg);
+            });
     };
 
     _finshInputCode = (text) => {
@@ -146,7 +149,7 @@ export default class InputCode extends BasePage {
                     // user.untiedWechat(nickName,this.params.appOpenid,this.params.unionid)
                     this.$navigate(RouterMap.InviteCodePage);
 
-                    TrackApi.phoneSignUpSuccess({ "signUpPhone": phoneNum });
+                    TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
                 } else {
                     this.$toastShow(res.msg);
                 }

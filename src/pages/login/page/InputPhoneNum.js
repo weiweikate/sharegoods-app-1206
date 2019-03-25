@@ -1,19 +1,19 @@
-import React, {} from "react";
+import React, {} from 'react';
 import {
     View,
     TouchableOpacity,
     Text
-} from "react-native";
-import BasePage from "../../../BasePage";
-import Styles from "../style/InputPhoneNum.Style";
-import res from "../res";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import { MRTextInput } from "../../../components/ui";
-import DesignRule from "../../../constants/DesignRule";
-import StringUtils from "../../../utils/StringUtils";
-import RouterMap from "../../../navigation/RouterMap";
-import ProtocolView from "../components/Login.protocol.view";
-import SMSTool from "../../../utils/SMSTool";
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import Styles from '../style/InputPhoneNum.Style';
+import res from '../res';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import { MRTextInput } from '../../../components/ui';
+import DesignRule from '../../../constants/DesignRule';
+import StringUtils from '../../../utils/StringUtils';
+import RouterMap from '../../../navigation/RouterMap';
+import ProtocolView from '../components/Login.protocol.view';
+import SMSTool from '../../../utils/SMSTool';
 
 const { px2dp } = ScreenUtils;
 const {
@@ -25,21 +25,21 @@ export default class InputPhoneNum extends BasePage {
         super(props);
         this.state = {
             isSelectProtocol: true,
-            phoneNum: "",
-            showKeyBoard:false
+            phoneNum: '',
+            showKeyBoard: false
         };
     }
 
     $navigationBarOptions = {
-        title: "",
+        title: '',
         show: true,
-        leftNavTitle: "取消"
+        leftNavTitle: '取消'
     };
 
     _render() {
         return (
             <View style={Styles.bgContent}>
-                <View style={{ marginTop: px2dp(84), alignItems: "center" }}>
+                <View style={{ marginTop: px2dp(84), alignItems: 'center' }}>
                     <Text style={Styles.topTitleStyle}>
                         请输入手机号
                     </Text>
@@ -77,14 +77,14 @@ export default class InputPhoneNum extends BasePage {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{ flex: 1, justifyContent: "flex-end" }}>
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                     <ProtocolView selectImageClick={(isSelectProtocol) => {
                         this.setState({
                             isSelectProtocol: isSelectProtocol
                         });
                     }} textClick={(htmlUrl) => {
-                        this.$navigate("HtmlPage", {
-                            title: "用户协议内容",
+                        this.$navigate('HtmlPage', {
+                            title: '用户协议内容',
                             uri: htmlUrl
                         });
                     }}/>
@@ -96,16 +96,16 @@ export default class InputPhoneNum extends BasePage {
     _btnClickAction = () => {
 
         if (StringUtils.isEmpty(this.state.phoneNum.trim())) {
-            this.$toastShow("请输入手机号");
+            this.$toastShow('请输入手机号');
         } else {
             if (StringUtils.checkPhone(this.state.phoneNum)) {
                 if (!this.state.isSelectProtocol) {
-                    this.$toastShow("请勾选用户协议");
+                    this.$toastShow('请勾选用户协议');
                 } else {
                     this._sendAutherCode();
                 }
             } else {
-                this.$toastShow("您输入的手机号有误，请重新输入");
+                this.$toastShow('您输入的手机号有误，请重新输入');
             }
         }
     };
@@ -114,15 +114,19 @@ export default class InputPhoneNum extends BasePage {
      * @private
      */
     _sendAutherCode = () => {
+        this.$toastShow('验证码发送，请稍后...');
         //发送验证码
-        SMSTool.sendVerificationCode(1, this.state.phoneNum).catch(error => {
-            this.$toastShow(error.msg);
-        });
-        let params = {
-            ...this.params,
-            phoneNum: this.state.phoneNum
-        };
-        this.$navigate(RouterMap.InputCode, params);
+        SMSTool.sendVerificationCode(1, this.state.phoneNum)
+            .then((resp) => {
+                let params = {
+                    ...this.params,
+                    phoneNum: this.state.phoneNum
+                };
+                this.$navigate(RouterMap.InputCode, params);
+            })
+            .catch(error => {
+                this.$toastShow(error.msg);
+            });
     };
 
 }
