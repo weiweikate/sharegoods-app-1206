@@ -299,7 +299,7 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     private VersionUpdateEvent updateEvent(String lastVersion) {
         //提示当前有版本更新
-        File apkFile = SDCardUtils.getFileDirPath("MR/file");
+        File apkFile = SDCardUtils.getFileDirPath(mContext, "MR/file");
         String fileName = AppUtils.getAppName() + "_" + lastVersion + ".apk";
         String filePath = apkFile.getAbsolutePath() + File.separator + fileName;
         boolean exist = FileUtils.fileIsExists(filePath);
@@ -435,7 +435,7 @@ public class CommModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void RN_Video_Image(final String filePath, final Promise promise) {
-        File dir = SDCardUtils.getFileDirPath("MR/picture");
+        File dir = SDCardUtils.getFileDirPath(mContext, "MR/picture");
         String absolutePath = dir.getAbsolutePath();
         String md5 = "";
         try {
@@ -496,7 +496,7 @@ public class CommModule extends ReactContextBaseJavaModule {
                     public void run() {
                         String exten = FileUtils.getExtensionName(url);
                         String filename = FileUtils.getFileNameNoEx(file.getName());
-                        String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
+                        String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
                         try {
                             FileUtils.copyFile(file.getAbsolutePath(), storePath);
                         } catch (Exception e) {

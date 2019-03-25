@@ -126,7 +126,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 String versionCode = pi.versionCode + "";
                 infos.put("versionName", versionName);
                 infos.put("versionCode", versionCode);
-                infos.put("is_phone", !Utils.isEmulator()+"");
+                infos.put("is_phone", !Utils.isEmulator() + "");
             }
             // 便于跟踪反馈
 //            String account = (String) SPCacheUtils.get("user_account", "");
@@ -189,7 +189,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             // crash日志文件名
             String fileName = "meeruu_" + time + "_" + timestamp + ".log";
             // 保存日志文件的相对目录
-            File dir = SDCardUtils.getFileDirPath("MR/crash");
+            File dir = SDCardUtils.getFileDirPath(mContext, "MR/crash");
             FileOutputStream fos = new FileOutputStream(dir.getAbsolutePath() + File.separator + fileName);
             fos.write(sb.toString().getBytes());
             fos.close();

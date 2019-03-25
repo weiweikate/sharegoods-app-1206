@@ -28,7 +28,6 @@ public class InitializeService extends IntentService {
 
     private int patchStatus;
     private WeakHandler mHandler;
-    private static final String ACTION_INIT_WHEN_APP_CREATE = "com.meeruu.sharegoods.init";
 
     public InitializeService() {
         super("InitializeService");
@@ -48,8 +47,8 @@ public class InitializeService extends IntentService {
     }
 
     public static void init(Context context) {
-        Intent intent = new Intent(context, InitializeService.class);
-        intent.setAction(ACTION_INIT_WHEN_APP_CREATE);
+        Intent intent = new Intent();
+        intent.setClass(context, InitializeService.class);
         context.startService(intent);
     }
 
@@ -57,12 +56,10 @@ public class InitializeService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_INIT_WHEN_APP_CREATE.equals(action)) {
-                // 延迟三方sdk初始化
-                initNow();
-                initCallback();
-                initDelay();
-            }
+            // 延迟三方sdk初始化
+            initNow();
+            initCallback();
+            initDelay();
         }
     }
 

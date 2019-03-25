@@ -74,7 +74,7 @@ class HomeModule {
     page = 1;
     firstLoad = true;
     errorMsg = '';
-    goodsIndex = 0
+    goodsIndex = 0;
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
@@ -161,7 +161,7 @@ class HomeModule {
         }
         try {
             this.isFetching = true;
-            this.goodsIndex = 0
+            this.goodsIndex = 0;
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             let list = result.data.data;
             let home = [];
@@ -176,7 +176,7 @@ class HomeModule {
                     itemData: list[i],
                     type: homeType.goods,
                     id: 'goods' + i,
-                    goodsIndex: this.goodsIndex ++
+                    goodsIndex: this.goodsIndex++
                 });
             }
             this.homeList = [...this.homeList, ...home];
@@ -210,9 +210,9 @@ class HomeModule {
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             this.isFetching = false;
             let list = result.data.data;
-            console.log('home list is', list)
+            console.log('home list is', list);
             if (list.length <= 0) {
-                console.log('home list is end')
+                console.log('home list is end');
                 this.isEnd = true;
             }
             let home = [];
@@ -221,7 +221,7 @@ class HomeModule {
                     itemData: list[i],
                     type: homeType.goods,
                     id: 'goods' + i + timeStamp,
-                    goodsIndex:  this.goodsIndex ++
+                    goodsIndex: this.goodsIndex++
                 });
             }
             this.homeList = this.homeList.concat(home);
@@ -236,7 +236,7 @@ class HomeModule {
     });
 
     bannerPoint = (item, location) => ({
-        bannerName: item.imgUrl,
+        bannerName: item.imgUrl || '',
         bannerId: item.id,
         bannerRank: item.rank,
         bannerType: item.linkType,

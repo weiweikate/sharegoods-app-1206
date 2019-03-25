@@ -259,7 +259,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         });
 
     }
-    
+
     public void setFocus(boolean focus) {
         this.focus = focus;
         if (popupWindow != null) {
@@ -305,12 +305,12 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
                 Field mLayoutInScreen = PopupWindow.class.getDeclaredField("mLayoutInScreen");
-                mLayoutInScreen.setAccessible(true);
-                mLayoutInScreen.set(popupWindow, needFullScreen);
+                if (mLayoutInScreen != null) {
+                    mLayoutInScreen.setAccessible(true);
+                    mLayoutInScreen.set(popupWindow, needFullScreen);
+                }
             } catch (NoSuchFieldException e) {
-                e.printStackTrace();
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
             }
         }
     }
