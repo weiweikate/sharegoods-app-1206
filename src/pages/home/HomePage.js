@@ -107,7 +107,6 @@ class HomePage extends BasePage {
                 break;
             case homeType.goods:
                 dim.height = kHomeGoodsViewHeight;
-                dim.width = ScreenUtils.width / 2;
                 break;
             case homeType.goodsTitle:
                 dim.height = px2dp(52);
