@@ -69,6 +69,7 @@ class HomeModule {
     @observable selectedTypeCode = null;
     @observable isRefreshing = false;
     @observable isFocused = false;
+    lastGoods = null
     isFetching = false;
     isEnd = false;
     page = 1;
@@ -114,7 +115,7 @@ class HomeModule {
     };
 
     //加载为你推荐列表
-    loadHomeList = flow(function* () {
+    @action loadHomeList = flow(function* () {
         this.isRefreshing = true;
         setTimeout(() => {
             this.isRefreshing = false;
@@ -164,22 +165,17 @@ class HomeModule {
             this.goodsIndex = 0
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             let list = result.data.data;
-            let home = [];
+            let home = []
             if (list.length > 0) {
                 home.push({
                     id: 9,
                     type: homeType.goodsTitle
                 });
             }
-            for (let i = 0; i < list.length; i++) {
-                home.push({
-                    itemData: list[i],
-                    type: homeType.goods,
-                    id: 'goods' + i,
-                    goodsIndex: this.goodsIndex ++
-                });
-            }
-            this.homeList = [...this.homeList, ...home];
+            this.homeList = this.homeList.concat(home);
+            let goods = this.configure(list, 0)
+            console.log('loadHomeList', goods)
+            this.homeList = this.homeList.concat(goods);
             this.isFetching = false;
             this.isRefreshing = false;
             this.page++;
@@ -194,7 +190,7 @@ class HomeModule {
     });
 
     //加载为你推荐列表
-    loadMoreHomeList = flow(function* () {
+    @action loadMoreHomeList = flow(function* () {
         if (this.isFetching) {
             return;
         }
@@ -205,35 +201,83 @@ class HomeModule {
             return;
         }
         try {
-            const timeStamp = new Date().getTime();
-            this.isFetching = true;
-            const result = yield HomeApi.getGoodsInHome({ page: this.page });
-            this.isFetching = false;
-            let list = result.data.data;
-            console.log('home list is', list)
-            if (list.length <= 0) {
-                console.log('home list is end')
-                this.isEnd = true;
-            }
-            let home = [];
-            for (let i = 0; i < list.length; i++) {
-                home.push({
-                    itemData: list[i],
-                    type: homeType.goods,
-                    id: 'goods' + i + timeStamp,
-                    goodsIndex:  this.goodsIndex ++
-                });
-            }
-            this.homeList = this.homeList.concat(home);
-            this.page++;
-            this.isFetching = false;
-            this.errorMsg = '';
+            this.loadMoreGoods()
+            
         } catch (error) {
             this.isFetching = false;
             this.isRefreshing = false;
             this.errorMsg = error.msg;
         }
     });
+
+    @action loadMoreGoods = flow(function* () {
+        this.isFetching = true;
+        const timeStamp = new Date().getTime();
+        let list = []
+        if (this.lastGoods) {
+            list.push(this.lastGoods)
+            this.lastGoods = null
+        }
+        const result = yield HomeApi.getGoodsInHome({ page: this.page });
+        this.isFetching = false;
+        list = list.concat(result.data.data);
+        if (this.page === result.data.totalPage) {
+            this.isEnd = true;
+        }
+        let goods = this.configure(list, timeStamp)
+        if (this.isEnd === true && this.lastGoods) {
+            goods.push({
+                itemData: [this.lastGoods],
+                type: homeType.goods,
+                id: 'goods' + (timeStamp ? timeStamp : 0),
+            });
+        }
+        this.homeList = this.homeList.concat(goods);
+        this.page++;
+        this.isFetching = false;
+        this.errorMsg = '';
+
+        console.log('loadMoreHomeList', goods, this.isEnd)
+        if (goods.length === 0 && this.isEnd === false) {
+            this.loadMoreGoods()
+        }
+    })
+
+    configure = (baseArray, timeStamp) =>  {
+        let len = baseArray.length;
+        let n = 2;
+        let lineNum = 0
+        if (len % n === 0) {
+            lineNum = len / n
+        } else {
+            lineNum = Math.floor( (len / n) )
+            this.lastGoods = baseArray[baseArray.length - 1]
+        }
+        let goodsRes = [];
+        for (let i = 0; i < lineNum; i++) {
+          let temp = baseArray.slice(i * n, i * n + n);
+          goodsRes.push({
+            itemData: temp,
+            type: homeType.goods,
+            id: 'goods' + i + (timeStamp ? timeStamp : 0),
+          });
+        }
+        return goodsRes;
+    }
+
+
+    @action configureHomelist = (list, timeStamp) => {
+        let timeline = [];
+        for (let i = 0; i < list.length; i++) {
+            timeline.push({
+                itemData: list[i],
+                type: homeType.goods,
+                id: 'goods' + i + (timeStamp ? timeStamp : 0),
+                goodsIndex:  this.goodsIndex ++
+            });
+        }
+        return timeline
+    }
 
     bannerPoint = (item, location) => ({
         bannerName: item.imgUrl,
