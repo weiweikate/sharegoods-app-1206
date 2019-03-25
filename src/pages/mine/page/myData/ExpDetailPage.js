@@ -146,11 +146,9 @@ export default class ExpDetailPage extends BasePage{
                     borderRadius:px2dp(4)
                 }}>
                     <Image source={res.myData.jdt_05} style={{
-                        marginRight: -0.5,
                         width: marginLeft,
                         height: px2dp(8),
                         borderRadius:px2dp(4),
-                        backgroundColor: 'rgba(104,0,0,0.1)',
                     }} resizeMode={'stretch'}/>
                 </View>
 
