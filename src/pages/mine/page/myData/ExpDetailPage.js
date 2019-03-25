@@ -174,62 +174,6 @@ export default class ExpDetailPage extends BasePage{
         );
     }
 
-    // renderHeader=()=>{
-    //     const progress = this.state.experience / this.state.levelExperience;
-    //     const marginLeft =  ScreenUtils.px2dp(315) * progress;
-    //     const radius = marginLeft > 4 ? -0.5 : 4;
-    //
-    //     return(
-    //        <View style={styles.headerBg}>
-    //            <View style={{ flex: 1, justifyContent: "center",alignItems:'flex-start',marginLeft:14 }}>
-    //                <Text style={{
-    //                    marginTop: 5,
-    //                    color: DesignRule.mainColor,
-    //                    fontSize: 24
-    //                }} allowFontScaling={false}>{this.state.experience || 0}<Text style={{
-    //                    color: DesignRule.textColor_secondTitle,
-    //                    fontSize:10
-    //                }}>
-    //                    /{this.state.levelExperience}
-    //                </Text></Text>
-    //
-    //                <ImageBackground source={res.myData.jdt_05} style={{
-    //                    overflow: "hidden",
-    //                    marginTop: 5,
-    //                    height: 8,
-    //                    width: ScreenUtils.px2dp(315)
-    //                }}>
-    //                    <View style={{
-    //                        marginRight: -0.5,
-    //                        marginLeft: marginLeft,
-    //                        height: 8,
-    //                        borderBottomRightRadius: 4,
-    //                        borderTopRightRadius: 4,
-    //                        backgroundColor: DesignRule.lineColor_inGrayBg,
-    //                        borderBottomLeftRadius: radius,
-    //                        borderTopLeftRadius: radius
-    //                    }}/>
-    //                </ImageBackground>
-    //
-    //                <Text style={{
-    //                    marginTop: 10,
-    //                    color: DesignRule.textColor_instruction,
-    //                    fontSize: 12
-    //                }} allowFontScaling={false}>距离晋升还差
-    //                    <Text style={{
-    //                        color: DesignRule.textColor_instruction,
-    //                        fontSize: 13
-    //                    }}>
-    //                        {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience - this.state.experience)}Exp` : '0Exp'}
-    //                    </Text>
-    //                    {(this.state.levelExperience - this.state.experience) > 0 ? null :
-    //                        <Text style={{ color: DesignRule.mainColor, fontSize: 11 }} allowFontScaling={false}>(Exp已满)</Text>
-    //                    }
-    //                </Text>
-    //            </View>
-    //        </View>
-    //     )
-    // }
     _renderContent=()=>{
         return(
             <View style={styles.contentStyle}>
