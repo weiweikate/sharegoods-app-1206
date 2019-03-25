@@ -55,16 +55,21 @@ export default class GoodsCell extends Component {
 
     render() {
         const { data } = this.props;
-        const {itemData, goodsIndex} = data
-        let cellStyle = {paddingRight: px2dp(15)}
-        if (goodsIndex % 2 === 0 ) {
-            cellStyle = {paddingLeft: px2dp(15)}
-        }
+        const {itemData} = data
+
         if (!data || data.length === 0) {
             return null;
         }
-        return <View style={[styles.cell, cellStyle]}>
-            <Goods goods={itemData} press={() => this._goodsAction(data)}/>
+        return <View style={[styles.cell]}>
+            <Goods goods={itemData[0]} press={() => this._goodsAction(itemData[0])}/>
+            <View style={{width: px2dp(5)}}/>
+            {
+                itemData[1]
+                ?
+                <Goods goods={itemData[1]} press={() => this._goodsAction(itemData[1])}/>
+                :
+                <View style={[styles.container, {backgroundColor: ''}]}/>
+            }
         </View>;
     }
 }
@@ -139,7 +144,10 @@ let styles = StyleSheet.create({
     },
     cell: {
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        height: px2dp(240),
+        width: ScreenUtils.width,
+        flexDirection: 'row'
     },
     title: {
         color: '#fff',
