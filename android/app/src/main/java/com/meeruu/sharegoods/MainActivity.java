@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity {
         if (!TextUtils.isEmpty(hostJson)) {
             JSONObject object = JSON.parseObject(hostJson);
             ossHost = object.getString("oss");
-            String url = ossHost + "/app/start_adv_bg.png";
+            String url = ossHost + "/app/start_adv_bg.png?" + System.currentTimeMillis();
             LoadingAdv(url);
         } else {
             hasAdResp = true;
@@ -176,7 +176,7 @@ public class MainActivity extends BaseActivity {
                             stub.inflate();
                             ivAdvBg = findViewById(R.id.iv_adv_bg);
                             tvGo = findViewById(R.id.tv_go);
-                            ImageLoadUtils.loadNetImage((String) msg.obj + "?" + System.currentTimeMillis(), ivAdvBg);
+                            ImageLoadUtils.loadNetImage((String) msg.obj, ivAdvBg);
                             ivAdv = findViewById(R.id.iv_adv);
                             String url = ossHost + "/app/start_adv.png?" + System.currentTimeMillis();
                             ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,

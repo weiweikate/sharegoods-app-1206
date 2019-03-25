@@ -727,10 +727,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 @Override
                 protected void onNewResultImpl(@Nullable Bitmap bitmap) {
                     draw(context, bitmap, shareImageBean, success, fail);
-                    if (bitmap != null && !bitmap.isRecycled()) {
-                        bitmap.recycle();
-                        bitmap = null;
-                    }
                 }
             });
         }
