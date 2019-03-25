@@ -21,7 +21,7 @@ import { observer } from 'mobx-react/native';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
-// import NoMoreClick from '../../../../components/ui/NoMoreClick';
+import NoMoreClick from '../../../../components/ui/NoMoreClick';
 
     const renwu=res.cashAccount.renwu;
     const daoshi=res.cashAccount.daoshi;
@@ -100,19 +100,19 @@ export default class MyCashAccountPage extends BasePage {
                     }}>
                         <Image source={res.button.white_back}/>
                     </TouchableWithoutFeedback>
-                    {/*<TouchableWithoutFeedback onPress={() => {*/}
-                        {/*this.$navigate('mine/bankCard/BankCardListPage');*/}
-                    {/*}}>*/}
-                        {/*<Text style={styles.settingStyle}>账户设置</Text>*/}
-                    {/*</TouchableWithoutFeedback>*/}
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigate('mine/bankCard/BankCardListPage');
+                    }}>
+                        <Text style={styles.settingStyle}>账户设置</Text>
+                    </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.withdrawWrapper}>
                     <Text style={styles.countTextStyle}>
                         账户余额（元）
                     </Text>
-                    {/*<NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>*/}
-                        {/*<Text style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}>提现</Text>*/}
-                    {/*</NoMoreClick>*/}
+                    <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
+                        <Text style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}>提现</Text>
+                    </NoMoreClick>
                 </View>
                 <Text style={{color:DesignRule.white,fontSize:48,marginLeft:DesignRule.margin_page,marginTop:15,marginBottom:30}}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
             </ImageBackground>
