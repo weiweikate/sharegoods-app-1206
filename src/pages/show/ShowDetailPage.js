@@ -16,7 +16,6 @@ import DesignRule from '../../constants/DesignRule';
 import AutoHeightWebView from '@mr/react-native-autoheight-webview';
 
 const { px2dp } = ScreenUtils;
-// import HTML from 'react-native-render-html';
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
@@ -80,8 +79,12 @@ export default class ShowDetailPage extends BasePage {
                     Toast.showLoading();
                     if (this.params.code) {
                         this.showDetailModule.showDetailCode(this.params.code || this.params.id).then(() => {
-                            const {detail} = this.showDetailModule;
-                            TrackApi.XiuChangDetails({articleCode:detail.code,author:detail.userName,collectionCount:detail.collectCount});
+                            const { detail } = this.showDetailModule;
+                            TrackApi.XiuChangDetails({
+                                articleCode: detail.code,
+                                author: detail.userName,
+                                collectionCount: detail.collectCount
+                            });
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
@@ -99,8 +102,12 @@ export default class ShowDetailPage extends BasePage {
                         });
                     } else {
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
-                            const {detail} = this.showDetailModule;
-                            TrackApi.XiuChangDetails({articleCode:detail.code,author:detail.userName,collectionCount:detail.collectCount});
+                            const { detail } = this.showDetailModule;
+                            TrackApi.XiuChangDetails({
+                                articleCode: detail.code,
+                                author: detail.userName,
+                                collectionCount: detail.collectCount
+                            });
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
@@ -215,7 +222,6 @@ export default class ShowDetailPage extends BasePage {
         Alert.alert('保存图片', '', [
             {
                 text: '取消', onPress: () => {
-
                 }
             },
             {
@@ -223,7 +229,6 @@ export default class ShowDetailPage extends BasePage {
                     NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url).then(() => {
                         this.$toastShow('保存成功!');
                     }).catch((error) => {
-
                     });
                 }
             }]);

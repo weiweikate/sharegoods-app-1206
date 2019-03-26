@@ -476,7 +476,8 @@ public class CommModule extends ReactContextBaseJavaModule {
             promise.reject("url不能为空");
             return;
         }
-        ImageLoadUtils.isImageExist(Uri.parse(url), new BaseRequestListener() {
+        // 预加载原图
+        ImageLoadUtils.preFetch(Uri.parse(url), 0, 0, new BaseRequestListener() {
             @Override
             public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
                 super.onRequestSuccess(request, requestId, isPrefetch);
@@ -491,18 +492,19 @@ public class CommModule extends ReactContextBaseJavaModule {
                     promise.reject("");
                     return;
                 }
+                String exten = FileUtils.getExtensionName(url);
+                String filename = FileUtils.getFileNameNoEx(file.getName());
+                final String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture")
+                        .getAbsolutePath() + File.separator + filename + "." + exten;
+                try {
+                    FileUtils.copyFile(file.getAbsolutePath(), storePath);
+                } catch (Exception e) {
+                    promise.reject("文件操作失败");
+                    return;
+                }
                 UiThreadUtil.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String exten = FileUtils.getExtensionName(url);
-                        String filename = FileUtils.getFileNameNoEx(file.getName());
-                        String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
-                        try {
-                            FileUtils.copyFile(file.getAbsolutePath(), storePath);
-                        } catch (Exception e) {
-                            promise.reject("文件操作失败");
-                            return;
-                        }
                         Uri uri = Uri.parse("file://" + storePath);
                         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                         intent.setData(uri);

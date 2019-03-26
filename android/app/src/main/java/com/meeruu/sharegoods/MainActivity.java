@@ -136,7 +136,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void LoadingAdv(final String url) {
-        ImageLoadUtils.isImageExist(Uri.parse(url), new BaseRequestListener() {
+        ImageLoadUtils.preFetch(Uri.parse(url), 100, 100, new BaseRequestListener() {
             @Override
             public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
                 super.onRequestSuccess(request, requestId, isPrefetch);

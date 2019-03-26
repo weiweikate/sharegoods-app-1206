@@ -473,18 +473,21 @@ public class ImageLoadUtils {
         view.setController(controller);
     }
 
-
     /**
      * 判断uri是否能加载
      *
      * @param uri
+     * @param width
+     * @param height
      * @param listener
      */
-    public static void isImageExist(Uri uri, BaseRequestListener listener) {
-        ImageRequest imageRequest = ImageRequestBuilder
-                .newBuilderWithSource(uri)
-                .setRequestListener(listener)
-                .build();
+    public static void preFetch(Uri uri, int width, int height, BaseRequestListener listener) {
+        ImageRequestBuilder builder = ImageRequestBuilder.newBuilderWithSource(uri);
+        builder.setRequestListener(listener);
+        if (width > 0 && height > 0) {
+            builder.setResizeOptions(new ResizeOptions(width, height));
+        }
+        ImageRequest imageRequest = builder.build();
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
         imagePipeline.fetchDecodedImage(imageRequest, BaseApplication.appContext);
     }
