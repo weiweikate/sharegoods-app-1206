@@ -954,7 +954,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
         long date = System.currentTimeMillis();
-        String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath() + File.separator + "screenshotImage.png_" + date;
+        String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath() + File.separator + "screenshotImage.png_" + date;
 
         File file = new File(storePath);
         if (bmp != null) {
