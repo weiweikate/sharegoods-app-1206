@@ -26,12 +26,13 @@ import javax.annotation.Nullable;
 public class QiyuImageLoader implements UnicornImageLoader {
 
     @Override
-    public Bitmap loadImageSync(String uri, int width, int height) {
+    public Bitmap loadImageSync(String url, int width, int height) {
         Bitmap resultBitmap = null;
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
-        boolean inMemoryCache = imagePipeline.isInBitmapMemoryCache(Uri.parse(uri));
+        Uri uri = Uri.parse(url);
+        boolean inMemoryCache = imagePipeline.isInBitmapMemoryCache(uri);
         if (inMemoryCache) {
-            ImageRequestBuilder builder = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uri));
+            ImageRequestBuilder builder = ImageRequestBuilder.newBuilderWithSource(uri);
             if (width > 0 && height > 0) {
                 builder.setResizeOptions(new ResizeOptions(width, height));
             } else {
@@ -45,12 +46,9 @@ public class QiyuImageLoader implements UnicornImageLoader {
                 if (imageReference != null) {
                     CloseableImage closeableImage = imageReference.get();
                     if (closeableImage != null && closeableImage instanceof CloseableBitmap) {
-                        try {
-                            Bitmap underlyingBitmap = ((CloseableBitmap) closeableImage).getUnderlyingBitmap();
-                            if (underlyingBitmap != null && !underlyingBitmap.isRecycled()) {
-                                resultBitmap = underlyingBitmap.copy(Bitmap.Config.RGB_565, false);
-                            }
-                        } catch (Exception e) {
+                        Bitmap underlyingBitmap = ((CloseableBitmap) closeableImage).getUnderlyingBitmap();
+                        if (underlyingBitmap != null && !underlyingBitmap.isRecycled()) {
+                            resultBitmap = underlyingBitmap.copy(Bitmap.Config.RGB_565, false);
                         }
                     }
                 }
@@ -74,49 +72,46 @@ public class QiyuImageLoader implements UnicornImageLoader {
 
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
         DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, BaseApplication.appContext);
-        try {
-            BaseBitmapDataSubscriber subscriber = new BaseBitmapDataSubscriber() {
-                @Override
-                public void onNewResultImpl(@Nullable Bitmap bitmap) {
-                    if (listener != null) {
-                        new AsyncTask<Bitmap, Void, Bitmap>() {
-                            @Override
-                            protected Bitmap doInBackground(Bitmap... params) {
-                                try {
-                                    Thread.sleep(30);
-                                    Bitmap result = null;
-                                    Bitmap bitmap = params[0];
-                                    if (bitmap != null && !bitmap.isRecycled()) {
-                                        result = bitmap.copy(Bitmap.Config.RGB_565, false);
-                                    }
-                                    return result;
-                                } catch (Exception e) {
-                                }
-                                return null;
-                            }
 
-                            @Override
-                            protected void onPostExecute(Bitmap bitmap) {
-                                if (bitmap != null) {
-                                    listener.onLoadComplete(bitmap);
-                                } else {
-                                    listener.onLoadFailed(null);
-                                }
+        BaseBitmapDataSubscriber subscriber = new BaseBitmapDataSubscriber() {
+            @Override
+            public void onNewResultImpl(@Nullable Bitmap bitmap) {
+                if (listener != null) {
+                    new AsyncTask<Bitmap, Void, Bitmap>() {
+                        @Override
+                        protected Bitmap doInBackground(Bitmap... params) {
+                            try {
+                                Thread.sleep(5);
+                            } catch (InterruptedException e) {
                             }
-                        }.execute(bitmap);
-                    }
-                }
+                            Bitmap bitmap = params[0];
+                            Bitmap result = null;
+                            if (bitmap != null && !bitmap.isRecycled()) {
+                                result = bitmap.copy(Bitmap.Config.RGB_565, false);
+                            }
+                            return result;
+                        }
 
-                @Override
-                public void onFailureImpl(DataSource dataSource) {
-                    if (listener != null) {
-                        listener.onLoadFailed(dataSource.getFailureCause());
-                    }
+                        @Override
+                        protected void onPostExecute(Bitmap bitmap) {
+                            if (bitmap != null) {
+                                listener.onLoadComplete(bitmap);
+                            } else {
+                                listener.onLoadFailed(null);
+                            }
+                        }
+                    }.execute(bitmap);
                 }
-            };
-            dataSource.subscribe(subscriber, UiThreadImmediateExecutorService.getInstance());
-        } catch (Exception e) {
-            listener.onLoadFailed(null);
-        }
+            }
+
+            @Override
+            public void onFailureImpl(DataSource dataSource) {
+                if (listener != null) {
+                    listener.onLoadFailed(dataSource.getFailureCause());
+                }
+            }
+        };
+
+        dataSource.subscribe(subscriber, UiThreadImmediateExecutorService.getInstance());
     }
 }
