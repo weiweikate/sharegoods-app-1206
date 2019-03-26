@@ -83,6 +83,7 @@ export default class MRBannerViewComponent extends Component {
 
     render() {
         const { bannerHeight, imgUrlArray, autoLoop, itemRadius, pageFocused } = this.props;
+        console.log('------' + itemRadius);
         let imgWidth = ScreenUtils.width - ScreenUtils.px2dp(30);
         return (
             <View style={styles.container}>
