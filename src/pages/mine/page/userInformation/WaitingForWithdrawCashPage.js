@@ -58,6 +58,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                 <RefreshList
                     data={this.state.viewData}
                     ListHeaderComponent={this.renderReHeader}
+                    ListFooterComponent={this.renderFooter}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
@@ -243,16 +244,11 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             </View>
         );
     };
-    renderLine = () => {
-        return (
-            <View style={{
-                height: 1,
-                backgroundColor: DesignRule.lineColor_inColorBg,
-                marginLeft: 48,
-                marginRight: 48
-            }}/>
-        );
-    };
+    renderFooter = () => {
+        return(
+            <View style={{height:30,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
+        )
+    }
 
     //**********************************BusinessPart******************************************
     componentDidMount() {

@@ -58,6 +58,7 @@ export default class MyIntegralAccountPage extends BasePage {
                 <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <RefreshList
                     ListHeaderComponent={this.renderReHeader}
+                    ListFooterComponent={this.renderFooter}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
@@ -158,6 +159,11 @@ export default class MyIntegralAccountPage extends BasePage {
         }
 
     };
+    renderFooter = () => {
+        return(
+            <View style={{height:30,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
+        )
+    }
 
     //**********************************BusinessPart******************************************
     componentDidMount() {
@@ -230,7 +236,6 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: DesignRule.bgColor,
-        marginBottom: ScreenUtils.safeBottom
     },
 
     container: {

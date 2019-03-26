@@ -72,6 +72,7 @@ export default class MyCashAccountPage extends BasePage {
                     <RefreshList
                         data={this.state.viewData}
                         ListHeaderComponent={this.renderReHeader}
+                        ListFooterComponent={this.renderFooter}
                         renderItem={this.renderItem}
                         onRefresh={this.onRefresh}
                         onLoadMore={this.onLoadMore}
@@ -116,7 +117,11 @@ export default class MyCashAccountPage extends BasePage {
         );
     }
 
-
+    renderFooter = () => {
+        return(
+            <View style={{height:20,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
+        )
+    }
     renderHeader = () => {
         return (
             <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.container}>
@@ -305,7 +310,6 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: DesignRule.bgColor,
-        marginBottom: ScreenUtils.safeBottom
     },
     container: {
         height: px2dp(188),
