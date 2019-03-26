@@ -31,7 +31,7 @@ export default class MRBannerView extends Component {
 
     render() {
         return (
-            <RCTMRBannerView {...this.props}/>
+            <RCTMRBannerView {...this.props} data={{imgUrlArray:this.props.imgUrlArray,itemWidth:this.props.itemWidth}}/>
         );
     }
 }
