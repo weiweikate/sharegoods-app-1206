@@ -29,7 +29,6 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
     private onDidScrollToIndexEvent scrollToIndexEvent;
     private onDidSelectItemAtIndexEvent selectItemAtIndexEvent;
     private static boolean pageFocus;
-    private int mRaduis;
 
     @Override
     public String getName() {
@@ -111,18 +110,19 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 view.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        setWidth(adapter, view);
                         adapter.setUrlList(datas);
                         view.setBannerSize(adapter);
                     }
                 }, 500);
             } else {
                 adapter = new WebBannerAdapter(view.getContext(), datas);
+                setWidth(adapter, view);
                 view.setAdapter(adapter);
             }
             if (!view.isPlaying()) {
                 view.setAutoPlaying(true);
             }
-            adapter.setRadius(mRaduis);
             adapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
@@ -135,16 +135,24 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
         }
     }
 
+    private void setWidth(WebBannerAdapter adapter, BannerLayout view) {
+        if (view.getItemWidth() > 0) {
+            adapter.setItemWidth(view.getItemWidth());
+        }
+    }
+
     @ReactProp(name = "itemWidth")
     public void setItemWidth(BannerLayout view, Integer width) {
-        if (view.getAdapter() != null) {
-            ((WebBannerAdapter) view.getAdapter()).setItemWidth(DensityUtils.dip2px(width));
+        if (width > 0) {
+            view.setItemWidth(DensityUtils.dip2px(width));
         }
     }
 
     @ReactProp(name = "itemRadius")
-    public void setItemRadius(final BannerLayout view, final Integer radius) {
-        this.mRaduis = DensityUtils.dip2px(radius);
+    public void setItemRadius(BannerLayout view, Integer radius) {
+        if (radius > 0 && view.getAdapter() != null) {
+            ((WebBannerAdapter) view.getAdapter()).setRadius(DensityUtils.dip2px(radius));
+        }
     }
 
     @ReactProp(name = "autoInterval")

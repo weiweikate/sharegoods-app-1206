@@ -187,12 +187,14 @@ export default class MyHelperPage extends BasePage {
         );
     };
     jumpQYIMPage = () => {
-        track(trackEvent.ClickContactCustomerService, { customerServiceModuleSource: 1 });
+        track(trackEvent.ClickOnlineCustomerService
+            , { customerServiceModuleSource: 1 });
         QYChatUtil.qiYUChat();
     };
 
     jump2Telephone() {
-        track(trackEvent.ClickContactCustomerService, { customerServiceModuleSource: 1 });
+        track(trackEvent.ClickPhoneCustomerService
+            , { customerServiceModuleSource: 1 });
         Linking.openURL('tel:' + '400-9696-365').catch(e => console.log(e));
     }
 

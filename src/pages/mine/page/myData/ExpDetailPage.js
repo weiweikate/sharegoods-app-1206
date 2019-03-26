@@ -14,36 +14,38 @@ import BasePage from "../../../../BasePage";
 import { RefreshList} from "../../../../components/ui";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "../../../../constants/DesignRule";
-import AccountItem from '../../components/AccountItem';
+// import AccountItem from '../../components/AccountItem';
 import res from "../../res";
 import user from "../../../../model/user";
 import StringUtils from "../../../../utils/StringUtils";
 const account_bg = res.bankCard.account_bg;
 const account_bg_white = res.bankCard.account_bg_white;
+const red_up= res.cashAccount.zhanghu_red;
+const lv_down=res.cashAccount.zhanghu_lv;
 const { px2dp } = ScreenUtils;
 
  const detailData ={
-    1:{title:"邀请注册奖励",icon:res.myData.invite_icon},
-    2:{title:"邀请注册奖励",icon:res.myData.invite_icon},
-     3:{title:"交易奖励",icon:res.myData.trading_icon},
-    4:{title:"交易奖励",icon:res.myData.trading_icon},
-    5:{title:"交易奖励",icon:res.myData.trading_icon},
-     6:{title:"交易奖励",icon:res.myData.trading_icon},
-     7:{title:"交易奖励",icon:res.myData.trading_icon},
-     8:{title:"交易奖励",icon:res.myData.trading_icon},
-     9:{title:"签到奖励",icon:res.myData.signIn_icon},
-     10:{title:"分享奖励",icon:res.myData.share_icon},
-     11:{title:"分享奖励",icon:res.myData.share_icon},
-     12:{title:"会员奖励",icon:res.myData.members_icon},
-     13:{title:"交易奖励",icon:res.myData.trading_icon},
-     14:{title:"交易奖励",icon:res.myData.trading_icon},
-     15:{title:"其他",icon:res.myData.activity_icon},
-     16:{title:"其他",icon:res.myData.activity_icon},
-     17:{title:"秀购奖励",icon:res.myData.xiugou_present},
-     18:{title:"秀购惩罚",icon:res.myData.xiugou_punishment},
-     19:{title:"抽奖奖励",icon:res.myData.xiugou_reword},
-     30:{title:"30天未登录扣除",icon:res.myData.xiugou_punishment},
-     31:{title:"周交易额未达标扣除",icon:res.myData.xiugou_punishment},
+    1:{title:"邀请注册奖励",icon:res.cashAccount.fenxiang_icon},
+    2:{title:"邀请注册奖励",icon:res.cashAccount.fenxiang_icon},
+     3:{title:"交易奖励",icon:res.cashAccount.zengsong_icon},
+    4:{title:"交易奖励",icon:res.cashAccount.zengsong_icon},
+    5:{title:"交易奖励",icon:res.cashAccount.zengsong_icon},
+     6:{title:"交易奖励",icon:res.cashAccount.zengsong_icon},
+     7:{title:"交易奖励",icon:res.cashAccount.zengsong_icon},
+     8:{title:"交易奖励",icon:res.cashAccount.zengsong_icon},
+     9:{title:"签到奖励",icon:res.cashAccount.qiandao_icon},
+     10:{title:"分享奖励",icon:res.cashAccount.fenxiang_icon},
+     11:{title:"分享奖励",icon:res.cashAccount.fenxiang_icon},
+     12:{title:"会员奖励",icon:res.cashAccount.renwu_icon},
+     13:{title:"交易奖励",icon:res.cashAccount.zengsong_icon},
+     14:{title:"交易奖励",icon:res.cashAccount.zengsong_icon},
+     15:{title:"其他",icon:res.cashAccount.other_icon},
+     16:{title:"其他",icon:res.cashAccount.other_icon},
+     17:{title:"秀购奖励",icon:res.cashAccount.zengsong_icon},
+     18:{title:"秀购惩罚",icon:res.cashAccount.chengFa_icon},
+     19:{title:"抽奖奖励",icon:res.cashAccount.zengsong_icon},
+     30:{title:"30天未登录扣除",icon:res.cashAccount.jinggao_icon},
+     31:{title:"周交易额未达标扣除",icon:res.cashAccount.jinggao_icon},
  }
 export default class ExpDetailPage extends BasePage{
     constructor(props){
@@ -178,6 +180,7 @@ export default class ExpDetailPage extends BasePage{
                 {this.renderHeader()}
                 <RefreshList
                     data={this.state.viewData}
+                    ListHeaderComponent={this.renderReHeader}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
@@ -189,23 +192,46 @@ export default class ExpDetailPage extends BasePage{
             </View>
         )
     }
+    renderReHeader = () => {
+        if (this.state.viewData && this.state.viewData.length > 0) {
+            return (
+                <View style={{ marginLeft: 15, marginTop: 115, marginBottom: 20,flexDirection:'row',alignItems:'center' }}>
+                    <View style={{backgroundColor:DesignRule.mainColor,width:2,height:8,borderRadius:1,marginRight:5}}/>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>经验明细</Text>
+                </View>
+            );
+        } else {
+            return null;
+        }
+
+    };
     renderItem = ({ item, index }) => {
         return (
-                <AccountItem
-                    type={item.type}
-                    time={item.time}
-                    serialNumber={""}
-                    capital={item.capital}
-                    iconImage={item.iconImage}
-                    clickItem={() => {}}
-                    capitalRed={item.capitalRed}
-                />
+            <View style={{
+                height: 40,
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: ScreenUtils.width,
+                marginBottom: 20
+            }}>
+                <Image source={item.iconImage} style={{ marginLeft: 15, width: 40, height: 40 }}/>
+                <View style={{  marginLeft: 17, marginRight: 18, flex: 1,alignItems: 'center', justifyContent: 'space-between' ,flexDirection:'row' }}>
+                    <View style={{ justifyContent: 'space-between' }}>
+                        <Text style={{ fontSize: 14, color: DesignRule.textColor_secondTitle }}>{item.type}</Text>
+                        <Text style={{
+                            fontSize: 12, color: DesignRule.textColor_instruction
+                        }}>{item.time}</Text>
+                    </View>
+                    <View  style={{flexDirection:'row',alignItems:'center'}}>
+                        <Text style={{ fontSize: 17, color: DesignRule.textColor_mainTitle }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                        <Image style={{marginLeft:5,width:8,height:5}} source={item.capitalRed?red_up:lv_down}/>
+                    </View>
+                </View>
+            </View>
         );
     };
     getDataFromNetwork = () => {
         console.log("getDataFromNetwork",this.params.experience)
-        // let use_type = ['', '邀请注册奖励', '邀请注册奖励', '交易奖励', '交易奖励', '交易奖励', '交易奖励',"交易奖励","交易奖励","签到奖励","分享奖励","分享奖励","会员奖励","交易奖励","交易奖励","秀购活动奖励","30天未登录扣除","秀购赠送","秀购惩罚","活动奖励"];
-        // let use_let_img = ['',invite_icon,invite_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,trading_icon,signIn_icon,share_icon,share_icon,members_icon,trading_icon,trading_icon,activity_icon,activity_icon,xiugou_present,xiugou_punishment,xiugou_reword ];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         MineApi.expDetail({
             page: this.currentPage,

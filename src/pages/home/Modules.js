@@ -129,6 +129,7 @@ class HomeModule {
         recommendModule.loadRecommendList(this.firstLoad);
         this.page = 1;
         this.isEnd = false;
+        this.lastGoods = null;
         this.homeList = [{
             id: 0,
             type: homeType.category
