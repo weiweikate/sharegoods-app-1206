@@ -46,16 +46,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   
   self.sessionVC.groupId = [jsonDic[@"groupId"] integerValue];
   self.sessionVC.staffId = [jsonDic[@"staffId"] integerValue];
-  
-//  self.sessionVC.groupId = 264002225;
-//  self.sessionVC.staffId = 1802229;
-//
-//切换客服
-//  [self.sessionVC changeHumanStaffWithStaffId:1802229 groupId:264002225 closetip:@"aa" closeCompletion:^(BOOL success, NSError *error) {
-//
-//  } requestCompletion:^(BOOL success, NSError *error) {
-//
-//  }];
+
   QYUserInfo *userInfo = [[QYUserInfo alloc] init];
   userInfo.userId = jsonDic[@"userId"];
   NSMutableArray *array = [NSMutableArray new];
@@ -163,6 +154,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  *  会话列表变化；非平台电商用户，只有一个会话项，平台电商用户，有多个会话项
  */
 - (void)onSessionListChanged:(NSArray<QYSessionInfo*> *)sessionList{
+  
 }
 /**
  *  收到消息

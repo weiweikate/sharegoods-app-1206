@@ -11,6 +11,10 @@
 
 @implementation JRServiceBridge
 
+RCT_EXPORT_MODULE()
+
+
+
 
 
 @end
