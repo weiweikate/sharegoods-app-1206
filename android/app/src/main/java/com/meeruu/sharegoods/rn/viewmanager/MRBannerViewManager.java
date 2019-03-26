@@ -41,7 +41,9 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         BannerLayout banner = new BannerLayout(reactContext);
         initBannerEvent(reactContext, banner);
-        ForegroundCallbacks.get().addListener(new MRListener(banner));
+        if (ForegroundCallbacks.get() != null) {
+            ForegroundCallbacks.get().addListener(new MRListener(banner));
+        }
         return banner;
     }
 
@@ -59,7 +61,10 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 }
                 scrollToIndexEvent.init(banner.getId());
                 scrollToIndexEvent.setIndex(position);
-                eventDispatcher.dispatchEvent(scrollToIndexEvent);
+                try {
+                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
+                } catch (Exception e) {
+                }
             }
         });
 

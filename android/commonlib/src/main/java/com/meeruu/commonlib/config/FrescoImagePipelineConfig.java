@@ -80,7 +80,7 @@ public class FrescoImagePipelineConfig {
                 }
             }
         };
-        File cacheFile = SDCardUtils.getFileDirPath("MR/cache");
+        File cacheFile = SDCardUtils.getFileDirPath(context, "MR/cache");
         // 小图片的磁盘配置
         DiskCacheConfig diskSmallCacheConfig = DiskCacheConfig.newBuilder(context).setBaseDirectoryPath(cacheFile)//缓存图片基路径
                 .setBaseDirectoryName(IMAGE_PIPELINE_SMALL_CACHE_DIR)//文件夹名
