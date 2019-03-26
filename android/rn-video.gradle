@@ -32,7 +32,6 @@ dependencies {
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
-
     implementation rootProject.ext.dependencies.exoplayer
     api(rootProject.ext.dependencies.exopOKhttp) {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'

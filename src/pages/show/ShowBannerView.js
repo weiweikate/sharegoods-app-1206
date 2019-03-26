@@ -33,10 +33,10 @@ export default class ShowBannerView extends Component {
         TrackApi.BannerClick({
             bannerName: item.imgUrl,
             bannerId: item.id,
-            bannerRank:item.rank,
-            bannerType:item.linkType,
-            bannerContent:item.linkTypeCode,
-            bannerLocation:32
+            bannerRank: item.rank,
+            bannerType: item.linkType,
+            bannerContent: item.linkTypeCode,
+            bannerLocation: 32
         });
 
         navigate(router, { ...params });
@@ -53,10 +53,10 @@ export default class ShowBannerView extends Component {
             TrackApi.BannerClick({
                 bannerName: item.imgUrl,
                 bannerId: item.id,
-                bannerRank:item.rank,
-                bannerType:item.linkType,
-                bannerContent:item.linkTypeCode,
-                bannerLocation:32
+                bannerRank: item.rank,
+                bannerType: item.linkType,
+                bannerContent: item.linkTypeCode,
+                bannerLocation: 32
             });
             navigate(router, { ...params });
         }
@@ -108,10 +108,10 @@ export default class ShowBannerView extends Component {
                             height: px2dp(175),
                             width: ScreenUtils.width
                         }}
-                        imgUrlArray={items}
                         itemWidth={px2dp(300)}
                         itemSpace={px2dp(10)}
                         itemRadius={5}
+                        imgUrlArray={items}
                         interceptTouchEvent={true}  //android端起作用，是否拦截touch事件
                         pageFocused={this.props.pageFocused}
                         onDidSelectItemAtIndex={(index) => {
@@ -130,7 +130,7 @@ export default class ShowBannerView extends Component {
 let styles = StyleSheet.create({
     container: {
         height: px2dp(200),
-        width: ScreenUtils.width,
+        width: ScreenUtils.width
     },
     scroll: {
         height: px2dp(175)
