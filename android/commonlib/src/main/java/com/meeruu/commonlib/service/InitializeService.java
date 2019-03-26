@@ -3,9 +3,12 @@ package com.meeruu.commonlib.service;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.handler.CrashHandler;
+import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
@@ -24,10 +27,24 @@ import static com.meeruu.commonlib.config.QiyuConfig.options;
 public class InitializeService extends IntentService {
 
     private int patchStatus;
+    private WeakHandler mHandler;
     private static final String ACTION_INIT_WHEN_APP_CREATE = "com.meeruu.sharegoods.init";
 
     public InitializeService() {
         super("InitializeService");
+        mHandler = new WeakHandler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                switch (msg.what) {
+                    case ParameterUtils.QIYU_IMG:
+                        // 七鱼初始化
+                        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", options(),
+                                new QiyuImageLoader());
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     public static void init(Context context) {
@@ -50,9 +67,7 @@ public class InitializeService extends IntentService {
     }
 
     private void initNow() {
-        // 七鱼初始化
-        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", options(),
-                new QiyuImageLoader(getApplicationContext()));
+        mHandler.sendEmptyMessage(ParameterUtils.QIYU_IMG);
     }
 
     private void initDelay() {

@@ -29,7 +29,7 @@
 #define SA_SERVER_URL @"https://stat.sharegoodsmall.com/sa?project=default"
 #else
 #define SA_DEBUG_MODE SensorsAnalyticsDebugOff
-#define SA_SERVER_URL @"https://stat.sharegoodsmall.com/sa?project=production"
+#define SA_SERVER_URL @"https://track.sharegoodsmall.com/sa?project=production"
 #endif
 
 #endif /* JRNotiOrKey_h */

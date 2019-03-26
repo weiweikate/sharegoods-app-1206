@@ -69,7 +69,7 @@ public class FrescoImagePipelineConfig {
                             MAX_CACHE_ENTRIES,                     // 最大总图片缓存数量
                             maxCacheSize / 3,    // 准备清除的总图片最大空间
                             MAX_CACHE_EVICTION_ENTRIES,            // 准备清除的总图片最大数量
-                            maxCacheSize / 5);     // 单个图片最大大小
+                            maxCacheSize / 2);     // 单个图片最大大小
                 } else {
                     return new MemoryCacheParams(
                             maxCacheSize,

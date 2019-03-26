@@ -281,6 +281,7 @@ export default class P_ScoreListPage extends BasePage {
                                                break;
                                            case 3:
                                                setTimeout(() => {
+                                                   track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
                                                    QYChatUtil.qiYUChat();
                                                }, 100);
                                                break;

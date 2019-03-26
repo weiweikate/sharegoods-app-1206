@@ -75,3 +75,5 @@ tsconfig.json
 /uploadPackage
 build
 /.update
+/.vscode
+*.mobileprovision
