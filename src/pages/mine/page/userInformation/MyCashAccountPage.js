@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     ImageBackground,
-    // TouchableOpacity,
     Alert,
     Image,
     TouchableWithoutFeedback
@@ -21,18 +20,20 @@ import { observer } from 'mobx-react/native';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
-// import NoMoreClick from '../../../../components/ui/NoMoreClick';
+import NoMoreClick from '../../../../components/ui/NoMoreClick';
 
-    const renwu=res.cashAccount.renwu;
-    const daoshi=res.cashAccount.daoshi;
-    const  fenhong =res.cashAccount.fenhong;
-    const hongbao =res.cashAccount.hongbao;
-    const tuiguang= res.cashAccount.tuiguang;
-    const tixiang = res.cashAccount.tixiang;
-    const tixiantk= res.cashAccount.tixiantk;
-    const xiaofei= res.cashAccount.xiaofei;
-    const xiaofeitk= res.cashAccount.xiaofeitk;
-    const account_bg= res.bankCard.account_bg;
+const { px2dp } = ScreenUtils;
+const renwu = res.cashAccount.renwu;
+const daoshi = res.cashAccount.daoshi;
+const fenhong = res.cashAccount.fenhong;
+const hongbao = res.cashAccount.hongbao;
+const tuiguang = res.cashAccount.tuiguang;
+const tixiang = res.cashAccount.tixiang;
+const tixiantk = res.cashAccount.tixiantk;
+const xiaofei = res.cashAccount.xiaofei;
+const xiaofeitk = res.cashAccount.xiaofeitk;
+const account_bg = res.bankCard.account_bg;
+const account_bg_white = res.bankCard.account_bg_white;
 
 @observer
 export default class MyCashAccountPage extends BasePage {
@@ -74,75 +75,108 @@ export default class MyCashAccountPage extends BasePage {
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
-                <View style={{borderTopLeftRadius:15,borderTopRightRadius:15,marginTop:-15,flex:1,backgroundColor:'white'}}>
-                <RefreshList
-                    data={this.state.viewData}
-                    ListHeaderComponent={this.renderReHeader}
-                    renderItem={this.renderItem}
-                    onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    extraData={this.state}
-                    isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无数据'}
-                />
+                <View style={{ flex: 1, backgroundColor: 'white' }}>
+                    <RefreshList
+                        data={this.state.viewData}
+                        ListHeaderComponent={this.renderReHeader}
+                        renderItem={this.renderItem}
+                        onRefresh={this.onRefresh}
+                        onLoadMore={this.onLoadMore}
+                        extraData={this.state}
+                        isEmpty={this.state.isEmpty}
+                        emptyTip={'暂无数据'}
+                    />
                 </View>
+                {this._accountInfoRender()}
             </View>
+        );
+    }
+
+    _accountInfoRender() {
+        return (
+            <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
+                position: 'absolute',
+                top: px2dp(80),
+                height: px2dp(140),
+                width: ScreenUtils.width,
+                left: 0,
+                paddingHorizontal: DesignRule.margin_page
+            }}>
+
+                <View style={styles.withdrawWrapper}>
+                    <Text style={styles.countTextStyle}>
+                        账户余额（元）
+                    </Text>
+                    <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
+                        <Text
+                            style={{ fontSize: DesignRule.fontSize_threeTitle, color: DesignRule.mainColor }}>提现</Text>
+                    </NoMoreClick>
+                </View>
+                <Text style={{
+                    color: DesignRule.textColor_mainTitle,
+                    fontSize: 48,
+                    marginLeft: DesignRule.margin_page,
+                    marginTop: px2dp(15),
+                    marginBottom: px2dp(30)
+                }}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
+            </ImageBackground>
         );
     }
 
 
     renderHeader = () => {
         return (
-            <ImageBackground source={account_bg} style={styles.container}>
+            <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.container}>
                 <View style={styles.headerWrapper}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
                         <Image source={res.button.white_back}/>
                     </TouchableWithoutFeedback>
-                    {/*<TouchableWithoutFeedback onPress={() => {*/}
-                        {/*this.$navigate('mine/bankCard/BankCardListPage');*/}
-                    {/*}}>*/}
-                        {/*<Text style={styles.settingStyle}>账户设置</Text>*/}
-                    {/*</TouchableWithoutFeedback>*/}
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigate('mine/bankCard/BankCardListPage');
+                    }}>
+                        <Text style={styles.settingStyle}>账户设置</Text>
+                    </TouchableWithoutFeedback>
                 </View>
-                <View style={styles.withdrawWrapper}>
-                    <Text style={styles.countTextStyle}>
-                        账户余额（元）
-                    </Text>
-                    {/*<NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>*/}
-                        {/*<Text style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}>提现</Text>*/}
-                    {/*</NoMoreClick>*/}
-                </View>
-                <Text style={{color:DesignRule.white,fontSize:48,marginLeft:DesignRule.margin_page,marginTop:15,marginBottom:30}}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
             </ImageBackground>
         );
     };
 
-    renderReHeader=()=>{
-        if(this.state.viewData&&this.state.viewData.length>0){
-            return(
-                <View style={{marginLeft:18,marginTop:17,marginBottom:24}}>
-                    <Text style={{fontSize:13,color:DesignRule.textColor_mainTitle}}>账户明细</Text>
+    renderReHeader = () => {
+        if (this.state.viewData && this.state.viewData.length > 0) {
+            return (
+                <View style={{ marginLeft: 18, marginTop: 17, marginBottom: 24 }}>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
                 </View>
-            )
-        }else{
+            );
+        } else {
             return null;
         }
 
-    }
+    };
     renderItem = ({ item, index }) => {
         return (
-            <View style={{height:47,flexDirection:'row',alignItems:'center',width:ScreenUtils.width,marginBottom:12}}>
-              <Image source={item.iconImage} style={{marginLeft:15,width:30,height:28}} />
-                <View style={{justifyContent:'center',marginLeft:17,marginRight:18,flex:1}}>
-                   <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-                       <Text style={{fontSize:13,color:DesignRule.textColor_secondTitle}}>{item.type}</Text>
-                       <Text style={{fontSize:13,color:DesignRule.textColor_instruction}}>{item.time}</Text>
-                   </View>
-                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-                        <Text style={{fontSize:17,color:DesignRule.textColor_mainTitle}}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
-                        <Text style={{fontSize:12,color:DesignRule.textColor_instruction}}>{item.serialNumber}</Text>
+            <View style={{
+                height: 47,
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: ScreenUtils.width,
+                marginBottom: 12
+            }}>
+                <Image source={item.iconImage} style={{ marginLeft: 15, width: 30, height: 28 }}/>
+                <View style={{ justifyContent: 'center', marginLeft: 17, marginRight: 18, flex: 1 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}>{item.type}</Text>
+                        <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>{item.time}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text style={{
+                            fontSize: 17,
+                            color: DesignRule.textColor_mainTitle
+                        }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                        <Text
+                            style={{ fontSize: 12, color: DesignRule.textColor_instruction }}>{item.serialNumber}</Text>
                     </View>
                 </View>
             </View>
@@ -283,12 +317,15 @@ export default class MyCashAccountPage extends BasePage {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1, backgroundColor: DesignRule.bgColor,
+        flex: 1,
+        backgroundColor: DesignRule.bgColor,
         marginBottom: ScreenUtils.safeBottom
     },
     container: {
-        backgroundColor: DesignRule.mainColor
-    }, imageBackgroundStyle: {
+        height: px2dp(188),
+        width: ScreenUtils.width
+    },
+    imageBackgroundStyle: {
         position: 'absolute',
         height: 95,
         backgroundColor: '#FF4F6E',
@@ -298,7 +335,8 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
         borderRadius: 15
-    }, rectangleStyle: {
+    },
+    rectangleStyle: {
         width: 120,
         height: 44,
         borderWidth: 1,
@@ -309,7 +347,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 3
-    }, viewStyle: {
+    },
+    viewStyle: {
         height: 95,
         marginTop: 10,
         marginBottom: 10,
@@ -329,24 +368,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: DesignRule.margin_page,
-        marginTop: ScreenUtils.statusBarHeight,
-        marginTop: 28
+        marginTop: px2dp(22)
     },
     settingStyle: {
         color: DesignRule.white,
         fontSize: DesignRule.fontSize_threeTitle
     },
     countTextStyle: {
-        color: DesignRule.white,
-        fontSize: DesignRule.fontSize_mainTitle
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_threeTitle
     },
     withdrawButtonWrapper: {
-        width: 80,
-        height: 26,
-        borderRadius: 13,
+        width: px2dp(80),
+        height: px2dp(28),
+        borderRadius: px2dp(14),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: DesignRule.white
+        backgroundColor: DesignRule.white,
+        borderColor: DesignRule.mainColor,
+        borderWidth: 1
     }
 });
 
