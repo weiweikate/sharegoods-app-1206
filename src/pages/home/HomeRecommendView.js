@@ -86,7 +86,6 @@ export default class HomeRecommendView extends Component {
                             height: px2dp(160),
                             width: ScreenUtil.width - px2dp(30)
                         }}
-                        imgUrlArray={items}
                         itemWidth={px2dp(295)}
                         itemSpace={px2dp(10)}
                         itemRadius={px2dp(5)}
@@ -97,6 +96,7 @@ export default class HomeRecommendView extends Component {
                         onDidScrollToIndex={(index) => {
                             this._onDidScrollToIndex(index);
                         }}
+                        imgUrlArray={items}
                     />
             }
             {this.renderIndexView()}
