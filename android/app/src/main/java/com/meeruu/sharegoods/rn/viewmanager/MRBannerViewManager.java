@@ -4,7 +4,6 @@ import android.support.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.SimpleViewManager;
@@ -99,12 +98,8 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
         }
     }
 
-    @ReactProp(name = "data")
-    public void setData(final BannerLayout view, ReadableMap data) {
-        final ReadableArray urls = data.getArray("imgUrlArray");
-        int width = data.getInt("itemWidth");
-        width = DensityUtils.dip2px(width);
-
+    @ReactProp(name = "imgUrlArray")
+    public void setImgUrlArray(final BannerLayout view, ReadableArray urls) {
         if (urls != null) {
             final List datas = urls.toArrayList();
             final WebBannerAdapter adapter;
@@ -112,7 +107,6 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 view.setAutoPlaying(false);
                 view.set2First();
                 adapter = (WebBannerAdapter) view.getAdapter();
-                adapter.setItemWidth(width);
                 adapter.setUrlList(null);
                 view.postDelayed(new Runnable() {
                     @Override
@@ -123,7 +117,6 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 }, 500);
             } else {
                 adapter = new WebBannerAdapter(view.getContext(), datas);
-                adapter.setItemWidth(width);
                 view.setAdapter(adapter);
             }
             if (!view.isPlaying()) {
@@ -139,6 +132,13 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                     eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
                 }
             });
+        }
+    }
+
+    @ReactProp(name = "itemWidth")
+    public void setItemWidth(BannerLayout view, Integer width) {
+        if (view.getAdapter() != null) {
+            ((WebBannerAdapter) view.getAdapter()).setItemWidth(DensityUtils.dip2px(width));
         }
     }
 
@@ -168,7 +168,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
 
     @ReactProp(name = "pageFocused")
     public void pageFocused(BannerLayout view, boolean focuse) {
-        pageFocus = focuse;
+        this.pageFocus = focuse;
         if (focuse) {
             if (!view.isPlaying()) {
                 view.setAutoPlaying(true);
