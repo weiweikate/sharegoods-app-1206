@@ -19,16 +19,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.facebook.binaryresource.BinaryResource;
 import com.facebook.binaryresource.FileBinaryResource;
 import com.facebook.cache.common.CacheKey;
-import com.facebook.common.executors.CallerThreadExecutor;
-import com.facebook.common.references.CloseableReference;
-import com.facebook.datasource.DataSource;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
-import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
-import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.listener.BaseRequestListener;
 import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -44,6 +38,7 @@ import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.ImageCacheUtils;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
@@ -304,7 +299,7 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     private VersionUpdateEvent updateEvent(String lastVersion) {
         //提示当前有版本更新
-        File apkFile = SDCardUtils.getFileDirPath("MR/file");
+        File apkFile = SDCardUtils.getFileDirPath(mContext, "MR/file");
         String fileName = AppUtils.getAppName() + "_" + lastVersion + ".apk";
         String filePath = apkFile.getAbsolutePath() + File.separator + fileName;
         boolean exist = FileUtils.fileIsExists(filePath);
@@ -440,7 +435,7 @@ public class CommModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void RN_Video_Image(final String filePath, final Promise promise) {
-        File dir = SDCardUtils.getFileDirPath("MR/picture");
+        File dir = SDCardUtils.getFileDirPath(mContext, "MR/picture");
         String absolutePath = dir.getAbsolutePath();
         String md5 = "";
         try {
@@ -481,13 +476,11 @@ public class CommModule extends ReactContextBaseJavaModule {
             promise.reject("url不能为空");
             return;
         }
-
-        final ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url)).setProgressiveRenderingEnabled(true).build();
-        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, mContext);
-        dataSource.subscribe(new BaseBitmapDataSubscriber() {
+        ImageLoadUtils.isImageExist(Uri.parse(url), new BaseRequestListener() {
             @Override
-            public void onNewResultImpl(Bitmap bitmap) {
-                CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(imageRequest, this);
+            public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                super.onRequestSuccess(request, requestId, isPrefetch);
+                CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
                 BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
                 if (resource == null) {
                     promise.reject("");
@@ -503,7 +496,7 @@ public class CommModule extends ReactContextBaseJavaModule {
                     public void run() {
                         String exten = FileUtils.getExtensionName(url);
                         String filename = FileUtils.getFileNameNoEx(file.getName());
-                        String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
+                        String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath() + File.separator + filename + "." + exten;
                         try {
                             FileUtils.copyFile(file.getAbsolutePath(), storePath);
                         } catch (Exception e) {
@@ -520,12 +513,11 @@ public class CommModule extends ReactContextBaseJavaModule {
             }
 
             @Override
-            public void onFailureImpl(DataSource dataSource) {
+            public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
+                super.onRequestFailure(request, requestId, throwable, isPrefetch);
                 promise.reject("下载失败");
             }
-
-
-        }, CallerThreadExecutor.getInstance());
+        });
     }
 
     @ReactMethod

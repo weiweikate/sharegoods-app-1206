@@ -119,6 +119,7 @@ class App extends Component {
     render() {
         const prefix = 'meeruu://';
         const { isShowShopFlag } = this.state;
+        const showDebugPanel = String(CONFIG.showDebugPanel)
         return (
             <View style={styles.container}>
                 <Navigator
@@ -136,7 +137,7 @@ class App extends Component {
                 />
                 <SpellShopFlag isShow={isShowShopFlag}/>
                 {
-                    CONFIG.showDebugPanel ?
+                    showDebugPanel === 'true' ?
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }

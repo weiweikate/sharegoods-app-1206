@@ -11,7 +11,7 @@ public class onDidScrollToIndexEvent extends Event<onDidScrollToIndexEvent> {
     private int index;
 
     @Override
-    protected void init(int viewTag) {
+    public void init(int viewTag) {
         super.init(viewTag);
     }
 

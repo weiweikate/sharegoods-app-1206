@@ -597,7 +597,7 @@ export default class MinePage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         onScroll={this._onScroll.bind(this)}
-                        scrollEventThrottle={30}
+                        scrollEventThrottle={200}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
@@ -730,9 +730,6 @@ export default class MinePage extends BasePage {
             icon: mine_icon_help_service,
             onPress: () => {
                 TrackApi.ClickCustomerService();
-                TrackApi.ClickContactCustomerService({
-                    customerServiceModuleSource:1
-                })
                 this.$navigate(RouterMap.MyHelperPage);
             }
         };

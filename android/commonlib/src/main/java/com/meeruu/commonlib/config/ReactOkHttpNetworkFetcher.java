@@ -12,7 +12,6 @@ import com.facebook.react.modules.fresco.ReactNetworkImageRequest;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
 import okhttp3.CacheControl;
 import okhttp3.Headers;
@@ -21,18 +20,11 @@ import okhttp3.Request;
 
 public class ReactOkHttpNetworkFetcher extends OkHttpNetworkFetcher {
 
-    private static final String TAG = "ReactOkHttpNetworkFetcher";
-
-    private final OkHttpClient mOkHttpClient;
-    private final Executor mCancellationExecutor;
-
     /**
      * @param okHttpClient client to use
      */
     public ReactOkHttpNetworkFetcher(OkHttpClient okHttpClient) {
         super(okHttpClient);
-        mOkHttpClient = okHttpClient;
-        mCancellationExecutor = okHttpClient.dispatcher().executorService();
     }
 
     private Map<String, String> getHeaders(ReadableMap readableMap) {

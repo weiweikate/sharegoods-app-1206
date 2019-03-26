@@ -69,7 +69,7 @@ public class FrescoImagePipelineConfig {
                             MAX_CACHE_ENTRIES,                     // 最大总图片缓存数量
                             maxCacheSize / 3,    // 准备清除的总图片最大空间
                             MAX_CACHE_EVICTION_ENTRIES,            // 准备清除的总图片最大数量
-                            maxCacheSize / 5);     // 单个图片最大大小
+                            maxCacheSize / 2);     // 单个图片最大大小
                 } else {
                     return new MemoryCacheParams(
                             maxCacheSize,
@@ -80,7 +80,7 @@ public class FrescoImagePipelineConfig {
                 }
             }
         };
-        File cacheFile = SDCardUtils.getFileDirPath("MR/cache");
+        File cacheFile = SDCardUtils.getFileDirPath(context, "MR/cache");
         // 小图片的磁盘配置
         DiskCacheConfig diskSmallCacheConfig = DiskCacheConfig.newBuilder(context).setBaseDirectoryPath(cacheFile)//缓存图片基路径
                 .setBaseDirectoryName(IMAGE_PIPELINE_SMALL_CACHE_DIR)//文件夹名

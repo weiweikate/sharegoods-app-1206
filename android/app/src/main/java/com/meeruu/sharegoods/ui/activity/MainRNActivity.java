@@ -109,7 +109,7 @@ public class MainRNActivity extends ReactActivity {
     //自定义MyReactDelegate
     class MyReactDelegate extends PreLoadReactDelegate {
 
-        public MyReactDelegate(Activity activity, @Nullable String mainComponentName) {
+        public MyReactDelegate(ReactActivity activity, @Nullable String mainComponentName) {
             super(activity, mainComponentName);
         }
 
