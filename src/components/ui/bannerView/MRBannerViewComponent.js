@@ -90,7 +90,6 @@ export default class MRBannerViewComponent extends Component {
                 <MRBannerView
                     ref={(ref) => this.mr_banner = ref}
                     style={[{ height: bannerHeight, width: imgWidth }]}
-                    imgUrlArray={imgUrlArray}
                     onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
                     itemWidth={imgWidth + 0.5}
                     itemRadius={itemRadius}
@@ -99,6 +98,7 @@ export default class MRBannerViewComponent extends Component {
                     onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
                     autoLoop={autoLoop === false ? false : true}
                     autoInterval={5}
+                    imgUrlArray={imgUrlArray}
                 />
                 {this._renderPageControl(imgUrlArray.length)}
             </View>
