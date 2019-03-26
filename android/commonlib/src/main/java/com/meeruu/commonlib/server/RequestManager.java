@@ -59,7 +59,7 @@ public class RequestManager {
     private static final MediaType MEDIA_OBJECT_STREAM = MediaType.parse("multipart/form-data");//mdiatype 这个需要和服务端保持一致
 
     private RequestManager() {
-        File cache_file = SDCardUtils.getFileDirPath("MR" + File.separator + "cache");
+        File cache_file = SDCardUtils.getFileDirPath(BaseApplication.appContext, "MR" + File.separator + "cache");
         int cache_size = 150 * 1024 * 1024;
         Cache cache = new Cache(cache_file, cache_size);
         OkHttpClient.Builder ClientBuilder = new OkHttpClient.Builder();

@@ -11,6 +11,8 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.util.Log;
 
+import com.meeruu.commonlib.base.BaseApplication;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -438,7 +440,7 @@ public final class BitmapUtils {
      * @return
      */
     public static String saveImageToCache(Bitmap bitmap, String name, String id) {
-        File dir = SDCardUtils.getFileDirPath("MR/picture");
+        File dir = SDCardUtils.getFileDirPath(BaseApplication.appContext, "MR/picture");
         String path = dir.getAbsolutePath();
         String md5 = "";
         try {
@@ -477,7 +479,7 @@ public final class BitmapUtils {
      * @return
      */
     public static File saveImageAsFile(Bitmap bitmap, String name) {
-        File dir = SDCardUtils.getFileDirPath("MR/picture");
+        File dir = SDCardUtils.getFileDirPath(BaseApplication.appContext, "MR/picture");
         String path = dir.getAbsolutePath();
         long date = System.currentTimeMillis();
         String fileName = date + name;

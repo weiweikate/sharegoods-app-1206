@@ -21,13 +21,17 @@ public class AppSettingsDialogHolderActivity extends AppCompatActivity implement
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (mDialog == null) {
-            mDialog = getIntent().getParcelableExtra(AppSettingsDialog.EXTRA_APP_SETTINGS);
+            if (getIntent() != null) {
+                mDialog = getIntent().getParcelableExtra(AppSettingsDialog.EXTRA_APP_SETTINGS);
+            }
         }
-        mDialog.dialogDismiss();
-        mDialog.setContext(this);
-        mDialog.setActivityOrFragment(this);
-        mDialog.setNegativeListener(this);
-        mDialog.showDialog();
+        if (mDialog != null) {
+            mDialog.dialogDismiss();
+            mDialog.setContext(this);
+            mDialog.setActivityOrFragment(this);
+            mDialog.setNegativeListener(this);
+            mDialog.showDialog();
+        }
     }
 
     @Override
