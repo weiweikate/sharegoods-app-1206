@@ -35,7 +35,7 @@ dependencies {
     api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.okhttp
     api rootProject.ext.dependencies.sensors
-    api (rootProject.ext.dependencies.sophix) {
+    api(rootProject.ext.dependencies.sophix) {
         exclude(module: 'alicloud-android-utdid')
         exclude(module: 'alicloud-android-ut')
     }

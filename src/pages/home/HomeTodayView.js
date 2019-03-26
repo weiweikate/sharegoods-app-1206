@@ -89,10 +89,9 @@ export default class HomeTodayView extends Component {
                             height: px2dp(160),
                             width: ScreenUtil.width - px2dp(30)
                         }}
-                        imgUrlArray={items}
                         itemWidth={px2dp(295)}
                         itemSpace={px2dp(10)}
-                        itemRadius={5}
+                        itemRadius={px2dp(5)}
                         pageFocused={this.props.pageFocused}
                         onDidSelectItemAtIndex={(e) => {
                             this._onPressRow(e);
@@ -100,6 +99,7 @@ export default class HomeTodayView extends Component {
                         onDidScrollToIndex={(e) => {
                             this._onDidScrollToIndex(e);
                         }}
+                        imgUrlArray={items}
                     />
             }
             {this.renderIndexView()}

@@ -83,6 +83,7 @@ export default class MRBannerViewComponent extends Component {
 
     render() {
         const { bannerHeight, imgUrlArray, autoLoop, itemRadius, pageFocused } = this.props;
+        console.log('------' + itemRadius);
         let imgWidth = ScreenUtils.width - ScreenUtils.px2dp(30);
         return (
             <View style={styles.container}>
@@ -91,14 +92,15 @@ export default class MRBannerViewComponent extends Component {
                     ref={(ref) => this.mr_banner = ref}
                     style={[{ height: bannerHeight, width: imgWidth }]}
                     onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
-                    imgUrlArray={imgUrlArray}
-                    itemRadius={itemRadius}
                     itemWidth={imgWidth + 0.5}
+                    itemRadius={itemRadius}
                     itemSpace={0}
                     pageFocused={pageFocused}
                     onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
                     autoLoop={autoLoop === false ? false : true}
-                    autoInterval={5}/>
+                    autoInterval={5}
+                    imgUrlArray={imgUrlArray}
+                />
                 {this._renderPageControl(imgUrlArray.length)}
             </View>
         );
