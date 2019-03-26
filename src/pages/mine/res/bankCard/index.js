@@ -13,6 +13,8 @@ const bankCard = {
     add_bank_disable:require('./add_bank_disabled.png'),
     delete_icon:require('./delete_icon.png'),
     close:require('./close.png'),
-    bounced:require('./bounced.png')
+    bounced:require('./bounced.png'),
+    account_bg:require('./account_bg.png'),
+    account_bg_white:require('./account_bg_white.png')
 };
 export default bankCard;

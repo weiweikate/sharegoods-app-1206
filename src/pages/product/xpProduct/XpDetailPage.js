@@ -64,6 +64,7 @@ export class XpDetailPage extends BasePage {
                     break;
                 case 3:
                     setTimeout(() => {
+                        track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
                         QYChatUtil.qiYUChat();
                     }, 100);
                     break;
@@ -252,7 +253,7 @@ export class XpDetailPage extends BasePage {
 
     _render() {
         const { activityCode } = this.params;
-        const { name, bannerUrl } = this.xpDetailModel;
+        const { bannerUrl } = this.xpDetailModel;
         return (
             <View style={styles.container}>
                 {/*页面状态*/}
@@ -271,12 +272,15 @@ export class XpDetailPage extends BasePage {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'miniProgramWithCopyUrl'}
                                 webJson={{
-                                    title: `${name}`,
+                                    title: `经验值大礼包`,
+                                    dec: `快速升级会员等级,更多权益享不停!`,
                                     thumImage: `${bannerUrl}`,
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&upuserid=${user.code || ''}`
                                 }}
                                 miniProgramJson={{
-                                    title: `${name}`,
+                                    title: `经验值大礼包`,
+                                    dec: `快速升级会员等级,更多权益享不停!`,
+                                    hdImageURL: `${bannerUrl}`,
                                     thumImage: 'logo.png',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&&upuserid=${user.code || ''}`,
                                     miniProgramPath: `/pages/index/index?type=6&id=${activityCode}&inviteId=${user.code || ''}`

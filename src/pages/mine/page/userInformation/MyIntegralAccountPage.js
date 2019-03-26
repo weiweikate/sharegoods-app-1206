@@ -4,7 +4,9 @@ import {
     StyleSheet,
     View,
     ImageBackground,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
@@ -17,14 +19,18 @@ import Toast from '../../../../utils/bridge' ;
 import { observer } from 'mobx-react/native';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text} from '../../../../components/ui'
+import { MRText as Text } from '../../../../components/ui';
+import NoMoreClick from '../../../../components/ui/NoMoreClick';
+
+const { px2dp } = ScreenUtils;
 
 const singInImg = res.userInfoImg.qdaojianli_icon;
 const taskImg = res.userInfoImg.rwujianli_icon;
 const yiyuanImg = res.userInfoImg.xiudozhanghu_icon_xjaingquan;
 const zensong = res.userInfoImg.xiudozhanghu_icon_zengsong;
 const xiugou_reword = res.myData.xiugou_reword;
-
+const account_bg = res.bankCard.account_bg;
+const account_bg_white = res.bankCard.account_bg_white;
 @observer
 export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
@@ -47,7 +53,7 @@ export default class MyIntegralAccountPage extends BasePage {
     $navigationBarOptions = {
         title: '我的秀豆',
 
-        show: true // false则隐藏导航
+        show: false // false则隐藏导航
     };
 
     //**********************************ViewPart******************************************
@@ -65,44 +71,59 @@ export default class MyIntegralAccountPage extends BasePage {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据！'}
                 />
+                {this._accountInfoRender()}
             </View>
+        );
+    }
+
+    _accountInfoRender() {
+        return (
+            <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
+                position: 'absolute',
+                top: px2dp(80),
+                height: px2dp(140),
+                width: ScreenUtils.width,
+                left: 0,
+                paddingHorizontal: DesignRule.margin_page
+            }}>
+
+                <View style={styles.withdrawWrapper}>
+                    <Text style={styles.countTextStyle}>
+                        秀豆账户（枚）
+                    </Text>
+                    <NoMoreClick style={styles.withdrawButtonWrapper}
+                                 onPress={() => this.$navigate('home/signIn/SignInPage')}>
+                        <Text style={{
+                            fontSize: DesignRule.fontSize_threeTitle,
+                            color: DesignRule.mainColor
+                        }}>兑换1元现金劵</Text>
+                    </NoMoreClick>
+                </View>
+                <Text style={{
+                    color: DesignRule.textColor_mainTitle,
+                    fontSize: 48,
+                    marginLeft: DesignRule.margin_page,
+                    marginTop: px2dp(15),
+                    marginBottom: px2dp(30)
+                }}>{user.userScore ? user.userScore : 0}</Text>
+            </ImageBackground>
         );
     }
 
     renderHeader = () => {
         return (
-            <View style={styles.container}>
-                <ImageBackground style={styles.imageBackgroundStyle}/>
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginRight: 15
-                }}>
-                    <View style={styles.viewStyle}>
-                        <Text style={{
-                            marginLeft: 25,
-                            marginTop: 15,
-                            fontSize: 13,
-                            color: 'white'
-                        }} allowFontScaling={false}>秀豆账户(枚)</Text>
-                        <Text style={{
-                            marginLeft: 25,
-                            fontSize: 25,
-                            marginTop: 10,
-                            color: 'white'
-                        }} allowFontScaling={false}>{user.userScore ? user.userScore : 0}</Text>
-                    </View>
-                    <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
-                        this.$navigate('home/signIn/SignInPage');
+            <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.container}>
+                <View style={styles.headerWrapper}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigateBack();
                     }}>
-                        <Text style={{ fontSize: 15, color: 'white' }}>兑换1元现金券</Text>
-                    </TouchableOpacity>
+                        <Image source={res.button.white_back}/>
+                    </TouchableWithoutFeedback>
                 </View>
-            </View>
-
+            </ImageBackground>
         );
     };
+
     renderItem = ({ item, index }) => {
         return (
             <TouchableOpacity>
@@ -142,12 +163,12 @@ export default class MyIntegralAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励', '任务奖励','秀购赠送','活动奖励'];
+        let use_type = ['', '注册赠送', '活动赠送', '其他', '兑换1元现金券', '签到奖励', '任务奖励', '秀购奖励', '抽奖奖励', '秀购奖励'];
 
         let use_type_symbol = ['', '+', '-'];
-        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg, taskImg,zensong,xiugou_reword];
+        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg, taskImg, zensong, xiugou_reword, zensong];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
-        if(this.currentPage>1){
+        if (this.currentPage > 1) {
             Toast.showLoading();
         }
         MineApi.userScoreQuery({
@@ -163,7 +184,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     arrData.push({
                         type: use_type[item.useType],
                         time: DataUtils.getFormatDate(item.createTime / 1000),
-                        serialNumber: item.serialNo||'',
+                        serialNumber: item.serialNo || '',
                         capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
                         iconImage: use_let_img[item.useType],
                         capitalRed: use_type_symbol[item.usType] === '+'
@@ -183,7 +204,7 @@ export default class MyIntegralAccountPage extends BasePage {
     };
     onRefresh = () => {
         this.currentPage = 1;
-        if (user.isLogin){
+        if (user.isLogin) {
             MineApi.getUser().then(resp => {
                 let data = resp.data;
                 user.saveUserInfo(data);
@@ -196,7 +217,7 @@ export default class MyIntegralAccountPage extends BasePage {
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
-        if(!this.state.isEmpty){
+        if (!this.state.isEmpty) {
             this.currentPage++;
             this.getDataFromNetwork();
         }
@@ -205,9 +226,11 @@ export default class MyIntegralAccountPage extends BasePage {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1, backgroundColor: DesignRule.bgColor
+        flex: 1,
+        backgroundColor: DesignRule.bgColor,
+        marginBottom: ScreenUtils.safeBottom
     },
-    container: {}, imageBackgroundStyle: {
+    imageBackgroundStyle: {
         position: 'absolute',
         height: 95,
         backgroundColor: '#F2D4A2',
@@ -217,7 +240,8 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
         borderRadius: 15
-    }, rectangleStyle: {
+    },
+    rectangleStyle: {
         width: 120,
         height: 44,
         borderWidth: 1,
@@ -228,12 +252,46 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 3
-    }, viewStyle: {
+    },
+    viewStyle: {
         height: 95,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,
         marginRight: 15
+    },
+    container: {
+        height: px2dp(188),
+        width: ScreenUtils.width
+    },
+    withdrawButtonWrapper: {
+        height: px2dp(28),
+        borderRadius: px2dp(14),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: DesignRule.white,
+        borderColor: DesignRule.mainColor,
+        borderWidth: 1,
+        paddingHorizontal: px2dp(7)
+    },
+    withdrawWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: DesignRule.margin_page,
+        marginTop: px2dp(22)
+    },
+    countTextStyle: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_threeTitle
+    },
+    headerWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: DesignRule.margin_page,
+        marginTop: ScreenUtils.statusBarHeight,
+        height: 44
     }
 });
 

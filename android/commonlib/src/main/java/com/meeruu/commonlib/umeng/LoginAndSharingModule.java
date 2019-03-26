@@ -727,10 +727,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 @Override
                 protected void onNewResultImpl(@Nullable Bitmap bitmap) {
                     draw(context, bitmap, shareImageBean, success, fail);
-                    if (bitmap != null && !bitmap.isRecycled()) {
-                        bitmap.recycle();
-                        bitmap = null;
-                    }
                 }
             });
         }
@@ -958,7 +954,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
         long date = System.currentTimeMillis();
-        String storePath = SDCardUtils.getFileDirPath("MR/picture").getAbsolutePath() + File.separator + "screenshotImage.png_" + date;
+        String storePath = SDCardUtils.getFileDirPath(mContext, "MR/picture").getAbsolutePath() + File.separator + "screenshotImage.png_" + date;
 
         File file = new File(storePath);
         if (bmp != null) {

@@ -4,7 +4,8 @@ import {
     View,
     Image,
     TouchableOpacity,
-    ImageBackground
+    ImageBackground,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList, UIImage, UIText } from '../../../../components/ui';
@@ -20,14 +21,18 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 
-const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
-const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
-const storeShareBonus = res.userInfoImg.xiangjzhanghu_icon03_06;
-const shouyi = res.userInfoImg.xiangjzhanghu_icon03_10;
-const xiaofei = res.userInfoImg.xiangjzhanghu_icon03_12;
+const { px2dp } = ScreenUtils;
+import NoMoreClick from '../../../../components/ui/NoMoreClick';
+
+// const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
+// const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
+// const storeShareBonus = res.userInfoImg.xiangjzhanghu_icon03_06;
+// const shouyi = res.userInfoImg.xiangjzhanghu_icon03_10;
+// const xiaofei = res.userInfoImg.xiangjzhanghu_icon03_12;
 const salesCommissions = res.userInfoImg.xiangjzhanghu_icon03_08;
-const renwu = res.userInfoImg.xiangjzhanghu_icon03_16;
-const questionImage_white = res.userInfoImg.questionImage_white;
+// const renwu = res.userInfoImg.xiangjzhanghu_icon03_16;
+const account_bg = res.bankCard.account_bg;
+const account_bg_white = res.bankCard.account_bg_white;
 /** 先放在，不改*/
 import topicShow from '../../../topic/res/topicShow.png';
 import topicShowClose from '../../../topic/res/topicShowClose.png';
@@ -54,7 +59,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        show: true, // false则隐藏导航
+        show: false, // false则隐藏导航
         title: '待入账'
     };
 
@@ -72,41 +77,59 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据！'}
                 />
+                {this._accountInfoRender()}
+                {this.renderShowCommand()}
             </View>
+        );
+    }
+
+    _accountInfoRender() {
+        return (
+            <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
+                position: 'absolute',
+                top: px2dp(80),
+                height: px2dp(140),
+                width: ScreenUtils.width,
+                left: 0,
+                paddingHorizontal: DesignRule.margin_page
+            }}>
+                <View style={styles.withdrawWrapper}>
+                    <Text style={styles.countTextStyle}>
+                        待入账（元）
+                    </Text>
+                    <NoMoreClick style={styles.withdrawButtonWrapper}
+                                 onPress={() => this.show()}>
+                        <Text style={{
+                            fontSize: DesignRule.fontSize_threeTitle,
+                            color: DesignRule.mainColor
+                        }}>提现说明</Text>
+                    </NoMoreClick>
+                </View>
+                <Text style={{
+                    color: DesignRule.textColor_mainTitle,
+                    fontSize: 48,
+                    marginLeft: DesignRule.margin_page,
+                    marginTop: px2dp(15),
+                    marginBottom: px2dp(30)
+                }}>{user.blockedBalance ? user.blockedBalance : `0.00`}</Text>
+            </ImageBackground>
         );
     }
 
     renderHeader = () => {
         return (
-            <View style={styles.container}>
-                <ImageBackground style={styles.imageBackgroundStyle}/>
-                <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }}
-                          allowFontScaling={false}>待入账(元)</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
-                            <Text style={{
-                                marginLeft: 25,
-                                fontSize: 25,
-                                color: 'white'
-                            }} allowFontScaling={false}>{user.blockedBalance ? user.blockedBalance : `0.00`}</Text>
-                        </View>
-                        <View style={{ marginRight: 20 }}>
-                            <TouchableOpacity
-                                style={{ flexDirection: 'row', marginTop: 10, paddingLeft: 22, alignItems: 'center' }}
-                                onPress={() => this.show()}>
-                                <UIImage source={questionImage_white}
-                                         style={{ width: 13, height: 13, marginRight: 3 }}/>
-                                <UIText value={'提现说明'} style={{ fontSize: 11, color: 'white' }}/>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+            <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.container}>
+                <View style={styles.headerWrapper}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigateBack();
+                    }}>
+                        <Image source={res.button.white_back}/>
+                    </TouchableWithoutFeedback>
                 </View>
-                {this.renderShowCommand()}
-            </View>
-
+            </ImageBackground>
         );
     };
+
     show = () => {
         this.modal && this.modal.open();
         this.setState({
@@ -272,10 +295,10 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '服务顾问管理费', '品牌分红奖励', '品牌推广奖励', '现金红包', '任务奖励'];
+        // let use_type = ['', '用户收益', '提现支出', '消费支出', '服务顾问管理费', '品牌分红奖励', '品牌推广奖励', '现金红包', '任务奖励'];
         let use_type_symbol = ['', '+', '-'];
-        let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
-        if(this.currentPage>1){
+        // let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
+        if (this.currentPage > 1) {
             Toast.showLoading();
         }
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
@@ -287,10 +310,10 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
-                            type: use_type[item.useType],
+                            type: '品牌推广奖励金',
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             capital: use_type_symbol[item.biType] + item.balance,
-                            iconImage: useLeftImg[item.useType],
+                            iconImage: salesCommissions,
                             realBalance: item.realBalance
                         });
                     });
@@ -313,7 +336,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
     };
     onRefresh = () => {
         this.currentPage = 1;
-        if(user.isLogin){
+        if (user.isLogin) {
             MineApi.getUser().then(resp => {
                 let data = resp.data;
                 user.saveUserInfo(data);
@@ -337,7 +360,10 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1, backgroundColor: DesignRule.bgColor
     },
-    container: {}, imageBackgroundStyle: {
+    container: {
+        height: px2dp(188),
+        width: ScreenUtils.width
+    }, imageBackgroundStyle: {
         position: 'absolute',
         height: 95,
         width: ScreenUtils.width - 30,
@@ -368,6 +394,36 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 90,
         alignItems: 'center'
+    },
+    withdrawButtonWrapper: {
+        height: px2dp(28),
+        borderRadius: px2dp(14),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: DesignRule.white,
+        borderColor: DesignRule.mainColor,
+        borderWidth: 1,
+        paddingHorizontal: px2dp(7)
+    },
+    withdrawWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: DesignRule.margin_page,
+        marginTop: px2dp(22)
+    },
+    countTextStyle: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_threeTitle
+    },
+    headerWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: DesignRule.margin_page,
+        marginTop: ScreenUtils.statusBarHeight,
+        height: 44
     }
+
 });
 

@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.storage.AsyncStorageModule;
 import com.facebook.react.shell.MainPackageConfig;
 import com.meeruu.commonlib.rn.storage.MRAsyncStorageModule;
+import com.meeruu.commonlib.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,19 +31,21 @@ public class MainReactPackage extends com.facebook.react.shell.MainReactPackage 
         Iterator<ModuleSpec> it = modules.iterator();
         while (it.hasNext()) {
             ModuleSpec module = it.next();
-            if (AsyncStorageModule.class.getName().equals(module.getClassName())) {
-                it.remove();
-                break;
-            }
+            LogUtils.d("=====" + AsyncStorageModule.class.getName());
+            LogUtils.d("=====" + module.getName());
+//            if (AsyncStorageModule.class.getName().equals(module.getClassName())) {
+//                it.remove();
+//                break;
+//            }
         }
-        modules.add(ModuleSpec.nativeModuleSpec(
-                MRAsyncStorageModule.class,
-                new Provider<NativeModule>() {
-                    @Override
-                    public NativeModule get() {
-                        return new MRAsyncStorageModule(context);
-                    }
-                }));
+//        modules.add(ModuleSpec.nativeModuleSpec(
+//                MRAsyncStorageModule.class,
+//                new Provider<NativeModule>() {
+//                    @Override
+//                    public NativeModule get() {
+//                        return new MRAsyncStorageModule(context);
+//                    }
+//                }));
         return modules;
     }
 }

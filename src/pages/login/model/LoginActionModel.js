@@ -44,8 +44,6 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         UserModel.saveToken(result.data.token);
         homeModule.loadHomeList();
         bridge.setCookies(result.data);
-
-
     }).catch(error => {
         bridge.$toast(error.msg);
     });

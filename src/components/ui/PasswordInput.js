@@ -50,7 +50,9 @@ export default class PasswordInput extends Component {
     }
 
     changeRedBorderColor = () => {
-        this.setState({borderColor: DesignRule.mainColor})
+        this.setState({borderColor: DesignRule.mainColor, text: ''})
+        this.refs.textInput && this.refs.textInput.clear()
+
     }
 
     render() {
@@ -59,12 +61,13 @@ export default class PasswordInput extends Component {
                 onPress={this._onPress.bind(this)}
                 activeOpacity={1}
                 underlayColor='transparent'>
-                <View style={[styles.container, this.props.style, {borderColor: this.state.borderColor}]}>
+                <View style={this.props.style}>
+                <View style={[styles.container, {borderColor: this.state.borderColor}]}>
                     {
                         this._getInputItem()
                     }
                     <TextInput
-                        style={{ height: 45, zIndex: 99, position: 'absolute', width: 57 * 6, opacity: 0 }}
+                        style={{ top: 0, zIndex: 99, position: 'absolute', bottom: 0, left: 0, right: 0, opacity: 0 }}
                         ref='textInput'
                         maxLength={this.props.maxLength}
                         autoFocus={false}
@@ -88,6 +91,7 @@ export default class PasswordInput extends Component {
                         }
                     />
                 </View>
+                </View>
             </TouchableHighlight>
         );
 
@@ -100,7 +104,7 @@ export default class PasswordInput extends Component {
         for (let i = 0; i < maxLen; i++) {
             if (i === 0) {
                 inputItem.push(
-                    <View key={i} style={[styles.inputItem, this.props.inputItemStyle]}>
+                    <View key={i} style={[styles.inputItem,styles.inputItemBorderLeftWidth, this.props.inputItemStyle]}>
                         {i < text.length ? <View style={[styles.iconStyle, this.props.iconStyle]}/> : null}
                     </View>);
             }
@@ -125,18 +129,21 @@ export default class PasswordInput extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
         flexDirection: 'row',
         borderWidth: 0.5,
         borderRadius: 5,
         borderColor: '#ddd',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0
     },
     inputItem: {
-        height: 50,
-        width: 57,
+        flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     inputItemBorderLeftWidth: {
         borderLeftWidth: 0.5,

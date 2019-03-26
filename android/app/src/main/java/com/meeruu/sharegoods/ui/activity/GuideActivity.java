@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,12 +23,10 @@ import com.meeruu.sharegoods.ui.adapter.GuidePageAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuideActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class GuideActivity extends BaseActivity {
 
     private int[] imageIdArray;//图片资源的数组
     private List<RelativeLayout> viewList;//图片资源的集合
-    private LinearLayout vg;//放置圆点
-    private ImageView[] ivPointArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +45,9 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
         if (imageIdArray != null) {
             imageIdArray = null;
         }
-        if (ivPointArray != null) {
-            ivPointArray = null;
-        }
         if (viewList != null) {
             viewList.clear();
             viewList = null;
-        }
-        if (vg != null) {
-            vg.removeAllViews();
-            vg = null;
         }
     }
 
@@ -70,8 +60,6 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
         }
         // 加载ViewPager
         initViewPager();
-        // 加载底部圆点
-        initPoint();
     }
 
     @Override
@@ -80,36 +68,6 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
 
     @Override
     protected void doClick(View v) {
-    }
-
-    /**
-     * 加载底部圆点
-     */
-    private void initPoint() {
-        // 这里实例化LinearLayout
-        vg = findViewById(R.id.guide_ll_point);
-        // 根据ViewPager的item数量实例化数组
-        ivPointArray = new ImageView[viewList.size()];
-        // 循环新建底部圆点ImageView，将生成的ImageView保存到数组中
-        int size = viewList.size();
-        // 实例化原点View
-        ImageView iv_point;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtils.dip2px(8), DensityUtils.dip2px(8));
-        params.setMargins(DensityUtils.dip2px(7), 0, DensityUtils.dip2px(7), 0);
-        for (int i = 0; i < size; i++) {
-            iv_point = new ImageView(this);
-            iv_point.setLayoutParams(params);
-            // 第一个页面需要设置为选中状态，这里采用两张不同的图片
-            if (i == 0) {
-                iv_point.setBackgroundResource(R.drawable.full_holo);
-            } else {
-                iv_point.setBackgroundResource(R.drawable.empty_holo);
-            }
-            ivPointArray[i] = iv_point;
-            // 将数组中的ImageView加入到ViewGroup
-            vg.addView(ivPointArray[i]);
-            iv_point = null;
-        }
     }
 
     /**
@@ -123,7 +81,7 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
         viewList = new ArrayList<>();
         // 循环创建View并加入到集合中
         int len = imageIdArray.length;
-        SimpleDraweeView imageView;
+        ImageView imageView;
         RelativeLayout parent;
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -134,12 +92,12 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
             parent.setBackgroundResource(imgBg[i]);
             parent.setLayoutParams(params);
             parent.setGravity(Gravity.CENTER);
-            imageView = new SimpleDraweeView(this);
+            imageView = new ImageView(this);
             RelativeLayout.LayoutParams imgParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
             imageView.setLayoutParams(imgParams);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ImageLoadUtils.loadImageRes(this, imageIdArray[i], imageView);
+            imageView.setImageResource(imageIdArray[i]);
             parent.addView(imageView);
             // 将ImageView加入到集合中
             viewList.add(parent);
@@ -170,33 +128,5 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
         }
         // View集合初始化好后，设置Adapter
         vp.setAdapter(new GuidePageAdapter(viewList));
-        // 设置滑动监听
-        vp.addOnPageChangeListener(this);
-    }
-
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    }
-
-    /**
-     * 滑动后的监听
-     *
-     * @param position
-     */
-    @Override
-    public void onPageSelected(int position) {
-        // 循环设置当前页的标记图
-        int length = imageIdArray.length;
-        for (int i = 0; i < length; i++) {
-            ivPointArray[position].setBackgroundResource(R.drawable.full_holo);
-            if (position != i) {
-                ivPointArray[i].setBackgroundResource(R.drawable.empty_holo);
-            }
-        }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
     }
 }

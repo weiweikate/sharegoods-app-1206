@@ -117,6 +117,8 @@ export default class CommShareModal extends React.Component {
         if (user.isLogin) {
             user.userShare();
         }
+        let props = this.props;
+        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare' || props.type === 'miniProgramWithCopyUrl') ? 2 : 1;
         this.setState({ modalVisible: true, shareType: this.defaultShareType, showToastImage: false });
         this.modal && this.modal.open();
         // this.state.y.setValue(autoSizeWidth(340));
@@ -363,7 +365,7 @@ export default class CommShareModal extends React.Component {
         }
 
         const { shareMoney } = this.props.imageJson || {};
-        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}起` : '';
+        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
 
         return (
             <CommModal onRequestClose={this.close}
@@ -403,7 +405,9 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_secondTitle,
                                             fontSize: autoSizeWidth(17),
                                             marginHorizontal: 7
-                                        }}>{`分享秀一秀 ${user.isLogin ? shareMoneyText : ''}`}</MRText>
+                                        }}>{`分享秀一秀 `}<MRText
+                                            style={{ color: DesignRule.mainColor }}>{shareMoneyText || ''}</MRText>{shareMoneyText ? '起' : ''}
+                                        </MRText>
                                         :
                                         <MRText style={{
                                             color: DesignRule.textColor_secondTitle,

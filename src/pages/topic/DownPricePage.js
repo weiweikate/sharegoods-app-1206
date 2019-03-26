@@ -6,7 +6,9 @@ import {
     StyleSheet,
     ScrollView,
     RefreshControl,
-    InteractionManager
+    InteractionManager,
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import { observer } from 'mobx-react';
 import { ActivityOneView, TopBannerView } from './components/SbSectiontHeaderView';
@@ -18,10 +20,17 @@ import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from '../../constants/DesignRule';
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
-import { MRText } from "../../components/ui";
 import CommShareModal from "../../comm/components/CommShareModal";
 import apiEnvironment from "../../api/ApiEnvironment";
 import user from '../../model/user'
+
+import res from '../../comm/res'
+
+const {
+    button:{
+        message_three
+    }
+} = res
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -51,13 +60,14 @@ export default class DownPricePage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return (
-            <MRText
-                onPress={() => {
-                    this.shareModal.open();
-                }}
+
+            <TouchableOpacity
+            onPress={() => {
+                    this.shareModal.open();}}
             >
-                分享
-            </MRText>
+
+                <Image source={message_three}/>
+            </TouchableOpacity>
         )
     }
 
@@ -232,18 +242,18 @@ export default class DownPricePage extends BasePage {
                     this._renderBottomListView(sectionData)
                 }
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'miniProgram'}
+                                type={'miniProgramWithCopyUrl'}
                                 webJson={{
                                     hdImageURL:this.dataModel.imgUrl || '',
-                                    title: this.dataModel.topicTitle,
-                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
-                                    linkUrl: apiEnvironment.getCurrentH5Url() + '/subject/' + linkTypeCode,
+                                    title: '秀一秀，赚到够',
+                                    dec: '[秀购]发现一个很给力的活动快去看看',
+                                    linkUrl:  `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
                                     thumImage: 'logo.png'
                                 }}
                                 miniProgramJson={{
                                     hdImageURL:this.dataModel.imgUrl || '',
-                                    title: this.dataModel.topicTitle,
-                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    title: '秀一秀，赚到够',
+                                    dec: '[秀购]发现一个很给力的活动快去看看',
                                     thumImage: 'logo.png',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
                                     miniProgramPath: `/pages/index/index?type=5&id=${linkTypeCode}&inviteId=${user.code || ''}`

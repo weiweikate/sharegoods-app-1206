@@ -13,6 +13,7 @@ import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
 import { recommendModule } from './HomeRecommendModel';
 import HomeTitleView from './HomeTitleView';
+import { homePoint } from './HomeTypes';
 
 export const recommendHeight = px2dp(240);
 
@@ -28,7 +29,7 @@ export default class HomeRecommendView extends Component {
         const { recommendList } = recommendModule;
         let item = recommendList[index];
         if (item) {
-            track(trackEvent.selectedBannerClick, homeModule.bannerPoint(item))
+            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeRecommad))
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);
