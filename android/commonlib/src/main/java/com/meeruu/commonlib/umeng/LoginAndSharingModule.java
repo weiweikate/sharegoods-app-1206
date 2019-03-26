@@ -390,7 +390,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
                 @Override
                 protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                    drawInviteFriendsImage(context, bitmap, url, success, fail);
+                    if (bitmap != null && !bitmap.isRecycled()) {
+                        drawInviteFriendsImage(context, bitmap, url, success, fail);
+                    } else {
+                        Bitmap bmp = getDefaultIcon(context);
+                        drawInviteFriendsImage(context, bmp, url, success, fail);
+                    }
                 }
             });
         }
@@ -407,8 +412,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 //    shopPerson: `店主: ${manager.nickname || ''}`,
 //    codeString: this.state.codeString,
 //    wxTip: this.state.wxTip
-    public void drawShopInviteFriendsImage(final Context context, final ReadableMap map, final Callback success, final Callback fail) {
-
+    public void drawShopInviteFriendsImage(final Context context, final ReadableMap map,
+                                           final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
             String headerImgUrl = map.getString("headerImg");
             ImageLoadUtils.downloadImage(Uri.parse(headerImgUrl), new BaseBitmapDataSubscriber() {
@@ -420,12 +425,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
                 @Override
                 protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                    drawShopInviteFriendsImageWithHeader(context, map, bitmap, success, fail);
+                    if (bitmap != null && !bitmap.isRecycled()) {
+                        drawShopInviteFriendsImageWithHeader(context, map, bitmap, success, fail);
+                    } else {
+                        fail.invoke("店主图片下载失败");
+                    }
                 }
             });
         }
     }
-
 
     private static Bitmap getDefaultIcon(Context context) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round);
@@ -726,7 +734,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
                 @Override
                 protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                    draw(context, bitmap, shareImageBean, success, fail);
+                    if (bitmap != null && !bitmap.isRecycled()) {
+                        draw(context, bitmap, shareImageBean, success, fail);
+                    } else {
+                        fail.invoke("图片获取失败");
+                    }
                 }
             });
         }
