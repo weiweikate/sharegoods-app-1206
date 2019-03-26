@@ -4,6 +4,8 @@ import {
     Text,
     StyleSheet,
     ImageBackground,
+    TouchableWithoutFeedback,
+    Image
 } from "react-native";
 import { PageLoadingState, renderViewByLoadingState } from "../../../../components/pageDecorator/PageState";
 import MineApi from "../../api/MineApi";
@@ -16,6 +18,10 @@ import AccountItem from '../../components/AccountItem';
 import res from "../../res";
 import user from "../../../../model/user";
 import StringUtils from "../../../../utils/StringUtils";
+const account_bg = res.bankCard.account_bg;
+const account_bg_white = res.bankCard.account_bg_white;
+const { px2dp } = ScreenUtils;
+
  const detailData ={
     1:{title:"邀请注册奖励",icon:res.myData.invite_icon},
     2:{title:"邀请注册奖励",icon:res.myData.invite_icon},
@@ -54,7 +60,7 @@ export default class ExpDetailPage extends BasePage{
     }
 
     $navigationBarOptions = {
-        show: true, // false则隐藏导航
+        show: false, // false则隐藏导航
         title: "Exp明细"
     };
     $getPageStateOptions = () => {
@@ -77,62 +83,95 @@ export default class ExpDetailPage extends BasePage{
             </View>
         )
     }
-    renderHeader=()=>{
+
+    renderHeader = () => {
+        return (
+            <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.headerContainer}>
+                <View style={styles.headerWrapper}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigateBack();
+                    }}>
+                        <Image source={res.button.white_back}/>
+                    </TouchableWithoutFeedback>
+                </View>
+            </ImageBackground>
+        );
+    };
+
+    _accountInfoRender() {
         const progress = this.state.experience / this.state.levelExperience;
         const marginLeft =  ScreenUtils.px2dp(315) * progress;
-        const radius = marginLeft > 4 ? -0.5 : 4;
+        return (
+            <ImageBackground source={account_bg_white} resizeMode={'stretch'} style={{
+                position: 'absolute',
+                top: px2dp(80),
+                height: px2dp(205),
+                width:DesignRule.width,
+                left: 0,
+                paddingHorizontal: DesignRule.margin_page
+            }}>
 
-        return(
-           <View style={styles.headerBg}>
-               <View style={{ flex: 1, justifyContent: "center",alignItems:'flex-start',marginLeft:14 }}>
-                   <Text style={{
-                       marginTop: 5,
-                       color: DesignRule.mainColor,
-                       fontSize: 24
-                   }} allowFontScaling={false}>{this.state.experience || 0}<Text style={{
-                       color: DesignRule.textColor_secondTitle,
-                       fontSize:10
-                   }}>
-                       /{this.state.levelExperience}
-                   </Text></Text>
+                <View style={styles.withdrawWrapper}>
+                    <Text style={styles.countTextStyle}>
+                        经验值（Exp）
+                    </Text>
+                </View>
+                <Text style={{
+                    color: DesignRule.textColor_mainTitle,
+                    fontSize: 48,
+                    marginLeft: DesignRule.margin_page,
+                    marginTop: px2dp(15),
+                }}>
+                    {this.state.experience || 0}
+                    <Text style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: 25
+                    }}>
+                        /
+                    </Text>
+                    <Text style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: 16
+                    }}>
+                        {this.state.levelExperience}
+                    </Text>
+                </Text>
+                <View style={{
+                    overflow: "hidden",
+                    marginTop: px2dp(26),
+                    height: px2dp(8),
+                    width: ScreenUtils.px2dp(315),
+                    alignSelf:'center',
+                    backgroundColor: 'rgba(104,0,0,0.1)',
+                    borderRadius:px2dp(4)
+                }}>
+                    <Image source={res.myData.jdt_05} style={{
+                        width: marginLeft,
+                        height: px2dp(8),
+                        borderRadius:px2dp(4),
+                    }} resizeMode={'stretch'}/>
+                </View>
 
-                   <ImageBackground source={res.myData.jdt_05} style={{
-                       overflow: "hidden",
-                       marginTop: 5,
-                       height: 8,
-                       width: ScreenUtils.px2dp(315)
-                   }}>
-                       <View style={{
-                           marginRight: -0.5,
-                           marginLeft: marginLeft,
-                           height: 8,
-                           borderBottomRightRadius: 4,
-                           borderTopRightRadius: 4,
-                           backgroundColor: DesignRule.lineColor_inGrayBg,
-                           borderBottomLeftRadius: radius,
-                           borderTopLeftRadius: radius
-                       }}/>
-                   </ImageBackground>
-
-                   <Text style={{
-                       marginTop: 10,
-                       color: DesignRule.textColor_instruction,
-                       fontSize: 12
-                   }} allowFontScaling={false}>距离晋升还差
-                       <Text style={{
-                           color: DesignRule.textColor_instruction,
-                           fontSize: 13
-                       }}>
-                           {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience - this.state.experience)}Exp` : '0Exp'}
-                       </Text>
-                       {(this.state.levelExperience - this.state.experience) > 0 ? null :
-                           <Text style={{ color: DesignRule.mainColor, fontSize: 11 }} allowFontScaling={false}>(Exp已满)</Text>
-                       }
-                   </Text>
-               </View>
-           </View>
-        )
+                <Text style={{
+                    marginTop: px2dp(10),
+                    color: DesignRule.textColor_instruction,
+                    fontSize: 12,
+                    marginLeft:DesignRule.margin_page
+                }} allowFontScaling={false}>距离晋升还差
+                    <Text style={{
+                        color: DesignRule.textColor_instruction,
+                        fontSize: 13
+                    }}>
+                        {(parseFloat(this.state.levelExperience) - parseFloat(this.state.experience)) > 0 ? `${StringUtils.formatDecimal(this.state.levelExperience - this.state.experience)}Exp` : '0Exp'}
+                    </Text>
+                    {(this.state.levelExperience - this.state.experience) > 0 ? null :
+                        <Text style={{ color: DesignRule.mainColor, fontSize: 11 }} allowFontScaling={false}>(Exp已满)</Text>
+                    }
+                </Text>
+            </ImageBackground>
+        );
     }
+
     _renderContent=()=>{
         return(
             <View style={styles.contentStyle}>
@@ -146,6 +185,7 @@ export default class ExpDetailPage extends BasePage{
                     isEmpty={this.state.isEmpty}
                     emptyTip={"暂无数据"}
                 />
+                {this._accountInfoRender()}
             </View>
         )
     }
@@ -219,4 +259,38 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 15
     },
+    headerContainer:{
+        height: px2dp(188),
+        width: ScreenUtils.width
+    },
+    withdrawButtonWrapper: {
+        height: px2dp(28),
+        borderRadius: px2dp(14),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: DesignRule.white,
+        borderColor: DesignRule.mainColor,
+        borderWidth: 1,
+        paddingHorizontal: px2dp(7)
+    },
+    withdrawWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: DesignRule.margin_page,
+        marginTop: px2dp(22)
+    },
+    countTextStyle: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_threeTitle
+    },
+    headerWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: DesignRule.margin_page,
+        marginTop: ScreenUtils.statusBarHeight,
+        height: 44
+    }
+
 });
