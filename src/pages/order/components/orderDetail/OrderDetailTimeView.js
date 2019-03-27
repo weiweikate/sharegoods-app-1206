@@ -48,8 +48,8 @@ export default class OrderDetailTimeView extends Component {
                 {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].payTime) && orderDetailModel.status > 1 ?
                     <UIText value={'付款时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].payTime / 1000)}
                             style={styles.textGoodsDownStyle}/> : null}
-                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].cancelTime) && orderDetailModel.status === 5 ?
-                    <UIText value={'关闭时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].cancelTime / 1000)}
+                {StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].finishTime) && orderDetailModel.status === 5 ?
+                    <UIText value={'关闭时间：' + DateUtils.getFormatDate(orderDetailModel.warehouseOrderDTOList[0].finishTime / 1000)}
                             style={styles.textGoodsDownStyle}/> : null}
                 {/*{StringUtils.isNoEmpty(orderDetailModel.warehouseOrderDTOList[0].outTradeNo)&&orderDetailModel.status<5  ?*/}
                     {/*<UIText value={'交易订单号：' + orderDetailModel.warehouseOrderDTOList[0].outTradeNo}*/}
