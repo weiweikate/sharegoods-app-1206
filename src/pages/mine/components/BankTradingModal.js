@@ -66,38 +66,37 @@ export default class BankTradingModal extends Component {
             }}
         >
             <View style={styles.container}>
-                <View style={{ flex: 135 / (ScreenUtils.headerHeight) }}/>
+                <View style={{ flex: 1 }}/>
                 <View style={styles.passwordForm}>
                     <View style={styles.form}>
                         <View style={styles.header}>
-                            <View style={styles.closeButton}/>
-                            <View style={styles.titleView}>
-                                <Text style={styles.title}>{this.props.title}</Text>
-                            </View>
                             <TouchableOpacity style={styles.closeButton} onPress={() => {
                                 this.props.closeAction();
                             }}>
                                 <Image source={closeImg} style={{ width: 12, height: 12 }}/>
                             </TouchableOpacity>
+                            <View style={styles.titleView}>
+                                <Text style={styles.title}>{this.props.title}</Text>
+                            </View>
+                            <View style={styles.closeButton}/>
                         </View>
                         <View style={styles.line}/>
+                        <Text style={styles.typeStyle}>提现</Text>
                         <Text style={styles.input}>{this.props.message}</Text>
-                        <View style={{ flex: 1 }}/>
                         <PasswordInput
                             ref={(ref)=>{this.passwordInput = ref;}}
                             style={styles.password}
                             maxLength={6}
                             onChange={value => this.inputText(value)}
                         />
-                        <Text style={styles.msgStyle}>
-                            {this.props.errMsg || ''}
-                        </Text>
+                        {/*<Text style={styles.msgStyle}>*/}
+                            {/*{this.props.errMsg || ''}*/}
+                        {/*</Text>*/}
                         <TouchableOpacity style={styles.forget} onPress={()=>{this.props.forgetAction()}}>
                             <Text style={styles.forgetText}>{this.props.instructions}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{ flex: 309 / (ScreenUtils.headerHeight) }}/>
             </View>
         </Modal>;
     }
@@ -109,27 +108,27 @@ const styles = StyleSheet.create({
         width:ScreenUtils.width
     },
     password: {
-        width: 220,
-        height: 38
+        width: ScreenUtils.width-px2dp(24),
+        height: px2dp(57),
+        marginTop:px2dp(19)
     },
     keyboard: {
         height: 0,
         backgroundColor: "#f00"
     },
     form: {
-        height: px2dp(224),
-        width: px2dp(295),
+        height: px2dp(492),
+        width: ScreenUtils.width,
         backgroundColor: "#fff",
-        borderRadius: 10,
         alignItems: "center"
     },
     passwordForm: {
         justifyContent: "center",
         alignItems: "center",
-        height: px2dp(224)
+        height: px2dp(492)
     },
     header: {
-        height: px2dp(47),
+        height: px2dp(45),
         flexDirection: "row",
         alignItems: "center"
     },
@@ -151,26 +150,30 @@ const styles = StyleSheet.create({
     line: {
         backgroundColor: "#ddd",
         height: ScreenUtils.onePixel,
-        width: px2dp(295)
+        width: ScreenUtils.width-2*px2dp(15)
     },
     input: {
-        color: "#222",
-        fontSize: px2dp(15),
-        marginTop: px2dp(38)
+        color: DesignRule.textColor_mainTitle,
+        fontSize: px2dp(18),
+        marginTop: px2dp(5)
     },
     forget: {
-        height: px2dp(46),
-        alignItems: "center",
-        justifyContent: "center"
+        alignSelf:'flex-end',
+        marginTop:px2dp(10),
+        marginRight:px2dp(18)
     },
     forgetText: {
-        color: "#00A7F5",
-        fontSize: px2dp(12)
+        color: "#4A90E2",
+        fontSize: px2dp(16)
     },
     msgStyle:{
         color:DesignRule.mainColor,
         fontSize:DesignRule.fontSize_threeTitle,
         alignSelf:'center',
-
+    },
+    typeStyle:{
+        color:DesignRule.textColor_mainTitle,
+        fontSize:DesignRule.fontSize_secondTitle,
+        marginTop:px2dp(10)
     }
 });

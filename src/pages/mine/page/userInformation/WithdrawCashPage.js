@@ -12,8 +12,7 @@ import {
     UIText, UIImage, UIButton, MRText
 } from '../../../../components/ui';
 import { MRText as Text, MRTextInput as RNTextInput } from '../../../../components/ui';
-
-import StringUtils from '../../../../utils/StringUtils';
+import StringUtils, { isNoEmpty } from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
@@ -26,7 +25,7 @@ import { PageLoadingState } from '../../../../components/pageDecorator/PageState
 import WithdrawFinishModal from './Modal/WithdrawFinishModal';
 
 const arrow_right = res.button.arrow_right_black;
-const bank = res.userInfoImg.bank_card_icon;
+const bank = res.bankCard.bankcard_icon;
 const delete_icon = res.bankCard.delete_icon;
 
 function accMul(num1, num2) {
@@ -42,6 +41,23 @@ function accMul(num1, num2) {
     }
 
     return Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m);
+}
+
+function formatMoneyString(num, needSymbol = true) {
+    let temp = (isNoEmpty(num) ? num : 0) + '';
+    if (temp.indexOf('.') === -1) {
+        temp += '.00';
+    }
+    if ((temp.indexOf('.') + 3) < temp.length) {
+        temp = temp.substr(0, temp.indexOf('.') + 3);
+    }
+    if ((temp.indexOf('.') + 2 === temp.length)) {
+        temp += '0';
+    }
+    if (needSymbol && temp.indexOf('¥') === -1) {
+        temp = '¥' + temp;
+    }
+    return temp;
 }
 
 
@@ -238,9 +254,9 @@ export default class WithdrawCashPage extends BasePage {
                     }}
                     finishedAction={(password) => this.passwordFinish(password)}
                     visible={this.state.isShowModal}
-                    instructions={'忘记支付密码'}
-                    title={'请输入支付密码'}
-                    message={'请输入6位支付密码'}
+                    instructions={'忘记密码'}
+                    title={'请输入交易密码'}
+                    message={`${formatMoneyString(this.state.money)}`}
                 />
                 <WithdrawFinishModal visible={this.state.showFinishModal} onRequestClose={() => {
                     this.setState({ showFinishModal: false });
@@ -408,7 +424,7 @@ export default class WithdrawCashPage extends BasePage {
                 onPress={() => this.selectBankCard()}
             >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <UIImage source={bank} style={{ width: 49, height: 49, marginLeft: 16 }}/>
+                    <Image source={bank} style={{ width: 49, height: 49, marginLeft: 16 }}/>
                     <View style={{ marginLeft: 12 }}>
                         <UIText value={this.state.bank_name}
                                 style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}/>
