@@ -1,6 +1,7 @@
 package com.meeruu.commonlib.config;
 
 import com.meeruu.commonlib.R;
+import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.YSFOptions;
@@ -11,6 +12,7 @@ public class QiyuConfig {
     public static YSFOptions options() {
         YSFOptions options = new YSFOptions();
         StatusBarNotificationConfig statusBarNotificationConfig = new StatusBarNotificationConfig();
+        statusBarNotificationConfig.notificationEntrance = QiyuServiceMessageActivity.class;
         statusBarNotificationConfig.notificationSmallIconId = R.mipmap.ic_launcher_round;
         options.statusBarNotificationConfig = statusBarNotificationConfig;
         UICustomization uiCustomization = new UICustomization();

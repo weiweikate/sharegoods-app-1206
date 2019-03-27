@@ -32,6 +32,7 @@ public class MainReactPackage extends com.facebook.react.shell.MainReactPackage 
         Iterator<ModuleSpec> it = modules.iterator();
         while (it.hasNext()) {
             ModuleSpec module = it.next();
+
             if (TextUtils.equals(AsyncStorageModule.class.getName(), module.getProvider().get().getClass().getName())) {
                 it.remove();
                 break;
