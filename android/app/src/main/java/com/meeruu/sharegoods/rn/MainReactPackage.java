@@ -32,7 +32,7 @@ public class MainReactPackage extends com.facebook.react.shell.MainReactPackage 
         while (it.hasNext()) {
             ModuleSpec module = it.next();
             LogUtils.d("=====" + AsyncStorageModule.class.getName());
-            LogUtils.d("=====" + module.getName());
+//            LogUtils.d("=====" + module.getName());
 //            if (AsyncStorageModule.class.getName().equals(module.getClassName())) {
 //                it.remove();
 //                break;
