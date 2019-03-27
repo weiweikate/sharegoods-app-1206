@@ -1,104 +1,103 @@
-import React from "react";
+import React from 'react';
 import {
-    NativeModules,
+    DeviceEventEmitter,
     StyleSheet,
-    View,
+    View
 
-} from "react-native";
-import BasePage from "../../../../BasePage";
+} from 'react-native';
+import BasePage from '../../../../BasePage';
 import {
     UIText, UIButton
-} from "../../../../components/ui";
-import {MRText as Text, MRTextInput as RNTextInput} from '../../../../components/ui';
+} from '../../../../components/ui';
+import { MRText as Text, MRTextInput as RNTextInput } from '../../../../components/ui';
 
-import StringUtils from "../../../../utils/StringUtils";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import MineApi from "../../api/MineApi";
-import Toast from "../../../../utils/bridge";
-import user from "../../../../model/user";
+import StringUtils from '../../../../utils/StringUtils';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import MineApi from '../../api/MineApi';
+import Toast from '../../../../utils/bridge';
+import user from '../../../../model/user';
 import DesignRule from '../../../../constants/DesignRule';
-import { observer } from "mobx-react/native";
+import { observer } from 'mobx-react/native';
+
 let lastcommit = null;
+
 @observer
 class AddBankCardPage extends BasePage {
     constructor(props) {
         super(props);
-        // this.initHeader({
-        //     title: '添加银行卡'
-        // });
+
         this.state = {
-            phone: "",
-            pwd: "",
+            phone: this._formatPhone(user.phone),
+            pwd: '',
             thirdType: 1,
             passwordDis: false,
             phoneError: false,
             passwordError: false,
-            refundsDescription: "",
+            refundsDescription: '',
             hasInputNum: 0,
             account: user.realname,
             bankName: '',
-            cardNo: "",
-            cardType: '',
+            cardNo: '',
+            cardType: ''
         };
     }
 
     // 导航配置
     $navigationBarOptions = {
-        title: "绑定银行卡"
+        title: '绑定银行卡'
 
     };
 
-    $isMonitorNetworkStatus(){
+    $isMonitorNetworkStatus() {
         return true;
     }
 
-    _formatPhone(text){
-        if(text){
-            let phone =  text.replace(/ /g,'');
-            if(phone && phone.length < 4){
-                return phone
+    _formatPhone(text) {
+        if (text) {
+            let phone = text.replace(/ /g, '');
+            if (phone && phone.length < 4) {
+                return phone;
             }
 
-            if(phone && phone.length < 8){
-                return `${phone.substring(0,3)} ${phone.substring(3,phone.length)}`;
+            if (phone && phone.length < 8) {
+                return `${phone.substring(0, 3)} ${phone.substring(3, phone.length)}`;
             }
 
-            if(phone && phone.length > 7){
-                return `${phone.substring(0,3)} ${phone.substring(3,7)} ${phone.substring(7,phone.length)}`;
+            if (phone && phone.length > 7) {
+                return `${phone.substring(0, 3)} ${phone.substring(3, 7)} ${phone.substring(7, phone.length)}`;
             }
-        }else {
+        } else {
             return text;
         }
 
     }
 
-    _formatCard(text){
+    _formatCard(text) {
 
-        if(text){
-            let phone =  text.replace(/ /g,'');
-            if(phone && phone.length < 5){
-                return phone
+        if (text) {
+            let phone = text.replace(/ /g, '');
+            if (phone && phone.length < 5) {
+                return phone;
             }
 
-            if(phone && phone.length < 9){
-                return `${phone.substring(0,4)} ${phone.substring(4,phone.length)}`;
+            if (phone && phone.length < 9) {
+                return `${phone.substring(0, 4)} ${phone.substring(4, phone.length)}`;
             }
 
-            if(phone && phone.length < 13){
-                return `${phone.substring(0,4)} ${phone.substring(4,8)} ${phone.substring(8,phone.length)}`;
+            if (phone && phone.length < 13) {
+                return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, phone.length)}`;
             }
 
-            if(phone && phone.length < 17){
-                return `${phone.substring(0,4)} ${phone.substring(4,8)} ${phone.substring(8,12)} ${phone.substring(12,phone.length)}`;
+            if (phone && phone.length < 17) {
+                return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, phone.length)}`;
             }
 
-            if(phone && phone.length > 16){
-                return `${phone.substring(0,4)} ${phone.substring(4,8)} ${phone.substring(8,12)} ${phone.substring(12,16)} ${phone.substring(16,phone.length)}`;
+            if (phone && phone.length > 16) {
+                return `${phone.substring(0, 4)} ${phone.substring(4, 8)} ${phone.substring(8, 12)} ${phone.substring(12, 16)} ${phone.substring(16, phone.length)}`;
             }
-        }else {
+        } else {
             return text;
         }
-
 
 
     }
@@ -108,15 +107,15 @@ class AddBankCardPage extends BasePage {
         return (
             <View style={DesignRule.style_container}>
                 <View style={styles.itemTitleView}>
-                    <UIText value={"请绑定持卡人本人银行卡"} style={styles.itemTitleText}/>
+                    <UIText value={'请绑定持卡人本人银行卡'} style={styles.itemTitleText}/>
                 </View>
                 <View style={{
                     height: 45,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: "white"
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: 'white'
                 }}>
-                    <Text style={styles.accountStyle}>{"持卡人姓名"}</Text>
+                    <Text style={styles.accountStyle}>{'持卡人姓名'}</Text>
                     <UIText
                         style={styles.inputTextStyle}
                         value={user.realname}
@@ -125,48 +124,48 @@ class AddBankCardPage extends BasePage {
                 {this.renderLine()}
                 <View style={{
                     height: 45,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: "white"
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: 'white'
                 }}>
-                    <Text style={styles.accountStyle}>{"预留手机号"}</Text>
+                    <Text style={styles.accountStyle}>{'预留手机号'}</Text>
                     <RNTextInput
                         style={styles.inputTextStyle}
                         onChangeText={text => this.setState({ phone: this._formatPhone(text) })}
                         value={this.state.phone}
-                        placeholder={"请输入手机号"}
+                        placeholder={'请输入手机号'}
                         keyboardType='numeric'
                     />
                 </View>
 
                 <View style={{
                     height: 45,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: "white",
-                    marginTop:10
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: 'white',
+                    marginTop: 10
                 }}>
-                    <Text style={styles.accountStyle}>{"卡号"}</Text>
+                    <Text style={styles.accountStyle}>{'卡号'}</Text>
                     <RNTextInput
                         style={styles.inputTextStyle}
                         onChangeText={(text) => this.inputCardNum(text)}
                         value={this.state.cardNo}
-                        placeholder={"请输入卡号"}
+                        placeholder={'请输入卡号'}
                     />
                 </View>
                 {this.renderLine()}
                 <View style={{
                     height: 45,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: "white",
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: 'white'
                 }}>
-                    <Text style={styles.accountStyle}>{"卡类型"}</Text>
+                    <Text style={styles.accountStyle}>{'卡类型'}</Text>
                     <Text style={styles.accountStyle2}>{`${this.state.bankName}  ${this.state.cardType}`}</Text>
 
                 </View>
                 <UIButton
-                    value={"确认"}
+                    value={'确认'}
                     style={{
                         marginTop: 58,
                         backgroundColor: (this.state.bankName && this.state.phone) ? DesignRule.mainColor : DesignRule.textColor_placeholder,
@@ -194,41 +193,41 @@ class AddBankCardPage extends BasePage {
     };
     inputCardNum = (cardNo) => {
         this.setState({ cardNo: this._formatCard(cardNo) });
-        let card =  cardNo.replace(/ /g,'');
+        let card = cardNo.replace(/ /g, '');
         this.getBankType(card);
     };
     getBankType = (bankCard) => {
-        if(StringUtils.isEmpty(bankCard)){
+        if (StringUtils.isEmpty(bankCard)) {
             this.setState({
-                bankName:'',
-                cardType:''
-            })
+                bankName: '',
+                cardType: ''
+            });
             return;
         }
         if (bankCard.length < 6) {
             this.setState({
-                bankName:'',
-                cardType:''
-            })
+                bankName: '',
+                cardType: ''
+            });
             return;
         }
         MineApi.findByBankCard({ cardnumber: bankCard }).then((response) => {
-            if(response.data){
+            if (response.data) {
                 this.setState({
-                    bankName:response.data[0],
-                    cardType:response.data[1]
-                })
-            }else {
+                    bankName: response.data[0],
+                    cardType: response.data[1]
+                });
+            } else {
                 this.setState({
-                    bankName:'',
-                    cardType:''
-                })
+                    bankName: '',
+                    cardType: ''
+                });
             }
         }).catch(e => {
             this.setState({
-                bankName:'',
-                cardType:''
-            })
+                bankName: '',
+                cardType: ''
+            });
         });
     };
     renderWideLine = () => {
@@ -254,16 +253,16 @@ class AddBankCardPage extends BasePage {
 
     confirm = () => {
         let now = new Date().getTime();
-        if(lastcommit != null && now - lastcommit < 500){
+        if (lastcommit != null && now - lastcommit < 500) {
             lastcommit = now;
             return;
         }
 
         let params = {
             bankName: this.state.bankName,
-            cardNo: this.state.cardNo.replace(/ /g,''),
+            cardNo: this.state.cardNo.replace(/ /g, ''),
             cardType: this.state.cardType,
-            phone: this.state.phone.replace(/ /g,'')
+            phone: this.state.phone.replace(/ /g, '')
         };
 
         lastcommit = now;
@@ -289,9 +288,9 @@ class AddBankCardPage extends BasePage {
         Toast.showLoading();
         MineApi.addUserBank(params).then((response) => {
             Toast.hiddenLoading();
-                NativeModules.commModule.toast("绑定银行卡成功");
-                this.params.callBack();
-                this.$navigateBack();
+            this.$toastShow('绑定银行卡成功');
+            DeviceEventEmitter.emit('bindBank');
+            this.$navigateBack();
         }).catch(e => {
             Toast.hiddenLoading();
             this.$toastShow(e.msg);
@@ -310,9 +309,9 @@ const styles = StyleSheet.create({
         marginRight: 40,
         borderRadius: 3,
         padding: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center"
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }, accountStyle: {
         marginLeft: 21, color: DesignRule.textColor_mainTitle, width: 80
     }, accountStyle2: {
@@ -323,13 +322,13 @@ const styles = StyleSheet.create({
         flex: 1,
         marginLeft: 20,
         marginRight: 20,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         fontSize: 14
     }, itemTitleView: {
         height: 48,
         backgroundColor: DesignRule.bgColor,
         paddingLeft: 14,
-        justifyContent: "center"
+        justifyContent: 'center'
     }, itemTitleText: {
         fontSize: 13,
         color: DesignRule.textColor_instruction

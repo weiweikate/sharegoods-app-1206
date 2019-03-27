@@ -324,37 +324,6 @@ const styles = StyleSheet.create({
     container: {
         height: px2dp(188),
         width: ScreenUtils.width
-    }, imageBackgroundStyle: {
-        position: 'absolute',
-        height: 95,
-        width: ScreenUtils.width - 30,
-        marginLeft: 15,
-        marginRight: 15,
-        marginTop: 10,
-        marginBottom: 10,
-        borderRadius: 15,
-        backgroundColor: DesignRule.bgColor_blueCard
-    }, rectangleStyle: {
-        width: 100,
-        height: 44,
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: 'white',
-        marginRight: 15,
-        justifyContent: 'center',
-        marginTop: 20,
-        alignItems: 'center'
-    }, viewStyle: {
-        height: 95,
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 15,
-        marginRight: 15
-    }, Itemcontainer: {
-        backgroundColor: 'white',
-        flexDirection: 'row',
-        height: 90,
-        alignItems: 'center'
     },
     withdrawButtonWrapper: {
         height: px2dp(28),

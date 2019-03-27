@@ -18,7 +18,9 @@ android {
 }
 
 dependencies {
-    compileOnly rootProject.ext.dependencies.rn
+    api(rootProject.ext.dependencies.rn) {
+        exclude group: 'com.android.support'
+    }
     compileOnly 'com.facebook.infer.annotation:infer-annotation:+'
     implementation "com.drewnoakes:metadata-extractor:2.9.1"
     implementation "com.google.android.gms:play-services-vision:17.0.2"
