@@ -472,7 +472,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor
     },
     titleView: {
-        marginTop: px2dp(13),
+        marginTop: px2dp(10),
         paddingLeft: px2dp(15),
         width: ScreenUtils.width
     },

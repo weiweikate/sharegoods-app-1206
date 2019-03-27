@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
+const {px2dp} = ScreenUtils;
 import {MRTextInput as TextInput} from '../../../components/ui'
 export default class PasswordInput extends Component {
     static propTypes = {
@@ -63,7 +64,7 @@ export default class PasswordInput extends Component {
                 <View style={[styles.container, this.props.style]}>
                     <TextInput
                         style={{
-                            height: 45,
+                            height: px2dp(57),
                             zIndex: 99,
                             position: 'absolute',
                             width: 45 * this.props.maxLength,
@@ -137,11 +138,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderWidth: ScreenUtils.isIOS ? 1.0 : 0.5,
         borderColor: '#ccc',
-        borderRadius: 5,
         backgroundColor: '#fff'
     },
     inputItem: {
-        height: 38,
+        height: px2dp(57),
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
@@ -151,9 +151,9 @@ const styles = StyleSheet.create({
         borderColor: DesignRule.lineColor_inGrayBg
     },
     iconStyle: {
-        width: 16,
-        height: 16,
+        width: px2dp(14),
+        height: px2dp(14),
         backgroundColor: DesignRule.textColor_mainTitle,
-        borderRadius: 8
+        borderRadius: px2dp(7)
     }
 });

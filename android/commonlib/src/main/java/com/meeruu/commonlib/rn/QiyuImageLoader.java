@@ -2,25 +2,33 @@ package com.meeruu.commonlib.rn;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import com.facebook.common.executors.UiThreadImmediateExecutorService;
+import com.facebook.binaryresource.BinaryResource;
+import com.facebook.binaryresource.FileBinaryResource;
+import com.facebook.cache.common.CacheKey;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
-import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.imagepipeline.image.CloseableBitmap;
 import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.listener.BaseRequestListener;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.meeruu.commonlib.base.BaseApplication;
+import com.meeruu.commonlib.utils.BitmapUtils;
+import com.meeruu.commonlib.utils.FileUtils;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.qiyukf.unicorn.api.ImageLoaderListener;
 import com.qiyukf.unicorn.api.UnicornImageLoader;
 
-import javax.annotation.Nullable;
+import java.io.File;
 
 @SuppressLint("StaticFieldLeak")
 public class QiyuImageLoader implements UnicornImageLoader {
@@ -61,57 +69,64 @@ public class QiyuImageLoader implements UnicornImageLoader {
     }
 
     @Override
-    public void loadImage(String uri, int width, int height, final ImageLoaderListener listener) {
-        ImageRequestBuilder builder = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uri));
-        if (width > 0 && height > 0) {
-            builder.setResizeOptions(new ResizeOptions(width, height));
+    public void loadImage(final String url, int width, int height, final ImageLoaderListener listener) {
+        final Uri uri = Uri.parse(url);
+        if ("http".equals(uri.getScheme()) || "https".equals(uri.getScheme())) {
+            ImageLoadUtils.preFetch(uri, width, height, new BaseRequestListener() {
+                @Override
+                public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                    super.onRequestSuccess(request, requestId, isPrefetch);
+                    if (listener != null) {
+                        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                        BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                        if (resource == null) {
+                            listener.onLoadFailed(null);
+                            return;
+                        }
+                        final File file = ((FileBinaryResource) resource).getFile();
+                        if (file == null) {
+                            listener.onLoadFailed(null);
+                            return;
+                        }
+                        Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        if (bmp != null && !bmp.isRecycled()) {
+                            listener.onLoadComplete(bmp);
+                        } else {
+                            listener.onLoadFailed(null);
+                        }
+                    }
+                }
+
+                @Override
+                public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
+                    super.onRequestFailure(request, requestId, throwable, isPrefetch);
+                    if (listener != null) {
+                        listener.onLoadFailed(null);
+                    }
+                }
+            });
         } else {
-            builder.setResizeOptions(new ResizeOptions(100, 100));
+            String path = FileUtils.getFilePathByUri(BaseApplication.appContext, uri);
+            new AsyncTask<String, Void, Bitmap>() {
+                @Override
+                protected Bitmap doInBackground(String... params) {
+                    Bitmap bmp = BitmapFactory.decodeFile(params[0], BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        return bmp;
+                    } else {
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(Bitmap bitmap) {
+                    if (bitmap != null) {
+                        listener.onLoadComplete(bitmap);
+                    } else {
+                        listener.onLoadFailed(null);
+                    }
+                }
+            }.execute(path);
         }
-        ImageRequest imageRequest = builder.build();
-
-        ImagePipeline imagePipeline = Fresco.getImagePipeline();
-        DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, BaseApplication.appContext);
-
-        BaseBitmapDataSubscriber subscriber = new BaseBitmapDataSubscriber() {
-            @Override
-            public void onNewResultImpl(@Nullable Bitmap bitmap) {
-                if (listener != null) {
-                    new AsyncTask<Bitmap, Void, Bitmap>() {
-                        @Override
-                        protected Bitmap doInBackground(Bitmap... params) {
-                            try {
-                                Thread.sleep(5);
-                            } catch (InterruptedException e) {
-                            }
-                            Bitmap bitmap = params[0];
-                            Bitmap result = null;
-                            if (bitmap != null && !bitmap.isRecycled()) {
-                                result = bitmap.copy(Bitmap.Config.RGB_565, false);
-                            }
-                            return result;
-                        }
-
-                        @Override
-                        protected void onPostExecute(Bitmap bitmap) {
-                            if (bitmap != null) {
-                                listener.onLoadComplete(bitmap);
-                            } else {
-                                listener.onLoadFailed(null);
-                            }
-                        }
-                    }.execute(bitmap);
-                }
-            }
-
-            @Override
-            public void onFailureImpl(DataSource dataSource) {
-                if (listener != null) {
-                    listener.onLoadFailed(dataSource.getFailureCause());
-                }
-            }
-        };
-
-        dataSource.subscribe(subscriber, UiThreadImmediateExecutorService.getInstance());
     }
 }
