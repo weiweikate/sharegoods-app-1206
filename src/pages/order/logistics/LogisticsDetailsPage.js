@@ -121,15 +121,24 @@ export default class LogisticsDetailsPage extends BasePage {
         console.log(this.params);
         if (StringUtils.isNoEmpty(this.state.expressNo)) {
             OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo}).then((response) => {
-                console.log(response.data.list);
+                // console.log(response.data.list);
                 let arrData = [];
-               response.data.list.map((item, index) => {
-                    let time = item.time;
-                    arrData.push({
-                        time: time.replace(" ", "\n"),
-                        content1: item.status
+                if(response.data&&response.data.list.length>0){
+                    response.data.list.map((item, index) => {
+                        let time = item.time;
+                        arrData.push({
+                            time: time.replace(" ", "\n"),
+                            content1: item.status
+                        });
                     });
-                });
+                }else{
+                    this.setState({
+                        loadingState: "success",
+                        // viewData: [],
+                        isEmpty:true
+                    });
+                    return;
+                }
                 this.setState({
                     expressName: response.data.expName,
                     viewData: arrData,

@@ -35,6 +35,7 @@ platform :ios do
       workspace: 'crm_app_xiugou.xcworkspace',
       output_directory: '~/Desktop/ipa',
       output_name: out_name,
+      clean: true,
       export_options: {
         method: "ad-hoc", # 这可以不指定
       }
