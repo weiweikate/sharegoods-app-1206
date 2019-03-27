@@ -164,6 +164,14 @@
   return self.dataArr.count;
 }
 
+- (void)collectionNode:(ASCollectionNode *)collectionNode didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (_onItemPress) {
+    _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
+    self.dataArr[indexPath.item].click = self.dataArr[indexPath.item].click + 5;
+    [_collectionNode reloadData];
+  }
+}
 
 #pragma mark - ASCollectionNode data source.
 
