@@ -505,4 +505,11 @@ public final class BitmapUtils {
         return saveImageAsFile(bitmap, name).getAbsolutePath();
     }
 
+    public static BitmapFactory.Options getBitmapOption(int inSampleSize) {
+        System.gc();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPurgeable = true;
+        options.inSampleSize = inSampleSize;
+        return options;
+    }
 }

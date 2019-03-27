@@ -34,8 +34,8 @@
     url: '',
     methods: 'GET',
     params: {}
-    luckyDraw: bool, //ture 分享成功后是否调用增加抽奖码的接口
 }
+ luckyDraw: bool, //ture 分享成功后是否调用增加抽奖码的接口
  trackParmas={}埋点
  trackEvent= ''
  gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
@@ -130,9 +130,9 @@ export default class CommShareModal extends React.Component {
         //         duration: 500
         //     }
         // ).start();
-        if (this.props.type !== 'Image') {
-            this.showImage();
-        }
+        // if (this.props.type !== 'Image') {
+        //     this.showImage();
+        // }
     }
 
     /**
@@ -163,7 +163,8 @@ export default class CommShareModal extends React.Component {
                     });
                 }
             } else {//已经有图片就直接展示
-                this.startAnimated();
+                 this.changeShareType(0);
+                 this.startAnimated();
             }
         }
     }

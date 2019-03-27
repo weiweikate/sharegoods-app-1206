@@ -37,7 +37,7 @@ class SubjectModule {
     });
 
     computeHeight = (data) => {
-        let height = px2dp(57);
+        let height = px2dp(60);
         data.map(value => {
             const { topicBannerProductDTOList } = value;
             if (topicBannerProductDTOList && topicBannerProductDTOList.length > 0) {
