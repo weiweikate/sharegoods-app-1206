@@ -32,6 +32,7 @@ import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from "react-native-code-push";
 import {SpellShopFlag} from './navigation/Tab';
+import QYChatModel from './pages/mine/page/helper/QYChatModel'
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -141,8 +142,16 @@ class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
+                {
+                    <DebugButton onPress={this.jumpToService} style={{ backgroundColor: 'red' }}><Text
+                        style={{ color: 'white' }}>客服调试</Text></DebugButton>
+                }
             </View>
         );
+    }
+
+    jumpToService=()=>{
+        QYChatModel.initQYChat();
     }
 
     showDebugPage = () => {

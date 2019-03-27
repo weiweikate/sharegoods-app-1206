@@ -13,6 +13,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JRServiceManager (Util)
 
+/**
+ 组装七鱼用户信息函数
+ 
+ @param jsonData RN端传递过来的json对象
+ @return 返回QYUserInfo 对象
+ */
+-(QYUserInfo *)packingUserInfo:(id)jsonData;
+
+
 
 
 @end
