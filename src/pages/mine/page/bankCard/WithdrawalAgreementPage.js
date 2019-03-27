@@ -43,17 +43,17 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
         return true;
     }
 
-    _checkUserGongMallResult = () => {
-        MineApi.gongmallResult().then((data) => {
-            if (!data.data) {
-                this._getSignUrl();
-            } else {
-                this.$navigate('mine/userInformation/WithdrawCashPage');
-            }
-        }).catch(error => {
-            this.$toastShow(error.msg);
-        });
-    };
+    // _checkUserGongMallResult = () => {
+    //     MineApi.gongmallResult().then((data) => {
+    //         if (!data.data) {
+    //             this._getSignUrl();
+    //         } else {
+    //             this.$navigate('mine/userInformation/WithdrawCashPage');
+    //         }
+    //     }).catch(error => {
+    //         this.$toastShow(error.msg);
+    //     });
+    // };
 
     _getSignUrl = () => {
         MineApi.gongmallEnter().then((data) => {
@@ -67,15 +67,15 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
         });
     };
 
-    _commit = () => {
-        // this.$navigate('mine/userInformation/WithdrawCashPage');
-        // return;
-        this._checkUserGongMallResult();
-        // let s = 'https://contract-qa.gongmall.com/url_contract.html?companyId=AVR3eP&positionId=RMQwyV&data=8567o/DnpfCNVY4w+XJZpKA7OWEoP1flChjbrsQazI9K7OeY2hJSk4ua05Jz5wtVcuuuafiJ+xVSjcq7V7Bu+nHTZeBTT/S2XUErK6CNko4TWjTyFlGZ0HtheXRkpTMI05uerC3UcKjlHoP1sN9Av4a6feGVnJx73bdxwH+dO6gQ0dR5zyyh53U93Riuak1dTDPBOCm419nrU6jI721Ce816vlkXP19WVWS48wInPrq6OqiAQcBBMoICrQCkWXP/'
-        // NativeModules.commModule.goGongmallPage(s).then(()=>{
-        //     alert();
-        // });
-    };
+    // _commit = () => {
+    //     // this.$navigate('mine/userInformation/WithdrawCashPage');
+    //     // return;
+    //     this._checkUserGongMallResult();
+    //     // let s = 'https://contract-qa.gongmall.com/url_contract.html?companyId=AVR3eP&positionId=RMQwyV&data=8567o/DnpfCNVY4w+XJZpKA7OWEoP1flChjbrsQazI9K7OeY2hJSk4ua05Jz5wtVcuuuafiJ+xVSjcq7V7Bu+nHTZeBTT/S2XUErK6CNko4TWjTyFlGZ0HtheXRkpTMI05uerC3UcKjlHoP1sN9Av4a6feGVnJx73bdxwH+dO6gQ0dR5zyyh53U93Riuak1dTDPBOCm419nrU6jI721Ce816vlkXP19WVWS48wInPrq6OqiAQcBBMoICrQCkWXP/'
+    //     // NativeModules.commModule.goGongmallPage(s).then(()=>{
+    //     //     alert();
+    //     // });
+    // };
 
 
     _render() {
@@ -88,7 +88,7 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
                          style={styles.webViewWrapper}
                          showsVerticalScrollIndicator={false}
                 />
-                <TouchableWithoutFeedback onPress={this._checkUserGongMallResult}>
+                <TouchableWithoutFeedback onPress={this._getSignUrl}>
                     <View style={styles.bottomButtonWrapper}>
                         <Text style={styles.buttonTextStyle}>
                             同意协议
