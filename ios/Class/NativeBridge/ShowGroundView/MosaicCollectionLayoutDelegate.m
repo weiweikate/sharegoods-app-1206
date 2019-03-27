@@ -8,7 +8,7 @@
 
 #import "MosaicCollectionLayoutDelegate.h"
 #import "MosaicCollectionLayoutInfo.h"
-#import "ImageCellNode.h"
+//#import "ImageCellNode.h"
 
 #import <AsyncDisplayKit/ASCollectionElement.h>
 
@@ -126,11 +126,11 @@
 + (ASSizeRange)_sizeRangeForItem:(ASCellNode *)item atIndexPath:(NSIndexPath *)indexPath withLayoutWidth:(CGFloat)layoutWidth info:(MosaicCollectionLayoutInfo *)info
 {
   CGFloat itemWidth = [self _columnWidthForSection:indexPath.section withLayoutWidth:layoutWidth info:info];
-  if ([item isKindOfClass:[ImageCellNode class]]) {
-    return ASSizeRangeMake(CGSizeMake(itemWidth, 0), CGSizeMake(itemWidth, CGFLOAT_MAX));
-  } else {
-    return ASSizeRangeMake(CGSizeMake(itemWidth, itemWidth)); // In kShowUICollectionViewCells = YES mode, make those cells itemWidth x itemWidth.
-  }
+//  if ([item isKindOfClass:[ImageCellNode class]]) {
+  return ASSizeRangeMake(CGSizeMake(itemWidth, 0), CGSizeMake(itemWidth, CGFLOAT_MAX));
+//  } else {
+//    return ASSizeRangeMake(CGSizeMake(itemWidth, itemWidth)); // In kShowUICollectionViewCells = YES mode, make those cells itemWidth x itemWidth.
+//  }
 }
 
 + (ASSizeRange)_sizeRangeForHeaderOfSection:(NSInteger)section withLayoutWidth:(CGFloat)layoutWidth info:(MosaicCollectionLayoutInfo *)info

@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface ShowCellNode : UIView
-
+#import <AsyncDisplayKit/AsyncDisplayKit.h>
+#import "ShowQueryModel.h"
+@interface ShowCellNode : ASCellNode
+-(instancetype)initWithModel:(ShowQuery_dataModel *)model;
 @end
 
-NS_ASSUME_NONNULL_END
