@@ -188,6 +188,7 @@ export default class MyCashAccountPage extends BasePage {
 
     //**********************************BusinessPart******************************************
     componentWillMount() {
+        Toast.showLoading();
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
