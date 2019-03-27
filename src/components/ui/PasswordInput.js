@@ -70,7 +70,7 @@ export default class PasswordInput extends Component {
                         style={{ top: 0, zIndex: 99, position: 'absolute', bottom: 0, left: 0, right: 0, opacity: 0 }}
                         ref='textInput'
                         maxLength={this.props.maxLength}
-                        autoFocus={false}
+                        autoFocus={true}
                         caretHidden={true}
                         keyboardType="numeric"
                         value={this.state.text}

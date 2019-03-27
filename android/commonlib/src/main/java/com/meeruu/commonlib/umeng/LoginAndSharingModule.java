@@ -13,16 +13,18 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
-import com.facebook.common.references.CloseableReference;
-import com.facebook.datasource.DataSource;
+import com.facebook.binaryresource.BinaryResource;
+import com.facebook.binaryresource.FileBinaryResource;
+import com.facebook.cache.common.CacheKey;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
-import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.facebook.imagepipeline.listener.BaseRequestListener;
+import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -380,16 +382,36 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     private void downloadHeaderImg(final Context context, final String headImg, final String url, final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
-            ImageLoadUtils.downloadImage(Uri.parse(headImg), new BaseBitmapDataSubscriber() {
-
+            ImageLoadUtils.preFetch(Uri.parse(headImg), 0, 0, new BaseRequestListener() {
                 @Override
-                protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
-                    Bitmap bitmap = getDefaultIcon(context);
-                    drawInviteFriendsImage(context, bitmap, url, success, fail);
+                public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                    super.onRequestSuccess(request, requestId, isPrefetch);
+                    CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                    if (resource == null) {
+                        Bitmap bitmap = getDefaultIcon(context);
+                        drawInviteFriendsImage(context, bitmap, url, success, fail);
+                        return;
+                    }
+                    final File file = ((FileBinaryResource) resource).getFile();
+                    if (file == null) {
+                        Bitmap bitmap = getDefaultIcon(context);
+                        drawInviteFriendsImage(context, bitmap, url, success, fail);
+                        return;
+                    }
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        drawInviteFriendsImage(context, bmp, url, success, fail);
+                    } else {
+                        Bitmap bitmap = getDefaultIcon(context);
+                        drawInviteFriendsImage(context, bitmap, url, success, fail);
+                    }
                 }
 
                 @Override
-                protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
+                    super.onRequestFailure(request, requestId, throwable, isPrefetch);
+                    Bitmap bitmap = getDefaultIcon(context);
                     drawInviteFriendsImage(context, bitmap, url, success, fail);
                 }
             });
@@ -402,30 +424,46 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     //    headerImg: `${shareInfo.headUrl}`,
-//    shopName: `${shareInfo.name}`,
-//    shopId: `ID: ${shareInfo.showNumber}`,
-//    shopPerson: `店主: ${manager.nickname || ''}`,
-//    codeString: this.state.codeString,
-//    wxTip: this.state.wxTip
-    public void drawShopInviteFriendsImage(final Context context, final ReadableMap map, final Callback success, final Callback fail) {
-
+    //    shopName: `${shareInfo.name}`,
+    //    shopId: `ID: ${shareInfo.showNumber}`,
+    //    shopPerson: `店主: ${manager.nickname || ''}`,
+    //    codeString: this.state.codeString,
+    //    wxTip: this.state.wxTip
+    public void drawShopInviteFriendsImage(final Context context, final ReadableMap map,
+                                           final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
             String headerImgUrl = map.getString("headerImg");
-            ImageLoadUtils.downloadImage(Uri.parse(headerImgUrl), new BaseBitmapDataSubscriber() {
-
+            ImageLoadUtils.preFetch(Uri.parse(headerImgUrl), 0, 0, new BaseRequestListener() {
                 @Override
-                protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
-                    fail.invoke("店主图片下载失败");
+                public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                    super.onRequestSuccess(request, requestId, isPrefetch);
+                    CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                    if (resource == null) {
+                        fail.invoke("店主图片下载失败");
+                        return;
+                    }
+                    final File file = ((FileBinaryResource) resource).getFile();
+                    if (file == null) {
+                        fail.invoke("店主图片下载失败");
+                        return;
+                    }
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        drawShopInviteFriendsImageWithHeader(context, map, bmp, success, fail);
+                    } else {
+                        fail.invoke("店主图片下载失败");
+                    }
                 }
 
                 @Override
-                protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                    drawShopInviteFriendsImageWithHeader(context, map, bitmap, success, fail);
+                public void onRequestFailure(ImageRequest request, String requestId, Throwable throwable, boolean isPrefetch) {
+                    super.onRequestFailure(request, requestId, throwable, isPrefetch);
+                    fail.invoke("店主图片下载失败");
                 }
             });
         }
     }
-
 
     private static Bitmap getDefaultIcon(Context context) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round);
@@ -718,15 +756,27 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     public static void getBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         if (Fresco.hasBeenInitialized()) {
-            ImageLoadUtils.downloadImage(Uri.parse(shareImageBean.getImageUrlStr()), new BaseBitmapDataSubscriber() {
-
+            ImageLoadUtils.preFetch(Uri.parse(shareImageBean.getImageUrlStr()), 0, 0, new BaseRequestListener() {
                 @Override
-                protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
-                }
-
-                @Override
-                protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                    draw(context, bitmap, shareImageBean, success, fail);
+                public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
+                    super.onRequestSuccess(request, requestId, isPrefetch);
+                    CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, this);
+                    BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+                    if (resource == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    final File file = ((FileBinaryResource) resource).getFile();
+                    if (file == null) {
+                        fail.invoke("图片获取失败");
+                        return;
+                    }
+                    Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
+                    if (bmp != null && !bmp.isRecycled()) {
+                        draw(context, bmp, shareImageBean, success, fail);
+                    } else {
+                        fail.invoke("图片获取失败");
+                    }
                 }
             });
         }

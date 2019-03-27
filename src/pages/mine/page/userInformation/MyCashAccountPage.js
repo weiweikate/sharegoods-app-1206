@@ -209,19 +209,15 @@ export default class MyCashAccountPage extends BasePage {
         MineApi.getUserBankInfo().then((data) => {
             this.getUserBankInfoing = false;
             if (data.data && data.data.length > 0) {
-
-                MineApi.isFirstTimeWithdraw().then((data) => {
-                    if (data.data) {
+                MineApi.gongmallResult().then((data) => {
+                    if (!data.data) {
                         this.$navigate('mine/bankCard/WithdrawalAgreementPage');
                     } else {
                         this.$navigate('mine/userInformation/WithdrawCashPage');
                     }
-                }).catch((error) => {
+                }).catch(error => {
                     this.$toastShow(error.msg);
                 });
-
-                // this.$navigate("mine/userInformation/WithdrawCashPage");
-
             } else {
                 Alert.alert('未绑定银行卡', '你还没有绑定银行卡', [{
                     text: '稍后设置', onPress: () => {

@@ -33,7 +33,7 @@ export default class HomeBannerView extends Component {
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
-            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner ));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner));
             navigate(router, { ...params });
         }
     }
@@ -70,7 +70,8 @@ export default class HomeBannerView extends Component {
             {len === 0 ?
                 <View style={styles.defaultImg}/> :
                 <MRBannerViewComponent
-                    itemRadius={px2dp(5)} imgUrlArray={items}
+                    itemRadius={px2dp(5)}
+                    imgUrlArray={items}
                     bannerHeight={bannerHeight}
                     modeStyle={1}
                     autoLoop={isFocused ? true : false}
