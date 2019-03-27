@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
-// import AccountItem from '../../components/CashAccountItem';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
@@ -201,13 +200,7 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     jumpToWithdrawCashPage = () => {
-        if (this.getUserBankInfoing) {
-            return;
-        }
-        this.getUserBankInfoing = true;
-
         MineApi.getUserBankInfo().then((data) => {
-            this.getUserBankInfoing = false;
             if (data.data && data.data.length > 0) {
                 MineApi.gongmallResult().then((data) => {
                     if (!data.data) {
@@ -232,7 +225,6 @@ export default class MyCashAccountPage extends BasePage {
                 }]);
             }
         }).catch((err) => {
-            this.getUserBankInfoing = false;
             this.$toastShow(err.msg);
         });
     };

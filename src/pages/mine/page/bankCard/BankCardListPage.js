@@ -56,23 +56,23 @@ export default class BankCardListPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
         title: '提现银行卡管理',
-        show: true,
+        show: true
     };
 
-    $NavBarRenderRightItem = ()=>{
-        return(
+    $NavBarRenderRightItem = () => {
+        return (
             <TouchableWithoutFeedback onPress={this.addBankCard}>
                 <MRText style={styles.rightStyle}>添加银行卡</MRText>
             </TouchableWithoutFeedback>
-        )
-    }
+        );
+    };
 
     $isMonitorNetworkStatus() {
         return true;
     }
 
 
-    componentDidMount(){
+    componentDidMount() {
         this.listener = DeviceEventEmitter.addListener('unbindBank', (bankId) => {
             this._getBankInfo();
         });
@@ -87,7 +87,6 @@ export default class BankCardListPage extends BasePage {
         this.bindListener && this.bindListener.remove();
         this.listener && this.listener.remove();
     }
-
 
 
     _getBankInfo = () => {
@@ -108,22 +107,22 @@ export default class BankCardListPage extends BasePage {
     //**********************************ViewPart******************************************
     _render = () => {
         return (
-            <View style={{flex:1}}>
-            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.isRefreshing}
-                                onRefresh={this._getBankInfo}
-                                progressViewOffset={ScreenUtils.statusBarHeight + 44}
-                                colors={[DesignRule.mainColor]}
-                                title="下拉刷新"
-                                tintColor={DesignRule.textColor_instruction}
-                                titleColor={DesignRule.textColor_instruction}
-                            />}>
-                <View style={{ alignItems: 'center' }}>
-                    {this.renderList()}
-                </View>
-            </ScrollView>
+            <View style={{ flex: 1 }}>
+                <ScrollView style={styles.container} showsVerticalScrollIndicator={false}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.isRefreshing}
+                                    onRefresh={this._getBankInfo}
+                                    progressViewOffset={ScreenUtils.statusBarHeight + 44}
+                                    colors={[DesignRule.mainColor]}
+                                    title="下拉刷新"
+                                    tintColor={DesignRule.textColor_instruction}
+                                    titleColor={DesignRule.textColor_instruction}
+                                />}>
+                    <View style={{ alignItems: 'center' }}>
+                        {this.renderList()}
+                    </View>
+                </ScrollView>
                 <MRText style={styles.tipStyle}>注：请绑定本人有效储蓄卡，信用卡将无法提现</MRText>
             </View>
 
@@ -153,7 +152,7 @@ export default class BankCardListPage extends BasePage {
     };
 
     renderList = () => {
-        if(this.state.viewData.length){
+        if (this.state.viewData.length) {
             const tempArr = this.ds.cloneWithRows(this.state.viewData);
             return (<SwipeListView
                 style={{ backgroundColor: DesignRule.white }}
@@ -176,7 +175,7 @@ export default class BankCardListPage extends BasePage {
                             marginTop: 10,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            borderRadius: 11
+                            borderRadius: 10
                         }}>
                             <UIText style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_mediumBtnText }}
                                     value='删除'/>
@@ -184,14 +183,18 @@ export default class BankCardListPage extends BasePage {
                     </TouchableOpacity>
                 )}
                 listViewRef={(listView) => this.contentList = listView}
-                rightOpenValue={-75}
+                rightOpenValue={-68}
             />);
-        }else {
-            return <View style={{marginTop:200,alignSelf:'center', alignItems: 'center'}}>
-                <Image source={bankcard_empty} style={{width:120,height:120}}/>
-                <UIText style={{color:DesignRule.textColor_instruction,fontSize:DesignRule.fontSize_threeTitle,marginTop:15}}
+        } else {
+            return <View style={{ marginTop: 200, alignSelf: 'center', alignItems: 'center' }}>
+                <Image source={bankcard_empty} style={{ width: 120, height: 120 }}/>
+                <UIText style={{
+                    color: DesignRule.textColor_instruction,
+                    fontSize: DesignRule.fontSize_threeTitle,
+                    marginTop: 15
+                }}
                         value={'您还没有添加银行卡'}/>
-            </View>
+            </View>;
         }
     };
 
@@ -214,16 +217,10 @@ export default class BankCardListPage extends BasePage {
     }
 
 
-
-
-
-
-
     deleteBankCard = (data) => {
-        this.$navigate(RouterMap.BankCardPasswordPage,{title:'删除银行卡',selectBankCard:data,type:'delete'});
+        this.$navigate(RouterMap.BankCardPasswordPage, { title: '删除银行卡', selectBankCard: data, type: 'delete' });
     };
     addBankCard = () => {
-
         if (EmptyUtils.isEmpty(user.realname)) {
             Alert.alert('未实名认证', '你还没有实名认证', [{
                 text: '稍后认证', onPress: () => {
@@ -248,9 +245,18 @@ export default class BankCardListPage extends BasePage {
             return;
         }
 
-        this.$navigate(RouterMap.BankCardPasswordPage,{title:'绑定银行卡',type:'bind'});
-
-
+        if (this.state.viewData.length >= 5) {
+            Alert.alert('提示', '最多添加5张银行卡\n如需另外绑定，请解绑其他银行卡',
+                [
+                    {
+                        text: '确定', onPress: () => {
+                        }
+                    }
+                ]
+            );
+        } else {
+            this.$navigate(RouterMap.BankCardPasswordPage, { title: '绑定银行卡', type: 'bind' });
+        }
     };
     callBack = (item) => {
         if (this.params.callBack) {
@@ -304,16 +310,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    rightStyle:{
-        color:DesignRule.textColor_secondTitle,
-        fontSize:DesignRule.fontSize_threeTitle
+    rightStyle: {
+        color: DesignRule.textColor_secondTitle,
+        fontSize: DesignRule.fontSize_threeTitle
     },
-    tipStyle:{
-        color:DesignRule.textColor_instruction,
-        fontSize:DesignRule.fontSize_threeTitle,
-        alignSelf:'center',
-        marginTop:15,
-        marginBottom:30
+    tipStyle: {
+        color: DesignRule.textColor_instruction,
+        fontSize: DesignRule.fontSize_threeTitle,
+        alignSelf: 'center',
+        marginTop: 15,
+        marginBottom: 30
     }
 });
 
