@@ -9,7 +9,7 @@ const kHomeAdStore = '@home/kHomeAdStore';
 const { px2dp } = ScreenUtils;
 const bannerWidth = ScreenUtils.width;
 const kAdWidth = (ScreenUtils.width - px2dp(30)) / 2 - 0.5;
-const kAdHeight = kAdWidth * (160 / 340) - 0.5;
+const kAdHeight = kAdWidth * (80 / 170);
 
 class AdModules {
     @observable ad = [];
@@ -19,11 +19,11 @@ class AdModules {
     imgUrls = [];
 
     @computed get adHeight() {
-        let h = kAdHeight * 2 + px2dp(15);
+        let h = kAdHeight * 2;
         if (this.banner.length === 0) {
-            h += px2dp(5);
+            h += px2dp(10);
         } else {
-            h -= px2dp(5);
+            h += px2dp(5);
         }
         this.adHeights.forEach((value, key, map) => {
             if (this.imgUrls.indexOf(key) >= 0 && value > 0) {

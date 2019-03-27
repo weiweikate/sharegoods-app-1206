@@ -17,7 +17,7 @@ import HomeRecommendView, { recommendHeight } from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './HomeBannerView';
 import HomeAdView from './HomeAdView';
-import HomeGoodsView, { kHomeGoodsViewHeight } from './HomeGoodsView';
+import GoodsCell, { kHomeGoodsViewHeight } from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import HomeCategoryView, { categoryHeight } from './HomeCategoryView';
 import MessageApi from '../message/api/MessageApi';
@@ -346,7 +346,7 @@ class HomePage extends BasePage {
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
         } else if (type === homeType.goods) {
-            return <HomeGoodsView data={data.itemData} navigate={this.$navigate}/>;
+            return <GoodsCell data={data} navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
             return <View style={styles.titleView}
                          ref={e => this.toGoods = e}
@@ -413,8 +413,7 @@ class HomePage extends BasePage {
                                                     onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
-                    scrollEventThrottle={200}
-                    onEndReachedThreshold={ScreenUtils.height / 2}
+                    onEndReachedThreshold={ScreenUtils.height / 3}
                     dataProvider={this.dataProvider}
                     rowRenderer={this._renderItem.bind(this)}
                     layoutProvider={this.layoutProvider}
@@ -473,7 +472,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor
     },
     titleView: {
-        marginTop: px2dp(13),
+        marginTop: px2dp(10),
         paddingLeft: px2dp(15),
         width: ScreenUtils.width
     },

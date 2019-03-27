@@ -5,7 +5,8 @@ import {
     Image,
     TouchableWithoutFeedback,
     AppState,
-    ActivityIndicator
+    ActivityIndicator,
+    Platform
 } from 'react-native';
 import res from './res'
 import BasePage from '../../BasePage';
@@ -34,7 +35,7 @@ export default class ChannelPage extends BasePage {
 
     constructor(props) {
         super(props)
-        this.remainMoney = this.params.remainMoney
+        this.remainMoney = parseFloat(this.params.remainMoney)
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         let name = orderProduct && orderProduct.productName
         if (name) {
@@ -117,6 +118,7 @@ export default class ChannelPage extends BasePage {
     }
 
     _handleAppStateChange = (nextAppState) =>{
+        console.log('_handleAppStateChange', nextAppState)
         if (nextAppState !== 'active') {
             return
         }
@@ -124,11 +126,13 @@ export default class ChannelPage extends BasePage {
         if (this.state.orderChecking === true) {
             return;
         }
-        if (payment.isGoToPay === false) {
+        if (Platform.OS === 'ios' && payment.isGoToPay === false) {
             return;
         }
         if (payment.platformOrderNo && selctedPayType !== paymentType.none) {
-            payment.isGoToPay = false
+            if(Platform.OS === 'ios') {
+                payment.isGoToPay = false;
+            }
             this.orderTime = (new Date().getTime()) / 1000;
             this._checkOrder();
             this.setState({orderChecking: true})
@@ -211,7 +215,8 @@ export default class ChannelPage extends BasePage {
     _render() {
         const { selctedPayType, name } = payment
         const { orderChecking } = this.state
-
+        let payMoney = this.remainMoney  ? this.remainMoney  : payment.amounts
+        
         return <View style={styles.container}>
             <View style={styles.content}>
             <View style={styles.row}>
@@ -220,7 +225,7 @@ export default class ChannelPage extends BasePage {
             </View>
             <View style={styles.needView}>
             <Text style={styles.need}>支付金额</Text>
-            <Text style={styles.amount}>￥{this.remainMoney  ? this.remainMoney  : payment.amounts}</Text>
+            <Text style={styles.amount}>￥{payMoney.toFixed(2)}</Text>
             </View>
             <View style={styles.channelView}>
             <TouchableWithoutFeedback onPress={()=> this._selectedType(paymentType.wechat)}>

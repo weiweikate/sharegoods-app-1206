@@ -34,8 +34,8 @@
     url: '',
     methods: 'GET',
     params: {}
-    luckyDraw: bool, //ture 分享成功后是否调用增加抽奖码的接口
 }
+ luckyDraw: bool, //ture 分享成功后是否调用增加抽奖码的接口
  trackParmas={}埋点
  trackEvent= ''
  gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
@@ -117,6 +117,8 @@ export default class CommShareModal extends React.Component {
         if (user.isLogin) {
             user.userShare();
         }
+        let props = this.props;
+        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare' || props.type === 'miniProgramWithCopyUrl') ? 2 : 1;
         this.setState({ modalVisible: true, shareType: this.defaultShareType, showToastImage: false });
         this.modal && this.modal.open();
         // this.state.y.setValue(autoSizeWidth(340));
@@ -128,9 +130,9 @@ export default class CommShareModal extends React.Component {
         //         duration: 500
         //     }
         // ).start();
-        if (this.props.type !== 'Image') {
-            this.showImage();
-        }
+        // if (this.props.type !== 'Image') {
+        //     this.showImage();
+        // }
     }
 
     /**
@@ -161,7 +163,8 @@ export default class CommShareModal extends React.Component {
                     });
                 }
             } else {//已经有图片就直接展示
-                this.startAnimated();
+                 this.changeShareType(0);
+                 this.startAnimated();
             }
         }
     }
@@ -363,7 +366,7 @@ export default class CommShareModal extends React.Component {
         }
 
         const { shareMoney } = this.props.imageJson || {};
-        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}起` : '';
+        let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
 
         return (
             <CommModal onRequestClose={this.close}
@@ -403,7 +406,9 @@ export default class CommShareModal extends React.Component {
                                             color: DesignRule.textColor_secondTitle,
                                             fontSize: autoSizeWidth(17),
                                             marginHorizontal: 7
-                                        }}>{`分享秀一秀 ${user.isLogin ? shareMoneyText : ''}`}</MRText>
+                                        }}>{`分享秀一秀 `}<MRText
+                                            style={{ color: DesignRule.mainColor }}>{shareMoneyText || ''}</MRText>{shareMoneyText ? '起' : ''}
+                                        </MRText>
                                         :
                                         <MRText style={{
                                             color: DesignRule.textColor_secondTitle,

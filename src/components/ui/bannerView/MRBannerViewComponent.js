@@ -82,22 +82,24 @@ export default class MRBannerViewComponent extends Component {
 
 
     render() {
-        const { bannerHeight, imgUrlArray, autoLoop, autoInterval, itemRadius } = this.props;
+        const { bannerHeight, imgUrlArray, autoLoop, itemRadius, pageFocused } = this.props;
         let imgWidth = ScreenUtils.width - ScreenUtils.px2dp(30);
         return (
             <View style={styles.container}>
                 {/*加一个0.5修正值*/}
-                <MRBannerView ref={(ref) => this.mr_banner = ref}
-                              style={[{ height: bannerHeight, width: imgWidth }]}
-                              onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
-                              imgUrlArray={imgUrlArray}
-                              itemRadius={itemRadius}
-                              itemWidth={imgWidth + 0.5}
-                              itemSpace={0}
-                              pageFocused={this.props.pageFocused}
-                              onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
-                              autoLoop={autoLoop === false ? false : true}
-                              autoInterval={autoInterval || (autoInterval === 0 ? 0 : 5)}/>
+                <MRBannerView
+                    ref={(ref) => this.mr_banner = ref}
+                    style={[{ height: bannerHeight, width: imgWidth }]}
+                    onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
+                    itemWidth={imgWidth + 0.5}
+                    itemRadius={itemRadius}
+                    itemSpace={0}
+                    pageFocused={pageFocused}
+                    onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
+                    autoLoop={autoLoop === false ? false : true}
+                    autoInterval={5}
+                    imgUrlArray={imgUrlArray}
+                />
                 {this._renderPageControl(imgUrlArray.length)}
             </View>
         );

@@ -37,6 +37,10 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application>
-        <service android:name=".service.InitializeService" />
+        <service android:name=".service.InitializeService">
+            <intent-filter>
+                <action android:name="com.meeruu.sharegoods.third_init" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

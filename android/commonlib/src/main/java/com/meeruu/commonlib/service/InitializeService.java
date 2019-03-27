@@ -3,14 +3,16 @@ package com.meeruu.commonlib.service;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.handler.CrashHandler;
+import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.commonlib.utils.SensorsUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
@@ -25,15 +27,28 @@ import static com.meeruu.commonlib.config.QiyuConfig.options;
 public class InitializeService extends IntentService {
 
     private int patchStatus;
-    private static final String ACTION_INIT_WHEN_APP_CREATE = "com.meeruu.sharegoods.init";
+    private WeakHandler mHandler;
 
     public InitializeService() {
         super("InitializeService");
+        mHandler = new WeakHandler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                switch (msg.what) {
+                    case ParameterUtils.QIYU_IMG:
+                        // 七鱼初始化
+                        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", options(),
+                                new QiyuImageLoader());
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     public static void init(Context context) {
-        Intent intent = new Intent(context, InitializeService.class);
-        intent.setAction(ACTION_INIT_WHEN_APP_CREATE);
+        Intent intent = new Intent();
+        intent.setClass(context, InitializeService.class);
         context.startService(intent);
     }
 
@@ -41,19 +56,15 @@ public class InitializeService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_INIT_WHEN_APP_CREATE.equals(action)) {
-                // 延迟三方sdk初始化
-                initNow();
-                initCallback();
-                initDelay();
-            }
+            // 延迟三方sdk初始化
+            initNow();
+            initCallback();
+            initDelay();
         }
     }
 
     private void initNow() {
-        // 七鱼初始化
-        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", options(),
-                new QiyuImageLoader(getApplicationContext()));
+        mHandler.sendEmptyMessage(ParameterUtils.QIYU_IMG);
     }
 
     private void initDelay() {
@@ -61,7 +72,6 @@ public class InitializeService extends IntentService {
             // 延迟2s执行
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
         }
         // umeng初始化
         String channel = WalleChannelReader.getChannel(getApplicationContext(), "guanwang");

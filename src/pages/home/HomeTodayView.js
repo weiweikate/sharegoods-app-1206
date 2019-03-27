@@ -12,6 +12,7 @@ import { todayModule } from './HomeTodayModel';
 import DesignRule from '../../constants/DesignRule';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 import { MRText as Text } from '../../components/ui';
+import { homePoint } from './HomeTypes';
 
 
 export const todayHeight = px2dp(240);
@@ -28,7 +29,7 @@ export default class HomeTodayView extends Component {
         const { todayList } = todayModule;
         let item = todayList[index];
         if (item) {
-            track(trackEvent.recommanderBannerClick, homeModule.bannerPoint(item));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeToday));
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);
@@ -88,10 +89,9 @@ export default class HomeTodayView extends Component {
                             height: px2dp(160),
                             width: ScreenUtil.width - px2dp(30)
                         }}
-                        imgUrlArray={items}
                         itemWidth={px2dp(295)}
                         itemSpace={px2dp(10)}
-                        itemRadius={5}
+                        itemRadius={px2dp(5)}
                         pageFocused={this.props.pageFocused}
                         onDidSelectItemAtIndex={(e) => {
                             this._onPressRow(e);
@@ -99,6 +99,7 @@ export default class HomeTodayView extends Component {
                         onDidScrollToIndex={(e) => {
                             this._onDidScrollToIndex(e);
                         }}
+                        imgUrlArray={items}
                     />
             }
             {this.renderIndexView()}

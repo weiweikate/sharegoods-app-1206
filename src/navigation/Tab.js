@@ -16,6 +16,7 @@ import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 import Animation from 'lottie-react-native';
+import { TrackApi } from '../utils/SensorsTrack';
 
 
 const NormalTab = ({ source, title }) => {
@@ -67,7 +68,7 @@ class SpellShopTab extends Component {
 class HomeTab extends Component {
 
     render() {
-        if (!homeTabManager.homeFocus) {
+        if (!homeTabManager.homeFocus || !this.props.focus) {
             return <Tab normalSource={res.tab.home_n} title={'首页'}/>;
         }
         return (
@@ -145,7 +146,8 @@ export const TabNav = TabNavigator(
             screen: Home,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => <HomeTab normalSource={res.tab.home_n}
-                                                      title={'首页'}/>,
+                                                      title={'首页'}
+                                                      focus={focused}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene, previousScene } = tab;
                     if (previousScene.key !== 'HomePage') {
@@ -163,7 +165,14 @@ export const TabNav = TabNavigator(
             navigationOptions: {
                 tabBarLabel: '秀场',
                 tabBarIcon: ({ focused }) => <Tab focused={focused} normalSource={res.tab.discover_n}
-                                                  activeSource={res.tab.discover_s} title={'秀场'}/>
+                                                  activeSource={res.tab.discover_s} title={'秀场'}/>,
+                tabBarOnPress: (tab) => {
+                    const { jumpToIndex, scene, previousScene } = tab;
+                    if (previousScene.key !== 'ShowListPage') {
+                        jumpToIndex(scene.index);
+                        TrackApi.WatchXiuChang({ moduleSource: 1 });
+                    }
+                }
             }
         },
         MyShop_RecruitPage: {

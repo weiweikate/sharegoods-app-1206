@@ -3,23 +3,15 @@ package com.meeruu.sharegoods.ui.activity;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Parcelable;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
@@ -29,20 +21,13 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.meeruu.commonlib.base.BaseActivity;
-import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.permissions.Permission;
-import com.meeruu.permissions.PermissionUtil;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class GongMallActivity extends BaseActivity {
     private WebView webView;
@@ -50,19 +35,38 @@ public class GongMallActivity extends BaseActivity {
     public static final int REQUEST_SELECT_FILE = 100;
     public ValueCallback<Uri[]> uploadMessageAboveL;
     private static final int FILECHOOSER_RESULTCODE = 2;
-    private String url ;
+    private String url;
     public static final int SIGN_OK = 889;
+    private VelocityTracker mVelocityTracker;
+    //手指上下滑动时的最小速度
+    private static final int YSPEED_MIN = 1000;
+
+    //手指向右滑动时的最小距离
+    private static final int XDISTANCE_MIN = 50;
+
+    //手指向上滑或下滑时的最小距离
+    private static final int YDISTANCE_MIN = 100;
+
+    //记录手指按下时的横坐标。
+    private float xDown;
+
+    //记录手指按下时的纵坐标。
+    private float yDown;
+
+    //记录手指移动时的横坐标。
+    private float xMove;
+
+    //记录手指移动时的纵坐标。
+    private float yMove;
 
     //WebViewClient主要帮助WebView处理各种通知、请求事件
     private WebViewClient webViewClient = new WebViewClient() {
         @Override
         public void onPageFinished(WebView view, String url) {//页面加载完成
-//            progressBar.setVisibility(View.GONE);
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {//页面开始加载
-//            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -99,13 +103,11 @@ public class GongMallActivity extends BaseActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-//            Log.i("ansen", "网页标题:" + title);
         }
 
         //加载进度回调
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-//            progressBar.setProgress(newProgress);
         }
 
         protected void openFileChooser(ValueCallback uploadMsg, String acceptType) {
@@ -142,6 +144,7 @@ public class GongMallActivity extends BaseActivity {
         intent.putExtra("singlePic", true);
         startActivityForResult(intent, FILECHOOSER_RESULTCODE);
     }
+
     /*
      * 图片选择完成操作
      *
@@ -163,7 +166,7 @@ public class GongMallActivity extends BaseActivity {
         switch (requestCode) {
             case REQUEST_SELECT_FILE:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (uploadMessageAboveL == null){
+                    if (uploadMessageAboveL == null) {
                         return;
                     }
                     uploadMessageAboveL.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
@@ -172,21 +175,21 @@ public class GongMallActivity extends BaseActivity {
                 break;
             case FILECHOOSER_RESULTCODE:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (uploadMessageAboveL == null){
+                    if (uploadMessageAboveL == null) {
                         return;
                     }
                     String filePath = intent.getStringExtra("path");
-                    Uri  imageUri = Uri.fromFile(new File(filePath));
+                    Uri imageUri = Uri.fromFile(new File(filePath));
                     Uri[] results = null;
                     results = new Uri[]{imageUri};
                     uploadMessageAboveL.onReceiveValue(results);
                     uploadMessageAboveL = null;
                 } else {
-                    if (mUploadMessage == null){
+                    if (mUploadMessage == null) {
                         return;
                     }
                     String filePath = intent.getStringExtra("path");
-                    Uri  imageUri = Uri.fromFile(new File(filePath));
+                    Uri imageUri = Uri.fromFile(new File(filePath));
                     mUploadMessage.onReceiveValue(imageUri);
                     mUploadMessage = null;
                 }
@@ -200,7 +203,6 @@ public class GongMallActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.i("ansen", "是否有上一个页面:" + webView.canGoBack());
         if (webView.canGoBack() && keyCode == KeyEvent.KEYCODE_BACK) {//点击返回按钮的时候判断有没有上一页
             webView.goBack(); // goBack()表示返回webView的上一页面
             return true;
@@ -216,7 +218,6 @@ public class GongMallActivity extends BaseActivity {
      */
     @JavascriptInterface
     public void getClient(String str) {
-        Log.i("ansen", "html调用客户端:" + str);
     }
 
     @Override
@@ -242,7 +243,7 @@ public class GongMallActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gongmao);
         this.url = getIntent().getStringExtra("url");
-        if(TextUtils.isEmpty(this.url)){
+        if (TextUtils.isEmpty(this.url)) {
             finish();
         }
         webView = (WebView) findViewById(R.id.webView);
@@ -288,5 +289,70 @@ public class GongMallActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        createVelocityTracker(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                xDown = event.getRawX();
+                yDown = event.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                xMove = event.getRawX();
+                yMove= event.getRawY();
+                //滑动的距离
+                int distanceX = (int) (xMove - xDown);
+                int distanceY= (int) (yMove - yDown);
+                //获取顺时速度
+                int ySpeed = getScrollVelocity();
+                //关闭Activity需满足以下条件：
+                //1.x轴滑动的距离>XDISTANCE_MIN
+                //2.y轴滑动的距离在YDISTANCE_MIN范围内
+                //3.y轴上（即上下滑动的速度）<XSPEED_MIN，如果大于，则认为用户意图是在上下滑动而非左滑结束Activity
+                if(distanceX > XDISTANCE_MIN &&(distanceY<YDISTANCE_MIN&&distanceY>-YDISTANCE_MIN)&& ySpeed < YSPEED_MIN) {
+                    if(webView != null && webView.canGoBack()){
+                        webView.goBack();
+                    }
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                recycleVelocityTracker();
+                break;
+            default:
+                break;
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    /**
+     * 创建VelocityTracker对象，并将触摸界面的滑动事件加入到VelocityTracker当中。
+     *
+     * @param event
+     *
+     */
+    private void createVelocityTracker(MotionEvent event) {
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(event);
+    }
+
+    /**
+     * 回收VelocityTracker对象。
+     */
+    private void recycleVelocityTracker() {
+        mVelocityTracker.recycle();
+        mVelocityTracker = null;
+    }
+
+    /**
+     *
+     * @return 滑动速度，以每秒钟移动了多少像素值为单位。
+     */
+    private int getScrollVelocity() {
+        mVelocityTracker.computeCurrentVelocity(1000);
+        int velocity = (int) mVelocityTracker.getYVelocity();
+        return Math.abs(velocity);
+    }
 
 }

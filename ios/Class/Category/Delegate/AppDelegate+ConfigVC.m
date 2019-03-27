@@ -18,7 +18,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <SandBoxPreviewTool/SuspensionButton.h>
 #import <SandBoxPreviewTool/SandBoxPreviewTool.h>
-//#import <CodePush/CodePush.h>
+#import <CodePush/CodePush.h>
 
 
 @implementation AppDelegate (ConfigVC)
@@ -27,11 +27,11 @@
 {
   
   NSURL *jsCodeLocation;
-//  #if DEBUG
+  #if DEBUG
    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-//  #else
-//    jsCodeLocation = [CodePush bundleURL];
-//  #endif
+  #else
+    jsCodeLocation = [CodePush bundleURL];
+  #endif
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"sharegoods"
                                                initialProperties:@{@"statusBarHeight":[NSNumber numberWithFloat:kStatusBarHeight]}
@@ -45,7 +45,7 @@
   self.window.rootViewController = nav;
   [self.window makeKeyAndVisible];
   [NSThread sleepForTimeInterval:3];
-  [self createDebugSuspensionButton];
+//  [self createDebugSuspensionButton];
 }
 
 // 创建悬浮球按钮

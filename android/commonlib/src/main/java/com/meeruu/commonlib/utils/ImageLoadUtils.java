@@ -22,6 +22,7 @@ import com.facebook.imagepipeline.common.RotationOptions;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.listener.BaseRequestListener;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.meeruu.commonlib.R;
@@ -470,6 +471,25 @@ public class ImageLoadUtils {
                 .build();
         view.setHierarchy(hierarchy);
         view.setController(controller);
+    }
+
+    /**
+     * 判断uri是否能加载
+     *
+     * @param uri
+     * @param width
+     * @param height
+     * @param listener
+     */
+    public static void preFetch(Uri uri, int width, int height, BaseRequestListener listener) {
+        ImageRequestBuilder builder = ImageRequestBuilder.newBuilderWithSource(uri);
+        builder.setRequestListener(listener);
+        if (width > 0 && height > 0) {
+            builder.setResizeOptions(new ResizeOptions(width, height));
+        }
+        ImageRequest imageRequest = builder.build();
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        imagePipeline.fetchDecodedImage(imageRequest, BaseApplication.appContext);
     }
 
     /**

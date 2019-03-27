@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import {
     View,
     StyleSheet,
@@ -8,7 +7,6 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ProgressBarView from './ProgressBarView';
-// import ImageLoad from '@mr/image-placeholder'
 import PropTypes from 'prop-types';
 import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
@@ -17,7 +15,6 @@ import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
-// import UIText from '../../../components/ui/UIText';
 import {
     MRText as Text
 } from '../../../components/ui';
@@ -64,7 +61,6 @@ export default class OpenPrizeItemView extends Component {
         }
     }
 
-
     static propTypes = {
         itemData: PropTypes.object.isRequired,
         itemClick: PropTypes.func.isRequired
@@ -75,11 +71,7 @@ export default class OpenPrizeItemView extends Component {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={
-                    () => {
-                        this.props.itemClick && this.props.itemClick(itemData);
-                    }
-                }
+                onPress={ () => {this.props.itemClick && this.props.itemClick(itemData); }}
             >
                 <View style={ItemStyles.itemBgStyle}>
                     <View style={ItemStyles.itemContentStyle}>
@@ -107,17 +99,9 @@ export default class OpenPrizeItemView extends Component {
                         <Text
                             style={ItemStyles.itemBottomTextStyle}
                             numberOfLines={2}
-                            // value=
                             >
                             {itemData.productName}
                         </Text>
-                        {/*<Text*/}
-                            {/*style={ItemStyles.itemBottomTextStyle}*/}
-                            {/*number={2}*/}
-                        {/*>*/}
-                            {/*{itemData.productName}*/}
-                        {/*</Text>*/}
-                        {/*中部视图 关注或者进度条*/}
                         <View
                             style={{
                                 marginTop: 5,
@@ -279,7 +263,6 @@ export default class OpenPrizeItemView extends Component {
             }
             this.setState({
                 itemData: itemData
-
             });
         }).catch(error => {
             bridge.$toast(error.msg);
@@ -300,7 +283,6 @@ const ItemStyles = StyleSheet.create({
         backgroundColor: 'white'
     },
     itemTopImageStyle: {
-        // backgroundColor: DesignRule.mainColor
         width: mainWidth / 2 - 16,
         height: mainWidth / 2 - 16
     },

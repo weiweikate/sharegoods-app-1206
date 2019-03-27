@@ -1,5 +1,6 @@
 package com.meeruu.commonlib.utils;
 
+import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
 
@@ -20,8 +21,12 @@ public class SDCardUtils {
      * @return
      */
     public static boolean isSDCardEnable() {
-        return Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED);
+        try {
+            return Environment.getExternalStorageState().equals(
+                    Environment.MEDIA_MOUNTED);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -98,9 +103,9 @@ public class SDCardUtils {
     }
 
     //创建用于长期保存的临时存储目录
-    private static String getRootFileDirPath(String filePathName) {
+    private static String getRootFileDirPath(Context context, String filePathName) {
         String DefaultPath = "";
-        DefaultPath = BaseApplication.appContext.getFilesDir().getAbsolutePath();
+        DefaultPath = context.getFilesDir().getAbsolutePath();
 
         // 然后再获得一个绝对目录替换为保存目录
         if (DefaultPath.endsWith(File.separator)) {
@@ -112,10 +117,10 @@ public class SDCardUtils {
     }
 
     //创建本地文件目录
-    public static File getFileDirPath(String fileName) {
+    public static File getFileDirPath(Context context, String fileName) {
         String dirPath;
         if (!isSDCardEnable()) {
-            dirPath = getRootFileDirPath(fileName);
+            dirPath = getRootFileDirPath(context, fileName);
         } else {
             dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName;
         }

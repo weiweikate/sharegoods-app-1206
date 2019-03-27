@@ -478,7 +478,6 @@ export default class MinePage extends BasePage {
                     })}
                     {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : '0.00', false), '待入账', () => {
                         this.go2CashDetailPage(3);
-                        TrackApi.ViewWaitToRecord();
                     })}
                 </View>
             </ImageBackground>
@@ -598,7 +597,7 @@ export default class MinePage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         onScroll={this._onScroll.bind(this)}
-                        scrollEventThrottle={30}
+                        scrollEventThrottle={200}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
@@ -731,9 +730,6 @@ export default class MinePage extends BasePage {
             icon: mine_icon_help_service,
             onPress: () => {
                 TrackApi.ClickCustomerService();
-                TrackApi.ClickContactCustomerService({
-                    customerServiceModuleSource:1
-                })
                 this.$navigate(RouterMap.MyHelperPage);
             }
         };
@@ -749,6 +745,7 @@ export default class MinePage extends BasePage {
             icon: mine_icon_discollect,
             onPress: () => {
                 TrackApi.ViewMyXiuCollection();
+                TrackApi.WatchXiuChang({moduleSource:3});
                 this.$navigate(RouterMap.ShowConnectPage);
             }
         };
@@ -757,7 +754,6 @@ export default class MinePage extends BasePage {
             icon: mine_icon_fans,
             onPress: () => {
                 if (this.state.hasFans) {
-                    TrackApi.ViewMyFans();
                     this.$navigate(RouterMap.MyShowFansPage);
                 }
             }
@@ -768,7 +764,6 @@ export default class MinePage extends BasePage {
             icon: mine_icon_mentor,
             onPress: () => {
                 if (user.upUserCode) {
-                    TrackApi.ViewMyAdviser();
                     this.$navigate(RouterMap.MyMentorPage);
                 }
             }
@@ -893,6 +888,7 @@ export default class MinePage extends BasePage {
             this.gotoLoginPage();
             return;
         }
+        track(trackEvent.ViewMyOrder,{myOrderModuleSource:1})
         this.$navigate('order/order/MyOrdersListPage', { index: 0 });
     };
     jumpToServicePage = () => {
@@ -901,7 +897,6 @@ export default class MinePage extends BasePage {
             return;
         }
         this.$navigate('message/MessageCenterPage');
-        TrackApi.ViewMyMessage();
     };
 
     jumpToSettingPage = () => {

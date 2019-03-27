@@ -8,9 +8,11 @@
 
 #import "JRServiceManager.h"
 #import <QYSDK.h>
+#import "JRServiceManager+Util.h"
 @interface JRServiceManager()<QYConversationManagerDelegate>
 
 @property(nonatomic,strong) QYSessionViewController *sessionVC;
+@property (nonatomic,strong) JRBaseNavVC * QYNavVC;
 
 @end
 
@@ -20,6 +22,8 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 -(void)qiYULogout{
   [[QYSDK sharedSDK]logout:nil];
 }
+
+
 /**
  * groupId:0,
  * staffId:0,
@@ -31,7 +35,42 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  * device:手机型号
  * systemVersion:手机系统版本
  */
+-(void)initQYChat:(id)jsonData{
+  
+  QYUserInfo * userInfo = [self packingUserInfo:jsonData];
+  [[QYSDK sharedSDK] setUserInfo:userInfo];
+  
+  NSDictionary *jsonDic = jsonData;
+  QYSource *source = [[QYSource alloc] init];
+  source.title =  jsonDic[@"title"];
+  source.urlString = @"https://8.163.com/";
+  [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
+  
+}
+
+/**
+ 客服切换函数
+ @param swichData RN传递过来的 商品/订单 信息
+ */
+-(void)swichGroup:(id)swichData{
+  
+}
+
+//device = "iPhone X";
+//groupId = 0;
+//nickName = "\U80e1\U7389\U5cf0";
+//phoneNum = 18768435263;
+//staffId = 0;
+//systemVersion = "12.1";
+//title = "\U79c0\U8d2d\U5ba2\U670d";
+//userIcon = "https://cdn.sharegoodsmall.com/sharegoods/8f1c8726c7864dbb9fa30f3c5dfd4914.png";
+//userId = 1495323;
+
 -(void)qiYUChat:(id)josnData{
+
+   QYUserInfo * userInfo = [self packingUserInfo:josnData];
+   [[QYSDK sharedSDK] setUserInfo:userInfo];
+  
   NSDictionary *jsonDic = josnData;
   QYSource *source = [[QYSource alloc] init];
   source.title =  jsonDic[@"title"];
@@ -47,86 +86,17 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   self.sessionVC.groupId = [jsonDic[@"groupId"] integerValue];
   self.sessionVC.staffId = [jsonDic[@"staffId"] integerValue];
   
-//  self.sessionVC.groupId = 264002225;
-//  self.sessionVC.staffId = 1802229;
-//
-//切换客服
-//  [self.sessionVC changeHumanStaffWithStaffId:1802229 groupId:264002225 closetip:@"aa" closeCompletion:^(BOOL success, NSError *error) {
-//
-//  } requestCompletion:^(BOOL success, NSError *error) {
-//
-//  }];
-  QYUserInfo *userInfo = [[QYUserInfo alloc] init];
-  userInfo.userId = jsonDic[@"userId"];
-  NSMutableArray *array = [NSMutableArray new];
-  
-  NSMutableDictionary *dictRealName = [NSMutableDictionary new];
-  [dictRealName setObject:@"real_name" forKey:@"key"];
-  [dictRealName setObject:jsonDic[@"nickName"]?jsonDic[@"nickName"]:@"" forKey:@"value"];
-  [array addObject:dictRealName];
-  
-  NSMutableDictionary *dictMobilePhone = [NSMutableDictionary new];
-  [dictMobilePhone setObject:@"mobile_phone" forKey:@"key"];
-  [dictMobilePhone setObject:jsonDic[@"phoneNum"]?jsonDic[@"phoneNum"]:@"" forKey:@"value"];
-  [dictMobilePhone setObject:@(NO) forKey:@"hidden"];
-  [array addObject:dictMobilePhone];
-  
-  NSMutableDictionary *dictavatar = [NSMutableDictionary new];
-  [dictavatar setObject:@"avatar" forKey:@"key"];
-  [dictavatar setObject:jsonDic[@"userIcon"]?jsonDic[@"userIcon"]:@"" forKey:@"value"];
-  [array addObject:dictavatar];
-  
-  NSMutableDictionary *dictphoneNum = [NSMutableDictionary new];
-  [dictphoneNum setObject:@"phoneNum" forKey:@"key"];
-  [dictphoneNum setObject:jsonDic[@"phoneNum"]?jsonDic[@"phoneNum"]:@"" forKey:@"value"];
-  [array addObject:dictphoneNum];
-  
-  NSMutableDictionary *dictSystemVersion = [NSMutableDictionary new];
-  [dictSystemVersion setObject:@"systemVersion" forKey:@"key"];
-  [dictSystemVersion setObject:jsonDic[@"systemVersion"]?jsonDic[@"systemVersion"]:@"" forKey:@"value"];
-  [array addObject:dictSystemVersion];
-  
-  NSMutableDictionary *appVersion = [NSMutableDictionary new];
-  [appVersion setObject:@"appVersion" forKey:@"key"];
-  [appVersion setObject:kAppVersion forKey:@"value"];
-  [array addObject:dictSystemVersion];
-  
-  NSData *data = [NSJSONSerialization dataWithJSONObject:array
-                                                 options:0
-                                                   error:nil];
-  
-  if (data) {
-    userInfo.data = [[NSString alloc] initWithData:data
-                                          encoding:NSUTF8StringEncoding];
-  }
-  
-  [[QYSDK sharedSDK] setUserInfo:userInfo];
-  
   JRBaseNavVC *nav =[[JRBaseNavVC alloc] initWithRootViewController:self.sessionVC];
   self.sessionVC.navigationItem.leftBarButtonItem =
   [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain
                                   target:self action:@selector(onBack:)];
-  [KRootVC presentViewController:nav animated:YES completion:nil];
-//  [self sendMsg];
-}
--(void)startServiceWithGroupId:(int64_t)groupId andStaffId:(int64_t)staffId andTitle:(NSString *)title{
-  QYSource *source = [[QYSource alloc] init];
-  source.title =  title;
-  source.urlString = @"https://8.163.com/";
-  [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
   
-  self.sessionVC.sessionTitle = title;
-  self.sessionVC.source = source;
+//  self.sessionVC.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"链接客服" style:UIBarButtonItemStylePlain
+//                                                                                     target:self action:@selector(onBack:)];
   
-  self.sessionVC.groupId = groupId;
-  self.sessionVC.groupId = staffId;
-  
-  JRBaseNavVC *nav =[[JRBaseNavVC alloc] initWithRootViewController:self.sessionVC];
-  self.sessionVC.navigationItem.leftBarButtonItem =
-  [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain
-                                  target:self action:@selector(onBack:)];
   [KRootVC presentViewController:nav animated:YES completion:nil];
 }
+
 - (void)onBack:(id)sender
 {
   [KRootVC dismissViewControllerAnimated:self.sessionVC completion:nil];
@@ -163,6 +133,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  *  会话列表变化；非平台电商用户，只有一个会话项，平台电商用户，有多个会话项
  */
 - (void)onSessionListChanged:(NSArray<QYSessionInfo*> *)sessionList{
+  
 }
 /**
  *  收到消息

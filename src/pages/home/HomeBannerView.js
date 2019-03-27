@@ -14,6 +14,7 @@ export const bannerHeight = px2dp(120);
 import MRBannerViewComponent from '../../components/ui/bannerView/MRBannerViewComponent';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import DesignRule from '../../constants/DesignRule';
+import { homePoint } from './HomeTypes';
 
 
 @observer
@@ -32,7 +33,7 @@ export default class HomeBannerView extends Component {
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
-            track(trackEvent.bannerClick, homeModule.bannerPoint(data));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner));
             navigate(router, { ...params });
         }
     }
@@ -46,7 +47,7 @@ export default class HomeBannerView extends Component {
             let params = homeModule.paramsNavigate(data);
             const { navigate } = this.props;
 
-            track(trackEvent.bannerClick, homeModule.bannerPoint(data));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner));
             navigate(router, { ...params });
         }
     };
@@ -54,12 +55,12 @@ export default class HomeBannerView extends Component {
     _onDidScrollToIndex(index) {
         const { bannerList } = bannerModule;
         let data = bannerList[index];
-        track(trackEvent.bannerSwiper, homeModule.bannerPoint(data));
+        track(trackEvent.bannerShow, homeModule.bannerPoint(data, homePoint.homeBanner));
     }
 
     render() {
         const { bannerList } = bannerModule;
-
+        const isFocused = homeModule.isFocused;
         let items = [];
         bannerList.map(value => {
             items.push(value.imgUrl);
@@ -68,17 +69,19 @@ export default class HomeBannerView extends Component {
         return <View style={styles.banner}>
             {len === 0 ?
                 <View style={styles.defaultImg}/> :
-                <MRBannerViewComponent itemRadius={px2dp(5)} imgUrlArray={items}
-                                       bannerHeight={bannerHeight}
-                                       modeStyle={1}
-                                       autoInterval={homeModule.isFocused ? 5 : 0}
-                                       pageFocused={homeModule.isFocused}
-                                       onDidScrollToIndex={(i) => {
-                                           this._onDidScrollToIndex(i);
-                                       }}
-                                       onDidSelectItemAtIndex={(i) => {
-                                           this._onPressRow(i);
-                                       }}/>
+                <MRBannerViewComponent
+                    itemRadius={px2dp(5)}
+                    imgUrlArray={items}
+                    bannerHeight={bannerHeight}
+                    modeStyle={1}
+                    autoLoop={isFocused ? true : false}
+                    pageFocused={isFocused}
+                    onDidScrollToIndex={(i) => {
+                        this._onDidScrollToIndex(i);
+                    }}
+                    onDidSelectItemAtIndex={(i) => {
+                        this._onPressRow(i);
+                    }}/>
             }
         </View>;
     }

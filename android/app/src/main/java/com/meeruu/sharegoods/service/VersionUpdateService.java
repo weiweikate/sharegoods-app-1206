@@ -15,6 +15,7 @@ import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import com.meeruu.commonlib.base.BaseApplication;
@@ -215,7 +216,7 @@ public class VersionUpdateService extends Service {
     }
 
     public void downloadApk(final int flag) {
-        final File apkfile_file = SDCardUtils.getFileDirPath("MR/file");
+        final File apkfile_file = SDCardUtils.getFileDirPath(getApplicationContext(), "MR/file");
         final String fileName = AppUtils.getAppName() + "_" + lastVersion + ".apk";
         RequestManager.getInstance().downLoadFile(app.getDownLoadUrl(),
                 apkfile_file.getAbsolutePath() + File.separator + fileName,
@@ -240,7 +241,7 @@ public class VersionUpdateService extends Service {
                     @Override
                     public void onErr(String errCode, String msg) {
                         Message message = Message.obtain();
-                        message.obj = msg;
+                        message.obj = TextUtils.isEmpty(msg) ? "" : msg;
                         message.what = ParameterUtils.MSG_WHAT_ERR;
                         mHandler.sendMessage(message);
                         File file = new File(apkfile_file.getAbsolutePath() + File.separator + fileName);

@@ -3,6 +3,8 @@ package com.meeruu.commonlib.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.meeruu.commonlib.base.BaseApplication;
+
 import java.io.File;
 import java.math.BigDecimal;
 
@@ -13,7 +15,7 @@ import java.math.BigDecimal;
 public class ImageCacheUtils {
 
     private static ImageCacheUtils inst;
-    private File ImageExternalCatchFile = SDCardUtils.getFileDirPath("MR" + File.separator + "cache");
+    private File ImageExternalCatchFile = SDCardUtils.getFileDirPath(BaseApplication.appContext, "MR" + File.separator + "cache");
 
 
     public static ImageCacheUtils getInstance() {

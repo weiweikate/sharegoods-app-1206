@@ -345,12 +345,12 @@ class ExchangeGoodsDetailPage extends BasePage {
             this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息');
             return;
         }
-        this.logisticsDetailsPage()
+        this.logisticsDetailsPage(expressNo)
     };
 
     logisticsDetailsPage = (expressNo) => {
-        OrderApi.return_express({expressNo: expressNo}).then((data)=>{
-            if (data&&data.length>1){//有多个物流
+        OrderApi.return_express({serviceNo: this.params.serviceNo}).then((data)=>{
+            if (data.data&&data.data.length>1){//有多个物流
                 this.$navigate(RouterMap.AfterLogisticsListView, {
                     serviceNo: this.params.serviceNo
                 });

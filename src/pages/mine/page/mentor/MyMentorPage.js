@@ -17,6 +17,7 @@ import homeRes from "../../res"
 import DesignRule from "../../../../constants/DesignRule";
 import MineAPI from "../../api/MineApi";
 import {MRText as Text} from '../../../../components/ui'
+import { TrackApi } from '../../../../utils/SensorsTrack';
 
 const HeaderBarBgImg = res.myShop.txbg_03;
 const white_back = res.button.white_back;
@@ -60,6 +61,8 @@ export default class MyMentorPage extends BasePage {
                     phone: info.phone,
                     profile: info.profile ? info.profile : "这位服务顾问很懒，什么也没留下~"
                 });
+                TrackApi.ViewMyAdviser({hasAdviser:true,adviserCode:info.code});
+
             }else {
                 this.$toastShow('未查询到服务顾问信息');
             }

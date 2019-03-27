@@ -6,10 +6,11 @@ import React, { Component } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+
 const { px2dp, onePixel } = ScreenUtil;
 import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
-import { homeLinkType, homeRoute } from './HomeTypes';
+import { homeLinkType, homeRoute, homePoint } from './HomeTypes';
 import { subjectModule } from './HomeSubjectModel';
 import DesignRule from '../../constants/DesignRule';
 import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTool';
@@ -106,7 +107,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
 @observer
 export default class HomeSubjectView extends Component {
     _subjectActions(item) {
-        track(trackEvent.hotsellBannerClick, homeModule.bannerPoint(item))
+        track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeSubject));
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(item);
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
@@ -177,14 +178,14 @@ let styles = StyleSheet.create({
         height: bannerHeight
     },
     scroll: {
-        height: px2dp(165),
+        height: px2dp(170),
         marginTop: px2dp(5),
-        marginBottom: px2dp(15)
+        marginBottom: px2dp(10)
     },
     goodsView: {
         marginTop: px2dp(5),
         width: px2dp(100),
-        height: px2dp(165),
+        height: px2dp(170),
         marginHorizontal: px2dp(2.5)
     },
     goodImg: {
@@ -209,7 +210,7 @@ let styles = StyleSheet.create({
     },
     moreView: {
         width: px2dp(100),
-        height: px2dp(165),
+        height: px2dp(170),
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: px2dp(5),

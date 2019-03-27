@@ -47,6 +47,7 @@ public class BannerLayout extends FrameLayout {
     private boolean hasInit;
     private int bannerSize = 1;
     private int currentIndex;
+    private int purIndex;
     private boolean isPlaying = false;
 
     private boolean isAutoPlaying = true;
@@ -56,6 +57,16 @@ public class BannerLayout extends FrameLayout {
     private OnPageSelected onPageSelected;
     private RecyclerView.Adapter adapter;
     private boolean intercept;
+    private int itemWidth;
+
+
+    public void setItemWidth(int itemWidth) {
+        this.itemWidth = itemWidth;
+    }
+
+    public int getItemWidth() {
+        return this.itemWidth;
+    }
 
     protected WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
         @Override
@@ -360,8 +371,9 @@ public class BannerLayout extends FrameLayout {
     public synchronized void refreshIndicator() {
         if (bannerSize > 0) {
             int position = currentIndex % bannerSize;
-            if (onPageSelected != null) {
+            if (onPageSelected != null && purIndex != position) {
                 onPageSelected.pageSelected(position);
+                purIndex = position;
             }
             if (showIndicator) {
                 indicatorAdapter.setPosition(position);
