@@ -12,7 +12,7 @@
 
 // Read-only properties
 @property (nonatomic, assign, readonly) NSInteger numberOfColumns;
-@property (nonatomic, assign, readonly) CGFloat headerHeight;
+@property (nonatomic, assign) CGFloat headerHeight;
 @property (nonatomic, assign, readonly) CGFloat columnSpacing;
 @property (nonatomic, assign, readonly) UIEdgeInsets sectionInsets;
 @property (nonatomic, assign, readonly) UIEdgeInsets interItemSpacing;

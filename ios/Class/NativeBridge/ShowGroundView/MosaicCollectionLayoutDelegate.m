@@ -30,6 +30,12 @@
   return self;
 }
 
+- (void)setHeaderHeight:(CGFloat)headerHeight
+{
+  _headerHeight = headerHeight;
+  _info.headerHeight = headerHeight;
+}
+
 - (ASScrollDirection)scrollableDirections
 {
   ASDisplayNodeAssertMainThread();
@@ -67,7 +73,7 @@
       
       ASSizeRange sizeRange = [self _sizeRangeForHeaderOfSection:section withLayoutWidth:layoutWidth info:info];
       CGSize size = [element.node layoutThatFits:sizeRange].size;
-      CGRect frame = CGRectMake(info.sectionInsets.left, top, size.width, size.height);
+      CGRect frame = CGRectMake(0, top, size.width, size.height);
       
       attrs.frame = frame;
       [attrsMap setObject:attrs forKey:element];
@@ -120,7 +126,8 @@
 
 + (CGFloat)_widthForSection:(NSUInteger)section withLayoutWidth:(CGFloat)layoutWidth info:(MosaicCollectionLayoutInfo *)info
 {
-  return layoutWidth - info.sectionInsets.left - info.sectionInsets.right;
+ 
+  return layoutWidth - info.sectionInsets.left - info.sectionInsets.right < 0 ? 0 : layoutWidth - info.sectionInsets.left - info.sectionInsets.right;
 }
 
 + (ASSizeRange)_sizeRangeForItem:(ASCellNode *)item atIndexPath:(NSIndexPath *)indexPath withLayoutWidth:(CGFloat)layoutWidth info:(MosaicCollectionLayoutInfo *)info

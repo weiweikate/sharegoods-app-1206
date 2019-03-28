@@ -25,7 +25,6 @@
 {
   if (self = [super init]) {
     self.cornerRadius = 5;
-    self.neverShowPlaceholders = YES;
     _model = model;
     [self addSubnode:self.imageNode];
     [self addSubnode:self.titleNode];
@@ -35,6 +34,7 @@
     [self addSubnode:self.numBgNode];
     [self addSubnode:self.numNode];
     [self addSubnode:self.numIconNode];
+    self.backgroundColor = [UIColor whiteColor];
   }
   return self;
 }
@@ -47,16 +47,16 @@
                                                                        child:_imageNode];
   _numIconNode.style.spacingBefore = 10;
   ASStackLayoutSpec *hNumSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
-                                                                     spacing:10
-                                                              justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsCenter
-                                                                    children:@[_numIconNode,
-                                                                               _numNode
-                                                                                        ]];
+                                                                        spacing:10
+                                                                 justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsCenter
+                                                                       children:@[_numIconNode,
+                                                                                  _numNode
+                                                                                  ]];
   _numBgNode.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
   hNumSpec.style.preferredSize = CGSizeMake(constrainedSize.min.width, 30);
   ASOverlayLayoutSpec * overSpec1 =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:_numBgNode overlay: hNumSpec];
-//  ASAbsoluteLayoutSpec * overSpec1  = [ASAbsoluteLayoutSpec absoluteLayoutSpecWithChildren:@[_numBgNode, hNumSpec]];
-//  overSpec1.style.height = ASDimensionMake(30);
+  //  ASAbsoluteLayoutSpec * overSpec1  = [ASAbsoluteLayoutSpec absoluteLayoutSpecWithChildren:@[_numBgNode, hNumSpec]];
+  //  overSpec1.style.height = ASDimensionMake(30);
   UIEdgeInsets insets = UIEdgeInsetsMake(INFINITY,0,0,0);
   ASInsetLayoutSpec * numBgNode = [ASInsetLayoutSpec insetLayoutSpecWithInsets:insets child:overSpec1];
   ASOverlayLayoutSpec * overSpec =  [ASOverlayLayoutSpec overlayLayoutSpecWithChild:ImageSpec overlay: numBgNode];
@@ -66,7 +66,7 @@
   _timeNode.style.spacingAfter = 10;
   _userNameNode.style.flexShrink = 1.0;
   _userNameNode.style.flexGrow = 1.0;
-
+  
   
   ASStackLayoutSpec *hSpec = [ASStackLayoutSpec stackLayoutSpecWithDirection:ASStackLayoutDirectionHorizontal
                                                                      spacing:0
@@ -79,7 +79,7 @@
                                                                      spacing:10
                                                               justifyContent:ASStackLayoutJustifyContentStart alignItems:ASStackLayoutAlignItemsStart
                                                                     children:@[overSpec,
-                                                                                [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
+                                                                               [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
                                                                                hSpec                                                                ]];
   
   return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsZero child:vSpec];
@@ -193,13 +193,12 @@
     @"999999+" :
     [NSString stringWithFormat:@"%ld", (long)_model.click];
     _numNode.attributedText = [[NSAttributedString alloc]initWithString:click attributes:@{
-                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:10],
-                                                                                                            NSForegroundColorAttributeName: [UIColor colorWithHexString:@"ffffff"]
-                                                                                                            }];
+                                                                                           NSFontAttributeName: [UIFont systemFontOfSize:10],
+                                                                                           NSForegroundColorAttributeName: [UIColor colorWithHexString:@"ffffff"]
+                                                                                           }];
   }
   return _numNode;
 }
-
 
 
 @end

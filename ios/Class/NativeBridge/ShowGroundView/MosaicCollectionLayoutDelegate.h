@@ -12,5 +12,6 @@
 @interface MosaicCollectionLayoutDelegate : NSObject <ASCollectionLayoutDelegate>
 
 - (instancetype)initWithNumberOfColumns:(NSInteger)numberOfColumns headerHeight:(CGFloat)headerHeight;
+@property(nonatomic, assign)CGFloat headerHeight;
 
 @end
