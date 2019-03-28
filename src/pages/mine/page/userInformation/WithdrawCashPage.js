@@ -386,12 +386,6 @@ export default class WithdrawCashPage extends BasePage {
             }
         }
 
-
-
-
-
-
-
         return (
             <View style={{ backgroundColor: 'white' }}>
                 <UIText value={'提现金额'}
