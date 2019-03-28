@@ -127,7 +127,6 @@ public class QiyuImageLoader implements UnicornImageLoader {
                     }
                 }
             }.execute(path);
-
         }
     }
 }

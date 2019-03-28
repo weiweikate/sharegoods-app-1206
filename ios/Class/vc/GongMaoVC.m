@@ -78,6 +78,9 @@ static  NSString * constTile = @"公猫认证";
   if ([mark isEqualToString:url_str]) {
     decisionHandler(WKNavigationActionPolicyCancel);
     [self.navigationController popViewControllerAnimated:YES];
+    if (self.resolver) {
+      self.resolver(@{});
+    }
     return;
   }
   decisionHandler(WKNavigationActionPolicyAllow);
