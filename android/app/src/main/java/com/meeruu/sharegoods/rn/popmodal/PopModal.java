@@ -128,7 +128,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             // We need to remove the mHostView from the parent
             // It is possible we are dismissing this dialog and reattaching the hostView to another
             ViewGroup parent = (ViewGroup) mHostView.getParent();
-            parent.removeViewAt(0);
+            if (parent != null) {
+                parent.removeViewAt(0);
+            }
         }
     }
 
@@ -358,13 +360,19 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
         @Override
         public boolean onInterceptTouchEvent(MotionEvent event) {
-            mJSTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
+            try {
+                mJSTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
+            } catch (Exception e) {
+            }
             return super.onInterceptTouchEvent(event);
         }
 
         @Override
         public boolean onTouchEvent(MotionEvent event) {
-            mJSTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
+            try {
+                mJSTouchDispatcher.handleTouchEvent(event, getEventDispatcher());
+            } catch (Exception e) {
+            }
             super.onTouchEvent(event);
             // In case when there is no children interested in handling touch event, we return true from
             // the root view in order to receive subsequent events related to that gesture
