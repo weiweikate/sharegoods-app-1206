@@ -82,7 +82,7 @@
                                                                                [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 10, 0, 10) child:_titleNode],
                                                                                hSpec                                                                ]];
   
-  return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsZero child:vSpec];
+  return [ASInsetLayoutSpec insetLayoutSpecWithInsets:UIEdgeInsetsMake(0, 0, 12, 0) child:vSpec];
   
 }
 
