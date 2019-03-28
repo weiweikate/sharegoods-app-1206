@@ -129,6 +129,7 @@ class HomeModule {
         recommendModule.loadRecommendList(this.firstLoad);
         this.page = 1;
         this.isEnd = false;
+        this.lastGoods = null;
         this.homeList = [{
             id: 0,
             type: homeType.category
@@ -202,7 +203,6 @@ class HomeModule {
         }
         try {
             this.loadMoreGoods();
-
         } catch (error) {
             this.isFetching = false;
             this.isRefreshing = false;
@@ -219,7 +219,6 @@ class HomeModule {
             this.lastGoods = null;
         }
         const result = yield HomeApi.getGoodsInHome({ page: this.page });
-        this.isFetching = false;
         list = list.concat(result.data.data);
         if (this.page === result.data.totalPage) {
             this.isEnd = true;
@@ -236,8 +235,6 @@ class HomeModule {
         this.page++;
         this.isFetching = false;
         this.errorMsg = '';
-
-        console.log('loadMoreHomeList', goods, this.isEnd);
         if (goods.length === 0 && this.isEnd === false) {
             this.loadMoreGoods();
         }

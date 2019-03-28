@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
-        Log.d("is_phone", !Utils.isEmulator() + "");
+        Log.d("is_phone", !Utils.isEmulator(getApplicationContext()) + "");
     }
 
     @Override
@@ -136,7 +136,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void LoadingAdv(final String url) {
-        ImageLoadUtils.isImageExist(Uri.parse(url), new BaseRequestListener() {
+        ImageLoadUtils.preFetch(Uri.parse(url), 100, 100, new BaseRequestListener() {
             @Override
             public void onRequestSuccess(ImageRequest request, String requestId, boolean isPrefetch) {
                 super.onRequestSuccess(request, requestId, isPrefetch);

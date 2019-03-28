@@ -4,13 +4,12 @@ import {
     StyleSheet,
     View,
     ImageBackground,
-    TouchableOpacity,
     TouchableWithoutFeedback,
     Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
-import AccountItem from '../../components/AccountItem';
+// import AccountItem from '../../components/AccountItem';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -21,28 +20,24 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
+import StringUtils from "../../../../utils/StringUtils";
 
 const { px2dp } = ScreenUtils;
 
-const singInImg = res.userInfoImg.qdaojianli_icon;
-const taskImg = res.userInfoImg.rwujianli_icon;
-const yiyuanImg = res.userInfoImg.xiudozhanghu_icon_xjaingquan;
-const zensong = res.userInfoImg.xiudozhanghu_icon_zengsong;
-const xiugou_reword = res.myData.xiugou_reword;
+const singInImg = res.cashAccount.qiandao_icon;
+const taskImg = res.cashAccount.renwu_icon;
+const yiyuanImg = res.cashAccount.quan_icon;
+const zensong = res.cashAccount.zengsong_icon;
+const xiugou_reword = res.cashAccount.renwuShuoMing_icon;
 const account_bg = res.bankCard.account_bg;
 const account_bg_white = res.bankCard.account_bg_white;
+const red_up= res.cashAccount.zhanghu_red;
+const lv_down=res.cashAccount.zhanghu_lv;
 @observer
 export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            id: user.code,
-            phone: '',
-            pwd: '',
-            thirdType: 1,
-            passwordDis: false,
-            phoneError: false,
-            passwordError: false,
             viewData: [],
             currentPage: 1,
             isEmpty: false
@@ -52,7 +47,6 @@ export default class MyIntegralAccountPage extends BasePage {
 
     $navigationBarOptions = {
         title: '我的秀豆',
-
         show: false // false则隐藏导航
     };
 
@@ -61,8 +55,10 @@ export default class MyIntegralAccountPage extends BasePage {
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
+                <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <RefreshList
-                    ListFooterComponent={this.renderFootder}
+                    ListHeaderComponent={this.renderReHeader}
+                    ListFooterComponent={this.renderFooter}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
@@ -71,6 +67,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据！'}
                 />
+                </View>
                 {this._accountInfoRender()}
             </View>
         );
@@ -126,42 +123,53 @@ export default class MyIntegralAccountPage extends BasePage {
 
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity>
-                <AccountItem
-                    type={item.type}
-                    time={item.time}
-                    serialNumber={item.serialNumber}
-                    capital={item.capital}
-                    iconImage={item.iconImage}
-                    clickItem={() => {
-                        this.clickItem(index);
-                    }}
-                    capitalRed={item.capitalRed}
-                />
-            </TouchableOpacity>
-        );
-    };
-    renderLine = () => {
-        return (
             <View style={{
-                height: 0.5,
-                backgroundColor: DesignRule.lineColor_inColorBg,
-                marginLeft: 48,
-                marginRight: 48
-            }}/>
-
+                height: 40,
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: ScreenUtils.width,
+                marginBottom: 20
+            }}>
+                <Image source={item.iconImage} style={{ marginLeft: 15, width: 40, height: 40 }}/>
+                <View style={{  marginLeft: 17, marginRight: 18, flex: 1,alignItems: 'center', justifyContent: 'space-between' ,flexDirection:'row' }}>
+                    <View style={{ justifyContent: 'space-between' }}>
+                        <Text style={{ fontSize: 14, color: DesignRule.textColor_secondTitle }}>{item.type}</Text>
+                        <Text style={{
+                            fontSize: 12, color: DesignRule.textColor_instruction
+                        }}>{item.time}</Text>
+                    </View>
+                    <View  style={{flexDirection:'row',alignItems:'center'}}>
+                        <Text style={{ fontSize: 17, color: DesignRule.textColor_mainTitle }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                        <Image style={{marginLeft:5,width:8,height:5}} source={item.capitalRed?red_up:lv_down}/>
+                    </View>
+                </View>
+            </View>
         );
     };
+    renderReHeader = () => {
+        if (this.state.viewData && this.state.viewData.length > 0) {
+            return (
+                <View style={{ marginLeft: 15, marginTop: 52, marginBottom: 20,flexDirection:'row',alignItems:'center' }}>
+                    <View style={{backgroundColor:DesignRule.mainColor,width:2,height:8,borderRadius:1,marginRight:5}}/>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
+                </View>
+            );
+        } else {
+            return null;
+        }
+
+    };
+    renderFooter = () => {
+        return(
+            <View style={{height:30,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
+        )
+    }
 
     //**********************************BusinessPart******************************************
     componentDidMount() {
-
         this.onRefresh();
     }
 
-    clickItem = (index) => {
-        // alert(index);
-    };
     getDataFromNetwork = () => {
         let use_type = ['', '注册赠送', '活动赠送', '其他', '兑换1元现金券', '签到奖励', '任务奖励', '秀购奖励', '抽奖奖励', '秀购奖励'];
 
@@ -228,38 +236,8 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: DesignRule.bgColor,
-        marginBottom: ScreenUtils.safeBottom
     },
-    imageBackgroundStyle: {
-        position: 'absolute',
-        height: 95,
-        backgroundColor: '#F2D4A2',
-        width: ScreenUtils.width - 30,
-        marginLeft: 15,
-        marginRight: 15,
-        marginTop: 10,
-        marginBottom: 10,
-        borderRadius: 15
-    },
-    rectangleStyle: {
-        width: 120,
-        height: 44,
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: 'white',
-        marginLeft: 15,
-        marginRight: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 3
-    },
-    viewStyle: {
-        height: 95,
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 15,
-        marginRight: 15
-    },
+
     container: {
         height: px2dp(188),
         width: ScreenUtils.width

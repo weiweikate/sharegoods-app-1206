@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
-// import AccountItem from '../../components/CashAccountItem';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
@@ -23,17 +22,19 @@ import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
 
 const { px2dp } = ScreenUtils;
-const renwu = res.cashAccount.renwu;
-const daoshi = res.cashAccount.daoshi;
-const fenhong = res.cashAccount.fenhong;
-const hongbao = res.cashAccount.hongbao;
-const tuiguang = res.cashAccount.tuiguang;
-const tixiang = res.cashAccount.tixiang;
-const tixiantk = res.cashAccount.tixiantk;
-const xiaofei = res.cashAccount.xiaofei;
-const xiaofeitk = res.cashAccount.xiaofeitk;
+const renwu = res.cashAccount.renwu_icon;
+const daoshi = res.cashAccount.daoshi_icon;
+const fenhong = res.cashAccount.fenhong_icon;
+const hongbao = res.cashAccount.hongbao_icon;
+const tuiguang = res.cashAccount.tuiguang_icon;
+const tixiang = res.cashAccount.tixian_icon;
+const tixiantk = res.cashAccount.tixian_icon;
+const xiaofei = res.cashAccount.xiaofei_icon;
+const xiaofeitk = res.cashAccount.xiaofei_icon;
 const account_bg = res.bankCard.account_bg;
 const account_bg_white = res.bankCard.account_bg_white;
+const red_up= res.cashAccount.zhanghu_red;
+const lv_down=res.cashAccount.zhanghu_lv;
 
 @observer
 export default class MyCashAccountPage extends BasePage {
@@ -41,16 +42,7 @@ export default class MyCashAccountPage extends BasePage {
         super(props);
         this.getUserBankInfoing = false;
         this.state = {
-            id: user.code,
-            phone: '',
-            pwd: '',
-            thirdType: 1,
-            passwordDis: false,
-            phoneError: false,
-            passwordError: false,
             viewData: [],
-            restMoney: this.params.availableBalance,
-
             currentPage: 1,
             isEmpty: false
 
@@ -79,6 +71,7 @@ export default class MyCashAccountPage extends BasePage {
                     <RefreshList
                         data={this.state.viewData}
                         ListHeaderComponent={this.renderReHeader}
+                        ListFooterComponent={this.renderFooter}
                         renderItem={this.renderItem}
                         onRefresh={this.onRefresh}
                         onLoadMore={this.onLoadMore}
@@ -123,7 +116,11 @@ export default class MyCashAccountPage extends BasePage {
         );
     }
 
-
+    renderFooter = () => {
+        return(
+            <View style={{height:20,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
+        )
+    }
     renderHeader = () => {
         return (
             <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.container}>
@@ -146,7 +143,8 @@ export default class MyCashAccountPage extends BasePage {
     renderReHeader = () => {
         if (this.state.viewData && this.state.viewData.length > 0) {
             return (
-                <View style={{ marginLeft: 18, marginTop: 17, marginBottom: 24 }}>
+                <View style={{ marginLeft: 15, marginTop: 52, marginBottom: 20,flexDirection:'row',alignItems:'center' }}>
+                    <View style={{backgroundColor:DesignRule.mainColor,width:2,height:8,borderRadius:1,marginRight:5}}/>
                     <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
                 </View>
             );
@@ -158,43 +156,38 @@ export default class MyCashAccountPage extends BasePage {
     renderItem = ({ item, index }) => {
         return (
             <View style={{
-                height: 47,
+                height: 40,
                 flexDirection: 'row',
                 alignItems: 'center',
                 width: ScreenUtils.width,
-                marginBottom: 12
+                marginBottom: 20
             }}>
-                <Image source={item.iconImage} style={{ marginLeft: 15, width: 30, height: 28 }}/>
-                <View style={{ justifyContent: 'center', marginLeft: 17, marginRight: 18, flex: 1 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Text style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}>{item.type}</Text>
-                        <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>{item.time}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Image source={item.iconImage} style={{ marginLeft: 15, width: 40, height: 40 }}/>
+                <View style={{  marginLeft: 17, marginRight: 18, flex: 1,alignItems: 'center', justifyContent: 'space-between' ,flexDirection:'row' }}>
+                    <View style={{ justifyContent: 'space-between' }}>
+                        <Text style={{ fontSize: 14, color: DesignRule.textColor_secondTitle }}>{item.type}</Text>
                         <Text style={{
-                            fontSize: 17,
-                            color: DesignRule.textColor_mainTitle
-                        }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
-                        <Text
-                            style={{ fontSize: 12, color: DesignRule.textColor_instruction }}>{item.serialNumber}</Text>
+                            fontSize: 12, color: DesignRule.textColor_instruction
+                        }}>{item.time}</Text>
+                    </View>
+                    <View style={{ justifyContent: 'space-between',alignItems:'flex-end'}}>
+                    <View  style={{flexDirection:'row',alignItems:'center'}}>
+                        <Text style={{ fontSize: 17, color: DesignRule.textColor_mainTitle }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                        <Image style={{marginLeft:5,width:8,height:5}} source={item.capitalRed?lv_down:red_up}/>
+                    </View>
+                        <Text style={{
+                            fontSize: 12, color: DesignRule.textColor_instruction
+                        }}>{item.serialNumber}</Text>
                     </View>
                 </View>
             </View>
         );
     };
-    renderLine = () => {
-        return (
-            <View style={{
-                height: 1,
-                backgroundColor: DesignRule.lineColor_inColorBg,
-                marginLeft: 48,
-                marginRight: 48
-            }}/>
-        );
-    };
+
 
     //**********************************BusinessPart******************************************
     componentWillMount() {
+        Toast.showLoading();
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -208,27 +201,17 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     jumpToWithdrawCashPage = () => {
-        if (this.getUserBankInfoing) {
-            return;
-        }
-        this.getUserBankInfoing = true;
-
         MineApi.getUserBankInfo().then((data) => {
-            this.getUserBankInfoing = false;
             if (data.data && data.data.length > 0) {
-
-                MineApi.isFirstTimeWithdraw().then((data) => {
-                    if (data.data) {
+                MineApi.gongmallResult().then((data) => {
+                    if (!data.data) {
                         this.$navigate('mine/bankCard/WithdrawalAgreementPage');
                     } else {
                         this.$navigate('mine/userInformation/WithdrawCashPage');
                     }
-                }).catch((error) => {
+                }).catch(error => {
                     this.$toastShow(error.msg);
                 });
-
-                // this.$navigate("mine/userInformation/WithdrawCashPage");
-
             } else {
                 Alert.alert('未绑定银行卡', '你还没有绑定银行卡', [{
                     text: '稍后设置', onPress: () => {
@@ -243,13 +226,10 @@ export default class MyCashAccountPage extends BasePage {
                 }]);
             }
         }).catch((err) => {
-            this.getUserBankInfoing = false;
             this.$toastShow(err.msg);
         });
     };
-    clickItem = (index) => {
-        // alert(index);
-    };
+
     getDataFromNetwork = () => {
         let use_type = ['', '其他', '提现支出', '消费支出', '导师管理费', '额外品牌分红奖励', '品牌推广奖励金', '其他', '任务奖励', '消费退款', '提现退款'];
         let use_type_symbol = ['', '+', '-'];
@@ -269,7 +249,7 @@ export default class MyCashAccountPage extends BasePage {
                         arrData.push({
                             type: use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
-                            serialNumber: '编号：' + item.serialNo,
+                            serialNumber: item.serialNo,
                             capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
                             iconImage: useLeftImg[item.useType],
                             capitalRed: use_type_symbol[item.biType] === '-'
@@ -319,35 +299,12 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: DesignRule.bgColor,
-        marginBottom: ScreenUtils.safeBottom
     },
     container: {
         height: px2dp(188),
         width: ScreenUtils.width
     },
-    imageBackgroundStyle: {
-        position: 'absolute',
-        height: 95,
-        backgroundColor: '#FF4F6E',
-        width: ScreenUtils.width - 30,
-        marginLeft: 15,
-        marginRight: 15,
-        marginTop: 10,
-        marginBottom: 10,
-        borderRadius: 15
-    },
-    rectangleStyle: {
-        width: 120,
-        height: 44,
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: 'white',
-        marginLeft: 15,
-        marginRight: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 3
-    },
+
     viewStyle: {
         height: 95,
         marginTop: 10,
