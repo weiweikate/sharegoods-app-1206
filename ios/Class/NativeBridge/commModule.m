@@ -369,10 +369,14 @@ RCT_EXPORT_METHOD(setLightMode){
   });
 }
 
-RCT_EXPORT_METHOD(goGongmallPage: (NSString *)webUrl){
+RCT_EXPORT_METHOD(goGongmallPage: (NSString *)url
+      resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
   dispatch_async(dispatch_get_main_queue(), ^{
     GongMaoVC *vc = [GongMaoVC new];
-    vc.url = webUrl;
+    vc.url = url;
+    vc.resolver = resolve;
     [self.currentViewController_XG.navigationController pushViewController:vc animated: YES];
   });
 }

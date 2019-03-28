@@ -181,13 +181,15 @@ const styles = StyleSheet.create({
     },
     forget: {
         height: px2dp(46),
-        alignItems: 'flex-end',
-        justifyContent: 'center',
+        width:px2dp(70),
+        alignSelf: 'flex-end',
+        justifyContent:'center',
         marginRight: px2dp(15)
     },
     forgetText: {
         color: '#00A7F5',
-        fontSize: px2dp(12)
+        fontSize: px2dp(12),
+        textAlign:'right'
     },
     msgView: {
         height: px2dp(49),
