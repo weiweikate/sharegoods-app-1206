@@ -349,6 +349,25 @@ export default class WithdrawCashPage extends BasePage {
         }
     }
 
+    getTip2 = ()=>{
+        if((parseFloat(this.state.money) > parseFloat(user.availableBalance))){
+            return '输入金额超过可提现余额';
+        }
+        if(this.state.minCount !== null && !StringUtils.isEmpty(this.state.money)){
+            return parseFloat(this.state.money) % parseFloat(this.state.minCount) !== 0 ?  '输入金额不可提现' : '';
+        }
+
+        if(parseFloat(this.state.money) > singleCommit){
+            return `单笔提现不可超过￥${singleCommit}.00`;
+        }
+
+        if(this.state.balance !== null){
+            if(parseFloat(this.state.money) > parseFloat(user.availableBalance)){
+                return '提现金额已超出本月剩余提现额度';
+            }
+        }
+    }
+
     renderWithdrawMoney = () => {
         let tip = '';
         if (!EmptyUtils.isEmpty(this.state.rate)) {
@@ -360,7 +379,7 @@ export default class WithdrawCashPage extends BasePage {
             tip = tip + `提现金额不满${this.state.whenLessAmount}元，则扣除${this.state.fixedFee}元手续费`;
         }
 
-        let tip2;
+        let tip2 = this.getTip2();
         // tip2 = (parseFloat(this.state.money) > parseFloat(user.availableBalance)) ? (<Text>
         //     输入金额超过可提现余额
         // </Text>) : (<Text style={{ fontSize: 13 }}>
@@ -369,22 +388,22 @@ export default class WithdrawCashPage extends BasePage {
         //         （最低提现金额为<Text style={{ color: DesignRule.mainColor }}>{this.state.minCount}元</Text>）
         //     </Text>) : null}
         // </Text>);
-        if((parseFloat(this.state.money) > parseFloat(user.availableBalance))){
-            tip2 = '输入金额超过可提现余额';
-        }
-        if(this.state.minCount !== null && !StringUtils.isEmpty(this.state.money)){
-            tip2 = parseFloat(this.state.money) % parseFloat(this.state.minCount) !== 0 ?  '输入金额不可提现' : '';
-        }
-
-        if(parseFloat(this.state.money) > singleCommit){
-            tip2 = `单笔提现不可超过￥${singleCommit}.00`;
-        }
-
-        if(this.state.balance !== null){
-            if(parseFloat(this.state.money) > parseFloat(user.availableBalance)){
-                tip2 = '提现金额已超出本月剩余提现额度'
-            }
-        }
+        // if((parseFloat(this.state.money) > parseFloat(user.availableBalance))){
+        //     tip2 = '输入金额超过可提现余额';
+        // }
+        // if(this.state.minCount !== null && !StringUtils.isEmpty(this.state.money)){
+        //     tip2 = parseFloat(this.state.money) % parseFloat(this.state.minCount) !== 0 ?  '输入金额不可提现' : '';
+        // }
+        //
+        // if(parseFloat(this.state.money) > singleCommit){
+        //     tip2 = `单笔提现不可超过￥${singleCommit}.00`;
+        // }
+        //
+        // if(this.state.balance !== null){
+        //     if(parseFloat(this.state.money) > parseFloat(user.availableBalance)){
+        //         tip2 = '提现金额已超出本月剩余提现额度'
+        //     }
+        // }
 
         return (
             <View style={{ backgroundColor: 'white' }}>
