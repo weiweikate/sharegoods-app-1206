@@ -100,13 +100,13 @@ public class Utils {
      *
      * @return
      */
-    public static boolean isEmulator() {
+    public static boolean isEmulator(Context context) {
         String url = "tel:" + "123456";
         Intent intent = new Intent();
         intent.setData(Uri.parse(url));
         intent.setAction(Intent.ACTION_DIAL);
         // 是否可以处理跳转到拨号的 Intent
-        boolean canResolveIntent = intent.resolveActivity(BaseApplication.appContext.getPackageManager()) != null;
+        boolean canResolveIntent = intent.resolveActivity(context.getPackageManager()) != null;
 
         return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.toLowerCase().contains("vbox")
@@ -119,7 +119,7 @@ public class Utils {
                 || Build.MANUFACTURER.contains("Genymotion")
                 || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
                 || "google_sdk".equals(Build.PRODUCT)
-                || ((TelephonyManager) BaseApplication.appContext.getSystemService(Context.TELEPHONY_SERVICE))
+                || ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE))
                 .getNetworkOperatorName().toLowerCase().equals("android")
                 || !canResolveIntent;
     }
