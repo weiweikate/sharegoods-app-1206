@@ -43,12 +43,11 @@ export default {
      * chatType: 0 消息列表 1 商品详情 2 订单
      * groupId : 组id
      * data：{
-     * 相关信息
-     * }
-     * }
+     *      相关信息
+     *      }
+     *     }
      */
     startChat(obj) {
-
 
 
     },
