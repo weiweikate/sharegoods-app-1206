@@ -7,6 +7,7 @@ import { todayModule } from './HomeTodayModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
 import { categoryModule } from './HomeCategoryModel';
+import { limitGoModule } from './HomeLimitGoModel'
 import res from './res';
 import OssHelper from '../../utils/OssHelper';
 
@@ -127,6 +128,7 @@ class HomeModule {
         classifyModules.loadClassifyList();
         subjectModule.loadSubjectList(this.firstLoad);
         recommendModule.loadRecommendList(this.firstLoad);
+        limitGoModule.loadLimitGo()
         this.page = 1;
         this.isEnd = false;
         this.lastGoods = null;
@@ -146,6 +148,9 @@ class HomeModule {
             id: 4,
             type: homeType.ad
         }, {
+            id: 9,
+            type: homeType.limitGo
+        },{
             id: 5,
             type: homeType.starShop
         }, {
