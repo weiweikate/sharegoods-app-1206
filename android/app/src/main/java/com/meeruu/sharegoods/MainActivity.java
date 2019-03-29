@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
-        Log.d("is_phone", !Utils.isEmulator() + "");
+        Log.d("is_phone", !Utils.isEmulator(getApplicationContext()) + "");
     }
 
     @Override
