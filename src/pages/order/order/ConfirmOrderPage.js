@@ -30,23 +30,6 @@ export default class ConfirmOrderPage extends BasePage {
         show: true // false则隐藏导航
     };
 
-    $getPageStateOptions = () => {
-        return {
-            loadingState: confirmOrderModel.loadingState,
-            netFailedProps: {
-                netFailedInfo: confirmOrderModel.netFailedInfo,
-                reloadBtnClick: this._reload
-            }
-        };
-    };
-
-    _reload = () => {
-        confirmOrderModel.netFailedInfo = null;
-        bridge.showLoading('加载中...');
-        setTimeout(() => {
-            this.loadPageData();
-        }, 0);
-    };
 
     //**********************************ViewPart******************************************
     _renderContent = () => {
@@ -95,7 +78,7 @@ export default class ConfirmOrderPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {renderViewByLoadingState(this.$getPageStateOptions(), this._renderContent)}
+                {this._renderContent()}
             </View>
         );
     }
