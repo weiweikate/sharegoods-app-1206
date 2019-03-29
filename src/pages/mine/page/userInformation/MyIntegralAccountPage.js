@@ -20,7 +20,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import { MRText as Text } from '../../../../components/ui';
 import NoMoreClick from '../../../../components/ui/NoMoreClick';
-import StringUtils from "../../../../utils/StringUtils";
+import StringUtils from '../../../../utils/StringUtils';
 
 const { px2dp } = ScreenUtils;
 
@@ -31,8 +31,8 @@ const zensong = res.cashAccount.zengsong_icon;
 const xiugou_reword = res.cashAccount.renwuShuoMing_icon;
 const account_bg = res.bankCard.account_bg;
 const account_bg_white = res.bankCard.account_bg_white;
-const red_up= res.cashAccount.zhanghu_red;
-const lv_down=res.cashAccount.zhanghu_lv;
+const red_up = res.cashAccount.zhanghu_red;
+const lv_down = res.cashAccount.zhanghu_lv;
 @observer
 export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
@@ -55,19 +55,18 @@ export default class MyIntegralAccountPage extends BasePage {
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
-                <View style={{ flex: 1, backgroundColor: 'white' }}>
+                {this.state.viewData && this.state.viewData.length > 0 ? null : this.renderReHeader()}
                 <RefreshList
                     ListHeaderComponent={this.renderReHeader}
-                    ListFooterComponent={this.renderFooter}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
+                    progressViewOffset={30}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无数据！'}
+                    emptyTip={'暂无明细数据！'}
                 />
-                </View>
                 {this._accountInfoRender()}
             </View>
         );
@@ -124,46 +123,62 @@ export default class MyIntegralAccountPage extends BasePage {
     renderItem = ({ item, index }) => {
         return (
             <View style={{
-                height: 40,
+                height: 60,
                 flexDirection: 'row',
                 alignItems: 'center',
                 width: ScreenUtils.width,
-                marginBottom: 20
+                paddingBottom: 20,
+                backgroundColor: 'white'
             }}>
                 <Image source={item.iconImage} style={{ marginLeft: 15, width: 40, height: 40 }}/>
-                <View style={{  marginLeft: 17, marginRight: 18, flex: 1,alignItems: 'center', justifyContent: 'space-between' ,flexDirection:'row' }}>
+                <View style={{
+                    marginLeft: 17,
+                    marginRight: 18,
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row'
+                }}>
                     <View style={{ justifyContent: 'space-between' }}>
                         <Text style={{ fontSize: 14, color: DesignRule.textColor_secondTitle }}>{item.type}</Text>
                         <Text style={{
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    <View  style={{flexDirection:'row',alignItems:'center'}}>
-                        <Text style={{ fontSize: 17, color: DesignRule.textColor_mainTitle }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
-                        <Image style={{marginLeft:5,width:8,height:5}} source={item.capitalRed?red_up:lv_down}/>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{
+                            fontSize: 17,
+                            color: DesignRule.textColor_mainTitle
+                        }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                        <Image style={{ marginLeft: 5, width: 8, height: 5 }}
+                               source={item.capitalRed ? red_up : lv_down}/>
                     </View>
                 </View>
             </View>
         );
     };
     renderReHeader = () => {
-        if (this.state.viewData && this.state.viewData.length > 0) {
-            return (
-                <View style={{ marginLeft: 15, marginTop: 52, marginBottom: 20,flexDirection:'row',alignItems:'center' }}>
-                    <View style={{backgroundColor:DesignRule.mainColor,width:2,height:8,borderRadius:1,marginRight:5}}/>
-                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
-                </View>
-            );
-        } else {
-            return null;
-        }
-
+        return (
+            <View
+                style={{
+                    backgroundColor: 'white',
+                    paddingLeft: 15,
+                    paddingTop: 52,
+                    paddingBottom: 20,
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }}>
+                <View style={{
+                    backgroundColor: DesignRule.mainColor,
+                    width: 2,
+                    height: 8,
+                    borderRadius: 1,
+                    marginRight: 5
+                }}/>
+                <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
+            </View>
+        );
     };
-    renderFooter = () => {
-        return(
-            <View style={{height:30,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
-        )
-    }
 
     //**********************************BusinessPart******************************************
     componentDidMount() {
@@ -235,7 +250,7 @@ export default class MyIntegralAccountPage extends BasePage {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: DesignRule.bgColor,
+        backgroundColor: DesignRule.bgColor
     },
 
     container: {

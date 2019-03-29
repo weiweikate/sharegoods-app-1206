@@ -239,8 +239,8 @@ export default class MinePage extends BasePage {
         let code = user.perfectNumberCode && (user.perfectNumberCode !== user.code) ? `${user.perfectNumberCode}` : `${user.code}`;
         Clipboard.setString(code);
         this.setState({
-            modalId:false
-        })
+            modalId: false
+        });
     };
 
     //**********************************ViewPart******************************************
@@ -401,7 +401,7 @@ export default class MinePage extends BasePage {
                                   }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.$navigate(RouterMap.MyPromotionPage);
-                            TrackApi.ViewLevelInterest({moduleSource:2})
+                            TrackApi.ViewLevelInterest({ moduleSource: 2 });
                         }}>
                             <View style={{
                                 justifyContent: 'space-between',
@@ -460,7 +460,11 @@ export default class MinePage extends BasePage {
                 overflow: 'hidden'
             }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
-                    <Text style={{ fontSize: DesignRule.fontSize_threeTitle, color: DesignRule.white,fontWeight:'bold' }}>
+                    <Text style={{
+                        fontSize: DesignRule.fontSize_threeTitle,
+                        color: DesignRule.white,
+                        fontWeight: 'bold'
+                    }}>
                         我的账户
                     </Text>
                 </View>
@@ -506,13 +510,13 @@ export default class MinePage extends BasePage {
                         color: 'white',
                         includeFontPadding: false,
                         width: 80,
-                        height: 20,
+                        height: 22,
                         fontSize: this.getAdjustsFontSize(num)
                     }}>
                         {num}
                     </Text>
                     <View style={{ height: 9 }}/>
-                    <Text style={{ color: 'white', fontSize: px2dp(12), includeFontPadding: false }}>
+                    <Text style={{ color: 'white', fontSize: px2dp(12) }}>
                         {text}
                     </Text>
                 </View>
@@ -532,15 +536,15 @@ export default class MinePage extends BasePage {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginTop:px2dp(10),
-                    marginBottom:px2dp(10)
+                    marginTop: px2dp(10),
+                    marginBottom: px2dp(10)
                 }}>
                     <View style={{ flexDirection: 'row', marginLeft: 15, alignItems: 'center' }}>
                         <UIText value={'我的订单'}
                                 style={{
                                     fontSize: DesignRule.fontSize_threeTitle,
                                     color: DesignRule.textColor_mainTitle,
-                                    fontWeight:'bold'
+                                    fontWeight: 'bold'
                                 }}/>
                     </View>
                     <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
@@ -555,10 +559,11 @@ export default class MinePage extends BasePage {
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
-                <ScrollView style={{width:DesignRule.width-DesignRule.margin_page*2,}} horizontal={true} showsHorizontalScrollIndicator={false}>
-                <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
-                    {this.renderOrderStates()}
-                </View>
+                <ScrollView style={{ width: DesignRule.width - DesignRule.margin_page * 2 }} horizontal={true}
+                            showsHorizontalScrollIndicator={false}>
+                    <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(15) }}>
+                        {this.renderOrderStates()}
+                    </View>
                 </ScrollView>
             </View>
 
@@ -576,14 +581,18 @@ export default class MinePage extends BasePage {
                 borderRadius: px2dp(5)
             }}>
                 <View
-                    style={{paddingHorizontal: DesignRule.margin_page, justifyContent: 'center' ,marginTop:px2dp(10)}}>
+                    style={{
+                        paddingHorizontal: DesignRule.margin_page,
+                        justifyContent: 'center',
+                        marginTop: px2dp(10)
+                    }}>
                     <Text
                         style={{
                             includeFontPadding: false,
                             fontSize: DesignRule.fontSize_threeTitle,
                             color: DesignRule.textColor_mainTitle,
-                            fontWeight:'bold',
-                            width: ScreenUtils.width - DesignRule.margin_page * 2,
+                            fontWeight: 'bold',
+                            width: ScreenUtils.width - DesignRule.margin_page * 2
                         }}>
                         常用工具
                     </Text>
@@ -631,10 +640,10 @@ export default class MinePage extends BasePage {
     };
 
     renderOrderStates = () => {
-        let statesImage = [mine_wait_pay_icon, mine_wait_send_icon, mine_wait_receive_icon,mine_showOrder, mine_after_buy_icon];
-        let statesText = ['待付款', '待发货', '待收货', '待晒单','售后/退款'];
-        let width = (DesignRule.width-DesignRule.margin_page*2)/4.5;
-            let arr = [];
+        let statesImage = [mine_wait_pay_icon, mine_wait_send_icon, mine_wait_receive_icon, mine_showOrder, mine_after_buy_icon];
+        let statesText = ['待付款', '待发货', '待收货', '待晒单', '售后/退款'];
+        let width = (DesignRule.width - DesignRule.margin_page * 2) / 4.5;
+        let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
             let num = this.getOrderNum(i);
             let numView = num ? (
@@ -705,7 +714,7 @@ export default class MinePage extends BasePage {
             text: '我的优惠券',
             icon: mine_coupon_icon,
             onPress: () => {
-                TrackApi.ViewCoupon({couponModuleSource:1});
+                TrackApi.ViewCoupon({ couponModuleSource: 1 });
                 this.$navigate(RouterMap.CouponsPage);
             }
         };
@@ -745,7 +754,7 @@ export default class MinePage extends BasePage {
             icon: mine_icon_discollect,
             onPress: () => {
                 TrackApi.ViewMyXiuCollection();
-                TrackApi.WatchXiuChang({moduleSource:3});
+                TrackApi.WatchXiuChang({ moduleSource: 3 });
                 this.$navigate(RouterMap.ShowConnectPage);
             }
         };
@@ -844,7 +853,7 @@ export default class MinePage extends BasePage {
             this.$navigate('login/login/LoginPage');
             return;
         }
-        track(trackEvent.ViewMyOrder,{myOrderModuleSource:1})
+        track(trackEvent.ViewMyOrder, { myOrderModuleSource: 1 });
         switch (index) {
             case 0:
                 this.$navigate('order/order/MyOrdersListPage', { index: 1 });
@@ -874,7 +883,7 @@ export default class MinePage extends BasePage {
                 this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: user.userScore ? user.userScore : 0 });
                 break;
             case 3:
-                track(trackEvent.ViewWaitToRecord,{recordModuleSource:1})
+                track(trackEvent.ViewWaitToRecord, { recordModuleSource: 1 });
                 this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
                 break;
             default:
@@ -888,7 +897,7 @@ export default class MinePage extends BasePage {
             this.gotoLoginPage();
             return;
         }
-        track(trackEvent.ViewMyOrder,{myOrderModuleSource:1})
+        track(trackEvent.ViewMyOrder, { myOrderModuleSource: 1 });
         this.$navigate('order/order/MyOrdersListPage', { index: 0 });
     };
     jumpToServicePage = () => {

@@ -14,7 +14,7 @@ const UIText = (props) => {
         ...attributes
     } = props;
     let theStyle = StyleSheet.flatten(props.style);
-    let size = theStyle.fontSize ? theStyle.fontSize * 1.4 : 0;
+    let size = theStyle && theStyle.fontSize ? theStyle.fontSize * 1.4 : 0;
     return (
         <RNText {...attributes}
                 allowFontScaling={false}
@@ -29,7 +29,7 @@ const MRText = (props) => {
         ...attributes
     } = props;
     let theStyle = StyleSheet.flatten(props.style);
-    let size = theStyle.fontSize ? theStyle.fontSize * 1.4 : 0;
+    let size = theStyle && theStyle.fontSize ? theStyle.fontSize * 1.4 : 0;
     return (
         <RNText {...attributes}
                 allowFontScaling={false}

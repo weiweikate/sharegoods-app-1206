@@ -33,8 +33,8 @@ const xiaofei = res.cashAccount.xiaofei_icon;
 const xiaofeitk = res.cashAccount.xiaofei_icon;
 const account_bg = res.bankCard.account_bg;
 const account_bg_white = res.bankCard.account_bg_white;
-const red_up= res.cashAccount.zhanghu_red;
-const lv_down=res.cashAccount.zhanghu_lv;
+const red_up = res.cashAccount.zhanghu_red;
+const lv_down = res.cashAccount.zhanghu_lv;
 
 @observer
 export default class MyCashAccountPage extends BasePage {
@@ -67,19 +67,18 @@ export default class MyCashAccountPage extends BasePage {
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
-                <View style={{ flex: 1, backgroundColor: 'white' }}>
-                    <RefreshList
-                        data={this.state.viewData}
-                        ListHeaderComponent={this.renderReHeader}
-                        ListFooterComponent={this.renderFooter}
-                        renderItem={this.renderItem}
-                        onRefresh={this.onRefresh}
-                        onLoadMore={this.onLoadMore}
-                        extraData={this.state}
-                        isEmpty={this.state.isEmpty}
-                        emptyTip={'暂无数据'}
-                    />
-                </View>
+                {this.state.viewData && this.state.viewData.length > 0 ? null : this.renderReHeader()}
+                <RefreshList
+                    data={this.state.viewData}
+                    ListHeaderComponent={this.renderReHeader}
+                    progressViewOffset={30}
+                    renderItem={this.renderItem}
+                    onRefresh={this.onRefresh}
+                    onLoadMore={this.onLoadMore}
+                    extraData={this.state}
+                    isEmpty={this.state.isEmpty}
+                    emptyTip={'暂无明细数据'}
+                />
                 {this._accountInfoRender()}
             </View>
         );
@@ -117,10 +116,10 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     renderFooter = () => {
-        return(
-            <View style={{height:20,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
-        )
-    }
+        return (
+            <View style={{ height: 20, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
+        );
+    };
     renderHeader = () => {
         return (
             <ImageBackground resizeMode={'stretch'} source={account_bg} style={styles.container}>
@@ -141,40 +140,60 @@ export default class MyCashAccountPage extends BasePage {
     };
 
     renderReHeader = () => {
-        if (this.state.viewData && this.state.viewData.length > 0) {
-            return (
-                <View style={{ marginLeft: 15, marginTop: 52, marginBottom: 20,flexDirection:'row',alignItems:'center' }}>
-                    <View style={{backgroundColor:DesignRule.mainColor,width:2,height:8,borderRadius:1,marginRight:5}}/>
-                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
-                </View>
-            );
-        } else {
-            return null;
-        }
-
+        return (
+            <View style={{
+                paddingLeft: 15,
+                paddingTop: 52,
+                paddingBottom: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: 'white'
+            }}>
+                <View style={{
+                    backgroundColor: DesignRule.mainColor,
+                    width: 2,
+                    height: 8,
+                    borderRadius: 1,
+                    marginRight: 5
+                }}/>
+                <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
+            </View>
+        );
     };
     renderItem = ({ item, index }) => {
         return (
             <View style={{
-                height: 40,
+                height: 60,
                 flexDirection: 'row',
                 alignItems: 'center',
                 width: ScreenUtils.width,
-                marginBottom: 20
+                backgroundColor: 'white',
+                paddingBottom: 20
             }}>
                 <Image source={item.iconImage} style={{ marginLeft: 15, width: 40, height: 40 }}/>
-                <View style={{  marginLeft: 17, marginRight: 18, flex: 1,alignItems: 'center', justifyContent: 'space-between' ,flexDirection:'row' }}>
+                <View style={{
+                    marginLeft: 17,
+                    marginRight: 18,
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row'
+                }}>
                     <View style={{ justifyContent: 'space-between' }}>
                         <Text style={{ fontSize: 14, color: DesignRule.textColor_secondTitle }}>{item.type}</Text>
                         <Text style={{
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    <View style={{ justifyContent: 'space-between',alignItems:'flex-end'}}>
-                    <View  style={{flexDirection:'row',alignItems:'center'}}>
-                        <Text style={{ fontSize: 17, color: DesignRule.textColor_mainTitle }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
-                        <Image style={{marginLeft:5,width:8,height:5}} source={item.capitalRed?lv_down:red_up}/>
-                    </View>
+                    <View style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{
+                                fontSize: 17,
+                                color: DesignRule.textColor_mainTitle
+                            }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                            <Image style={{ marginLeft: 5, width: 8, height: 5 }}
+                                   source={item.capitalRed ? lv_down : red_up}/>
+                        </View>
                         <Text style={{
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.serialNumber}</Text>
@@ -187,7 +206,6 @@ export default class MyCashAccountPage extends BasePage {
 
     //**********************************BusinessPart******************************************
     componentWillMount() {
-        Toast.showLoading();
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -298,7 +316,7 @@ export default class MyCashAccountPage extends BasePage {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: DesignRule.bgColor,
+        backgroundColor: DesignRule.bgColor
     },
     container: {
         height: px2dp(188),
