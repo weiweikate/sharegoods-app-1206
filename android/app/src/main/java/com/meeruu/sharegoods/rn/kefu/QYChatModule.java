@@ -56,10 +56,6 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         name.put("key", "real_name");
         name.put("value", params.getString("nickName"));
         arr.add(name);
-        JSONObject phone = new JSONObject();
-        phone.put("key", "mobile_phone");
-        phone.put("value", params.getString("phoneNum"));
-        arr.add(phone);
         JSONObject avatar = new JSONObject();
         avatar.put("key", "avatar");
         avatar.put("value", params.getString("userIcon"));

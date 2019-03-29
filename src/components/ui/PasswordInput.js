@@ -55,6 +55,10 @@ export default class PasswordInput extends Component {
 
     }
 
+    clean = () => {
+        this.setState({text: ''});
+    }
+
     render() {
         return (
             <TouchableHighlight
