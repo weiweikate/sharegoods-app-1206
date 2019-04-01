@@ -309,10 +309,10 @@ export default class WithdrawCashPage extends BasePage {
         }
         let multipleTip = this.state.multiple ? `以及￥${this.state.minCount}的倍数` : '';
 
-        let tip = null;
-        if (!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee)) {
-            tip = `提现金额不满${this.state.whenLessAmount}元，则扣除${this.state.fixedFee}元手续费`;
-        }
+        // let tip = null;
+        // if (!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee)) {
+        //     tip = `提现金额不满${this.state.whenLessAmount}元，则扣除${this.state.fixedFee}元手续费`;
+        // }
 
         return (
             <View style={{ flexDirection: 'row', marginLeft: DesignRule.margin_page, marginTop: 5 }}>
@@ -334,9 +334,9 @@ export default class WithdrawCashPage extends BasePage {
                     {this.state.minCount ? <MRText style={styles.tipTextStyle}>
                         {`${tip3Index}.提现为￥${this.state.minCount}起${multipleTip}`}
                     </MRText> : null}
-                    {tip ? <MRText style={styles.tipTextStyle}>
-                        {`${tip3Index+1}.${tip}`}
-                    </MRText> : null}
+                    {/*{tip ? <MRText style={styles.tipTextStyle}>*/}
+                        {/*{`${tip3Index+1}.${tip}`}*/}
+                    {/*</MRText> : null}*/}
 
                 </View>
             </View>
@@ -365,6 +365,11 @@ export default class WithdrawCashPage extends BasePage {
     };
 
     checkError = (money) => {
+        if(!StringUtils.isNumber(money)){
+            this.setState({ errorTip: '输入金额不可提现' });
+            return;
+        }
+
         if ((parseFloat(money) > parseFloat(user.availableBalance))) {
             this.setState({ errorTip: '输入金额超过可提现余额' });
             return;
