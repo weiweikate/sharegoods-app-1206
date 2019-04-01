@@ -16,4 +16,6 @@
     <dimen name="pickerview_textsize">20sp</dimen>
     <!-- 引导页按钮距底部高度 -->
     <dimen name="start_page_marginb">45dp</dimen>
+    <!-- 选项式对话框距边框的距离 -->
+    <dimen name="popup_dialog_distance_to_edge">40dp</dimen>
 </resources>

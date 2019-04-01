@@ -20,6 +20,8 @@ import android.view.View;
 import com.meeruu.commonlib.base.BaseApplication;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author louis
@@ -151,5 +153,22 @@ public class Utils {
                 ObjectAnimator.ofFloat(view, "scaleY", vaules));
         set.setDuration(150);
         set.start();
+    }
+
+    public static String getUserAgent(String userAgent) {
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0, length = userAgent.length(); i < length; i++) {
+            char c = userAgent.charAt(i);
+            if (c <= '\u001f' || c >= '\u007f') {
+                sb.append(String.format("\\u%04x", (int) c));
+            } else {
+                sb.append(c);
+            }
+        }
+        String regEx = "^(\\w+)/([\\d\\.]+)";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(sb.toString());
+        return m.replaceAll("sharegoods/" + AppUtils.getVersionName()).trim();
     }
 }
