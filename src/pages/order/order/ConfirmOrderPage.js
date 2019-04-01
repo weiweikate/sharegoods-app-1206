@@ -15,7 +15,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ConfirmAddressView from '../components/confirmOrder/ConfirmAddressView';
 import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
 import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
-import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+// import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 @observer
@@ -151,7 +151,6 @@ export default class ConfirmOrderPage extends BasePage {
             this.$navigate('mine/coupons/CouponsPage', {
                 justOne: (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) : 1,
                 callBack: (data) => {
-                    console.log(typeof data);
                     if (parseInt(data) >= 0) {
                         let params = {
                             tokenCoin: parseInt(data) > 0 && parseInt(data) <= (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? parseInt(data) : 0,
