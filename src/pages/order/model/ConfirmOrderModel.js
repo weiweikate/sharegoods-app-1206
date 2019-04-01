@@ -275,7 +275,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             case 98:
@@ -300,7 +300,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             case 1:
@@ -325,7 +325,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             case 2:
@@ -350,7 +350,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             case 3:
@@ -378,7 +378,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             default:
