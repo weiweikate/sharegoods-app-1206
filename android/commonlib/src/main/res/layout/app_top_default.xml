@@ -24,7 +24,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="5dp"
                 android:clickable="true"
-                android:paddingLeft="7.5dp"
+                android:paddingLeft="10dp"
                 android:paddingRight="7.5dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_go_back" />
