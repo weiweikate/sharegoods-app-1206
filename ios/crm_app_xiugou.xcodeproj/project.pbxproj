@@ -98,7 +98,6 @@
 		5068364821379E2B001AB175 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364721379E2B001AB175 /* Foundation.framework */; };
 		5077FC2721A401E3003B860D /* RSAEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5077FC2621A401E2003B860D /* RSAEncryptor.m */; };
 		5077FC8221A4F987003B860D /* HBRSAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5077FC2A21A4F982003B860D /* HBRSAHandler.m */; };
-		5077FCDF21A4FE37003B860D /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5077FC8C21A4FE37003B860D /* libcrypto.a */; };
 		5077FCE021A4FE37003B860D /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5077FC8D21A4FE37003B860D /* libssl.a */; };
 		5077FCE121A4FE37003B860D /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 5077FC8E21A4FE37003B860D /* LICENSE */; };
 		5077FCE221A4FE37003B860D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5077FCDC21A4FE37003B860D /* NSData+Base64.m */; };
@@ -1014,7 +1013,6 @@
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				0347BAD52237CD0A0011184A /* Lottie.framework in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
-				5077FCDF21A4FE37003B860D /* libcrypto.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
@@ -3163,6 +3161,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Class/Modules/RSA/HBRSAHandler/openssl/include",
 					"$(PROJECT_DIR)/Class/openssl/include",
+					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -3289,12 +3288,7 @@
 					"$(PROJECT_DIR)/crm_app_xiugou/Vendor",
 					"$(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Class/libs/AliPay",
-					"$(PROJECT_DIR)/crm_app_xiugou/Vendor",
-					"$(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios",
-				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = "$(inherited) $(PROJECT_DIR)/Class/libs/AliPay $(PROJECT_DIR)/crm_app_xiugou/Vendor $(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Class/Macros/Jure.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3316,6 +3310,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Class/Modules/RSA/HBRSAHandler/openssl/include",
 					"$(PROJECT_DIR)/Class/openssl/include",
+					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -3370,6 +3365,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Class/Modules/RSA/HBRSAHandler/openssl/include",
 					"$(PROJECT_DIR)/Class/openssl/include",
+					"$(PROJECT_DIR)/Class/libs/QIYU_iOS_SDK/SDK",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",

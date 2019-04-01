@@ -58,9 +58,30 @@ class QYChatModel {
         //增加监听
         this.listener = QYManagerEmitter.addListener(QY_MSG_CHANGE, this.msgChangeHandle);
     }
-
+    /**
+     * 来自原生的数据源
+     * @param msgData
+     * {
+     *  unreadCount:总体消息未读数
+     *  供应商列表
+     *  sessionListData：[
+     *  {
+     *      hasTrashWords:是否存在垃圾文字
+     *      lastMessageText：供应商发送过来的最后一条消息
+     *      lastMessageType：最后一条消息类型
+     *      unreadCount：当前供应商消息未读数
+     *      status：状态
+     *      lastMessageTimeStamp：最后一条消息的时间戳
+     *      shopId：供应商id
+     *      avatarImageUrlString：供应商头像
+     *      sessionName：供应商所设置的名字
+     *  }
+     *  ....
+     *  ]
+     *
+     * }
+     */
     msgChangeHandle = (msgData) => {
-
         this.saveSupplierListData(msgData);
         this.saveUnreadCount(msgData);
     };
