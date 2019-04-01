@@ -104,7 +104,7 @@ export default class MessageCenterPage extends BasePage {
     }
 
     renderGongYingShang=()=>{
-        let sessionArr = chatModel.msgData.sessionListData || [];
+        let sessionArr = chatModel.sessionListData || [];
         let  arr = [];
 
         console.log('sessionArr'+sessionArr.length)

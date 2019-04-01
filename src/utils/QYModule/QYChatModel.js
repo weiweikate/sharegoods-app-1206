@@ -7,18 +7,17 @@ const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 
 class QYChatModel {
 
-    @action
-    saveAllData = (allMsgData) => {
-        if (allMsgData) {
-            this.msgData = allMsgData;
-        }
-    };
+    // @action
+    // saveAllData = (allMsgData) => {
+    //     if (allMsgData) {
+    //         this.msgData = allMsgData;
+    //     }
+    // };
 
     @action
     saveSupplierListData = (allMsgData) => {
         if (allMsgData &&
-            allMsgData.sessionListData &&
-            Array.isArray(allMsgData.sessionListData)) {
+            allMsgData.sessionListData ) {
             this.sessionListData = allMsgData.sessionListData;
         }
     };
@@ -31,26 +30,29 @@ class QYChatModel {
     };
 
     //暂存原生穿过来的所有消息数据
-    @observable
-    msgData = {};
+    // @observable
+    // msgData = {};
 
-    //供应商聊天数组
+    /**
+     * 供应商聊天数组
+     * 里面存储着所有聊天的供应商
+     * @type {Array}
+     */
     @observable
     sessionListData = [];
 
-    //消息未读数
+    /**
+     * 所有供应商聊天的总未读数据
+     * @type {number}
+     */
     @observable
     unreadCount = 0;
 
     @computed
     get isHaveUnreadCount() {
-        return this.unreadCount;
+        return this.unreadCount > 0;
     }
 
-    @computed
-    get sessionListData() {
-        return this.msgData.sessionListData;
-    }
 
     constructor() {
         //增加监听
@@ -58,8 +60,8 @@ class QYChatModel {
     }
 
     msgChangeHandle = (msgData) => {
-        this.saveAllData(msgData);
-        // this.saveSupplierListData(msgData);
+
+        this.saveSupplierListData(msgData);
         this.saveUnreadCount(msgData);
     };
 
