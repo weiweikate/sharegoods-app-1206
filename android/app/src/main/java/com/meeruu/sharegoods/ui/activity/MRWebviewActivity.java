@@ -62,6 +62,7 @@ public class MRWebviewActivity extends BaseActivity implements OnWebCommonListen
         progressbar = findViewById(R.id.progressbar);
         mrWebviewFragment = new MRWebviewFragment();
         ivBack = findViewById(R.id.topdefault_leftbutton);
+        ivBack.setOnClickListener(this);
         useTitile = intent.getBooleanExtra("use_title", false);
         mTitle = intent.getStringExtra(TITLE);
         topTitle.setText(mTitle);
@@ -78,7 +79,6 @@ public class MRWebviewActivity extends BaseActivity implements OnWebCommonListen
 
     @Override
     public void initEvent() {
-        ivBack.setOnClickListener(this);
     }
 
     @Override
