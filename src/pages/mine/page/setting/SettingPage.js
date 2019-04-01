@@ -19,7 +19,7 @@ import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
 import DesignRule from '../../../../constants/DesignRule';
-import QYChatUtil from '../helper/QYChatModel';
+// import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
 import { homeModule } from '../../../home/Modules';
@@ -29,6 +29,7 @@ import userOrderNum from '../../../../model/userOrderNum';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import loginModel from '../../../login/model/LoginModel';
 import StringUtils from '../../../../utils/StringUtils';
+import { QYChatTool } from "../../../../utils/QYModule/QYChatTool";
 
 /**
  * @author luoyongming
@@ -234,7 +235,8 @@ class SettingPage extends BasePage {
                         homeModule.loadHomeList();
                         MineApi.signOut();
                         // 退出七鱼
-                        QYChatUtil.qiYULogout();
+                        // QYChatUtil.qiYULogout();
+                        QYChatTool.qiYULogout()
                         this.$loadingDismiss();
                         // 神策退出登录
                         logout();

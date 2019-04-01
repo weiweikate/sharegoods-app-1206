@@ -7,6 +7,7 @@ import { todayModule } from './HomeTodayModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
 import { categoryModule } from './HomeCategoryModel';
+import { limitGoModule } from './HomeLimitGoModel'
 import res from './res';
 import OssHelper from '../../utils/OssHelper';
 
@@ -127,6 +128,7 @@ class HomeModule {
         classifyModules.loadClassifyList();
         subjectModule.loadSubjectList(this.firstLoad);
         recommendModule.loadRecommendList(this.firstLoad);
+        limitGoModule.loadLimitGo()
         this.page = 1;
         this.isEnd = false;
         this.lastGoods = null;
@@ -146,6 +148,9 @@ class HomeModule {
             id: 4,
             type: homeType.ad
         }, {
+            id: 9,
+            type: homeType.limitGo
+        },{
             id: 5,
             type: homeType.starShop
         }, {
@@ -203,7 +208,6 @@ class HomeModule {
         }
         try {
             this.loadMoreGoods();
-
         } catch (error) {
             this.isFetching = false;
             this.isRefreshing = false;
@@ -220,7 +224,6 @@ class HomeModule {
             this.lastGoods = null;
         }
         const result = yield HomeApi.getGoodsInHome({ page: this.page });
-        this.isFetching = false;
         list = list.concat(result.data.data);
         if (this.page === result.data.totalPage) {
             this.isEnd = true;
@@ -237,8 +240,6 @@ class HomeModule {
         this.page++;
         this.isFetching = false;
         this.errorMsg = '';
-
-        console.log('loadMoreHomeList', goods, this.isEnd);
         if (goods.length === 0 && this.isEnd === false) {
             this.loadMoreGoods();
         }

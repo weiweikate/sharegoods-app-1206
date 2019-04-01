@@ -20,7 +20,7 @@ import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 
-export const kHomeClassifyHeight = px2dp(88);
+export const kHomeClassifyHeight = px2dp(90);
 
 class Item extends Component {
     state = {
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         paddingLeft: px2dp(16),
         paddingRight: px2dp(16),
         paddingTop: px2dp(8),
-        paddingBottom: px2dp(10),
+        height: kHomeClassifyHeight,
         justifyContent: 'space-between',
         backgroundColor: 'white',
         width: ScreenUtils.width

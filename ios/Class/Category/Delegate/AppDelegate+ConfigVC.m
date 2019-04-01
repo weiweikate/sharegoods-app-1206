@@ -20,6 +20,8 @@
 #import <SandBoxPreviewTool/SandBoxPreviewTool.h>
 #import <CodePush/CodePush.h>
 
+#import "JRServiceBridge.h"
+
 
 @implementation AppDelegate (ConfigVC)
 
@@ -45,7 +47,7 @@
   self.window.rootViewController = nav;
   [self.window makeKeyAndVisible];
   [NSThread sleepForTimeInterval:3];
-//  [self createDebugSuspensionButton];
+  [self createDebugSuspensionButton];
 }
 
 // 创建悬浮球按钮
@@ -57,20 +59,16 @@
   [button addTarget:SandBoxPreviewTool.sharedTool action:@selector(autoOpenCloseApplicationDiskDirectoryPanel) forControlEvents:UIControlEventTouchUpInside];
   [self.window.rootViewController.view addSubview:button];
 }
+
+
 - (void)testA {
   NSLog(@"testa");
+//  JRServiceBridge * emitter = [[JRServiceBridge alloc]init];
+////  [emitter sendEventWithName:QY_MSG_CHANGE body:@{@"name":@"原生传递过来的数据"}];
+//  dispatch_async(dispatch_get_main_queue(), ^{
+//   [emitter sendEventWithName:QY_MSG_CHANGE body:@{@"name": @"原生传递过来的数据"}];
+//  });
   
-  [[JRCacheManager sharedInstance]getAllCachesWithFinshBlock:^(unsigned long long memorySise) {
-    
-  }];
 }
 
-//// Add this above the `@end`:
-//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-//  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-//{
-//  
-//  
-
-//}
 @end

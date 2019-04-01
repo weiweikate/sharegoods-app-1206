@@ -37,7 +37,7 @@ import { PageLoadingState, renderViewByLoadingState } from '../../components/pag
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 // import res from '../res';
 import MessageApi from '../message/api/MessageApi';
-import QYChatUtil from '../mine/page/helper/QYChatModel';
+// import QYChatUtil from '../mine/page/helper/QYChatModel';
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import ProductApi from './api/ProductApi';
@@ -586,7 +586,7 @@ export default class ProductDetailPage extends BasePage {
                                        case 3:
                                            setTimeout(() => {
                                                track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                                               QYChatUtil.qiYUChat();
+                                               // QYChatUtil.qiYUChat();
                                            }, 100);
                                            break;
                                    }

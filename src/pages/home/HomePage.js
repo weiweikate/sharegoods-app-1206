@@ -39,6 +39,8 @@ import HomeTitleView from './HomeTitleView';
 import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
 import HomeMessageModal from './HomeMessageModal';
+import HomeLimitGoView from './HomeLimitGoView'
+import { limitGoModule } from './HomeLimitGoModel'
 
 /**
  * @author zhangjian
@@ -111,9 +113,11 @@ class HomePage extends BasePage {
             case homeType.goodsTitle:
                 dim.height = px2dp(52);
                 break;
+            case homeType.limitGo:
+                dim.height = limitGoModule.limitHeight
+                break;
             default:
-                dim.height = 0;
-
+                dim.height = 0
         }
     });
 
@@ -355,6 +359,8 @@ class HomePage extends BasePage {
                          }}>
                 <HomeTitleView title={'为你推荐'}/>
             </View>;
+        } else if (type === homeType.limitGo) {
+            return <HomeLimitGoView/>
         }
         return <View/>;
     };
@@ -396,7 +402,7 @@ class HomePage extends BasePage {
     };
 
     render() {
-        console.log('getBanner render', adModules.adHeight); //千万别去掉
+        console.log('getBanner render', adModules.adHeight, limitGoModule.limitHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
