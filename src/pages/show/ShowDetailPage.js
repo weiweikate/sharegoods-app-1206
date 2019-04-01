@@ -137,7 +137,7 @@ export default class ShowDetailPage extends BasePage {
     componentDidMount() {
         let that = this;
         InteractionManager.runAfterInteractions(() => {
-            if (isFirst === true){
+            if (that.state.isFirst === true){
                 isFirst = false;
                 that.setState({isFirst});
             }

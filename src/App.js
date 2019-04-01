@@ -32,6 +32,7 @@ import { login, logout } from './utils/SensorsTrack';
 import ScreenUtils from './utils/ScreenUtils';
 import codePush from "react-native-code-push";
 import {SpellShopFlag} from './navigation/Tab';
+import WebViewBridge from "@mr/webview";
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -114,6 +115,7 @@ class App extends Component {
         });
         // 移除启动页
         bridge.removeLaunch();
+        this.preView && this.preView.isLoaded();
     }
 
     render() {
@@ -141,6 +143,7 @@ class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: 'red' }}><Text
                             style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
+                <PreComponent ref={(ref)=>{this.preView = ref}}/>
             </View>
         );
     }
@@ -152,8 +155,29 @@ class App extends Component {
         global.$navigator.dispatch(navigationAction);
     };
 }
-
 export default codePush(App);
+
+class PreComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = ({ isLoaded: false });
+    }
+
+    isLoaded = () => {
+        this.setState({ isLoaded: true });
+    }
+    render() {
+        if (this.state.isLoaded === true) {
+            return <View />
+        }
+        return (
+            <View style={{ height: 2, width: 1 }}>
+                <WebViewBridge/>
+            </View>
+        )
+    }
+}
+
 
 const styles = StyleSheet.create({
     container: {

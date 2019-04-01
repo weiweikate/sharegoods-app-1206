@@ -18,7 +18,6 @@ import DeviceInfo from 'react-native-device-info';
 import res from '../../comm/res'
 import ScreenUtils from '../../utils/ScreenUtils';
 const moreIcon = res.button.message_three;
-let isFirst = true;
 @observer
 export default class RequestDetailPage extends BasePage {
 
@@ -61,7 +60,6 @@ export default class RequestDetailPage extends BasePage {
             uri: realUri,
             shareParmas: {},
             hasRightItem: false,
-            isFirst: isFirst
         };
 
     }
@@ -93,13 +91,6 @@ export default class RequestDetailPage extends BasePage {
 
     componentDidMount() {
         this.$NavigationBarResetTitle(this.state.title || "加载中...");
-        let that = this;
-        InteractionManager.runAfterInteractions(() => {
-            if (isFirst === true){
-                isFirst = false;
-                that.setState({isFirst});
-            }
-        })
     }
 
     _postMessage = (msg) => {
@@ -122,9 +113,6 @@ export default class RequestDetailPage extends BasePage {
     };
 
     _render() {
-        if (this.state.isFirst === true){
-            return;
-        }
         return (
             <View style={{ flex: 1, overflow: "hidden" }}>
                 <WebViewBridge
