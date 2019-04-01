@@ -151,7 +151,6 @@ export default class ConfirmOrderPage extends BasePage {
             this.$navigate('mine/coupons/CouponsPage', {
                 justOne: (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) : 1,
                 callBack: (data) => {
-                    console.log(typeof data);
                     if (parseInt(data) >= 0) {
                         let params = {
                             tokenCoin: parseInt(data) > 0 && parseInt(data) <= (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? parseInt(data) : 0,
