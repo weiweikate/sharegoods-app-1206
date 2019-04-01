@@ -11,6 +11,7 @@
 #import <QYPOPSDK.h>
 #import "JRServiceManager+Util.h"
 #import "JRServiceBridge.h"
+#import <SandBoxPreviewTool/SuspensionButton.h>
 
 #define all_unread_count @"unreadCount"
 #define sessionListData  @"sessionListData"
@@ -21,6 +22,11 @@
 @property (nonatomic,strong) JRBaseNavVC * QYNavVC;
 
 @property (nonatomic,strong) NSMutableDictionary * sessionListDic;
+
+//当前视图弹出来源类型
+@property (nonatomic,assign)  CHAT_TYPE currentChatType;
+
+@property (nonatomic,strong) SuspensionButton *button ;
 
 @end
 
@@ -38,6 +44,19 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   }
   return _sessionListDic;
 }
+-(SuspensionButton *)button{
+  if (!_button) {
+    _button = [[SuspensionButton alloc] initWithFrame:CGRectMake(-5, ([UIScreen mainScreen].bounds.size.height - kNavBarHeight)/2, 50, 50) color:[UIColor colorWithRed:135 / 255.0 green:216 / 255.0 blue:80 / 255.0 alpha:1]];
+    _button.leanType = SuspensionViewLeanTypeEachSide;
+    [_button addTarget:self action:@selector(changeKefu:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImageView * imageView = [[UIImageView alloc]init];
+    imageView.frame = _button.bounds;
+    imageView.image = [UIImage imageNamed:@"rgongkf_icon"];
+    [_button addSubview:imageView];
+  }
+  return _button ;
+}
 
 
 /**
@@ -52,6 +71,9 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  * systemVersion:手机系统版本
  */
 -(void)initQYChat:(id)jsonData{
+  
+  [self initActionConfig];
+  
   QYUserInfo * userInfo = [self packingUserInfo:jsonData];
   [[QYSDK sharedSDK] setUserInfo:userInfo];
      QYSource *source = [[QYSource alloc] init];
@@ -61,12 +83,35 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
 }
 
+-(void)initActionConfig{
+  QYCustomActionConfig  * actionConfig = [[QYSDK sharedSDK] customActionConfig];
+  actionConfig.linkClickBlock = ^(NSString *linkAddress) {
+    if (self.currentChatType == BEGIN_FROM_ORDER ||
+        self.currentChatType == BEGIN_FROM_PRODUCT) {
+      [self onBack:nil];
+    }else{
+      
+    }
+  };
+}
+
 /**
  客服切换函数
  @param swichData RN传递过来的 商品/订单 信息
  */
 -(void)swichGroup:(id)swichData{
    NSDictionary * chatInfo = swichData;
+  
+  //暂存客服来源类型
+  if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
+    self.currentChatType = BEGIN_FROM_OTHER;
+  }else if([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_PRODUCT){
+    self.currentChatType = BEGIN_FROM_PRODUCT;
+  }else if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_ORDER){
+    self.currentChatType = BEGIN_FROM_PRODUCT;
+  }else{
+    self.currentChatType = BEGIN_FROM_OTHER;
+  }
   
   QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
   sessionVC.shopId = chatInfo[@"shopId"];
@@ -77,11 +122,18 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain
                                   target:self action:@selector(onBack:)];
   JRBaseNavVC *nav = [[JRBaseNavVC alloc]initWithRootViewController:sessionVC];
+  
+  [ [UIApplication sharedApplication].keyWindow addSubview:self.button];
+  
   [KRootVC presentViewController:nav animated:YES completion:^{
     
   }];
 }
 
+-(void)changeKefu:(SuspensionButton *)btn{
+  NSLog(@"aaaa");
+  
+}
 
 //device = "iPhone X";
 //groupId = 0;
@@ -120,6 +172,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 
 - (void)onBack:(id)sender
 {
+  [self.button removeFromSuperview];
   [KRootVC dismissViewControllerAnimated:self.sessionVC completion:nil];
 }
 
@@ -163,14 +216,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   dispatch_async(dispatch_get_main_queue(), ^{
    [[NSNotificationCenter defaultCenter]postNotificationName:QY_MSG_CHANGE object:self.sessionListDic];
   });
-  
 }
-///**
-// *  收到消息
-// */
-//- (void)onReceiveMessage:(QYMessageInfo *)message{
-//
-//}
 -(NSString *)arrToJsonString:(NSArray *)arr{
     NSData *data = [NSJSONSerialization dataWithJSONObject:self
                                                    options:NSJSONReadingMutableLeaves | NSJSONReadingAllowFragments

@@ -116,6 +116,7 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BF6EE61B214F8AF3007C1185 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */; };
 		C43AE8FF2240C567003CC51F /* JRServiceBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = C43AE8FE2240C567003CC51F /* JRServiceBridge.m */; };
+		C44CFCBB2251F5E100A16386 /* SuspensionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C44CFCBA2251F5E100A16386 /* SuspensionButton.m */; };
 		C4D4505A2249F6B800196E1B /* JRServiceManager+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D450592249F6B800196E1B /* JRServiceManager+Util.m */; };
 		C4F01EE8222D116B00ACA1B4 /* ATAuthSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F01EB2222D116B00ACA1B4 /* ATAuthSDK.framework */; };
 		C4F01EEC222D141200ACA1B4 /* PhoneAutherTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F01EEB222D141200ACA1B4 /* PhoneAutherTool.m */; };
@@ -875,6 +876,8 @@
 		BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		C43AE8FD2240C567003CC51F /* JRServiceBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JRServiceBridge.h; sourceTree = "<group>"; };
 		C43AE8FE2240C567003CC51F /* JRServiceBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JRServiceBridge.m; sourceTree = "<group>"; };
+		C44CFCB92251F5E100A16386 /* SuspensionButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuspensionButton.h; sourceTree = "<group>"; };
+		C44CFCBA2251F5E100A16386 /* SuspensionButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SuspensionButton.m; sourceTree = "<group>"; };
 		C4D450582249F6B800196E1B /* JRServiceManager+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JRServiceManager+Util.h"; sourceTree = "<group>"; };
 		C4D450592249F6B800196E1B /* JRServiceManager+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "JRServiceManager+Util.m"; sourceTree = "<group>"; };
 		C4F01EB2222D116B00ACA1B4 /* ATAuthSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ATAuthSDK.framework; sourceTree = "<group>"; };
@@ -1914,6 +1917,8 @@
 				CD24240821F825C1008C7FF4 /* StorageFromRN.m */,
 				CD89B1F0224B4C54006CCEF7 /* SGNetworkImageNode.h */,
 				CD89B1F1224B4C54006CCEF7 /* SGNetworkImageNode.m */,
+				C44CFCB92251F5E100A16386 /* SuspensionButton.h */,
+				C44CFCBA2251F5E100A16386 /* SuspensionButton.m */,
 			);
 			path = tool;
 			sourceTree = "<group>";
@@ -2916,6 +2921,7 @@
 				CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */,
 				CD6741F621DEF78500464549 /* AdView.m in Sources */,
 				CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */,
+				C44CFCBB2251F5E100A16386 /* SuspensionButton.m in Sources */,
 				CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */,
 				CD89B1CD224B1010006CCEF7 /* MosaicCollectionLayoutInfo.m in Sources */,
 				5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */,
@@ -3288,7 +3294,12 @@
 					"$(PROJECT_DIR)/crm_app_xiugou/Vendor",
 					"$(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = "$(inherited) $(PROJECT_DIR)/Class/libs/AliPay $(PROJECT_DIR)/crm_app_xiugou/Vendor $(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios";
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Class/libs/AliPay",
+					"$(PROJECT_DIR)/crm_app_xiugou/Vendor",
+					"$(PROJECT_DIR)/../node_modules/@mr/rn-geolocation/lib/ios",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Class/Macros/Jure.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
