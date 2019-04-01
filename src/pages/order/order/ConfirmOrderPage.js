@@ -15,7 +15,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ConfirmAddressView from '../components/confirmOrder/ConfirmAddressView';
 import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
 import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
-import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+// import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 @observer
