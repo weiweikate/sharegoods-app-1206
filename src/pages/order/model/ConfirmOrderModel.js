@@ -7,6 +7,7 @@ import API from '../../../api';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
+import { navigateBack } from "../../../navigation/RouterMap";
 
 class ConfirmOrderModel {
     @observable
@@ -66,8 +67,6 @@ class ConfirmOrderModel {
         this.message = '';
         this.addressId = null;
         this.orderParamVO = {};
-        this.netFailedInfo = null;
-        this.loadingState = PageLoadingState.success;
         this.canCommit = true;
         this.giveUpCou= false;
         this.couponCount=0;
@@ -166,33 +165,20 @@ class ConfirmOrderModel {
     disPoseErr = (err, orderParamVO, params) => {
         bridge.hiddenLoading();
         this.canCommit = true;
-        if (err.code === 10009) {
-            this.$navigate('login/login/LoginPage', {
-                callback: () => {
-                    setTimeout(() => {
-                        this.makeSureProduct(orderParamVO, params);
-                    }, 100);
-                }
-            });
-        } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
-            this.netFailedInfo = null;
-            this.loadingState = PageLoadingState.success;
+        if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             Alert.alert('提示', err.msg, [
                 {
                     text: '确定', onPress: () => {
-                        this.$navigateBack();
+                        navigateBack()
                     }
                 }
             ]);
         } else if (err.code === 54001) {
-            this.netFailedInfo = null;
-            this.loadingState = PageLoadingState.success;
             bridge.$toast('商品库存不足！');
-            this.$navigateBack();
+          navigateBack()
         } else {
-            this.netFailedInfo = err;
-            this.loadingState = PageLoadingState.fail;
-            bridge.$toastShow(err.msg);
+            bridge.$toast(err.msg);
+            navigateBack()
         }
     };
 

@@ -11,7 +11,7 @@ import {
     MRText as Text
 } from '../../components/ui';
 import ShowGroundView from './components/ShowGroundView';
-import { TrackApi } from '../../utils/SensorsTrack';
+
 @observer
 export default class ShowListPage extends BasePage {
 
