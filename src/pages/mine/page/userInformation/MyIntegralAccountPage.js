@@ -65,7 +65,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     extraData={this.state}
                     progressViewOffset={30}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无明细数据！'}
+                    emptyTip={'暂无明细数据～'}
                 />
                 {this._accountInfoRender()}
             </View>

@@ -910,7 +910,6 @@ export default class MinePage extends BasePage {
 
     jumpToSettingPage = () => {
         this.$navigate('mine/SettingPage', { callBack: () => this.loadPageData() });
-
     };
 }
 

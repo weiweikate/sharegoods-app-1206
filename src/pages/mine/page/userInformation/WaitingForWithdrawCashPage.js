@@ -62,7 +62,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无明细数据！'}
+                    emptyTip={'暂无明细数据～'}
                 />
                 {this._accountInfoRender()}
                 {this.renderShowCommand()}
