@@ -13,10 +13,10 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import DetailNavShowModal from '../components/DetailNavShowModal';
 import DetailNavView from '../components/DetailNavView';
 import ProductApi from '../api/ProductApi';
+import { QYChatTool } from "../../../utils/QYModule/QYChatTool";
 
 const { p_score_smile, p_score_empty } = res.productScore;
 
@@ -282,7 +282,7 @@ export default class P_ScoreListPage extends BasePage {
                                            case 3:
                                                setTimeout(() => {
                                                    track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                                                   QYChatUtil.qiYUChat();
+                                                   QYChatTool.beginQYChat();
                                                }, 100);
                                                break;
                                        }

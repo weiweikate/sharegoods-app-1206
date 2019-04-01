@@ -68,7 +68,12 @@
   
 }
 -(void)configQYLib{
+  
   [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"秀购"];
+  [QYCustomUIConfig sharedInstance].customMessageTextColor=[UIColor whiteColor];
+  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [UIImage imageNamed:@"promotionBg"];
+  [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [UIImage imageNamed:@"promotionBg"];
+  
 }
 #pragma mark - delegate
 //支持目前所有iOS系统

@@ -16,6 +16,12 @@ SINGLETON_FOR_HEADER(JRServiceManager)
  */
 -(void)initQYChat:(id)jsonData;
 
+/**
+ 发起会话函数
+ @param swichData rn传递过来的数据
+ */
+-(void)swichGroup:(id)swichData;
+
 -(void)qiYUChat:(id)josnData;
 /**
  清理缓存

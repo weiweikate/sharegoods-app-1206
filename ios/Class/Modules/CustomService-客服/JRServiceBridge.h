@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
+
+#define QY_MSG_CHANGE  @"QY_MSG_CHANGE"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JRServiceBridge : NSObject <RCTBridgeModule>
+
+@interface JRServiceBridge : RCTEventEmitter <RCTBridgeModule>
 
 @end
 

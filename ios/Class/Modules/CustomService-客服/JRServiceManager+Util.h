@@ -11,6 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger,CHAT_TYPE){
+  BEGIN_FROM_OTHER= 0,//从其他地方发起的聊天，一律转接平台客服
+  BEGIN_FROM_PRODUCT= 1,//从商品发起的客服，
+  BEGIN_FROM_ORDER= 2,//从订单发起客服
+  BEGIN_FROM_MESSAGE=3//从消息列表发起客服
+};
+
 @interface JRServiceManager (Util)
 
 /**
@@ -21,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 -(QYUserInfo *)packingUserInfo:(id)jsonData;
 
+
+-(QYCommodityInfo *)getCommodityMsgWithData:(id)chatData;
 
 
 

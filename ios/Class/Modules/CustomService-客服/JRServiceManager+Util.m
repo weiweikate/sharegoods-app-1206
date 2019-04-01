@@ -8,6 +8,9 @@
 
 #import "JRServiceManager+Util.h"
 
+
+
+
 @implementation JRServiceManager (Util)
 
 /**
@@ -28,12 +31,6 @@
   [dictRealName setObject:@"real_name" forKey:@"key"];
   [dictRealName setObject:jsonDic[@"nickName"]?jsonDic[@"nickName"]:@"" forKey:@"value"];
   [array addObject:dictRealName];
-  
-  NSMutableDictionary *dictMobilePhone = [NSMutableDictionary new];
-  [dictMobilePhone setObject:@"mobile_phone" forKey:@"key"];
-  [dictMobilePhone setObject:jsonDic[@"phoneNum"]?jsonDic[@"phoneNum"]:@"" forKey:@"value"];
-  [dictMobilePhone setObject:@(NO) forKey:@"hidden"];
-  [array addObject:dictMobilePhone];
   
   NSMutableDictionary *dictavatar = [NSMutableDictionary new];
   [dictavatar setObject:@"avatar" forKey:@"key"];
@@ -67,6 +64,55 @@
   }
   
   return userInfo;
+}
+
+
+/**
+ 组装消息类
+ chatType = 0;
+ data =     {
+ desc = "\U7f51\U6613\U4e03\U9c7c\U662f\U7f51\U6613\U65d7\U4e0b\U4e00\U6b3e\U4e13\U6ce8\U4e8e\U89e3\U51b3\U4f01\U4e1a\U4e0e\U5ba2\U6237\U6c9f\U901a\U7684\U5ba2\U670d\U7cfb\U7edf\U4ea7\U54c1\U3002";
+ note = "\Uffe510000";
+ pictureUrlString = "http://qiyukf.com/main/res/img/index/barcode.png";
+ title = "\U7f51\U6613\U4e03\U9c7c";
+ urlString = "http://qiyukf.com/";
+ };
+ shopId = gys111;
+
+ @param chatData RN方面传过来的数据，数据结构如上
+ @return 返回发送的消息实体
+ */
+-(QYCommodityInfo *)getCommodityMsgWithData:(id)swichData{
+  NSDictionary * chatData = swichData;
+  NSDictionary * infoData = chatData[@"data"];
+  QYCommodityInfo *commodityInfo = [[QYCommodityInfo alloc] init];
+  
+  if ([chatData[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
+    commodityInfo = nil;
+  }else if([chatData[@"chatType"] integerValue] == BEGIN_FROM_PRODUCT){
+    commodityInfo.title = infoData[@"title"];
+    commodityInfo.desc = infoData[@"desc"];
+    commodityInfo.pictureUrlString = infoData[@"pictureUrlString"];
+    commodityInfo.urlString = infoData[@"urlString"];
+    commodityInfo.note = infoData[@"note"];
+    commodityInfo.show = YES;
+    commodityInfo.actionText = @"发送商品";
+    commodityInfo.actionTextColor = [UIColor redColor];
+    commodityInfo.sendByUser = YES;
+  }else if ([chatData[@"chatType"] integerValue] == BEGIN_FROM_ORDER){
+    commodityInfo.title = infoData[@"title"];
+    commodityInfo.desc = infoData[@"desc"];
+    commodityInfo.pictureUrlString = infoData[@"pictureUrlString"];
+    commodityInfo.urlString = infoData[@"urlString"];
+    commodityInfo.note = infoData[@"note"];
+    commodityInfo.show = YES;
+    commodityInfo.actionText = @"发送商品";
+    commodityInfo.actionTextColor = [UIColor redColor];
+    commodityInfo.sendByUser = YES;
+  }else if([chatData[@"chatType"] integerValue] == BEGIN_FROM_ORDER){
+    commodityInfo = nil;
+  }
+  return commodityInfo;
 }
 
 @end

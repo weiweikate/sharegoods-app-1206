@@ -18,6 +18,10 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import { TrackApi } from '../../utils/SensorsTrack';
+import chatModel from "../../utils/QYModule/QYChatModel";
+
+import { observer } from 'mobx-react';
+import { beginChatType, QYChatTool } from "../../utils/QYModule/QYChatTool";
 
 const {
     icon_03: noticeIcon,
@@ -29,7 +33,7 @@ const {
 } = res;
 const { px2dp } = ScreenUtils;
 
-
+@observer
 export default class MessageCenterPage extends BasePage {
     constructor(props) {
         super(props);
@@ -58,6 +62,7 @@ export default class MessageCenterPage extends BasePage {
         return (
             <ScrollView style={styles.container}>
                 {this.renderBodyView()}
+                {this.renderGongYingShang()}
             </ScrollView>
         );
     }
@@ -96,6 +101,64 @@ export default class MessageCenterPage extends BasePage {
                 this.$navigate('message/ShopMessagePage');
                 break;
         }
+    }
+
+    renderGongYingShang=()=>{
+        let sessionArr = chatModel.msgData.sessionListData || [];
+        let  arr = [];
+
+        console.log('sessionArr'+sessionArr.length)
+        if (  typeof sessionArr !== 'undefined' && sessionArr.length > 0){
+            sessionArr.forEach((item, index)=>{
+                arr.push(
+                    <View key={index} style={{ width: ScreenUtils.width, height: 60, marginTop: 11 }}>
+                        <TouchableOpacity style={{
+                            flex: 1,
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            paddingHorizontal:DesignRule.margin_page,
+                            backgroundColor: 'white',
+                            flexDirection: 'row'
+                        }} onPress={() => {
+                            this.beginChat(item)
+                        }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                {/*<Image source={leftImage[i]} style={{ height: 35 }} resizeMode={'contain'}/>*/}
+                                <UIText value={item.sessionName} style={[{ fontSize: DesignRule.fontSize_secondTitle, marginLeft: DesignRule.margin_page }]}/>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                {item.unreadCount ? <View style={{
+                                    marginRight: 7,
+                                    backgroundColor: DesignRule.mainColor,
+                                    borderRadius: px2dp(8),
+                                    height: px2dp(16),
+                                    width: px2dp(16),
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                    <Text style={{
+                                        color: 'white',
+                                        includeFontPadding: false,
+                                        fontSize: DesignRule.fontSize_20
+                                    }}>{item.unreadCount}</Text>
+                                </View> : null}
+                                <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>
+                            </View>
+                        </TouchableOpacity>
+                    </View>)
+            })
+        }
+        return arr;
+    }
+
+    beginChat=(item)=>{
+        let  params = {
+            title:item.sessionName,
+            shopId:item.shopId,
+            chatType:beginChatType.BEGIN_FROM_MESSAGE,
+            data:{}
+        }
+        QYChatTool.beginQYChat(params)
     }
 
     renderBodyView = () => {
