@@ -1,38 +1,26 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity} from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import ScreenUtils from '../../utils/ScreenUtils'
 import LinearGradient from 'react-native-linear-gradient';
 import HomeTitleView from './HomeTitleView'
 import ImageLoader from '@mr/image-placeholder';
-import { limitGoModule } from './HomeLimitGoModel'
+import { limitGoModule, limitStatus } from './HomeLimitGoModel'
 const { px2dp } = ScreenUtils
 export const kLimitGoHeight = px2dp(500)
 
 export default class HomeLimitGoView extends Component {
 
-  state = {
-    page: 6
-  }
-
-  constructor(props) {
-    super(props)
-    this._selectedLimit(-1)
-  }
-
   _onChangeTab(number) {
-    console.log('changeLimitGo number', number)
-    this.setState({page: number.i })
     this._selectedLimit(number.i )
   }
 
   _selectedLimit(number) {
     let index = number !== -1 ? number : this.state.page
     let limit = limitGoModule.timeList[index];
-
-    console.log('changeLimitGo', index)
-    
-    limitGoModule.changeLimitGo(limit.id)
+    if (limit) {
+      limitGoModule.changeLimitGo(limit.id, number)
+    }
   }
 
   _renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
@@ -77,12 +65,20 @@ export default class HomeLimitGoView extends Component {
     </TouchableOpacity>;
   }
 
+  _goToDetail(value) {
+    this.props.navigate('topic/TopicDetailPage', {
+      activityCode: value.activityCode,
+      activityType: value.activityType
+    })
+  }
+
   _renderGoodsList(id) {
     let goodsItems = []
     const goods = limitGoModule.goodsList[id]
     goods.map((value, index) => {
       goodsItems.push(
-        <View>
+        <TouchableWithoutFeedback onPress={()=> this._goToDetail(value)}>
+        <View key={index}>
         {
           index !== 0
           ?
@@ -92,6 +88,7 @@ export default class HomeLimitGoView extends Component {
         }
         <GoodsItem key={index} item={value}/>
         </View>
+        </TouchableWithoutFeedback>
       )
     })
     return <View>{goodsItems}</View>
@@ -99,6 +96,7 @@ export default class HomeLimitGoView extends Component {
 
   render() {
     let viewItems = []
+
     limitGoModule.timeList.map((value, index) => {
       viewItems.push(
         <View key={index} tabLabel={value.id}>
@@ -107,17 +105,22 @@ export default class HomeLimitGoView extends Component {
       )
     })
 
+    if (viewItems.length === 0) {
+      return <View/>
+    }
+
+
     return <View style={[styles.container, {height: limitGoModule.limitHeight}]}>
       <HomeTitleView title={'限时购'}/>
       <ScrollableTabView
         ref={ref => {this.scrollableTabView = ref}}
         style={styles.tabBar}
-        page={this.state.page}
+        page={limitGoModule.currentPage !== -1 ? limitGoModule.currentPage : limitGoModule.initialPage}
         renderTabBar={() => <ScrollableTabBar style={styles.scrollTab} underlineStyle={styles.underline} renderTab={this._renderTab.bind(this)}/>}
         tabBarUnderlineStyle={styles.underline}
         onChangeTab={(index) => this._onChangeTab(index)}
         showsVerticalScrollIndicator={false}
-        initialPage={6}
+        initialPage={limitGoModule.initialPage}
       >
         {viewItems}
       </ScrollableTabView>
@@ -127,36 +130,60 @@ export default class HomeLimitGoView extends Component {
 
 const GoodsItem = (item) => {
   let data = item.item
+  console.log('GoodsItem', data)
   return <View style={styles.goodsItem}>
   <ImageLoader
-    source={{ uri: data.imgUrl }}
+    source={{ uri: data.specImg }}
     showPlaceholder={false}
     width={px2dp(120)}
     height={px2dp(120)}
     style={styles.goodsImage}
   />
   <View style={styles.goodsContent}>
-    <Text style={styles.goodsTitle} numberOfLines={2}>{data.title}</Text>
-    <Text style={styles.text}>舒适亲肤 不易变形</Text>
-    <Text style={styles.text}>已有233333人关注了</Text>
+    <Text style={styles.goodsTitle} numberOfLines={2}>{data.productName}</Text>
+    <Text style={styles.text}>{data.secondName}</Text>
+    <Text style={styles.text}>已有{data.subscribeCount}人关注了</Text>
     <View style={{flex: 1}}/>
     <View style={styles.moneyView}>
-      <Text style={styles.money}>¥</Text>
-      <Text style={styles.moneyText}>140</Text>
+    {
+      data.seckillPrice
+      ?
+      <Text style={styles.money}>¥<Text style={styles.moneyText}>{data.seckillPrice}</Text></Text>
+      :
+      null
+    }
+      
       <View style={{flex: 1}}/>
-      <LinearGradient style={styles.button}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            colors={['#FF0050', '#FC5D39']}
-          >
-        <Text style={styles.buttonTitle}>
-        即将开抢
-        </Text>
-      </LinearGradient>
+      <GoodsItemButton data={data}/>
     </View>
   </View>
 </View>
 }
+
+const GoodsItemButton = ({data}) => {
+  if (data.status === limitStatus.doing) {
+    return <LinearGradient style={styles.button}
+    start={{ x: 0, y: 0 }}
+    end={{ x: 1, y: 0 }}
+    colors={['#FF0050', '#FC5D39']} >
+    <Text style={styles.buttonTitle}>
+    马上抢
+    </Text>
+    </LinearGradient>
+  } else if (data.status === limitStatus.noBegin) {
+    return <View style={styles.buttonWill} >
+    <Text style={styles.buttonWillTitle}>
+    即将开抢
+    </Text>
+    </View>
+  } else {
+    return <View style={styles.disbutton} >
+    <Text style={styles.disbuttonTitle}>
+    抢光了
+    </Text>
+    </View>
+  }
+} 
 
 const styles = StyleSheet.create({
   container: {
@@ -253,6 +280,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   buttonTitle: {
+    color: '#fff',
+    fontSize: px2dp(14)
+  },
+  buttonWill: {
+    width: px2dp(82),
+    height: px2dp(28),
+    borderRadius: px2dp(14),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: ScreenUtils.onePixel,
+    borderColor: '#FF0050'
+  },
+  buttonWillTitle: {
+    color: '#FF0050',
+    fontSize: px2dp(14)
+  },
+  disbutton: {
+    width: px2dp(82),
+    height: px2dp(28),
+    borderRadius: px2dp(14),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ccc'
+  },
+  disbuttonTitle: {
     color: '#fff',
     fontSize: px2dp(14)
   }
