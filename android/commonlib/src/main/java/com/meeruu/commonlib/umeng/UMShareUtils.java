@@ -49,8 +49,10 @@ public class UMShareUtils {
         //        userName //"小程序username，如 gh_3ac2059ac66f";
         //                miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
         ShareListener umShareListener = new ShareListener(mContext, success, fail);
-        int shareType = (int) params.get("shareType");
-        int platformType = (int) params.get("platformType");
+        double shart_type = Double.parseDouble(params.get("shareType") + "");
+        int shareType = (int) shart_type;
+        double platform_type = Double.parseDouble(params.get("platformType") + "");
+        int platformType = (int) platform_type;
         SHARE_MEDIA platform = null;
         switch (platformType) {
             case 0:
@@ -133,7 +135,6 @@ public class UMShareUtils {
                     umMin.setUserName(params.get("userName") + "");
                 }
                 new ShareAction(mContext).withMedia(umMin).setPlatform(platform).setCallback(umShareListener).share();
-
         }
     }
 
