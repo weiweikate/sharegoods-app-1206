@@ -156,6 +156,7 @@
 		CD89B1D1224B1A30006CCEF7 /* ShowCellNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CD89B1D0224B1A30006CCEF7 /* ShowCellNode.m */; };
 		CD89B1F2224B4C54006CCEF7 /* SGNetworkImageNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CD89B1F1224B4C54006CCEF7 /* SGNetworkImageNode.m */; };
 		CD89B3F4224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = CD89B3F3224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.m */; };
+		CD908FAB2253492700E348B4 /* UINavigationController+Autorotate.m in Sources */ = {isa = PBXBuildFile; fileRef = CD908FAA2253492700E348B4 /* UINavigationController+Autorotate.m */; };
 		CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */; };
 		CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */; };
 		CDA2F57821744443005FD4B3 /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F57721744443005FD4B3 /* ShareImageMaker.m */; };
@@ -938,6 +939,8 @@
 		CD89B1F1224B4C54006CCEF7 /* SGNetworkImageNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SGNetworkImageNode.m; sourceTree = "<group>"; };
 		CD89B3F2224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ASCollectionNode+ReloadIndexPaths.h"; sourceTree = "<group>"; };
 		CD89B3F3224C9F8F006CCEF7 /* ASCollectionNode+ReloadIndexPaths.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ASCollectionNode+ReloadIndexPaths.m"; sourceTree = "<group>"; };
+		CD908F6C2253492600E348B4 /* UINavigationController+Autorotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Autorotate.h"; sourceTree = "<group>"; };
+		CD908FAA2253492700E348B4 /* UINavigationController+Autorotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Autorotate.m"; sourceTree = "<group>"; };
 		CDA2F5302171D8D2005FD4B3 /* UIViewController+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Util.h"; sourceTree = "<group>"; };
 		CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Util.m"; sourceTree = "<group>"; };
 		CDA2F5332171D90E005FD4B3 /* NSObject+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Util.h"; sourceTree = "<group>"; };
@@ -1994,6 +1997,8 @@
 		CDA2F52F2171D7A0005FD4B3 /* UIViewController */ = {
 			isa = PBXGroup;
 			children = (
+				CD908F6C2253492600E348B4 /* UINavigationController+Autorotate.h */,
+				CD908FAA2253492700E348B4 /* UINavigationController+Autorotate.m */,
 				CDA2F5302171D8D2005FD4B3 /* UIViewController+Util.h */,
 				CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */,
 			);
@@ -2946,6 +2951,7 @@
 				5068363421379B78001AB175 /* JRPay.m in Sources */,
 				5068363C21379B78001AB175 /* QRCodeModule.m in Sources */,
 				50043A8421C79D5400270DFA /* SCCell.m in Sources */,
+				CD908FAB2253492700E348B4 /* UINavigationController+Autorotate.m in Sources */,
 				5068363021379B78001AB175 /* CachesModule.m in Sources */,
 				CD5EB10B221E9A9F007AAEE0 /* ShowHeaderViewManager.m in Sources */,
 				CD89B1D1224B1A30006CCEF7 /* ShowCellNode.m in Sources */,
