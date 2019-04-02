@@ -3,28 +3,22 @@ import React, { Component } from "react";
 import {
     TouchableOpacity,
     View,
-    Image,
+    Image
 } from "react-native";
 import {
     UIText
 } from "../../../components/ui";
 import DesignRule from "../../../constants/DesignRule";
 import ScreenUtils from "../../../utils/ScreenUtils";
-import res from "../res";
 
 const { px2dp } = ScreenUtils;
-const {
-    button: {
-        arrow_right_black: arrow_right
-    }
-} = res;
 export default class ServiceRowView extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        const { item, index ,beginChat} = this.props;
+        const { item, index, beginChat } = this.props;
         return (
             <View key={index} style={{ width: ScreenUtils.width, height: 50, marginTop: 11 }}>
                 <TouchableOpacity style={{
@@ -46,7 +40,7 @@ export default class ServiceRowView extends Component {
                         }} resizeMode={"contain"}/>
 
                         {
-                            item.unreadCount>0?
+                            item.unreadCount > 0 ?
                                 <View
                                     style={{
                                         width: 8,
@@ -59,7 +53,7 @@ export default class ServiceRowView extends Component {
                                         left: 30,
                                         top: 18
                                     }}
-                                />:
+                                /> :
                                 null
                         }
 
@@ -67,31 +61,31 @@ export default class ServiceRowView extends Component {
                             <UIText value={item.sessionName}
                                     numberOfLines={1}
                                     style={[{
-                                fontSize: DesignRule.fontSize_secondTitle,
-                                marginLeft: DesignRule.margin_page,
-                                color: DesignRule.textColor_mainTitle,
-                                marginTop: 15
-                            }]}/>
+                                        fontSize: DesignRule.fontSize_secondTitle,
+                                        marginLeft: DesignRule.margin_page,
+                                        color: DesignRule.textColor_mainTitle,
+                                        marginTop: 15
+                                    }]}/>
 
 
                             <UIText value={item.lastMessageText}
                                     numberOfLines={1}
                                     style={{
-                                fontSize: DesignRule.fontSize_24,
-                                marginLeft: DesignRule.margin_page,
-                                color: DesignRule.textColor_instruction,
-                                height: 40
+                                        fontSize: DesignRule.fontSize_24,
+                                        marginLeft: DesignRule.margin_page,
+                                        color: DesignRule.textColor_instruction,
+                                        height: 40
 
-                            }}/>
+                                    }}/>
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: "row", width: 50 }}>
+                    <View style={{ flexDirection: "row", width: 65, }}>
                         <UIText
                             value={
                                 this.format(item.lastMessageTimeStamp)
                             }
-                            style={{ fontSize: 12, color: DesignRule.textColor_placeholder }}
+                            style={{ fontSize: 12, color: DesignRule.textColor_placeholder,textangle:'center' }}
                         />
                     </View>
                 </TouchableOpacity>
@@ -103,29 +97,39 @@ export default class ServiceRowView extends Component {
         return m < 10 ? "0" + m : m;
     };
     format = (shijianchuo) => {
-        let time = new Date(shijianchuo);
+        let newShijianchuo = shijianchuo + "";
+        while (newShijianchuo.length < 13) {
+            newShijianchuo = newShijianchuo + "0";
+        }
+        console.log("时间戳最受是===" + newShijianchuo);
+        let time = new Date(parseInt(newShijianchuo));
         let y = time.getFullYear();
         let m = time.getMonth() + 1;
         let d = time.getDate();
         let h = time.getHours();
         let mm = time.getMinutes();
 
-         let currentTime = new Date();
-         let currentY = currentTime.getFullYear();
-         let currentM = currentTime.getMonth();
-         let currentD = currentTime.getDate();
-         let currentH = currentTime.getHours();
-         let currentMM = currentTime.getMinutes()
+        // 1554197149000
+        console.log("huyufeng" + y + "m" + m + "d" + d);
+        // huyufeng1970m1d19
 
-         if (y === currentY && m === currentM && d === currentD){
-             if (h === currentH){
-                 return currentMM - mm + '分钟前';
-             } else {
-                 return currentH - h + '小时前';
-             }
-         } else {
-             return ("" + y).substr(y.length - 2, 2) + "/" + this.add0(m) + "/" + this.add0(d);
-         }
+        let currentTime = new Date();
+        let currentY = currentTime.getFullYear();
+        let currentM = currentTime.getMonth()+1;
+        let currentD = currentTime.getDate();
+        let currentH = currentTime.getHours();
+        let currentMM = currentTime.getMinutes();
+        console.log("huyufeng22" + "年" + currentY + "月" + currentM + "日" + currentD);
+
+        // if (y === currentY && m === currentM && d === currentD) {
+        //     if (h === currentH) {
+        //         return currentMM - mm + "分钟前";
+        //     } else {
+        //         return currentH - h + "小时前";
+        //     }
+        // } else {
+            return ("" + y).substr(2, 2) + "/" + this.add0(m) + "/" + this.add0(d);
+        // }
     };
 
 }
