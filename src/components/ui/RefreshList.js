@@ -6,13 +6,14 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     Image, RefreshControl
-} from "react-native";
+} from 'react-native';
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../utils/ScreenUtils';
 import res from '../../comm/res';
 import DesignRule from '../../constants/DesignRule';
-import {MRText as Text}from './UIText';
-const empty_list_message = res.placeholder.no_data
+import { MRText as Text } from './UIText';
+
+const empty_list_message = res.placeholder.no_data;
 
 const defaultPageSize = 10;
 
@@ -98,10 +99,14 @@ export default class RefreshList extends Component {
     renderEmpty = () => {
         return (
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
-                              onPress={() =>!this.props.emptyNoRefresh && this.props.onRefresh()}>
+                              onPress={() => !this.props.emptyNoRefresh && this.props.onRefresh()}>
                 <Image style={{ height: 110, width: 110 }} source={this.state.emptyIcon} resizeMode={'contain'}/>
                 <Text
-                    style={{ marginTop: 20, fontSize: 14, color: DesignRule.textColor_instruction }}>{this.state.emptyTip}</Text>
+                    style={{
+                        marginTop: 20,
+                        fontSize: 14,
+                        color: DesignRule.textColor_instruction
+                    }}>{this.state.emptyTip}</Text>
             </TouchableOpacity>);
     };
 
@@ -120,7 +125,7 @@ export default class RefreshList extends Component {
 
 
     render() {
-        const { data, headerData, renderItem, onRefresh, keyExtractor, isEmpty, extraData, ...attributes } = this.props;
+        const { data, headerData, renderItem, onRefresh, keyExtractor, isEmpty, extraData, progressViewOffset, ...attributes } = this.props;
         if (data.length > 0 || headerData) {
             return (
                 <FlatList
@@ -136,7 +141,8 @@ export default class RefreshList extends Component {
                     keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
                     refreshControl={<RefreshControl refreshing={this.state.refreshing}
                                                     onRefresh={onRefresh ? this.refresh : null}
-                                                    colors={[DesignRule.mainColor]}/>}
+                                                    colors={[DesignRule.mainColor]}
+                                                    progressViewOffset={progressViewOffset}/>}
                     ref={'flatlist'}
                     {...attributes}
                 />
@@ -168,7 +174,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         height: 44
-    },
+    }
 });
 
 

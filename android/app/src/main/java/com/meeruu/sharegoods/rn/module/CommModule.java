@@ -40,6 +40,7 @@ import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.ImageCacheUtils;
 import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.SecurityUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
@@ -48,7 +49,7 @@ import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
-import com.meeruu.sharegoods.ui.activity.GongMallActivity;
+import com.meeruu.sharegoods.ui.activity.MRWebviewActivity;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.Unicorn;
 
@@ -60,15 +61,11 @@ import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
-import static com.meeruu.sharegoods.ui.activity.GongMallActivity.SIGN_OK;
-
 
 public class CommModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
-    public static final String CHANNEL_KEY = "channel";
-    private static final int GONGMAOCODE = 888;
     private Promise gongMao;
 
     /**
@@ -82,14 +79,14 @@ public class CommModule extends ReactContextBaseJavaModule {
         this.mContext.addActivityEventListener(new ActivityEventListener() {
             @Override
             public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-                if (gongMao != null && requestCode == GONGMAOCODE && resultCode == SIGN_OK) {
+                if (gongMao != null && requestCode == ParameterUtils.REQUEST_CODE_GONGMAO
+                        && resultCode == ParameterUtils.SIGN_OK) {
                     gongMao.resolve(null);
                 }
             }
 
             @Override
             public void onNewIntent(Intent intent) {
-
             }
         });
     }
@@ -531,9 +528,10 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void goGongmallPage(String url, Promise promise) {
         this.gongMao = promise;
-        Intent intent = new Intent(getCurrentActivity(), GongMallActivity.class);
-        intent.putExtra("url", url);
-        getCurrentActivity().startActivityForResult(intent, GONGMAOCODE);
+        Intent intent = new Intent(getCurrentActivity(), MRWebviewActivity.class);
+        intent.putExtra("web_url", url);
+        intent.putExtra("url_action", "get");
+        getCurrentActivity().startActivityForResult(intent, ParameterUtils.REQUEST_CODE_GONGMAO);
     }
 
 

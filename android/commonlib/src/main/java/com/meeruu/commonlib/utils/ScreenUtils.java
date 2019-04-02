@@ -176,18 +176,16 @@ public class ScreenUtils {
         view.setDrawingCacheEnabled(false);
         view.destroyDrawingCache();
         return bp;
-
     }
-
-
 
     /**
      * 判断是否是刘海屏
+     *
      * @return
      */
-    public static boolean hasNotchScreen(Activity activity){
-        if (getInt("ro.miui.notch",activity) == 1 || hasNotchAtHuawei(activity) || hasNotchAtOPPO(activity)
-                || hasNotchAtVivo(activity) || isAndroidP(activity) != null){ //TODO 各种品牌
+    public static boolean hasNotchScreen(Activity activity) {
+        if (getInt("ro.miui.notch", activity) == 1 || hasNotchAtHuawei(activity) || hasNotchAtOPPO(activity)
+                || hasNotchAtVivo(activity) || isAndroidP(activity) != null) { //TODO 各种品牌
             return true;
         }
         return false;
@@ -195,14 +193,15 @@ public class ScreenUtils {
 
     /**
      * Android P 刘海屏判断
+     *
      * @param activity
      * @return
      */
-    public static DisplayCutout isAndroidP(Activity activity){
+    public static DisplayCutout isAndroidP(Activity activity) {
         View decorView = activity.getWindow().getDecorView();
-        if (decorView != null && android.os.Build.VERSION.SDK_INT >= 28){
+        if (decorView != null && android.os.Build.VERSION.SDK_INT >= 28) {
             WindowInsets windowInsets = decorView.getRootWindowInsets();
-            if (windowInsets != null){
+            if (windowInsets != null) {
                 return windowInsets.getDisplayCutout();
             }
         }
@@ -211,12 +210,13 @@ public class ScreenUtils {
 
     /**
      * 小米刘海屏判断.
+     *
      * @return 0 if it is not notch ; return 1 means notch
      * @throws IllegalArgumentException if the key exceeds 32 characters
      */
-    public static int getInt(String key,Activity activity) {
+    public static int getInt(String key, Activity activity) {
         int result = 0;
-        if (DeviceUtils.isXiaomi()){
+        if (DeviceUtils.isXiaomi()) {
             try {
                 ClassLoader classLoader = activity.getClassLoader();
                 @SuppressWarnings("rawtypes")
@@ -250,6 +250,7 @@ public class ScreenUtils {
 
     /**
      * 华为刘海屏判断
+     *
      * @return
      */
     public static boolean hasNotchAtHuawei(Context context) {
@@ -264,7 +265,7 @@ public class ScreenUtils {
         } catch (NoSuchMethodException e) {
             LogUtils.i("hasNotchAtHuawei NoSuchMethodException");
         } catch (Exception e) {
-            LogUtils.i( "hasNotchAtHuawei Exception");
+            LogUtils.i("hasNotchAtHuawei Exception");
         } finally {
             return ret;
         }
@@ -275,6 +276,7 @@ public class ScreenUtils {
 
     /**
      * VIVO刘海屏判断
+     *
      * @return
      */
     public static boolean hasNotchAtVivo(Context context) {
@@ -285,20 +287,22 @@ public class ScreenUtils {
             Method method = FtFeature.getMethod("isFeatureSupport", int.class);
             ret = (boolean) method.invoke(FtFeature, VIVO_NOTCH);
         } catch (ClassNotFoundException e) {
-            LogUtils.i( "hasNotchAtVivo ClassNotFoundException");
+            LogUtils.i("hasNotchAtVivo ClassNotFoundException");
         } catch (NoSuchMethodException e) {
-            LogUtils.i(  "hasNotchAtVivo NoSuchMethodException");
+            LogUtils.i("hasNotchAtVivo NoSuchMethodException");
         } catch (Exception e) {
-            LogUtils.i(  "hasNotchAtVivo Exception");
+            LogUtils.i("hasNotchAtVivo Exception");
         } finally {
             return ret;
         }
     }
+
     /**
      * OPPO刘海屏判断
+     *
      * @return
      */
     public static boolean hasNotchAtOPPO(Context context) {
-        return  context.getPackageManager().hasSystemFeature("com.oppo.feature.screen.heteromorphism");
+        return context.getPackageManager().hasSystemFeature("com.oppo.feature.screen.heteromorphism");
     }
 }
