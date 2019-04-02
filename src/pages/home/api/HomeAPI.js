@@ -45,7 +45,9 @@ const api = {
     //获取红包  type1:获取红包信息并领取 type2：获取红包信息
     getReceivePackage:['/promotion/promotionPromoter/userReceivePackage',{method:'get'}],
     //商品页面用户领取红包-->杨小猛
-    givingPackageToUser:['/promotion/promotionPromoter/givingPackageToUser',{method:'get'}]
+    givingPackageToUser:['/promotion/promotionPromoter/givingPackageToUser',{method:'get'}],
+    //秒杀
+    getLimitGo: ['http://172.16.10.99:9090/gateway/operator/seckill/homePage', {method: 'get'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

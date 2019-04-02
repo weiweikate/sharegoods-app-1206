@@ -1,158 +1,113 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, flow } from 'mobx';
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
+import HomeApi from './api/HomeAPI'
+import { differenceInCalendarDays , format} from 'date-fns'
 
-const mockData = [
-  {
-    id: 1,
-    time: '14: 00',
-    current: true,
-    title: '昨日精选'
-  },
-  {
-    id: 2,
-    time: '15: 00',
-    current: true,
-    title: '昨日精选'
-  },
-  {
-    id: 3,
-    time: '20: 00',
-    current: true,
-    title: '昨日精选'
-  },
-  {
-    id: 4,
-    time: '24: 00',
-    current: true,
-    title: '昨日精选'
-  },
-  {
-    id: 5,
-    time: '08: 00',
-    current: true,
-    title: '抢购中'
-  },
-  {
-    id: 6,
-    time: '10: 00',
-    current: true,
-    title: '抢购中'
-  },
-  {
-    id: 7,
-    time: '24: 00',
-    current: true,
-    title: '即将开抢'
-  },
-  {
-    id: 8,
-    time: '02: 00',
-    current: true,
-    title: '即将开抢'
-  }
-]
-
-const GoodsList = {
-  1: [
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    },
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    },
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    },
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    },
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    }
-  ],
-  2: [
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    }
-  ],
-  3: [
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    }
-  ],
-  4: [
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    },
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    }
-  ],
-  5: [
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    }
-  ],
-  6: [
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    }
-  ],
-  7: [
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    }
-  ],
-  8: [
-    {
-      title: "BLOOM FOREVER净肤滋养护手霜套装30g*2",
-      imgUrl: "https://cdn.sharegoodsmall.com/sharegoods/ec16d70ad2604d90b6cab8afb8a19ef6.jpg",
-      price: '56.8'
-    }
-  ]
+export const limitStatus = {
+  del: 0, //删除
+  noBegin: 1, //未开始
+  doing: 2, //进行中
+  end: 3, //已售完
+  endTime: 4, //时间结束
+  endDone: 5, //手动结束
 }
 
 export class LimitGoModules {
     @observable goodsList = {};
     @observable timeList = [];
     @observable currentGoodsList = [];
+    @observable initialPage = 0;
+    @observable currentPage = -1;
     @computed get limitHeight() {
       return px2dp(92) + this.currentGoodsList.length * px2dp(140) + (this.currentGoodsList.length - 1) * px2dp(10)
     }
 
-    @action loadLimitGo() {
-      this.timeList = mockData
-      this.goodsList = GoodsList
+    @action loadLimitGo = flow(function* (isCache) {
+      try {
+        const res = yield HomeApi.getLimitGo()
+        const result = res.data
+        const keys = Object.keys(result)
+        const sortKeys = keys.sort((val1, val2) =>  parseInt(val1, 0) - parseInt(val2, 0))
+        
+        let _timeList = []
+        let _goodsList = {}
+        let _currentDate = 0
+        
+        let currentId = 0
+        let lastSeckills = 0 //最近的秒杀
+        sortKeys.map((value, index) => {
+          let goods = result[value]
+          let seckills = goods.seckills
+          if (!_currentDate) {
+            _currentDate = goods.date
+          }
+
+          let nowTime = new Date(_currentDate)
+          let secTime = new Date(parseInt(value, 0))
+          let diffTime = Math.abs(_currentDate - parseInt(value, 0))
+
+
+          if (lastSeckills === 0) {
+            lastSeckills = diffTime
+            currentId = value
+            this.initialPage = index
+          } else if (lastSeckills !== 0) {
+            if (lastSeckills > diffTime) {
+              lastSeckills = diffTime
+              currentId = value
+              this.initialPage = index
+            }
+          }
+
+          let diff = differenceInCalendarDays( nowTime, secTime)
+          let title = '即将开始'
+
+          if (diff > 0) { //如果是昨天， title就是昨日精选
+            title = '昨日精选'
+            for (const goodsValue of seckills) {
+              if (goodsValue.status === limitStatus.doing) {
+                title = '抢购中'
+                break
+              }
+            }
+          }
+
+          if (diff === 0 && _currentDate >= parseInt(value, 0)) {  //今天，已经结束
+            title = '已结束'
+            for (const goodsValue of seckills) {
+              if (goodsValue.status === limitStatus.doing) {
+                title = '抢购中'
+                break
+              }
+            }
+          }
+
+          _timeList.push({
+            title: title,
+            id: value,
+            time: format(secTime, 'HH:mm')
+          })
+
+          _goodsList[value] = seckills
+        })
+
+        console.log('loadLimitGo', _goodsList, _timeList)
+
+        this.timeList = _timeList
+        this.goodsList = _goodsList
+        this.currentGoodsList = this.goodsList[currentId]
+      } catch (error) {
+        console.log(error);
+      }
+    })
+
+    @action changeLimitGo(id, index) {
+      this.currentGoodsList = this.goodsList[id]
+      this.currentPage = index
     }
 
-    @action changeLimitGo(id) {
-      this.currentGoodsList = this.goodsList[id]
-    }
+   
 }
 
 export const limitGoModule = new LimitGoModules();
