@@ -95,5 +95,19 @@ static  NSString * constTile = @"公猫认证";
   }
 }
 
+- (BOOL)shouldAutorotate
+{
+  return YES;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+  return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+  return UIInterfaceOrientationPortrait;
+}
 
 @end
