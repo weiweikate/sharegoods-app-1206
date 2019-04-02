@@ -169,7 +169,7 @@ class HomeModule {
         try {
             this.isFetching = true;
             this.goodsIndex = 0;
-            const result = yield HomeApi.getGoodsInHome({ page: this.page });
+            const result = yield HomeApi.getGoodsInHome({ page: this.page, pageSize: 20 });
             let list = result.data.data;
             let home = [];
             if (list.length > 0) {
@@ -223,7 +223,7 @@ class HomeModule {
             list.push(this.lastGoods);
             this.lastGoods = null;
         }
-        const result = yield HomeApi.getGoodsInHome({ page: this.page });
+        const result = yield HomeApi.getGoodsInHome({ page: this.page, pageSize: 20 });
         list = list.concat(result.data.data);
         if (this.page === result.data.totalPage) {
             this.isEnd = true;

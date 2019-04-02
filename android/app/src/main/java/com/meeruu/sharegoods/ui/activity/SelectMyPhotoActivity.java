@@ -182,7 +182,7 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
     @Override
     public void initEvent() {
         findViewById(R.id.topdefault_leftbutton).setOnClickListener(this);
-        findViewById(R.id.topdefault_righttext).setOnClickListener(this);
+        topdefault_righttext.setOnClickListener(this);
         findViewById(R.id.id_choose_dir).setOnClickListener(this);
     }
 
