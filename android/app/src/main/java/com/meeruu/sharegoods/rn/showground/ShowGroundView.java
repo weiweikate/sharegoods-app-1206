@@ -49,7 +49,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private onEndScrollEvent endScrollEvent;
 
     private WeakReference<View> showgroundView;
-    public ViewGroup getShowGroundView(ReactContext reactContext){
+
+    public ViewGroup getShowGroundView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         LayoutInflater inflater = LayoutInflater.from(reactContext);
         View view = inflater.inflate(R.layout.view_showground, null);
@@ -113,18 +114,18 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         adapter.setLoadMoreView(new CustomLoadMoreView());
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(final BaseQuickAdapter adapter, View view1,final int position) {
+            public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
 
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         NewestShowGroundBean.DataBean bean = data.get(position);
-                        bean.setClick(bean.getClick()+5);
+                        bean.setClick(bean.getClick() + 5);
                         adapter.replaceData(data);
 
                     }
-                },200);
+                }, 200);
 
                 if (data != null) {
                     NewestShowGroundBean.DataBean item = data.get(position);
@@ -212,7 +213,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         adapter.loadMoreComplete();
     }
 
-    public void addHeader(View view){
+    public void addHeader(View view) {
         int i = adapter.getHeaderLayoutCount();
         if (i != 0) {
             adapter.removeAllHeaderView();
@@ -221,7 +222,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         recyclerView.scrollToPosition(0);
     }
 
-    public void setParams(HashMap map){
+    public void setParams(HashMap map) {
         if (presenter != null) {
             presenter.setParams(map);
         }

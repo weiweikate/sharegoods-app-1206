@@ -26,7 +26,7 @@ public class ScaleImageView extends SimpleDraweeView {
         this.initWidth = initWidth;
         this.initHeight = initHeight;
         this.requestLayout();
-//        this.invalidate();
+        this.invalidate();
     }
 
     @Override

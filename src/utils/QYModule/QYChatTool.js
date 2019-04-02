@@ -1,9 +1,8 @@
 import {
-    NativeModules,
-    Platform
-} from "react-native";
-import user from "../../model/user";
-import DeviceInfo from "react-native-device-info/deviceinfo";
+    NativeModules
+} from 'react-native';
+import user from '../../model/user';
+import DeviceInfo from 'react-native-device-info/deviceinfo';
 
 const { JRQYService } = NativeModules;
 
@@ -11,7 +10,7 @@ const beginChatType = {
     BEGIN_FROM_OTHER: 0,//从我的地方发起客服 会直接对接平台客服
     BEGIN_FROM_PRODUCT: 1,//从产品详情发起客服
     BEGIN_FROM_ORDER: 2,//从订单发起客服
-    BEGIN_FROM_MESSAGE:3//从消息列表发起客服
+    BEGIN_FROM_MESSAGE: 3//从消息列表发起客服
 };
 
 
@@ -29,16 +28,14 @@ const QYChatTool = {
 
     initQYChat() {
         let jsonParams = {
-            title: "秀购客服",
-            userId: user.code + "",
+            title: '秀购客服',
+            userId: user.code + '',
             userIcon: user.headImg,
             nickName: user.nickname,
             device: DeviceInfo.getDeviceName(),
             systemVersion: DeviceInfo.getSystemVersion()
         };
-        if (Platform.OS === "ios") {
-            JRQYService.initQYChat(jsonParams);
-        }
+        JRQYService.initQYChat(jsonParams);
     },
 
     /**
@@ -57,36 +54,15 @@ const QYChatTool = {
      *           urlString:'http://qiyukf.com/', 商品或者url
      *           note:'￥10000',   商品价格或者订单号等
      *      }
-        */
-    beginQYChat(params={
-        urlString: "",
-        title: "秀购客服",
-        shopId: "",
-        chatType: beginChatType.BEGIN_FROM_OTHER,
-        data: {} })
-    {
-        if (Platform.OS === "ios") {
-            JRQYService.beginQYChat(params);
-        }
-    },
-    /**
-     * 发起客服聊天
-     * ！！！老方法，废弃 不要用 上线时整理好删掉
-     * @param jsonParams
      */
-    qiYUChat() {
-        let jsonParams = {
-            groupId: 0,
-            staffId: 0,
-            title: "秀购客服",
-            userId: user.code + "",
-            userIcon: user.headImg,
-            nickName: user.nickname,
-            device: DeviceInfo.getDeviceName(),
-            systemVersion: DeviceInfo.getSystemVersion(),
-            phoneNum: user.phone + ""
-        };
-        JRQYService.qiYUChat(jsonParams);
+    beginQYChat(params = {
+        urlString: '',
+        title: '秀购客服',
+        shopId: '',
+        chatType: beginChatType.BEGIN_FROM_OTHER,
+        data: {}
+    }) {
+        JRQYService.beginQYChat(params);
     },
     /**
      * 退出客服聊天系统
