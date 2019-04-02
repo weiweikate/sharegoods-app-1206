@@ -109,7 +109,7 @@
     commodityInfo.actionText = @"发送商品";
     commodityInfo.actionTextColor = [UIColor redColor];
     commodityInfo.sendByUser = YES;
-  }else if([chatData[@"chatType"] integerValue] == BEGIN_FROM_ORDER){
+  }else if([chatData[@"chatType"] integerValue] == BEGIN_FROM_MESSAGE){
     commodityInfo = nil;
   }
   return commodityInfo;

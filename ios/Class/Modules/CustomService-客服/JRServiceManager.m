@@ -12,6 +12,7 @@
 #import "JRServiceManager+Util.h"
 #import "JRServiceBridge.h"
 #import <SandBoxPreviewTool/SuspensionButton.h>
+#import "SuspensionBtn.h"
 
 #define all_unread_count @"unreadCount"
 #define sessionListData  @"sessionListData"
@@ -26,7 +27,7 @@
 //当前视图弹出来源类型
 @property (nonatomic,assign)  CHAT_TYPE currentChatType;
 
-@property (nonatomic,strong) SuspensionButton *button ;
+@property (nonatomic,strong) SuspensionBtn *suspensionBtn ;
 
 @end
 
@@ -44,20 +45,33 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   }
   return _sessionListDic;
 }
--(SuspensionButton *)button{
-  if (!_button) {
-    _button = [[SuspensionButton alloc] initWithFrame:CGRectMake(-5, ([UIScreen mainScreen].bounds.size.height - kNavBarHeight)/2, 50, 50) color:[UIColor colorWithRed:135 / 255.0 green:216 / 255.0 blue:80 / 255.0 alpha:1]];
-    _button.leanType = SuspensionViewLeanTypeEachSide;
-    [_button addTarget:self action:@selector(changeKefu:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIImageView * imageView = [[UIImageView alloc]init];
-    imageView.frame = _button.bounds;
-    imageView.image = [UIImage imageNamed:@"rgongkf_icon"];
-    [_button addSubview:imageView];
+-(SuspensionBtn *)suspensionBtn{
+  if(!_suspensionBtn){
+    _suspensionBtn = [[SuspensionBtn alloc]initWithFrame:CGRectMake(0, KScreenHeight/2, 100, 40)];
+    [_suspensionBtn setBackgroundImage:[UIImage imageNamed:@"rgongkf_icon"] forState:UIControlStateNormal];
+    [_suspensionBtn addTarget:self action:@selector(beginChat:) forControlEvents:UIControlEventTouchUpInside];
   }
-  return _button ;
+  return _suspensionBtn;
 }
 
+//urlString: "",
+//title: "秀购客服",
+//shopId: "",
+//chatType: beginChatType.BEGIN_FROM_OTHER,
+//data: {} }
+-(void)beginChat:(UIButton *)btn{
+  [self.suspensionBtn removeFromSuperview];
+  [KRootVC dismissViewControllerAnimated:NO completion:^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      [self swichGroup:@{
+                         @"title":@"秀购客服",
+                         @"shopId":@"",
+                         @"chatType":@(BEGIN_FROM_OTHER),
+                         @"data":@{}
+                         }];
+    });
+  }];
+}
 
 /**
  * groupId:0,
@@ -76,10 +90,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   
   QYUserInfo * userInfo = [self packingUserInfo:jsonData];
   [[QYSDK sharedSDK] setUserInfo:userInfo];
-     QYSource *source = [[QYSource alloc] init];
-     source.title =  @"秀购客服";
-//     source.urlString = @"https://8.163.com/";
-     self.sessionVC.source = source;
+  
   [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
 }
 
@@ -105,27 +116,36 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   //暂存客服来源类型
   if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
     self.currentChatType = BEGIN_FROM_OTHER;
+    [self.suspensionBtn removeFromSuperview];
   }else if([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_PRODUCT){
     self.currentChatType = BEGIN_FROM_PRODUCT;
+     [ [UIApplication sharedApplication].keyWindow addSubview:self.suspensionBtn];
   }else if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_ORDER){
     self.currentChatType = BEGIN_FROM_PRODUCT;
+     [ [UIApplication sharedApplication].keyWindow addSubview:self.suspensionBtn];
   }else{
-    self.currentChatType = BEGIN_FROM_OTHER;
+    [self.suspensionBtn removeFromSuperview];
+    self.currentChatType = BEGIN_FROM_MESSAGE;
   }
   
   QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
-  sessionVC.shopId = chatInfo[@"shopId"];
+  sessionVC.sessionTitle = chatInfo[@"title"];
+  sessionVC.shopId = ((NSString *)chatInfo[@"shopId"]).length > 0 ?chatInfo[@"shopId"]:@"";
   sessionVC.commodityInfo = [self getCommodityMsgWithData:swichData];
-  sessionVC.autoSendInRobot = YES;//机器人模式下同样发送
+//  sessionVC.autoSendInRobot = YES;//机器人模式下同样发送
+  sessionVC.groupId = 0;
+  sessionVC.staffId = 0;
+  
+  QYSource *source = [[QYSource alloc] init];
+  source.title = chatInfo[@"title"];
+  sessionVC.source = source;
   
   sessionVC.navigationItem.leftBarButtonItem =
   [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain
                                   target:self action:@selector(onBack:)];
   JRBaseNavVC *nav = [[JRBaseNavVC alloc]initWithRootViewController:sessionVC];
   
-  [ [UIApplication sharedApplication].keyWindow addSubview:self.button];
-  
-  [KRootVC presentViewController:nav animated:YES completion:^{
+  [KRootVC presentViewController:nav animated:NO completion:^{
     
   }];
 }
@@ -172,7 +192,8 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 
 - (void)onBack:(id)sender
 {
-  [self.button removeFromSuperview];
+  [self.suspensionBtn removeFromSuperview];
+  self.suspensionBtn.centerY = KScreenHeight/2;
   [KRootVC dismissViewControllerAnimated:self.sessionVC completion:nil];
 }
 
@@ -208,6 +229,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
                                 @"avatarImageUrlString":sessionInfo.avatarImageUrlString,
                                 @"sessionName":sessionInfo.sessionName,
                                 };
+    NSLog(@"%@",session);
     [sessionListDataArr addObject:session];
   }
   

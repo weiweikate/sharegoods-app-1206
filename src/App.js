@@ -158,6 +158,10 @@ class App extends Component {
                     <DebugButton onPress={this.lianjie222} style={{ backgroundColor: "red" }}><Text
                         style={{ color: "white" }}>链接供应商222</Text></DebugButton>
                 }
+                {
+                    <DebugButton onPress={this.lianjie333} style={{ backgroundColor: "red" }}><Text
+                        style={{ color: "white" }}>平台客服</Text></DebugButton>
+                }
             </View>
         );
     }
@@ -189,6 +193,22 @@ class App extends Component {
             title:'供应商222',
             shopId: "gys222",
             chatType: beginChatType.BEGIN_FROM_PRODUCT,
+            data:{
+                title:'网易七鱼',
+                desc:'网易七鱼是网易旗下一款专注于解决企业与客户沟通的客服系统产品。',
+                pictureUrlString:'http://qiyukf.com/main/res/img/index/barcode.png',
+                urlString:'http://qiyukf.com/',
+                note:'￥10000',
+            }
+        };
+        QYChatTool.beginQYChat(jsonParams);
+    };
+    lianjie333 = () => {
+        let jsonParams = {
+            urlString:'hzmrwlyxgs-gys222.qiyukf.com',
+            title:'平台客服',
+            shopId: "",
+            chatType: beginChatType.BEGIN_FROM_OTHER,
             data:{
                 title:'网易七鱼',
                 desc:'网易七鱼是网易旗下一款专注于解决企业与客户沟通的客服系统产品。',
