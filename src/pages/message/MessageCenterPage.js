@@ -112,7 +112,7 @@ export default class MessageCenterPage extends BasePage {
         if (typeof sessionArr !== "undefined" && sessionArr.length > 0) {
             sessionArr.forEach((item, index) => {
                 arr.push(
-                    <ServiceRowView item={item} index={index}/>
+                    <ServiceRowView item={item} index={index} beginChat={this.beginChat}/>
                    );
             });
         }

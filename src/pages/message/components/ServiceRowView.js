@@ -4,7 +4,6 @@ import {
     TouchableOpacity,
     View,
     Image,
-    Text
 } from "react-native";
 import {
     UIText
@@ -25,7 +24,7 @@ export default class ServiceRowView extends Component {
     }
 
     render() {
-        const { item, index } = this.props;
+        const { item, index ,beginChat} = this.props;
         return (
             <View key={index} style={{ width: ScreenUtils.width, height: 50, marginTop: 11 }}>
                 <TouchableOpacity style={{
@@ -36,28 +35,34 @@ export default class ServiceRowView extends Component {
                     backgroundColor: "white",
                     flexDirection: "row"
                 }} onPress={() => {
-                    this.beginChat(item);
+                    beginChat(item);
                 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
                         <Image uri={item.avatarImageUrlString} style={{
-                            height: 35,
-                            width: 35,
+                            height: px2dp(35),
+                            width: px2dp(35),
                             backgroundColor: DesignRule.lineColor_inColorBg,
-                            borderRadius: 17
+                            borderRadius: px2dp(17)
                         }} resizeMode={"contain"}/>
-                        <View
-                            style={{
-                                width: 8,
-                                height: 8,
-                                borderRadius: 3.5,
-                                backgroundColor: DesignRule.mainColor,
-                                borderWidth: 1,
-                                borderColor: DesignRule.color_fff,
-                                position: "absolute",
-                                left: 30,
-                                top: 18
-                            }}
-                        />
+
+                        {
+                            item.unreadCount>0?
+                                <View
+                                    style={{
+                                        width: 8,
+                                        height: 8,
+                                        borderRadius: 3.5,
+                                        backgroundColor: DesignRule.mainColor,
+                                        borderWidth: 1,
+                                        borderColor: DesignRule.color_fff,
+                                        position: "absolute",
+                                        left: 30,
+                                        top: 18
+                                    }}
+                                />:
+                                null
+                        }
+
                         <View style={{ flex: 1 }}>
                             <UIText value={item.sessionName}
                                     numberOfLines={1}
@@ -102,10 +107,25 @@ export default class ServiceRowView extends Component {
         let y = time.getFullYear();
         let m = time.getMonth() + 1;
         let d = time.getDate();
-        // let h = time.getHours();
-        // let mm = time.getMinutes();
-        // let s = time.getSeconds();
-        return ("" + y).substr(y.length - 2, 2) + "/" + this.add0(m) + "/" + this.add0(d);
+        let h = time.getHours();
+        let mm = time.getMinutes();
+
+         let currentTime = new Date();
+         let currentY = currentTime.getFullYear();
+         let currentM = currentTime.getMonth();
+         let currentD = currentTime.getDate();
+         let currentH = currentTime.getHours();
+         let currentMM = currentTime.getMinutes()
+
+         if (y === currentY && m === currentM && d === currentD){
+             if (h === currentH){
+                 return currentMM - mm + '分钟前';
+             } else {
+                 return currentH - h + '小时前';
+             }
+         } else {
+             return ("" + y).substr(y.length - 2, 2) + "/" + this.add0(m) + "/" + this.add0(d);
+         }
     };
 
 }

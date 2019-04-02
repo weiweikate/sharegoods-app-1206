@@ -65,7 +65,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       [self swichGroup:@{
                          @"title":@"秀购客服",
-                         @"shopId":@"0",
+                         @"shopId":@"",
                          @"chatType":@(BEGIN_FROM_OTHER),
                          @"data":@{}
                          }];
@@ -90,10 +90,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   
   QYUserInfo * userInfo = [self packingUserInfo:jsonData];
   [[QYSDK sharedSDK] setUserInfo:userInfo];
-     QYSource *source = [[QYSource alloc] init];
-     source.title =  @"秀购客服";
-//     source.urlString = @"https://8.163.com/";
-     self.sessionVC.source = source;
+  
   [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
 }
 
@@ -132,17 +129,21 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   }
   
   QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
-  sessionVC.title = chatInfo[@"title"];
-  sessionVC.shopId = chatInfo[@"shopId"];
+  sessionVC.sessionTitle = chatInfo[@"title"];
+  sessionVC.shopId = ((NSString *)chatInfo[@"shopId"]).length > 0 ?chatInfo[@"shopId"]:@"";
   sessionVC.commodityInfo = [self getCommodityMsgWithData:swichData];
-  sessionVC.autoSendInRobot = YES;//机器人模式下同样发送
+//  sessionVC.autoSendInRobot = YES;//机器人模式下同样发送
+  sessionVC.groupId = 0;
+  sessionVC.staffId = 0;
+  
+  QYSource *source = [[QYSource alloc] init];
+  source.title = chatInfo[@"title"];
+  sessionVC.source = source;
   
   sessionVC.navigationItem.leftBarButtonItem =
   [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain
                                   target:self action:@selector(onBack:)];
   JRBaseNavVC *nav = [[JRBaseNavVC alloc]initWithRootViewController:sessionVC];
-  
- 
   
   [KRootVC presentViewController:nav animated:NO completion:^{
     
