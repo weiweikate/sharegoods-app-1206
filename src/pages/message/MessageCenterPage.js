@@ -2,26 +2,27 @@
  * Created by nuomi on 2018/7/18.
  * 消息中心页面
  */
-import React from 'react';
+import React from "react";
 import {
     StyleSheet, View, Image, DeviceEventEmitter,
     TouchableOpacity, ScrollView
-} from 'react-native';
+} from "react-native";
 import {
     UIText
-} from '../../components/ui';
-import {MRText as Text} from '../../components/ui'
-import ScreenUtils from '../../utils/ScreenUtils';
-import BasePage from '../../BasePage';
-import MessageApi from './api/MessageApi';
-import EmptyUtils from '../../utils/EmptyUtils';
-import DesignRule from '../../constants/DesignRule';
-import res from './res';
-import { TrackApi } from '../../utils/SensorsTrack';
+} from "../../components/ui";
+import { MRText as Text } from "../../components/ui";
+import ScreenUtils from "../../utils/ScreenUtils";
+import BasePage from "../../BasePage";
+import MessageApi from "./api/MessageApi";
+import EmptyUtils from "../../utils/EmptyUtils";
+import DesignRule from "../../constants/DesignRule";
+import res from "./res";
+import { TrackApi } from "../../utils/SensorsTrack";
 import chatModel from "../../utils/QYModule/QYChatModel";
 
-import { observer } from 'mobx-react';
+import { observer } from "mobx-react";
 import { beginChatType, QYChatTool } from "../../utils/QYModule/QYChatTool";
+import ServiceRowView from './components/ServiceRowView'
 
 const {
     icon_03: noticeIcon,
@@ -39,7 +40,7 @@ export default class MessageCenterPage extends BasePage {
         super(props);
         this.state = {
             viewData: [],
-            explain: '',
+            explain: "",
             shopMessageCount: 0,
             noticeCount: 0,
             messageCount: 0
@@ -48,13 +49,13 @@ export default class MessageCenterPage extends BasePage {
 
     $navigationBarOptions = {
         show: true, // false则隐藏导航
-        title: '消息中心'
+        title: "消息中心"
     };
 
 
     componentDidMount() {
         this.loadPageData();
-        this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadPageData);
+        this.listener = DeviceEventEmitter.addListener("contentViewed", this.loadPageData);
         TrackApi.ViewMyMessage();
     }
 
@@ -88,82 +89,51 @@ export default class MessageCenterPage extends BasePage {
     orderMenuJump(i) {
         switch (i) {
             case 0:
-                this.$navigate('message/NotificationPage');
+                this.$navigate("message/NotificationPage");
                 TrackApi.ViewNotice();
                 break;
             case 1:
                 TrackApi.ViewMessage();
-                this.$navigate('message/MessageGatherPage');
+                this.$navigate("message/MessageGatherPage");
                 break;
 
             case 2:
                 TrackApi.ViewPinMessage();
-                this.$navigate('message/ShopMessagePage');
+                this.$navigate("message/ShopMessagePage");
                 break;
         }
     }
 
-    renderGongYingShang=()=>{
+    renderGongYingShang = () => {
         let sessionArr = chatModel.sessionListData || [];
-        let  arr = [];
+        let arr = [];
 
-        console.log('sessionArr'+sessionArr.length)
-        if (  typeof sessionArr !== 'undefined' && sessionArr.length > 0){
-            sessionArr.forEach((item, index)=>{
+        console.log("sessionArr" + sessionArr.length);
+        if (typeof sessionArr !== "undefined" && sessionArr.length > 0) {
+            sessionArr.forEach((item, index) => {
                 arr.push(
-                    <View key={index} style={{ width: ScreenUtils.width, height: 60, marginTop: 11 }}>
-                        <TouchableOpacity style={{
-                            flex: 1,
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            paddingHorizontal:DesignRule.margin_page,
-                            backgroundColor: 'white',
-                            flexDirection: 'row'
-                        }} onPress={() => {
-                            this.beginChat(item)
-                        }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                {/*<Image source={leftImage[i]} style={{ height: 35 }} resizeMode={'contain'}/>*/}
-                                <UIText value={item.sessionName} style={[{ fontSize: DesignRule.fontSize_secondTitle, marginLeft: DesignRule.margin_page }]}/>
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                {item.unreadCount ? <View style={{
-                                    marginRight: 7,
-                                    backgroundColor: DesignRule.mainColor,
-                                    borderRadius: px2dp(8),
-                                    height: px2dp(16),
-                                    width: px2dp(16),
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}>
-                                    <Text style={{
-                                        color: 'white',
-                                        includeFontPadding: false,
-                                        fontSize: DesignRule.fontSize_20
-                                    }}>{item.unreadCount}</Text>
-                                </View> : null}
-                                <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>)
-            })
+                    <ServiceRowView item={item} index={index}/>
+                   );
+            });
         }
         return arr;
-    }
+    };
 
-    beginChat=(item)=>{
-        let  params = {
-            title:item.sessionName,
-            shopId:item.shopId,
-            chatType:beginChatType.BEGIN_FROM_MESSAGE,
-            data:{}
-        }
-        QYChatTool.beginQYChat(params)
-    }
+
+
+    beginChat = (item) => {
+        let params = {
+            title: item.sessionName,
+            shopId: item.shopId,
+            chatType: beginChatType.BEGIN_FROM_MESSAGE,
+            data: {}
+        };
+        QYChatTool.beginQYChat(params);
+    };
 
     renderBodyView = () => {
         let leftImage = [noticeIcon, newsIcon, spellIcon];
-        let leftText = ['通知', '消息', '拼店消息'];
+        let leftText = ["通知", "消息", "拼店消息"];
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
             let count;
@@ -182,33 +152,36 @@ export default class MessageCenterPage extends BasePage {
                 <View key={i} style={{ width: ScreenUtils.width, height: 60, marginTop: 11 }}>
                     <TouchableOpacity style={{
                         flex: 1,
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        paddingHorizontal:DesignRule.margin_page,
-                        backgroundColor: 'white',
-                        flexDirection: 'row'
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        paddingHorizontal: DesignRule.margin_page,
+                        backgroundColor: "white",
+                        flexDirection: "row"
                     }} onPress={() => this.orderMenuJump(i)}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Image source={leftImage[i]} style={{ height: 35 }} resizeMode={'contain'}/>
-                            <UIText value={leftText[i]} style={[{ fontSize: DesignRule.fontSize_secondTitle, marginLeft: DesignRule.margin_page }]}/>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <Image source={leftImage[i]} style={{ height: 35 }} resizeMode={"contain"}/>
+                            <UIText value={leftText[i]} style={[{
+                                fontSize: DesignRule.fontSize_secondTitle,
+                                marginLeft: DesignRule.margin_page
+                            }]}/>
                         </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
                             {count ? <View style={{
                                 marginRight: 7,
                                 backgroundColor: DesignRule.mainColor,
                                 borderRadius: px2dp(8),
                                 height: px2dp(16),
                                 width: px2dp(16),
-                                alignItems: 'center',
-                                justifyContent: 'center'
+                                alignItems: "center",
+                                justifyContent: "center"
                             }}>
                                 <Text style={{
-                                    color: 'white',
+                                    color: "white",
                                     includeFontPadding: false,
                                     fontSize: DesignRule.fontSize_20
                                 }}>{count}</Text>
                             </View> : null}
-                            <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>
+                            <Image source={arrow_right} style={{ height: 14 }} resizeMode={"contain"}/>
                         </View>
                     </TouchableOpacity>
                 </View>
