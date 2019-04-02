@@ -59,7 +59,7 @@ export default class ShowDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: '',
-            isFirst: Flag.isFirst
+            isFirst: true
         };
         this.noNeedRefresh = false;
     }
@@ -137,10 +137,7 @@ export default class ShowDetailPage extends BasePage {
     componentDidMount() {
         let that = this;
         InteractionManager.runAfterInteractions(() => {
-            if (that.state.isFirst === true || Flag.isFirst === true){
-                Flag.isFirst = false;
-                that.setState({isFirst:Flag.isFirst});
-            }
+                that.setState({isFirst:false});
         })
     }
 
@@ -247,7 +244,7 @@ export default class ShowDetailPage extends BasePage {
     };
 
     _render() {
-        if (this.state.isFirst === true && Flag.isFirst === true){
+        if (this.state.isFirst === true){
             return;
         }
         const { pageState } = this.state;
