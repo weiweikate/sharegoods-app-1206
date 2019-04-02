@@ -106,6 +106,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewAndData() {
+        mHandler = new WeakHandler(callback);
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -158,40 +159,41 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
-        mHandler = new WeakHandler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                switch (msg.what) {
-                    case ParameterUtils.EMPTY_WHAT:
-                        needGo = true;
-                        if (hasBasePer && !hasGo) {
-                            goIndex();
-                        }
-                        break;
-                    case ParameterUtils.TIMER_START:
-                        //有广告时延迟时间增加
-                        mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
-                        ViewStub stub = findViewById(R.id.vs_adv);
-                        if (stub != null) {
-                            stub.inflate();
-                            ivAdvBg = findViewById(R.id.iv_adv_bg);
-                            tvGo = findViewById(R.id.tv_go);
-                            ImageLoadUtils.loadNetImage((String) msg.obj, ivAdvBg);
-                            ivAdv = findViewById(R.id.iv_adv);
-                            String url = ossHost + "/app/start_adv.png?" + System.currentTimeMillis();
-                            ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
-                                    ScalingUtils.ScaleType.FIT_CENTER);
-                            initAdvEvent();
-                            startTimer();
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
     }
+
+    Handler.Callback callback = new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case ParameterUtils.EMPTY_WHAT:
+                    needGo = true;
+                    if (hasBasePer && !hasGo) {
+                        goIndex();
+                    }
+                    break;
+                case ParameterUtils.TIMER_START:
+                    //有广告时延迟时间增加
+                    mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
+                    ViewStub stub = findViewById(R.id.vs_adv);
+                    if (stub != null) {
+                        stub.inflate();
+                        ivAdvBg = findViewById(R.id.iv_adv_bg);
+                        tvGo = findViewById(R.id.tv_go);
+                        ImageLoadUtils.loadNetImage((String) msg.obj, ivAdvBg);
+                        ivAdv = findViewById(R.id.iv_adv);
+                        String url = ossHost + "/app/start_adv.png?" + System.currentTimeMillis();
+                        ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
+                                ScalingUtils.ScaleType.FIT_CENTER);
+                        initAdvEvent();
+                        startTimer();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    };
 
     private void initAdvEvent() {
         ivAdv.setOnTouchListener(new View.OnTouchListener() {
