@@ -31,7 +31,7 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { TrackApi } from '../../utils/SensorsTrack';
-let isFirst = true;
+const Flag = {isFirst: true};
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -59,7 +59,7 @@ export default class ShowDetailPage extends BasePage {
         this.state = {
             pageState: PageLoadingState.loading,
             errorMsg: '',
-            isFirst: isFirst
+            isFirst: Flag.isFirst
         };
         this.noNeedRefresh = false;
     }
@@ -137,9 +137,9 @@ export default class ShowDetailPage extends BasePage {
     componentDidMount() {
         let that = this;
         InteractionManager.runAfterInteractions(() => {
-            if (that.state.isFirst === true){
-                isFirst = false;
-                that.setState({isFirst});
+            if (that.state.isFirst === true || Flag.isFirst === true){
+                Flag.isFirst = false;
+                that.setState({isFirst:Flag.isFirst});
             }
         })
     }
@@ -247,7 +247,7 @@ export default class ShowDetailPage extends BasePage {
     };
 
     _render() {
-        if (this.state.isFirst === true){
+        if (this.state.isFirst === true && Flag.isFirst === true){
             return;
         }
         const { pageState } = this.state;
