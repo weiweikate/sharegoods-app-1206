@@ -47,7 +47,9 @@ const api = {
     //商品页面用户领取红包-->杨小猛
     givingPackageToUser:['/promotion/promotionPromoter/givingPackageToUser',{method:'get'}],
     //秒杀
-    getLimitGo: ['http://172.16.10.99:9090/gateway/operator/seckill/homePage', {method: 'get'}]
+    getLimitGo: ['/operator/seckill/homePage', {method: 'get'}],
+    //是否显示秒杀
+    isShowLimitGo: ['/advertising/timeLimitSecKill', {method: 'get'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

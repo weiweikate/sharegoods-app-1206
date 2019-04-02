@@ -20,11 +20,19 @@ export class LimitGoModules {
     @observable initialPage = 0;
     @observable currentPage = -1;
     @computed get limitHeight() {
-      return px2dp(92) + this.currentGoodsList.length * px2dp(140) + (this.currentGoodsList.length - 1) * px2dp(10)
+      if (this.currentGoodsList.length > 0) {
+        return px2dp(92) + this.currentGoodsList.length * px2dp(140) + (this.currentGoodsList.length - 1) * px2dp(10)
+      }
+      return 0
     }
 
     @action loadLimitGo = flow(function* (isCache) {
       try {
+        const isShowResult = yield HomeApi.isShowLimitGo()
+        if (!isShowResult.data) {
+          throw new Error('不显示秒杀')
+        }
+
         const res = yield HomeApi.getLimitGo()
         const result = res.data
         const keys = Object.keys(result)
