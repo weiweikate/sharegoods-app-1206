@@ -152,7 +152,12 @@
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
     [weakSelf.dataArr addObjectsFromArray:result.data];
-    [weakSelf.collectionNode reloadData];
+    NSMutableArray *indexPaths = [NSMutableArray new];
+    for (int i = 0; i<result.data.count; i++) {
+      NSIndexPath *indexPath = [NSIndexPath indexPathForRow:weakSelf.dataArr.count - 1 - i inSection:0];
+      [indexPaths addObject:indexPath];
+    }
+    [weakSelf.collectionNode insertItemsAtIndexPaths:indexPaths];
     //    [weakSelf.collectionView.collectionViewLayout invalidateLayout];
     if(result.data.count < 20){
       [weakSelf.collectionNode.view.mj_footer endRefreshingWithNoMoreData];
@@ -181,7 +186,7 @@
   if (_onItemPress) {
     _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
     self.dataArr[indexPath.item].click = self.dataArr[indexPath.item].click + 5;
-    [_collectionNode reloadData];
+    [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
   }
 }
 
