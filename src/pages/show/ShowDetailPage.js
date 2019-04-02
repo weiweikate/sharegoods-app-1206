@@ -7,7 +7,7 @@ import {
     ActivityIndicator,
     StyleSheet,
     NativeModules,
-    Alert
+    Alert, InteractionManager
 } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
@@ -31,6 +31,7 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { TrackApi } from '../../utils/SensorsTrack';
+const Flag = {isFirst: true};
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -57,7 +58,8 @@ export default class ShowDetailPage extends BasePage {
         this.showDetailModule = new ShowDetail();
         this.state = {
             pageState: PageLoadingState.loading,
-            errorMsg: ''
+            errorMsg: '',
+            isFirst: Flag.isFirst
         };
         this.noNeedRefresh = false;
     }
@@ -132,6 +134,16 @@ export default class ShowDetailPage extends BasePage {
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
+    componentDidMount() {
+        let that = this;
+        InteractionManager.runAfterInteractions(() => {
+            if (that.state.isFirst === true || Flag.isFirst === true){
+                Flag.isFirst = false;
+                that.setState({isFirst:Flag.isFirst});
+            }
+        })
+    }
+
 
     _goBack() {
         console.log('_goBack');
@@ -235,7 +247,9 @@ export default class ShowDetailPage extends BasePage {
     };
 
     _render() {
-
+        if (this.state.isFirst === true && Flag.isFirst === true){
+            return;
+        }
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
             return <View style={styles.container}><NetFailedView

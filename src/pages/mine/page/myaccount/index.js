@@ -7,6 +7,7 @@ import JudgePhonePage from './JudgePhonePage';
 import JudgeIDCardPage from './JudgeIDCardPage';
 import SetOrEditPayPwdPage from './SetOrEditPayPwdPage';
 import SetPayPwdSuccessPage from './SetPayPwdSuccessPage';
+import SetPhonePwdPage from './SetPhonePwdPage';
 
 export default {
     moduleName: 'account',    //模块名称
@@ -19,6 +20,7 @@ export default {
         JudgePhonePage,
         JudgeIDCardPage,
         SetOrEditPayPwdPage,
-        SetPayPwdSuccessPage
+        SetPayPwdSuccessPage,
+        SetPhonePwdPage
     }
 };
