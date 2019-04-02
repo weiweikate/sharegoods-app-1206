@@ -14,7 +14,7 @@
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     
-    NSArray *selStringsArray = @[@"reloadData"];
+    NSArray *selStringsArray = @[@"reloadData", @"reloadItemsAtIndexPaths:"];
     
     [selStringsArray enumerateObjectsUsingBlock:^(NSString *selString, NSUInteger idx, BOOL *stop) {
       NSString *mySelString = [@"js_" stringByAppendingString:selString];
@@ -36,6 +36,11 @@
 {
   self.js_reloadIndexPaths = [self.indexPathsForVisibleItems copy];
   [self js_reloadData];
+}
+- (void)js_reloadItemsAtIndexPaths:(NSArray*)indexPaths
+{
+  self.js_reloadIndexPaths = [indexPaths copy];
+  [self js_reloadItemsAtIndexPaths: indexPaths];
 }
 
 @end

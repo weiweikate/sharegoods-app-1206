@@ -11,6 +11,8 @@ import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
+import RouterMap from '../../../../navigation/RouterMap';
+import {PageType} from '../myaccount/JudgePhonePage';
 
 const arrow_right = res.button.arrow_right;
 @observer
@@ -75,7 +77,16 @@ export default class AccountSettingPage extends BasePage {
         });
     };
     _toEditPwd = () => {
-        this.$navigate('mine/account/EditPhonePwdPage');
+        if (0){
+            Alert.alert('未设置登录密码',
+                '你还没有设置登录密码',
+                [
+                    {onPress:()=>{}, text: '稍后就去'},
+                    {onPress:()=>{this.$navigate(RouterMap.JudgePhonePage, {title: PageType.setLoginPW})}, text: '马上设置'}
+                ])
+        } else {
+            this.$navigate('mine/account/EditPhonePwdPage');
+        }
     };
     _toEditPayPwd = () => {
         console.log(user);

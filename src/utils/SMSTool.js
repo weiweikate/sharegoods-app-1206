@@ -31,7 +31,8 @@ const SMSTool = {
         SalePwdType: 4,
         SetSaleType: 5,
         ForgetSaleType: 6,
-        ForgetPasswordType: 7
+        ForgetPasswordType: 7,
+        setLoginPW: 8,
     },
     /**
      *
@@ -85,6 +86,12 @@ const SMSTool = {
                 });
                 break;
             case this.SMSType.ForgetPasswordType:
+                TrackApi.otherGetVerifySMS()
+                return SMSAPI.SMSForgetLoginPassword({
+                    phone: phoneNumber
+                });
+                break;
+            case this.SMSType.setLoginPW:
                 TrackApi.otherGetVerifySMS()
                 return SMSAPI.SMSForgetLoginPassword({
                     phone: phoneNumber
