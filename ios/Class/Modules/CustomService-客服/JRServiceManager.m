@@ -112,10 +112,11 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  */
 -(void)swichGroup:(id)swichData{
    NSDictionary * chatInfo = swichData;
-  
+  QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
   //暂存客服来源类型
   if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
     self.currentChatType = BEGIN_FROM_OTHER;
+    sessionVC.shopId=@"hzmrwlyxgs";
     [self.suspensionBtn removeFromSuperview];
   }else if([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_PRODUCT){
     self.currentChatType = BEGIN_FROM_PRODUCT;
@@ -128,11 +129,14 @@ SINGLETON_FOR_CLASS(JRServiceManager)
     self.currentChatType = BEGIN_FROM_MESSAGE;
   }
   
-  QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
+  
   sessionVC.sessionTitle = chatInfo[@"title"];
   sessionVC.shopId = ((NSString *)chatInfo[@"shopId"]).length > 0 ?chatInfo[@"shopId"]:@"";
+  //重置一下供应商的域名
+  if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
+    sessionVC.shopId=@"hzmrwlyxgs";
+  }
   sessionVC.commodityInfo = [self getCommodityMsgWithData:swichData];
-//  sessionVC.autoSendInRobot = YES;//机器人模式下同样发送
   sessionVC.groupId = 0;
   sessionVC.staffId = 0;
   
@@ -218,13 +222,14 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   
   for (NSInteger index = 0 ; index < sessionList.count; index++) {
     QYSessionInfo * sessionInfo = sessionList[index];
+    long long lastTime = (long long)sessionInfo.lastMessageTimeStamp;
     NSDictionary * session =  @{
                                 @"hasTrashWords":@(sessionInfo.hasTrashWords),
                                 @"lastMessageText":sessionInfo.lastMessageText,
                                 @"lastMessageType":@(sessionInfo.lastMessageType),
                                 @"unreadCount":@(sessionInfo.unreadCount),
                                 @"status":@(sessionInfo.status),
-                                @"lastMessageTimeStamp":@(sessionInfo.lastMessageTimeStamp),
+                                @"lastMessageTimeStamp":@(lastTime),
                                 @"shopId":sessionInfo.shopId,
                                 @"avatarImageUrlString":sessionInfo.avatarImageUrlString,
                                 @"sessionName":sessionInfo.sessionName,
