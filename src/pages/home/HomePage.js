@@ -360,7 +360,7 @@ class HomePage extends BasePage {
                 <HomeTitleView title={'为你推荐'}/>
             </View>;
         } else if (type === homeType.limitGo) {
-            return <HomeLimitGoView/>
+            return <HomeLimitGoView navigate={this.$navigate}/>
         }
         return <View/>;
     };

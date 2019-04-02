@@ -44,7 +44,6 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
         float width = 1;
         float height = 1;
         String imgUrl;
-
         if (item.getGeneralize() == New || item.getGeneralize() == Recommend) {
             width = item.getCoverImgWide();
             height = item.getCoverImgHigh();

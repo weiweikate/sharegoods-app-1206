@@ -17,6 +17,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 import com.meeruu.sharegoods.rn.showground.event.onEndScrollEvent;
@@ -75,6 +76,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         endScrollEvent = new onEndScrollEvent();
         adapter = new ShowGroundAdapter();
         adapter.setPreLoadNumber(3);
+        adapter.setHasStableIds(true);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
@@ -133,7 +135,6 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                         eventDispatcher.dispatchEvent(itemPressEvent);
                     }
                 }
-
             }
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
