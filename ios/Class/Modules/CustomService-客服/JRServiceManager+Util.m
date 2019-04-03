@@ -85,8 +85,11 @@
 -(QYCommodityInfo *)getCommodityMsgWithData:(id)swichData{
   NSDictionary * chatData = swichData;
   NSDictionary * infoData = chatData[@"data"];
-  QYCommodityInfo *commodityInfo = [[QYCommodityInfo alloc] init];
+  if (infoData.allKeys.count == 0) {
+    return nil;
+  }
   
+  QYCommodityInfo *commodityInfo = [[QYCommodityInfo alloc] init];
   if ([chatData[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
     commodityInfo = nil;
   }else if([chatData[@"chatType"] integerValue] == BEGIN_FROM_PRODUCT){
