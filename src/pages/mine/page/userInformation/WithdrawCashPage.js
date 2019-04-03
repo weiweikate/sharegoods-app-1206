@@ -8,6 +8,7 @@ import {
     Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
+import * as math from 'mathjs';
 import {
     UIText, UIImage, UIButton, MRText
 } from '../../../../components/ui';
@@ -29,21 +30,41 @@ const bank = res.bankCard.bankcard_icon;
 const delete_icon = res.bankCard.delete_icon;
 const singleCommit = 10000;
 
-function accMul(num1, num2) {
-    let m = 0, s1 = num1.toString(), s2 = num2.toString();
-    try {
-        m += s1.split('.')[1].length;
-    } catch (e) {
+function number_format(number, decimals, dec_point, thousands_sep,roundtag) {
+    /*
+    * 参数说明：
+    * number：要格式化的数字
+    * decimals：保留几位小数
+    * dec_point：小数点符号
+    * thousands_sep：千分位符号
+    * roundtag:舍入参数，默认 "ceil" 向上取,"floor"向下取,"round" 四舍五入
+    * */
+    number = (number + '').replace(/[^0-9+-Ee.]/g, '');
+    roundtag = roundtag || "ceil"; //"ceil","floor","round"
+    var n = !isFinite(+number) ? 0 : +number,
+        prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+        sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+        dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+        s = '',
+        toFixedFix = function (n, prec) {
+
+            var k = Math.pow(10, prec);
+            console.log();
+
+            return '' + parseFloat(Math[roundtag](parseFloat((n * k).toFixed(prec*2))).toFixed(prec*2)) / k;
+        };
+    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+    var re = /(-?\d+)(\d{3})/;
+    while (re.test(s[0])) {
+        s[0] = s[0].replace(re, "$1" + sep + "$2");
     }
 
-    try {
-        m += s2.split('.')[1].length;
-    } catch (e) {
+    if ((s[1] || '').length < prec) {
+        s[1] = s[1] || '';
+        s[1] += new Array(prec - s[1].length + 1).join('0');
     }
-
-    return Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m);
+    return s.join(dec);
 }
-
 function formatMoneyString(num, needSymbol = true) {
     let temp = (isNoEmpty(num) ? num : 0) + '';
     if (temp.indexOf('.') === -1) {
@@ -100,7 +121,6 @@ export default class WithdrawCashPage extends BasePage {
         this.purMoney='';
     }
 
-    //*********************************ViewPart******************************************
     $navigationBarOptions = {
         title: '提现',
         show: true // false则隐藏导航
@@ -309,11 +329,6 @@ export default class WithdrawCashPage extends BasePage {
         }
         let multipleTip = this.state.multiple ? `以及￥${this.state.minCount}的倍数` : '';
 
-        // let tip = null;
-        // if (!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee)) {
-        //     tip = `提现金额不满${this.state.whenLessAmount}元，则扣除${this.state.fixedFee}元手续费`;
-        // }
-
         return (
             <View style={{ flexDirection: 'row', marginLeft: DesignRule.margin_page, marginTop: 5 }}>
 
@@ -334,10 +349,6 @@ export default class WithdrawCashPage extends BasePage {
                     {this.state.minCount ? <MRText style={styles.tipTextStyle}>
                         {`${tip3Index}.提现为￥${this.state.minCount}起${multipleTip}`}
                     </MRText> : null}
-                    {/*{tip ? <MRText style={styles.tipTextStyle}>*/}
-                    {/*{`${tip3Index+1}.${tip}`}*/}
-                    {/*</MRText> : null}*/}
-
                 </View>
             </View>
         );
@@ -418,41 +429,6 @@ export default class WithdrawCashPage extends BasePage {
     };
 
     renderWithdrawMoney = () => {
-        // let tip = '';
-        // if (!EmptyUtils.isEmpty(this.state.rate)) {
-        //     if (this.state.money && !isNaN(parseFloat(this.state.money))) {
-        //         tip = tip + `额外扣除￥${Math.ceil(accMul(this.state.rate / 100, parseFloat(this.state.money)) * 100) / 100}手续费(费率${this.state.rate}%)`;
-        //     }
-        // }
-        // if (!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee)) {
-        //     tip = tip + `提现金额不满${this.state.whenLessAmount}元，则扣除${this.state.fixedFee}元手续费`;
-        // }
-
-        // let tip2 = this.getTip2();
-        // tip2 = (parseFloat(this.state.money) > parseFloat(user.availableBalance)) ? (<Text>
-        //     输入金额超过可提现余额
-        // </Text>) : (<Text style={{ fontSize: 13 }}>
-        //     {`可用余额${user.availableBalance}元`}
-        //     {!EmptyUtils.isEmpty(this.state.minCount) ? (<Text style={{ fontSize: 11 }}>
-        //         （最低提现金额为<Text style={{ color: DesignRule.mainColor }}>{this.state.minCount}元</Text>）
-        //     </Text>) : null}
-        // </Text>);
-        // if((parseFloat(this.state.money) > parseFloat(user.availableBalance))){
-        //     tip2 = '输入金额超过可提现余额';
-        // }
-        // if(this.state.minCount !== null && !StringUtils.isEmpty(this.state.money)){
-        //     tip2 = parseFloat(this.state.money) % parseFloat(this.state.minCount) !== 0 ?  '输入金额不可提现' : '';
-        // }
-        //
-        // if(parseFloat(this.state.money) > singleCommit){
-        //     tip2 = `单笔提现不可超过￥${singleCommit}.00`;
-        // }
-        //
-        // if(this.state.balance !== null){
-        //     if(parseFloat(this.state.money) > parseFloat(user.availableBalance)){
-        //         tip2 = '提现金额已超出本月剩余提现额度'
-        //     }
-        // }
 
         let tip2;
         if (this.state.errorTip !== null) {
@@ -461,13 +437,15 @@ export default class WithdrawCashPage extends BasePage {
             tip2 = `可用余额${user.availableBalance}`;
         } else {
             if (!EmptyUtils.isEmpty(this.state.rate)) {
-                tip2 = `可提现，额外扣除￥${Math.ceil(accMul(this.state.rate / 100, parseFloat(this.state.money)) * 100) / 100}手续费(费率${this.state.rate}%)`;
+                // tip2 = `可提现，额外扣除￥${Math.ceil(accMul(this.state.rate / 100, parseFloat(this.state.money)) * 100) / 100}手续费(费率${this.state.rate}%)`;
+                let num = math.eval(`${this.state.rate} * ${this.state.money} / 100 `);
+                tip2 = `可提现，额外扣除￥${number_format(num,2,'.','','ceil')}服务费(费率${this.state.rate}%)`;
             } else {
                 tip2 = '可提现，无服务费';
             }
 
             if (!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee) && parseFloat(this.state.money) < this.state.whenLessAmount) {
-                tip2 = `可提现，额外扣除${this.state.fixedFee}元手续费`;
+                tip2 = `可提现，额外扣除${this.state.fixedFee}元服务费`;
             }
 
         }
@@ -595,7 +573,6 @@ export default class WithdrawCashPage extends BasePage {
         );
     };
 
-    //**********************************BusinessPart******************************************
 
     authNum=(text)=>{
         if(text === null){
