@@ -31,7 +31,6 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { TrackApi } from '../../utils/SensorsTrack';
-const Flag = {isFirst: true};
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -96,13 +95,11 @@ export default class ShowDetailPage extends BasePage {
                                 pageState: PageLoadingState.fail,
                                 errorMsg: error.msg || '获取详情失败'
                             });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 1
-                            });
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
                     } else {
+                        Toast.showLoading();
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             const { detail } = this.showDetailModule;
                             TrackApi.XiuChangDetails({
@@ -118,9 +115,6 @@ export default class ShowDetailPage extends BasePage {
                             this.setState({
                                 pageState: PageLoadingState.fail,
                                 errorMsg: error.msg || '获取详情失败'
-                            });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 1
                             });
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
@@ -200,7 +194,7 @@ export default class ShowDetailPage extends BasePage {
     _renderNormalTitle() {
         return <View style={styles.whiteNav} ref={(ref) => {
             this._whiteNavRef = ref;
-        }} opacity={0}>
+        }} opacity={1}>
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
                     <Image source={res.back}/>
@@ -249,8 +243,8 @@ export default class ShowDetailPage extends BasePage {
         }
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
-            return <View style={styles.container}><NetFailedView
-                netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}</View>;
+            return <View style={styles.container}>
+                <NetFailedView netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}</View>;
         }
 
         const { detail, isCollecting } = this.showDetailModule;
@@ -389,7 +383,6 @@ export default class ShowDetailPage extends BasePage {
                     <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
                 </TouchableOpacity>
             </View>
-            {this._renderNormalTitle()}
             <View style={styles.nav} ref={(ref) => {
                 this._blackNavRef = ref;
             }}>
