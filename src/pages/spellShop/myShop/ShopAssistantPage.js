@@ -23,7 +23,6 @@ import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from '../../../constants/DesignRule';
 import RouterMap from '../../../navigation/RouterMap';
-import StringUtils from '../../../utils/StringUtils';
 
 const sectionsArr = [
     'master',
@@ -37,12 +36,12 @@ export default class AssistantListPage extends BasePage {
 
     $navigationBarOptions = {
         title: '店员管理',
-        rightNavTitle: this.showRightItem ? '我要扩容' : ''
+        rightNavTitle: (this.params.storeData || {}).myStore ? '我要扩容' : '',
+        rightTitleStyle: { color: DesignRule.mainColor }
     };
 
     $NavBarRightPressed = () => {
-        const { packageCode } = this.params.storeData;
-        this.$navigate(RouterMap.TopicDetailPage, { activityType: 3, activityCode: packageCode });
+        this.$navigate(RouterMap.AddCapacityPage);
     };
 
     //contribution/tradeBalance本月收入
@@ -56,8 +55,6 @@ export default class AssistantListPage extends BasePage {
             list: [],
             searchText: ''
         };
-        let { packageCode, myStore } = this.params.storeData;
-        this.showRightItem = myStore && StringUtils.isNoEmpty(packageCode);
     }
 
     $getPageStateOptions = () => {

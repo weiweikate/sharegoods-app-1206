@@ -276,31 +276,28 @@ export default class TopicDetailPage extends BasePage {
                 netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
             });
         } else {
-            this.setState({
-                loadingState: PageLoadingState.success
-            }, () => {
-                ProductApi.getProductDetailByCode({
-                    code: prodCode
-                }).then((data) => {
-                    this.setState({
-                        data: data.data || {}
-                    }, () => {
-                        /*商品详情埋点*/
-                        const { prodCode, name, priceType, minPrice, maxPrice, groupPrice } = data.data || {};
-                        track(trackEvent.ProductDetail, {
-                            spuCode: prodCode,
-                            spuName: name,
-                            priceShareStore: groupPrice,
-                            pricePerCommodity: minPrice !== maxPrice ? `${minPrice}-${maxPrice}` : `${minPrice}`,
-                            priceType: priceType === 2 ? 100 : user.levelRemark
-                        });
-
-                        this._needPushToNormal();
-                        this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
+            ProductApi.getProductDetailByCode({
+                code: prodCode
+            }).then((data) => {
+                this.setState({
+                    loadingState: PageLoadingState.success,
+                    data: data.data || {}
+                }, () => {
+                    /*商品详情埋点*/
+                    const { prodCode, name, priceType, minPrice, maxPrice, groupPrice } = data.data || {};
+                    track(trackEvent.ProductDetail, {
+                        spuCode: prodCode,
+                        spuName: name,
+                        priceShareStore: groupPrice,
+                        pricePerCommodity: minPrice !== maxPrice ? `${minPrice}-${maxPrice}` : `${minPrice}`,
+                        priceType: priceType === 2 ? 100 : user.levelRemark
                     });
-                }).catch((error) => {
-                    this.$toastShow(error.msg);
+
+                    this._needPushToNormal();
+                    this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
                 });
+            }).catch((error) => {
+                this._error(error);
             });
         }
     };
@@ -688,7 +685,7 @@ export default class TopicDetailPage extends BasePage {
                                                break;
                                            case 3:
                                                setTimeout(() => {
-                                                   track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
+                                                   track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
                                                    QYChatUtil.qiYUChat();
                                                }, 100);
                                                break;
