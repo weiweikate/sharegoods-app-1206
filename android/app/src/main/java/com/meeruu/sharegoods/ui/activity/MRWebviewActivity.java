@@ -85,7 +85,7 @@ public class MRWebviewActivity extends BaseActivity implements OnWebCommonListen
     protected void doClick(View v) {
         switch (v.getId()) {
             case R.id.topdefault_leftbutton:
-                finish();
+                handleGoBack();
                 break;
             default:
                 break;

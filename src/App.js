@@ -31,12 +31,17 @@ import Storage from "./utils/storage";
 import { login, logout } from "./utils/SensorsTrack";
 import ScreenUtils from "./utils/ScreenUtils";
 import codePush from "react-native-code-push";
+<<<<<<< HEAD
 import { SpellShopFlag } from "./navigation/Tab";
 import chatModel from "./utils/QYModule/QYChatModel";
 import { QYChatTool,beginChatType } from "./utils/QYModule/QYChatTool";
 
 // import QYChatTool from "./pages/mine/page/helper/QYChatTool";
 
+=======
+import {SpellShopFlag} from './navigation/Tab';
+import WebViewBridge from "@mr/webview";
+>>>>>>> 4bf99e8a2c68f51a860a555421454d35f03de116
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -119,6 +124,7 @@ class App extends Component {
         });
         // 移除启动页
         bridge.removeLaunch();
+        this.preView && this.preView.isLoaded();
     }
 
     render() {
@@ -162,6 +168,7 @@ class App extends Component {
                     <DebugButton onPress={this.lianjie333} style={{ backgroundColor: "red" }}><Text
                         style={{ color: "white" }}>平台客服</Text></DebugButton>
                 }
+                <PreComponent ref={(ref)=>{this.preView = ref}}/>
             </View>
         );
     }
@@ -227,8 +234,29 @@ class App extends Component {
         global.$navigator.dispatch(navigationAction);
     };
 }
-
 export default codePush(App);
+
+class PreComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = ({ isLoaded: false });
+    }
+
+    isLoaded = () => {
+        this.setState({ isLoaded: true });
+    }
+    render() {
+        if (this.state.isLoaded === true) {
+            return <View />
+        }
+        return (
+            <View style={{ height: 2, width: 1 }}>
+                <WebViewBridge/>
+            </View>
+        )
+    }
+}
+
 
 const styles = StyleSheet.create({
     container: {
