@@ -48,7 +48,7 @@ export class XpDetailPage extends BasePage {
 
     _rightPressed = () => {
         this.DetailNavShowModal.show(this.xpDetailModel.messageCount, (item) => {
-            switch (item.index) {
+            switch (item.type) {
                 case 0:
                     if (!user.isLogin) {
                         this.$navigate(RouterMap.LoginPage);
