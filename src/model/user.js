@@ -1,11 +1,10 @@
 import { AsyncStorage } from 'react-native';
 import { action, computed, observable, autorun } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
-//import apiEnvironment from '../api/ApiEnvironment';
 import UserApi from './userApi';
 import bridge from '../utils/bridge';
-// import bridge from '../utils/bridge';
-// import JPushUtils from '../utils/JPushUtils';
+import { QYChatTool } from "../utils/QYModule/QYChatTool";
+
 
 const USERINFOCACHEKEY = 'UserInfo';
 const CARTDATA = 'cartData';
@@ -219,7 +218,6 @@ class User {
         AsyncStorage.setItem(USERTOKEN, token).catch(e => {
         });
     }
-
     // 设置用户信息
     @action
     saveUserInfo(info, saveToDisk = true) {
@@ -294,8 +292,8 @@ class User {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
         }
+        QYChatTool.initQYChat();
     }
-
     // 修改手机号
     @action
     changePhone(phone) {
@@ -466,6 +464,5 @@ class User {
 const user = new User();
 autorun(() => {
    user.token ? shopCartCacheTool.synchronousData() : null;
-
 });
 export default user;

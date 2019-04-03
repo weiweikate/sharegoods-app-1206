@@ -43,7 +43,7 @@ import DetailNavView from '../product/components/DetailNavView';
 import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MessageAPI from '../message/api/MessageApi';
-import QYChatUtil from '../mine/page/helper/QYChatModel';
+// import QYChatUtil from '../mine/page/helper/QYChatModel';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
 import ProductApi from '../product/api/ProductApi';
@@ -672,7 +672,7 @@ export default class TopicDetailPage extends BasePage {
                                }}
                                navRRight={() => {
                                    this.DetailNavShowModal.show(this.state.messageCount, (item) => {
-                                       switch (item.index) {
+                                       switch (item.type) {
                                            case 0:
                                                if (!user.isLogin) {
                                                    this.$navigate('login/login/LoginPage');
@@ -689,7 +689,7 @@ export default class TopicDetailPage extends BasePage {
                                            case 3:
                                                setTimeout(() => {
                                                    track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                                                   QYChatUtil.qiYUChat();
+                                                   // QYChatUtil.qiYUChat();
                                                }, 100);
                                                break;
                                        }
