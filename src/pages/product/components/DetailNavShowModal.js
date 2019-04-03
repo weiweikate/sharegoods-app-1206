@@ -7,7 +7,6 @@ import {
     Platform,
     Image
 } from 'react-native';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../components/ui/index';
 
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -20,7 +19,8 @@ const {
     message,
     detail_search,
     share,
-    detail_kefu
+    detail_kefu,
+    product_icon_home
 } = res;
 
 const bgHeight = ScreenUtils.autoSizeWidth(410 / 2.0);
@@ -34,16 +34,16 @@ export default class DetailNavShowModal extends Component {
             modalVisible: false, //是否显示
             confirmCallBack: null,
             messageCount: 0,
-            hiddenShare: false
+            showType: 1//1客服,2首页
         };
     }
 
-    show = (messageCount, confirmCallBack, hidden) => {
+    show = (messageCount, confirmCallBack, showType = 1) => {
         this.setState({
             messageCount: messageCount,
             modalVisible: true,
             confirmCallBack: confirmCallBack,
-            hiddenShare: hidden
+            showType: showType
         });
     };
 
@@ -54,10 +54,6 @@ export default class DetailNavShowModal extends Component {
     };
 
     _onPress = (item) => {
-        /*点击客服埋点*/
-        if (item.index === 3) {
-            track(trackEvent.contact, { origin: '在线', questionType: '商品详情' });
-        }
         this.setState({
             modalVisible: false
         });
@@ -71,18 +67,19 @@ export default class DetailNavShowModal extends Component {
 
     getImgArr = () => {
         let imgArr;
-        if (this.state.hiddenShare) {
+        if (this.state.showType === 2) {
             imgArr = [
-                { img: message, tittle: '消息', index: 0 },
-                { img: detail_search, tittle: '搜索', index: 1 },
-                { img: detail_kefu, tittle: '客服', index: 3 }
+                { img: message, tittle: '消息', type: 0 },
+                { img: product_icon_home, tittle: '首页', type: 4 },
+                { img: detail_search, tittle: '搜索', type: 1 },
+                { img: share, tittle: '分享', type: 2 }
             ];
         } else {
             imgArr = [
-                { img: message, tittle: '消息', index: 0 },
-                { img: detail_search, tittle: '搜索', index: 1 },
-                { img: share, tittle: '分享', index: 2 },
-                { img: detail_kefu, tittle: '客服', index: 3 }
+                { img: message, tittle: '消息', type: 0 },
+                { img: detail_search, tittle: '搜索', type: 1 },
+                { img: share, tittle: '分享', type: 2 },
+                { img: detail_kefu, tittle: '客服', type: 3 }
             ];
         }
         return imgArr;
@@ -94,13 +91,13 @@ export default class DetailNavShowModal extends Component {
                 flexDirection: 'row',
                 alignItems: 'center',
                 height: (bgHeight - 20) / this.getImgArr().length,
-                marginTop: item.index === 0 ? 16 : 0
+                marginTop: item.type === 0 ? 16 : 0
             }}
             onPress={() => this._onPress(item)}>
             <Image source={item.img} style={{ marginLeft: 23 }}/>
             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }}
                   allowFontScaling={false}>{item.tittle}</Text>
-            {item.index === 0 && this.state.messageCount > 0 ? <View style={{
+            {item.type === 0 && this.state.messageCount > 0 ? <View style={{
                 position: 'absolute', justifyContent: 'center', alignItems: 'center',
                 top: ScreenUtils.autoSizeWidth(9),
                 left: 23 + 12,
