@@ -120,8 +120,8 @@ export default class ServiceRowView extends Component {
     add0 = (m) => {
         return m < 10 ? "0" + m : m;
     };
-    format = (shijianchuo) => {
-        let newShijianchuo = shijianchuo + "";
+    format = (timeStamp) => {
+        let newShijianchuo = timeStamp + "";
         while (newShijianchuo.length < 13) {
             newShijianchuo = newShijianchuo + "0";
         }
@@ -132,7 +132,6 @@ export default class ServiceRowView extends Component {
         let d = time.getDate();
         let h = time.getHours();
         let mm = time.getMinutes();
-
         // 1554197149000
         console.log("huyufeng" + y + "m" + m + "d" + d);
         // huyufeng1970m1d19
@@ -145,15 +144,15 @@ export default class ServiceRowView extends Component {
         let currentMM = currentTime.getMinutes();
         console.log("huyufeng22" + "年" + currentY + "月" + currentM + "日" + currentD);
 
-        // if (y === currentY && m === currentM && d === currentD) {
-        //     if (h === currentH) {
-        //         return currentMM - mm + "分钟前";
-        //     } else {
-        //         return currentH - h + "小时前";
-        //     }
-        // } else {
+        if (y === currentY && m === currentM && d === currentD) {
+            if (h === currentH) {
+                return currentMM - mm + "分钟前";
+            } else {
+                return currentH - h + "小时前";
+            }
+        } else {
         return ("" + y).substr(2, 2) + "/" + this.add0(m) + "/" + this.add0(d);
-        // }
+        }
     };
 
 }
