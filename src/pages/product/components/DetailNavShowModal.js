@@ -13,6 +13,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
 import Modal from '../../../comm/components/CommModal';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const {
     detailShowBg,
@@ -57,6 +58,9 @@ export default class DetailNavShowModal extends Component {
         this.setState({
             modalVisible: false
         });
+        if (item.type === 3){//客服埋点
+            track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
+        }
         this.state.confirmCallBack && this.state.confirmCallBack(item);
     };
 

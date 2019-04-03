@@ -47,6 +47,7 @@ import MessageAPI from '../message/api/MessageApi';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
 import ProductApi from '../product/api/ProductApi';
+import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -688,8 +689,13 @@ export default class TopicDetailPage extends BasePage {
                                                break;
                                            case 3:
                                                setTimeout(() => {
-                                                   track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                                                   // QYChatUtil.qiYUChat();
+                                                   QYChatTool.beginQYChat({
+                                                       urlString: '',
+                                                       title: '平台客服',
+                                                       shopId: '',
+                                                       chatType: beginChatType.BEGIN_FROM_OTHER,
+                                                       data: {}
+                                                   });
                                                }, 100);
                                                break;
                                        }

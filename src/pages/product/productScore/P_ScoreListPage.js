@@ -16,7 +16,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import DetailNavShowModal from '../components/DetailNavShowModal';
 import DetailNavView from '../components/DetailNavView';
 import ProductApi from '../api/ProductApi';
-import { QYChatTool } from "../../../utils/QYModule/QYChatTool";
+import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
 
 const { p_score_smile, p_score_empty } = res.productScore;
 
@@ -193,7 +193,19 @@ export default class P_ScoreListPage extends BasePage {
                 break;
             case 'keFu':
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
-                QYChatUtil.qiYUChat();
+                const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
+                QYChatTool.beginQYChat({
+                    shopId: shopId,
+                    title: title,
+                    chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                    data: {
+                        title: name,
+                        desc: secondName,
+                        pictureUrlString: imgUrl,
+                        urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
+                        note: `¥${minPrice}-¥${maxPrice}`
+                    }
+                });
                 break;
             case 'buy':
                 if (!user.isLogin) {
@@ -283,11 +295,8 @@ export default class P_ScoreListPage extends BasePage {
                                            case 2:
                                                this.shareModal.open();
                                                break;
-                                           case 3:
-                                               setTimeout(() => {
-                                                   track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                                                   QYChatTool.beginQYChat();
-                                               }, 100);
+                                           case 4:
+                                               this.$navigateBackToHome();
                                                break;
                                        }
                                    });
