@@ -31,17 +31,15 @@ import Storage from "./utils/storage";
 import { login, logout } from "./utils/SensorsTrack";
 import ScreenUtils from "./utils/ScreenUtils";
 import codePush from "react-native-code-push";
-<<<<<<< HEAD
+
 import { SpellShopFlag } from "./navigation/Tab";
 import chatModel from "./utils/QYModule/QYChatModel";
 import { QYChatTool,beginChatType } from "./utils/QYModule/QYChatTool";
 
 // import QYChatTool from "./pages/mine/page/helper/QYChatTool";
 
-=======
 import {SpellShopFlag} from './navigation/Tab';
 import WebViewBridge from "@mr/webview";
->>>>>>> 4bf99e8a2c68f51a860a555421454d35f03de116
 
 if (__DEV__) {
     const modules = require.getModules();
