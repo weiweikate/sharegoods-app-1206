@@ -607,7 +607,7 @@ export default class ProductDetailPage extends BasePage {
                                            this.$navigateBackToHome();
                                            break;
                                    }
-                               });
+                               }, 2);
                            }}/>
             <SectionList onScroll={this._onScroll}
                          ListHeaderComponent={this._renderListHeader}

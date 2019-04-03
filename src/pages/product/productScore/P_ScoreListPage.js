@@ -303,7 +303,7 @@ export default class P_ScoreListPage extends BasePage {
                                                this.$navigateBackToHome();
                                                break;
                                        }
-                                   });
+                                   }, 2);
                                }}/>
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderFlatList)}
                 <DetailBottomView bottomViewAction={this._bottomViewAction}
