@@ -18,7 +18,11 @@ const LoginModular = {
         "name": "LoginSuccess",
         "params": { "loginMethod": 3 }
     },
-
+    "localPhoneNumLogin": {
+        "des":"本机号码一键登录",
+        "name":"LoginSuccess",
+        "params":{ "loginMethod": 4 }
+    },
     "onKeyLoginPage": {
         "des": "一键登录页面埋点",
         "name": "OnKeyLoginPage",
@@ -31,23 +35,23 @@ const LoginModular = {
         "params": {}
     },
     "codeGetVerifySMS": {
-        "des": '获取手机号验证码,手机号登录',
+        "des": "获取手机号验证码,手机号登录",
         "name": "GetVerifySMS",
         "params": { "pagePosition": 3 }
     },
     "registGetVerifySMS": {
-        "des": '获取手机号验证码,注册验证码',
+        "des": "获取手机号验证码,注册验证码",
         "name": "GetVerifySMS",
         "params": { "pagePosition": 2 }
     },
     "otherGetVerifySMS": {
-        "des": '其他验证码',
+        "des": "其他验证码",
         "name": "GetVerifySMS",
         "params": { "pagePosition": 100 }
     },
 
     "phoneSignUpSuccess": {
-        "des": '手机号注册',
+        "des": "手机号注册",
         "name": "SignUpSuccess",
         "params": {
             "signUpMethod": 2, "signUpPlatform": 1
@@ -55,7 +59,7 @@ const LoginModular = {
         }
     },
     "wxSignUpSuccess": {
-        "des": '微信注册',
+        "des": "微信注册",
         "name": "SignUpSuccess",
         "params": {
             "signUpMethod": 1,
@@ -64,4 +68,4 @@ const LoginModular = {
     }
 };
 
-export default LoginModular
+export default LoginModular;

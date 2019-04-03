@@ -195,7 +195,7 @@ export default class MyHelperPage extends BasePage {
 
         let params = {
             urlString: "",
-            title: "秀购客服",
+            title: "平台客服",
             shopId: "",
             chatType: beginChatType.BEGIN_FROM_OTHER,
             data: {}

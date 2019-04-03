@@ -29,6 +29,7 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
+        TrackApi.localPhoneNumLogin()
         if (result.unionid == null) {
             //未绑定微信
             phoneBindWx();

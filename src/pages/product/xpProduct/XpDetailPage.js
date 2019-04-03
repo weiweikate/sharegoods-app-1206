@@ -24,7 +24,7 @@ import RouterMap from '../../../navigation/RouterMap';
 import DetailHeaderScoreView from '../components/DetailHeaderScoreView';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import CommShareModal from '../../../comm/components/CommShareModal';
-import { QYChatTool } from "../../../utils/QYModule/QYChatTool";
+import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
 
 const { arrow_right_black } = productRes.button;
 const { detail_more_down } = productRes.detailNavView;
@@ -63,10 +63,24 @@ export class XpDetailPage extends BasePage {
                     this.shareModal.open();
                     break;
                 case 3:
-                    setTimeout(() => {
-                        track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                       QYChatTool.beginQYChat()
-                    }, 100);
+                    if (!user.isLogin) {
+                        this.$navigate('login/login/LoginPage');
+                        return;
+                    }
+                    const { pData } = this.xpDetailModel;
+                    const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
+                    QYChatTool.beginQYChat({
+                        shopId: shopId,
+                        title: title,
+                        chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                        data: {
+                            title: name,
+                            desc: secondName,
+                            pictureUrlString: imgUrl,
+                            urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
+                            note: `¥${minPrice}-¥${maxPrice}`
+                        }
+                    });
                     break;
             }
         });
