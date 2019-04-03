@@ -37,11 +37,10 @@ import { PageLoadingState, renderViewByLoadingState } from '../../components/pag
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 // import res from '../res';
 import MessageApi from '../message/api/MessageApi';
-// import QYChatUtil from '../mine/page/helper/QYChatModel';
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import ProductApi from './api/ProductApi';
-import { beginChatType, QYChatTool } from "../../utils/QYModule/QYChatTool";
+import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -295,8 +294,24 @@ export default class ProductDetailPage extends BasePage {
                 }
                 break;
             case 'keFu':
+                if (!user.isLogin) {
+                    this.$navigate('login/login/LoginPage');
+                    return;
+                }
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
-                QYChatUtil.qiYUChat();
+                const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = this.state.data || {};
+                QYChatTool.beginQYChat({
+                    shopId: shopId,
+                    title: title,
+                    chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                    data: {
+                        title: name,
+                        desc: secondName,
+                        pictureUrlString: imgUrl,
+                        urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
+                        note: `¥${minPrice}-¥${maxPrice}`
+                    }
+                });
                 break;
             case 'buy':
                 if (!user.isLogin) {
@@ -559,7 +574,6 @@ export default class ProductDetailPage extends BasePage {
     _renderContent = () => {
 
         const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, shareMoney } = this.state.data || {};
-        const { shopId, title } = this.state.data || {};
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -589,27 +603,11 @@ export default class ProductDetailPage extends BasePage {
                                        case 2:
                                            this.shareModal.open();
                                            break;
-                                       case 3:
-                                           setTimeout(() => {
-                                               track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                                               // QYChatUtil.qiYUChat();
-
-                                               QYChatTool.beginQYChat({
-                                                   shopId:shopId,
-                                                   title:title,
-                                                   chatType: beginChatType.BEGIN_FROM_PRODUCT,
-                                                   data:{
-                                                       title:'网易七鱼',
-                                                       desc:'网易七鱼是网易旗下一款专注于解决企业与客户沟通的客服系统产品。',
-                                                       pictureUrlString:'http://qiyukf.com/main/res/img/index/barcode.png',
-                                                       urlString:'http://qiyukf.com/',
-                                                       note:'￥10000',
-                                                   }
-                                               })
-                                           }, 100);
+                                       case 4:
+                                           this.$navigateBackToHome();
                                            break;
                                    }
-                               });
+                               }, 2);
                            }}/>
             <SectionList onScroll={this._onScroll}
                          ListHeaderComponent={this._renderListHeader}
