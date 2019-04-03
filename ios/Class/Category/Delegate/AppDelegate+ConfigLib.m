@@ -68,7 +68,14 @@
   
 }
 -(void)configQYLib{
+  
   [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"秀购"];
+  [QYCustomUIConfig sharedInstance].customMessageTextColor=[UIColor whiteColor];
+  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [UIImage imageNamed:@"qipao"];
+  [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [UIImage imageNamed:@"qipao"];
+//  [QYCustomUIConfig sharedInstance].showShopEntrance = YES;
+//  [QYCustomUIConfig sharedInstance].shopEntranceText = @"转平台";
+  
 }
 #pragma mark - delegate
 //支持目前所有iOS系统
