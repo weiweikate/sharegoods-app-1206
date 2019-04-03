@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 import { track, trackEvent } from '../../utils/SensorsTrack';
+
 const { px2dp } = ScreenUtils;
 import { homeModule } from './Modules';
 import DesignRule from '../../constants/DesignRule';
@@ -46,7 +47,7 @@ export const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={()
 
 export default class GoodsCell extends Component {
     _goodsAction(data) {
-        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeForyou))
+        track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeForyou));
         let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         const { navigate } = this.props;
         let params = homeModule.paramsNavigate(data);
@@ -55,20 +56,20 @@ export default class GoodsCell extends Component {
 
     render() {
         const { data } = this.props;
-        const {itemData} = data
+        const { itemData } = data;
 
         if (!data || data.length === 0) {
             return null;
         }
         return <View style={[styles.cell]}>
             <Goods goods={itemData[0]} press={() => this._goodsAction(itemData[0])}/>
-            <View style={{width: px2dp(5)}}/>
+            <View style={{ width: px2dp(5) }}/>
             {
                 itemData[1]
-                ?
-                <Goods goods={itemData[1]} press={() => this._goodsAction(itemData[1])}/>
-                :
-                <View style={[styles.container, {backgroundColor: ''}]}/>
+                    ?
+                    <Goods goods={itemData[1]} press={() => this._goodsAction(itemData[1])}/>
+                    :
+                    <View style={[styles.container, { backgroundColor: '' }]}/>
             }
         </View>;
     }
@@ -138,7 +139,7 @@ let styles = StyleSheet.create({
     dis: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(12),
-        marginTop: px2dp(10),
+        marginTop: px2dp(8),
         marginLeft: px2dp(7),
         marginRight: px2dp(7)
     },
@@ -160,7 +161,7 @@ let styles = StyleSheet.create({
     },
     unit: {
         color: DesignRule.mainColor,
-        marginBottom: px2dp(5),
+        marginBottom: px2dp(8),
         marginLeft: px2dp(7)
     },
     money: {

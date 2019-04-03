@@ -1,4 +1,4 @@
-import { InteractionManager, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -12,7 +12,13 @@ import { MRText as Text} from '../../../../components/ui';
 import { observer } from 'mobx-react';
 import VerifyCodeInput from '../../components/VerifyCodeInput'
 import Styles from '../../../login/style/InputPhoneNum.Style';
+import RouterMap from '../../../../navigation/RouterMap';
 const {px2dp} = ScreenUtils;
+export const PageType = {
+    setSalePay: '设置交易密码',
+    changeSalePay: '修改交易密码',
+    setLoginPW: '设置登录密码',
+};
 @observer
 export default class JudgePhonePage extends BasePage {
 
@@ -28,10 +34,7 @@ export default class JudgePhonePage extends BasePage {
 
 
     componentDidMount() {
-
-        // InteractionManager.runAfterInteractions(() => {
            this._onGetCode();
-        // });
     }
 
     _render() {
@@ -90,8 +93,6 @@ export default class JudgePhonePage extends BasePage {
         );
     }
 
-
-
     _onGetCode = () => {
         let downTime = this.state.downTime;
         let tel = user.phone;
@@ -104,8 +105,18 @@ export default class JudgePhonePage extends BasePage {
         }
         //获取验证码
         let that = this;
+        let SMSType = '';
+        let pageType = this.params.title;
+        let {setSalePay, changeSalePay, setLoginPW} = PageType
+        if (pageType === setSalePay){
+            SMSType = SMSTool.SMSType.SetSaleType;
+        } else if (pageType === changeSalePay) {
+            SMSType = SMSTool.SMSType.ForgetSaleType;
+        }else if (pageType === setLoginPW) {
+            SMSType = SMSTool.SMSType.setLoginPW;
+        }
         if (StringUtils.checkPhone(tel)) {
-            SMSTool.sendVerificationCode(this.params.title === '设置交易密码' ? SMSTool.SMSType.SetSaleType : SMSTool.SMSType.ForgetSaleType, tel).then((data) => {
+            SMSTool.sendVerificationCode(SMSType, tel).then((data) => {
                 that.setState({downTime: 60});
                 bridge.$toast('验证码已发送请注意查收');
                 (new TimeDownUtils()).startDown((time) => {
@@ -132,42 +143,59 @@ export default class JudgePhonePage extends BasePage {
         if (StringUtils.isEmpty(code) || code.length !== 4) {
             return;
         }
-        if (StringUtils.checkPhone(tel)) {
-            // 验证
-            this.isLoadding = true;
-            MineAPI.judgeCode({
-                verificationCode: code,
-                phone: tel
-            }).then((data) => {
-                this.isLoadding = false;
-                if (user.hadSalePassword) {//设置过交易密码， 修改支付密码
-                    if (user.idcard) {//认证过身份证
-                        this.$navigate('mine/account/JudgeIDCardPage');
-                    } else {
-                        // 跳转到实名认证页面
-                        this.$navigate('mine/userInformation/IDVertify2Page', {
-                            from: 'salePwd'
-                        });
-                    }
-                } else {
-                    // 第一次设置交易密码
-                    this.$navigate('mine/account/SetOrEditPayPwdPage', {
-                        title: '设置交易密码',
-                        tips: '请设置6位纯数字交易支付密码',
-                        from: 'set',
-                        oldPwd: '',
-                        code: code
-                    });
-                }
-            }).catch((data) => {
-                bridge.$toast(data.msg);
-                this.isLoadding = false;
-            });
-        } else {
+        if (!StringUtils.checkPhone(tel)) {
             this.isLoadding = false;
             bridge.$toast('手机格式不对');
             return;
         }
+
+        let pageType = this.params.title;
+        let {setSalePay, changeSalePay, setLoginPW} = PageType
+        if (pageType === setSalePay || pageType === changeSalePay) {
+
+            this.judgePhoneSalePay(tel, code);
+        }else if (pageType === setLoginPW) {
+            this.judgePhoneLoginPW(tel, code);
+        }
+
     };
+    //验证登录密码密码短信验证码
+    judgePhoneLoginPW = (tel, code) => {
+        this.$navigate(RouterMap.SetPhonePwdPage);
+    }
+    //验证支付密码短信验证码
+    judgePhoneSalePay = (tel, code) => {
+        // 验证
+        this.isLoadding = true;
+        MineAPI.judgeCode({
+            verificationCode: code,
+            phone: tel
+        }).then((data) => {
+            this.isLoadding = false;
+            // 原来用title来判断是设置交易\修改密码, 这里用本地user数据来判断
+            if (user.hadSalePassword) {//设置过交易密码， 修改支付密码
+                if (user.idcard) {//认证过身份证
+                    this.$navigate('mine/account/JudgeIDCardPage');
+                } else {
+                    // 跳转到实名认证页面
+                    this.$navigate('mine/userInformation/IDVertify2Page', {
+                        from: 'salePwd'
+                    });
+                }
+            } else {
+                // 第一次设置交易密码
+                this.$navigate('mine/account/SetOrEditPayPwdPage', {
+                    title: '设置交易密码',
+                    tips: '请设置6位纯数字交易支付密码',
+                    from: 'set',
+                    oldPwd: '',
+                    code: code
+                });
+            }
+        }).catch((data) => {
+            bridge.$toast(data.msg);
+            this.isLoadding = false;
+        });
+    }
 }
 

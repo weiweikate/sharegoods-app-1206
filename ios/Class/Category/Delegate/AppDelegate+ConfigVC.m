@@ -44,7 +44,6 @@
   JRBaseNavVC * nav = [[JRBaseNavVC alloc] initWithRootViewController:rootViewController];
   self.window.rootViewController = nav;
   [self.window makeKeyAndVisible];
-  [NSThread sleepForTimeInterval:3];
 //  [self createDebugSuspensionButton];
 }
 

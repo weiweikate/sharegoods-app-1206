@@ -8,8 +8,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import { RefreshList,  UIText } from '../../../../components/ui';
-// import StringUtils from '../../../../utils/StringUtils';
+import { RefreshList, UIText } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -29,7 +28,7 @@ const account_bg = res.bankCard.account_bg;
 const account_bg_white = res.bankCard.account_bg_white;
 /** 先放在，不改*/
 import topicShowClose from '../../../topic/res/topicShowClose.png';
-import StringUtils from "../../../../utils/StringUtils";
+import StringUtils from '../../../../utils/StringUtils';
 
 @observer
 export default class WaitingForWithdrawCashPage extends BasePage {
@@ -54,19 +53,17 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
-                <View style={{ flex: 1, backgroundColor: 'white' }}>
+                {this.state.viewData && this.state.viewData.length > 0 ? null : this.renderReHeader()}
                 <RefreshList
                     data={this.state.viewData}
                     ListHeaderComponent={this.renderReHeader}
-                    ListFooterComponent={this.renderFooter}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无数据！'}
+                    emptyTip={'暂无明细数据～'}
                 />
-                </View>
                 {this._accountInfoRender()}
                 {this.renderShowCommand()}
             </View>
@@ -156,20 +153,27 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         backgroundColor: 'white',
                         width: ScreenUtils.px2dp(290),
                         alignItems: 'center',
-                        justifyContent:'center',
-                        borderRadius: 5,
+                        justifyContent: 'center',
+                        borderRadius: 5
                     }}>
 
-                            <Image source={res.cashAccount.title_card} style={{width:55,height:55,marginTop:15,marginBottom:15}}/>
-                            <Text style={{ color: "#000000", fontSize: ScreenUtils.px2dp(14)}}
-                                  allowFontScaling={false}>待提现账户说明</Text>
+                        <Image source={res.cashAccount.title_card}
+                               style={{ width: 55, height: 55, marginTop: 15, marginBottom: 15 }}/>
+                        <Text style={{ color: '#000000', fontSize: ScreenUtils.px2dp(14) }}
+                              allowFontScaling={false}>待提现账户说明</Text>
 
-                            <ImageBackground style={{marginTop:15,alignItems:'center',justifyContent:'center',width:ScreenUtils.px2dp(160),height:45}}
-                                             source={res.cashAccount.shuoming_icon} resizeMode={'contain'}>
-                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: ScreenUtils.px2dp(11)}}>
-                            要认真看哦
-                        </Text>
-                            </ImageBackground>
+                        <ImageBackground style={{
+                            marginTop: 15,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: ScreenUtils.px2dp(160),
+                            height: 45
+                        }}
+                                         source={res.cashAccount.shuoming_icon} resizeMode={'contain'}>
+                            <Text style={{ color: DesignRule.textColor_instruction, fontSize: ScreenUtils.px2dp(11) }}>
+                                要认真看哦
+                            </Text>
+                        </ImageBackground>
                         <View style={{ marginLeft: ScreenUtils.px2dp(22), marginRight: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 color: DesignRule.textColor_mainTitle,
@@ -181,7 +185,11 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 fontSize: ScreenUtils.px2dp(13)
                             }} allowFontScaling={false}>{`待提现账户为用户推广预期的奖励明细，可通过查看待提现账户查询收益情况。`}</Text>
                         </View>
-                        <View style={{ marginLeft: ScreenUtils.px2dp(22), marginRight: ScreenUtils.px2dp(22),marginBottom:20 }}>
+                        <View style={{
+                            marginLeft: ScreenUtils.px2dp(22),
+                            marginRight: ScreenUtils.px2dp(22),
+                            marginBottom: 20
+                        }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_mainTitle,
@@ -191,11 +199,12 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
-                            }} allowFontScaling={false}>{`你的推广成功后会获得平台的预计收益，而预计收益会因最后推广结果被调整，最终推广成功后，待提现账户金额会自动提现至您的余额账户。`}</Text>
+                            }}
+                                  allowFontScaling={false}>{`你的推广成功后会获得平台的预计收益，而预计收益会因最后推广结果被调整，最终推广成功后，待提现账户金额会自动提现至您的余额账户。`}</Text>
                         </View>
                     </View>
                     <TouchableOpacity style={{
-                        marginTop:15
+                        marginTop: 15
                     }} onPress={this._onPress}>
                         <Image style={{ width: 40, height: 40 }} source={topicShowClose}/>
                     </TouchableOpacity>
@@ -206,37 +215,57 @@ export default class WaitingForWithdrawCashPage extends BasePage {
     }
 
     renderReHeader = () => {
-        if (this.state.viewData && this.state.viewData.length > 0) {
-            return (
-                <View style={{ marginLeft: 15, marginTop: 52, marginBottom: 20,flexDirection:'row',alignItems:'center' }}>
-                    <View style={{backgroundColor:DesignRule.mainColor,width:2,height:8,borderRadius:1,marginRight:5}}/>
-                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
-                </View>
-            );
-        } else {
-            return null;
-        }
-
+        return (
+            <View style={{
+                paddingLeft: 15,
+                paddingTop: 52,
+                paddingBottom: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: 'white'
+            }}>
+                <View style={{
+                    backgroundColor: DesignRule.mainColor,
+                    width: 2,
+                    height: 8,
+                    borderRadius: 1,
+                    marginRight: 5
+                }}/>
+                <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}>账户明细</Text>
+            </View>
+        );
     };
+
     renderItem = ({ item, index }) => {
         return (
             <View style={{
-                height: 40,
+                height: 60,
                 flexDirection: 'row',
                 alignItems: 'center',
                 width: ScreenUtils.width,
-                marginBottom: 20
+                paddingBottom: 20,
+                backgroundColor: 'white'
             }}>
                 <Image source={item.iconImage} style={{ marginLeft: 15, width: 40, height: 40 }}/>
-                <View style={{  marginLeft: 17, marginRight: 18, flex: 1,alignItems: 'center', justifyContent: 'space-between' ,flexDirection:'row' }}>
+                <View style={{
+                    marginLeft: 17,
+                    marginRight: 18,
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row'
+                }}>
                     <View style={{ justifyContent: 'center' }}>
                         <Text style={{ fontSize: 14, color: DesignRule.textColor_secondTitle }}>{item.type}</Text>
                         <Text style={{
                             fontSize: 12, color: DesignRule.textColor_instruction
                         }}>{item.time}</Text>
                     </View>
-                    <View style={{ justifyContent: 'center',alignItems:'flex-end'}}>
-                            <Text style={{ fontSize: 17, color: DesignRule.textColor_mainTitle }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
+                    <View style={{ justifyContent: 'center', alignItems: 'flex-end' }}>
+                        <Text style={{
+                            fontSize: 17,
+                            color: DesignRule.textColor_mainTitle
+                        }}>{StringUtils.formatMoneyString(item.capital, false)}</Text>
                         <UIText value={item.realBalance === null ? '待入账：?' : `已入账：` + item.realBalance}
                                 style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}/>
                     </View>
@@ -244,11 +273,6 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             </View>
         );
     };
-    renderFooter = () => {
-        return(
-            <View style={{height:30,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
-        )
-    }
 
     //**********************************BusinessPart******************************************
     componentDidMount() {

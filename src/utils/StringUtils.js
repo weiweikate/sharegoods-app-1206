@@ -280,6 +280,10 @@ function parsingRoute(s) {
     return result;
 }
 
+function isNumber(n) {
+    return  !isNaN(parseFloat(n))&&isFinite(n);
+}
+
 
 export default {
     isEmpty,
@@ -300,7 +304,8 @@ export default {
     encryptPhone,
     formatPhoneNumber,
     parsingRoute,
-    formatDecimal
+    formatDecimal,
+    isNumber
 };
 
 
