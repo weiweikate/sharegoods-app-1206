@@ -235,7 +235,6 @@ class SettingPage extends BasePage {
                         homeModule.loadHomeList();
                         MineApi.signOut();
                         // 退出七鱼
-                        // QYChatUtil.qiYULogout();
                         QYChatTool.qiYULogout()
                         this.$loadingDismiss();
                         // 神策退出登录
