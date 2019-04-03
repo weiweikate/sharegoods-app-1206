@@ -5,6 +5,8 @@ const QY_MSG_CHANGE = "QY_MSG_CHANGE";
 const { JRQYService } = NativeModules;
 const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 
+const platformShopId = 'hzmrwlyxgs'
+
 class QYChatModel {
 
     // @action
@@ -18,7 +20,17 @@ class QYChatModel {
     saveSupplierListData = (allMsgData) => {
         if (allMsgData &&
             allMsgData.sessionListData ) {
-            this.sessionListData = allMsgData.sessionListData;
+            let currentArr = allMsgData.sessionListData || [];
+            let tempArr = [];
+            currentArr.map((item)=>{
+                if (item.shopId === platformShopId || (item.shopId && item.shopId.length === 0)) {
+                    tempArr.unshift(item);
+                }else {
+                    tempArr.push(item)
+                }
+            })
+
+            this.sessionListData = tempArr;
         }
     };
 
