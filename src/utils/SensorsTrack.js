@@ -30,6 +30,7 @@ const productTrack = {
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {
     QrCodeShareto: 'QrCodeShareto',//分享二维码
+    ClickLotteryPage: 'ClickLotteryPage',//首页抽奖
 }
 
 const mineEvent = {
