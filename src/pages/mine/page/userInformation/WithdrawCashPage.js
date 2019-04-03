@@ -97,7 +97,7 @@ export default class WithdrawCashPage extends BasePage {
         this.whenLessAmount = null;
         this.getLastBankInfoSuccess = false;
         this.getRateSuccess = false;
-
+        this.purMoney='';
     }
 
     //*********************************ViewPart******************************************
@@ -290,10 +290,10 @@ export default class WithdrawCashPage extends BasePage {
                     height: 48,
                     marginLeft: 48,
                     marginRight: 48,
-                    backgroundColor: (StringUtils.isNoEmpty(this.state.card_no) && parseFloat(this.state.money) && this.state.errorTip === null )? DesignRule.mainColor : DesignRule.textColor_placeholder,
+                    backgroundColor: (StringUtils.isNoEmpty(this.state.card_no) && parseFloat(this.state.money) && this.state.errorTip === null) ? DesignRule.mainColor : DesignRule.textColor_placeholder,
                     borderRadius: 25
                 }}
-                disabled={!(StringUtils.isNoEmpty(this.state.card_no) && parseFloat(this.state.money) && this.state.errorTip === null )}
+                disabled={!(StringUtils.isNoEmpty(this.state.card_no) && parseFloat(this.state.money) && this.state.errorTip === null)}
                 onPress={() => this.commit()}/>
         );
     };
@@ -309,10 +309,10 @@ export default class WithdrawCashPage extends BasePage {
         }
         let multipleTip = this.state.multiple ? `以及￥${this.state.minCount}的倍数` : '';
 
-        let tip = null;
-        if (!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee)) {
-            tip = `提现金额不满${this.state.whenLessAmount}元，则扣除${this.state.fixedFee}元手续费`;
-        }
+        // let tip = null;
+        // if (!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee)) {
+        //     tip = `提现金额不满${this.state.whenLessAmount}元，则扣除${this.state.fixedFee}元手续费`;
+        // }
 
         return (
             <View style={{ flexDirection: 'row', marginLeft: DesignRule.margin_page, marginTop: 5 }}>
@@ -334,9 +334,9 @@ export default class WithdrawCashPage extends BasePage {
                     {this.state.minCount ? <MRText style={styles.tipTextStyle}>
                         {`${tip3Index}.提现为￥${this.state.minCount}起${multipleTip}`}
                     </MRText> : null}
-                    {tip ? <MRText style={styles.tipTextStyle}>
-                        {`${tip3Index+1}.${tip}`}
-                    </MRText> : null}
+                    {/*{tip ? <MRText style={styles.tipTextStyle}>*/}
+                    {/*{`${tip3Index+1}.${tip}`}*/}
+                    {/*</MRText> : null}*/}
 
                 </View>
             </View>
@@ -345,11 +345,9 @@ export default class WithdrawCashPage extends BasePage {
 
     commitAll = () => {
         if (this.state.balance !== null) {
-            if (user.availableBalance <= singleCommit && singleCommit <= this.state.balance) {
+            if (user.availableBalance <= this.state.balance && user.availableBalance <= singleCommit) {
                 this.setState({ money: `${user.availableBalance}` });
-            } else if (user.availableBalance <= this.state.balance && this.state.balance <= singleCommit) {
-                this.setState({ money: `${user.availableBalance}` });
-            } else if (this.state.balance <= user.availableBalance && user.availableBalance <= singleCommit) {
+            } else if (this.state.balance <= user.availableBalance && this.state.balance <= singleCommit) {
                 this.setState({ money: `${this.state.balance}` });
             } else {
                 this.setState({ money: `${singleCommit}` });
@@ -365,6 +363,21 @@ export default class WithdrawCashPage extends BasePage {
     };
 
     checkError = (money) => {
+        if(money === null){
+            this.setState({ errorTip: null });
+            return;
+        }
+
+        if(money.length === 0){
+            this.setState({ errorTip: null });
+            return;
+        }
+
+        if (!StringUtils.isNumber(money)) {
+            this.setState({ errorTip: '输入金额不可提现' });
+            return;
+        }
+
         if ((parseFloat(money) > parseFloat(user.availableBalance))) {
             this.setState({ errorTip: '输入金额超过可提现余额' });
             return;
@@ -442,14 +455,14 @@ export default class WithdrawCashPage extends BasePage {
         // }
 
         let tip2;
-        if(this.state.errorTip !== null){
+        if (this.state.errorTip !== null) {
             tip2 = this.state.errorTip;
-        }else if(!parseFloat(this.state.money)){
-            tip2 = `可用余额${user.availableBalance}`
-        }else {
-            if(!EmptyUtils.isEmpty(this.state.rate)){
-                tip2 = `可提现，额外扣除￥${Math.ceil(accMul(this.state.rate / 100, parseFloat(this.state.money)) * 100) / 100}手续费(费率${this.state.rate}%)`
-            }else {
+        } else if (!parseFloat(this.state.money)) {
+            tip2 = `可用余额${user.availableBalance}`;
+        } else {
+            if (!EmptyUtils.isEmpty(this.state.rate)) {
+                tip2 = `可提现，额外扣除￥${Math.ceil(accMul(this.state.rate / 100, parseFloat(this.state.money)) * 100) / 100}手续费(费率${this.state.rate}%)`;
+            } else {
                 tip2 = '可提现，无服务费';
             }
 
@@ -518,7 +531,7 @@ export default class WithdrawCashPage extends BasePage {
                     paddingHorizontal: DesignRule.margin_page
                 }}>
                     <UIText value={tip2} style={{
-                        color:this.state.errorTip ?  DesignRule.mainColor : DesignRule.textColor_secondTitle,
+                        color: this.state.errorTip ? DesignRule.mainColor : DesignRule.textColor_secondTitle,
                         fontSize: DesignRule.fontSize_threeTitle
                     }}/>
                 </View>
@@ -584,9 +597,25 @@ export default class WithdrawCashPage extends BasePage {
 
     //**********************************BusinessPart******************************************
 
+    authNum=(text)=>{
+        if(text === null){
+            return true
+        }
+        if(text.length === 0){
+            return true;
+        }
+        if(/^-?\d+\.?\d{0,2}$/.test(text)){
+            return true
+        }else {
+            return false
+        }
+    }
+
     onChangeText = (text) => {
-        this.checkError(text);
-        this.setState({ money: text });
+        if(this.authNum(text)){
+            this.checkError(text);
+            this.setState({ money: text });
+        }
     };
     commit = () => {
         if (parseFloat(this.state.money) > parseFloat(user.availableBalance)) {

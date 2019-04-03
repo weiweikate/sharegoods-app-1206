@@ -5,16 +5,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -77,8 +74,8 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         startScrollEvent = new onStartScrollEvent();
         endScrollEvent = new onEndScrollEvent();
         adapter = new ShowGroundAdapter();
-        adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         adapter.setPreLoadNumber(3);
+        adapter.setHasStableIds(true);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerView.setLayoutManager(layoutManager);
@@ -87,16 +84,14 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE: {
+                    case RecyclerView.SCROLL_STATE_IDLE:
                         endScrollEvent.init(view.getId());
                         eventDispatcher.dispatchEvent(endScrollEvent);
-                    }
-                    break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING: {
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
                         startScrollEvent.init(view.getId());
                         eventDispatcher.dispatchEvent(startScrollEvent);
-                    }
-                    break;
+                        break;
                     default:
                         break;
                 }
@@ -139,7 +134,6 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                         eventDispatcher.dispatchEvent(itemPressEvent);
                     }
                 }
-
             }
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));

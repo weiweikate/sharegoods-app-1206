@@ -24,7 +24,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="5dp"
                 android:clickable="true"
-                android:paddingLeft="10dp"
+                android:paddingLeft="13.5dp"
                 android:paddingRight="7.5dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_go_back" />
@@ -73,7 +73,7 @@
                 android:maxWidth="220dp"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="17sp" />
 
             <ProgressBar
                 android:id="@+id/top_progressBar"
@@ -85,7 +85,6 @@
                 android:indeterminate="false"
                 android:indeterminateDrawable="@drawable/top_loading"
                 android:visibility="gone" />
-
 
         </RelativeLayout>
 
