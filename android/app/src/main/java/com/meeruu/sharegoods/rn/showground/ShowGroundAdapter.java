@@ -16,8 +16,8 @@ import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
 
-    public static final int Featured = 1;
-    public static final int Hot = 2;
+    //    public static final int Featured = 1;
+//    public static final int Hot = 2;
     private static final int Recommend = 3;
     private static final int New = 4;
     private final int realWidth;
@@ -33,14 +33,14 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
     @Override
     protected void convert(BaseViewHolder helper, NewestShowGroundBean.DataBean item) {
-        SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
+        final SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
         String userTag = (String) userIcon.getTag();
         String userUrl = item.getUserHeadImg();
         if (!TextUtils.equals(userUrl, userTag)) {
             ImageLoadUtils.loadCircleNetImage(userUrl, userIcon);
             userIcon.setTag(userUrl);
         }
-        SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
+        final SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
         float width = 1;
         float height = 1;
         String imgUrl;
@@ -53,17 +53,22 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             height = item.getImgHigh();
             imgUrl = item.getImg();
         }
+        if (TextUtils.isEmpty(imgUrl)) {
+            imgUrl = "res://" + imageView.getContext().getPackageName() + "/" + R.drawable.bg_app_img;
+        }
         int realHeight = (int) ((height / width) * realWidth);
-        if (realHeight > 1) {
-            String tag = (String) imageView.getTag();
-            if (!TextUtils.equals(imgUrl, tag)) {
-                imageView.setTag(imgUrl);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
-                params.width = realWidth;
-                params.height = realHeight;
-                imageView.setLayoutParams(params);
-                ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
-            }
+        if (realHeight <= 1) {
+            realHeight = realWidth;
+        }
+        String tag = (String) imageView.getTag();
+
+        if (!TextUtils.equals(imgUrl, tag)) {
+            imageView.setTag(imgUrl);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+            params.width = realWidth;
+            params.height = realHeight;
+            imageView.setLayoutParams(params);
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
         }
 
         TextView name = helper.getView(R.id.showground_item_name);
