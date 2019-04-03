@@ -148,10 +148,10 @@ class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: "red" }}><Text
                             style={{ color: "white" }}>调试页</Text></DebugButton> : null
                 }
-                {/*{*/}
-                    {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
-                        {/*style={{ color: "white" }}>链接供应商111</Text></DebugButton>*/}
-                {/*}*/}
+                {
+                    <DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text
+                        style={{ color: "white" }}>链接供应商111</Text></DebugButton>
+                }
                 {/*{*/}
                     {/*<DebugButton onPress={this.lianjie222} style={{ backgroundColor: "red" }}><Text*/}
                         {/*style={{ color: "white" }}>链接供应商222</Text></DebugButton>*/}

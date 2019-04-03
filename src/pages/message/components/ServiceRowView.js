@@ -104,13 +104,14 @@ export default class ServiceRowView extends Component {
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: "row", width: 65 }}>
+                    <View style={{ flexDirection: "column", width: 65 ,height:50,paddingTop:5}}>
                         <UIText
                             value={
                                 this.format(item.lastMessageTimeStamp)
                             }
-                            style={{ fontSize: 12, color: DesignRule.textColor_placeholder, textangle: "center" }}
+                            style={{ fontSize: 12, color: DesignRule.textColor_placeholder, textAlign: "right" }}
                         />
+
                     </View>
                 </TouchableOpacity>
             </View>
@@ -146,7 +147,7 @@ export default class ServiceRowView extends Component {
 
         if (y === currentY && m === currentM && d === currentD) {
             if (h === currentH) {
-                return currentMM - mm + "分钟前";
+                return currentMM - mm > 0 ? currentMM - mm +"分钟前":"刚刚";
             } else {
                 return currentH - h + "小时前";
             }
