@@ -70,7 +70,6 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             imageView.setLayoutParams(params);
             ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
         }
-
         TextView name = helper.getView(R.id.showground_item_name);
         name.setText(item.getUserName());
 

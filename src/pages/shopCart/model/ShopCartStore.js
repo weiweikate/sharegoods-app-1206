@@ -3,11 +3,12 @@ import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
 import MineApi from '../../mine/api/MineApi';
 import user from '../../../model/user';
-import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import shopCartCacheTool from './ShopCartCacheTool';
+import { QYChatTool } from "../../../utils/QYModule/QYChatTool";
 
 // import testData from './testData';
 class ShopCartStore {
+
     needSelectGoods = [];
     @observable
     isRefresh = false;
@@ -524,7 +525,7 @@ class ShopCartStore {
                     //清空购物车
                     this.data = [];
                     MineApi.signOut();
-                    QYChatUtil.qiYULogout();
+                    QYChatTool.qiYULogout();
                     shopCartCacheTool.addGoodItem(item);
                 } else {
                     bridge.$toast(error.msg);
