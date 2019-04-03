@@ -43,12 +43,10 @@ export default class DownPricePage extends BasePage {
 
     constructor(props) {
         super(props);
-
         this.dataModel = new TotalTopicDataModel();
         this.state = {
             selectNav: 0
         };
-
         InteractionManager.runAfterInteractions(() => {
             //初次进入loading
             if (this.dataModel.isShowLoading) {

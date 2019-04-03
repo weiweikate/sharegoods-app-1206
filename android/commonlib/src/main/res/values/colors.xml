@@ -42,4 +42,5 @@
     <color name="bg_img">#f5f5f5</color>
     <!-- item点击后颜色改变透明度80% -->
     <color name="item_click_tran80">#f0f0f0</color>
+    <color name="app_main_bg">#F7F7F7</color>
 </resources>

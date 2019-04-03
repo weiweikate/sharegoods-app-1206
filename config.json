@@ -102,7 +102,7 @@
         },
         "杨飞": {
             "name": "杨飞",
-            "host": "http://172.16.10.109:18096/gateway",
+            "host": "http://172.16.10.48:18096/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "顾嘉豪": {

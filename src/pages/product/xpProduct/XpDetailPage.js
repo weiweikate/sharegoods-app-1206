@@ -19,12 +19,12 @@ import SelectionPage from '../SelectionPage';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import DetailNavShowModal from '../components/DetailNavShowModal';
-import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import user from '../../../model/user';
 import RouterMap from '../../../navigation/RouterMap';
 import DetailHeaderScoreView from '../components/DetailHeaderScoreView';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import { QYChatTool } from "../../../utils/QYModule/QYChatTool";
 
 const { arrow_right_black } = productRes.button;
 const { detail_more_down } = productRes.detailNavView;
@@ -48,7 +48,7 @@ export class XpDetailPage extends BasePage {
 
     _rightPressed = () => {
         this.DetailNavShowModal.show(this.xpDetailModel.messageCount, (item) => {
-            switch (item.index) {
+            switch (item.type) {
                 case 0:
                     if (!user.isLogin) {
                         this.$navigate(RouterMap.LoginPage);
@@ -65,7 +65,7 @@ export class XpDetailPage extends BasePage {
                 case 3:
                     setTimeout(() => {
                         track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                        QYChatUtil.qiYUChat();
+                       QYChatTool.beginQYChat()
                     }, 100);
                     break;
             }

@@ -154,7 +154,7 @@ export default class MyCouponsItems extends Component {
     };
     commitTokenCoin = () => {
         bridge.showLoading();
-        this.props.useCoupons(this.state.tokenCoinNum);
+        this.props.useCoupons(this.state.tokenCoinNum||0);
         this.setState({ showDialogModal: false });
     };
     reduceTokenCoin = () => {

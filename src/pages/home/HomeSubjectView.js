@@ -206,7 +206,7 @@ let styles = StyleSheet.create({
         marginHorizontal: px2dp(2.5),
         color: DesignRule.mainColor,
         fontSize: px2dp(12),
-        marginBottom: px2dp(10)
+        marginBottom: px2dp(2)
     },
     moreView: {
         width: px2dp(100),
