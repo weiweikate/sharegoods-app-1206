@@ -58,25 +58,39 @@ export default class ServiceRowView extends Component {
                         }
 
                         <View style={{ flex: 1 }}>
-                            <View style={{flexDirection:'row'}}>
-                            <UIText value={item.sessionName}
-                                    numberOfLines={1}
-                                    style={[{
-                                        fontSize: DesignRule.fontSize_secondTitle,
-                                        marginLeft: DesignRule.margin_page,
-                                        color: DesignRule.textColor_mainTitle,
-                                        marginTop: 15
-                                    }]}/>
-                                <UIText
-                                value={'官方'}
+                            <View style={{ flexDirection: "row" }}>
+                                <UIText value={item.sessionName}
+                                        numberOfLines={1}
+                                        style={[{
+                                            fontSize: DesignRule.fontSize_secondTitle,
+                                            marginLeft: DesignRule.margin_page,
+                                            color: DesignRule.textColor_mainTitle,
+                                            marginTop: 15
+                                        }]}/>
+
+                                <View
                                 style={{
                                     marginTop:15,
-                                    fontSize: DesignRule.fontSize_secondTitle,
-                                    padding:5,
+                                    borderRadius:8,
+                                    backgroundColor: "#F2F2F2",
+                                    alignItems:'center',
+                                    justifyContent:'center',
+                                    marginLeft:5,
                                 }}
-                                />
-                            </View>
+                                >
+                                    <UIText
+                                        value={item.shopId === "hzmrwlyxgs" ? "官方" : "品牌"}
+                                        style={{
+                                            fontSize: 8,
+                                            color: "#999",
+                                            paddingLeft:5,
+                                            paddingRight:5,
+                                        }}
+                                    />
+                                </View>
 
+
+                            </View>
 
                             <UIText value={item.lastMessageText}
                                     numberOfLines={1}
@@ -90,12 +104,12 @@ export default class ServiceRowView extends Component {
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: "row", width: 65, }}>
+                    <View style={{ flexDirection: "row", width: 65 }}>
                         <UIText
                             value={
                                 this.format(item.lastMessageTimeStamp)
                             }
-                            style={{ fontSize: 12, color: DesignRule.textColor_placeholder,textangle:'center' }}
+                            style={{ fontSize: 12, color: DesignRule.textColor_placeholder, textangle: "center" }}
                         />
                     </View>
                 </TouchableOpacity>
@@ -125,7 +139,7 @@ export default class ServiceRowView extends Component {
 
         let currentTime = new Date();
         let currentY = currentTime.getFullYear();
-        let currentM = currentTime.getMonth()+1;
+        let currentM = currentTime.getMonth() + 1;
         let currentD = currentTime.getDate();
         let currentH = currentTime.getHours();
         let currentMM = currentTime.getMinutes();
@@ -138,7 +152,7 @@ export default class ServiceRowView extends Component {
         //         return currentH - h + "小时前";
         //     }
         // } else {
-            return ("" + y).substr(2, 2) + "/" + this.add0(m) + "/" + this.add0(d);
+        return ("" + y).substr(2, 2) + "/" + this.add0(m) + "/" + this.add0(d);
         // }
     };
 
