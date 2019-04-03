@@ -672,7 +672,7 @@ export default class TopicDetailPage extends BasePage {
                                }}
                                navRRight={() => {
                                    this.DetailNavShowModal.show(this.state.messageCount, (item) => {
-                                       switch (item.index) {
+                                       switch (item.type) {
                                            case 0:
                                                if (!user.isLogin) {
                                                    this.$navigate('login/login/LoginPage');

@@ -1,6 +1,7 @@
 package com.meeruu.sharegoods.rn.showground;
 
 import android.text.TextUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -11,15 +12,15 @@ import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
-import com.meeruu.sharegoods.rn.showground.widgets.ScaleImageView;
 
 
 public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.DataBean, BaseViewHolder> {
 
-    public static final int Featured = 1;
-    public static final int Hot = 2;
-    public static final int Recommend = 3;
-    public static final int New = 4;
+    //    public static final int Featured = 1;
+//    public static final int Hot = 2;
+    private static final int Recommend = 3;
+    private static final int New = 4;
+    private final int realWidth;
 
 
     private final int radius = DensityUtils.dip2px(5);
@@ -27,23 +28,22 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
 
     public ShowGroundAdapter() {
         super(R.layout.item_showground);
+        realWidth = (ScreenUtils.getScreenWidth() - 40) / 2;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, NewestShowGroundBean.DataBean item) {
-
-        SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
-        if (!TextUtils.isEmpty(item.getUserHeadImg())) {
-            ImageLoadUtils.loadCircleNetImage(item.getUserHeadImg(), userIcon);
-        } else {
-            userIcon.setImageResource(R.drawable.bg_app_user);
+        final SimpleDraweeView userIcon = helper.getView(R.id.showground_item_userIcon);
+        String userTag = (String) userIcon.getTag();
+        String userUrl = item.getUserHeadImg();
+        if (!TextUtils.equals(userUrl, userTag)) {
+            ImageLoadUtils.loadCircleNetImage(userUrl, userIcon);
+            userIcon.setTag(userUrl);
         }
-
-        ScaleImageView imageView = helper.getView(R.id.showground_item_image);
+        final SimpleDraweeView imageView = helper.getView(R.id.showground_item_image);
         float width = 1;
         float height = 1;
         String imgUrl;
-
         if (item.getGeneralize() == New || item.getGeneralize() == Recommend) {
             width = item.getCoverImgWide();
             height = item.getCoverImgHigh();
@@ -53,12 +53,21 @@ public class ShowGroundAdapter extends BaseQuickAdapter<NewestShowGroundBean.Dat
             height = item.getImgHigh();
             imgUrl = item.getImg();
         }
-
-        int realWidth = (ScreenUtils.getScreenWidth() - 40) / 2;
+        if (TextUtils.isEmpty(imgUrl)) {
+            imgUrl = "res://" + imageView.getContext().getPackageName() + "/" + R.drawable.bg_app_img;
+        }
         int realHeight = (int) ((height / width) * realWidth);
+        if (realHeight <= 1) {
+            realHeight = realWidth;
+        }
+        String tag = (String) imageView.getTag();
 
-        if (realHeight > 1) {
-            imageView.setInitSize(realWidth, realHeight);
+        if (!TextUtils.equals(imgUrl, tag)) {
+            imageView.setTag(imgUrl);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+            params.width = realWidth;
+            params.height = realHeight;
+            imageView.setLayoutParams(params);
             ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, arr_raduis);
         }
 
