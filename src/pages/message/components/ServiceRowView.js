@@ -58,6 +58,7 @@ export default class ServiceRowView extends Component {
                         }
 
                         <View style={{ flex: 1 }}>
+                            <View style={{flexDirection:'row'}}>
                             <UIText value={item.sessionName}
                                     numberOfLines={1}
                                     style={[{
@@ -66,6 +67,15 @@ export default class ServiceRowView extends Component {
                                         color: DesignRule.textColor_mainTitle,
                                         marginTop: 15
                                     }]}/>
+                                <UIText
+                                value={'官方'}
+                                style={{
+                                    marginTop:15,
+                                    fontSize: DesignRule.fontSize_secondTitle,
+                                    padding:5,
+                                }}
+                                />
+                            </View>
 
 
                             <UIText value={item.lastMessageText}

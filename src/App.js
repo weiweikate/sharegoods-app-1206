@@ -37,8 +37,6 @@ import chatModel from "./utils/QYModule/QYChatModel";
 import { QYChatTool,beginChatType } from "./utils/QYModule/QYChatTool";
 
 // import QYChatTool from "./pages/mine/page/helper/QYChatTool";
-
-import {SpellShopFlag} from './navigation/Tab';
 import WebViewBridge from "@mr/webview";
 
 if (__DEV__) {
