@@ -25,6 +25,7 @@ import ImageLoad from '@mr/image-placeholder';
 import GuideApi from './GuideApi';
 import { navigate } from '../../navigation/RouterMap';
 import { homeModule } from '../home/Modules';
+import { trackEvent, track } from '../../utils/SensorsTrack';
 
 export default class LuckyIcon extends React.Component {
 
@@ -90,6 +91,8 @@ export default class LuckyIcon extends React.Component {
             this.open();
             return;
         }
+
+        track(trackEvent.ClickLotteryPage,{lotteryModuleSource: '1'}) //0：未知 1:app首页 100：其他
         let data = this.state.data;
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
