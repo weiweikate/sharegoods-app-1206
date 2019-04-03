@@ -688,6 +688,10 @@ export default class TopicDetailPage extends BasePage {
                                                this.shareModal.open();
                                                break;
                                            case 3:
+                                               if (!user.isLogin) {
+                                                   this.$navigate('login/login/LoginPage');
+                                                   return;
+                                               }
                                                setTimeout(() => {
                                                    QYChatTool.beginQYChat({
                                                        urlString: '',

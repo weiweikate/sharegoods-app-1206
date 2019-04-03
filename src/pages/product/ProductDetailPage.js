@@ -294,6 +294,10 @@ export default class ProductDetailPage extends BasePage {
                 }
                 break;
             case 'keFu':
+                if (!user.isLogin) {
+                    this.$navigate('login/login/LoginPage');
+                    return;
+                }
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
                 const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = this.state.data || {};
                 QYChatTool.beginQYChat({

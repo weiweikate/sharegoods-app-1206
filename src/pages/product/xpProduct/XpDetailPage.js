@@ -63,6 +63,10 @@ export class XpDetailPage extends BasePage {
                     this.shareModal.open();
                     break;
                 case 3:
+                    if (!user.isLogin) {
+                        this.$navigate('login/login/LoginPage');
+                        return;
+                    }
                     const { pData } = this.xpDetailModel;
                     const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
                     QYChatTool.beginQYChat({

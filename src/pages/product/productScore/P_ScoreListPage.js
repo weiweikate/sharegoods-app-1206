@@ -192,6 +192,10 @@ export default class P_ScoreListPage extends BasePage {
                 }
                 break;
             case 'keFu':
+                if (!user.isLogin) {
+                    this.$navigate('login/login/LoginPage');
+                    return;
+                }
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
                 const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
                 QYChatTool.beginQYChat({
