@@ -294,6 +294,10 @@ export default class ProductDetailPage extends BasePage {
                     this.shareModal.open();
                 }
                 break;
+            case 'keFu':
+                track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
+                QYChatUtil.qiYUChat();
+                break;
             case 'buy':
                 if (!user.isLogin) {
                     this.$navigate('login/login/LoginPage');
@@ -571,7 +575,7 @@ export default class ProductDetailPage extends BasePage {
                            }}
                            navRRight={() => {
                                this.DetailNavShowModal.show(this.state.messageCount, (item) => {
-                                   switch (item.index) {
+                                   switch (item.type) {
                                        case 0:
                                            if (!user.isLogin) {
                                                this.gotoLoginPage();
