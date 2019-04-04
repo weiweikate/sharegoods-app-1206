@@ -14,7 +14,10 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import UIText from '../../components/ui/UIText';
 import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
-
+import { observer } from 'mobx-react';
+import { autorun } from "mobx";
+import HomeModalManager from './model/HomeModalManager';
+@observer
 export default class VersionUpdateModal extends React.Component {
 
     constructor(props) {
@@ -26,22 +29,23 @@ export default class VersionUpdateModal extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.updateData) {
+
+    autoRun = autorun(() => {
+        let versionData = HomeModalManager.versionData
+        if (versionData) {
             if (Platform.OS !== 'ios') {
-                this.currProgress = 0;
                 this.setState({
-                    positiveTxt: nextProps.apkExist ? '立即安装' : '立即更新',
-                    updateContent: nextProps.apkExist ? '是否安装V' + nextProps.updateData.version + '版本？' : '是否更新为V' + nextProps.updateData.version + '版本？'
+                    positiveTxt: versionData.apkExist ? '立即安装' : '立即更新',
+                    updateContent: versionData.apkExist ? '是否安装V' + versionData.version + '版本？' : '是否更新为V' + versionData.version + '版本？'
                 });
             } else {
                 this.setState({
                     positiveTxt: '立即更新',
-                    updateContent: '是否更新为V' + nextProps.updateData.version + '版本？'
+                    updateContent: '是否更新为V' + versionData.version + '版本？'
                 });
             }
         }
-    }
+    });
 
     componentWillMount() {
         if (Platform.OS !== 'ios') {
@@ -57,27 +61,21 @@ export default class VersionUpdateModal extends React.Component {
                 this.setState({
                     progress: this.currProgress,
                     positiveTxt: '立即安装',
-                    updateContent: '是否安装V' + this.props.updateData.version + '版本？'
+                    updateContent: '是否安装V' + HomeModalManager.versionData.version + '版本？'
                 });
             });
         }
     }
 
-    open = () => {
-        this.modal && this.modal.open();
-    };
-
     render() {
+        let versionData = HomeModalManager.versionData || {};
         return (<CommModal
             focusable={false}
             animationType='fade'
-            ref={(ref) => {
-                this.modal = ref;
-            }}
             onRequestClose={() => {
-                this.props.onRequestClose && this.props.onRequestClose();
+                HomeModalManager.closeUpdate();
             }}
-            visible={this.props.showUpdate}>
+            visible={HomeModalManager.isShowUpdate}>
             <View style={{
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -115,14 +113,13 @@ export default class VersionUpdateModal extends React.Component {
                     <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/> : null}
                 <View style={{ flexDirection: 'row' }}>
                     {
-                        this.props.forceUpdate ? null :
+                        versionData.forceUpdate ? null :
                             <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <TouchableOpacity
                                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
                                     onPress={() => {
                                         // 缓存状态
-                                        AsyncStorage.setItem('isToUpdate', this.props.updateData.version);
-                                        this.props.onDismiss();
+                                        HomeModalManager.closeUpdate();
                                     }}>
                                     <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                                 </TouchableOpacity>
@@ -138,7 +135,7 @@ export default class VersionUpdateModal extends React.Component {
                                 height: 45,
                                 backgroundColor: DesignRule.mainColor,
                                 borderBottomRightRadius: 10,
-                                borderBottomLeftRadius: this.props.forceUpdate ? 10 : 0
+                                borderBottomLeftRadius: versionData.forceUpdate ? 10 : 0
                             }}
                             onPress={() => {
                                 this.toUpdate();
@@ -152,31 +149,32 @@ export default class VersionUpdateModal extends React.Component {
     }
 
     toUpdate = () => {
+        let updateData  = HomeModalManager.versionData;
         if (Platform.OS === 'ios') {
             // 前往appstore
-            if (StringUtils.isEmpty(this.props.updateData.url)) {
+            if (StringUtils.isEmpty(updateData.url)) {
                 Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
             } else {
-                Linking.openURL(this.props.updateData.url);
+                Linking.openURL(updateData.url);
             }
         } else {
 
-            if (this.props.updateData.forceUpdate === 1) {
+            if (updateData.forceUpdate === 1) {
                 // 强制更新app
-                NativeModules.commModule.updateable(JSON.stringify(this.props.updateData), true, (exist) => {
+                NativeModules.commModule.updateable(JSON.stringify(updateData), true, (exist) => {
                     if (this.state.positiveTxt !== '立即安装') {
                         this.setState({
                             showBtn: false,
                             positiveTxt: exist ? '立即安装' : '立即更新',
-                            updateContent: exist ? '是否安装V' + this.props.updateData.version + '版本？' : '是否更新为V' + this.props.updateData.version + '版本？'
+                            updateContent: exist ? '是否安装V' + updateData.version + '版本？' : '是否更新为V' + updateData.version + '版本？'
                         });
                     }
                 });
             } else {
                 // 关闭弹框
-                this.props.onDismiss();
+                HomeModalManager.closeUpdate();
                 // 更新app
-                NativeModules.commModule.updateable(JSON.stringify(this.props.updateData), false, null);
+                NativeModules.commModule.updateable(JSON.stringify(updateData), false, null);
             }
         }
     };

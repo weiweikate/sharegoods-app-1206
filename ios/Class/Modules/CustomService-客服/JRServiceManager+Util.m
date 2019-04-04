@@ -91,7 +91,15 @@
   
   QYCommodityInfo *commodityInfo = [[QYCommodityInfo alloc] init];
   if ([chatData[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
-    commodityInfo = nil;
+    commodityInfo.title = infoData[@"title"];
+    commodityInfo.desc = infoData[@"desc"];
+    commodityInfo.pictureUrlString = infoData[@"pictureUrlString"];
+    commodityInfo.urlString = infoData[@"urlString"];
+    commodityInfo.note = infoData[@"note"];
+    commodityInfo.show = YES;
+    commodityInfo.actionText = @"发送商品";
+    commodityInfo.actionTextColor = [UIColor redColor];
+    commodityInfo.sendByUser = YES;
   }else if([chatData[@"chatType"] integerValue] == BEGIN_FROM_PRODUCT){
     commodityInfo.title = infoData[@"title"];
     commodityInfo.desc = infoData[@"desc"];

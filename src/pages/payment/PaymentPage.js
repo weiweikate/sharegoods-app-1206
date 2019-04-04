@@ -51,6 +51,7 @@ export default class PaymentPage extends BasePage {
                     this._zeroPay()
                     return
                 }
+                //是否选择余额
                 const {selectedBalace} = payment
                 if (!selectedBalace) {
                     this.$navigate('payment/ChannelPage')
@@ -91,7 +92,6 @@ export default class PaymentPage extends BasePage {
                 this.$navigate('payment/ChannelPage', {remainMoney: (payment.amounts - user.availableBalance).toFixed(2)})
                 return
             }
-
             let replace = NavigationActions.replace({
                 key: this.props.navigation.state.key,
                 routeName: 'payment/PaymentResultPage',
@@ -126,7 +126,7 @@ export default class PaymentPage extends BasePage {
                 { cancelable: false }
             )
         }, 600)
-        
+
     }
 
     _goToOrder(index) {

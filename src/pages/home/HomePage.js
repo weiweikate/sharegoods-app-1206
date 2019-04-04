@@ -2,7 +2,7 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    Platform, AsyncStorage, DeviceEventEmitter, InteractionManager,
+    DeviceEventEmitter, InteractionManager,
     RefreshControl, BackHandler
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -23,7 +23,6 @@ import HomeCategoryView, { categoryHeight } from './HomeCategoryView';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModal from './VersionUpdateModal';
-import StringUtils from '../../utils/StringUtils';
 import DesignRule from '../../constants/DesignRule';
 import homeModalManager from './model/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
@@ -38,7 +37,7 @@ import { subjectModule } from './HomeSubjectModel';
 import HomeTitleView from './HomeTitleView';
 import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModal from './HomeMessageModal';
+import HomeMessageModal, { HomeAdModal } from './HomeMessageModal';
 import HomeLimitGoView from './HomeLimitGoView'
 import { limitGoModule } from './HomeLimitGoModel'
 
@@ -156,8 +155,7 @@ class HomePage extends BasePage {
                 }
                 console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
-                    // this.shareTaskIcon.queryTask();
-                    this.guideModal.getUserRecord();
+
                     this.luckyIcon.getLucky();
                 }
             }
@@ -170,7 +168,7 @@ class HomePage extends BasePage {
                 homeTabManager.setHomeFocus(false);
                 const { state } = payload;
                 if (state && state.routeName === 'HomePage') {
-                    this.guideModal.cancelUserRecord();
+                    homeModalManager.leaveHome();
                 }
                 BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
             }
@@ -181,7 +179,8 @@ class HomePage extends BasePage {
             payload => {
                 homeTabManager.setHomeFocus(true);
                 homeModule.homeFocused(true);
-                this.showModal();
+                homeModalManager.entryHome()
+                homeModalManager.requestGuide();
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             }
         );
@@ -194,10 +193,10 @@ class HomePage extends BasePage {
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
 
         InteractionManager.runAfterInteractions(() => {
-            this._homeModaldata();
             user.getToken().then(() => {//让user初始化完成
                 this.luckyIcon.getLucky();
-                this.guideModal.getUserRecord();
+                homeModalManager.requestGuide();
+                homeModalManager.requestData();
                 this.loadMessageCount();
             });
         });
@@ -223,18 +222,6 @@ class HomePage extends BasePage {
         return this.state.forceUpdate;
     };
 
-    _homeModaldata = () => {
-        // 检测版本更新
-        // this.getVersion();
-        homeModalManager.getVersion().then((data) => {
-            homeModalManager.getMessage().then(data => {
-                if (!this.props.isFocused) {
-                    return;
-                }
-                this.showModal();
-            });
-        });
-    };
 
     loadMessageCount = () => {
         if (user.token) {
@@ -253,81 +240,6 @@ class HomePage extends BasePage {
             });
         }
     };
-
-    showModal = () => {
-        if (EmptyUtils.isEmpty(homeModalManager.versionData)) {
-            this._showMessageOrActivity();
-        } else {
-            //展示升级提示
-            this.showUpdateModal();
-        }
-    };
-
-    _showMessageOrActivity = () => {
-        //公告弹窗
-        if (!this.state.showUpdate) {
-            this.showMessageModal();
-        }
-    };
-
-    showUpdateModal = async () => {
-        if (!EmptyUtils.isEmpty(homeModalManager.versionData)) {
-            let upVersion = '';
-            try {
-                upVersion = await AsyncStorage.getItem('isToUpdate');
-            } catch (error) {
-
-            }
-            let resp = homeModalManager.versionData;
-            if (resp.data.upgrade === 1) {
-                let showUpdate = resp.data.forceUpdate === 1 ? true : ((StringUtils.isEmpty(upVersion) || upVersion !== resp.data.version) ? true : false);
-                if (Platform.OS !== 'ios') {
-                    bridge.isApkExist(resp.data.version, (exist) => {
-                        this.setState({
-                            updateData: resp.data,
-                            showUpdate: showUpdate,
-                            forceUpdate: resp.data.forceUpdate === 1,
-                            apkExist: exist
-                        });
-                    });
-                } else {
-                    this.setState({
-                        updateData: resp.data,
-                        showUpdate: showUpdate,
-                        forceUpdate: resp.data.forceUpdate === 1
-                    });
-                }
-                if (showUpdate) {
-                    this.updateModal && this.updateModal.open();
-                } else {
-                    this._showMessageOrActivity();
-                }
-            } else {
-                this._showMessageOrActivity();
-            }
-        }
-    };
-
-
-    showMessageModal() {
-        if (!EmptyUtils.isEmpty(homeModalManager.homeMessage)) {
-            let resp = homeModalManager.homeMessage;
-            let currStr = new Date().getTime() + '';
-            AsyncStorage.getItem('lastMessageTime').then((value) => {
-                if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
-                        this.messageModal && this.messageModal.open();
-                        this.setState({
-                            showMessage: true,
-                            messageData: resp.data.data
-                        });
-                        homeModalManager.setHomeMessage(null);
-                    }
-                }
-            });
-            AsyncStorage.setItem('lastMessageTime', currStr);
-        }
-    }
 
     _keyExtractor = (item, index) => item.id + '';
 
@@ -372,20 +284,9 @@ class HomePage extends BasePage {
     _onRefresh() {
         homeModule.loadHomeList(true);
         this.loadMessageCount();
-        this.luckyIcon.getLucky();
-        this.guideModal.getUserRecord();
+        this.luckyIcon.getLucky()
 
     }
-
-    getMessageData = () => {
-
-        MessageApi.queryNotice({ page: 1, pageSize: 10, type: 100 }).then(resp => {
-            if (!EmptyUtils.isEmptyArr(resp.data.data)) {
-                homeModalManager.setHomeMessage(resp);
-                this.showModal();
-            }
-        });
-    };
 
     _onListViewScroll = (event) => {
         if (!this.props.isFocused) {
@@ -438,34 +339,10 @@ class HomePage extends BasePage {
                 <LuckyIcon ref={(ref) => {
                     this.luckyIcon = ref;
                 }}/>
-                <HomeMessageModal messageData={this.state.messageData} showMessage={this.state.showMessage}
-                                  onRequestClose={() => {
-                                      this.setState({
-                                          showMessage: false
-                                      });
-                                  }}/>
-                <GuideModal ref={(ref) => {
-                    this.guideModal = ref;
-                }}
-                            callback={() => {
-                                this.recyclerListView && this.recyclerListView.scrollToTop();
-                            }}
-                            versionUpdate={this.state.showUpdate}
-                />
-                <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
-                                    apkExist={this.state.apkExist}
-                                    onRequestClose={() => {
-                                        homeModalManager.setVersion(null);
-                                        this.setState({ showUpdate: false });
-                                    }}
-                                    ref={(ref) => {
-                                        this.updateModal = ref;
-                                    }}
-                                    forceUpdate={this.state.forceUpdate} onDismiss={() => {
-                    this.setState({ showUpdate: false });
-                    homeModalManager.setVersion(null);
-
-                }}/>
+                <HomeAdModal/>
+                <HomeMessageModal/>
+                <GuideModal/>
+                <VersionUpdateModal />
             </View>
         );
     }
