@@ -14,6 +14,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.ProductDetail;
 import com.qiyukf.unicorn.api.Unicorn;
@@ -30,6 +31,10 @@ public class QYChatModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "JRQYService";
+    private static final int BEGIN_FROM_OTHER = 0;//从我的地方发起客服 会直接对接平台客服
+    private static final int BEGIN_FROM_PRODUCT = 1;//从产品详情发起客服
+    private static final int BEGIN_FROM_ORDER = 2;//从订单发起客服
+    private static final int BEGIN_FROM_MESSAGE = 3;//从消息列表发起客服
 
     /**
      * 构造方法必须实现
@@ -126,12 +131,28 @@ public class QYChatModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void beginQYChat(ReadableMap params) {
         String title = params.getString("title");
+        double type = params.getDouble("chatType");
+        int chatType = (int) type;
+        switch (chatType) {
+            case BEGIN_FROM_MESSAGE:
+                SPCacheUtils.remove("shopId");
+                break;
+            case BEGIN_FROM_ORDER:
+                break;
+            case BEGIN_FROM_OTHER:
+                SPCacheUtils.remove("shopId");
+                break;
+            case BEGIN_FROM_PRODUCT:
+                break;
+            default:
+                break;
+        }
         /**
          * 设置访客来源，标识访客是从哪个页面发起咨询的，用于客服了解用户是从什么页面进入。
          * 三个参数分别为：来源页面的url，来源页面标题，来源页面额外信息（保留字段，暂时无用）。
          * 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
          */
-        ConsultSource source = new ConsultSource("mine/helper", "帮助与客服", "");
+        ConsultSource source = new ConsultSource("mine/helper", title, "");
         source.shopId = params.getString("shopId");
         ReadableMap map = params.getMap("data");
         if (map.hasKey("urlString")) {
