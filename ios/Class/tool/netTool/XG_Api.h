@@ -10,5 +10,6 @@
 #define XG_Api_h
 
 #define ShowApi_query   @"/discover/query@GET"
+#define AdApi_query   @"/advertising/queryAdvertisingList"
 
 #endif /* Header_h */

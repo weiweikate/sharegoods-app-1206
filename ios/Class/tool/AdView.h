@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL isLoadJS;// js 已经加载完成
 
 - (void)addToWindow;
++ (void)preImage;
 //- (void)removeFromWindow;
 @end
 

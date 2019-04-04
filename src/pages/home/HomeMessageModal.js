@@ -149,7 +149,8 @@ export  class HomeAdModal extends PureComponent {
     }
 
     render(){
-
+        let  AdData = HomeModalManager.AdData || {}
+        let image = AdData.image || '';
         return (
             <CommModal ref={(ref) => {
                 this.messageModal = ref;
@@ -158,13 +159,13 @@ export  class HomeAdModal extends PureComponent {
                        visible={HomeModalManager.isShowAd && HomeModalManager.isHome}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <View style={{ flex: 1 }}/>
-                    <TouchableWithoutFeedback onPress={this.gotoPage}>
-                        <ImageLoad style={{width: autoSizeWidth(310), height: autoSizeWidth(410), backgroundColor: 'red'}}
-                                   source={{ uri: '' }}
+                    <TouchableOpacity onPress={()=> {this.gotoPage()}}>
+                        <ImageLoad style={{width: autoSizeWidth(310), height: autoSizeWidth(410)}}
+                                   source={{ uri: image }}
                                    resizeMode={'contain'}
                         >
                         </ImageLoad>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                     <View style={{ flex: 1 }}>
                         <TouchableOpacity onPress={()=> {HomeModalManager.closeAd()}} style = {{marginTop: autoSizeWidth(25)}}>
                             <Image source={closeImg} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
