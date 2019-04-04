@@ -22,13 +22,13 @@ class HomeModalManager {
     /** 控制新手引导*/
     @observable
     isShowGuide = false;
-    needShowGuide = true;
+    needShowGuide = false;
     @observable
     guideData = {};
     /** 控制公告*/
     @observable
     isShowNotice = false;
-    needShowNotice = true;
+    needShowNotice = false;
     @observable
     noticeData = null;
     /** 控制首页广告*/
@@ -137,7 +137,6 @@ class HomeModalManager {
                     }
                 }
             }
-            this.isShowUpdate = true;
             if (this.isShowUpdate === false){
                 if (this.needShowGuide === true){
                     this.isShowGuide = true
@@ -216,9 +215,9 @@ class HomeModalManager {
         AsyncStorage.getItem("home_lastAdTime").then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                 GuideApi.queryAdvertisingList({type:  1}).then(resp => {
-                    this.AdData = resp.data.data;
-                    if (resp.data.data && resp.data.data.length > 0) {
+                    if (resp.data && resp.data.length > 0) {
                         this.needShowAd = true;
+                        this.AdData = resp.data[0];
                     }
                     this.actionFinish();
                 }).catch((msg)=> {

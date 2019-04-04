@@ -21,7 +21,11 @@ static  NSString * constTile = @"公猫认证";
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.title = constTile;
+ if(_webConstTitle) {
+    self.title = _webConstTitle;
+ }else{
+    self.title = constTile;
+ }
   [self addBackBtn];
   if (!self.url) {
     [MBProgressHUD showError:@"网页链接为空"];
@@ -90,6 +94,8 @@ static  NSString * constTile = @"公猫认证";
 {
   if (webView.title) {
     self.title = webView.title;
+  }else if(_webConstTitle){
+    self.title = _webConstTitle;
   }else{
     self.title = constTile;
   }

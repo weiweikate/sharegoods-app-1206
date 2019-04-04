@@ -5,7 +5,7 @@ import {
     View,
     Platform,
     Image,
-    TouchableOpacity, InteractionManager
+    TouchableOpacity
 } from 'react-native';
 import CommShareModal from "../../comm/components/CommShareModal";
 // import res from '../../comm/res';
