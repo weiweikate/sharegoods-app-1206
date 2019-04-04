@@ -138,7 +138,7 @@ export default class OpenPrizeItemView extends Component {
                                     }
                                 </Text>
                                 <Text style={{
-                                    height: 11,
+                                    height: 12,
                                     fontSize: 11,
                                     textDecorationLine: 'line-through',
                                     color: DesignRule.textColor_instruction
@@ -202,7 +202,9 @@ export default class OpenPrizeItemView extends Component {
                                             backgroundColor: DesignRule.mainColor,
                                             height: 30,
                                             width: (ScreenUtils.width / 2 - 16) / 2,
-                                            borderRadius: 5
+                                            borderRadius: 5,
+                                            alignItems:'center',
+                                            justifyContent:'center'
                                         },
                                             (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
                                                 ? { backgroundColor: DesignRule.bgColor }
@@ -214,8 +216,6 @@ export default class OpenPrizeItemView extends Component {
                                                 [{
                                                     color: 'white',
                                                     textAlign: 'center',
-                                                    height: 30,
-                                                    paddingTop: 8,
                                                     fontSize: 12
                                                 },
                                                     (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
@@ -231,8 +231,6 @@ export default class OpenPrizeItemView extends Component {
 
                                     </View>
                             }
-
-                            {/*</View>*/}
                         </View>
                     </View>
                 </View>
@@ -293,7 +291,7 @@ const ItemStyles = StyleSheet.create({
         paddingRight:10,
         color: DesignRule.textColor_mainTitle,
         width: mainWidth / 2 - 16,
-        height: 40,
+        height: 41,
         fontSize: 12,
     },
     itemFolloweTextStyle: {

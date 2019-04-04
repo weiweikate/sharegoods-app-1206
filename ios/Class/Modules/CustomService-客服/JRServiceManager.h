@@ -11,9 +11,18 @@
 @interface JRServiceManager : NSObject
 
 SINGLETON_FOR_HEADER(JRServiceManager)
+/**
+ * 初始化七鱼客服
+ */
+-(void)initQYChat:(id)jsonData;
+
+/**
+ 发起会话函数
+ @param swichData rn传递过来的数据
+ */
+-(void)swichGroup:(id)swichData;
 
 -(void)qiYUChat:(id)josnData;
--(void)startServiceWithGroupId:(int64_t)groupId andStaffId:(int64_t)staffId andTitle:(NSString *)title;
 /**
  清理缓存
  */

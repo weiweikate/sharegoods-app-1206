@@ -43,10 +43,10 @@ import DetailNavView from '../product/components/DetailNavView';
 import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MessageAPI from '../message/api/MessageApi';
-import QYChatUtil from '../mine/page/helper/QYChatModel';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
 import ProductApi from '../product/api/ProductApi';
+import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -684,10 +684,17 @@ export default class TopicDetailPage extends BasePage {
                                                this.shareModal.open();
                                                break;
                                            case 3:
-                                               setTimeout(() => {
-                                                   track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
-                                                   QYChatUtil.qiYUChat();
-                                               }, 100);
+                                               if (!user.isLogin) {
+                                                   this.$navigate('login/login/LoginPage');
+                                                   return;
+                                               }
+                                                   QYChatTool.beginQYChat({
+                                                       urlString: '',
+                                                       title: '平台客服',
+                                                       shopId: '',
+                                                       chatType: beginChatType.BEGIN_FROM_OTHER,
+                                                       data: {}
+                                                   });
                                                break;
                                        }
                                    });

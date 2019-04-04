@@ -117,7 +117,9 @@ const api = {
     //电签合同入口
     gongmallEnter:['/gongmall/contract',{method:'get'}],
     //电签结果查询接口
-    gongmallResult:['/gongmall/query',{method:'get'}]
+    gongmallResult:['/gongmall/query',{method:'get'}],
+    //查询是否可以提现
+    canWithdraw:['/user/applyWithdraw/whiteList',{method:'post'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

@@ -37,10 +37,10 @@ import { PageLoadingState, renderViewByLoadingState } from '../../components/pag
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 // import res from '../res';
 import MessageApi from '../message/api/MessageApi';
-import QYChatUtil from '../mine/page/helper/QYChatModel';
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import ProductApi from './api/ProductApi';
+import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -294,8 +294,24 @@ export default class ProductDetailPage extends BasePage {
                 }
                 break;
             case 'keFu':
+                if (!user.isLogin) {
+                    this.$navigate('login/login/LoginPage');
+                    return;
+                }
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
-                QYChatUtil.qiYUChat();
+                const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = this.state.data || {};
+                QYChatTool.beginQYChat({
+                    shopId: shopId,
+                    title: title,
+                    chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                    data: {
+                        title: name,
+                        desc: secondName,
+                        pictureUrlString: imgUrl,
+                        urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
+                        note: `¥${minPrice}-¥${maxPrice}`
+                    }
+                });
                 break;
             case 'buy':
                 if (!user.isLogin) {
