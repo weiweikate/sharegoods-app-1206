@@ -11,7 +11,7 @@
 import { TabNav } from './Tab';
 //  import  TabNav  from '../pages/mine/page/myaccount/SetPayPwdSuccessPage';
 //  import  TabNav  from './pages/home/product/ProductDetailPage';
-//   import  TabNav  from '../pages/order/afterSaleService/AfterSaleServicePage';
+//   import  TabNav  from '../pages/order/afterSaleService/SelectLogisticsCompanyPage';
 //   import  TabNav  from './Dome';
 // 业务模块
 import debug from '../pages/debug';
