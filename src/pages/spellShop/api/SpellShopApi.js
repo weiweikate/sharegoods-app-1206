@@ -4,7 +4,7 @@ import ApiUtils from '../../../api/network/ApiUtils';
 const api = {
 
     // 查询用户个人信息
-    getUser: ['/user/getUser', { method: 'get', checkLogin: true}],
+    getUser: ['/user/getUser', { method: 'get', checkLogin: true }],
 
     // 查询首页推荐店铺
     queryHomeStore: ['/user/store/queryHomeStore', { method: 'get' }],
@@ -23,7 +23,6 @@ const api = {
     startStore: '/user/store/startStore',
     // 关闭店铺
     closeStore: '/user/store/closeStore',
-
 
 
     // 根据id查询店铺
@@ -64,8 +63,44 @@ const api = {
     // 根据店铺公告id查询公告信息get
     findById: ['/user/storeNotice/findById', { method: 'get' }],
     // 发店铺公告post
-    storeNoticeInsert: '/user/storeNotice/insert'
+    storeNoticeInsert: '/user/storeNotice/insert',
 
+    /**店铺扩容**/
+    /*
+    * 拼店解散说明
+    * */
+    store_dissolve: ['/config/store/dissolve', { method: 'get' }],
+    /*
+    * 解散店铺
+    * */
+    store_disband: ['/user/store/disband', { method: 'get' }],
+    /*
+    * 查询店铺人员数量,最大人员数量,是否可以扩容
+    * storeCode
+    * */
+    store_person: ['/user/store/person', { method: 'get' }],
+    /*
+    * 拼店扩容说明
+    * */
+    store_expansion: ['/config/store/expansion', { method: 'get' }],
+    /*
+    * 根据店铺code查询当前店铺所在等级的扩展信息
+    * storeCode
+    * */
+    store_expend: ['/user/store/expend', { method: 'get' }],
+    /*
+    * 创建扩容订单
+    * expandId
+    * */
+    store_save: ['/user/store/save', { method: 'get' }],
+    /*
+    * 扩容列表
+    * expandId
+    * */
+    store_record: ['/user/store/record', { method: 'get' }],
+
+    //去支付测试
+    user_pay: ['/user/pay', { method: 'get' }],
 };
 const SpellShopApi = ApiUtils(api);
 export default SpellShopApi;
