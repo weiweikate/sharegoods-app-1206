@@ -8,6 +8,7 @@ import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import HTML from 'react-native-render-html';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import StringUtils from '../../../utils/StringUtils';
 
 export class AddCapacityPage extends BasePage {
     $navigationBarOptions = {
@@ -25,13 +26,24 @@ export class AddCapacityPage extends BasePage {
         };
     }
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState
+        };
+    };
+
     componentDidMount() {
         const { storeData } = this.params;
         SpellShopApi.store_person({ storeCode: storeData.storeNumber }).then((data) => {
             const dataTemp = data.data || {};
             const { maxPersonNum, personNum, showExpand } = dataTemp;
             this.setState({
+                loadingState: PageLoadingState.success,
                 maxPersonNum, personNum, showExpand
+            });
+        }).catch(() => {
+            this.setState({
+                loadingState: PageLoadingState.fail
             });
         });
 
@@ -59,9 +71,19 @@ export class AddCapacityPage extends BasePage {
                 <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction} disabled={!showExpand}>
                     <Text style={styles.addText}>立即扩容</Text>
                 </NoMoreClick>
-                <HTML html={storeExpansion} imagesMaxWidth={ScreenUtils.width - 30}
-                      imagesInitialDimensions={{ width: ScreenUtils.width - 30, height: 0 }}
-                      containerStyle={{ marginTop: 30, marginHorizontal: 15 }}/>
+                {
+                    StringUtils.isNoEmpty(storeExpansion) ? <HTML html={storeExpansion}
+                                                                  imagesMaxWidth={ScreenUtils.width - 30}
+                                                                  imagesInitialDimensions={{
+                                                                      width: ScreenUtils.width - 30,
+                                                                      height: 0
+                                                                  }}
+                                                                  containerStyle={{
+                                                                      marginTop: 30,
+                                                                      marginHorizontal: 15
+                                                                  }}/> : null
+                }
+
             </ScrollView>
         );
     }

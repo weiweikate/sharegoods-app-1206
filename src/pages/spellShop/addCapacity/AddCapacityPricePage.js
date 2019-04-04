@@ -8,6 +8,8 @@ import PickTicketModal from './components/PickTicketModal';
 import res from '../res';
 import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import StringUtils from '../../../utils/StringUtils';
+import RouterMap from '../../../navigation/RouterMap';
 
 const ArrowImg = res.shopSetting.xjt_03;
 
@@ -26,19 +28,43 @@ export class AddCapacityPricePage extends BasePage {
         };
     }
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState
+        };
+    };
+
     componentDidMount() {
         SpellShopApi.store_expend({ storeCode: this.params.storeData.storeNumber }).then((data) => {
             const dataTemp = data.data || {};
             this.setState({
+                loadingState: PageLoadingState.success,
                 dataList: dataTemp || []
+            });
+        }).catch(() => {
+            this.setState({
+                loadingState: PageLoadingState.fail
             });
         });
     }
 
     _addBtnAction = () => {
-        SpellShopApi.store_save({ storeCode: this.params.storeData.storeNumber }).then(() => {
-            this.$toastShow('去支付啦');
-        });
+        const { id } = this.state.selectedItem || {};
+        if (!id) {
+            this.$toastShow('请选择扩容人数');
+        } else {
+            SpellShopApi.store_save({
+                expandId: id,
+                tokenCoinCount: this.state.amount
+            }).then((data) => {
+                const dataTemp = data.data || {};
+                SpellShopApi.user_pay({ orderNo: dataTemp.orderNo, tokenCoin: 1 }).then(() => {
+                    this.$navigate(RouterMap.AddCapacitySuccessPage, { storeData: this.params.storeData });
+                }).catch(() => {
+                    this.$toastShow('支付失败');
+                });
+            });
+        }
     };
 
     _itemBtnAction = (selectedIndex) => {
@@ -59,12 +85,17 @@ export class AddCapacityPricePage extends BasePage {
     };
 
     _oneMoneyAction = () => {
-        this.PickTicketModal.show({
-            callBack: (amount) => {
-                this.setState({
-                    amount
-                });
-            }
+        const { id } = this.state.selectedItem;
+        if (StringUtils.isEmpty(id)) {
+            this.$toastShow('请选择扩容人数');
+            return;
+        }
+        this.PickTicketModal.show((amount) => {
+            let tempArr = [...this.state.dataList];
+            this.setState({
+                amount,
+                dataList: tempArr
+            });
         });
     };
 
@@ -88,7 +119,8 @@ export class AddCapacityPricePage extends BasePage {
                     <Text style={[styles.itemLeftText, { color: itemColor }]}>{`${personNum}人`}</Text>
                     <View style={styles.itemRightView}>
                         {discountPrice ?
-                            <Text style={[styles.itemOriginText, itemColor]}>{`¥${discountPrice}`}</Text> : null}
+                            <Text
+                                style={[styles.itemOriginText, { color: itemColor }]}>{`¥${discountPrice}`}</Text> : null}
                         <Text style={{ fontSize: discountPrice ? 12 : 17, color: itemColor }}>{`¥${price}`}</Text>
                     </View>
                 </NoMoreClick>
@@ -101,14 +133,24 @@ export class AddCapacityPricePage extends BasePage {
     };
 
     _listFooterComponent = () => {
-        const { discountPrice } = this.state.selectedItem;
-        let money = (discountPrice || 0) - (this.state.amount || 0);
+        const { amount } = this.state;
+        const { discountPrice, price } = this.state.selectedItem;
+        let discountPriceS = StringUtils.isNoEmpty(discountPrice) ? parseFloat(discountPrice || 0) : parseFloat(price || 0);
+        let amountS = parseFloat(amount || 0);
+        //券大于钱
+        if (amountS > discountPriceS) {
+            //券设置成钱的正数量
+            amountS = Math.floor(discountPriceS);
+        }
+        //钱减去券的数量
+        let money = discountPriceS - amountS;
+
         return (
             <View style={styles.footerView}>
                 <NoMoreClick style={styles.footerItemView} onPress={this._oneMoneyAction}>
                     <Text style={styles.footerItemLeftText}>1元现金券</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={styles.footerOneMoneyText}>-¥{this.state.amount}</Text>
+                        <Text style={styles.footerOneMoneyText}>-¥{amountS}</Text>
                         <Image source={ArrowImg}/>
                     </View>
                 </NoMoreClick>

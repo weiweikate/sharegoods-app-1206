@@ -97,8 +97,10 @@ const api = {
     * 扩容列表
     * expandId
     * */
-    store_record: ['/user/store/record', { method: 'get' }]
+    store_record: ['/user/store/record', { method: 'get' }],
 
+    //去支付测试
+    user_pay: ['/user/pay', { method: 'get' }],
 };
 const SpellShopApi = ApiUtils(api);
 export default SpellShopApi;

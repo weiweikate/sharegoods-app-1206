@@ -20,7 +20,7 @@ export default class SelectAmountView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amount: 0
+            amount: props.amount || 0
         };
     }
 
@@ -33,7 +33,7 @@ export default class SelectAmountView extends Component {
         this.setState({
             amount: amount - 1
         }, () => {
-            amountChangeAction(amount);
+            amountChangeAction(this.state.amount);
         });
 
     };
@@ -42,13 +42,12 @@ export default class SelectAmountView extends Component {
         const { amount } = this.state;
         const { amountChangeAction, maxCount } = this.props;
         if (maxCount <= amount) {
-            bridge.$toast('超出最大券数~');
             return;
         }
         this.setState({
             amount: amount + 1
         }, () => {
-            amountChangeAction(amount);
+            amountChangeAction(this.state.amount);
         });
     };
 

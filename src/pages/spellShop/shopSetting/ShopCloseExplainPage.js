@@ -22,6 +22,12 @@ export class ShopCloseExplainPage extends BasePage {
         };
     }
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState
+        };
+    };
+
     _continueBtnAction = () => {
         this.$navigateBack();
     };
@@ -36,7 +42,14 @@ export class ShopCloseExplainPage extends BasePage {
     componentDidMount() {
         SpellShopApi.store_dissolve().then((data) => {
             const { storeDissolve } = data.data || {};
-            this.setState({ storeDissolve });
+            this.setState({
+                storeDissolve,
+                loadingState: PageLoadingState.success
+            });
+        }).catch(() => {
+            this.setState({
+                loadingState: PageLoadingState.fail
+            });
         });
     }
 

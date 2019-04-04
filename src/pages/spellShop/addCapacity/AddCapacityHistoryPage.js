@@ -6,15 +6,48 @@ import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import RouterMap from '../../../navigation/RouterMap';
 import SpellShopApi from '../api/SpellShopApi';
+import StringUtils from '../../../utils/StringUtils';
+import DateUtils from '../../../utils/DateUtils';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import EmptyView from '../../../components/pageDecorator/BaseView/EmptyView';
 
 export class AddCapacityHistoryPage extends BasePage {
     $navigationBarOptions = {
         title: '我的扩容'
     };
 
-    componentDidMount(){
-        SpellShopApi.store_record({ storeCode: this.params.storeData.storeNumber }).then((data) => {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loadingState: PageLoadingState.loading,
+            dataList: []
+        };
+    }
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState
+        };
+    };
+
+    componentDidMount() {
+        SpellShopApi.store_record({
+            storeCode: this.params.storeData.storeNumber,
+            page: 1,
+            pageSize: 100
+        }).then((data) => {
+            //isMore
             const dataTemp = data.data || {};
+            //
+            const dataArrTemp = dataTemp.data || [];
+            this.setState({
+                dataList: dataArrTemp,
+                loadingState: PageLoadingState.success
+            });
+        }).catch(() => {
+            this.setState({
+                loadingState: PageLoadingState.fail
+            });
         });
     }
 
@@ -23,20 +56,45 @@ export class AddCapacityHistoryPage extends BasePage {
     };
 
     _renderItem = ({ item }) => {
+        const { payTime, personNum, price, status } = item;
+        let explainText = '';
+        let textColor = status === 1 ? DesignRule.textColor_redWarn : (status === 3 ? DesignRule.color_green : DesignRule.textColor_instruction);
+        switch (status) {
+            case 1:
+                explainText = '去支付 >>';
+                break;
+            case 2:
+                explainText = '支付中';
+                break;
+            case 3:
+                explainText = '交易成功';
+                break;
+            case 4:
+                explainText = '交易失败';
+                break;
+            case 5:
+                explainText = '交易关闭';
+                break;
+        }
         return (
             <View style={styles.itemView}>
-                <View style={styles.itemContentView}>
+                <NoMoreClick style={styles.itemContentView} onPress={() => {
+                }}>
                     <View style={styles.itemVerticalView}>
-                        <Text style={styles.contentText}>店铺扩容N人</Text>
-                        <Text style={styles.dateText}>2019年03月20日15:59:37</Text>
+                        <Text style={styles.contentText}>{`店铺扩容${personNum || ''}人`}</Text>
+                        <Text
+                            style={styles.dateText}>{`${StringUtils.isNoEmpty(payTime) && DateUtils.formatDate(payTime) || ''}`}</Text>
                     </View>
                     <View style={styles.itemVerticalView}>
-                        <Text style={styles.moneyText}>100.00</Text>
-                        <Text style={styles.explainText}>交易成功</Text>
+                        <Text style={styles.moneyText}>{`¥${price || ''}`}</Text>
+                        <Text style={[styles.explainText, { color: textColor }]}>{explainText}</Text>
                     </View>
-                </View>
+                </NoMoreClick>
             </View>
         );
+    };
+    _ListEmptyComponent = () => {
+        return <EmptyView style={{ marginTop: 70 }} description='暂无扩容记录'/>;
     };
     _keyExtractor = (item, index) => {
         return index + item.id + '';
@@ -45,9 +103,10 @@ export class AddCapacityHistoryPage extends BasePage {
     _render() {
         return (
             <View style={{ flex: 1 }}>
-                <FlatList data={['', '']}
+                <FlatList data={this.state.dataList}
                           renderItem={this._renderItem}
-                          keyExtractor={this._keyExtractor}/>
+                          keyExtractor={this._keyExtractor}
+                          ListEmptyComponent={this._ListEmptyComponent}/>
                 <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction}>
                     <Text style={styles.addText}>继续扩容</Text>
                 </NoMoreClick>
@@ -66,7 +125,7 @@ const styles = StyleSheet.create({
         margin: 15
     },
     itemVerticalView: {
-        justifyContent: 'space-between'
+        justifyContent: 'space-between', alignItems: 'flex-end'
     },
     contentText: {
         fontSize: 13, color: DesignRule.textColor_mainTitle

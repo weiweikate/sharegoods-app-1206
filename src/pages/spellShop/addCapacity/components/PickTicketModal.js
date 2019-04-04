@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Image } from 'react-native';
 import { MRText as Text } from '../../../../components/ui/index';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
@@ -7,8 +7,9 @@ import CommModal from '../../../../comm/components/CommModal';
 import SelectAmountView from './SelectAmountView';
 import res from '../../res';
 import user from '../../../../model/user';
+import bridge from '../../../../utils/bridge';
 
-const { youhuiquan_bg } = res.addCapacity;
+const { youhuiquan_bg, addCapacityNoneMoney } = res.addCapacity;
 const { px2dp, width } = ScreenUtils;
 
 export default class PickTicketModal extends Component {
@@ -20,18 +21,24 @@ export default class PickTicketModal extends Component {
         };
     }
 
-    show = ({ callBack }) => {
+    show = (callBack) => {
         this.setState({
             modalVisible: true,
             callBack
         });
     };
 
-    _close = () => {
+    _close = (save) => {
         this.setState({
             modalVisible: false
         }, () => {
-            this.state.callBack && this.state.callBack(this.amount);
+            if (save) {
+                if (this.amount > user.tokenCoin) {
+                    this.amount = user.tokenCoin;
+                    bridge.$toast('超出最大券数~');
+                }
+                this.state.callBack && this.state.callBack(this.amount);
+            }
         });
     };
 
@@ -47,24 +54,40 @@ export default class PickTicketModal extends Component {
                 <View style={styles.containerView}>
                     <TouchableOpacity style={styles.topCloseBtn} onPress={this._close}/>
                     <View style={styles.bottomView}>
-                        <View style={{ flex: 1 }}>
-                            <ImageBackground style={styles.ticketImg} source={youhuiquan_bg}>
-                                <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
-                                    <Text style={styles.ticketMoneyText}>¥</Text>
-                                    <Text style={styles.ticketMoney1Text}>1</Text>
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Text style={styles.ticketTittle1Text}>1元现金券<Text
-                                        style={styles.ticketTittle2Text}>（可叠加使用）</Text></Text>
-                                    <Text style={[styles.ticketContentText, { paddingVertical: 5 }]}>使用有效期：无时间限制</Text>
-                                    <Text style={styles.ticketContentText}>限商品：会员专属券</Text>
-                                </View>
-                                <Text style={styles.ticketAmountText}>{`×${user.tokenCoin || 0}`}</Text>
-                            </ImageBackground>
-                            <SelectAmountView style={styles.numberView} maxCount={user.tokenCoin || 0}
-                                              amountChangeAction={this._amountChangeAction}/>
-                        </View>
-                        <TouchableOpacity style={styles.sureBtn} onPress={this._close}>
+                        <ScrollView>
+                            {
+                                user.tokenCoin > 0 ? <View>
+                                        <ImageBackground style={styles.ticketImg} source={youhuiquan_bg}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+                                                <Text style={styles.ticketMoneyText}>¥</Text>
+                                                <Text style={styles.ticketMoney1Text}>1</Text>
+                                            </View>
+                                            <View style={{ flex: 1 }}>
+                                                <Text style={styles.ticketTittle1Text}>1元现金券<Text
+                                                    style={styles.ticketTittle2Text}>（可叠加使用）</Text></Text>
+                                                <Text
+                                                    style={[styles.ticketContentText, { paddingVertical: 5 }]}>使用有效期：无时间限制</Text>
+                                                <Text style={styles.ticketContentText}>限商品：会员专属券</Text>
+                                            </View>
+                                            <Text style={styles.ticketAmountText}>{`×${user.tokenCoin || 0}`}</Text>
+                                        </ImageBackground>
+                                        <SelectAmountView style={styles.numberView} maxCount={user.tokenCoin || 0}
+                                                          amountChangeAction={this._amountChangeAction}
+                                                          amount={this.amount}/>
+                                    </View>
+                                    :
+                                    <View style={{ alignItems: 'center' }}>
+                                        <Image style={{ marginTop: px2dp(70), width: px2dp(267), height: px2dp(192) }}
+                                               source={addCapacityNoneMoney}/>
+                                        <Text style={{
+                                            fontSize: 13,
+                                            color: DesignRule.textColor_secondTitle
+                                        }}>暂无可用1元现金券</Text>
+                                    </View>
+                            }
+
+                        </ScrollView>
+                        <TouchableOpacity style={styles.sureBtn} onPress={() => this._close(true)}>
                             <Text style={styles.sureText}>确认</Text>
                         </TouchableOpacity>
                     </View>
@@ -80,7 +103,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.5)', width: ScreenUtils.width
     },
     topCloseBtn: {
-        height: px2dp(271)
+        height: px2dp(207)
     },
     bottomView: {
         flex: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10,
