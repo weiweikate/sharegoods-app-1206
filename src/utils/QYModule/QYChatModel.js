@@ -8,13 +8,7 @@ const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 const platformShopId = 'hzmrwlyxgs'
 
 class QYChatModel {
-
-    // @action
-    // saveAllData = (allMsgData) => {
-    //     if (allMsgData) {
-    //         this.msgData = allMsgData;
-    //     }
-    // };
+    
 
     @action
     saveSupplierListData = (allMsgData) => {
