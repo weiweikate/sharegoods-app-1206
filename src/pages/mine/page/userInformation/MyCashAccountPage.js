@@ -220,10 +220,14 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     componentDidMount(){
-        MineApi.canWithdraw().then(data=>{
-
+        MineApi.canWithdraw({phoneNo:user.phone}).then(data=>{
+            this.setState({
+                canWithdraw:data.data
+            })
         }).catch((error)=>{
-
+            this.setState({
+                canWithdraw:false
+            })
         })
     }
 

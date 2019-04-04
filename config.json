@@ -58,6 +58,10 @@
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "https://api.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
+        "zhaoqian":{
+            "name": "赵强",
+            "host": "http://172.16.10.134:4085/gateway"
+        },
         "吴承骏": {
             "name": "吴承骏",
             "host": "http://172.16.10.53:8903/gateway"
@@ -107,7 +111,7 @@
         },
         "顾嘉豪": {
             "name": "顾嘉豪",
-            "host": "http://172.16.10.58:9090/gateway",
+            "host": "http://172.16.10.83:18062/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "高建伟": {
