@@ -2,67 +2,14 @@ import { observable, action, flow } from 'mobx';
 import HomeApi from './api/HomeAPI';
 import { homeType, homeRoute } from './HomeTypes';
 import { bannerModule } from './HomeBannerModel';
-import { adModules } from './HomeAdModel';
+import { homeFocusAdModel } from './HomeFocusAdModel';
+import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
 import { todayModule } from './HomeTodayModel';
+import { channelModules } from './HomeChannelModel';
 import { subjectModule } from './HomeSubjectModel';
 import { recommendModule } from './HomeRecommendModel';
 import { categoryModule } from './HomeCategoryModel';
-import { limitGoModule } from './HomeLimitGoModel'
-import res from './res';
-import OssHelper from '../../utils/OssHelper';
-
-const {
-    school: schoolImg,
-    show: showImg,
-    share_icon: shareImg,
-    signin: signinImg,
-    spike: spikeImg
-} = res;
-
-class ClassifyModules {
-    @observable classifyList = [];
-
-    @action loadClassifyList = () => {
-        this.classifyList = [{
-            icon: shareImg,
-            img: OssHelper('/app/share11.png'),
-            name: '升级',
-            id: 1,
-            route: 'topic/DownPricePage',
-            linkTypeCode: 'ZT2019000029'
-        }, {
-            icon: showImg,
-            img: OssHelper('/app/show11.png'),
-            name: '秀场',
-            id: 1,
-            route: 'show/ShowListPage'
-        }, {
-            icon: signinImg,
-            img: OssHelper('/app/signin11.png'),
-            name: '签到',
-            id: 1,
-            route: 'home/signIn/SignInPage',
-            needLogin: 1
-        }, {
-            icon: schoolImg,
-            img: OssHelper('/app/school11.png'),
-            name: '必看',
-            id: 1,
-            linkTypeCode: 'FX181226000001',
-            route: 'show/ShowDetailPage'
-        }, {
-            icon: spikeImg,
-            img: OssHelper('/app/spike11.png'),
-            name: '秒杀',
-            id: 1,
-            route: 'topic/DownPricePage',
-            linkTypeCode: 'ZT2018000002'
-        }];
-
-    };
-}
-
-export const classifyModules = new ClassifyModules();
+import { limitGoModule } from './HomeLimitGoModel';
 
 //首页modules
 class HomeModule {
@@ -121,14 +68,25 @@ class HomeModule {
         setTimeout(() => {
             this.isRefreshing = false;
         }, 2000);
+        // 首页类目
         categoryModule.loadCategoryList();
+        // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
+        // 首页频道类目
+        channelModules.loadChannel();
+        // 首页通栏
+        homeExpandBnnerModel.loadBannerList();
+        // 首焦点广告
+        homeFocusAdModel.loadAdList();
+        // 首页限时秒杀
+        // limitGoModule.loadLimitGo();
+        // 首页今日榜单
         todayModule.loadTodayList(this.firstLoad);
-        adModules.loadAdList(this.firstLoad);
-        classifyModules.loadClassifyList();
-        subjectModule.loadSubjectList(this.firstLoad);
+        // 首页精品推荐
         recommendModule.loadRecommendList(this.firstLoad);
-        limitGoModule.loadLimitGo()
+        // 超值热卖
+        subjectModule.loadSubjectList(this.firstLoad);
+
         this.page = 1;
         this.isEnd = false;
         this.lastGoods = null;
@@ -143,25 +101,28 @@ class HomeModule {
             type: homeType.user
         }, {
             id: 3,
-            type: homeType.classify
+            type: homeType.channel
         }, {
             id: 4,
-            type: homeType.ad
+            type: homeType.expandBanner
         }, {
-            id: 9,
-            type: homeType.limitGo
-        },{
             id: 5,
-            type: homeType.starShop
+            type: homeType.focusGrid
         }, {
             id: 6,
-            type: homeType.today
+            type: homeType.limitGo
         }, {
             id: 7,
-            type: homeType.recommend
+            type: homeType.star
         }, {
             id: 8,
-            type: homeType.subject
+            type: homeType.today
+        }, {
+            id: 9,
+            type: homeType.fine
+        }, {
+            id: 10,
+            type: homeType.homeHot
         }];
         if (this.isFetching === true) {
             return;
@@ -169,12 +130,15 @@ class HomeModule {
         try {
             this.isFetching = true;
             this.goodsIndex = 0;
-            const result = yield HomeApi.getGoodsInHome({ page: this.page, pageSize: 20 });
+            const result = yield HomeApi.getGoodsInHome({ page: this.page });
             let list = result.data.data;
+            if (this.page === result.data.totalPage) {
+                this.isEnd = true;
+            }
             let home = [];
             if (list.length > 0) {
                 home.push({
-                    id: 9,
+                    id: 11,
                     type: homeType.goodsTitle
                 });
             }
@@ -223,7 +187,7 @@ class HomeModule {
             list.push(this.lastGoods);
             this.lastGoods = null;
         }
-        const result = yield HomeApi.getGoodsInHome({ page: this.page, pageSize: 20 });
+        const result = yield HomeApi.getGoodsInHome({ page: this.page });
         list = list.concat(result.data.data);
         if (this.page === result.data.totalPage) {
             this.isEnd = true;

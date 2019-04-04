@@ -26,7 +26,7 @@ class SubjectModule {
                     this.subjectList = storeRes;
                 }
             }
-            const res = yield HomeApi.getSubject({ type: homeType.subject });
+            const res = yield HomeApi.getHomeData({ type: homeType.homeHot });
             let list = res.data;
             this.computeHeight(list);
             this.subjectList = list;

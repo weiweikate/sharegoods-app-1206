@@ -33,10 +33,10 @@ export class RecommendBanner extends Component {
     };
 
     _renderViewPageItem = (item) => {
-        const { imgUrl } = item;
+        const { image } = item;
         return (
             <UIImage style={{ width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(230) }}
-                     source={{ uri: imgUrl }}
+                     source={{ uri: image }}
                      resizeMode="cover"
             />);
     };
