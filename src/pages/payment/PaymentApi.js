@@ -12,7 +12,8 @@ const api = {
     //平台余额支付接口
     platformPay: ['/payV2/platform'],
     //检查订单状态:
-    check: ['/payV2/check', {method:'get'}],
+    // check: ['/payV2/check', {method:'get'}],
+    check:['/pay/pay/payorder'],
     //支付宝支付v2
     alipay: ['/payV2/alipay'],
     //微信支付v2

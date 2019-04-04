@@ -71,8 +71,8 @@
   
   [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"秀购"];
   [QYCustomUIConfig sharedInstance].customMessageTextColor=[UIColor whiteColor];
-  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [UIImage imageNamed:@"qipao"];
-  [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [UIImage imageNamed:@"qipao"];
+  [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [[UIImage imageNamed:@"qipao"] resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
+  [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [[UIImage imageNamed:@"qipao"]resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
   [QYCustomUIConfig sharedInstance].serviceMessageHyperLinkColor = [UIColor colorWithHexString:@"#FF0050"];
 //  [QYCustomUIConfig sharedInstance].showShopEntrance = YES;
 //  [QYCustomUIConfig sharedInstance].shopEntranceText = @"转平台";

@@ -8,7 +8,6 @@ const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 const platformShopId = 'hzmrwlyxgs'
 
 class QYChatModel {
-    
 
     @action
     saveSupplierListData = (allMsgData) => {
@@ -34,10 +33,6 @@ class QYChatModel {
             this.unreadCount = allMsgData.unreadCount;
         }
     };
-
-    //暂存原生穿过来的所有消息数据
-    // @observable
-    // msgData = {};
 
     /**
      * 供应商聊天数组
