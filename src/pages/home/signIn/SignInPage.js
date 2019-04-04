@@ -148,10 +148,6 @@ export default class SignInPage extends BasePage {
     };
 
     showMore = () => {
-        this.setState({
-            showModal:true
-        })
-        return;
         this.$navigate('HtmlPage', {
             title: '签到规则',
             uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/signInRule.html`
