@@ -117,7 +117,12 @@ const api = {
     //电签合同入口
     gongmallEnter:['/gongmall/contract',{method:'get'}],
     //电签结果查询接口
-    gongmallResult:['/gongmall/query',{method:'get'}]
+    gongmallResult:['/gongmall/query',{method:'get'}],
+    //查询是否可以提现
+    canWithdraw:['/user/withdraw/whiteList',{method:'get'}],
+    //查询秀迷等级列表
+    getFansLevelList:['/user/fansLevelList',{method:'get'}]
+
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

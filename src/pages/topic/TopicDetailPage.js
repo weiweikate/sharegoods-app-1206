@@ -43,10 +43,10 @@ import DetailNavView from '../product/components/DetailNavView';
 import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MessageAPI from '../message/api/MessageApi';
-import QYChatUtil from '../mine/page/helper/QYChatModel';
 import { track, trackEvent } from '../../utils/SensorsTrack';
 import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
 import ProductApi from '../product/api/ProductApi';
+import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -276,31 +276,28 @@ export default class TopicDetailPage extends BasePage {
                 netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
             });
         } else {
-            this.setState({
-                loadingState: PageLoadingState.success
-            }, () => {
-                ProductApi.getProductDetailByCode({
-                    code: prodCode
-                }).then((data) => {
-                    this.setState({
-                        data: data.data || {}
-                    }, () => {
-                        /*商品详情埋点*/
-                        const { prodCode, name, priceType, minPrice, maxPrice, groupPrice } = data.data || {};
-                        track(trackEvent.ProductDetail, {
-                            spuCode: prodCode,
-                            spuName: name,
-                            priceShareStore: groupPrice,
-                            pricePerCommodity: minPrice !== maxPrice ? `${minPrice}-${maxPrice}` : `${minPrice}`,
-                            priceType: priceType === 2 ? 100 : user.levelRemark
-                        });
-
-                        this._needPushToNormal();
-                        this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
+            ProductApi.getProductDetailByCode({
+                code: prodCode
+            }).then((data) => {
+                this.setState({
+                    loadingState: PageLoadingState.success,
+                    data: data.data || {}
+                }, () => {
+                    /*商品详情埋点*/
+                    const { prodCode, name, priceType, minPrice, maxPrice, groupPrice } = data.data || {};
+                    track(trackEvent.ProductDetail, {
+                        spuCode: prodCode,
+                        spuName: name,
+                        priceShareStore: groupPrice,
+                        pricePerCommodity: minPrice !== maxPrice ? `${minPrice}-${maxPrice}` : `${minPrice}`,
+                        priceType: priceType === 2 ? 100 : user.levelRemark
                     });
-                }).catch((error) => {
-                    this.$toastShow(error.msg);
+
+                    this._needPushToNormal();
+                    this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
                 });
+            }).catch((error) => {
+                this._error(error);
             });
         }
     };
@@ -672,7 +669,7 @@ export default class TopicDetailPage extends BasePage {
                                }}
                                navRRight={() => {
                                    this.DetailNavShowModal.show(this.state.messageCount, (item) => {
-                                       switch (item.index) {
+                                       switch (item.type) {
                                            case 0:
                                                if (!user.isLogin) {
                                                    this.$navigate('login/login/LoginPage');
@@ -687,10 +684,17 @@ export default class TopicDetailPage extends BasePage {
                                                this.shareModal.open();
                                                break;
                                            case 3:
-                                               setTimeout(() => {
-                                                   track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                                                   QYChatUtil.qiYUChat();
-                                               }, 100);
+                                               if (!user.isLogin) {
+                                                   this.$navigate('login/login/LoginPage');
+                                                   return;
+                                               }
+                                                   QYChatTool.beginQYChat({
+                                                       urlString: '',
+                                                       title: '平台客服',
+                                                       shopId: '',
+                                                       chatType: beginChatType.BEGIN_FROM_OTHER,
+                                                       data: {}
+                                                   });
                                                break;
                                        }
                                    });

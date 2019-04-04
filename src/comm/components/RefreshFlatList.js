@@ -46,7 +46,8 @@ export default class RefreshFlatList extends React.Component {
 
         /** 网络请求需要props */
         url: PropTypes.func, // API.subURL 请求的方法
-        params: PropTypes.func, //请求参数
+        params: PropTypes.object, //请求参数
+        paramsFunc: PropTypes.func, //请求参数
         pageKey: PropTypes.string,
         sizeKey: PropTypes.string,
         pageSize: PropTypes.number,//每页的数据数
@@ -154,7 +155,10 @@ export default class RefreshFlatList extends React.Component {
         }
         this.setState({ refreshing: true, footerStatus: 'idle' });
         this.allLoadCompleted = false;
-        let { onStartRefresh, url, params, defaultPage, onEndRefresh } = this.props;
+        let { onStartRefresh, url, params, defaultPage, onEndRefresh ,paramsFunc} = this.props;
+        if(paramsFunc){
+            params = paramsFunc();
+        }
         this.page = defaultPage;
         onStartRefresh && onStartRefresh();
 
@@ -181,7 +185,10 @@ export default class RefreshFlatList extends React.Component {
 
 
     _onLoadMore() {
-        let { onStartLoadMore, url, params, isSupportLoadingMore } = this.props;
+        let { onStartLoadMore, url, params, isSupportLoadingMore ,paramsFunc} = this.props;
+        if(paramsFunc){
+            params = paramsFunc();
+        }
         if (isSupportLoadingMore === false || this.allLoadCompleted === true) {
             return;
         }

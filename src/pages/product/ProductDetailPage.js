@@ -37,10 +37,10 @@ import { PageLoadingState, renderViewByLoadingState } from '../../components/pag
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 // import res from '../res';
 import MessageApi from '../message/api/MessageApi';
-import QYChatUtil from '../mine/page/helper/QYChatModel';
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import ProductApi from './api/ProductApi';
+import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -292,6 +292,26 @@ export default class ProductDetailPage extends BasePage {
                 } else {
                     this.shareModal.open();
                 }
+                break;
+            case 'keFu':
+                if (!user.isLogin) {
+                    this.$navigate('login/login/LoginPage');
+                    return;
+                }
+                track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
+                const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = this.state.data || {};
+                QYChatTool.beginQYChat({
+                    shopId: shopId,
+                    title: title,
+                    chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                    data: {
+                        title: name,
+                        desc: secondName,
+                        pictureUrlString: imgUrl,
+                        urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
+                        note: `¥${minPrice}-¥${maxPrice}`
+                    }
+                });
                 break;
             case 'buy':
                 if (!user.isLogin) {
@@ -569,7 +589,7 @@ export default class ProductDetailPage extends BasePage {
                            }}
                            navRRight={() => {
                                this.DetailNavShowModal.show(this.state.messageCount, (item) => {
-                                   switch (item.index) {
+                                   switch (item.type) {
                                        case 0:
                                            if (!user.isLogin) {
                                                this.gotoLoginPage();
@@ -583,14 +603,11 @@ export default class ProductDetailPage extends BasePage {
                                        case 2:
                                            this.shareModal.open();
                                            break;
-                                       case 3:
-                                           setTimeout(() => {
-                                               track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                                               QYChatUtil.qiYUChat();
-                                           }, 100);
+                                       case 4:
+                                           this.$navigateBackToHome();
                                            break;
                                    }
-                               });
+                               }, 2);
                            }}/>
             <SectionList onScroll={this._onScroll}
                          ListHeaderComponent={this._renderListHeader}

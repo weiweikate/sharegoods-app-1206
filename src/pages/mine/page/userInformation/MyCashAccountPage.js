@@ -44,8 +44,8 @@ export default class MyCashAccountPage extends BasePage {
         this.state = {
             viewData: [],
             currentPage: 1,
-            isEmpty: false
-
+            isEmpty: false,
+            canWithdraw : false
         };
         this.currentPage = 0;
     }
@@ -99,10 +99,11 @@ export default class MyCashAccountPage extends BasePage {
                     <Text style={styles.countTextStyle}>
                         账户余额（元）
                     </Text>
-                    <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
+                    {this.state.canWithdraw ? <NoMoreClick style={styles.withdrawButtonWrapper} onPress={() => this.jumpToWithdrawCashPage()}>
                         <Text
                             style={{ fontSize: DesignRule.fontSize_threeTitle, color: DesignRule.mainColor }}>提现</Text>
-                    </NoMoreClick>
+                    </NoMoreClick> : null}
+
                 </View>
                 <Text style={{
                     color: DesignRule.textColor_mainTitle,
@@ -216,6 +217,18 @@ export default class MyCashAccountPage extends BasePage {
 
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
+    }
+
+    componentDidMount(){
+        MineApi.canWithdraw({phoneNo:user.phone}).then(data=>{
+            this.setState({
+                canWithdraw:data.data
+            })
+        }).catch((error)=>{
+            this.setState({
+                canWithdraw:false
+            })
+        })
     }
 
     jumpToWithdrawCashPage = () => {

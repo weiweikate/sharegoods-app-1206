@@ -8,9 +8,11 @@
  * Created by huchao on 2018/12/18.
  *
  */
+
 'use strict';
 
 import React,{Component} from 'react';
+import { observer } from 'mobx-react';
 
 import {
     StyleSheet,
@@ -26,6 +28,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import PropTypes from 'prop-types'
 
+@observer
 export default class ShopCartEmptyView  extends Component {
     constructor(props) {
         super(props);

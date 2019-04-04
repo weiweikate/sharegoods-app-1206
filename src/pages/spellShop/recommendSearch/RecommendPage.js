@@ -246,6 +246,10 @@ export default class RecommendPage extends BasePage {
             this.$navigate('show/ShowDetailPage', {
                 code: item.linkTypeCode
             });
+        }else if (item.linkType === homeLinkType.exp) {
+            this.$navigate('product/xpProduct/XpDetailPage', {
+                activityCode: item.linkTypeCode
+            });
         }
     };
 

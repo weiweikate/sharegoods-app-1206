@@ -37,6 +37,7 @@ import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { navigate } from '../../navigation/RouterMap';
 import { homeModule } from '../home/Modules';
+import HomeModalManager from '../home/model/HomeModalManager'
 import GuideApi from './GuideApi';
 
 const {
@@ -71,9 +72,6 @@ export default class GuideModal extends React.Component {
 
         this.state = {
             step: 0, /** 新手引导第几步*/
-            visible: false,
-            isHome: false,
-            rewardzData: {},
             showActivityIndicator: true
         };
         /** 每一步引导的数据*/
@@ -86,46 +84,6 @@ export default class GuideModal extends React.Component {
 
         ];
     }
-
-    getUserRecord = () => {
-        console.log('user.finishGuide' + user.finishGuide);
-        this.state.isHome = true;
-        GuideApi.getUserRecord().then((data) => {
-            if (data.data === true) {
-                if (user.finishGuide === true) {
-                    GuideApi.registerSend({});
-                } else {
-                    this.open();
-                    this.getRewardzInfo();
-                }
-            }
-        }).catch(() => {
-        });
-    };
-
-    cancelUserRecord = () => {
-        this.setState({ isHome: false, visible: false });
-    };
-
-
-    getRewardzInfo = () => {
-        GuideApi.rewardzInfo({ type: 17 }).then((data) => {
-            data = data.data || [];
-            if (data.length > 0) {
-                this.setState({ rewardzData: data[0] });
-            }
-        });
-    };
-
-
-    open = () => {
-        this.props.callback && this.props.callback();
-        this.setState({ visible: true, step: 0, showActivityIndicator: true });
-    };
-    close = () => {
-        this.setState({ visible: false });
-    };
-
 
     componentDidMount() {
 
@@ -313,7 +271,7 @@ export default class GuideModal extends React.Component {
                     <TouchableWithoutFeedback onPress={this.gotoPage}>
                         <View>
                             <ImageLoad style={imageStyle}
-                                       source={{ uri: this.state.rewardzData.imgUrl || '' }}
+                                       source={{ uri: HomeModalManager.guideData.imgUrl || '' }}
                                        resizeMode={'contain'}
                                        onError={() => {
                                            this.setState({ showActivityIndicator: false });
@@ -355,13 +313,13 @@ export default class GuideModal extends React.Component {
     };
 
     gotoPage = () => {
-        let data = this.state.rewardzData;
+        let data = HomeModalManager.guideData;
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
         if (router) {
             navigate(router, params);
         }
-        this.close();
+        HomeModalManager.closeGuide();
     };
 
 
@@ -372,7 +330,7 @@ export default class GuideModal extends React.Component {
                 ref={(ref) => {
                     this.modal = ref;
                 }}
-                visible={this.state.visible && this.state.isHome && !this.props.versionUpdate}
+                visible={HomeModalManager.isShowGuide && HomeModalManager.isHome}
             >
                 {this.renderContent()}
             </CommModal>

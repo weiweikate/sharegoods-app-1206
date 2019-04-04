@@ -31,7 +31,6 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { TrackApi } from '../../utils/SensorsTrack';
-const Flag = {isFirst: true};
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -58,8 +57,7 @@ export default class ShowDetailPage extends BasePage {
         this.showDetailModule = new ShowDetail();
         this.state = {
             pageState: PageLoadingState.loading,
-            errorMsg: '',
-            isFirst: true
+            errorMsg: ''
         };
         this.noNeedRefresh = false;
     }
@@ -90,19 +88,20 @@ export default class ShowDetailPage extends BasePage {
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
+                            this._whiteNavRef.setNativeProps({
+                                opacity: 0
+                            });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
                                 errorMsg: error.msg || '获取详情失败'
                             });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 1
-                            });
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
                     } else {
+                        Toast.showLoading();
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             const { detail } = this.showDetailModule;
                             TrackApi.XiuChangDetails({
@@ -113,14 +112,14 @@ export default class ShowDetailPage extends BasePage {
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
+                            this._whiteNavRef.setNativeProps({
+                                opacity: 0
+                            });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
                                 errorMsg: error.msg || '获取详情失败'
-                            });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 1
                             });
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
@@ -135,10 +134,6 @@ export default class ShowDetailPage extends BasePage {
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
     componentDidMount() {
-        let that = this;
-        InteractionManager.runAfterInteractions(() => {
-                that.setState({isFirst:false});
-        })
     }
 
 
@@ -175,6 +170,10 @@ export default class ShowDetailPage extends BasePage {
     }
 
     _goToShare() {
+        const { pageState } = this.state;
+        if (pageState === PageLoadingState.fail) {
+            return
+        }
         this.shareModal && this.shareModal.open();
     }
 
@@ -200,7 +199,7 @@ export default class ShowDetailPage extends BasePage {
     _renderNormalTitle() {
         return <View style={styles.whiteNav} ref={(ref) => {
             this._whiteNavRef = ref;
-        }} opacity={0}>
+        }} opacity={1}>
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
                     <Image source={res.back}/>
@@ -244,18 +243,16 @@ export default class ShowDetailPage extends BasePage {
     };
 
     _render() {
-        if (this.state.isFirst === true){
-            return;
-        }
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
-            return <View style={styles.container}><NetFailedView
-                netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}</View>;
+            return <View style={styles.container}>
+                <NetFailedView netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}
+                </View>;
         }
 
-        const { detail, isCollecting } = this.showDetailModule;
+        let { detail, isCollecting } = this.showDetailModule;
         if (!detail) {
-            return <View style={styles.loading}/>;
+            detail = {imgs: '', products: [], click: 0, content: ''}
         }
         let products = detail.products;
         let number = detail.click;
@@ -321,6 +318,8 @@ export default class ShowDetailPage extends BasePage {
                 showsVerticalScrollIndicator={false}
                 scrollEventThrottle={30}
                 onScroll={this._onScroll.bind(this)}
+                scrollEnabled={pageState === PageLoadingState.success}
+
             >
                 {
                     detail.imgs
@@ -373,23 +372,24 @@ export default class ShowDetailPage extends BasePage {
                             <Image style={styles.collectImg}
                                    source={detail.hadCollect ? res.showFire : res.noShowFire}/>
                             <Text style={styles.bottomText}
-                                  allowFontScaling={false}>{'人气值'} · {detail.collectCount}</Text>
+                                  allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'人气值'} · {detail.collectCount}</Text>
                         </TouchableOpacity>
                 }
             </ScrollView>
-            <View style={styles.bottom}>
-                <View style={styles.showTimesWrapper}>
-                    <Image source={res.button.see} style={styles.seeImgStyle}/>
-                    <Text style={styles.number} allowFontScaling={false}>浏览 · {number}</Text>
-                </View>
+            {pageState === PageLoadingState.fail ? null :
+                <View style={styles.bottom}>
+                    <View style={styles.showTimesWrapper}>
+                        <Image source={res.button.see} style={styles.seeImgStyle}/>
+                        <Text style={styles.number} allowFontScaling={false}>浏览 · {number}</Text>
+                    </View>
 
-                <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
-                    <Image source={res.share}/>
-                    <View style={{ width: px2dp(10) }}/>
-                    <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
-                </TouchableOpacity>
-            </View>
-            {this._renderNormalTitle()}
+                    <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
+                        <Image source={res.share}/>
+                        <View style={{ width: px2dp(10) }}/>
+                        <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
+                    </TouchableOpacity>
+                </View>
+            }
             <View style={styles.nav} ref={(ref) => {
                 this._blackNavRef = ref;
             }}>
@@ -405,6 +405,7 @@ export default class ShowDetailPage extends BasePage {
                     </TouchableOpacity>
                 </View>
             </View>
+            {this._renderNormalTitle()}
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}
@@ -429,7 +430,7 @@ let styles = StyleSheet.create({
     },
     loading: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'red',
         alignItems: 'center',
         justifyContent: 'center'
     },
