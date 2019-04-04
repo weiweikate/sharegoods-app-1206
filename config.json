@@ -108,7 +108,7 @@
         },
         "顾嘉豪": {
             "name": "顾嘉豪",
-            "host": "http://172.16.10.58:9090/gateway",
+            "host": "http://172.16.10.83:18080/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "高建伟": {

@@ -4,26 +4,64 @@ import BasePage from '../../../BasePage';
 import DesignRule from '../../../constants/DesignRule';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import RouterMap from '../../../navigation/RouterMap';
+import SpellShopApi from '../api/SpellShopApi';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import HTML from 'react-native-render-html';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 export class AddCapacityPage extends BasePage {
     $navigationBarOptions = {
         title: '我要扩容'
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            loadingState: PageLoadingState.loading,
+            maxPersonNum: '',
+            personNum: '',
+            showExpand: false,
+            storeExpansion: ''
+        };
+    }
+
+    componentDidMount() {
+        const { storeData } = this.params;
+        SpellShopApi.store_person({ storeCode: storeData.storeNumber }).then((data) => {
+            const dataTemp = data.data || {};
+            const { maxPersonNum, personNum, showExpand } = dataTemp;
+            this.setState({
+                maxPersonNum, personNum, showExpand
+            });
+        });
+
+        SpellShopApi.store_expansion().then((data) => {
+            const dataTemp = data.data || {};
+            const { storeExpansion } = dataTemp;
+            this.setState({
+                storeExpansion
+            });
+        });
+    }
+
     _addBtnAction = () => {
-        this.$navigate(RouterMap.AddCapacityPricePage);
+        this.$navigate(RouterMap.AddCapacityPricePage, { storeData: this.params.storeData });
     };
 
     _render() {
+        const { maxPersonNum, personNum, showExpand, storeExpansion } = this.state;
         return (
             <ScrollView>
                 <View style={styles.numView}>
                     <Text style={styles.leftText}>店铺成员数：</Text>
-                    <Text style={styles.rightText}>199/200 人</Text>
+                    <Text style={styles.rightText}>{`${personNum || 0}/${maxPersonNum || 0} 人`}</Text>
                 </View>
-                <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction}>
+                <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction} disabled={!showExpand}>
                     <Text style={styles.addText}>立即扩容</Text>
                 </NoMoreClick>
+                <HTML html={storeExpansion} imagesMaxWidth={ScreenUtils.width - 30}
+                      imagesInitialDimensions={{ width: ScreenUtils.width - 30, height: 0 }}
+                      containerStyle={{ marginTop: 30, marginHorizontal: 15 }}/>
             </ScrollView>
         );
     }

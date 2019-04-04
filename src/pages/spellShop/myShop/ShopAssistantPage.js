@@ -41,7 +41,7 @@ export default class AssistantListPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        this.$navigate(RouterMap.AddCapacityPage);
+        this.$navigate(RouterMap.AddCapacityPage, { storeData: this.params.storeData });
     };
 
     //contribution/tradeBalance本月收入

@@ -5,14 +5,21 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import DesignRule from '../../../constants/DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import RouterMap from '../../../navigation/RouterMap';
+import SpellShopApi from '../api/SpellShopApi';
 
 export class AddCapacityHistoryPage extends BasePage {
     $navigationBarOptions = {
         title: '我的扩容'
     };
 
+    componentDidMount(){
+        SpellShopApi.store_record({ storeCode: this.params.storeData.storeNumber }).then((data) => {
+            const dataTemp = data.data || {};
+        });
+    }
+
     _addBtnAction = () => {
-        this.$navigate(RouterMap.AddCapacityPage);
+        this.$navigate(RouterMap.AddCapacityPage, { storeData: this.params.storeData });
     };
 
     _renderItem = ({ item }) => {

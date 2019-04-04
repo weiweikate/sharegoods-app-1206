@@ -59,7 +59,7 @@ export default class ShopPageSettingPage extends BasePage {
     };
 
     _addCapacityHistory = () => {
-        this.$navigate(RouterMap.AddCapacityHistoryPage);
+        this.$navigate(RouterMap.AddCapacityHistoryPage, { storeData: this.state.storeData });
     };
 
     // 店铺评分
@@ -68,7 +68,7 @@ export default class ShopPageSettingPage extends BasePage {
     };
 
     _closeStore = () => {
-        this.$navigate(RouterMap.ShopCloseExplainPage);
+        this.$navigate(RouterMap.ShopCloseExplainPage, { storeData: this.state.storeData });
     };
 
     _render() {

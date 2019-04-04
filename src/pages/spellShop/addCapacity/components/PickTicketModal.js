@@ -6,6 +6,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import CommModal from '../../../../comm/components/CommModal';
 import SelectAmountView from './SelectAmountView';
 import res from '../../res';
+import user from '../../../../model/user';
 
 const { youhuiquan_bg } = res.addCapacity;
 const { px2dp, width } = ScreenUtils;
@@ -19,20 +20,23 @@ export default class PickTicketModal extends Component {
         };
     }
 
-    show = () => {
+    show = ({ callBack }) => {
         this.setState({
-            modalVisible: true
+            modalVisible: true,
+            callBack
         });
     };
 
     _close = () => {
         this.setState({
             modalVisible: false
+        }, () => {
+            this.state.callBack && this.state.callBack(this.amount);
         });
     };
 
     _amountChangeAction = (amount) => {
-
+        this.amount = amount;
     };
 
     render() {
@@ -55,9 +59,9 @@ export default class PickTicketModal extends Component {
                                     <Text style={[styles.ticketContentText, { paddingVertical: 5 }]}>使用有效期：无时间限制</Text>
                                     <Text style={styles.ticketContentText}>限商品：会员专属券</Text>
                                 </View>
-                                <Text style={styles.ticketAmountText}>×23</Text>
+                                <Text style={styles.ticketAmountText}>{`×${user.tokenCoin || 0}`}</Text>
                             </ImageBackground>
-                            <SelectAmountView style={styles.numberView} maxCount={0}
+                            <SelectAmountView style={styles.numberView} maxCount={user.tokenCoin || 0}
                                               amountChangeAction={this._amountChangeAction}/>
                         </View>
                         <TouchableOpacity style={styles.sureBtn} onPress={this._close}>
