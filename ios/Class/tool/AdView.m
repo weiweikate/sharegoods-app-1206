@@ -14,7 +14,7 @@
 #import "GongMaoVC.h"
 #define bg @"/app/start_adv_bg.png"
 #define ad @"/app/start_adv.png"
-#define Nums 10
+#define Nums 3
 
 @interface TimerView: UIView
 @property(nonatomic, assign)NSInteger num;
