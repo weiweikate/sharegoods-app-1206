@@ -11,9 +11,11 @@
 #import "AppDelegate.h"
 #import "StorageFromRN.h"
 #import "NSDictionary+Util.h"
+#import "GongMaoVC.h"
 #define bg @"/app/start_adv_bg.png"
 #define ad @"/app/start_adv.png"
-#define Nums 3
+#define Nums 10
+
 @interface TimerView: UIView
 @property(nonatomic, assign)NSInteger num;
 -(instancetype)initWithNum:(NSInteger)num;
@@ -109,6 +111,7 @@
 
 @property (nonatomic, strong)UIImage *adImg;
 @property (nonatomic, strong)UIImage *bgImg;
+@property(nonatomic, strong)NSString *linkTypeCode;
 @end
 @implementation AdView
 
@@ -133,41 +136,31 @@
   return self;
 }
 
++ (void)preImage{
+  NSDictionary *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"sg_ad"];
+  NSString * bgPath = data[@"image"];
+  NSString * imagePath = data[@"assistantImage"];
+  if (bgPath) {
+    [self loadImage:bgPath];
+  }
+  if (imagePath) {
+    [self loadImage:imagePath];
+  }
+}
+
 
 - (void)loadAd
 {
-  NSString * HostJson = [StorageFromRN getItem:@"HostJson"];
-  NSDictionary *dic = @{};
-  if (HostJson) {
-   dic =  [NSDictionary dictionaryWithJsonString:HostJson];
-  }
-//  YYWebImageManager * imageManager =  [YYWebImageManager sharedManager];
-//  imageManager.cache.diskCache.ageLimit = 60*60*24;
-  NSString * path = dic[@"oss"];
-//  YYWebImageOperation* operation = [ imageManager requestImageWithURL:[NSURL URLWithString:] options:YYWebImageOptionUseNSURLCache | YYWebImageOptionIgnoreFailedURL  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//
-//  } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
-//    return image;
-//  } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//      if (image) {//开始广告播放
-//        self.bgView.image = image;
-//        self.logoImgView.image = [UIImage imageNamed:@"default_logo"];
-//        self.timerView.hidden = NO;
-//        [self.timerView start];
-//        [self.launchImgView removeFromSuperview];
-//      }else{//无广告
-//        self.isPlayAd = YES;
-//      }
-//    });
-//  }];
-  
-//  [self performSelectorWithArgs:@selector(cancelOperation:) afterDelay:3,operation];
-  if(path == nil || path.length == 0)  {
+  NSDictionary *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"sg_ad"];
+  NSString * bgPath = data[@"image"];
+  NSString * imagePath = data[@"assistantImage"];
+  _linkTypeCode = data[@"linkTypeCode"];
+  if (!data || !bgPath|| !imagePath) {
     self.isPlayAd = YES;
     return;
   }
-  [self requestImageWithPath:[NSString stringWithFormat:@"%@%@",path,bg] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+
+  [self requestImageWithPath:[NSString stringWithFormat:@"%@",bgPath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
      dispatch_async(dispatch_get_main_queue(), ^{
        if (image) {
          self.bgImg = image;
@@ -178,7 +171,7 @@
      });
   }];
   
-  [self requestImageWithPath:[NSString stringWithFormat:@"%@%@",path,ad] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+  [self requestImageWithPath:[NSString stringWithFormat:@"%@",imagePath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
     dispatch_async(dispatch_get_main_queue(), ^{
       if (image) {
         self.adImg = image;
@@ -192,12 +185,23 @@
   
 }
 
++ (void)loadImage:(NSString *)str{
+  YYWebImageManager * imageManager =  [YYWebImageManager sharedManager];
+  imageManager.cache.diskCache.ageLimit = 60*60*24*7;
+  [imageManager requestImageWithURL:[NSURL URLWithString:str] options:  YYWebImageOptionIgnoreFailedURL | YYWebImageOptionIgnoreDiskCache  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    
+  } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
+    return image;
+  } completion:nil];
+
+}
+
 - (void)requestImageWithPath: (NSString *)str
 completion:(YYWebImageCompletionBlock)completion
 {
   YYWebImageManager * imageManager =  [YYWebImageManager sharedManager];
-  imageManager.cache.diskCache.ageLimit = 60*60*24;
-  YYWebImageOperation* operation = [imageManager requestImageWithURL:[NSURL URLWithString:str] options:  YYWebImageOptionIgnoreFailedURL | YYWebImageOptionIgnoreDiskCache  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+  imageManager.cache.diskCache.ageLimit = 60*60*24*7;
+  YYWebImageOperation* operation = [imageManager requestImageWithURL:[NSURL URLWithString:str] options:  YYWebImageOptionIgnoreFailedURL  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
     
   } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
     return image;
@@ -289,6 +293,9 @@ completion:(YYWebImageCompletionBlock)completion
   if (!_adImgView) {
     _adImgView = [UIImageView new];
     _adImgView.contentMode = UIViewContentModeScaleAspectFit;
+    _adImgView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(AdTap)];
+    [_adImgView addGestureRecognizer:tap];
     [self addSubview:_adImgView];
     UILabel *label = [UILabel new];
     label.textAlignment = 1;
@@ -299,6 +306,18 @@ completion:(YYWebImageCompletionBlock)completion
     [_adImgView addSubview:label];
   }
   return _adImgView;
+}
+
+- (void)AdTap
+{
+  if (_linkTypeCode) {
+    self.isPlayAd = YES;
+    self.isLoadJS = YES;
+    GongMaoVC *vc = [GongMaoVC new];
+    vc.url = _linkTypeCode;
+    vc.webConstTitle = @"";
+    [self.currentViewController_XG.navigationController pushViewController:vc animated: NO];
+  }
 }
 
 - (UIImageView *)bgView
