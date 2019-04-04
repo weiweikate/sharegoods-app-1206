@@ -31,8 +31,8 @@ import OssHelper from '../../utils/OssHelper';
 import ImageLoad from '@mr/image-placeholder';
 import { categoryHeight } from '../home/HomeCategoryView';
 import { bannerHeight } from '../home/HomeBannerView';
-import { kHomeClassifyHeight } from '../home/HomeClassifyView';
-import { adModules } from '../home/HomeAdModel';
+import { channelModules } from '../home/HomeChannelModel';
+import { homeFocusAdModel } from '../home/HomeFocusAdModel';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { navigate } from '../../navigation/RouterMap';
@@ -212,11 +212,11 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 3) {
-                let ad = adModules.ad;
-                let top = kHomeClassifyHeight + _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0);
+                let ad = homeFocusAdModel.ad;
+                let top = channelModules.channelHeight + _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0);
                 if (ad.length > 0) {
                     data.image = ad[ad.length - 1].imgUrl || '';//获取最后一个图片地址
-                    top = top + adModules.adHeight - adHeight;
+                    top = top + homeFocusAdModel.adHeight - adHeight;
                 }
                 if (top > ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight) {
                     top = ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight;

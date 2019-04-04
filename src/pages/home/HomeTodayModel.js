@@ -17,7 +17,7 @@ class TodayModule {
                     this.todayList = storeRes;
                 }
             }
-            const res = yield HomeApi.getTodays({ type: homeType.today });
+            const res = yield HomeApi.getHomeData({ type: homeType.today });
             this.todayList = res.data;
             save(kHomeTodayStore, res.data);
         } catch (error) {

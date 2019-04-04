@@ -11,12 +11,11 @@ import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import { homeType } from './HomeTypes';
 import HomeSearchView from './HomeSearchView';
-import HomeClassifyView, { kHomeClassifyHeight } from './HomeClassifyView';
+import HomeChannelView from './HomeChannelView';
 import HomeTodayView, { todayHeight } from './HomeTodayView';
 import HomeRecommendView, { recommendHeight } from './HomeRecommendView';
 import HomeSubjectView from './HomeSubjectView';
 import HomeBannerView, { bannerHeight } from './HomeBannerView';
-import HomeAdView from './HomeAdView';
 import GoodsCell, { kHomeGoodsViewHeight } from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import HomeCategoryView, { categoryHeight } from './HomeCategoryView';
@@ -31,16 +30,20 @@ import user from '../../model/user';
 import { homeTabManager } from './model/HomeTabManager';
 import { MRText as Text } from '../../components/ui';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
-import { adModules } from './HomeAdModel';
+import { homeFocusAdModel } from './HomeFocusAdModel';
 import { todayModule } from './HomeTodayModel';
 import { recommendModule } from './HomeRecommendModel';
 import { subjectModule } from './HomeSubjectModel';
+import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
 import HomeTitleView from './HomeTitleView';
 import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
 import HomeMessageModal from './HomeMessageModal';
-import HomeLimitGoView from './HomeLimitGoView'
-import { limitGoModule } from './HomeLimitGoModel'
+import { channelModules } from './HomeChannelModel';
+import HomeLimitGoView from './HomeLimitGoView';
+import { limitGoModule } from './HomeLimitGoModel';
+import HomeExpandBannerView from './HomeExpandBannerView';
+import HomeFocusAdView from './HomeFocusAdView';
 
 /**
  * @author zhangjian
@@ -89,35 +92,38 @@ class HomePage extends BasePage {
             case homeType.swiper:
                 dim.height = bannerHeight;
                 break;
-            case homeType.classify:
-                dim.height = kHomeClassifyHeight;
+            case homeType.user:
+                dim.height = user.isLogin ? px2dp(44) : 0;
                 break;
-            case homeType.ad:
-                dim.height = adModules.adHeight;
+            case homeType.channel:
+                dim.height = channelModules.channelHeight;
+                break;
+            case homeType.expandBanner:
+                dim.height = homeExpandBnnerModel.bannerHeight;
+                break;
+            case homeType.focusGrid:
+                dim.height = homeFocusAdModel.adHeight;
+                break;
+            case homeType.limitGo:
+                dim.height = limitGoModule.limitHeight;
                 break;
             case homeType.today:
                 dim.height = todayList.length > 0 ? todayHeight : 0;
                 break;
-            case homeType.recommend:
+            case homeType.fine:
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
-            case homeType.subject:
+            case homeType.homeHot:
                 dim.height = subjectHeight;
-                break;
-            case homeType.user:
-                dim.height = user.isLogin ? px2dp(44) : 0;
-                break;
-            case homeType.goods:
-                dim.height = kHomeGoodsViewHeight;
                 break;
             case homeType.goodsTitle:
                 dim.height = px2dp(52);
                 break;
-            case homeType.limitGo:
-                dim.height = limitGoModule.limitHeight
+            case homeType.goods:
+                dim.height = kHomeGoodsViewHeight;
                 break;
             default:
-                dim.height = 0
+                dim.height = 0;
         }
     });
 
@@ -337,18 +343,22 @@ class HomePage extends BasePage {
             return <HomeCategoryView navigate={this.$navigate}/>;
         } else if (type === homeType.swiper) {
             return <HomeBannerView navigate={this.$navigate}/>;
-        } else if (type === homeType.classify) {
-            return <HomeClassifyView navigate={this.$navigate}/>;
-        } else if (type === homeType.ad) {
-            return <HomeAdView navigate={this.$navigate}/>;
-        } else if (type === homeType.today) {
-            return <HomeTodayView navigate={this.$navigate}/>;
-        } else if (type === homeType.recommend) {
-            return <HomeRecommendView navigate={this.$navigate}/>;
-        } else if (type === homeType.subject) {
-            return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
+        } else if (type === homeType.channel) {
+            return <HomeChannelView navigate={this.$navigate}/>;
+        } else if (type === homeType.expandBanner) {
+            return <HomeExpandBannerView navigate={this.$navigate}/>;
+        } else if (type === homeType.focusGrid) {
+            return <HomeFocusAdView navigate={this.$navigate}/>;
+        } else if (type === homeType.limitGo) {
+            return <HomeLimitGoView navigate={this.$navigate}/>;
+        } else if (type === homeType.today) {
+            return <HomeTodayView navigate={this.$navigate}/>;
+        } else if (type === homeType.fine) {
+            return <HomeRecommendView navigate={this.$navigate}/>;
+        } else if (type === homeType.homeHot) {
+            return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.goods) {
             return <GoodsCell data={data} navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
@@ -359,8 +369,6 @@ class HomePage extends BasePage {
                          }}>
                 <HomeTitleView title={'为你推荐'}/>
             </View>;
-        } else if (type === homeType.limitGo) {
-            return <HomeLimitGoView navigate={this.$navigate}/>
         }
         return <View/>;
     };
@@ -402,7 +410,7 @@ class HomePage extends BasePage {
     };
 
     render() {
-        console.log('getBanner render', adModules.adHeight, limitGoModule.limitHeight); //千万别去掉
+        console.log('getBanner render', homeExpandBnnerModel.adHeight, limitGoModule.limitHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (

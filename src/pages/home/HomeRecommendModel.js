@@ -18,7 +18,7 @@ class RecommendModule {
                 }
             }
 
-            const res = yield HomeApi.getRecommends({ type: homeType.recommend });
+            const res = yield HomeApi.getHomeData({ type: homeType.fine });
             this.recommendList = res.data;
             save(kHomeRecommendStore, res.data);
         } catch (error) {
