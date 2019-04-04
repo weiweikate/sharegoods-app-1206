@@ -220,8 +220,8 @@ export default class CommShareModal extends React.Component {
         }
         if (this.props.trackEvent) {
             let p = this.props.trackParmas || {};
-            let shareMethod = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][platformType];
-            track(this.props.trackEvent, { shareMethod, ...p });
+            let shareType = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][platformType];
+            track(this.props.trackEvent, { shareType, ...p });
         }
         bridge.share(params, () => {
             if (user.isLogin && that.props.luckyDraw === true) {
@@ -260,7 +260,7 @@ export default class CommShareModal extends React.Component {
 
     saveImage(path) {
         if (this.props.trackEvent) {
-            track(this.props.trackEvent, { shareMethod: TrackShareType.saveImage, ...this.props.trackParmas });
+            track(this.props.trackEvent, { shareType: TrackShareType.saveImage, ...this.props.trackParmas });
         }
         bridge.saveImage(path);
         this.close();
@@ -268,7 +268,7 @@ export default class CommShareModal extends React.Component {
 
     copyUrl() {
         if (this.props.trackEvent) {
-            track(this.props.trackEvent, { shareMethod: TrackShareType.copyLink, ...this.props.trackParmas });
+            track(this.props.trackEvent, { shareType: TrackShareType.copyLink, ...this.props.trackParmas });
         }
         Clipboard.setString(this.props.webJson.linkUrl);
         NativeModules.commModule.toast('复制链接成功');

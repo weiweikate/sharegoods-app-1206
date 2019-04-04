@@ -87,11 +87,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
     [self.changeToSupplierBtn removeFromSuperview];
   }
 }
-//urlString: "",
-//title: "秀购客服",
-//shopId: "",
-//chatType: beginChatType.BEGIN_FROM_OTHER,
-//data: {} }
+//切换到平台客服
 -(void)changeToPlatformAction:(UIButton *)btn{
   //暂存上个供应商数据
   [self.suspensionBtn removeFromSuperview];
@@ -124,13 +120,15 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  * systemVersion:手机系统版本
  */
 -(void)initQYChat:(id)jsonData{
-  
   [self initActionConfig];
-  
   QYUserInfo * userInfo = [self packingUserInfo:jsonData];
+  [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
   [[QYSDK sharedSDK] setUserInfo:userInfo];
   
-  [[[QYSDK sharedSDK] conversationManager] setDelegate:self];
+  NSInteger allUnReadCount =  [[[QYSDK sharedSDK]conversationManager]allUnreadCount];
+  [self.sessionListDic setObject:@(allUnReadCount) forKey:all_unread_count];
+  NSArray * sessionList =  [[[QYSDK sharedSDK]conversationManager]getSessionList];
+  [self postNoti:sessionList];
 }
 
 -(void)initActionConfig{
@@ -262,7 +260,10 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  *  会话列表变化；非平台电商用户，只有一个会话项，平台电商用户，有多个会话项
  */
 - (void)onSessionListChanged:(NSArray<QYSessionInfo*> *)sessionList{
-//  NSLog(@"%@",sessionList);
+  [self postNoti:sessionList];
+}
+//组装数据并发送通知
+-(void)postNoti:(NSArray *)sessionList{
   //将所有回话列表进行组装并传递给原生
   NSMutableArray * sessionListDataArr = [NSMutableArray array];
   
@@ -287,9 +288,10 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   [self.sessionListDic setObject:sessionListDataArr forKey:sessionListData];
   
   dispatch_async(dispatch_get_main_queue(), ^{
-   [[NSNotificationCenter defaultCenter]postNotificationName:QY_MSG_CHANGE object:self.sessionListDic];
+    [[NSNotificationCenter defaultCenter]postNotificationName:QY_MSG_CHANGE object:self.sessionListDic];
   });
 }
+
 -(NSString *)arrToJsonString:(NSArray *)arr{
     NSData *data = [NSJSONSerialization dataWithJSONObject:self
                                                    options:NSJSONReadingMutableLeaves | NSJSONReadingAllowFragments

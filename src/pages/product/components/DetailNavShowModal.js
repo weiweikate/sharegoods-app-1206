@@ -8,11 +8,13 @@ import {
     Image
 } from 'react-native';
 import { MRText as Text } from '../../../components/ui/index';
-
+import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
 import Modal from '../../../comm/components/CommModal';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import QYChatModel from '../../../utils/QYModule/QYChatModel';
 
 const {
     detailShowBg,
@@ -26,6 +28,7 @@ const {
 const bgHeight = ScreenUtils.autoSizeWidth(410 / 2.0);
 const bgWidth = 286 / 2.0;
 
+@observer
 export default class DetailNavShowModal extends Component {
 
     constructor(props) {
@@ -57,6 +60,9 @@ export default class DetailNavShowModal extends Component {
         this.setState({
             modalVisible: false
         });
+        if (item.type === 3) {//客服埋点
+            track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
+        }
         this.state.confirmCallBack && this.state.confirmCallBack(item);
     };
 
@@ -86,6 +92,7 @@ export default class DetailNavShowModal extends Component {
     };
 
     _renderItem = ({ item }) => {
+        const messageCount = this.state.messageCount + QYChatModel.unreadCount;
         return <TouchableOpacity
             style={{
                 flexDirection: 'row',
@@ -97,7 +104,7 @@ export default class DetailNavShowModal extends Component {
             <Image source={item.img} style={{ marginLeft: 23 }}/>
             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }}
                   allowFontScaling={false}>{item.tittle}</Text>
-            {item.type === 0 && this.state.messageCount > 0 ? <View style={{
+            {item.type === 0 && messageCount > 0 ? <View style={{
                 position: 'absolute', justifyContent: 'center', alignItems: 'center',
                 top: ScreenUtils.autoSizeWidth(9),
                 left: 23 + 12,
@@ -107,7 +114,7 @@ export default class DetailNavShowModal extends Component {
                 <Text style={{
                     color: DesignRule.white,
                     fontSize: 9
-                }} allowFontScaling={false}>{this.state.messageCount > 99 ? 99 : this.state.messageCount}</Text>
+                }} allowFontScaling={false}>{messageCount > 99 ? 99 : messageCount}</Text>
             </View> : null}
         </TouchableOpacity>;
     };
