@@ -49,7 +49,9 @@ const api = {
     //秒杀
     getLimitGo: ['/operator/seckill/homePage', {method: 'get'}],
     //是否显示秒杀
-    isShowLimitGo: ['/advertising/timeLimitSecKill', {method: 'get'}]
+    isShowLimitGo: ['/advertising/timeLimitSecKill', {method: 'get'}],
+    //查询广告列表
+    queryAdvertisingList:['/advertising/queryAdvertisingList',{method:'post'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

@@ -7,29 +7,29 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ImageBackground,
-    Image
+    Image,
+    ScrollView,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { MRText as Text } from '../../../../components/ui';
-import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import MineAPI from '../../api/MineApi';
-import res from '../../res';
-import AvatarImage from '../../../../components/ui/AvatarImage';
 import { TrackApi } from '../../../../utils/SensorsTrack';
 import ToSearchComponent from './Component/ToSearchComponent';
-const {px2dp} = ScreenUtils;
-const {
-    bg_fans_item
-} = res.homeBaseImg;
+import RouterMap from '../../../../navigation/RouterMap';
+import res from '../../res'
+const { px2dp } = ScreenUtils;
+const {next_icon,icon_v1,icon_v2,icon_v3,icon_v4,icon_v5} = res.myData;
+
 type Props = {};
 export default class MainShowFansPage extends BasePage<Props> {
     constructor(props) {
         super(props);
         this.state = {
-            fansNum: null
+            fansNum: null,
+            levelList: []
         };
     }
 
@@ -38,27 +38,21 @@ export default class MainShowFansPage extends BasePage<Props> {
         show: true
     };
 
+    componentDidMount() {
+        MineAPI.getFansLevelList().then(
+            (data) => {
+                if (data.data) {
+                    TrackApi.ViewMyFans({ fanAmount: data.data.total });
+                    this.setState({
+                        fansNum: data.data.total,
+                        levelList: data.data.userFansLevelList || []
+                    });
+                }
+            }
+        ).catch((error) => {
 
-    _listItemRender = ({ item }) => {
-        const uri = { uri: item.headImg };
-        return (
-            <ImageBackground resizeMode={'stretch'} source={bg_fans_item} style={styles.itemWrapper}>
-                <View style={[styles.fansIcon, { overflow: 'hidden' }]}>
-                    <AvatarImage style={styles.fansIcon} source={uri}/>
-                </View>
-                <Text style={styles.fansNameStyle}>
-                    {item.nickname}
-                </Text>
-
-                <View style={styles.levelWrapper}>
-                    <Text style={styles.levelTextStyle}>
-                        {`V${item.level ? item.level  : 0}`}
-                    </Text>
-                </View>
-
-            </ImageBackground>
-        );
-    };
+        });
+    }
 
     _headerRender = () => {
         if (this.state.fansNum) {
@@ -72,46 +66,57 @@ export default class MainShowFansPage extends BasePage<Props> {
         }
     };
 
-    itemRender(){
-        return(
-            <View style={styles.groupWrapper}>
-                <Text style={styles.levelName}>
-                    砖石品鉴官
-                </Text>
-                <Image style={styles.levelIcon}/>
-                <Text style={styles.numTextStyle}>
-                    24人
-                </Text>
-                <Image style={styles.nextIcon}/>
-            </View>
-        )
+    itemRender(data, index) {
+        let levelIcon ;
+        if(data.vname === 'v1'){
+            levelIcon = icon_v1
+        }
+        if(data.vname === 'v2'){
+            levelIcon = icon_v2
+        }
+        if(data.vname === 'v3'){
+            levelIcon = icon_v3
+        }
+        if(data.vname === 'v4'){
+            levelIcon = icon_v4
+        }
+        if(data.vname === 'v5'){
+            levelIcon = icon_v5
+        }
+
+        return (
+            <TouchableWithoutFeedback onPress={() => {
+                this.$navigate(RouterMap.GroupShowFansPage, data);
+            }}>
+                <View key={'item' + index} style={styles.groupWrapper}>
+                    <Text style={styles.levelName}>
+                        {`${data.name}品鉴官`}
+                    </Text>
+                    <Image source={levelIcon} style={styles.levelIcon}/>
+                    <Text style={styles.numTextStyle}>
+                        {data.count ? `${data.count}人` : '0人'}
+                    </Text>
+                    <Image source={next_icon} style={styles.nextIcon} resizeMode={'contain'}/>
+                </View>
+            </TouchableWithoutFeedback>
+        );
     }
+
+    allLevelRender = () => {
+        return this.state.levelList.map((data, index) => {
+            return this.itemRender(data, index);
+        });
+    };
+
 
     _render() {
         return (
             <View style={styles.container}>
-                <ToSearchComponent />
+                <ToSearchComponent navigate={this.$navigate}/>
                 {this._headerRender()}
-                {this.itemRender()}
-                {/*{this._listItemRender()}*/}
-                <RefreshFlatList
-                    style={styles.container}
-                    url={MineAPI.getShowFansList}
-                    renderItem={this._listItemRender}
-                    // totalPageNum={(result)=> {return result.data.isMore ? 10 : 0}}
-                    renderHeader={this._headerRender}
-                    onStartRefresh={this.loadPageData}
-                    handleRequestResult={(result) => {
-                        this.setState({
-                            fansNum: result.data.totalNum
-                        });
-                        TrackApi.ViewMyFans({fanAmount:result.data.totalNum});
-
-                        return result.data.data;
-                    }}
-
-                    // ref={(ref) => {this.list = ref}}
-                />
+                <ScrollView showsVerticalScrollIndicator={false} h>
+                    {this.allLevelRender()}
+                </ScrollView>
             </View>
         );
     }
@@ -168,45 +173,44 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 1,
         marginLeft: 15,
-        borderColor:DesignRule.mainColor,
-        paddingHorizontal:12,
+        borderColor: DesignRule.mainColor,
+        paddingHorizontal: 12
     },
     levelTextStyle: {
         color: DesignRule.mainColor,
         includeFontPadding: false,
         fontSize: DesignRule.fontSize_20
     },
-    groupWrapper:{
-        height:px2dp(44),
-        width:DesignRule.width - DesignRule.margin_page*2,
-        backgroundColor:DesignRule.white,
-        borderRadius:px2dp(5),
-        flexDirection:'row',
-        alignItems:'center',
-        paddingLeft:px2dp(15),
-        paddingRight:px2dp(10),
-        alignSelf:'center',
-        marginTop:px2dp(15)
+    groupWrapper: {
+        height: px2dp(44),
+        width: DesignRule.width - DesignRule.margin_page * 2,
+        backgroundColor: DesignRule.white,
+        borderRadius: px2dp(5),
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: px2dp(15),
+        paddingRight: px2dp(10),
+        alignSelf: 'center',
+        marginTop: px2dp(15)
     },
-    levelName:{
-      color:DesignRule.textColor_mainTitle,
-        fontSize:DesignRule.fontSize_threeTitle
+    levelName: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: DesignRule.fontSize_threeTitle
     },
-    levelIcon:{
-        width:px2dp(24),
-        height:px2dp(16),
-        marginLeft:px2dp(5),
-        backgroundColor:'red'
+    levelIcon: {
+        width: px2dp(24),
+        height: px2dp(16),
+        marginLeft: px2dp(5),
     },
-    numTextStyle:{
-        fontSize:px2dp(12),
-        color:DesignRule.textColor_instruction,
-        flex:1,
-        textAlign:'right',
+    numTextStyle: {
+        fontSize: px2dp(12),
+        color: DesignRule.textColor_instruction,
+        flex: 1,
+        textAlign: 'right'
     },
-    nextIcon:{
-        width:px2dp(16),
-        height:px2dp(16),
-        backgroundColor:'red'
+    nextIcon: {
+        width: px2dp(4),
+        height: px2dp(9),
+        marginLeft:px2dp(5)
     }
 });

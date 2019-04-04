@@ -9,18 +9,20 @@ import {
     View,
     ImageBackground,
     Image,
-    PixelRatio
+    PixelRatio,
+    TouchableWithoutFeedback,
+    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import { MRText as Text,MRTextInput as TextInput } from '../../../../components/ui';
+import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
 import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import MineAPI from '../../api/MineApi';
-import res from '../../res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
-import { TrackApi } from '../../../../utils/SensorsTrack';
+import res from '../../res';
 
+const { icon_search, icon_clean } = res.myData;
 const { px2dp } = ScreenUtils;
 const {
     bg_fans_item
@@ -30,7 +32,8 @@ export default class SearchShowFansPage extends BasePage<Props> {
     constructor(props) {
         super(props);
         this.state = {
-            fansNum: null
+            fanName: '',
+            searchRender: null
         };
     }
 
@@ -50,13 +53,11 @@ export default class SearchShowFansPage extends BasePage<Props> {
                 <Text style={styles.fansNameStyle}>
                     {item.nickname}
                 </Text>
-
                 <View style={styles.levelWrapper}>
                     <Text style={styles.levelTextStyle}>
                         {`V${item.level ? item.level : 0}`}
                     </Text>
                 </View>
-
             </ImageBackground>
         );
     };
@@ -65,56 +66,59 @@ export default class SearchShowFansPage extends BasePage<Props> {
         return (
             <View style={styles.bar_contain}>
                 <View style={styles.searchBarWrapper}>
-                    <View style={styles.searchIcon}/>
-                    <TextInput style={styles.textInputStyle}/>
-                    <View/>
+                    <Image source={icon_search} style={styles.searchIcon}/>
+                    <TextInput
+                        placeholder={'搜索'}
+                        value={this.state.fanName}
+                        onChangeText={(text) => {
+                            this.setState({
+                                fanName: text
+                            }, () => {
+                                this.list && this.list._onRefresh();
+                            });
+                        }} style={styles.textInputStyle}/>
+                    <TouchableOpacity onPress={()=>{
+                        this.setState({
+                            fanName:''
+                        })
+                    }}>
+                        <Image source={icon_clean} style={styles.cleanIcon}/>
+                    </TouchableOpacity>
                 </View>
-                <Text style={styles.cancelButtonStyle}>
-                    取消
-                </Text>
+                <TouchableWithoutFeedback onPress={() => {
+                    this.$navigateBack();
+                }}>
+                    <Text style={styles.cancelButtonStyle}>
+                        取消
+                    </Text>
+                </TouchableWithoutFeedback>
             </View>
         );
     }
 
-    itemRender() {
-        return (
-            <View style={styles.groupWrapper}>
-                <Text style={styles.levelName}>
-                    砖石品鉴官
-                </Text>
-                <Image style={styles.levelIcon}/>
-                <Text style={styles.numTextStyle}>
-                    24人
-                </Text>
-                <Image style={styles.nextIcon}/>
-            </View>
-        );
-    }
 
     _render() {
+        let params = this.params.levelId ? {
+            levelId: this.params.levelId,
+            fansName: this.state.fanName
+        } : { fansName: this.state.fanName };
         return (
             <View style={styles.container}>
                 {this.searchBarRender()}
-                {this.itemRender()}
-                {/*{this._listItemRender()}*/}
-                <RefreshFlatList
+                {this.state.fanName ? <RefreshFlatList
+                    ref={(ref) => {
+                        this.list = ref;
+                    }}
                     style={styles.container}
                     url={MineAPI.getShowFansList}
                     renderItem={this._listItemRender}
-                    // totalPageNum={(result)=> {return result.data.isMore ? 10 : 0}}
-                    renderHeader={this._headerRender}
-                    onStartRefresh={this.loadPageData}
-                    handleRequestResult={(result) => {
-                        this.setState({
-                            fansNum: result.data.totalNum
-                        });
-                        TrackApi.ViewMyFans({ fanAmount: result.data.totalNum });
-
-                        return result.data.data;
+                    renderEmpty={() => {
+                        return <View/>;
                     }}
-
-                    // ref={(ref) => {this.list = ref}}
-                />
+                    paramsFunc={() => {
+                        return params;
+                    }}
+                /> : null}
             </View>
         );
     }
@@ -195,22 +199,11 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle,
         fontSize: DesignRule.fontSize_threeTitle
     },
-    levelIcon: {
-        width: px2dp(24),
-        height: px2dp(16),
-        marginLeft: px2dp(5),
-        backgroundColor: 'red'
-    },
     numTextStyle: {
         fontSize: px2dp(12),
         color: DesignRule.textColor_instruction,
         flex: 1,
         textAlign: 'right'
-    },
-    nextIcon: {
-        width: px2dp(16),
-        height: px2dp(16),
-        backgroundColor: 'red'
     },
     bar_contain: {
         width: DesignRule.width,
@@ -219,33 +212,37 @@ const styles = StyleSheet.create({
         marginTop: -1.0 / PixelRatio.get(),
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal:px2dp(15),
-        flexDirection:'row',
+        paddingHorizontal: px2dp(15),
+        flexDirection: 'row'
     },
-    searchBarWrapper:{
-        flex:1,
-        height:px2dp(34),
-        borderRadius:px2dp(17),
-        backgroundColor:'#F7F7F7'
+    searchBarWrapper: {
+        flex: 1,
+        height: px2dp(34),
+        borderRadius: px2dp(17),
+        backgroundColor: '#F7F7F7',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
-    cancelButtonStyle:{
-        color:'#999999',
-        fontSize:px2dp(13),
-        marginLeft:px2dp(10)
+    cancelButtonStyle: {
+        color: '#999999',
+        fontSize: px2dp(13),
+        marginLeft: px2dp(10)
     },
-    searchIcon:{
-        width:px2dp(18),
-        height:px2dp(18),
-        marginLeft:px2dp(10),
-        backgroundColor:'red'
+    searchIcon: {
+        width: px2dp(18),
+        height: px2dp(18),
+        marginLeft: px2dp(10)
     },
-    textInputStyle:{
-        flex:1,
-        fontSize:px2dp(13),
-        marginLeft:px2dp(10)
+    textInputStyle: {
+        flex: 1,
+        fontSize: px2dp(13),
+        marginLeft: px2dp(10)
     },
-    cleanIcon:{
-        width:px2dp(16)
+    cleanIcon: {
+        width: px2dp(16),
+        height: px2dp(16),
+        marginLeft: px2dp(10),
+        marginRight: px2dp(10)
     }
 
 });

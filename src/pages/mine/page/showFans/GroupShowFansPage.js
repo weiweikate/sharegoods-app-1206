@@ -18,12 +18,19 @@ import DesignRule from '../../../../constants/DesignRule';
 import MineAPI from '../../api/MineApi';
 import res from '../../res';
 import AvatarImage from '../../../../components/ui/AvatarImage';
-import { TrackApi } from '../../../../utils/SensorsTrack';
 import ToSearchComponent from './Component/ToSearchComponent';
 const {px2dp} = ScreenUtils;
 const {
     bg_fans_item
 } = res.homeBaseImg;
+
+const {
+    icon_v1,
+    icon_v2,
+    icon_v3,
+    icon_v4,
+    icon_v5
+} = res.myData;
 type Props = {};
 export default class GroupShowFansPage extends BasePage<Props> {
     constructor(props) {
@@ -37,7 +44,6 @@ export default class GroupShowFansPage extends BasePage<Props> {
         title: '我的秀迷',
         show: true
     };
-
 
     _listItemRender = ({ item }) => {
         const uri = { uri: item.headImg };
@@ -61,56 +67,46 @@ export default class GroupShowFansPage extends BasePage<Props> {
     };
 
     _headerRender = () => {
-        if (this.state.fansNum) {
-            return (
-                <Text style={styles.headerTextWrapper}>
-                    {`秀迷人数： ${this.state.fansNum}人`}
-                </Text>
-            );
-        } else {
-            return null;
+        let levelIcon ;
+        if(this.params.vname === 'v1'){
+            levelIcon = icon_v1
         }
+        if(this.params.vname === 'v2'){
+            levelIcon = icon_v2
+        }
+        if(this.params.vname === 'v3'){
+            levelIcon = icon_v3
+        }
+        if(this.params.vname === 'v4'){
+            levelIcon = icon_v4
+        }
+        if(this.params.vname === 'v5'){
+            levelIcon = icon_v5
+        }
+       return(
+           <View style={styles.headerWrapper}>
+               <Text style={styles.levelNameText}>
+                   {`${this.params.name}品鉴官`}
+               </Text>
+               <Image source={levelIcon} style={styles.iconStyle}/>
+                <View style={{flex:1}}/>
+               <Text style={styles.headerText}>
+                   {`${this.params.count || 0}人`}
+               </Text>
+           </View>
+       )
     };
-
-    itemRender(){
-        return(
-            <View style={styles.groupWrapper}>
-                <Text style={styles.levelName}>
-                    砖石品鉴官
-                </Text>
-                <Image style={styles.levelIcon}/>
-                <Text style={styles.numTextStyle}>
-                    24人
-                </Text>
-                <Image style={styles.nextIcon}/>
-            </View>
-        )
-    }
 
     _render() {
         return (
             <View style={styles.container}>
-                <ToSearchComponent />
+                <ToSearchComponent navigate={this.$navigate} levelId={this.params.id}/>
                 {this._headerRender()}
-                {this.itemRender()}
-                {/*{this._listItemRender()}*/}
                 <RefreshFlatList
                     style={styles.container}
                     url={MineAPI.getShowFansList}
                     renderItem={this._listItemRender}
-                    // totalPageNum={(result)=> {return result.data.isMore ? 10 : 0}}
-                    renderHeader={this._headerRender}
-                    onStartRefresh={this.loadPageData}
-                    handleRequestResult={(result) => {
-                        this.setState({
-                            fansNum: result.data.totalNum
-                        });
-                        TrackApi.ViewMyFans({fanAmount:result.data.totalNum});
-
-                        return result.data.data;
-                    }}
-
-                    // ref={(ref) => {this.list = ref}}
+                    params={{levelId:this.params.id}}
                 />
             </View>
         );
@@ -192,21 +188,30 @@ const styles = StyleSheet.create({
         color:DesignRule.textColor_mainTitle,
         fontSize:DesignRule.fontSize_threeTitle
     },
-    levelIcon:{
-        width:px2dp(24),
-        height:px2dp(16),
-        marginLeft:px2dp(5),
-        backgroundColor:'red'
-    },
     numTextStyle:{
         fontSize:px2dp(12),
         color:DesignRule.textColor_instruction,
         flex:1,
         textAlign:'right',
     },
-    nextIcon:{
-        width:px2dp(16),
+    headerWrapper:{
+        flexDirection:'row',
+        alignItems:'center',
+        width:DesignRule.width,
+        paddingHorizontal:px2dp(15),
+        marginTop:px2dp(10)
+    },
+    iconStyle:{
+        width:px2dp(24),
         height:px2dp(16),
-        backgroundColor:'red'
+        marginLeft:px2dp(5),
+    },
+    headerText:{
+        color:DesignRule.textColor_instruction,
+        fontSize:DesignRule.fontSize_24
+    },
+    levelNameText:{
+        color:DesignRule.textColor_mainTitle,
+        fontSize:px2dp(13)
     }
 });

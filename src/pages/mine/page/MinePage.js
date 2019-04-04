@@ -763,7 +763,7 @@ export default class MinePage extends BasePage {
             icon: mine_icon_fans,
             onPress: () => {
                 if (this.state.hasFans) {
-                    this.$navigate(RouterMap.SearchShowFansPage);
+                    this.$navigate(RouterMap.MainShowFansPage);
                 }
             }
         };

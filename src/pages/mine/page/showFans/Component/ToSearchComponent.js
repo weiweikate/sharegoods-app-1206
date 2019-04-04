@@ -8,30 +8,19 @@ import {
     StyleSheet,
     View,
     PixelRatio,
-    TextInput,
-    Alert,
-    Text,
-    TouchableOpacity,
-    Navigator,
-    StatusBar,
-    ScrollView,
-    ToastAndroid,
-    TouchableWithoutFeedback,
-    FlatList,
-    Modal,
-    InteractionManager,
-    ViewPagerAndroid,
-    Image
+    Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 import DesignRule from '../../../../../constants/DesignRule';
 import ScreenUtils from '../../../../../utils/ScreenUtils';
 import { MRText } from '../../../../../components/ui';
 import RouterMap from '../../../../../navigation/RouterMap';
-
+import res from '../../../res'
+const {icon_search} = res.myData;
 const { px2dp } = ScreenUtils;
 export default class ToSearchComponent extends PureComponent {
     toSearch = () => {
-        this.props.navigation && this.props.navigation(RouterMap.SearchShowFansPage);
+        this.props.navigate && this.props.navigate(RouterMap.SearchShowFansPage,{levelId:this.props.levelId});
     };
 
     render() {
@@ -39,7 +28,7 @@ export default class ToSearchComponent extends PureComponent {
             <View style={styles.contain}>
                 <TouchableWithoutFeedback onPress={this.toSearch}>
                     <View style={styles.searchWrapper}>
-                        <Image style={styles.iconStyle}/>
+                        <Image source={icon_search} style={styles.iconStyle}/>
                         <MRText style={styles.textStyle}>
                             搜索
                         </MRText>
@@ -68,7 +57,6 @@ const styles = StyleSheet.create({
         width: DesignRule.width - DesignRule.margin_page * 2
     },
     iconStyle: {
-        backgroundColor: 'red',
         width: px2dp(18),
         height: px2dp(18),
         marginLeft: px2dp(10)
