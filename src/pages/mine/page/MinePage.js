@@ -401,7 +401,7 @@ export default class MinePage extends BasePage {
                                   }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.$navigate(RouterMap.MyPromotionPage);
-                            TrackApi.ViewLevelInterest({ moduleSource: 2 });
+                            TrackApi.ViewLevelInterest({ levelInterestModuleSource: 2 });
                         }}>
                             <View style={{
                                 justifyContent: 'space-between',
@@ -754,7 +754,7 @@ export default class MinePage extends BasePage {
             icon: mine_icon_discollect,
             onPress: () => {
                 TrackApi.ViewMyXiuCollection();
-                TrackApi.WatchXiuChang({ moduleSource: 3 });
+                TrackApi.WatchXiuChang({ xiuChangModuleSource: 3 });
                 this.$navigate(RouterMap.ShowConnectPage);
             }
         };
@@ -763,7 +763,7 @@ export default class MinePage extends BasePage {
             icon: mine_icon_fans,
             onPress: () => {
                 if (this.state.hasFans) {
-                    this.$navigate(RouterMap.MyShowFansPage);
+                    this.$navigate(RouterMap.SearchShowFansPage);
                 }
             }
         };
