@@ -66,7 +66,8 @@ export default class SearchShowFansPage extends BasePage<Props> {
             <View style={styles.bar_contain}>
                 <View style={styles.searchBarWrapper}>
                     <View style={styles.searchIcon}/>
-                    <TextInput  />
+                    <TextInput style={styles.textInputStyle}/>
+                    <View/>
                 </View>
                 <Text style={styles.cancelButtonStyle}>
                     取消
@@ -242,6 +243,9 @@ const styles = StyleSheet.create({
         flex:1,
         fontSize:px2dp(13),
         marginLeft:px2dp(10)
+    },
+    cleanIcon:{
+        width:px2dp(16)
     }
 
 });
