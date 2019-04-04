@@ -61,7 +61,7 @@ export class Payment {
         this.selectedBalace = false
         this.isGoToPay = false
     }
-    
+
     //选择余额支付
     @action selectBalancePayment = () => {
         this.selectedBalace = !this.selectedBalace
@@ -98,7 +98,15 @@ export class Payment {
     @action checkOrderStatus = flow(function * (pOrderNo) {
          try {
             Toast.showLoading()
-            const result = yield PaymentApi.check({platformOrderNo: pOrderNo ? pOrderNo : this.platformOrderNo})
+            const result = yield PaymentApi.check(
+                {
+                    // platformOrderNo: pOrderNo ? pOrderNo : this.platformOrderNo
+                    outTradeNo: pOrderNo ? pOrderNo : this.platformOrderNo,//订单号
+                    bizType:0,//业务类型.0:普通订单;1:拼店扩容;
+                    modeType:0,//结算模式.0:正常流程结算;1:立即结算.例如:拼店扩容应该是立即结算;普通商品交易应该是普通结算
+                    payAmount:'0.01',
+                    tradeDesc:'普工订单'
+                })
             Toast.hiddenLoading()
             return result.data
         } catch (error) {
@@ -136,7 +144,7 @@ export class Payment {
         try {
             Toast.showLoading()
             const result = yield PaymentApi.wechatPay({platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo})
-            
+
             this.isGoToPay = true
             const payInfo = JSON.parse(result.data)
             Toast.hiddenLoading()
@@ -153,7 +161,7 @@ export class Payment {
                 throw new Error(resultStr.msg)
             }
             return resultStr
-            
+
         } catch (error) {
             track(trackEvent.payOrder, {...paymentTrack, paymentProgress: 'error', errorCause: error.msg || error.message})
             Toast.hiddenLoading()

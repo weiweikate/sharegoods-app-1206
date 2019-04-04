@@ -13,7 +13,7 @@ const api = {
     platformPay: ['/payV2/platform'],
     //检查订单状态:
     // check: ['/payV2/check', {method:'get'}],
-    check:['/pay/pay/payorder'],
+    check:['/pay/pay/payOrder'],
     //支付宝支付v2
     alipay: ['/payV2/alipay'],
     //微信支付v2

@@ -540,6 +540,7 @@ export default class MyOrdersListView extends Component {
         const { platformOrderNo, orderNo, totalPrice, orderProduct } = payData;
         console.log('_goToPay', payData);
         let result = await payment.checkOrderStatus(platformOrderNo);
+        return;
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
                 orderNum: orderNo,
