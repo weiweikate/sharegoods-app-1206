@@ -25,6 +25,7 @@ import bridge from './utils/bridge';
 import DesignRule from './constants/DesignRule';
 import Toast from './utils/bridge';
 import RouterMap from './navigation/RouterMap';
+import StringUtils from './utils/StringUtils';
 
 export default class BasePage extends Component {
     constructor(props) {
@@ -37,7 +38,7 @@ export default class BasePage extends Component {
 
     $navigationBarOptions = {
         title: '',
-        show: true,
+        show: true
     };
 
     componentDidMount() {
@@ -51,7 +52,7 @@ export default class BasePage extends Component {
 
     $renderSuperView = () => {
         this.setState({});
-    }
+    };
 
 
     $isMonitorNetworkStatus() {
@@ -109,16 +110,18 @@ export default class BasePage extends Component {
             </View>
         );
     }
+
     /**
      * 跳转登录页面
      */
-    gotoLoginPage=(params={})=>{
-        if (true){
-            this.$navigate(RouterMap.LoginPage,params);
+    gotoLoginPage = (params = {}) => {
+        if (true) {
+            this.$navigate(RouterMap.LoginPage, params);
         } else {
-            this.$navigate(RouterMap.OldUserLoginPage,params);
+            this.$navigate(RouterMap.OldUserLoginPage, params);
         }
-    }
+    };
+
     renderContianer() {
         let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
         return (
@@ -210,7 +213,7 @@ export default class BasePage extends Component {
         // navigate(routeName, params);
         // return;
         try {
-            if (!routeName) {
+            if (StringUtils.isEmpty(routeName)) {
                 return;
             }
             let time = new Date().getTime();
