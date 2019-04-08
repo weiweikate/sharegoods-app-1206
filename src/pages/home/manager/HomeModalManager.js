@@ -7,6 +7,8 @@
 import { action, observable, flow } from "mobx";
 import DeviceInfo from "react-native-device-info/deviceinfo";
 import MineApi from "../../mine/api/MineApi";
+import HomeAPI from '../api/HomeAPI'
+import {homeType}from '../HomeTypes'
 import GuideApi from '../../guide/GuideApi'
 import { AsyncStorage, Platform } from 'react-native';
 import MessageApi from "../../message/api/MessageApi";
@@ -214,7 +216,7 @@ class HomeModalManager {
         let currStr = new Date().getTime() + "";
         AsyncStorage.getItem("home_lastAdTime").then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                GuideApi.queryAdvertisingList({type:  1}).then(resp => {
+                HomeAPI.getHomeData({type:  homeType.windowAlert}).then(resp => {
                     if (resp.data && resp.data.length > 0) {
                         this.needShowAd = true;
                         this.AdData = resp.data[0];
