@@ -14,6 +14,9 @@ import InviteFriendsPage from './page/Invite/InviteFriendsPage';
 import promotion from './page/promotion';
 import MyMentorPage from './page/mentor/MyMentorPage';
 import MyShowFansPage from './page/showFans/MyShowFansPage';
+import SearchShowFansPage from './page/showFans/SearchShowFansPage';
+import GroupShowFansPage from './page/showFans/GroupShowFansPage';
+import MainShowFansPage from './page/showFans/MainShowFansPage';
 import ExpDetailPage from './page/myData/ExpDetailPage';
 import SetMentorPage from './page/mentor/SetMentorPage';
 
@@ -38,5 +41,8 @@ export default {
         MyShowFansPage,
         ExpDetailPage,
         SetMentorPage,
+        MainShowFansPage,
+        GroupShowFansPage,
+        SearchShowFansPage
     }
 };

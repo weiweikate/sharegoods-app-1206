@@ -29,8 +29,8 @@ import res from '../res';
 import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { TrackApi } from '../../../utils/SensorsTrack';
-import { homeLinkType } from '../../home/HomeTypes';
-import { homeModule } from '../../home/Modules';
+import { homeLinkType, homeType } from '../../home/HomeTypes';
+import { homeModule } from '../../home/model/Modules';
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
@@ -156,8 +156,8 @@ export default class RecommendPage extends BasePage {
     };
 
     _getSwipers = () => {
-        HomeAPI.getSwipers({
-            type: 9
+        HomeAPI.getHomeData({
+            type: homeType.pinShop
         }).then((data) => {
             this.setState({
                 adList: data.data || []
@@ -245,6 +245,10 @@ export default class RecommendPage extends BasePage {
         } else if (item.linkType === homeLinkType.show) {
             this.$navigate('show/ShowDetailPage', {
                 code: item.linkTypeCode
+            });
+        }else if (item.linkType === homeLinkType.exp) {
+            this.$navigate('product/xpProduct/XpDetailPage', {
+                activityCode: item.linkTypeCode
             });
         }
     };

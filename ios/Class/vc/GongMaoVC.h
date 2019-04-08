@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GongMaoVC : UIViewController
 @property(nonatomic, copy)NSString *url;
 @property(nonatomic, copy)RCTPromiseResolveBlock resolver;
+@property(nonatomic, copy)NSString *webConstTitle;
 @end
 
 NS_ASSUME_NONNULL_END

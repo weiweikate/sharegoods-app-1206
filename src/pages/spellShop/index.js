@@ -3,6 +3,7 @@ import openShop from './openShop';
 import shopRecruit from './shopRecruit';
 import myShop from './myShop';
 import shopSetting from './shopSetting';
+import addCapacity from './addCapacity'
 import MyShop_RecruitPage from './MyShop_RecruitPage'
 
 export default {
@@ -18,6 +19,8 @@ export default {
         shopRecruit,
         //我的店铺模块
         myShop,
+        //扩容模块
+        addCapacity,
         //店铺设置
         shopSetting
     }
