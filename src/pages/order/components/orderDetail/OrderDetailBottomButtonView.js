@@ -12,12 +12,12 @@ import Toast from "../../../../utils/bridge";
 import shopCartCacheTool from "../../../shopCart/model/ShopCartCacheTool";
 import { observer } from "mobx-react/native";
 import RouterMap from "../../../../navigation/RouterMap";
-import {payStatus, payment, payStatusMsg} from '../../../payment/Payment'
-import { NavigationActions } from 'react-navigation';
-import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import { payStatus, payment, payStatusMsg } from "../../../payment/Payment";
+import { NavigationActions } from "react-navigation";
+import { track, trackEvent } from "../../../../utils/SensorsTrack";
 
 const { px2dp } = ScreenUtils;
-import { MRText as Text, NoMoreClick } from "../../../../components/ui";
+import { MRText as Text, NoMoreClick, UIText } from "../../../../components/ui";
 
 @observer
 export default class OrderDetailBottomButtonView extends Component {
@@ -25,28 +25,100 @@ export default class OrderDetailBottomButtonView extends Component {
         super(props);
     }
 
+    state = {
+        showDele: false
+    };
+
     render() {
         let nameArr = orderDetailAfterServiceModel.menu;
         if (nameArr.length > 0) {
-            return (
-                <View style={styles.containerStyle}>
-                    {nameArr.map((item,i)=>{
-                        return  <NoMoreClick key={i}
-                                             style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
-                                             onPress={() => {
-                                                 this.operationMenuClick(item);
-                                             }}>
-                            <Text style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
-                                  allowFontScaling={false}>{item.operation}</Text>
-                        </NoMoreClick>
-                    })}
-                </View>
-            );
+            if (nameArr.length === 3) {
+                return (
+                    <View style={styles.containerStyle}>
+                        <View style={{
+                            height: px2dp(48),
+                            marginRight: 6,
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}>
+                            {!this.state.showDele ? null : <NoMoreClick style={{
+                                width: 68,
+                                height: 32,
+                                position: "absolute",
+                                bottom: 44,
+                                backgroundColor: DesignRule.textColor_instruction
+                                ,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderRadius: 5,
+                                overflow: "hidden"
+                            }} onPress={() => {
+                                this.operationMenuClick({ id: 7 }), this.setState({ showDele: false });
+                            }}>
+                                <UIText value={"删除订单"} style={{ color: "white", fontSize: 13 }}/>
+                            </NoMoreClick>}
+                            <UIText value={"更多"} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
+                                    onPress={() => {
+                                        this.setState({ showDele: !this.state.showDele });
+                                    }}/>
+                        </View>
+                        {nameArr.map((item, i) => {
+                            return <NoMoreClick key={i}
+                                                style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
+                                                onPress={() => {
+                                                    this.operationMenuClick(item);
+                                                }}>
+                                <Text
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitcle }}
+                                    allowFontScaling={false}>{item.operation}</Text>
+                            </NoMoreClick>;
+                        })}
+                    </View>
+                );
+            } else {
+                let datas=[];
+                if (orderDetailModel.status === 4) {
+                   datas=[
+                    {
+                        id: 7,
+                            operation: "删除订单",
+                        isRed: false
+                    },{
+                           id: 5,
+                           operation: "查看物流",
+                           isRed: false
+                       }, {
+                        id: 8,
+                            operation: "再次购买",
+                            isRed: true
+                    }
+                    ]
+                }else {
+                    datas=nameArr;
+                }
+                return (
+                    <View style={styles.containerStyle}>
+                        {datas.map((item, i) => {
+                            return <NoMoreClick key={i}
+                                                style={[styles.touchableStyle, { borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
+                                                onPress={() => {
+                                                    this.operationMenuClick(item);
+                                                }}>
+                                <Text
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
+                                    allowFontScaling={false}>{item.operation}</Text>
+                            </NoMoreClick>;
+                        })}
+                    </View>
+                );
+            }
+
         } else {
             return null;
         }
 
     }
+
     operationMenuClick = (menu) => {
         /*
          * 取消订单                 ->  1
@@ -72,7 +144,7 @@ export default class OrderDetailBottomButtonView extends Component {
                 this._goToPay();
                 break;
             case 3:
-                this._goToPay()
+                this._goToPay();
                 break;
             case 4:
                 break;
@@ -96,12 +168,12 @@ export default class OrderDetailBottomButtonView extends Component {
                 }
                 break;
             case 6:
-                let content='是否确认收货?';
-               orderDetailModel.warehouseOrderDTOList[0].products.map((value)=>{
-                   if(value.status<3){
-                       content='您还有商品未发货，确认收货吗？'
-                   }
-               })
+                let content = "是否确认收货?";
+                orderDetailModel.warehouseOrderDTOList[0].products.map((value) => {
+                    if (value.status < 3) {
+                        content = "您还有商品未发货，确认收货吗？";
+                    }
+                });
 
                 Alert.alert("", `${content}`, [
                     {
@@ -114,10 +186,10 @@ export default class OrderDetailBottomButtonView extends Component {
                             OrderApi.confirmReceipt({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
                                 Toast.hiddenLoading();
                                 Toast.$toast("确认收货成功");
-                                this.props.nav('order/order/ConfirmReceiveGoodsPage',{
+                                this.props.nav("order/order/ConfirmReceiveGoodsPage", {
                                     orderNo: orderDetailModel.getOrderNo(),
                                     callBack: this.props.loadPageData
-                                })
+                                });
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 Toast.$toast(e.msg);
@@ -163,9 +235,9 @@ export default class OrderDetailBottomButtonView extends Component {
                         amount: item.quantity
                     });
                 });
-                track(trackEvent.OrderAgain,{
-                    orderId:orderDetailModel.getOrderNo(),
-                   })
+                track(trackEvent.OrderAgain, {
+                    orderId: orderDetailModel.getOrderNo()
+                });
                 shopCartCacheTool.addGoodItem(cartData);
                 this.props.nav("shopCart/ShopCart", { hiddeLeft: false });
                 break;
@@ -196,27 +268,27 @@ export default class OrderDetailBottomButtonView extends Component {
                 ], { cancelable: true });
                 break;
             case 10:
-                OrderApi.checkInfo({warehouseOrderNo:orderDetailModel.getOrderNo()}).then(res => {
-                    if(res.data){
+                OrderApi.checkInfo({ warehouseOrderNo: orderDetailModel.getOrderNo() }).then(res => {
+                    if (res.data) {
                         this.props.nav(RouterMap.P_ScorePublishPage, {
-                            orderNo:  orderDetailModel.getOrderNo()
+                            orderNo: orderDetailModel.getOrderNo()
                         });
-                    }else{
-                        Toast.$toast('该商品已晒过单！');
-                        this.props.loadPageData()
+                    } else {
+                        Toast.$toast("该商品已晒过单！");
+                        this.props.loadPageData();
                     }
 
-                }).catch(e =>{
+                }).catch(e => {
                     Toast.$toast(e.msg);
-                })
+                });
 
                 break;
         }
     };
 
     async _goToPay() {
-        let platformOrderNo = orderDetailModel.platformOrderNo
-        let result = await payment.checkOrderStatus(platformOrderNo)
+        let platformOrderNo = orderDetailModel.platformOrderNo;
+        let result = await payment.checkOrderStatus(platformOrderNo);
         if (result.code === payStatus.payNo) {
             this.props.nav("payment/PaymentPage", {
                 orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
@@ -225,22 +297,22 @@ export default class OrderDetailBottomButtonView extends Component {
                 orderProductList: orderDetailModel.warehouseOrderDTOList[0].products
             });
         } else if (result.code === payStatus.payNeedThrid) {
-            this.props.nav('payment/ChannelPage', {
+            this.props.nav("payment/ChannelPage", {
                 remainMoney: Math.floor(result.thirdPayAmount * 100) / 100,
                 orderProductList: orderDetailModel.warehouseOrderDTOList[0].products,
                 orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
-                platformOrderNo: orderDetailModel.platformOrderNo,
-            })
+                platformOrderNo: orderDetailModel.platformOrderNo
+            });
         } else if (result.code === payStatus.payOut) {
-            Toast.$toast(payStatusMsg[result.code])
+            Toast.$toast(payStatusMsg[result.code]);
             let replace = NavigationActions.replace({
                 key: this.props.navigation.state.key,
-                routeName: 'order/order/MyOrdersListPage',
+                routeName: "order/order/MyOrdersListPage",
                 params: { index: 2 }
             });
             this.props.navigation.dispatch(replace);
         } else {
-            Toast.$toast(payStatusMsg[result.code])
+            Toast.$toast(payStatusMsg[result.code]);
         }
     }
 }

@@ -214,6 +214,7 @@ export default class MyOrdersDetailPage extends BasePage {
                     salePrice={"￥" + StringUtils.formatMoneyString(item.salePrice, false)}
                     category={item.category}
                     goodsNum={item.goodsNum}
+                    activityCodes={item.activityCodes}
                     style={{ backgroundColor: "white" }}
                     clickItem={() => {
                         this.clickItem(index, item);
@@ -452,7 +453,8 @@ export default class MyOrdersDetailPage extends BasePage {
                         goodsNum: item.quantity,
                         afterSaleService: this.getAfterSaleService(item, index),
                         status: item.status,
-                        activityCode: orderDetailModel.warehouseOrderDTOList[0].status === 1?item.activityCode:item.skuCode
+                        activityCode: orderDetailModel.warehouseOrderDTOList[0].status === 1?item.activityCode:item.skuCode,
+                        activityCodes:  item.activityCodes
                     });
                 });
             });
@@ -517,8 +519,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 orderDetailAfterServiceModel.moreDetail = "";
                 orderDetailAfterServiceModel.menu = [
                     {
-                        id: 7,
-                        operation: "删除订单",
+                        id: 5,
+                        operation: "查看物流",
                         isRed: false
                     }, {
                         id: 8,

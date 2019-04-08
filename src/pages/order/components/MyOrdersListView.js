@@ -60,6 +60,7 @@ export default class MyOrdersListView extends Component {
                 shutOffTime={item.cancelTime}
                 totalPrice={item.totalPrice}
                 quantity={item.quantity}
+                orderCreateTime={item.createTime}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
@@ -173,7 +174,8 @@ export default class MyOrdersListView extends Component {
                 status: item.status,
                 orderType: item.subStatus,
                 prodCode: item.prodCode,
-                skuCode: item.skuCode
+                skuCode: item.skuCode,
+                activityCodes:item.activityCodes
             });
         });
         return arrData;
@@ -193,7 +195,8 @@ export default class MyOrdersListView extends Component {
                     status: item.status,
                     orderType: item.subStatus,
                     prodCode: item.prodCode,
-                    skuCode: item.skuCode
+                    skuCode: item.skuCode,
+                    activityCodes:item.activityCodes
                 });
             });
         });
@@ -212,6 +215,7 @@ export default class MyOrdersListView extends Component {
                         totalPrice: item.payAmount,
                         nowTime: item.nowTime,
                         cancelTime: item.warehouseOrderDTOList[0].cancelTime,
+                        createTime: item.warehouseOrderDTOList[0].createTime,
                         outTradeNo: item.warehouseOrderDTOList[0].outTradeNo,
                         orderAmount: item.orderAmount,
                         commentStatus: item.commentStatus,
@@ -224,6 +228,7 @@ export default class MyOrdersListView extends Component {
                             orderProduct: this.getOrderProduct(resp.products),
                             orderNo: resp.warehouseOrderNo,
                             cancelTime: resp.cancelTime,
+                            createTime: resp.createTime,
                             quantity: this.totalAmount(resp.products),
                             orderType: resp.subStatus,
                             orderStatus: resp.status,
