@@ -1,6 +1,6 @@
 /**
  * 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
-  */
+ */
 const statues = {
     deleteStatue: 0,
     noBegin: 1,
@@ -30,7 +30,7 @@ const productTypes = {
     giftPackage: 3,
     helpFree: 4,
     newTopic: 5,
-    experienceValue:6,
+    experienceValue: 6,
     normalProduct: 99
 };
 
@@ -42,7 +42,7 @@ const typeName = {
     [productTypes.helpFree]: 'originalPrice',
     [productTypes.newTopic]: 'originalPrice',
     [productTypes.normalProduct]: 'originalPrice',
-    [productTypes.experienceValue]:'originalPrice'
+    [productTypes.experienceValue]: 'originalPrice'
 };
 
 /**
@@ -56,15 +56,15 @@ const jumpPageParams = {
     [productTypes.giftPackage]: 'topic/TopicDetailPage',
     [productTypes.helpFree]: 'topic/TopicDetailPage',
     [productTypes.newTopic]: 'topic/DownPricePage',
-    [productTypes.normalProduct]: 'product/ProductDetailPage'
-
+    [productTypes.normalProduct]: 'product/ProductDetailPage',
+    [productTypes.experienceValue]: 'product/xpProduct/XpDetailPage',
 };
+
 /**
  * @param itemDta 数据源
  * @param preseat 埋点所需来源字符串
  */
 function getTopicJumpPageParam(itemData) {
-
     return {
         pageRoute: jumpPageParams[itemData.productType],
         params: {
@@ -75,7 +75,7 @@ function getTopicJumpPageParam(itemData) {
             activityCode: itemData.prodCode,
             productType: itemData.productType
         }
-    }
+    };
 }
 
 /**
@@ -85,7 +85,7 @@ function getTopicJumpPageParam(itemData) {
  */
 function getShowPrice(itemData) {
     if (itemData.productType === productTypes.newTopic) {
-        return ''
+        return '';
     }
     let showPrice = itemData.productType === 2
         ?
@@ -95,4 +95,4 @@ function getShowPrice(itemData) {
     return showPrice;
 }
 
-export { getShowPrice,getTopicJumpPageParam };
+export { getShowPrice, getTopicJumpPageParam };
