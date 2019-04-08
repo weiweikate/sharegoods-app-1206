@@ -3,7 +3,7 @@ import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
 
-const kHomeSujectStore = '@home/kHomeSujectStore';
+const kHomeHotStore = '@home/kHomeHotStore';
 import ScreenUtil from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
@@ -20,7 +20,7 @@ class SubjectModule {
     loadSubjectList = flow(function* (isCache) {
         try {
             if (isCache) {
-                const storeRes = yield get(kHomeSujectStore);
+                const storeRes = yield get(kHomeHotStore);
                 if (storeRes) {
                     this.computeHeight(storeRes);
                     this.subjectList = storeRes || [];
@@ -30,7 +30,7 @@ class SubjectModule {
             let list = res.data || [];
             this.computeHeight(list);
             this.subjectList = list;
-            save(kHomeSujectStore, res.data);
+            save(kHomeHotStore, res.data);
         } catch (error) {
             console.log(error);
         }
