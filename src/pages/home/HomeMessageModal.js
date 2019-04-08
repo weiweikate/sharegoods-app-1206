@@ -28,7 +28,7 @@ const home_notice_bg = res.home_notice_bg;
 
 import XQSwiper from '../../components/ui/XGSwiper';
 import DesignRule from '../../constants/DesignRule';
-import HomeModalManager from './model/HomeModalManager';
+import HomeModalManager from './manager/HomeModalManager';
 import { observer } from 'mobx-react';
 const {autoSizeWidth} = ScreenUtils;
 import ImageLoad from '@mr/image-placeholder';

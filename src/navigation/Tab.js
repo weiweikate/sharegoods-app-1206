@@ -10,7 +10,7 @@ import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
-import { homeTabManager } from '../pages/home/model/HomeTabManager';
+import { homeTabManager } from '../pages/home/manager/HomeTabManager';
 import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';

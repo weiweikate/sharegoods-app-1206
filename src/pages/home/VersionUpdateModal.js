@@ -16,7 +16,7 @@ import DesignRule from '../../constants/DesignRule';
 import StringUtils from '../../utils/StringUtils';
 import { observer } from 'mobx-react';
 import { autorun } from "mobx";
-import HomeModalManager from './model/HomeModalManager';
+import HomeModalManager from './manager/HomeModalManager';
 @observer
 export default class VersionUpdateModal extends React.Component {
 

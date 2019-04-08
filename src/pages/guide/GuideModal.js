@@ -37,7 +37,7 @@ import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { navigate } from '../../navigation/RouterMap';
 import { homeModule } from '../home/Modules';
-import HomeModalManager from '../home/model/HomeModalManager'
+import HomeModalManager from '../home/manager/HomeModalManager'
 import GuideApi from './GuideApi';
 
 const {
