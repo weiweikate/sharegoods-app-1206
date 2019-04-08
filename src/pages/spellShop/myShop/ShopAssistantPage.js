@@ -23,6 +23,7 @@ import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from '../../../constants/DesignRule';
 import RouterMap from '../../../navigation/RouterMap';
+import spellStatusModel from '../model/SpellStatusModel';
 
 const sectionsArr = [
     'master',
@@ -36,7 +37,6 @@ export default class AssistantListPage extends BasePage {
 
     $navigationBarOptions = {
         title: '店员管理',
-        rightNavTitle: (this.params.storeData || {}).myStore ? '我要扩容' : '',
         rightTitleStyle: { color: DesignRule.mainColor }
     };
 
@@ -71,6 +71,13 @@ export default class AssistantListPage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
+        SpellShopApi.store_person({ storeCode: spellStatusModel.storeCode }).then((data) => {
+            const dataTemp = data.data || {};
+            const { showExpand } = dataTemp;
+            if (showExpand) {
+                this.$NavigationBarResetRightTitle('我要扩容');
+            }
+        });
     }
 
     // 处理排序
