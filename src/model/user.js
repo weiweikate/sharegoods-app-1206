@@ -174,7 +174,7 @@ class User {
     perfectNumberCode = null;
 
     @action getFinishGuide = () => {
-        return this.finishGuide();
+        return this.finishGuide;
     };
 
     @action getToken = () => {
