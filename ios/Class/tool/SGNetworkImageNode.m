@@ -7,11 +7,9 @@
 //
 
 #import "SGNetworkImageNode.h"
-#define HAVE_CACHE_IMAGE(str) [[YYImageCache sharedCache] containsImageForKey:str] //判断是否存在缓存键值
-#define CACHE_IMAGE(str) [[YYImageCache sharedCache] getImageForKey:str]//获取缓存图片
-@interface SGNetworkImageNode ()<ASNetworkImageNodeDelegate>
-/**网络图片*/
-@property (nonatomic, strong) ASNetworkImageNode *netImgNode;
+//#define HAVE_CACHE_IMAGE(str) [[YYImageCache sharedCache] containsImageForKey:str] //判断是否存在缓存键值
+//#define CACHE_IMAGE(str) [[YYImageCache sharedCache] getImageForKey:str]//获取缓存图片
+@interface SGNetworkImageNode ()
 /**本地图片*/
 @property (nonatomic, strong) ASImageNode *imageNode;
 
@@ -21,21 +19,12 @@
 - (instancetype)init{
   self = [super init];
   if (self) {
-    [self addSubnode:self.netImgNode];
     [self addSubnode:self.imageNode];
   }
   return self;
 }
 - (ASLayoutSpec *)layoutSpecThatFits:(ASSizeRange)constrainedSize{
-  return [ASInsetLayoutSpec insetLayoutSpecWithInsets:(UIEdgeInsetsZero) child:HAVE_CACHE_IMAGE(self.URL.absoluteString) ? self.imageNode : self.netImgNode];
-}
-- (ASNetworkImageNode *)netImgNode{
-  if (!_netImgNode) {
-    _netImgNode = [[ASNetworkImageNode alloc] init];
-    _netImgNode.delegate = self;
-    _netImgNode.shouldCacheImage = NO;
-  }
-  return _netImgNode;
+  return [ASInsetLayoutSpec insetLayoutSpecWithInsets:(UIEdgeInsetsZero) child: self.imageNode];
 }
 - (ASImageNode *)imageNode{
   if (!_imageNode) {
@@ -45,26 +34,29 @@
 }
 - (void)setURL:(NSURL *)URL{
   _URL = URL;
-  if (HAVE_CACHE_IMAGE(_URL.absoluteString)) {
-    self.imageNode.image = CACHE_IMAGE(_URL.absoluteString);
-  } else {
-    self.netImgNode.URL = _URL;
-  }
+  @weakify(self);
+  [[YYWebImageManager sharedManager] requestImageWithURL:URL options:YYWebImageOptionIgnoreFailedURL progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    
+  } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+    @strongify(self);
+    if (error) {
+      
+    }else{
+        self.imageNode.image = image;
+    }
+  }];
 }
 - (void)setPlaceholderColor:(UIColor *)placeholderColor{
-  self.netImgNode.placeholderColor = placeholderColor;
+   if (!self.imageNode.image) {
+      self.imageNode.placeholderColor = placeholderColor;
+   }
 }
 - (void)setImage:(UIImage *)image{
-  self.netImgNode.image = image;
+  self.imageNode.image = image;
 }
 - (void)setDefaultImage:(UIImage *)defaultImage{
-  self.netImgNode.defaultImage = defaultImage;
-}
-- (void)setJs_placeholderFadeDuration:(NSTimeInterval)js_placeholderFadeDuration{
-  self.netImgNode.placeholderFadeDuration = js_placeholderFadeDuration;
-}
-- (void)imageNode:(ASNetworkImageNode *)imageNode didLoadImage:(UIImage *)image{
-  [[YYImageCache sharedCache] setImage:image forKey:imageNode.URL.absoluteString];
-  
+  if (!self.imageNode.image) {
+     self.imageNode.image = defaultImage;
+  }
 }
 @end

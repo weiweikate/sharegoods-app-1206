@@ -57,7 +57,6 @@ export default class GoodsCell extends Component {
     render() {
         const { data } = this.props;
         const { itemData } = data;
-
         if (!data || data.length === 0) {
             return null;
         }

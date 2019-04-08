@@ -32,6 +32,8 @@ import HomeModalManager from '../manager/HomeModalManager';
 import { observer } from 'mobx-react';
 const {autoSizeWidth} = ScreenUtils;
 import ImageLoad from '@mr/image-placeholder';
+import { homeModule } from '../model/Modules';
+import { navigate } from '../../../navigation/RouterMap';
 @observer
 export default class HomeMessageModalView extends PureComponent {
     state = {
@@ -144,6 +146,12 @@ export  class HomeAdModal extends PureComponent {
     }
 
     gotoPage = () => {
+        let data = HomeModalManager.AdData || {};
+        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        let params = homeModule.paramsNavigate(data);
+        if (router){
+            navigate(router, params);
+        }
         HomeModalManager.closeAd();
         //页面跳转
     }

@@ -15,11 +15,6 @@ class HomeExpandBnnerModel {
 
     @computed get bannerHeight() {
         let h = 0;
-        if (this.banner.length === 0) {
-            h += px2dp(10);
-        } else {
-            h += px2dp(5);
-        }
         this.adHeights.forEach((value, key, map) => {
             if (this.imgUrls.indexOf(key) >= 0 && value > 0) {
                 h += value + px2dp(15);
@@ -28,27 +23,31 @@ class HomeExpandBnnerModel {
         return h;
     }
 
-    @action loadBannerList = flow(function* (isCache) {
+    @action loadBannerList = flow(function* () {
         try {
             const bannerRes = yield HomeApi.getHomeData({ type: homeType.expandBanner });
             this.banner = bannerRes.data || [];
-            this.imgUrls = [];
-            if (this.banner.length > 0) {
-                this.banner.map((val, index) => {
-                    let url = val.imgUrl;
-                    this.imgUrls.push(url);
-                    if (!this.adHeights.has(url)) {
-                        Image.getSize(url, (width, height) => {
-                            let h = (bannerWidth * height) / width;
-                            this.adHeights.set(url, h);
-                        });
-                    }
-                });
-            }
+            this.handleExpnadHeight();
         } catch (error) {
             console.log(error);
         }
     });
+
+    handleExpnadHeight = () => {
+        this.imgUrls = [];
+        if (this.banner.length > 0) {
+            this.banner.map((val, index) => {
+                let url = val.image;
+                this.imgUrls.push(url);
+                if (!this.adHeights.has(url)) {
+                    Image.getSize(url, (width, height) => {
+                        let h = (bannerWidth * height) / width;
+                        this.adHeights.set(url, h);
+                    });
+                }
+            });
+        }
+    };
 }
 
 export const homeExpandBnnerModel = new HomeExpandBnnerModel();

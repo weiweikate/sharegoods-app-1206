@@ -3,6 +3,7 @@ import ShowApi from './ShowApi';
 import Toast from '../../utils/bridge';
 import ScreenUtil from '../../utils/ScreenUtils';
 import { TrackApi } from '../../utils/SensorsTrack';
+import { homeType } from '../home/HomeTypes';
 
 const { px2dp } = ScreenUtil;
 
@@ -91,7 +92,7 @@ class ShowBannerModules {
     }
 
     @action loadBannerList = () => {
-        ShowApi.showSwper({ type: 11 }).then(res => {
+        ShowApi.getShowBanner({ type: homeType.discover }).then(res => {
             if (res.code === 10000 && res.data) {
                 this.bannerList = res.data || [];
             }
