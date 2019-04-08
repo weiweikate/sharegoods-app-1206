@@ -24,6 +24,8 @@ public class ToastUtils {
     }
 
     public static void showToast(CharSequence text) {
-        showToast(text, Toast.LENGTH_SHORT);
+        if (AppUtils.isMainThread()) {
+            showToast(text, Toast.LENGTH_SHORT);
+        }
     }
 }
