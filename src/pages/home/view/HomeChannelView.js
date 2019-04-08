@@ -15,6 +15,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui/index';
 import ImageLoad from '@mr/image-placeholder';
+import { homeModule } from '../model/Modules';
 
 const { px2dp } = ScreenUtils;
 
@@ -44,15 +45,10 @@ export default class HomeChannelView extends Component {
 
     _onItemPress = (data) => {
         const { navigate } = this.props;
-        navigate(data.route, {
-            fromHome: true,
-            id: 1,
-            linkTypeCode: data.linkTypeCode,
-            code: data.linkTypeCode,
-            name: data.name,
-            categoryId: data.id,
-            activityCode: data.linkTypeCode
-        });
+
+        let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        let params = homeModule.paramsNavigate(data);
+        navigate(router, { ...params });
     };
 
     renderItems = () => {
