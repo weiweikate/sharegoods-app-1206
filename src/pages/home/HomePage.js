@@ -8,38 +8,41 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
+import { homeModule } from './model/Modules';
 import { homeType } from './HomeTypes';
-import HomeSearchView from './HomeSearchView';
-import HomeClassifyView, { kHomeClassifyHeight } from './HomeClassifyView';
-import HomeTodayView, { todayHeight } from './HomeTodayView';
-import HomeRecommendView, { recommendHeight } from './HomeRecommendView';
-import HomeSubjectView from './HomeSubjectView';
-import HomeBannerView, { bannerHeight } from './HomeBannerView';
-import HomeAdView from './HomeAdView';
-import GoodsCell, { kHomeGoodsViewHeight } from './HomeGoodsView';
-import HomeUserView from './HomeUserView';
-import HomeCategoryView, { categoryHeight } from './HomeCategoryView';
+import HomeSearchView from './view/HomeSearchView';
+import HomeChannelView from './view/HomeChannelView';
+import HomeTodayView, { todayHeight } from './view/HomeTodayView';
+import HomeRecommendView, { recommendHeight } from './view/HomeRecommendView';
+import HomeSubjectView from './view/HomeSubjectView';
+import HomeBannerView, { bannerHeight } from './view/HomeBannerView';
+import GoodsCell, { kHomeGoodsViewHeight } from './view/HomeGoodsView';
+import HomeUserView from './view/HomeUserView';
+import HomeCategoryView, { categoryHeight } from './view/HomeCategoryView';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import VersionUpdateModal from './VersionUpdateModal';
+import VersionUpdateModalView from './view/VersionUpdateModalView';
 import DesignRule from '../../constants/DesignRule';
-import homeModalManager from './model/HomeModalManager';
+import homeModalManager from './manager/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
-import { homeTabManager } from './model/HomeTabManager';
+import { homeTabManager } from './manager/HomeTabManager';
 import { MRText as Text } from '../../components/ui';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
-import { adModules } from './HomeAdModel';
-import { todayModule } from './HomeTodayModel';
-import { recommendModule } from './HomeRecommendModel';
-import { subjectModule } from './HomeSubjectModel';
-import HomeTitleView from './HomeTitleView';
+import { homeFocusAdModel } from './model/HomeFocusAdModel';
+import { todayModule } from './model/HomeTodayModel';
+import { recommendModule } from './model/HomeRecommendModel';
+import { subjectModule } from './model/HomeSubjectModel';
+import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
+import HomeTitleView from './view/HomeTitleView';
 import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModal, { HomeAdModal } from './HomeMessageModal';
-import HomeLimitGoView from './HomeLimitGoView'
-import { limitGoModule } from './HomeLimitGoModel'
+import HomeMessageModalView, { HomeAdModal } from './view/HomeMessageModalView';
+import { channelModules } from './model/HomeChannelModel';
+import HomeLimitGoView from './view/HomeLimitGoView';
+import { limitGoModule } from './model/HomeLimitGoModel';
+import HomeExpandBannerView from './view/HomeExpandBannerView';
+import HomeFocusAdView from './view/HomeFocusAdView';
 
 /**
  * @author zhangjian
@@ -52,7 +55,6 @@ import { limitGoModule } from './HomeLimitGoModel'
 const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
-import bridge from '../../utils/bridge';
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -88,35 +90,38 @@ class HomePage extends BasePage {
             case homeType.swiper:
                 dim.height = bannerHeight;
                 break;
-            case homeType.classify:
-                dim.height = kHomeClassifyHeight;
+            case homeType.user:
+                dim.height = user.isLogin ? px2dp(44) : 0;
                 break;
-            case homeType.ad:
-                dim.height = adModules.adHeight;
+            case homeType.channel:
+                dim.height = channelModules.channelHeight;
+                break;
+            case homeType.expandBanner:
+                dim.height = homeExpandBnnerModel.bannerHeight;
+                break;
+            case homeType.focusGrid:
+                dim.height = homeFocusAdModel.adHeight;
+                break;
+            case homeType.limitGo:
+                dim.height = limitGoModule.limitHeight;
                 break;
             case homeType.today:
                 dim.height = todayList.length > 0 ? todayHeight : 0;
                 break;
-            case homeType.recommend:
+            case homeType.fine:
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
-            case homeType.subject:
+            case homeType.homeHot:
                 dim.height = subjectHeight;
-                break;
-            case homeType.user:
-                dim.height = user.isLogin ? px2dp(44) : 0;
-                break;
-            case homeType.goods:
-                dim.height = kHomeGoodsViewHeight;
                 break;
             case homeType.goodsTitle:
                 dim.height = px2dp(52);
                 break;
-            case homeType.limitGo:
-                dim.height = limitGoModule.limitHeight
+            case homeType.goods:
+                dim.height = kHomeGoodsViewHeight;
                 break;
             default:
-                dim.height = 0
+                dim.height = 0;
         }
     });
 
@@ -155,7 +160,6 @@ class HomePage extends BasePage {
                 }
                 console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
-
                     this.luckyIcon.getLucky();
                 }
             }
@@ -179,7 +183,7 @@ class HomePage extends BasePage {
             payload => {
                 homeTabManager.setHomeFocus(true);
                 homeModule.homeFocused(true);
-                homeModalManager.entryHome()
+                homeModalManager.entryHome();
                 homeModalManager.requestGuide();
                 BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
             }
@@ -249,18 +253,22 @@ class HomePage extends BasePage {
             return <HomeCategoryView navigate={this.$navigate}/>;
         } else if (type === homeType.swiper) {
             return <HomeBannerView navigate={this.$navigate}/>;
-        } else if (type === homeType.classify) {
-            return <HomeClassifyView navigate={this.$navigate}/>;
-        } else if (type === homeType.ad) {
-            return <HomeAdView navigate={this.$navigate}/>;
-        } else if (type === homeType.today) {
-            return <HomeTodayView navigate={this.$navigate}/>;
-        } else if (type === homeType.recommend) {
-            return <HomeRecommendView navigate={this.$navigate}/>;
-        } else if (type === homeType.subject) {
-            return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.user) {
             return <HomeUserView navigate={this.$navigate}/>;
+        } else if (type === homeType.channel) {
+            return <HomeChannelView navigate={this.$navigate}/>;
+        } else if (type === homeType.expandBanner) {
+            return <HomeExpandBannerView navigate={this.$navigate}/>;
+        } else if (type === homeType.focusGrid) {
+            return <HomeFocusAdView navigate={this.$navigate}/>;
+        } else if (type === homeType.limitGo) {
+            return <HomeLimitGoView navigate={this.$navigate}/>;
+        } else if (type === homeType.today) {
+            return <HomeTodayView navigate={this.$navigate}/>;
+        } else if (type === homeType.fine) {
+            return <HomeRecommendView navigate={this.$navigate}/>;
+        } else if (type === homeType.homeHot) {
+            return <HomeSubjectView navigate={this.$navigate}/>;
         } else if (type === homeType.goods) {
             return <GoodsCell data={data} navigate={this.$navigate}/>;
         } else if (type === homeType.goodsTitle) {
@@ -271,8 +279,6 @@ class HomePage extends BasePage {
                          }}>
                 <HomeTitleView title={'为你推荐'}/>
             </View>;
-        } else if (type === homeType.limitGo) {
-            return <HomeLimitGoView navigate={this.$navigate}/>
         }
         return <View/>;
     };
@@ -284,7 +290,7 @@ class HomePage extends BasePage {
     _onRefresh() {
         homeModule.loadHomeList(true);
         this.loadMessageCount();
-        this.luckyIcon.getLucky()
+        this.luckyIcon.getLucky();
 
     }
 
@@ -303,7 +309,7 @@ class HomePage extends BasePage {
     };
 
     render() {
-        console.log('getBanner render', adModules.adHeight, limitGoModule.limitHeight); //千万别去掉
+        console.log('getBanner render', homeExpandBnnerModel.adHeight, limitGoModule.limitHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
@@ -340,9 +346,9 @@ class HomePage extends BasePage {
                     this.luckyIcon = ref;
                 }}/>
                 <HomeAdModal/>
-                <HomeMessageModal/>
+                <HomeMessageModalView/>
                 <GuideModal/>
-                <VersionUpdateModal />
+                <VersionUpdateModalView/>
             </View>
         );
     }

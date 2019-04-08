@@ -2,18 +2,18 @@
  * 今日榜单
  */
 import React, { Component } from 'react';
-import { View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import ScreenUtil from '../../utils/ScreenUtils';
-import { track, trackEvent } from '../../utils/SensorsTrack';
-const { px2dp } = ScreenUtil;
+import { View, StyleSheet } from 'react-native';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
-import { todayModule } from './HomeTodayModel';
-import DesignRule from '../../constants/DesignRule';
-import MRBannerView from '../../components/ui/bannerView/MRBannerView';
-import { MRText as Text } from '../../components/ui';
-import { homePoint } from './HomeTypes';
+import { homeModule } from '../model/Modules';
+import { todayModule } from '../model/HomeTodayModel';
+import DesignRule from '../../../constants/DesignRule';
+import MRBannerView from '../../../components/ui/bannerView/MRBannerView';
+import { MRText as Text } from '../../../components/ui';
+import { homePoint } from './../HomeTypes';
+import ScreenUtil from '../../../utils/ScreenUtils';
 
+const { px2dp } = ScreenUtil;
 
 export const todayHeight = px2dp(240);
 
@@ -67,7 +67,7 @@ export default class HomeTodayView extends Component {
 
         let items = [];
         todayList.map((item, index) => {
-            items.push(item.imgUrl);
+            items.push(item.image);
         });
 
         return <View style={styles.container}>
@@ -75,33 +75,23 @@ export default class HomeTodayView extends Component {
                 <View style={styles.flag}/>
                 <Text style={styles.title}>今日榜单</Text>
             </View>
-            {
-                todayList.length === 1
-                    ?
-                    <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(todayList[0])}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            {this.renderRow(todayList[0])}
-                        </View>
-                    </TouchableWithoutFeedback>
-                    :
-                    <MRBannerView
-                        style={{
-                            height: px2dp(160),
-                            width: ScreenUtil.width - px2dp(30)
-                        }}
-                        itemWidth={px2dp(295)}
-                        itemSpace={px2dp(10)}
-                        itemRadius={px2dp(5)}
-                        pageFocused={this.props.pageFocused}
-                        onDidSelectItemAtIndex={(e) => {
-                            this._onPressRow(e);
-                        }}
-                        onDidScrollToIndex={(e) => {
-                            this._onDidScrollToIndex(e);
-                        }}
-                        imgUrlArray={items}
-                    />
-            }
+            <MRBannerView
+                style={{
+                    height: px2dp(160),
+                    width: ScreenUtil.width - px2dp(30)
+                }}
+                itemWidth={px2dp(295)}
+                itemSpace={px2dp(10)}
+                itemRadius={px2dp(5)}
+                pageFocused={this.props.pageFocused}
+                onDidSelectItemAtIndex={(e) => {
+                    this._onPressRow(e);
+                }}
+                onDidScrollToIndex={(e) => {
+                    this._onDidScrollToIndex(e);
+                }}
+                imgUrlArray={items}
+            />
             {this.renderIndexView()}
         </View>;
     }
@@ -121,7 +111,8 @@ let styles = StyleSheet.create({
     flag: {
         backgroundColor: DesignRule.mainColor,
         width: px2dp(2),
-        height: px2dp(8)
+        height: px2dp(8),
+        borderRadius: px2dp(4)
     },
     titleView: {
         height: px2dp(42),

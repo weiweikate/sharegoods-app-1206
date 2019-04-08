@@ -407,7 +407,7 @@ export default class SearchResultPage extends BasePage {
     _rowRenderer = (type, data) => {
         switch (type) {
             case viewTypes.rowView:
-                const { itemData } = data;
+                const { itemData } = data || {};
                 return <View style={{ flexDirection: 'row', marginHorizontal: 15 }}>
                     {itemData[0] ?
                         <ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import ScreenUtil from '../../utils/ScreenUtils';
+import ScreenUtil from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
-import DesignRule from '../../constants/DesignRule';
+import DesignRule from '../../../constants/DesignRule';
 
 export default ({ title }) => <View style={styles.titleView}>
     <View style={styles.flag}/>

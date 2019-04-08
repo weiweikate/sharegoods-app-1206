@@ -6,43 +6,27 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
-    Image
+    TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import { classifyModules } from './Modules';
-import ScreenUtils from '../../utils/ScreenUtils';
-import user from '../../model/user';
-import DesignRule from '../../constants/DesignRule';
-import { MRText as Text } from '../../components/ui';
+import { channelModules } from '../model/HomeChannelModel';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
+import { MRText as Text } from '../../../components/ui/index';
 import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;
 
-export const kHomeClassifyHeight = px2dp(90);
-
 class Item extends Component {
-    state = {
-        loadingError: false
-    };
 
     render() {
         const { onPress, data } = this.props;
-        const { img, icon } = this.props.data;
-        const { loadingError } = this.state;
-        let source = { uri: img };
+        const { image, title } = this.props.data;
+        let source = { uri: image };
         return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
-            {
-                loadingError
-                    ?
-                    <Image style={styles.icon} source={icon}/>
-                    :
-                    <ImageLoad style={styles.icon} showPlaceholder={false} source={source} onError={() => {
-                        this.setState({ loadingError: true });
-                    }}/>
-            }
-            <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{data.name}</Text>
+            <ImageLoad style={styles.icon} showPlaceholder={false} source={source}/>
+            <Text style={styles.name} allowFontScaling={false} numberOfLines={1}>{title}</Text>
         </TouchableOpacity>;
     }
 }
@@ -56,14 +40,10 @@ class Item extends Component {
  */
 
 @observer
-export default class HomeClassifyView extends Component {
+export default class HomeChannelView extends Component {
 
     _onItemPress = (data) => {
         const { navigate } = this.props;
-        if (data.needLogin && !user.isLogin) {
-            navigate('login/login/LoginPage');
-            return;
-        }
         navigate(data.route, {
             fromHome: true,
             id: 1,
@@ -76,9 +56,9 @@ export default class HomeClassifyView extends Component {
     };
 
     renderItems = () => {
-        const { classifyList } = classifyModules;
+        const { channelList } = channelModules;
         let itemViews = [];
-        classifyList.map((value, index) => {
+        channelList.map((value, index) => {
             itemViews.push(<Item key={index} data={value} onPress={(data) => {
                 this._onItemPress(data);
             }}/>);
@@ -87,14 +67,14 @@ export default class HomeClassifyView extends Component {
     };
 
     render() {
-        return (<View style={styles.container}>
+        return (<View style={[styles.container, { height: channelModules.channelHeight }]}>
                 {this.renderItems()}
             </View>
         );
     }
 }
 
-HomeClassifyView.propTypes = {
+HomeChannelView.propTypes = {
     navigation: PropTypes.object
 };
 
@@ -105,7 +85,6 @@ const styles = StyleSheet.create({
         paddingLeft: px2dp(16),
         paddingRight: px2dp(16),
         paddingTop: px2dp(8),
-        height: kHomeClassifyHeight,
         justifyContent: 'space-between',
         backgroundColor: 'white',
         width: ScreenUtils.width

@@ -3,18 +3,18 @@
  */
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
-import { bannerModule } from './HomeBannerModel';
+import { homeModule } from '../model/Modules';
+import { bannerModule } from '../model/HomeBannerModel';
 
 export const bannerHeight = px2dp(120);
-import MRBannerViewComponent from '../../components/ui/bannerView/MRBannerViewComponent';
-import { track, trackEvent } from '../../utils/SensorsTrack';
-import DesignRule from '../../constants/DesignRule';
-import { homePoint } from './HomeTypes';
+import MRBannerViewComponent from '../../../components/ui/bannerView/MRBannerViewComponent';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import DesignRule from '../../../constants/DesignRule';
+import { homePoint } from '../HomeTypes';
 
 
 @observer
@@ -23,7 +23,7 @@ export default class HomeBannerView extends Component {
         const { bannerCount, bannerList } = bannerModule;
         let data = null;
         for (let i = 0; i < bannerCount; i++) {
-            if (bannerList[i].imgUrl === item) {
+            if (bannerList[i].image === item) {
                 data = bannerList[i];
                 break;
             }
@@ -63,7 +63,7 @@ export default class HomeBannerView extends Component {
         const isFocused = homeModule.isFocused;
         let items = [];
         bannerList.map(value => {
-            items.push(value.imgUrl);
+            items.push(value.image);
         });
         let len = items.length;
         return <View style={styles.banner}>

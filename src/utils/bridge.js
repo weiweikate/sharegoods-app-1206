@@ -203,8 +203,8 @@ export default {
     setLightMode: () => {
         NativeModules.commModule.setLightMode();
     },
-    isApkExist: (version, onSuccess) => {
-        NativeModules.commModule.apkExist(version, onSuccess);
+     isApkExist: (version) => {
+        return NativeModules.commModule.apkExist(version);
     },
     getAPKChannel:NativeModules.commModule.getAPKChannel
 };

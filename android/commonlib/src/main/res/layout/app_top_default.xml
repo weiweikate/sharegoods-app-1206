@@ -27,7 +27,7 @@
                 android:paddingLeft="13.5dp"
                 android:paddingRight="7.5dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_go_back" />
+                android:src="@drawable/ysf_title_bar_back_icon" />
 
             <TextView
                 android:id="@+id/topdefault_lefttext"

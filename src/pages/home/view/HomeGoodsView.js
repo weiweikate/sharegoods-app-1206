@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
-import EmptyUtils from '../../utils/EmptyUtils';
-import { track, trackEvent } from '../../utils/SensorsTrack';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import EmptyUtils from '../../../utils/EmptyUtils';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
-import { homeModule } from './Modules';
-import DesignRule from '../../constants/DesignRule';
+import { homeModule } from '../model/Modules';
+import DesignRule from '../../../constants/DesignRule';
 import ImageLoader from '@mr/image-placeholder';
-import { MRText as Text } from '../../components/ui';
-import StringUtils from '../../utils/StringUtils';
-import { homePoint } from './HomeTypes';
+import { MRText as Text } from '../../../components/ui/index';
+import StringUtils from '../../../utils/StringUtils';
+import { homePoint } from '../HomeTypes';
 
 export const kHomeGoodsViewHeight = px2dp(246);
 const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;
@@ -28,18 +28,18 @@ const MoneyItems = ({ money }) => {
 export const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
         <View style={styles.image}>
-            <ReuserImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
+            <ReuserImage style={styles.image} source={{ uri: goods.image ? goods.image : '' }}/>
             {
-                StringUtils.isEmpty(goods.title)
+                StringUtils.isEmpty(goods.secTitle)
                     ?
                     null
                     :
                     <View style={styles.titleView}>
-                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.secTitle}</Text>
                     </View>
             }
         </View>
-        <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
+        <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.title}</Text>
         <View style={{ flex: 1 }}/>
         <MoneyItems money={goods.price}/>
     </View>

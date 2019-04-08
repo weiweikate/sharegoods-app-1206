@@ -1,10 +1,10 @@
 import { observable, flow, action } from 'mobx';
-import HomeApi from './api/HomeAPI';
-import { homeType } from './HomeTypes';
+import HomeApi from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
 
 const kHomeSujectStore = '@home/kHomeSujectStore';
-import ScreenUtil from '../../utils/ScreenUtils';
+import ScreenUtil from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
 
@@ -23,11 +23,11 @@ class SubjectModule {
                 const storeRes = yield get(kHomeSujectStore);
                 if (storeRes) {
                     this.computeHeight(storeRes);
-                    this.subjectList = storeRes;
+                    this.subjectList = storeRes || [];
                 }
             }
-            const res = yield HomeApi.getSubject({ type: homeType.subject });
-            let list = res.data;
+            const res = yield HomeApi.getHomeData({ type: homeType.homeHot });
+            let list = res.data || [];
             this.computeHeight(list);
             this.subjectList = list;
             save(kHomeSujectStore, res.data);

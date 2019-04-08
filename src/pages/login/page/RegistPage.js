@@ -13,7 +13,7 @@ import bridge from '../../../utils/bridge';
 import UserModel from '../../../model/user';
 import DeviceInfo from 'react-native-device-info';
 import DesignRule from '../../../constants/DesignRule';
-import { homeModule } from '../../home/Modules';
+import { homeModule } from '../../home/model/Modules';
 import res from '../res';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login, track, trackEvent } from '../../../utils/SensorsTrack';
