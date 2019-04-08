@@ -1,6 +1,6 @@
 import { observable, action, flow } from 'mobx';
 import HomeApi from '../api/HomeAPI';
-import { homeType, homeRoute } from '../HomeTypes';
+import { homeType, homeRoute, homeLinkType } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import { homeFocusAdModel } from './HomeFocusAdModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
@@ -26,7 +26,13 @@ class HomeModule {
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
-        return homeRoute[linkType];
+        if (linkType === homeLinkType.page) {
+            return linkTypeCode;
+        } else if (linkType === homeLinkType.nothing) {
+            return;
+        } else {
+            return homeRoute[linkType];
+        }
     };
     //获取参数
     @action paramsNavigate = (data) => {
