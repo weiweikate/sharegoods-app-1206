@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
-
 import { observer } from 'mobx-react';
 import { homeModule } from '../model/Modules';
 import { todayModule } from '../model/HomeTodayModel';
