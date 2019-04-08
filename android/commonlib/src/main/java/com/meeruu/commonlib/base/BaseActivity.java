@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected boolean hasBasePer = false;
     protected boolean canFastClick = false;
     private static String[] mDenyPerms = StringUtis.concatAll(
-            Permission.STORAGE, Permission.PHONE, Permission.LOCATION);
+            Permission.STORAGE, Permission.LOCATION);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

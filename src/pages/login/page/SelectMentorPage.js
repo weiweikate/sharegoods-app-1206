@@ -29,7 +29,7 @@ import LoginAPI from "../api/LoginApi";
 import bridge from "../../../utils/bridge";
 import UIText from "../../../components/ui/UIText";
 import Styles from "../style/SelectMentorPage.style";
-import { homeRegisterFirstManager } from "../../home/model/HomeRegisterFirstManager";
+import { homeRegisterFirstManager } from "../../home/manager/HomeRegisterFirstManager";
 import { MRText as Text } from "../../../components/ui";
 
 const { px2dp } = ScreenUtils;

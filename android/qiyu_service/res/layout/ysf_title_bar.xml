@@ -35,7 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:contentDescription="@null"
-                android:scaleType="centerInside"
+                android:paddingLeft="10dp"
+                android:scaleType="center"
                 android:src="@drawable/ysf_title_bar_back_icon" />
 
             <TextView

@@ -12,14 +12,14 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-// import userOrderNum from '../../../model/userOrderNum';
+// import userOrderNum from '../../../manager/userOrderNum';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
 import {
     MRText as Text
 } from '../../../components/ui';
-// import user from '../../../model/user';
+// import user from '../../../manager/user';
 import RouterMap from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
 import { NavigationActions } from 'react-navigation';
@@ -538,8 +538,11 @@ export default class MyOrdersListView extends Component {
     async _goToPay(index) {
         let payData = this.state.viewData[index];
         const { platformOrderNo, orderNo, totalPrice, orderProduct } = payData;
+        const {productName} = orderProduct;
         console.log('_goToPay', payData);
-        let result = await payment.checkOrderStatus(platformOrderNo);
+        //从订单发起的都是普通支付
+        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice,productName);
+        // return;
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
                 orderNum: orderNo,
@@ -563,7 +566,7 @@ export default class MyOrdersListView extends Component {
             });
             this.props.navigation.dispatch(replace);
         } else {
-            Toast.$toast(payStatusMsg[result.code]);
+            Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
         }
     }
 }

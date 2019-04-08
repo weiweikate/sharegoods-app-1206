@@ -20,7 +20,7 @@ export default class ServiceRowView extends Component {
     render() {
         const { item, index, beginChat } = this.props;
         return (
-            <View key={index} style={{ width: ScreenUtils.width, height: 50, marginTop: 11 }}>
+            <View key={index} style={{ width: ScreenUtils.width, height: 50, marginTop: 15 }}>
                 <TouchableOpacity style={{
                     flex: 1,
                     justifyContent: "space-between",
@@ -58,7 +58,10 @@ export default class ServiceRowView extends Component {
                         }
 
                         <View style={{ flex: 1 }}>
-                            <View style={{ flexDirection: "row" }}>
+                            <View style={{
+                                flexDirection: "row",
+                                paddingTop: px2dp(7)
+                            }}>
                                 <UIText value={item.sessionName}
                                         numberOfLines={1}
                                         style={[{
@@ -69,22 +72,22 @@ export default class ServiceRowView extends Component {
                                         }]}/>
 
                                 <View
-                                style={{
-                                    marginTop:15,
-                                    borderRadius:8,
-                                    backgroundColor: "#F2F2F2",
-                                    alignItems:'center',
-                                    justifyContent:'center',
-                                    marginLeft:5,
-                                }}
+                                    style={{
+                                        marginTop: 15,
+                                        borderRadius: 8,
+                                        backgroundColor: "#F2F2F2",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        marginLeft: 5
+                                    }}
                                 >
                                     <UIText
                                         value={item.shopId === "hzmrwlyxgs" ? "官方" : "品牌"}
                                         style={{
                                             fontSize: 8,
                                             color: "#999",
-                                            paddingLeft:5,
-                                            paddingRight:5,
+                                            paddingLeft: 5,
+                                            paddingRight: 5
                                         }}
                                     />
                                 </View>
@@ -104,7 +107,7 @@ export default class ServiceRowView extends Component {
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: "column", width: 65 ,height:50,paddingTop:5}}>
+                    <View style={{ flexDirection: "column", width: 65, height: 50, paddingTop: 5 }}>
                         <UIText
                             value={
                                 this.format(item.lastMessageTimeStamp)
@@ -147,12 +150,16 @@ export default class ServiceRowView extends Component {
 
         if (y === currentY && m === currentM && d === currentD) {
             if (h === currentH) {
-                return currentMM - mm > 0 ? currentMM - mm +"分钟前":"刚刚";
+                return currentMM - mm > 0 ? currentMM - mm + "分钟前" : "刚刚";
             } else {
-                return currentH - h + "小时前";
+                return currentH - h < 48 ? currentH - h + "小时前" : "昨天";
             }
         } else {
-        return ("" + y).substr(2, 2) + "/" + this.add0(m) + "/" + this.add0(d);
+            if (y === currentY && m === currentM && currentH - h < 48) {
+                return "昨天";
+            } else {
+                return ("" + y).substr(2, 2) + "/" + this.add0(m) + "/" + this.add0(d);
+            }
         }
     };
 

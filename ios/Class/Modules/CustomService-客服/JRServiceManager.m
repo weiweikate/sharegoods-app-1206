@@ -87,11 +87,6 @@ SINGLETON_FOR_CLASS(JRServiceManager)
     [self.changeToSupplierBtn removeFromSuperview];
   }
 }
-//urlString: "",
-//title: "秀购客服",
-//shopId: "",
-//chatType: beginChatType.BEGIN_FROM_OTHER,
-//data: {} }
 //切换到平台客服
 -(void)changeToPlatformAction:(UIButton *)btn{
   //暂存上个供应商数据

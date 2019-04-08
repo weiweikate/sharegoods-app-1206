@@ -89,12 +89,21 @@ class XpDetailModel {
     }
 
     @computed get skuTotal() {
-        let skuList = this.pData.skuList;
+        const { skuList, stockSysConfig } = this.pData;
         let count = 0;
         skuList.forEach((item) => {
             count = count + item.sellStock;
         });
-        return count;
+
+        let goodsNumberText;
+        for (let item of (stockSysConfig || [])) {
+            const tempArr = item.value.split('★');
+            if (parseFloat(count) > parseFloat(tempArr[0])) {
+                goodsNumberText = tempArr[1];
+                break;
+            }
+        }
+        return goodsNumberText || count;
     }
 
     @computed get pPriceType() {

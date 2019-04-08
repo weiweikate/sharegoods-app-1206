@@ -5,20 +5,25 @@ const QY_MSG_CHANGE = "QY_MSG_CHANGE";
 const { JRQYService } = NativeModules;
 const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 
-class QYChatModel {
+const platformShopId = 'hzmrwlyxgs'
 
-    // @action
-    // saveAllData = (allMsgData) => {
-    //     if (allMsgData) {
-    //         this.msgData = allMsgData;
-    //     }
-    // };
+class QYChatModel {
 
     @action
     saveSupplierListData = (allMsgData) => {
         if (allMsgData &&
             allMsgData.sessionListData ) {
-            this.sessionListData = allMsgData.sessionListData;
+            let currentArr = allMsgData.sessionListData || [];
+            let tempArr = [];
+            currentArr.map((item)=>{
+                if (item.shopId === platformShopId || (item.shopId && item.shopId.length === 0)) {
+                    tempArr.unshift(item);
+                }else {
+                    tempArr.push(item)
+                }
+            })
+
+            this.sessionListData = tempArr;
         }
     };
 
@@ -28,10 +33,6 @@ class QYChatModel {
             this.unreadCount = allMsgData.unreadCount;
         }
     };
-
-    //暂存原生穿过来的所有消息数据
-    // @observable
-    // msgData = {};
 
     /**
      * 供应商聊天数组
