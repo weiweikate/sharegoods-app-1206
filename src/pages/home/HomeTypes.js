@@ -10,6 +10,7 @@ export const homeType = {
     float: 10,           // 右下角浮动框
     goods: 18,           // 为你推荐商品
     pinShop: 12,          // 拼店banner
+    discover: 13,          // 发现banner
     other: 'other',
     classify: 'classify',
     category: 'category',

@@ -15,7 +15,7 @@ class HomeFocusAdModel {
     imgUrls = [];
 
     @computed get adHeight() {
-        return kAdHeight * 2;
+        return kAdHeight * 2 + px2dp(4);
     }
 
     @action loadAdList = flow(function* (isCache) {
@@ -23,7 +23,7 @@ class HomeFocusAdModel {
             if (isCache) {
                 const storeRes = yield get(kHomeAdStore);
                 if (storeRes) {
-                    this.ad = storeRes||[];
+                    this.ad = storeRes || [];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.focusGrid });
