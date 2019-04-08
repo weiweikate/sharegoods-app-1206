@@ -49,8 +49,8 @@ export default class PaymentPage extends BasePage {
     };
 
     goToPay = () => {
-       const {bizType,modeType,platformOrderNo,amounts} = payment
-        payment.checkOrderStatus(platformOrderNo ,bizType, modeType, amounts).then(result => {
+        const { bizType, modeType, platformOrderNo, amounts } = payment;
+        payment.checkOrderStatus(platformOrderNo, bizType, modeType, amounts).then(result => {
             if (result.code === payStatus.payNo) {
                 if (payment.amounts <= 0) {
                     this._zeroPay();
@@ -93,23 +93,33 @@ export default class PaymentPage extends BasePage {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去出用余额
         let channelAmount = (payment.amounts).toFixed(2); //需要支付的金额
-        let { fundsTradingNo,oneCoupon,bizType } = payment;
+        let { fundsTradingNo, oneCoupon, bizType } = payment;
         let detailList = [];
-        if (selectBance) {
-            if (channelAmount > availableBalance) {
-                detailList.push({
-                    payType: paymentType.balance,
-                    payAmount: availableBalance
-                });
+        if (bizType === 1 && oneCoupon > 0) {
+            detailList.push({
+                payType: paymentType.coupon,
+                payAmount: availableBalance
+            });
+        }
+        //减去优惠券后
+        channelAmount = (channelAmount - oneCoupon * 1) > 0 ? (channelAmount - oneCoupon * 1) : 0;
+
+        if (channelAmount > 0){
+            if (selectBance){
+                if (channelAmount > availableBalance) {
+                    detailList.push({
+                        payType: paymentType.balance,
+                        payAmount: availableBalance
+                    });
+                } else {
+                    detailList.push({
+                        payType: paymentType.balance,
+                        payAmount: channelAmount
+                    });
+                }
             } else {
-                detailList.push({
-                    payType: paymentType.balance,
-                    payAmount: channelAmount
-                });
+                this.$toastShow("未选择平台支付");
             }
-        } else {
-            this.$toastShow("未选择平台支付");
-            return;
         }
 
         payment.platformPay(password, fundsTradingNo, detailList).then((result) => {

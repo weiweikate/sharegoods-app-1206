@@ -13,7 +13,8 @@ export const paymentType = {
     wechat: 4,  //微信
     alipay: 8,  //支付宝
     bank: 16,    //银行卡支付
-    section: 5
+    section: 5 ,  //
+    coupon : 17 //优惠券支付
 };
 
 
