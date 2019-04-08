@@ -34,13 +34,14 @@ export default class HomeLimitGoView extends Component {
     if (!selected) {
       return <View/>
     }
-    const { time, title} = selected
+    const { time, title, diff} = selected
+    let tabWidth = diff === 0 ? px2dp(60) : px2dp(80)
     return <TouchableOpacity
       key={`${name}_${page}`}
       onPress={() => onPressHandler(page)}
       onLayout={onLayoutHandler}
     >
-      <View style={styles.tab}>
+      <View style={[styles.tab, {width: tabWidth}]}>
         <Text style={[styles.time, {color: textColor}]}>
           {time}
         </Text>
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     height: px2dp(59),
-    width: px2dp(60),
+    width: px2dp(80),
     alignItems: 'center'
   },
   tabBar: {

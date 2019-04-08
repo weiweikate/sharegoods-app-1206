@@ -3,17 +3,17 @@
  */
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import ScreenUtil from '../../utils/ScreenUtils';
-import { track, trackEvent } from '../../utils/SensorsTrack';
+import ScreenUtil from '../../../utils/ScreenUtils';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
-import { todayModule } from './HomeTodayModel';
-import DesignRule from '../../constants/DesignRule';
-import MRBannerView from '../../components/ui/bannerView/MRBannerView';
-import { MRText as Text } from '../../components/ui';
-import { homePoint } from './HomeTypes';
+import { homeModule } from '../model/Modules';
+import { todayModule } from '../model/HomeTodayModel';
+import DesignRule from '../../../constants/DesignRule';
+import MRBannerView from '../../../components/ui/bannerView/MRBannerView';
+import { MRText as Text } from '../../../components/ui';
+import { homePoint } from '../HomeTypes';
 
 
 export const todayHeight = px2dp(240);

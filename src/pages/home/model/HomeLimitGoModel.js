@@ -55,7 +55,6 @@ export class LimitGoModules {
           let secTime = new Date(parseInt(value, 0))
           let diffTime = Math.abs(_currentDate - parseInt(value, 0))
 
-
           if (lastSeckills === 0) {
             lastSeckills = diffTime
             currentId = value
@@ -91,16 +90,30 @@ export class LimitGoModules {
             }
           }
 
+          console.log('loadLimitGo', diff)
+
+          let timeFormat = ''
+          if (diff === 0) {
+            timeFormat = format(secTime, 'HH:mm')
+          } else if (diff === 1) {
+            timeFormat = '昨日' + format(secTime, 'HH:mm')
+          } else if (diff === -1) {
+            timeFormat = '明日' + format(secTime, 'HH:mm')
+          } else {
+            timeFormat = format(secTime, 'DD日HH:mm')
+          }
+          
           _timeList.push({
             title: title,
             id: value,
-            time: format(secTime, 'HH:mm')
+            time: timeFormat,
+            diff: diff
           })
 
           _goodsList[value] = seckills
         })
 
-        console.log('loadLimitGo', _goodsList, _timeList)
+        console.log('loadLimitGo',  _timeList)
 
         this.timeList = _timeList
         this.goodsList = _goodsList
