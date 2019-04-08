@@ -53,6 +53,10 @@ const api = {
     updatePhone: ['/user/updatePhone', { method: 'post' }],
     // 修改密码
     changePhonePwd: ['/user/updateLoginPassword', { method: 'post' }],
+    //设置登录密码
+    SetPhonePwd: '/user/setLoginPassword',
+    //检查是否有登录密码
+    checkPhonePwd: ['/user/getLoginPassword', { method: 'get' }],
     // 解绑微信号
     untiedWechat: ['/user/untiedWechat', { method: 'post' }],
     // 验证交易密码
