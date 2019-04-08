@@ -4,7 +4,7 @@ import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
 import bridge from '../../../utils/bridge';
 
-const kHomeBannerStore = '@home/kHomeBannerStore';
+const kHomeTopBannerStore = '@home/kHomeTopBannerStore';
 
 export class BannerModules {
     @observable bannerList = [];
@@ -16,14 +16,14 @@ export class BannerModules {
     @action loadBannerList = flow(function* (isCache) {
         try {
             if (isCache) {
-                const storeRes = yield get(kHomeBannerStore);
+                const storeRes = yield get(kHomeTopBannerStore);
                 if (storeRes) {
                     this.bannerList = storeRes||[];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.swiper });
             this.bannerList = res.data||[];
-            save(kHomeBannerStore, res.data);
+            save(kHomeTopBannerStore, res.data);
         } catch (error) {
             console.log(error);
             bridge.$toast(error.msg);

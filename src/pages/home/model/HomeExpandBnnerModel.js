@@ -3,9 +3,7 @@ import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { Image } from 'react-native';
-import { get, save } from '@mr/rn-store';
 
-const kHomeExpandStore = '@home/kHomeRecommendStore';
 const { px2dp } = ScreenUtils;
 const bannerWidth = ScreenUtils.width;
 
@@ -25,20 +23,11 @@ class HomeExpandBnnerModel {
         return h;
     }
 
-    @action loadBannerList = flow(function* (isCache) {
-        console.log('-------')
+    @action loadBannerList = flow(function* () {
         try {
-            if (isCache) {
-                const storeRes = yield get(kHomeExpandStore);
-                if (storeRes) {
-                    this.banner = storeRes || [];
-                    this.handleExpnadHeight();
-                }
-            }
             const bannerRes = yield HomeApi.getHomeData({ type: homeType.expandBanner });
             this.banner = bannerRes.data || [];
             this.handleExpnadHeight();
-            save(kHomeExpandStore, bannerRes.data);
         } catch (error) {
             console.log(error);
         }
