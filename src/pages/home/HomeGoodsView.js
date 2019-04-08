@@ -28,18 +28,18 @@ const MoneyItems = ({ money }) => {
 export const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={() => press && press()}>
     <View style={styles.container}>
         <View style={styles.image}>
-            <ReuserImage style={styles.image} source={{ uri: goods.imgUrl ? goods.imgUrl : '' }}/>
+            <ReuserImage style={styles.image} source={{ uri: goods.image ? goods.image : '' }}/>
             {
-                StringUtils.isEmpty(goods.title)
+                StringUtils.isEmpty(goods.secTitle)
                     ?
                     null
                     :
                     <View style={styles.titleView}>
-                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.title}</Text>
+                        <Text style={styles.title} numberOfLines={1} allowFontScaling={false}>{goods.secTitle}</Text>
                     </View>
             }
         </View>
-        <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.name}</Text>
+        <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.title}</Text>
         <View style={{ flex: 1 }}/>
         <MoneyItems money={goods.price}/>
     </View>

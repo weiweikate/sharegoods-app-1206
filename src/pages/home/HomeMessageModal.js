@@ -13,7 +13,8 @@ import {
     Image,
     ImageBackground,
     TouchableWithoutFeedback,
-    ScrollView
+    ScrollView,
+    TouchableOpacity
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
@@ -27,7 +28,11 @@ const home_notice_bg = res.home_notice_bg;
 
 import XQSwiper from '../../components/ui/XGSwiper';
 import DesignRule from '../../constants/DesignRule';
-
+import HomeModalManager from './model/HomeModalManager';
+import { observer } from 'mobx-react';
+const {autoSizeWidth} = ScreenUtils;
+import ImageLoad from '@mr/image-placeholder';
+@observer
 export default class HomeMessageModal extends PureComponent {
     state = {
         messageIndex : 0
@@ -37,11 +42,12 @@ export default class HomeMessageModal extends PureComponent {
     }
 
     messageIndexRender() {
-        if (EmptyUtils.isEmptyArr(this.state.messageData)) {
+        let messageData = HomeModalManager.homeMessage || [];
+        if (EmptyUtils.isEmptyArr(messageData)) {
             return null;
         }
         let indexs = [];
-        for (let i = 0; i < this.state.messageData.length; i++) {
+        for (let i = 0; i < messageData.length; i++) {
             let view = i === this.state.messageIndex ?
                 <View style={[styles.messageIndexStyle, { backgroundColor: '#FF427D' }]}/> :
                 <View style={[styles.messageIndexStyle, { backgroundColor: '#f4d7e4' }]}/>;
@@ -50,8 +56,8 @@ export default class HomeMessageModal extends PureComponent {
         return (
             <View style={{
                 flexDirection: 'row',
-                width: px2dp(12 * this.state.messageData.length),
-                justifyContent: this.state.messageData.length === 1 ? 'center' : 'space-between',
+                width: px2dp(12 * messageData.length),
+                justifyContent: messageData.length === 1 ? 'center' : 'space-between',
                 marginBottom: px2dp(12),
                 height: 12,
                 alignSelf: 'center'
@@ -89,14 +95,15 @@ export default class HomeMessageModal extends PureComponent {
 
 
     render(){
+        let dataSource =  HomeModalManager.homeMessage || [];
         return (
             <CommModal ref={(ref) => {
                 this.messageModal = ref;
             }}
-                   onRequestClose={this.props.onRequestClose}
-                   visible={this.props.showMessage}>
+                       onRequestClose={() => HomeModalManager.closeMessage()}
+                       visible={HomeModalManager.isShowNotice && HomeModalManager.isHome}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
-                    <TouchableWithoutFeedback onPress={this.props.onRequestClose}>
+                    <TouchableWithoutFeedback onPress={() => HomeModalManager.closeMessage()}>
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
 
@@ -109,7 +116,7 @@ export default class HomeMessageModal extends PureComponent {
                                 height: px2dp(211)
                             }}
                             height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
-                            dataSource={EmptyUtils.isEmptyArr(this.props.messageData) ? [] : this.props.messageData}
+                            dataSource={dataSource}
                             loop={false}
                             onDidChange={(item, index) => {
                                 this.setState({
@@ -120,6 +127,50 @@ export default class HomeMessageModal extends PureComponent {
                         <View style={{ flex: 1 }}/>
                         {this.messageIndexRender()}
                     </ImageBackground>
+                </View>
+            </CommModal>
+        );
+    }
+}
+
+
+@observer
+export  class HomeAdModal extends PureComponent {
+    state = {
+        messageIndex : 0
+    }
+    constructor(props){
+        super(props);
+    }
+
+    gotoPage = () => {
+        HomeModalManager.closeAd();
+        //页面跳转
+    }
+
+    render(){
+        let  AdData = HomeModalManager.AdData || {}
+        let image = AdData.image || '';
+        return (
+            <CommModal ref={(ref) => {
+                this.messageModal = ref;
+            }}
+                       onRequestClose={() => HomeModalManager.closeAd()}
+                       visible={HomeModalManager.isShowAd && HomeModalManager.isHome}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
+                    <View style={{ flex: 1 }}/>
+                    <TouchableOpacity onPress={()=> {this.gotoPage()}}>
+                        <ImageLoad style={{width: autoSizeWidth(310), height: autoSizeWidth(410)}}
+                                   source={{ uri: image }}
+                                   resizeMode={'contain'}
+                        >
+                        </ImageLoad>
+                    </TouchableOpacity>
+                    <View style={{ flex: 1 }}>
+                        <TouchableOpacity onPress={()=> {HomeModalManager.closeAd()}} style = {{marginTop: autoSizeWidth(25)}}>
+                            <Image source={closeImg} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </CommModal>
         );

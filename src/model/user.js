@@ -173,6 +173,10 @@ class User {
     @observable
     perfectNumberCode = null;
 
+    @action getFinishGuide = () => {
+        return this.finishGuide();
+    };
+
     @action getToken = () => {
         if (this.token) {
             return Promise.resolve(this.token);

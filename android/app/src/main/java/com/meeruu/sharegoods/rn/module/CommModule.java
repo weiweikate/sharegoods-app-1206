@@ -307,8 +307,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void apkExist(String version, Callback callback) {
-        callback.invoke(updateEvent(version).isExist());
+    public void apkExist(String version, Promise promise) {
+        promise.resolve(updateEvent(version).isExist());
     }
 
     @ReactMethod

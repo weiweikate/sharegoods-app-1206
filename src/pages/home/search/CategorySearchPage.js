@@ -232,7 +232,7 @@ export default class CategorySearchPage extends BasePage {
             });
         } else if (item.linkType === homeLinkType.exp) {
             this.$navigate('product/xpProduct/XpDetailPage', {
-                code: item.linkTypeCode
+                activityCode: item.linkTypeCode
             });
         }
     };

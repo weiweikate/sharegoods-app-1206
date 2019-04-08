@@ -21,8 +21,8 @@ export class BannerModules {
                     this.bannerList = storeRes;
                 }
             }
-            const res = yield HomeApi.getSwipers({ type: homeType.swiper });
-            this.bannerList = res.data;
+            const res = yield HomeApi.getHomeData({ type: homeType.swiper });
+            this.bannerList = res.data||[];
             save(kHomeBannerStore, res.data);
         } catch (error) {
             console.log(error);

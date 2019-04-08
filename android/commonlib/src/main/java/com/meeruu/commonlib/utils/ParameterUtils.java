@@ -62,6 +62,7 @@ public class ParameterUtils {
     public static final int ACTION_FROM_WEB = 45;
     public static final int SIGN_OK = 46;  // 工猫签约
     public static final int REQUEST_CODE_GONGMAO = 47;  // 工猫签约
+    public static final int REQUEST_CODE_WEBVIEW = 48;
     /**
      * 一般图片url宽高
      */

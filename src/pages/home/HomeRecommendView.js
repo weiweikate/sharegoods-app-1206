@@ -29,7 +29,7 @@ export default class HomeRecommendView extends Component {
         const { recommendList } = recommendModule;
         let item = recommendList[index];
         if (item) {
-            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeRecommad))
+            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeRecommad));
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);
@@ -67,38 +67,28 @@ export default class HomeRecommendView extends Component {
 
         let items = [];
         recommendList.map((item, index) => {
-            items.push(item.imgUrl);
+            items.push(item.image);
         });
 
         return <View style={styles.container}>
             <HomeTitleView title={'精品推荐'}/>
-            {
-                recommendList.length === 1
-                    ?
-                    <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(recommendList[0])}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            {this.renderRow(recommendList[0])}
-                        </View>
-                    </TouchableWithoutFeedback>
-                    :
-                    <MRBannerView
-                        style={{
-                            height: px2dp(160),
-                            width: ScreenUtil.width - px2dp(30)
-                        }}
-                        itemWidth={px2dp(295)}
-                        itemSpace={px2dp(10)}
-                        itemRadius={px2dp(5)}
-                        pageFocused={this.props.pageFocused}
-                        onDidSelectItemAtIndex={(index) => {
-                            this._onPressRow(index);
-                        }}
-                        onDidScrollToIndex={(index) => {
-                            this._onDidScrollToIndex(index);
-                        }}
-                        imgUrlArray={items}
-                    />
-            }
+            <MRBannerView
+                style={{
+                    height: px2dp(160),
+                    width: ScreenUtil.width - px2dp(30)
+                }}
+                itemWidth={px2dp(295)}
+                itemSpace={px2dp(10)}
+                itemRadius={px2dp(5)}
+                pageFocused={this.props.pageFocused}
+                onDidSelectItemAtIndex={(index) => {
+                    this._onPressRow(index);
+                }}
+                onDidScrollToIndex={(index) => {
+                    this._onDidScrollToIndex(index);
+                }}
+                imgUrlArray={items}
+            />
             {this.renderIndexView()}
         </View>;
     }

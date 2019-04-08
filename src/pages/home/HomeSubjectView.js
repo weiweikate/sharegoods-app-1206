@@ -55,7 +55,7 @@ const MoreItem = ({ press }) => <TouchableOpacity style={styles.moreView} onPres
 </TouchableOpacity>;
 
 const ActivityItem = ({ data, press, goodsPress }) => {
-    const { imgUrl, topicBannerProductDTOList } = data;
+    const { image, topicBannerProductDTOList } = data;
     let goodsItem = [];
     topicBannerProductDTOList && topicBannerProductDTOList.map((value, index) => {
         if (index >= 8) {
@@ -80,7 +80,7 @@ const ActivityItem = ({ data, press, goodsPress }) => {
         }}>
             <View style={styles.bannerView}>
                 <ImageLoad style={styles.banner}
-                           source={{ uri: imgUrl ? encodeURI(imgUrl) : '' }}/>
+                           source={{ uri: image ? encodeURI(image) : '' }}/>
             </View>
         </TouchableWithoutFeedback>
         {

@@ -170,7 +170,7 @@ export const TabNav = TabNavigator(
                     const { jumpToIndex, scene, previousScene } = tab;
                     if (previousScene.key !== 'ShowListPage') {
                         jumpToIndex(scene.index);
-                        TrackApi.WatchXiuChang({ moduleSource: 1 });
+                        TrackApi.WatchXiuChang({ xiuChangModuleSource: 1 });
                     }
                 }
             }

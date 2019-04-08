@@ -1,25 +1,20 @@
 import { observable, flow, action, computed } from 'mobx';
 import HomeApi from './api/HomeAPI';
 import { homeType } from './HomeTypes';
-import { get, save } from '@mr/rn-store';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { Image } from 'react-native';
 
-const kHomeAdStore = '@home/kHomeAdStore';
 const { px2dp } = ScreenUtils;
 const bannerWidth = ScreenUtils.width;
-const kAdWidth = (ScreenUtils.width - px2dp(30)) / 2 - 0.5;
-const kAdHeight = kAdWidth * (80 / 170);
 
-class AdModules {
-    @observable ad = [];
+class HomeExpandBnnerModel {
     @observable banner = [];
     @observable adHeights = new Map();
 
     imgUrls = [];
 
-    @computed get adHeight() {
-        let h = kAdHeight * 2;
+    @computed get bannerHeight() {
+        let h = 0;
         if (this.banner.length === 0) {
             h += px2dp(10);
         } else {
@@ -33,19 +28,9 @@ class AdModules {
         return h;
     }
 
-    @action loadAdList = flow(function* (isCache) {
+    @action loadBannerList = flow(function* (isCache) {
         try {
-            if (isCache) {
-                const storeRes = yield get(kHomeAdStore);
-                if (storeRes) {
-                    this.ad = storeRes;
-                }
-            }
-
-            const res = yield HomeApi.getAd({ type: homeType.ad });
-            this.ad = res.data;
-            save(kHomeAdStore, res.data);
-            const bannerRes = yield HomeApi.getBanner({ type: homeType.banner });
+            const bannerRes = yield HomeApi.getHomeData({ type: homeType.expandBanner });
             this.banner = bannerRes.data;
             this.imgUrls = [];
             if (this.banner.length > 0) {
@@ -66,4 +51,4 @@ class AdModules {
     });
 }
 
-export const adModules = new AdModules();
+export const homeExpandBnnerModel = new HomeExpandBnnerModel();

@@ -23,7 +23,7 @@ export default class HomeBannerView extends Component {
         const { bannerCount, bannerList } = bannerModule;
         let data = null;
         for (let i = 0; i < bannerCount; i++) {
-            if (bannerList[i].imgUrl === item) {
+            if (bannerList[i].image === item) {
                 data = bannerList[i];
                 break;
             }
@@ -63,7 +63,7 @@ export default class HomeBannerView extends Component {
         const isFocused = homeModule.isFocused;
         let items = [];
         bannerList.map(value => {
-            items.push(value.imgUrl);
+            items.push(value.image);
         });
         let len = items.length;
         return <View style={styles.banner}>
