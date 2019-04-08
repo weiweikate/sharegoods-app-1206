@@ -1,6 +1,6 @@
 import { observable, action, flow } from 'mobx';
-import HomeApi from './api/HomeAPI';
-import { homeType, homeRoute } from './HomeTypes';
+import HomeApi from '../api/HomeAPI';
+import { homeType, homeRoute } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import { homeFocusAdModel } from './HomeFocusAdModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
@@ -79,7 +79,7 @@ class HomeModule {
         // 首焦点广告
         homeFocusAdModel.loadAdList();
         // 首页限时秒杀
-        // limitGoModule.loadLimitGo();
+        limitGoModule.loadLimitGo();
         // 首页今日榜单
         todayModule.loadTodayList(this.firstLoad);
         // 首页精品推荐

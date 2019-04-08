@@ -13,7 +13,7 @@ import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui';
 import { homeLinkType } from '../HomeTypes';
 import { TrackApi } from '../../../utils/SensorsTrack';
-import { homeModule } from '../Modules';
+import { homeModule } from '../model/Modules';
 
 const icon_search = res.search;
 

@@ -22,7 +22,7 @@ import DesignRule from '../../../../constants/DesignRule';
 // import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
-import { homeModule } from '../../../home/Modules';
+import { homeModule } from '../../../home/model/Modules';
 import { logout } from '../../../../utils/SensorsTrack';
 import { MRText as Text } from '../../../../components/ui';
 import userOrderNum from '../../../../model/userOrderNum';

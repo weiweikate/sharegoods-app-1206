@@ -16,24 +16,24 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
-import EmptyUtils from '../../utils/EmptyUtils';
-import CommModal from '../../comm/components/CommModal';
-import { MRText as Text } from '../../components/ui';
-import res from './res';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import EmptyUtils from '../../../utils/EmptyUtils';
+import CommModal from '../../../comm/components/CommModal';
+import { MRText as Text } from '../../../components/ui/index';
+import res from '../res/index';
 const { px2dp } = ScreenUtils;
 
 const closeImg = res.button.cancel_white_circle;
 const home_notice_bg = res.home_notice_bg;
 
-import XQSwiper from '../../components/ui/XGSwiper';
-import DesignRule from '../../constants/DesignRule';
-import HomeModalManager from './manager/HomeModalManager';
+import XQSwiper from '../../../components/ui/XGSwiper';
+import DesignRule from '../../../constants/DesignRule';
+import HomeModalManager from '../manager/HomeModalManager';
 import { observer } from 'mobx-react';
 const {autoSizeWidth} = ScreenUtils;
 import ImageLoad from '@mr/image-placeholder';
 @observer
-export default class HomeMessageModal extends PureComponent {
+export default class HomeMessageModalView extends PureComponent {
     state = {
         messageIndex : 0
     }

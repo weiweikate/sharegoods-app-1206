@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import ScreenUtil from '../../utils/ScreenUtils';
+import ScreenUtil from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
-import user from '../../model/user';
+import user from '../../../model/user';
 import { observer } from 'mobx-react';
-import res from './res';
-import { MRText as Text } from '../../components/ui';
+import res from '../res/index';
+import { MRText as Text } from '../../../components/ui/index';
 
 @observer
 export default class HomeUserView extends Component {

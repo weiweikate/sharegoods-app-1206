@@ -1,8 +1,8 @@
 import { observable, flow, action, computed } from 'mobx';
-import HomeApi from './api/HomeAPI';
-import { homeType } from './HomeTypes';
+import HomeApi from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
-import ScreenUtils from '../../utils/ScreenUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const kHomeChannelStore = '@home/kHomeChannelStore';
 const { px2dp } = ScreenUtils;

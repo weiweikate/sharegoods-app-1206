@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
-import EmptyUtils from '../../utils/EmptyUtils';
-import { track, trackEvent } from '../../utils/SensorsTrack';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import EmptyUtils from '../../../utils/EmptyUtils';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtils;
-import { homeModule } from './Modules';
-import DesignRule from '../../constants/DesignRule';
+import { homeModule } from '../model/Modules';
+import DesignRule from '../../../constants/DesignRule';
 import ImageLoader from '@mr/image-placeholder';
-import { MRText as Text } from '../../components/ui';
-import StringUtils from '../../utils/StringUtils';
-import { homePoint } from './HomeTypes';
+import { MRText as Text } from '../../../components/ui/index';
+import StringUtils from '../../../utils/StringUtils';
+import { homePoint } from '../HomeTypes';
 
 export const kHomeGoodsViewHeight = px2dp(246);
 const goodsWidth = (ScreenUtils.width - px2dp(35)) / 2;

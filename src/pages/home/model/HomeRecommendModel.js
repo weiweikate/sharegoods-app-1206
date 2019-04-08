@@ -1,6 +1,6 @@
 import { observable, flow, action } from 'mobx';
-import HomeApi from './api/HomeAPI';
-import { homeType } from './HomeTypes';
+import HomeApi from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
 
 const kHomeRecommendStore = '@home/kHomeRecommendStore';

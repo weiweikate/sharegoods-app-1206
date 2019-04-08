@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view'
-import ScreenUtils from '../../utils/ScreenUtils'
+import ScreenUtils from '../../../utils/ScreenUtils'
 import LinearGradient from 'react-native-linear-gradient';
 import HomeTitleView from './HomeTitleView'
 import ImageLoader from '@mr/image-placeholder';
-import { limitGoModule, limitStatus } from './HomeLimitGoModel'
+import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel'
 const { px2dp } = ScreenUtils
 export const kLimitGoHeight = px2dp(500)
 
@@ -152,7 +152,7 @@ const GoodsItem = (item) => {
       :
       null
     }
-      
+
       <View style={{flex: 1}}/>
       <GoodsItemButton data={data}/>
     </View>
@@ -183,7 +183,7 @@ const GoodsItemButton = ({data}) => {
     </Text>
     </View>
   }
-} 
+}
 
 const styles = StyleSheet.create({
   container: {
