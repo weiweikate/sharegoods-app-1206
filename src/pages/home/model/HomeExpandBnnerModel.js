@@ -1,7 +1,7 @@
 import { observable, flow, action, computed } from 'mobx';
-import HomeApi from './api/HomeAPI';
-import { homeType } from './HomeTypes';
-import ScreenUtils from '../../utils/ScreenUtils';
+import HomeApi from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import { Image } from 'react-native';
 
 const { px2dp } = ScreenUtils;
@@ -31,7 +31,7 @@ class HomeExpandBnnerModel {
     @action loadBannerList = flow(function* (isCache) {
         try {
             const bannerRes = yield HomeApi.getHomeData({ type: homeType.expandBanner });
-            this.banner = bannerRes.data;
+            this.banner = bannerRes.data || [];
             this.imgUrls = [];
             if (this.banner.length > 0) {
                 this.banner.map((val, index) => {

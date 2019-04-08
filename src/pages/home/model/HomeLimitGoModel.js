@@ -1,7 +1,7 @@
 import { observable, action, computed, flow } from 'mobx';
-import ScreenUtils from '../../utils/ScreenUtils'
+import ScreenUtils from '../../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
-import HomeApi from './api/HomeAPI'
+import HomeApi from '../api/HomeAPI'
 import { differenceInCalendarDays , format} from 'date-fns'
 
 export const limitStatus = {
@@ -37,11 +37,11 @@ export class LimitGoModules {
         const result = res.data
         const keys = Object.keys(result)
         const sortKeys = keys.sort((val1, val2) =>  parseInt(val1, 0) - parseInt(val2, 0))
-        
+
         let _timeList = []
         let _goodsList = {}
         let _currentDate = 0
-        
+
         let currentId = 0
         let lastSeckills = 0 //最近的秒杀
         sortKeys.map((value, index) => {
@@ -102,7 +102,7 @@ export class LimitGoModules {
 
         console.log('loadLimitGo', _goodsList, _timeList)
 
-        this.timeList = _timeList
+        this.timeList = _timeList||[]
         this.goodsList = _goodsList
         this.currentGoodsList = this.goodsList[currentId]
       } catch (error) {
@@ -115,7 +115,7 @@ export class LimitGoModules {
       this.currentPage = index
     }
 
-   
+
 }
 
 export const limitGoModule = new LimitGoModules();

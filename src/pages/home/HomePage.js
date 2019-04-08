@@ -8,41 +8,41 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
+import { homeModule } from './model/Modules';
 import { homeType } from './HomeTypes';
-import HomeSearchView from './HomeSearchView';
-import HomeChannelView from './HomeChannelView';
-import HomeTodayView, { todayHeight } from './HomeTodayView';
-import HomeRecommendView, { recommendHeight } from './HomeRecommendView';
-import HomeSubjectView from './HomeSubjectView';
-import HomeBannerView, { bannerHeight } from './HomeBannerView';
-import GoodsCell, { kHomeGoodsViewHeight } from './HomeGoodsView';
-import HomeUserView from './HomeUserView';
-import HomeCategoryView, { categoryHeight } from './HomeCategoryView';
+import HomeSearchView from './view/HomeSearchView';
+import HomeChannelView from './view/HomeChannelView';
+import HomeTodayView, { todayHeight } from './view/HomeTodayView';
+import HomeRecommendView, { recommendHeight } from './view/HomeRecommendView';
+import HomeSubjectView from './view/HomeSubjectView';
+import HomeBannerView, { bannerHeight } from './view/HomeBannerView';
+import GoodsCell, { kHomeGoodsViewHeight } from './view/HomeGoodsView';
+import HomeUserView from './view/HomeUserView';
+import HomeCategoryView, { categoryHeight } from './view/HomeCategoryView';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import VersionUpdateModal from './VersionUpdateModal';
+import VersionUpdateModalView from './view/VersionUpdateModalView';
 import DesignRule from '../../constants/DesignRule';
-import homeModalManager from './model/HomeModalManager';
+import homeModalManager from './manager/HomeModalManager';
 import { withNavigationFocus } from 'react-navigation';
 import user from '../../model/user';
-import { homeTabManager } from './model/HomeTabManager';
+import { homeTabManager } from './manager/HomeTabManager';
 import { MRText as Text } from '../../components/ui';
 import { RecyclerListView, LayoutProvider, DataProvider } from 'recyclerlistview';
-import { homeFocusAdModel } from './HomeFocusAdModel';
-import { todayModule } from './HomeTodayModel';
-import { recommendModule } from './HomeRecommendModel';
-import { subjectModule } from './HomeSubjectModel';
-import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
-import HomeTitleView from './HomeTitleView';
+import { homeFocusAdModel } from './model/HomeFocusAdModel';
+import { todayModule } from './model/HomeTodayModel';
+import { recommendModule } from './model/HomeRecommendModel';
+import { subjectModule } from './model/HomeSubjectModel';
+import { homeExpandBnnerModel } from './model/HomeExpandBnnerModel';
+import HomeTitleView from './view/HomeTitleView';
 import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
-import HomeMessageModal, { HomeAdModal } from './HomeMessageModal';
-import { channelModules } from './HomeChannelModel';
-import HomeLimitGoView from './HomeLimitGoView';
-import { limitGoModule } from './HomeLimitGoModel';
-import HomeExpandBannerView from './HomeExpandBannerView';
-import HomeFocusAdView from './HomeFocusAdView';
+import HomeMessageModalView, { HomeAdModal } from './view/HomeMessageModalView';
+import { channelModules } from './model/HomeChannelModel';
+import HomeLimitGoView from './view/HomeLimitGoView';
+import { limitGoModule } from './model/HomeLimitGoModel';
+import HomeExpandBannerView from './view/HomeExpandBannerView';
+import HomeFocusAdView from './view/HomeFocusAdView';
 
 /**
  * @author zhangjian
@@ -346,9 +346,9 @@ class HomePage extends BasePage {
                     this.luckyIcon = ref;
                 }}/>
                 <HomeAdModal/>
-                <HomeMessageModal/>
+                <HomeMessageModalView/>
                 <GuideModal/>
-                <VersionUpdateModal/>
+                <VersionUpdateModalView/>
             </View>
         );
     }

@@ -1,25 +1,24 @@
 /**
- * 今日榜单
+ * 精品推荐
  */
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import ScreenUtil from '../../utils/ScreenUtils';
-import { track, trackEvent } from '../../utils/SensorsTrack';
+import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import ScreenUtil from '../../../utils/ScreenUtils';
+import MRBannerView from '../../../components/ui/bannerView/MRBannerView';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
-import { todayModule } from './HomeTodayModel';
-import DesignRule from '../../constants/DesignRule';
-import MRBannerView from '../../components/ui/bannerView/MRBannerView';
-import { MRText as Text } from '../../components/ui';
-import { homePoint } from './HomeTypes';
+import { homeModule } from '../model/Modules';
+import DesignRule from '../../../constants/DesignRule';
+import { recommendModule } from '../model/HomeRecommendModel';
+import HomeTitleView from './HomeTitleView';
+import { homePoint } from '../HomeTypes';
 
-
-export const todayHeight = px2dp(240);
+export const recommendHeight = px2dp(240);
 
 @observer
-export default class HomeTodayView extends Component {
+export default class HomeRecommendView extends Component {
 
     state = {
         index: 0
@@ -27,10 +26,10 @@ export default class HomeTodayView extends Component {
 
     _onPressRow(e) {
         let index = e.nativeEvent.index;
-        const { todayList } = todayModule;
-        let item = todayList[index];
+        const { recommendList } = recommendModule;
+        let item = recommendList[index];
         if (item) {
-            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeToday));
+            track(trackEvent.bannerClick, homeModule.bannerPoint(item, homePoint.homeRecommad));
             let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
             const { navigate } = this.props;
             let params = homeModule.paramsNavigate(item);
@@ -44,9 +43,9 @@ export default class HomeTodayView extends Component {
 
     renderIndexView() {
         const { index } = this.state;
-        const { todayList } = todayModule;
+        const { recommendList } = recommendModule;
         let items = [];
-        for (let i = 0; i < todayList.length; i++) {
+        for (let i = 0; i < recommendList.length; i++) {
             if (index === i) {
                 items.push(<View key={i} style={styles.activityIndex}/>);
             } else {
@@ -59,23 +58,20 @@ export default class HomeTodayView extends Component {
     }
 
     render() {
-        const { todayList } = todayModule;
+        const { recommendList } = recommendModule;
 
         // 此处需返回null，否则指示器有问题
-        if (todayList.length === 0) {
+        if (recommendList.length === 0) {
             return null;
         }
 
         let items = [];
-        todayList.map((item, index) => {
+        recommendList.map((item, index) => {
             items.push(item.image);
         });
 
         return <View style={styles.container}>
-            <View style={styles.titleView}>
-                <View style={styles.flag}/>
-                <Text style={styles.title}>今日榜单</Text>
-            </View>
+            <HomeTitleView title={'精品推荐'}/>
             <MRBannerView
                 style={{
                     height: px2dp(160),
@@ -85,11 +81,11 @@ export default class HomeTodayView extends Component {
                 itemSpace={px2dp(10)}
                 itemRadius={px2dp(5)}
                 pageFocused={this.props.pageFocused}
-                onDidSelectItemAtIndex={(e) => {
-                    this._onPressRow(e);
+                onDidSelectItemAtIndex={(index) => {
+                    this._onPressRow(index);
                 }}
-                onDidScrollToIndex={(e) => {
-                    this._onDidScrollToIndex(e);
+                onDidScrollToIndex={(index) => {
+                    this._onDidScrollToIndex(index);
                 }}
                 imgUrlArray={items}
             />
@@ -105,46 +101,12 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
         width: ScreenUtil.width - px2dp(30),
-        borderRadius: (5),
+        borderRadius: 5,
         overflow: 'hidden',
         backgroundColor: 'white'
     },
-    flag: {
-        backgroundColor: DesignRule.mainColor,
-        width: px2dp(2),
-        height: px2dp(8)
-    },
-    titleView: {
-        height: px2dp(42),
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    title: {
-        color: DesignRule.textColor_secondTitle,
-        fontSize: px2dp(16),
-        marginLeft: px2dp(10),
-        fontWeight: '600'
-    },
     scroll: {
         height: px2dp(175)
-    },
-    img: {
-        width: px2dp(280),
-        height: px2dp(140)
-    },
-    imgView: {
-        width: px2dp(280),
-        height: px2dp(140),
-        borderRadius: px2dp(5),
-        overflow: 'hidden'
-    },
-    item: {
-        width: px2dp(280),
-        height: px2dp(145),
-        marginLeft: px2dp(10)
-    },
-    space: {
-        width: px2dp(15)
     },
     text: {
         color: DesignRule.textColor_secondTitle,
@@ -155,7 +117,7 @@ let styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: px2dp(10)
+        flex: 1
     },
     activityIndex: {
         width: px2dp(10),

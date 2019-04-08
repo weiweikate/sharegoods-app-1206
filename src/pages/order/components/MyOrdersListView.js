@@ -12,14 +12,14 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-// import userOrderNum from '../../../model/userOrderNum';
+// import userOrderNum from '../../../manager/userOrderNum';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
 import {
     MRText as Text
 } from '../../../components/ui';
-// import user from '../../../model/user';
+// import user from '../../../manager/user';
 import RouterMap from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
 import { NavigationActions } from 'react-navigation';

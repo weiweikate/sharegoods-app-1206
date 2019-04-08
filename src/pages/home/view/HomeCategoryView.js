@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import { observer } from 'mobx-react';
-import { categoryModule } from './HomeCategoryModel';
-import DesignRule from '../../constants/DesignRule';
-import bridge from '../../utils/bridge';
+import { categoryModule } from '../model/HomeCategoryModel';
+import DesignRule from '../../../constants/DesignRule';
+import bridge from '../../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 

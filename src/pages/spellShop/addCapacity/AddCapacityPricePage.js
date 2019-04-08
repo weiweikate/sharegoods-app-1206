@@ -50,19 +50,25 @@ export class AddCapacityPricePage extends BasePage {
 
     _addBtnAction = () => {
         const { id } = this.state.selectedItem || {};
+        const { amount } = this.state;
         if (!id) {
             this.$toastShow('请选择扩容人数');
         } else {
             SpellShopApi.store_save({
                 expandId: id,
-                tokenCoinCount: this.state.amount
+                tokenCoinCount: amount
             }).then((data) => {
-                const dataTemp = data.data || {};
-                SpellShopApi.user_pay({ orderNo: dataTemp.orderNo, tokenCoin: 1 }).then(() => {
-                    this.$navigate(RouterMap.AddCapacitySuccessPage, { storeData: this.params.storeData });
-                }).catch(() => {
-                    this.$toastShow('支付失败');
+                const { orderNo, price } = data.data || {};
+                this.$navigate(RouterMap.PaymentPage, {
+                    platformOrderNo: orderNo,
+                    amounts: price,
+                    orderProductList: [{ productName: '拼店扩容' }],
+                    bizType: 1,
+                    modeType: 1,
+                    oneCoupon: amount
                 });
+            }).catch((e) => {
+                this.$toastShow(e.msg);
             });
         }
     };

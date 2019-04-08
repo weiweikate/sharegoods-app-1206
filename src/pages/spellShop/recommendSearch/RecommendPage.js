@@ -30,7 +30,7 @@ import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeLinkType, homeType } from '../../home/HomeTypes';
-import { homeModule } from '../../home/Modules';
+import { homeModule } from '../../home/model/Modules';
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;

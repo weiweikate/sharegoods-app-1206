@@ -30,7 +30,7 @@ import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
 
 import { MRText as Text } from '../../../components/ui';
 import CommModal from '../../../comm/components/CommModal';
-import { homeModule } from '../Modules';
+import { homeModule } from '../model/Modules';
 
 const {
     sign_in_bg: signInImageBg,
