@@ -98,7 +98,7 @@ class XpDetailModel {
         let goodsNumberText;
         for (let item of (stockSysConfig || [])) {
             const tempArr = item.value.split('★');
-            if (parseFloat(count) > parseFloat(tempArr[0])) {
+            if (parseFloat(count) >= parseFloat(tempArr[0])) {
                 goodsNumberText = tempArr[1];
                 break;
             }

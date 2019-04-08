@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
     },
     name: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: px2dp(11)
+        fontSize: px2dp(11),
+        marginBottom:px2dp(10)
     }
 });
 
