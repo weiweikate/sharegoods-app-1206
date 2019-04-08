@@ -87,50 +87,60 @@ export default class ChannelPage extends BasePage {
                     if (payment.selctedPayType === paymentType.alipay) {
                         //支付宝支付
                         detailList.push({ payType: paymentType.alipay, payAmount: payAmount });
-                        payment.platformPay("", fundsTradingNo, detailList, name)
-                            .then(result => {
-                                const detail = result.detail || [];
-                                detail.map((payItem) => {
-                                    if (parseInt(payItem.payType) === paymentType.alipay) {
-                                        payment.alipay(payItem.payResult).catch(err => {
-                                            console.log("alipay err", err, err.code);
-                                            if (err.code === 20002) {
-                                                Toast.$toast(err.msg);
-                                                return;
-                                            }
-                                            payment.resetPayment();
-                                            this._goToOrder();
-                                        });
-                                    } else if (parseInt(payItem.payType) === paymentType.wechat) {
-                                        // payment.appWXPay(payItem.appWXPay())
-                                    }
-                                });
-                            }).catch(err => {
-                            console.log("alipay err", err, err.code);
-                            if (err.code === 20002) {
-                                Toast.$toast(err.msg);
-                                return;
-                            }
-                            payment.resetPayment();
-                            this._goToOrder();
+                        payment.platformPay("", fundsTradingNo, detailList, name).then(result => {
+                            const detail = result.detail || [];
+                            detail.map((payItem) => {
+                                if (parseInt(payItem.payType) === paymentType.alipay) {
+                                    //支付宝支付
+                                    payment.alipay(payItem.payResult).catch(err => {
+                                        console.log("alipay err", err, err.code);
+                                        if (err.code === 20002) {
+                                            Toast.$toast(err.msg);
+                                            return;
+                                        }
+                                        payment.resetPayment();
+                                        this._goToOrder();
+                                    });
+                                } else {
+                                    Toast.$toast("请点选支付方式");
+                                }
+                            });
+                        }).catch(err => {
+                            Toast.$toast("拉去三方支付信息报错");
                         });
                     }
 
                     if (payment.selctedPayType === paymentType.wechat) {
-                        //微信支付
-                        payment.appWXPay().catch(err => {
-                            console.log("wexin err", err, err.code);
-                            if (err.code === 20002) {
-                                Toast.$toast(err.msg);
-                                return;
-                            }
-                            if (err.message === "请安装微信后完成支付") {
-                                Toast.$toast(err.message);
-                                return;
-                            }
-                            payment.resetPayment();
-                            this._goToOrder();
+                        detailList.push({ payType: paymentType.wechat, payAmount: payAmount });
+                        payment.platformPay("", fundsTradingNo, detailList, name).then(result => {
+                            //wx支付
+                            const detail = result.detail || [];
+                            detail.map((payItem) => {
+                                if (parseInt(payItem.payType) === paymentType.wechat) {
+
+                                } else {
+                                    Toast.$toast("请点选支付方式");
+                                }
+                            });
+
+                        }).catch(err => {
+
                         });
+
+                        // //微信支付
+                        // payment.appWXPay().catch(err => {
+                        //     console.log("wexin err", err, err.code);
+                        //     if (err.code === 20002) {
+                        //         Toast.$toast(err.msg);
+                        //         return;
+                        //     }
+                        //     if (err.message === "请安装微信后完成支付") {
+                        //         Toast.$toast(err.message);
+                        //         return;
+                        //     }
+                        //     payment.resetPayment();
+                        //     this._goToOrder();
+                        // });
                     }
                 } else if (result.code === payStatus.payOut) {
                     Toast.$toast(payStatusMsg[result.code]);

@@ -538,9 +538,10 @@ export default class MyOrdersListView extends Component {
     async _goToPay(index) {
         let payData = this.state.viewData[index];
         const { platformOrderNo, orderNo, totalPrice, orderProduct } = payData;
+        const {productName} = orderProduct;
         console.log('_goToPay', payData);
         //从订单发起的都是普通支付
-        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice);
+        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice,productName);
         // return;
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
