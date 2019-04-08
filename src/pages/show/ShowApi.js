@@ -16,7 +16,7 @@ const api = {
     // 收藏列表
     showCollectList: ['/discover/queryCollect', { method: 'get' }],
     // 轮播图
-    showSwper: ['/config/advertisement/queryAdvertisementList']
+    getShowBanner: ['/advertising/queryAdvertisingList', { method: 'post' }]
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

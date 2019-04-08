@@ -3,7 +3,9 @@ import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { Image } from 'react-native';
+import { get, save } from '@mr/rn-store';
 
+const kHomeExpandStore = '@home/kHomeRecommendStore';
 const { px2dp } = ScreenUtils;
 const bannerWidth = ScreenUtils.width;
 
@@ -15,11 +17,6 @@ class HomeExpandBnnerModel {
 
     @computed get bannerHeight() {
         let h = 0;
-        if (this.banner.length === 0) {
-            h += px2dp(10);
-        } else {
-            h += px2dp(5);
-        }
         this.adHeights.forEach((value, key, map) => {
             if (this.imgUrls.indexOf(key) >= 0 && value > 0) {
                 h += value + px2dp(15);
@@ -29,26 +26,39 @@ class HomeExpandBnnerModel {
     }
 
     @action loadBannerList = flow(function* (isCache) {
+        console.log('-------')
         try {
+            if (isCache) {
+                const storeRes = yield get(kHomeExpandStore);
+                if (storeRes) {
+                    this.banner = storeRes || [];
+                    this.handleExpnadHeight();
+                }
+            }
             const bannerRes = yield HomeApi.getHomeData({ type: homeType.expandBanner });
             this.banner = bannerRes.data || [];
-            this.imgUrls = [];
-            if (this.banner.length > 0) {
-                this.banner.map((val, index) => {
-                    let url = val.imgUrl;
-                    this.imgUrls.push(url);
-                    if (!this.adHeights.has(url)) {
-                        Image.getSize(url, (width, height) => {
-                            let h = (bannerWidth * height) / width;
-                            this.adHeights.set(url, h);
-                        });
-                    }
-                });
-            }
+            this.handleExpnadHeight();
+            save(kHomeExpandStore, bannerRes.data);
         } catch (error) {
             console.log(error);
         }
     });
+
+    handleExpnadHeight = () => {
+        this.imgUrls = [];
+        if (this.banner.length > 0) {
+            this.banner.map((val, index) => {
+                let url = val.image;
+                this.imgUrls.push(url);
+                if (!this.adHeights.has(url)) {
+                    Image.getSize(url, (width, height) => {
+                        let h = (bannerWidth * height) / width;
+                        this.adHeights.set(url, h);
+                    });
+                }
+            });
+        }
+    };
 }
 
 export const homeExpandBnnerModel = new HomeExpandBnnerModel();

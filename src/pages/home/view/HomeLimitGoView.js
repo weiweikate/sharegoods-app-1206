@@ -8,7 +8,6 @@ import ImageLoader from '@mr/image-placeholder';
 import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
 
 const { px2dp } = ScreenUtils;
-export const kLimitGoHeight = px2dp(500);
 
 export default class HomeLimitGoView extends Component {
 
@@ -88,7 +87,7 @@ export default class HomeLimitGoView extends Component {
             );
         });
         return (<View>
-            <View style={{ height: px2dp(8) }}/>
+            <View style={{ height: px2dp(10) }}/>
             {goodsItems}
         </View>);
     }
@@ -110,7 +109,7 @@ export default class HomeLimitGoView extends Component {
 
 
         return <View style={[styles.container, { height: limitGoModule.limitHeight }]}>
-            <View style={{ paddingLeft: px2dp(15) }}>
+            <View style={{ paddingLeft: px2dp(15), marginTop: px2dp(3) }}>
                 <HomeTitleView title={'限时购'}/>
             </View>
             <ScrollableTabView
