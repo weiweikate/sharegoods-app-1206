@@ -21,7 +21,7 @@ export default class ShowBannerView extends Component {
 
     renderRow(item) {
         return <View style={styles.imgView}>
-            <UIImage style={styles.img} source={{ uri: item.imgUrl }}/>
+            <UIImage style={styles.img} source={{ uri: item.image }}/>
         </View>;
     }
 
@@ -91,7 +91,7 @@ export default class ShowBannerView extends Component {
         }
         let items = [];
         bannerList.map(value => {
-            items.push(value.imgUrl);
+            items.push(value.image);
         });
         return <View style={styles.container}>
             {

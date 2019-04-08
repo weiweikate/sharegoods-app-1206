@@ -1,6 +1,7 @@
 package com.meeruu.commonlib.server;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.bean.ResponseInfo;
 import com.meeruu.commonlib.callback.BaseCallback;
@@ -119,7 +120,7 @@ public class RequestManager {
      */
     private static RequestBody setRequestBody(Map<String, String> BodyParams) {
         RequestBody body = null;
-        okhttp3.FormBody.Builder formEncodingBuilder = new okhttp3.FormBody.Builder();
+        JSONObject params = new JSONObject();
         if (BodyParams != null) {
             Iterator<String> iterator = BodyParams.keySet().iterator();
             String key = "";
@@ -127,11 +128,12 @@ public class RequestManager {
                 key = iterator.next().toString();
                 LogUtils.d("post_Params===" + key + "====", BodyParams.get(key) + "====");
                 if (BodyParams.get(key) != null) {
-                    formEncodingBuilder.add(key, BodyParams.get(key));
+                    params.put(key, BodyParams.get(key));
                 }
             }
         }
-        body = formEncodingBuilder.build();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        body = RequestBody.create(JSON, params.toJSONString());
         return body;
     }
 
