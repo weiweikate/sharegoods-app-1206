@@ -7,7 +7,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui';
 import user from '../../model/user';
-import { payment, payStatus, payStatusMsg } from './Payment'
+import { payment, paymentType, payStatus, payStatusMsg } from "./Payment";
 import PasswordView from './PayPasswordView'
 import { PaymentResult } from './PaymentResultPage';
 const { px2dp } = ScreenUtils;
@@ -45,7 +45,11 @@ export default class PaymentPage extends BasePage {
     }
 
     goToPay =()=> {
-        payment.checkOrderStatus().then(result => {
+        let bizType = 0;
+        let modeType = 0;
+        let payAmount = payment.amounts;
+
+        payment.checkOrderStatus(payment.platformOrderNo,bizType,modeType,payAmount).then(result => {
             if (result.code === payStatus.payNo) {
                 if (payment.amounts <= 0) {
                     this._zeroPay()
@@ -85,9 +89,31 @@ export default class PaymentPage extends BasePage {
     }
 
     _platformPay(password) {
-        payment.platformPay(password).then((result) => {
+        let selectBance = payment.selectedBalace;
+        let { availableBalance } = user//去出用余额
+        let channelAmount = (payment.amounts).toFixed(2) //需要支付的金额
+        let {fundsTradingNo}  = payment
+        let detailList = [];
+        if (selectBance){
+            if(channelAmount > availableBalance){
+                detailList.push({
+                    payType:paymentType.balance,
+                    payAmount:availableBalance,
+                })
+            }else {
+                detailList.push({
+                    payType:paymentType.balance,
+                    payAmount:channelAmount,
+                })
+            }
+        }else {
+            this.$toastShow('未选择平台支付');
+            return;
+        }
+
+        payment.platformPay(password,fundsTradingNo,detailList).then((result) => {
             this.setState({ showPwd: false })
-            if (result === payStatus.payNeedThrid) {
+            if (result.statue === payStatus.payNeedThrid) {
                 payment.selectedBalace = false
                 this.$navigate('payment/ChannelPage', {remainMoney: (payment.amounts - user.availableBalance).toFixed(2)})
                 return

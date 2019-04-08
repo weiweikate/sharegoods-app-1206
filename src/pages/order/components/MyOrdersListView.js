@@ -539,8 +539,9 @@ export default class MyOrdersListView extends Component {
         let payData = this.state.viewData[index];
         const { platformOrderNo, orderNo, totalPrice, orderProduct } = payData;
         console.log('_goToPay', payData);
-        let result = await payment.checkOrderStatus(platformOrderNo);
-        return;
+        //从订单发起的都是普通支付
+        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice);
+        // return;
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
                 orderNum: orderNo,
@@ -564,7 +565,7 @@ export default class MyOrdersListView extends Component {
             });
             this.props.navigation.dispatch(replace);
         } else {
-            Toast.$toast(payStatusMsg[result.code]);
+            Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
         }
     }
 }
