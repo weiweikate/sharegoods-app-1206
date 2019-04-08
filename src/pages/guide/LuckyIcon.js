@@ -22,7 +22,8 @@ import {
 } from 'react-native';
 
 import ImageLoad from '@mr/image-placeholder';
-import GuideApi from './GuideApi';
+import {homeType}from '../home/HomeTypes';
+import HomeAPI from '../home/api/HomeAPI'
 import { navigate } from '../../navigation/RouterMap';
 import { homeModule } from '../home/model/Modules';
 import { trackEvent, track } from '../../utils/SensorsTrack';
@@ -44,10 +45,10 @@ export default class LuckyIcon extends React.Component {
     }
 
     getLucky = () =>{
-        GuideApi.getLucky({}).then((data) => {
-            if (data.data && data.data.linkTypeCode){
+        HomeAPI.getHomeData({type: homeType.float}).then((data) => {
+            if (data.data && data.data.length > 0){
                 this.setState({show: true});
-                this.setState({data: data.data})
+                this.setState({data: data.data[0]})
             } else {
                 this.setState({show: false});
             }
@@ -111,7 +112,7 @@ export default class LuckyIcon extends React.Component {
                 <TouchableOpacity onPress={this._onPress}>
                     <ImageLoad
                         style={styles.image}
-                        source={{uri: this.state.data.icon}}
+                        source={{uri: this.state.data.image}}
                         resizeMode={'contain'}
                         isAvatar={true}
                     />

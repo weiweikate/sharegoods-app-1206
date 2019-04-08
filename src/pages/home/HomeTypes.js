@@ -19,7 +19,8 @@ export const homeType = {
     show: 11,            //秀场
     web: 10,
     banner: 14,
-    limitGo: 'limitGo'   //限时秒杀
+    limitGo: 'limitGo',   //限时秒杀
+    windowAlert: 1 //首页弹框
 };
 
 
