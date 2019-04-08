@@ -49,7 +49,7 @@ export default class SelectionHeaderView extends Component {
         let goodsNumberText;
         for (let item of (stockSysConfig || [])) {
             const tempArr = item.value.split('★');
-            if (parseFloat(stock) > parseFloat(tempArr[0])) {
+            if (parseFloat(stock) >= parseFloat(tempArr[0])) {
                 goodsNumberText = tempArr[1];
                 break;
             }
