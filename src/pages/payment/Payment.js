@@ -65,6 +65,9 @@ export class Payment {
     @observable amounts = 0;
     //后期更改支付时需要的收单号
     @observable fundsTradingNo = "";
+    @observable bizType = 0;
+    @observable modeType = 0;
+    @observable oneCoupon = 0;//一元劵使用个数
 
     @action resetPayment = () => {
         this.orderName = "";
@@ -72,6 +75,9 @@ export class Payment {
         this.selectedBalace = false;
         this.isGoToPay = false;
         this.fundsTradingNo = '';
+        this.bizType = 0;
+        this.modeType = 0;
+        this.oneCoupon = 0;
     };
 
     //选择余额支付
