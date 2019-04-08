@@ -115,7 +115,7 @@ export class LimitGoModules {
 
         console.log('loadLimitGo',  _timeList)
 
-        this.timeList = _timeList
+        this.timeList = _timeList||[]
         this.goodsList = _goodsList
         this.currentGoodsList = this.goodsList[currentId]
       } catch (error) {

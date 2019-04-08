@@ -23,11 +23,11 @@ class SubjectModule {
                 const storeRes = yield get(kHomeSujectStore);
                 if (storeRes) {
                     this.computeHeight(storeRes);
-                    this.subjectList = storeRes;
+                    this.subjectList = storeRes || [];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.homeHot });
-            let list = res.data;
+            let list = res.data || [];
             this.computeHeight(list);
             this.subjectList = list;
             save(kHomeSujectStore, res.data);

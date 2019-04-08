@@ -18,7 +18,7 @@ export class BannerModules {
             if (isCache) {
                 const storeRes = yield get(kHomeBannerStore);
                 if (storeRes) {
-                    this.bannerList = storeRes;
+                    this.bannerList = storeRes||[];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.swiper });
