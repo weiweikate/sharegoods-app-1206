@@ -21,7 +21,7 @@ export class LimitGoModules {
     @observable currentPage = -1;
     @computed get limitHeight() {
       if (this.currentGoodsList.length > 0) {
-        return px2dp(92) + this.currentGoodsList.length * px2dp(140) + (this.currentGoodsList.length - 1) * px2dp(10)
+        return px2dp(90) + this.currentGoodsList.length * px2dp(140) + this.currentGoodsList.length * px2dp(10)
       }
       return 0
     }

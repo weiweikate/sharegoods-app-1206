@@ -112,7 +112,8 @@ let styles = StyleSheet.create({
     flag: {
         backgroundColor: DesignRule.mainColor,
         width: px2dp(2),
-        height: px2dp(8)
+        height: px2dp(8),
+        borderRadius: px2dp(4)
     },
     titleView: {
         height: px2dp(42),
