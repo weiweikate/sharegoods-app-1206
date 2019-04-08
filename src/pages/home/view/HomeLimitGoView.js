@@ -35,13 +35,14 @@ export default class HomeLimitGoView extends Component {
         if (!selected) {
             return <View/>;
         }
-        const { time, title } = selected;
+        const { time, title, diff } = selected;
+        let tabWidth = diff === 0 ? px2dp(60) : px2dp(80);
         return <TouchableOpacity
             key={`${name}_${page}`}
             onPress={() => onPressHandler(page)}
             onLayout={onLayoutHandler}
         >
-            <View style={styles.tab}>
+            <View style={[styles.tab, { width: tabWidth }]}>
                 <Text style={[styles.time, { color: textColor }]}>
                     {time}
                 </Text>
@@ -75,7 +76,7 @@ export default class HomeLimitGoView extends Component {
 
     _renderGoodsList(id) {
         let goodsItems = [];
-        const goods = limitGoModule.goodsList[id] || [];
+        const goods = limitGoModule.goodsList[id];
         goods.map((value, index) => {
             goodsItems.push(
                 <TouchableWithoutFeedback onPress={() => this._goToDetail(value)}>
@@ -86,11 +87,10 @@ export default class HomeLimitGoView extends Component {
                 </TouchableWithoutFeedback>
             );
         });
-        return (
-            <View>
-                <View style={{ height: px2dp(8) }}/>
-                {goodsItems}
-            </View>);
+        return (<View>
+            <View style={{ height: px2dp(8) }}/>
+            {goodsItems}
+        </View>);
     }
 
     render() {
@@ -156,7 +156,6 @@ const GoodsItem = (item) => {
                         :
                         null
                 }
-
                 <View style={{ flex: 1 }}/>
                 <GoodsItemButton data={data}/>
             </View>
@@ -195,7 +194,7 @@ const styles = StyleSheet.create({
     },
     tab: {
         height: px2dp(59),
-        width: px2dp(60),
+        width: px2dp(80),
         alignItems: 'center'
     },
     tabBar: {
@@ -221,7 +220,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: px2dp(60),
         height: px2dp(20),
-        borderRadius: px2dp(10)
+        borderRadius: px2dp(10),
+        marginTop: px2dp(5)
     },
     activeTitle: {
         color: '#fff',

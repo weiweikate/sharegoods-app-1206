@@ -21,7 +21,7 @@ export class LimitGoModules {
     @observable currentPage = -1;
     @computed get limitHeight() {
       if (this.currentGoodsList.length > 0) {
-        return px2dp(90) + this.currentGoodsList.length * px2dp(140) + this.currentGoodsList.length * px2dp(10)
+        return px2dp(88) + this.currentGoodsList.length * px2dp(140) + this.currentGoodsList.length * px2dp(10)
       }
       return 0
     }
@@ -54,7 +54,6 @@ export class LimitGoModules {
           let nowTime = new Date(_currentDate)
           let secTime = new Date(parseInt(value, 0))
           let diffTime = Math.abs(_currentDate - parseInt(value, 0))
-
 
           if (lastSeckills === 0) {
             lastSeckills = diffTime
@@ -91,16 +90,30 @@ export class LimitGoModules {
             }
           }
 
+          console.log('loadLimitGo', diff)
+
+          let timeFormat = ''
+          if (diff === 0) {
+            timeFormat = format(secTime, 'HH:mm')
+          } else if (diff === 1) {
+            timeFormat = '昨日' + format(secTime, 'HH:mm')
+          } else if (diff === -1) {
+            timeFormat = '明日' + format(secTime, 'HH:mm')
+          } else {
+            timeFormat = format(secTime, 'DD日HH:mm')
+          }
+
           _timeList.push({
             title: title,
             id: value,
-            time: format(secTime, 'HH:mm')
+            time: timeFormat,
+            diff: diff
           })
 
           _goodsList[value] = seckills
         })
 
-        console.log('loadLimitGo', _goodsList, _timeList)
+        console.log('loadLimitGo',  _timeList)
 
         this.timeList = _timeList||[]
         this.goodsList = _goodsList

@@ -10,6 +10,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import EmptyView from '../../../components/pageDecorator/BaseView/EmptyView';
+import spellStatusModel from '../model/SpellStatusModel';
 
 export class AddCapacityHistoryPage extends BasePage {
     $navigationBarOptions = {
@@ -32,7 +33,7 @@ export class AddCapacityHistoryPage extends BasePage {
 
     componentDidMount() {
         SpellShopApi.store_record({
-            storeCode: this.params.storeData.storeNumber,
+            storeCode: spellStatusModel.storeCode,
             page: 1,
             pageSize: 100
         }).then((data) => {
