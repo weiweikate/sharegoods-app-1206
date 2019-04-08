@@ -19,11 +19,11 @@ class ChannelModules {
             if (isCache) {
                 const storeRes = yield get(kHomeChannelStore);
                 if (storeRes) {
-                    this.ad = storeRes;
+                    this.ad = storeRes || [];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.channel });
-            this.channelList = res.data;
+            this.channelList = res.data || [];
             save(kHomeChannelStore, res.data);
         } catch (error) {
             console.log(error);
