@@ -1,8 +1,8 @@
 import { observable, flow, action, computed } from 'mobx';
-import HomeApi from './api/HomeAPI';
-import { homeType } from './HomeTypes';
+import HomeApi from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
-import ScreenUtils from '../../utils/ScreenUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const kHomeAdStore = '@home/kHomeAdStore';
 const { px2dp } = ScreenUtils;
@@ -23,7 +23,7 @@ class HomeFocusAdModel {
             if (isCache) {
                 const storeRes = yield get(kHomeAdStore);
                 if (storeRes) {
-                    this.ad = storeRes;
+                    this.ad = storeRes||[];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.focusGrid });

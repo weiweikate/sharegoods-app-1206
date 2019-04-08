@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
-import { homeModule } from './Modules';
-import { homePoint } from './HomeTypes';
-import { homeFocusAdModel } from './HomeFocusAdModel';
-import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import { homeModule } from '../model/Modules';
+import { homePoint } from '../HomeTypes';
+import { homeFocusAdModel } from '../model/HomeFocusAdModel';
+import { homeExpandBnnerModel } from '../model/HomeExpandBnnerModel';
 import { observer } from 'mobx-react';
 import ImageLoad from '@mr/image-placeholder';
-import { track, trackEvent } from '../../utils/SensorsTrack';
-import bridge from '../../utils/bridge';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
+import bridge from '../../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 

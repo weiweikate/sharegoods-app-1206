@@ -1,5 +1,5 @@
 import React from 'react';
-import CommModal from '../../comm/components/CommModal';
+import CommModal from '../../../comm/components/CommModal';
 import {
     DeviceEventEmitter,
     NativeModules,
@@ -10,15 +10,15 @@ import {
     AsyncStorage,
     Linking
 } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
-import UIText from '../../components/ui/UIText';
-import DesignRule from '../../constants/DesignRule';
-import StringUtils from '../../utils/StringUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import UIText from '../../../components/ui/UIText';
+import DesignRule from '../../../constants/DesignRule';
+import StringUtils from '../../../utils/StringUtils';
 import { observer } from 'mobx-react';
 import { autorun } from "mobx";
-import HomeModalManager from './manager/HomeModalManager';
+import HomeModalManager from '../manager/HomeModalManager';
 @observer
-export default class VersionUpdateModal extends React.Component {
+export default class VersionUpdateModalView extends React.Component {
 
     constructor(props) {
         super(props);

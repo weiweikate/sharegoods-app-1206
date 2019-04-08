@@ -29,14 +29,14 @@ import { MRText } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import OssHelper from '../../utils/OssHelper';
 import ImageLoad from '@mr/image-placeholder';
-import { categoryHeight } from '../home/HomeCategoryView';
-import { bannerHeight } from '../home/HomeBannerView';
-import { channelModules } from '../home/HomeChannelModel';
-import { homeFocusAdModel } from '../home/HomeFocusAdModel';
+import { categoryHeight } from '../home/view/HomeCategoryView';
+import { bannerHeight } from '../home/view/HomeBannerView';
+import { channelModules } from '../home/model/HomeChannelModel';
+import { homeFocusAdModel } from '../home/model/HomeFocusAdModel';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { navigate } from '../../navigation/RouterMap';
-import { homeModule } from '../home/Modules';
+import { homeModule } from '../home/model/Modules';
 import HomeModalManager from '../home/manager/HomeModalManager'
 import GuideApi from './GuideApi';
 

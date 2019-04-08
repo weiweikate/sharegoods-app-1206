@@ -1,8 +1,8 @@
 import { observable, computed, action, flow } from 'mobx';
-import HomeApi from './api/HomeAPI';
-import { homeType } from './HomeTypes';
+import HomeApi from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
-import bridge from '../../utils/bridge';
+import bridge from '../../../utils/bridge';
 
 const kHomeBannerStore = '@home/kHomeBannerStore';
 
@@ -18,7 +18,7 @@ export class BannerModules {
             if (isCache) {
                 const storeRes = yield get(kHomeBannerStore);
                 if (storeRes) {
-                    this.bannerList = storeRes;
+                    this.bannerList = storeRes||[];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.swiper });

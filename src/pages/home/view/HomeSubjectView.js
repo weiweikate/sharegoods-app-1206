@@ -4,21 +4,21 @@
 
 import React, { Component } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
-import ScreenUtil from '../../utils/ScreenUtils';
-import { track, trackEvent } from '../../utils/SensorsTrack';
+import ScreenUtil from '../../../utils/ScreenUtils';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const { px2dp, onePixel } = ScreenUtil;
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
-import { homeLinkType, homeRoute, homePoint } from './HomeTypes';
-import { subjectModule } from './HomeSubjectModel';
-import DesignRule from '../../constants/DesignRule';
-import { getShowPrice, getTopicJumpPageParam } from '../topic/model/TopicMudelTool';
+import { homeModule } from '../model/Modules';
+import { homeLinkType, homeRoute, homePoint } from '../HomeTypes';
+import { subjectModule } from '../model/HomeSubjectModel';
+import DesignRule from '../../../constants/DesignRule';
+import { getShowPrice, getTopicJumpPageParam } from '../../topic/model/TopicMudelTool';
 import ImageLoad from '@mr/image-placeholder';
-import EmptyUtils from '../../utils/EmptyUtils';
-import { MRText as Text } from '../../components/ui';
+import EmptyUtils from '../../../utils/EmptyUtils';
+import { MRText as Text } from '../../../components/ui/index';
 import HomeTitleView from './HomeTitleView';
-import res from './res';
+import res from '../res/index';
 
 const MoneyItems = ({ money }) => {
     if (EmptyUtils.isEmpty(money)) {

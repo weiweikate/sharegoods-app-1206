@@ -3,17 +3,17 @@
  */
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import ScreenUtil from '../../utils/ScreenUtils';
-import MRBannerView from '../../components/ui/bannerView/MRBannerView';
-import { track, trackEvent } from '../../utils/SensorsTrack';
+import ScreenUtil from '../../../utils/ScreenUtils';
+import MRBannerView from '../../../components/ui/bannerView/MRBannerView';
+import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 const { px2dp } = ScreenUtil;
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
-import DesignRule from '../../constants/DesignRule';
-import { recommendModule } from './HomeRecommendModel';
+import { homeModule } from '../model/Modules';
+import DesignRule from '../../../constants/DesignRule';
+import { recommendModule } from '../model/HomeRecommendModel';
 import HomeTitleView from './HomeTitleView';
-import { homePoint } from './HomeTypes';
+import { homePoint } from '../HomeTypes';
 
 export const recommendHeight = px2dp(240);
 

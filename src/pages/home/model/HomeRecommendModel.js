@@ -1,6 +1,6 @@
 import { observable, flow, action } from 'mobx';
-import HomeApi from './api/HomeAPI';
-import { homeType } from './HomeTypes';
+import HomeApi from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
 
 const kHomeRecommendStore = '@home/kHomeRecommendStore';
@@ -14,12 +14,12 @@ class RecommendModule {
             if (isCache) {
                 const storeRes = yield get(kHomeRecommendStore);
                 if (storeRes) {
-                    this.recommendList = storeRes;
+                    this.recommendList = storeRes||[];
                 }
             }
 
             const res = yield HomeApi.getHomeData({ type: homeType.fine });
-            this.recommendList = res.data;
+            this.recommendList = res.data ||[];
             save(kHomeRecommendStore, res.data);
         } catch (error) {
             console.log(error);

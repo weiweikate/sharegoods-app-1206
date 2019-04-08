@@ -12,7 +12,7 @@ import bridge from '../../../utils/bridge';
 import { homeRegisterFirstManager } from '../../home/manager/HomeRegisterFirstManager';
 import DeviceInfo from 'react-native-device-info/deviceinfo';
 import UserModel from '../../../model/user';
-import { homeModule } from '../../home/Modules';
+import { homeModule } from '../../home/model/Modules';
 import JPushUtils from '../../../utils/JPushUtils';
 import { login } from '../../../utils/SensorsTrack';
 

@@ -4,13 +4,13 @@
 
 import React from 'react';
 import { View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const { px2dp, statusBarHeight, headerHeight } = ScreenUtils;
-import UIText from '../../components/ui/UIText';
-import DesignRule from '../../constants/DesignRule';
-import User from '../../model/user';
-import res from './res';
+import UIText from '../../../components/ui/UIText';
+import DesignRule from '../../../constants/DesignRule';
+import User from '../../../model/user';
+import res from '../res/index';
 
 const logoRed = res.home_icon_logo_red;
 const searchImg = res.icon_search;

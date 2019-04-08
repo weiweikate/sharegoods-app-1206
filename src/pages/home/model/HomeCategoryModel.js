@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import HomeApi from './api/HomeAPI';
+import HomeApi from '../api/HomeAPI';
 
 class CategoryModules {
     @observable categoryList = [];
@@ -7,7 +7,7 @@ class CategoryModules {
     @action loadCategoryList = () => {
         HomeApi.classify().then(resData => {
             if (resData.code === 10000 && resData.data) {
-                let resClassifys = resData.data;
+                let resClassifys = resData.data ||[];
                 resClassifys.map((data) => {
                     if (data.name === '全部分类') {
                         data.route = 'home/search/CategorySearchPage';
