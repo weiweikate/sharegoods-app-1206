@@ -14,11 +14,11 @@ class TodayModule {
             if (isCache) {
                 const storeRes = yield get(kHomeTodayStore);
                 if (storeRes) {
-                    this.todayList = storeRes;
+                    this.todayList = storeRes||[];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.today });
-            this.todayList = res.data;
+            this.todayList = res.data||[];
             save(kHomeTodayStore, res.data);
         } catch (error) {
             console.log(error);

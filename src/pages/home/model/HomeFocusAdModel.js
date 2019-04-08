@@ -23,7 +23,7 @@ class HomeFocusAdModel {
             if (isCache) {
                 const storeRes = yield get(kHomeAdStore);
                 if (storeRes) {
-                    this.ad = storeRes;
+                    this.ad = storeRes||[];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.focusGrid });

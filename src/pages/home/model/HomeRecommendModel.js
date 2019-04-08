@@ -14,12 +14,12 @@ class RecommendModule {
             if (isCache) {
                 const storeRes = yield get(kHomeRecommendStore);
                 if (storeRes) {
-                    this.recommendList = storeRes;
+                    this.recommendList = storeRes||[];
                 }
             }
 
             const res = yield HomeApi.getHomeData({ type: homeType.fine });
-            this.recommendList = res.data;
+            this.recommendList = res.data ||[];
             save(kHomeRecommendStore, res.data);
         } catch (error) {
             console.log(error);
