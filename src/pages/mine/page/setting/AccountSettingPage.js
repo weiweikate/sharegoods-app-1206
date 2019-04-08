@@ -77,16 +77,21 @@ export default class AccountSettingPage extends BasePage {
         });
     };
     _toEditPwd = () => {
-        if (0){
-            Alert.alert('未设置登录密码',
-                '你还没有设置登录密码',
-                [
-                    {onPress:()=>{}, text: '稍后就去'},
-                    {onPress:()=>{this.$navigate(RouterMap.JudgePhonePage, {title: PageType.setLoginPW})}, text: '马上设置'}
-                ])
-        } else {
-            this.$navigate('mine/account/EditPhonePwdPage');
-        }
+        MineAPI.checkPhonePwd({}).then((data)=> {
+            if (data.data === true){
+                this.$navigate('mine/account/EditPhonePwdPage');
+            } else {
+                Alert.alert('未设置登录密码',
+                    '你还没有设置登录密码',
+                    [
+                        {onPress:()=>{}, text: '稍后就去'},
+                        {onPress:()=>{this.$navigate(RouterMap.JudgePhonePage, {title: PageType.setLoginPW})}, text: '马上设置'}
+                    ])
+            }
+        }).catch((err)=> {
+            this.$toastShow(err.msg);
+        });
+
     };
     _toEditPayPwd = () => {
         console.log(user);

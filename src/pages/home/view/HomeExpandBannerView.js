@@ -32,7 +32,6 @@ export default class HomeExpandBannerView extends Component {
             bridge.$toast('获取数据失败！');
             return;
         }
-        track(trackEvent.bannerClick, homeModule.bannerPoint(value, homePoint.homeAd));
         const router = homeModule.homeNavigate(value.linkType, value.linkTypeCode);
         const { navigate } = this.props;
         const params = homeModule.paramsNavigate(value);

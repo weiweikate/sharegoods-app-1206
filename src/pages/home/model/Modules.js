@@ -55,7 +55,7 @@ class HomeModule {
             productType: productType,
             storeCode: storeCode,
             uri: data.linkTypeCode,
-            id: data.showId,
+            id: data.id,
             code: data.linkTypeCode
         };
 
@@ -88,7 +88,6 @@ class HomeModule {
 
         this.page = 1;
         this.isEnd = false;
-        this.lastGoods = null;
         this.homeList = [{
             id: 0,
             type: homeType.category
