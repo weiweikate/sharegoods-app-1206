@@ -4,7 +4,7 @@ import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
-const kHomeAdStore = '@home/kHomeAdStore';
+const kHomeFocusStore = '@home/kHomeFocusStore';
 const { px2dp } = ScreenUtils;
 const kAdWidth = (ScreenUtils.width - px2dp(30)) / 2 - 0.5;
 const kAdHeight = kAdWidth * (80 / 170);
@@ -21,14 +21,14 @@ class HomeFocusAdModel {
     @action loadAdList = flow(function* (isCache) {
         try {
             if (isCache) {
-                const storeRes = yield get(kHomeAdStore);
+                const storeRes = yield get(kHomeFocusStore);
                 if (storeRes) {
                     this.ad = storeRes || [];
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.focusGrid });
             this.ad = res.data || [];
-            save(kHomeAdStore, res.data);
+            save(kHomeFocusStore, res.data);
         } catch (error) {
             console.log(error);
         }
