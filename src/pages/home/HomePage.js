@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
         height: 50
     },
     text: {
-        color: '#999',
+        color: DesignRule.textColor_instruction,
         fontSize: DesignRule.fontSize_24
     }
 });

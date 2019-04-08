@@ -180,9 +180,11 @@ export default class ActivityView extends Component {
             alignItems: 'center',
             justifyContent: 'space-between'
         }} onPress={() => this.props.productActivityViewAction()}>
-            <View style={{ marginLeft: 11, flexDirection: 'row', paddingVertical: 10 }}>
-                <Text style={{ color: 'white', fontSize: 18 }} allowFontScaling={false}>￥<Text
-                    style={{ fontSize: 40 }} allowFontScaling={false}>{price}</Text></Text>
+            <View style={{ marginLeft: 11, flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+                    <Text style={{ color: 'white', fontSize: 18 }}>￥</Text>
+                    <Text style={{ color: 'white', fontSize: 40 }}>{price}</Text>
+                </View>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
                     <Text style={{ color: DesignRule.bgColor, fontSize: 12 }} allowFontScaling={false}>{one}</Text>
                     <Text style={{

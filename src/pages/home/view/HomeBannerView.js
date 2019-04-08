@@ -63,7 +63,9 @@ export default class HomeBannerView extends Component {
         const isFocused = homeModule.isFocused;
         let items = [];
         bannerList.map(value => {
-            items.push(value.image);
+           if (value.image) {
+               items.push(value.image);
+           }
         });
         let len = items.length;
         return <View style={styles.banner}>
