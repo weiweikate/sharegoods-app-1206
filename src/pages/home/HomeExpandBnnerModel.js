@@ -31,7 +31,7 @@ class HomeExpandBnnerModel {
     @action loadBannerList = flow(function* (isCache) {
         try {
             const bannerRes = yield HomeApi.getHomeData({ type: homeType.expandBanner });
-            this.banner = bannerRes.data;
+            this.banner = bannerRes.data || [];
             this.imgUrls = [];
             if (this.banner.length > 0) {
                 this.banner.map((val, index) => {

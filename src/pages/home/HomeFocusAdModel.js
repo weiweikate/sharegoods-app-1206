@@ -27,7 +27,7 @@ class HomeFocusAdModel {
                 }
             }
             const res = yield HomeApi.getHomeData({ type: homeType.focusGrid });
-            this.ad = res.data;
+            this.ad = res.data || [];
             save(kHomeAdStore, res.data);
         } catch (error) {
             console.log(error);

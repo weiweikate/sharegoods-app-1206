@@ -24,7 +24,7 @@ import LoginAPI from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import res from '../../../comm/res';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
-import { homeRegisterFirstManager } from '../../home/model/HomeRegisterFirstManager';
+import { homeRegisterFirstManager } from '../../home/manager/HomeRegisterFirstManager';
 import {MRText as Text} from '../../../components/ui'
 
 export default class MentorDetailPage extends BasePage {
