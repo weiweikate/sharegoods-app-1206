@@ -12,6 +12,7 @@ import StringUtils from '../../../utils/StringUtils';
 import RouterMap from '../../../navigation/RouterMap';
 
 const ArrowImg = res.shopSetting.xjt_03;
+const { isNoEmpty } = StringUtils;
 
 export class AddCapacityPricePage extends BasePage {
     $navigationBarOptions = {
@@ -124,10 +125,13 @@ export class AddCapacityPricePage extends BasePage {
                 }]} onPress={() => this._itemBtnAction(index)} disabled={invalid}>
                     <Text style={[styles.itemLeftText, { color: itemColor }]}>{`${personNum}人`}</Text>
                     <View style={styles.itemRightView}>
-                        {discountPrice ?
+                        {isNoEmpty(discountPrice) ?
                             <Text
                                 style={[styles.itemOriginText, { color: itemColor }]}>{`¥${discountPrice}`}</Text> : null}
-                        <Text style={{ fontSize: discountPrice ? 12 : 17, color: itemColor }}>{`¥${price}`}</Text>
+                        <Text style={[{
+                            fontSize: isNoEmpty(discountPrice) ? 12 : 17,
+                            color: itemColor
+                        }, isNoEmpty(discountPrice) ? { textDecorationLine: 'line-through' } : {}]}>{`¥${price}`}</Text>
                     </View>
                 </NoMoreClick>
             </View>
