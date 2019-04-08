@@ -55,7 +55,7 @@ export default class MainShowFansPage extends BasePage<Props> {
     }
 
     _headerRender = () => {
-        if (this.state.fansNum) {
+        if (this.state.fansNum || this.state.fansNum === 0) {
             return (
                 <Text style={styles.headerTextWrapper}>
                     {`秀迷人数： ${this.state.fansNum}人`}
@@ -70,18 +70,16 @@ export default class MainShowFansPage extends BasePage<Props> {
         let levelIcon ;
         if(data.vname === 'v1'){
             levelIcon = icon_v1
-        }
-        if(data.vname === 'v2'){
+        }else if(data.vname === 'v2'){
             levelIcon = icon_v2
-        }
-        if(data.vname === 'v3'){
+        }else if(data.vname === 'v3'){
             levelIcon = icon_v3
-        }
-        if(data.vname === 'v4'){
+        }else if(data.vname === 'v4'){
             levelIcon = icon_v4
-        }
-        if(data.vname === 'v5'){
+        }else if(data.vname === 'v5'){
             levelIcon = icon_v5
+        }else {
+            return null;
         }
 
         return (
