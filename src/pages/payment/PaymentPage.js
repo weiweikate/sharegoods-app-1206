@@ -14,6 +14,7 @@ import { PaymentResult } from "./PaymentResultPage";
 const { px2dp } = ScreenUtils;
 import Toast from "../../utils/bridge";
 import { NavigationActions } from "react-navigation";
+import RouterMap from "../../navigation/RouterMap";
 
 @observer
 export default class PaymentPage extends BasePage {
@@ -104,8 +105,8 @@ export default class PaymentPage extends BasePage {
         //减去优惠券后
         channelAmount = (channelAmount - oneCoupon * 1) > 0 ? (channelAmount - oneCoupon * 1) : 0;
 
-        if (channelAmount > 0){
-            if (selectBance){
+        if (channelAmount > 0) {
+            if (selectBance) {
                 if (channelAmount > availableBalance) {
                     detailList.push({
                         payType: paymentType.balance,
@@ -129,11 +130,22 @@ export default class PaymentPage extends BasePage {
                 this.$navigate("payment/ChannelPage", { remainMoney: (payment.amounts - user.availableBalance).toFixed(2) });
                 return;
             }
-            let replace = NavigationActions.replace({
-                key: this.props.navigation.state.key,
-                routeName: "payment/PaymentResultPage",
-                params: { payResult: PaymentResult.success }
-            });
+
+            let replace;
+            if (bizType === 1) {
+                //如何为拼店扩容来的支付，支付结果跳转拼店扩容结果页
+                replace = NavigationActions.replace({
+                    key: this.props.navigation.state.key,
+                    routeName: RouterMap.AddCapacitySuccessPage,
+                    params: { payResult: PaymentResult.success }
+                });
+            } else {
+                replace = NavigationActions.replace({
+                    key: this.props.navigation.state.key,
+                    routeName: "payment/PaymentResultPage",
+                    params: { payResult: PaymentResult.success }
+                });
+            }
             this.props.navigation.dispatch(replace);
             payment.resetPayment();
         }).catch(err => {
