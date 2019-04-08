@@ -7,7 +7,7 @@
  */
 import LoginAPI from "../api/LoginApi";
 import bridge from "../../../utils/bridge";
-import { homeModule } from "../../home/Modules";
+import { homeModule } from "../../home/model/Modules";
 import UserModel from "../../../model/user";
 import { login, TrackApi } from "../../../utils/SensorsTrack";
 import JPushUtils from "../../../utils/JPushUtils";

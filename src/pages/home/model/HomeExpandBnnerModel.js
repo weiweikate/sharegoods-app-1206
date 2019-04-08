@@ -1,7 +1,7 @@
 import { observable, flow, action, computed } from 'mobx';
-import HomeApi from './api/HomeAPI';
-import { homeType } from './HomeTypes';
-import ScreenUtils from '../../utils/ScreenUtils';
+import HomeApi from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import { Image } from 'react-native';
 
 const { px2dp } = ScreenUtils;

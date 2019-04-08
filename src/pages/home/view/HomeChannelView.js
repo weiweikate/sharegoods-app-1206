@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import { channelModules } from './HomeChannelModel';
-import ScreenUtils from '../../utils/ScreenUtils';
-import DesignRule from '../../constants/DesignRule';
-import { MRText as Text } from '../../components/ui';
+import { channelModules } from '../model/HomeChannelModel';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
+import { MRText as Text } from '../../../components/ui/index';
 import ImageLoad from '@mr/image-placeholder';
 
 const { px2dp } = ScreenUtils;

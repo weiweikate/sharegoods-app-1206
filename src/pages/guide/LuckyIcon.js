@@ -24,7 +24,7 @@ import {
 import ImageLoad from '@mr/image-placeholder';
 import GuideApi from './GuideApi';
 import { navigate } from '../../navigation/RouterMap';
-import { homeModule } from '../home/Modules';
+import { homeModule } from '../home/model/Modules';
 import { trackEvent, track } from '../../utils/SensorsTrack';
 
 export default class LuckyIcon extends React.Component {

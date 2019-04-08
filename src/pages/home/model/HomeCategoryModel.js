@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import HomeApi from './api/HomeAPI';
+import HomeApi from '../api/HomeAPI';
 
 class CategoryModules {
     @observable categoryList = [];
