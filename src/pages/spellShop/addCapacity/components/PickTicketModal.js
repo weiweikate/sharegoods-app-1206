@@ -54,6 +54,9 @@ export default class PickTicketModal extends Component {
                 <View style={styles.containerView}>
                     <TouchableOpacity style={styles.topCloseBtn} onPress={this._close}/>
                     <View style={styles.bottomView}>
+                        <View style={styles.bottomTittleView}>
+                            <Text style={styles.bottomTittleText}>选择一元优惠券</Text>
+                        </View>
                         <ScrollView>
                             {
                                 user.tokenCoin > 0 ? <View>
@@ -82,7 +85,7 @@ export default class PickTicketModal extends Component {
                                         <Text style={{
                                             fontSize: 13,
                                             color: DesignRule.textColor_secondTitle
-                                        }}>暂无可用1元现金券</Text>
+                                        }}>暂无可用一元现金券</Text>
                                     </View>
                             }
 
@@ -107,7 +110,14 @@ const styles = StyleSheet.create({
     },
     bottomView: {
         flex: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10,
-        backgroundColor: DesignRule.bgColor
+        backgroundColor: DesignRule.bgColor, overflow: 'hidden'
+    },
+    bottomTittleView: {
+        height: 44, backgroundColor: 'white',
+        justifyContent: 'center', alignItems: 'center'
+    },
+    bottomTittleText: {
+        color: DesignRule.textColor_mainTitle, fontSize: 15
     },
     ticketImg: {
         flexDirection: 'row', alignItems: 'center',
