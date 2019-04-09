@@ -87,7 +87,7 @@
 -(QYCommodityInfo *)getCommodityMsgWithData:(id)swichData{
   NSDictionary * chatData = swichData;
   NSDictionary * infoData = chatData[@"data"];
-  if (infoData.allKeys.count == 0) {
+  if (infoData && infoData.allKeys.count == 0) {
     return nil;
   }
   
