@@ -68,6 +68,7 @@ export default {
            retailPrice: '¥90.00',
            spellPrice: '¥80.00',
            QRCodeStr: '分享的链接',
+           imageType: 'web'
  }
      * @param onSuccess(path)
      * @param onError(errorStr)
