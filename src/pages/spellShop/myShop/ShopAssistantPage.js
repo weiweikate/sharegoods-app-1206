@@ -71,7 +71,8 @@ export default class AssistantListPage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
-        SpellShopApi.store_person({ storeCode: spellStatusModel.storeCode }).then((data) => {
+        //开启的店铺才请求显示
+        spellStatusModel.storeStatus === 1 && SpellShopApi.store_person({ storeCode: spellStatusModel.storeCode }).then((data) => {
             const dataTemp = data.data || {};
             const { showExpand } = dataTemp;
             if (showExpand) {
