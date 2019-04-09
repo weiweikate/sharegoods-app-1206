@@ -85,7 +85,7 @@ public class UMShareUtils {
         switch (shareType) {
             case 0:
                 UMImage image = fixThumImage(mContext, params.get("shareImage") + "");
-
+                image.compressStyle = UMImage.CompressStyle.QUALITY;
                 new ShareAction(mContext).setPlatform(platform)//传入平台
                         .withMedia(image).setCallback(umShareListener)//回调监听器
                         .share();
@@ -97,7 +97,7 @@ public class UMShareUtils {
                 } else {
                     image = fixThumImage(mContext, params.get("thumImage") + "");
                 }
-
+                image.compressStyle = UMImage.CompressStyle.QUALITY;
                 UMWeb web = new UMWeb(params.get("linkUrl") + "");
                 if (params.containsKey("title")) {
                     web.setTitle(params.get("title") + "");//标题
@@ -120,6 +120,7 @@ public class UMShareUtils {
                 } else {
                     image = fixThumImage(mContext, params.get("thumImage") + "");
                 }
+                image.compressStyle = UMImage.CompressStyle.QUALITY;
                 umMin.setThumb(image);
                 if (params.containsKey("title")) {
                     umMin.setTitle(params.get("title") + "");
