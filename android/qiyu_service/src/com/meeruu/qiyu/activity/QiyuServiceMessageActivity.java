@@ -50,7 +50,11 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
                     myKefuButton.setVisibility(View.VISIBLE);
                 }
             } else {
-                myKefuButton.setVisibility(View.VISIBLE);
+                if (TextUtils.equals("hzmrwlyxgs", source.shopId)) {
+                    myKefuButton.setVisibility(View.GONE);
+                } else {
+                    myKefuButton.setVisibility(View.VISIBLE);
+                }
             }
         }
         if (source != null && !TextUtils.isEmpty(source.shopId)) {

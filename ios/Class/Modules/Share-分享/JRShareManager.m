@@ -10,6 +10,7 @@
 #import "JRDeviceInfo.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <YYKit.h>
+#import "UIImage+Util.h"
 @implementation JRShareModel
 
 @end
@@ -68,12 +69,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
       return image;
     } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
       if (!error) {
-        NSData * data = UIImageJPEGRepresentation(image, 1);
-        if (data.length > 128*1024) {
-           shareObject.hdImageData = UIImageJPEGRepresentation(image, 128 * 1024 / (data.length* 1.0));
-        }else{
-          shareObject.hdImageData = data;
-        }
+          shareObject.hdImageData = [image compressWithMaxLength:128 * 1024];
       }
        [self shareWithMessageObject:message platform:UMSocialPlatformType_WechatSession completion:completion];
     }];

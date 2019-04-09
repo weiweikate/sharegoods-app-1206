@@ -108,7 +108,7 @@ export default class ConfirmOrderPage extends BasePage {
                 };
                 confirmOrderModel.tokenCoinText = '选择使用1元券',
                     confirmOrderModel.tokenCoin = 0;
-                confirmOrderModel.addressId = json.id;
+                // confirmOrderModel.addressId = json.id;
                 setTimeout(() => {
                     this.loadPageData(params);
                 }, 0);

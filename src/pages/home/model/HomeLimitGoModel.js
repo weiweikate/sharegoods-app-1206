@@ -22,7 +22,7 @@ export class LimitGoModules {
     @observable currentPage = -1;
 
     @computed get limitHeight() {
-        if (this.currentGoodsList.length > 0) {
+        if (this.currentGoodsList && this.currentGoodsList.length > 0) {
             return px2dp(91) + this.currentGoodsList.length * px2dp(140) + this.currentGoodsList.length * px2dp(10);
         }
         return 0;
@@ -119,14 +119,14 @@ export class LimitGoModules {
 
             this.timeList = _timeList || [];
             this.goodsList = _goodsList;
-            this.currentGoodsList = this.goodsList[currentId];
+            this.currentGoodsList = this.goodsList[currentId] || [];
         } catch (error) {
             console.log(error);
         }
     });
 
     @action changeLimitGo(id, index) {
-        this.currentGoodsList = this.goodsList[id];
+        this.currentGoodsList = this.goodsList[id] || [];
         this.currentPage = index;
     }
 

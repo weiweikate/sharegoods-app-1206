@@ -347,7 +347,7 @@ class HomePage extends BasePage {
                 }}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
-                <GuideModal/>
+                <GuideModal onShow={()=> {this.recyclerListView.scrollToTop()}}/>
                 <VersionUpdateModalView/>
             </View>
         );

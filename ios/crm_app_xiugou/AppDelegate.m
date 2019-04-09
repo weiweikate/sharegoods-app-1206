@@ -48,7 +48,7 @@
 -(void)getAd
 {
   [NetWorkTool requestWithURL:AdApi_query params:@{@"type": @"16" } toModel:nil success:^(NSArray* result) {
-    if (result.count > 0) {
+    if ([result isKindOfClass:[NSArray class]] && result.count > 0) {
       NSMutableDictionary *dic = [result[0] mutableCopy];
       for (NSString*key  in dic.allKeys) {
         if ([dic[key] isKindOfClass:[NSNull class]]) {
