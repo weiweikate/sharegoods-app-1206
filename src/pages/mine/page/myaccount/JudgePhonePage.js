@@ -161,7 +161,7 @@ export default class JudgePhonePage extends BasePage {
     };
     //验证登录密码密码短信验证码
     judgePhoneLoginPW = (tel, code) => {
-        this.$navigate(RouterMap.SetPhonePwdPage);
+        this.$navigate(RouterMap.SetPhonePwdPage, {code});
     }
     //验证支付密码短信验证码
     judgePhoneSalePay = (tel, code) => {

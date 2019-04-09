@@ -80,8 +80,10 @@ public class QYChatModule extends ReactContextBaseJavaModule {
                 sessionData.putString("status", session.getMsgStatus() + "");
                 sessionData.putDouble("lastMessageTimeStamp", msg.getTime());
                 sessionData.putString("shopId", session.getContactId());
-                sessionData.putString("avatarImageUrlString", shopInfo.getAvatar());
-                sessionData.putString("sessionName", shopInfo.getName());
+                if (shopInfo != null) {
+                    sessionData.putString("avatarImageUrlString", shopInfo.getAvatar());
+                    sessionData.putString("sessionName", shopInfo.getName());
+                }
                 sessionListData.pushMap(sessionData);
             }
             WritableMap params = Arguments.createMap();
