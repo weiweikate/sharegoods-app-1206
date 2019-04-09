@@ -95,8 +95,8 @@ export class AddCapacityHistoryPage extends BasePage {
                         <Text
                             style={styles.dateText}>{`${StringUtils.isNoEmpty(payTime) && DateUtils.formatDate(payTime) || ''}`}</Text>
                     </View>
-                    <View style={styles.itemVerticalView}>
-                        <Text style={styles.moneyText}>{`¥${price || ''}`}</Text>
+                    <View style={[styles.itemVerticalView, { alignItems: 'flex-end' }]}>
+                        <Text style={styles.moneyText}>{`¥${price.toFixed(2)}`}</Text>
                         <Text style={[styles.explainText, { color: textColor }]}>{explainText}</Text>
                     </View>
                 </NoMoreClick>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         margin: 15
     },
     itemVerticalView: {
-        justifyContent: 'space-between', alignItems: 'flex-end'
+        justifyContent: 'space-between'
     },
     contentText: {
         fontSize: 13, color: DesignRule.textColor_mainTitle
