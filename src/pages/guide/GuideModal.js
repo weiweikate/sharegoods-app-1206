@@ -71,7 +71,6 @@ export default class GuideModal extends React.Component {
         super(props);
 
         this.state = {
-            step: 0, /** 新手引导第几步*/
             showActivityIndicator: true
         };
         /** 每一步引导的数据*/
@@ -93,7 +92,7 @@ export default class GuideModal extends React.Component {
      * 渲染新手引导的内容
      */
     renderContent = () => {
-        let { step } = this.state;
+        let { step } = HomeModalManager;
         let data = this.data[step];
         let _categoryHeight = categoryHeight;
         if (step < 6) {
@@ -271,7 +270,7 @@ export default class GuideModal extends React.Component {
                     <TouchableWithoutFeedback onPress={this.gotoPage}>
                         <View>
                             <ImageLoad style={imageStyle}
-                                       source={{ uri: HomeModalManager.guideData.imgUrl || '' }}
+                                       source={{ uri: HomeModalManager.guideData.image || '' }}
                                        resizeMode={'contain'}
                                        onError={() => {
                                            this.setState({ showActivityIndicator: false });
@@ -305,11 +304,11 @@ export default class GuideModal extends React.Component {
     };
 
     nextPress = () => {
-        if (this.state.step === 5) {
+        if (HomeModalManager.step === 5) {
             GuideApi.registerSend({});//完成了新手引导
             user.finishGiudeAction();//防止请求失败，重复调用新手引导
         }
-        this.setState({ step: this.state.step + 1 });
+        HomeModalManager.guideNextAction();
     };
 
     gotoPage = () => {
@@ -324,6 +323,9 @@ export default class GuideModal extends React.Component {
 
 
     render() {
+        if (HomeModalManager.isShowGuide && HomeModalManager.isHome) {
+            this.props.onShow && this.props.onShow()
+        }
         return (
             <CommModal
                 focusable={false}

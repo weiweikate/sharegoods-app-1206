@@ -84,10 +84,18 @@ export default class SignInPage extends BasePage {
         );
     };
 
-    componentDidMount() {
-        this.loadPageData();
+    componentWillMount() {
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                this.loadPageData();
+            }
+        );
     }
 
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+    }
 
     loadPageData = () => {
         this.getSignData();
@@ -120,7 +128,8 @@ export default class SignInPage extends BasePage {
     };
 
     getSignData = () => {
-        HomeAPI.querySignList().then((data) => {
+        let callback = this.loadPageData;
+        HomeAPI.querySignList(null,{callback}).then((data) => {
             this.setState({
                 signInData: data.data,
                 // loading: false,

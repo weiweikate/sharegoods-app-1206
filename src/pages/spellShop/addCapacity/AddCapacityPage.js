@@ -19,6 +19,7 @@ export class AddCapacityPage extends BasePage {
         super(props);
         this.state = {
             loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
             maxPersonNum: '',
             personNum: '',
             showExpand: false,
@@ -28,11 +29,16 @@ export class AddCapacityPage extends BasePage {
 
     $getPageStateOptions = () => {
         return {
-            loadingState: this.state.loadingState
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: () => {
+                    this.loadPageData();
+                }
+            }
         };
     };
-
-    componentDidMount() {
+    loadPageData = () => {
         const { storeData } = this.params;
         SpellShopApi.store_person({ storeCode: storeData.storeNumber }).then((data) => {
             const dataTemp = data.data || {};
@@ -41,9 +47,10 @@ export class AddCapacityPage extends BasePage {
                 loadingState: PageLoadingState.success,
                 maxPersonNum, personNum, showExpand
             });
-        }).catch(() => {
+        }).catch((e) => {
             this.setState({
-                loadingState: PageLoadingState.fail
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: e
             });
         });
 
@@ -54,6 +61,10 @@ export class AddCapacityPage extends BasePage {
                 storeExpansion
             });
         });
+    };
+
+    componentDidMount() {
+        this.loadPageData();
     }
 
     _addBtnAction = () => {

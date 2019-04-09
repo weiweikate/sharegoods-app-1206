@@ -42,7 +42,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     dispatch_async(dispatch_get_main_queue(), ^{
       UIImage * image2 = image;
       if (error) {//如果加载网络图片失败，就用默认图
-        image2 = [UIImage imageNamed:@""];
+        image2 = [UIImage imageNamed:@"logo.png"];
       }
       NSString *path = [weakSelf ceratShareImageWithProductImage:image2
                                                            model: model];
@@ -71,13 +71,13 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     [nodes addObject:@{
                        @"value": productImage,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 340*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 300*i)]}
      ];
     //二维码
     UIImage *QRCodeImage = [self QRCodeWithStr:QRCodeStr];
     [nodes addObject:@{@"value": QRCodeImage,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(160*i, 250*i, 60*i, 60*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(105*i, 290*i, 40*i, 40*i)]}
      ];
   }else{
     NSString *titleStr = model.titleStr;

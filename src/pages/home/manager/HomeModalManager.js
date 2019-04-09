@@ -26,6 +26,8 @@ class HomeModalManager {
     isShowGuide = false;
     needShowGuide = false;
     @observable
+    step = 0; /** 新手引导第几步*/
+    @observable
     guideData = {};
     /** 控制公告*/
     @observable
@@ -52,6 +54,11 @@ class HomeModalManager {
     @action
     leaveHome () {
         this.isHome = false;
+        this.step = 0;
+    }
+    @action
+    guideNextAction () {
+        this.step ++;
     }
     @action
     requestGuide () {
@@ -173,15 +180,15 @@ class HomeModalManager {
                     this.needShowGuide = true;
                     this.getRewardzInfo();
                 }
-                this.actionFinish();
             }
+            this.actionFinish();
         }).catch(() => {
             this.actionFinish();
         });
     };
 
     getRewardzInfo = () => {
-        GuideApi.rewardzInfo({ type: 17 }).then((data) => {
+        HomeAPI.getHomeData({ type: homeType.guideInfo }).then((data) => {
             data = data.data || [];
             if (data.length > 0) {
                 this.guideData = data[0];
