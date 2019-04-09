@@ -12,6 +12,7 @@ import { showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 import { TrackApi } from '../../utils/SensorsTrack';
+import { homeModule } from '../home/model/Modules';
 
 @observer
 export default class ShowBannerView extends Component {
@@ -21,13 +22,13 @@ export default class ShowBannerView extends Component {
 
     renderRow(item) {
         return <View style={styles.imgView}>
-            <UIImage style={styles.img} source={{ uri: item.imgUrl }}/>
+            <UIImage style={styles.img} source={{ uri: item.image }}/>
         </View>;
     }
 
     _onPressRowWithItem(item) {
-        const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
-        let params = showBannerModules.paramsNavigate(item);
+        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode) || '';
+        let params = homeModule.paramsNavigate(item);
         const { navigate } = this.props;
 
         TrackApi.BannerClick({
@@ -47,8 +48,8 @@ export default class ShowBannerView extends Component {
         const { bannerList } = showBannerModules;
         let item = bannerList[index];
         if (item) {
-            const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
-            let params = showBannerModules.paramsNavigate(item);
+            let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode) || '';
+            let params = homeModule.paramsNavigate(item);
             const { navigate } = this.props;
             TrackApi.BannerClick({
                 bannerName: item.imgUrl,
@@ -91,7 +92,7 @@ export default class ShowBannerView extends Component {
         }
         let items = [];
         bannerList.map(value => {
-            items.push(value.imgUrl);
+            items.push(value.image);
         });
         return <View style={styles.container}>
             {

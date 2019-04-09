@@ -1,6 +1,6 @@
 import { observable, action, flow } from 'mobx';
 import HomeApi from '../api/HomeAPI';
-import { homeType, homeRoute } from '../HomeTypes';
+import { homeType, homeRoute, homeLinkType } from '../HomeTypes';
 import { bannerModule } from './HomeBannerModel';
 import { homeFocusAdModel } from './HomeFocusAdModel';
 import { homeExpandBnnerModel } from './HomeExpandBnnerModel';
@@ -23,11 +23,16 @@ class HomeModule {
     page = 1;
     firstLoad = true;
     errorMsg = '';
-    goodsIndex = 0;
     //解析路由
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
-        return homeRoute[linkType];
+        if (linkType === homeLinkType.page) {
+            return linkTypeCode.replace(/[\n]/g, "");
+        } else if (linkType === homeLinkType.nothing) {
+            return;
+        } else {
+            return homeRoute[linkType];
+        }
     };
     //获取参数
     @action paramsNavigate = (data) => {
@@ -56,7 +61,7 @@ class HomeModule {
             productType: productType,
             storeCode: storeCode,
             uri: data.linkTypeCode,
-            id: data.showId,
+            id: data.id,
             code: data.linkTypeCode
         };
 
@@ -89,7 +94,6 @@ class HomeModule {
 
         this.page = 1;
         this.isEnd = false;
-        this.lastGoods = null;
         this.homeList = [{
             id: 0,
             type: homeType.category
@@ -129,9 +133,8 @@ class HomeModule {
         }
         try {
             this.isFetching = true;
-            this.goodsIndex = 0;
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
-            let list = result.data.data;
+            let list = result.data.data || [];
             if (this.page === result.data.totalPage) {
                 this.isEnd = true;
             }
@@ -142,10 +145,29 @@ class HomeModule {
                     type: homeType.goodsTitle
                 });
             }
-            this.homeList = this.homeList.concat(home);
-            let goods = this.configure(list, 0);
-            console.log('loadHomeList', goods);
-            this.homeList = this.homeList.concat(goods);
+            let itemData = [];
+            for (let i = 0, len = list.length; i < len; i++) {
+                if (i % 2 === 1) {
+                    let good = list[i];
+                    itemData.push(good);
+                    home.push({
+                        itemData: itemData,
+                        type: homeType.goods,
+                        id: 'goods' + i
+                    });
+                    itemData = [];
+                } else {
+                    itemData.push(list[i]);
+                }
+            }
+            if (itemData.length > 0) {
+                home.push({
+                    itemData: itemData,
+                    type: homeType.goods,
+                    id: 'goods'
+                });
+            }
+            this.homeList = [...this.homeList, ...home];
             this.isFetching = false;
             this.isRefreshing = false;
             this.page++;
@@ -171,79 +193,49 @@ class HomeModule {
             return;
         }
         try {
-            this.loadMoreGoods();
+            const timeStamp = new Date().getTime();
+            this.isFetching = true;
+            const result = yield HomeApi.getGoodsInHome({ page: this.page });
+            this.isFetching = false;
+            let list = result.data.data || [];
+            if (this.page === result.data.totalPage) {
+                this.isEnd = true;
+            }
+            let itemData = [];
+            let home = [];
+            for (let i = 0, len = list.length; i < len; i++) {
+                if (i % 2 === 1) {
+                    let good = list[i];
+                    itemData.push(good);
+                    home.push({
+                        itemData: itemData,
+                        type: homeType.goods,
+                        id: 'goods' + good.linkTypeCode + i + timeStamp
+                    });
+                    itemData = [];
+                } else {
+                    itemData.push(list[i]);
+                }
+            }
+            if (itemData.length > 0) {
+                home.push({
+                    itemData: itemData,
+                    type: homeType.goods,
+                    id: 'goods'
+                });
+            }
+            this.homeList = this.homeList.concat(home);
+            this.page++;
+            this.isFetching = false;
+            this.errorMsg = '';
         } catch (error) {
             this.isFetching = false;
             this.isRefreshing = false;
             this.errorMsg = error.msg;
+            console.log(error);
         }
+
     });
-
-    @action loadMoreGoods = flow(function* () {
-        this.isFetching = true;
-        const timeStamp = new Date().getTime();
-        let list = [];
-        if (this.lastGoods) {
-            list.push(this.lastGoods);
-            this.lastGoods = null;
-        }
-        const result = yield HomeApi.getGoodsInHome({ page: this.page });
-        list = list.concat(result.data.data);
-        if (this.page === result.data.totalPage) {
-            this.isEnd = true;
-        }
-        let goods = this.configure(list, timeStamp);
-        if (this.isEnd === true && this.lastGoods) {
-            goods.push({
-                itemData: [this.lastGoods],
-                type: homeType.goods,
-                id: 'goods' + (timeStamp ? timeStamp : 0)
-            });
-        }
-        this.homeList = this.homeList.concat(goods);
-        this.page++;
-        this.isFetching = false;
-        this.errorMsg = '';
-        if (goods.length === 0 && this.isEnd === false) {
-            this.loadMoreGoods();
-        }
-    });
-
-    configure = (baseArray, timeStamp) => {
-        let len = baseArray.length;
-        let n = 2;
-        let lineNum = 0;
-        if (len % n === 0) {
-            lineNum = len / n;
-        } else {
-            lineNum = Math.floor((len / n));
-            this.lastGoods = baseArray[baseArray.length - 1];
-        }
-        let goodsRes = [];
-        for (let i = 0; i < lineNum; i++) {
-            let temp = baseArray.slice(i * n, i * n + n);
-            goodsRes.push({
-                itemData: temp,
-                type: homeType.goods,
-                id: 'goods' + i + (timeStamp ? timeStamp : 0)
-            });
-        }
-        return goodsRes;
-    };
-
-
-    @action configureHomelist = (list, timeStamp) => {
-        let timeline = [];
-        for (let i = 0; i < list.length; i++) {
-            timeline.push({
-                itemData: list[i],
-                type: homeType.goods,
-                id: 'goods' + i + (timeStamp ? timeStamp : 0),
-                goodsIndex: this.goodsIndex++
-            });
-        }
-        return timeline;
-    };
 
     bannerPoint = (item, location) => ({
         bannerName: item.imgUrl || '',

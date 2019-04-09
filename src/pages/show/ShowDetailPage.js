@@ -7,7 +7,7 @@ import {
     ActivityIndicator,
     StyleSheet,
     NativeModules,
-    Alert, InteractionManager
+    Alert
 } from 'react-native';
 import ShowImageView from './ShowImageView';
 import res from './res';
@@ -277,7 +277,7 @@ export default class ShowDetailPage extends BasePage {
             // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
             + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
             + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
-            + px2dp(13)
+            +13
             + 'px;'
             + '}'
             + 'p {word-break:break-all;}'

@@ -172,6 +172,7 @@ export class Payment {
             // Toast.hiddenLoading();
             this.isGoToPay = true;
             const resultStr = yield PayUtil.appAliPay(payResult);
+            console.log(resultStr);
             if (resultStr.sdkCode !== 9000) {
                 throw new Error(resultStr.msg);
             }
@@ -188,16 +189,15 @@ export class Payment {
     });
 
     //微信支付
-    @action appWXPay = flow(function* () {
+    @action appWXPay = flow(function* (result) {
         paymentTrack.paymentMethod = "wxpay";
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "start" });
 
         try {
             Toast.showLoading();
-            const result = yield PaymentApi.wechatPay({ platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo });
-
+            // const result = yield PaymentApi.wechatPay({ platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo });
             this.isGoToPay = true;
-            const payInfo = JSON.parse(result.data);
+            const payInfo = JSON.parse(result);
             Toast.hiddenLoading();
             payInfo.partnerid = payInfo.mchId;
             payInfo.timestamp = payInfo.timeStamp;
@@ -229,9 +229,14 @@ export class Payment {
     //检查订单状态
     @action checkPayStatus = flow(function* () {
         try {
+            // const result = yield PaymentApi.payStatus({
+            //     platformOrderNo: this.platformOrderNo,
+            //     payMethodCode: this.selctedPayType === paymentType.alipay ? "alipay" : "wxpay"
+            // });
             const result = yield PaymentApi.payStatus({
-                platformOrderNo: this.platformOrderNo,
-                payMethodCode: this.selctedPayType === paymentType.alipay ? "alipay" : "wxpay"
+                fundsTradingNo: this.fundsTradingNo,
+                bizType: this.bizType,
+                outTradeNo:this.outTradeNo
             });
             return result;
         } catch (error) {

@@ -80,8 +80,10 @@ public class QYChatModule extends ReactContextBaseJavaModule {
                 sessionData.putString("status", session.getMsgStatus() + "");
                 sessionData.putDouble("lastMessageTimeStamp", msg.getTime());
                 sessionData.putString("shopId", session.getContactId());
-                sessionData.putString("avatarImageUrlString", shopInfo.getAvatar());
-                sessionData.putString("sessionName", shopInfo.getName());
+                if (shopInfo != null) {
+                    sessionData.putString("avatarImageUrlString", shopInfo.getAvatar());
+                    sessionData.putString("sessionName", shopInfo.getName());
+                }
                 sessionListData.pushMap(sessionData);
             }
             WritableMap params = Arguments.createMap();
@@ -153,12 +155,14 @@ public class QYChatModule extends ReactContextBaseJavaModule {
          * 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
          */
         ConsultSource source = new ConsultSource("mine/helper", title, "");
+        source.isSendProductonRobot = true;
         source.shopId = params.getString("shopId");
         ReadableMap map = params.getMap("data");
         if (map.hasKey("urlString")) {
             ProductDetail productDetail = new ProductDetail.Builder()
                     .setShow(1)
                     .setSendByUser(true)
+                    .setAlwaysSend(true)
                     .setActionText("发送宝贝")
                     .setActionTextColor(0xFFF00050)
                     .setTitle(map.getString("title"))
@@ -189,8 +193,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
     private void sendEvent(ReactContext reactContext,
                            String eventName,
                            @Nullable WritableMap params) {
-        reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
     }
 }

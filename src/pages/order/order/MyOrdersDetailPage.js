@@ -4,10 +4,10 @@ import {
     View,
     TouchableOpacity,
     Image,
-    ScrollView,Text
+    ScrollView, Text, Alert
 } from "react-native";
 import BasePage from "../../../BasePage";
-import { RefreshList } from "../../../components/ui";
+import { RefreshList,NoMoreClick,UIText } from "../../../components/ui";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import GoodsDetailItem from "../components/GoodsDetailItem";
@@ -23,7 +23,7 @@ import MineApi from "../../mine/api/MineApi";
 import { getDateData, leadingZeros } from '../components/orderDetail/OrderCutDown';
 import res from "../res";
 import OrderDetailStatusView from "../components/orderDetail/OrderDetailStatusView";
-import OrderDetailStateView from "../components/orderDetail/OrderDetailStateView";
+// import OrderDetailStateView from "../components/orderDetail/OrderDetailStateView";
 import DetailAddressView from "../components/orderDetail/DetailAddressView";
 import OrderDetailPriceView from "../components/orderDetail/OrderDetailPriceView";
 import OrderDetailTimeView from "../components/orderDetail/OrderDetailTimeView";
@@ -125,9 +125,10 @@ export default class MyOrdersDetailPage extends BasePage {
                 <OrderDetailStatusView
                     leftTopIcon={leftIconArr[orderDetailModel.status]}
                 />
-                <OrderDetailStateView
-                    nav={this.$navigate}
-                />
+                <DetailAddressView/>
+                {/*<OrderDetailStateView*/}
+                    {/*nav={this.$navigate}*/}
+                {/*/>*/}
             </View>
 
         );
@@ -158,7 +159,29 @@ export default class MyOrdersDetailPage extends BasePage {
     onRefresh = () => {
         this.loadPageData();
     };
+    operationDelete(){
+        Alert.alert("", `确定删除此订单吗?`, [
+            {
+                text: `取消`, onPress: () => {
+                }
+            },
+            {
+                text: `确定`, onPress: () => {
+                    Toast.showLoading();
+                    OrderApi.deleteOrder({ orderNo: orderDetailModel.getOrderNo() }).then((response) => {
+                        Toast.hiddenLoading();
+                        Toast.$toast("订单已删除");
+                        this.$navigateBack()
+                    }).catch(e => {
+                        Toast.hiddenLoading();
+                        Toast.$toast(e.msg);
+                    });
 
+                }
+            }
+
+        ], { cancelable: true });
+    }
     _renderContent = () => {
         if(orderDetailModel.deleteInfo){
             return(
@@ -183,15 +206,32 @@ export default class MyOrdersDetailPage extends BasePage {
                             onLoadMore={this.onLoadMore}
                             extraData={this.state}
                             isEmpty={this.state.isEmpty}
+
                             emptyTip={"暂无数据！"}
                         />
                     </ScrollView>
                     <OrderDetailBottomButtonView
                         goBack={() => this.$navigateBack()}
                         nav={this.$navigate}
+                        switchButton={()=>{this.setState({showDele:!this.state.showDele})}}
                         navigation={this.props.navigation}
                         callBack={this.params.callBack && (()=>this.params.callBack())}
                         loadPageData={() => this.loadPageData()}/>
+                    {!this.state.showDele ? null : <NoMoreClick style={{
+                        width: 68,
+                        height: 32,
+                        position: "absolute",
+                        bottom: 45,
+                        left:29,
+                        backgroundColor: DesignRule.textColor_instruction,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: 5,
+                    }} onPress={() => {
+                        this.operationDelete(), this.setState({showDele:false});
+                    }}>
+                        <UIText value={"删除订单"} style={{ color: "white", fontSize: 13 }}/>
+                    </NoMoreClick>}
                 </View>
             );
         }
@@ -214,6 +254,7 @@ export default class MyOrdersDetailPage extends BasePage {
                     salePrice={"￥" + StringUtils.formatMoneyString(item.salePrice, false)}
                     category={item.category}
                     goodsNum={item.goodsNum}
+                    activityCodes={item.activityCodes}
                     style={{ backgroundColor: "white" }}
                     clickItem={() => {
                         this.clickItem(index, item);
@@ -228,7 +269,7 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View>
                 {this.renderState()}
-                {orderDetailModel.status > 1 &&orderDetailModel.status<5? <DetailAddressView/> : null}
+                {/*{orderDetailModel.status > 1 &&orderDetailModel.status<5? <DetailAddressView/> : null}*/}
                 <GiftHeaderView/>
             </View>
         );
@@ -452,7 +493,8 @@ export default class MyOrdersDetailPage extends BasePage {
                         goodsNum: item.quantity,
                         afterSaleService: this.getAfterSaleService(item, index),
                         status: item.status,
-                        activityCode: orderDetailModel.warehouseOrderDTOList[0].status === 1?item.activityCode:item.skuCode
+                        activityCode: orderDetailModel.warehouseOrderDTOList[0].status === 1?item.activityCode:item.skuCode,
+                        activityCodes:  item.activityCodes
                     });
                 });
             });
@@ -517,8 +559,8 @@ export default class MyOrdersDetailPage extends BasePage {
                 orderDetailAfterServiceModel.moreDetail = "";
                 orderDetailAfterServiceModel.menu = [
                     {
-                        id: 7,
-                        operation: "删除订单",
+                        id: 5,
+                        operation: "查看物流",
                         isRed: false
                     }, {
                         id: 8,

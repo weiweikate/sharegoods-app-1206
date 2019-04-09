@@ -8,7 +8,8 @@ const api = {
     //平台
     balance: ['/pay/sgpay'],
     //检查订单状态
-    payStatus: ['/payV2/status'],
+    // payStatus: ['/payV2/status'],
+    payStatus: ['/pay/pay/payOrder/info'],
     //平台余额支付接口
     // platformPay: ['/payV2/platform'],
     platformPay: ['/pay/pay/payment'],

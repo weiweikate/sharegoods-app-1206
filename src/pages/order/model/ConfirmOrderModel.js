@@ -50,6 +50,8 @@ class ConfirmOrderModel {
     couponCount=0;
     @observable
     couponData={}
+    @observable
+    err=null
 
     @action clearData() {
         this.orderProductList = [];
@@ -71,10 +73,12 @@ class ConfirmOrderModel {
         this.giveUpCou= false;
         this.couponCount=0;
         this.couponData={};
+        this.err=null;
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
         this.orderParamVO = orderParamVO;
+        this.err=null;
         switch (orderParamVO.orderType) {
             case 99://普通商品
                 OrderApi.makeSureOrder({
@@ -96,7 +100,7 @@ class ConfirmOrderModel {
             case 98:
                 OrderApi.makeSureOrder({
                     orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
-                    orderSubType: 5,//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                    orderSubType: 5,//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包，
                     source: orderParamVO.source,//1.购物车 2.直接下单
                     channel: 2,//1.小程序 2.APP 3.H5
                     orderProductList: orderParamVO.orderProducts,
@@ -165,6 +169,7 @@ class ConfirmOrderModel {
     disPoseErr = (err, orderParamVO, params) => {
         bridge.hiddenLoading();
         this.canCommit = true;
+        this.err=err;
         if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             Alert.alert('提示', err.msg, [
                 {
@@ -175,14 +180,15 @@ class ConfirmOrderModel {
             ]);
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
-          navigateBack()
+          // navigateBack()
         } else {
             bridge.$toast(err.msg);
-            navigateBack()
+            // navigateBack()
         }
     };
 
     handleNetData = (data) => {
+        this.err=null;
         bridge.hiddenLoading();
         this.canCommit = true;
         this.loadingState = PageLoadingState.success;
@@ -240,6 +246,10 @@ class ConfirmOrderModel {
     @action submitProduct(orderParamVO, { callback }) {
         if (StringUtils.isEmpty(this.addressId)) {
             bridge.$toast('请先添加地址');
+            bridge.hiddenLoading();
+            return;
+        }
+        if(!StringUtils.isEmpty(this.err)){
             bridge.hiddenLoading();
             return;
         }

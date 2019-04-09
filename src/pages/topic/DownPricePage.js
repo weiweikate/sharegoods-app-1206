@@ -79,6 +79,7 @@ export default class DownPricePage extends BasePage {
                 setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
                 })
+
             }
         );
     }

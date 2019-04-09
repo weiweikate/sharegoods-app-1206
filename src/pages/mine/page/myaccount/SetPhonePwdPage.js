@@ -12,6 +12,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import { MRText as Text} from '../../../../components/ui';
 import PasswordInputText from './PasswordInputText';
+import user from '../../../../model/user';
 const title = '请设置登录密码';
 const tip = '请设置6-8位数字字母组合密码，不含特殊符号';
 
@@ -71,8 +72,10 @@ export default class EditPhonePwdPage extends BasePage {
             return;
         }
         this.isLoadding == true;
-        MineAPI.changePhonePwd({
-            newPassword: newPwd
+        MineAPI.SetPhonePwd({
+            password: newPwd,
+            code: this.params.code,
+            phone: user.phone
         }).then((data) => {
             this.$navigateBack(-2);
             this.isLoadding == false;

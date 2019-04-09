@@ -3,6 +3,7 @@ import ShowApi from './ShowApi';
 import Toast from '../../utils/bridge';
 import ScreenUtil from '../../utils/ScreenUtils';
 import { TrackApi } from '../../utils/SensorsTrack';
+import { homeType } from '../home/HomeTypes';
 
 const { px2dp } = ScreenUtil;
 
@@ -51,30 +52,6 @@ export class HomeShowModules {
     });
 }
 
-const homeLinkType = {
-    good: 1,
-    subject: 2,
-    down: 3,
-    spike: 4,
-    package: 5,
-    exp: 6, //经验值
-    store: 8,
-    web: 10,
-    show: 11
-};
-
-const bannerRoute = {
-    [homeLinkType.good]: 'product/ProductDetailPage',
-    [homeLinkType.subject]: 'topic/DownPricePage',
-    [homeLinkType.down]: 'topic/TopicDetailPage',
-    [homeLinkType.spike]: 'topic/TopicDetailPage',
-    [homeLinkType.package]: 'topic/TopicDetailPage',
-    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage',
-    [homeLinkType.web]: 'HtmlPage',
-    [homeLinkType.show]: 'show/ShowDetailPage',
-    [homeLinkType.exp]: 'product/xpProduct/XpDetailPage'
-};
-
 export const showTypes = {
     choice: 'choice',
     hot: 'hot',
@@ -91,50 +68,12 @@ class ShowBannerModules {
     }
 
     @action loadBannerList = () => {
-        ShowApi.showSwper({ type: 11 }).then(res => {
+        ShowApi.getShowBanner({ type: homeType.discover }).then(res => {
             if (res.code === 10000 && res.data) {
                 this.bannerList = res.data || [];
             }
         });
     };
-
-    @action bannerNavigate = (linkType, linkTypeCode) => {
-        this.selectedTypeCode = linkTypeCode;
-        return bannerRoute[linkType];
-    };
-
-    @action paramsNavigate = (data) => {
-        const { topicBannerProductDTOList } = data;
-        let product = null;
-        let productType = '';
-        if (topicBannerProductDTOList) {
-            product = topicBannerProductDTOList[0];
-            if (product) {
-                productType = product.productType;
-            }
-        }
-
-        const { storeDTO } = data;
-        let storeCode = 0;
-        if (storeDTO) {
-            storeCode = storeDTO.storeNumber;
-        }
-
-        const { linkType } = data;
-        return {
-            activityType: linkType === 3 ? 2 : linkType === 4 ? 1 : 3,
-            activityCode: data.linkTypeCode,
-            linkTypeCode: data.linkTypeCode,
-            productCode: data.linkTypeCode,
-            productType: productType,
-            storeCode: storeCode,
-            uri: data.linkTypeCode,
-            id: data.showId,
-            code: data.linkTypeCode
-        };
-
-    };
-
 }
 
 export const showBannerModules = new ShowBannerModules();

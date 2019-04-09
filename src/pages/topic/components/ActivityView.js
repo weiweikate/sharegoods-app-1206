@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    View,
+    View
 } from 'react-native';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import { formatDate, isToday, isTomorrow } from '../../../utils/DateUtils';
@@ -140,7 +140,7 @@ export default class MyShop_RecruitPage extends Component {
                 three = `距开抢 ${this._timeDif(this.state.countTime)}`;
                 if (isTomorrow(beginTime)) {
                     four = `明天 ${formatDate(beginTime, 'HH:mm')}开拍`;
-                }else if (isToday(beginTime)){
+                } else if (isToday(beginTime)) {
                     four = `今天 ${formatDate(beginTime, 'HH:mm')}开拍`;
                 } else {
                     four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
@@ -160,7 +160,7 @@ export default class MyShop_RecruitPage extends Component {
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
                 if (isTomorrow(beginTime)) {
                     four = `明天 ${formatDate(beginTime, 'HH:mm')}开抢`;
-                }else if (isToday(beginTime)){
+                } else if (isToday(beginTime)) {
                     four = `今天 ${formatDate(beginTime, 'HH:mm')}开抢`;
                 } else {
                     four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开抢`;
@@ -178,9 +178,11 @@ export default class MyShop_RecruitPage extends Component {
             alignItems: 'center',
             justifyContent: 'space-between'
         }}>
-            <View style={{ marginLeft: 11, flexDirection: 'row', paddingVertical: 10 }}>
-                <Text style={{ color: 'white', fontSize: 18 }} allowFontScaling={false}>￥<Text
-                    style={{ fontSize: 40 }}>{price}</Text></Text>
+            <View style={{ marginLeft: 11, flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ color: 'white', fontSize: 18 }}>￥</Text>
+                    <Text style={{ color: 'white', fontSize: 40 }}>{price}</Text>
+                </View>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
                     <Text style={{
                         color: DesignRule.bgColor,

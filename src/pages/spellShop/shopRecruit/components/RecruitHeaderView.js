@@ -95,7 +95,7 @@ export default class RecommendRow extends Component {
                     <View style={{ backgroundColor: '#E4E4E4', height: 0.5 }}/>
                     <View style={{
                         flexDirection: 'row',
-                        height: ScreenUtils.autoSizeWidth(57),
+                        height: ScreenUtils.autoSizeWidth(37),
                         paddingHorizontal: 24,
                         alignItems: 'center',
                         justifyContent: 'space-between'
@@ -117,7 +117,7 @@ export default class RecommendRow extends Component {
 
 const styles = StyleSheet.create({
     bg: {
-        height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(271)
+        height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(252),
     },
     //header背景
     headerBg: {
@@ -141,10 +141,10 @@ const styles = StyleSheet.create({
     },
     //白的面板背景
     whiteBg: {
-        marginTop: ScreenUtils.autoSizeWidth(22.5),
+        marginTop: ScreenUtils.autoSizeWidth(10),
         backgroundColor: DesignRule.white,
         marginHorizontal: 15,
-        height: ScreenUtils.autoSizeWidth(144),
+        height: ScreenUtils.autoSizeWidth(124),
         borderRadius: 10
     }
 });

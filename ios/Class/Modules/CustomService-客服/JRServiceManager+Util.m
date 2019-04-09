@@ -8,6 +8,8 @@
 
 #import "JRServiceManager+Util.h"
 
+#define sendBtnTitl @"发送宝贝"
+
 
 
 
@@ -85,7 +87,7 @@
 -(QYCommodityInfo *)getCommodityMsgWithData:(id)swichData{
   NSDictionary * chatData = swichData;
   NSDictionary * infoData = chatData[@"data"];
-  if (infoData.allKeys.count == 0) {
+  if (infoData && infoData.allKeys.count == 0) {
     return nil;
   }
   
@@ -97,7 +99,7 @@
     commodityInfo.urlString = infoData[@"urlString"];
     commodityInfo.note = infoData[@"note"];
     commodityInfo.show = YES;
-    commodityInfo.actionText = @"发送商品";
+    commodityInfo.actionText = sendBtnTitl;
     commodityInfo.actionTextColor = [UIColor redColor];
     commodityInfo.sendByUser = YES;
   }else if([chatData[@"chatType"] integerValue] == BEGIN_FROM_PRODUCT){
@@ -107,7 +109,7 @@
     commodityInfo.urlString = infoData[@"urlString"];
     commodityInfo.note = infoData[@"note"];
     commodityInfo.show = YES;
-    commodityInfo.actionText = @"发送商品";
+    commodityInfo.actionText = sendBtnTitl;
     commodityInfo.actionTextColor = [UIColor redColor];
     commodityInfo.sendByUser = YES;
   }else if ([chatData[@"chatType"] integerValue] == BEGIN_FROM_ORDER){
@@ -117,7 +119,7 @@
     commodityInfo.urlString = infoData[@"urlString"];
     commodityInfo.note = infoData[@"note"];
     commodityInfo.show = YES;
-    commodityInfo.actionText = @"发送商品";
+    commodityInfo.actionText = sendBtnTitl;
     commodityInfo.actionTextColor = [UIColor redColor];
     commodityInfo.sendByUser = YES;
   }else if([chatData[@"chatType"] integerValue] == BEGIN_FROM_MESSAGE){
