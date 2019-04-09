@@ -21,7 +21,8 @@ export class AddCapacityHistoryPage extends BasePage {
         super(props);
         this.state = {
             loadingState: PageLoadingState.loading,
-            dataList: []
+            dataList: [],
+            showExpand: false
         };
     }
 
@@ -48,6 +49,14 @@ export class AddCapacityHistoryPage extends BasePage {
         }).catch(() => {
             this.setState({
                 loadingState: PageLoadingState.fail
+            });
+        });
+
+        SpellShopApi.store_person({ storeCode: spellStatusModel.storeCode }).then((data) => {
+            const dataTemp = data.data || {};
+            const { showExpand } = dataTemp;
+            this.setState({
+                showExpand
             });
         });
     }
@@ -108,9 +117,9 @@ export class AddCapacityHistoryPage extends BasePage {
                           renderItem={this._renderItem}
                           keyExtractor={this._keyExtractor}
                           ListEmptyComponent={this._ListEmptyComponent}/>
-                <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction}>
+                {this.state.showExpand ? <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction}>
                     <Text style={styles.addText}>继续扩容</Text>
-                </NoMoreClick>
+                </NoMoreClick> : null}
             </View>
         );
     }
