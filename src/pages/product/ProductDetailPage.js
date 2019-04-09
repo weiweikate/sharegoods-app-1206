@@ -299,7 +299,7 @@ export default class ProductDetailPage extends BasePage {
                     return;
                 }
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
-                const { shopId, title, name, secondName, imgUrl, prodCode, originalPrice } = this.state.data || {};
+                const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = this.state.data || {};
                 QYChatTool.beginQYChat({
                     shopId: shopId,
                     title: title,
@@ -309,7 +309,7 @@ export default class ProductDetailPage extends BasePage {
                         desc: secondName,
                         pictureUrlString: imgUrl,
                         urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
-                        note: `¥${originalPrice}`
+                        note: minPrice !== maxPrice ? `${minPrice}-${maxPrice}` : `${minPrice}`
                     }
                 });
                 break;
