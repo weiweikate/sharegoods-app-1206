@@ -12,10 +12,14 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
+import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.YSFOptions;
+import com.qiyukf.unicorn.api.pop.OnShopEventListener;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
@@ -37,7 +41,7 @@ public class InitializeService extends IntentService {
                 switch (msg.what) {
                     case ParameterUtils.QIYU_IMG:
                         // 七鱼初始化
-                        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", options(),
+                        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
                                 new QiyuImageLoader());
                         break;
                 }
@@ -124,5 +128,24 @@ public class InitializeService extends IntentService {
                 }
             }
         });
+    }
+
+    private YSFOptions QiYuOptions() {
+        YSFOptions ysfOptions = options();
+        ysfOptions.onMessageItemClickListener = new OnMessageItemClickListener() {
+            // 响应 url 点击事件
+            public void onURLClicked(Context context, String url) {
+                LogUtils.d("======" + url);
+                // 打开内置浏览器等动作
+                try {
+                    context.startActivity(new Intent(context, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"))
+                            .putExtra("web_url", url)
+                            .putExtra("url_action", "get"));
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        return ysfOptions;
     }
 }
