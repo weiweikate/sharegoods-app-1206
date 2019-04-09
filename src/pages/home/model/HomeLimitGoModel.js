@@ -119,14 +119,14 @@ export class LimitGoModules {
 
             this.timeList = _timeList || [];
             this.goodsList = _goodsList;
-            this.currentGoodsList = this.goodsList[currentId];
+            this.currentGoodsList = this.goodsList[currentId] || [];
         } catch (error) {
             console.log(error);
         }
     });
 
     @action changeLimitGo(id, index) {
-        this.currentGoodsList = this.goodsList[id];
+        this.currentGoodsList = this.goodsList[id] || [];
         this.currentPage = index;
     }
 

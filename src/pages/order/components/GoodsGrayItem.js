@@ -15,14 +15,14 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    TouchableWithoutFeedback, Text,
+    TouchableWithoutFeedback, Text
 } from "react-native";
 
 import {
-    UIText,
+    UIText
 } from "../../../components/ui";
 import UIImage from "@mr/image-placeholder";
-import DesignRule from '../../../constants/DesignRule';
+import DesignRule from "../../../constants/DesignRule";
 
 export default class GoodsGrayItem extends React.Component {
 
@@ -34,7 +34,9 @@ export default class GoodsGrayItem extends React.Component {
 
 
     render() {
-        let { uri, goodsName, salePrice, category, goodsNum, onPress,} = this.props;
+        let { uri, goodsName, salePrice, category, goodsNum, onPress, activityCodes } = this.props;
+        let types = activityCodes && activityCodes[0].orderType || 0;
+        const datas = ["", "秒杀", "降价拍", "升级礼包", "普通礼包", "经验专区"];
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={[styles.container, this.props.style]}>
@@ -42,14 +44,18 @@ export default class GoodsGrayItem extends React.Component {
                     <View style={{ marginHorizontal: 10, flex: 1, height: 100 }}>
                         <View style={{ flexDirection: "row", marginTop: 5 }}>
                             <View style={{ flex: 1, flexDirection: "row", marginRight: 10, alignItems: "center" }}>
-                                <Text style={[styles.title]} numberOfLines={2}>{goodsName}</Text>
+                                <Text numberOfLines={2}> <Text style={{
+                                    fontSize: 12, color: DesignRule.mainColor, borderColor: DesignRule.mainColor,
+                                    borderWidth: 1, padding: 1 ,
+                                }}>{types>0?`[${datas[types]}]`:''}</Text>
+                                    <Text style={[styles.title]}>{goodsName}</Text></Text>
                             </View>
-                            <UIText value={salePrice} style={[styles.title, { marginRight: 4 ,marginTop:12}]}/>
+                            <UIText value={salePrice} style={[styles.title, { marginRight: 4, marginTop: 12 }]}/>
                         </View>
                         <View style={{ marginTop: 10, marginRight: 5, flexDirection: "row" }}>
                             <View style={{ flex: 1, flexDirection: "row", marginRight: 10, alignItems: "center" }}>
-                            <UIText value={category}
-                                    style={[styles.detail ,{textAlign:"left"}]} numberOfLines={3}/>
+                                <UIText value={category}
+                                        style={[styles.detail, { textAlign: "left" }]} numberOfLines={3}/>
                             </View>
                             <UIText value={"x" + goodsNum} style={styles.detail}/>
                         </View>
