@@ -21,6 +21,7 @@ import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.listener.BaseRequestListener;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
@@ -88,9 +89,14 @@ public class QiyuImageLoader implements UnicornImageLoader {
                             listener.onLoadFailed(null);
                             return;
                         }
-                        Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        final Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
                         if (bmp != null && !bmp.isRecycled()) {
-                            listener.onLoadComplete(bmp);
+                            UiThreadUtil.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listener.onLoadComplete(bmp);
+                                }
+                            });
                         } else {
                             listener.onLoadFailed(null);
                         }
