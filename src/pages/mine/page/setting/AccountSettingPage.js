@@ -15,6 +15,11 @@ import RouterMap from '../../../../navigation/RouterMap';
 import {PageType} from '../myaccount/JudgePhonePage';
 
 const arrow_right = res.button.arrow_right;
+const PhonePwdStatus = {
+    Undefined: 0,
+    UnSet: 1,
+    Setted: 2,
+}
 @observer
 export default class AccountSettingPage extends BasePage {
 
@@ -24,7 +29,23 @@ export default class AccountSettingPage extends BasePage {
 
     constructor(props) {
         super(props);
+        this.state = {
+            phonePwdStatus: PhonePwdStatus.Undefined
+        }
     }
+
+    componentDidMount() {
+        MineAPI.checkPhonePwd({}).then((data)=> {
+            if (data.data === true){
+                this.setState({phonePwdStatus: PhonePwdStatus.Setted})
+            } else {
+                this.setState({phonePwdStatus: PhonePwdStatus.UnSet})
+            }
+        }).catch((err)=> {
+            this.$toastShow(err.msg);
+        });
+    }
+
 
     _render() {
         return (
@@ -42,7 +63,7 @@ export default class AccountSettingPage extends BasePage {
                     marginRight: 15
                 }}/>
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPwd()}>
-                    <UIText value={'修改密码'} style={styles.blackText}/>
+                    <UIText value={this.state.phonePwdStatus === 1?'设置密码':'修改密码'} style={styles.blackText}/>
                     <Image source={arrow_right} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{
@@ -77,10 +98,27 @@ export default class AccountSettingPage extends BasePage {
         });
     };
     _toEditPwd = () => {
+        let {phonePwdStatus} = this.state;
+        if (phonePwdStatus === PhonePwdStatus.UnSet){
+            Alert.alert('未设置登录密码',
+                '你还没有设置登录密码',
+                [
+                    {onPress:()=>{}, text: '稍后就去'},
+                    {onPress:()=>{this.$navigate(RouterMap.JudgePhonePage, {title: PageType.setLoginPW})}, text: '马上设置'}
+                ])
+            return;
+        }
+
+        if (phonePwdStatus === PhonePwdStatus.Setted){
+            this.$navigate('mine/account/EditPhonePwdPage');
+            return;
+        }
         MineAPI.checkPhonePwd({}).then((data)=> {
             if (data.data === true){
+                this.setState({phonePwdStatus: PhonePwdStatus.Setted})
                 this.$navigate('mine/account/EditPhonePwdPage');
             } else {
+                this.setState({phonePwdStatus: PhonePwdStatus.UnSet})
                 Alert.alert('未设置登录密码',
                     '你还没有设置登录密码',
                     [
