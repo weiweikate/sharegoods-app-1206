@@ -188,7 +188,7 @@ class HomeModalManager {
     };
 
     getRewardzInfo = () => {
-        GuideApi.rewardzInfo({ type: 17 }).then((data) => {
+        HomeAPI.getHomeData({ type: homeType.guideInfo }).then((data) => {
             data = data.data || [];
             if (data.length > 0) {
                 this.guideData = data[0];

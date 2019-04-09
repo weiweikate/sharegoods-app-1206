@@ -270,7 +270,7 @@ export default class GuideModal extends React.Component {
                     <TouchableWithoutFeedback onPress={this.gotoPage}>
                         <View>
                             <ImageLoad style={imageStyle}
-                                       source={{ uri: HomeModalManager.guideData.imgUrl || '' }}
+                                       source={{ uri: HomeModalManager.guideData.image || '' }}
                                        resizeMode={'contain'}
                                        onError={() => {
                                            this.setState({ showActivityIndicator: false });
