@@ -38,9 +38,20 @@ export class AddCapacityPricePage extends BasePage {
     componentDidMount() {
         SpellShopApi.store_expend({ storeCode: this.params.storeData.storeNumber }).then((data) => {
             const dataTemp = data.data || {};
+            let selectedItem = {};
+            if (dataTemp.length > 0) {
+                const itemDic = dataTemp[0];
+                const { invalid } = itemDic;
+                if (!invalid) {
+                    //能选  默认第一个选中
+                    itemDic.isSelected = true;
+                    selectedItem = itemDic;
+                }
+            }
             this.setState({
                 loadingState: PageLoadingState.success,
-                dataList: dataTemp || []
+                dataList: dataTemp || [],
+                selectedItem
             });
         }).catch(() => {
             this.setState({
