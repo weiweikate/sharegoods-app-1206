@@ -171,7 +171,7 @@ export class AddCapacityPricePage extends BasePage {
                 <NoMoreClick style={styles.footerItemView} onPress={this._oneMoneyAction}>
                     <Text style={styles.footerItemLeftText}>1元现金券</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={styles.footerOneMoneyText}>-¥{amountS}</Text>
+                        <Text style={styles.footerOneMoneyText}>{amountS ? `-¥${amountS}` : '请选择'}</Text>
                         <Image source={ArrowImg}/>
                     </View>
                 </NoMoreClick>
