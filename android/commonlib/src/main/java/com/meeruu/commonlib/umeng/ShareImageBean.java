@@ -7,6 +7,15 @@ public class ShareImageBean {
     public String QRCodeStr;
     public String retail;
     public String spell;
+    public String imageType;
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
 
     public String getRetail() {
         return retail;
@@ -52,14 +61,13 @@ public class ShareImageBean {
         return QRCodeStr;
     }
 
-    @Override
-    public String toString() {
-        return "ShareImageBean{" + "imageUrlStr='" + imageUrlStr + '\'' + ", titleStr='" + titleStr + '\'' + ", priceStr='" + priceStr + '\'' + ", QRCodeStr='" + QRCodeStr + '\'' + ", retail='" + retail + '\'' + ", spell='" + spell + '\'' + '}';
-    }
 
     public void setQRCodeStr(String QRCodeStr) {
         this.QRCodeStr = QRCodeStr;
     }
 
-
+    @Override
+    public String toString() {
+        return "ShareImageBean{" + "imageUrlStr='" + imageUrlStr + '\'' + ", titleStr='" + titleStr + '\'' + ", priceStr='" + priceStr + '\'' + ", QRCodeStr='" + QRCodeStr + '\'' + ", retail='" + retail + '\'' + ", spell='" + spell + '\'' + ", imageType='" + imageType + '\'' + '}';
+    }
 }

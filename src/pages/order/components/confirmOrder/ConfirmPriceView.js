@@ -57,7 +57,7 @@ export default class ConfirmPriceView extends Component {
                     <View>
                         <TouchableOpacity style={styles.couponsStyle}
                                           activeOpacity={0.5}
-                                          disabled={parseInt(confirmOrderModel.payAmount) < 1}
+                                          disabled={parseInt(confirmOrderModel.payAmount) < 1&&confirmOrderModel.tokenCoin<1}
                                           onPress={() => this.props.jumpToCouponsPage('justOne')}>
                             <UIText value={'1元现金券'} style={styles.blackText}/>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
