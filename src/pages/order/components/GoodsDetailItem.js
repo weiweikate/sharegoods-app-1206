@@ -21,7 +21,8 @@ const GoodsDetailItem = props => {
         clickItem,
         afterSaleService,
         afterSaleServiceClick,
-        style
+        style,
+        activityCodes,
     } = props;
 
     this.renderLine = () => {
@@ -79,6 +80,7 @@ const GoodsDetailItem = props => {
         <View>
             <GoodsGrayItem
                 uri={uri}
+                activityCodes={activityCodes}
                 goodsName={goodsName}
                 salePrice={salePrice}
                 category={category}

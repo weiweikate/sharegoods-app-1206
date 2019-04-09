@@ -11,6 +11,7 @@ import DateUtils from '../../../utils/DateUtils';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import EmptyView from '../../../components/pageDecorator/BaseView/EmptyView';
 import spellStatusModel from '../model/SpellStatusModel';
+import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 
 export class AddCapacityHistoryPage extends BasePage {
     $navigationBarOptions = {
@@ -20,7 +21,13 @@ export class AddCapacityHistoryPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            noMore: false,//是否能加载更多
+            loadingMore: false,//是否显示加载更多的菊花
+            loadingMoreError: null,//加载更多是否报错
+            page: 1,
+
             loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
             dataList: [],
             showExpand: false
         };
@@ -28,16 +35,27 @@ export class AddCapacityHistoryPage extends BasePage {
 
     $getPageStateOptions = () => {
         return {
-            loadingState: this.state.loadingState
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: () => {
+                    this.loadPageData();
+                }
+            }
         };
     };
 
     componentDidMount() {
+        this.loadPageData();
+    }
+
+    loadPageData = () => {
         SpellShopApi.store_record({
             storeCode: spellStatusModel.storeCode,
-            page: 1,
-            pageSize: 100
+            page: this.state.page,
+            size: 10
         }).then((data) => {
+            this.state.page++;
             //isMore
             const dataTemp = data.data || {};
             //
@@ -46,9 +64,10 @@ export class AddCapacityHistoryPage extends BasePage {
                 dataList: dataArrTemp,
                 loadingState: PageLoadingState.success
             });
-        }).catch(() => {
+        }).catch((e) => {
             this.setState({
-                loadingState: PageLoadingState.fail
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: e
             });
         });
 
@@ -59,25 +78,70 @@ export class AddCapacityHistoryPage extends BasePage {
                 showExpand
             });
         });
-    }
+    };
+
+    _loadPageDataMore = () => {
+        this.setState({
+            loadingMore: true
+        }, () => {
+            SpellShopApi.store_record({
+                storeCode: spellStatusModel.storeCode,
+                page: this.state.page,
+                size: 10
+            }).then((data) => {
+                this.state.page++;
+                //isMore
+                const dataTemp = data.data || {};
+                //
+                const dataArrTemp = dataTemp.data || [];
+                this.setState({
+                    dataList: this.state.dataList.concat(dataArrTemp),
+                    noMore: dataTemp.isMore === 0,
+                    loadingMore: false,
+                    loadingMoreError: null
+                });
+            }).catch((e) => {
+                this.setState({
+                    loadingMore: false,
+                    loadingMoreError: e.msg
+                });
+            });
+        });
+    };
+
+    _ListFooterComponent = () => {
+        if (this.state.loadingState !== PageLoadingState.success) {
+            return null;
+        }
+        return <ListFooter loadingMore={this.state.loadingMore}
+                           errorDesc={this.state.loadingMoreError}
+                           onPressLoadError={this._onEndReached}/>;
+    };
+    _onEndReached = () => {
+        if (this.state.loadingState !== PageLoadingState.success || this.state.noMore || this.state.loadingMore) {
+            return;
+        }
+        this._loadPageDataMore();
+    };
 
     _addBtnAction = () => {
         this.$navigate(RouterMap.AddCapacityPage, { storeData: this.params.storeData });
     };
 
     _renderItem = ({ item }) => {
-        const { payTime, personNum, price, status } = item;
+        const { payTime, personNum, price, status, expandId } = item;
         let explainText = '';
-        let textColor = status === 1 ? DesignRule.textColor_redWarn : (status === 3 ? DesignRule.color_green : DesignRule.textColor_instruction);
+        let textColor = status === 2 ? DesignRule.textColor_redWarn : (status === 3 ? DesignRule.color_green : DesignRule.textColor_instruction);
         switch (status) {
-            case 1:
+            case 2:
                 explainText = '去支付 >>';
                 break;
-            case 2:
-                explainText = '支付中';
-                break;
             case 3:
-                explainText = '交易成功';
+                if (expandId) {
+                    explainText = '交易成功';
+                } else {
+                    explainText = '管理员赠送';
+                }
                 break;
             case 4:
                 explainText = '交易失败';
@@ -95,8 +159,8 @@ export class AddCapacityHistoryPage extends BasePage {
                         <Text
                             style={styles.dateText}>{`${StringUtils.isNoEmpty(payTime) && DateUtils.formatDate(payTime) || ''}`}</Text>
                     </View>
-                    <View style={styles.itemVerticalView}>
-                        <Text style={styles.moneyText}>{`¥${price || ''}`}</Text>
+                    <View style={[styles.itemVerticalView, { alignItems: 'flex-end' }]}>
+                        <Text style={styles.moneyText}>{`¥${price.toFixed(2)}`}</Text>
                         <Text style={[styles.explainText, { color: textColor }]}>{explainText}</Text>
                     </View>
                 </NoMoreClick>
@@ -116,6 +180,9 @@ export class AddCapacityHistoryPage extends BasePage {
                 <FlatList data={this.state.dataList}
                           renderItem={this._renderItem}
                           keyExtractor={this._keyExtractor}
+                          onEndReached={this._onEndReached}
+                          onEndReachedThreshold={0.3}
+                          ListFooterComponent={this._ListFooterComponent}
                           ListEmptyComponent={this._ListEmptyComponent}/>
                 {this.state.showExpand ? <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction}>
                     <Text style={styles.addText}>继续扩容</Text>
@@ -135,7 +202,7 @@ const styles = StyleSheet.create({
         margin: 15
     },
     itemVerticalView: {
-        justifyContent: 'space-between', alignItems: 'flex-end'
+        justifyContent: 'space-between'
     },
     contentText: {
         fontSize: 13, color: DesignRule.textColor_mainTitle
