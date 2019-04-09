@@ -102,7 +102,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
                          @"title":@"平台客服",
                          @"shopId":@"",
                          @"chatType":@(BEGIN_FROM_OTHER),
-                         @"data":@{}
+                         @"data":self.dataDic[@"data"]
                          }];
     });
   }];
