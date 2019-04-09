@@ -70,11 +70,8 @@ export class AddCapacityHistoryPage extends BasePage {
         let explainText = '';
         let textColor = status === 1 ? DesignRule.textColor_redWarn : (status === 3 ? DesignRule.color_green : DesignRule.textColor_instruction);
         switch (status) {
-            case 1:
-                explainText = '去支付 >>';
-                break;
             case 2:
-                explainText = '支付中';
+                explainText = '去支付 >>';
                 break;
             case 3:
                 explainText = '交易成功';
