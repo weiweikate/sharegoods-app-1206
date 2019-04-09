@@ -230,9 +230,14 @@ export class Payment {
     //检查订单状态
     @action checkPayStatus = flow(function* () {
         try {
+            // const result = yield PaymentApi.payStatus({
+            //     platformOrderNo: this.platformOrderNo,
+            //     payMethodCode: this.selctedPayType === paymentType.alipay ? "alipay" : "wxpay"
+            // });
             const result = yield PaymentApi.payStatus({
-                platformOrderNo: this.platformOrderNo,
-                payMethodCode: this.selctedPayType === paymentType.alipay ? "alipay" : "wxpay"
+                fundsTradingNo: this.fundsTradingNo,
+                bizType: this.bizType,
+                outTradeNo:this.outTradeNo
             });
             return result;
         } catch (error) {

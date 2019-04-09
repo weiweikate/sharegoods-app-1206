@@ -197,13 +197,14 @@ export default class PaymentPage extends BasePage {
     }
 
     _render() {
-        const { selectedBalace, name } = payment;
+        const { selectedBalace, name,bizType,oneCoupon } = payment;
         const { showPwd } = this.state;
         let { availableBalance } = user;
         let channelAmount = (payment.amounts).toFixed(2);
         if (selectedBalace) {
             channelAmount = (payment.amounts - availableBalance) <= 0 ? 0.00 : (payment.amounts - availableBalance).toFixed(2);
         }
+        //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.row}>

@@ -74,8 +74,8 @@ export default class ChannelPage extends BasePage {
     };
 
     goToPay() {
-        this.$navigate(RouterMap.PaymentCheckPage);
-        return;
+        // this.$navigate(RouterMap.PaymentCheckPage);
+        // return;
         if (payment.selctedPayType === paymentType.none) {
             Toast.$toast("请选择支付方式");
             return;
@@ -174,7 +174,7 @@ export default class ChannelPage extends BasePage {
                 payment.isGoToPay = false;
             }
             this.orderTime = (new Date().getTime()) / 1000;
-            this.$navigate(RouterMap.PaymentCheckPage);
+            this.$navigate(RouterMap.PaymentCheckPage);//去等待结果页面
             // this._checkOrder();
             // this.setState({ orderChecking: true });
         }
@@ -244,15 +244,6 @@ export default class ChannelPage extends BasePage {
 
     _selectedType(type) {
         payment.selectPayTypeAction(type);
-    }
-
-    _closeResultView() {
-        this.setState({
-            showResult: false,
-            payResult: PaymentResult.none,
-            payMsg: ""
-        });
-        payment.resetPayment();
     }
 
     _render() {
