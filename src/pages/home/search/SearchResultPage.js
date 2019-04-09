@@ -341,7 +341,7 @@ export default class SearchResultPage extends BasePage {
                         marginLeft: 16,
                         paddingVertical: 15
                     }} allowFontScaling={false}>{item}</Text>
-                    <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
+                    <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
     };

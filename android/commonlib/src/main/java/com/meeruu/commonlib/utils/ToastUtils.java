@@ -2,6 +2,7 @@ package com.meeruu.commonlib.utils;
 
 import android.widget.Toast;
 
+import com.facebook.react.bridge.UiThreadUtil;
 import com.meeruu.commonlib.base.BaseApplication;
 
 public class ToastUtils {
@@ -23,9 +24,12 @@ public class ToastUtils {
         }
     }
 
-    public static void showToast(CharSequence text) {
-        if (AppUtils.isMainThread()) {
-            showToast(text, Toast.LENGTH_SHORT);
-        }
+    public static void showToast(final CharSequence text) {
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showToast(text, Toast.LENGTH_SHORT);
+            }
+        });
     }
 }
