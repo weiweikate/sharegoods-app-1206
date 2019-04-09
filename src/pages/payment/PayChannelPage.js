@@ -21,6 +21,7 @@ import { track, trackEvent } from "../../utils/SensorsTrack";
 const { px2dp } = ScreenUtils;
 import Toast from "../../utils/bridge";
 import { NavigationActions } from "react-navigation";
+import RouterMap from "../../navigation/RouterMap";
 
 @observer
 export default class ChannelPage extends BasePage {
@@ -73,6 +74,8 @@ export default class ChannelPage extends BasePage {
     };
 
     goToPay() {
+        this.$navigate(RouterMap.PaymentCheckPage);
+        return;
         if (payment.selctedPayType === paymentType.none) {
             Toast.$toast("请选择支付方式");
             return;
@@ -171,8 +174,9 @@ export default class ChannelPage extends BasePage {
                 payment.isGoToPay = false;
             }
             this.orderTime = (new Date().getTime()) / 1000;
-            this._checkOrder();
-            this.setState({ orderChecking: true });
+            this.$navigate(RouterMap.PaymentCheckPage);
+            // this._checkOrder();
+            // this.setState({ orderChecking: true });
         }
     };
 
@@ -181,11 +185,13 @@ export default class ChannelPage extends BasePage {
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checking" });
         if (time - this.orderTime > 10) {
             track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checkOut" });
+            this.setState({ orderChecking: false });
             return;
         }
         payment.checkPayStatus().then(result => {
             if (result.data === payStatus.payCreate) {
                 this.setState({ orderChecking: false });
+
                 return;
             }
 

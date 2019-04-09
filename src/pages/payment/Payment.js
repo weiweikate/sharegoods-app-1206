@@ -172,6 +172,7 @@ export class Payment {
             // Toast.hiddenLoading();
             this.isGoToPay = true;
             const resultStr = yield PayUtil.appAliPay(payResult);
+            console.log(resultStr);
             if (resultStr.sdkCode !== 9000) {
                 throw new Error(resultStr.msg);
             }
