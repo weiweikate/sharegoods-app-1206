@@ -18,6 +18,7 @@ import SignInCircleView from './components/SignInCircleView';
 const { px2dp } = ScreenUtils;
 import ImageLoader from '@mr/image-placeholder';
 import HomeAPI from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
 import { observer } from 'mobx-react/native';
@@ -83,10 +84,18 @@ export default class SignInPage extends BasePage {
         );
     };
 
-    componentDidMount() {
-        this.loadPageData();
+    componentWillMount() {
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                this.loadPageData();
+            }
+        );
     }
 
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+    }
 
     loadPageData = () => {
         this.getSignData();
@@ -96,7 +105,7 @@ export default class SignInPage extends BasePage {
     };
 
     getModalInfo = () => {
-        HomeAPI.queryAdvertisingList({ type: 19 }).then((data) => {
+        HomeAPI.getHomeData({ type: homeType.signIn }).then((data) => {
             this.setState({
                 modalInfo: data.data
             });
@@ -119,7 +128,8 @@ export default class SignInPage extends BasePage {
     };
 
     getSignData = () => {
-        HomeAPI.querySignList().then((data) => {
+        let callback = this.loadPageData;
+        HomeAPI.querySignList(null,{callback}).then((data) => {
             this.setState({
                 signInData: data.data,
                 // loading: false,
@@ -400,8 +410,8 @@ export default class SignInPage extends BasePage {
 
     _modalPress = () => {
         this.setState({
-            showModal:false
-        })
+            showModal: false
+        });
         const item = this.state.modalInfo[0];
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
         let params = homeModule.paramsNavigate(item);

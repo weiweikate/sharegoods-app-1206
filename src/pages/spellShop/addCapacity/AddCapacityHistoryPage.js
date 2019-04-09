@@ -21,7 +21,8 @@ export class AddCapacityHistoryPage extends BasePage {
         super(props);
         this.state = {
             loadingState: PageLoadingState.loading,
-            dataList: []
+            dataList: [],
+            showExpand: false
         };
     }
 
@@ -50,6 +51,14 @@ export class AddCapacityHistoryPage extends BasePage {
                 loadingState: PageLoadingState.fail
             });
         });
+
+        SpellShopApi.store_person({ storeCode: spellStatusModel.storeCode }).then((data) => {
+            const dataTemp = data.data || {};
+            const { showExpand } = dataTemp;
+            this.setState({
+                showExpand
+            });
+        });
     }
 
     _addBtnAction = () => {
@@ -59,13 +68,10 @@ export class AddCapacityHistoryPage extends BasePage {
     _renderItem = ({ item }) => {
         const { payTime, personNum, price, status } = item;
         let explainText = '';
-        let textColor = status === 1 ? DesignRule.textColor_redWarn : (status === 3 ? DesignRule.color_green : DesignRule.textColor_instruction);
+        let textColor = status === 2 ? DesignRule.textColor_redWarn : (status === 3 ? DesignRule.color_green : DesignRule.textColor_instruction);
         switch (status) {
-            case 1:
-                explainText = '去支付 >>';
-                break;
             case 2:
-                explainText = '支付中';
+                explainText = '去支付 >>';
                 break;
             case 3:
                 explainText = '交易成功';
@@ -86,8 +92,8 @@ export class AddCapacityHistoryPage extends BasePage {
                         <Text
                             style={styles.dateText}>{`${StringUtils.isNoEmpty(payTime) && DateUtils.formatDate(payTime) || ''}`}</Text>
                     </View>
-                    <View style={styles.itemVerticalView}>
-                        <Text style={styles.moneyText}>{`¥${price || ''}`}</Text>
+                    <View style={[styles.itemVerticalView, { alignItems: 'flex-end' }]}>
+                        <Text style={styles.moneyText}>{`¥${price.toFixed(2)}`}</Text>
                         <Text style={[styles.explainText, { color: textColor }]}>{explainText}</Text>
                     </View>
                 </NoMoreClick>
@@ -108,9 +114,9 @@ export class AddCapacityHistoryPage extends BasePage {
                           renderItem={this._renderItem}
                           keyExtractor={this._keyExtractor}
                           ListEmptyComponent={this._ListEmptyComponent}/>
-                <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction}>
+                {this.state.showExpand ? <NoMoreClick style={styles.addBtn} onPress={this._addBtnAction}>
                     <Text style={styles.addText}>继续扩容</Text>
-                </NoMoreClick>
+                </NoMoreClick> : null}
             </View>
         );
     }
@@ -126,7 +132,7 @@ const styles = StyleSheet.create({
         margin: 15
     },
     itemVerticalView: {
-        justifyContent: 'space-between', alignItems: 'flex-end'
+        justifyContent: 'space-between'
     },
     contentText: {
         fontSize: 13, color: DesignRule.textColor_mainTitle
