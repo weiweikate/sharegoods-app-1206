@@ -37,7 +37,10 @@ export default class ChannelPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.remainMoney = parseFloat(this.params.remainMoney);
+        // this.remainMoney = parseFloat(this.params.remainMoney);
+        this.state={
+            remainMoney:parseFloat(this.params.remainMoney)
+        }
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         let name = orderProduct && orderProduct.productName;
         if (name) {
@@ -60,6 +63,12 @@ export default class ChannelPage extends BasePage {
 
     componentDidMount() {
         AppState.addEventListener("change", this._handleAppStateChange);
+        const {platformOrderNo,bizType,modeType,name,amounts} = payment
+        payment.checkOrderStatus(platformOrderNo,bizType,modeType,amounts,name).then(result=>{
+            this.setState({
+                remainMoney:Math.floor(result.unpaidAmount * 100) / 100
+            })
+        })
     }
 
     componentWillUnmount() {
@@ -81,10 +90,12 @@ export default class ChannelPage extends BasePage {
             return;
         }
         const { fundsTradingNo, platformOrderNo, name, amounts } = payment;
-        let payAmount = this.remainMoney || amounts;
+        let payAmount = this.state.remainMoney || amounts;
         payment.checkOrderStatus(platformOrderNo, this.bizType, this.modeType, payAmount, name)
             .then(result => {
-                console.log("checkOrderStatus", result);
+                //以为借口返回的剩余未支付为准
+                payAmount = Math.floor(result.unpaidAmount * 100) / 100;
+                    console.log("checkOrderStatus", result);
                 let detailList = [];
                 if (result.code === payStatus.payNo || result.code === payStatus.payNeedThrid) {
                     if (payment.selctedPayType === paymentType.alipay) {
@@ -120,6 +131,16 @@ export default class ChannelPage extends BasePage {
                             const detail = result.detail || [];
                             detail.map((payItem) => {
                                 if (parseInt(payItem.payType) === paymentType.wechat) {
+                                    //微信支付
+                                    payment.appWXPay(payItem.payResult).catch(err => {
+                                        console.log("alipay err", err, err.code);
+                                        if (err.code === 20002) {
+                                            Toast.$toast(err.msg);
+                                            return;
+                                        }
+                                        payment.resetPayment();
+                                        this._goToOrder();
+                                    });
 
                                 } else {
                                     Toast.$toast("请点选支付方式");
@@ -127,23 +148,9 @@ export default class ChannelPage extends BasePage {
                             });
 
                         }).catch(err => {
+                            Toast.$toast("拉去三方支付信息报错");
 
                         });
-
-                        // //微信支付
-                        // payment.appWXPay().catch(err => {
-                        //     console.log("wexin err", err, err.code);
-                        //     if (err.code === 20002) {
-                        //         Toast.$toast(err.msg);
-                        //         return;
-                        //     }
-                        //     if (err.message === "请安装微信后完成支付") {
-                        //         Toast.$toast(err.message);
-                        //         return;
-                        //     }
-                        //     payment.resetPayment();
-                        //     this._goToOrder();
-                        // });
                     }
                 } else if (result.code === payStatus.payOut) {
                     Toast.$toast(payStatusMsg[result.code]);
@@ -249,7 +256,8 @@ export default class ChannelPage extends BasePage {
     _render() {
         const { selctedPayType, name } = payment;
         const { orderChecking } = this.state;
-        let payMoney = this.remainMoney ? this.remainMoney : payment.amounts;
+        // let payMoney = this.remainMoney ? this.remainMoney : payment.amounts;
+        let payMoney = this.state.remainMoney;
 
         return <View style={styles.container}>
             <View style={styles.content}>

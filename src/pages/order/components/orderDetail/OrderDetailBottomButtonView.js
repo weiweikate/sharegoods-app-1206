@@ -215,8 +215,8 @@ export default class OrderDetailBottomButtonView extends Component {
     };
 
     async _goToPay() {
-        let platformOrderNo = orderDetailModel.platformOrderNo
-        let result = await payment.checkOrderStatus(platformOrderNo)
+        const {payAmount,platformOrderNo} = orderDetailModel
+        let result = await payment.checkOrderStatus(platformOrderNo,0,0,payAmount,'')
         if (result.code === payStatus.payNo) {
             this.props.nav("payment/PaymentPage", {
                 orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
@@ -226,7 +226,7 @@ export default class OrderDetailBottomButtonView extends Component {
             });
         } else if (result.code === payStatus.payNeedThrid) {
             this.props.nav('payment/ChannelPage', {
-                remainMoney: Math.floor(result.thirdPayAmount * 100) / 100,
+                remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
                 orderProductList: orderDetailModel.warehouseOrderDTOList[0].products,
                 orderNum: orderDetailModel.warehouseOrderDTOList[0].outTradeNo,
                 platformOrderNo: orderDetailModel.platformOrderNo,

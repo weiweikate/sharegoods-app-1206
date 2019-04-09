@@ -189,16 +189,15 @@ export class Payment {
     });
 
     //微信支付
-    @action appWXPay = flow(function* () {
+    @action appWXPay = flow(function* (result) {
         paymentTrack.paymentMethod = "wxpay";
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "start" });
 
         try {
             Toast.showLoading();
-            const result = yield PaymentApi.wechatPay({ platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo });
-
+            // const result = yield PaymentApi.wechatPay({ platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo });
             this.isGoToPay = true;
-            const payInfo = JSON.parse(result.data);
+            const payInfo = JSON.parse(result);
             Toast.hiddenLoading();
             payInfo.partnerid = payInfo.mchId;
             payInfo.timestamp = payInfo.timeStamp;

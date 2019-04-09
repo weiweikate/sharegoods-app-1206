@@ -97,6 +97,16 @@
 				<string>sab9cf024a</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>wxpay</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wx6456c75e56bd91a6</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>

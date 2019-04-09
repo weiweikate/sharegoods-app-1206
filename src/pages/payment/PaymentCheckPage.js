@@ -42,7 +42,6 @@ export default class PaymentCheckPage extends BasePage {
                 marginTop:-2,
                 backgroundColor:DesignRule.bgColor
             }}>
-
                 <View
                 style={{
                     alignItems:'center',
@@ -75,9 +74,7 @@ export default class PaymentCheckPage extends BasePage {
                         结果返回前，请不要重复支付
                     </Text>
                 </View>
-
             </View>
-
         );
     }
 
@@ -86,16 +83,15 @@ export default class PaymentCheckPage extends BasePage {
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checking" });
         if (time - this.orderTime > 60) {
             track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checkOut" });
-            this.setState({ orderChecking: false });
+            this.$toastShow('支付结果请求超时');
+            this._goToOrder(2);
+            payment.resetPayment();
             return;
         }
         payment.checkPayStatus().then(result => {
             console.log(result);
             let  resultData = result.data;
             if (parseInt(resultData.status) === payStatus.paySuccess) {
-                this.setState({
-                    msg:'支付成功'
-                })
                 this.props.navigation.dispatch({
                     key: this.props.navigation.state.key,
                     type: "ReplacePayScreen",
@@ -106,9 +102,6 @@ export default class PaymentCheckPage extends BasePage {
                 payment.resetPayment();
 
             }else if (parseInt(resultData.status) === payStatus.payClose){
-                this.setState({
-                    msg:'支付关闭',
-                })
                 this.props.navigation.dispatch({
                     key: this.props.navigation.state.key,
                     type: "ReplacePayScreen",
@@ -126,6 +119,14 @@ export default class PaymentCheckPage extends BasePage {
 
         });
     };
+    _goToOrder(index) {
+        this.props.navigation.dispatch({
+            key: this.props.navigation.state.key,
+            type: "ReplacePayScreen",
+            routeName: "order/order/MyOrdersListPage",
+            params: { index: index ? index : 1 }
+        });
+    }
 
 }
 

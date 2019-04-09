@@ -552,7 +552,7 @@ export default class MyOrdersListView extends Component {
             });
         } else if (result.code === payStatus.payNeedThrid) {
             this.props.nav('payment/ChannelPage', {
-                remainMoney: Math.floor(result.thirdPayAmount * 100) / 100,
+                remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
                 orderNum: orderNo,
                 platformOrderNo: platformOrderNo,
                 orderProductList: orderProduct

@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Image, Platform, Keyboard} from 're
 import PasswordInput from '../../components/ui/PasswordInput'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import res from './res';
 import {MRText as Text} from '../../components/ui'
 import Modal from '../../comm/components/CommModal'
