@@ -39,28 +39,12 @@ export default class OrderDetailBottomButtonView extends Component {
                             height: px2dp(48),
                             marginRight: 6,
                             alignItems: "center",
-                            justifyContent: "center"
+                            justifyContent: "center",
                         }}>
-                            {!this.state.showDele ? null : <NoMoreClick style={{
-                                width: 68,
-                                height: 32,
-                                position: "absolute",
-                                bottom: 44,
-                                backgroundColor: DesignRule.textColor_instruction
-                                ,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: 5,
-                                overflow: "hidden"
-                            }} onPress={() => {
-                                this.operationMenuClick({ id: 7 }), this.setState({ showDele: false });
-                            }}>
-                                <UIText value={"删除订单"} style={{ color: "white", fontSize: 13 }}/>
-                            </NoMoreClick>}
                             <UIText value={"更多"} style={{ color: DesignRule.textColor_secondTitle, fontSize: 13 }}
-                                    onPress={() => {
-                                        this.setState({ showDele: !this.state.showDele });
-                                    }}/>
+                                    onPress={
+                                       this.props.switchButton
+                                    }/>
                         </View>
                         {nameArr.map((item, i) => {
                             return <NoMoreClick key={i}
@@ -69,7 +53,7 @@ export default class OrderDetailBottomButtonView extends Component {
                                                     this.operationMenuClick(item);
                                                 }}>
                                 <Text
-                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitcle }}
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}
                                     allowFontScaling={false}>{item.operation}</Text>
                             </NoMoreClick>;
                         })}
@@ -168,7 +152,7 @@ export default class OrderDetailBottomButtonView extends Component {
                 }
                 break;
             case 6:
-                let content = "是否确认收货?";
+                let content = "确定收到货了吗?";
                 orderDetailModel.warehouseOrderDTOList[0].products.map((value) => {
                     if (value.status < 3) {
                         content = "您还有商品未发货，确认收货吗？";

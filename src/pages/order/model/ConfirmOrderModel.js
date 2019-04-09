@@ -50,6 +50,8 @@ class ConfirmOrderModel {
     couponCount=0;
     @observable
     couponData={}
+    @observable
+    err=null
 
     @action clearData() {
         this.orderProductList = [];
@@ -71,10 +73,12 @@ class ConfirmOrderModel {
         this.giveUpCou= false;
         this.couponCount=0;
         this.couponData={};
+        this.err=null;
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
         this.orderParamVO = orderParamVO;
+        this.err=null;
         switch (orderParamVO.orderType) {
             case 99://普通商品
                 OrderApi.makeSureOrder({
@@ -165,6 +169,7 @@ class ConfirmOrderModel {
     disPoseErr = (err, orderParamVO, params) => {
         bridge.hiddenLoading();
         this.canCommit = true;
+        this.err=err;
         if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             Alert.alert('提示', err.msg, [
                 {
@@ -175,14 +180,15 @@ class ConfirmOrderModel {
             ]);
         } else if (err.code === 54001) {
             bridge.$toast('商品库存不足！');
-          navigateBack()
+          // navigateBack()
         } else {
             bridge.$toast(err.msg);
-            navigateBack()
+            // navigateBack()
         }
     };
 
     handleNetData = (data) => {
+        this.err=null;
         bridge.hiddenLoading();
         this.canCommit = true;
         this.loadingState = PageLoadingState.success;
@@ -241,6 +247,9 @@ class ConfirmOrderModel {
         if (StringUtils.isEmpty(this.addressId)) {
             bridge.$toast('请先添加地址');
             bridge.hiddenLoading();
+            return;
+        }
+        if(!StringUtils.isEmpty(this.err)){
             return;
         }
         let baseParams = {

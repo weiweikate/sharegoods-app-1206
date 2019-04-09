@@ -56,6 +56,8 @@ export default class MyOrdersListView extends Component {
             <GoodsListItem
                 orderNum={item.orderNo}
                 orderStatus={item.orderStatus}
+                warehouseType={item.warehouseType}
+                subStatus={item.subStatus}
                 orderProduct={item.orderProduct}
                 shutOffTime={item.cancelTime}
                 totalPrice={item.totalPrice}
@@ -212,6 +214,8 @@ export default class MyOrdersListView extends Component {
                         orderNo: item.platformOrderNo,
                         quantity: item.quantity,
                         orderStatus: 1,
+                        subStatus:item.warehouseOrderDTOList[0].subStatus,
+                        warehouseType:item.warehouseOrderDTOList[0].warehouseType,
                         totalPrice: item.payAmount,
                         nowTime: item.nowTime,
                         cancelTime: item.warehouseOrderDTOList[0].cancelTime,
@@ -232,6 +236,8 @@ export default class MyOrdersListView extends Component {
                             quantity: this.totalAmount(resp.products),
                             orderType: resp.subStatus,
                             orderStatus: resp.status,
+                            subStatus:item.warehouseOrderDTOList[0].subStatus,
+                            warehouseType:item.warehouseOrderDTOList[0].warehouseType,
                             totalPrice: resp.payAmount,
                             expList: resp.expList || [],
                             nowTime: resp.nowTime,
@@ -431,7 +437,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 6:
                 console.log(data);
-                let content = `是否确认收货?`;
+                let content = `确定收到货了吗?`;
                 data.orderProduct.map((value) => {
                     if (value.status < 3) {
                         content = '您还有商品未发货，确认收货吗？';

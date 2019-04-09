@@ -21,7 +21,8 @@ const GoodsListItem = props => {
         // orderNum,
         orderCreateTime,
         orderStatus,
-        // freightPrice,
+        warehouseType,
+        subStatus,
         totalPrice,
         orderProduct,
         clickItem,
@@ -157,7 +158,7 @@ const GoodsListItem = props => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UIText value={'订单提交时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
-                    <UIText value={constants.viewOrderStatus[orderStatus].orderStatus}
+                    <UIText value={warehouseType != 2 && orderStatus == 3 && subStatus == 3?'部分发货':constants.viewOrderStatus[orderStatus].orderStatus}
                             style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 13 }}/>
                 </View>
             </View>
