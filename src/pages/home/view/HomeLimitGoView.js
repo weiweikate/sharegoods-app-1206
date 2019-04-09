@@ -104,7 +104,7 @@ export default class HomeLimitGoView extends Component {
         });
 
         if (viewItems.length === 0) {
-            return <View/>;
+            return null;
         }
 
 
@@ -145,7 +145,7 @@ const GoodsItem = (item) => {
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={2}>{data.productName}</Text>
             <Text style={styles.text}>{data.secondName}</Text>
-            <Text style={styles.text}>已有{data.subscribeCount}人关注了</Text>
+            {data.status === limitStatus.doing ? null : <Text style={styles.text}>已有{data.subscribeCount}人关注了</Text>}
             <View style={{ flex: 1 }}/>
             <View style={styles.moneyView}>
                 {

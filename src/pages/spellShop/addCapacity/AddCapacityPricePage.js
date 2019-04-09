@@ -12,6 +12,7 @@ import StringUtils from '../../../utils/StringUtils';
 import RouterMap from '../../../navigation/RouterMap';
 
 const ArrowImg = res.shopSetting.xjt_03;
+const { isNoEmpty } = StringUtils;
 
 export class AddCapacityPricePage extends BasePage {
     $navigationBarOptions = {
@@ -37,9 +38,20 @@ export class AddCapacityPricePage extends BasePage {
     componentDidMount() {
         SpellShopApi.store_expend({ storeCode: this.params.storeData.storeNumber }).then((data) => {
             const dataTemp = data.data || {};
+            let selectedItem = {};
+            if (dataTemp.length > 0) {
+                const itemDic = dataTemp[0];
+                const { invalid } = itemDic;
+                if (!invalid) {
+                    //能选  默认第一个选中
+                    itemDic.isSelected = true;
+                    selectedItem = itemDic;
+                }
+            }
             this.setState({
                 loadingState: PageLoadingState.success,
-                dataList: dataTemp || []
+                dataList: dataTemp || [],
+                selectedItem
             });
         }).catch(() => {
             this.setState({
@@ -124,10 +136,13 @@ export class AddCapacityPricePage extends BasePage {
                 }]} onPress={() => this._itemBtnAction(index)} disabled={invalid}>
                     <Text style={[styles.itemLeftText, { color: itemColor }]}>{`${personNum}人`}</Text>
                     <View style={styles.itemRightView}>
-                        {discountPrice ?
+                        {isNoEmpty(discountPrice) ?
                             <Text
                                 style={[styles.itemOriginText, { color: itemColor }]}>{`¥${discountPrice}`}</Text> : null}
-                        <Text style={{ fontSize: discountPrice ? 12 : 17, color: itemColor }}>{`¥${price}`}</Text>
+                        <Text style={[{
+                            fontSize: isNoEmpty(discountPrice) ? 12 : 17,
+                            color: itemColor
+                        }, isNoEmpty(discountPrice) ? { textDecorationLine: 'line-through' } : {}]}>{`¥${price}`}</Text>
                     </View>
                 </NoMoreClick>
             </View>
@@ -156,7 +171,7 @@ export class AddCapacityPricePage extends BasePage {
                 <NoMoreClick style={styles.footerItemView} onPress={this._oneMoneyAction}>
                     <Text style={styles.footerItemLeftText}>1元现金券</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={styles.footerOneMoneyText}>-¥{amountS}</Text>
+                        <Text style={styles.footerOneMoneyText}>{amountS ? `-¥${amountS}` : '请选择'}</Text>
                         <Image source={ArrowImg}/>
                     </View>
                 </NoMoreClick>

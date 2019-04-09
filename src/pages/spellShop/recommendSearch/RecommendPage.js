@@ -221,36 +221,12 @@ export default class RecommendPage extends BasePage {
 
     // 点击轮播图广告
     _clickItem = (item) => {
+        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode) || '';
+        let params = homeModule.paramsNavigate(item);
+        this.$navigate(router, { ...params });
+
         let trackDic = homeModule.bannerPoint(item) || {};
         TrackApi.BannerClick({ bannerLocation: 21, ...trackDic });
-        if (item.linkType === homeLinkType.good) {
-            this.$navigate('product/ProductDetailPage', {
-                productCode: item.linkTypeCode
-            });
-        } else if (item.linkType === homeLinkType.subject) {
-            this.$navigate('topic/DownPricePage', {
-                linkTypeCode: item.linkTypeCode
-            });
-        } else if (item.linkType === homeLinkType.web) {
-            this.$navigate('HtmlPage', {
-                title: '详情',
-                uri: item.linkTypeCode
-            });
-        } else if (item.linkType === 3 || item.linkType === 4 || item.linkType === 5) {
-            let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
-            this.$navigate('topic/TopicDetailPage', {
-                activityCode: item.linkTypeCode,
-                activityType: type
-            });
-        } else if (item.linkType === homeLinkType.show) {
-            this.$navigate('show/ShowDetailPage', {
-                code: item.linkTypeCode
-            });
-        }else if (item.linkType === homeLinkType.exp) {
-            this.$navigate('product/xpProduct/XpDetailPage', {
-                activityCode: item.linkTypeCode
-            });
-        }
     };
 
     _segmentPressAtIndex = (index) => {

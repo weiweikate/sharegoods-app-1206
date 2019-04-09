@@ -48,6 +48,8 @@ export default class HomeFocusAdView extends Component {
         let len = 4;
         if (ad.length > 0) {
             len = ad.length;
+            // 4个
+            len = len > 4 ? 4 : len;
         }
         let items = [];
         for (let i = 0; i < len; i++) {

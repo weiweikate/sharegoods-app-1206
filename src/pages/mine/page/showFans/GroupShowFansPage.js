@@ -55,13 +55,6 @@ export default class GroupShowFansPage extends BasePage<Props> {
                 <Text style={styles.fansNameStyle}>
                     {item.nickname}
                 </Text>
-
-                <View style={styles.levelWrapper}>
-                    <Text style={styles.levelTextStyle}>
-                        {`V${item.level ? item.level  : 0}`}
-                    </Text>
-                </View>
-
             </ImageBackground>
         );
     };

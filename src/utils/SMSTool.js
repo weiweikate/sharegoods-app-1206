@@ -17,7 +17,8 @@ const SMSInterface = {
     // 设置交易密码手机验证验证码
     SMSSetSalePhone: ['/sms/sendTransPasswordMessage', { method: 'get', isRSA: true }],
     // 忘记交易密码手机验证验证码
-    SMSForgetSalePhone: ['/sms/sendForgetTransPasswordMessage', { method: 'get', isRSA: true }]
+    SMSForgetSalePhone: ['/sms/sendForgetTransPasswordMessage', { method: 'get', isRSA: true }],
+    SMSSetLoginPassword: ['/sms/sendSetPasswordMessage',{ method: 'get', isRSA: true }],
 };
 
 const SMSAPI = ApiUtils(SMSInterface);
@@ -93,7 +94,7 @@ const SMSTool = {
                 break;
             case this.SMSType.setLoginPW:
                 TrackApi.otherGetVerifySMS()
-                return SMSAPI.SMSForgetLoginPassword({
+                return SMSAPI.SMSSetLoginPassword({
                     phone: phoneNumber
                 });
                 break;

@@ -15,6 +15,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText as Text } from '../../../components/ui/index';
 import ImageLoad from '@mr/image-placeholder';
+import { homeModule } from '../model/Modules';
 
 const { px2dp } = ScreenUtils;
 
@@ -44,21 +45,17 @@ export default class HomeChannelView extends Component {
 
     _onItemPress = (data) => {
         const { navigate } = this.props;
-        navigate(data.route, {
-            fromHome: true,
-            id: 1,
-            linkTypeCode: data.linkTypeCode,
-            code: data.linkTypeCode,
-            name: data.name,
-            categoryId: data.id,
-            activityCode: data.linkTypeCode
-        });
+
+        let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
+        let params = homeModule.paramsNavigate(data);
+        navigate(router, { ...params });
     };
 
     renderItems = () => {
         const { channelList } = channelModules;
         let itemViews = [];
-        channelList.map((value, index) => {
+        // 5个
+        channelList.slice(0, 5).map((value, index) => {
             itemViews.push(<Item key={index} data={value} onPress={(data) => {
                 this._onItemPress(data);
             }}/>);
@@ -101,7 +98,7 @@ const styles = StyleSheet.create({
     name: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(11),
-        marginBottom:px2dp(10)
+        marginBottom: px2dp(10)
     }
 });
 
