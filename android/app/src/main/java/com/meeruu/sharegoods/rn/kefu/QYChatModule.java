@@ -25,6 +25,7 @@ import com.qiyukf.unicorn.api.pop.POPManager;
 import com.qiyukf.unicorn.api.pop.Session;
 import com.qiyukf.unicorn.api.pop.ShopInfo;
 
+import java.util.Collections;
 import java.util.List;
 
 public class QYChatModule extends ReactContextBaseJavaModule {

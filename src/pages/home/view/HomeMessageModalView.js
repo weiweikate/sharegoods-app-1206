@@ -5,7 +5,7 @@
 
 'use strict';
 
-import React,{PureComponent} from 'react';
+import React from 'react';
 
 import {
     StyleSheet,
@@ -21,6 +21,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import CommModal from '../../../comm/components/CommModal';
 import { MRText as Text } from '../../../components/ui/index';
 import res from '../res/index';
+
 const { px2dp } = ScreenUtils;
 
 const closeImg = res.button.cancel_white_circle;
@@ -30,16 +31,19 @@ import XQSwiper from '../../../components/ui/XGSwiper';
 import DesignRule from '../../../constants/DesignRule';
 import HomeModalManager from '../manager/HomeModalManager';
 import { observer } from 'mobx-react';
-const {autoSizeWidth} = ScreenUtils;
+
+const { autoSizeWidth } = ScreenUtils;
 import ImageLoad from '@mr/image-placeholder';
 import { homeModule } from '../model/Modules';
 import { navigate } from '../../../navigation/RouterMap';
+
 @observer
-export default class HomeMessageModalView extends PureComponent {
+export default class HomeMessageModalView extends React.Component {
     state = {
-        messageIndex : 0
-    }
-    constructor(props){
+        messageIndex: 0
+    };
+
+    constructor(props) {
         super(props);
     }
 
@@ -71,7 +75,7 @@ export default class HomeMessageModalView extends PureComponent {
 
     messageRender(item, index) {
         return (
-            <View key={'message'+index} onStartShouldSetResponder={() => true}>
+            <View key={'message' + index} onStartShouldSetResponder={() => true}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ showsVerticalScrollIndicator: false }}>
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
@@ -95,9 +99,8 @@ export default class HomeMessageModalView extends PureComponent {
         );
     }
 
-
-    render(){
-        let dataSource =  HomeModalManager.homeMessage || [];
+    render() {
+        let dataSource = HomeModalManager.homeMessage || [];
         return (
             <CommModal ref={(ref) => {
                 this.messageModal = ref;
@@ -137,11 +140,12 @@ export default class HomeMessageModalView extends PureComponent {
 
 
 @observer
-export  class HomeAdModal extends PureComponent {
+export class HomeAdModal extends React.Component {
     state = {
-        messageIndex : 0
-    }
-    constructor(props){
+        messageIndex: 0
+    };
+
+    constructor(props) {
         super(props);
     }
 
@@ -149,15 +153,15 @@ export  class HomeAdModal extends PureComponent {
         let data = HomeModalManager.AdData || {};
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
-        if (router){
+        if (router) {
             navigate(router, params);
         }
         HomeModalManager.closeAd();
         //页面跳转
-    }
+    };
 
-    render(){
-        let  AdData = HomeModalManager.AdData || {}
+    render() {
+        let AdData = HomeModalManager.AdData || {};
         let image = AdData.image || '';
         return (
             <CommModal ref={(ref) => {
@@ -167,16 +171,21 @@ export  class HomeAdModal extends PureComponent {
                        visible={HomeModalManager.isShowAd && HomeModalManager.isHome}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <View style={{ flex: 1 }}/>
-                    <TouchableOpacity onPress={()=> {this.gotoPage()}}>
-                        <ImageLoad style={{width: autoSizeWidth(310), height: autoSizeWidth(410)}}
+                    <TouchableOpacity onPress={() => {
+                        this.gotoPage();
+                    }}>
+                        <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410) }}
                                    source={{ uri: image }}
                                    resizeMode={'contain'}
                         >
                         </ImageLoad>
                     </TouchableOpacity>
                     <View style={{ flex: 1 }}>
-                        <TouchableOpacity onPress={()=> {HomeModalManager.closeAd()}} style = {{marginTop: autoSizeWidth(25)}}>
-                            <Image source={closeImg} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>
+                        <TouchableOpacity onPress={() => {
+                            HomeModalManager.closeAd();
+                        }} style={{ marginTop: autoSizeWidth(25) }}>
+                            <Image source={closeImg} style={{ height: autoSizeWidth(24), width: autoSizeWidth(24) }}
+                                   resizeMode={'stretch'}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -184,6 +193,7 @@ export  class HomeAdModal extends PureComponent {
         );
     }
 }
+
 const styles = StyleSheet.create({
     messageCloseStyle: {
         width: px2dp(24),
@@ -201,5 +211,5 @@ const styles = StyleSheet.create({
         width: px2dp(10),
         height: px2dp(10),
         borderRadius: px2dp(5)
-    },
-})
+    }
+});
