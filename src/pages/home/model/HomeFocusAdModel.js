@@ -1,34 +1,21 @@
-import { observable, flow, action, computed } from 'mobx';
+import { observable, flow, action } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
-import { get, save } from '@mr/rn-store';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
-const kHomeFocusStore = '@home/kHomeFocusStore';
 const { px2dp } = ScreenUtils;
 const kAdWidth = (ScreenUtils.width - px2dp(30)) / 2 - 0.5;
 const kAdHeight = kAdWidth * (80 / 170);
 
 class HomeFocusAdModel {
     @observable ad = [];
+    @observable foucusHeight = 0;
 
-    imgUrls = [];
-
-    @computed get adHeight() {
-        return kAdHeight * 2 + px2dp(4);
-    }
-
-    @action loadAdList = flow(function* (isCache) {
+    @action loadAdList = flow(function* () {
         try {
-            if (isCache) {
-                const storeRes = yield get(kHomeFocusStore);
-                if (storeRes) {
-                    this.ad = storeRes || [];
-                }
-            }
             const res = yield HomeApi.getHomeData({ type: homeType.focusGrid });
             this.ad = res.data || [];
-            save(kHomeFocusStore, res.data);
+            this.foucusHeight = this.ad.length > 0 ? kAdHeight * 2 + px2dp(4) : 0;
         } catch (error) {
             console.log(error);
         }
