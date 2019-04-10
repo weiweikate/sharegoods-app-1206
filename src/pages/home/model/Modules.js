@@ -53,6 +53,7 @@ class HomeModule {
             productCode: data.linkTypeCode,
             productType: productType,
             storeCode: data.linkTypeCode,
+            categoryId: data.linkTypeCode,
             uri: data.linkTypeCode,
             id: data.id,
             code: data.linkTypeCode

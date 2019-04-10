@@ -1,4 +1,4 @@
-import { observable, flow, action } from 'mobx';
+import { observable, flow, action, computed } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -10,9 +10,18 @@ const bannerWidth = ScreenUtils.width;
 class HomeExpandBnnerModel {
     @observable banner = [];
     @observable adHeights = new Map();
-    @observable expandHeight = 0;
 
     imgUrls = [];
+
+    @computed get getExpandHeight() {
+        let h = 0;
+        this.adHeights.forEach((value, key, map) => {
+            if (this.imgUrls.indexOf(key) >= 0 && value > 0) {
+                h += value + px2dp(15);
+            }
+        });
+        return h;
+    }
 
     @action loadBannerList = flow(function* () {
         try {
@@ -25,7 +34,6 @@ class HomeExpandBnnerModel {
     });
 
     handleExpnadHeight = (list) => {
-        this.expandHeight = 0;
         this.imgUrls = [];
         if (list.length > 0) {
             list.map((val, index) => {
@@ -35,14 +43,11 @@ class HomeExpandBnnerModel {
                     Image.getSize(url, (width, height) => {
                         let h = (bannerWidth * height) / width;
                         this.adHeights.set(url, h);
-                        this.adHeights.forEach((value, key, map) => {
-                            if (this.imgUrls.indexOf(key) >= 0 && value > 0) {
-                                this.expandHeight += value + px2dp(15);
-                            }
-                        });
                     });
                 }
             });
+        } else {
+            this.adHeights.clear();
         }
     };
 }
