@@ -38,6 +38,9 @@ export default class HomeCategoryView extends Component {
 
     render() {
         const { categoryList } = categoryModule;
+        if (categoryList.length === 0) {
+            return null;
+        }
         let len = 5;
         if (categoryList.length > 0) {
             len = categoryList.length;
