@@ -5,7 +5,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
 const kAdWidth = (ScreenUtils.width - px2dp(30)) / 2 - 0.5;
-const kAdHeight = kAdWidth * (80 / 170);
+export const kAdHeight = kAdWidth * (80 / 170);
 
 class HomeFocusAdModel {
     @observable ad = [];
