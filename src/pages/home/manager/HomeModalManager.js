@@ -132,8 +132,9 @@ class HomeModalManager {
     @action
     checkShowAlert  = flow(function* () {
         try {
-            let {forceUpdate, version, upgrade} = this.versionData;
-            if (upgrade === 1 && this.versionData){
+            let versionData = this.versionData || {}
+            let {forceUpdate, version, upgrade} = versionData;
+            if ( this.versionData && upgrade === 1){
                 let storage_version = yield AsyncStorage.getItem('isToUpdate')
                 if (storage_version !== version || forceUpdate === 1) {
                     //安卓需要判断是否有apk存在
