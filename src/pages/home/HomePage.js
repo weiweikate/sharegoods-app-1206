@@ -99,11 +99,10 @@ class HomePage extends BasePage {
                 dim.height = channelHeight;
                 break;
             case homeType.expandBanner:
-                console.log('------' + homeExpandBnnerModel.expandHeight);
-                dim.height = homeExpandBnnerModel.expandHeight;
+                dim.height = homeExpandBnnerModel.getExpandHeight;
                 break;
             case homeType.focusGrid:
-                dim.height = foucusHeight;
+                dim.height = foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(5) : px2dp(10));
                 break;
             case homeType.limitGo:
                 dim.height = limitGoModule.limitHeight;
@@ -312,7 +311,7 @@ class HomePage extends BasePage {
     };
 
     render() {
-        console.log('getBanner render', homeExpandBnnerModel.adHeight, limitGoModule.limitHeight); //千万别去掉
+        console.log('getBanner render', homeExpandBnnerModel.getExpandHeight, limitGoModule.limitHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (

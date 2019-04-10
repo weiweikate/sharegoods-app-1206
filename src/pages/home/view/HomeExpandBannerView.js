@@ -30,17 +30,22 @@ export default class HomeExpandBannerView extends Component {
             return null;
         }
         let items = [];
+        console.log('-----', 'render');
         banner.map((val, index) => {
             let url = val.image;
-            items.push(
-                <TouchableWithoutFeedback onPress={() => this._adAction(val)} key={'banner' + index}>
-                    <Image
-                        style={[styles.bannerImage, { height: adHeights.get(url) }]}
-                        source={{ uri: url }}/>
-                </TouchableWithoutFeedback>
-            );
+            let imgHeight = adHeights.get(url);
+            console.log('url------' + url + '------' + imgHeight);
+            if (imgHeight) {
+                items.push(
+                    <TouchableWithoutFeedback onPress={() => this._adAction(val)} key={'banner' + index}>
+                        <Image
+                            style={[styles.bannerImage, { height: imgHeight }]}
+                            source={{ uri: url }}/>
+                    </TouchableWithoutFeedback>
+                );
+            }
         });
-        return <View style={{ height: homeExpandBnnerModel.bannerHeight }}>{items}</View>;
+        return <View>{items}</View>;
     }
 
     render() {
