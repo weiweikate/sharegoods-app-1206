@@ -10,17 +10,18 @@ const bannerWidth = ScreenUtils.width;
 class HomeExpandBnnerModel {
     @observable banner = [];
     @observable adHeights = new Map();
+    @observable bannerHeight = 0;
 
     imgUrls = [];
 
-    @computed get bannerHeight() {
+    @action getBannerHeight() {
         let h = 0;
         this.adHeights.forEach((value, key, map) => {
             if (this.imgUrls.indexOf(key) >= 0 && value > 0) {
                 h += value + px2dp(15);
             }
         });
-        return h;
+        this.bannerHeight = h ;
     }
 
     @action loadBannerList = flow(function* () {
@@ -43,10 +44,12 @@ class HomeExpandBnnerModel {
                     Image.getSize(url, (width, height) => {
                         let h = (bannerWidth * height) / width;
                         this.adHeights.set(url, h);
+                        this.getBannerHeight();
                     });
                 }
             });
         }
+            this.getBannerHeight();
     };
 }
 
