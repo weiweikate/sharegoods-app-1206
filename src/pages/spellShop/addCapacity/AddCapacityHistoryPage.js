@@ -153,6 +153,9 @@ export class AddCapacityHistoryPage extends BasePage {
         return (
             <View style={styles.itemView}>
                 <NoMoreClick style={styles.itemContentView} onPress={() => {
+                    if (status !== 2) {
+                        return;
+                    }
                     this.$navigate(RouterMap.PaymentPage, {
                         platformOrderNo: orderNo,
                         amounts: price,
