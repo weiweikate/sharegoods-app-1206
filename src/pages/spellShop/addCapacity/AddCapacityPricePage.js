@@ -129,7 +129,7 @@ export class AddCapacityPricePage extends BasePage {
         const { isSelected, personNum, discountPrice, price, invalid } = item;
         const itemColor = isSelected ? DesignRule.white : DesignRule.textColor_mainTitle;
         const bgStyle = invalid ? { backgroundColor: DesignRule.bgColor_grayHeader } :
-            (isSelected ? { backgroundColor: DesignRule.bgColor_grayHeader } :
+            (isSelected ? { backgroundColor: DesignRule.mainColor } :
                     {
                         borderWidth: 1,
                         borderColor: DesignRule.lineColor_inWhiteBg
