@@ -16,7 +16,7 @@ export class AddCapacitySuccessPage extends BasePage {
     };
 
     $NavBarLeftPressed = () => {
-        this.$navigateBackToStore();
+        this.$navigateBack();
     };
 
     _render() {

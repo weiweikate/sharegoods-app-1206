@@ -79,15 +79,14 @@ export default class DownPricePage extends BasePage {
                 console.log('-----' + linkTypeCode);
                 setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
-                });
+                })
+
             }
         );
     }
-
     componentWillUnmount() {
         this.$loadingDismiss();
     }
-
     /**
      * 渲染底部组列表
      * @param sections 所有组数据
