@@ -31,7 +31,6 @@ export class LimitGoModules {
     @action loadLimitGo = flow(function* () {
         try {
             const isShowResult = yield HomeApi.isShowLimitGo();
-            console.log('-------' + JSON.stringify(isShowResult));
             if (!isShowResult.data) {
                 this.goodsList = {};
                 this.timeList = [];
