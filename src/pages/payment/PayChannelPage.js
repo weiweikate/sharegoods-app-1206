@@ -38,9 +38,9 @@ export default class ChannelPage extends BasePage {
     constructor(props) {
         super(props);
         // this.remainMoney = parseFloat(this.params.remainMoney);
-        this.state={
-            remainMoney:parseFloat(this.params.remainMoney)
-        }
+        this.state = {
+            remainMoney: isNaN(parseFloat(this.params.remainMoney)) ? 0.0 : parseFloat(this.params.remainMoney)
+        };
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         let name = orderProduct && orderProduct.productName;
         if (name) {
@@ -63,12 +63,12 @@ export default class ChannelPage extends BasePage {
 
     componentDidMount() {
         AppState.addEventListener("change", this._handleAppStateChange);
-        const {platformOrderNo,bizType,modeType,name,amounts} = payment
-        payment.checkOrderStatus(platformOrderNo,bizType,modeType,amounts,name).then(result=>{
+        const { platformOrderNo, bizType, modeType, name, amounts } = payment;
+        payment.checkOrderStatus(platformOrderNo, bizType, modeType, amounts, name).then(result => {
             this.setState({
-                remainMoney:Math.floor(result.unpaidAmount * 100) / 100
-            })
-        })
+                remainMoney: Math.floor(result.unpaidAmount * 100) / 100
+            });
+        });
     }
 
     componentWillUnmount() {
@@ -95,7 +95,7 @@ export default class ChannelPage extends BasePage {
             .then(result => {
                 //以为借口返回的剩余未支付为准
                 payAmount = Math.floor(result.unpaidAmount * 100) / 100;
-                    console.log("checkOrderStatus", result);
+                console.log("checkOrderStatus", result);
                 let detailList = [];
                 if (result.code === payStatus.payNo || result.code === payStatus.payNeedThrid) {
                     if (payment.selctedPayType === paymentType.alipay) {
@@ -181,7 +181,13 @@ export default class ChannelPage extends BasePage {
                 payment.isGoToPay = false;
             }
             this.orderTime = (new Date().getTime()) / 1000;
-            this.$navigate(RouterMap.PaymentCheckPage);//去等待结果页面
+            //去等待结果页面
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type: "ReplacePayScreen",
+                routeName: RouterMap.PaymentCheckPage,
+                params: { payResult: PaymentResult.success }
+            });
             // this._checkOrder();
             // this.setState({ orderChecking: true });
         }

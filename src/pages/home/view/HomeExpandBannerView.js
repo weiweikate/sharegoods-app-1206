@@ -2,30 +2,16 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { homeModule } from '../model/Modules';
-import { homePoint } from '../HomeTypes';
 import { homeExpandBnnerModel } from '../model/HomeExpandBnnerModel';
 import { observer } from 'mobx-react';
-import { track, trackEvent } from '../../../utils/SensorsTrack';
 import bridge from '../../../utils/bridge';
 
 const { px2dp } = ScreenUtils;
 
 const defaultBannerHeight = px2dp(10);
 
-const radius = (5);
-
 @observer
 export default class HomeExpandBannerView extends Component {
-
-    constructor(props) {
-        super(props);
-        this.adRadius = [
-            { borderTopLeftRadius: radius, overflow: 'hidden' },
-            { borderTopRightRadius: radius, overflow: 'hidden' },
-            { borderBottomLeftRadius: radius, overflow: 'hidden' },
-            { borderBottomRightRadius: radius, overflow: 'hidden' }
-        ];
-    }
 
     _adAction(value) {
         if (!value) {
@@ -54,7 +40,7 @@ export default class HomeExpandBannerView extends Component {
                 </TouchableWithoutFeedback>
             );
         });
-        return <View>{items}</View>;
+        return <View style={{ height: homeExpandBnnerModel.bannerHeight }}>{items}</View>;
     }
 
     render() {

@@ -24,45 +24,25 @@
 }
 
 -(void)initBtn{
-  UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc]
-                                                  
-                                                  initWithTarget:self
-                                                  
-                                                  action:@selector(handlePan:)];
+  UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
    [self addGestureRecognizer:panGestureRecognizer];
 }
 - (void) handlePan:(UIPanGestureRecognizer*) recognizer{
   CGPoint translation = [recognizer translationInView:[UIApplication sharedApplication].delegate.window.rootViewController.view];
-  
   CGFloat centerX=recognizer.view.center.x+ translation.x;
-  
   CGFloat thecenter=0;
-  
-  recognizer.view.center=CGPointMake(centerX,
-                                     
-                                     recognizer.view.center.y+ translation.y);
-  
+  recognizer.view.center=CGPointMake(centerX,recognizer.view.center.y+ translation.y);
   [recognizer setTranslation:CGPointZero inView:self.window.rootViewController.view];
   
   if(recognizer.state==UIGestureRecognizerStateEnded|| recognizer.state==UIGestureRecognizerStateCancelled) {
-    
     if(centerX>KScreenWidth/2) {
-      
       thecenter=KScreenWidth-50/2;
-      
     }else{
-      
-      thecenter=50/2;
-      
+      thecenter=70/2;
     }
     [UIView animateWithDuration:0.3 animations:^{
-      
-      recognizer.view.center=CGPointMake(thecenter,
-                                         
-                                         recognizer.view.center.y+ translation.y);
-      
+      recognizer.view.center=CGPointMake(thecenter, recognizer.view.center.y+ translation.y);
     }];
-    
   }
 }
 

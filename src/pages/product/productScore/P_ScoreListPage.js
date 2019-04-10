@@ -207,7 +207,7 @@ export default class P_ScoreListPage extends BasePage {
                         desc: secondName,
                         pictureUrlString: imgUrl,
                         urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
-                        note: `¥${minPrice}-¥${maxPrice}`
+                        note: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`
                     }
                 });
                 break;

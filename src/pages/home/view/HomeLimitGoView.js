@@ -78,8 +78,8 @@ export default class HomeLimitGoView extends Component {
         const goods = limitGoModule.goodsList[id];
         goods.map((value, index) => {
             goodsItems.push(
-                <TouchableWithoutFeedback onPress={() => this._goToDetail(value)}>
-                    <View key={index}>
+                <TouchableWithoutFeedback key={index} onPress={() => this._goToDetail(value)}>
+                    <View>
                         <GoodsItem key={index} item={value}/>
                         <View style={{ height: px2dp(10) }}/>
                     </View>

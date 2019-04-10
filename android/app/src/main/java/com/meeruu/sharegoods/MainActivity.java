@@ -1,7 +1,6 @@
 package com.meeruu.sharegoods;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -99,11 +98,14 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onSuccess(String result) {
                     JSONArray array = JSON.parseArray(result);
-                    if (array.size() > 0) {
+                    if (array != null && array.size() > 0) {
                         JSONObject object = array.getJSONObject(0);
                         adUrl = object.getString("linkTypeCode");
                         SPCacheUtils.put("adBgImg", object.getString("image"));
                         SPCacheUtils.put("adImg", object.getString("assistantImage"));
+                    } else {
+                        SPCacheUtils.put("adBgImg", "");
+                        SPCacheUtils.put("adImg", "");
                     }
                 }
             });
