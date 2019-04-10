@@ -50,7 +50,7 @@ export default class PaymentPage extends BasePage {
     };
 
     goToPay = () => {
-        const { bizType, modeType, platformOrderNo, amounts,oneCoupon } = payment;
+        const { bizType, modeType, platformOrderNo, amounts, oneCoupon } = payment;
         payment.checkOrderStatus(platformOrderNo, bizType, modeType, amounts).then(result => {
             if (result.code === payStatus.payNo) {
                 if (payment.amounts <= 0) {
@@ -59,8 +59,8 @@ export default class PaymentPage extends BasePage {
                 }
                 //是否选择余额
                 const { selectedBalace } = payment;
-                if (!selectedBalace ) {//当一元劵全部可以抵消掉的时候
-                    if ( (bizType === 1 && amounts - oneCoupon > 0 ) || (bizType !== 1)) {
+                if (!selectedBalace && bizType !== 1 && oneCoupon <= 0) {//当一元劵全部可以抵消掉的时候
+                    if ((bizType === 1 && amounts - oneCoupon > 0) || (bizType !== 1)) {
                         this.$navigate("payment/ChannelPage");
                         return;
                     }
@@ -108,21 +108,22 @@ export default class PaymentPage extends BasePage {
         //减去优惠券后
         channelAmount = (channelAmount - oneCoupon * 1) > 0 ? (channelAmount - oneCoupon * 1) : 0;
 
-        if (channelAmount > 0) {
-            if (selectBance) {
+
+        if (selectBance) {
+            if (channelAmount > 0) {
                 if (channelAmount > availableBalance) {
                     detailList.push({
                         payType: paymentType.balance,
                         payAmount: availableBalance
                     });
-                } else {
+                }
+            } else {
+                if (channelAmount > 0) {
                     detailList.push({
                         payType: paymentType.balance,
                         payAmount: channelAmount
                     });
                 }
-            } else {
-                this.$toastShow("未选择平台支付");
             }
         }
 
@@ -214,7 +215,7 @@ export default class PaymentPage extends BasePage {
 
         //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
-            <View style={styles.content}>
+            <View style={[styles.content,payment.oneCoupon>0?{height:px2dp(150)}:{height:px2dp(100)}]}>
                 <View style={styles.row}>
                     <Text style={styles.name} numberOfLines={1}>订单名称：{name}</Text>
                 </View>
@@ -223,8 +224,17 @@ export default class PaymentPage extends BasePage {
                     <Text style={styles.text}>需支付金额：</Text>
                     <Text style={styles.money}>￥{payment.amounts}</Text>
                 </View>
+                <View style={styles.line}/>
+                {
+                    payment.oneCoupon > 0 ? <View style={styles.row}>
+                        <Text style={styles.text}>一元劵抵扣：</Text>
+                        <Text style={styles.money}>￥{payment.oneCoupon}</Text>
+                    </View> : null
+                }
+
             </View>
-            <TouchableWithoutFeedback disabled={availableBalance <= 0 || channelAmount <= 0} onPress={() => this._selectedBalance()}>
+            <TouchableWithoutFeedback disabled={availableBalance <= 0 || channelAmount <= 0}
+                                      onPress={() => this._selectedBalance()}>
                 <View style={styles.balanceContent}>
                     <Image style={styles.iconBalance} source={res.balance}/>
                     <Text style={styles.text}>现金账户</Text>
@@ -273,7 +283,7 @@ const styles = StyleSheet.create({
         marginTop: px2dp(10),
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
-        height: px2dp(100),
+        height: px2dp(150),
         backgroundColor: whiteBg,
         borderRadius: 5
     },
