@@ -44,6 +44,7 @@ const {
 export default class SignInPage extends BasePage {
     constructor(props) {
         super(props);
+        this.first = true; //初次进入
         this.signinRequesting = false;
         this.exchangeing = false;
         this.state = {
@@ -88,7 +89,14 @@ export default class SignInPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                this.loadPageData();
+                if(user.token){
+                    this.loadPageData();
+                }else {
+                    if(this.first){
+                        this.loadPageData();
+                        this.first = false;
+                    }
+                }
             }
         );
     }

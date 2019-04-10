@@ -161,7 +161,7 @@ export default class TopicDetailHeaderView extends Component {
                         </TouchableOpacity>
                         <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     </View> : null}
-                <NoMoreClick style={styles.serviceView} onPress={activityType !== 3 && serviceAction}>
+                <NoMoreClick style={styles.serviceView} onPress={activityType !== 3 ? serviceAction : null}>
                     <Text style={styles.serviceNameText}>服务</Text>
                     <Text style={styles.serviceValueText} numberOfLines={1}>
                         {`质量保障·48小时发货${(restrictionsTT & 4) === 4 ? `·7天退换` : ``}${(restrictionsTT & 8) === 8 ? `·节假日发货` : ``}`}

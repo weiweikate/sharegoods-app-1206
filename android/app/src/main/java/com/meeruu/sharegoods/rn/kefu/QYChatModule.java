@@ -25,6 +25,7 @@ import com.qiyukf.unicorn.api.pop.POPManager;
 import com.qiyukf.unicorn.api.pop.Session;
 import com.qiyukf.unicorn.api.pop.ShopInfo;
 
+import java.util.Collections;
 import java.util.List;
 
 public class QYChatModule extends ReactContextBaseJavaModule {
@@ -155,7 +156,6 @@ public class QYChatModule extends ReactContextBaseJavaModule {
          * 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
          */
         ConsultSource source = new ConsultSource("mine/helper", title, "");
-        source.isSendProductonRobot = true;
         source.shopId = params.getString("shopId");
         ReadableMap map = params.getMap("data");
         if (map.hasKey("urlString")) {

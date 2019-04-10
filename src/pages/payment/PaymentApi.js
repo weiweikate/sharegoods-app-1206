@@ -8,14 +8,17 @@ const api = {
     //平台
     balance: ['/pay/sgpay'],
     //检查订单状态
-    payStatus: ['/payV2/status'],
+    // payStatus: ['/payV2/status'],
+    payStatus: ['/pay/pay/payOrder/info'],
     //平台余额支付接口
-    platformPay: ['/payV2/platform'],
+    // platformPay: ['/payV2/platform'],
+    platformPay: ['/pay/pay/payment'],
     //检查订单状态:
-    check: ['/payV2/check', {method:'get'}],
-    // check:['/pay/pay/payorder'],
+    // check: ['/payV2/check', {method:'get'}],
+    check:['/pay/pay/payOrder'],
     //支付宝支付v2
-    alipay: ['/payV2/alipay'],
+    // alipay: ['/payV2/alipay'],
+    alipay: ['/pay/pay/payment'],
     //微信支付v2
     wechatPay: ['/payV2/wxpay']
 };

@@ -1,7 +1,7 @@
 {
     "showDebugPanel": true,
-    "envType": "qa",
-    "isDevHotUpdate": true,
+    "envType": "devOpen",
+    "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
         "dev_mock": {
@@ -150,6 +150,10 @@
         "麻晓刚": {
             "name": "麻晓刚",
             "host": "http://172.16.10.43:18088/gateway"
+        },
+        "devOpen": {
+            "name": "devOpen",
+            "host": "http://devopenapi.sharegoodsmall.com/gateway",
         }
     }
 }

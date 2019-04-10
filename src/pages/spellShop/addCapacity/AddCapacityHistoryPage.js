@@ -129,7 +129,7 @@ export class AddCapacityHistoryPage extends BasePage {
     };
 
     _renderItem = ({ item }) => {
-        const { payTime, personNum, price, status, expandId } = item;
+        const { payTime, personNum, price, status, expandId, orderNo, tokenCoinAmount } = item;
         let explainText = '';
         let textColor = status === 2 ? DesignRule.textColor_redWarn : (status === 3 ? DesignRule.color_green : DesignRule.textColor_instruction);
         switch (status) {
@@ -153,6 +153,17 @@ export class AddCapacityHistoryPage extends BasePage {
         return (
             <View style={styles.itemView}>
                 <NoMoreClick style={styles.itemContentView} onPress={() => {
+                    if (status !== 2) {
+                        return;
+                    }
+                    this.$navigate(RouterMap.PaymentPage, {
+                        platformOrderNo: orderNo,
+                        amounts: price,
+                        orderProductList: [{ productName: '拼店扩容' }],
+                        bizType: 1,
+                        modeType: 1,
+                        oneCoupon: tokenCoinAmount
+                    });
                 }}>
                     <View style={styles.itemVerticalView}>
                         <Text style={styles.contentText}>{`店铺扩容${personNum || ''}人`}</Text>

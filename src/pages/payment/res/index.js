@@ -15,5 +15,6 @@ const index = {
     pay_result_loading: require('./pay_result_loading.png'),
     pay_result_success: require('./pay_result_success.png'),
     pay_result_timeout: require('./pay_result_timeout.png'),
+    pay_check_statue:require('./tongyong_icon_dengdai_nor.png')
 };
 export default index;

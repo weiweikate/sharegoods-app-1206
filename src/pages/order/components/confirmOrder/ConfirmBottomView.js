@@ -32,7 +32,7 @@ export default class ConfirmBottomView extends Component {
                             style={styles.commitAmountStyle}/>
                     </View>
                     <NoMoreClick
-                        style={styles.commitTouStyle}
+                        style={[styles.commitTouStyle,{backgroundColor: StringUtils.isEmpty(confirmOrderModel.err)?DesignRule.mainColor:DesignRule.textColor_placeholder}]}
                         onPress={() => {
                             bridge.showLoading('提交中...');
                             setTimeout(() => {
@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
         marginRight: ScreenUtils.autoSizeWidth(15)
     },
     commitTouStyle: {
-        backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center',
         height: ScreenUtils.autoSizeHeight(49)

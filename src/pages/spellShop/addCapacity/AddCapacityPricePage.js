@@ -70,6 +70,15 @@ export class AddCapacityPricePage extends BasePage {
                 expandId: id,
                 tokenCoinCount: amount
             }).then((data) => {
+
+                //假支付
+                // const dataTemp = data.data || {};
+                // SpellShopApi.user_pay({ orderNo: dataTemp.orderNo, tokenCoin: 1 }).then(() => {
+                //     this.$navigate(RouterMap.AddCapacitySuccessPage, { storeData: this.params.storeData });
+                // }).catch(() => {
+                //     this.$toastShow('支付失败');
+                // });
+
                 const { orderNo, price } = data.data || {};
                 this.$navigate(RouterMap.PaymentPage, {
                     platformOrderNo: orderNo,
@@ -129,7 +138,7 @@ export class AddCapacityPricePage extends BasePage {
         const { isSelected, personNum, discountPrice, price, invalid } = item;
         const itemColor = isSelected ? DesignRule.white : DesignRule.textColor_mainTitle;
         const bgStyle = invalid ? { backgroundColor: DesignRule.bgColor_grayHeader } :
-            (isSelected ? { backgroundColor: DesignRule.bgColor_grayHeader } :
+            (isSelected ? { backgroundColor: DesignRule.mainColor } :
                     {
                         borderWidth: 1,
                         borderColor: DesignRule.lineColor_inWhiteBg
@@ -159,24 +168,24 @@ export class AddCapacityPricePage extends BasePage {
     };
 
     _listFooterComponent = () => {
-        const { amount } = this.state;
+        let { amount } = this.state;
         const { discountPrice, price } = this.state.selectedItem;
         let discountPriceS = StringUtils.isNoEmpty(discountPrice) ? parseFloat(discountPrice || 0) : parseFloat(price || 0);
-        let amountS = parseFloat(amount || 0);
+        amount = parseFloat(amount || 0);
         //券大于钱
-        if (amountS > discountPriceS) {
+        if (amount > discountPriceS) {
             //券设置成钱的正数量
-            amountS = Math.floor(discountPriceS);
+            amount = Math.floor(discountPriceS);
         }
         //钱减去券的数量
-        let money = discountPriceS - amountS;
+        let money = discountPriceS - amount;
 
         return (
             <View style={styles.footerView}>
                 <NoMoreClick style={styles.footerItemView} onPress={this._oneMoneyAction}>
                     <Text style={styles.footerItemLeftText}>1元现金券</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={styles.footerOneMoneyText}>{amountS ? `-¥${amountS}` : '请选择'}</Text>
+                        <Text style={styles.footerOneMoneyText}>{amount ? `-¥${amount}` : '请选择'}</Text>
                         <Image source={ArrowImg}/>
                     </View>
                 </NoMoreClick>

@@ -250,6 +250,7 @@ class ConfirmOrderModel {
             return;
         }
         if(!StringUtils.isEmpty(this.err)){
+            bridge.hiddenLoading();
             return;
         }
         let baseParams = {

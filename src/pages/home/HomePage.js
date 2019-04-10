@@ -80,8 +80,10 @@ class HomePage extends BasePage {
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
+        const { channelHeight } = channelModules;
         const { recommendList } = recommendModule;
         const { subjectHeight } = subjectModule;
+        const { foucusHeight } = homeFocusAdModel;
 
         switch (type) {
             case homeType.category:
@@ -94,13 +96,13 @@ class HomePage extends BasePage {
                 dim.height = user.isLogin ? px2dp(44) : 0;
                 break;
             case homeType.channel:
-                dim.height = channelModules.channelHeight;
+                dim.height = channelHeight;
                 break;
             case homeType.expandBanner:
-                dim.height = homeExpandBnnerModel.bannerHeight;
+                dim.height = homeExpandBnnerModel.getExpandHeight;
                 break;
             case homeType.focusGrid:
-                dim.height = homeFocusAdModel.adHeight;
+                dim.height = foucusHeight + (homeExpandBnnerModel.banner.length > 0 ? px2dp(5) : px2dp(10));
                 break;
             case homeType.limitGo:
                 dim.height = limitGoModule.limitHeight;
@@ -309,7 +311,7 @@ class HomePage extends BasePage {
     };
 
     render() {
-        console.log('getBanner render', homeExpandBnnerModel.adHeight, limitGoModule.limitHeight); //千万别去掉
+        console.log('getBanner render', homeExpandBnnerModel.getExpandHeight, limitGoModule.limitHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
@@ -347,7 +349,9 @@ class HomePage extends BasePage {
                 }}/>
                 <HomeAdModal/>
                 <HomeMessageModalView/>
-                <GuideModal onShow={()=> {this.recyclerListView.scrollToTop()}}/>
+                <GuideModal onShow={() => {
+                    this.recyclerListView.scrollToTop();
+                }}/>
                 <VersionUpdateModalView/>
             </View>
         );
