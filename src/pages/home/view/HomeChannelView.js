@@ -45,7 +45,6 @@ export default class HomeChannelView extends Component {
 
     _onItemPress = (data) => {
         const { navigate } = this.props;
-
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
         navigate(router, { ...params });

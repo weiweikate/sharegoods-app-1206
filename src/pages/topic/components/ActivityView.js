@@ -13,7 +13,7 @@ import {
 export default class MyShop_RecruitPage extends Component {
     static propTypes = {
         activityData: PropTypes.object.isRequired,
-        activityType: PropTypes.object.isRequired
+        activityType: PropTypes.number.isRequired
     };
 
     constructor(props) {

@@ -45,12 +45,7 @@ export default class HomeFocusAdView extends Component {
 
     _renderAd() {
         const { ad } = homeFocusAdModel;
-        let len = 4;
-        if (ad.length > 0) {
-            len = ad.length;
-            // 4个
-            len = len > 4 ? 4 : len;
-        }
+        let len = ad.length > 4 ? 4 : ad.length;
         let items = [];
         for (let i = 0; i < len; i++) {
             items.push(<TouchableWithoutFeedback key={i} onPress={() => this._adAction(ad[i])}>
