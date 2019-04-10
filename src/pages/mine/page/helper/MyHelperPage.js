@@ -38,6 +38,7 @@ import { observer } from "mobx-react/native";
 import OssHelper from "../../../../utils/OssHelper";
 import ImageLoad from "@mr/image-placeholder";
 import { beginChatType, QYChatTool } from "../../../../utils/QYModule/QYChatTool";
+import StringUtils from "../../../../utils/StringUtils";
 
 
 @observer
@@ -211,7 +212,9 @@ export default class MyHelperPage extends BasePage {
     }
 
     orderListq(list) {
-        this.$navigate("mine/helper/HelperQuestionListPage", { list });
+        if(StringUtils.isNoEmpty(list)){
+            this.$navigate("mine/helper/HelperQuestionListPage", { list });
+        }
     }
 
     questionfeedBack(type) {
