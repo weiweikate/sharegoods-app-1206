@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
     View,
     ProgressBarAndroid,
-    AsyncStorage,
     Linking
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -15,8 +14,9 @@ import UIText from '../../../components/ui/UIText';
 import DesignRule from '../../../constants/DesignRule';
 import StringUtils from '../../../utils/StringUtils';
 import { observer } from 'mobx-react';
-import { autorun } from "mobx";
+import { autorun } from 'mobx';
 import HomeModalManager from '../manager/HomeModalManager';
+
 @observer
 export default class VersionUpdateModalView extends React.Component {
 
@@ -31,7 +31,7 @@ export default class VersionUpdateModalView extends React.Component {
 
 
     autoRun = autorun(() => {
-        let versionData = HomeModalManager.versionData
+        let versionData = HomeModalManager.versionData || {};
         if (versionData) {
             if (Platform.OS !== 'ios') {
                 this.setState({
@@ -149,7 +149,7 @@ export default class VersionUpdateModalView extends React.Component {
     }
 
     toUpdate = () => {
-        let updateData  = HomeModalManager.versionData;
+        let updateData = HomeModalManager.versionData || {};
         if (Platform.OS === 'ios') {
             // 前往appstore
             if (StringUtils.isEmpty(updateData.url)) {
