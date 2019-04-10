@@ -69,18 +69,20 @@ export class XpDetailPage extends BasePage {
                     }
                     const { pData } = this.xpDetailModel;
                     const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
-                    QYChatTool.beginQYChat({
-                        shopId: shopId,
-                        title: title,
-                        chatType: beginChatType.BEGIN_FROM_PRODUCT,
-                        data: {
-                            title: name,
-                            desc: secondName,
-                            pictureUrlString: imgUrl,
-                            urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
-                            note: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`
-                        }
-                    });
+                    setTimeout(() => {
+                        QYChatTool.beginQYChat({
+                            shopId: shopId,
+                            title: title,
+                            chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                            data: {
+                                title: name,
+                                desc: secondName,
+                                pictureUrlString: imgUrl,
+                                urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
+                                note: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`
+                            }
+                        });
+                    }, 200);
                     break;
             }
         });
