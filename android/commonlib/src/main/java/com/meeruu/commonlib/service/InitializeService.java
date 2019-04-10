@@ -1,5 +1,6 @@
 package com.meeruu.commonlib.service;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
@@ -135,15 +136,15 @@ public class InitializeService extends IntentService {
         ysfOptions.onMessageItemClickListener = new OnMessageItemClickListener() {
             // 响应 url 点击事件
             public void onURLClicked(Context context, String url) {
-                LogUtils.d("======" + url);
+                ((Activity) context).finish();
                 // 打开内置浏览器等动作
-                try {
-                    context.startActivity(new Intent(context, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"))
-                            .putExtra("web_url", url)
-                            .putExtra("url_action", "get"));
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    context.startActivity(new Intent(context, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"))
+//                            .putExtra("web_url", url)
+//                            .putExtra("url_action", "get"));
+//                } catch (ClassNotFoundException e) {
+//                    e.printStackTrace();
+//                }
             }
         };
         return ysfOptions;

@@ -42,6 +42,7 @@ const QYChatTool = {
      * 发起客服，指定特定供应商
      * @param params
      *   {
+     *     routePath:''
      *     urlString:'hzmrwlyxgs-gys222.qiyukf.com', 供应商域名地址 暂时无用
      *         title:'供应商222',  供应商名称  后台给
      *        shopId: "gys222",   供应商id 用户连接供应商 后台传入
@@ -56,6 +57,7 @@ const QYChatTool = {
      *      }
      */
     beginQYChat(params = {
+        routePath: '',
         urlString: '',
         title: '秀购客服',
         shopId: '',
