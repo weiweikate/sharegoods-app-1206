@@ -239,7 +239,7 @@ export default class ProductDetailPage extends BasePage {
                     spuCode: prodCode,
                     spuName: name,
                     priceShareStore: groupPrice,
-                    pricePerCommodity: minPrice !== maxPrice ? `${minPrice}-${maxPrice}` : `${minPrice}`,
+                    pricePerCommodity: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`,
                     priceType: priceType === 2 ? 100 : user.levelRemark
                 });
                 this._getQueryByProductId();
@@ -309,7 +309,7 @@ export default class ProductDetailPage extends BasePage {
                         desc: secondName,
                         pictureUrlString: imgUrl,
                         urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
-                        note: minPrice !== maxPrice ? `${minPrice}-${maxPrice}` : `${minPrice}`
+                        note: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`
                     }
                 });
                 break;
