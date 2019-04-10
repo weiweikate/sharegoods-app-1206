@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -6,6 +6,7 @@ import NoMoreClick from '../../../components/ui/NoMoreClick';
 import DesignRule from '../../../constants/DesignRule';
 import RouterMap from '../../../navigation/RouterMap';
 import res from '../res';
+import { NavigationActions } from 'react-navigation';
 
 const { addCapacitySuccess } = res.addCapacity;
 const { px2dp } = ScreenUtils;
@@ -16,7 +17,16 @@ export class AddCapacitySuccessPage extends BasePage {
     };
 
     $NavBarLeftPressed = () => {
-        this.$navigateBack();
+        this._goHistoryPage();
+    };
+
+    _goHistoryPage = () => {
+        let replace = NavigationActions.replace({
+            key: this.props.navigation.state.key,
+            routeName: RouterMap.AddCapacityHistoryPage,
+            params: {}
+        });
+        this.props.navigation.dispatch(replace);
     };
 
     _render() {
@@ -33,9 +43,7 @@ export class AddCapacitySuccessPage extends BasePage {
                         <Text style={[styles.btnText, { color: DesignRule.textColor_instruction }]}>返回我的店铺</Text>
                     </NoMoreClick>
                     <NoMoreClick style={[styles.btn, { borderColor: DesignRule.mainColor, marginLeft: 20 }]}
-                                 onPress={() => {
-                                     this.$navigate(RouterMap.AddCapacityHistoryPage, { storeData: this.params.storeData });
-                                 }}>
+                                 onPress={this._goHistoryPage}>
                         <Text style={[styles.btnText, { color: DesignRule.mainColor }]}>查看扩容记录</Text>
                     </NoMoreClick>
                 </View>
@@ -47,7 +55,7 @@ export class AddCapacitySuccessPage extends BasePage {
 const styles = StyleSheet.create({
     btn: {
         justifyContent: 'center', alignItems: 'center',
-        borderRadius: 20, height: 40, borderWidth: 1,
+        borderRadius: 20, height: 40, borderWidth: 1
     },
     btnText: {
         fontSize: 15, paddingHorizontal: 15
