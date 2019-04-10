@@ -74,7 +74,7 @@
   [QYCustomUIConfig sharedInstance].customerMessageBubbleNormalImage = [[UIImage imageNamed:@"qipao"] resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
   [QYCustomUIConfig sharedInstance].customerMessageBubblePressedImage = [[UIImage imageNamed:@"qipao"]resizableImageWithCapInsets:UIEdgeInsetsMake(25, 10, 10, 10) resizingMode:UIImageResizingModeStretch];
   [QYCustomUIConfig sharedInstance].serviceMessageHyperLinkColor = [UIColor colorWithHexString:@"#FF0050"];
-  [QYCustomUIConfig sharedInstance].showShopEntrance = YES;
+//  [QYCustomUIConfig sharedInstance].showShopEntrance = YES;
   
 }
 #pragma mark - delegate

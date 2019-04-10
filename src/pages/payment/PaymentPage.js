@@ -50,7 +50,7 @@ export default class PaymentPage extends BasePage {
     };
 
     goToPay = () => {
-        const { bizType, modeType, platformOrderNo, amounts } = payment;
+        const { bizType, modeType, platformOrderNo, amounts,oneCoupon } = payment;
         payment.checkOrderStatus(platformOrderNo, bizType, modeType, amounts).then(result => {
             if (result.code === payStatus.payNo) {
                 if (payment.amounts <= 0) {
@@ -59,9 +59,11 @@ export default class PaymentPage extends BasePage {
                 }
                 //是否选择余额
                 const { selectedBalace } = payment;
-                if (!selectedBalace) {
-                    this.$navigate("payment/ChannelPage");
-                    return;
+                if (!selectedBalace ) {//当一元劵全部可以抵消掉的时候
+                    if ( (bizType === 1 && amounts - oneCoupon > 0 ) || (bizType !== 1)) {
+                        this.$navigate("payment/ChannelPage");
+                        return;
+                    }
                 }
                 //用户设置过交易密码
                 if (user.hadSalePassword) {
@@ -100,7 +102,7 @@ export default class PaymentPage extends BasePage {
         if (bizType === 1 && oneCoupon > 0) {
             detailList.push({
                 payType: paymentType.coupon,
-                payAmount: availableBalance
+                payAmount: oneCoupon
             });
         }
         //减去优惠券后
@@ -131,7 +133,6 @@ export default class PaymentPage extends BasePage {
                 this.$navigate("payment/ChannelPage", { remainMoney: (payment.amounts - channelAmount).toFixed(2) });
                 return;
             }
-
             let replace;
             if (bizType === 1) {
                 //如何为拼店扩容来的支付，支付结果跳转拼店扩容结果页
@@ -195,16 +196,22 @@ export default class PaymentPage extends BasePage {
             params: { index: index ? index : 1 }
         });
         this.props.navigation.dispatch(replace);
+        payment.resetPayment();
     }
 
     _render() {
-        const { selectedBalace, name,bizType,oneCoupon } = payment;
+        const { selectedBalace, name, bizType, oneCoupon } = payment;
         const { showPwd } = this.state;
         let { availableBalance } = user;
         let channelAmount = (payment.amounts).toFixed(2);
-        if (selectedBalace) {
-            channelAmount = (payment.amounts - availableBalance) <= 0 ? 0.00 : (payment.amounts - availableBalance).toFixed(2);
+        //有优惠券先减掉优惠券
+        if (bizType === 1) {
+            channelAmount = channelAmount - oneCoupon * 1 <= 0 ? 0 : channelAmount - oneCoupon * 1;
         }
+        if (selectedBalace) {
+            channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance).toFixed(2);
+        }
+
         //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
             <View style={styles.content}>
@@ -217,7 +224,7 @@ export default class PaymentPage extends BasePage {
                     <Text style={styles.money}>￥{payment.amounts}</Text>
                 </View>
             </View>
-            <TouchableWithoutFeedback disabled={availableBalance <= 0} onPress={() => this._selectedBalance()}>
+            <TouchableWithoutFeedback disabled={availableBalance <= 0 || channelAmount <= 0} onPress={() => this._selectedBalance()}>
                 <View style={styles.balanceContent}>
                     <Image style={styles.iconBalance} source={res.balance}/>
                     <Text style={styles.text}>现金账户</Text>
