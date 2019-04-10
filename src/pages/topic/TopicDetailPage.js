@@ -688,6 +688,7 @@ export default class TopicDetailPage extends BasePage {
                                                    this.$navigate('login/login/LoginPage');
                                                    return;
                                                }
+                                               setTimeout(() => {
                                                    QYChatTool.beginQYChat({
                                                        urlString: '',
                                                        title: '平台客服',
@@ -695,6 +696,7 @@ export default class TopicDetailPage extends BasePage {
                                                        chatType: beginChatType.BEGIN_FROM_OTHER,
                                                        data: {}
                                                    });
+                                               }, 200);
                                                break;
                                        }
                                    });
