@@ -62,30 +62,11 @@ export class XpDetailPage extends BasePage {
                 case 2:
                     this.shareModal.open();
                     break;
-                case 3:
-                    if (!user.isLogin) {
-                        this.$navigate('login/login/LoginPage');
-                        return;
-                    }
-                    const { pData } = this.xpDetailModel;
-                    const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
-                    setTimeout(() => {
-                        QYChatTool.beginQYChat({
-                            shopId: shopId,
-                            title: title,
-                            chatType: beginChatType.BEGIN_FROM_PRODUCT,
-                            data: {
-                                title: name,
-                                desc: secondName,
-                                pictureUrlString: imgUrl,
-                                urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
-                                note: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`
-                            }
-                        });
-                    }, 200);
+                case 4:
+                    this.$navigateBackToHome();
                     break;
             }
-        });
+        }, 2);
     };
 
     _getBasePageStateOptions = () => {
@@ -141,6 +122,26 @@ export class XpDetailPage extends BasePage {
         if (type === 'goGwc') {
             this.$navigate('shopCart/ShopCart', {
                 hiddeLeft: false
+            });
+        } else if (type === 'keFu') {
+            track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
+            if (!user.isLogin) {
+                this.$navigate('login/login/LoginPage');
+                return;
+            }
+            const { pData } = this.xpDetailModel;
+            const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
+            QYChatTool.beginQYChat({
+                shopId: shopId,
+                title: title,
+                chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                data: {
+                    title: name,
+                    desc: secondName,
+                    pictureUrlString: imgUrl,
+                    urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
+                    note: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`
+                }
             });
         } else {
             if (!user.isLogin) {

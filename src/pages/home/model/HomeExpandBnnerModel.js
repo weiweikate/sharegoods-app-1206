@@ -1,4 +1,4 @@
-import { observable, flow, action, computed } from 'mobx';
+import { observable, flow, action } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -21,7 +21,10 @@ class HomeExpandBnnerModel {
                 h += value + px2dp(15);
             }
         });
-        this.bannerHeight = h ;
+        if (h > 0) {
+            h -= px2dp(15);
+        }
+        this.bannerHeight = h;
     }
 
     @action loadBannerList = flow(function* () {
@@ -49,8 +52,9 @@ class HomeExpandBnnerModel {
                 }
             });
         }
-            this.getBannerHeight();
+        this.getBannerHeight();
     };
 }
 
 export const homeExpandBnnerModel = new HomeExpandBnnerModel();
+

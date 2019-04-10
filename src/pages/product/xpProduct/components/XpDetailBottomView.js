@@ -9,6 +9,8 @@ import ShopCartStore from '../../../shopCart/model/ShopCartStore';
 import { observer } from 'mobx-react';
 
 const gwc = res.detailNavView.detail_car_down;
+const { me_bangzu_kefu_icon } = res;
+
 const { px2dp } = ScreenUtils;
 
 @observer
@@ -24,6 +26,12 @@ export default class XpDetailBottomView extends Component {
                 </View> : null}
                 <View style={styles.containerView}>
                     <View style={styles.bgView}>
+                        <TouchableOpacity
+                            style={styles.gwcBtn}
+                            onPress={() => this.props.bottomViewAction('keFu')}>
+                            <Image source={me_bangzu_kefu_icon}/>
+                            <Text style={styles.gwcText}>客服</Text>
+                        </TouchableOpacity>
                         <TouchableOpacity style={styles.gwcBtn} onPress={() => bottomViewAction('goGwc')}>
                             <Image source={gwc}/>
                             <Text style={styles.gwcText}>购物车</Text>
@@ -77,7 +85,7 @@ const styles = StyleSheet.create({
     },
     gwcBtn: {
         alignItems: 'center', justifyContent: 'center',
-        width: 64
+        width: px2dp(64)
     },
     gwcText: {
         marginTop: 2,
