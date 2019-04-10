@@ -94,7 +94,6 @@ export default class HomeLimitGoView extends Component {
 
     render() {
         let viewItems = [];
-        console.log('-------' + limitGoModule.timeList);
         limitGoModule.timeList.map((value, index) => {
             viewItems.push(
                 <View key={index} tabLabel={value.id}>
