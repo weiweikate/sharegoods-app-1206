@@ -108,26 +108,27 @@ export default class HomeLimitGoView extends Component {
         }
 
 
-        return <View style={[styles.container, { height: limitGoModule.limitHeight }]}>
-            <View style={{ paddingLeft: px2dp(15), marginTop: px2dp(3) }}>
-                <HomeTitleView title={'限时购'}/>
-            </View>
-            <ScrollableTabView
-                ref={ref => {
-                    this.scrollableTabView = ref;
-                }}
-                style={styles.tabBar}
-                page={limitGoModule.currentPage !== -1 ? limitGoModule.currentPage : limitGoModule.initialPage}
-                renderTabBar={() => <ScrollableTabBar style={styles.scrollTab} underlineStyle={styles.underline}
-                                                      renderTab={this._renderTab.bind(this)}/>}
-                tabBarUnderlineStyle={styles.underline}
-                onChangeTab={(index) => this._onChangeTab(index)}
-                showsVerticalScrollIndicator={false}
-                initialPage={limitGoModule.initialPage}
-            >
-                {viewItems}
-            </ScrollableTabView>
-        </View>;
+        return (
+            <View style={[styles.container, { height: limitGoModule.limitHeight }]}>
+                <View style={{ paddingLeft: px2dp(15), marginTop: px2dp(3) }}>
+                    <HomeTitleView title={'限时购'}/>
+                </View>
+                <ScrollableTabView
+                    ref={ref => {
+                        this.scrollableTabView = ref;
+                    }}
+                    style={styles.tabBar}
+                    page={limitGoModule.currentPage !== -1 ? limitGoModule.currentPage : limitGoModule.initialPage}
+                    renderTabBar={() => <ScrollableTabBar style={styles.scrollTab} underlineStyle={styles.underline}
+                                                          renderTab={this._renderTab.bind(this)}/>}
+                    tabBarUnderlineStyle={styles.underline}
+                    onChangeTab={(index) => this._onChangeTab(index)}
+                    showsVerticalScrollIndicator={false}
+                    initialPage={limitGoModule.initialPage}
+                >
+                    {viewItems}
+                </ScrollableTabView>
+            </View>);
     }
 }
 
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     },
     time: {
         color: '#FC533B',
-        fontWeight: '700',
+        fontWeight: '600',
         fontSize: px2dp(16)
     },
     normalTitle: {

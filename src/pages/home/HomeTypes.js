@@ -55,7 +55,7 @@ export const homeRoute = {
     [homeLinkType.customTopic]: 'HtmlPage',
     [homeLinkType.discover]: 'show/ShowDetailPage',
     [homeLinkType.exp]: 'product/xpProduct/XpDetailPage',
-    [homeLinkType.classify]: 'home/search/CategorySearchPage',
+    [homeLinkType.classify]: 'home/search/SearchResultPage',
     [homeLinkType.nothing]: '',  // 不做跳转
     [homeLinkType.page]: ''      // 跳转到页面
 };
