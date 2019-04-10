@@ -27,7 +27,7 @@ class HomeModule {
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
         if (linkType === homeLinkType.page) {
-            return linkTypeCode.replace(/[\n]/g, "");
+            return linkTypeCode.replace(/[\n]/g, '').trim();
         } else if (linkType === homeLinkType.nothing) {
             return;
         } else {
@@ -45,13 +45,6 @@ class HomeModule {
                 productType = product.productType;
             }
         }
-
-        const { storeDTO } = data;
-        let storeCode = 0;
-        if (storeDTO) {
-            storeCode = storeDTO.storeNumber;
-        }
-
         const { linkType } = data;
         return {
             activityType: linkType === 3 ? 2 : linkType === 4 ? 1 : 3,
@@ -59,7 +52,7 @@ class HomeModule {
             linkTypeCode: data.linkTypeCode,
             productCode: data.linkTypeCode,
             productType: productType,
-            storeCode: storeCode,
+            storeCode: data.linkTypeCode,
             uri: data.linkTypeCode,
             id: data.id,
             code: data.linkTypeCode

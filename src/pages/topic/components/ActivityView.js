@@ -13,7 +13,7 @@ import {
 export default class MyShop_RecruitPage extends Component {
     static propTypes = {
         activityData: PropTypes.object.isRequired,
-        activityType: PropTypes.object.isRequired
+        activityType: PropTypes.number.isRequired
     };
 
     constructor(props) {
@@ -179,7 +179,7 @@ export default class MyShop_RecruitPage extends Component {
             justifyContent: 'space-between'
         }}>
             <View style={{ marginLeft: 11, flexDirection: 'row' }}>
-                <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={{ color: 'white', fontSize: 18 }}>￥</Text>
                     <Text style={{ color: 'white', fontSize: 40 }}>{price}</Text>
                 </View>

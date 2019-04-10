@@ -9,10 +9,7 @@ const { px2dp } = ScreenUtils;
 
 class ChannelModules {
     @observable channelList = [];
-
-    @computed get channelHeight() {
-        return px2dp(90);
-    }
+    @observable channelHeight = 0;
 
     @action loadChannel = flow(function* (isCache) {
         try {
@@ -24,6 +21,7 @@ class ChannelModules {
             }
             const res = yield HomeApi.getHomeData({ type: homeType.channel });
             this.channelList = res.data || [];
+            this.channelHeight = this.channelList.length > 0 ? px2dp(90) : 0;
             save(kHomeChannelStore, res.data);
         } catch (error) {
             console.log(error);

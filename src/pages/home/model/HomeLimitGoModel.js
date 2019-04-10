@@ -28,7 +28,7 @@ export class LimitGoModules {
         return 0;
     }
 
-    @action loadLimitGo = flow(function* (isCache) {
+    @action loadLimitGo = flow(function* () {
         try {
             const isShowResult = yield HomeApi.isShowLimitGo();
             if (!isShowResult.data) {
