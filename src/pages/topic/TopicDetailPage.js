@@ -652,6 +652,11 @@ export default class TopicDetailPage extends BasePage {
         originalPrice = (this.state.data || {}).originalPrice || '';
         groupPrice = (this.state.data || {}).groupPrice || '';
 
+        //秒杀降价拍
+        const { shopId, title, startPrice, seckillPrice } = this.state.activityData || {};
+        //礼包
+        const { levelPrice } = this.state.data || {};
+
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
@@ -689,12 +694,29 @@ export default class TopicDetailPage extends BasePage {
                                                    return;
                                                }
                                                setTimeout(() => {
-                                                   QYChatTool.beginQYChat({
+                                                   activityType === 3 ? QYChatTool.beginQYChat({
                                                        urlString: '',
                                                        title: '平台客服',
                                                        shopId: '',
                                                        chatType: beginChatType.BEGIN_FROM_OTHER,
-                                                       data: {}
+                                                       data: {
+                                                           title: productName,
+                                                           desc: '',
+                                                           pictureUrlString: productImgUrl,
+                                                           urlString: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
+                                                           note: `￥${levelPrice}`
+                                                       }
+                                                   }) : QYChatTool.beginQYChat({
+                                                       shopId: shopId,
+                                                       title: title,
+                                                       chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                                                       data: {
+                                                           title: productName,
+                                                           desc: '',
+                                                           pictureUrlString: productImgUrl,
+                                                           urlString: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
+                                                           note: `￥${activityType === 2 ? startPrice : seckillPrice}`
+                                                       }
                                                    });
                                                }, 200);
                                                break;
