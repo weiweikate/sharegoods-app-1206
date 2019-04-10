@@ -19,6 +19,7 @@ import HomeBannerView, { bannerHeight } from './view/HomeBannerView';
 import GoodsCell, { kHomeGoodsViewHeight } from './view/HomeGoodsView';
 import HomeUserView from './view/HomeUserView';
 import HomeCategoryView, { categoryHeight } from './view/HomeCategoryView';
+import { categoryModule } from './model/HomeCategoryModel';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import VersionUpdateModalView from './view/VersionUpdateModalView';
@@ -39,6 +40,7 @@ import GuideModal from '../guide/GuideModal';
 import LuckyIcon from '../guide/LuckyIcon';
 import HomeMessageModalView, { HomeAdModal } from './view/HomeMessageModalView';
 import { channelModules } from './model/HomeChannelModel';
+import { bannerModule } from './model/HomeBannerModel';
 import HomeLimitGoView from './view/HomeLimitGoView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
@@ -87,10 +89,10 @@ class HomePage extends BasePage {
 
         switch (type) {
             case homeType.category:
-                dim.height = categoryHeight;
+                dim.height = categoryModule.categoryList.length > 0 ? categoryHeight : 0;
                 break;
             case homeType.swiper:
-                dim.height = bannerHeight;
+                dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
                 break;
             case homeType.user:
                 dim.height = user.isLogin ? px2dp(44) : 0;
@@ -313,6 +315,7 @@ class HomePage extends BasePage {
     render() {
         console.log('getBanner render',
             homeExpandBnnerModel.bannerHeight,
+            subjectModule.subjectHeight,
             limitGoModule.limitHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);

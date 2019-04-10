@@ -69,7 +69,7 @@ class ShowBannerModules {
 
     @action loadBannerList = () => {
         ShowApi.getShowBanner({ type: homeType.discover }).then(res => {
-            if (res.code === 10000 && res.data) {
+            if (res.code === 10000) {
                 this.bannerList = res.data || [];
             }
         });
