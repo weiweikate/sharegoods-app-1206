@@ -114,9 +114,7 @@ export default class PaymentPage extends BasePage {
                         payType: paymentType.balance,
                         payAmount: availableBalance
                     });
-                }
-            } else {
-                if (channelAmount > 0) {
+                } else {
                     detailList.push({
                         payType: paymentType.balance,
                         payAmount: channelAmount
@@ -124,7 +122,6 @@ export default class PaymentPage extends BasePage {
                 }
             }
         }
-
         payment.platformPay(password, fundsTradingNo, detailList).then((result) => {
             this.setState({ showPwd: false });
             if (parseInt(result.status) === payStatus.payNeedThrid) {
@@ -213,7 +210,7 @@ export default class PaymentPage extends BasePage {
 
         //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
-            <View style={[styles.content,payment.oneCoupon>0?{height:px2dp(150)}:{height:px2dp(100)}]}>
+            <View style={[styles.content, payment.oneCoupon > 0 ? { height: px2dp(150) } : { height: px2dp(100) }]}>
                 <View style={styles.row}>
                     <Text style={styles.name} numberOfLines={1}>订单名称：{name}</Text>
                 </View>
