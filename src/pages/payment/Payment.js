@@ -14,7 +14,8 @@ export const paymentType = {
     alipay: 8,  //支付宝
     bank: 16,    //银行卡支付
     section: 5,  //
-    coupon: 17 //优惠券支付
+    coupon: 17, //优惠券支付
+    zeroPay:0
 };
 
 
