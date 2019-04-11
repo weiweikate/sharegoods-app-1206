@@ -93,20 +93,25 @@ export default class PaymentPage extends BasePage {
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去出用余额
-        let channelAmount = (payment.amounts).toFixed(2); //需要支付的金额
+        let channelAmount = parseFloat(payment.amounts).toFixed(2); //需要支付的金额
         let { fundsTradingNo, oneCoupon, bizType } = payment;
         let detailList = [];
-        //拼店扩容
+
+        if (channelAmount == 0.00){
+            detailList.push({
+                payType: paymentType.zeroPay,
+                payAmount: channelAmount
+            })
+        }
+        //拼店扩容 且 减去优惠券后
         if (bizType === 1 && oneCoupon > 0) {
             detailList.push({
                 payType: paymentType.coupon,
                 payAmount: oneCoupon
             });
-        }
-        //减去优惠券后
-        if (bizType === 1 && oneCoupon > 0) {
             channelAmount = (channelAmount - oneCoupon * 1) > 0 ? (channelAmount - oneCoupon * 1) : 0;
         }
+       //余额支付
         if (selectBance) {
             if (channelAmount > 0) {
                 if (channelAmount > availableBalance) {
@@ -122,6 +127,8 @@ export default class PaymentPage extends BasePage {
                 }
             }
         }
+
+
         payment.platformPay(password, fundsTradingNo, detailList).then((result) => {
             this.setState({ showPwd: false });
             if (parseInt(result.status) === payStatus.payNeedThrid) {
