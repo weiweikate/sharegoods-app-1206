@@ -148,25 +148,22 @@ class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: "red" }}><Text
                             style={{ color: "white" }}>调试页</Text></DebugButton> : null
                 }
-                {
-                    <DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text
-                        style={{ color: "white" }}>微信支付</Text></DebugButton>
-                }
+                {/*{*/}
+                    {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
+                        {/*style={{ color: "white" }}>微信支付</Text></DebugButton>*/}
+                {/*}*/}
 
                 <PreComponent ref={(ref)=>{this.preView = ref}}/>
             </View>
         );
     }
 
-    lianjie111 = () => {
-        const navigationAction = NavigationActions.navigate({
-            routeName: 'payment/TextWxPay'
-        });
-        global.$navigator.dispatch(navigationAction);
-    };
-
-
-
+    // lianjie111 = () => {
+    //     const navigationAction = NavigationActions.navigate({
+    //         routeName: 'payment/TextWxPay'
+    //     });
+    //     global.$navigator.dispatch(navigationAction);
+    // };
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage
