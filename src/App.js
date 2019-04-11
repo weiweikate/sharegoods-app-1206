@@ -148,52 +148,23 @@ class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: "red" }}><Text
                             style={{ color: "white" }}>调试页</Text></DebugButton> : null
                 }
-                {/*{*/}
-                    {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
-                        {/*style={{ color: "white" }}>链接供应商111</Text></DebugButton>*/}
-                {/*}*/}
-                {/*{*/}
-                    {/*<DebugButton onPress={this.lianjie222} style={{ backgroundColor: "red" }}><Text*/}
-                        {/*style={{ color: "white" }}>链接供应商222</Text></DebugButton>*/}
-                {/*}*/}
+                {
+                    <DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text
+                        style={{ color: "white" }}>微信支付</Text></DebugButton>
+                }
+
                 <PreComponent ref={(ref)=>{this.preView = ref}}/>
             </View>
         );
     }
 
     lianjie111 = () => {
-        let jsonParams = {
-            urlString:'http://hzmrwlyxgs-gys111.qiyukf.com',
-            title:'供应商111',
-            shopId: "gys111",
-            chatType: beginChatType.BEGIN_FROM_PRODUCT,
-            data:{
-                title:'网易七鱼',
-                desc:'网易七鱼是网易旗下一款专注于解决企业与客户沟通的客服系统产品。',
-                pictureUrlString:'http://qiyukf.com/main/res/img/index/barcode.png',
-                urlString:'http://qiyukf.com/',
-                note:'￥10000',
-            }
-        };
-        QYChatTool.beginQYChat(jsonParams);
+        const navigationAction = NavigationActions.navigate({
+            routeName: 'payment/TextWxPay'
+        });
+        global.$navigator.dispatch(navigationAction);
     };
 
-    lianjie222 = () => {
-        let jsonParams = {
-            urlString:'hzmrwlyxgs-gys222.qiyukf.com',
-            title:'供应商222',
-            shopId: "gys222",
-            chatType: beginChatType.BEGIN_FROM_PRODUCT,
-            data:{
-                title:'网易七鱼',
-                desc:'网易七鱼是网易旗下一款专注于解决企业与客户沟通的客服系统产品。',
-                pictureUrlString:'http://qiyukf.com/main/res/img/index/barcode.png',
-                urlString:'http://qiyukf.com/',
-                note:'￥10000',
-            }
-        };
-        QYChatTool.beginQYChat(jsonParams);
-    };
 
 
     showDebugPage = () => {
