@@ -82,7 +82,6 @@ class HomePage extends BasePage {
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
-        const { channelHeight } = channelModules;
         const { recommendList } = recommendModule;
         const { subjectHeight } = subjectModule;
         const { foucusHeight } = homeFocusAdModel;
@@ -98,7 +97,7 @@ class HomePage extends BasePage {
                 dim.height = user.isLogin ? (bannerModule.bannerList.length > 0 ? px2dp(44) : px2dp(31)) : 0;
                 break;
             case homeType.channel:
-                dim.height = channelHeight;
+                dim.height = channelModules.channelList.length > 0 ? px2dp(90) : 0;
                 break;
             case homeType.expandBanner:
                 dim.height = homeExpandBnnerModel.bannerHeight;
@@ -326,7 +325,7 @@ class HomePage extends BasePage {
                     }}
                     style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
-                                                   onRefresh={this._onRefresh.bind(this)}
+                                                    onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 3}
