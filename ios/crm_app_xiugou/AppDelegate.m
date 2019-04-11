@@ -22,9 +22,7 @@
 #import "ShareImageMaker.h"
 #import "WelcomeView.h"
 #import "NetWorkTool.h"
-#import "NetWorkTool.h"
 @implementation AppDelegate
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [self JR_ConfigLib:application didFinishLaunchingWithOptions:launchOptions];
