@@ -232,7 +232,6 @@ class HomeModule {
             this.isFetching = false;
             this.errorMsg = '';
         } catch (error) {
-            alert(111)
             this.isFetching = false;
             this.isRefreshing = false;
             this.errorMsg = error.msg;
