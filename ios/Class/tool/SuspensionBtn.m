@@ -35,11 +35,7 @@
   [recognizer setTranslation:CGPointZero inView:self.window.rootViewController.view];
   
   if(recognizer.state==UIGestureRecognizerStateEnded|| recognizer.state==UIGestureRecognizerStateCancelled) {
-    if(centerX>KScreenWidth/2) {
-      thecenter=KScreenWidth-80/2;
-    }else{
       thecenter=80/2;
-    }
     [UIView animateWithDuration:0.3 animations:^{
       recognizer.view.center=CGPointMake(thecenter, recognizer.view.center.y+ translation.y);
     }];
