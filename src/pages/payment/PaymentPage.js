@@ -104,9 +104,9 @@ export default class PaymentPage extends BasePage {
             });
         }
         //减去优惠券后
-        channelAmount = (channelAmount - oneCoupon * 1) > 0 ? (channelAmount - oneCoupon * 1) : 0;
-
-
+        if (bizType === 1 && oneCoupon > 0) {
+            channelAmount = (channelAmount - oneCoupon * 1) > 0 ? (channelAmount - oneCoupon * 1) : 0;
+        }
         if (selectBance) {
             if (channelAmount > 0) {
                 if (channelAmount > availableBalance) {
