@@ -13,8 +13,8 @@ export const paymentType = {
     wechat: 4,  //微信
     alipay: 8,  //支付宝
     bank: 16,    //银行卡支付
-    section: 5 ,  //
-    coupon : 17 //优惠券支付
+    section: 5,  //
+    coupon: 17 //优惠券支付
 };
 
 
@@ -75,7 +75,7 @@ export class Payment {
         this.selctedPayType = paymentType.none;
         this.selectedBalace = false;
         this.isGoToPay = false;
-        this.fundsTradingNo = '';
+        this.fundsTradingNo = "";
         this.bizType = 0;
         this.modeType = 0;
         this.oneCoupon = 0;
@@ -236,7 +236,7 @@ export class Payment {
             const result = yield PaymentApi.payStatus({
                 fundsTradingNo: this.fundsTradingNo,
                 bizType: this.bizType,
-                outTradeNo:this.outTradeNo
+                outTradeNo: this.outTradeNo
             });
             return result;
         } catch (error) {
