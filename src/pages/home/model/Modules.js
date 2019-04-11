@@ -90,7 +90,7 @@ class HomeModule {
         this.isEnd = false;
         this.homeList = [{
             id: 0,
-            type: homeType.category
+            type: homeType.classify
         }, {
             id: 1,
             type: homeType.swiper
