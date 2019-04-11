@@ -37,7 +37,6 @@ export default class ChannelPage extends BasePage {
 
     constructor(props) {
         super(props);
-        // this.remainMoney = parseFloat(this.params.remainMoney);
         this.state = {
             remainMoney: isNaN(parseFloat(this.params.remainMoney)) ? 0.0 : parseFloat(this.params.remainMoney)
         };
@@ -83,8 +82,6 @@ export default class ChannelPage extends BasePage {
     };
 
     goToPay() {
-        // this.$navigate(RouterMap.PaymentCheckPage);
-        // return;
         if (payment.selctedPayType === paymentType.none) {
             Toast.$toast("请选择支付方式");
             return;

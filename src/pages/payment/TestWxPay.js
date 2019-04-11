@@ -72,17 +72,8 @@ export default class TestWxPay extends BasePage {
                 Toast.showLoading();
                 const payInfo = JSON.parse(this.state.jsonValue);
                 Toast.hiddenLoading();
-                payInfo.partnerid = payInfo.mchId;
-                payInfo.timestamp = payInfo.timeStamp;
-                payInfo.prepayid = payInfo.prepayId;
-                payInfo.sign = payInfo.paySign;
-                payInfo.noncestr = payInfo.nonceStr;
-                payInfo.appid = payInfo.appId;
                 const resultStr = PayUtil.appWXPay(payInfo);
                 console.log(JSON.stringify(resultStr));
-                // if (parseInt(resultStr.code, 0) !== 0) {
-                //     throw new Error(resultStr.msg);
-                // }
                 return resultStr;
 
             } catch (error) {
