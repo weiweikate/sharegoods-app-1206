@@ -3,9 +3,11 @@ package com.meeruu.qiyu.activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.meeruu.qiyu.KeyBoardUtils;
 import com.meeruu.qiyu.SPCacheUtils;
 import com.meeruu.qiyu.ScreenUtils;
 import com.meeruu.qiyu.SoftKeyboardFixerForFullscreen;
@@ -102,6 +104,15 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
         } else {
             // miui、flyme沉浸式
             StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EditText editText = findViewById(R.id.editTextMessage);
+        if (editText != null) {
+            KeyBoardUtils.closeKeybord(editText, this);
         }
     }
 }

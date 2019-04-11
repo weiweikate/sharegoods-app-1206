@@ -84,7 +84,7 @@ class HomeModule {
         channelModules.loadChannel();
         // 首页通栏
         homeExpandBnnerModel.loadBannerList();
-        //首焦点广告
+        // 首焦点广告
         homeFocusAdModel.loadAdList();
         // 首页限时秒杀
         limitGoModule.loadLimitGo();
@@ -177,10 +177,10 @@ class HomeModule {
             this.firstLoad = false;
             this.errorMsg = '';
         } catch (error) {
-            console.log(error);
             this.isFetching = false;
             this.isRefreshing = false;
             this.errorMsg = error.msg;
+            console.log(error);
         }
     });
 
