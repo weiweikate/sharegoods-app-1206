@@ -87,7 +87,7 @@ export default class CheckLogisticsPage extends BasePage {
                             <GoodsGrayItem
                                 uri={item.specImg}
                                 goodsName={item.productName}
-                                salePrice={10}
+                                salePrice={item.unitPrice}
                                 category={item.specValues}
                                 goodsNum={item.quantity}
                                 style={{ backgroundColor: "white" }}
