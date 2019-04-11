@@ -80,9 +80,9 @@ export default class TestWxPay extends BasePage {
                 payInfo.appid = payInfo.appId;
                 const resultStr = PayUtil.appWXPay(payInfo);
                 console.log(JSON.stringify(resultStr));
-                if (parseInt(resultStr.code, 0) !== 0) {
-                    throw new Error(resultStr.msg);
-                }
+                // if (parseInt(resultStr.code, 0) !== 0) {
+                //     throw new Error(resultStr.msg);
+                // }
                 return resultStr;
 
             } catch (error) {
