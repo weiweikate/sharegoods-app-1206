@@ -110,6 +110,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
                          }];
     });
   }];
+  
 }
 
 /**

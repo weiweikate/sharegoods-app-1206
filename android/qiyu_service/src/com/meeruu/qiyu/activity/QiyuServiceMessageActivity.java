@@ -110,6 +110,9 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        KeyBoardUtils.closeKeybord((EditText) getCurrentFocus(), this);
+        EditText editText = findViewById(R.id.editTextMessage);
+        if (editText != null) {
+            KeyBoardUtils.closeKeybord(editText, this);
+        }
     }
 }

@@ -10,7 +10,7 @@ const { px2dp } = ScreenUtil;
 
 const bannerWidth = ScreenUtil.width - px2dp(50);
 const bannerHeight = bannerWidth * (240 / 650);
-
+import {homeModule} from './Modules'
 //专题
 class SubjectModule {
     @observable subjectList = [];
@@ -30,6 +30,7 @@ class SubjectModule {
             let list = res.data || [];
             this.computeHeight(list);
             this.subjectList = list;
+            homeModule.changeHomeList(homeType.homeHot)
             save(kHomeHotStore, res.data);
         } catch (error) {
             console.log(error);
