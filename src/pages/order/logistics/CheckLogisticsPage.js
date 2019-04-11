@@ -22,7 +22,7 @@ export default class CheckLogisticsPage extends BasePage {
             expressNo: expressNo
         });
     }
-
+//{this.params.expressList.length + this.params.unSendProductInfoList.length}
     _render() {
         return (
             <ScrollView style={styles.container}>
@@ -36,7 +36,7 @@ export default class CheckLogisticsPage extends BasePage {
                     <Text style={{
                         fontSize: 12,
                         color: DesignRule.textColor_instruction
-                    }}>{`——— 以下商品被拆分成${this.params.expressList.length + this.params.unSendProductInfoList.length}个包裹 ————`}</Text>
+                    }}>{`——— 以下商品被拆分成多个包裹 ————`}</Text>
                 </View>
                 {this.params.expressList.map((item) => {
                     return (

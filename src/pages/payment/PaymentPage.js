@@ -59,11 +59,9 @@ export default class PaymentPage extends BasePage {
                 }
                 //是否选择余额
                 const { selectedBalace } = payment;
-                if (!selectedBalace && bizType !== 1 && oneCoupon <= 0) {//当一元劵全部可以抵消掉的时候
-                    if ((bizType === 1 && amounts - oneCoupon > 0) || (bizType !== 1)) {
-                        this.$navigate("payment/ChannelPage");
-                        return;
-                    }
+                if (!selectedBalace && oneCoupon <= 0) {
+                    this.$navigate("payment/ChannelPage");
+                    return;
                 }
                 //用户设置过交易密码
                 if (user.hadSalePassword) {
