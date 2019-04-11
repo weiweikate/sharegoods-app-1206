@@ -52,12 +52,6 @@ export default class HomeBannerView extends Component {
         }
     };
 
-    _onDidScrollToIndex(index) {
-        const { bannerList } = bannerModule;
-        let data = bannerList[index];
-        track(trackEvent.bannerShow, homeModule.bannerPoint(data, homePoint.homeBanner));
-    }
-
     render() {
         const { bannerList } = bannerModule;
         if (bannerList.length === 0) {
@@ -81,9 +75,6 @@ export default class HomeBannerView extends Component {
                     modeStyle={1}
                     autoLoop={isFocused ? true : false}
                     pageFocused={isFocused}
-                    onDidScrollToIndex={(i) => {
-                        this._onDidScrollToIndex(i);
-                    }}
                     onDidSelectItemAtIndex={(i) => {
                         this._onPressRow(i);
                     }}/>
