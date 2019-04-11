@@ -32,10 +32,10 @@ public class QYChatModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "JRQYService";
-    private static final int BEGIN_FROM_OTHER = 0;//从我的地方发起客服 会直接对接平台客服
-    private static final int BEGIN_FROM_PRODUCT = 1;//从产品详情发起客服
-    private static final int BEGIN_FROM_ORDER = 2;//从订单发起客服
-    private static final int BEGIN_FROM_MESSAGE = 3;//从消息列表发起客服
+    public static final int BEGIN_FROM_OTHER = 0;//从我的地方发起客服 会直接对接平台客服
+    public static final int BEGIN_FROM_PRODUCT = 1;//从产品详情发起客服
+    public static final int BEGIN_FROM_ORDER = 2;//从订单发起客服
+    public static final int BEGIN_FROM_MESSAGE = 3;//从消息列表发起客服
 
     /**
      * 构造方法必须实现
@@ -150,7 +150,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
                 title = params.getString("title");
             }
         } else {
-            title = "秀购客服";
+            title = "平台客服";
         }
         double type = params.getDouble("chatType");
         int chatType = (int) type;
@@ -174,6 +174,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
          * 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
          */
         ConsultSource source = new ConsultSource("mine/helper", title, "");
+        source.custom = chatType + "";
         source.shopId = params.hasKey("shopId") ? params.getString("shopId") : "";
         ReadableMap map = params.getMap("data");
         if (map.hasKey("urlString")) {
