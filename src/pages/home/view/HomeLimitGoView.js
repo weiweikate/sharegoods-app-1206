@@ -7,6 +7,7 @@ import HomeTitleView from './HomeTitleView';
 import ImageLoader from '@mr/image-placeholder';
 import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
 import DesignRule from '../../../constants/DesignRule';
+import resHome from '../res';
 
 const { px2dp } = ScreenUtils;
 
@@ -140,8 +141,10 @@ const GoodsItem = (item) => {
             showPlaceholder={false}
             width={px2dp(120)}
             height={px2dp(120)}
-            style={styles.goodsImage}
-        />
+            style={styles.goodsImage}>
+            <Image source={resHome.home_sallout}
+                   style={styles.goodsTag}/>
+        </ImageLoader>
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={2}>{data.productName}</Text>
             <Text style={styles.text}>{data.secondName}</Text>
@@ -184,7 +187,7 @@ const GoodsItemButton = ({ data }) => {
     } else {
         return <View style={styles.disbutton}>
             <Text style={styles.disbuttonTitle}>
-                抢光了
+                {data.status === limitStatus.end ? '抢光了' : '已结束'}
             </Text>
         </View>;
     }
@@ -246,7 +249,13 @@ const styles = StyleSheet.create({
         height: px2dp(120),
         borderRadius: px2dp(5),
         marginLeft: px2dp(10),
+        justifyContent: 'center',
+        alignItems: 'center',
         overflow: 'hidden'
+    },
+    goodsTag: {
+        width: px2dp(80),
+        height: px2dp(80)
     },
     goodsContent: {
         marginLeft: px2dp(10),
