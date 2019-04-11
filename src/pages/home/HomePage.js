@@ -95,7 +95,7 @@ class HomePage extends BasePage {
                 dim.height = bannerModule.bannerList.length > 0 ? bannerHeight : 0;
                 break;
             case homeType.user:
-                dim.height = user.isLogin ? px2dp(44) : 0;
+                dim.height = user.isLogin ? (bannerModule.bannerList.length > 0 ? px2dp(44) : px2dp(31)) : 0;
                 break;
             case homeType.channel:
                 dim.height = channelHeight;

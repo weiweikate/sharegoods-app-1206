@@ -14,6 +14,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.ProductDetail;
@@ -25,7 +26,6 @@ import com.qiyukf.unicorn.api.pop.POPManager;
 import com.qiyukf.unicorn.api.pop.Session;
 import com.qiyukf.unicorn.api.pop.ShopInfo;
 
-import java.util.Collections;
 import java.util.List;
 
 public class QYChatModule extends ReactContextBaseJavaModule {
@@ -63,36 +63,41 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         // 声明一个成员变量
         @Override
         public void onUnreadCountChange(int count) {
-            /**
-             * 获取最近联系商家列表
-             *
-             * @return 最近联系商家列表
-             */
-            List<Session> sessionList = POPManager.getSessionList();
-            WritableArray sessionListData = Arguments.createArray();
-            for (Session session : sessionList) {
-                UnicornMessage msg = POPManager.queryLastMessage(session.getContactId());
-                ShopInfo shopInfo = POPManager.getShopInfo(session.getContactId());
-                WritableMap sessionData = Arguments.createMap();
-                sessionData.putString("hasTrashWords", "");
-                sessionData.putString("lastMessageText", msg.getContent());
-                sessionData.putString("lastMessageType", msg.getMsgType() + "");
-                sessionData.putInt("unreadCount", session.getUnreadCount());
-                sessionData.putString("status", session.getMsgStatus() + "");
-                sessionData.putDouble("lastMessageTimeStamp", msg.getTime());
-                sessionData.putString("shopId", session.getContactId());
-                if (shopInfo != null) {
-                    sessionData.putString("avatarImageUrlString", shopInfo.getAvatar());
-                    sessionData.putString("sessionName", shopInfo.getName());
-                }
-                sessionListData.pushMap(sessionData);
-            }
-            WritableMap params = Arguments.createMap();
-            params.putInt("unreadCount", count);
-            params.putArray("sessionListData", sessionListData);
-            sendEvent(mContext, "QY_MSG_CHANGE", params);
+            sendEvent2RN(count);
         }
     };
+
+    private void sendEvent2RN(int count) {
+        /**
+         * 获取最近联系商家列表
+         *
+         * @return 最近联系商家列表
+         */
+        List<Session> sessionList = POPManager.getSessionList();
+        WritableArray sessionListData = Arguments.createArray();
+        for (int len = sessionList.size(), i = len - 1; i >= 0; i--) {
+            Session session = sessionList.get(i);
+            UnicornMessage msg = POPManager.queryLastMessage(session.getContactId());
+            ShopInfo shopInfo = POPManager.getShopInfo(session.getContactId());
+            WritableMap sessionData = Arguments.createMap();
+            sessionData.putString("hasTrashWords", "");
+            sessionData.putString("lastMessageText", msg.getContent());
+            sessionData.putString("lastMessageType", msg.getMsgType() + "");
+            sessionData.putInt("unreadCount", session.getUnreadCount());
+            sessionData.putString("status", session.getMsgStatus() + "");
+            sessionData.putDouble("lastMessageTimeStamp", msg.getTime());
+            sessionData.putString("shopId", session.getContactId());
+            if (shopInfo != null) {
+                sessionData.putString("avatarImageUrlString", shopInfo.getAvatar());
+                sessionData.putString("sessionName", shopInfo.getName());
+            }
+            sessionListData.pushMap(sessionData);
+        }
+        WritableMap params = Arguments.createMap();
+        params.putInt("unreadCount", count);
+        params.putArray("sessionListData", sessionListData);
+        sendEvent(mContext, "QY_MSG_CHANGE", params);
+    }
 
     private void addUnreadCountChangeListener(boolean add) {
         Unicorn.addUnreadCountChangeListener(listener, add);
@@ -129,6 +134,7 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         userInfo.data = JSONArray.toJSONString(arr);
         Unicorn.setUserInfo(userInfo);
         addUnreadCountChangeListener(true);
+        sendEvent2RN(Unicorn.getUnreadCount());
     }
 
     @ReactMethod
