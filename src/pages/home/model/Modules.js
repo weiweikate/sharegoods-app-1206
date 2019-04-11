@@ -60,13 +60,18 @@ class HomeModule {
         };
 
     };
-
+    @action changeHomeList = (type) =>{
+       this.homeList = this.homeList.map((item)=> {
+               return ({...item});
+       })
+    };
     //加载为你推荐列表
     @action loadHomeList = flow(function* () {
         this.isRefreshing = true;
         setTimeout(() => {
             this.isRefreshing = false;
-        }, 2000);
+        }, 1000);
+
         // 首页类目
         categoryModule.loadCategoryList();
         // 首页顶部轮播图
@@ -90,7 +95,7 @@ class HomeModule {
         this.isEnd = false;
         this.homeList = [{
             id: 0,
-            type: homeType.category
+            type: homeType.category,
         }, {
             id: 1,
             type: homeType.swiper
@@ -168,10 +173,10 @@ class HomeModule {
             this.firstLoad = false;
             this.errorMsg = '';
         } catch (error) {
-            console.log(error);
             this.isFetching = false;
             this.isRefreshing = false;
             this.errorMsg = error.msg;
+            console.log(error);
         }
     });
 

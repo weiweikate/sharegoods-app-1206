@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import HomeTitleView from './HomeTitleView';
 import ImageLoader from '@mr/image-placeholder';
 import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
+import DesignRule from '../../../constants/DesignRule';
 
 const { px2dp } = ScreenUtils;
 
@@ -34,14 +35,13 @@ export default class HomeLimitGoView extends Component {
         if (!selected) {
             return <View/>;
         }
-        const { time, title, diff } = selected;
-        let tabWidth = diff === 0 ? px2dp(60) : px2dp(80);
+        const { time, title } = selected;
         return <TouchableOpacity
             key={`${name}_${page}`}
             onPress={() => onPressHandler(page)}
             onLayout={onLayoutHandler}
         >
-            <View style={[styles.tab, { width: tabWidth }]}>
+            <View style={[styles.tab, { marginLeft: page === 0 ? 0 : px2dp(12) }]}>
                 <Text style={[styles.time, { color: textColor }]}>
                     {time}
                 </Text>
@@ -151,7 +151,10 @@ const GoodsItem = (item) => {
                 {
                     data.seckillPrice
                         ?
-                        <Text style={styles.money}>¥<Text style={styles.moneyText}>{data.seckillPrice}</Text></Text>
+                        <Text style={styles.money}>¥<Text
+                            style={styles.moneyText}>{data.seckillPrice + ' '}</Text>
+                            <Text style={styles.originMoneyText}>¥{data.originalPrice}</Text>
+                        </Text>
                         :
                         null
                 }
@@ -193,7 +196,7 @@ const styles = StyleSheet.create({
     },
     tab: {
         height: px2dp(59),
-        width: px2dp(80),
+        minWidth: px2dp(60),
         alignItems: 'center'
     },
     tabBar: {
@@ -207,7 +210,7 @@ const styles = StyleSheet.create({
     time: {
         color: '#FC533B',
         fontWeight: '600',
-        fontSize: px2dp(16)
+        fontSize: 16
     },
     normalTitle: {
         color: '#333',
@@ -269,11 +272,18 @@ const styles = StyleSheet.create({
         paddingRight: px2dp(5)
     },
     money: {
-        fontSize: px2dp(12)
+        fontSize: px2dp(12),
+        color: DesignRule.mainColor
     },
     moneyText: {
-        fontSize: px2dp(16),
-        marginLeft: px2dp(2)
+        fontSize: px2dp(20),
+        marginLeft: px2dp(3),
+        color: DesignRule.mainColor
+    },
+    originMoneyText: {
+        fontSize: px2dp(12),
+        color: DesignRule.textColor_instruction,
+        textDecorationLine: 'line-through'
     },
     button: {
         width: px2dp(82),

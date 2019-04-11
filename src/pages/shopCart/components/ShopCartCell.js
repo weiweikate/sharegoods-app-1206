@@ -160,8 +160,7 @@ export default class ShopCartCell extends Component {
                                     style={{
                                         marginTop: 0,
                                         fontSize: 13,
-                                        lineHeight: 16,
-                                        height: 32,
+                                        lineHeight: 10,
                                         color: DesignRule.textColor_mainTitle
                                     }}
                                 />

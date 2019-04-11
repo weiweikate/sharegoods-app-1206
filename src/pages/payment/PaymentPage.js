@@ -59,11 +59,9 @@ export default class PaymentPage extends BasePage {
                 }
                 //是否选择余额
                 const { selectedBalace } = payment;
-                if (!selectedBalace && bizType !== 1 && oneCoupon <= 0) {//当一元劵全部可以抵消掉的时候
-                    if ((bizType === 1 && amounts - oneCoupon > 0) || (bizType !== 1)) {
-                        this.$navigate("payment/ChannelPage");
-                        return;
-                    }
+                if (!selectedBalace && oneCoupon <= 0) {
+                    this.$navigate("payment/ChannelPage");
+                    return;
                 }
                 //用户设置过交易密码
                 if (user.hadSalePassword) {
@@ -95,20 +93,25 @@ export default class PaymentPage extends BasePage {
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去出用余额
-        let channelAmount = (payment.amounts).toFixed(2); //需要支付的金额
+        let channelAmount = parseFloat(payment.amounts).toFixed(2); //需要支付的金额
         let { fundsTradingNo, oneCoupon, bizType } = payment;
         let detailList = [];
-        //拼店扩容
+
+        if (channelAmount == 0.00){
+            detailList.push({
+                payType: paymentType.zeroPay,
+                payAmount: channelAmount
+            })
+        }
+        //拼店扩容 且 减去优惠券后
         if (bizType === 1 && oneCoupon > 0) {
             detailList.push({
                 payType: paymentType.coupon,
                 payAmount: oneCoupon
             });
+            channelAmount = (channelAmount - oneCoupon * 1) > 0 ? (channelAmount - oneCoupon * 1) : 0;
         }
-        //减去优惠券后
-        channelAmount = (channelAmount - oneCoupon * 1) > 0 ? (channelAmount - oneCoupon * 1) : 0;
-
-
+       //余额支付
         if (selectBance) {
             if (channelAmount > 0) {
                 if (channelAmount > availableBalance) {
@@ -116,9 +119,7 @@ export default class PaymentPage extends BasePage {
                         payType: paymentType.balance,
                         payAmount: availableBalance
                     });
-                }
-            } else {
-                if (channelAmount > 0) {
+                } else {
                     detailList.push({
                         payType: paymentType.balance,
                         payAmount: channelAmount
@@ -126,6 +127,7 @@ export default class PaymentPage extends BasePage {
                 }
             }
         }
+
 
         payment.platformPay(password, fundsTradingNo, detailList).then((result) => {
             this.setState({ showPwd: false });
@@ -215,7 +217,7 @@ export default class PaymentPage extends BasePage {
 
         //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
-            <View style={[styles.content,payment.oneCoupon>0?{height:px2dp(150)}:{height:px2dp(100)}]}>
+            <View style={[styles.content, payment.oneCoupon > 0 ? { height: px2dp(150) } : { height: px2dp(100) }]}>
                 <View style={styles.row}>
                     <Text style={styles.name} numberOfLines={1}>订单名称：{name}</Text>
                 </View>

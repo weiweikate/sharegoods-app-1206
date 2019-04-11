@@ -1,6 +1,7 @@
 package com.meeruu.sharegoods.rn.kefu;
 
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -14,7 +15,6 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.utils.AppUtils;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.ProductDetail;
@@ -32,10 +32,10 @@ public class QYChatModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "JRQYService";
-    private static final int BEGIN_FROM_OTHER = 0;//从我的地方发起客服 会直接对接平台客服
-    private static final int BEGIN_FROM_PRODUCT = 1;//从产品详情发起客服
-    private static final int BEGIN_FROM_ORDER = 2;//从订单发起客服
-    private static final int BEGIN_FROM_MESSAGE = 3;//从消息列表发起客服
+    public static final int BEGIN_FROM_OTHER = 0;//从我的地方发起客服 会直接对接平台客服
+    public static final int BEGIN_FROM_PRODUCT = 1;//从产品详情发起客服
+    public static final int BEGIN_FROM_ORDER = 2;//从订单发起客服
+    public static final int BEGIN_FROM_MESSAGE = 3;//从消息列表发起客服
 
     /**
      * 构造方法必须实现
@@ -77,11 +77,16 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         WritableArray sessionListData = Arguments.createArray();
         for (int len = sessionList.size(), i = len - 1; i >= 0; i--) {
             Session session = sessionList.get(i);
-            UnicornMessage msg = POPManager.queryLastMessage(session.getContactId());
+            UnicornMessage msg;
+            if (TextUtils.isEmpty(session.getContactId())) {
+                msg = Unicorn.queryLastMessage();
+            } else {
+                msg = POPManager.queryLastMessage(session.getContactId());
+            }
             ShopInfo shopInfo = POPManager.getShopInfo(session.getContactId());
             WritableMap sessionData = Arguments.createMap();
             sessionData.putString("hasTrashWords", "");
-            sessionData.putString("lastMessageText", msg.getContent());
+            sessionData.putString("lastMessageText", session.getContent());
             sessionData.putString("lastMessageType", msg.getMsgType() + "");
             sessionData.putInt("unreadCount", session.getUnreadCount());
             sessionData.putString("status", session.getMsgStatus() + "");
@@ -139,7 +144,14 @@ public class QYChatModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void beginQYChat(ReadableMap params) {
-        String title = params.getString("title");
+        String title = "";
+        if (params.hasKey("shopId")) {
+            if (params.hasKey("title")) {
+                title = params.getString("title");
+            }
+        } else {
+            title = "平台客服";
+        }
         double type = params.getDouble("chatType");
         int chatType = (int) type;
         switch (chatType) {
@@ -162,7 +174,8 @@ public class QYChatModule extends ReactContextBaseJavaModule {
          * 设置来源后，在客服会话界面的"用户资料"栏的页面项，可以看到这里设置的值。
          */
         ConsultSource source = new ConsultSource("mine/helper", title, "");
-        source.shopId = params.getString("shopId");
+        source.custom = chatType + "";
+        source.shopId = params.hasKey("shopId") ? params.getString("shopId") : "";
         ReadableMap map = params.getMap("data");
         if (map.hasKey("urlString")) {
             ProductDetail productDetail = new ProductDetail.Builder()
