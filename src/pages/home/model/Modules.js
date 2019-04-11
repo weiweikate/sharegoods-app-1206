@@ -60,13 +60,22 @@ class HomeModule {
         };
 
     };
-
+    @action changeHomeList = (type) =>{
+       this.homeList = this.homeList.map((item)=> {
+           if (type === item.type){
+               return ({...item});
+           }else {
+               return item;
+           }
+       })
+    };
     //加载为你推荐列表
     @action loadHomeList = flow(function* () {
         this.isRefreshing = true;
         setTimeout(() => {
             this.isRefreshing = false;
-        }, 2000);
+        }, 1000);
+
         // 首页类目
         categoryModule.loadCategoryList();
         // 首页顶部轮播图
@@ -75,7 +84,7 @@ class HomeModule {
         channelModules.loadChannel();
         // 首页通栏
         homeExpandBnnerModel.loadBannerList();
-        // 首焦点广告
+        //首焦点广告
         homeFocusAdModel.loadAdList();
         // 首页限时秒杀
         limitGoModule.loadLimitGo();
@@ -90,7 +99,7 @@ class HomeModule {
         this.isEnd = false;
         this.homeList = [{
             id: 0,
-            type: homeType.category
+            type: homeType.category,
         }, {
             id: 1,
             type: homeType.swiper
@@ -223,6 +232,7 @@ class HomeModule {
             this.isFetching = false;
             this.errorMsg = '';
         } catch (error) {
+            alert(111)
             this.isFetching = false;
             this.isRefreshing = false;
             this.errorMsg = error.msg;
