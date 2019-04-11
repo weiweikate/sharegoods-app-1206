@@ -378,8 +378,7 @@ public class MRWebviewFragment extends BaseFragment implements Handler.Callback 
                 mActivity.setResult(ParameterUtils.SIGN_OK);
                 mActivity.finish();
                 return true;//表示我已经处理过了
-            }
-            if (url.startsWith("tel:")) {
+            } else if (url.startsWith("tel:")) {
                 Utils.openWithWeb(webView.getContext(), url);
                 return true;
             } else if (url.startsWith("baidumap://")) {

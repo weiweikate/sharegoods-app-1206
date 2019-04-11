@@ -43,13 +43,13 @@ export default class ServiceRowView extends Component {
                                     style={{
                                         width: 8,
                                         height: 8,
-                                        borderRadius: 3.5,
+                                        borderRadius: 4,
                                         backgroundColor: DesignRule.mainColor,
                                         borderWidth: 1,
                                         borderColor: DesignRule.color_fff,
                                         position: 'absolute',
                                         left: 30,
-                                        top: 18
+                                        top: 25
                                     }}
                                 /> :
                                 null
@@ -129,16 +129,12 @@ export default class ServiceRowView extends Component {
         while (newShijianchuo.length < 13) {
             newShijianchuo = newShijianchuo + '0';
         }
-        console.log('时间戳最受是===' + newShijianchuo);
         let time = new Date(parseInt(newShijianchuo));
         let y = time.getFullYear();
         let m = time.getMonth() + 1;
         let d = time.getDate();
         let h = time.getHours();
         let mm = time.getMinutes();
-        // 1554197149000
-        console.log('huyufeng' + y + 'm' + m + 'd' + d);
-        // huyufeng1970m1d19
 
         let currentTime = new Date();
         let currentY = currentTime.getFullYear();
@@ -146,7 +142,6 @@ export default class ServiceRowView extends Component {
         let currentD = currentTime.getDate();
         let currentH = currentTime.getHours();
         let currentMM = currentTime.getMinutes();
-        console.log('huyufeng22' + '年' + currentY + '月' + currentM + '日' + currentD);
 
         if (y === currentY && m === currentM && d === currentD) {
             if (h === currentH) {

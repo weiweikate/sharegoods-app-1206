@@ -70,19 +70,18 @@ export class LimitGoModules {
                             lastSeckills = diffTime;
                             currentId = value;
                             this.initialPage = index;
+                            this.currentPage = index;
                         }
                     }
 
                     let diff = differenceInCalendarDays(nowTime, secTime);
-                    let title = '即将开始';
+                    let title = '即将开抢';
 
                     if (diff > 0) { //如果是昨天， title就是昨日精选
-                        title = '昨日精选';
-                        for (const goodsValue of seckills) {
-                            if (goodsValue.status === limitStatus.doing) {
-                                title = '抢购中';
-                                break;
-                            }
+                        if (diff === 1) {
+                            title = '昨日精选';
+                        } else {
+                            title = format(secTime, 'D日') + '精选';
                         }
                     }
 
@@ -106,7 +105,7 @@ export class LimitGoModules {
                     } else if (diff === -1) {
                         timeFormat = '明日' + format(secTime, 'HH:mm');
                     } else {
-                        timeFormat = format(secTime, 'DD日HH:mm');
+                        timeFormat = format(secTime, 'D日HH:mm');
                     }
 
                     _timeList.push({

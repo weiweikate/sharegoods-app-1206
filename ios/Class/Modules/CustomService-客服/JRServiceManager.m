@@ -71,7 +71,9 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 -(void)changeToSupplierAction:(UIButton *)btn{
   if (self.preShopId && self.preShopId.length > 0) {
     [self.changeToSupplierBtn removeFromSuperview];
-    [[UIApplication sharedApplication].delegate.window addSubview:self.suspensionBtn];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+       [[UIApplication sharedApplication].delegate.window addSubview:self.suspensionBtn];
+    });
     [KRootVC dismissViewControllerAnimated:NO completion:^{
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self swichGroup:@{
@@ -91,7 +93,9 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 -(void)changeToPlatformAction:(UIButton *)btn{
   //暂存上个供应商数据
   [self.suspensionBtn removeFromSuperview];
-  [[UIApplication sharedApplication].delegate.window addSubview:self.changeToSupplierBtn];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [[UIApplication sharedApplication].delegate.window addSubview:self.changeToSupplierBtn];
+  });
   self.preShopId = self.dataDic[@"shopId"];
   self.preTitle = self.dataDic[@"title"];
   self.preChatType = (NSInteger)self.dataDic[@"chatType"];
@@ -152,27 +156,17 @@ SINGLETON_FOR_CLASS(JRServiceManager)
    self.dataDic = chatInfo;//暂存来的数据
   QYSessionViewController * sessionVC = [[QYSDK sharedSDK] sessionViewController];
   //暂存客服来源类型
-  if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
-    sessionVC.shopId=@"hzmrwlyxgs";
-    [self.suspensionBtn removeFromSuperview];
-  }else if([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_PRODUCT){
-    if (![chatInfo[@"shopId"] isEqualToString:@"hzmrwlyxgs"]) {
-      [ [UIApplication sharedApplication].keyWindow addSubview:self.suspensionBtn];
-    }
-  }else if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_ORDER){
-    if (![chatInfo[@"shopId"] isEqualToString:@"hzmrwlyxgs"]) {
-       [ [UIApplication sharedApplication].keyWindow addSubview:self.suspensionBtn];
-    }
+  if (![chatInfo[@"shopId"] isEqualToString:@"hzmrwlyxgs"] && ((NSString *)chatInfo[@"shopId"]).length != 0) {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+       [[UIApplication sharedApplication].keyWindow addSubview:self.suspensionBtn];
+    });
   }else{
-    if (((NSString *)chatInfo[@"shopId"]).length > 0 ) {
-      //存在供应商id说明链接的不是平台客服
-    }else{
-      
-    }
+    [self.suspensionBtn removeFromSuperview];
   }
-   self.currentChatType = [chatInfo[@"chatType"] integerValue];
+  
+  self.currentChatType = [chatInfo[@"chatType"] integerValue];
   sessionVC.sessionTitle = chatInfo[@"title"];
-  sessionVC.shopId = ((NSString *)chatInfo[@"shopId"]).length > 0 ?chatInfo[@"shopId"]:@"";
+  sessionVC.shopId = ((NSString *)chatInfo[@"shopId"]).length > 0 ?chatInfo[@"shopId"]:suspensionId;
   //重置一下供应商的域名
   if ([chatInfo[@"chatType"] integerValue] == BEGIN_FROM_OTHER) {
     sessionVC.shopId= suspensionId;
