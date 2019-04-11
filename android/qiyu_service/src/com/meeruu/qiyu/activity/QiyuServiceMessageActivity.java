@@ -70,7 +70,7 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
                 if (!TextUtils.isEmpty(source.shopId)) {
                     SPCacheUtils.put(QiyuServiceMessageActivity.this, "shopId", source.shopId);
                     source.shopId = "";
-                    Unicorn.openServiceActivity(QiyuServiceMessageActivity.this, "秀购客服", source);
+                    Unicorn.openServiceActivity(QiyuServiceMessageActivity.this, "平台客服", source);
                 } else {
                     String shopId = (String) SPCacheUtils.get(QiyuServiceMessageActivity.this, "shopId", "");
                     source.shopId = shopId;

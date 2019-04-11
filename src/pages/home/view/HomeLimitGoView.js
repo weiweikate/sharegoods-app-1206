@@ -41,7 +41,7 @@ export default class HomeLimitGoView extends Component {
             onPress={() => onPressHandler(page)}
             onLayout={onLayoutHandler}
         >
-            <View style={[styles.tab, { marginLeft: page === 0 ? 0 : px2dp(22) }]}>
+            <View style={[styles.tab, { marginLeft: page === 0 ? 0 : px2dp(12) }]}>
                 <Text style={[styles.time, { color: textColor }]}>
                     {time}
                 </Text>
@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     },
     tab: {
         height: px2dp(59),
+        minWidth: px2dp(60),
         alignItems: 'center'
     },
     tabBar: {
