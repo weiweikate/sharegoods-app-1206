@@ -2,7 +2,7 @@ import { observable, flow, action } from 'mobx';
 import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
-
+import {homeModule} from './Modules'
 const kHomeTodayHotStore = '@home/kHomeTodayHotStore';
 
 //今日榜单
@@ -19,6 +19,7 @@ class TodayModule {
             }
             const res = yield HomeApi.getHomeData({ type: homeType.today });
             this.todayList = res.data||[];
+            homeModule.changeHomeList(homeType.today)
             save(kHomeTodayHotStore, res.data);
         } catch (error) {
             console.log(error);

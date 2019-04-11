@@ -3,9 +3,8 @@ import HomeApi from '../api/HomeAPI';
 import { homeType } from '../HomeTypes';
 import { get, save } from '@mr/rn-store';
 import bridge from '../../../utils/bridge';
-
+import {homeModule} from './Modules'
 const kHomeTopBannerStore = '@home/kHomeTopBannerStore';
-
 export class BannerModules {
     @observable bannerList = [];
 
@@ -23,6 +22,7 @@ export class BannerModules {
             }
             const res = yield HomeApi.getHomeData({ type: homeType.swiper });
             this.bannerList = res.data||[];
+            homeModule.changeHomeList(homeType.swiper)
             save(kHomeTopBannerStore, res.data);
         } catch (error) {
             console.log(error);

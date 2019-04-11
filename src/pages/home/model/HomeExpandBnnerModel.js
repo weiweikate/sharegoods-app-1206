@@ -6,6 +6,7 @@ import { Image } from 'react-native';
 
 const { px2dp } = ScreenUtils;
 const bannerWidth = ScreenUtils.width;
+import {homeModule} from './Modules'
 
 class HomeExpandBnnerModel {
     @observable banner = [];
@@ -25,6 +26,7 @@ class HomeExpandBnnerModel {
             h -= px2dp(15);
         }
         this.bannerHeight = h;
+        homeModule.changeHomeList(homeType.expandBanner)
     }
 
     @action loadBannerList = flow(function* () {

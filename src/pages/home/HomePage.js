@@ -293,8 +293,8 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
-        this.loadMessageCount();
-        this.luckyIcon.getLucky();
+        // this.loadMessageCount();
+        // this.luckyIcon.getLucky();
 
     }
 
@@ -313,10 +313,6 @@ class HomePage extends BasePage {
     };
 
     render() {
-        console.log('getBanner render',
-            homeExpandBnnerModel.bannerHeight,
-            subjectModule.subjectHeight,
-            limitGoModule.limitHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (
@@ -330,7 +326,7 @@ class HomePage extends BasePage {
                     }}
                     style={{ minHeight: ScreenUtils.headerHeight, minWidth: 1, flex: 1 }}
                     refreshControl={<RefreshControl refreshing={homeModule.isRefreshing}
-                                                    onRefresh={this._onRefresh.bind(this)}
+                                                   onRefresh={this._onRefresh.bind(this)}
                                                     colors={[DesignRule.mainColor]}/>}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={ScreenUtils.height / 3}
