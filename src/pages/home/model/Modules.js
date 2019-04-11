@@ -62,11 +62,7 @@ class HomeModule {
     };
     @action changeHomeList = (type) =>{
        this.homeList = this.homeList.map((item)=> {
-           if (type === item.type){
                return ({...item});
-           }else {
-               return item;
-           }
        })
     };
     //加载为你推荐列表

@@ -69,9 +69,13 @@ export class LimitGoModules {
                     } else if (lastSeckills !== 0) {
                         if (lastSeckills > diffTime) {
                             lastSeckills = diffTime;
-                            currentId = value;
                             this.initialPage = index;
-                            this.currentPage = index;
+                            if (this.currentPage>(sortKeys.length-1) || this.currentPage === -1) {
+                                this.currentPage = index;
+                                currentId = value;
+                            }else {
+                                currentId = sortKeys[this.currentPage];
+                            }
                         }
                     }
 
