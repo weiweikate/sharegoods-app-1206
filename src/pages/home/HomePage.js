@@ -83,7 +83,7 @@ class HomePage extends BasePage {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
         const { recommendList } = recommendModule;
-        const { subjectHeight } = subjectModule;
+        const { subjectHeight, subjectList } = subjectModule;
         const { foucusHeight } = homeFocusAdModel;
 
         switch (type) {
@@ -115,7 +115,7 @@ class HomePage extends BasePage {
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
             case homeType.homeHot:
-                dim.height = subjectHeight;
+                dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
                 dim.height = px2dp(52);
@@ -292,9 +292,6 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
-        // this.loadMessageCount();
-        // this.luckyIcon.getLucky();
-
     }
 
     _onListViewScroll = (event) => {

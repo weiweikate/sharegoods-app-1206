@@ -77,7 +77,7 @@ class HomeModule {
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
         // 首页频道类目
-        channelModules.loadChannel();
+        channelModules.loadChannel(this.firstLoad);
         // 首页通栏
         homeExpandBnnerModel.loadBannerList();
         // 首焦点广告
