@@ -20,6 +20,8 @@ import com.qiyukf.unicorn.ui.activity.ServiceMessageActivity;
 
 public class QiyuServiceMessageActivity extends ServiceMessageActivity {
 
+    private ConsultSource source;
+
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -42,7 +44,7 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
         MyKefuButton myKefuButton = findViewById(R.id.mb_kefu_btn);
         final ImageView ivKefu = findViewById(R.id.iv_kefu);
         Bundle data = getIntent().getExtras();
-        final ConsultSource source = (ConsultSource) data.getSerializable("source");
+        source = (ConsultSource) data.getSerializable("source");
         if (source != null) {
             String shopId = (String) SPCacheUtils.get(QiyuServiceMessageActivity.this, "shopId", "");
             if (TextUtils.isEmpty(source.shopId)) {
@@ -70,7 +72,7 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
                 if (!TextUtils.isEmpty(source.shopId)) {
                     SPCacheUtils.put(QiyuServiceMessageActivity.this, "shopId", source.shopId);
                     source.shopId = "";
-                    Unicorn.openServiceActivity(QiyuServiceMessageActivity.this, "秀购客服", source);
+                    Unicorn.openServiceActivity(QiyuServiceMessageActivity.this, "平台客服", source);
                 } else {
                     String shopId = (String) SPCacheUtils.get(QiyuServiceMessageActivity.this, "shopId", "");
                     source.shopId = shopId;
@@ -113,6 +115,19 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
         EditText editText = findViewById(R.id.editTextMessage);
         if (editText != null) {
             KeyBoardUtils.closeKeybord(editText, this);
+        }
+    }
+
+    public void finish(boolean needFinish) {
+        if (source != null) {
+            String chatType = source.custom;
+            if ("0".equals(chatType) || "3".equals(chatType)) {
+                // do nothing
+            } else {
+                if (needFinish) {
+                    this.finish();
+                }
+            }
         }
     }
 }
