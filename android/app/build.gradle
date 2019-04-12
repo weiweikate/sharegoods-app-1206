@@ -21,8 +21,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 1201
-        versionName "1.2.1"
+        versionCode 1202016
+        versionName "1.2.2.16"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -128,6 +128,7 @@ dependencies {
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.wechat
     api rootProject.ext.dependencies.recyclerview
+    api rootProject.ext.dependencies.lottie
 
     api(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     api(name: 'alicom-number-verification-android-2.0.0-20190219-release', ext: 'aar')
@@ -144,7 +145,6 @@ dependencies {
     api project(':rn-geolocation')
     api project(':commonlib')
     api project(':qrcode')
-    api project(':lottie')
     api project(':base_adapter')
     api project(':react-native-webview')
     api project(':react-native-extra-dimensions-android')

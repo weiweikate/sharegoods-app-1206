@@ -1,5 +1,7 @@
 package com.meeruu.sharegoods.rn;
 
+import android.text.TextUtils;
+
 import com.facebook.react.bridge.ModuleSpec;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -30,7 +32,8 @@ public class MainReactPackage extends com.facebook.react.shell.MainReactPackage 
         Iterator<ModuleSpec> it = modules.iterator();
         while (it.hasNext()) {
             ModuleSpec module = it.next();
-            if (AsyncStorageModule.class.getName().equals(module.getClassName())) {
+
+            if (TextUtils.equals(AsyncStorageModule.class.getName(), module.getProvider().get().getClass().getName())) {
                 it.remove();
                 break;
             }

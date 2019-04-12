@@ -29,8 +29,8 @@ import res from '../res';
 import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { TrackApi } from '../../../utils/SensorsTrack';
-import { homeLinkType } from '../../home/HomeTypes';
-import { homeModule } from '../../home/Modules';
+import { homeLinkType, homeType } from '../../home/HomeTypes';
+import { homeModule } from '../../home/model/Modules';
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
@@ -156,8 +156,8 @@ export default class RecommendPage extends BasePage {
     };
 
     _getSwipers = () => {
-        HomeAPI.getSwipers({
-            type: 9
+        HomeAPI.getHomeData({
+            type: homeType.pinShop
         }).then((data) => {
             this.setState({
                 adList: data.data || []
@@ -221,32 +221,12 @@ export default class RecommendPage extends BasePage {
 
     // 点击轮播图广告
     _clickItem = (item) => {
+        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode) || '';
+        let params = homeModule.paramsNavigate(item);
+        this.$navigate(router, { ...params });
+
         let trackDic = homeModule.bannerPoint(item) || {};
         TrackApi.BannerClick({ bannerLocation: 21, ...trackDic });
-        if (item.linkType === homeLinkType.good) {
-            this.$navigate('product/ProductDetailPage', {
-                productCode: item.linkTypeCode
-            });
-        } else if (item.linkType === homeLinkType.subject) {
-            this.$navigate('topic/DownPricePage', {
-                linkTypeCode: item.linkTypeCode
-            });
-        } else if (item.linkType === homeLinkType.web) {
-            this.$navigate('HtmlPage', {
-                title: '详情',
-                uri: item.linkTypeCode
-            });
-        } else if (item.linkType === 3 || item.linkType === 4 || item.linkType === 5) {
-            let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
-            this.$navigate('topic/TopicDetailPage', {
-                activityCode: item.linkTypeCode,
-                activityType: type
-            });
-        } else if (item.linkType === homeLinkType.show) {
-            this.$navigate('show/ShowDetailPage', {
-                code: item.linkTypeCode
-            });
-        }
     };
 
     _segmentPressAtIndex = (index) => {

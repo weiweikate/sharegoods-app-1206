@@ -1,10 +1,10 @@
 import {
-    Image,
-    TouchableOpacity, View, ScrollView, Keyboard
+    TouchableOpacity,
+    KeyboardAvoidingView,
+    StyleSheet
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
-import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
@@ -12,149 +12,45 @@ import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DesignRule from '../../../../constants/DesignRule';
-import res from '../../res';
-import { MRText as Text, MRTextInput as TextInput } from '../../../../components/ui';
-
-const openEyeImage = res.button.open_eye;
-const closeEyeImage = res.button.close_eye;
+import { MRText as Text} from '../../../../components/ui';
+import PasswordInputText from './PasswordInputText';
+const title = '修改登录密码';
+const tip = '请设置6-8位数字字母组合密码，不含特殊符号';
 
 export default class EditPhonePwdPage extends BasePage {
 
     $navigationBarOptions = {
-        title: '修改密码'
+        title: ''
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            isOldSecuret: true,
             oldPwd: '',
-            isNewSecuret: true,
             newPwd: '',
-            isAgainSecuret: true,
             newPwdAgain: ''
         };
         this.isLoadding = false;
     }
 
     _render() {
-        return <ScrollView style={{ flex: 1 }}>
-            <UIText value={'请输入旧密码'}
-                    style={{ fontSize: 13, color: DesignRule.textColor_hint, marginLeft: 20, marginTop: 15 }}/>
-            <View style={{
-                flexDirection: 'row',
-                height: 48,
-                backgroundColor: 'white',
-                marginTop: 12,
-                alignItems: 'center'
-            }}>
-                <UIText value={'旧密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
-                <TextInput
-                    style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
-                    placeholder={'请输入旧密码'} placeholderTextColor={DesignRule.textColor_hint}
-                    onChangeText={(text) => this.setState({ oldPwd: text })}
-                    value={this.state.oldPwd}
-                    keyboardType={'default'}
-                    secureTextEntry={this.state.isOldSecuret}/>
-                <TouchableOpacity onPress={() => {
-                    Keyboard.dismiss();
-                    this.setState({
-                        isOldSecuret: !this.state.isOldSecuret
-                    });
-                }}>
-                    <Image
-                        source={this.state.isOldSecuret ? closeEyeImage : openEyeImage}
-                        style={{ marginRight: 20 }}/>
-
+        let {oldPwd, newPwd, newPwdAgain} = this.state;
+        let enabled = oldPwd.length > 0 && newPwd.length>0 && newPwdAgain.length>0 ;
+        return(
+            <KeyboardAvoidingView style={{alignItems: 'center'}}>
+                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.tip}>{tip}</Text>
+                <PasswordInputText placeholder={'请输入原密码'} onChangeText={(text)=>{this.setState({oldPwd: text})}}/>
+                <PasswordInputText placeholder={'请输入新密码'} onChangeText={(text)=>{this.setState({newPwd: text})}}/>
+                <PasswordInputText placeholder={'请再次输入密码'} onChangeText={(text)=>{this.setState({newPwdAgain: text})}}/>
+                <TouchableOpacity style={[{
+                    backgroundColor: enabled ? DesignRule.mainColor: '#cccccc',
+                    enabled: enabled
+                }, styles.btn]} onPress={() => this._done()}>
+                    <Text style={{ fontSize: 17, color: 'white' }}>完成</Text>
                 </TouchableOpacity>
-            </View>
-            <UIText value={'请设置新密码'}
-                    style={{ fontSize: 13, color: DesignRule.textColor_hint, marginLeft: 20, marginTop: 15 }}/>
-            <View style={{ backgroundColor: 'white', marginTop: 12, flexDirection: 'column' }}>
-                <View style={{
-                    flexDirection: 'row',
-                    height: 48,
-                    alignItems: 'center'
-                }}>
-                    <UIText value={'新密码'}
-                            style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
-                    <TextInput style={{
-                        flex: 1,
-                        padding: 0,
-                        fontSize: 13,
-                        color: DesignRule.textColor_mainTitle,
-                        marginLeft: 14
-                    }}
-                               placeholder={'请输入新密码'} placeholderTextColor={DesignRule.textColor_hint}
-                               onChangeText={(text) => this.setState({ newPwd: text })}
-                               value={this.state.newPwd}
-                               keyboardType={'default'}
-                               secureTextEntry={this.state.isNewSecuret}/>
-                    <TouchableOpacity onPress={() => {
-                        Keyboard.dismiss();
-                        this.setState({
-                            isNewSecuret: !this.state.isNewSecuret
-                        });
-                    }}>
-                        <Image
-                            source={this.state.isNewSecuret ? closeEyeImage : openEyeImage}
-                            style={{ marginRight: 20 }}/>
-
-                    </TouchableOpacity>
-                </View>
-                <View style={{
-                    height: 0.5,
-                    backgroundColor: DesignRule.lineColor_inColorBg,
-                    marginRight: 15,
-                    marginLeft: 15
-                }}/>
-                <View style={{
-                    flexDirection: 'row',
-                    height: 48,
-                    alignItems: 'center'
-                }}>
-                    <UIText value={'新密码'}
-                            style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
-                    <TextInput style={{
-                        flex: 1,
-                        padding: 0,
-                        fontSize: 13,
-                        color: DesignRule.textColor_mainTitle,
-                        marginLeft: 14
-                    }}
-                               placeholder={'请再次输入新密码'} placeholderTextColor={DesignRule.textColor_hint}
-                               onChangeText={(text) => this.setState({ newPwdAgain: text })}
-                               value={this.state.newPwdAgain}
-                               keyboardType={'default'}
-                               secureTextEntry={this.state.isAgainSecuret}/>
-                    <TouchableOpacity onPress={() => {
-                        Keyboard.dismiss();
-                        this.setState({
-                            isAgainSecuret: !this.state.isAgainSecuret
-                        });
-                    }}>
-                        <Image
-                            source={this.state.isAgainSecuret ? closeEyeImage : openEyeImage}
-                            style={{ marginRight: 20 }}/>
-
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <TouchableOpacity style={{
-                marginTop: 63,
-                backgroundColor: DesignRule.mainColor,
-                width: ScreenUtils.width - 84,
-                height: 50,
-                marginLeft: 42,
-                marginRight: 42,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 25
-            }} onPress={() => this._done()}>
-                <Text style={{ fontSize: 17, color: 'white' }}>完成</Text>
-            </TouchableOpacity>
-        </ScrollView>;
+            </KeyboardAvoidingView>
+        )
     }
 
     _done = () => {
@@ -215,3 +111,28 @@ export default class EditPhonePwdPage extends BasePage {
         });
     };
 }
+
+
+const styles = StyleSheet.create({
+    btn: {
+        marginTop: 63,
+        width: ScreenUtils.width - 84,
+        height: 50,
+        marginLeft: 30,
+        marginRight: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25,
+    },
+    title: {
+        fontSize: 23,
+        color: DesignRule.textColor_mainTitle,
+        marginTop: ScreenUtils.autoSizeWidth(80)
+    },
+    tip: {
+        fontSize: 11,
+        color: DesignRule.textColor_placeholder,
+        marginTop: 10,
+        marginBottom: ScreenUtils.autoSizeWidth(25)
+    }
+});

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import com.meeruu.commonlib.base.BaseApplication;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.umeng.socialize.utils.ContextUtil.getPackageName;
@@ -34,7 +36,10 @@ public class AppUtils {
     private AppUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
+    }
 
+    public static boolean isMainThread() {
+        return Thread.currentThread() == Looper.getMainLooper().getThread();
     }
 
     /**
@@ -287,6 +292,31 @@ public class AppUtils {
             e.printStackTrace();
         }
         return resultData;
+    }
+
+    /**
+     * 检查手机上是否安装了指定的软件
+     *
+     * @param context
+     * @param packageName 应用包名
+     * @return
+     */
+    public static boolean isAvilible(Context context, String packageName) {
+        //获取packagemanager
+        final PackageManager packageManager = context.getPackageManager();
+        //获取所有已安装程序的包信息
+        List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
+        //用于存储所有已安装程序的包名
+        List<String> packageNames = new ArrayList<String>();
+        //从pinfo中将包名字逐一取出，压入pName list中
+        if (packageInfos != null) {
+            for (int i = 0; i < packageInfos.size(); i++) {
+                String packName = packageInfos.get(i).packageName;
+                packageNames.add(packName);
+            }
+        }
+        //判断packageNames中是否有目标程序的包名，有TRUE，没有FALSE
+        return packageNames.contains(packageName);
     }
 
 }

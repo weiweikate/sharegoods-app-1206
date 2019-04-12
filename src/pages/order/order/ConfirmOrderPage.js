@@ -15,7 +15,7 @@ import DesignRule from '../../../constants/DesignRule';
 import ConfirmAddressView from '../components/confirmOrder/ConfirmAddressView';
 import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
 import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
-import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+// import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 
 @observer
@@ -30,23 +30,6 @@ export default class ConfirmOrderPage extends BasePage {
         show: true // false则隐藏导航
     };
 
-    $getPageStateOptions = () => {
-        return {
-            loadingState: confirmOrderModel.loadingState,
-            netFailedProps: {
-                netFailedInfo: confirmOrderModel.netFailedInfo,
-                reloadBtnClick: this._reload
-            }
-        };
-    };
-
-    _reload = () => {
-        confirmOrderModel.netFailedInfo = null;
-        bridge.showLoading('加载中...');
-        setTimeout(() => {
-            this.loadPageData();
-        }, 0);
-    };
 
     //**********************************ViewPart******************************************
     _renderContent = () => {
@@ -95,7 +78,7 @@ export default class ConfirmOrderPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {renderViewByLoadingState(this.$getPageStateOptions(), this._renderContent)}
+                {this._renderContent()}
             </View>
         );
     }
@@ -125,7 +108,7 @@ export default class ConfirmOrderPage extends BasePage {
                 };
                 confirmOrderModel.tokenCoinText = '选择使用1元券',
                     confirmOrderModel.tokenCoin = 0;
-                confirmOrderModel.addressId = json.id;
+                // confirmOrderModel.addressId = json.id;
                 setTimeout(() => {
                     this.loadPageData(params);
                 }, 0);
@@ -168,7 +151,6 @@ export default class ConfirmOrderPage extends BasePage {
             this.$navigate('mine/coupons/CouponsPage', {
                 justOne: (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) : 1,
                 callBack: (data) => {
-                    console.log(typeof data);
                     if (parseInt(data) >= 0) {
                         let params = {
                             tokenCoin: parseInt(data) > 0 && parseInt(data) <= (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? parseInt(data) : 0,

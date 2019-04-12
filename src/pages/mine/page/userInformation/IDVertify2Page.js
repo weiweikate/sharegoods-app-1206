@@ -161,7 +161,7 @@ export default class IDVertify2Page extends BasePage {
     renderBackIdCard = () => {
         let imageWidth = (ScreenUtils.width - 45) / 2;
         if (StringUtils.isEmpty(this.state.backIdCard) ) {
-          return  <UIImage source={IDcard_country} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
+          return  <UIImage source={IDcard_persion} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
                 this.getIDcard_country();
             }}/>
         }else {
@@ -173,11 +173,11 @@ export default class IDVertify2Page extends BasePage {
                 </TouchableOpacity>)
         }
     };
-    renderFrontIdCard = () => {
+    renderFrontIdCard = () => {//IDcard_persion
         let imageWidth = (ScreenUtils.width - 45) / 2;
         if (StringUtils.isEmpty(this.state.frontIdCard))
         {
-            return  <UIImage source={IDcard_persion} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
+            return  <UIImage source={IDcard_country} style={{ height: imageWidth, width: imageWidth }} onPress={() => {
                 this.getIDcard_persion();
             }}/>
         }else {
@@ -277,8 +277,8 @@ export default class IDVertify2Page extends BasePage {
             return;
         }
         let params = {
-            backPhoto: this.state.backIdCard,
-            frontPhoto: this.state.frontIdCard,
+            frontPhoto: this.state.backIdCard,
+            backPhoto: this.state.frontIdCard,
             idcardNo: this.state.idNumber,
             realName: this.state.name
         };

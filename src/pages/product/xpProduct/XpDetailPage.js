@@ -19,12 +19,12 @@ import SelectionPage from '../SelectionPage';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import DetailNavShowModal from '../components/DetailNavShowModal';
-import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import user from '../../../model/user';
 import RouterMap from '../../../navigation/RouterMap';
 import DetailHeaderScoreView from '../components/DetailHeaderScoreView';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
 
 const { arrow_right_black } = productRes.button;
 const { detail_more_down } = productRes.detailNavView;
@@ -48,7 +48,7 @@ export class XpDetailPage extends BasePage {
 
     _rightPressed = () => {
         this.DetailNavShowModal.show(this.xpDetailModel.messageCount, (item) => {
-            switch (item.index) {
+            switch (item.type) {
                 case 0:
                     if (!user.isLogin) {
                         this.$navigate(RouterMap.LoginPage);
@@ -62,14 +62,11 @@ export class XpDetailPage extends BasePage {
                 case 2:
                     this.shareModal.open();
                     break;
-                case 3:
-                    setTimeout(() => {
-                        track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                        QYChatUtil.qiYUChat();
-                    }, 100);
+                case 4:
+                    this.$navigateBackToHome();
                     break;
             }
-        });
+        }, 2);
     };
 
     _getBasePageStateOptions = () => {
@@ -125,6 +122,26 @@ export class XpDetailPage extends BasePage {
         if (type === 'goGwc') {
             this.$navigate('shopCart/ShopCart', {
                 hiddeLeft: false
+            });
+        } else if (type === 'keFu') {
+            track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
+            if (!user.isLogin) {
+                this.$navigate('login/login/LoginPage');
+                return;
+            }
+            const { pData } = this.xpDetailModel;
+            const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
+            QYChatTool.beginQYChat({
+                shopId: shopId,
+                title: title,
+                chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                data: {
+                    title: name,
+                    desc: secondName,
+                    pictureUrlString: imgUrl,
+                    urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
+                    note: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`
+                }
             });
         } else {
             if (!user.isLogin) {

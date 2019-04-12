@@ -341,7 +341,7 @@ export default class SearchResultPage extends BasePage {
                         marginLeft: 16,
                         paddingVertical: 15
                     }} allowFontScaling={false}>{item}</Text>
-                    <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
+                    <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
     };
@@ -407,7 +407,7 @@ export default class SearchResultPage extends BasePage {
     _rowRenderer = (type, data) => {
         switch (type) {
             case viewTypes.rowView:
-                const { itemData } = data;
+                const { itemData } = data || {};
                 return <View style={{ flexDirection: 'row', marginHorizontal: 15 }}>
                     {itemData[0] ?
                         <ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}

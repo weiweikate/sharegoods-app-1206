@@ -6,11 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
 
 import com.facebook.infer.annotation.Assertions;
+import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -28,8 +28,6 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
     private final @Nullable
     Activity mActivity;
     private final @Nullable
-    FragmentActivity mFragmentActivity;
-    private final @Nullable
     String mMainComponentName;
 
     private @Nullable
@@ -41,20 +39,15 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
     private @Nullable
     Callback mPermissionsCallback;
 
-    public PreLoadReactDelegate(Activity activity, @Nullable String mainComponentName) {
+    public PreLoadReactDelegate(ReactActivity activity, @Nullable String mainComponentName) {
         super(activity, mainComponentName);
         mActivity = activity;
         mMainComponentName = mainComponentName;
-        mFragmentActivity = null;
     }
 
-    public PreLoadReactDelegate(
-            FragmentActivity fragmentActivity,
-            @Nullable String mainComponentName) {
-        super(fragmentActivity, mainComponentName);
-        mFragmentActivity = fragmentActivity;
-        mMainComponentName = mainComponentName;
-        mActivity = null;
+    protected @Nullable
+    Bundle getLaunchOptions() {
+        return null;
     }
 
     protected ReactRootView createRootView() {
@@ -108,6 +101,7 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
                     getPlainActivity(),
                     (DefaultHardwareBackBtnHandler) getPlainActivity());
         }
+
         if (mPermissionsCallback != null) {
             mPermissionsCallback.invoke();
             mPermissionsCallback = null;
@@ -122,8 +116,6 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
         if (getReactNativeHost().hasInstance()) {
             getReactNativeHost().getReactInstanceManager().onHostDestroy(getPlainActivity());
         }
-        // 清除View
-        ReactNativePreLoader.detachView(mMainComponentName);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -208,14 +200,11 @@ public class PreLoadReactDelegate extends ReactActivityDelegate {
         };
     }
 
-    private Context getContext() {
-        if (mActivity != null) {
-            return mActivity;
-        }
-        return Assertions.assertNotNull(mFragmentActivity);
+    protected Context getContext() {
+        return Assertions.assertNotNull(mActivity);
     }
 
-    private Activity getPlainActivity() {
+    protected Activity getPlainActivity() {
         return ((Activity) getContext());
     }
 }

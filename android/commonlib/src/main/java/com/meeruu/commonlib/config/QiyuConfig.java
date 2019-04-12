@@ -1,15 +1,25 @@
 package com.meeruu.commonlib.config;
 
+import android.content.Context;
+
+import com.meeruu.commonlib.R;
+import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
+import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.YSFOptions;
+import com.qiyukf.unicorn.api.pop.OnShopEventListener;
 
 public class QiyuConfig {
 
     // 如果返回值为null，则全部使用默认参数。
     public static YSFOptions options() {
         YSFOptions options = new YSFOptions();
-        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
+        StatusBarNotificationConfig statusBarNotificationConfig = new StatusBarNotificationConfig();
+        statusBarNotificationConfig.notificationEntrance = QiyuServiceMessageActivity.class;
+        statusBarNotificationConfig.notificationSmallIconId = R.mipmap.ic_launcher_round;
+        options.statusBarNotificationConfig = statusBarNotificationConfig;
         UICustomization uiCustomization = new UICustomization();
         // 头像风格，0为圆形，1为方形
         uiCustomization.avatarShape = 0;

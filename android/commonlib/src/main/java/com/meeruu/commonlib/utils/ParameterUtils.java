@@ -22,6 +22,18 @@ public class ParameterUtils {
     // 无网络连接错误码
     public static final String RESPONE_CODE_NETERR = "net_err";
     public static final String RN_MAIN_NAME = "sharegoods";
+    /**
+     * 标题
+     */
+    public static final String TITLE = "title";
+    /**
+     * webview参数传递key
+     */
+    public static final String WEBVIEW_URL = "web_url";
+    /**
+     * webview参数传递key
+     */
+    public static final String WEBVIEW_ACTION = "url_action";
     // 应用更新
     public static final int FLAG_UPDATE = 1;
     // 应用强制更新
@@ -47,6 +59,10 @@ public class ParameterUtils {
     public static final int REQUEST_CODE_CHANGEPHOTO = 41; //更换照片请求码
     public static final int REQUEST_CODE_CLIP_OVER = 43; //剪裁照片请求码
     public static final int QIYU_IMG = 44;
+    public static final int ACTION_FROM_WEB = 45;
+    public static final int SIGN_OK = 46;  // 工猫签约
+    public static final int REQUEST_CODE_GONGMAO = 47;  // 工猫签约
+    public static final int REQUEST_CODE_WEBVIEW = 48;
     /**
      * 一般图片url宽高
      */

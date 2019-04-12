@@ -23,7 +23,6 @@
 #import "WelcomeView.h"
 #import "NetWorkTool.h"
 @implementation AppDelegate
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [self JR_ConfigLib:application didFinishLaunchingWithOptions:launchOptions];
@@ -40,7 +39,33 @@
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isNotFrist"];
   }
   [self configureUserAgent];
+  [self getAd];
   return YES;
+}
+
+-(void)getAd
+{
+  [NetWorkTool requestWithURL:AdApi_query params:@{@"type": @"16" } toModel:nil success:^(NSArray* result) {
+    if ([result isKindOfClass:[NSArray class]] && result.count > 0) {
+      NSMutableDictionary *dic = [result[0] mutableCopy];
+      for (NSString*key  in dic.allKeys) {
+        if ([dic[key] isKindOfClass:[NSNull class]]) {
+          [dic removeObjectForKey:key];
+        }else if ([dic[key] isKindOfClass:[NSString class]]){
+          NSString *value = dic[key];
+          if ([value isEqualToString:@"<null>"]) {
+            [dic removeObjectForKey:key];
+          }
+        }
+      }
+      [[NSUserDefaults standardUserDefaults] setObject:dic forKey:@"sg_ad"];
+      [AdView preImage];
+    }else{
+      [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sg_ad"];
+    }
+  } failure:^(NSString *msg, NSInteger code) {
+    
+  } showLoading:nil];
 }
 
 - (void)addWelcomeView

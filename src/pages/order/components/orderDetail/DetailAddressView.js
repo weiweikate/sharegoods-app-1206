@@ -46,7 +46,8 @@ const styles = StyleSheet.create({
          flexDirection: 'row',
          paddingTop:  px2dp(10),
          paddingBottom:  px2dp(10),
-         alignItems: 'center'
+         alignItems: 'center',
+         marginTop:105
      },
     innerTextStyle:{
         fontSize: 15,

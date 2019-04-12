@@ -1,7 +1,6 @@
 {
-    "Version":"1.2.1.5",
-    "showDebugPanel": false,
-    "envType": "online",
+    "showDebugPanel": true,
+    "envType": "qa",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
@@ -59,9 +58,13 @@
             "wxAppletKey": "gh_aa91c3ea0f6c",
             "gongmao": "https://api.sharegoodsmall.com/gateway/gongmall/contract/reback"
         },
+        "zhaoqian": {
+            "name": "赵强",
+            "host": "http://172.16.10.134:4085/gateway"
+        },
         "吴承骏": {
             "name": "吴承骏",
-            "host": "http://172.16.10.123:8903/gateway"
+            "host": "http://172.16.10.53:8903/gateway"
         },
         "da_wei": {
             "name": "蒋大为",
@@ -103,12 +106,12 @@
         },
         "杨飞": {
             "name": "杨飞",
-            "host": "http://172.16.10.109:18096/gateway",
+            "host": "http://172.16.10.48:18096/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "顾嘉豪": {
             "name": "顾嘉豪",
-            "host": "http://172.16.10.58:9090/gateway",
+            "host": "http://172.16.10.83:18062/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         },
         "高建伟": {
@@ -143,6 +146,14 @@
         "岑登": {
             "name": "岑登",
             "host": "http://172.16.10.74:18080/gateway"
+        },
+        "麻晓刚": {
+            "name": "麻晓刚",
+            "host": "http://172.16.10.43:18088/gateway"
+        },
+        "devOpen": {
+            "name": "devOpen",
+            "host": "http://devopenapi.sharegoodsmall.com/gateway"
         }
     }
 }

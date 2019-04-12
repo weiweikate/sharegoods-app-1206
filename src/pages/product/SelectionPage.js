@@ -67,7 +67,6 @@ export default class SelectionPage extends Component {
             specMap: specMapTemp,
             priceList: priceListTemp,
             tittleList: tittleList,
-            amount: 1
         }, () => {
             this._indexCanSelectedItems();
 
@@ -262,6 +261,7 @@ export default class SelectionPage extends Component {
                             <ScrollView>
                                 {this._addSelectionSectionView()}
                                 <SelectionAmountView style={{ marginVertical: 30 }}
+                                                     amount = {this.state.amount}
                                                      amountClickAction={this._amountClickAction}
                                                      maxCount={this.state.maxStock} afterAmount={afterAmount}
                                                      type={type}/>

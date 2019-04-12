@@ -57,6 +57,16 @@ public class BannerLayout extends FrameLayout {
     private OnPageSelected onPageSelected;
     private RecyclerView.Adapter adapter;
     private boolean intercept;
+    private int itemWidth;
+
+
+    public void setItemWidth(int itemWidth) {
+        this.itemWidth = itemWidth;
+    }
+
+    public int getItemWidth() {
+        return this.itemWidth;
+    }
 
     protected WeakHandler mHandler = new WeakHandler(new Handler.Callback() {
         @Override

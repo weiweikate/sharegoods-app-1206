@@ -55,7 +55,7 @@ export default class MyCouponsItems extends Component {
     }
 
     fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd');
+        return formatDate(obj, 'yyyy.MM.dd HH:mm');
     }
 
 
@@ -154,7 +154,7 @@ export default class MyCouponsItems extends Component {
     };
     commitTokenCoin = () => {
         bridge.showLoading();
-        this.props.useCoupons(this.state.tokenCoinNum);
+        this.props.useCoupons(this.state.tokenCoinNum||0);
         this.setState({ showDialogModal: false });
     };
     reduceTokenCoin = () => {

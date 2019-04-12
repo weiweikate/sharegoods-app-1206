@@ -29,15 +29,18 @@ import { MRText } from '../../components/ui';
 import DesignRule from '../../constants/DesignRule';
 import OssHelper from '../../utils/OssHelper';
 import ImageLoad from '@mr/image-placeholder';
-import {categoryHeight} from '../home/HomeCategoryView'
-import { bannerHeight } from '../home/HomeBannerView';
-import{ kHomeClassifyHeight } from '../home/HomeClassifyView';
-import { adModules } from '../home/HomeAdModel';
+import { categoryHeight } from '../home/view/HomeCategoryView';
+import { bannerHeight } from '../home/view/HomeBannerView';
+import { homeFocusAdModel , kAdHeight} from '../home/model/HomeFocusAdModel';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { navigate } from '../../navigation/RouterMap';
-import { homeModule } from '../home/Modules';
+import { homeModule } from '../home/model/Modules';
+import { channelModules } from '../home/model/HomeChannelModel';
+import { homeExpandBnnerModel } from '../home/model/HomeExpandBnnerModel';
+import HomeModalManager from '../home/manager/HomeModalManager'
 import GuideApi from './GuideApi';
+
 const {
     tip_one,
     tip_two,
@@ -48,13 +51,13 @@ const {
     discover,
     group,
     mine,
-    next_btn,
+    next_btn
     // button: {
     //     cancel_white_circle
     // }
 } = res;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
-const adWidth = (ScreenUtils.width - autoSizeWidth(35)) / 2
+const adWidth = (ScreenUtils.width - autoSizeWidth(35)) / 2;
 const adHeight = adWidth * (160 / 340);
 
 // import {
@@ -69,62 +72,18 @@ export default class GuideModal extends React.Component {
         super(props);
 
         this.state = {
-            step: 0,/** 新手引导第几步*/
-            visible: false,
-            isHome: false,
-            rewardzData: {},
             showActivityIndicator: true
         };
         /** 每一步引导的数据*/
-        this.data = [{image: discover, tip: tip_one, text: '秀场'},
-            {image: OssHelper('/app/share11.png'), tip: tip_two, text: '升级'},
-            {image: group, tip: tip_three, text: '拼店'},
-            {image: '', tip: tip_four},//这个图片从 mobox获取
-            {image: OssHelper('/app/signin11.png'), tip: tip_five, text: '签到'},
-            {image: mine, tip: tip_six, text: '我的'},
+        this.data = [{ image: discover, tip: tip_one, text: '秀场' },
+            { image: OssHelper('/app/share11.png'), tip: tip_two, text: '升级' },
+            { image: group, tip: tip_three, text: '拼店' },
+            { image: '', tip: tip_four },//这个图片从 mobox获取
+            { image: OssHelper('/app/signin11.png'), tip: tip_five, text: '签到' },
+            { image: mine, tip: tip_six, text: '我的' }
 
         ];
     }
-
-    getUserRecord = () => {
-        console.log('user.finishGuide'+ user.finishGuide);
-        this.state.isHome = true;
-        GuideApi.getUserRecord().then((data)=> {
-            if(data.data === true){
-                if (user.finishGuide === true){
-                    GuideApi.registerSend({});
-                }else {
-                    this.open();
-                    this.getRewardzInfo();
-                }
-            }
-        }).catch(()=> {
-        })
-    }
-
-    cancelUserRecord = () => {
-        this.setState({isHome: false, visible: false});
-    }
-
-
-    getRewardzInfo = () => {
-        GuideApi.rewardzInfo({type: 17}).then((data)=> {
-            data = data.data || [];
-            if (data.length>0){
-                this.setState({rewardzData: data[0]});
-            }
-        })
-    }
-
-
-    open = () => {
-        this.props.callback &&  this.props.callback();
-        this.setState({visible: true, step: 0, showActivityIndicator: true});
-    }
-    close = () => {
-        this.setState({visible: false});
-    }
-
 
     componentDidMount() {
 
@@ -134,7 +93,7 @@ export default class GuideModal extends React.Component {
      * 渲染新手引导的内容
      */
     renderContent = () => {
-        let {step} = this.state;
+        let { step } = HomeModalManager;
         let data = this.data[step];
         let _categoryHeight = categoryHeight;
         if (step < 6) {
@@ -147,31 +106,33 @@ export default class GuideModal extends React.Component {
                 height: autoSizeWidth(46)
             };
             // alert(ScreenUtils.headerHeight);
-            if (step === 0){
+            if (step === 0) {
                 let bg_offsety = ScreenUtils.tabBarHeight > 49 ? 49 : ScreenUtils.tabBarHeight;
                 let bottom = ScreenUtils.tabBarHeight - bg_offsety + 3;
-                bgStyle = {bottom: bottom, left: ScreenUtils.width/5.0 * 1}
-                imageStyle = {width: autoSizeWidth(32), height: autoSizeWidth(32)};
-                textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6};
+                bgStyle = { bottom: bottom, left: ScreenUtils.width / 5.0 * 1 };
+                imageStyle = { width: autoSizeWidth(32), height: autoSizeWidth(32) };
+                textStyle = { color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6 };
                 tipStyle = {
                     width: autoSizeWidth(178),
                     height: autoSizeWidth(117),
-                    left: ScreenUtils.width/5.0 * 1,
-                    bottom: bottom+autoSizeWidth(75) + 2,
+                    left: ScreenUtils.width / 5.0 * 1,
+                    bottom: bottom + autoSizeWidth(75) + 2,
                     position: 'absolute'
                 };
-                next_btnStyle= {...next_btnStyle,
+                next_btnStyle = {
+                    ...next_btnStyle,
                     left: autoSizeWidth(225),
                     bottom: ScreenUtils.tabBarHeight,
-                    position: 'absolute'};
+                    position: 'absolute'
+                };
             }
 
 
-            if (step === 1){
-                let top =  _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0) - (ScreenUtils.isIphonex?10:0) + 6;
-                bgStyle = {top: top, left: autoSizeWidth(7)}
-                imageStyle = {width: autoSizeWidth(50), height: autoSizeWidth(50)};
-                textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
+            if (step === 1) {
+                let top = _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0) + 6;
+                bgStyle = { top: top, left: autoSizeWidth(7) };
+                imageStyle = { width: autoSizeWidth(50), height: autoSizeWidth(50) };
+                textStyle = { color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1 };
                 tipStyle = {
                     width: autoSizeWidth(183),
                     height: autoSizeWidth(110),
@@ -179,44 +140,54 @@ export default class GuideModal extends React.Component {
                     top: top - autoSizeWidth(110) - 2,
                     position: 'absolute'
                 };
-                next_btnStyle= {...next_btnStyle,
+                next_btnStyle = {
+                    ...next_btnStyle,
                     right: autoSizeWidth(97),
-                    top: top - autoSizeWidth(46/2),
-                    position: 'absolute'};
+                    top: top - autoSizeWidth(46 / 2),
+                    position: 'absolute'
+                };
             }
 
-            if (step === 2){
+            if (step === 2) {
                 let bg_offsety = ScreenUtils.tabBarHeight > 49 ? 49 : ScreenUtils.tabBarHeight;
                 let bottom = ScreenUtils.tabBarHeight - bg_offsety + 3;
-                bgStyle = {bottom: bottom, left: ScreenUtils.width/5.0 * 2}
-                imageStyle = {width: autoSizeWidth(32), height: autoSizeWidth(32)};
-                textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6};
+                bgStyle = { bottom: bottom, left: ScreenUtils.width / 5.0 * 2 };
+                imageStyle = { width: autoSizeWidth(32), height: autoSizeWidth(32) };
+                textStyle = { color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6 };
                 tipStyle = {
                     width: autoSizeWidth(144),
                     height: autoSizeWidth(111),
                     left: autoSizeWidth(125),
-                    bottom: bottom+autoSizeWidth(75) + 2,
+                    bottom: bottom + autoSizeWidth(75) + 2,
                     position: 'absolute'
                 };
-                next_btnStyle= {...next_btnStyle,
+                next_btnStyle = {
+                    ...next_btnStyle,
                     right: autoSizeWidth(33),
                     bottom: ScreenUtils.tabBarHeight,
-                    position: 'absolute'};
+                    position: 'absolute'
+                };
             }
 
-            if (step === 3){
-                let ad = adModules.ad;
-                let top =  kHomeClassifyHeight+_categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0)- (ScreenUtils.isIphonex?10:0);
-                if (ad.length > 0){
-                    data.image = ad[ad.length-1].imgUrl;//获取最后一个图片地址
-                    top = top + adModules.adHeight - adHeight;
+            if (step === 3) {
+                let ad = homeExpandBnnerModel.banner;
+                let top =  _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0) + homeExpandBnnerModel.bannerHeight + channelModules.channelHeight;
+                if (ad.length > 0) {
+                    data.image = ad[ad.length - 1].image || '';//获取最后一个图片地址
+                    top = top + homeFocusAdModel.foucusHeight - kAdHeight;
                 }
-                if (top>ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight) {
+                if (top > ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight) {
                     top = ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight;
                 }
-                bgStyle = {top: top, right: autoSizeWidth(12), height: autoSizeWidth(80), width: autoSizeWidth(180), borderRadius: 5}
-                imageStyle = {width: autoSizeWidth(180), height: autoSizeWidth(80)};
-                textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
+                bgStyle = {
+                    top: top,
+                    right: autoSizeWidth(12),
+                    height: autoSizeWidth(80),
+                    width: autoSizeWidth(180),
+                    borderRadius: 5
+                };
+                imageStyle = { width: autoSizeWidth(180), height: autoSizeWidth(80) };
+                textStyle = { color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1 };
                 tipStyle = {
                     width: autoSizeWidth(189),
                     height: autoSizeWidth(122),
@@ -224,17 +195,19 @@ export default class GuideModal extends React.Component {
                     top: top - autoSizeWidth(122) - 2,
                     position: 'absolute'
                 };
-                next_btnStyle= {...next_btnStyle,
+                next_btnStyle = {
+                    ...next_btnStyle,
                     right: autoSizeWidth(65),
                     top: top - autoSizeWidth(189),
-                    position: 'absolute'};
+                    position: 'absolute'
+                };
             }
 
-            if (step === 4){
-                let top =  _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin?autoSizeWidth(44):0)- (ScreenUtils.isIphonex?10:0) + 6;
-                bgStyle = {top: top, left: autoSizeWidth(148)}
-                imageStyle = {width: autoSizeWidth(50), height: autoSizeWidth(50)};
-                textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1};
+            if (step === 4) {
+                let top = _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0) + 6;
+                bgStyle = { top: top, left: autoSizeWidth(148) };
+                imageStyle = { width: autoSizeWidth(50), height: autoSizeWidth(50) };
+                textStyle = { color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 1 };
                 tipStyle = {
                     width: autoSizeWidth(200),
                     height: autoSizeWidth(120),
@@ -242,57 +215,70 @@ export default class GuideModal extends React.Component {
                     top: top - autoSizeWidth(120) - 2,
                     position: 'absolute'
                 };
-                next_btnStyle= {...next_btnStyle,
+                next_btnStyle = {
+                    ...next_btnStyle,
                     right: autoSizeWidth(32),
-                    top: top - autoSizeWidth(46/2),
-                    position: 'absolute'};
+                    top: top - autoSizeWidth(46 / 2),
+                    position: 'absolute'
+                };
             }
 
-            if (step === 5){
+            if (step === 5) {
                 let bg_offsety = ScreenUtils.tabBarHeight > 49 ? 49 : ScreenUtils.tabBarHeight;
                 let bottom = ScreenUtils.tabBarHeight - bg_offsety + 3;
-                bgStyle = {bottom: bottom, right: 8}
-                imageStyle = {width: autoSizeWidth(32), height: autoSizeWidth(32)};
-                textStyle = {color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6};
+                bgStyle = { bottom: bottom, right: 8 };
+                imageStyle = { width: autoSizeWidth(32), height: autoSizeWidth(32) };
+                textStyle = { color: DesignRule.textColor_mainTitle, fontSize: 10, marginTop: 6 };
                 tipStyle = {
                     width: autoSizeWidth(260),
                     height: autoSizeWidth(130),
                     left: autoSizeWidth(67),
-                    bottom: bottom+autoSizeWidth(75) + 2,
+                    bottom: bottom + autoSizeWidth(75) + 2,
                     position: 'absolute'
                 };
-                next_btnStyle= {...next_btnStyle,
+                next_btnStyle = {
+                    ...next_btnStyle,
                     right: autoSizeWidth(51),
-                    bottom: ScreenUtils.tabBarHeight + autoSizeWidth(130) + autoSizeWidth(37) + autoSizeWidth(75/2.0),
-                    position: 'absolute'};
+                    bottom: ScreenUtils.tabBarHeight + autoSizeWidth(130) + autoSizeWidth(37) + autoSizeWidth(75 / 2.0),
+                    position: 'absolute'
+                };
             }
             return (
                 <View style={DesignRule.style_absoluteFullParent}>
                     <View style={[styles.circleBg, bgStyle]}>
-                        { typeof data.image === 'string' ?
-                            <ImageLoad source={{uri: data.image}} style = {imageStyle}  key={step+''}/>:
-                            <Image source={data.image} style = {imageStyle}/>
+                        {typeof data.image === 'string' ?
+                            <ImageLoad source={{ uri: data.image }} style={imageStyle} key={step + ''}/> :
+                            <Image source={data.image} style={imageStyle}/>
                         }
                         {data.text ? <MRText style={textStyle}>{data.text}</MRText> : null}
                     </View>
-                    <Image source={data.tip} style = {tipStyle} resizeMode={'stretch'}/>
-                    <TouchableOpacity onPress={this.nextPress} style = {next_btnStyle}>
-                        <Image source={next_btn} style={{flex: 1}} resizeMode={'stretch'}/>
+                    <Image source={data.tip} style={tipStyle} resizeMode={'stretch'}/>
+                    <TouchableOpacity onPress={this.nextPress} style={next_btnStyle}>
+                        <Image source={next_btn} style={{ flex: 1 }} resizeMode={'stretch'}/>
                     </TouchableOpacity>
                 </View>
-            )
-        }else {
-            let imageStyle = {height: autoSizeWidth(375), width: autoSizeWidth(315), justifyContent: 'flex-end',alignItems: 'center'};
+            );
+        } else {
+            let imageStyle = {
+                height: autoSizeWidth(375),
+                width: autoSizeWidth(315),
+                justifyContent: 'flex-end',
+                alignItems: 'center'
+            };
             return (
-                <View style={[DesignRule.style_absoluteFullParent, {alignItems: 'center'}]}>
-                    <View style={{flex: 1}}/>
+                <View style={[DesignRule.style_absoluteFullParent, { alignItems: 'center' }]}>
+                    <View style={{ flex: 1 }}/>
                     <TouchableWithoutFeedback onPress={this.gotoPage}>
                         <View>
                             <ImageLoad style={imageStyle}
-                                       source={{uri: this.state.rewardzData.imgUrl}}
+                                       source={{ uri: HomeModalManager.guideData.image || '' }}
                                        resizeMode={'contain'}
-                                       onError={()=>{this.setState({showActivityIndicator: false})}}
-                                       onLoadEnd={()=>{this.setState({showActivityIndicator: false})}}
+                                       onError={() => {
+                                           this.setState({ showActivityIndicator: false });
+                                       }}
+                                       onLoadEnd={() => {
+                                           this.setState({ showActivityIndicator: false });
+                                       }}
                             >
                                 {
                                     this.state.showActivityIndicator === true ? <ActivityIndicator
@@ -301,48 +287,53 @@ export default class GuideModal extends React.Component {
                                             position: 'absolute',
                                             width: 10,
                                             height: 10,
-                                            top: autoSizeWidth(375)/ 2.0 - 5,
+                                            top: autoSizeWidth(375) / 2.0 - 5,
                                             left: autoSizeWidth(315) / 2.0 - 5
                                         }}/> : null
                                 }
                             </ImageLoad>
                         </View>
                     </TouchableWithoutFeedback>
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                         {/*<TouchableOpacity onPress={this.close} style = {{marginTop: autoSizeWidth(25)}}>*/}
                         {/*<Image source={cancel_white_circle} style={{height: autoSizeWidth(24), width: autoSizeWidth(24)}} resizeMode={'stretch'}/>*/}
                         {/*</TouchableOpacity>*/}
                     </View>
                 </View>
-            )
+            );
         }
-    }
+    };
 
-    nextPress=()=>{
-        if (this.state.step === 5){
+    nextPress = () => {
+        if (HomeModalManager.step === 5) {
             GuideApi.registerSend({});//完成了新手引导
             user.finishGiudeAction();//防止请求失败，重复调用新手引导
         }
-        this.setState({step: this.state.step + 1})   ;
-    }
+        HomeModalManager.guideNextAction();
+    };
 
-    gotoPage=()=>{
-        let data = this.state.rewardzData;
+    gotoPage = () => {
+        let data = HomeModalManager.guideData;
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
-        if (router){
+        if (router) {
             navigate(router, params);
         }
-        this.close();
-    }
+        HomeModalManager.closeGuide();
+    };
 
 
     render() {
+        if (HomeModalManager.isShowGuide && HomeModalManager.isHome) {
+            this.props.onShow && this.props.onShow()
+        }
         return (
             <CommModal
                 focusable={false}
-                ref={(ref) => {this.modal = ref}}
-                visible={this.state.visible && this.state.isHome && !this.props.versionUpdate}
+                ref={(ref) => {
+                    this.modal = ref;
+                }}
+                visible={HomeModalManager.isShowGuide && HomeModalManager.isHome}
             >
                 {this.renderContent()}
             </CommModal>
@@ -357,7 +348,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderWidth: 3,
         borderColor: 'rgba(0,0,0,0.05)',
-        borderRadius: autoSizeWidth(75/2.0),
+        borderRadius: autoSizeWidth(75 / 2.0),
         alignItems: 'center',
         position: 'absolute',
         justifyContent: 'center',

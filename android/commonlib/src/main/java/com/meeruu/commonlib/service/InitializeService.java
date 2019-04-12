@@ -1,5 +1,6 @@
 package com.meeruu.commonlib.service;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +13,15 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
+import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
 import com.meituan.android.walle.WalleChannelReader;
+import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.YSFOptions;
+import com.qiyukf.unicorn.api.pop.OnShopEventListener;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
@@ -28,7 +34,6 @@ public class InitializeService extends IntentService {
 
     private int patchStatus;
     private WeakHandler mHandler;
-    private static final String ACTION_INIT_WHEN_APP_CREATE = "com.meeruu.sharegoods.init";
 
     public InitializeService() {
         super("InitializeService");
@@ -38,7 +43,7 @@ public class InitializeService extends IntentService {
                 switch (msg.what) {
                     case ParameterUtils.QIYU_IMG:
                         // 七鱼初始化
-                        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", options(),
+                        Unicorn.init(getApplicationContext(), "b87fd67831699ca494a9d3de266cd3b0", QiYuOptions(),
                                 new QiyuImageLoader());
                         break;
                 }
@@ -48,8 +53,8 @@ public class InitializeService extends IntentService {
     }
 
     public static void init(Context context) {
-        Intent intent = new Intent(context, InitializeService.class);
-        intent.setAction(ACTION_INIT_WHEN_APP_CREATE);
+        Intent intent = new Intent();
+        intent.setClass(context, InitializeService.class);
         context.startService(intent);
     }
 
@@ -57,12 +62,10 @@ public class InitializeService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_INIT_WHEN_APP_CREATE.equals(action)) {
-                // 延迟三方sdk初始化
-                initNow();
-                initCallback();
-                initDelay();
-            }
+            // 延迟三方sdk初始化
+            initNow();
+            initCallback();
+            initDelay();
         }
     }
 
@@ -127,5 +130,24 @@ public class InitializeService extends IntentService {
                 }
             }
         });
+    }
+
+    private YSFOptions QiYuOptions() {
+        YSFOptions ysfOptions = options();
+        ysfOptions.onMessageItemClickListener = new OnMessageItemClickListener() {
+            // 响应 url 点击事件
+            public void onURLClicked(Context context, String url) {
+                ((QiyuServiceMessageActivity) context).finish(true);
+                // 打开内置浏览器等动作
+//                try {
+//                    context.startActivity(new Intent(context, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"))
+//                            .putExtra("web_url", url)
+//                            .putExtra("url_action", "get"));
+//                } catch (ClassNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+            }
+        };
+        return ysfOptions;
     }
 }

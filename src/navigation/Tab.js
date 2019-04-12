@@ -10,7 +10,7 @@ import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
-import { homeTabManager } from '../pages/home/model/HomeTabManager';
+import { homeTabManager } from '../pages/home/manager/HomeTabManager';
 import RouterMap from './RouterMap';
 import DesignRule from '../constants/DesignRule';
 import { observer } from 'mobx-react';
@@ -68,7 +68,7 @@ class SpellShopTab extends Component {
 class HomeTab extends Component {
 
     render() {
-        if (!homeTabManager.homeFocus) {
+        if (!homeTabManager.homeFocus || !this.props.focus) {
             return <Tab normalSource={res.tab.home_n} title={'首页'}/>;
         }
         return (
@@ -146,7 +146,8 @@ export const TabNav = TabNavigator(
             screen: Home,
             navigationOptions: {
                 tabBarIcon: ({ focused }) => <HomeTab normalSource={res.tab.home_n}
-                                                      title={'首页'}/>,
+                                                      title={'首页'}
+                                                      focus={focused}/>,
                 tabBarOnPress: (tab) => {
                     const { jumpToIndex, scene, previousScene } = tab;
                     if (previousScene.key !== 'HomePage') {
@@ -169,7 +170,7 @@ export const TabNav = TabNavigator(
                     const { jumpToIndex, scene, previousScene } = tab;
                     if (previousScene.key !== 'ShowListPage') {
                         jumpToIndex(scene.index);
-                        TrackApi.WatchXiuChang({moduleSource:1})
+                        TrackApi.WatchXiuChang({ xiuChangModuleSource: 1 });
                     }
                 }
             }

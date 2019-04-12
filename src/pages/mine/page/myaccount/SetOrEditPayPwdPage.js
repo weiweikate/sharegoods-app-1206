@@ -37,6 +37,7 @@ export default class SetOrEditPayPwdPage extends BasePage {
     _onext = (pwd) => {
         const { oldPwd, userName, cardNum, from, title, code } = this.props.navigation.state.params;
         if (StringUtils.isEmpty(oldPwd)) {
+            this.paw.clean();
             if (from === 'edit') {
                 // 跳转到确认密码
                 this.$navigate('mine/account/SetOrEditPayPwdPage', {

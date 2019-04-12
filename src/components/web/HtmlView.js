@@ -1,7 +1,8 @@
 import React from "react";
 import BasePage from "../../BasePage";
 import WebViewBridge from "@mr/webview";
-import { View,
+import {
+    View,
     Platform,
     Image,
     TouchableOpacity
@@ -17,7 +18,6 @@ import DeviceInfo from 'react-native-device-info';
 import res from '../../comm/res'
 import ScreenUtils from '../../utils/ScreenUtils';
 const moreIcon = res.button.message_three;
-
 @observer
 export default class RequestDetailPage extends BasePage {
 

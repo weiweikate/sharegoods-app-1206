@@ -182,7 +182,7 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
     @Override
     public void initEvent() {
         findViewById(R.id.topdefault_leftbutton).setOnClickListener(this);
-        findViewById(R.id.topdefault_righttext).setOnClickListener(this);
+        topdefault_righttext.setOnClickListener(this);
         findViewById(R.id.id_choose_dir).setOnClickListener(this);
     }
 
@@ -539,12 +539,12 @@ public class SelectMyPhotoActivity extends BaseActivity implements ListImageDirP
         if (getIntent().getBooleanExtra("singlePic", true)) {
             photoSaveName = System.currentTimeMillis() + ".png";
             // 存放照片的文件夹
-            photoSaveFile = SDCardUtils.getFileDirPath("MR" + File.separator + "picture");
+            photoSaveFile = SDCardUtils.getFileDirPath(getApplicationContext(), "MR" + File.separator + "picture");
             AppUtils.startActionCapture(SelectMyPhotoActivity.this, new File(photoSaveFile.getAbsolutePath(), photoSaveName), ParameterUtils.REQUEST_CODE_CAMERA);
         } else {
             photoSaveName = System.currentTimeMillis() + ".png";
             // 存放照片的文件夹
-            photoSaveFile = SDCardUtils.getFileDirPath("MR" + File.separator + "picture");
+            photoSaveFile = SDCardUtils.getFileDirPath(getApplicationContext(), "MR" + File.separator + "picture");
             Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (photoSaveFile != null) {
                 imageUri = Uri.fromFile(new File(photoSaveFile.getAbsolutePath(), photoSaveName));

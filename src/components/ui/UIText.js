@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text as RNText, TextInput } from 'react-native';
+import { Text as RNText, TextInput, StyleSheet } from 'react-native';
 import connectStyle from './connectStyle';
 
 /**
@@ -13,10 +13,12 @@ const UIText = (props) => {
         value,
         ...attributes
     } = props;
+    let theStyle = StyleSheet.flatten(props.style);
+    let size = theStyle && theStyle.fontSize ? theStyle.fontSize * 1.4 : 0;
     return (
         <RNText {...attributes}
                 allowFontScaling={false}
-                style={[props.style, { includeFontPadding: false }]}>
+                style={[props.style, { includeFontPadding: false }, size > 0 ? { lineHeight: size } : null]}>
             {value}
         </RNText>
     );
@@ -26,10 +28,12 @@ const MRText = (props) => {
     const {
         ...attributes
     } = props;
+    let theStyle = StyleSheet.flatten(props.style);
+    let size = theStyle && theStyle.fontSize ? theStyle.fontSize * 1.4 : 0;
     return (
         <RNText {...attributes}
                 allowFontScaling={false}
-                style={[props.style, { includeFontPadding: false }]}>
+                style={[props.style, { includeFontPadding: false }, size > 0 ? { lineHeight: size } : null]}>
             {props.children}
         </RNText>
     );

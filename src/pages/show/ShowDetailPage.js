@@ -16,7 +16,6 @@ import DesignRule from '../../constants/DesignRule';
 import AutoHeightWebView from '@mr/react-native-autoheight-webview';
 
 const { px2dp } = ScreenUtils;
-// import HTML from 'react-native-render-html';
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
@@ -80,38 +79,47 @@ export default class ShowDetailPage extends BasePage {
                     Toast.showLoading();
                     if (this.params.code) {
                         this.showDetailModule.showDetailCode(this.params.code || this.params.id).then(() => {
-                            const {detail} = this.showDetailModule;
-                            TrackApi.XiuChangDetails({articleCode:detail.code,author:detail.userName,collectionCount:detail.collectCount});
+                            const { detail } = this.showDetailModule;
+                            TrackApi.XiuChangDetails({
+                                articleCode: detail.code,
+                                author: detail.userName,
+                                collectionCount: detail.collectCount
+                            });
                             this.setState({
                                 pageState: PageLoadingState.success
+                            });
+                            this._whiteNavRef.setNativeProps({
+                                opacity: 0
                             });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
                                 errorMsg: error.msg || '获取详情失败'
-                            });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 1
                             });
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
                         });
                     } else {
+                        Toast.showLoading();
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
-                            const {detail} = this.showDetailModule;
-                            TrackApi.XiuChangDetails({articleCode:detail.code,author:detail.userName,collectionCount:detail.collectCount});
+                            const { detail } = this.showDetailModule;
+                            TrackApi.XiuChangDetails({
+                                articleCode: detail.code,
+                                author: detail.userName,
+                                collectionCount: detail.collectCount
+                            });
                             this.setState({
                                 pageState: PageLoadingState.success
+                            });
+                            this._whiteNavRef.setNativeProps({
+                                opacity: 0
                             });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
                                 pageState: PageLoadingState.fail,
                                 errorMsg: error.msg || '获取详情失败'
-                            });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 1
                             });
                             Toast.$toast(error.msg || '获取详情失败');
                             Toast.hiddenLoading();
@@ -125,6 +133,9 @@ export default class ShowDetailPage extends BasePage {
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
+    componentDidMount() {
+    }
+
 
     _goBack() {
         console.log('_goBack');
@@ -159,6 +170,10 @@ export default class ShowDetailPage extends BasePage {
     }
 
     _goToShare() {
+        const { pageState } = this.state;
+        if (pageState === PageLoadingState.fail) {
+            return
+        }
         this.shareModal && this.shareModal.open();
     }
 
@@ -184,7 +199,7 @@ export default class ShowDetailPage extends BasePage {
     _renderNormalTitle() {
         return <View style={styles.whiteNav} ref={(ref) => {
             this._whiteNavRef = ref;
-        }} opacity={0}>
+        }} opacity={1}>
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
                     <Image source={res.back}/>
@@ -215,7 +230,6 @@ export default class ShowDetailPage extends BasePage {
         Alert.alert('保存图片', '', [
             {
                 text: '取消', onPress: () => {
-
                 }
             },
             {
@@ -223,23 +237,22 @@ export default class ShowDetailPage extends BasePage {
                     NativeModules.commModule.saveImageToPhotoAlbumWithUrl(url).then(() => {
                         this.$toastShow('保存成功!');
                     }).catch((error) => {
-
                     });
                 }
             }]);
     };
 
     _render() {
-
         const { pageState } = this.state;
         if (pageState === PageLoadingState.fail) {
-            return <View style={styles.container}><NetFailedView
-                netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}</View>;
+            return <View style={styles.container}>
+                <NetFailedView netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}
+                </View>;
         }
 
-        const { detail, isCollecting } = this.showDetailModule;
+        let { detail, isCollecting } = this.showDetailModule;
         if (!detail) {
-            return <View style={styles.loading}/>;
+            detail = {imgs: '', products: [], click: 0, content: ''}
         }
         let products = detail.products;
         let number = detail.click;
@@ -264,7 +277,7 @@ export default class ShowDetailPage extends BasePage {
             // + '<link rel="stylesheet" href="http://m.007fenqi.com/app/app.css" type="text/css"/>'
             + '<style type="text/css">' + 'html, body, p, embed, iframe, div ,video {'
             + 'position:relative;width:100%;margin:0;padding:0;background-color:#ffffff' + ';line-height:28px;box-sizing:border-box;display:block;font-size:'
-            + px2dp(13)
+            +13
             + 'px;'
             + '}'
             + 'p {word-break:break-all;}'
@@ -305,6 +318,8 @@ export default class ShowDetailPage extends BasePage {
                 showsVerticalScrollIndicator={false}
                 scrollEventThrottle={30}
                 onScroll={this._onScroll.bind(this)}
+                scrollEnabled={pageState === PageLoadingState.success}
+
             >
                 {
                     detail.imgs
@@ -357,23 +372,24 @@ export default class ShowDetailPage extends BasePage {
                             <Image style={styles.collectImg}
                                    source={detail.hadCollect ? res.showFire : res.noShowFire}/>
                             <Text style={styles.bottomText}
-                                  allowFontScaling={false}>{'人气值'} · {detail.collectCount}</Text>
+                                  allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'人气值'} · {detail.collectCount}</Text>
                         </TouchableOpacity>
                 }
             </ScrollView>
-            <View style={styles.bottom}>
-                <View style={styles.showTimesWrapper}>
-                    <Image source={res.button.see} style={styles.seeImgStyle}/>
-                    <Text style={styles.number} allowFontScaling={false}>浏览 · {number}</Text>
-                </View>
+            {pageState === PageLoadingState.fail ? null :
+                <View style={styles.bottom}>
+                    <View style={styles.showTimesWrapper}>
+                        <Image source={res.button.see} style={styles.seeImgStyle}/>
+                        <Text style={styles.number} allowFontScaling={false}>浏览 · {number}</Text>
+                    </View>
 
-                <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
-                    <Image source={res.share}/>
-                    <View style={{ width: px2dp(10) }}/>
-                    <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
-                </TouchableOpacity>
-            </View>
-            {this._renderNormalTitle()}
+                    <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
+                        <Image source={res.share}/>
+                        <View style={{ width: px2dp(10) }}/>
+                        <Text style={styles.text} allowFontScaling={false}>秀一秀</Text>
+                    </TouchableOpacity>
+                </View>
+            }
             <View style={styles.nav} ref={(ref) => {
                 this._blackNavRef = ref;
             }}>
@@ -389,6 +405,7 @@ export default class ShowDetailPage extends BasePage {
                     </TouchableOpacity>
                 </View>
             </View>
+            {this._renderNormalTitle()}
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}
@@ -413,7 +430,7 @@ let styles = StyleSheet.create({
     },
     loading: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'red',
         alignItems: 'center',
         justifyContent: 'center'
     },
