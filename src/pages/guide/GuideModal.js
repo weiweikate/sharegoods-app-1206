@@ -38,6 +38,7 @@ import { navigate } from '../../navigation/RouterMap';
 import { homeModule } from '../home/model/Modules';
 import { channelModules } from '../home/model/HomeChannelModel';
 import { homeExpandBnnerModel } from '../home/model/HomeExpandBnnerModel';
+import { categoryModule } from '../home/model/HomeCategoryModel';
 import HomeModalManager from '../home/manager/HomeModalManager'
 import GuideApi from './GuideApi';
 
@@ -95,7 +96,7 @@ export default class GuideModal extends React.Component {
     renderContent = () => {
         let { step } = HomeModalManager;
         let data = this.data[step];
-        let _categoryHeight = categoryHeight;
+        let _categoryHeight = categoryModule.categoryList.length>0? categoryHeight: 0;
         if (step < 6) {
             let bgStyle = {};
             let imageStyle = {};
