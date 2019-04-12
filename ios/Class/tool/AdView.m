@@ -328,7 +328,7 @@ completion:(YYWebImageCompletionBlock)completion
 
 - (void)AdTap
 {
-  if (_linkTypeCode) {
+  if (_linkTypeCode && _linkTypeCode.length > 0) {
     self.isPlayAd = YES;
     self.isLoadJS = YES;
     GongMaoVC *vc = [GongMaoVC new];
