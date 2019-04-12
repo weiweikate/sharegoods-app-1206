@@ -10,6 +10,7 @@ import user from "../../model/user";
 import { payment, paymentType, payStatus, payStatusMsg } from "./Payment";
 import PasswordView from "./PayPasswordView";
 import { PaymentResult } from "./PaymentResultPage";
+import * as math from 'mathjs';
 
 const { px2dp } = ScreenUtils;
 import Toast from "../../utils/bridge";
@@ -212,9 +213,9 @@ export default class PaymentPage extends BasePage {
             channelAmount = channelAmount - oneCoupon * 1 <= 0 ? 0 : channelAmount - oneCoupon * 1;
         }
         if (selectedBalace) {
-            channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance).toFixed(2);
+            channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance);
         }
-
+        channelAmount = channelAmount.toFixed(2);
         //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
             <View style={[styles.content, payment.oneCoupon > 0 ? { height: px2dp(150) } : { height: px2dp(100) }]}>
