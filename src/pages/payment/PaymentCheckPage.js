@@ -77,20 +77,28 @@ export default class PaymentCheckPage extends BasePage {
             payment.resetPayment();
             return;
         }
+        const { bizType } = payment;
         payment.checkPayStatus().then(result => {
             console.log(result);
             let resultData = result.data;
             if (parseInt(resultData.status) === payStatus.paySuccess) {
-
-                let replace = NavigationActions.replace({
-                    key: this.props.navigation.state.key,
-                    routeName: RouterMap.PaymentResultPage,
-                    params: { payResult: PaymentResult.success }
-                });
+                let replace;
+                if (bizType != 1) {
+                    replace = NavigationActions.replace({
+                        key: this.props.navigation.state.key,
+                        routeName: RouterMap.PaymentResultPage,
+                        params: { payResult: PaymentResult.success }
+                    });
+                } else {
+                    replace = NavigationActions.replace({
+                        key: this.props.navigation.state.key,
+                        routeName: RouterMap.AddCapacitySuccessPage,
+                        params: { payResult: PaymentResult.success }
+                    });
+                }
                 this.props.navigation.dispatch(replace);
-                track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
                 payment.resetPayment();
-
+                track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
             } else if (parseInt(resultData.status) === payStatus.payClose) {
                 let replace = NavigationActions.replace({
                     key: this.props.navigation.state.key,
@@ -128,10 +136,10 @@ const styles = StyleSheet.create({
         marginTop: -2,
         backgroundColor: DesignRule.bgColor
     },
-    waitContentTopView:{ alignItems: "center", justifyContent: "center", marginTop: px2dp(137) },
-    waitContentTopImage:{ height: px2dp(72), width: px2dp(72) },
-    waitContentTopText:{ marginTop: px2dp(22), fontSize: px2dp(13), color: DesignRule.textColor_instruction },
-    waitContentBottomView:{ marginTop: px2dp(150), alignItems: "center", justifyContent: "center" },
-    waitContentBottomTip:{ color: DesignRule.mainColor, fontSize: px2dp(13) },
-    waitContentBottomWaitingText:{ marginTop: px2dp(5), color: DesignRule.textColor_instruction, fontSize: px2dp(13) },
+    waitContentTopView: { alignItems: "center", justifyContent: "center", marginTop: px2dp(137) },
+    waitContentTopImage: { height: px2dp(72), width: px2dp(72) },
+    waitContentTopText: { marginTop: px2dp(22), fontSize: px2dp(13), color: DesignRule.textColor_instruction },
+    waitContentBottomView: { marginTop: px2dp(150), alignItems: "center", justifyContent: "center" },
+    waitContentBottomTip: { color: DesignRule.mainColor, fontSize: px2dp(13) },
+    waitContentBottomWaitingText: { marginTop: px2dp(5), color: DesignRule.textColor_instruction, fontSize: px2dp(13) }
 });
