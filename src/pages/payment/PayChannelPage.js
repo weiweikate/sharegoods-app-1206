@@ -50,14 +50,15 @@ export default class ChannelPage extends BasePage {
         if (platformOrderNo) {
             payment.platformOrderNo = platformOrderNo;
         }
-
         let orderNo = this.params.orderNo;
         if (orderNo) {
             payment.orderNo = orderNo;
         }
-
         this.bizType = this.params.bizType || 0;
         this.modeType = this.params.modeType || 0;
+        //将type给payment 做存储
+        payment.bizType = this.params.bizType || 0;
+        payment.modeType = this.params.modeType || 0;
     }
 
     componentDidMount() {
@@ -109,7 +110,6 @@ export default class ChannelPage extends BasePage {
                                             Toast.$toast(err.msg);
                                             return;
                                         }
-                                        payment.resetPayment();
                                         this._goToOrder();
                                     });
                                 } else {
@@ -135,7 +135,7 @@ export default class ChannelPage extends BasePage {
                                             Toast.$toast(err.msg);
                                             return;
                                         }
-                                        payment.resetPayment();
+
                                         this._goToOrder();
                                     });
 
@@ -243,12 +243,22 @@ export default class ChannelPage extends BasePage {
     }
 
     _goToOrder(index) {
-        this.props.navigation.dispatch({
-            key: this.props.navigation.state.key,
-            type: "ReplacePayScreen",
-            routeName: "order/order/MyOrdersListPage",
-            params: { index: index ? index : 1 }
-        });
+        const {bizType} = payment;
+        if (bizType == 1){
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type:'ReplacePayScreen',
+                routeName: RouterMap.AddCapacityHistoryPage,
+            })
+        } else {
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type: "ReplacePayScreen",
+                routeName: "order/order/MyOrdersListPage",
+                params: { index: index ? index : 1 }
+            });
+        }
+        payment.resetPayment();
     }
 
 
