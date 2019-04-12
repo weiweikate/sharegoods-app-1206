@@ -11,6 +11,7 @@ import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import StringUtils from '../../../utils/StringUtils';
 import RouterMap from '../../../navigation/RouterMap';
 import spellStatusModel from '../model/SpellStatusModel';
+import user from '../../../model/user';
 
 const ArrowImg = res.shopSetting.xjt_03;
 const { isNoEmpty } = StringUtils;
@@ -118,7 +119,7 @@ export class AddCapacityPricePage extends BasePage {
             this.$toastShow('请选择扩容人数');
             return;
         }
-        this.PickTicketModal.show((amount) => {
+        this.PickTicketModal.show(this.state.amount,(amount) => {
             let tempArr = [...this.state.dataList];
             this.setState({
                 amount,
@@ -180,13 +181,15 @@ export class AddCapacityPricePage extends BasePage {
         }
         //钱减去券的数量
         let money = discountPriceS - amount;
+        this.state.amount = amount;
 
         return (
             <View style={styles.footerView}>
                 <NoMoreClick style={styles.footerItemView} onPress={this._oneMoneyAction}>
                     <Text style={styles.footerItemLeftText}>1元现金券</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={styles.footerOneMoneyText}>{amount ? `-¥${amount}` : '请选择'}</Text>
+                        <Text
+                            style={styles.footerOneMoneyText}>{user.tokenCoin ? (amount ? `-¥${amount}` : '请选择') : '暂无可用'}</Text>
                         <Image source={ArrowImg}/>
                     </View>
                 </NoMoreClick>
