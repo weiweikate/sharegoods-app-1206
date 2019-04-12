@@ -593,21 +593,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     public static void drawWeb(Context context, Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail){
 
         String info = shareImageBean.getQRCodeStr();
-        Bitmap result = Bitmap.createBitmap(345,  525, Bitmap.Config.ARGB_8888) ;
+        Bitmap result = Bitmap.createBitmap(250,  340, Bitmap.Config.ARGB_8888) ;
 
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        bitmap = Bitmap.createScaledBitmap(bitmap, 345, 440, true);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 250, 340, true);
         canvas.drawBitmap(bitmap, 0, 0, paint);
 
-        //在图片下边画一个白色矩形块用来放文字，防止文字是透明背景，在有些情况下保存到本地后看不出来
 
-        paint.setColor(Color.WHITE);
-        canvas.drawRect(0, 440, 345, 525, paint);
-
-        Bitmap qrBitmap = createQRImage(info, 86, 86);
-        canvas.drawBitmap(qrBitmap, 131, 417, paint);
+        Bitmap qrBitmap = createQRImage(info, 45, 45);
+        canvas.drawBitmap(qrBitmap, 190, 285, paint);
 
         String path = BitmapUtils.saveImageToCache(result, "shareImage.png", shareImageBean.toString());
         if (!TextUtils.isEmpty(path)) {
