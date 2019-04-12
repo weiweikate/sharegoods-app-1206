@@ -14,6 +14,7 @@ import { AsyncStorage, Platform } from 'react-native';
 import MessageApi from "../../message/api/MessageApi";
 import bridge from '../../../utils/bridge';
 import user from '../../../model/user';
+import { homeFocusAdModel } from '../model/HomeFocusAdModel';
 const requsetCount = 4;
 class HomeModalManager {
     /** 控制升级框*/
@@ -58,7 +59,11 @@ class HomeModalManager {
     }
     @action
     guideNextAction () {
-        this.step ++;
+        if (this.step === 2 && homeFocusAdModel.foucusHeight === 0){
+            this.step = this.step + 2;
+        }else {
+            this.step ++;
+        }
     }
     @action
     requestGuide () {
