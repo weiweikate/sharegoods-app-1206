@@ -180,7 +180,7 @@ export class AddCapacityPricePage extends BasePage {
             amount = Math.floor(discountPriceS);
         }
         //钱减去券的数量
-        let money = discountPriceS - amount;
+        let money = (discountPriceS - amount).toFixed(2);
         this.state.amount = amount;
 
         return (
