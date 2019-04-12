@@ -60,10 +60,10 @@ class HomeModule {
         };
 
     };
-    @action changeHomeList = (type) =>{
-       this.homeList = this.homeList.map((item)=> {
-               return ({...item});
-       })
+    @action changeHomeList = (type) => {
+        this.homeList = this.homeList.map((item) => {
+            return ({ ...item });
+        });
     };
     //加载为你推荐列表
     @action loadHomeList = flow(function* () {
@@ -77,7 +77,7 @@ class HomeModule {
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
         // 首页频道类目
-        channelModules.loadChannel();
+        channelModules.loadChannel(this.firstLoad);
         // 首页通栏
         homeExpandBnnerModel.loadBannerList();
         // 首焦点广告
@@ -95,7 +95,7 @@ class HomeModule {
         this.isEnd = false;
         this.homeList = [{
             id: 0,
-            type: homeType.category,
+            type: homeType.category
         }, {
             id: 1,
             type: homeType.swiper
@@ -134,7 +134,7 @@ class HomeModule {
             this.isFetching = true;
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             let list = result.data.data || [];
-            if (this.page === result.data.totalPage) {
+            if (this.page === result.data.totalPage || result.data.totalPage === 0) {
                 this.isEnd = true;
             }
             let home = [];
