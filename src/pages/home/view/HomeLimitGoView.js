@@ -142,8 +142,9 @@ const GoodsItem = (item) => {
             width={px2dp(120)}
             height={px2dp(120)}
             style={styles.goodsImage}>
-            <Image source={resHome.home_sallout}
-                   style={styles.goodsTag}/>
+            {data.status === limitStatus.end ?
+                <Image source={resHome.home_sallout}
+                       style={styles.goodsTag}/> : null}
         </ImageLoader>
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={2}>{data.productName}</Text>
