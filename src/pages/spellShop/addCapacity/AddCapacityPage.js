@@ -9,6 +9,7 @@ import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import HTML from 'react-native-render-html';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
+import spellStatusModel from '../model/SpellStatusModel';
 
 export class AddCapacityPage extends BasePage {
     $navigationBarOptions = {
@@ -39,8 +40,7 @@ export class AddCapacityPage extends BasePage {
         };
     };
     loadPageData = () => {
-        const { storeData } = this.params;
-        SpellShopApi.store_person({ storeCode: storeData.storeNumber }).then((data) => {
+        SpellShopApi.store_person({ storeCode: spellStatusModel.storeCode }).then((data) => {
             const dataTemp = data.data || {};
             const { maxPersonNum, personNum, showExpand } = dataTemp;
             this.setState({
@@ -68,7 +68,7 @@ export class AddCapacityPage extends BasePage {
     }
 
     _addBtnAction = () => {
-        this.$navigate(RouterMap.AddCapacityPricePage, { storeData: this.params.storeData });
+        this.$navigate(RouterMap.AddCapacityPricePage);
     };
 
     _render() {

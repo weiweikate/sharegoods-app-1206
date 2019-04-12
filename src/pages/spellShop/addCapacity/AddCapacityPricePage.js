@@ -10,6 +10,7 @@ import SpellShopApi from '../api/SpellShopApi';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import StringUtils from '../../../utils/StringUtils';
 import RouterMap from '../../../navigation/RouterMap';
+import spellStatusModel from '../model/SpellStatusModel';
 
 const ArrowImg = res.shopSetting.xjt_03;
 const { isNoEmpty } = StringUtils;
@@ -36,7 +37,7 @@ export class AddCapacityPricePage extends BasePage {
     };
 
     componentDidMount() {
-        SpellShopApi.store_expend({ storeCode: this.params.storeData.storeNumber }).then((data) => {
+        SpellShopApi.store_expend({ storeCode: spellStatusModel.storeCode }).then((data) => {
             const dataTemp = data.data || {};
             let selectedItem = {};
             if (dataTemp.length > 0) {
