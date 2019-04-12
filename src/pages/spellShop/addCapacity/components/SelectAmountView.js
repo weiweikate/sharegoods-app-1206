@@ -20,8 +20,17 @@ export default class SelectAmountView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            //ios modal
             amount: props.amount || 0
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { amount } = nextProps;
+        //安卓modal
+        this.setState({
+            amount
+        });
     }
 
     _leftAction = () => {
