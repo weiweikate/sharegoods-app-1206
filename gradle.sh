@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 cd gradle
 node gradle.js
 cd ..

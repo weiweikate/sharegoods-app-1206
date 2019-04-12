@@ -19,24 +19,6 @@ import { homePoint } from '../HomeTypes';
 
 @observer
 export default class HomeBannerView extends Component {
-    _onPressRowWithItem(item) {
-        const { bannerCount, bannerList } = bannerModule;
-        let data = null;
-        for (let i = 0; i < bannerCount; i++) {
-            if (bannerList[i].image === item) {
-                data = bannerList[i];
-                break;
-            }
-        }
-        if (data) {
-            const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
-            let params = homeModule.paramsNavigate(data);
-            const { navigate } = this.props;
-
-            track(trackEvent.bannerClick, homeModule.bannerPoint(data, homePoint.homeBanner));
-            navigate(router, { ...params });
-        }
-    }
 
     _onPressRow = (index) => {
         const { bannerList } = bannerModule;

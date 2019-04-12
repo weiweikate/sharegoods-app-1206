@@ -130,7 +130,7 @@ export default class MessageCenterPage extends BasePage {
         QYChatTool.beginQYChat(params);
     };
 
-    renderBodyView = () => {
+     renderBodyView = () => {
         let leftImage = [noticeIcon, newsIcon, spellIcon];
         let leftText = ['通知', '消息', '拼店消息'];
         let arr = [];

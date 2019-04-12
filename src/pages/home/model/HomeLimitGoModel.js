@@ -1,7 +1,8 @@
 import { observable, action, computed, flow } from 'mobx';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { homeType } from '../HomeTypes';
-import {homeModule} from './Modules'
+import { homeModule } from './Modules';
+
 const { px2dp } = ScreenUtils;
 import HomeApi from '../api/HomeAPI';
 import { differenceInCalendarDays, format } from 'date-fns';
@@ -69,9 +70,13 @@ export class LimitGoModules {
                     } else if (lastSeckills !== 0) {
                         if (lastSeckills > diffTime) {
                             lastSeckills = diffTime;
-                            currentId = value;
                             this.initialPage = index;
+                            // if (this.currentPage > (sortKeys.length - 1) || this.currentPage === -1) {
                             this.currentPage = index;
+                            currentId = value;
+                            // } else {
+                            //     currentId = sortKeys[this.currentPage];
+                            // }
                         }
                     }
 
@@ -124,7 +129,7 @@ export class LimitGoModules {
                 this.timeList = _timeList || [];
                 this.goodsList = _goodsList;
                 this.currentGoodsList = this.goodsList[currentId] || [];
-                homeModule.changeHomeList(homeType.limitGo)
+                homeModule.changeHomeList(homeType.limitGo);
             }
         } catch (error) {
             console.log(error);
@@ -134,7 +139,7 @@ export class LimitGoModules {
     @action changeLimitGo(id, index) {
         this.currentGoodsList = this.goodsList[id] || [];
         this.currentPage = index;
-        homeModule.changeHomeList(homeType.limitGo)
+        homeModule.changeHomeList(homeType.limitGo);
     }
 
 
