@@ -31,12 +31,13 @@ import OssHelper from '../../utils/OssHelper';
 import ImageLoad from '@mr/image-placeholder';
 import { categoryHeight } from '../home/view/HomeCategoryView';
 import { bannerHeight } from '../home/view/HomeBannerView';
-import { channelModules } from '../home/model/HomeChannelModel';
-import { homeFocusAdModel } from '../home/model/HomeFocusAdModel';
+import { homeFocusAdModel , kAdHeight} from '../home/model/HomeFocusAdModel';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { navigate } from '../../navigation/RouterMap';
 import { homeModule } from '../home/model/Modules';
+import { channelModules } from '../home/model/HomeChannelModel';
+import { homeExpandBnnerModel } from '../home/model/HomeExpandBnnerModel';
 import HomeModalManager from '../home/manager/HomeModalManager'
 import GuideApi from './GuideApi';
 
@@ -169,11 +170,11 @@ export default class GuideModal extends React.Component {
             }
 
             if (step === 3) {
-                let ad = homeFocusAdModel.ad;
-                let top = channelModules.channelHeight + _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0);
+                let ad = homeExpandBnnerModel.banner;
+                let top =  _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0) + homeExpandBnnerModel.bannerHeight + channelModules.channelHeight;
                 if (ad.length > 0) {
-                    data.image = ad[ad.length - 1].imgUrl || '';//获取最后一个图片地址
-                    top = top + homeFocusAdModel.adHeight - adHeight;
+                    data.image = ad[ad.length - 1].image || '';//获取最后一个图片地址
+                    top = top + homeFocusAdModel.foucusHeight - kAdHeight;
                 }
                 if (top > ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight) {
                     top = ScreenUtils.height - ScreenUtils.tabBarHeight - adHeight;

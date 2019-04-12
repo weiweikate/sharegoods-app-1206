@@ -20,7 +20,7 @@ export default class ServiceRowView extends Component {
     render() {
         const { item, index, beginChat } = this.props;
         return (
-            <View key={index} style={{ width: ScreenUtils.width, height: 50, marginTop: 15 }}>
+            <View key={index} style={{ width: ScreenUtils.width, height: px2dp(60), marginTop: 11 }}>
                 <TouchableOpacity style={{
                     flex: 1,
                     justifyContent: 'space-between',
@@ -43,13 +43,13 @@ export default class ServiceRowView extends Component {
                                     style={{
                                         width: 8,
                                         height: 8,
-                                        borderRadius: 3.5,
+                                        borderRadius: 4,
                                         backgroundColor: DesignRule.mainColor,
                                         borderWidth: 1,
                                         borderColor: DesignRule.color_fff,
                                         position: 'absolute',
                                         left: 30,
-                                        top: 18
+                                        top: 25
                                     }}
                                 /> :
                                 null
@@ -58,7 +58,8 @@ export default class ServiceRowView extends Component {
                         <View style={{ flex: 1 }}>
                             <View style={{
                                 flexDirection: 'row',
-                                paddingTop: px2dp(7)
+                                alignItems: 'center',
+                                marginTop: px2dp(7)
                             }}>
                                 <UIText value={item.sessionName}
                                         numberOfLines={1}
@@ -74,7 +75,8 @@ export default class ServiceRowView extends Component {
                                         marginTop: 15,
                                         paddingRight: 6,
                                         paddingLeft: 6,
-                                        borderRadius: 14,
+                                        height: 20,
+                                        borderRadius: 10,
                                         backgroundColor: '#F2F2F2',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -129,16 +131,12 @@ export default class ServiceRowView extends Component {
         while (newShijianchuo.length < 13) {
             newShijianchuo = newShijianchuo + '0';
         }
-        console.log('时间戳最受是===' + newShijianchuo);
         let time = new Date(parseInt(newShijianchuo));
         let y = time.getFullYear();
         let m = time.getMonth() + 1;
         let d = time.getDate();
         let h = time.getHours();
         let mm = time.getMinutes();
-        // 1554197149000
-        console.log('huyufeng' + y + 'm' + m + 'd' + d);
-        // huyufeng1970m1d19
 
         let currentTime = new Date();
         let currentY = currentTime.getFullYear();
@@ -146,7 +144,6 @@ export default class ServiceRowView extends Component {
         let currentD = currentTime.getDate();
         let currentH = currentTime.getHours();
         let currentMM = currentTime.getMinutes();
-        console.log('huyufeng22' + '年' + currentY + '月' + currentM + '日' + currentD);
 
         if (y === currentY && m === currentM && d === currentD) {
             if (h === currentH) {

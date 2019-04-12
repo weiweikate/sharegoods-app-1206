@@ -7,6 +7,7 @@ import user from '../../../model/user';
 import { observer } from 'mobx-react';
 import res from '../res/index';
 import { MRText as Text } from '../../../components/ui/index';
+import { bannerModule } from '../model/HomeBannerModel';
 
 @observer
 export default class HomeUserView extends Component {
@@ -22,7 +23,7 @@ export default class HomeUserView extends Component {
         }
         let { levelName } = user;
         return <View style={styles.container}>
-            <View style={{ height: px2dp(13) }}/>
+            <View style={{ height: bannerModule.bannerList.length > 0 ? px2dp(13) : 0 }}/>
             <ImageBackground style={styles.inContainer} source={res.account_bg} resizeMode={'stretch'}>
                 <View style={styles.left}/>
                 <Text style={styles.title} allowFontScaling={false}>尊敬的</Text>
@@ -57,10 +58,10 @@ let styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     inContainer: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        height: px2dp(30),
+        justifyContent: 'center',
+        height: px2dp(31),
         paddingBottom: px2dp(1)
     },
     left: {

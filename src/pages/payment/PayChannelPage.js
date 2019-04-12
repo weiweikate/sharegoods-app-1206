@@ -37,7 +37,6 @@ export default class ChannelPage extends BasePage {
 
     constructor(props) {
         super(props);
-        // this.remainMoney = parseFloat(this.params.remainMoney);
         this.state = {
             remainMoney: isNaN(parseFloat(this.params.remainMoney)) ? 0.0 : parseFloat(this.params.remainMoney)
         };
@@ -83,8 +82,6 @@ export default class ChannelPage extends BasePage {
     };
 
     goToPay() {
-        // this.$navigate(RouterMap.PaymentCheckPage);
-        // return;
         if (payment.selctedPayType === paymentType.none) {
             Toast.$toast("请选择支付方式");
             return;
@@ -101,10 +98,10 @@ export default class ChannelPage extends BasePage {
                     if (payment.selctedPayType === paymentType.alipay) {
                         //支付宝支付
                         detailList.push({ payType: paymentType.alipay, payAmount: payAmount });
-                        payment.platformPay("", fundsTradingNo, detailList, name).then(result => {
-                            const detail = result.detail || [];
+                        payment.platformPay("", fundsTradingNo, detailList, name).then(dataResult => {
+                            const detail = dataResult.detail || [];
                             detail.map((payItem) => {
-                                if (parseInt(payItem.payType) === paymentType.alipay) {
+                                if (parseInt(payItem.payType,10) === paymentType.alipay) {
                                     //支付宝支付
                                     payment.alipay(payItem.payResult).catch(err => {
                                         console.log("alipay err", err, err.code);
@@ -126,11 +123,11 @@ export default class ChannelPage extends BasePage {
 
                     if (payment.selctedPayType === paymentType.wechat) {
                         detailList.push({ payType: paymentType.wechat, payAmount: payAmount });
-                        payment.platformPay("", fundsTradingNo, detailList, name).then(result => {
+                        payment.platformPay("", fundsTradingNo, detailList, name).then(dataResult => {
                             //wx支付
-                            const detail = result.detail || [];
+                            const detail = dataResult.detail || [];
                             detail.map((payItem) => {
-                                if (parseInt(payItem.payType) === paymentType.wechat) {
+                                if (parseInt(payItem.payType,10) === paymentType.wechat) {
                                     //微信支付
                                     payment.appWXPay(payItem.payResult).catch(err => {
                                         console.log("alipay err", err, err.code);

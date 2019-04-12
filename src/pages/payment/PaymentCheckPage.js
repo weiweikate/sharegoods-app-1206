@@ -43,52 +43,30 @@ export default class PaymentCheckPage extends BasePage {
             </View>
         );
     }
-
     _renderWaitView = () => {
         return (
-            <View style={{
-                flex: 1,
-                backgroundColor: DesignRule.color_fff,
-                marginTop: -2,
-                backgroundColor: DesignRule.bgColor
-            }}>
-                <View
-                    style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginTop: px2dp(137)
-                    }}
-                >
-                    <Image
-                        style={{
-                            height: px2dp(72),
-                            width: px2dp(72)
-                        }}
-                        source={res.pay_check_statue}
-                    />
-                    <Text
-                        style={{ marginTop: px2dp(22), fontSize: px2dp(13), color: DesignRule.textColor_instruction }}>
+            <View style={styles.waitBgViewStyle}>
+                <View style={styles.waitContentTopView}>
+                    <Image style={styles.waitContentTopImage} source={res.pay_check_statue}/>
+                    <Text style={styles.waitContentTopText}>
                         支付返回结果等待中...
                     </Text>
                 </View>
-                <View
-                    style={{
-                        marginTop: px2dp(150),
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}
-                >
-                    <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(13) }}>
+                <View style={styles.waitContentBottomView}>
+                    <Text style={styles.waitContentBottomTip}>
                         温馨提示
                     </Text>
-                    <Text style={{ marginTop: px2dp(5), color: DesignRule.textColor_instruction, fontSize: px2dp(13) }}>
+                    <Text style={styles.waitContentBottomWaitingText}>
                         结果返回前，请不要重复支付
                     </Text>
                 </View>
             </View>
         );
     };
-
+    /**
+     * 轮询订单状态
+     * @private
+     */
     _checkStatues = () => {
         let time = (new Date().getTime()) / 1000;
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checking" });
@@ -144,6 +122,16 @@ export default class PaymentCheckPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    topBtnBgStyle: {},
-    bottomTextBgStyle: {}
+    waitBgViewStyle: {
+        flex: 1,
+        backgroundColor: DesignRule.color_fff,
+        marginTop: -2,
+        backgroundColor: DesignRule.bgColor
+    },
+    waitContentTopView:{ alignItems: "center", justifyContent: "center", marginTop: px2dp(137) },
+    waitContentTopImage:{ height: px2dp(72), width: px2dp(72) },
+    waitContentTopText:{ marginTop: px2dp(22), fontSize: px2dp(13), color: DesignRule.textColor_instruction },
+    waitContentBottomView:{ marginTop: px2dp(150), alignItems: "center", justifyContent: "center" },
+    waitContentBottomTip:{ color: DesignRule.mainColor, fontSize: px2dp(13) },
+    waitContentBottomWaitingText:{ marginTop: px2dp(5), color: DesignRule.textColor_instruction, fontSize: px2dp(13) },
 });

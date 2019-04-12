@@ -117,7 +117,6 @@ export default class ShopCartPage extends BasePage {
         }
         const { statusBarHeight } = ScreenUtils;
         return (
-
             <View
                 style={{
                     width: ScreenUtils.width,

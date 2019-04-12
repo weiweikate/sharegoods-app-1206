@@ -1,5 +1,7 @@
 import { observable, action, computed, flow } from 'mobx';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import { homeType } from '../HomeTypes';
+import { homeModule } from './Modules';
 
 const { px2dp } = ScreenUtils;
 import HomeApi from '../api/HomeAPI';
@@ -31,7 +33,6 @@ export class LimitGoModules {
     @action loadLimitGo = flow(function* () {
         try {
             const isShowResult = yield HomeApi.isShowLimitGo();
-            console.log('-------' + JSON.stringify(isShowResult));
             if (!isShowResult.data) {
                 this.goodsList = {};
                 this.timeList = [];
@@ -69,21 +70,24 @@ export class LimitGoModules {
                     } else if (lastSeckills !== 0) {
                         if (lastSeckills > diffTime) {
                             lastSeckills = diffTime;
-                            currentId = value;
                             this.initialPage = index;
+                            // if (this.currentPage > (sortKeys.length - 1) || this.currentPage === -1) {
+                            this.currentPage = index;
+                            currentId = value;
+                            // } else {
+                            //     currentId = sortKeys[this.currentPage];
+                            // }
                         }
                     }
 
                     let diff = differenceInCalendarDays(nowTime, secTime);
-                    let title = '即将开始';
+                    let title = '即将开抢';
 
                     if (diff > 0) { //如果是昨天， title就是昨日精选
-                        title = '昨日精选';
-                        for (const goodsValue of seckills) {
-                            if (goodsValue.status === limitStatus.doing) {
-                                title = '抢购中';
-                                break;
-                            }
+                        if (diff === 1) {
+                            title = '昨日精选';
+                        } else {
+                            title = format(secTime, 'D日') + '精选';
                         }
                     }
 
@@ -107,7 +111,7 @@ export class LimitGoModules {
                     } else if (diff === -1) {
                         timeFormat = '明日' + format(secTime, 'HH:mm');
                     } else {
-                        timeFormat = format(secTime, 'DD日HH:mm');
+                        timeFormat = format(secTime, 'D日HH:mm');
                     }
 
                     _timeList.push({
@@ -125,6 +129,7 @@ export class LimitGoModules {
                 this.timeList = _timeList || [];
                 this.goodsList = _goodsList;
                 this.currentGoodsList = this.goodsList[currentId] || [];
+                homeModule.changeHomeList(homeType.limitGo);
             }
         } catch (error) {
             console.log(error);
@@ -134,6 +139,7 @@ export class LimitGoModules {
     @action changeLimitGo(id, index) {
         this.currentGoodsList = this.goodsList[id] || [];
         this.currentPage = index;
+        homeModule.changeHomeList(homeType.limitGo);
     }
 
 

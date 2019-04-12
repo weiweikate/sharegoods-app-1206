@@ -28,7 +28,6 @@ const QYChatTool = {
 
     initQYChat() {
         let jsonParams = {
-            title: '秀购客服',
             userId: user.code + '',
             userIcon: user.headImg,
             nickName: user.nickname,
@@ -56,8 +55,9 @@ const QYChatTool = {
      *      }
      */
     beginQYChat(params = {
+        routePath: '',
         urlString: '',
-        title: '秀购客服',
+        title: '平台客服',
         shopId: '',
         chatType: beginChatType.BEGIN_FROM_OTHER,
         data: {}
