@@ -235,7 +235,7 @@ export default class PaymentPage extends BasePage {
                 }
 
             </View>
-            <TouchableWithoutFeedback disabled={availableBalance <= 0 || channelAmount <= 0}
+            <TouchableWithoutFeedback disabled={availableBalance <= 0}
                                       onPress={() => this._selectedBalance()}>
                 <View style={styles.balanceContent}>
                     <Image style={styles.iconBalance} source={res.balance}/>
