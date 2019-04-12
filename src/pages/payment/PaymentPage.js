@@ -93,7 +93,7 @@ export default class PaymentPage extends BasePage {
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去出用余额
-        let channelAmount = parseFloat(payment.amounts).toFixed(2); //需要支付的金额
+        let channelAmount = parseFloat(payment.amounts); //需要支付的金额
         let { fundsTradingNo, oneCoupon, bizType } = payment;
         let detailList = [];
 
@@ -113,8 +113,8 @@ export default class PaymentPage extends BasePage {
         }
        //余额支付
         if (selectBance) {
-            if (channelAmount > 0) {
-                if (channelAmount > availableBalance) {
+            if (parseFloat(channelAmount)  > 0) {
+                if (parseFloat(channelAmount)  > parseFloat(availableBalance) ) {
                     detailList.push({
                         payType: paymentType.balance,
                         payAmount: availableBalance
