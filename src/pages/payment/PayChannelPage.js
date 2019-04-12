@@ -109,7 +109,6 @@ export default class ChannelPage extends BasePage {
                                             Toast.$toast(err.msg);
                                             return;
                                         }
-                                        payment.resetPayment();
                                         this._goToOrder();
                                     });
                                 } else {
@@ -135,7 +134,7 @@ export default class ChannelPage extends BasePage {
                                             Toast.$toast(err.msg);
                                             return;
                                         }
-                                        payment.resetPayment();
+
                                         this._goToOrder();
                                     });
 
@@ -243,12 +242,22 @@ export default class ChannelPage extends BasePage {
     }
 
     _goToOrder(index) {
-        this.props.navigation.dispatch({
-            key: this.props.navigation.state.key,
-            type: "ReplacePayScreen",
-            routeName: "order/order/MyOrdersListPage",
-            params: { index: index ? index : 1 }
-        });
+        const {bizType} = payment;
+        if (bizType == 1){
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type:'ReplacePayScreen',
+                routeName: RouterMap.AddCapacityHistoryPage,
+            })
+        } else {
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type: "ReplacePayScreen",
+                routeName: "order/order/MyOrdersListPage",
+                params: { index: index ? index : 1 }
+            });
+        }
+        payment.resetPayment();
     }
 
 
