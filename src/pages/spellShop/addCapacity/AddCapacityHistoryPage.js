@@ -1,21 +1,24 @@
-import React from 'react';
-import { Text, View, FlatList, StyleSheet } from 'react-native';
-import BasePage from '../../../BasePage';
-import NoMoreClick from '../../../components/ui/NoMoreClick';
-import DesignRule from '../../../constants/DesignRule';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import RouterMap from '../../../navigation/RouterMap';
-import SpellShopApi from '../api/SpellShopApi';
-import StringUtils from '../../../utils/StringUtils';
-import DateUtils from '../../../utils/DateUtils';
-import { PageLoadingState } from '../../../components/pageDecorator/PageState';
-import EmptyView from '../../../components/pageDecorator/BaseView/EmptyView';
-import spellStatusModel from '../model/SpellStatusModel';
-import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
+import React from "react";
+import { Text, View, FlatList, StyleSheet } from "react-native";
+import BasePage from "../../../BasePage";
+import NoMoreClick from "../../../components/ui/NoMoreClick";
+import DesignRule from "../../../constants/DesignRule";
+import ScreenUtils from "../../../utils/ScreenUtils";
+import RouterMap from "../../../navigation/RouterMap";
+import SpellShopApi from "../api/SpellShopApi";
+import StringUtils from "../../../utils/StringUtils";
+import DateUtils from "../../../utils/DateUtils";
+import { PageLoadingState } from "../../../components/pageDecorator/PageState";
+import EmptyView from "../../../components/pageDecorator/BaseView/EmptyView";
+import spellStatusModel from "../model/SpellStatusModel";
+import ListFooter from "../../../components/pageDecorator/BaseView/ListFooter";
+import { payment, payStatus, payStatusMsg } from "../../payment/Payment";
+import user from "../../../model/user";
+import Toast from "../../../utils/bridge";
 
 export class AddCapacityHistoryPage extends BasePage {
     $navigationBarOptions = {
-        title: '我的扩容'
+        title: "我的扩容"
     };
 
     constructor(props) {
@@ -130,47 +133,37 @@ export class AddCapacityHistoryPage extends BasePage {
 
     _renderItem = ({ item }) => {
         const { payTime, personNum, price, status, expandId, orderNo, tokenCoinAmount } = item;
-        let explainText = '';
+        let explainText = "";
         let textColor = status === 2 ? DesignRule.textColor_redWarn : (status === 3 ? DesignRule.color_green : DesignRule.textColor_instruction);
         switch (status) {
             case 2:
-                explainText = '去支付 >>';
+                explainText = "去支付 >>";
                 break;
             case 3:
                 if (expandId) {
-                    explainText = '交易成功';
+                    explainText = "交易成功";
                 } else {
-                    explainText = '管理员赠送';
+                    explainText = "管理员赠送";
                 }
                 break;
             case 4:
-                explainText = '交易失败';
+                explainText = "交易失败";
                 break;
             case 5:
-                explainText = '交易关闭';
+                explainText = "交易关闭";
                 break;
         }
         return (
             <View style={styles.itemView}>
                 <NoMoreClick style={styles.itemContentView} onPress={() => {
-                    if (status !== 2) {
-                        return;
-                    }
-                    this.$navigate(RouterMap.PaymentPage, {
-                        platformOrderNo: orderNo,
-                        amounts: price,
-                        orderProductList: [{ productName: '拼店扩容' }],
-                        bizType: 1,
-                        modeType: 1,
-                        oneCoupon: tokenCoinAmount
-                    });
+                    this._check(status,orderNo,price,tokenCoinAmount);
                 }}>
                     <View style={styles.itemVerticalView}>
-                        <Text style={styles.contentText}>{`店铺扩容${personNum || ''}人`}</Text>
+                        <Text style={styles.contentText}>{`店铺扩容${personNum || ""}人`}</Text>
                         <Text
-                            style={styles.dateText}>{`${StringUtils.isNoEmpty(payTime) && DateUtils.formatDate(payTime) || ''}`}</Text>
+                            style={styles.dateText}>{`${StringUtils.isNoEmpty(payTime) && DateUtils.formatDate(payTime) || ""}`}</Text>
                     </View>
-                    <View style={[styles.itemVerticalView, { alignItems: 'flex-end' }]}>
+                    <View style={[styles.itemVerticalView, { alignItems: "flex-end" }]}>
                         <Text style={styles.moneyText}>{`¥${price.toFixed(2)}`}</Text>
                         <Text style={[styles.explainText, { color: textColor }]}>{explainText}</Text>
                     </View>
@@ -178,11 +171,48 @@ export class AddCapacityHistoryPage extends BasePage {
             </View>
         );
     };
+    /**
+     * 检测此订单是否支付过
+     * @param status
+     * @param orderNo
+     * @param price
+     * @param tokenCoinAmount
+     * @private
+     */
+    _check = (status,orderNo,price,tokenCoinAmount) => {
+        if (status !== 2) {
+            return;
+        }
+        payment.checkOrderStatus(orderNo, 1, 1, price).then(result => {
+            if (result.code === payStatus.payNo) {
+                this._toPay(orderNo,price,tokenCoinAmount)
+            } else if (result.code === payStatus.payNeedThrid) {
+                this._toPay(orderNo,Math.floor(result.unpaidAmount * 100) / 100,0)
+            } else if (result.code === payStatus.payOut) {
+                Toast.$toast(payStatusMsg[result.code]);
+            } else {
+                Toast.$toast(payStatusMsg[result.code]);
+            }
+        }).catch(err => {
+            Toast.$toast(err.msg);
+        });
+
+    };
+    _toPay=(orderNo,price,tokenCoinAmount)=>{
+        this.$navigate(RouterMap.PaymentPage, {
+            platformOrderNo: orderNo,
+            amounts: price,
+            orderProductList: [{ productName: "拼店扩容" }],
+            bizType: 1,
+            modeType: 1,
+            oneCoupon: tokenCoinAmount
+        });
+    }
     _ListEmptyComponent = () => {
         return <EmptyView style={{ marginTop: 70 }} description='暂无扩容记录'/>;
     };
     _keyExtractor = (item, index) => {
-        return index + item.id + '';
+        return index + item.id + "";
     };
 
     _render() {
@@ -209,11 +239,11 @@ const styles = StyleSheet.create({
         height: 76, borderRadius: 5, backgroundColor: DesignRule.white
     },
     itemContentView: {
-        flex: 1, flexDirection: 'row', justifyContent: 'space-between',
+        flex: 1, flexDirection: "row", justifyContent: "space-between",
         margin: 15
     },
     itemVerticalView: {
-        justifyContent: 'space-between'
+        justifyContent: "space-between"
     },
     contentText: {
         fontSize: 13, color: DesignRule.textColor_mainTitle
@@ -228,7 +258,7 @@ const styles = StyleSheet.create({
         fontSize: 13
     },
     addBtn: {
-        justifyContent: 'center', alignItems: 'center',
+        justifyContent: "center", alignItems: "center",
         marginBottom: ScreenUtils.safeBottom + 10, marginHorizontal: 15,
         borderRadius: 20, height: 40, backgroundColor: DesignRule.bgColor_btn
     },
