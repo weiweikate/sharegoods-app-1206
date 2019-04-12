@@ -50,14 +50,15 @@ export default class ChannelPage extends BasePage {
         if (platformOrderNo) {
             payment.platformOrderNo = platformOrderNo;
         }
-
         let orderNo = this.params.orderNo;
         if (orderNo) {
             payment.orderNo = orderNo;
         }
-
         this.bizType = this.params.bizType || 0;
         this.modeType = this.params.modeType || 0;
+        //将type给payment 做存储
+        payment.bizType = this.params.bizType || 0;
+        payment.modeType = this.params.modeType || 0;
     }
 
     componentDidMount() {
