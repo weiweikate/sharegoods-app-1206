@@ -60,7 +60,7 @@ export default class CheckLogisticsPage extends BasePage {
                                     uri={data.specImg}
                                     goodsName={data.productName}
                                     salePrice={data.unitPrice}
-                                    category={data.specValues}
+                                    category={data.spec}
                                     goodsNum={data.quantity}
                                     style={{ backgroundColor: "white" }}
                                 />;
@@ -88,7 +88,7 @@ export default class CheckLogisticsPage extends BasePage {
                                 uri={item.specImg}
                                 goodsName={item.productName}
                                 salePrice={item.unitPrice}
-                                category={item.specValues}
+                                category={item.spec}
                                 goodsNum={item.quantity}
                                 style={{ backgroundColor: "white" }}
                             />

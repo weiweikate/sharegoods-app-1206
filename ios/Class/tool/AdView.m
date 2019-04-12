@@ -160,27 +160,45 @@
     return;
   }
 
-  [self requestImageWithPath:[NSString stringWithFormat:@"%@",bgPath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-     dispatch_async(dispatch_get_main_queue(), ^{
-       if (image) {
-         self.bgImg = image;
-       }else{
-         //无广告
-         self.isPlayAd = YES;
-       }
-     });
-  }];
+//  [self requestImageWithPath:[NSString stringWithFormat:@"%@",bgPath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+//     dispatch_async(dispatch_get_main_queue(), ^{
+//       if (image) {
+//         self.bgImg = image;
+//       }else{
+//         //无广告
+//         self.isPlayAd = YES;
+//       }
+//     });
+//  }];
+  UIImage* tmp =  [[YYWebImageManager sharedManager].cache getImageForKey:bgPath];
+  if (tmp) {
+     self.bgImg = tmp;
+  }else{
+    //无广告
+    self.isPlayAd = YES;
+    return;
+  }
   
-  [self requestImageWithPath:[NSString stringWithFormat:@"%@",imagePath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      if (image) {
-        self.adImg = image;
-      }else{
-        //无广告
-        self.isPlayAd = YES;
-      }
-    });
-  }];
+  tmp =  [[YYWebImageManager sharedManager].cache getImageForKey:imagePath];
+  if (tmp) {
+    self.adImg = tmp;
+  }else{
+    //无广告
+    self.isPlayAd = YES;
+    return;
+  }
+
+  
+//  [self requestImageWithPath:[NSString stringWithFormat:@"%@",imagePath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//      if (image) {
+//        self.adImg = image;
+//      }else{
+//        //无广告
+//        self.isPlayAd = YES;
+//      }
+//    });
+//  }];
   
   
 }
@@ -207,7 +225,7 @@ completion:(YYWebImageCompletionBlock)completion
     return image;
   } completion:completion];
   
-  [self performSelectorWithArgs:@selector(cancelOperation:) afterDelay:3,operation];
+  [self performSelectorWithArgs:@selector(cancelOperation:) afterDelay:1,operation];
 }
 
 - (void)cancelOperation:(YYWebImageOperation*)operation
@@ -310,7 +328,7 @@ completion:(YYWebImageCompletionBlock)completion
 
 - (void)AdTap
 {
-  if (_linkTypeCode) {
+  if (_linkTypeCode && _linkTypeCode.length > 0) {
     self.isPlayAd = YES;
     self.isLoadJS = YES;
     GongMaoVC *vc = [GongMaoVC new];
