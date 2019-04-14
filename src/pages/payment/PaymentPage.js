@@ -193,12 +193,21 @@ export default class PaymentPage extends BasePage {
     };
 
     _goToOrder(index) {
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
-            routeName: "order/order/MyOrdersListPage",
-            params: { index: index ? index : 1 }
-        });
-        this.props.navigation.dispatch(replace);
+        const {bizType} = payment;
+        if (bizType == 1){
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type:'ReplacePayScreen',
+                routeName: RouterMap.AddCapacityHistoryPage,
+            })
+        } else {
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type: "ReplacePayScreen",
+                routeName: "order/order/MyOrdersListPage",
+                params: { index: index ? index : 1 }
+            });
+        }
         payment.resetPayment();
     }
 
@@ -209,7 +218,7 @@ export default class PaymentPage extends BasePage {
         let channelAmount = (payment.amounts).toFixed(2);
         //有优惠券先减掉优惠券
         if (bizType === 1) {
-            channelAmount = channelAmount - oneCoupon * 1 <= 0 ? 0 : channelAmount - oneCoupon * 1;
+            channelAmount = channelAmount - oneCoupon * 1 <= 0 ? 0.00 : channelAmount - oneCoupon * 1;
         }
         if (selectedBalace) {
             channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance);
