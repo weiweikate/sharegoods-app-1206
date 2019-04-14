@@ -93,7 +93,7 @@ export default class PaymentPage extends BasePage {
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去出用余额
-        let channelAmount = parseFloat(payment.amounts).toFixed(2); //需要支付的金额
+        let channelAmount = parseFloat(payment.amounts); //需要支付的金额
         let { fundsTradingNo, oneCoupon, bizType } = payment;
         let detailList = [];
 
@@ -113,8 +113,8 @@ export default class PaymentPage extends BasePage {
         }
        //余额支付
         if (selectBance) {
-            if (channelAmount > 0) {
-                if (channelAmount > availableBalance) {
+            if (parseFloat(channelAmount)  > 0) {
+                if (parseFloat(channelAmount)  > parseFloat(availableBalance) ) {
                     detailList.push({
                         payType: paymentType.balance,
                         payAmount: availableBalance
@@ -212,9 +212,9 @@ export default class PaymentPage extends BasePage {
             channelAmount = channelAmount - oneCoupon * 1 <= 0 ? 0 : channelAmount - oneCoupon * 1;
         }
         if (selectedBalace) {
-            channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance).toFixed(2);
+            channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance);
         }
-
+        channelAmount = channelAmount.toFixed(2);
         //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
             <View style={[styles.content, payment.oneCoupon > 0 ? { height: px2dp(150) } : { height: px2dp(100) }]}>

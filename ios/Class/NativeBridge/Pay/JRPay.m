@@ -96,6 +96,7 @@ static JRPay *_singleton;
           result.msg = @"请安装微信后完成支付";
           result.sdkCode = 4;
           resultBlock(result);
+          [JRLoadingAndToastTool showToast:@"请安装微信后完成支付" andDelyTime:0.5];
           return ;
         }
       

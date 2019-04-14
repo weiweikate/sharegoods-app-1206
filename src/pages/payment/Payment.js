@@ -137,7 +137,7 @@ export class Payment {
     });
 
     //检查订单状态
-    @action checkOrderStatus = flow(function* (pOrderNo, bizType = 0, modeType = 0, payAmount, tradeDesc = "") {
+    @action checkOrderStatus = flow(function* (pOrderNo, bizType = 0, modeType = 0, payAmount, tradeDesc = "APP支付") {
         try {
             Toast.showLoading();
             let checkParams = {

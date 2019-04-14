@@ -71,13 +71,13 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     [nodes addObject:@{
                        @"value": productImage,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 300*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 340*i)]}
      ];
     //二维码
     UIImage *QRCodeImage = [self QRCodeWithStr:QRCodeStr];
     [nodes addObject:@{@"value": QRCodeImage,
                        @"locationType": @"rect",
-                       @"location": [NSValue valueWithCGRect:CGRectMake(105*i, 290*i, 40*i, 40*i)]}
+                       @"location": [NSValue valueWithCGRect:CGRectMake(195*i, 285*i, 45*i, 45*i)]}
      ];
   }else{
     NSString *titleStr = model.titleStr;
