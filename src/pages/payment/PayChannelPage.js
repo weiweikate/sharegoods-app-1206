@@ -6,7 +6,8 @@ import {
     TouchableWithoutFeedback,
     AppState,
     ActivityIndicator,
-    Platform
+    Platform,
+    Alert
 } from "react-native";
 import res from "./res";
 import BasePage from "../../BasePage";
@@ -102,7 +103,7 @@ export default class ChannelPage extends BasePage {
                         payment.platformPay("", fundsTradingNo, detailList, name).then(dataResult => {
                             const detail = dataResult.detail || [];
                             detail.map((payItem) => {
-                                if (parseInt(payItem.payType,10) === paymentType.alipay) {
+                                if (parseInt(payItem.payType, 10) === paymentType.alipay) {
                                     //支付宝支付
                                     payment.alipay(payItem.payResult).catch(err => {
                                         console.log("alipay err", err, err.code);
@@ -127,7 +128,7 @@ export default class ChannelPage extends BasePage {
                             //wx支付
                             const detail = dataResult.detail || [];
                             detail.map((payItem) => {
-                                if (parseInt(payItem.payType,10) === paymentType.wechat) {
+                                if (parseInt(payItem.payType, 10) === paymentType.wechat) {
                                     //微信支付
                                     payment.appWXPay(payItem.payResult).catch(err => {
                                         console.log("alipay err", err, err.code);
@@ -177,14 +178,29 @@ export default class ChannelPage extends BasePage {
             if (Platform.OS === "ios") {
                 payment.isGoToPay = false;
             }
-            this.orderTime = (new Date().getTime()) / 1000;
-            //去等待结果页面
-            this.props.navigation.dispatch({
-                key: this.props.navigation.state.key,
-                type: "ReplacePayScreen",
-                routeName: RouterMap.PaymentCheckPage,
-                params: { payResult: PaymentResult.success }
-            });
+
+            Alert.alert(
+                "请确认支付是否已经完成",
+                "",
+                [{
+                    text: "重新支付", onPress: () => {
+                    }
+                },
+                    {
+                        text: "已经完成支付", onPress: () => {
+                            this.orderTime = (new Date().getTime()) / 1000;
+                            //去等待结果页面
+                            this.props.navigation.dispatch({
+                                key: this.props.navigation.state.key,
+                                type: "ReplacePayScreen",
+                                routeName: RouterMap.PaymentCheckPage,
+                                params: { payResult: PaymentResult.success }
+                            });
+                        }, style: "cancel"
+                    }
+                ],
+                { cancelable: false }
+            );
             // this._checkOrder();
             // this.setState({ orderChecking: true });
         }
@@ -243,13 +259,13 @@ export default class ChannelPage extends BasePage {
     }
 
     _goToOrder(index) {
-        const {bizType} = payment;
-        if (bizType == 1){
+        const { bizType } = payment;
+        if (bizType == 1) {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
-                type:'ReplacePayScreen',
-                routeName: RouterMap.AddCapacityHistoryPage,
-            })
+                type: "ReplacePayScreen",
+                routeName: RouterMap.AddCapacityHistoryPage
+            });
         } else {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
