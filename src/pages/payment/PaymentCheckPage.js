@@ -100,12 +100,18 @@ export default class PaymentCheckPage extends BasePage {
                 payment.resetPayment();
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
             } else if (parseInt(resultData.status) === payStatus.payClose) {
-                let replace = NavigationActions.replace({
-                    key: this.props.navigation.state.key,
-                    routeName: RouterMap.PaymentResultPage,
-                    params: { payResult: PaymentResult.fail, payMsg: "支付关闭" }
-                });
-                this.props.navigation.dispatch(replace);
+                const {bizType} = payment;
+                if (bizType !== 1){
+                    let replace = NavigationActions.replace({
+                        key: this.props.navigation.state.key,
+                        routeName: RouterMap.PaymentResultPage,
+                        params: { payResult: PaymentResult.fail, payMsg: "支付关闭" }
+                    });
+                    this.props.navigation.dispatch(replace);
+                } else {
+                    this._goToOrder();
+                }
+
                 payment.resetPayment();
             } else {
                 setTimeout(() => {
@@ -119,12 +125,21 @@ export default class PaymentCheckPage extends BasePage {
     };
 
     _goToOrder(index) {
-        this.props.navigation.dispatch({
-            key: this.props.navigation.state.key,
-            type: "ReplacePayScreen",
-            routeName: "order/order/MyOrdersListPage",
-            params: { index: index ? index : 1 }
-        });
+        const {bizType} = payment;
+        if (bizType == 1){
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type:'ReplacePayScreen',
+                routeName: RouterMap.AddCapacityHistoryPage,
+            })
+        } else {
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type: "ReplacePayScreen",
+                routeName: "order/order/MyOrdersListPage",
+                params: { index: index ? index : 1 }
+            });
+        }
     }
 
 }
