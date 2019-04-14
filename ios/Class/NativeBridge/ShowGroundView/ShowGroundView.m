@@ -133,8 +133,12 @@
       [weakSelf.collectionView.mj_footer resetNoMoreData];
     }
     [weakSelf.collectionView reloadData];
-//    [weakSelf.collectionView.collectionViewLayout invalidateLayout];
-    weakSelf.collectionView.mj_footer.hidden = NO;
+    if (weakSelf.collectionView.mj_footer.hidden) {
+      //延迟0.5秒，防止第一次在刷新成功过程中在顶部出现footer《加载更多》
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+          weakSelf.collectionView.mj_footer.hidden = NO;
+      });
+    }
   } failure:^(NSString *msg, NSInteger code) {
     [MBProgressHUD showSuccess:msg];
     [weakSelf.collectionView.mj_header endRefreshing];

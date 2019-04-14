@@ -14,6 +14,7 @@ import { AsyncStorage, Platform } from 'react-native';
 import MessageApi from "../../message/api/MessageApi";
 import bridge from '../../../utils/bridge';
 import user from '../../../model/user';
+import { homeFocusAdModel } from '../model/HomeFocusAdModel';
 const requsetCount = 4;
 class HomeModalManager {
     /** 控制升级框*/
@@ -58,7 +59,15 @@ class HomeModalManager {
     }
     @action
     guideNextAction () {
-        this.step ++;
+        if (this.step === 2 && homeFocusAdModel.foucusHeight === 0){
+            this.step = this.step + 2;
+        }else {
+            this.step ++;
+        }
+        if (this.step === 5){
+            GuideApi.registerSend({})//完成了新手引导
+            user.finishGiudeAction();//防止请求失败，重复调用新手引导
+        }
     }
     @action
     requestGuide () {
@@ -67,7 +76,7 @@ class HomeModalManager {
         }
         GuideApi.getUserRecord().then((data) => {
             if (data.data === true) {
-                if (user.getFinishGuide() === true) {
+                if (user.finishGuide === true) {
                     GuideApi.registerSend({});
                 } else {
                     this.isShowGuide = true;
@@ -175,7 +184,7 @@ class HomeModalManager {
     getUserRecord = () => {
         GuideApi.getUserRecord().then((data) => {
             if (data.data === true) {
-                if (user.getFinishGuide() === true) {
+                if (user.finishGuide === true) {
                     GuideApi.registerSend({});
                 } else {
                     this.needShowGuide = true;

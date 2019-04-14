@@ -21,7 +21,8 @@ export default class PickTicketModal extends Component {
         };
     }
 
-    show = (callBack) => {
+    show = (amount, callBack) => {
+        this.amount = amount;
         this.setState({
             modalVisible: true,
             callBack

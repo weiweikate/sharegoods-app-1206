@@ -72,12 +72,9 @@ export default class MRBannerViewComponent extends Component {
 
     _onDidScrollToIndex(e) {
         const { onDidScrollToIndex } = this.props;
-        if (!onDidScrollToIndex) {
-            return;
-        }
         let index = e.nativeEvent.index;
         this.setState({ index });
-        this.props.onDidScrollToIndex(index);
+        onDidScrollToIndex && onDidScrollToIndex(index);
     }
 
 

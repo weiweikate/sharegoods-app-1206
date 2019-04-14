@@ -10,6 +10,7 @@ const { px2dp } = ScreenUtil;
 
 const bannerWidth = ScreenUtil.width - px2dp(50);
 const bannerHeight = bannerWidth * (240 / 650);
+import { homeModule } from './Modules';
 
 //专题
 class SubjectModule {
@@ -30,6 +31,7 @@ class SubjectModule {
             let list = res.data || [];
             this.computeHeight(list);
             this.subjectList = list;
+            homeModule.changeHomeList(homeType.homeHot);
             save(kHomeHotStore, res.data);
         } catch (error) {
             console.log(error);
@@ -37,17 +39,19 @@ class SubjectModule {
     });
 
     computeHeight = (data) => {
-        let height = px2dp(60);
-        data.map(value => {
-            const { topicBannerProductDTOList } = value;
-            if (topicBannerProductDTOList && topicBannerProductDTOList.length > 0) {
-                height += px2dp(185);
-            } else {
-                height += px2dp(15);
-            }
-            height += bannerHeight;
-        });
-        this.subjectHeight = height;
+        if (data.length > 0) {
+            let height = px2dp(60);
+            data.map(value => {
+                const { topicBannerProductDTOList } = value;
+                if (topicBannerProductDTOList && topicBannerProductDTOList.length > 0) {
+                    height += px2dp(185);
+                } else {
+                    height += px2dp(15);
+                }
+                height += bannerHeight;
+            });
+            this.subjectHeight = height;
+        }
     };
 }
 

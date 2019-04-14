@@ -58,7 +58,8 @@ export default class ServiceRowView extends Component {
                         <View style={{ flex: 1 }}>
                             <View style={{
                                 flexDirection: 'row',
-                                paddingTop: px2dp(7)
+                                alignItems: 'center',
+                                marginTop: px2dp(7)
                             }}>
                                 <UIText value={item.sessionName}
                                         numberOfLines={1}
@@ -74,7 +75,8 @@ export default class ServiceRowView extends Component {
                                         marginTop: 15,
                                         paddingRight: 6,
                                         paddingLeft: 6,
-                                        borderRadius: 14,
+                                        height: 20,
+                                        borderRadius: 10,
                                         backgroundColor: '#F2F2F2',
                                         alignItems: 'center',
                                         justifyContent: 'center',

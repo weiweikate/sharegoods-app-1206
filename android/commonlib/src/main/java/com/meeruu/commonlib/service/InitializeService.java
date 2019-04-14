@@ -1,6 +1,5 @@
 package com.meeruu.commonlib.service;
 
-import android.app.Activity;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
@@ -13,14 +12,13 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
+import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
-import com.qiyukf.unicorn.api.pop.OnShopEventListener;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
@@ -136,7 +134,7 @@ public class InitializeService extends IntentService {
         ysfOptions.onMessageItemClickListener = new OnMessageItemClickListener() {
             // 响应 url 点击事件
             public void onURLClicked(Context context, String url) {
-                ((Activity) context).finish();
+                ((QiyuServiceMessageActivity) context).finish(true);
                 // 打开内置浏览器等动作
 //                try {
 //                    context.startActivity(new Intent(context, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"))

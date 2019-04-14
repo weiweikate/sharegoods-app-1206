@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LinearGradient from 'react-native-linear-gradient';
 import HomeTitleView from './HomeTitleView';
 import ImageLoader from '@mr/image-placeholder';
 import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
+import DesignRule from '../../../constants/DesignRule';
+import resHome from '../res';
 
 const { px2dp } = ScreenUtils;
 
@@ -34,14 +36,13 @@ export default class HomeLimitGoView extends Component {
         if (!selected) {
             return <View/>;
         }
-        const { time, title, diff } = selected;
-        let tabWidth = diff === 0 ? px2dp(60) : px2dp(80);
+        const { time, title } = selected;
         return <TouchableOpacity
             key={`${name}_${page}`}
             onPress={() => onPressHandler(page)}
             onLayout={onLayoutHandler}
         >
-            <View style={[styles.tab, { width: tabWidth }]}>
+            <View style={[styles.tab, { marginLeft: page === 0 ? 0 : px2dp(12) }]}>
                 <Text style={[styles.time, { color: textColor }]}>
                     {time}
                 </Text>
@@ -121,6 +122,8 @@ export default class HomeLimitGoView extends Component {
                     renderTabBar={() => <ScrollableTabBar style={styles.scrollTab} underlineStyle={styles.underline}
                                                           renderTab={this._renderTab.bind(this)}/>}
                     tabBarUnderlineStyle={styles.underline}
+                    locked={true}
+                    scrollWithoutAnimation={true}
                     onChangeTab={(index) => this._onChangeTab(index)}
                     showsVerticalScrollIndicator={false}
                     initialPage={limitGoModule.initialPage}
@@ -140,8 +143,11 @@ const GoodsItem = (item) => {
             showPlaceholder={false}
             width={px2dp(120)}
             height={px2dp(120)}
-            style={styles.goodsImage}
-        />
+            style={styles.goodsImage}>
+            {data.status === limitStatus.end ?
+                <Image source={resHome.home_sallout}
+                       style={styles.goodsTag}/> : null}
+        </ImageLoader>
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={2}>{data.productName}</Text>
             <Text style={styles.text}>{data.secondName}</Text>
@@ -151,7 +157,10 @@ const GoodsItem = (item) => {
                 {
                     data.seckillPrice
                         ?
-                        <Text style={styles.money}>¥<Text style={styles.moneyText}>{data.seckillPrice}</Text></Text>
+                        <Text style={styles.money}>¥<Text
+                            style={styles.moneyText}>{data.seckillPrice + ' '}</Text>
+                            <Text style={styles.originMoneyText}>¥{data.originalPrice}</Text>
+                        </Text>
                         :
                         null
                 }
@@ -181,7 +190,7 @@ const GoodsItemButton = ({ data }) => {
     } else {
         return <View style={styles.disbutton}>
             <Text style={styles.disbuttonTitle}>
-                抢光了
+                {data.status === limitStatus.end ? '抢光了' : '已结束'}
             </Text>
         </View>;
     }
@@ -193,7 +202,7 @@ const styles = StyleSheet.create({
     },
     tab: {
         height: px2dp(59),
-        width: px2dp(80),
+        minWidth: px2dp(60),
         alignItems: 'center'
     },
     tabBar: {
@@ -207,7 +216,7 @@ const styles = StyleSheet.create({
     time: {
         color: '#FC533B',
         fontWeight: '600',
-        fontSize: px2dp(16)
+        fontSize: 16
     },
     normalTitle: {
         color: '#333',
@@ -236,18 +245,26 @@ const styles = StyleSheet.create({
         height: px2dp(140),
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#fff'
     },
     goodsImage: {
         width: px2dp(120),
         height: px2dp(120),
+        marginTop: px2dp(-1.5),
         borderRadius: px2dp(5),
         marginLeft: px2dp(10),
+        justifyContent: 'center',
+        alignItems: 'center',
         overflow: 'hidden'
+    },
+    goodsTag: {
+        width: px2dp(80),
+        height: px2dp(80)
     },
     goodsContent: {
         marginLeft: px2dp(10),
-        marginTop: px2dp(17),
+        marginTop: px2dp(14),
         marginBottom: px2dp(10),
         flex: 1
     },
@@ -266,14 +283,22 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        marginBottom: px2dp(3),
         paddingRight: px2dp(5)
     },
     money: {
-        fontSize: px2dp(12)
+        fontSize: px2dp(12),
+        color: DesignRule.mainColor
     },
     moneyText: {
-        fontSize: px2dp(16),
-        marginLeft: px2dp(2)
+        fontSize: px2dp(20),
+        marginLeft: px2dp(3),
+        color: DesignRule.mainColor
+    },
+    originMoneyText: {
+        fontSize: px2dp(12),
+        color: DesignRule.textColor_instruction,
+        textDecorationLine: 'line-through'
     },
     button: {
         width: px2dp(82),
@@ -284,7 +309,8 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: '#fff',
-        fontSize: px2dp(14)
+        fontSize: px2dp(14),
+        marginBottom: px2dp(2)
     },
     buttonWill: {
         width: px2dp(82),
@@ -293,7 +319,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: ScreenUtils.onePixel,
-        borderColor: '#FF0050'
+        borderColor: '#FF0050',
+        marginBottom: px2dp(2)
     },
     buttonWillTitle: {
         color: '#FF0050',
@@ -305,7 +332,8 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(14),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ccc'
+        backgroundColor: '#ccc',
+        marginBottom: px2dp(2)
     },
     disbuttonTitle: {
         color: '#fff',

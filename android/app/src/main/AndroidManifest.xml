@@ -254,7 +254,7 @@
             android:launchMode="singleTop"
             android:resizeableActivity="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden"
+            android:windowSoftInputMode="adjustNothing|stateAlwaysHidden"
             tools:targetApi="n">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

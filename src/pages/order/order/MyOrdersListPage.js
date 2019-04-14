@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity} from "react-native";
+import { StyleSheet, Image, TouchableOpacity } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import MyOrdersListView from './../components/MyOrdersListView';
@@ -22,8 +22,8 @@ class MyOrdersListPage extends BasePage {
         super(props);
         this.state = {
             index: this.params.index ? this.params.index : 0,
-            selectTab:10,
-            resume:false
+            selectTab: 10,
+            resume: false
         };
     }
 
@@ -35,6 +35,7 @@ class MyOrdersListPage extends BasePage {
     $isMonitorNetworkStatus() {
         return true;
     }
+
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity onPress={this.gotoSearchPage}>
@@ -46,11 +47,13 @@ class MyOrdersListPage extends BasePage {
     gotoSearchPage = () => {
         this.$navigate('order/order/SearchPage');
     };
+
     componentWillUnmount() {
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
+
     componentWillMount() {
-        let i=0;
+        let i = 0;
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -58,7 +61,7 @@ class MyOrdersListPage extends BasePage {
                 const { state } = payload;
                 console.log('willFocusSubscriptionOrdersList', payload);
                 if (state && state.routeName === 'order/order/MyOrdersListPage') {
-                    if(i>1){
+                    if (i > 1) {
                         this.reLoads && this.reLoads.onRefresh();
                     }
 
@@ -73,30 +76,31 @@ class MyOrdersListPage extends BasePage {
                     this.setState({ selectTab: obj.i });
                 }}
                 style={styles.container}
+                scrollWithoutAnimation={true}
                 renderTabBar={this._renderTabBar}
                 //进界面的时候打算进第几个
                 initialPage={parseInt(this.state.index)}>
                 <MyOrdersListView
-                    tabLabel={'全部'} pageStatus={0} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
+                    tabLabel={'全部'} pageStatus={0} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
                     nav={this.$navigate}
                     navigation={this.props.navigation}
-                    />
+                />
                 <MyOrdersListView
-                    tabLabel={'待付款'} pageStatus={1} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
+                    tabLabel={'待付款'} pageStatus={1} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
                     nav={this.$navigate}
                     navigation={this.props.navigation}
-                    />
+                />
                 <MyOrdersListView
-                    tabLabel={'待发货'} pageStatus={2} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
+                    tabLabel={'待发货'} pageStatus={2} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
                     nav={this.$navigate}
                     navigation={this.props.navigation}
-                    />
+                />
                 <MyOrdersListView
-                    tabLabel={'待收货'} pageStatus={3} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
+                    tabLabel={'待收货'} pageStatus={3} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
                     nav={this.$navigate}
                     navigation={this.props.navigation}/>
                 <MyOrdersListView
-                    tabLabel={'待晒单'} pageStatus={4} selectTab={this.state.selectTab} ref={(e)=>this.reLoads=e}
+                    tabLabel={'待晒单'} pageStatus={4} selectTab={this.state.selectTab} ref={(e) => this.reLoads = e}
                     nav={this.$navigate}
                     navigation={this.props.navigation}/>
             </ScrollableTabView>

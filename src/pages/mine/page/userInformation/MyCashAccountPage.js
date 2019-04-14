@@ -130,11 +130,11 @@ export default class MyCashAccountPage extends BasePage {
                     }}>
                         <Image source={res.button.white_back}/>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => {
+                    {this.state.canWithdraw ? <TouchableWithoutFeedback onPress={() => {
                         this.$navigate('mine/bankCard/BankCardListPage');
                     }}>
                         <Text style={styles.settingStyle}>账户设置</Text>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> : null}
                 </View>
             </ImageBackground>
         );

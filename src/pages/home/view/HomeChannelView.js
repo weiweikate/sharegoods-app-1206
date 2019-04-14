@@ -52,6 +52,9 @@ export default class HomeChannelView extends Component {
 
     renderItems = () => {
         const { channelList } = channelModules;
+        if (channelList.length === 0) {
+            return null;
+        }
         let itemViews = [];
         // 5个
         channelList.slice(0, 5).map((value, index) => {

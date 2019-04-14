@@ -82,9 +82,8 @@ class HomePage extends BasePage {
     }, (type, dim) => {
         dim.width = ScreenUtils.width;
         const { todayList } = todayModule;
-        const { channelHeight } = channelModules;
         const { recommendList } = recommendModule;
-        const { subjectHeight } = subjectModule;
+        const { subjectHeight, subjectList } = subjectModule;
         const { foucusHeight } = homeFocusAdModel;
 
         switch (type) {
@@ -98,7 +97,7 @@ class HomePage extends BasePage {
                 dim.height = user.isLogin ? (bannerModule.bannerList.length > 0 ? px2dp(44) : px2dp(31)) : 0;
                 break;
             case homeType.channel:
-                dim.height = channelHeight;
+                dim.height = channelModules.channelList.length > 0 ? px2dp(90) : 0;
                 break;
             case homeType.expandBanner:
                 dim.height = homeExpandBnnerModel.bannerHeight;
@@ -116,7 +115,7 @@ class HomePage extends BasePage {
                 dim.height = recommendList.length > 0 ? recommendHeight : 0;
                 break;
             case homeType.homeHot:
-                dim.height = subjectHeight;
+                dim.height = subjectList.length > 0 ? subjectHeight : 0;
                 break;
             case homeType.goodsTitle:
                 dim.height = px2dp(52);
@@ -293,9 +292,6 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
-        this.loadMessageCount();
-        this.luckyIcon.getLucky();
-
     }
 
     _onListViewScroll = (event) => {
@@ -313,10 +309,6 @@ class HomePage extends BasePage {
     };
 
     render() {
-        console.log('getBanner render',
-            homeExpandBnnerModel.bannerHeight,
-            subjectModule.subjectHeight,
-            limitGoModule.limitHeight); //千万别去掉
         const { homeList } = homeModule;
         this.dataProvider = this.dataProvider.cloneWithRows(homeList);
         return (

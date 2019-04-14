@@ -60,19 +60,24 @@ class HomeModule {
         };
 
     };
-
+    @action changeHomeList = (type) => {
+        this.homeList = this.homeList.map((item) => {
+            return ({ ...item });
+        });
+    };
     //加载为你推荐列表
     @action loadHomeList = flow(function* () {
         this.isRefreshing = true;
         setTimeout(() => {
             this.isRefreshing = false;
-        }, 2000);
+        }, 1000);
+
         // 首页类目
         categoryModule.loadCategoryList();
         // 首页顶部轮播图
         bannerModule.loadBannerList(this.firstLoad);
         // 首页频道类目
-        channelModules.loadChannel();
+        channelModules.loadChannel(this.firstLoad);
         // 首页通栏
         homeExpandBnnerModel.loadBannerList();
         // 首焦点广告
@@ -129,7 +134,7 @@ class HomeModule {
             this.isFetching = true;
             const result = yield HomeApi.getGoodsInHome({ page: this.page });
             let list = result.data.data || [];
-            if (this.page === result.data.totalPage) {
+            if (this.page === result.data.totalPage || result.data.totalPage === 0) {
                 this.isEnd = true;
             }
             let home = [];
@@ -168,10 +173,10 @@ class HomeModule {
             this.firstLoad = false;
             this.errorMsg = '';
         } catch (error) {
-            console.log(error);
             this.isFetching = false;
             this.isRefreshing = false;
             this.errorMsg = error.msg;
+            console.log(error);
         }
     });
 

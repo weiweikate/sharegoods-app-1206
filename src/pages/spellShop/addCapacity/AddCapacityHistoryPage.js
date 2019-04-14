@@ -128,7 +128,7 @@ export class AddCapacityHistoryPage extends BasePage {
     };
 
     _addBtnAction = () => {
-        this.$navigate(RouterMap.AddCapacityPage, { storeData: spellStatusModel.storeCode });
+        this.$navigate(RouterMap.AddCapacityPage);
     };
 
     _renderItem = ({ item }) => {

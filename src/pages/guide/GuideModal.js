@@ -38,6 +38,7 @@ import { navigate } from '../../navigation/RouterMap';
 import { homeModule } from '../home/model/Modules';
 import { channelModules } from '../home/model/HomeChannelModel';
 import { homeExpandBnnerModel } from '../home/model/HomeExpandBnnerModel';
+import { categoryModule } from '../home/model/HomeCategoryModel';
 import HomeModalManager from '../home/manager/HomeModalManager'
 import GuideApi from './GuideApi';
 
@@ -95,7 +96,7 @@ export default class GuideModal extends React.Component {
     renderContent = () => {
         let { step } = HomeModalManager;
         let data = this.data[step];
-        let _categoryHeight = categoryHeight;
+        let _categoryHeight = categoryModule.categoryList.length>0? categoryHeight: 0;
         if (step < 6) {
             let bgStyle = {};
             let imageStyle = {};
@@ -171,7 +172,7 @@ export default class GuideModal extends React.Component {
 
             if (step === 3) {
                 let ad = homeExpandBnnerModel.banner;
-                let top =  _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0) + homeExpandBnnerModel.bannerHeight + channelModules.channelHeight;
+                let top =  _categoryHeight + bannerHeight + ScreenUtils.headerHeight + (user.isLogin ? autoSizeWidth(44) : 0) - (ScreenUtils.isIphonex ? 10 : 0) + homeExpandBnnerModel.bannerHeight + (channelModules.channelList.length > 0? autoSizeWidth(90): 0);
                 if (ad.length > 0) {
                     data.image = ad[ad.length - 1].image || '';//获取最后一个图片地址
                     top = top + homeFocusAdModel.foucusHeight - kAdHeight;
