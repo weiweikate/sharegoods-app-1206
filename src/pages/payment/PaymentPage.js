@@ -10,7 +10,6 @@ import user from "../../model/user";
 import { payment, paymentType, payStatus, payStatusMsg } from "./Payment";
 import PasswordView from "./PayPasswordView";
 import { PaymentResult } from "./PaymentResultPage";
-import * as math from 'mathjs';
 
 const { px2dp } = ScreenUtils;
 import Toast from "../../utils/bridge";
