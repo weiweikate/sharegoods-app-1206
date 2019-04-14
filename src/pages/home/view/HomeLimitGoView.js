@@ -122,6 +122,8 @@ export default class HomeLimitGoView extends Component {
                     renderTabBar={() => <ScrollableTabBar style={styles.scrollTab} underlineStyle={styles.underline}
                                                           renderTab={this._renderTab.bind(this)}/>}
                     tabBarUnderlineStyle={styles.underline}
+                    locked={true}
+                    scrollWithoutAnimation={true}
                     onChangeTab={(index) => this._onChangeTab(index)}
                     showsVerticalScrollIndicator={false}
                     initialPage={limitGoModule.initialPage}
@@ -249,7 +251,7 @@ const styles = StyleSheet.create({
     goodsImage: {
         width: px2dp(120),
         height: px2dp(120),
-        marginTop:px2dp(-1.5),
+        marginTop: px2dp(-1.5),
         borderRadius: px2dp(5),
         marginLeft: px2dp(10),
         justifyContent: 'center',
