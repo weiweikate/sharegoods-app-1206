@@ -70,10 +70,10 @@ export default class PaymentCheckPage extends BasePage {
     _checkStatues = () => {
         let time = (new Date().getTime()) / 1000;
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checking" });
-        if (time - this.orderTime > 15) {
+        if (time - this.orderTime > 5) {
             track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checkOut" });
             this.$toastShow("支付结果请求超时");
-            this._goToOrder(2);
+            this._goToOrder(1);
             payment.resetPayment();
             return;
         }

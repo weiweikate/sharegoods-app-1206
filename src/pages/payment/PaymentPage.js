@@ -89,7 +89,6 @@ export default class PaymentPage extends BasePage {
     _selectedBalance() {
         payment.selectBalancePayment();
     }
-
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去出用余额
@@ -215,7 +214,8 @@ export default class PaymentPage extends BasePage {
         const { selectedBalace, name, bizType, oneCoupon } = payment;
         const { showPwd } = this.state;
         let { availableBalance } = user;
-        let channelAmount = (payment.amounts).toFixed(2);
+
+        let channelAmount = payment.amounts;
         //有优惠券先减掉优惠券
         if (bizType === 1) {
             channelAmount = channelAmount - oneCoupon * 1 <= 0 ? 0.00 : channelAmount - oneCoupon * 1;
@@ -223,7 +223,7 @@ export default class PaymentPage extends BasePage {
         if (selectedBalace) {
             channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance);
         }
-        channelAmount = channelAmount.toFixed(2);
+        channelAmount =  channelAmount.toFixed(2);
         //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
             <View style={[styles.content, payment.oneCoupon > 0 ? { height: px2dp(150) } : { height: px2dp(100) }]}>
