@@ -64,6 +64,10 @@ class HomeModalManager {
         }else {
             this.step ++;
         }
+        if (this.step === 5){
+            GuideApi.registerSend({})//完成了新手引导
+            user.finishGiudeAction();//防止请求失败，重复调用新手引导
+        }
     }
     @action
     requestGuide () {
@@ -72,7 +76,7 @@ class HomeModalManager {
         }
         GuideApi.getUserRecord().then((data) => {
             if (data.data === true) {
-                if (user.getFinishGuide() === true) {
+                if (user.finishGuide === true) {
                     GuideApi.registerSend({});
                 } else {
                     this.isShowGuide = true;
@@ -180,7 +184,7 @@ class HomeModalManager {
     getUserRecord = () => {
         GuideApi.getUserRecord().then((data) => {
             if (data.data === true) {
-                if (user.getFinishGuide() === true) {
+                if (user.finishGuide === true) {
                     GuideApi.registerSend({});
                 } else {
                     this.needShowGuide = true;

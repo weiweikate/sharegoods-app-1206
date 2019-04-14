@@ -185,9 +185,9 @@ export class AddCapacityHistoryPage extends BasePage {
         }
         payment.checkOrderStatus(orderNo, 1, 1, price).then(result => {
             if (result.code === payStatus.payNo) {
-                this._toPay(orderNo,price,tokenCoinAmount)
+                this._toPay(orderNo,price,tokenCoinAmount,payStatus.payNo)
             } else if (result.code === payStatus.payNeedThrid) {
-                this._toPay(orderNo,Math.floor(result.unpaidAmount * 100) / 100,0)
+                this._toPay(orderNo,Math.floor(result.unpaidAmount * 100) / 100,0,payStatus.payNeedThrid)
             } else if (result.code === payStatus.payOut) {
                 Toast.$toast(payStatusMsg[result.code]);
             } else {
@@ -198,15 +198,26 @@ export class AddCapacityHistoryPage extends BasePage {
         });
 
     };
-    _toPay=(orderNo,price,tokenCoinAmount)=>{
-        this.$navigate(RouterMap.PaymentPage, {
-            platformOrderNo: orderNo,
-            amounts: price,
-            orderProductList: [{ productName: "拼店扩容" }],
-            bizType: 1,
-            modeType: 1,
-            oneCoupon: tokenCoinAmount
-        });
+    _toPay=(orderNo,price,tokenCoinAmount,payType)=>{
+        if (payType === payStatus.payNo) {
+            this.$navigate(RouterMap.PaymentPage, {
+                platformOrderNo: orderNo,
+                amounts: price,
+                orderProductList: [{ productName: "拼店扩容" }],
+                bizType: 1,
+                modeType: 1,
+                oneCoupon: tokenCoinAmount
+            });
+        }else {
+            this.$navigate(RouterMap.ChannelPage, {
+                platformOrderNo: orderNo,
+                amounts: price,
+                orderProductList: [{ productName: "拼店扩容" }],
+                bizType: 1,
+                modeType: 1,
+                oneCoupon: tokenCoinAmount
+            });
+        }
     }
     _ListEmptyComponent = () => {
         return <EmptyView style={{ marginTop: 70 }} description='暂无扩容记录'/>;
