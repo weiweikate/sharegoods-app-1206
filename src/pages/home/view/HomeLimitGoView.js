@@ -243,11 +243,13 @@ const styles = StyleSheet.create({
         height: px2dp(140),
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#fff'
     },
     goodsImage: {
         width: px2dp(120),
         height: px2dp(120),
+        marginTop:px2dp(-1.5),
         borderRadius: px2dp(5),
         marginLeft: px2dp(10),
         justifyContent: 'center',
@@ -260,7 +262,7 @@ const styles = StyleSheet.create({
     },
     goodsContent: {
         marginLeft: px2dp(10),
-        marginTop: px2dp(17),
+        marginTop: px2dp(14),
         marginBottom: px2dp(10),
         flex: 1
     },
@@ -279,6 +281,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        marginBottom: px2dp(3),
         paddingRight: px2dp(5)
     },
     money: {
@@ -304,7 +307,8 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: '#fff',
-        fontSize: px2dp(14)
+        fontSize: px2dp(14),
+        marginBottom: px2dp(2)
     },
     buttonWill: {
         width: px2dp(82),
@@ -313,7 +317,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: ScreenUtils.onePixel,
-        borderColor: '#FF0050'
+        borderColor: '#FF0050',
+        marginBottom: px2dp(2)
     },
     buttonWillTitle: {
         color: '#FF0050',
@@ -325,7 +330,8 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(14),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ccc'
+        backgroundColor: '#ccc',
+        marginBottom: px2dp(2)
     },
     disbuttonTitle: {
         color: '#fff',
