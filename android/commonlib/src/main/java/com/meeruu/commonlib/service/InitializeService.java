@@ -1,9 +1,10 @@
 package com.meeruu.commonlib.service;
 
-import android.app.Activity;
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 
@@ -13,7 +14,6 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
@@ -21,7 +21,6 @@ import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
-import com.qiyukf.unicorn.api.pop.OnShopEventListener;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
@@ -35,8 +34,10 @@ public class InitializeService extends IntentService {
     private int patchStatus;
     private WeakHandler mHandler;
 
-    public InitializeService() {
-        super("InitializeService");
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        startForeground(1, new Notification());
         mHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -52,10 +53,18 @@ public class InitializeService extends IntentService {
         });
     }
 
+    public InitializeService() {
+        super("InitializeService");
+    }
+
     public static void init(Context context) {
         Intent intent = new Intent();
         intent.setClass(context, InitializeService.class);
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
     }
 
     @Override

@@ -96,7 +96,7 @@ export default class RequestDetailPage extends BasePage {
     _postMessage = (msg) => {
         if (msg.action === "share") {
             // this.webJson = msg.shareParmas;
-            this.setState({ shareParmas: msg.shareParmas },()=>{this.shareModal.open();});
+            this.setState({ shareParmas: msg.shareParmas },()=>{this.shareModal && this.shareModal.open();});
             return;
         }
 

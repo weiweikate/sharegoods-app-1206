@@ -199,7 +199,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                 onPress = () => {
                     // global.$navigator.dispatch(NavigationActions.navigate({ routeName: RouterMap.ShareTaskIntroducePage, params: {jobId:item.jobId, status: 1} }));
                     this.setState({id: id})
-                    this.shareModal.open();
+                    this.shareModal && this.shareModal.open();
                 };
                 break;
             case 2:

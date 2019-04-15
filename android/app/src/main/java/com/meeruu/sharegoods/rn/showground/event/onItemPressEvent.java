@@ -29,6 +29,9 @@ public class onItemPressEvent extends Event<onItemPressEvent> {
 
     @Override
     public void dispatch(RCTEventEmitter rctEventEmitter) {
-        rctEventEmitter.receiveEvent(getViewTag(), getEventName(), this.data);
+        try {
+            rctEventEmitter.receiveEvent(getViewTag(), getEventName(), this.data);
+        } catch (Exception e) {
+        }
     }
 }
