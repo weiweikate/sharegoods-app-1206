@@ -167,15 +167,13 @@ class User {
     @observable
     upCode = null;
 
+    @observable
     finishGuide = false;
 
     //用户靓号
     @observable
     perfectNumberCode = null;
 
-    @action getFinishGuide = () => {
-        return this.finishGuide;
-    };
 
     @action getToken = () => {
         if (this.token) {
@@ -289,7 +287,6 @@ class User {
         this.levelCeil = info.levelCeil; //升级需要的经验值
         this.profile = info.profile;
         this.upCode = info.upCode;
-        this.finishGuide = false;
         //用户靓号
         this.perfectNumberCode = info.perfectNumberCode;
         if (saveToDisk) {
