@@ -173,16 +173,12 @@ export default class ChannelPage extends BasePage {
         if (this.state.orderChecking === true) {
             return;
         }
-        if (Platform.OS === "ios" && payment.isGoToPay === false) {
+        if (payment.isGoToPay === false) {
             return;
         }
-        if (payment.platformOrderNo
-            && selctedPayType !== paymentType.none
-            && this.canShowAlter) {
-            if (Platform.OS === "ios") {
-                payment.isGoToPay = false;
-            }
+        if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {
             this.canShowAlter = false;
+            payment.isGoToPay = false;
             Alert.alert(
                 "请确认支付是否已经完成",
                 "",
@@ -193,7 +189,6 @@ export default class ChannelPage extends BasePage {
                 },
                     {
                         text: "已经完成支付", onPress: () => {
-                            this.canShowAlter = true;
                             this.orderTime = (new Date().getTime()) / 1000;
                             //去等待结果页面
                             this.props.navigation.dispatch({
