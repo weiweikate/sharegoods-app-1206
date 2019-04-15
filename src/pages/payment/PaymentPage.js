@@ -60,7 +60,10 @@ export default class PaymentPage extends BasePage {
                 //是否选择余额
                 const { selectedBalace } = payment;
                 if (!selectedBalace && oneCoupon <= 0) {
-                    this.$navigate("payment/ChannelPage");
+                    this.$navigate("payment/ChannelPage",{
+                        bizType:bizType,
+                        modeType:modeType
+                    });
                     return;
                 }
                 //用户设置过交易密码
@@ -70,7 +73,11 @@ export default class PaymentPage extends BasePage {
                     this.$navigate("mine/account/JudgePhonePage", { title: "设置交易密码" });
                 }
             } else if (result.code === payStatus.payNeedThrid) {
-                this.$navigate("payment/ChannelPage", { remainMoney: Math.floor(result.unpaidAmount * 100) / 100 });
+                this.$navigate("payment/ChannelPage", {
+                    remainMoney: Math.floor(result.unpaidAmount * 100) / 100 ,
+                    bizType:bizType,
+                    modeType:modeType
+                });
             } else if (result.code === payStatus.payOut) {
                 Toast.$toast(payStatusMsg[result.code]);
                 this._goToOrder(2);
