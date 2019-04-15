@@ -88,7 +88,7 @@ export default class HomeLimitGoView extends Component {
             );
         });
         return (<View>
-            <View style={{ height: px2dp(10) }}/>
+            <View style={{ height: px2dp(6) }}/>
             {goodsItems}
         </View>);
     }
@@ -109,7 +109,7 @@ export default class HomeLimitGoView extends Component {
 
         return (
             <View style={[styles.container, { height: limitGoModule.limitHeight }]}>
-                <View style={{ paddingLeft: px2dp(15), marginTop: px2dp(3) }}>
+                <View style={{ paddingLeft: px2dp(15), marginTop: 3 }}>
                     <HomeTitleView title={'限时购'}/>
                 </View>
                 <ScrollableTabView
@@ -151,7 +151,6 @@ const GoodsItem = (item) => {
             <Text style={styles.goodsTitle} numberOfLines={2}>{data.productName}</Text>
             <Text style={styles.text}>{data.secondName}</Text>
             {data.status === limitStatus.doing ? null : <Text style={styles.text}>已有{data.subscribeCount}人关注了</Text>}
-            <View style={{ flex: 1 }}/>
             <View style={styles.moneyView}>
                 {
                     data.seckillPrice
@@ -200,12 +199,12 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width
     },
     tab: {
-        height: px2dp(59),
+        height: px2dp(60),
         minWidth: px2dp(60),
         alignItems: 'center'
     },
     tabBar: {
-        height: px2dp(59),
+        height: px2dp(60),
         width: ScreenUtils.width,
         borderWidth: 0
     },
@@ -245,12 +244,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: 'white'
     },
     goodsImage: {
         width: px2dp(120),
         height: px2dp(120),
-        marginTop: px2dp(-1.5),
         borderRadius: px2dp(5),
         marginLeft: px2dp(10),
         justifyContent: 'center',
@@ -281,8 +279,7 @@ const styles = StyleSheet.create({
     moneyView: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: px2dp(2),
+        alignItems: 'flex-end',
         paddingRight: px2dp(5)
     },
     money: {
@@ -307,9 +304,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     buttonTitle: {
-        color: '#fff',
-        fontSize: px2dp(14),
-        marginBottom: px2dp(2)
+        color: 'white',
+        fontSize: px2dp(14)
     },
     buttonWill: {
         width: px2dp(82),
@@ -318,11 +314,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: ScreenUtils.onePixel,
-        borderColor: '#FF0050',
-        marginBottom: px2dp(2)
+        borderColor: DesignRule.mainColor
     },
     buttonWillTitle: {
-        color: '#FF0050',
+        color: DesignRule.mainColor,
         fontSize: px2dp(14)
     },
     disbutton: {
@@ -331,11 +326,10 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(14),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ccc',
-        marginBottom: px2dp(2)
+        backgroundColor: DesignRule.textColor_placeholder
     },
     disbuttonTitle: {
-        color: '#fff',
+        color: 'white',
         fontSize: px2dp(14)
     }
 });
