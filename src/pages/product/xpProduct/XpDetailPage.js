@@ -60,7 +60,7 @@ export class XpDetailPage extends BasePage {
                     this.$navigate('home/search/SearchPage');
                     break;
                 case 2:
-                    this.shareModal.open();
+                    this.shareModal && this.shareModal.open();
                     break;
                 case 4:
                     this.$navigateBackToHome();

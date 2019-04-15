@@ -78,7 +78,7 @@ export default class InvitationToShopPage extends BasePage {
     };
 
     _shareImg = () => {
-        this.shareModal.open();
+        this.shareModal && this.shareModal.open();
     };
 
     _onLayout = ({ nativeEvent }) => {

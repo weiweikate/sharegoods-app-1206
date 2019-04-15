@@ -48,11 +48,11 @@ export default class ShareTaskHomeAlert extends React.Component {
     }
 
     open() {
-        this.shareModal.open();
+        this.shareModal && this.shareModal.open();
     }
 
     close() {
-        this.shareModal.close();
+        this.shareModal && this.shareModal.close();
     }
 
     componentDidMount() {

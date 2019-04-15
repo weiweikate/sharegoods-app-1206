@@ -1,8 +1,10 @@
 package com.meeruu.commonlib.service;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 
@@ -32,8 +34,10 @@ public class InitializeService extends IntentService {
     private int patchStatus;
     private WeakHandler mHandler;
 
-    public InitializeService() {
-        super("InitializeService");
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        startForeground(1, new Notification());
         mHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -49,10 +53,18 @@ public class InitializeService extends IntentService {
         });
     }
 
+    public InitializeService() {
+        super("InitializeService");
+    }
+
     public static void init(Context context) {
         Intent intent = new Intent();
         intent.setClass(context, InitializeService.class);
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
     }
 
     @Override
