@@ -141,8 +141,6 @@ export class LimitGoModules {
         this.currentPage = index;
         homeModule.changeHomeList(homeType.limitGo);
     }
-
-
 }
 
 export const limitGoModule = new LimitGoModules();
