@@ -59,9 +59,12 @@ export default class HomeLimitGoView extends Component {
                             </Text>
                         </LinearGradient>
                         :
-                        <Text style={styles.normalTitle}>
-                            {title}
-                        </Text>
+                        <View style={styles.normal}>
+                            <Text style={styles.normalTitle}>
+                                {title}
+                            </Text>
+                        </View>
+
                 }
             </View>
         </TouchableOpacity>;
@@ -88,7 +91,6 @@ export default class HomeLimitGoView extends Component {
             );
         });
         return (<View>
-            <View style={{ height: px2dp(6) }}/>
             {goodsItems}
         </View>);
     }
@@ -199,12 +201,11 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width
     },
     tab: {
-        height: px2dp(60),
+        height: px2dp(53),
         minWidth: px2dp(60),
         alignItems: 'center'
     },
     tabBar: {
-        height: px2dp(60),
         width: ScreenUtils.width,
         borderWidth: 0
     },
@@ -214,20 +215,28 @@ const styles = StyleSheet.create({
     time: {
         color: '#FC533B',
         fontWeight: '600',
-        fontSize: 16
+        fontSize: px2dp(15)
+
+    },
+    normal: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: px2dp(60),
+        height: px2dp(20),
+        marginTop: px2dp(3),
+        borderRadius: px2dp(10)
     },
     normalTitle: {
         color: '#333',
-        fontSize: px2dp(12),
-        marginTop: px2dp(5)
+        fontSize: px2dp(12)
     },
     active: {
         alignItems: 'center',
         justifyContent: 'center',
         width: px2dp(60),
         height: px2dp(20),
-        borderRadius: px2dp(10),
-        marginTop: px2dp(5)
+        marginTop: px2dp(3),
+        borderRadius: px2dp(10)
     },
     activeTitle: {
         color: '#fff',
@@ -304,7 +313,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     buttonTitle: {
-        color: 'white',
+        color: '#fff',
         fontSize: px2dp(14)
     },
     buttonWill: {
