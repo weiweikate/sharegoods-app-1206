@@ -75,7 +75,8 @@ export default class AssistantListPage extends BasePage {
         spellStatusModel.storeStatus === 1 && SpellShopApi.store_person({ storeCode: spellStatusModel.storeCode }).then((data) => {
             const dataTemp = data.data || {};
             const { showExpand } = dataTemp;
-            if (showExpand) {
+            const { myStore } = this.params.storeData;
+            if (showExpand && myStore) {
                 this.$NavigationBarResetRightTitle('我要扩容');
             }
         });

@@ -25,11 +25,17 @@ export default class PaymentCheckPage extends BasePage {
         this.state = {
             msg: " 支付返回结果等待中..."
         };
+        payment.checking = true;
     }
 
     $navigationBarOptions = {
         title: "支付订单"
     };
+
+    componentWillUnmount(){
+        payment.checking = false;
+
+    }
 
     componentDidMount() {
         this.orderTime = (new Date().getTime()) / 1000;
@@ -70,10 +76,11 @@ export default class PaymentCheckPage extends BasePage {
     _checkStatues = () => {
         let time = (new Date().getTime()) / 1000;
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checking" });
-        if (time - this.orderTime > 15) {
+        if (time - this.orderTime > 5) {
             track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checkOut" });
-            this.$toastShow("支付结果请求超时");
-            this._goToOrder(2);
+            if (payment.checking) {
+                this._goToOrder(1);
+            }
             payment.resetPayment();
             return;
         }
