@@ -93,7 +93,7 @@ export default class PaymentPage extends BasePage {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去出用余额
         let channelAmount = parseFloat(payment.amounts); //需要支付的金额
-        let { fundsTradingNo, oneCoupon, bizType } = payment;
+        let { fundsTradingNo, oneCoupon, bizType,modeType } = payment;
         let detailList = [];
 
         if (channelAmount == 0.00){
@@ -132,7 +132,11 @@ export default class PaymentPage extends BasePage {
             this.setState({ showPwd: false });
             if (parseInt(result.status) === payStatus.payNeedThrid) {
                 payment.selectedBalace = false;
-                this.$navigate("payment/ChannelPage", { remainMoney: (payment.amounts - channelAmount).toFixed(2) });
+                this.$navigate("payment/ChannelPage", {
+                    remainMoney: (payment.amounts - channelAmount).toFixed(2) ,
+                    bizType:bizType,
+                    modeType:modeType
+                });
                 return;
             }
             let replace;
