@@ -163,7 +163,7 @@ export default class ShopRecruitPage extends BasePage {
         }, (item, index) => {
             if (index === 0) {
                 setTimeout(() => {
-                    this.shareModal.open();
+                    this.shareModal && this.shareModal.open();
                 }, 500);
             } else if (index === 1) {
                 // 举报弹框

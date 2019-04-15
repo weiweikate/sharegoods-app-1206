@@ -1,8 +1,10 @@
 package com.meeruu.sharegoods.rn.module;
+
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.SparseArray;
+
 import com.alicom.phonenumberauthsdk.gatewayauth.AlicomAuthHelper;
 import com.alicom.phonenumberauthsdk.gatewayauth.TokenResultListener;
 import com.alicom.phonenumberauthsdk.gatewayauth.model.InitResult;
@@ -35,28 +37,29 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         mAlicomAuthHelper = AlicomAuthHelper.getInstance(reactContext, new TokenResultListener() {
             @Override
             public void onTokenSuccess(String s) {
-                if(authPromise != null){
+                if (authPromise != null) {
                     WritableMap map = Arguments.createMap();
-                    map.putInt("isCanAuthen",1);
-                    map.putInt("resultCode",6666);
-                    map.putString("data",s);
-                    map.putString("phoneNum",mAutInitResult.getSimPhoneNumber());
+                    map.putInt("isCanAuthen", 1);
+                    map.putInt("resultCode", 6666);
+                    map.putString("data", s);
+                    map.putString("phoneNum", mAutInitResult.getSimPhoneNumber());
                     authPromise.resolve(map);
                 }
             }
 
             @Override
             public void onTokenFailed(String s) {
-                if(authPromise != null){
+                if (authPromise != null) {
                     WritableMap map = Arguments.createMap();
-                    map.putInt("isCanAuthen",-1);
-                    map.putString("phoneNum",mAutInitResult.getSimPhoneNumber());
+                    map.putInt("isCanAuthen", -1);
+                    map.putString("phoneNum", mAutInitResult.getSimPhoneNumber());
                     authPromise.resolve(map);
                 }
             }
         });
-            mAutInitResult = mAlicomAuthHelper.init();
+        mAutInitResult = mAlicomAuthHelper.init();
     }
+
     /**
      * 在rn代码里面是需要这个名字来调用该类的方法
      *
@@ -113,8 +116,10 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
             }
         }
     }
+
     public interface PermissionCallback {
         void onPermissionGranted(boolean isRequestUser);
+
         void onPermissionDenied(boolean isRequestUser);
     }
 }

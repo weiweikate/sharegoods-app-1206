@@ -143,7 +143,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
 
     _bottomButtonRender() {
         return (
-            <TouchableWithoutFeedback onPress={() => {this.shareModal.open()}}>
+            <TouchableWithoutFeedback onPress={() => {this.shareModal && this.shareModal.open()}}>
                 <View style={styles.bottomButtonWrapper}>
                     <Text style={styles.bottomButtonTextStyle}>
                         分享我的推广

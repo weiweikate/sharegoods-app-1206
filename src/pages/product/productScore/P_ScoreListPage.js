@@ -177,7 +177,7 @@ export default class P_ScoreListPage extends BasePage {
                         [
                             {
                                 text: '取消', onPress: () => {
-                                    this.shareModal.open();
+                                    this.shareModal && this.shareModal.open();
                                 }
                             },
                             {
@@ -188,7 +188,7 @@ export default class P_ScoreListPage extends BasePage {
                         ]
                     );
                 } else {
-                    this.shareModal.open();
+                    this.shareModal && this.shareModal.open();
                 }
                 break;
             case 'keFu':
@@ -297,7 +297,7 @@ export default class P_ScoreListPage extends BasePage {
                                                this.$navigate('home/search/SearchPage');
                                                break;
                                            case 2:
-                                               this.shareModal.open();
+                                               this.shareModal && this.shareModal.open();
                                                break;
                                            case 4:
                                                this.$navigateBackToHome();

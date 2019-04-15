@@ -107,7 +107,6 @@ export default class HomeLimitGoView extends Component {
             return null;
         }
 
-
         return (
             <View style={[styles.container, { height: limitGoModule.limitHeight }]}>
                 <View style={{ paddingLeft: px2dp(15), marginTop: px2dp(3) }}>
@@ -283,7 +282,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: px2dp(3),
+        marginBottom: px2dp(2),
         paddingRight: px2dp(5)
     },
     money: {
