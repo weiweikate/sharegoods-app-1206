@@ -82,24 +82,24 @@ export default class HomeLimitGoView extends Component {
         const goods = limitGoModule.goodsList[id];
         goods.map((value, index) => {
             goodsItems.push(
-                <TouchableWithoutFeedback key={index} onPress={() => this._goToDetail(value)}>
+                <TouchableWithoutFeedback key={index}
+                                          onPress={() => this._goToDetail(value)}>
                     <View>
                         <GoodsItem key={index} item={value}/>
-                        <View style={{ height: px2dp(10) }}/>
+                        {index === goods.length - 1 ? null : <View style={{ height: px2dp(10) }}/>}
                     </View>
                 </TouchableWithoutFeedback>
             );
         });
-        return (<View>
-            {goodsItems}
-        </View>);
+        return goodsItems.length > 0 ? goodsItems : null;
     }
 
     render() {
         let viewItems = [];
         limitGoModule.timeList.map((value, index) => {
             viewItems.push(
-                <View key={index} tabLabel={value.id}>
+                <View key={index}
+                      tabLabel={value.id}>
                     {this._renderGoodsList(value.id)}
                 </View>
             );
@@ -110,8 +110,8 @@ export default class HomeLimitGoView extends Component {
         }
 
         return (
-            <View style={[styles.container, { height: limitGoModule.limitHeight }]}>
-                <View style={{ paddingLeft: px2dp(15), marginTop: 3 }}>
+            <View style={styles.container}>
+                <View style={{ paddingLeft: px2dp(15) }}>
                     <HomeTitleView title={'限时购'}/>
                 </View>
                 <ScrollableTabView
@@ -198,10 +198,11 @@ const GoodsItemButton = ({ data }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: ScreenUtils.width
+        flex: 1,
+        width: ScreenUtils.width,
+        marginTop: px2dp(3)
     },
     tab: {
-        height: px2dp(53),
         minWidth: px2dp(60),
         alignItems: 'center'
     },
@@ -243,7 +244,8 @@ const styles = StyleSheet.create({
         fontSize: px2dp(12)
     },
     scrollTab: {
-        borderWidth: 0
+        borderWidth: 0,
+        height: px2dp(53)
     },
     goodsItem: {
         marginLeft: px2dp(15),
