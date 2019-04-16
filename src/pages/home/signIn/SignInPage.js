@@ -89,10 +89,10 @@ export default class SignInPage extends BasePage {
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                if(user.token){
+                if (user.token) {
                     this.loadPageData();
-                }else {
-                    if(this.first){
+                } else {
+                    if (this.first) {
                         this.loadPageData();
                         this.first = false;
                     }
@@ -137,7 +137,7 @@ export default class SignInPage extends BasePage {
 
     getSignData = () => {
         let callback = this.loadPageData;
-        HomeAPI.querySignList(null,{callback}).then((data) => {
+        HomeAPI.querySignList(null, { callback }).then((data) => {
             this.setState({
                 signInData: data.data,
                 // loading: false,
@@ -289,7 +289,7 @@ export default class SignInPage extends BasePage {
         let datesView = this.state.signInData.map((item, index) => {
             return (
                 <Text key={'date' + index} style={styles.dateTextStyle}>
-                    {item.signDate.replace('-', '.')}
+                    {item.signDate && item.signDate.replace('-', '.')}
                 </Text>
             );
         });

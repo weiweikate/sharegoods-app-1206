@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 
-import { MRText as Text} from '../../../../components/ui';
+import { MRText as Text } from '../../../../components/ui';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
@@ -25,7 +25,7 @@ import DesignRule from '../../../../constants/DesignRule';
 export default class BankCardPasswordPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
-        title: this.params.title,
+        title: this.params && this.params.title,
         show: true
     };
 
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     contain: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor:DesignRule.bgColor
+        backgroundColor: DesignRule.bgColor
     },
     titleStyle: {
         color: DesignRule.textColor_mainTitle,
