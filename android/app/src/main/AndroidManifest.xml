@@ -63,6 +63,7 @@
         android:name="android.hardware.microphone"
         android:required="false" />
     <uses-feature android:name="android.hardware.wifi.rtt" />
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <supports-screens
         android:anyDensity="true"

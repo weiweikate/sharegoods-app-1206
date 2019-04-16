@@ -63,6 +63,15 @@ public class ParameterUtils {
     public static final int SIGN_OK = 46;  // 工猫签约
     public static final int REQUEST_CODE_GONGMAO = 47;  // 工猫签约
     public static final int REQUEST_CODE_WEBVIEW = 48;
+    public static final int NOTIFY_ID_APP_INIT = 49;
+    /**
+     * 异步初始化通知channnelId
+     */
+    public static final String MR_NOTIFY_CHANNEL_ID = "mr_2";
+    /**
+     * 异步初始化通知channnelName
+     */
+    public static final String MR_NOTIFY_CHANNEL_NAME = "秀购";
     /**
      * 一般图片url宽高
      */
