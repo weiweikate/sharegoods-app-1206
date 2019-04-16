@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.bean.ImageFloderInfo;
 import com.meeruu.sharegoods.ui.adapter.CommonAdapter;

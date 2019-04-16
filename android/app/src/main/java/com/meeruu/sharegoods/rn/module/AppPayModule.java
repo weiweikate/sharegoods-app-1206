@@ -6,13 +6,10 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alipay.sdk.app.PayTask;
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.WritableMap;
-import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.WXPayBean;
 import com.meeruu.sharegoods.event.AppPayEvent;
 import com.meeruu.sharegoods.utils.aipay.PayResult;

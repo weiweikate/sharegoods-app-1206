@@ -92,13 +92,7 @@ export class LimitGoModules {
                     }
 
                     if (diff === 0 && _currentDate >= parseInt(value, 0)) {  //今天，已经结束
-                        title = '已结束';
-                        for (const goodsValue of seckills) {
-                            if (goodsValue.status === limitStatus.doing) {
-                                title = '抢购中';
-                                break;
-                            }
-                        }
+                        title = '抢购中';
                     }
 
                     console.log('loadLimitGo', diff);
