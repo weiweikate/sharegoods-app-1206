@@ -306,7 +306,7 @@ export default class CategorySearchPage extends BasePage {
 
     _sectionHeader = ({ section }) => {
         return (
-            <UIText value={section.title}
+            <UIText value={section && section.title}
                     style={{
                         fontWeight: 'bold',
                         fontSize: 13,
