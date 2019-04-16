@@ -1,15 +1,10 @@
 package com.meeruu.commonlib.config;
 
-import android.content.Context;
-
 import com.meeruu.commonlib.R;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
-import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.YSFOptions;
-import com.qiyukf.unicorn.api.pop.OnShopEventListener;
 
 public class QiyuConfig {
 

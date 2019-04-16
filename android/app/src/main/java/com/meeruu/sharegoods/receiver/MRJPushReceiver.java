@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.meeruu.commonlib.utils.AppUtils;
-import com.request.BuildConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
