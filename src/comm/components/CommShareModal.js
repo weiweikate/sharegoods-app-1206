@@ -365,8 +365,13 @@ export default class CommShareModal extends React.Component {
             }];
         }
 
+        //shareMoney 4.0 - 5.0
         const { shareMoney } = this.props.imageJson || {};
         let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
+        //值相等  不要使用===  0的时候不显示
+        if (shareMoneyText == 0) {
+            shareMoneyText = null;
+        }
 
         return (
             <CommModal onRequestClose={this.close}

@@ -25,7 +25,7 @@ export class LimitGoModules {
 
     @computed get limitHeight() {
         if (this.currentGoodsList && this.currentGoodsList.length > 0) {
-            return px2dp(91) + this.currentGoodsList.length * px2dp(140) + this.currentGoodsList.length * px2dp(10);
+            return px2dp(83) + this.currentGoodsList.length * px2dp(140) + this.currentGoodsList.length * px2dp(10);
         }
         return 0;
     }
@@ -141,8 +141,6 @@ export class LimitGoModules {
         this.currentPage = index;
         homeModule.changeHomeList(homeType.limitGo);
     }
-
-
 }
 
 export const limitGoModule = new LimitGoModules();

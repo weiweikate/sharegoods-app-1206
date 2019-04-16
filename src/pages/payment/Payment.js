@@ -168,9 +168,6 @@ export class Payment {
         paymentTrack.paymentMethod = "alipay";
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "start" });
         try {
-            // Toast.showLoading();
-            // const result = yield PaymentApi.alipay({ platformOrderNo: this.platformOrderNo, tradeNo: this.orderNo });
-            // Toast.hiddenLoading();
             this.isGoToPay = true;
             const resultStr = yield PayUtil.appAliPay(payResult);
             console.log(resultStr);
@@ -230,10 +227,6 @@ export class Payment {
     //检查订单状态
     @action checkPayStatus = flow(function* () {
         try {
-            // const result = yield PaymentApi.payStatus({
-            //     platformOrderNo: this.platformOrderNo,
-            //     payMethodCode: this.selctedPayType === paymentType.alipay ? "alipay" : "wxpay"
-            // });
             const result = yield PaymentApi.payStatus({
                 fundsTradingNo: this.fundsTradingNo,
                 bizType: this.bizType,

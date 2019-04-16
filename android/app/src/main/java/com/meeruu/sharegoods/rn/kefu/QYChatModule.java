@@ -146,8 +146,13 @@ public class QYChatModule extends ReactContextBaseJavaModule {
     public void beginQYChat(ReadableMap params) {
         String title = "";
         if (params.hasKey("shopId")) {
-            if (params.hasKey("title")) {
-                title = params.getString("title");
+            String shopId = params.getString("shopId");
+            if (TextUtils.isEmpty(shopId)) {
+                title = "平台客服";
+            } else {
+                if (params.hasKey("title")) {
+                    title = params.getString("title");
+                }
             }
         } else {
             title = "平台客服";
