@@ -21,7 +21,8 @@ android {
         applicationId rootProject.ext.android.applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 1202022
+        
+        versionCode 1202024
         versionName "1.2.2.24"
         ndk {
             abiFilters "armeabi-v7a", "x86"
