@@ -27,7 +27,7 @@ class HomeModule {
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode;
         if (linkType === homeLinkType.page) {
-            return linkTypeCode.replace(/[\n]/g, '').trim();
+            return linkTypeCode ? linkTypeCode.replace(/[\n]/g, '').trim() : '';
         } else if (linkType === homeLinkType.nothing) {
             return;
         } else {

@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.qiyukf.unicorn.R;
 import com.meeruu.qiyu.ScreenUtils;
 import com.meeruu.qiyu.StatusBarUtils;
 import com.qiyukf.nim.uikit.common.media.picker.activity.PreviewImageFromCameraActivity;
+import com.qiyukf.unicorn.R;
 
 public class QiyuPreviewImageFromCameraActivity extends PreviewImageFromCameraActivity {
 

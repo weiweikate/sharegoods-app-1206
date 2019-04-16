@@ -33,7 +33,6 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
-import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.permissions.Permission;
 import com.meeruu.permissions.PermissionUtil;
 import com.meeruu.sharegoods.R;

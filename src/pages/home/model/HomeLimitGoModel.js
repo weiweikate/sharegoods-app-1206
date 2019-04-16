@@ -25,7 +25,7 @@ export class LimitGoModules {
 
     @computed get limitHeight() {
         if (this.currentGoodsList && this.currentGoodsList.length > 0) {
-            return px2dp(91) + this.currentGoodsList.length * px2dp(140) + this.currentGoodsList.length * px2dp(10);
+            return px2dp(98) + this.currentGoodsList.length * px2dp(140) + (this.currentGoodsList.length - 1) * px2dp(10) + 0.8;
         }
         return 0;
     }
@@ -92,13 +92,7 @@ export class LimitGoModules {
                     }
 
                     if (diff === 0 && _currentDate >= parseInt(value, 0)) {  //今天，已经结束
-                        title = '已结束';
-                        for (const goodsValue of seckills) {
-                            if (goodsValue.status === limitStatus.doing) {
-                                title = '抢购中';
-                                break;
-                            }
-                        }
+                        title = '抢购中';
                     }
 
                     console.log('loadLimitGo', diff);
