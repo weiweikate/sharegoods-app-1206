@@ -25,7 +25,7 @@ export class LimitGoModules {
 
     @computed get limitHeight() {
         if (this.currentGoodsList && this.currentGoodsList.length > 0) {
-            return px2dp(83) + this.currentGoodsList.length * px2dp(140) + this.currentGoodsList.length * px2dp(10);
+            return px2dp(98) + this.currentGoodsList.length * px2dp(140) + (this.currentGoodsList.length - 1) * px2dp(10) + 0.8;
         }
         return 0;
     }
