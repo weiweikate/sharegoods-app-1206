@@ -2,7 +2,6 @@ package com.meeruu.sharegoods;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.webkit.WebView;
 
