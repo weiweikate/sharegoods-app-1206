@@ -59,9 +59,12 @@ export default class HomeLimitGoView extends Component {
                             </Text>
                         </LinearGradient>
                         :
-                        <Text style={styles.normalTitle}>
-                            {title}
-                        </Text>
+                        <View style={styles.normal}>
+                            <Text style={styles.normalTitle}>
+                                {title}
+                            </Text>
+                        </View>
+
                 }
             </View>
         </TouchableOpacity>;
@@ -79,25 +82,24 @@ export default class HomeLimitGoView extends Component {
         const goods = limitGoModule.goodsList[id];
         goods.map((value, index) => {
             goodsItems.push(
-                <TouchableWithoutFeedback key={index} onPress={() => this._goToDetail(value)}>
+                <TouchableWithoutFeedback key={index}
+                                          onPress={() => this._goToDetail(value)}>
                     <View>
                         <GoodsItem key={index} item={value}/>
-                        <View style={{ height: px2dp(10) }}/>
+                        {index === goods.length - 1 ? null : <View style={{ height: px2dp(10) }}/>}
                     </View>
                 </TouchableWithoutFeedback>
             );
         });
-        return (<View>
-            <View style={{ height: px2dp(10) }}/>
-            {goodsItems}
-        </View>);
+        return goodsItems.length > 0 ? goodsItems : null;
     }
 
     render() {
         let viewItems = [];
         limitGoModule.timeList.map((value, index) => {
             viewItems.push(
-                <View key={index} tabLabel={value.id}>
+                <View key={index}
+                      tabLabel={value.id}>
                     {this._renderGoodsList(value.id)}
                 </View>
             );
@@ -108,8 +110,8 @@ export default class HomeLimitGoView extends Component {
         }
 
         return (
-            <View style={[styles.container, { height: limitGoModule.limitHeight }]}>
-                <View style={{ paddingLeft: px2dp(15), marginTop: px2dp(3) }}>
+            <View style={styles.container}>
+                <View style={{ paddingLeft: px2dp(15) }}>
                     <HomeTitleView title={'限时购'}/>
                 </View>
                 <ScrollableTabView
@@ -149,9 +151,8 @@ const GoodsItem = (item) => {
         </ImageLoader>
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={2}>{data.productName}</Text>
-            <Text style={styles.text}>{data.secondName}</Text>
+            <Text style={styles.text} numberOfLines={1}>{data.secondName}</Text>
             {data.status === limitStatus.doing ? null : <Text style={styles.text}>已有{data.subscribeCount}人关注了</Text>}
-            <View style={{ flex: 1 }}/>
             <View style={styles.moneyView}>
                 {
                     data.seckillPrice
@@ -197,15 +198,15 @@ const GoodsItemButton = ({ data }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: ScreenUtils.width
+        flex: 1,
+        width: ScreenUtils.width,
+        marginTop: px2dp(3)
     },
     tab: {
-        height: px2dp(59),
         minWidth: px2dp(60),
         alignItems: 'center'
     },
     tabBar: {
-        height: px2dp(59),
         width: ScreenUtils.width,
         borderWidth: 0
     },
@@ -215,27 +216,36 @@ const styles = StyleSheet.create({
     time: {
         color: '#FC533B',
         fontWeight: '600',
-        fontSize: 16
+        fontSize: px2dp(15)
+
+    },
+    normal: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: px2dp(60),
+        height: px2dp(20),
+        marginTop: px2dp(3),
+        borderRadius: px2dp(10)
     },
     normalTitle: {
         color: '#333',
-        fontSize: px2dp(12),
-        marginTop: px2dp(5)
+        fontSize: px2dp(12)
     },
     active: {
         alignItems: 'center',
         justifyContent: 'center',
         width: px2dp(60),
         height: px2dp(20),
-        borderRadius: px2dp(10),
-        marginTop: px2dp(5)
+        marginTop: px2dp(3),
+        borderRadius: px2dp(10)
     },
     activeTitle: {
         color: '#fff',
         fontSize: px2dp(12)
     },
     scrollTab: {
-        borderWidth: 0
+        borderWidth: 0,
+        height: px2dp(53)
     },
     goodsItem: {
         marginLeft: px2dp(15),
@@ -245,12 +255,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: 'white'
     },
     goodsImage: {
         width: px2dp(120),
         height: px2dp(120),
-        marginTop: px2dp(-1.5),
         borderRadius: px2dp(5),
         marginLeft: px2dp(10),
         justifyContent: 'center',
@@ -281,8 +290,7 @@ const styles = StyleSheet.create({
     moneyView: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: px2dp(2),
+        alignItems: 'flex-end',
         paddingRight: px2dp(5)
     },
     money: {
@@ -308,8 +316,7 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: '#fff',
-        fontSize: px2dp(14),
-        marginBottom: px2dp(2)
+        fontSize: px2dp(14)
     },
     buttonWill: {
         width: px2dp(82),
@@ -318,11 +325,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: ScreenUtils.onePixel,
-        borderColor: '#FF0050',
-        marginBottom: px2dp(2)
+        borderColor: DesignRule.mainColor
     },
     buttonWillTitle: {
-        color: '#FF0050',
+        color: DesignRule.mainColor,
         fontSize: px2dp(14)
     },
     disbutton: {
@@ -331,11 +337,10 @@ const styles = StyleSheet.create({
         borderRadius: px2dp(14),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ccc',
-        marginBottom: px2dp(2)
+        backgroundColor: DesignRule.textColor_placeholder
     },
     disbuttonTitle: {
-        color: '#fff',
+        color: 'white',
         fontSize: px2dp(14)
     }
 });

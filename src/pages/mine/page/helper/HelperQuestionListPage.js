@@ -10,8 +10,9 @@ import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
-import {MRText as Text,NoMoreClick} from '../../../../components/ui'
-const arrow_right =  res.button.arrow_right_black;
+import { MRText as Text, NoMoreClick } from '../../../../components/ui';
+
+const arrow_right = res.button.arrow_right_black;
 
 /**
  * @author chenxiang
@@ -41,9 +42,9 @@ export default class HelperQuestionListPage extends BasePage {
                 arr.push(
                     <View key={i} style={{ width: ScreenUtils.width, height: 48 }}>
                         <NoMoreClick style={styles.containerStyles}
-                                          onPress={() => this.orderMenuJump(this.params.list[i].id)}>
+                                     onPress={() => this.orderMenuJump(this.params.list[i].id)}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <UIText value={this.params.list[i].title}
+                                <UIText value={this.params.list[i] && this.params.list[i].title}
                                         style={[styles.blackText, { marginLeft: 5 }]}/>
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>

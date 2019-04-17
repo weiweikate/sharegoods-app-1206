@@ -60,6 +60,8 @@ export default class ChannelPage extends BasePage {
         //将type给payment 做存储
         payment.bizType = this.params.bizType || 0;
         payment.modeType = this.params.modeType || 0;
+
+        this.canShowAlter = true;
     }
 
     componentDidMount() {
@@ -171,19 +173,18 @@ export default class ChannelPage extends BasePage {
         if (this.state.orderChecking === true) {
             return;
         }
-        if (Platform.OS === "ios" && payment.isGoToPay === false) {
+        if (payment.isGoToPay === false) {
             return;
         }
-        if (payment.platformOrderNo && selctedPayType !== paymentType.none) {
-            if (Platform.OS === "ios") {
-                payment.isGoToPay = false;
-            }
-
+        if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {
+            this.canShowAlter = false;
+            payment.isGoToPay = false;
             Alert.alert(
                 "请确认支付是否已经完成",
                 "",
                 [{
                     text: "重新支付", onPress: () => {
+                        this.canShowAlter = true;
                     }
                 },
                     {
