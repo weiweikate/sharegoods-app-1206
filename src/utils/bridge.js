@@ -118,7 +118,7 @@ export default {
     }) {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
     },
-    saveInviteFriendsImage(QRString, logoStr,onSuccess, onError = (errorStr) => {
+    saveInviteFriendsImage(QRString, logoStr, onSuccess, onError = (errorStr) => {
     }) {
         NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString, logoStr, onSuccess, onError);
     },
@@ -178,9 +178,9 @@ export default {
     setCookies: (data) => {
         // setCookieToken(data.token,'172.16.10.117');
         // setCookies("userData", {id: data.id},'172.16.10.117');
-        let host = apiEnvironment.getCurrentH5Url();
-        host = host.replace(/(http)s?(:\/\/)/g, "");
-        host = host.replace(/\/\w*/g, "")
+        let host = apiEnvironment.getCurrentH5Url() || '';
+        host = host.replace(/(http)s?(:\/\/)/g, '');
+        host = host.replace(/\/\w*/g, '');
         setCookieToken(data.token, host);
         setCookies('userData', { userCode: data.code }, host);
         // alert(data.token + host + data.code);
@@ -188,10 +188,10 @@ export default {
     clearCookies: () => {
 
         clearCookies();
-        let data ={userData: {}, token: ''};
-        let host = apiEnvironment.getCurrentH5Url();
-        host = host.replace(/(http)s?(:\/\/)/g, "");
-        host = host.replace(/\/\w*/g, "")
+        let data = { userData: {}, token: '' };
+        let host = apiEnvironment.getCurrentH5Url() || '';
+        host = host.replace(/(http)s?(:\/\/)/g, '');
+        host = host.replace(/\/\w*/g, '');
         setCookieToken(data.token, host);
         setCookies('userData', { userCode: data.code }, host);
     },
@@ -204,8 +204,8 @@ export default {
     setLightMode: () => {
         NativeModules.commModule.setLightMode();
     },
-     isApkExist: (version) => {
+    isApkExist: (version) => {
         return NativeModules.commModule.apkExist(version);
     },
-    getAPKChannel:NativeModules.commModule.getAPKChannel
+    getAPKChannel: NativeModules.commModule.getAPKChannel
 };

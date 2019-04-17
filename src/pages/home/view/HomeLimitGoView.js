@@ -151,7 +151,7 @@ const GoodsItem = (item) => {
         </ImageLoader>
         <View style={styles.goodsContent}>
             <Text style={styles.goodsTitle} numberOfLines={2}>{data.productName}</Text>
-            <Text style={styles.text}>{data.secondName}</Text>
+            <Text style={styles.text} numberOfLines={1}>{data.secondName}</Text>
             {data.status === limitStatus.doing ? null : <Text style={styles.text}>已有{data.subscribeCount}人关注了</Text>}
             <View style={styles.moneyView}>
                 {

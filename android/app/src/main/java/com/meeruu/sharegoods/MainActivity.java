@@ -156,8 +156,10 @@ public class MainActivity extends BaseActivity {
             params.height = (ScreenUtils.getScreenWidth() * 7) / 5;
             ivAdv.setLayoutParams(params);
             ImageLoadUtils.loadNetImage(imgUrl, iv_adv_bg);
-            ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
-                    ScalingUtils.ScaleType.FIT_CENTER);
+            if (!TextUtils.isEmpty(url)) {
+                ImageLoadUtils.loadScaleTypeNetImage(url, ivAdv,
+                        ScalingUtils.ScaleType.FIT_CENTER);
+            }
             findViewById(R.id.iv_splash).setVisibility(View.GONE);
             initAdvEvent();
             startTimer();

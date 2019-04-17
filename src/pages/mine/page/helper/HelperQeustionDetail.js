@@ -8,7 +8,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
 import MineApi from '../../api/MineApi';
 import DesignRule from '../../../../constants/DesignRule';
-import {MRText as Text,NoMoreClick} from '../../../../components/ui'
+import { MRText as Text, NoMoreClick } from '../../../../components/ui';
+
 /**
  * @author chenxiang
  * @date on 2018/9/21
@@ -35,10 +36,11 @@ export default class HelperQuestionDetail extends BasePage {
 
     componentDidMount() {
         MineApi.findHelpQuestionById({ id: this.params.id }).then(res => {
+            let data = res.data || {};
             this.setState({
-                title: res.data.title,
-                content: res.data.content,
-                type: res.data.type
+                title: data.title,
+                content: data.content,
+                type: data.type
             });
         }).catch(err => {
             console.log(err);
@@ -48,15 +50,18 @@ export default class HelperQuestionDetail extends BasePage {
 
     _render() {
         return (
-            <View  style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
-            <ScrollView  style={{marginBottom:209}}>
-                {this.state.content ? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
-                                            containerStyle={{ backgroundColor: DesignRule.bgColor ,padding:5}}/> : null}
-            </ScrollView>
+            <View style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
+                <ScrollView style={{ marginBottom: 209 }}>
+                    {this.state.content ? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
+                                                containerStyle={{
+                                                    backgroundColor: DesignRule.bgColor,
+                                                    padding: 5
+                                                }}/> : null}
+                </ScrollView>
                 <View style={{
                     width: ScreenUtils.width,
                     height: 80,
-                    position:'absolute',
+                    position: 'absolute',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     bottom: 109,
@@ -76,7 +81,8 @@ export default class HelperQuestionDetail extends BasePage {
                         <Text style={{
                             fontSize: 16,
                             color: this.state.type === null || this.state.type === 1 ? DesignRule.mainColor : 'white'
-                        }} allowFontScaling={false}>{`没啥帮助?  (${this.state.noHelpNum > 9999 ? '9999+' : this.state.noHelpNum})`}</Text>
+                        }}
+                              allowFontScaling={false}>{`没啥帮助?  (${this.state.noHelpNum > 9999 ? '9999+' : this.state.noHelpNum})`}</Text>
                     </NoMoreClick>
                     <NoMoreClick activeOpacity={0.6} onPress={() => this.feedbackGoodUse()} style={{
                         width: 140,
@@ -91,7 +97,8 @@ export default class HelperQuestionDetail extends BasePage {
                         <Text style={{
                             fontSize: 16,
                             color: this.state.type === null || this.state.type === 0 ? DesignRule.mainColor : 'white'
-                        }} allowFontScaling={false}>{`有用  (${this.state.useHelpNum > 9999 ? '9999+' : this.state.useHelpNum})`}</Text>
+                        }}
+                              allowFontScaling={false}>{`有用  (${this.state.useHelpNum > 9999 ? '9999+' : this.state.useHelpNum})`}</Text>
                     </NoMoreClick>
                 </View>
             </View>
@@ -117,7 +124,7 @@ export default class HelperQuestionDetail extends BasePage {
             this.loadPageData();
         }).catch(err => {
             if (err.code === 10009) {
-                this.gotoLoginPage()
+                this.gotoLoginPage();
             }
         });
     }
