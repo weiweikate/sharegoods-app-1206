@@ -30,7 +30,7 @@ class AfterSaleDetailModel {
         this.loadingShow && this.loadingShow();
         orderApi.afterSaleDetail({serviceNo: this.serviceNo}).then(result => {
             this.loadingDismiss && this.loadingDismiss();
-            this.pageData = result.data;
+            this.pageData = result.data || {};
             let status = this.pageData.status;
             let subStatus = this.pageData.subStatus;
             let refundStatus = this.pageData.refundStatus;
@@ -134,7 +134,11 @@ class AfterSaleDetailModel {
                         this.detailTitle = '等待平台确认收货';
                     }else if(status === 4)   {
                         this.headerTitle = '售后处理中';
-                        this.detailTitle = '平台已安排发货';
+                        if (this.pageData.sendExpressNo){
+                            this.detailTitle = '平台已安排发货';
+                        }else {
+                            this.detailTitle = '等待平台发货';
+                        }
                     }else if(status === 5)   {
                         this.headerTitle = '售后完成';
                         this.detailTitle = '换货成功';

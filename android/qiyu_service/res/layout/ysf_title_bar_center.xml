@@ -20,7 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:contentDescription="@null"
-            android:scaleType="centerInside"
+            android:paddingLeft="10dp"
+            android:scaleType="center"
             android:src="@drawable/ysf_title_bar_back_icon" />
     </LinearLayout>
 
@@ -29,9 +30,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:gravity="center_vertical"
         android:layout_marginLeft="4dp"
         android:ellipsize="end"
+        android:gravity="center_vertical"
         android:maxEms="9"
         android:maxLines="1"
         android:textColor="@color/ysf_title_bar_title_color"

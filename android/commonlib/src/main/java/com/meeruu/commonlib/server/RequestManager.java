@@ -1,6 +1,7 @@
 package com.meeruu.commonlib.server;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.bean.ResponseInfo;
 import com.meeruu.commonlib.callback.BaseCallback;
@@ -59,7 +60,7 @@ public class RequestManager {
     private static final MediaType MEDIA_OBJECT_STREAM = MediaType.parse("multipart/form-data");//mdiatype 这个需要和服务端保持一致
 
     private RequestManager() {
-        File cache_file = SDCardUtils.getFileDirPath("MR" + File.separator + "cache");
+        File cache_file = SDCardUtils.getFileDirPath(BaseApplication.appContext, "MR" + File.separator + "cache");
         int cache_size = 150 * 1024 * 1024;
         Cache cache = new Cache(cache_file, cache_size);
         OkHttpClient.Builder ClientBuilder = new OkHttpClient.Builder();
@@ -119,7 +120,7 @@ public class RequestManager {
      */
     private static RequestBody setRequestBody(Map<String, String> BodyParams) {
         RequestBody body = null;
-        okhttp3.FormBody.Builder formEncodingBuilder = new okhttp3.FormBody.Builder();
+        JSONObject params = new JSONObject();
         if (BodyParams != null) {
             Iterator<String> iterator = BodyParams.keySet().iterator();
             String key = "";
@@ -127,11 +128,12 @@ public class RequestManager {
                 key = iterator.next().toString();
                 LogUtils.d("post_Params===" + key + "====", BodyParams.get(key) + "====");
                 if (BodyParams.get(key) != null) {
-                    formEncodingBuilder.add(key, BodyParams.get(key));
+                    params.put(key, BodyParams.get(key));
                 }
             }
         }
-        body = formEncodingBuilder.build();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        body = RequestBody.create(JSON, params.toJSONString());
         return body;
     }
 

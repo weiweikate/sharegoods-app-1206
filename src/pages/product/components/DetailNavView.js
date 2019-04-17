@@ -71,7 +71,7 @@ export default class DetailNavView extends Component {
                             width: 38,
                             height: 38,
                             borderColor: DesignRule.color_ddd,
-                            borderWidth: 1
+                            borderWidth: 1, overflow: 'hidden'
                         }}/> : null}
                 </View>
                 <View style={styles.rightBarItemContainer}>

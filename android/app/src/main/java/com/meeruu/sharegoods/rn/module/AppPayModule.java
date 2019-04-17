@@ -6,13 +6,10 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alipay.sdk.app.PayTask;
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.WritableMap;
-import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.WXPayBean;
 import com.meeruu.sharegoods.event.AppPayEvent;
 import com.meeruu.sharegoods.utils.aipay.PayResult;
@@ -121,9 +118,9 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                 PayTask alipay = new PayTask(getCurrentActivity());
                 // 调用支付接口，获取支付结果
                 String result = alipay.pay(str, true);
-                Message msg = new Message();
+                Message msg = Message.obtain();
                 msg.what = SDK_PAY_FLAG;
-                msg.obj = result;
+                msg.obj = TextUtils.isEmpty(result) ? "" : result;
                 mHandler.sendMessage(msg);
             }
         };
@@ -136,12 +133,12 @@ public class AppPayModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void appWXPay(final String params1, final Promise promise) {
         wxPayPromise = promise;
-        if(!api.isWXAppInstalled()){
+        if (!api.isWXAppInstalled()) {
             //未安装的处理
             Map map = new HashMap();
-            map.put("code",4);
-            map.put("sdkCode",4);
-            map.put("msg","请安装微信后完成支付");
+            map.put("code", 4);
+            map.put("sdkCode", 4);
+            map.put("msg", "请安装微信后完成支付");
             String json = JSON.toJSONString(map);
             wxPayPromise.resolve(json);
             return;

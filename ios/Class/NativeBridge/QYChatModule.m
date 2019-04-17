@@ -23,10 +23,4 @@ RCT_EXPORT_METHOD(qiYULogout){
     [[JRServiceManager sharedInstance]qiYULogout];
   });
 }
-
-//RCT_EXPORT_METHOD(startServiceWithGroupId:(int64_t)groupId andStaffId:(int64_t)staffId andTitle:(NSString *)title){
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//          [[JRServiceManager sharedInstance]startServiceWithGroupId:groupId andStaffId:staffId andTitle:title];
-//        });
-//}
 @end

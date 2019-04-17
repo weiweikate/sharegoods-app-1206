@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Image, Platform, Keyboard} from 're
 import PasswordInput from '../../components/ui/PasswordInput'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import res from './res';
 import {MRText as Text} from '../../components/ui'
 import Modal from '../../comm/components/CommModal'
@@ -181,13 +181,15 @@ const styles = StyleSheet.create({
     },
     forget: {
         height: px2dp(46),
-        alignItems: 'flex-end',
-        justifyContent: 'center',
+        width:px2dp(70),
+        alignSelf: 'flex-end',
+        justifyContent:'center',
         marginRight: px2dp(15)
     },
     forgetText: {
         color: '#00A7F5',
-        fontSize: px2dp(12)
+        fontSize: px2dp(12),
+        textAlign:'right'
     },
     msgView: {
         height: px2dp(49),

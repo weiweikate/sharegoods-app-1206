@@ -22,7 +22,7 @@ export default class SelectionAmountView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amount: props.type === 'after' ? this.props.afterAmount : 1//after退换货
+            amount: props.type === 'after' ? this.props.afterAmount : this.props.amount//after退换货
         };
     }
 

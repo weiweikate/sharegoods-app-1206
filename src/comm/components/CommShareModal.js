@@ -34,8 +34,8 @@
     url: '',
     methods: 'GET',
     params: {}
-    luckyDraw: bool, //ture 分享成功后是否调用增加抽奖码的接口
 }
+ luckyDraw: bool, //ture 分享成功后是否调用增加抽奖码的接口
  trackParmas={}埋点
  trackEvent= ''
  gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
@@ -130,9 +130,9 @@ export default class CommShareModal extends React.Component {
         //         duration: 500
         //     }
         // ).start();
-        if (this.props.type !== 'Image') {
-            this.showImage();
-        }
+        // if (this.props.type !== 'Image') {
+        //     this.showImage();
+        // }
     }
 
     /**
@@ -163,7 +163,8 @@ export default class CommShareModal extends React.Component {
                     });
                 }
             } else {//已经有图片就直接展示
-                this.startAnimated();
+                 this.changeShareType(0);
+                 this.startAnimated();
             }
         }
     }
@@ -219,8 +220,8 @@ export default class CommShareModal extends React.Component {
         }
         if (this.props.trackEvent) {
             let p = this.props.trackParmas || {};
-            let shareMethod = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][platformType];
-            track(this.props.trackEvent, { shareMethod, ...p });
+            let shareType = [TrackShareType.wx, TrackShareType.wxTimeline, TrackShareType.qq, TrackShareType.qqSpace, TrackShareType.weibo][platformType];
+            track(this.props.trackEvent, { shareType, ...p });
         }
         bridge.share(params, () => {
             if (user.isLogin && that.props.luckyDraw === true) {
@@ -259,7 +260,7 @@ export default class CommShareModal extends React.Component {
 
     saveImage(path) {
         if (this.props.trackEvent) {
-            track(this.props.trackEvent, { shareMethod: TrackShareType.saveImage, ...this.props.trackParmas });
+            track(this.props.trackEvent, { shareType: TrackShareType.saveImage, ...this.props.trackParmas });
         }
         bridge.saveImage(path);
         this.close();
@@ -267,7 +268,7 @@ export default class CommShareModal extends React.Component {
 
     copyUrl() {
         if (this.props.trackEvent) {
-            track(this.props.trackEvent, { shareMethod: TrackShareType.copyLink, ...this.props.trackParmas });
+            track(this.props.trackEvent, { shareType: TrackShareType.copyLink, ...this.props.trackParmas });
         }
         Clipboard.setString(this.props.webJson.linkUrl);
         NativeModules.commModule.toast('复制链接成功');
@@ -364,8 +365,13 @@ export default class CommShareModal extends React.Component {
             }];
         }
 
+        //shareMoney 4.0 - 5.0
         const { shareMoney } = this.props.imageJson || {};
         let shareMoneyText = (shareMoney && shareMoney !== '?') ? `${shareMoney.split('-').shift()}` : '';
+        //值相等  不要使用===  0的时候不显示
+        if (shareMoneyText == 0) {
+            shareMoneyText = null;
+        }
 
         return (
             <CommModal onRequestClose={this.close}

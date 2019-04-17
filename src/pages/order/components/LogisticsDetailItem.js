@@ -26,12 +26,12 @@ const LogisticsDetailItem = props => {
                 <View style={{
                     width: 1,
                     backgroundColor: DesignRule.color_ddd,
-                    marginTop: isTop ? px2dp(26) : px2dp(-19)
+                    marginTop: isTop ? px2dp(32) : px2dp(-19)
                 }}/> :
                 <View style={{
                     width: 1,
                     backgroundColor: DesignRule.color_ddd,
-                    marginTop: isTop ? px2dp(26) : px2dp(-19),
+                    marginTop: isTop ? px2dp(26) : px2dp(-13),
                     height: px2dp(45)
                 }}/>
         );

@@ -33,7 +33,7 @@ export default class SelectionHeaderView extends Component {
     }
 
     render() {
-        const { imgUrl, minPrice } = this.props.product || {};
+        const { imgUrl, minPrice, stockSysConfig } = this.props.product || {};
         let price = minPrice || '';
         let stock = 0;
         let stockUnit = '';
@@ -46,10 +46,17 @@ export default class SelectionHeaderView extends Component {
             specImg = item.specImg;
             price = item.price;
         });
-
+        let goodsNumberText;
+        for (let item of (stockSysConfig || [])) {
+            const tempArr = item.value.split('★');
+            if (parseFloat(stock) >= parseFloat(tempArr[0])) {
+                goodsNumberText = tempArr[1];
+                break;
+            }
+        }
         let selectStrListTemp = this.props.selectStrList.filter((item) => {
             return !StringUtils.isEmpty(item);
-        });
+        }) || [];
 
         return (
             <View style={{ backgroundColor: 'transparent' }}>
@@ -66,7 +73,7 @@ export default class SelectionHeaderView extends Component {
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 13,
                                 marginTop: 6
-                            }} allowFontScaling={false}>{`库存${stock}${stockUnit || ''}`}</Text>
+                            }}>库存{goodsNumberText || `${stock}${stockUnit || ''}`}</Text>
                         <Text style={{
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13,

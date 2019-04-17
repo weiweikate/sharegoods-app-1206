@@ -39,6 +39,7 @@ export default class OldPayPwdPage extends BasePage {
     _onext = (pwd) => {
         const { oldPwd } = this.props.navigation.state.params;
         if (StringUtils.isEmpty(oldPwd)) {
+            this.paw.clean()
             // 判断密码是否正确，正确则跳转到新页面输入新密码
             MineAPI.judgeSalesPassword({
                 newPassword: pwd,

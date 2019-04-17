@@ -12,14 +12,14 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-// import userOrderNum from '../../../model/userOrderNum';
+// import userOrderNum from '../../../manager/userOrderNum';
 import DesignRule from '../../../constants/DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
 import {
     MRText as Text
 } from '../../../components/ui';
-// import user from '../../../model/user';
+// import user from '../../../manager/user';
 import RouterMap from '../../../navigation/RouterMap';
 import { payStatus, payment, payStatusMsg } from '../../payment/Payment';
 import { NavigationActions } from 'react-navigation';
@@ -56,10 +56,13 @@ export default class MyOrdersListView extends Component {
             <GoodsListItem
                 orderNum={item.orderNo}
                 orderStatus={item.orderStatus}
+                warehouseType={item.warehouseType}
+                subStatus={item.subStatus}
                 orderProduct={item.orderProduct}
                 shutOffTime={item.cancelTime}
                 totalPrice={item.totalPrice}
                 quantity={item.quantity}
+                orderCreateTime={item.createTime}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
@@ -173,7 +176,8 @@ export default class MyOrdersListView extends Component {
                 status: item.status,
                 orderType: item.subStatus,
                 prodCode: item.prodCode,
-                skuCode: item.skuCode
+                skuCode: item.skuCode,
+                activityCodes:item.activityCodes
             });
         });
         return arrData;
@@ -193,7 +197,8 @@ export default class MyOrdersListView extends Component {
                     status: item.status,
                     orderType: item.subStatus,
                     prodCode: item.prodCode,
-                    skuCode: item.skuCode
+                    skuCode: item.skuCode,
+                    activityCodes:item.activityCodes
                 });
             });
         });
@@ -209,9 +214,12 @@ export default class MyOrdersListView extends Component {
                         orderNo: item.platformOrderNo,
                         quantity: item.quantity,
                         orderStatus: 1,
+                        subStatus:item.warehouseOrderDTOList[0].subStatus,
+                        warehouseType:item.warehouseOrderDTOList[0].warehouseType,
                         totalPrice: item.payAmount,
                         nowTime: item.nowTime,
                         cancelTime: item.warehouseOrderDTOList[0].cancelTime,
+                        createTime: item.warehouseOrderDTOList[0].createTime,
                         outTradeNo: item.warehouseOrderDTOList[0].outTradeNo,
                         orderAmount: item.orderAmount,
                         commentStatus: item.commentStatus,
@@ -224,9 +232,12 @@ export default class MyOrdersListView extends Component {
                             orderProduct: this.getOrderProduct(resp.products),
                             orderNo: resp.warehouseOrderNo,
                             cancelTime: resp.cancelTime,
+                            createTime: resp.createTime,
                             quantity: this.totalAmount(resp.products),
                             orderType: resp.subStatus,
                             orderStatus: resp.status,
+                            subStatus:item.warehouseOrderDTOList[0].subStatus,
+                            warehouseType:item.warehouseOrderDTOList[0].warehouseType,
                             totalPrice: resp.payAmount,
                             expList: resp.expList || [],
                             nowTime: resp.nowTime,
@@ -426,7 +437,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 6:
                 console.log(data);
-                let content = `是否确认收货?`;
+                let content = `确定收到货了吗?`;
                 data.orderProduct.map((value) => {
                     if (value.status < 3) {
                         content = '您还有商品未发货，确认收货吗？';
@@ -538,8 +549,11 @@ export default class MyOrdersListView extends Component {
     async _goToPay(index) {
         let payData = this.state.viewData[index];
         const { platformOrderNo, orderNo, totalPrice, orderProduct } = payData;
+        const {productName} = orderProduct;
         console.log('_goToPay', payData);
-        let result = await payment.checkOrderStatus(platformOrderNo);
+        //从订单发起的都是普通支付
+        let result = await payment.checkOrderStatus(platformOrderNo,0,0,totalPrice,productName);
+        // return;
         if (result.code === payStatus.payNo) {
             this.props.nav('payment/PaymentPage', {
                 orderNum: orderNo,
@@ -549,7 +563,7 @@ export default class MyOrdersListView extends Component {
             });
         } else if (result.code === payStatus.payNeedThrid) {
             this.props.nav('payment/ChannelPage', {
-                remainMoney: Math.floor(result.thirdPayAmount * 100) / 100,
+                remainMoney: Math.floor(result.unpaidAmount * 100) / 100,
                 orderNum: orderNo,
                 platformOrderNo: platformOrderNo,
                 orderProductList: orderProduct
@@ -563,7 +577,7 @@ export default class MyOrdersListView extends Component {
             });
             this.props.navigation.dispatch(replace);
         } else {
-            Toast.$toast(payStatusMsg[result.code]);
+            Toast.$toast(payStatusMsg[result.code] || '系统处理失败');
         }
     }
 }

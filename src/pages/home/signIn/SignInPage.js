@@ -16,8 +16,9 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import SignInCircleView from './components/SignInCircleView';
 
 const { px2dp } = ScreenUtils;
-
+import ImageLoader from '@mr/image-placeholder';
 import HomeAPI from '../api/HomeAPI';
+import { homeType } from '../HomeTypes';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
 import { observer } from 'mobx-react/native';
@@ -27,26 +28,31 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { track, TrackApi, trackEvent } from '../../../utils/SensorsTrack';
-// import {track,trackEvent}from '../../../utils/SensorsTrack'
 
 import { MRText as Text } from '../../../components/ui';
+import CommModal from '../../../comm/components/CommModal';
+import { homeModule } from '../model/Modules';
 
 const {
     sign_in_bg: signInImageBg,
     showbean_icon: showBeanIcon,
-    coupons_bg: couponBackground
+    coupons_bg: couponBackground,
+    modal_close: modalClose
 } = res.signIn;
 
 @observer
 export default class SignInPage extends BasePage {
     constructor(props) {
         super(props);
+        this.first = true; //初次进入
         this.signinRequesting = false;
-        this.exchangeing = false
+        this.exchangeing = false;
         this.state = {
             loadingState: PageLoadingState.loading,
             signInData: null,
-            exchangeData: null
+            exchangeData: null,
+            showModal: false,
+            modalInfo: null
         };
     }
 
@@ -79,15 +85,39 @@ export default class SignInPage extends BasePage {
         );
     };
 
-    componentDidMount() {
-        this.loadPageData();
+    componentWillMount() {
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                if (user.token) {
+                    this.loadPageData();
+                } else {
+                    if (this.first) {
+                        this.loadPageData();
+                        this.first = false;
+                    }
+                }
+            }
+        );
     }
 
+    componentWillUnmount() {
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+    }
 
     loadPageData = () => {
         this.getSignData();
         this.reSaveUserInfo();
         this.getExchange();
+        this.getModalInfo();
+    };
+
+    getModalInfo = () => {
+        HomeAPI.getHomeData({ type: homeType.signIn }).then((data) => {
+            this.setState({
+                modalInfo: data.data
+            });
+        });
     };
 
     /**
@@ -106,7 +136,8 @@ export default class SignInPage extends BasePage {
     };
 
     getSignData = () => {
-        HomeAPI.querySignList().then((data) => {
+        let callback = this.loadPageData;
+        HomeAPI.querySignList(null, { callback }).then((data) => {
             this.setState({
                 signInData: data.data,
                 // loading: false,
@@ -143,7 +174,7 @@ export default class SignInPage extends BasePage {
 
     //签到
     userSign = () => {
-        if(this.signinRequesting){
+        if (this.signinRequesting) {
             return;
         }
         this.signinRequesting = true;
@@ -153,12 +184,21 @@ export default class SignInPage extends BasePage {
         } else {
             count = this.state.signInData[2].continuous ? this.state.signInData[2].continuous : 0;
         }
-        TrackApi.SignUpFeedback({continuousSignNumber:count,signRewardType:1,signRewardAmount:this.state.signInData[3].canReward});
+        TrackApi.SignUpFeedback({
+            continuousSignNumber: count,
+            signRewardType: 1,
+            signRewardAmount: this.state.signInData[3].canReward
+        });
         HomeAPI.userSign().then((data) => {
             this.signinRequesting = false;
             this.$toastShow(`签到成功 +${this.state.signInData[3].canReward}秀豆`);
             this.getSignData();
             this.reSaveUserInfo();
+            if (this.state.modalInfo && this.state.modalInfo.length > 0) {
+                this.setState({
+                    showModal: true
+                });
+            }
         }).catch((error) => {
             this.signinRequesting = false;
             this.$toastShow(error.msg);
@@ -167,7 +207,7 @@ export default class SignInPage extends BasePage {
 
     //兑换一元优惠券
     exchangeCoupon = () => {
-        if(this.exchangeing){
+        if (this.exchangeing) {
             return;
         }
         this.exchangeing = true;
@@ -197,7 +237,7 @@ export default class SignInPage extends BasePage {
         }
 
         return (
-            <TouchableWithoutFeedback onPress={()=>{
+            <TouchableWithoutFeedback onPress={() => {
                 this.$toastShow('今天已签到！');
             }}>
                 <View style={styles.signInButtonWrapper}>
@@ -249,7 +289,7 @@ export default class SignInPage extends BasePage {
         let datesView = this.state.signInData.map((item, index) => {
             return (
                 <Text key={'date' + index} style={styles.dateTextStyle}>
-                    {item.signDate.replace('-', '.')}
+                    {item.signDate && item.signDate.replace('-', '.')}
                 </Text>
             );
         });
@@ -271,11 +311,17 @@ export default class SignInPage extends BasePage {
     _couponRender() {
         return (
             <ImageBackground source={couponBackground} style={styles.couponBgStyle}>
-                <View style={{flexDirection:'row',alignItems:'flex-end'}}>
-                <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(36), marginLeft: px2dp(30),includeFontPadding:false ,textAlignVertical:'bottom'}}>
-                    1
-                </Text>
-                    <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(14),marginBottom:8 }}>元</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                    <Text style={{
+                        color: DesignRule.mainColor,
+                        fontSize: px2dp(36),
+                        marginLeft: px2dp(30),
+                        includeFontPadding: false,
+                        textAlignVertical: 'bottom'
+                    }}>
+                        1
+                    </Text>
+                    <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(14), marginBottom: 8 }}>元</Text>
                 </View>
                 <View style={styles.couponTextWrapper}>
                     <Text style={styles.couponNameTextStyle}>
@@ -370,6 +416,46 @@ export default class SignInPage extends BasePage {
         );
     };
 
+    _modalPress = () => {
+        this.setState({
+            showModal: false
+        });
+        const item = this.state.modalInfo[0];
+        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
+        let params = homeModule.paramsNavigate(item);
+        this.$navigate(router, { ...params });
+    };
+
+    _signModalRender() {
+        return (this.state.modalInfo && this.state.modalInfo.length > 0) ? (
+            <CommModal onRequestClose={() => {
+                this.setState({
+                    showModal: false
+                });
+            }} visible={this.state.showModal}>
+                <View style={{ alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => {
+                        this._modalPress();
+                    }}>
+                        <ImageLoader
+                            source={{ uri: this.state.modalInfo[0].image }}
+                            showPlaceholder={false}
+                            style={styles.modalImageStyle}
+                            resizeMode={'contain'}
+                        />
+                    </TouchableOpacity>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.setState({
+                            showModal: false
+                        });
+                    }}>
+                        <Image source={modalClose} style={styles.closeIconStyle}/>
+                    </TouchableWithoutFeedback>
+                </View>
+            </CommModal>
+        ) : null;
+    }
+
     _render() {
 
         return (
@@ -386,6 +472,7 @@ export default class SignInPage extends BasePage {
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
+                {this._signModalRender()}
             </View>
         );
     }
@@ -510,6 +597,15 @@ const styles = StyleSheet.create({
     willSignTextStyle: {
         fontSize: px2dp(30),
         color: 'white'
+    },
+    closeIconStyle: {
+        width: px2dp(38),
+        height: px2dp(38),
+        marginTop: px2dp(30)
+    },
+    modalImageStyle: {
+        width: ScreenUtils.autoSizeWidth(310),
+        height: ScreenUtils.autoSizeHeight(410)
     }
 
 });

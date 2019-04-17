@@ -7,6 +7,7 @@ import API from '../../../api';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
+import { navigateBack } from "../../../navigation/RouterMap";
 
 class ConfirmOrderModel {
     @observable
@@ -49,6 +50,8 @@ class ConfirmOrderModel {
     couponCount=0;
     @observable
     couponData={}
+    @observable
+    err=null
 
     @action clearData() {
         this.orderProductList = [];
@@ -66,16 +69,16 @@ class ConfirmOrderModel {
         this.message = '';
         this.addressId = null;
         this.orderParamVO = {};
-        this.netFailedInfo = null;
-        this.loadingState = PageLoadingState.success;
         this.canCommit = true;
         this.giveUpCou= false;
         this.couponCount=0;
         this.couponData={};
+        this.err=null;
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
         this.orderParamVO = orderParamVO;
+        this.err=null;
         switch (orderParamVO.orderType) {
             case 99://普通商品
                 OrderApi.makeSureOrder({
@@ -97,7 +100,7 @@ class ConfirmOrderModel {
             case 98:
                 OrderApi.makeSureOrder({
                     orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
-                    orderSubType: 5,//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                    orderSubType: 5,//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包，
                     source: orderParamVO.source,//1.购物车 2.直接下单
                     channel: 2,//1.小程序 2.APP 3.H5
                     orderProductList: orderParamVO.orderProducts,
@@ -166,37 +169,26 @@ class ConfirmOrderModel {
     disPoseErr = (err, orderParamVO, params) => {
         bridge.hiddenLoading();
         this.canCommit = true;
-        if (err.code === 10009) {
-            this.$navigate('login/login/LoginPage', {
-                callback: () => {
-                    setTimeout(() => {
-                        this.makeSureProduct(orderParamVO, params);
-                    }, 100);
-                }
-            });
-        } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
-            this.netFailedInfo = null;
-            this.loadingState = PageLoadingState.success;
+        this.err=err;
+        if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
             Alert.alert('提示', err.msg, [
                 {
                     text: '确定', onPress: () => {
-                        this.$navigateBack();
+                        navigateBack()
                     }
                 }
             ]);
         } else if (err.code === 54001) {
-            this.netFailedInfo = null;
-            this.loadingState = PageLoadingState.success;
             bridge.$toast('商品库存不足！');
-            this.$navigateBack();
+          // navigateBack()
         } else {
-            this.netFailedInfo = err;
-            this.loadingState = PageLoadingState.fail;
-            bridge.$toastShow(err.msg);
+            bridge.$toast(err.msg);
+            // navigateBack()
         }
     };
 
     handleNetData = (data) => {
+        this.err=null;
         bridge.hiddenLoading();
         this.canCommit = true;
         this.loadingState = PageLoadingState.success;
@@ -257,6 +249,10 @@ class ConfirmOrderModel {
             bridge.hiddenLoading();
             return;
         }
+        if(!StringUtils.isEmpty(this.err)){
+            bridge.hiddenLoading();
+            return;
+        }
         let baseParams = {
             message: this.message,
             tokenCoin: this.tokenCoin,
@@ -289,7 +285,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             case 98:
@@ -314,7 +310,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             case 1:
@@ -339,7 +335,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             case 2:
@@ -364,7 +360,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             case 3:
@@ -392,7 +388,7 @@ class ConfirmOrderModel {
                 }).catch(err => {
                     this.canCommit = true;
                     bridge.hiddenLoading();
-                    this.disPoseErr(err, orderParamVO, {});
+                    bridge.$toast(err.msg);
                 });
                 break;
             default:

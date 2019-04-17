@@ -20,17 +20,17 @@ import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from '../../constants/DesignRule';
 import { getTopicJumpPageParam } from './model/TopicMudelTool';
-import CommShareModal from "../../comm/components/CommShareModal";
-import apiEnvironment from "../../api/ApiEnvironment";
-import user from '../../model/user'
+import CommShareModal from '../../comm/components/CommShareModal';
+import apiEnvironment from '../../api/ApiEnvironment';
+import user from '../../model/user';
 
-import res from '../../comm/res'
+import res from '../../comm/res';
 
 const {
-    button:{
+    button: {
         message_three
     }
-} = res
+} = res;
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -43,12 +43,10 @@ export default class DownPricePage extends BasePage {
 
     constructor(props) {
         super(props);
-
         this.dataModel = new TotalTopicDataModel();
         this.state = {
             selectNav: 0
         };
-
         InteractionManager.runAfterInteractions(() => {
             //初次进入loading
             if (this.dataModel.isShowLoading) {
@@ -62,14 +60,15 @@ export default class DownPricePage extends BasePage {
         return (
 
             <TouchableOpacity
-            onPress={() => {
-                    this.shareModal.open();}}
+                onPress={() => {
+                    this.shareModal && this.shareModal.open();
+                }}
             >
 
                 <Image source={message_three}/>
             </TouchableOpacity>
-        )
-    }
+        );
+    };
 
     componentDidMount() {
 
@@ -80,13 +79,16 @@ export default class DownPricePage extends BasePage {
                 console.log('-----' + linkTypeCode);
                 setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
-                })
+                });
+
             }
         );
     }
+
     componentWillUnmount() {
         this.$loadingDismiss();
     }
+
     /**
      * 渲染底部组列表
      * @param sections 所有组数据
@@ -130,6 +132,7 @@ export default class DownPricePage extends BasePage {
         const sectionListData = section.data.slice() || [];
         return (
             <View
+                key={sectionIndex}
                 style={
                     {
                         flexDirection: 'row',//设置横向布局
@@ -244,14 +247,14 @@ export default class DownPricePage extends BasePage {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'miniProgramWithCopyUrl'}
                                 webJson={{
-                                    hdImageURL:this.dataModel.imgUrl || '',
+                                    hdImageURL: this.dataModel.imgUrl || '',
                                     title: '秀一秀，赚到够',
                                     dec: '[秀购]发现一个很给力的活动快去看看',
-                                    linkUrl:  `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
                                     thumImage: 'logo.png'
                                 }}
                                 miniProgramJson={{
-                                    hdImageURL:this.dataModel.imgUrl || '',
+                                    hdImageURL: this.dataModel.imgUrl || '',
                                     title: '秀一秀，赚到够',
                                     dec: '[秀购]发现一个很给力的活动快去看看',
                                     thumImage: 'logo.png',

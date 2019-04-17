@@ -93,7 +93,7 @@ export  default class CouponExplainItem extends Component{
                                 fontSize: 11,
                                 color: DesignRule.textColor_instruction,
                                 marginTop: 6
-                            }} allowFontScaling={false}>使用有效期：{item.timeStr}</Text>:null}
+                            }} allowFontScaling={false}>{item.timeStr}</Text>:null}
                             <UIText style={{ fontSize: 11, color: DesignRule.textColor_instruction, marginTop: 6 }}
                                     value={item.limit}/>
                         </View>

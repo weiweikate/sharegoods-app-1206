@@ -10,7 +10,7 @@ import {
 import {
     UIText
 } from '../../components/ui';
-import {MRText as Text} from '../../components/ui'
+import { MRText as Text } from '../../components/ui';
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
 import MessageApi from './api/MessageApi';
@@ -18,6 +18,11 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from '../../constants/DesignRule';
 import res from './res';
 import { TrackApi } from '../../utils/SensorsTrack';
+import chatModel from '../../utils/QYModule/QYChatModel';
+
+import { observer } from 'mobx-react';
+import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
+import ServiceRowView from './components/ServiceRowView';
 
 const {
     icon_03: noticeIcon,
@@ -29,7 +34,7 @@ const {
 } = res;
 const { px2dp } = ScreenUtils;
 
-
+@observer
 export default class MessageCenterPage extends BasePage {
     constructor(props) {
         super(props);
@@ -58,6 +63,7 @@ export default class MessageCenterPage extends BasePage {
         return (
             <ScrollView style={styles.container}>
                 {this.renderBodyView()}
+                {this.renderGongYingShang()}
             </ScrollView>
         );
     }
@@ -98,7 +104,33 @@ export default class MessageCenterPage extends BasePage {
         }
     }
 
-    renderBodyView = () => {
+    renderGongYingShang = () => {
+        let sessionArr = chatModel.sessionListData || [];
+        let arr = [];
+
+        console.log('sessionArr' + sessionArr.length);
+        if (typeof sessionArr !== 'undefined' && sessionArr.length > 0) {
+            sessionArr.forEach((item, index) => {
+                arr.push(
+                    <ServiceRowView item={item} index={index} beginChat={this.beginChat}/>
+                );
+            });
+        }
+        return arr;
+    };
+
+
+    beginChat = (item) => {
+        let params = {
+            title: item.sessionName,
+            shopId: item.shopId,
+            chatType: beginChatType.BEGIN_FROM_MESSAGE,
+            data: {}
+        };
+        QYChatTool.beginQYChat(params);
+    };
+
+     renderBodyView = () => {
         let leftImage = [noticeIcon, newsIcon, spellIcon];
         let leftText = ['通知', '消息', '拼店消息'];
         let arr = [];
@@ -121,13 +153,16 @@ export default class MessageCenterPage extends BasePage {
                         flex: 1,
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        paddingHorizontal:DesignRule.margin_page,
+                        paddingHorizontal: DesignRule.margin_page,
                         backgroundColor: 'white',
                         flexDirection: 'row'
                     }} onPress={() => this.orderMenuJump(i)}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Image source={leftImage[i]} style={{ height: 35 }} resizeMode={'contain'}/>
-                            <UIText value={leftText[i]} style={[{ fontSize: DesignRule.fontSize_secondTitle, marginLeft: DesignRule.margin_page }]}/>
+                            <UIText value={leftText[i]} style={[{
+                                fontSize: DesignRule.fontSize_secondTitle,
+                                marginLeft: DesignRule.margin_page
+                            }]}/>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {count ? <View style={{

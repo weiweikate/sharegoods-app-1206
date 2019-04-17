@@ -13,10 +13,10 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import DetailNavShowModal from '../components/DetailNavShowModal';
 import DetailNavView from '../components/DetailNavView';
 import ProductApi from '../api/ProductApi';
+import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
 
 const { p_score_smile, p_score_empty } = res.productScore;
 
@@ -177,7 +177,7 @@ export default class P_ScoreListPage extends BasePage {
                         [
                             {
                                 text: '取消', onPress: () => {
-                                    this.shareModal.open();
+                                    this.shareModal && this.shareModal.open();
                                 }
                             },
                             {
@@ -188,8 +188,28 @@ export default class P_ScoreListPage extends BasePage {
                         ]
                     );
                 } else {
-                    this.shareModal.open();
+                    this.shareModal && this.shareModal.open();
                 }
+                break;
+            case 'keFu':
+                if (!user.isLogin) {
+                    this.$navigate('login/login/LoginPage');
+                    return;
+                }
+                track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
+                const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
+                QYChatTool.beginQYChat({
+                    shopId: shopId,
+                    title: title,
+                    chatType: beginChatType.BEGIN_FROM_PRODUCT,
+                    data: {
+                        title: name,
+                        desc: secondName,
+                        pictureUrlString: imgUrl,
+                        urlString: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}`,
+                        note: minPrice !== maxPrice ? `￥${minPrice}-￥${maxPrice}` : `￥${minPrice}`
+                    }
+                });
                 break;
             case 'buy':
                 if (!user.isLogin) {
@@ -265,7 +285,7 @@ export default class P_ScoreListPage extends BasePage {
                                }}
                                navRRight={() => {
                                    this.DetailNavShowModal.show(messageCount, (item) => {
-                                       switch (item.index) {
+                                       switch (item.type) {
                                            case 0:
                                                if (!user.isLogin) {
                                                    this.gotoLoginPage();
@@ -277,16 +297,13 @@ export default class P_ScoreListPage extends BasePage {
                                                this.$navigate('home/search/SearchPage');
                                                break;
                                            case 2:
-                                               this.shareModal.open();
+                                               this.shareModal && this.shareModal.open();
                                                break;
-                                           case 3:
-                                               setTimeout(() => {
-                                                   track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 2});
-                                                   QYChatUtil.qiYUChat();
-                                               }, 100);
+                                           case 4:
+                                               this.$navigateBackToHome();
                                                break;
                                        }
-                                   });
+                                   }, 2);
                                }}/>
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderFlatList)}
                 <DetailBottomView bottomViewAction={this._bottomViewAction}

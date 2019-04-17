@@ -72,12 +72,9 @@ export default class MRBannerViewComponent extends Component {
 
     _onDidScrollToIndex(e) {
         const { onDidScrollToIndex } = this.props;
-        if (!onDidScrollToIndex) {
-            return;
-        }
         let index = e.nativeEvent.index;
         this.setState({ index });
-        this.props.onDidScrollToIndex(index);
+        onDidScrollToIndex && onDidScrollToIndex(index);
     }
 
 
@@ -91,14 +88,15 @@ export default class MRBannerViewComponent extends Component {
                     ref={(ref) => this.mr_banner = ref}
                     style={[{ height: bannerHeight, width: imgWidth }]}
                     onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
-                    imgUrlArray={imgUrlArray}
-                    itemRadius={itemRadius}
                     itemWidth={imgWidth + 0.5}
+                    itemRadius={itemRadius}
                     itemSpace={0}
                     pageFocused={pageFocused}
                     onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
                     autoLoop={autoLoop === false ? false : true}
-                    autoInterval={5}/>
+                    autoInterval={5}
+                    imgUrlArray={imgUrlArray}
+                />
                 {this._renderPageControl(imgUrlArray.length)}
             </View>
         );

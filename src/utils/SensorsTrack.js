@@ -30,6 +30,7 @@ const productTrack = {
 /** 订单相关的埋点事件名称*/
 const inviteEvent = {
     QrCodeShareto: 'QrCodeShareto',//分享二维码
+    ClickLotteryPage: 'ClickLotteryPage',//首页抽奖
 }
 
 const mineEvent = {
@@ -47,7 +48,6 @@ const afterEvent = {
     ApplyReturn: 'ApplyReturn' // 0：未知 1：仅退款 2：退货退款 3：换货
 }
 const trackEvent = {
-    bannerShow: 'BannerShow', //首页埋点
     bannerClick: 'BannerClick',
     login: 'Login',//登录
     signUp: 'SignUp',//注册

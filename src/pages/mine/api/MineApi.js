@@ -53,6 +53,10 @@ const api = {
     updatePhone: ['/user/updatePhone', { method: 'post' }],
     // 修改密码
     changePhonePwd: ['/user/updateLoginPassword', { method: 'post' }],
+    //设置登录密码
+    SetPhonePwd: '/user/setLoginPassword',
+    //检查是否有登录密码
+    checkPhonePwd: ['/user/getLoginPassword', { method: 'get' }],
     // 解绑微信号
     untiedWechat: ['/user/untiedWechat', { method: 'post' }],
     // 验证交易密码
@@ -117,7 +121,12 @@ const api = {
     //电签合同入口
     gongmallEnter:['/gongmall/contract',{method:'get'}],
     //电签结果查询接口
-    gongmallResult:['/gongmall/query',{method:'get'}]
+    gongmallResult:['/gongmall/query',{method:'get'}],
+    //查询是否可以提现
+    canWithdraw:['/user/withdraw/whiteList',{method:'get'}],
+    //查询秀迷等级列表
+    getFansLevelList:['/user/fansLevelList',{method:'get'}]
+
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

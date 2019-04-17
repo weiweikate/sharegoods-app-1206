@@ -7,7 +7,7 @@
  */
 import LoginAPI from "../api/LoginApi";
 import bridge from "../../../utils/bridge";
-import { homeModule } from "../../home/Modules";
+import { homeModule } from "../../home/model/Modules";
 import UserModel from "../../../model/user";
 import { login, TrackApi } from "../../../utils/SensorsTrack";
 import JPushUtils from "../../../utils/JPushUtils";
@@ -29,6 +29,7 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         token: authenToken
     }).then(result => {
         successCallBack && successCallBack();
+        TrackApi.localPhoneNumLogin()
         if (result.unionid == null) {
             //未绑定微信
             phoneBindWx();
@@ -44,8 +45,6 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
         UserModel.saveToken(result.data.token);
         homeModule.loadHomeList();
         bridge.setCookies(result.data);
-
-
     }).catch(error => {
         bridge.$toast(error.msg);
     });

@@ -3,7 +3,6 @@ import React from 'react';
 import {
     View,
     Image,
-    Dimensions,
     StyleSheet,
     ScrollView,
     TouchableWithoutFeedback
@@ -14,9 +13,13 @@ import res from '../res';
 import {
     MRText as Text
 } from '../../../components/ui';
-const ArrowImg = res.shopSetting.xjt_03;
+import DateUtils from '../../../utils/DateUtils';
+import StringUtils from '../../../utils/StringUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
+import RouterMap from '../../../navigation/RouterMap';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const ArrowImg = res.shopSetting.xjt_03;
 
 export default class ShopPageSettingPage extends BasePage {
 
@@ -55,14 +58,22 @@ export default class ShopPageSettingPage extends BasePage {
         this.$navigate('spellShop/shopSetting/AnnouncementListPage', { storeData: this.state.storeData });
     };
 
+    _addCapacityHistory = () => {
+        this.$navigate(RouterMap.AddCapacityHistoryPage, { storeData: this.state.storeData });
+    };
+
     // 店铺评分
     _scoreShop = () => {
         this.$navigate('spellShop/shopSetting/ShopScorePage', { storeData: this.state.storeData });
     };
 
-    _render() {
-        return (
+    _closeStore = () => {
+        this.$navigate(RouterMap.ShopCloseExplainPage, { storeData: this.state.storeData });
+    };
 
+    _render() {
+        const { createTime } = this.params.storeData || {};
+        return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     {
@@ -71,7 +82,7 @@ export default class ShopPageSettingPage extends BasePage {
                             showArrow: true,
                             onPres: this._managerShop
                         }, {
-                            key: '店铺加入方式',
+                            key: '店铺邀请设置',
                             showArrow: true,
                             onPres: this._inviteSetting
                         }, {
@@ -79,59 +90,57 @@ export default class ShopPageSettingPage extends BasePage {
                             showArrow: true,
                             onPres: this._assistantManager
                         }, {
-                            key: '店铺晋升',
+                            key: '我的扩容',
+                            showArrow: true,
+                            onPres: this._addCapacityHistory
+                        }, {
+                            key: '店铺评分',
                             showArrow: true,
                             onPres: this._scoreShop
                         }, {
                             key: '店铺成立时间',
                             showArrow: false,
-                            value: this.params.storeData.createTimeStr
+                            value: StringUtils.isNoEmpty(createTime) && DateUtils.formatDate(createTime, 'yyyy-MM-dd')
                         }].map((item, index) => {
                             return this.renderRow(item, index);
                         })
                     }
                 </ScrollView>
+                <NoMoreClick style={styles.closeStore} onPress={this._closeStore}>
+                    <Text style={styles.closeText}>申请解散</Text>
+                </NoMoreClick>
             </View>
-        )
-            ;
+        );
     }
 
     renderRow = ({ key, value, showArrow, onPres }, index) => {
         return (<TouchableWithoutFeedback key={index} onPress={onPres}>
-            <View style={[styles.row, index === 0 ? { marginTop: 10 } : null]}>
+            <View style={[styles.row, { marginTop: index === 0 ? 10 : 0 }]}>
                 <View style={styles.rowTop}>
-                    <Text style={styles.text} allowFontScaling={false}>{key}</Text>
+                    <Text style={styles.text}>{key}</Text>
                     {
-                        showArrow ? <Image source={ArrowImg}/> : <Text style={styles.desc} allowFontScaling={false}>{value || ''}</Text>
+                        showArrow ?
+                            <Image source={ArrowImg}/> : <Text style={styles.desc}>{value || ''}</Text>
                     }
                 </View>
-                {index === 4 ? null : <View style={styles.line}/>}
             </View>
         </TouchableWithoutFeedback>);
     };
-
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    btnContainer: {
-        marginTop: 46,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     row: {
-        width: SCREEN_WIDTH,
         height: 44,
-        backgroundColor: '#fff'
+        justifyContent: 'center',
+        backgroundColor: DesignRule.white
     },
     rowTop: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 21,
-        flex: 1
+        paddingHorizontal: 15
     },
     text: {
         fontSize: 13,
@@ -139,39 +148,15 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 13,
-        color: DesignRule.textColor_secondTitle,
-        textAlign: 'right'
+        color: DesignRule.textColor_secondTitle
     },
-    line: {
-        backgroundColor: DesignRule.lineColor_inColorBg,
-        marginHorizontal: 15,
-        height: StyleSheet.hairlineWidth
+
+    closeStore: {
+        justifyContent: 'center', alignItems: 'center',
+        position: 'absolute', left: 15, right: 15, bottom: ScreenUtils.safeBottom + 15,
+        height: 40, borderRadius: 20, borderColor: DesignRule.mainColor, borderWidth: 1
     },
-    separateContainer: {
-        width: 150,
-        height: 48,
-        borderRadius: 5,
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: DesignRule.mainColor,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    separateTitle: {
-        fontSize: 16,
-        color: DesignRule.mainColor
-    },
-    sendContainer: {
-        marginTop: 10,
-        width: 150,
-        height: 48,
-        borderRadius: 5,
-        backgroundColor: DesignRule.mainColor,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    sendTitle: {
-        fontSize: 16,
-        color: 'white'
+    closeText: {
+        fontSize: 17, color: DesignRule.mainColor
     }
 });

@@ -42,9 +42,10 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     dispatch_async(dispatch_get_main_queue(), ^{
       UIImage * image2 = image;
       if (error) {//如果加载网络图片失败，就用默认图
-        image2 = [UIImage imageNamed:@""];
+        image2 = [UIImage imageNamed:@"logo.png"];
       }
-      NSString *path = [weakSelf ceratShareImageWithProductImage:image2 titleStr:model.titleStr priceStr:model.priceStr retailPrice: model.retailPrice spellPrice: model.spellPrice QRCodeStr:model.QRCodeStr model: model];
+      NSString *path = [weakSelf ceratShareImageWithProductImage:image2
+                                                           model: model];
       if (path == nil || path.length == 0) {
         completion(nil, @"ShareImageMaker：保存图片到本地失败");
       }else{
@@ -55,55 +56,123 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 }
 
 - (NSString* )ceratShareImageWithProductImage:(UIImage *)productImage
-                                     titleStr:(NSString *)titleStr
-                                     priceStr:(NSString *)priceStr
-                                  retailPrice:(NSString *)retailPrice
-                                   spellPrice:(NSString *)spellPrice
-                                    QRCodeStr:(NSString *)QRCodeStr
                                         model:(ShareImageMakerModel *)model
 {
-  CGFloat i = 3;
-  priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
-  retailPrice = [NSString stringWithFormat:@"V  1  价：%@",retailPrice];
-  spellPrice = [NSString stringWithFormat:@"拼店价：%@",spellPrice];
+  NSString *imageType = model.imageType;
+  NSString *QRCodeStr = model.QRCodeStr;
+  CGFloat i = 3;// 为了图片高清 图片尺寸250 * 340
   
-  CGFloat sigle =  [self getStringHeightWithText:@"1" fontSize:13*i viewWidth:220*i];
-  CGFloat height =  [self getStringHeightWithText:titleStr fontSize:13*i viewWidth:220*i];
-  if (height > sigle*2) {
-    height= sigle*2+1;
-  }
   CGFloat imageHeght = 340*i;
-  if (height > sigle) {
-    imageHeght = 360*i;
+  
+  NSMutableArray *nodes = [NSMutableArray new];
+  
+  if ([imageType isEqualToString:@"web"]) {
+    //主图图片
+    [nodes addObject:@{
+                       @"value": productImage,
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 340*i)]}
+     ];
+    //二维码
+    UIImage *QRCodeImage = [self QRCodeWithStr:QRCodeStr];
+    [nodes addObject:@{@"value": QRCodeImage,
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(195*i, 285*i, 45*i, 45*i)]}
+     ];
+  }else{
+    NSString *titleStr = model.titleStr;
+    NSString *priceStr = model.priceStr;
+    NSString *retailPrice = model.retailPrice;
+    NSString *spellPrice = model.spellPrice;
+    priceStr = [NSString stringWithFormat:@"市场价：%@",priceStr];
+    retailPrice = [NSString stringWithFormat:@"V  1  价：%@",retailPrice];
+    spellPrice = [NSString stringWithFormat:@"拼店价：%@",spellPrice];
+    
+    CGFloat sigle =  [self getStringHeightWithText:@"1" fontSize:13*i viewWidth:220*i];
+    CGFloat height =  [self getStringHeightWithText:titleStr fontSize:13*i viewWidth:220*i];
+    if (height > sigle*2) {
+      height= sigle*2+1;
+    }
+    
+    if (height > sigle) {
+      imageHeght = 360*i;
+    }
+    //主图图片
+    [nodes addObject:@{
+                       @"value": productImage,
+                       @"locationType": @"rect",
+                       @"location": [NSValue valueWithCGRect:CGRectMake(0, 0, 250*i, 250*i)]}
+     ];
+  //标题
+  NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+  style.lineBreakMode = NSLineBreakByTruncatingTail;
+  NSAttributedString *titleAttrStr = [[NSAttributedString alloc]initWithString:titleStr
+                                                                    attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor grayColor]}];
+  [nodes addObject:@{
+                     @"value": titleAttrStr,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(15*i, 253*i, 220*i, height)]}
+   ];
+  
+  //价格
+  NSMutableAttributedString *priceAttrStr = [[NSMutableAttributedString alloc]initWithString:priceStr
+                                                                                  attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"], NSStrikethroughStyleAttributeName: @1}];
+  [priceAttrStr addAttributes:@{ NSStrikethroughStyleAttributeName: @0}
+                        range:NSMakeRange(0, 4)];
+  [nodes addObject:@{
+                     @"value": priceAttrStr,
+                     @"location": [NSValue valueWithCGPoint:CGPointMake(15*i, 253*i+height+10*i)]}
+   ];
+  
+  //v1价格
+  NSMutableAttributedString *retailPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:retailPrice
+                                                                                        attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10*i], NSForegroundColorAttributeName: [UIColor redColor]}];
+  [retailPriceAttrStr addAttributes:@{ NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]}
+                              range:NSMakeRange(0, 8)];
+  [nodes addObject:@{
+                     @"value": retailPriceAttrStr,
+                     @"location": [NSValue valueWithCGPoint:CGPointMake(15*i, 253*i+height+10*i + 15*i)]}
+   ];
+  //拼店d价格
+  NSMutableAttributedString *spellPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:spellPrice
+                                                                                       attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10*i], NSForegroundColorAttributeName: [UIColor redColor]}];
+  [spellPriceAttrStr addAttributes:@{ NSForegroundColorAttributeName:[UIColor colorWithHexString:@"333333"]}
+                             range:NSMakeRange(0, 4)];
+  [nodes addObject:@{
+                     @"value": spellPriceAttrStr,
+                     @"location": [NSValue valueWithCGPoint:CGPointMake(15*i, 253*i+height+10*i + 15*i*2)]}
+   ];
+  //二维码
+  UIImage *QRCodeImage = [self QRCodeWithStr:QRCodeStr];
+  [nodes addObject:@{@"value": QRCodeImage,
+                     @"locationType": @"rect",
+                     @"location": [NSValue valueWithCGRect:CGRectMake(180*i, 253*i+height+10*i, 48*i, 48*i)]}
+   ];
   }
-  
-  NSMutableAttributedString *priceAttrStr = [[NSMutableAttributedString alloc]initWithString:priceStr attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10*i], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"], NSStrikethroughStyleAttributeName: @1}];
-  [priceAttrStr addAttributes:@{ NSStrikethroughStyleAttributeName: @0} range:NSMakeRange(0, 4)];
-  
-  NSMutableAttributedString *retailPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:retailPrice attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10*i], NSForegroundColorAttributeName: [UIColor redColor]}];
-  [retailPriceAttrStr addAttributes:@{ NSForegroundColorAttributeName: [UIColor colorWithHexString:@"333333"]} range:NSMakeRange(0, 8)];
-  
-  NSMutableAttributedString *spellPriceAttrStr = [[NSMutableAttributedString alloc]initWithString:spellPrice attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10*i], NSForegroundColorAttributeName: [UIColor redColor]}];
-  [spellPriceAttrStr addAttributes:@{ NSForegroundColorAttributeName:[UIColor colorWithHexString:@"333333"]} range:NSMakeRange(0, 4)];
-  
   
   CGRect rect = CGRectMake(0.0f, 0.0f, 250*i, imageHeght);
   UIGraphicsBeginImageContext(CGSizeMake(250*i, imageHeght));
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
   CGContextFillRect(context, rect);
-  // 绘制图片
-  [productImage drawInRect:CGRectMake(0, 0, 250*i, 250*i)];
-  // 绘制图片
-  NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
-  style.lineBreakMode = NSLineBreakByTruncatingTail;
-  [titleStr drawInRect:CGRectMake(15*i, 253*i, 220*i, height) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:13*i], NSForegroundColorAttributeName: [UIColor grayColor]}];
-  [priceAttrStr drawAtPoint:CGPointMake(15*i, 253*i+height+10*i)];
-  [retailPriceAttrStr drawAtPoint:CGPointMake(15*i, 253*i+height+10*i + 15*i)];
-  [spellPriceAttrStr drawAtPoint:CGPointMake(15*i, 253*i+height+10*i + 15*i*2)];
   
-  UIImage *QRCodeImage = [self QRCodeWithStr:QRCodeStr];
-  [QRCodeImage drawInRect:CGRectMake(180*i, 253*i+height+10*i, 48*i, 48*i)];
+  for (int i = 0 ; i < nodes.count; i++) {
+    NSDictionary *node = nodes[i];
+    NSValue *location = node[@"location"];
+    NSString * locationType = node[@"locationType"];
+    id str = node[@"value"];
+    if (locationType && [locationType isEqualToString:@"rect"]) {
+      if ([str respondsToSelector:NSSelectorFromString(@"drawInRect:")]) {
+        [str drawInRect:[location CGRectValue]];
+      }
+    }else{
+      if ([str respondsToSelector:NSSelectorFromString(@"drawAtPoint:")]) {
+        [str drawAtPoint:[location CGPointValue]];
+      }
+    }
+    
+  }
+  
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   return [self save:image withPath:[NSString stringWithFormat:@"/Documents/QRCode%@.png",[model modelToJSONString].md5String]];

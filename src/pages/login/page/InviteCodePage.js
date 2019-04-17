@@ -26,7 +26,7 @@ import UIText from "../../../components/ui/UIText";
 import LoginAPI from "../api/LoginApi";
 import bridge from "../../../utils/bridge";
 import { MRTextInput as TextInput } from "../../../components/ui";
-import { homeRegisterFirstManager } from "../../home/model/HomeRegisterFirstManager";
+import { homeRegisterFirstManager } from "../../home/manager/HomeRegisterFirstManager";
 import RouterMap from "../../../navigation/RouterMap";
 
 class inviteModel {

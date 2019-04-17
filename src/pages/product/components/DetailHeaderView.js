@@ -69,7 +69,8 @@ export default class DetailHeaderView extends Component {
                         <Text style={{
                             marginTop: 10,
                             color: DesignRule.textColor_mainTitle,
-                            fontSize: 13
+                            fontSize: 13,
+                            lineHeight: 17
                         }} numberOfLines={2} allowFontScaling={false}>{`${name || ''}`}</Text>
                         {StringUtils.isNoEmpty(secondName) ? <Text style={{
                             marginTop: 5, color: DesignRule.textColor_secondTitle,

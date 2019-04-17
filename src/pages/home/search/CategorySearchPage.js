@@ -13,7 +13,7 @@ import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui';
 import { homeLinkType } from '../HomeTypes';
 import { TrackApi } from '../../../utils/SensorsTrack';
-import { homeModule } from '../Modules';
+import { homeModule } from '../model/Modules';
 
 const icon_search = res.search;
 
@@ -205,36 +205,11 @@ export default class CategorySearchPage extends BasePage {
 
     clickBanner = (item) => {
         // banner点击跳转
+        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode) || '';
+        let params = homeModule.paramsNavigate(item);
+        this.$navigate(router, { ...params });
         let trackDic = homeModule.bannerPoint(item) || {};
         TrackApi.BannerClick({ bannerLocation: 31, ...trackDic });
-        if (item.linkType === homeLinkType.good) {
-            this.$navigate('product/ProductDetailPage', {
-                productCode: item.linkTypeCode
-            });
-        } else if (item.linkType === homeLinkType.subject) {
-            this.$navigate('topic/DownPricePage', {
-                linkTypeCode: item.linkTypeCode
-            });
-        } else if (item.linkType === homeLinkType.web) {
-            this.$navigate('HtmlPage', {
-                title: '详情',
-                uri: item.linkTypeCode
-            });
-        } else if (item.linkType === 3 || item.linkType === 4 || item.linkType === 5) {
-            let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
-            this.$navigate('topic/TopicDetailPage', {
-                activityCode: item.linkTypeCode,
-                activityType: type
-            });
-        } else if (item.linkType === homeLinkType.show) {
-            this.$navigate('show/ShowDetailPage', {
-                code: item.linkTypeCode
-            });
-        } else if (item.linkType === homeLinkType.exp) {
-            this.$navigate('product/xpProduct/XpDetailPage', {
-                code: item.linkTypeCode
-            });
-        }
     };
 
     _onCategoryClick = (item, index) => {
@@ -331,7 +306,7 @@ export default class CategorySearchPage extends BasePage {
 
     _sectionHeader = ({ section }) => {
         return (
-            <UIText value={section.title}
+            <UIText value={section && section.title}
                     style={{
                         fontWeight: 'bold',
                         fontSize: 13,

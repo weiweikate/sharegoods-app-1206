@@ -86,7 +86,7 @@ export default class AddressManagerPage extends BasePage {
                 renderEmpty={this._renderEmptyView}
                 ItemSeparatorComponent={this._separator}
                 handleRequestResult={(response) => {
-                    if (response.data) {
+                    if (response.data && response.data.length > 0) {
                         let ids = [];
                         let selectIndex = -1;
                         for (let i = 0, len = response.data.length; i < len; i++) {

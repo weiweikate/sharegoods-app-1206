@@ -71,7 +71,9 @@ export default class OpenPrizeItemView extends Component {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={ () => {this.props.itemClick && this.props.itemClick(itemData); }}
+                onPress={() => {
+                    this.props.itemClick && this.props.itemClick(itemData);
+                }}
             >
                 <View style={ItemStyles.itemBgStyle}>
                     <View style={ItemStyles.itemContentStyle}>
@@ -99,7 +101,7 @@ export default class OpenPrizeItemView extends Component {
                         <Text
                             style={ItemStyles.itemBottomTextStyle}
                             numberOfLines={2}
-                            >
+                        >
                             {itemData.productName}
                         </Text>
                         <View
@@ -138,7 +140,7 @@ export default class OpenPrizeItemView extends Component {
                                     }
                                 </Text>
                                 <Text style={{
-                                    height: 11,
+                                    height: 13,
                                     fontSize: 11,
                                     textDecorationLine: 'line-through',
                                     color: DesignRule.textColor_instruction
@@ -202,7 +204,9 @@ export default class OpenPrizeItemView extends Component {
                                             backgroundColor: DesignRule.mainColor,
                                             height: 30,
                                             width: (ScreenUtils.width / 2 - 16) / 2,
-                                            borderRadius: 5
+                                            borderRadius: 5,
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
                                         },
                                             (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
                                                 ? { backgroundColor: DesignRule.bgColor }
@@ -214,8 +218,6 @@ export default class OpenPrizeItemView extends Component {
                                                 [{
                                                     color: 'white',
                                                     textAlign: 'center',
-                                                    height: 30,
-                                                    paddingTop: 8,
                                                     fontSize: 12
                                                 },
                                                     (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
@@ -231,8 +233,6 @@ export default class OpenPrizeItemView extends Component {
 
                                     </View>
                             }
-
-                            {/*</View>*/}
                         </View>
                     </View>
                 </View>
@@ -275,8 +275,7 @@ const ItemStyles = StyleSheet.create({
         width: mainWidth / 2,
         height: mainWidth / 2 + 105,
         backgroundColor: DesignRule.bgColor,
-        padding: 5,
-        paddingBottom: 0
+        padding: 5
     },
     itemContentStyle: {
         flex: 1,
@@ -289,12 +288,12 @@ const ItemStyles = StyleSheet.create({
 
     itemBottomTextStyle: {
         paddingTop: 5,
-        paddingLeft:10,
-        paddingRight:10,
+        paddingLeft: 10,
+        paddingRight: 10,
         color: DesignRule.textColor_mainTitle,
         width: mainWidth / 2 - 16,
-        height: 40,
-        fontSize: 12,
+        height: 41,
+        fontSize: 12
     },
     itemFolloweTextStyle: {
         color: DesignRule.bgColor_blue,

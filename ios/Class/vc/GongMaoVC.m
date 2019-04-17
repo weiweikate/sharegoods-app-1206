@@ -21,7 +21,11 @@ static  NSString * constTile = @"公猫认证";
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.title = constTile;
+ if(_webConstTitle) {
+    self.title = _webConstTitle;
+ }else{
+    self.title = constTile;
+ }
   [self addBackBtn];
   if (!self.url) {
     [MBProgressHUD showError:@"网页链接为空"];
@@ -75,9 +79,12 @@ static  NSString * constTile = @"公猫认证";
   NSString *url_str = navi_url.absoluteString;
   NSLog(@"@@@@@%@",url_str);
   NSString *mark = [StorageFromRN getGongMao];
-  if ([mark isEqualToString:url_str]) {
+  if (url_str && [url_str containsString:mark]) {
     decisionHandler(WKNavigationActionPolicyCancel);
     [self.navigationController popViewControllerAnimated:YES];
+    if (self.resolver) {
+      self.resolver(@{});
+    }
     return;
   }
   decisionHandler(WKNavigationActionPolicyAllow);
@@ -87,10 +94,26 @@ static  NSString * constTile = @"公猫认证";
 {
   if (webView.title) {
     self.title = webView.title;
+  }else if(_webConstTitle){
+    self.title = _webConstTitle;
   }else{
     self.title = constTile;
   }
 }
 
+- (BOOL)shouldAutorotate
+{
+  return YES;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+  return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+  return UIInterfaceOrientationPortrait;
+}
 
 @end

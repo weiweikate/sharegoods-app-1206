@@ -12,6 +12,7 @@ import { showBannerModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 import { TrackApi } from '../../utils/SensorsTrack';
+import { homeModule } from '../home/model/Modules';
 
 @observer
 export default class ShowBannerView extends Component {
@@ -21,22 +22,22 @@ export default class ShowBannerView extends Component {
 
     renderRow(item) {
         return <View style={styles.imgView}>
-            <UIImage style={styles.img} source={{ uri: item.imgUrl }}/>
+            <UIImage style={styles.img} source={{ uri: item.image }}/>
         </View>;
     }
 
     _onPressRowWithItem(item) {
-        const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
-        let params = showBannerModules.paramsNavigate(item);
+        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode) || '';
+        let params = homeModule.paramsNavigate(item);
         const { navigate } = this.props;
 
         TrackApi.BannerClick({
             bannerName: item.imgUrl,
             bannerId: item.id,
-            bannerRank:item.rank,
-            bannerType:item.linkType,
-            bannerContent:item.linkTypeCode,
-            bannerLocation:32
+            bannerRank: item.rank,
+            bannerType: item.linkType,
+            bannerContent: item.linkTypeCode,
+            bannerLocation: 32
         });
 
         navigate(router, { ...params });
@@ -47,16 +48,16 @@ export default class ShowBannerView extends Component {
         const { bannerList } = showBannerModules;
         let item = bannerList[index];
         if (item) {
-            const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
-            let params = showBannerModules.paramsNavigate(item);
+            let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode) || '';
+            let params = homeModule.paramsNavigate(item);
             const { navigate } = this.props;
             TrackApi.BannerClick({
                 bannerName: item.imgUrl,
                 bannerId: item.id,
-                bannerRank:item.rank,
-                bannerType:item.linkType,
-                bannerContent:item.linkTypeCode,
-                bannerLocation:32
+                bannerRank: item.rank,
+                bannerType: item.linkType,
+                bannerContent: item.linkTypeCode,
+                bannerLocation: 32
             });
             navigate(router, { ...params });
         }
@@ -91,7 +92,7 @@ export default class ShowBannerView extends Component {
         }
         let items = [];
         bannerList.map(value => {
-            items.push(value.imgUrl);
+            items.push(value.image);
         });
         return <View style={styles.container}>
             {
@@ -108,10 +109,10 @@ export default class ShowBannerView extends Component {
                             height: px2dp(175),
                             width: ScreenUtils.width
                         }}
-                        imgUrlArray={items}
                         itemWidth={px2dp(300)}
                         itemSpace={px2dp(10)}
                         itemRadius={5}
+                        imgUrlArray={items}
                         interceptTouchEvent={true}  //android端起作用，是否拦截touch事件
                         pageFocused={this.props.pageFocused}
                         onDidSelectItemAtIndex={(index) => {
@@ -130,7 +131,7 @@ export default class ShowBannerView extends Component {
 let styles = StyleSheet.create({
     container: {
         height: px2dp(200),
-        width: ScreenUtils.width,
+        width: ScreenUtils.width
     },
     scroll: {
         height: px2dp(175)

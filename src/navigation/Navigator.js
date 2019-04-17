@@ -4,7 +4,6 @@ import { Platform, NativeModules } from 'react-native';
 import RouterMap from './RouterMap';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import Analytics from '../utils/AnalyticsUtil';
-import { trackViewScreen } from '../utils/SensorsTrack';
 import bridge from '../utils/bridge';
 
 const Navigator = StackNavigator(Router,
@@ -59,24 +58,10 @@ Navigator.router.getStateForAction = (action, state) => {
             return null;
         }
     }
-    //老用户登陆界面禁止
-    if (state && action.type === NavigationActions.NAVIGATE) {
-        let length = state.routes.length;
-        let currentRoute = state.routes[length - 1];
-        let nextRoute = action.routeName;
-        if (currentRoute
-            && nextRoute === RouterMap.LoginPage
-            && currentRoute.routeName === RouterMap.OldUserLoginPage) {
-            return null;
-        }
-    }
 
     if (action.type === NavigationActions.INIT) {
         const currentPage = 'HomePage';
         Analytics.onPageStart(currentPage);
-        trackViewScreen('$AppViewScreen', {
-            '$screen_name': currentPage
-        });
     }
 
     if (action.type === NavigationActions.NAVIGATE || action.type === NavigationActions.BACK) {
@@ -89,9 +74,6 @@ Navigator.router.getStateForAction = (action, state) => {
         const currentPage = getCurrentRouteName(state);
         console.log('getStateForAction currentpage start', currentPage);
         Analytics.onPageStart(currentPage);
-        trackViewScreen('$AppViewScreen', {
-            '$screen_name': currentPage
-        });
     }
 
     //支付页面路由替换，需要替换2个
@@ -99,12 +81,12 @@ Navigator.router.getStateForAction = (action, state) => {
         const routes = state.routes.slice(0, state.routes.length - 2);
         routes.push(action);
         return {
-          ...state,
-          routes,
-          index: routes.length - 1,
+            ...state,
+            routes,
+            index: routes.length - 1
         };
     }
-      
+
 
     // console.log('getStateForAction', action, state)
     return defaultStateAction(action, state);
