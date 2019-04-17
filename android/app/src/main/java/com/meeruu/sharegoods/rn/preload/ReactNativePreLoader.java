@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
-import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.MainApplication;
 

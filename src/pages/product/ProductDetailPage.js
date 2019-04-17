@@ -279,7 +279,7 @@ export default class ProductDetailPage extends BasePage {
                         [
                             {
                                 text: '取消', onPress: () => {
-                                    this.shareModal.open();
+                                    this.shareModal && this.shareModal.open();
                                 }
                             },
                             {
@@ -290,7 +290,7 @@ export default class ProductDetailPage extends BasePage {
                         ]
                     );
                 } else {
-                    this.shareModal.open();
+                    this.shareModal && this.shareModal.open();
                 }
                 break;
             case 'keFu':
@@ -601,7 +601,7 @@ export default class ProductDetailPage extends BasePage {
                                            this.$navigate('home/search/SearchPage');
                                            break;
                                        case 2:
-                                           this.shareModal.open();
+                                           this.shareModal && this.shareModal.open();
                                            break;
                                        case 4:
                                            this.$navigateBackToHome();

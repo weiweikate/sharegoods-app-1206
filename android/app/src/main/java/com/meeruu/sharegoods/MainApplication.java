@@ -1,7 +1,9 @@
 package com.meeruu.sharegoods;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
+import android.webkit.WebView;
 
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -64,6 +66,10 @@ public class MainApplication extends BaseApplication implements ReactApplication
             super.onCreate();
             // 检测内存泄漏
             LeakCanary.install(this);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                WebView.setDataDirectorySuffix("com.meeruu." + packageName);
+            }
         }
     }
 

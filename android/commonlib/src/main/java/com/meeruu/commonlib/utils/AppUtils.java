@@ -25,8 +25,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.umeng.socialize.utils.ContextUtil.getPackageName;
-
 /**
  * 跟App相关的辅助类
  * Created by louis on 2017/3/4.

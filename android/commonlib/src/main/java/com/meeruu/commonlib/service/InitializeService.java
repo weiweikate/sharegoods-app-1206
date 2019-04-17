@@ -1,11 +1,15 @@
 package com.meeruu.commonlib.service;
 
-import android.app.Activity;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
 
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.handler.CrashHandler;
@@ -13,7 +17,6 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.rn.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.qiyu.activity.QiyuServiceMessageActivity;
@@ -21,7 +24,6 @@ import com.meituan.android.walle.WalleChannelReader;
 import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
-import com.qiyukf.unicorn.api.pop.OnShopEventListener;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
@@ -35,8 +37,10 @@ public class InitializeService extends IntentService {
     private int patchStatus;
     private WeakHandler mHandler;
 
-    public InitializeService() {
-        super("InitializeService");
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        startForeground();
         mHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -52,10 +56,18 @@ public class InitializeService extends IntentService {
         });
     }
 
+    public InitializeService() {
+        super("InitializeService");
+    }
+
     public static void init(Context context) {
         Intent intent = new Intent();
         intent.setClass(context, InitializeService.class);
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
     }
 
     @Override
@@ -130,6 +142,23 @@ public class InitializeService extends IntentService {
                 }
             }
         });
+    }
+
+    private void startForeground() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(ParameterUtils.MR_NOTIFY_CHANNEL_ID, ParameterUtils.MR_NOTIFY_CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (manager == null)
+                return;
+            manager.createNotificationChannel(channel);
+            Notification notification = new NotificationCompat.Builder(this, ParameterUtils.MR_NOTIFY_CHANNEL_ID)
+                    .setAutoCancel(true)
+                    .setCategory(Notification.CATEGORY_SERVICE)
+                    .setOngoing(true)
+                    .setPriority(NotificationManager.IMPORTANCE_LOW)
+                    .build();
+            startForeground(ParameterUtils.NOTIFY_ID_APP_INIT, notification);
+        }
     }
 
     private YSFOptions QiYuOptions() {

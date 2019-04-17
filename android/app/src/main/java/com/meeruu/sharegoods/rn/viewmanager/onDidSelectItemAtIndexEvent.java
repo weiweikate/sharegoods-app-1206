@@ -1,6 +1,5 @@
 package com.meeruu.sharegoods.rn.viewmanager;
 
-import com.facebook.drawee.components.DraweeEventTracker;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;

@@ -60,7 +60,10 @@ export default class PaymentPage extends BasePage {
                 //是否选择余额
                 const { selectedBalace } = payment;
                 if (!selectedBalace && oneCoupon <= 0) {
-                    this.$navigate("payment/ChannelPage");
+                    this.$navigate("payment/ChannelPage",{
+                        bizType:bizType,
+                        modeType:modeType
+                    });
                     return;
                 }
                 //用户设置过交易密码
@@ -70,7 +73,11 @@ export default class PaymentPage extends BasePage {
                     this.$navigate("mine/account/JudgePhonePage", { title: "设置交易密码" });
                 }
             } else if (result.code === payStatus.payNeedThrid) {
-                this.$navigate("payment/ChannelPage", { remainMoney: Math.floor(result.unpaidAmount * 100) / 100 });
+                this.$navigate("payment/ChannelPage", {
+                    remainMoney: Math.floor(result.unpaidAmount * 100) / 100 ,
+                    bizType:bizType,
+                    modeType:modeType
+                });
             } else if (result.code === payStatus.payOut) {
                 Toast.$toast(payStatusMsg[result.code]);
                 this._goToOrder(2);
@@ -89,12 +96,11 @@ export default class PaymentPage extends BasePage {
     _selectedBalance() {
         payment.selectBalancePayment();
     }
-
     _platformPay(password) {
         let selectBance = payment.selectedBalace;
         let { availableBalance } = user;//去出用余额
         let channelAmount = parseFloat(payment.amounts); //需要支付的金额
-        let { fundsTradingNo, oneCoupon, bizType } = payment;
+        let { fundsTradingNo, oneCoupon, bizType,modeType } = payment;
         let detailList = [];
 
         if (channelAmount == 0.00){
@@ -133,7 +139,11 @@ export default class PaymentPage extends BasePage {
             this.setState({ showPwd: false });
             if (parseInt(result.status) === payStatus.payNeedThrid) {
                 payment.selectedBalace = false;
-                this.$navigate("payment/ChannelPage", { remainMoney: (payment.amounts - channelAmount).toFixed(2) });
+                this.$navigate("payment/ChannelPage", {
+                    remainMoney: (payment.amounts - channelAmount).toFixed(2) ,
+                    bizType:bizType,
+                    modeType:modeType
+                });
                 return;
             }
             let replace;
@@ -193,12 +203,21 @@ export default class PaymentPage extends BasePage {
     };
 
     _goToOrder(index) {
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
-            routeName: "order/order/MyOrdersListPage",
-            params: { index: index ? index : 1 }
-        });
-        this.props.navigation.dispatch(replace);
+        const {bizType} = payment;
+        if (bizType == 1){
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type:'ReplacePayScreen',
+                routeName: RouterMap.AddCapacityHistoryPage,
+            })
+        } else {
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type: "ReplacePayScreen",
+                routeName: "order/order/MyOrdersListPage",
+                params: { index: index ? index : 1 }
+            });
+        }
         payment.resetPayment();
     }
 
@@ -206,15 +225,16 @@ export default class PaymentPage extends BasePage {
         const { selectedBalace, name, bizType, oneCoupon } = payment;
         const { showPwd } = this.state;
         let { availableBalance } = user;
-        let channelAmount = (payment.amounts).toFixed(2);
+
+        let channelAmount = payment.amounts;
         //有优惠券先减掉优惠券
         if (bizType === 1) {
-            channelAmount = channelAmount - oneCoupon * 1 <= 0 ? 0 : channelAmount - oneCoupon * 1;
+            channelAmount = channelAmount - oneCoupon * 1 <= 0 ? 0.00 : channelAmount - oneCoupon * 1;
         }
         if (selectedBalace) {
-            channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance).toFixed(2);
+            channelAmount = (channelAmount - availableBalance) <= 0 ? 0.00 : (channelAmount - availableBalance);
         }
-
+        channelAmount =  channelAmount.toFixed(2);
         //此处可能因为拼店扩容存在一元劵
         return <View style={styles.container}>
             <View style={[styles.content, payment.oneCoupon > 0 ? { height: px2dp(150) } : { height: px2dp(100) }]}>

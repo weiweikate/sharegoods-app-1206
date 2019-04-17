@@ -9,7 +9,7 @@ import {
     MRText as Text
 } from '../../components/ui';
 import { observer } from 'mobx-react';
-import { ShowRecommendModules, tag, showBannerModules, showChoiceModules } from './Show';
+import { tag, showBannerModules, showChoiceModules } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
 
@@ -30,7 +30,6 @@ export default class ShowHotView extends React.Component {
     constructor(props) {
         super(props);
         this.firstLoad = true;
-        this.recommendModules = new ShowRecommendModules();
         this.state = {
             headerView: null
         };
@@ -54,7 +53,6 @@ export default class ShowHotView extends React.Component {
 
     loadData() {
         showChoiceModules.loadChoiceList().then(data => {
-
             if (Platform.OS !== 'ios' && data) {
                 this.setState({
                     headerView: this.renderHeader()
@@ -91,17 +89,14 @@ export default class ShowHotView extends React.Component {
                                 renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                                 onStartRefresh={() => {
                                     this.loadData();
-
                                 }}
                                 params={{ generalize: tag.Recommend + '' }}
                                 onStartScroll={() => {
                                     console.log('_onChoiceAction star');
                                     this.timer && clearTimeout(this.timer);
                                     this.choiceView && this.choiceView.changeIsScroll(true);
-                                    // this.choiceView && this.choiceView.isScroll = true;
                                 }}
                                 onEndScroll={() => {
-
                                     console.log('_onChoiceAction end1');
                                     this.timer = setTimeout(() => {
                                         this.choiceView && this.choiceView.changeIsScroll(false);
