@@ -41,13 +41,15 @@ export class AddCapacityPricePage extends BasePage {
         SpellShopApi.store_expend({ storeCode: spellStatusModel.storeCode }).then((data) => {
             const dataTemp = data.data || {};
             let selectedItem = {};
-            if (dataTemp.length > 0) {
-                const itemDic = dataTemp[0];
-                const { invalid } = itemDic;
+            for (let item of (dataTemp || [])) {
+                if (selectedItem.isSelected) {
+                    break;
+                }
+                const { invalid } = item;
                 if (!invalid) {
-                    //能选  默认第一个选中
-                    itemDic.isSelected = true;
-                    selectedItem = itemDic;
+                    //能选  默认选中一个
+                    item.isSelected = true;
+                    selectedItem = item;
                 }
             }
             this.setState({
@@ -66,34 +68,24 @@ export class AddCapacityPricePage extends BasePage {
         const { id } = this.state.selectedItem || {};
         const { amount } = this.state;
         if (!id) {
-            this.$toastShow('请选择扩容人数');
-        } else {
-            SpellShopApi.store_save({
-                expandId: id,
-                tokenCoinCount: amount
-            }).then((data) => {
-
-                //假支付
-                // const dataTemp = data.data || {};
-                // SpellShopApi.user_pay({ orderNo: dataTemp.orderNo, tokenCoin: 1 }).then(() => {
-                //     this.$navigate(RouterMap.AddCapacitySuccessPage, { storeData: this.params.storeData });
-                // }).catch(() => {
-                //     this.$toastShow('支付失败');
-                // });
-
-                const { orderNo, price } = data.data || {};
-                this.$navigate(RouterMap.PaymentPage, {
-                    platformOrderNo: orderNo,
-                    amounts: price,
-                    orderProductList: [{ productName: '拼店扩容' }],
-                    bizType: 1,
-                    modeType: 1,
-                    oneCoupon: amount
-                });
-            }).catch((e) => {
-                this.$toastShow(e.msg);
-            });
+            return;
         }
+        SpellShopApi.store_save({
+            expandId: id,
+            tokenCoinCount: amount
+        }).then((data) => {
+            const { orderNo, price } = data.data || {};
+            this.$navigate(RouterMap.PaymentPage, {
+                platformOrderNo: orderNo,
+                amounts: price,
+                orderProductList: [{ productName: '拼店扩容' }],
+                bizType: 1,
+                modeType: 1,
+                oneCoupon: amount
+            });
+        }).catch((e) => {
+            this.$toastShow(e.msg);
+        });
     };
 
     _itemBtnAction = (selectedIndex) => {
@@ -119,7 +111,7 @@ export class AddCapacityPricePage extends BasePage {
             this.$toastShow('请选择扩容人数');
             return;
         }
-        this.PickTicketModal.show(this.state.amount,(amount) => {
+        this.PickTicketModal.show(this.state.amount, (amount) => {
             let tempArr = [...this.state.dataList];
             this.setState({
                 amount,
@@ -202,6 +194,7 @@ export class AddCapacityPricePage extends BasePage {
     };
 
     _render() {
+        const { selectedItem } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <FlatList data={this.state.dataList}
@@ -209,7 +202,9 @@ export class AddCapacityPricePage extends BasePage {
                           keyExtractor={this._keyExtractor}
                           ListHeaderComponent={this._listHeaderComponent}
                           ListFooterComponent={this._listFooterComponent}/>
-                <NoMoreClick style={styles.payBtn} onPress={this._addBtnAction}>
+                <NoMoreClick
+                    style={[styles.payBtn, { backgroundColor: selectedItem.isSelected ? DesignRule.bgColor_btn : DesignRule.bgColor_grayer }]}
+                    onPress={this._addBtnAction}>
                     <Text style={styles.payText}>去支付</Text>
                 </NoMoreClick>
                 <PickTicketModal ref={(ref) => {
@@ -261,7 +256,7 @@ const styles = StyleSheet.create({
     payBtn: {
         justifyContent: 'center', alignItems: 'center',
         marginBottom: ScreenUtils.safeBottom + 10, marginHorizontal: 15,
-        borderRadius: 20, height: 40, backgroundColor: DesignRule.bgColor_btn
+        borderRadius: 20, height: 40
     },
     payText: {
         color: DesignRule.textColor_white, fontSize: 15

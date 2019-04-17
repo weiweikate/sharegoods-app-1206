@@ -181,7 +181,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             downloadHeaderImg(mContext, headImg, url, success, fail);
         }
-
     }
 
     private void downloadHeaderImg(final Context context, final String headImg, final String url, final Callback success, final Callback fail) {
@@ -226,6 +225,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     public void saveShopInviteFriendsImage(ReadableMap map, Callback success, Callback fail) {
         drawShopInviteFriendsImage(mContext, map, success, fail);
     }
+
     //    headerImg: `${shareInfo.headUrl}`,
     //    shopName: `${shareInfo.name}`,
     //    shopId: `ID: ${shareInfo.showNumber}`,
@@ -576,9 +576,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     }
                     Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), BitmapUtils.getBitmapOption(2));
                     if (bmp != null && !bmp.isRecycled()) {
-                        if(TextUtils.equals(shareImageBean.getImageType(),"web") ){
+                        if (TextUtils.equals(shareImageBean.getImageType(), "web")) {
                             drawWeb(context, bmp, shareImageBean, success, fail);
-                        }else {
+                        } else {
                             draw(context, bmp, shareImageBean, success, fail);
                         }
                     } else {
@@ -590,10 +590,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
 
-    public static void drawWeb(Context context, Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail){
+    public static void drawWeb(Context context, Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
 
         String info = shareImageBean.getQRCodeStr();
-        Bitmap result = Bitmap.createBitmap(250,  340, Bitmap.Config.ARGB_8888) ;
+        Bitmap result = Bitmap.createBitmap(250, 340, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -789,9 +789,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             shareImageBean.setSpell("");
         }
 
-        if(map.hasKey("imageType")){
+        if (map.hasKey("imageType")) {
             shareImageBean.setImageType(map.getString("imageType"));
-        }else {
+        } else {
             shareImageBean.setImageType(null);
         }
 

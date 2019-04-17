@@ -25,11 +25,17 @@ export default class PaymentCheckPage extends BasePage {
         this.state = {
             msg: " 支付返回结果等待中..."
         };
+        payment.checking = true;
     }
 
     $navigationBarOptions = {
         title: "支付订单"
     };
+
+    componentWillUnmount(){
+        payment.checking = false;
+
+    }
 
     componentDidMount() {
         this.orderTime = (new Date().getTime()) / 1000;
@@ -70,10 +76,11 @@ export default class PaymentCheckPage extends BasePage {
     _checkStatues = () => {
         let time = (new Date().getTime()) / 1000;
         track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checking" });
-        if (time - this.orderTime > 15) {
+        if (time - this.orderTime > 5) {
             track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "checkOut" });
-            this.$toastShow("支付结果请求超时");
-            this._goToOrder(2);
+            if (payment.checking) {
+                this._goToOrder(1);
+            }
             payment.resetPayment();
             return;
         }
@@ -100,12 +107,18 @@ export default class PaymentCheckPage extends BasePage {
                 payment.resetPayment();
                 track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
             } else if (parseInt(resultData.status) === payStatus.payClose) {
-                let replace = NavigationActions.replace({
-                    key: this.props.navigation.state.key,
-                    routeName: RouterMap.PaymentResultPage,
-                    params: { payResult: PaymentResult.fail, payMsg: "支付关闭" }
-                });
-                this.props.navigation.dispatch(replace);
+                const {bizType} = payment;
+                if (bizType !== 1){
+                    let replace = NavigationActions.replace({
+                        key: this.props.navigation.state.key,
+                        routeName: RouterMap.PaymentResultPage,
+                        params: { payResult: PaymentResult.fail, payMsg: "支付关闭" }
+                    });
+                    this.props.navigation.dispatch(replace);
+                } else {
+                    this._goToOrder();
+                }
+
                 payment.resetPayment();
             } else {
                 setTimeout(() => {
@@ -119,12 +132,21 @@ export default class PaymentCheckPage extends BasePage {
     };
 
     _goToOrder(index) {
-        this.props.navigation.dispatch({
-            key: this.props.navigation.state.key,
-            type: "ReplacePayScreen",
-            routeName: "order/order/MyOrdersListPage",
-            params: { index: index ? index : 1 }
-        });
+        const {bizType} = payment;
+        if (bizType == 1){
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type:'ReplacePayScreen',
+                routeName: RouterMap.AddCapacityHistoryPage,
+            })
+        } else {
+            this.props.navigation.dispatch({
+                key: this.props.navigation.state.key,
+                type: "ReplacePayScreen",
+                routeName: "order/order/MyOrdersListPage",
+                params: { index: index ? index : 1 }
+            });
+        }
     }
 
 }

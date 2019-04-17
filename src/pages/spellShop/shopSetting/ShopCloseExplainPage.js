@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Alert } from 'react-native';
 import BasePage from '../../../BasePage';
 import DesignRule from '../../../constants/DesignRule';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
@@ -33,10 +33,22 @@ export class ShopCloseExplainPage extends BasePage {
     };
 
     _exitBtnAction = () => {
-        SpellShopApi.store_disband().then(() => {
-            spellStatusModel.getUser(2);
-            this.$navigateBackToStore();
-        });
+        Alert.alert('提示', '确认解散该店铺吗？',
+            [
+                {
+                    text: '取消', onPress: () => {
+                    }
+                },
+                {
+                    text: '确定', onPress: () => {
+                        SpellShopApi.store_disband().then(() => {
+                            spellStatusModel.getUser(2);
+                            this.$navigateBackToStore();
+                        }).catch(e => this.$toastShow(e.msg));
+                    }
+                }
+            ]
+        );
     };
 
     componentDidMount() {

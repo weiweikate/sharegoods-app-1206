@@ -79,7 +79,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                     />
                 </ScrollView>
                 {this.params.status === 1 ? <TouchableWithoutFeedback onPress={() => {
-                    this.shareModal.open();
+                    this.shareModal && this.shareModal.open();
                 }}>
                     <View style={{
                         backgroundColor: DesignRule.mainColor,

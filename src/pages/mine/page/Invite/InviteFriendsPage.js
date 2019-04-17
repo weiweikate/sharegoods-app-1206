@@ -213,7 +213,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     </TouchableOpacity>
                     <View style={{ flex: 1 }}/>
                     <TouchableOpacity onPress={() => {
-                        this.shareModal.open();
+                        this.shareModal && this.shareModal.open();
                     }}>
                         <ImageBackground source={button} style={styles.btnContainer} resizeMode={'stretch'}>
                             <Text style={styles.btnText}>

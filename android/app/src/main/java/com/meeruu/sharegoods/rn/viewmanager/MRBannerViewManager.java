@@ -129,7 +129,10 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                     view.setAutoPlaying(false);
                     selectItemAtIndexEvent.init(view.getId());
                     selectItemAtIndexEvent.setIndex(position);
-                    eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
+                    try {
+                        eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
+                    } catch (Exception e) {
+                    }
                 }
             });
         }
