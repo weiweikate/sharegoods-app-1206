@@ -92,6 +92,7 @@ export default class MinePage extends BasePage {
             hasFans: false,
             modalId: false
         };
+        TrackApi.myPage();
     }
 
     $navigationBarOptions = {
