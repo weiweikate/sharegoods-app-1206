@@ -32,6 +32,7 @@ export default class InputCode extends BasePage {
             verifyCode: ''
             // showKeyBoard: true
         };
+        TrackApi.verifySMSPage();
     }
 
     $navigationBarOptions = {

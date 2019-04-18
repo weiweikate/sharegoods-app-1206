@@ -27,6 +27,7 @@ import SectionHeaderView from '../components/SectionHeaderView';
 import RouterMap from '../../../navigation/RouterMap';
 import user from '../../../model/user';
 import StringUtils from '../../../utils/StringUtils';
+import { TrackApi } from "../../../utils/SensorsTrack";
 
 const {px2dp} = ScreenUtils
 
@@ -52,6 +53,8 @@ export default class ShopCartPage extends BasePage {
         this.state = {
             showNav: false
         };
+
+        TrackApi.shoppingcart();
     }
 
     componentDidMount() {

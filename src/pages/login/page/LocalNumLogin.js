@@ -37,10 +37,10 @@ export default class LocalNumLogin extends BasePage {
             phoneNumber: this.params.tempPhone || "",
             authenToken: this.params.authenToken || ""
         };
+        TrackApi.onKeyLoginPage();
     }
     // 导航配置
     $navigationBarOptions = {
-        // title: '登录',
         gesturesEnabled: false
 
     };

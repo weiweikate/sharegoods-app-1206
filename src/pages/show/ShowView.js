@@ -11,6 +11,7 @@ import {
     MRText as Text,
 } from '../../components/ui';
 import res from './res'
+import { TrackApi } from "../../utils/SensorsTrack";
 const homeShowImg = res.other.home_show;
 const TagView = ({ text }) => <View style={styles.tagView}>
     <Text style={styles.tag} allowFontScaling={false}>{text}</Text>
@@ -22,6 +23,7 @@ export default class ShowView extends Component {
         super(props);
         this.showModules = new HomeShowModules();
         this.showModules.loadShowList();
+        TrackApi.xiuChang();
     }
 
     _renderItems(item, index) {
