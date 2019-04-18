@@ -107,9 +107,6 @@ export default class ShopCartPage extends BasePage {
             <ShopCartEmptyView navigateToHome={this.$navigateBackToHome}/>
         );
     };
-    _gotoLookAround = () => {
-        this.$navigateBackToHome();
-    };
     _renderListView = () => {
         if (!this.pageFocus) {
             return;
@@ -140,14 +137,7 @@ export default class ShopCartPage extends BasePage {
                     )}
                     renderHeaderView={(sectionData) => {
                         console.log(sectionData.section);
-                        return (
-                            <SectionHeaderView
-                                sectionData={sectionData.section}
-                                gotoCollectBills={(sectionData) => {
-                                    this._gotoCollectBills(sectionData);
-                                }}
-                            />
-                        );
+                        return (<SectionHeaderView sectionData={sectionData.section} navigate={this.$navigate}/>);
                     }}
                     listViewRef={(listView) => this.contentList = listView}
                     rightOpenValue={-75}
@@ -169,16 +159,6 @@ export default class ShopCartPage extends BasePage {
                 />
             </View>
         );
-    };
-    _gotoCollectBills = (sectionData) => {
-        if (!StringUtils.isEmpty(sectionData.activityCode)) {
-            this.$navigate(RouterMap.XpDetailPage, {
-                activityCode: sectionData.activityCode
-            });
-        } else {
-            this.$toastShow("活动不存在");
-        }
-
     };
     _renderRowHiddenComponent = (data, rowMap) => {
         return (
