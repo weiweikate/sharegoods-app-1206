@@ -25,6 +25,7 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import user from '../../model/user';
 
 import res from '../../comm/res';
+import { TrackApi } from "../../utils/SensorsTrack";
 
 const {
     button: {
@@ -72,18 +73,17 @@ export default class DownPricePage extends BasePage {
     };
 
     componentDidMount() {
-
+        const { linkTypeCode } = this.params;
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                const { linkTypeCode } = this.params;
                 console.log('-----' + linkTypeCode);
                 setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
                 });
-
             }
         );
+        TrackApi.specialTopicPage({"specialTopicId":linkTypeCode});
     }
 
     componentWillUnmount() {

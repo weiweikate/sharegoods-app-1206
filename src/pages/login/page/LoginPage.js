@@ -72,6 +72,7 @@ export default class LoginPage extends BasePage {
             showWxLoginBtn: false,
             isCanClick: true
         };
+        TrackApi.passLoginPage();
     }
 
     $navigationBarOptions = {

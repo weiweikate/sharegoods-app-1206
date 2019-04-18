@@ -14,6 +14,7 @@ import StringUtils from '../../../utils/StringUtils';
 import RouterMap from '../../../navigation/RouterMap';
 import ProtocolView from '../components/Login.protocol.view';
 import SMSTool from '../../../utils/SMSTool';
+import { TrackApi } from "../../../utils/SensorsTrack";
 
 const { px2dp } = ScreenUtils;
 const {
@@ -28,6 +29,7 @@ export default class InputPhoneNum extends BasePage {
             phoneNum: '',
             showKeyBoard: false
         };
+        TrackApi.registerPage();
     }
 
     $navigationBarOptions = {

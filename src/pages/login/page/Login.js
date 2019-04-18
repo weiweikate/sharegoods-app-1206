@@ -9,6 +9,7 @@ import { createBottomButton, createLoginButton, loginBtnType } from "../componen
 import res from "../res";
 import RouterMap from "../../../navigation/RouterMap";
 import { wxLoginAction } from "../model/LoginActionModel";
+import { TrackApi } from "../../../utils/SensorsTrack";
 
 const {
     other: {
@@ -27,8 +28,8 @@ export default class Login extends BasePage {
             tempPhone:"",
             authenToken: ""
         };
+        TrackApi.loginPage();
     }
-
     // 导航配置
     $navigationBarOptions = {
         gesturesEnabled: false
@@ -56,17 +57,7 @@ export default class Login extends BasePage {
                             source={tongyong_logo_nor}
                         />
                     </View>
-                    {/*<CommNavigation>*/}
-                    {/*<MRText>*/}
-                    {/*value 1*/}
-                    {/*</MRText>*/}
-                    {/*<MRText>*/}
-                    {/*value 2*/}
-                    {/*</MRText>*/}
-
-                    {/*</CommNavigation>*/}
                 </View>
-
                 {/*中部视图*/}
                 <View style={Styles.middleBgContent}>
                     {
