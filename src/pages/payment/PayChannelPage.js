@@ -6,7 +6,7 @@ import {
     TouchableWithoutFeedback,
     AppState,
     ActivityIndicator,
-    Platform,
+    // Platform,
     Alert
 } from "react-native";
 import res from "./res";
