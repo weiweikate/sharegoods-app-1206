@@ -58,7 +58,9 @@ const api = {
     subOrder: '/after-sale/order-detail',//子订单
     afterSaleList: '/after-sale/list',//列表
     checkInfo: ["/appraise/checkCommentStatus",{method:'get'}],//校验是否可晒单
-    return_express: "/after-sale/return-express"
+    return_express: "/after-sale/return-express",
+    //获取个人信息
+    getUser: ['/user/getUser', { method: 'get', checkLogin: true }],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

@@ -188,9 +188,12 @@
 - (void)collectionNode:(ASCollectionNode *)collectionNode didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
   if (_onItemPress) {
+    self.dataArr[indexPath.item].click = self.dataArr[indexPath.item].click + arc4random()%7 + 1;
+    self.dataArr[indexPath.item].appSetClick_ = self.dataArr[indexPath.item].click;
     _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
-    self.dataArr[indexPath.item].click = self.dataArr[indexPath.item].click + 5;
-    [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+       [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
+    });
   }
 }
 

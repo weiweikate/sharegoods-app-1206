@@ -52,6 +52,8 @@ class ConfirmOrderModel {
     couponData={}
     @observable
     err=null
+    @observable
+    allProductPrice = 0;
 
     @action clearData() {
         this.orderProductList = [];
@@ -74,6 +76,7 @@ class ConfirmOrderModel {
         this.couponCount=0;
         this.couponData={};
         this.err=null;
+        this.allProductPrice = 0;
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
@@ -199,23 +202,34 @@ class ConfirmOrderModel {
         this.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         this.couponList = data.couponList ? data.couponList : null;
         this.couponCount=data.couponCount;
+        let allProductPrice = 0;
         this.orderProductList.map((item) => {
+            let {quantity, num , unitPrice} = item
+            let  amount = quantity || num;
+            allProductPrice = allProductPrice + unitPrice * amount
             if ((item.restrictions & 1) === 1) {
                 this.canUseCou = true;
             }
         });
+        this.allProductPrice = allProductPrice;
         if (this.canUseCou) {
             let arr = [];
             let params = {};
-            if (this.orderParamVO.orderType == 99 || this.orderParamVO.orderType == 98) {
+            //99的普通商品， 98、经验值专区
+            if (this.orderParamVO.orderType == 99 || this.orderParamVO.orderType == 98 ) {
                 this.orderParamVO.orderProducts.map((item, index) => {
+
+                    let {quantity, num , skuCode, productCode} = item
+                    let  amount = quantity || num;
                     arr.push({
-                        priceCode: item.skuCode,
-                        productCode: item.productCode,
-                        amount: item.quantity || item.num
+                        priceCode: skuCode,
+                        productCode: productCode,
+                        amount: amount
                     });
                 });
+
                 params = { productPriceIds: arr };
+                //orderType1：秒杀，2：降价拍，3（，orderSubType 3升级礼包 4普通礼包）
             } else if (this.orderParamVO.orderType == 1 || this.orderParamVO.orderType == 2 || this.orderParamVO.orderType == 3) {
                 this.orderParamVO.orderProducts.map((item, index) => {
                     arr.push({

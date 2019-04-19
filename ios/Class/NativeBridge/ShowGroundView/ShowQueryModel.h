@@ -46,6 +46,7 @@ NS_ASSUME_NONNULL_END
 @property (nonatomic, copy)NSString *userName;
 @property (nonatomic, copy)NSString *time;
 @property (nonatomic, assign)NSInteger click;
+@property (nonatomic, assign)NSInteger appSetClick_;
 
 @property (nonatomic, assign)CGFloat coverImgWide;
 @property (nonatomic, assign)CGFloat coverImgHigh;
