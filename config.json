@@ -1,5 +1,5 @@
 {
-    "showDebugPanel": false,
+    "showDebugPanel": true,
     "envType": "qa",
     "isDevHotUpdate": false,
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
@@ -89,7 +89,7 @@
         },
         "dev_wkl": {
             "name": "王昆仑",
-            "host": "http://172.16.10.181:9090/gateway"
+            "host": "http://172.18.6.123:9090/gateway"
         },
         "dev_yxm": {
             "name": "杨小猛",
