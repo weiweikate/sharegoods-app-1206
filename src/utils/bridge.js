@@ -70,7 +70,7 @@ export default {
            QRCodeStr: '分享的链接',
            imageType: 'web'
  }
-     * @param onSuccess(path)
+     * @param onSuccess(path)apkExist
      * @param onError(errorStr)
      */
     creatShareImage(jsonParam, onSuccess, onError = (errorStr) => {
