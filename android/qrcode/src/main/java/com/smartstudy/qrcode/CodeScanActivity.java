@@ -10,10 +10,10 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.meeruu.statusbar.ImmersionBar;
 import com.smartstudy.qrcode.qrdecode.BarcodeFormat;
 import com.smartstudy.qrcode.qrscan.camera.CameraManager;
 import com.smartstudy.qrcode.qrscan.decoding.CaptureActivityHandler;
-import com.smartstudy.qrcode.tools.StatusBarUtils;
 
 import java.io.IOException;
 
@@ -106,17 +106,12 @@ public class CodeScanActivity extends AppCompatActivity implements SurfaceHolder
      * 沉浸式状态栏
      */
     public void initSystemBar() {
-        int result = StatusBarUtils.setLightMode(this);
-        if (result == 3) {
-            // 6.0以上沉浸式
-            StatusBarUtils.setColor(this, getResources().getColor(R.color.top_bg_color), 0);
-        } else if (result == 4) {
-            // 其它半透明效果
-            StatusBarUtils.setColor(this, getResources().getColor(R.color.top_bg_color));
-        } else {
-            // miui、flyme沉浸式
-            StatusBarUtils.setColor(this, getResources().getColor(R.color.top_bg_color), 0);
-        }
+        ImmersionBar.with(this)
+                .barColor(R.color.top_bg_color)
+                .fitsSystemWindows(true)
+                .statusBarDarkFont(true)
+                .navigationBarDarkIcon(true)
+                .init();
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {
