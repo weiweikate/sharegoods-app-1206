@@ -1,5 +1,4 @@
-// import { computed } from 'mobx';
-// import {observer} from 'mobx-react'
+
 import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
 import user from '../../../model/user';

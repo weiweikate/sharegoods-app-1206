@@ -533,6 +533,4 @@ public class CommModule extends ReactContextBaseJavaModule {
         intent.putExtra("url_action", "get");
         getCurrentActivity().startActivityForResult(intent, ParameterUtils.REQUEST_CODE_GONGMAO);
     }
-
-
 }

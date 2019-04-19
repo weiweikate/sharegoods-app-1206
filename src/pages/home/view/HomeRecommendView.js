@@ -2,7 +2,7 @@
  * 精品推荐
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ScreenUtil from '../../../utils/ScreenUtils';
 import MRBannerView from '../../../components/ui/bannerView/MRBannerView';
 import { track, trackEvent } from '../../../utils/SensorsTrack';

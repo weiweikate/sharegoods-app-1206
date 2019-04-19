@@ -57,6 +57,7 @@ import HomeFocusAdView from './view/HomeFocusAdView';
 const { px2dp, height, headerHeight } = ScreenUtils;
 const scrollDist = height / 2 - headerHeight;
 import BasePage from '../../BasePage';
+import { TrackApi } from "../../utils/SensorsTrack";
 
 const Footer = ({ errorMsg, isEnd, isFetching }) => <View style={styles.footer}>
     <Text style={styles.text}
@@ -145,8 +146,8 @@ class HomePage extends BasePage {
         InteractionManager.runAfterInteractions(() => {
             homeModule.loadHomeList(true);
         });
+        TrackApi.homePage();//埋点
     }
-
 
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(

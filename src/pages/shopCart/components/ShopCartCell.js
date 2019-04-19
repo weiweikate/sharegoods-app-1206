@@ -5,10 +5,9 @@
  *
  * @flow
  * @format
- * Created by huchao on 2018/12/13.
+ * Created by huyufeng on 2019/1/3.
  *
  */
-
 'use strict';
 
 import React, { Component } from 'react';
