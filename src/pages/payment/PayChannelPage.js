@@ -17,7 +17,7 @@ import DesignRule from "../../constants/DesignRule";
 import { MRText as Text } from "../../components/ui";
 import { payment, paymentType, paymentTrack, payStatus, payStatusMsg } from "./Payment";
 import { PaymentResult } from "./PaymentResultPage";
-import { track, trackEvent } from "../../utils/SensorsTrack";
+import { track, TrackApi, trackEvent } from "../../utils/SensorsTrack";
 
 const { px2dp } = ScreenUtils;
 import Toast from "../../utils/bridge";
@@ -60,8 +60,9 @@ export default class ChannelPage extends BasePage {
         //将type给payment 做存储
         payment.bizType = this.params.bizType || 0;
         payment.modeType = this.params.modeType || 0;
-
         this.canShowAlter = true;
+
+        TrackApi.orderPayChannelPage();
     }
 
     componentDidMount() {
