@@ -113,7 +113,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
                 Random random = new Random();
-                final int count = random.nextInt(4) + 1;
+                final int count = random.nextInt(6) + 1;
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
