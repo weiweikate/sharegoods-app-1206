@@ -1,6 +1,7 @@
-import { NativeModules } from 'react-native';
+import { NativeModules,Platform } from 'react-native';
 // import SensorsEvent from './SensorsEvent'
 import SensorsEvent from './TrackEvent'
+import user from "../model/user";
 const {
     track,
     trackTimerStart,
@@ -96,7 +97,10 @@ function trackUtil(p) {
         let key = keys[i];
         let value = p[key]
         arr[key]= (s) => {
-            track(value.name, {...value.params,...s})
+            track(value.name, {
+                "platformType":Platform.OS ==="ios"?"iOS":"Android",
+                "userLevel":user.isLogin?user.level:"V1",
+                ...value.params,...s})
         }
     }
     return arr;

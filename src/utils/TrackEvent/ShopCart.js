@@ -9,6 +9,6 @@ const  shopCartModular = {
         "name": "ViewShoppingcart",//  提交订单
         "params": {}
     },
-    ''
+
 }
 export default shopCartModular
