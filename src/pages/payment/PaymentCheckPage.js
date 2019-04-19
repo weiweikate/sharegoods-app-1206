@@ -10,7 +10,7 @@ import { payment, paymentTrack, payStatus } from "./Payment";
 import DesignRule from "../../constants/DesignRule";
 import ScreenUtils from "../../utils/ScreenUtils";
 import res from "./res";
-import { track, trackEvent } from "../../utils/SensorsTrack";
+import { track, TrackApi, trackEvent } from "../../utils/SensorsTrack";
 import { PaymentResult } from "./PaymentResultPage";
 import { NavigationActions } from "react-navigation";
 import RouterMap from "../../navigation/RouterMap";
@@ -105,7 +105,8 @@ export default class PaymentCheckPage extends BasePage {
                 }
                 this.props.navigation.dispatch(replace);
                 payment.resetPayment();
-                track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
+                TrackApi.orderPayResultPage({isPaySuccess:true})
+                // track(trackEvent.payOrder, { ...paymentTrack, paymentProgress: "success" });
             } else if (parseInt(resultData.status) === payStatus.payClose) {
                 const {bizType} = payment;
                 if (bizType !== 1){
@@ -118,8 +119,8 @@ export default class PaymentCheckPage extends BasePage {
                 } else {
                     this._goToOrder();
                 }
-
                 payment.resetPayment();
+                TrackApi.orderPayResultPage({isPaySuccess:false})
             } else {
                 setTimeout(() => {
                     this._checkStatues();
