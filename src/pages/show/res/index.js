@@ -8,6 +8,7 @@ const index = {
     more: require('./more.png'),
     showFire:require('./show_fire.png'),
     noShowFire:require('./no_show_fire.png'),
-    grayMore:require('./gray_more.png')
+    grayMore:require('./gray_more.png'),
+    likeIcon:require('./like_icon.png')
 };
 export default index

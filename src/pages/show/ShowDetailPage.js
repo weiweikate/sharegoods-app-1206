@@ -255,7 +255,7 @@ export default class ShowDetailPage extends BasePage {
             detail = {imgs: '', products: [], click: 0, content: ''}
         }
         let products = detail.products;
-        let number = detail.click;
+        let number = this.params.appSetClick;
         if (!number) {
             number = 0;
         }
@@ -372,15 +372,15 @@ export default class ShowDetailPage extends BasePage {
                             <Image style={styles.collectImg}
                                    source={detail.hadCollect ? res.showFire : res.noShowFire}/>
                             <Text style={styles.bottomText}
-                                  allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'人气值'} · {detail.collectCount}</Text>
+                                  allowFontScaling={false}>{pageState === PageLoadingState.fail ? '' :'收藏'} · {detail.collectCount}</Text>
                         </TouchableOpacity>
                 }
             </ScrollView>
             {pageState === PageLoadingState.fail ? null :
                 <View style={styles.bottom}>
                     <View style={styles.showTimesWrapper}>
-                        <Image source={res.button.see} style={styles.seeImgStyle}/>
-                        <Text style={styles.number} allowFontScaling={false}>浏览 · {number}</Text>
+                        <Image source={res.likeIcon} style={styles.seeImgStyle}/>
+                        <Text style={styles.number} allowFontScaling={false}>人气值 · {number}</Text>
                     </View>
 
                     <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
@@ -612,7 +612,7 @@ let styles = StyleSheet.create({
     },
     seeImgStyle: {
         width: px2dp(20),
-        height: px2dp(12)
+        height: px2dp(20)
     }
 });
 
