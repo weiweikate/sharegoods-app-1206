@@ -230,7 +230,7 @@ class ConfirmOrderModel {
 
                 params = { productPriceIds: arr };
                 //orderType1：秒杀，2：降价拍，3（，orderSubType 3升级礼包 4普通礼包）
-            } else if (this.orderParamVO.orderType == 1 || this.orderParamVO.orderType == 2 || this.orderParamVO.orderType == 3) {
+            } else if (this.orderParamVO.orderType == 1 || this.orderParamVO.orderType == 2  || this.orderParamVO.orderType == 3) {
                 this.orderParamVO.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,

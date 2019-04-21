@@ -61,7 +61,16 @@ export default class RequestDetailPage extends BasePage {
             shareParmas: {},
             hasRightItem: false,
         };
+        this.webType = 'isExchangeWeb';
 
+    }
+
+    $NavigationBarDefaultLeftPressed = () => {
+        if (this.webView === 'isExchangeWeb') {
+
+        }else {
+            this.$navigateBack();
+        }
     }
 
     $NavBarRenderRightItem = () => {
