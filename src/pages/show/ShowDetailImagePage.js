@@ -24,7 +24,6 @@ export default class ShowDetailImagePage extends BasePage {
                                 onCancel={() => {this.props.navigation.goBack();}}
                                 loadingRender={() => {
                     return null;
-                    // return (<Image source={"./imgs/common/loading-normal.gif"} style={{ width: 30, height: 30 }}/>);
                 }}
                                 saveToLocalByLongPress = {true}
                                 onSaveToCamera={()=> {this.$toastShow('保存成功')}}

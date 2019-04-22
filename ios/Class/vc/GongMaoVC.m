@@ -79,7 +79,7 @@ static  NSString * constTile = @"公猫认证";
   NSString *url_str = navi_url.absoluteString;
   NSLog(@"@@@@@%@",url_str);
   NSString *mark = [StorageFromRN getGongMao];
-  if ([mark isEqualToString:url_str]) {
+  if (url_str && [url_str containsString:mark]) {
     decisionHandler(WKNavigationActionPolicyCancel);
     [self.navigationController popViewControllerAnimated:YES];
     if (self.resolver) {

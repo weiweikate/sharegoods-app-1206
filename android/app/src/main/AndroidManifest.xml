@@ -78,17 +78,27 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:maxAspectRatio="2.4"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
 
-        <!-- 适配全面屏手机 -->
+        <!-- 适配全面屏 -->
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.1" />
+            android:value="2.4" />
+        <!-- 适配华为(hua wei)刘海屏 -->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
+        <!-- 适配小米(xiao mi)刘海屏 -->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
 
         <!-- android N适配 -->
         <provider
@@ -230,6 +240,7 @@
         <activity
             android:name=".MainActivity"
             android:hardwareAccelerated="true"
+            android:resizeableActivity="true"
             android:theme="@style/AppSplashTheme"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden">
             <intent-filter>
@@ -271,8 +282,9 @@
 
         <activity
             android:name=".ui.activity.MRWebviewActivity"
+            android:resizeableActivity="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateUnchanged|adjustResize" />
+            android:windowSoftInputMode="stateUnchanged|adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".ui.activity.ClipPictureActivity"
             android:screenOrientation="portrait"

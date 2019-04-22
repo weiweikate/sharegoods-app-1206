@@ -11,8 +11,8 @@ import com.meeruu.qiyu.KeyBoardUtils;
 import com.meeruu.qiyu.SPCacheUtils;
 import com.meeruu.qiyu.ScreenUtils;
 import com.meeruu.qiyu.SoftKeyboardFixerForFullscreen;
-import com.meeruu.qiyu.StatusBarUtils;
 import com.meeruu.qiyu.view.MyKefuButton;
+import com.meeruu.statusbar.ImmersionBar;
 import com.qiyukf.unicorn.R;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.Unicorn;
@@ -26,21 +26,11 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         SoftKeyboardFixerForFullscreen.assistActivity(this);
-        int result = StatusBarUtils.setLightMode(this);
-        int statusColor = android.R.color.white;
-        if (result == 3) {
-            // 6.0以上沉浸式
-            StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
-            handleTop();
-        } else if (result == 4) {
-            // 其它半透明效果
-            StatusBarUtils.setColor(this, getResources().getColor(statusColor));
-        } else {
-            // miui、flyme沉浸式
-            StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
-            handleTop();
-        }
-
+        ImmersionBar.with(this).barColor(android.R.color.white)
+                .fitsSystemWindows(true)
+                .navigationBarColor(android.R.color.white)
+                .statusBarDarkFont(true)
+                .navigationBarDarkIcon(true).init();
         MyKefuButton myKefuButton = findViewById(R.id.mb_kefu_btn);
         final ImageView ivKefu = findViewById(R.id.iv_kefu);
         Bundle data = getIntent().getExtras();
@@ -89,23 +79,6 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
             LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) titleBar.getLayoutParams();
             param.height += ScreenUtils.getStatusHeight(this);
             titleBar.setLayoutParams(param);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        int result = StatusBarUtils.setLightMode(this);
-        int statusColor = android.R.color.white;
-        if (result == 3) {
-            // 6.0以上沉浸式
-            StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
-        } else if (result == 4) {
-            // 其它半透明效果
-            StatusBarUtils.setColor(this, getResources().getColor(statusColor));
-        } else {
-            // miui、flyme沉浸式
-            StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
         }
     }
 
