@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { ImageCacheManager } from 'react-native-cached-image'
+import { ImageCacheManager } from 'react-native-cached-image';
 import {
     TouchableOpacity,
     View,
@@ -24,8 +24,11 @@ import {
 import ImageZoom from './FlyImageZoom';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from '../../constants/DesignRule';
-import ImageLoad from '@mr/image-placeholder'
-import {MRText as Text} from '../../components/ui';
+import ImageLoad from '@mr/image-placeholder';
+import { MRText as Text } from '../../components/ui';
+import res from '../res';
+
+const { down_icon, close_icon } = res.button;
 
 let staticStyle = {
     show: false,
@@ -42,7 +45,7 @@ export default class FlyImageViewer extends Component {
     getStyle(width: number, height: number) {
         return {
             modalContainer: {
-                backgroundColor: DesignRule.textColor_mainTitle,
+                backgroundColor: DesignRule.black,
                 justifyContent: 'center',
                 alignItems: 'center',
                 overflow: 'hidden'
@@ -522,26 +525,28 @@ export default class FlyImageViewer extends Component {
             //     isShowMenu: true
             // });
             let that = this;
-            if (Platform.OS === 'ios'){
+            if (Platform.OS === 'ios') {
                 ActionSheetIOS.showActionSheetWithOptions({
                         options: ['取消', '保存图片到相册'],
                         // title: null,
-                        cancelButtonIndex: 0,
+                        cancelButtonIndex: 0
                     },
                     (buttonIndex) => {
-                        if (buttonIndex === 1) {that.saveToLocal()}
+                        if (buttonIndex === 1) {
+                            that.saveToLocal();
+                        }
                     });
-            }else {
+            } else {
 
                 Alert.alert(
                     '保存图片',
                     null,
                     [
-                        {text: '取消', onPress: () => console.log('取消'),style: 'cancel'},
-                        {text: '保存到相册', onPress: () => that.saveToLocal()}
+                        { text: '取消', onPress: () => console.log('取消'), style: 'cancel' },
+                        { text: '保存到相册', onPress: () => that.saveToLocal() }
                     ],
                     { cancelable: false }
-                )
+                );
             }
         }
     }
@@ -550,7 +555,7 @@ export default class FlyImageViewer extends Component {
      * 单击
      */
     handleClick() {
-        this.props.onClick(this.handleCancel.bind(this));
+        // this.props.onClick(this.handleCancel.bind(this));
     }
 
     /**
@@ -631,7 +636,7 @@ export default class FlyImageViewer extends Component {
                                onClick={this.handleClick.bind(this)}
                                onDoubleClick={this.handleDoubleClick.bind(this)}>
                         <ImageLoad style={[this.styles.imageStyle, { width: width, height: height }]}
-                               source={{ uri: image }}/>
+                                   source={{ uri: image }}/>
                     </ImageZoom>
                 );
             } else {
@@ -649,8 +654,8 @@ export default class FlyImageViewer extends Component {
                     case 'success':
                         return (
                             <ImageLoad key={index}
-                                   style={[this.styles.imageStyle, { width: width, height: height }]}
-                                   source={{ uri: image }}/>
+                                       style={[this.styles.imageStyle, { width: width, height: height }]}
+                                       source={{ uri: image }}/>
                         );
                     case 'fail':
                         return (
@@ -669,7 +674,7 @@ export default class FlyImageViewer extends Component {
                                 <TouchableOpacity key={index}
                                                   style={this.styles.failContainer}>
                                     <ImageLoad source={this.props.failImageSource}
-                                           style={this.styles.failImage}/>
+                                               style={this.styles.failImage}/>
                                 </TouchableOpacity>
                             </ImageZoom>
                         );
@@ -725,13 +730,17 @@ export default class FlyImageViewer extends Component {
     saveToLocal() {
         if (!this.props.onSave) {
             let that = this;
-            if (Platform.OS === 'ios'){
+            if (Platform.OS === 'ios') {
                 CameraRoll.saveToCameraRoll(that.props.imageUrls[that.state.currentShowIndex])
-                    .then(()=> {that.props.onSaveToCamera(that.state.currentShowIndex);});
-            }else {
-                ImageCacheManager().downloadAndCacheUrl(this.props.imageUrls[this.state.currentShowIndex]).then(((path)=>{
+                    .then(() => {
+                        that.props.onSaveToCamera(that.state.currentShowIndex);
+                    });
+            } else {
+                ImageCacheManager().downloadAndCacheUrl(this.props.imageUrls[this.state.currentShowIndex]).then(((path) => {
                     CameraRoll.saveToCameraRoll(path)
-                        .then(()=> {that.props.onSaveToCamera(that.state.currentShowIndex);})
+                        .then(() => {
+                            that.props.onSaveToCamera(that.state.currentShowIndex);
+                        });
                 }));
             }
 
@@ -756,12 +765,14 @@ export default class FlyImageViewer extends Component {
                     <TouchableHighlight underlayColor={DesignRule.color_f2}
                                         onPress={this.saveToLocal.bind(this)}
                                         style={this.styles.operateContainer}>
-                        <Text style={this.styles.operateText} allowFontScaling={false}>{this.props.menuContext.saveToLocal}</Text>
+                        <Text style={this.styles.operateText}
+                              allowFontScaling={false}>{this.props.menuContext.saveToLocal}</Text>
                     </TouchableHighlight>
                     <TouchableHighlight underlayColor={DesignRule.color_f2}
                                         onPress={this.handleLeaveMenu.bind(this)}
                                         style={this.styles.operateContainer}>
-                        <Text style={this.styles.operateText} allowFontScaling={false}>{this.props.menuContext.cancel}</Text>
+                        <Text style={this.styles.operateText}
+                              allowFontScaling={false}>{this.props.menuContext.cancel}</Text>
                     </TouchableHighlight>
                 </View>
             </View>
@@ -774,6 +785,36 @@ export default class FlyImageViewer extends Component {
         });
     }
 
+    downloadIcon = () => {
+        return (
+            <TouchableWithoutFeedback
+                onPress={() => this.handleLongPress(this.props.imageUrls[this.state.currentShowIndex])}>
+                <Image style={{
+                    width: 16,
+                    height: 16,
+                    position: 'absolute',
+                    bottom: 17,
+                    right: 18
+                }}
+                       source={down_icon}/>
+            </TouchableWithoutFeedback>
+        );
+    };
+
+    closeIcon = () => {
+        return (<TouchableWithoutFeedback
+            onPress={() => this.handleCancel()}>
+            <Image style={{
+                width: 18,
+                height: 18,
+                position: 'absolute',
+                top: 20+ScreenUtils.statusBarHeight,
+                left: 15
+            }}
+                   source={close_icon}/>
+        </TouchableWithoutFeedback>);
+    };
+
     render() {
         let childs = null;
 
@@ -781,6 +822,8 @@ export default class FlyImageViewer extends Component {
             <View>
                 {this.getContent()}
                 {this.getMenu()}
+                {this.downloadIcon()}
+                {this.closeIcon()}
             </View>
         );
 

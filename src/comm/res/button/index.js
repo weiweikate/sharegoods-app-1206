@@ -21,6 +21,8 @@ const button = {
     close_eye: require('./close_eye.png'),//灰色喝上4眼睛
     white_go: require('./white_go.png'),//白色向右箭头
     del_web: require('./del_web.png'),
-    message_three: require('./tongyong_icon_more_nor.png')
+    message_three: require('./tongyong_icon_more_nor.png'),
+    down_icon: require('./down_icon.png'),
+    close_icon: require('./close_icon.png')
 };
 export default button;

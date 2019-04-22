@@ -110,7 +110,9 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={res.button.white_back}/>
+                        <View style={{ width: 60 }}>
+                            <Image source={res.button.white_back}/>
+                        </View>
                     </TouchableWithoutFeedback>
                 </View>
             </ImageBackground>
