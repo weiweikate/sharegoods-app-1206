@@ -6,7 +6,7 @@ import {
     TouchableWithoutFeedback,
     AppState,
     ActivityIndicator,
-    // Platform,
+    Platform,
     Alert
 } from "react-native";
 import res from "./res";
@@ -17,12 +17,13 @@ import DesignRule from "../../constants/DesignRule";
 import { MRText as Text } from "../../components/ui";
 import { payment, paymentType, paymentTrack, payStatus, payStatusMsg } from "./Payment";
 import { PaymentResult } from "./PaymentResultPage";
-import { track, trackEvent } from "../../utils/SensorsTrack";
+import { track, TrackApi, trackEvent } from "../../utils/SensorsTrack";
 
 const { px2dp } = ScreenUtils;
 import Toast from "../../utils/bridge";
 import { NavigationActions } from "react-navigation";
 import RouterMap from "../../navigation/RouterMap";
+import StringUtils from "../../utils/StringUtils";
 
 @observer
 export default class ChannelPage extends BasePage {
@@ -39,7 +40,7 @@ export default class ChannelPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            remainMoney: isNaN(parseFloat(this.params.remainMoney)) ? 0.0 : parseFloat(this.params.remainMoney)
+            remainMoney:  0.0
         };
         let orderProduct = this.params.orderProductList && this.params.orderProductList[0];
         let name = orderProduct && orderProduct.productName;
@@ -60,8 +61,9 @@ export default class ChannelPage extends BasePage {
         //将type给payment 做存储
         payment.bizType = this.params.bizType || 0;
         payment.modeType = this.params.modeType || 0;
-
         this.canShowAlter = true;
+
+        TrackApi.orderPayChannelPage();
     }
 
     componentDidMount() {
@@ -69,7 +71,7 @@ export default class ChannelPage extends BasePage {
         const { platformOrderNo, bizType, modeType, name, amounts } = payment;
         payment.checkOrderStatus(platformOrderNo, bizType, modeType, amounts, name).then(result => {
             this.setState({
-                remainMoney: Math.floor(result.unpaidAmount * 100) / 100
+                remainMoney:Math.floor(StringUtils.mul(result.unpaidAmount , 100))  / 100
             });
         });
     }
@@ -95,7 +97,7 @@ export default class ChannelPage extends BasePage {
         payment.checkOrderStatus(platformOrderNo, this.bizType, this.modeType, payAmount, name)
             .then(result => {
                 //以为借口返回的剩余未支付为准
-                payAmount = Math.floor(result.unpaidAmount * 100) / 100;
+                payAmount = Math.floor(StringUtils.mul(result.unpaidAmount , 100)) / 100;
                 console.log("checkOrderStatus", result);
                 let detailList = [];
                 if (result.code === payStatus.payNo || result.code === payStatus.payNeedThrid) {
@@ -138,7 +140,6 @@ export default class ChannelPage extends BasePage {
                                             Toast.$toast(err.msg);
                                             return;
                                         }
-
                                         this._goToOrder();
                                     });
 
@@ -161,7 +162,6 @@ export default class ChannelPage extends BasePage {
             }).catch(err => {
             Toast.$toast(err.msg);
         });
-
     }
 
     _handleAppStateChange = (nextAppState) => {
@@ -173,7 +173,7 @@ export default class ChannelPage extends BasePage {
         if (this.state.orderChecking === true) {
             return;
         }
-        if (payment.isGoToPay === false) {
+        if (payment.isGoToPay === false && Platform.OS !== 'ios' ) {
             return;
         }
         if (payment.platformOrderNo && selctedPayType !== paymentType.none && this.canShowAlter) {

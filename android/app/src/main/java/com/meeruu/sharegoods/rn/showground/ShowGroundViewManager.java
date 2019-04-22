@@ -3,17 +3,26 @@ package com.meeruu.sharegoods.rn.showground;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.views.webview.ReactWebViewManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
     private static final String COMPONENT_NAME = "ShowGroundView";
+    public static final int REPLACE_DATA = 1;
 
     @Override
     public String getName() {
@@ -46,29 +55,30 @@ public class ShowGroundViewManager extends ViewGroupManager<ViewGroup> {
         }
     }
 
+    @javax.annotation.Nullable
+    @Override
+    public Map<String, Integer> getCommandsMap() {
+        return MapBuilder.of("replaceData", REPLACE_DATA);
+    }
+
+    @Override
+    public void receiveCommand(@Nonnull ViewGroup root, int commandId, @javax.annotation.Nullable ReadableArray args) {
+        switch (commandId) {
+            case REPLACE_DATA: {
+                Object object = root.getTag();
+                if (object != null && object instanceof ShowGroundView) {
+                    ((ShowGroundView) object).repelaceData(args.getInt(0), args.getInt(1));
+                }
+            }
+            break;
+
+        }
+    }
+
     @Nullable
     @Override
     public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
-        return MapBuilder.<String, Object>builder()
-                .put(
-                        "MrShowGroundOnItemPressEvent",
-                        MapBuilder.of(
-                                "phasedRegistrationNames",
-                                MapBuilder.of(
-                                        "bubbled", "onItemPress")))
-                .put("MrShowGroundOnStartRefreshEvent", MapBuilder.of(
-                        "phasedRegistrationNames",
-                        MapBuilder.of(
-                                "bubbled", "onStartRefresh")))
-                .put("MrShowGroundOnStartScrollEvent", MapBuilder.of(
-                        "phasedRegistrationNames",
-                        MapBuilder.of(
-                                "bubbled", "onStartScroll")))
-                .put("MrShowGroundOnEndScrollEvent", MapBuilder.of(
-                        "phasedRegistrationNames",
-                        MapBuilder.of(
-                                "bubbled", "onEndScroll")))
-                .build();
+        return MapBuilder.<String, Object>builder().put("MrShowGroundOnItemPressEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onItemPress"))).put("MrShowGroundOnStartRefreshEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartRefresh"))).put("MrShowGroundOnStartScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onStartScroll"))).put("MrShowGroundOnEndScrollEvent", MapBuilder.of("phasedRegistrationNames", MapBuilder.of("bubbled", "onEndScroll"))).build();
     }
 
 }

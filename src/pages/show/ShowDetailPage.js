@@ -256,7 +256,7 @@ export default class ShowDetailPage extends BasePage {
             detail = {imgs: '', products: [], click: 0, content: ''}
         }
         let products = detail.products;
-        let number = this.params.appSetClick;
+        let number = detail.click;
         if (!number) {
             number = 0;
         }

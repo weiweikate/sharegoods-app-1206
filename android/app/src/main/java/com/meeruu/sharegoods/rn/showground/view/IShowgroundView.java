@@ -13,4 +13,6 @@ public interface IShowgroundView {
     void loadMoreFail();
 
     void viewLoadMore(List data);
+
+    void repelaceData(int index,int clickNum);
 }

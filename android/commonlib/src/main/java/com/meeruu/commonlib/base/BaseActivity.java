@@ -11,12 +11,13 @@ import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.utils.NoFastClickUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.commonlib.utils.StringUtis;
 import com.meeruu.permissions.AfterPermissionGranted;
 import com.meeruu.permissions.AppSettingsDialog;
 import com.meeruu.permissions.Permission;
 import com.meeruu.permissions.PermissionUtil;
+import com.meeruu.statusbar.BarHide;
+import com.meeruu.statusbar.ImmersionBar;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         mInflater = LayoutInflater.from(this);
         super.onCreate(savedInstanceState);
-        initSystemBar();
+        initStatusBar();
     }
 
     @Override
@@ -111,28 +112,19 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     /**
      * 沉浸式状态栏
      */
-    public void initSystemBar() {
-        int result = StatusBarUtils.setLightMode(this);
-        if (!changeStatusTrans) {
-            if (result == 3) {
-                // 6.0以上沉浸式
-                StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
-            } else if (result == 4) {
-                // 其它半透明效果
-                StatusBarUtils.setColor(this, getResources().getColor(statusColor));
-            } else {
-                // miui、flyme沉浸式
-                StatusBarUtils.setColor(this, getResources().getColor(statusColor), 0);
-            }
+    public void initStatusBar() {
+        ImmersionBar immersionBar = ImmersionBar.with(this);
+        if (changeStatusTrans) {
+            immersionBar.transparentStatusBar();
         } else {
-            if (result == 4) {
-                // 其它半透明效果
-                StatusBarUtils.setTranslucent(this, StatusBarUtils.DEFAULT_STATUS_BAR_ALPHA);
-            } else {
-                // 透明效果
-                StatusBarUtils.setTransparent(this);
-            }
+            immersionBar.barColor(statusColor)
+                    .hideBar(BarHide.FLAG_SHOW_BAR)
+                    .fitsSystemWindows(true);
         }
+        immersionBar.navigationBarColor(statusColor)
+                .statusBarDarkFont(true)
+                .navigationBarDarkIcon(true)
+                .init();
     }
 
     @Override
