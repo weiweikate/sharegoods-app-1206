@@ -3,6 +3,7 @@ import detailNavView from './detailNavView';
 import xpProduct from './xpProduct/index';
 import productScore from './productScore';
 import service from './service';
+import suitProduct from './suitProduct';
 
 const product = {
     ...res,
@@ -29,6 +30,9 @@ const product = {
     },
     service: {
         ...service
+    },
+    suitProduct: {
+        ...suitProduct
     }
 };
 export default product;
