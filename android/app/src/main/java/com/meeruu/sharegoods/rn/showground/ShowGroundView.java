@@ -112,24 +112,12 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             @Override
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-//                Random random = new Random();
-//                final int count = random.nextInt(6) + 1;
-//                recyclerView.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        NewestShowGroundBean.DataBean bean = data.get(position);
-//                        bean.setClick(bean.getClick() + count);
-//                        adapter.replaceData(data);
-//
-//                    }
-//                }, 200);
-
                 if (data != null) {
                     NewestShowGroundBean.DataBean item = data.get(position);
                     String json = JSONObject.toJSONString(item);
                     Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
                     });
-//                    map.put("appSetClick", item.getClick() + count);
+                    map.put("index", position);
                     WritableMap realData = Arguments.makeNativeMap(map);
                     if (eventDispatcher != null) {
                         itemPressEvent.init(view.getId());
