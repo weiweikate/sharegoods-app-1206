@@ -23,6 +23,7 @@ import { getTopicJumpPageParam } from './model/TopicMudelTool';
 import CommShareModal from '../../comm/components/CommShareModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import user from '../../model/user';
+import Manager,{AdViewBindModal} from '../../components/web/WebModalManager'
 
 import res from '../../comm/res';
 import { TrackApi } from "../../utils/SensorsTrack";
@@ -55,6 +56,14 @@ export default class DownPricePage extends BasePage {
                 this.dataModel.isShowLoading = false;
             }
         });
+        //获取弹出框的信息
+        this.manager = new Manager();
+        this.AdModal = observer(AdViewBindModal(this.manager))
+        this.manager.getAd(3,this.params.linkTypeCode);
+    }
+
+    $NavigationBarDefaultLeftPressed = () => {
+            this.manager.showAd(()=>this.$navigateBack())
     }
 
     $NavBarRenderRightItem = () => {
@@ -194,6 +203,7 @@ export default class DownPricePage extends BasePage {
         const { imgUrl } = this.dataModel;
         const { linkTypeCode } = this.params;
         this.$NavigationBarResetTitle(this.dataModel.name);
+        const AdModal = this.AdModal;
         return (
             <ScrollView
                 alwaysBounceVertical={true}
@@ -262,6 +272,7 @@ export default class DownPricePage extends BasePage {
                                     miniProgramPath: `/pages/index/index?type=5&id=${linkTypeCode}&inviteId=${user.code || ''}`
                                 }}
                 />
+                <AdModal />
             </ScrollView>
         );
     }

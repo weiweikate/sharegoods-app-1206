@@ -17,17 +17,21 @@ class Manager {
     @observable
     AdData = null;
     //一天弹一次 公告与广告不共存
-    // EXCHANGE(2, "兑换专区"),
+    // EXCHANGE(2, "兑换专区"),web
     // EXPERIENCE(3, "经验值专区"),
     // TOPIC(4, "专题"),
-    // CUSTOMTOPIC(5, "自定义专题"
+    // CUSTOMTOPIC(5, "自定义专题"）
     @action
-    getAd(type) {
+    getAd(showPage,showPageValue) {
         let currStr = new Date().getTime() + "";
-        this.type = type;
-        AsyncStorage.getItem("web_" + type).then((value) => {
+        let _showPageValue = showPageValue|| ""
+        let _showPage = showPage|| ""
+        this.type = "web_storage_"+_showPage+'_'+_showPageValue;
+
+        AsyncStorage.getItem(this.type).then((value) => {
+
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                HomeAPI.getHomeData({type:  homeType.guideInfo}).then(resp => {
+                HomeAPI.getHomeData({showPage, showPageValue}).then(resp => {
                     if (resp.data && resp.data.length > 0) {
                         this.needShowAd = true;
                         this.AdData = resp.data[0];
@@ -35,11 +39,10 @@ class Manager {
                     }else {
                     }
                 }).catch((msg)=> {
-
                 })
             } else {
             }
-        }).catch(() => {
+        }).catch((msg) => {
 
         });
     }
@@ -56,7 +59,7 @@ class Manager {
     @action
     closeAd () {
         let currStr = new Date().getTime() + '';
-        AsyncStorage.setItem('web_'+this.type, currStr);
+        AsyncStorage.setItem(this.type, currStr);
         this.isShowAd = false;
         this.needShowAd = false;
         this.AdData = null;

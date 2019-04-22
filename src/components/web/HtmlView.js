@@ -20,8 +20,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import Manager,{AdViewBindModal} from './WebModalManager'
 import SmoothPushHighComponent from '../../comm/components/SmoothPushHighComponent';
 const moreIcon = res.button.message_three;
-const manager = new Manager()
-const WebAdModal = observer(AdViewBindModal(manager))
+
 @SmoothPushHighComponent
 @observer
 export default class RequestDetailPage extends BasePage {
@@ -66,11 +65,13 @@ export default class RequestDetailPage extends BasePage {
             shareParmas: {},
             hasRightItem: false,
         };
+      this.manager = new Manager();
+      this.WebAdModal = observer(AdViewBindModal(this.manager))
     }
 
     $NavigationBarDefaultLeftPressed = () => {
-        if (this.webType === 'isExchangeWeb') {
-            manager.showAd(()=>this.$navigateBack())
+        if (this.webType === 'showAlert') {
+            this.manager.showAd(()=>this.$navigateBack())
         }else {
             this.$navigateBack();
         }
@@ -123,14 +124,15 @@ export default class RequestDetailPage extends BasePage {
             return;
         }
 
-        if (msg.action === "isExchangeWeb") {
-            this.webType = 'isExchangeWeb';
-            manager.getAd('ExchangeWebModal')
+        if (msg.action === "showAlert") {
+            this.webType = 'showAlert';
+            this.manager.getAd(...msg.parmas);
             return;
         }
     };
 
     _render() {
+        let WebAdModal = this.WebAdModal;
         return (
             <View style={{ flex: 1, overflow: "hidden" }}>
                 <WebViewBridge

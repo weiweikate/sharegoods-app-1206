@@ -171,8 +171,13 @@
 //       }
 //     });
 //  }];
-  UIImage* tmp =  [[YYWebImageManager sharedManager].cache getImageForKey:bgPath];
+  UIImage* tmp = nil;
   
+  if (imagePath) {
+    tmp =  [[YYWebImageManager sharedManager].cache getImageForKey:imagePath];
+    self.adImg = tmp;
+  }
+  tmp = [[YYWebImageManager sharedManager].cache getImageForKey:bgPath];
   if (tmp) {
      self.bgImg = tmp;
   }else{
@@ -181,10 +186,6 @@
     return;
   }
   
-  if (imagePath) {
-     tmp =  [[YYWebImageManager sharedManager].cache getImageForKey:imagePath];
-      self.adImg = tmp;
-  }
 
   
 //  [self requestImageWithPath:[NSString stringWithFormat:@"%@",imagePath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
