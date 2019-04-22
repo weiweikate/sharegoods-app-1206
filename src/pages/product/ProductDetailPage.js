@@ -3,12 +3,12 @@ import {
     View,
     StyleSheet,
     SectionList,
-    Alert
+    Alert,
+    Image
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
 import PriceExplain from './components/PriceExplain';
-import DetailNavView from './components/DetailNavView';
 import SelectionPage from './SelectionPage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
@@ -30,11 +30,12 @@ import {
     HeaderItemView,
     ParamItemView,
     PromoteItemView,
-    ServiceItemView, SuitItemView
+    ServiceItemView, ShowTopView, SuitItemView
 } from './components/ProductDetailItemView';
 import DetailHeaderScoreView from './components/DetailHeaderScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
+import ProductDetailNavView from './components/ProductDetailNavView';
 
 /**
  * @author chenyangjun
@@ -43,6 +44,7 @@ import { ContentSectionView, SectionLineView, SectionNullView } from './componen
  * @org www.sharegoodsmall.com
  * @email chenyangjun@meeruu.com
  */
+
 @observer
 export default class ProductDetailPage extends BasePage {
 
@@ -195,10 +197,9 @@ export default class ProductDetailPage extends BasePage {
                 return <SectionLineView/>;
             }
             default: {
-                return <SectionNullView key={key}/>;
+                return <SectionNullView/>;
             }
         }
-        return null;
     };
 
     _renderItem = ({ item, index, section: { key } }) => {
@@ -246,18 +247,25 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
-        if (Y < 44) {
-            this.st = 0;
-        } else if (Y < ScreenUtils.autoSizeWidth(375)) {
-            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(375) - 44);
-        } else {
-            this.st = 1;
+        /*实时透明度*/
+        let offsetY = event.nativeEvent.contentOffset.y;
+        let opacity = 1;
+        if (offsetY < 44) {
+            opacity = 0;
+        } else if (offsetY < ScreenUtils.autoSizeWidth(375)) {
+            opacity = (offsetY - 44) / (ScreenUtils.autoSizeWidth(375) - 44);
         }
-        this.DetailNavView.updateWithScale(this.st);
         this._refHeader.setNativeProps({
-            opacity: this.st
+            opacity: opacity
         });
+
+        /*model相关赋值*/
+        this.productDetailModel.offsetY = offsetY;
+        this.productDetailModel.opacity = opacity;
+    };
+
+    _onPressToTop = () => {
+        this.SectionList && this.SectionList.scrollToLocation({ sectionIndex: 0, itemIndex: 0 });
     };
 
     _render() {
@@ -278,51 +286,24 @@ export default class ProductDetailPage extends BasePage {
         const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, shareMoney, sectionDataList } = this.productDetailModel;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
-            <DetailNavView ref={(e) => this.DetailNavView = e}
-                           messageCount={this.state.messageCount}
-                           source={imgUrl}
-                           navBack={() => {
-                               this.$navigateBack();
-                           }}
-                           navRLeft={() => {
-                               this.$navigate('shopCart/ShopCart', {
-                                   hiddeLeft: false
-                               });
-                           }}
-                           navRRight={() => {
-                               this.DetailNavShowModal.show(this.state.messageCount, (item) => {
-                                   switch (item.type) {
-                                       case 0:
-                                           if (!user.isLogin) {
-                                               this.gotoLoginPage();
-                                               return;
-                                           }
-                                           this.$navigate('message/MessageCenterPage');
-                                           break;
-                                       case 1:
-                                           this.$navigate('home/search/SearchPage');
-                                           break;
-                                       case 2:
-                                           this.shareModal && this.shareModal.open();
-                                           break;
-                                       case 4:
-                                           this.$navigateBackToHome();
-                                           break;
-                                   }
-                               }, 2);
-                           }}/>
+            <ProductDetailNavView productDetailModel={this.productDetailModel}
+                                  showAction={() => {
+                                      this.shareModal.open();
+                                  }}/>
             <SectionList onScroll={this._onScroll}
+                         ref={(e) => this.SectionList = e}
                          renderSectionHeader={this._renderSectionHeader}
                          renderItem={this._renderItem}
                          keyExtractor={(item, index) => {
-                             console.log(item + index);
+                             return item + index;
                          }}
                          sections={sectionDataList}
                          scrollEventThrottle={10}
                          showsVerticalScrollIndicator={false}/>
             <DetailBottomView bottomViewAction={this._bottomViewAction}
                               pData={this.productDetailModel}/>
-
+            <ShowTopView productDetailModel={this.productDetailModel}
+                         toTopAction={this._onPressToTop}/>
 
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
@@ -369,15 +350,9 @@ const styles = StyleSheet.create({
         flex: 1
     },
     opacityView: {
-        height: ScreenUtils.headerHeight,
-        backgroundColor: 'white',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 2,
-        opacity: 0
+        zIndex: 1024,
+        height: ScreenUtils.headerHeight, backgroundColor: 'white', opacity: 0,
+        position: 'absolute', top: 0, left: 0, right: 0
     }
-
 });
 

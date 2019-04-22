@@ -6,7 +6,7 @@ import user from '../../model/user';
 import StringUtils from '../../utils/StringUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
 
-const { width } = ScreenUtils;
+const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
 
 export const contentImgWidth = width;
@@ -42,6 +42,9 @@ export default class ProductDetailModel {
 
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
+
+    @observable offsetY = 0;
+    @observable opacity = 0;
 
     /***0产品删除 1产品上架 2产品下架(包含未上架的所有状态，出去删除状态) 3未开售***/
     @observable productStatus;
@@ -97,6 +100,14 @@ export default class ProductDetailModel {
     @observable shopId;
     @observable title;
 
+    /**显示向上返回**/
+    @computed get showTop() {
+        return this.offsetY > height;
+    }
+
+    @computed get showNavText() {
+        return this.opacity === 1;
+    }
 
     @computed get showPrice() {
         const { minPrice, maxPrice } = this;

@@ -17,9 +17,13 @@ import { ActivityDidBeginView, ActivityWillBeginView } from './ProductDetailActi
 import UIImage from '@mr/image-placeholder';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import RouterMap, { navigate } from '../../../navigation/RouterMap';
+import { observer } from 'mobx-react';
+import res from '../../home/res';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
+const { arrow_right_red } = RES;
+const { toTop } = res.search;
 const { px2dp } = ScreenUtils;
 
 /*
@@ -59,7 +63,7 @@ export class HeaderItemView extends Component {
                 <View style={styles.shopSubView}>
                     <View style={styles.shopSubLineView}/>
                     <Text style={styles.shopSubText}>加入拼店</Text>
-                    <Image source={arrow_right_black}/>
+                    <Image source={arrow_right_red}/>
                 </View>
             </NoMoreClick>
         );
@@ -385,7 +389,6 @@ export class ContentItemView extends Component {
 
     componentDidMount() {
         const { item } = this.props;
-        console.log(item);
         Image.getSize(item, (width, height) => {
             height = height / width * contentImgWidth;
             this.setState({
@@ -400,6 +403,33 @@ export class ContentItemView extends Component {
         if (height === 0) {
             return null;
         }
-        return <Image source={{ uri: item }} style={{ width, height }}/>;
+        return <NoMoreClick onPress={() => {
+            navigate(RouterMap.CheckBigImagesView, { imageUrls: [item] });
+        }}>
+            <Image source={{ uri: item }} style={{ width, height }}/>
+        </NoMoreClick>;
     }
 }
+
+/*显示*/
+@observer
+export class ShowTopView extends Component {
+    render() {
+        const { productDetailModel, toTopAction } = this.props;
+        const { showTop } = productDetailModel;
+        return <View style={showTopViewStyles.showTopView}>
+            {showTop && <NoMoreClick onPress={toTopAction}>
+                <Image style={showTopViewStyles.showTopBtn} source={toTop}/>
+            </NoMoreClick>}
+        </View>;
+    }
+}
+
+const showTopViewStyles = StyleSheet.create({
+    showTopView: {
+        position: 'absolute', right: 15, bottom: DesignRule.safeBottom + 69 + 15
+    },
+    showTopBtn: {
+        width: 44, height: 44
+    }
+});

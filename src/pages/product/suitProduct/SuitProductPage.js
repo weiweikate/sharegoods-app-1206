@@ -17,7 +17,7 @@ export default class SuitProductPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.suitProductModel.setSubProductArr([{ stock: 1 }, { stock: 2 }, { stock: 3 }, { stock: 4 }]);
+        this.suitProductModel.setSubProductArr({}, [{ stock: 1 }, { stock: 2 }, { stock: 3 }, { stock: 4 }]);
     }
 
     _renderItem = ({ item }) => {

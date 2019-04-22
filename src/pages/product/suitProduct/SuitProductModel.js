@@ -9,15 +9,16 @@ export default class SuitProductModel {
     /*选择中的规格*/
     @observable selectedItems = [];
 
-    @computed getTotalProduct() {
-
-    }
+    // @computed getTotalProduct() {
+    //
+    // }
 
     //是否能增加
     @computed get canAddAmount() {
         //最大能点击数 选择里面的最小
         let tempArr = [this.mainProduct, ...this.selectedItems];
         tempArr.map(() => {
+            console.log(tempArr);
             return;
         });
         let tempItem = tempArr.reduce((pre, cur) => {

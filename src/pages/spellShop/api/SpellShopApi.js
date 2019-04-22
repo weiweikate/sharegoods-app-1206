@@ -10,6 +10,8 @@ const api = {
     queryHomeStore: ['/user/store/queryHomeStore', { method: 'get' }],
     // 查询店铺列表
     queryByStatusAndKeyword: ['/user/store/queryByStatusAndKeyword', { method: 'get' }],
+    /**开店信息**/
+    store_openStore: ['/user/store/openStore', { method: 'get' }],
 
     //test-------------test店铺支付成功
     depositTest: ['/user/store/deposit', { method: 'get' }],
