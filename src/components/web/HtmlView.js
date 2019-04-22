@@ -64,13 +64,12 @@ export default class RequestDetailPage extends BasePage {
             shareParmas: {},
             hasRightItem: false,
         };
-        this.webType = 'isExchangeWeb';
 
     }
 
     $NavigationBarDefaultLeftPressed = () => {
-        if (this.webView === 'isExchangeWeb') {
-            Manager.getAd('ExchangeWebModal', ()=>this.$navigateBack())
+        if (this.webType === 'isExchangeWeb') {
+            Manager.showAd(()=>this.$navigateBack())
         }else {
             this.$navigateBack();
         }
@@ -120,6 +119,12 @@ export default class RequestDetailPage extends BasePage {
         if (msg.action === "showRightItem") {
             this.state.hasRightItem=true;
             this.$renderSuperView();//为了触发render
+            return;
+        }
+
+        if (msg.action === "isExchangeWeb") {
+            this.webType = 'isExchangeWeb';
+            Manager.getAd('ExchangeWebModal')
             return;
         }
     };

@@ -13,39 +13,41 @@ class Manager {
     AdData = null;
     //一天弹一次 公告与广告不共存
     @action
-    getAd(type, callBack) {
+    getAd(type) {
         let currStr = new Date().getTime() + "";
+        this.type = type;
         AsyncStorage.getItem("web_" + type).then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                HomeAPI.getHomeData({type:  homeType.windowAlert}).then(resp => {
+                HomeAPI.getHomeData({type:  homeType.guideInfo}).then(resp => {
                     if (resp.data && resp.data.length > 0) {
                         this.needShowAd = true;
                         this.AdData = resp.data[0];
 
                     }else {
-                        callBack&&callBack();
                     }
                 }).catch((msg)=> {
-                    callBack&&callBack();
+
                 })
             } else {
-                callBack&&callBack();
             }
         }).catch(() => {
-            callBack&&callBack();
+
         });
     }
     @action
-    showAd(){
+    showAd(callBack){
         if (this.needShowAd === true){
             this.isShowAd= true
+        }else {
+            callBack&&callBack();
         }
+
     }
 
     @action
     closeAd () {
         let currStr = new Date().getTime() + '';
-        AsyncStorage.setItem('home_lastAdTime', currStr);
+        AsyncStorage.setItem('web_'+this.type, currStr);
         this.isShowAd = false;
         this.needShowAd = false;
         this.AdData = null;
