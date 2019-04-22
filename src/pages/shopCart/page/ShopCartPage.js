@@ -247,9 +247,8 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         height: px2dp(145),
         width: shopCartListWidth,
-        marginTop: -px2dp(20),
         justifyContent: "center",
-        alignItems: "flex-end"
+        alignItems: "flex-end",
     },
     hideTextBgView:{
         width: px2dp(75),

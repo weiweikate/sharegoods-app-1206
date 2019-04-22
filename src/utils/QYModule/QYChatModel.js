@@ -60,7 +60,7 @@ class QYChatModel {
         //增加消息监听
         this.listener = QYManagerEmitter.addListener(QY_MSG_CHANGE, this.msgChangeHandle);
 
-        // this.cardClickListener = QYManagerEmitter.addListener(QY_CARD_CLICK, this.cardClickHandle);
+        this.cardListener = QYManagerEmitter.addListener(QY_CARD_CLICK, this.cardClickHandle);
 
     }
 
