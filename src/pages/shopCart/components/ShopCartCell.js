@@ -307,7 +307,7 @@ export default class ShopCartCell extends Component {
         );
     };
 
-    _getTipArrView = (tipArr = ["直降", "秒杀", "限购令"]) => {
+    _getTipArrView = (tipArr = []) => {
         return tipArr.map((tipItem,index) => {
             return (<View style={[styles.labelBgView,{ marginLeft:index===0?0:3,}]}>
                 <UIText
