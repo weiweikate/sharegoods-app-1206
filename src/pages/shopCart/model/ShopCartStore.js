@@ -155,13 +155,13 @@ class ShopCartStore {
             effectiveArr.map((itemObj, index) => {
                 //增加两个字段
                 itemObj.type = itemObj.activityType;//当前分组类型
-                itemObj.middleTitle = '1111';
+                itemObj.middleTitle = '';
                 itemObj.key = index;
                 itemObj.data = itemObj.products;
                 itemObj.data.map((goodItem, goodItemIndex) => {
                     goodItem.sectionType = itemObj.activityType;//当前组所属类型 8 经验值 null是其他
                     goodItem.isSelected = false;
-                    goodItem.key = ''+index+goodItemIndex;
+                    goodItem.key = `${index}_${goodItemIndex}`;
                     goodItem.nowTime = itemObj.nowTime;//系统当前时间戳
                     goodItem.activityCode = itemObj.activityCode;
 

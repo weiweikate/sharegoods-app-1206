@@ -30,6 +30,8 @@ import RouterMap from "../../../navigation/RouterMap";
 import StringUtils from "../../../utils/StringUtils";
 import bridge from "../../../utils/bridge";
 
+const {px2dp} = ScreenUtils
+
 export default class SectionHeaderView extends Component {
 
     constructor(props) {
@@ -199,7 +201,8 @@ SectionHeaderView.propTypes = {
 };
 const styles = StyleSheet.create({
     bgViewStyle: {
-        height: 40,
+        marginTop:px2dp(15),
+        height: px2dp(40),
         flexDirection: 'column',
         backgroundColor: '#fff',
         justifyContent: 'space-between'
@@ -218,37 +221,37 @@ const styles = StyleSheet.create({
     },
     leftTipBgStyle: {
         backgroundColor: DesignRule.mainColor,
-        borderRadius: 7,
-        width: 70,
-        marginLeft: 20,
+        borderRadius: px2dp(7),
+        width: px2dp(70),
+        marginLeft: px2dp(10),
         justifyContent: 'center',
         alignItems: 'center',
         height: 14
     },
     leftTextStyle: {
         color: '#fff',
-        fontSize: 11
+        fontSize: px2dp(11)
     },
     middleTextBgStyle: {
-        marginLeft: 20,
-        width: ScreenUtils.width - 180,
-        height: 25,
+        marginLeft: px2dp(20),
+        width: ScreenUtils.width - px2dp(200),
+        height: px2dp(25),
         justifyContent: 'center'
     },
     middleTextStyle: {
         color: DesignRule.textColor_secondTitle,
-        fontSize: 10
+        fontSize: px2dp(10)
     },
     bottomLineStyle: {
         height: 1,
         backgroundColor: DesignRule.bgColor
     },
     rightTextBgView: {
-        marginLeft: 20
+        marginLeft: px2dp(10)
     },
     rightTextStyle: {
-        fontSize: 10,
+        fontSize: px2dp(10),
         color: DesignRule.mainColor,
-        marginRight: 10
+        marginRight: px2dp(10)
     }
 });

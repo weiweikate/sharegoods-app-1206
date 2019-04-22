@@ -11,6 +11,7 @@
 #import <React/RCTEventEmitter.h>
 
 #define QY_MSG_CHANGE  @"QY_MSG_CHANGE"
+#define QY_CARD_CLICK  @"QY_CARD_CLICK"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -2,26 +2,27 @@ import { NativeEventEmitter, NativeModules } from "react-native";
 import { observable, computed, action } from "mobx";
 
 const QY_MSG_CHANGE = "QY_MSG_CHANGE";
+const QY_CARD_CLICK = "QY_CARD_CLICK";
 const { JRQYService } = NativeModules;
 const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 
-const platformShopId = 'hzmrwlyxgs'
+const platformShopId = "hzmrwlyxgs";
 
 class QYChatModel {
 
     @action
     saveSupplierListData = (allMsgData) => {
         if (allMsgData &&
-            allMsgData.sessionListData ) {
+            allMsgData.sessionListData) {
             let currentArr = allMsgData.sessionListData || [];
             let tempArr = [];
-            currentArr.map((item)=>{
+            currentArr.map((item) => {
                 if (item.shopId === platformShopId || (item.shopId && item.shopId.length === 0)) {
                     tempArr.unshift(item);
-                }else {
-                    tempArr.push(item)
+                } else {
+                    tempArr.push(item);
                 }
-            })
+            });
 
             this.sessionListData = tempArr;
         }
@@ -56,9 +57,13 @@ class QYChatModel {
 
 
     constructor() {
-        //增加监听
+        //增加消息监听
         this.listener = QYManagerEmitter.addListener(QY_MSG_CHANGE, this.msgChangeHandle);
+
+        this.cardListener = QYManagerEmitter.addListener(QY_CARD_CLICK, this.cardClickHandle);
+
     }
+
     /**
      * 来自原生的数据源
      * @param msgData
@@ -85,6 +90,10 @@ class QYChatModel {
     msgChangeHandle = (msgData) => {
         this.saveSupplierListData(msgData);
         this.saveUnreadCount(msgData);
+    };
+
+    cardClickHandle = (handleData) => {
+        console.log(handleData);
     };
 
 }
