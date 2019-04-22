@@ -104,8 +104,6 @@ export default class ShowDetailPage extends BasePage {
                         });
                     } else {
                         Toast.showLoading();
-                        this.params.ref && this.params.ref.replaceData(this.params.index,30)
-
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             const { detail } = this.showDetailModule;
                             TrackApi.XiuChangDetails({
