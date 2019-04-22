@@ -2,8 +2,13 @@ import { action, observable } from "mobx";
 import { AsyncStorage } from 'react-native';
 import HomeAPI from '../../pages/home/api/HomeAPI';
 import { homeType } from '../../pages/home/HomeTypes';
-import { observer } from 'mobx-react';
 import { AdViewBindModal } from '../../pages/home/view/HomeMessageModalView';
+const Type = {
+    EXCHANGE: 2,
+    EXPERIENCE: 3,
+    TOPIC: 4,
+    CUSTOMTOPIC: 5
+}
 class Manager {
     /** 控制广告页*/
     @observable
@@ -12,6 +17,10 @@ class Manager {
     @observable
     AdData = null;
     //一天弹一次 公告与广告不共存
+    // EXCHANGE(2, "兑换专区"),
+    // EXPERIENCE(3, "经验值专区"),
+    // TOPIC(4, "专题"),
+    // CUSTOMTOPIC(5, "自定义专题"
     @action
     getAd(type) {
         let currStr = new Date().getTime() + "";
@@ -54,8 +63,5 @@ class Manager {
     }
 }
 
-
-const manager = new Manager()
-const WebAdModal = observer(AdViewBindModal(manager))
-export default manager;
-export {WebAdModal};
+export default Manager;
+export {AdViewBindModal};

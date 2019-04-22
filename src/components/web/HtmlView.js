@@ -17,9 +17,11 @@ import { observer } from "mobx-react";
 import DeviceInfo from 'react-native-device-info';
 import res from '../../comm/res'
 import ScreenUtils from '../../utils/ScreenUtils';
-import Manager,{WebAdModal} from './WebModalManager'
+import Manager,{AdViewBindModal} from './WebModalManager'
 import SmoothPushHighComponent from '../../comm/components/SmoothPushHighComponent';
 const moreIcon = res.button.message_three;
+const manager = new Manager()
+const WebAdModal = observer(AdViewBindModal(manager))
 @SmoothPushHighComponent
 @observer
 export default class RequestDetailPage extends BasePage {
@@ -64,12 +66,11 @@ export default class RequestDetailPage extends BasePage {
             shareParmas: {},
             hasRightItem: false,
         };
-
     }
 
     $NavigationBarDefaultLeftPressed = () => {
         if (this.webType === 'isExchangeWeb') {
-            Manager.showAd(()=>this.$navigateBack())
+            manager.showAd(()=>this.$navigateBack())
         }else {
             this.$navigateBack();
         }
@@ -124,7 +125,7 @@ export default class RequestDetailPage extends BasePage {
 
         if (msg.action === "isExchangeWeb") {
             this.webType = 'isExchangeWeb';
-            Manager.getAd('ExchangeWebModal')
+            manager.getAd('ExchangeWebModal')
             return;
         }
     };
