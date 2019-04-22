@@ -2,7 +2,6 @@ package com.meeruu.sharegoods.rn.loadingview;
 
 import android.view.View;
 
-import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.meeruu.sharegoods.R;

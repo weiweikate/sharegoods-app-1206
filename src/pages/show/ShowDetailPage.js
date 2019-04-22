@@ -60,6 +60,7 @@ export default class ShowDetailPage extends BasePage {
             errorMsg: ''
         };
         this.noNeedRefresh = false;
+        TrackApi.xiuChangDetail();
     }
 
     $isMonitorNetworkStatus() {

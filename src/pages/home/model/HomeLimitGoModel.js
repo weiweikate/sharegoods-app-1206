@@ -25,7 +25,7 @@ export class LimitGoModules {
 
     @computed get limitHeight() {
         if (this.currentGoodsList && this.currentGoodsList.length > 0) {
-            return px2dp(91) + this.currentGoodsList.length * px2dp(140) + this.currentGoodsList.length * px2dp(10);
+            return px2dp(98) + this.currentGoodsList.length * px2dp(140) + (this.currentGoodsList.length - 1) * px2dp(10) + 0.8;
         }
         return 0;
     }
@@ -52,6 +52,8 @@ export class LimitGoModules {
 
                 let currentId = 0;
                 let lastSeckills = 0; //最近的秒杀
+                let _initialPage = 0;
+                let _currentPage = -1;
                 sortKeys.map((value, index) => {
                     let goods = result[value];
                     let seckills = goods.seckills;
@@ -66,17 +68,13 @@ export class LimitGoModules {
                     if (lastSeckills === 0) {
                         lastSeckills = diffTime;
                         currentId = value;
-                        this.initialPage = index;
+                        _initialPage = index;
                     } else if (lastSeckills !== 0) {
                         if (lastSeckills > diffTime) {
                             lastSeckills = diffTime;
-                            this.initialPage = index;
-                            // if (this.currentPage > (sortKeys.length - 1) || this.currentPage === -1) {
-                            this.currentPage = index;
+                            _initialPage = index;
+                            _currentPage = index;
                             currentId = value;
-                            // } else {
-                            //     currentId = sortKeys[this.currentPage];
-                            // }
                         }
                     }
 
@@ -92,13 +90,7 @@ export class LimitGoModules {
                     }
 
                     if (diff === 0 && _currentDate >= parseInt(value, 0)) {  //今天，已经结束
-                        title = '已结束';
-                        for (const goodsValue of seckills) {
-                            if (goodsValue.status === limitStatus.doing) {
-                                title = '抢购中';
-                                break;
-                            }
-                        }
+                        title = '抢购中';
                     }
 
                     console.log('loadLimitGo', diff);
@@ -125,7 +117,8 @@ export class LimitGoModules {
                 });
 
                 console.log('loadLimitGo', _timeList);
-
+                this.initialPage = _initialPage;
+                this.currentPage = _currentPage;
                 this.timeList = _timeList || [];
                 this.goodsList = _goodsList;
                 this.currentGoodsList = this.goodsList[currentId] || [];

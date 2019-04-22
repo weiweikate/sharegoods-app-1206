@@ -1,14 +1,13 @@
-
-import React from "react";
-import { NativeModules, StyleSheet, TouchableOpacity, View ,Image} from "react-native";
-import BasePage from "../../../BasePage";
-import { RefreshList, UIText, MRText as Text } from "../../../components/ui";
-import StringUtils from "../../../utils/StringUtils";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import LogisticsDetailItem from "../components/LogisticsDetailItem";
-import OrderApi from "../api/orderApi";
+import React from 'react';
+import { NativeModules, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import BasePage from '../../../BasePage';
+import { RefreshList, UIText, MRText as Text } from '../../../components/ui';
+import StringUtils from '../../../utils/StringUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import LogisticsDetailItem from '../components/LogisticsDetailItem';
+import OrderApi from '../api/orderApi';
 import DesignRule from '../../../constants/DesignRule';
-import res from "../res";
+import res from '../res';
 // import UIImage from "@mr/image-placeholder";
 
 // const logisticsTop = res.logisticsTop;
@@ -35,29 +34,29 @@ export default class LogisticsDetailsPage extends BasePage {
         super(props);
         this.state = {
             orderId: this.params.orderId ? this.params.orderId : 0,
-            expressNo: this.params.expressNo ? this.params.expressNo : "",
-            expressName: "",
-            loadingState: "loading",
+            expressNo: this.params.expressNo ? this.params.expressNo : '',
+            expressName: '',
+            loadingState: 'loading',
             flags: false,
             viewData: []
         };
     }
 
     $navigationBarOptions = {
-        title: "物流详情",
+        title: '物流详情',
         show: true// false则隐藏导航
     };
     renderFooter = () => {
-        return(
-            <View style={{height:20,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
-        )
-    }
+        return (
+            <View style={{ height: 20, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
+        );
+    };
 
     renderHeader = () => {
         return (
             <TouchableOpacity style={styles.logisticsNumber} onPress={() => this.copyToClipboard()}>
-                <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-                    <UIText value={this.state.expressName + "：" + this.state.expressNo}
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                    <UIText value={this.state.expressName + '：' + this.state.expressNo}
                             style={{ color: DesignRule.yellow_FF7, marginLeft: 18 }}/>
                     <Image source={copy} style={{ height: 17, width: 17, marginRight: 15 }}/>
                 </View>
@@ -66,12 +65,12 @@ export default class LogisticsDetailsPage extends BasePage {
     };
     renderItem = ({ item, index }) => {
         return (
-                <LogisticsDetailItem
-                    time={item.time}
-                    content1={item.content1}
-                    isTop={index === 0}
-                    isBottom={index + 1 === this.state.viewData.length}
-                />
+            <LogisticsDetailItem
+                time={item.time}
+                content1={item.content1}
+                isTop={index === 0}
+                isBottom={index + 1 === this.state.viewData.length}
+            />
         );
     };
 
@@ -86,9 +85,9 @@ export default class LogisticsDetailsPage extends BasePage {
 
     renderEmpty() {
         return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={Nowuliu} style={{ width: 92, height: 61 }}/>
-                <Text style={{ color: "#909090", fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
+                <Text style={{ color: '#909090', fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
             </View>
         );
     }
@@ -104,7 +103,7 @@ export default class LogisticsDetailsPage extends BasePage {
                     onRefresh={this.onRefresh}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={"暂无数据"}
+                    emptyTip={'暂无数据'}
                 />
             </View>
         );
@@ -113,70 +112,72 @@ export default class LogisticsDetailsPage extends BasePage {
     componentDidMount() {
         this.loadPageData();
     }
-    onRefresh=()=>{
+
+    onRefresh = () => {
         this.loadPageData();
-    }
+    };
+
     //**********************************BusinessPart******************************************
     loadPageData() {
         console.log(this.params);
         if (StringUtils.isNoEmpty(this.state.expressNo)) {
-            OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo}).then((response) => {
+            OrderApi.findLogisticsDetail({ expressNo: this.state.expressNo }).then((response) => {
                 // console.log(response.data.list);
                 let arrData = [];
-                if(response.data&&response.data.list.length>0){
+                if (response.data && response.data.list.length > 0) {
                     response.data.list.map((item, index) => {
                         let time = item.time;
                         arrData.push({
-                            time: time.replace(" ", "\n"),
+                            time: time ? time.replace(' ', '\n') : '',
                             content1: item.status
                         });
                     });
-                }else{
+                } else {
                     this.setState({
-                        loadingState: "success",
+                        loadingState: 'success',
                         // viewData: [],
-                        isEmpty:true
+                        isEmpty: true
                     });
                     return;
                 }
                 this.setState({
                     expressName: response.data.expName,
                     viewData: arrData,
-                    loadingState: "success"
+                    loadingState: 'success'
                 });
             }).catch(e => {
                 this.$toastShow(e.msg);
                 this.setState({
                     flags: true,
-                    loadingState: "success"
+                    loadingState: 'success'
                 });
             });
         } else {
-            this.setState({ loadingState: "success" });
+            this.setState({ loadingState: 'success' });
         }
 
     }
 
     copyToClipboard = () => {
         StringUtils.clipboardSetString(this.state.expressNo);
-        NativeModules.commModule.toast("快递单号已复制到剪切板");
+        NativeModules.commModule.toast('快递单号已复制到剪切板');
     };
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: DesignRule.bgColor,
+        backgroundColor: DesignRule.bgColor
     }, logisticsNumber: {
         marginLeft: 15,
         marginRight: 15,
         marginTop: 10,
         marginBottom: 10,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderWidth: 1,
         borderRadius: 10,
         height: 48,
-        borderColor: "white",
-        justifyContent: "center"
+        borderColor: 'white',
+        justifyContent: 'center'
     }
 });

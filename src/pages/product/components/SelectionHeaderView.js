@@ -53,7 +53,7 @@ export default class SelectionHeaderView extends Component {
         }
         let selectStrListTemp = this.props.selectStrList.filter((item) => {
             return !StringUtils.isEmpty(item);
-        });
+        }) || [];
 
         return (
             <View style={{ backgroundColor: 'transparent' }}>

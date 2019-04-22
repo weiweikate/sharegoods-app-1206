@@ -34,7 +34,6 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
@@ -43,6 +42,7 @@ import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.rn.preload.PreLoadReactDelegate;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
+import com.meeruu.statusbar.ImmersionBar;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
@@ -187,17 +187,12 @@ public class MainRNActivity extends ReactActivity {
     }
 
     private void initStatus() {
-        fullScreen(MainRNActivity.this);
-        View decorView = getWindow().getDecorView();
-        //重点：SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        decorView.setSystemUiVisibility(option);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
         // 更改状态栏字体颜色
-        StatusBarUtils.setLightMode(this);
+        ImmersionBar.with(this)
+                .navigationBarColor(R.color.app_top_color)
+                .statusBarDarkFont(true)
+                .navigationBarDarkIcon(true)
+                .init();
     }
 
     private void initHandler() {

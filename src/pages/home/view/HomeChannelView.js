@@ -47,6 +47,7 @@ export default class HomeChannelView extends Component {
         const { navigate } = this.props;
         let router = homeModule.homeNavigate(data.linkType, data.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(data);
+        params.fromHome = true;
         navigate(router, { ...params });
     };
 

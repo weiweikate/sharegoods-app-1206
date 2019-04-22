@@ -41,6 +41,7 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
             //老用户
             gobackPage(navigation);
         }
+
         UserModel.saveUserInfo(result.data);
         UserModel.saveToken(result.data.token);
         homeModule.loadHomeList();
