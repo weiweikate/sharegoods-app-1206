@@ -77,8 +77,9 @@
 - (void)handleTimer:(NSTimer *)timer
 {
   self.num --;
-    self.label.text = [NSString stringWithFormat:@"跳过%lds",self.num];
+  self.label.text = [NSString stringWithFormat:@"跳过%lds",self.num];
   if (self.num > 0) {
+    
   }else{
     [timer invalidate];
     timer = nil;
@@ -241,7 +242,6 @@ completion:(YYWebImageCompletionBlock)completion
 - (void)setAdImg:(UIImage *)adImg
 {
   _adImg = adImg;
-  [self showAd];
 }
 
 - (void)setBgImg:(UIImage *)bgImg

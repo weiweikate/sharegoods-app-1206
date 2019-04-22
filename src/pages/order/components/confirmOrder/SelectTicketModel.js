@@ -53,16 +53,7 @@ export default class SelectTicketModel extends React.Component {
         let arr = [];
         let {orderType, orderProducts = [], activityCode} = orderParamVO || {};
         let params = {}
-        if (orderType == 99 || orderType == 98 ) {
-            orderProducts.map((item, index) => {
-                arr.push({
-                    priceCode: item.skuCode,
-                    productCode: item.prodCode,
-                    amount: item.quantity
-                });
-            });
-            params = { productPriceIds: arr };
-        } else if (orderType == 1 || orderType == 3 || orderType == 2 ) {
+        if (orderType == 3 || orderType == 2 ) {
             this.props.orderParam.orderProducts.map((item, index) => {
                 arr.push({
                     priceCode: item.skuCode,
@@ -75,6 +66,15 @@ export default class SelectTicketModel extends React.Component {
                 activityCode:activityCode,
                 activityType:orderType
             };
+        }   else{
+            orderProducts.map((item, index) => {
+                arr.push({
+                    priceCode: item.skuCode,
+                    productCode: item.productCode,
+                    amount: item.quantity
+                });
+            });
+            params = { productPriceIds: arr };
         }
         this.parmas = { sgAppVersion: 310, ...params}
         this.callBack = callBack;
@@ -99,7 +99,7 @@ export default class SelectTicketModel extends React.Component {
         return (
             <View style={{alignItems: 'center'}}>
                 <CouponNormalItem item={item} index={index} clickItem={()=> {this.clickItem(item)}}/>
-         </View>)
+            </View>)
     }
 
     fmtDate(obj) {
@@ -172,20 +172,20 @@ export default class SelectTicketModel extends React.Component {
                                 选择优惠券
                             </Text>
                         </View>
-                       <RefreshFlatList url={API.listAvailable}
-                                        key={'RefreshFlatList+111'}
-                                        style={{backgroundColor: DesignRule.bgColor}}
-                                        paramsFunc={()=>{return this.parmas}}
-                                        renderItem={this.renderItem}
-                                        renderEmpty={()=> {
-                                            return(
-                                                <View style={{height: autoSizeWidth(480-95), alignItems: 'center', justifyContent: 'center'}}>
-                                                    <Image source={emptyIcon} style={{height: autoSizeWidth(140), width: autoSizeWidth(244)}}/>
-                                                    <Text style={{color: '#666666', fontSize: autoSizeWidth(13)}}>无可用券</Text>
-                                                </View>
-                                            )
-                                        }}
-                       />
+                        <RefreshFlatList url={API.listAvailable}
+                                         key={'RefreshFlatList+111'}
+                                         style={{backgroundColor: DesignRule.bgColor}}
+                                         paramsFunc={()=>{return this.parmas}}
+                                         renderItem={this.renderItem}
+                                         renderEmpty={()=> {
+                                             return(
+                                                 <View style={{height: autoSizeWidth(480-95), alignItems: 'center', justifyContent: 'center'}}>
+                                                     <Image source={emptyIcon} style={{height: autoSizeWidth(140), width: autoSizeWidth(244)}}/>
+                                                     <Text style={{color: '#666666', fontSize: autoSizeWidth(13)}}>无可用券</Text>
+                                                 </View>
+                                             )
+                                         }}
+                        />
                         <View style={{height: autoSizeWidth(50) + safeBottom}}>
                             <TouchableOpacity style={[DesignRule.style_bigRedBorderBtn,{height: autoSizeWidth(40), borderColor: DesignRule.textColor_instruction,  borderRadius: autoSizeWidth(20),}]}
                                               onPress={()=>{this.close(); this.callBack&&this.callBack('giveUp')}}

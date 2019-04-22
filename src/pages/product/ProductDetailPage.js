@@ -41,6 +41,7 @@ import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import ProductApi from './api/ProductApi';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
+import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -54,6 +55,7 @@ import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
  */
 
 // const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
+@SmoothPushPreLoadHighComponent
 export default class ProductDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -94,7 +96,6 @@ export default class ProductDetailPage extends BasePage {
     };
 
     componentDidMount() {
-        // this.getPromotion();
     }
 
     componentWillMount() {

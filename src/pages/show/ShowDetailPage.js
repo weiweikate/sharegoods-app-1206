@@ -31,6 +31,7 @@ import Toast from '../../utils/bridge';
 import { NetFailedView } from '../../components/pageDecorator/BaseView';
 import AvatarImage from '../../components/ui/AvatarImage';
 import { TrackApi } from '../../utils/SensorsTrack';
+import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent'
 
 const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
     press && press();
@@ -42,7 +43,7 @@ const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} on
         <Text style={styles.price} allowFontScaling={false}>￥ {data.price}起</Text>
     </View>
 </TouchableOpacity>;
-
+@SmoothPushPreLoadHighComponent
 @observer
 export default class ShowDetailPage extends BasePage {
 
@@ -88,9 +89,9 @@ export default class ShowDetailPage extends BasePage {
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 0
-                            });
+                            // this._whiteNavRef.setNativeProps({
+                            //     opacity: 0
+                            // });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
@@ -112,9 +113,9 @@ export default class ShowDetailPage extends BasePage {
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
-                            this._whiteNavRef.setNativeProps({
-                                opacity: 0
-                            });
+                            // this._whiteNavRef.setNativeProps({
+                            //     opacity: 0
+                            // });
                             Toast.hiddenLoading();
                         }).catch(error => {
                             this.setState({
@@ -196,10 +197,10 @@ export default class ShowDetailPage extends BasePage {
     };
 
 
-    _renderNormalTitle() {
+    _renderNormalTitle(opacity) {
         return <View style={styles.whiteNav} ref={(ref) => {
             this._whiteNavRef = ref;
-        }} opacity={1}>
+        }} opacity={opacity}>
             <View style={styles.navTitle}>
                 <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
                     <Image source={res.back}/>
@@ -248,6 +249,11 @@ export default class ShowDetailPage extends BasePage {
             return <View style={styles.container}>
                 <NetFailedView netFailedInfo={{ msg: this.state.errorMsg }}/>{this._renderNormalTitle()}
                 </View>;
+        }
+        if (pageState === PageLoadingState.loading) {
+            return <View style={styles.container} >
+                {this._renderNormalTitle(1)}
+            </View>
         }
 
         let { detail, isCollecting } = this.showDetailModule;
@@ -405,7 +411,7 @@ export default class ShowDetailPage extends BasePage {
                     </TouchableOpacity>
                 </View>
             </View>
-            {this._renderNormalTitle()}
+            {this._renderNormalTitle(0)}
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             trackEvent={'ArticleShare'}

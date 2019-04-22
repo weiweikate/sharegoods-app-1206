@@ -198,7 +198,7 @@ function AdViewBindModal(modal) {
 }
 
 let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
-export{HomeAdModal}
+export{HomeAdModal, AdViewBindModal}
 
 
 const styles = StyleSheet.create({
