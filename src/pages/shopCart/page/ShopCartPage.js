@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     },
     hideBgView:{
         backgroundColor: "white",
-        height: px2dp(140),
+        height: px2dp(145),
         width: shopCartListWidth,
         marginTop: -px2dp(20),
         justifyContent: "center",
@@ -256,6 +256,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: DesignRule.mainColor,
-        height: px2dp(140)
+        height: px2dp(145)
     }
 });

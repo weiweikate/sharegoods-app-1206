@@ -32,9 +32,12 @@ import shopCartCacheTool from "../model/ShopCartCacheTool";
 
 const dismissKeyboard = require("dismissKeyboard");
 
+const { px2dp } = ScreenUtils;
+
 export default class ShopCartCell extends Component {
     constructor(props) {
         super(props);
+
     }
 
     render() {
@@ -101,7 +104,7 @@ export default class ShopCartCell extends Component {
                         }
 
                         <View style={styles.validContextContainer}>
-                            <View>
+                            <View style={{}}>
                                 <UIText
                                     value={
                                         itemData.productName
@@ -114,7 +117,8 @@ export default class ShopCartCell extends Component {
                                                     "" + itemData.productName
                                             )
                                             :
-                                            ""}
+                                            ""
+                                    }
                                     numberOfLines={2}
                                     style={{
                                         marginTop: 0,
@@ -126,7 +130,7 @@ export default class ShopCartCell extends Component {
 
                                 <UIText
                                     value={itemData.specifyContent ? itemData.specifyContent : ""}
-                                    numberOfLines={2}
+                                    numberOfLines={1}
                                     style={{
                                         fontSize: 13,
                                         color: DesignRule.textColor_instruction
@@ -142,14 +146,13 @@ export default class ShopCartCell extends Component {
                                         }}/>
                                 }
 
+                                <View style={{ flexDirection: "row" }}>
+                                    { this._getTipArrView()}
+                                </View>
                             </View>
-                            <View style={{
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: "center"
-                            }}>
+                            <View style={styles.priceBgView}>
                                 <UIText
-                                    value={"￥ " + itemData.price}
+                                    value={"￥" + itemData.price}
                                     style={{ fontSize: 14, color: DesignRule.mainColor }}/>
                                 <View style={{ flexDirection: "row" }}>
                                     <TouchableOpacity
@@ -244,7 +247,6 @@ export default class ShopCartCell extends Component {
                                                         : null
                                                 ]
                                             }
-
                                         />
                                     </TouchableOpacity>
                                 </View>
@@ -252,7 +254,6 @@ export default class ShopCartCell extends Component {
                         </View>
                     </View>
                 </TouchableHighlight>
-
                 <View
                     style={{
                         backgroundColor: DesignRule.bgColor
@@ -304,6 +305,18 @@ export default class ShopCartCell extends Component {
                 </View>
             </View>
         );
+    };
+
+    _getTipArrView = (tipArr = ["直降", "秒杀", "限购令"]) => {
+        return tipArr.map((tipItem,index) => {
+            return (<View style={[styles.labelBgView,{ marginLeft:index===0?0:3,}]}>
+                <UIText
+                    style={styles.labelTextView}
+                    value={tipItem}
+                />
+            </View>);
+        });
+
     };
 
     _selectImageClick = (sectionData, rowId) => {
@@ -397,15 +410,15 @@ const styles = StyleSheet.create({
     standaloneRowFront: {
         alignItems: "center",
         backgroundColor: "#fff",
-        height: 130,
-        width: ScreenUtils.width -30,
+        height: px2dp(140),
+        width: ScreenUtils.width - px2dp(30),
         flexDirection: "row",
         marginRight: 16
     },
-    itemSelectImg: { width: 22, height: 22, marginLeft: 10 },
+    itemSelectImg: { width: px2dp(22), height: px2dp(22), marginLeft: px2dp(10) },
     rectangle: {
-        height: 30,
-        width: 30,
+        height: px2dp(30),
+        width: px2dp(30),
         justifyContent: "center",
         borderWidth: 1,
         borderColor: DesignRule.lineColor_inColorBg,
@@ -416,17 +429,17 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     validProductImg: {
-        width: 80,
-        height: 80,
-        marginLeft: 16,
-        marginRight: 16
+        width: px2dp(75),
+        height: px2dp(75),
+        marginLeft: px2dp(10),
+        marginRight: px2dp(10)
     },
     TextInputStyle: {
         padding: 0,
         paddingTop: 5,
-        height: 30,
-        width: 46,
-        fontSize: 11,
+        height: px2dp(30),
+        width: px2dp(46),
+        fontSize: px2dp(11),
         color: DesignRule.textColor_mainTitle,
         alignSelf: "center",
         justifyContent: "center",
@@ -435,10 +448,25 @@ const styles = StyleSheet.create({
     },
     validContextContainer: {
         flex: 1,
-        height: 100,
+        height: px2dp(120),
         justifyContent: "space-between",
-        marginTop: 10,
-        paddingRight: 15
+        marginTop: px2dp(3),
+        paddingRight: px2dp(15)
+    },
+    labelBgView: {
+        paddingLeft: 2,
+        paddingRight: 2,
+        backgroundColor: "rgba(241, 217, 232, 1)",
+    },
+    labelTextView:{
+        fontSize:10,
+        color:DesignRule.mainColor,
+    },
+    priceBgView:{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        height: 30
     }
 });
 
