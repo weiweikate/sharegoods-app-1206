@@ -104,7 +104,6 @@ const getTipString = (itemData) => {
     if (itemData.amount > itemData.sellStock) {
         returnObj.tipString = tipString + '库存不足\n';
     }
-    returnObj.tipString = tipString + '库存不足\n';
     //暂未开售
     if (itemData.productStatus === 3){
         returnObj.tipString += tipString + formatTime(itemData.upTime);
