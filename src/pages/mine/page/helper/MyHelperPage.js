@@ -72,7 +72,7 @@ export default class MyHelperPage extends BasePage {
                                 }} allowFontScaling={false}>{item.name}</Text>
                             </NoMoreClick>
                             <View style={styles.hot2ViewStyle}>
-                                <View style={{ flex: 1, justifyContent: "center" }}>
+                                <View style={{ flex: 1, width: "100%", justifyContent: "center" }}>
                                     <UIText onPress={() => this.gotoquestionDetail(item.list[0].id)}
                                             style={{
                                                 marginLeft: 10,
@@ -83,7 +83,7 @@ export default class MyHelperPage extends BasePage {
                                             numberOfLines={1}/>
                                 </View>
                                 <View style={{ width: "100%", height: 0.5, backgroundColor: "#c9c9c9" }}/>
-                                <View style={{ flex: 1, justifyContent: "center", borderColor: "#c9c9c9" }}>
+                                <View style={{ flex: 1, width: "100%", justifyContent: "center", borderColor: "#c9c9c9" }}>
                                     <UIText onPress={() => this.gotoquestionDetail(item.list[1].id)}
                                             style={{
                                                 marginLeft: 10,
@@ -284,6 +284,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5
     },
     hot2ViewStyle: {
+        display: 'flex',
         alignItems: "flex-start",
         justifyContent: "center",
         flex: 2,

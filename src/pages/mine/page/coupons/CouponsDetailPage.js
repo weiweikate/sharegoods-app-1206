@@ -1,19 +1,20 @@
-import React from "react";
+import React from 'react';
 import {
-    StyleSheet, View, Image,FlatList,RefreshControl,ActivityIndicator,
-} from "react-native";
-import BasePage from "../../../../BasePage";
-import ScreenUtils from "../../../../utils/ScreenUtils";
-import DesignRule from "../../../../constants/DesignRule";
-import { MRText as Text, NoMoreClick} from "../../../../components/ui";
-import res from "./../../res";
-import API from "../../../../api";
+    StyleSheet, View, Image, FlatList, RefreshControl, ActivityIndicator
+} from 'react-native';
+import BasePage from '../../../../BasePage';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from '../../../../constants/DesignRule';
+import { MRText as Text, NoMoreClick } from '../../../../components/ui';
+import res from './../../res';
+import API from '../../../../api';
 // import StringUtils from "../../../../utils/StringUtils";
-import bridge from "../../../../utils/bridge";
-import user from "../../../../model/user";
-import { formatDate } from "../../../../utils/DateUtils";
-import CouponExplainItem from "../../components/CouponExplainItem";
-import CouponNormalItem from "../../components/CouponNormalItem";
+import bridge from '../../../../utils/bridge';
+import user from '../../../../model/user';
+import { formatDate } from '../../../../utils/DateUtils';
+import CouponExplainItem from '../../components/CouponExplainItem';
+import CouponNormalItem from '../../components/CouponNormalItem';
+
 const NoMessage = res.couponsImg.coupons_no_data;
 
 
@@ -34,9 +35,10 @@ export default class CouponsDetailPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: "优惠券",
+        title: '优惠券',
         show: true // false则隐藏导航
     };
+
     componentDidMount() {
         this.onRefresh();
     }
@@ -53,7 +55,7 @@ export default class CouponsDetailPage extends BasePage {
             );
         } else {
             return (
-                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
                     <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}
                           allowFontScaling={false}>还没有优惠券哦</Text>
@@ -84,20 +86,20 @@ export default class CouponsDetailPage extends BasePage {
     parseCoupon = (item) => {
         let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
         let result = null;
-        if(item.type === 5){
-            return "限商品：限指定商品可用";
+        if (item.type === 5) {
+            return '限商品：限指定商品可用';
         }
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
-                return "限商品：限指定商品可用";
+                return '限商品：限指定商品可用';
             }
             if (products.length > 1) {
-                return "限商品：限指定商品可用";
+                return '限商品：限指定商品可用';
             }
             if (products.length === 1) {
                 let productStr = products[0];
                 if (productStr.length > 15) {
-                    productStr = productStr.substring(0, 15) + "...";
+                    productStr = productStr.substring(0, 15) + '...';
                 }
                 return `限商品：限${productStr}商品可用`;
             }
@@ -109,45 +111,49 @@ export default class CouponsDetailPage extends BasePage {
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
             return `限品类：限指定品类商品可用`;
         } else {
-            return "全品类：全场通用券（特殊商品除外）";
+            return '全品类：全场通用券（特殊商品除外）';
         }
     };
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         if (item.remarks) {
             return (
-                <CouponExplainItem item={item} index={index} toExtendData={()=>this.toExtendData(item)}
-                                   pickUpData={()=>this.pickUpData(item)} clickItem={()=>{}}/>
+                <CouponExplainItem item={item} index={index} toExtendData={() => this.toExtendData(item)}
+                                   pickUpData={() => this.pickUpData(item)} clickItem={() => {
+                }}/>
             );
         } else {
             return (
-                <CouponNormalItem  item={item} index={index} clickItem={()=>{}}/>
+                <CouponNormalItem item={item} index={index} clickItem={() => {
+                }}/>
             );
         }
 
     };
-    fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd HH:mm');
-    }
-    toExtendData=(item)=>{
-        let index = this.state.viewData.indexOf(item);
-        let viewData = this.state.viewData;
-        viewData[index].tobeextend=false;
-        this.setState({viewData:viewData})
-    }
-    pickUpData=(item)=>{
-        let index = this.state.viewData.indexOf(item);
-        let viewData = this.state.viewData;
-        viewData[index].tobeextend=true;
-        this.setState({viewData:viewData})
 
+    fmtDate(obj) {
+        return formatDate(obj, 'yyyy.MM.dd');
     }
+
+    toExtendData = (item) => {
+        let index = this.state.viewData.indexOf(item);
+        let viewData = this.state.viewData;
+        viewData[index].tobeextend = false;
+        this.setState({ viewData: viewData });
+    };
+    pickUpData = (item) => {
+        let index = this.state.viewData.indexOf(item);
+        let viewData = this.state.viewData;
+        viewData[index].tobeextend = true;
+        this.setState({ viewData: viewData });
+
+    };
     parseData = (dataList) => {
         let arrData = [];
-        console.log("currentPage",this.currentPage);
+        console.log('currentPage', this.currentPage);
         if (this.currentPage === 1) {//refresh
             this.handleList(dataList, arrData);
-            console.log("couponsDetail",arrData);
+            console.log('couponsDetail', arrData);
             this.setState({ viewData: arrData, isFirstLoad: false });
         } else {//more
             this.handleList(dataList, arrData);
@@ -162,8 +168,8 @@ export default class CouponsDetailPage extends BasePage {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: item.startTime&&item.expireTime?this.fmtDate(item.startTime||0) + "-" + this.fmtDate(item.expireTime||0):null,
-                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? "商品\n兑换" : (item.type === 5 ? "兑换" : item.value)),
+                timeStr: '使用有效期：' + item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
+                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
@@ -173,30 +179,31 @@ export default class CouponsDetailPage extends BasePage {
         });
     };
     onLoadMore = () => {
-        console.log("onLoadMore", this.isLoadMore,this.isEnd,this.state.isFirstLoad);
+        console.log('onLoadMore', this.isLoadMore, this.isEnd, this.state.isFirstLoad);
         if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
             this.getDataFromNetwork();
         }
     };
     onRefresh = () => {
-        console.log("refresh");
+        console.log('refresh');
         this.isEnd = false;
         this.currentPage = 1;
         this.getDataFromNetwork();
     };
-    getDataFromNetwork(){
+
+    getDataFromNetwork() {
         API.userCouponList({
             page: this.currentPage,
             pageSize: 10,
-            status:this.params.status,
-            couponIds:this.params.couponIds,
-            pageType:2
+            status: this.params.status,
+            couponIds: this.params.couponIds,
+            pageType: 2
         }).then(result => {
             let data = result.data || {};
             let dataList = data.data || [];
             this.isLoadMore = false;
-            console.log("getDataFromNetwork",dataList);
+            console.log('getDataFromNetwork', dataList);
             this.parseData(dataList);
 
             if (dataList.length === 0) {
@@ -212,8 +219,8 @@ export default class CouponsDetailPage extends BasePage {
         });
     }
 
-    _render(){
-        return(
+    _render() {
+        return (
             <View style={styles.container}>
                 <FlatList
                     data={this.state.viewData}
@@ -230,7 +237,7 @@ export default class CouponsDetailPage extends BasePage {
                                                     colors={[DesignRule.mainColor]}/>}
                 />
             </View>
-        )
+        );
     }
 
 }
@@ -239,15 +246,15 @@ const styles = StyleSheet.create(
         container: {
             paddingTop: 15,
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             backgroundColor: DesignRule.bgColor
         },
         itemFirStyle: {
-            alignItems: "center",
-            flexDirection: "row",
-            justifyContent: "center",
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'center',
             width: px2dp(80)
-        },
+        }
     }
 );

@@ -59,6 +59,9 @@ public class MainApplication extends BaseApplication implements ReactApplication
 
     @Override
     public void onCreate() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WebView.setDataDirectorySuffix("com.meeruu." + packageName);
+        }
         if (packageName.equals(getPackageName())) {
             SoLoader.init(getApplicationContext(), /* native exopackage */ false);
             Fresco.initialize(getApplicationContext(),
@@ -66,10 +69,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
             super.onCreate();
             // 检测内存泄漏
             LeakCanary.install(this);
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                WebView.setDataDirectorySuffix("com.meeruu." + packageName);
-            }
         }
     }
 

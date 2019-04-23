@@ -218,44 +218,46 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                        @Override
-                        public void onDismiss() {
+                if (popupWindow != null) {
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
 
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (!isAppOnForeground(getContext())) {
-                                        return;
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!isAppOnForeground(getContext())) {
+                                            return;
+                                        }
+                                        eventDispatcher.dispatchEvent(new PopModalDismissEvent(PopModal.this.getId()));
                                     }
-                                    eventDispatcher.dispatchEvent(new PopModalDismissEvent(PopModal.this.getId()));
-                                }
-                            }, 200);
+                                }, 200);
 
+                            }
+                        });
+
+                        if (rect == null) {
+                            rect = new Rect();
                         }
-                    });
-
-                    if (rect == null) {
-                        rect = new Rect();
+                        mHostView.getGlobalVisibleRect(rect);
+                        int h = mHostView.getResources().getDisplayMetrics().heightPixels - rect.bottom;
+                        popupWindow.setHeight(h);
                     }
-                    mHostView.getGlobalVisibleRect(rect);
-                    int h = mHostView.getResources().getDisplayMetrics().heightPixels - rect.bottom;
-                    popupWindow.setHeight(h);
-                }
 
-                popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-                popupWindow.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
-                View v = getContentView();
-                popupWindow.setContentView(v);
-                popupWindow.setWidth(ScreenUtils.getScreenWidth());
-                popupWindow.setTouchable(true);// true popwindow优先一切（系统级以外）处理touch  false:popwindow 只是一个view 不影响界面操作
-                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//不设置 不是全屏 周围会有空白部分
-                popupWindow.setOutsideTouchable(true);
-                fitPopupWindowOverStatusBar(popupWindow, true);
-                if (currentActivity != null || !currentActivity.isFinishing()) {
-                    popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+                    popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+                    popupWindow.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+                    View v = getContentView();
+                    popupWindow.setContentView(v);
+                    popupWindow.setWidth(ScreenUtils.getScreenWidth());
+                    popupWindow.setTouchable(true);// true popwindow优先一切（系统级以外）处理touch  false:popwindow 只是一个view 不影响界面操作
+                    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//不设置 不是全屏 周围会有空白部分
+                    popupWindow.setOutsideTouchable(true);
+                    fitPopupWindowOverStatusBar(popupWindow, true);
+                    if (currentActivity != null || !currentActivity.isFinishing()) {
+                        popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+                    }
                 }
             }
         });
@@ -309,7 +311,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
                 Field mLayoutInScreen = PopupWindow.class.getDeclaredField("mLayoutInScreen");
                 if (mLayoutInScreen != null) {
                     mLayoutInScreen.setAccessible(true);
-                    mLayoutInScreen.set(popupWindow, needFullScreen);
+                    if (popupWindow != null) {
+                        mLayoutInScreen.set(popupWindow, needFullScreen);
+                    }
                 }
             } catch (NoSuchFieldException e) {
             } catch (IllegalAccessException e) {
