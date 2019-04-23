@@ -18,11 +18,11 @@ class LoginModel {
     @observable
     isSelectProtocol = true;
     @observable
-    isCanOneKeyLogin = false;
+    authPhone = null;
 
     @action
-    setCanOneKeyLogin(canOneKey){
-        this.isCanOneKeyLogin = canOneKey;
+    setAuthPhone(str){
+        this.authPhone = str;
     }
 
     @action

@@ -8,7 +8,7 @@ import Styles from "../style/Login.style";
 import { createBottomButton, createLoginButton, loginBtnType } from "../components/Login.button.view";
 import res from "../res";
 import RouterMap from "../../../navigation/RouterMap";
-import { wxLoginAction } from "../model/LoginActionModel";
+import { oneClickLoginValidation, wxLoginAction } from '../model/LoginActionModel';
 import { TrackApi } from "../../../utils/SensorsTrack";
 import { startLoginAuth } from "../model/PhoneAuthenAction";
 import { observer } from "mobx-react";
@@ -63,22 +63,29 @@ export default class Login extends BasePage {
                 </View>
                 {/*中部视图*/}
                 {
-                    loginModel.isCanOneKeyLogin ? <View style={Styles.middleBgContent}>
+                    loginModel.authPhone ? <View style={Styles.middleBgContent}>
                         {
                             createLoginButton(loginBtnType.localPhoneNumLoginType, "本机号码一键登录", () => {
                                 this._clickAction(loginBtnType.localPhoneNumLoginType);
                             })
                         }
-                    </View> : null
+                    </View> : <View style={Styles.middleBgContent}>
+                        {
+                            createLoginButton(loginBtnType.localPhoneNumLoginType, "微信授权登录", () => {
+                                this._clickAction(loginBtnType.wxLoginBtnType);
+                            })
+                        }
+                    </View>
 
                 }
                 {/*下部分视图*/}
                 <View style={Styles.bottomBgContent}>
                     {
 
-                        createLoginButton(loginBtnType.wxLoginBtnType, "微信授权登录", () => {
+                        loginModel.authPhone ?  createLoginButton(loginBtnType.wxLoginBtnType, "微信授权登录", () => {
                             this._clickAction(loginBtnType.wxLoginBtnType);
-                        })}
+                        }) : null
+                    }
                     {
                         createLoginButton(loginBtnType.otherLoginBtnType, "其他登录方式", () => {
                             this._clickAction(loginBtnType.otherLoginBtnType);
@@ -100,7 +107,7 @@ export default class Login extends BasePage {
 
     _clickAction = (btnType) => {
         if (!this.state.isSelectProtocol) {
-            this.$toastShow("清先勾选用户协议");
+            this.$toastShow("请先勾选用户协议");
             return;
         }
         if (btnType === loginBtnType.wxLoginBtnType) {
@@ -111,9 +118,10 @@ export default class Login extends BasePage {
             //     authenToken: this.state.authenToken
             // });
             startLoginAuth().then((data)=>{
-                alert(JSON.stringify(data))
+                let { navigation } = this.props;
+                oneClickLoginValidation(loginModel.authPhone, data, navigation);
             }).catch((error)=>{
-                alert(error.message);
+                this.$toastShow("认证失败,请选择其他登录方式");
             })
         } else {
             this.$navigate(RouterMap.OtherLoginPage);

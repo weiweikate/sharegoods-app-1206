@@ -96,9 +96,9 @@ class App extends Component {
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 checkInitResult().then((data)=>{
-                    loginModel.setCanOneKeyLogin(data);
+                    loginModel.setAuthPhone(data);
                 }).catch((erro)=>{
-                    loginModel.setCanOneKeyLogin(false);
+                    loginModel.setAuthPhone(null);
                 })
 
 

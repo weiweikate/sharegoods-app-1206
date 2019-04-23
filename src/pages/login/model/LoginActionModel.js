@@ -54,7 +54,7 @@ const gobackPage = (navigation) => {
     // //老用户登录成功后直接退出原界面
     try {
         let $routes = global.$routes || [];
-        let router = $routes[$routes.length - 2];
+        let router = $routes[$routes.length - 1];
         let routerKey = router.key;
         const backAction = NavigationActions.back({ key: routerKey });
         navigation.dispatch(backAction);

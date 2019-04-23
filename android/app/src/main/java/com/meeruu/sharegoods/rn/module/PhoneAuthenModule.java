@@ -16,6 +16,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
+import com.meeruu.sharegoods.utils.HttpUrlUtils;
 import com.mobile.auth.gatewayauth.AuthUIConfig;
 import com.mobile.auth.gatewayauth.PhoneNumberAuthHelper;
 import com.mobile.auth.gatewayauth.TokenResultListener;
@@ -47,6 +48,8 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
     }
 
     private void init(){
+        String url = HttpUrlUtils.getH5Url("/static/protocol/service.html");
+
         mTokenListener = new TokenResultListener() {
             @Override
             public void onTokenSuccess(String s) {
@@ -65,7 +68,7 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         mAlicomAuthHelper = PhoneNumberAuthHelper.getInstance(this.mContext,mTokenListener);
         mAlicomAuthHelper.setDebugMode(true);
         mAlicomAuthHelper.setAuthUIConfig(new AuthUIConfig.Builder()
-                .setAppPrivacyOne("号码认证APP服务条款", "https://www.aliyun.com/product/dypns")
+                .setAppPrivacyOne("秀购用户协议", url)
                 .setSwitchClicker(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -104,7 +107,7 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
             promise.reject("get phone failed");
             return;
         }
-        promise.resolve(true);
+        promise.resolve(phone);
     }
 
     /**
