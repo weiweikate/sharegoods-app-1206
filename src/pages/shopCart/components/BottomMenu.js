@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import user from "../../../model/user";
 import RouterMap from "../../../navigation/RouterMap";
 import bridge from "../../../utils/bridge";
+import LinearGradient from 'react-native-linear-gradient'
 
 const dismissKeyboard = require("dismissKeyboard");
 const { px2dp } = ScreenUtils;
@@ -74,24 +75,40 @@ export default class BottomMenu extends Component {
                                 marginLeft: 10
                             }}/>
                     </TouchableOpacity>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <UIText
-                            value={"合计"}
-                            style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
-                        <UIText
-                            value={"¥" + shopCartStore.getTotalMoney}
-                            style={styles.totalPrice}/>
-                        <TouchableOpacity
-                            style={styles.selectGoodsNum}
-                            onPress={() => this._toBuyImmediately()}
-                        >
-                            <UIText
-                                value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                                style={{ color: "white", fontSize: 16 }}
-                            />
+                    <View style={{ flexDirection: "row", alignItems: "center" ,paddingRight:px2dp(10)}}>
+                        <View>
+                            <View style={{flexDirection:'row'}}>
+                                <UIText
+                                    value={"合计:"}
+                                    style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
+                                <UIText
+                                    value={"¥" + shopCartStore.getTotalMoney}
+                                    style={styles.totalPrice}/>
+                            </View>
+                            <View style={{justifyContent:'flex-end',flexDirection:'row',marginRight:px2dp(10)}}>
+                                <UIText
+                                    value={"免运费"}
+                                    style={styles.shippingText}/>
+                            </View>
+
+                        </View>
+
+
+                        <TouchableOpacity onPress={() => this._toBuyImmediately()}>
+                            <LinearGradient colors={['rgba(255, 0, 80, 1)','rgba(252, 93, 57, 1)']}
+                                            style={styles.selectGoodsNum}
+                                            start={{x:0,y:0}}
+                                            end={{x:1,y:1}}>
+                                    <UIText
+                                        value={`去结算(${shopCartStore.getTotalSelectGoodsNum})`}
+                                        style={{ color: "white", fontSize: 16 }}
+                                    />
+
+                            </LinearGradient>
                         </TouchableOpacity>
                     </View>
                 </View>
+                <View style={{height:1,width:ScreenUtils.width,backgroundColor:DesignRule.bgColor}}/>
             </View>
         );
     }
@@ -167,17 +184,24 @@ const styles = StyleSheet.create({
     },
     selectGoodsNum: {
         width: px2dp(110),
-        height: px2dp(49),
+        height: px2dp(34),
+        borderRadius:px2dp(17),
         backgroundColor: DesignRule.mainColor,
         justifyContent: "center",
         alignItems: "center"
     },
     CartBottomContainer: {
         width: ScreenUtils.width,
-        height: px2dp(49),
+        height: px2dp(47.5),
         backgroundColor: "white",
         justifyContent: "space-between",
         flexDirection: "row",
         alignItems: "center"
+    },
+    shippingText:{
+        color:DesignRule.textColor_mainTitle,
+        fontSize:px2dp(10),
+
     }
+
 });
