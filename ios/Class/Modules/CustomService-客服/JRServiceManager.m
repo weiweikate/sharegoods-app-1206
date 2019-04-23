@@ -140,14 +140,8 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 -(void)initActionConfig{
   QYCustomActionConfig  * actionConfig = [[QYSDK sharedSDK] customActionConfig];
   actionConfig.linkClickBlock = ^(NSString *linkAddress) {
-//    if (self.currentChatType == BEGIN_FROM_ORDER ||
-//        self.currentChatType == BEGIN_FROM_PRODUCT) {
-//      [self onBack:nil];
-//    }else{
-//
-//    }
      [self onBack:nil];
-    NSDictionary *urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":@"arr/SPU00000568"};
+     NSDictionary *urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":@"arr/SPU00000568"};
      [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
   };
 }

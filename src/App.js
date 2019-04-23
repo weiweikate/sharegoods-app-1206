@@ -156,27 +156,27 @@ class App extends Component {
         );
     }
 
-    lianjie111 = () => {
-        QYChatTool.beginQYChat(
-            {
-                urlString: 'hzmrwlyxgs-gys222.qiyukf.com',// 供应商域名地址 暂时无用
-                title: '供应商222', // 供应商名称  后台给
-                shopId: "gys222",   //供应商id 用户连接供应商 后台传入
-                chatType: beginChatType.BEGIN_FROM_PRODUCT,  //发起请求类型 详见枚举数据源
-                data: {
-                    title: '网易七鱼', //商品或订单title
-                    desc: '网易七鱼是网易旗下一款专注于解决企业与客户沟通的客服系统产品。',  //描述
-                    pictureUrlString: 'http://qiyukf.com/main/res/img/index/barcode.png',// 商品或订单图片连接
-                    urlString: 'http://qiyukf.com/SPU00000568',// 商品或者url
-                    note: '￥10000',   //商品价格或者订单号等
-                }
-            }
-        )
-        // const navigationAction = NavigationActions.navigate({
-        //     routeName: 'payment/TextWxPay'
-        // });
-        // global.$navigator.dispatch(navigationAction);
-    };
+    // lianjie111 = () => {
+    //     QYChatTool.beginQYChat(
+    //         {
+    //             urlString: 'hzmrwlyxgs-gys222.qiyukf.com',// 供应商域名地址 暂时无用
+    //             title: '供应商222', // 供应商名称  后台给
+    //             shopId: "gys222",   //供应商id 用户连接供应商 后台传入
+    //             chatType: beginChatType.BEGIN_FROM_PRODUCT,  //发起请求类型 详见枚举数据源
+    //             data: {
+    //                 title: '网易七鱼', //商品或订单title
+    //                 desc: '网易七鱼是网易旗下一款专注于解决企业与客户沟通的客服系统产品。',  //描述
+    //                 pictureUrlString: 'http://qiyukf.com/main/res/img/index/barcode.png',// 商品或订单图片连接
+    //                 urlString: 'http://qiyukf.com/',// 商品或者url
+    //                 note: '￥10000',   //商品价格或者订单号等
+    //             }
+    //         }
+    //     )
+    //     // const navigationAction = NavigationActions.navigate({
+    //     //     routeName: 'payment/TextWxPay'
+    //     // });
+    //     // global.$navigator.dispatch(navigationAction);
+    // };
 
 
     showDebugPage = () => {

@@ -67,30 +67,30 @@ export default class ShopCartCell extends Component {
                                  }}/>
                         <UIImage source={{ uri: itemData.imgUrl ? itemData.imgUrl : "" }}
                                  style={[styles.validProductImg]}/>
-                        {
-                            getTipString(itemData).needIconText
-                                ?
-                                <View
-                                    style={{
-                                        position: "absolute",
-                                        left: 140,
-                                        top: 20,
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        borderWidth: 1,
-                                        borderRadius: 4,
-                                        borderColor: DesignRule.mainColor,
-                                        width: 16,
-                                        height: 16
-                                    }}
-                                >
-                                    <UIText
-                                        value={getTipString(itemData).iconText}
-                                        style={{ fontSize: 10, color: DesignRule.mainColor }}
-                                    />
-                                </View>
-                                : null
-                        }
+                        {/*{*/}
+                            {/*getTipString(itemData).needIconText*/}
+                                {/*?*/}
+                                {/*<View*/}
+                                    {/*style={{*/}
+                                        {/*position: "absolute",*/}
+                                        {/*left: 140,*/}
+                                        {/*top: 20,*/}
+                                        {/*justifyContent: "center",*/}
+                                        {/*alignItems: "center",*/}
+                                        {/*borderWidth: 1,*/}
+                                        {/*borderRadius: 4,*/}
+                                        {/*borderColor: DesignRule.mainColor,*/}
+                                        {/*width: 16,*/}
+                                        {/*height: 16*/}
+                                    {/*}}*/}
+                                {/*>*/}
+                                    {/*<UIText*/}
+                                        {/*value={getTipString(itemData).iconText}*/}
+                                        {/*style={{ fontSize: 10, color: DesignRule.mainColor }}*/}
+                                    {/*/>*/}
+                                {/*</View>*/}
+                                {/*: null*/}
+                        {/*}*/}
                         {
                             //是否售完
                             itemData.productStatus === 1
@@ -110,19 +110,7 @@ export default class ShopCartCell extends Component {
                         <View style={styles.validContextContainer}>
                             <View style={{}}>
                                 <UIText
-                                    value={
-                                        itemData.productName
-                                            ?
-                                            (
-                                                getTipString(itemData).needIconText
-                                                    ?
-                                                    "    " + itemData.productName
-                                                    :
-                                                    "" + itemData.productName
-                                            )
-                                            :
-                                            ""
-                                    }
+                                    value={itemData.productName ? itemData.productName : ""}
                                     numberOfLines={2}
                                     style={{
                                         marginTop: 0,
@@ -142,7 +130,8 @@ export default class ShopCartCell extends Component {
 
                                 {
                                     <UIText
-                                        value={getTipString(itemData).tipString}
+                                        // value={getTipString(itemData).tipString}
+                                        value={''}
                                         numberOfLines={2}
                                         style={{
                                             fontSize: 11,
