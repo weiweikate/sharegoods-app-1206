@@ -42,7 +42,7 @@ export default class SuitProductPage extends BasePage {
     };
 
     _bottomAction = () => {
-        const { groupCode } = this.suitProductModel;
+        const { groupCode, selectedAmount } = this.suitProductModel;
         this.suitProductModel.subProductArr.map((item) => {
             const { prodCode, skuCode } = item;
             return {
@@ -50,7 +50,7 @@ export default class SuitProductPage extends BasePage {
                 batchNo: 1,
                 productCode: prodCode,
                 skuCode: skuCode,
-                quantity: 2
+                quantity: selectedAmount
             };
         });
         this.$navigate(RouterMap.ConfirOrderPage, {
