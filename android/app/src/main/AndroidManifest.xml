@@ -345,6 +345,19 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.mobile.auth.gatewayauth.LoginAuthActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
         <!--&lt;!&ndash;高德地图定位&ndash;&gt;-->
         <!--<meta-data android:name="com.amap.api.v2.apikey" android:value="4a3ff7c2164aaf7d67a98fb9b88ae0e6">-->
         <!--</meta-data>-->

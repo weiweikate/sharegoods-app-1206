@@ -438,11 +438,20 @@ public static final int *;
 -keep class * extends androidx.appcompat.app.ActionBar {*;}
 
 # number verify
+#-keep class android.support.v4.** { *;}
+#-keep class com.alibaba.fastjson.** {*;}
+#-keep class cn.com.chinatelecom.** {*;}
+#-keep class com.unicom.** {*;}
+#-keep class com.cmic.** {*;}
+# -keep class com.alicom.phonenumberauthsdk.** {
+#      *;
+#  }
+
+#ali auth
+-keep class cn.com.chinatelecom.gateway.lib.** {*;}
+-keep class com.unicom.xiaowo.login.** {*;}
+-keep class com.cmic.sso.sdk.** {*;}
+-keep class com.mobile.auth.gatewayauth.** {*;}
 -keep class android.support.v4.** { *;}
+-keep class org.json.**{*;}
 -keep class com.alibaba.fastjson.** {*;}
--keep class cn.com.chinatelecom.** {*;}
--keep class com.unicom.** {*;}
--keep class com.cmic.** {*;}
- -keep class com.alicom.phonenumberauthsdk.** {
-      *;
-  }

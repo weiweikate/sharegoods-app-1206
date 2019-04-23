@@ -10,6 +10,7 @@ import res from "../res";
 import RouterMap from "../../../navigation/RouterMap";
 import { wxLoginAction } from "../model/LoginActionModel";
 import { TrackApi } from "../../../utils/SensorsTrack";
+import { startLoginAuth } from "../model/PhoneAuthenAction";
 
 const {
     other: {
@@ -101,10 +102,15 @@ export default class Login extends BasePage {
         if (btnType === loginBtnType.wxLoginBtnType) {
             this._wxLogin();
         } else if (btnType === loginBtnType.localPhoneNumLoginType) {
-            this.$navigate(RouterMap.LocalNumLogin, {
-                tempPhone: this.state.tempPhone,
-                authenToken: this.state.authenToken
-            });
+            // this.$navigate(RouterMap.LocalNumLogin, {
+            //     tempPhone: this.state.tempPhone,
+            //     authenToken: this.state.authenToken
+            // });
+            startLoginAuth().then((data)=>{
+                alert(JSON.stringify(data))
+            }).catch((error)=>{
+                alert(error.message);
+            })
         } else {
             this.$navigate(RouterMap.OtherLoginPage);
         }
