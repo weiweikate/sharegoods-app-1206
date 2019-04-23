@@ -95,18 +95,18 @@ export class SubProductView extends Component {
     render() {
         const { item, suitProductModel, chooseSku } = this.props;
         const { changeItem, selectedAmount } = suitProductModel;
-        const { isSelected, canSelected } = item;
+        const { isSelected, name, imgUrl, minPrice, selectedSkuItem } = item;
         return (
             <NoMoreClick style={[mStyles.bgView, { marginHorizontal: 15, marginTop: 10, borderRadius: 5 }]}
                          onPress={isSelected ? changeItem : chooseSku}>
                 <Image style={mStyles.selectImg}
-                       source={canSelected ? (isSelected ? selected : un_selected) : cant_selected}/>
-                <UIImage style={mStyles.productImg}/>
+                       source={un_selected}/>
+                <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
                 <View style={mStyles.productView}>
-                    <MRText style={mStyles.nameText}>大熊毛绒玩具送女友泰迪熊熊猫公仔抱抱熊2米女生布娃娃</MRText>
+                    <MRText style={mStyles.nameText}>{name}</MRText>
                     <View style={mStyles.specView}>
                         <MRText style={mStyles.specText}
-                                numberOfLines={2}>规格：红色，1.2m，1.2m规格：红色，1.2m，1.2m规格：红色，1.2m，1.2m规格：红色，1.2m，1.2m</MRText>
+                                numberOfLines={2}>{name}</MRText>
                         <Image style={mStyles.specImg} source={selected_sku}/>
                         <MRText style={mStyles.specAmountText}>{`x${selectedAmount}`}</MRText>
                     </View>
@@ -115,7 +115,7 @@ export class SubProductView extends Component {
                             <MRText style={mStyles.bonusText}>立省￥20起111111</MRText>
                         </View>
                     </View>
-                    <MRText style={mStyles.priceText}>¥150.00</MRText>
+                    <MRText style={mStyles.priceText}>{isSelected ? `¥${selectedSkuItem}` : `¥${minPrice}起`}</MRText>
                 </View>
             </NoMoreClick>
         );

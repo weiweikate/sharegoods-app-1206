@@ -2,41 +2,32 @@ import { observable, computed, action } from 'mobx';
 import bridge from '../../../utils/bridge';
 
 export default class SuitProductModel {
-    @observable mainProduct = { selectedSkuItem: null, sellStock: 2 };
+
+    @observable mainProduct = {};
     @observable subProductArr = [];
+    @observable totalProduct = [];
 
     @observable selectedAmount = 1;
     /*选择中的规格*/
     @observable selectedItems = [];
 
-    // @computed getTotalProduct() {
-    //
-    // }
-
     //是否能增加
     @computed get canAddAmount() {
         //最大能点击数 选择里面的最小
-        let tempArr = [this.mainProduct, ...this.selectedItems];
-        tempArr.map(() => {
-            console.log(tempArr);
-            return;
-        });
-        let tempItem = tempArr.reduce((pre, cur) => {
-            if (!cur) {
-                return pre;
-            }
-            if (pre.sellStock <= cur.sellStock) {
-                return pre;
-            } else {
-                return cur;
-            }
-        });
-        return tempItem.sellStock > this.selectedAmount;
+        if (this.selectedItems.length === 0) {
+            return true;
+        } else {
+            let sellStockList = this.selectedItems.map((item) => {
+                return item.sellStock;
+            });
+            let minSellStock = Math.min.apply(null, sellStockList);
+            return minSellStock > this.selectedAmount;
+        }
     }
 
     @action addAmount = () => {
         this.selectedAmount++;
-        this.changeArr();
+        // this.changeArr();
     };
 
     @action subAmount = () => {
@@ -44,13 +35,14 @@ export default class SuitProductModel {
             return;
         }
         this.selectedAmount--;
-        this.changeArr();
+        //是否能选择
+        // this.changeArr();
     };
 
-    @action changeArr = () => {
-        let tempArr = [this.mainProduct, ...this.selectedItems];
-
-    };
+    // @action changeArr = () => {
+    //     this
+    //
+    // };
 
     @action changeItem = (item) => {
         const { isSelected } = item;
@@ -67,19 +59,24 @@ export default class SuitProductModel {
                 item.isSelected = true;
             }
         }
-        let tempArr = [this.mainProduct, ...this.selectedItems];
-        this.selectedItems = tempArr.filter((item1) => {
+        //获取选择的item
+        this.selectedItems = this.totalProduct.filter((item1) => {
             return item1.isSelected;
         });
     };
 
     /*初始化*/
-    @action setSubProductArr = (mainProduct, subProducts) => {
+    @action setSubProductArr = (productDetailModel) => {
+        const { productData, groupActivity } = productDetailModel;
+        let tempProductData = JSON.parse(JSON.stringify(productData || {}));
+        let tempGroupActivity = JSON.parse(JSON.stringify(groupActivity || {}));
+
         this.mainProduct = {
-            ...mainProduct,
-            selectedSkuItem: null
+            ...tempProductData,
+            selectedSkuItem: null,
+            isSelected: false
         };
-        this.subProductArr = subProducts.map((item) => {
+        this.subProductArr = (tempGroupActivity.subProductList || []).map((item) => {
             return {
                 ...item,
                 /*选择的库存*/
@@ -87,5 +84,7 @@ export default class SuitProductModel {
                 isSelected: false
             };
         });
+
+        this.totalProduct = [this.mainProduct, ...this.subProductArr];
     };
 }

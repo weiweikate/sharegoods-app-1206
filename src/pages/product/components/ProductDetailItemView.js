@@ -158,23 +158,26 @@ const styles = StyleSheet.create({
 * 套餐
 * */
 export class SuitItemView extends Component {
-    _renderItem = () => {
+    _renderItem = ({item}) => {
+        const { imgUrl, name, minPrice } = item;
         return (
             <View style={SuitItemViewStyles.item}>
-                <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: '' }}/>
+                <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}/>
                 <Text style={SuitItemViewStyles.itemText}
-                      numberOfLines={2}>我是标题我是标题我是标题我…我是标题我是标题我是标题我…我是标题我是标题我是标题我…我是标题我是标题我是标题我…</Text>
-                <Text style={SuitItemViewStyles.itemPrice}>¥110起</Text>
+                      numberOfLines={2}>{name}</Text>
+                <Text style={SuitItemViewStyles.itemPrice}>{`¥${minPrice}起`}</Text>
             </View>
         );
     };
 
     _goSuitPage = () => {
-        navigate(RouterMap.SuitProductPage);
+        const { productDetailModel } = this.props;
+        navigate(RouterMap.SuitProductPage, { productDetailModel });
     };
 
     render() {
-        let arr = ['', '', '', '', '', ''];
+        const { productDetailModel } = this.props;
+        const { groupActivity } = productDetailModel;
         return (
             <View style={SuitItemViewStyles.bgView}>
                 <NoMoreClick style={SuitItemViewStyles.tittleView} onPress={this._goSuitPage}>
@@ -186,7 +189,7 @@ export class SuitItemView extends Component {
                 </NoMoreClick>
                 <FlatList
                     style={SuitItemViewStyles.flatList}
-                    data={arr}
+                    data={groupActivity.subProductList}
                     keyExtractor={(item, index) => item.id + index + ''}
                     renderItem={this._renderItem}
                     horizontal={true}

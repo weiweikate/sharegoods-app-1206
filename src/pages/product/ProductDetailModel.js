@@ -39,13 +39,14 @@ export const product_status = {
 export default class ProductDetailModel {
 
     @observable prodCode;
-
     @observable loadingState = PageLoadingState.loading;
     @observable netFailedInfo = {};
 
     @observable offsetY = 0;
     @observable opacity = 0;
 
+    /*总数据*/
+    @observable productData;
     /***0产品删除 1产品上架 2产品下架(包含未上架的所有状态，出去删除状态) 3未开售***/
     @observable productStatus;
     /**视频**/
@@ -96,9 +97,17 @@ export default class ProductDetailModel {
     /**商品详情**/
     @observable contentArr = [];
 
+    /**营销活动**/
+    /*秒杀*/
+    @observable singleActivity = {};
+    /*套餐*/
+    /*subProductList:[]*/
+    @observable groupActivity = [];
+
     /**七鱼相关**/
     @observable shopId;
     @observable title;
+
 
     /**显示向上返回**/
     @computed get showTop() {
@@ -120,18 +129,22 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr } = this;
+        const { promoteInfoVOList, contentArr, groupActivity } = this;
 
         let sectionArr = [
             { key: productItemType.headerView, data: [productItemType.headerView] }
         ];
-        if (promoteInfoVOList && promoteInfoVOList.length !== 0) {
+        if ((groupActivity.subProductList || []).length !== 0) {
+            sectionArr.push(
+                { key: productItemType.suit, data: [productItemType.suit] }
+            );
+        }
+        if (promoteInfoVOList.length !== 0) {
             sectionArr.push(
                 { key: productItemType.promote, data: [productItemType.promote] }
             );
         }
         sectionArr.push(
-            { key: productItemType.suit, data: [productItemType.suit] },
             { key: productItemType.service, data: [productItemType.service] },
             { key: productItemType.param, data: [productItemType.param] },
             { key: productItemType.comment, data: [productItemType.comment] },
@@ -148,20 +161,22 @@ export default class ProductDetailModel {
             this.loadingState = PageLoadingState.fail;
             this.netFailedInfo = { msg: `该商品走丢了\n去看看别的商品吧` };
         } else {
+            this.productData = data || {};
             const {
                 videoUrl, imgUrl, imgFileList, minPrice, maxPrice,
                 originalPrice, priceType, name, secondName, freight,
                 groupPrice, v0Price, shareMoney,
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
                 restrictions, paramList, comment, totalComment,
-                prodCode, upTime, now, content, shopId, title
+                prodCode, upTime, now, content, shopId, title, promotionResult
             } = data || {};
+
             let contentArr = isNoEmpty(content) ? content.split(',') : [];
 
             this.loadingState = PageLoadingState.success;
             this.videoUrl = videoUrl;
             this.imgUrl = imgUrl;
-            this.imgFileList = imgFileList;
+            this.imgFileList = imgFileList || [];
             this.minPrice = minPrice;
             this.maxPrice = maxPrice;
             this.groupPrice = groupPrice;
@@ -173,17 +188,20 @@ export default class ProductDetailModel {
             this.secondName = secondName;
             this.freight = freight;
             this.monthSaleCount = monthSaleCount;
-            this.skuList = skuList;
-            this.specifyList = specifyList;
-            this.stockSysConfig = stockSysConfig;
-            this.promoteInfoVOList = promoteInfoVOList;
+            this.skuList = skuList || [];
+            this.specifyList = specifyList || [];
+            this.stockSysConfig = stockSysConfig || [];
+            this.promoteInfoVOList = promoteInfoVOList || [];
             this.restrictions = restrictions;
-            this.paramList = paramList;
-            this.comment = comment;
+            this.paramList = paramList || [];
+            this.comment = comment || {};
             this.totalComment = totalComment;
             this.contentArr = contentArr;
             this.shopId = shopId;
             this.title = title;
+            const { singleActivity, groupActivity } = promotionResult || {};
+            this.singleActivity = singleActivity || {};
+            this.groupActivity = groupActivity || {};
 
             /*productStatus===3的时候需要刷新*/
             if (productStatus === 3 && upTime && now) {

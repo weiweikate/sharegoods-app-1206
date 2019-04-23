@@ -17,7 +17,8 @@ export default class SuitProductPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.suitProductModel.setSubProductArr({}, [{ stock: 1 }, { stock: 2 }, { stock: 3 }, { stock: 4 }]);
+        const { productDetailModel } = this.params;
+        this.suitProductModel.setSubProductArr(productDetailModel);
     }
 
     _renderItem = ({ item }) => {
@@ -35,7 +36,7 @@ export default class SuitProductPage extends BasePage {
 
     _render() {
         const { subProductArr } = this.suitProductModel;
-        return <View>
+        return <View style={{ flex: 1 }}>
             <AmountItemView suitProductModel={this.suitProductModel}/>
             <MainProductView suitProductModel={this.suitProductModel}
                              chooseSku={this._chooseSku}/>

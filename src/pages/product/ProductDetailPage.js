@@ -212,7 +212,7 @@ export default class ProductDetailPage extends BasePage {
                                        }}/>;
             }
             case productItemType.suit: {
-                return <SuitItemView/>;
+                return <SuitItemView productDetailModel={this.productDetailModel}/>;
             }
             case productItemType.promote: {
                 return <PromoteItemView productDetailModel={this.productDetailModel}
