@@ -2,13 +2,15 @@ import { observable, computed, action } from 'mobx';
 import bridge from '../../../utils/bridge';
 
 export default class SuitProductModel {
-
-    @observable mainProduct = {};
-    @observable subProductArr = [];
-    @observable totalProduct = [];
-
     @observable selectedAmount = 1;
-    /*选择中的规格*/
+    /*主商品*/
+    @observable mainProduct = {};
+    /*主sku*/
+    @observable mainSkuItem = {};
+
+    /*子商品*/
+    @observable subProductArr = [];
+    /*子sku*/
     @observable selectedItems = [];
 
     //是否能增加
@@ -25,6 +27,20 @@ export default class SuitProductModel {
         }
     }
 
+    @computed get totalPayMoney() {
+        return this.selectedItems.reduce((pre, cur) => {
+            const { promotionPrice } = cur;
+            return pre + promotionPrice * this.selectedAmount;
+        }, 0);
+    }
+
+    @computed get totalSubMoney() {
+        return this.selectedItems.reduce((pre, cur) => {
+            const { promotionDecreaseAmount } = cur;
+            return pre + promotionDecreaseAmount * this.selectedAmount;
+        }, 0);
+    }
+
     @action addAmount = () => {
         this.selectedAmount++;
         // this.changeArr();
@@ -38,11 +54,6 @@ export default class SuitProductModel {
         //是否能选择
         // this.changeArr();
     };
-
-    // @action changeArr = () => {
-    //     this
-    //
-    // };
 
     @action changeItem = (item) => {
         const { isSelected } = item;
@@ -60,7 +71,7 @@ export default class SuitProductModel {
             }
         }
         //获取选择的item
-        this.selectedItems = this.totalProduct.filter((item1) => {
+        this.selectedItems = this.subProductArr.filter((item1) => {
             return item1.isSelected;
         });
     };
@@ -71,14 +82,11 @@ export default class SuitProductModel {
         let tempProductData = JSON.parse(JSON.stringify(productData || {}));
         let tempGroupActivity = JSON.parse(JSON.stringify(groupActivity || {}));
 
-        let decreaseList = (tempProductData.skuList || []).map((sku) => {
-            return sku.promotionDecreaseAmount;
-        });
+        //主商品不参加活动
         this.mainProduct = {
             ...tempProductData,
             selectedSkuItem: null,
-            isSelected: false,
-            minDecrease: decreaseList && decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList)
+            isSelected: false
         };
         this.subProductArr = (tempGroupActivity.subProductList || []).map((item) => {
             let decreaseList = (item.skuList || []).map((sku) => {
@@ -89,10 +97,8 @@ export default class SuitProductModel {
                 /*选择的库存*/
                 selectedSkuItem: null,
                 isSelected: false,
-                minDecrease: decreaseList && decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList)
+                minDecrease: decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList)
             };
         });
-
-        this.totalProduct = [this.mainProduct, ...this.subProductArr];
     };
 }
