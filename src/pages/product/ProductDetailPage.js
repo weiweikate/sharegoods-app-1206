@@ -182,7 +182,6 @@ export default class ProductDetailPage extends BasePage {
                 skuCode: skuCode,
                 quantity: amount,
                 productCode: prodCode,
-                spuName: name
             }];
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {

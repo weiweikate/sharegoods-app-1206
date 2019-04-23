@@ -1,8 +1,8 @@
 const api = {
     // 确认订单
-    makeSureOrder: ['/order/confirm2',{ isRSA: true }],
+    makeSureOrder: ['/order/confirmV2',{ isRSA: true }],
     //order/submitOrder提交订单
-    submitOrder: ['/order/submit2',{ isRSA: true }],
+    submitOrder: ['/order/submitV2',{ isRSA: true }],
     //订单列表  订单状态（1：待支付 2：待发货 3：待收货 4：确认收货 5：已完成 6：退货关闭 7：用户关闭 8：超时关闭）
     queryPage: ['/order/list',{method:'get'}],
     //订单搜索
