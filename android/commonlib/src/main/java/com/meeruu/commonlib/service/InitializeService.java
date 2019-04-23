@@ -11,7 +11,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
+import android.util.Log;
 
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.handler.CrashHandler;
 import com.meeruu.commonlib.handler.WeakHandler;
@@ -28,6 +33,8 @@ import com.qiyukf.unicorn.api.YSFOptions;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -174,8 +181,12 @@ public class InitializeService extends IntentService {
         YSFOptions ysfOptions = options();
         ysfOptions.onMessageItemClickListener = new OnMessageItemClickListener() {
             // 响应 url 点击事件
+            @Override
             public void onURLClicked(Context context, String url) {
                 ((QiyuServiceMessageActivity) context).finish(true);
+                QiyuUrlEvent event = new QiyuUrlEvent();
+                event.setUrl(url);
+                EventBus.getDefault().post(event);
                 // 打开内置浏览器等动作
 //                try {
 //                    context.startActivity(new Intent(context, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"))
@@ -187,5 +198,12 @@ public class InitializeService extends IntentService {
             }
         };
         return ysfOptions;
+    }
+
+    private void sendEvent(ReactContext reactContext,
+                           String eventName,
+                           @Nullable WritableMap params) {
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 }

@@ -146,10 +146,10 @@ class App extends Component {
                         <DebugButton onPress={this.showDebugPage} style={{ backgroundColor: "red" }}><Text
                             style={{ color: "white" }}>调试页</Text></DebugButton> : null
                 }
-                {/*{*/}
-                    {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
-                        {/*style={{ color: "white" }}>客服</Text></DebugButton>*/}
-                {/*}*/}
+                {
+                    <DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text
+                        style={{ color: "white" }}>客服</Text></DebugButton>
+                }
 
                 <PreComponent ref={(ref)=>{this.preView = ref}}/>
             </View>

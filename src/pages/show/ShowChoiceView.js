@@ -13,7 +13,6 @@ const maskImg = res.other.show_mask;
 import DesignRule from '../../constants/DesignRule';
 import ImageLoad from '@mr/image-placeholder'
 import AvatarImage from '../../components/ui/AvatarImage'
-import TimerMixin from 'react-timer-mixin'
 import {
     MRText as Text,
 } from '../../components/ui';
@@ -39,12 +38,15 @@ class Card extends Component {
     _onSelectedCard() {
         const { press } = this.props
         press && press()
-
-        TimerMixin.setTimeout(() => {
-            const { readNumber } = this.state
-            this.setState({readNumber: readNumber + 5})
-        }, 800)
     }
+
+    setClick=(num)=>{
+        this.setState({
+            readNumber:num
+        })
+    }
+
+
 
     render () {
         const { item } = this.props
@@ -90,12 +92,12 @@ export default class ShowChoiceView extends Component {
         this.isScroll = isScroll
     }
 
-    _onChoiceAction(item) {
+    _onChoiceAction(item,index) {
         const { navigate } = this.props
         if (this.isScroll === true) {
             return
         }
-        navigate('show/ShowDetailPage', {id: item.id, code: item.code})
+        navigate('show/ShowDetailPage', {id: item.id, code: item.code,ref:this['card'+index],isFormHeader:true})
     }
 
     render() {
@@ -105,7 +107,9 @@ export default class ShowChoiceView extends Component {
             return <View/>
         }
         choiceList.map((item, index) => {
-            items.push(<Card key={index} item={item} press={()=>this._onChoiceAction(item)}/>)
+            items.push(<Card ref={(ref)=>{
+                this['card'+index] = ref;
+            }} key={index} item={item} press={()=>this._onChoiceAction(item,index)}/>)
         })
         return <View>
         {
