@@ -167,7 +167,7 @@ class App extends Component {
                     title: '网易七鱼', //商品或订单title
                     desc: '网易七鱼是网易旗下一款专注于解决企业与客户沟通的客服系统产品。',  //描述
                     pictureUrlString: 'http://qiyukf.com/main/res/img/index/barcode.png',// 商品或订单图片连接
-                    urlString: 'http://qiyukf.com/',// 商品或者url
+                    urlString: 'http://qiyukf.com/SPU00000568',// 商品或者url
                     note: '￥10000',   //商品价格或者订单号等
                 }
             }
