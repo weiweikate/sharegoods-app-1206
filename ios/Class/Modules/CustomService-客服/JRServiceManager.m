@@ -18,6 +18,7 @@
 #define sessionListData  @"sessionListData"
 #define suspensionId  @"hzmrwlyxgs"
 
+
 @interface JRServiceManager()<QYConversationManagerDelegate>
 
 @property (nonatomic,strong) NSDictionary * dataDic;
@@ -139,12 +140,15 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 -(void)initActionConfig{
   QYCustomActionConfig  * actionConfig = [[QYSDK sharedSDK] customActionConfig];
   actionConfig.linkClickBlock = ^(NSString *linkAddress) {
-    if (self.currentChatType == BEGIN_FROM_ORDER ||
-        self.currentChatType == BEGIN_FROM_PRODUCT) {
-      [self onBack:nil];
-    }else{
-      
-    }
+//    if (self.currentChatType == BEGIN_FROM_ORDER ||
+//        self.currentChatType == BEGIN_FROM_PRODUCT) {
+//      [self onBack:nil];
+//    }else{
+//
+//    }
+     [self onBack:nil];
+    NSDictionary *urlData = @{@"card_type":@(PRODUCT_CARD), @"linkUrl":@"arr/SPU00000568"};
+     [[NSNotificationCenter defaultCenter]postNotificationName:QY_CARD_CLICK object:urlData];
   };
 }
 
@@ -275,7 +279,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   }
   
   [self.sessionListDic setObject:sessionListDataArr forKey:sessionListData];
-  
+
   dispatch_async(dispatch_get_main_queue(), ^{
     [[NSNotificationCenter defaultCenter]postNotificationName:QY_MSG_CHANGE object:self.sessionListDic];
   });

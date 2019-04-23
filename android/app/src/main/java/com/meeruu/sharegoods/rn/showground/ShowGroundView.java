@@ -32,6 +32,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRefreshListener {
     private int page = 1;
@@ -111,22 +112,12 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
             @Override
             public void onItemClick(final BaseQuickAdapter adapter, View view1, final int position) {
                 final List<NewestShowGroundBean.DataBean> data = adapter.getData();
-
-                recyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        NewestShowGroundBean.DataBean bean = data.get(position);
-                        bean.setClick(bean.getClick() + 5);
-                        adapter.replaceData(data);
-
-                    }
-                }, 200);
-
                 if (data != null) {
                     NewestShowGroundBean.DataBean item = data.get(position);
                     String json = JSONObject.toJSONString(item);
                     Map map = JSONObject.parseObject(json, new TypeReference<Map>() {
                     });
+                    map.put("index", position);
                     WritableMap realData = Arguments.makeNativeMap(map);
                     if (eventDispatcher != null) {
                         itemPressEvent.init(view.getId());
@@ -135,8 +126,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
                     }
                 }
             }
-        });
-        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
+        }); recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         recyclerView.setAdapter(adapter);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -199,6 +189,23 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     public void loadMoreEnd() {
         if (adapter != null) {
             adapter.loadMoreEnd();
+        }
+    }
+
+    @Override
+    public void repelaceData(final int index, final int clickNum) {
+        if (adapter != null) {
+            final List<NewestShowGroundBean.DataBean> data = adapter.getData();
+
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    NewestShowGroundBean.DataBean bean = data.get(index);
+                    bean.setClick(clickNum);
+                    adapter.replaceData(data);
+
+                }
+            }, 200);
         }
     }
 

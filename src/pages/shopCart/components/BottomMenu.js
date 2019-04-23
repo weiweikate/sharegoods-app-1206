@@ -141,7 +141,10 @@ export default class BottomMenu extends Component {
                 buyGoodsArr.push({
                     skuCode: goods.skuCode,
                     quantity: goods.amount,
-                    productCode: goods.spuCode
+                    productCode: goods.spuCode,
+                    batchNo:'1',
+                    shoppingCartId:goods.id,
+                    activityCode:goods.activityCode
                 });
             });
             navigate("order/order/ConfirOrderPage", {

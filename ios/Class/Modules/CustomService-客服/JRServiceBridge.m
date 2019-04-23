@@ -18,7 +18,8 @@
 
 -(NSArray<NSString *> *)supportedEvents{
   return @[
-           QY_MSG_CHANGE
+           QY_MSG_CHANGE,
+           QY_CARD_CLICK
            ];
 }
 
@@ -45,15 +46,29 @@ RCT_EXPORT_METHOD(qiYULogout){
 // 在添加第一个监听函数时触发
 -(void)startObserving {
   hasListeners = YES;
+    //监听长链接发来的消息
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(aaa:)
+                                           selector:@selector(toRNHandleMsg:)
                                                name:QY_MSG_CHANGE
                                              object:nil];
+    //增加卡片点击的监听
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                              selector:@selector(toRNHandleCardClick:)
+                                                  name:QY_CARD_CLICK
+                                                object:nil];
 }
-- (void)aaa:(NSNotification*)notification {
+- (void)toRNHandleMsg:(NSNotification*)notification {
   if (hasListeners) {
     dispatch_async(dispatch_get_main_queue(), ^{
       [self sendEventWithName:QY_MSG_CHANGE body:notification.object];
+    });
+  }
+}
+
+-(void)toRNHandleCardClick:(NSNotification *)notification{
+  if (hasListeners) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self sendEventWithName:QY_CARD_CLICK body:notification.object];
     });
   }
 }
