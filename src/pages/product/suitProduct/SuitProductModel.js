@@ -5,13 +5,23 @@ export default class SuitProductModel {
     @observable groupCode;
     @observable selectedAmount = 1;
     /*主商品*/
+    /*
+    * product级别 额外增加字段 选择的sku
+    * selectedSkuItem: null,
+    * isSelected: false,
+    * */
     @observable mainProduct = {};
     /*主sku*/
     @observable mainSkuItem = {};
 
-    /*子商品*/
+    /*子商品们*/
+    /*product级别 额外增加字段
+    * selectedSkuItem: null,
+    * isSelected: false,
+    * minDecrease: 活动商品最小价格
+    * */
     @observable subProductArr = [];
-    /*子sku*/
+    /*子商品们skuS*/
     @observable selectedItems = [];
 
     /*去选择的商品*/
@@ -20,7 +30,7 @@ export default class SuitProductModel {
     //是否能增加
     @computed get canAddAmount() {
         //最大能点击数 选择里面的最小
-        if (this.selectedItems.length === 0) {
+        if (this.selectedItems.length === 0 && this.mainProduct.isSelected) {
             return true;
         } else {
             /*子商品*/
