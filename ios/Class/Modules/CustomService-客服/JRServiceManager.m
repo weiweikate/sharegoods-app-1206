@@ -275,7 +275,7 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   }
   
   [self.sessionListDic setObject:sessionListDataArr forKey:sessionListData];
-  
+
   dispatch_async(dispatch_get_main_queue(), ^{
     [[NSNotificationCenter defaultCenter]postNotificationName:QY_MSG_CHANGE object:self.sessionListDic];
   });

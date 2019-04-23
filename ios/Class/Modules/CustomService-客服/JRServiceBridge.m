@@ -46,10 +46,16 @@ RCT_EXPORT_METHOD(qiYULogout){
 // 在添加第一个监听函数时触发
 -(void)startObserving {
   hasListeners = YES;
+    //监听长链接发来的消息
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(toRNHandleMsg:)
                                                name:QY_MSG_CHANGE
                                              object:nil];
+    //增加卡片点击的监听
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                              selector:@selector(toRNHandleCardClick:)
+                                                  name:QY_CARD_CLICK
+                                                object:nil];
 }
 - (void)toRNHandleMsg:(NSNotification*)notification {
   if (hasListeners) {
