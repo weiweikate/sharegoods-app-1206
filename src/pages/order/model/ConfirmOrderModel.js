@@ -206,13 +206,14 @@ class ConfirmOrderModel {
             } else{//其他
                 this.orderParamVO.orderProducts.map((item, index) => {
 
-                    let {quantity, num , skuCode, productCode, activityCode} = item
+                    let {quantity, num , skuCode, productCode, activityCode, batchNo} = item
                     let  amount = quantity || num;
                     arr.push({
                         priceCode: skuCode,
                         productCode: productCode,
                         amount: amount,
-                        activityCode: activityCode
+                        activityCode: activityCode,
+                        batchNo
                     });
                 });
 
