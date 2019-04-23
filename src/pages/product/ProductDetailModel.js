@@ -211,7 +211,7 @@ export default class ProductDetailModel {
         let sectionArr = [
             { key: productItemType.headerView, data: [productItemType.headerView] }
         ];
-        if (activityStatus === activity_status.group && (groupActivity || []).length > 0) {
+        if (activityStatus === activity_status.inSell && (groupActivity.subProductList || []).length > 0) {
             sectionArr.push(
                 { key: productItemType.suit, data: [productItemType.suit] }
             );
@@ -295,14 +295,25 @@ export default class ProductDetailModel {
             this.promotionMinPrice = promotionMinPrice;
             this.promotionMaxPrice = promotionMaxPrice;
 
-            const { endTime, startTime, type } = singleActivity || {};
-            this.activityType = type;
-            if (now < startTime) {
+            let typeT, endTimeT, startTimeT;
+            if ((groupActivity || {}).type) {
+                const { endTime, startTime, type } = groupActivity || {};
+                typeT = type;
+                endTimeT = endTime;
+                startTimeT = startTime;
+            } else {
+                const { endTime, startTime, type } = singleActivity || {};
+                typeT = type;
+                endTimeT = endTime;
+                startTimeT = startTime;
+            }
+            this.activityType = typeT;
+            if (now < startTimeT) {
                 this.activityStatus = activity_status.unBegin;
-                this._startSkillInterval(now, startTime);
-            } else if (now >= startTime && now < endTime) {
+                this._startSkillInterval(now, startTimeT);
+            } else if (now >= startTimeT && now < endTimeT) {
                 this.activityStatus = activity_status.inSell;
-                this._startSkillInterval(now, endTime);
+                this._startSkillInterval(now, endTimeT);
             } else {
                 this.activityStatus = null;
             }
@@ -360,7 +371,7 @@ export default class ProductDetailModel {
         * SPU00000361 套餐主商品 SPU00000098
         * */
         ProductApi.getProductDetailByCodeV2({
-            code: 'SPU00000263'
+            code: 'SPU00000361'
         }).then((data) => {
             this.productSuccess((data || {}).data);
         }).catch((e) => {

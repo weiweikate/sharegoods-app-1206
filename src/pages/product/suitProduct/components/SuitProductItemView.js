@@ -66,13 +66,13 @@ const aStyles = StyleSheet.create({
 @observer
 export class MainProductView extends Component {
     render() {
-        const { item, suitProductModel, chooseSku } = this.props;
-        const { changeItem, selectedAmount } = suitProductModel;
-        const { isSelected, name, imgUrl, minPrice, minDecrease, selectedSkuItem } = item;
-        const { promotionUnitAmount, promotionDecreaseAmount, propertyValues } = selectedSkuItem;
+        const { suitProductModel, chooseSku } = this.props;
+        const { changeItem, selectedAmount, mainProduct } = suitProductModel;
+        const { isSelected, name, imgUrl, minPrice, selectedSkuItem } = mainProduct;
+        const { propertyValues, price } = selectedSkuItem || {};
         return (
             <NoMoreClick style={[mStyles.bgView, { paddingHorizontal: 15 }]}
-                         onPress={isSelected ? () => changeItem(item) : chooseSku}>
+                         onPress={isSelected ? () => changeItem(mainProduct) : chooseSku}>
                 <Image style={mStyles.selectImg} source={default_selected}/>
                 <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
                 <View style={mStyles.productView}>
@@ -83,13 +83,8 @@ export class MainProductView extends Component {
                         <Image style={mStyles.specImg} source={selected_sku}/>
                         <MRText style={mStyles.specAmountText}>x{selectedAmount}</MRText>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={mStyles.bonusView}>
-                            <MRText
-                                style={mStyles.bonusText}>{isSelected ? promotionDecreaseAmount : `立省￥${minDecrease}起`}</MRText>
-                        </View>
-                    </View>
-                    <MRText style={mStyles.priceText}>{isSelected ? `¥${promotionUnitAmount}` : `¥${minPrice}起`}</MRText>
+                    <MRText
+                        style={mStyles.priceText}>{isSelected ? `¥${price}` : `¥${minPrice}起`}</MRText>
                 </View>
             </NoMoreClick>
         );
@@ -101,8 +96,8 @@ export class SubProductView extends Component {
     render() {
         const { item, suitProductModel, chooseSku } = this.props;
         const { changeItem, selectedAmount } = suitProductModel;
-        const { isSelected, name, imgUrl, minPrice, minDecrease, selectedSkuItem } = item;
-        const { promotionUnitAmount, promotionDecreaseAmount, propertyValues } = selectedSkuItem;
+        const { isSelected, name, imgUrl, promotionMinPrice, minDecrease, selectedSkuItem } = item;
+        const { promotionPrice, promotionDecreaseAmount, propertyValues } = selectedSkuItem || {};
         return (
             <NoMoreClick style={[mStyles.bgView, { marginHorizontal: 15, marginTop: 10, borderRadius: 5 }]}
                          onPress={isSelected ? () => changeItem(item) : chooseSku}>
@@ -124,7 +119,7 @@ export class SubProductView extends Component {
                         </View>
                     </View>
                     <MRText
-                        style={mStyles.priceText}>{isSelected ? `¥${promotionUnitAmount}` : `¥${minPrice}起`}</MRText>
+                        style={mStyles.priceText}>{isSelected ? `¥${promotionPrice}` : `¥${promotionMinPrice}起`}</MRText>
                 </View>
             </NoMoreClick>
         );
