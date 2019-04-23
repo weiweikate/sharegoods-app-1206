@@ -164,7 +164,7 @@ class HomePage extends BasePage {
                 }
                 console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
-                    this.luckyIcon.getLucky();
+                    this.luckyIcon&&this.luckyIcon.getLucky(1,'');
                 }
             }
         );
@@ -202,7 +202,7 @@ class HomePage extends BasePage {
 
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
-                this.luckyIcon.getLucky();
+                this.luckyIcon&&this.luckyIcon.getLucky(1,'');
                 homeModalManager.requestGuide();
                 homeModalManager.requestData();
                 this.loadMessageCount();
@@ -293,6 +293,7 @@ class HomePage extends BasePage {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        this.luckyIcon&&this.luckyIcon.getLucky(1,'');
     }
 
     _onListViewScroll = (event) => {

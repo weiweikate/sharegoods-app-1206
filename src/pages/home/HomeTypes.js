@@ -22,7 +22,8 @@ export const homeType = {
     banner: 14,
     limitGo: 'limitGo',   //限时秒杀
     windowAlert: 1, //首页弹框
-    guideInfo: 17
+    guideInfo: 17,
+    Alert: 21,//退出的弹窗
 };
 
 

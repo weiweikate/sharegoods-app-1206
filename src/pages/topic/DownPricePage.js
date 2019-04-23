@@ -27,6 +27,8 @@ import Manager,{AdViewBindModal} from '../../components/web/WebModalManager'
 
 import res from '../../comm/res';
 import { TrackApi } from "../../utils/SensorsTrack";
+import LuckyIcon from '../guide/LuckyIcon';
+import { homeType } from '../home/HomeTypes';
 
 const {
     button: {
@@ -59,11 +61,11 @@ export default class DownPricePage extends BasePage {
         //获取弹出框的信息
         this.manager = new Manager();
         this.AdModal = observer(AdViewBindModal(this.manager))
-        this.manager.getAd(3,this.params.linkTypeCode);
+        this.manager.getAd(4,this.params.linkTypeCode,homeType.Alert);
     }
 
     $NavigationBarDefaultLeftPressed = () => {
-            this.manager.showAd(()=>this.$navigateBack())
+        this.manager.showAd(()=>this.$navigateBack())
     }
 
     $NavBarRenderRightItem = () => {
@@ -89,6 +91,7 @@ export default class DownPricePage extends BasePage {
                 console.log('-----' + linkTypeCode);
                 setTimeout(() => {
                     this.dataModel.loadTopicData(linkTypeCode);
+                    this.luckyIcon&&this.luckyIcon.getLucky(4,linkTypeCode)
                 });
             }
         );
@@ -206,75 +209,81 @@ export default class DownPricePage extends BasePage {
         this.$NavigationBarResetTitle(this.dataModel.name);
         const AdModal = this.AdModal;
         return (
-            <ScrollView
-                alwaysBounceVertical={true}
-                contentContainerStyle={Styles.list}
-                showsVerticalScrollIndicator={false}
-                style={{
-                    width: ScreenUtils.width,
-                    flex: 1
-                }}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.dataModel.isRefresh}
-                        onRefresh={this._onRefresh.bind(this)}
-                        progressViewOffset={statusBarHeight + 44}
-                        colors={[DesignRule.mainColor]}
-                        title="下拉刷新"
-                        tintColor={DesignRule.textColor_instruction}
-                        titleColor={DesignRule.textColor_instruction}
-                    />
-                }
-            >
-                {/*<ImageLoad style={Styles.topBannerImageStyle} source={{ uri: imgUrl ? imgUrl : '' }}/>*/}
-                <TopBannerView imageUrl={imgUrl} ratio={0.5}/>
-                {
-                    this._getTopicType() === 0
-                        ?
-                        <SubSwichView
-                            headerData={this.dataModel}
-                            navItemClick={(index) => {
-                                this.setState({
-                                    selectNav: index
-                                });
-                            }
-                            }
+            <View style={{flex: 1}}>
+                <ScrollView
+                    alwaysBounceVertical={true}
+                    contentContainerStyle={Styles.list}
+                    showsVerticalScrollIndicator={false}
+                    onScrollBeginDrag={() => {
+                        this.luckyIcon&&this.luckyIcon.close();
+                    }}
+                    style={{
+                        width: ScreenUtils.width,
+                        flex: 1
+                    }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.dataModel.isRefresh}
+                            onRefresh={this._onRefresh.bind(this)}
+                            progressViewOffset={statusBarHeight + 44}
+                            colors={[DesignRule.mainColor]}
+                            title="下拉刷新"
+                            tintColor={DesignRule.textColor_instruction}
+                            titleColor={DesignRule.textColor_instruction}
                         />
-                        :
-                        <SbOpenPrizeHeader
-                            headerData={this.dataModel}
-                            navItemClick={(index, item) => {
-                                //自导航点击事件
-                                this.setState({
-                                    selectNav: index
-                                });
-                            }}
-                        />
+                    }
+                >
+                    {/*<ImageLoad style={Styles.topBannerImageStyle} source={{ uri: imgUrl ? imgUrl : '' }}/>*/}
+                    <TopBannerView imageUrl={imgUrl} ratio={0.5}/>
+                    {
+                        this._getTopicType() === 0
+                            ?
+                            <SubSwichView
+                                headerData={this.dataModel}
+                                navItemClick={(index) => {
+                                    this.setState({
+                                        selectNav: index
+                                    });
+                                }
+                                }
+                            />
+                            :
+                            <SbOpenPrizeHeader
+                                headerData={this.dataModel}
+                                navItemClick={(index, item) => {
+                                    //自导航点击事件
+                                    this.setState({
+                                        selectNav: index
+                                    });
+                                }}
+                            />
 
-                }
-                {
-                    this._renderBottomListView(sectionData)
-                }
-                <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'miniProgramWithCopyUrl'}
-                                webJson={{
-                                    hdImageURL: this.dataModel.imgUrl || '',
-                                    title: '秀一秀，赚到够',
-                                    dec: '[秀购]发现一个很给力的活动快去看看',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
-                                    thumImage: 'logo.png'
-                                }}
-                                miniProgramJson={{
-                                    hdImageURL: this.dataModel.imgUrl || '',
-                                    title: '秀一秀，赚到够',
-                                    dec: '[秀购]发现一个很给力的活动快去看看',
-                                    thumImage: 'logo.png',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
-                                    miniProgramPath: `/pages/index/index?type=5&id=${linkTypeCode}&inviteId=${user.code || ''}`
-                                }}
-                />
+                    }
+                    {
+                        this._renderBottomListView(sectionData)
+                    }
+                    <CommShareModal ref={(ref) => this.shareModal = ref}
+                                    type={'miniProgramWithCopyUrl'}
+                                    webJson={{
+                                        hdImageURL: this.dataModel.imgUrl || '',
+                                        title: '秀一秀，赚到够',
+                                        dec: '[秀购]发现一个很给力的活动快去看看',
+                                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                        thumImage: 'logo.png'
+                                    }}
+                                    miniProgramJson={{
+                                        hdImageURL: this.dataModel.imgUrl || '',
+                                        title: '秀一秀，赚到够',
+                                        dec: '[秀购]发现一个很给力的活动快去看看',
+                                        thumImage: 'logo.png',
+                                        linkUrl: `${apiEnvironment.getCurrentH5Url()}/subject/${linkTypeCode}?upuserid=${user.code || ''}`,
+                                        miniProgramPath: `/pages/index/index?type=5&id=${linkTypeCode}&inviteId=${user.code || ''}`
+                                    }}
+                    />
+                </ScrollView>
                 <AdModal />
-            </ScrollView>
+                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}}></LuckyIcon>
+            </View>
         );
     }
 

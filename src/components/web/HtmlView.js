@@ -20,6 +20,8 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import Manager,{AdViewBindModal} from './WebModalManager'
 import SmoothPushHighComponent from '../../comm/components/SmoothPushHighComponent';
 import ShareUtil from '../../utils/ShareUtil';
+import { homeType } from '../../pages/home/HomeTypes';
+import LuckyIcon from '../../pages/guide/LuckyIcon';
 const moreIcon = res.button.message_three;
 
 @SmoothPushHighComponent
@@ -71,7 +73,7 @@ export default class RequestDetailPage extends BasePage {
     }
 
     $NavigationBarDefaultLeftPressed = () => {
-        if (this.webType === 'showAlert') {
+        if (this.webType === 'exitShowAlert') {
             this.manager.showAd(()=>this.$navigateBack())
         }else {
             this.$navigateBack();
@@ -138,9 +140,16 @@ export default class RequestDetailPage extends BasePage {
             return;
         }
 
-        if (msg.action === "showAlert") {
-            this.webType = 'showAlert';
-            this.manager.getAd(...msg.parmas);
+        if (msg.action === "exitShowAlert") {
+            this.webType = 'exitShowAlert';
+            let parmas = msg.params || {};
+            this.manager.getAd(parmas.showPage, parmas.showPageValue,homeType.Alert);
+            return;
+        }
+
+        if (msg.action === "showFloat") {
+            let parmas = msg.params || {};
+            this.luckyIcon&&this.luckyIcon.getLucky(parmas.showPage, parmas.showPageValue)
             return;
         }
     };
@@ -162,6 +171,9 @@ export default class RequestDetailPage extends BasePage {
                             r = RouterMap[routerKey] || r;
                         }
                         this.$navigate(r, p);
+                    }}
+                    onScrollBeginDrag={() => {//这个方法原生还没桥接过来
+                        this.luckyIcon&&this.luckyIcon.close();
                     }}
                     onNavigationStateChange={event => {
                         this.canGoBack = event.canGoBack;
@@ -189,6 +201,7 @@ export default class RequestDetailPage extends BasePage {
                     {...this.state.shareParmas}
                 />
                 <WebAdModal />
+                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}}></LuckyIcon>
             </View>
         );
     }
