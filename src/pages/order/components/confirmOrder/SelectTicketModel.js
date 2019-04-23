@@ -73,7 +73,7 @@ export default class SelectTicketModel extends React.Component {
                     priceCode: item.skuCode,
                     productCode: item.productCode,
                     amount: item.quantity,
-                    activityType: item.item
+                    activityType: item.activityType
                 });
             });
             params = { productPriceIds: arr };
