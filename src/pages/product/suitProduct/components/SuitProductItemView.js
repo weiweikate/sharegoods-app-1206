@@ -67,12 +67,12 @@ const aStyles = StyleSheet.create({
 export class MainProductView extends Component {
     render() {
         const { suitProductModel, chooseSku } = this.props;
-        const { changeItem, selectedAmount, mainProduct } = suitProductModel;
+        const { selectedAmount, mainProduct } = suitProductModel;
         const { isSelected, name, imgUrl, minPrice, selectedSkuItem } = mainProduct;
         const { propertyValues, price } = selectedSkuItem || {};
         return (
             <NoMoreClick style={[mStyles.bgView, { paddingHorizontal: 15 }]}
-                         onPress={isSelected ? () => changeItem(mainProduct) : chooseSku}>
+                         onPress={chooseSku}>
                 <Image style={mStyles.selectImg} source={default_selected}/>
                 <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
                 <View style={mStyles.productView}>
@@ -95,14 +95,14 @@ export class MainProductView extends Component {
 export class SubProductView extends Component {
     render() {
         const { item, suitProductModel, chooseSku } = this.props;
-        const { changeItem, selectedAmount } = suitProductModel;
+        const { selectedAmount } = suitProductModel;
         const { isSelected, name, imgUrl, promotionMinPrice, minDecrease, selectedSkuItem } = item;
         const { promotionPrice, promotionDecreaseAmount, propertyValues } = selectedSkuItem || {};
         return (
             <NoMoreClick style={[mStyles.bgView, { marginHorizontal: 15, marginTop: 10, borderRadius: 5 }]}
-                         onPress={isSelected ? () => changeItem(item) : chooseSku}>
+                         onPress={chooseSku}>
                 <Image style={mStyles.selectImg}
-                       source={un_selected}/>
+                       source={isSelected ? selected : un_selected}/>
                 <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
                 <View style={mStyles.productView}>
                     <MRText style={mStyles.nameText}>{name}</MRText>
@@ -115,7 +115,7 @@ export class SubProductView extends Component {
                     <View style={{ flexDirection: 'row' }}>
                         <View style={mStyles.bonusView}>
                             <MRText
-                                style={mStyles.bonusText}>{isSelected ? promotionDecreaseAmount : `立省￥${minDecrease}起`}</MRText>
+                                style={mStyles.bonusText}>{isSelected ? `立省￥${promotionDecreaseAmount}` : `立省￥${minDecrease}起`}</MRText>
                         </View>
                     </View>
                     <MRText

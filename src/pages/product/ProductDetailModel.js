@@ -365,13 +365,12 @@ export default class ProductDetailModel {
     /****网络请求****/
     requestProductDetail = () => {
         /*
-        *
         * SPU00000263 秒杀
         * SPU00000375 直降
         * SPU00000361 套餐主商品 SPU00000098
         * */
         ProductApi.getProductDetailByCodeV2({
-            code: 'SPU00000361'
+            code: 'SPU00000359'
         }).then((data) => {
             this.productSuccess((data || {}).data);
         }).catch((e) => {

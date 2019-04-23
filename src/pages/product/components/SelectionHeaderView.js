@@ -10,7 +10,7 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../res/product';
 import UIImage from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui/index';
-
+import { sourceType } from '../SelectionPage';
 
 const { icon_close } = res;
 
@@ -33,15 +33,17 @@ export default class SelectionHeaderView extends Component {
     }
 
     render() {
-        const { imgUrl, minPrice, stockSysConfig } = this.props.product || {};
-        let price = minPrice || '';
+        const { imgUrl, minPrice, promotionMinPrice, stockSysConfig } = this.props.product || {};
+        let isPromotion = this.props.sourceType === sourceType.promotion;
+
+        let price = isPromotion ? promotionMinPrice : minPrice;
         let stock = 0;
         let specImg;
         this.props.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
-            stock = stock + item.sellStock;
+            stock = stock + (isPromotion ? item.promotionStockNum : item.sellStock);
             specImg = item.specImg;
-            price = item.price;
+            price = isPromotion ? item.promotionPrice : item.price;
         });
         let goodsNumberText;
         for (let item of (stockSysConfig || [])) {
