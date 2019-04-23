@@ -1,8 +1,8 @@
 const api = {
     // 确认订单
-    makeSureOrder: ['/order/confirm',{ isRSA: true }],
+    makeSureOrder: ['/order/confirm2',{ isRSA: true }],
     //order/submitOrder提交订单
-    submitOrder: ['/order/submit',{ isRSA: true }],
+    submitOrder: ['/order/submit2',{ isRSA: true }],
     //订单列表  订单状态（1：待支付 2：待发货 3：待收货 4：确认收货 5：已完成 6：退货关闭 7：用户关闭 8：超时关闭）
     queryPage: ['/order/list',{method:'get'}],
     //订单搜索
@@ -58,7 +58,9 @@ const api = {
     subOrder: '/after-sale/order-detail',//子订单
     afterSaleList: '/after-sale/list',//列表
     checkInfo: ["/appraise/checkCommentStatus",{method:'get'}],//校验是否可晒单
-    return_express: "/after-sale/return-express"
+    return_express: "/after-sale/return-express",
+    //获取个人信息
+    getUser: ['/user/getUser', { method: 'get', checkLogin: true }],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

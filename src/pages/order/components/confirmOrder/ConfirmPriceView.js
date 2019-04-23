@@ -14,7 +14,6 @@ import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react/native';
 import { confirmOrderModel } from '../../model/ConfirmOrderModel';
 import res from '../../res';
-import user from '../../../../model/user';
 
 const arrow_right = res.arrow_right;
 const couponIcon = res.coupons_icon;
@@ -40,11 +39,29 @@ export default class ConfirmPriceView extends Component {
     renderPriceView = () => {
         return (
             <View style={{ backgroundColor: 'white' }}>
+                <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
+                <View style={styles.couponsStyle}>
+                    <UIText value={'商品金额'} style={styles.blackText}/>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText value={`¥${confirmOrderModel.allProductPrice}`}
+                                style={[styles.grayText]}/>
+                    </View>
+                </View>
+                {this.renderLine()}
+                <View style={styles.couponsStyle}>
+                    <UIText value={'运费'} style={styles.blackText}/>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText value={`¥${confirmOrderModel.totalFreightFee}`}
+                                style={[styles.grayText]}/>
+                    </View>
+                </View>
+                <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
                 <TouchableOpacity style={styles.couponsStyle}
                                   activeOpacity={0.5}
                                   disabled={!confirmOrderModel.canUseCou}
                                   onPress={this.props.jumpToCouponsPage}>
                     <UIText value={'优惠券'} style={styles.blackText}/>
+                    {this.renderLine()}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
                             value={!confirmOrderModel.canUseCou ? '不支持使用优惠券' :(confirmOrderModel.couponCount&&confirmOrderModel.couponCount>0?`兑换券x${confirmOrderModel.couponCount}张`: (confirmOrderModel.couponName ? confirmOrderModel.couponName : '选择优惠券'))}
@@ -52,12 +69,9 @@ export default class ConfirmPriceView extends Component {
                         <Image source={arrow_right}/>
                     </View>
                 </TouchableOpacity>
-                {this.renderLine()}
-                {!user.tokenCoin ? null :
-                    <View>
+
                         <TouchableOpacity style={styles.couponsStyle}
                                           activeOpacity={0.5}
-                                          disabled={parseInt(confirmOrderModel.payAmount) < 1&&confirmOrderModel.tokenCoin<1}
                                           onPress={() => this.props.jumpToCouponsPage('justOne')}>
                             <UIText value={'1元现金券'} style={styles.blackText}/>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -67,16 +81,6 @@ export default class ConfirmPriceView extends Component {
                                 <Image source={arrow_right}/>
                             </View>
                         </TouchableOpacity>
-                        {this.renderLine()}
-                    </View>
-                }
-                <View style={styles.couponsStyle}>
-                    <UIText value={'运费'} style={styles.blackText}/>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={`¥${confirmOrderModel.totalFreightFee}`}
-                                style={[styles.grayText]}/>
-                    </View>
-                </View>
                 {this.renderLine()}
                 <TouchableOpacity style={styles.couponsStyle} onPress={() => {
                     if (this.input.isFocused()) {

@@ -77,8 +77,9 @@
 - (void)handleTimer:(NSTimer *)timer
 {
   self.num --;
-    self.label.text = [NSString stringWithFormat:@"跳过%lds",self.num];
+  self.label.text = [NSString stringWithFormat:@"跳过%lds",self.num];
   if (self.num > 0) {
+    
   }else{
     [timer invalidate];
     timer = nil;
@@ -155,7 +156,7 @@
   NSString * bgPath = data[@"image"];
   NSString * imagePath = data[@"assistantImage"];
   _linkTypeCode = data[@"linkTypeCode"];
-  if (!data || !bgPath|| !imagePath) {
+  if (!data || !bgPath) {
     self.isPlayAd = YES;
     return;
   }
@@ -170,7 +171,13 @@
 //       }
 //     });
 //  }];
-  UIImage* tmp =  [[YYWebImageManager sharedManager].cache getImageForKey:bgPath];
+  UIImage* tmp = nil;
+  
+  if (imagePath) {
+    tmp =  [[YYWebImageManager sharedManager].cache getImageForKey:imagePath];
+    self.adImg = tmp;
+  }
+  tmp = [[YYWebImageManager sharedManager].cache getImageForKey:bgPath];
   if (tmp) {
      self.bgImg = tmp;
   }else{
@@ -179,14 +186,6 @@
     return;
   }
   
-  tmp =  [[YYWebImageManager sharedManager].cache getImageForKey:imagePath];
-  if (tmp) {
-    self.adImg = tmp;
-  }else{
-    //无广告
-    self.isPlayAd = YES;
-    return;
-  }
 
   
 //  [self requestImageWithPath:[NSString stringWithFormat:@"%@",imagePath] completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
@@ -244,7 +243,6 @@ completion:(YYWebImageCompletionBlock)completion
 - (void)setAdImg:(UIImage *)adImg
 {
   _adImg = adImg;
-  [self showAd];
 }
 
 - (void)setBgImg:(UIImage *)bgImg
@@ -254,7 +252,7 @@ completion:(YYWebImageCompletionBlock)completion
 }
 
 - (void)showAd{
-  if (_adImg && _bgImg) {
+  if (_bgImg) {
     //开始广告播放
     self.bgView.image = _bgImg;
     self.adImgView.image = _adImg;
