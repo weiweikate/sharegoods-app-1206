@@ -370,7 +370,7 @@ export default class ProductDetailModel {
         * SPU00000361 套餐主商品 SPU00000098
         * */
         ProductApi.getProductDetailByCodeV2({
-            code: 'SPU00000359'
+            code: 'SPU00000203'
         }).then((data) => {
             this.productSuccess((data || {}).data);
         }).catch((e) => {

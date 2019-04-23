@@ -56,6 +56,19 @@ export default class ConfirmPriceView extends Component {
                     </View>
                 </View>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
+                <View style={styles.couponsStyle}
+                                  activeOpacity={0.5}
+                                  disabled={!confirmOrderModel.canUseCou}
+                                  onPress={this.props.jumpToCouponsPage}>
+                    <UIText value={'组合优惠'} style={styles.blackText}/>
+                    {this.renderLine()}
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText
+                            value={confirmOrderModel.promotionAmount}
+                            style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
+                        <Image source={arrow_right}/>
+                    </View>
+                </View>
                 <TouchableOpacity style={styles.couponsStyle}
                                   activeOpacity={0.5}
                                   disabled={!confirmOrderModel.canUseCou}
@@ -64,7 +77,7 @@ export default class ConfirmPriceView extends Component {
                     {this.renderLine()}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={!confirmOrderModel.canUseCou ? '不支持使用优惠券' :(confirmOrderModel.couponCount&&confirmOrderModel.couponCount>0?`兑换券x${confirmOrderModel.couponCount}张`: (confirmOrderModel.couponName ? confirmOrderModel.couponName : '选择优惠券'))}
+                            value={!confirmOrderModel.canUseCou ? '不支持使用优惠券' : confirmOrderModel.couponAmount == 0? '请选择优惠券':'-¥'+confirmOrderModel.couponAmount}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>

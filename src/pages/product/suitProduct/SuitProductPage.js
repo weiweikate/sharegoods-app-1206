@@ -42,8 +42,8 @@ export default class SuitProductPage extends BasePage {
     };
 
     _bottomAction = () => {
-        const { groupCode, selectedAmount } = this.suitProductModel;
-        this.suitProductModel.subProductArr.map((item) => {
+        const { groupCode, selectedAmount, mainSkuItem } = this.suitProductModel;
+        let orderProductList = this.suitProductModel.selectedItems.map((item) => {
             const { prodCode, skuCode } = item;
             return {
                 activityCode: groupCode,
@@ -53,9 +53,19 @@ export default class SuitProductPage extends BasePage {
                 quantity: selectedAmount
             };
         });
+        const { prodCode, skuCode } = mainSkuItem;
         this.$navigate(RouterMap.ConfirOrderPage, {
-            orderType: 1,
-            orderProductList: []
+            orderParamVO: {
+                orderType: 1,
+                source: 2,
+                orderProducts: [{
+                    activityCode: groupCode,
+                    batchNo: 1,
+                    productCode: prodCode,
+                    skuCode: skuCode,
+                    quantity: selectedAmount
+                }, ...orderProductList]
+            }
         });
     };
 

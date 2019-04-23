@@ -55,6 +55,10 @@ class ConfirmOrderModel {
     err=null
     @observable
     allProductPrice = 0;
+    @observable
+    promotionAmount
+    @observable
+    couponAmount
 
     @action clearData() {
         this.orderProductList = [];
@@ -78,6 +82,8 @@ class ConfirmOrderModel {
         this.couponData={};
         this.err=null;
         this.allProductPrice = 0;
+        this.couponAmount=0
+        this.promotionAmount='';
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
@@ -172,16 +178,14 @@ class ConfirmOrderModel {
         this.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         this.couponList = data.couponList ? data.couponList : null;
         this.couponCount=data.couponCount;
-        let allProductPrice = 0;
+        this.allProductPrice = data.totalAmount;
+        this.promotionAmount = data.promotionAmount;
+        this.couponAmount = data.couponAmount;
         this.orderProductList.map((item) => {
-            let {quantity, num , unitPrice} = item
-            let  amount = quantity || num;
-            allProductPrice = allProductPrice + unitPrice * amount
             if ((item.restrictions & 1) === 1) {
                 this.canUseCou = true;
             }
         });
-        this.allProductPrice = allProductPrice;
         if (this.canUseCou) {
             let arr = [];
             let params = {};

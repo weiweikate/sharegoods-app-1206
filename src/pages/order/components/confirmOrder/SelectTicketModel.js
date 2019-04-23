@@ -54,7 +54,7 @@ export default class SelectTicketModel extends React.Component {
         let arr = [];
         let {orderType, orderProducts = [], activityCode, orderSubType} = orderParamVO || {};
         let params = {}
-        if (this.orderParamVO.orderType === OrderType.depreciate_old || this.orderParamVO.orderType === OrderType.gift) {
+        if (orderParamVO.orderType === OrderType.depreciate_old || orderParamVO.orderType === OrderType.gift) {
             this.props.orderParam.orderProducts.map((item, index) => {
                 arr.push({
                     priceCode: item.skuCode,

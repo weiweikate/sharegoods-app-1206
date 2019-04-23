@@ -84,8 +84,11 @@ export default class SuitProductModel {
             this.mainSkuItem = item;
         }
         //获取选择的item
-        this.selectedItems = this.subProductArr.filter((item1) => {
+        let tempArr = this.subProductArr.filter((item1) => {
             return item1.isSelected;
+        });
+        this.selectedItems = tempArr.map((item) => {
+            return item.selectedSkuItem;
         });
     };
 

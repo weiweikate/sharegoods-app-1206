@@ -23,7 +23,7 @@ export default class SuitProductBottomView extends Component {
 
                     <NoMoreClick style={styles.rightBtn}
                                  onPress={() => {
-
+                                     this.props.bottomAction();
                                  }}>
                         <LinearGradient style={styles.LinearGradient}
                                         start={{ x: 0, y: 0 }}
