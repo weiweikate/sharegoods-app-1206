@@ -5,23 +5,32 @@ import { MRText } from '../../../../components/ui';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import LinearGradient from 'react-native-linear-gradient';
 
 @observer
 export default class SuitProductBottomView extends Component {
     render() {
-        const { totalSubMoney } = this.props.suitProductModel;
+        const { totalSubMoney, totalPayMoney } = this.props.suitProductModel;
         return (
             <View style={styles.bgView}>
                 <View style={styles.container}>
                     <View style={styles.leftView}>
-                        <MRText style={styles.leftTopText1}>合计：<MRText style={styles.leftTopText2}>1</MRText></MRText>
+                        <MRText style={styles.leftTopText1}>合计：<MRText
+                            style={styles.leftTopText2}>￥{totalPayMoney}</MRText></MRText>
                         <MRText style={styles.leftBottomText1}>活动已减<MRText
-                            style={styles.leftBottomText2}>{totalSubMoney}元</MRText></MRText>
+                            style={styles.leftBottomText2}>￥{totalSubMoney}</MRText></MRText>
                     </View>
-                    <NoMoreClick>
-                        <MRText>
-                            立即购买
-                        </MRText>
+
+                    <NoMoreClick style={styles.rightBtn}
+                                 onPress={() => {
+
+                                 }}>
+                        <LinearGradient style={styles.LinearGradient}
+                                        start={{ x: 0, y: 0 }}
+                                        end={{ x: 1, y: 0 }}
+                                        colors={['#FC5D39', '#FF0050']}>
+                            <MRText style={styles.rightText}>立即购买</MRText>
+                        </LinearGradient>
                     </NoMoreClick>
                 </View>
             </View>
@@ -53,8 +62,12 @@ const styles = StyleSheet.create({
         fontSize: 12, color: DesignRule.textColor_redWarn
     },
     rightBtn: {
-        alignItems: 'center', justifyContent: 'space-between',
+        alignItems: 'center', justifyContent: 'center',
         height: 34, width: ScreenUtils.px2dp(100), borderRadius: 17, backgroundColor: DesignRule.bgColor_redCard
+    },
+    LinearGradient: {
+        flex: 1,
+        justifyContent: 'center', alignItems: 'center'
     },
     rightText: {
         fontSize: 14, color: DesignRule.white, fontWeight: 'bold'
