@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     },
     leftTextStyle: {
         color: '#fff',
-        fontSize: px2dp(11)
+        fontSize: px2dp(10)
     },
     middleTextBgStyle: {
         marginLeft: px2dp(20),
