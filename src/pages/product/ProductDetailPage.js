@@ -207,7 +207,7 @@ export default class ProductDetailPage extends BasePage {
             case productItemType.headerView: {
                 return <HeaderItemView productDetailModel={this.productDetailModel}
                                        navigation={this.props.navigation}
-                                       goShopAction={() => {
+                                       shopAction={() => {
                                            this.$navigateBackToStore();
                                        }}/>;
             }

@@ -5,6 +5,7 @@ import { AmountItemView, MainProductView, SubProductView } from './components/Su
 import SuitProductModel from './SuitProductModel';
 import { observer } from 'mobx-react';
 import SelectionPage from '../SelectionPage';
+import SuitProductBottomView from './components/SuitProductBottomView';
 
 @observer
 export default class SuitProductPage extends BasePage {
@@ -45,7 +46,7 @@ export default class SuitProductPage extends BasePage {
                       renderItem={this._renderItem}
                       initialNumToRender={5}
             />
-
+            <SuitProductBottomView suitProductModel={this.suitProductModel}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
         </View>;
     }

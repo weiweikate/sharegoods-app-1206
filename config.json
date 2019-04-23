@@ -68,7 +68,7 @@
         },
         "da_wei": {
             "name": "蒋大为",
-            "host": "http://172.16.10.42:4090/gateway"
+            "host": "http://172.18.6.24:9090/gateway"
         },
         "gao_di": {
             "name": "高迪",
