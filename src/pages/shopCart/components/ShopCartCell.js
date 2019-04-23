@@ -130,8 +130,8 @@ export default class ShopCartCell extends Component {
 
                                 {
                                     <UIText
-                                        // value={getTipString(itemData).tipString}
-                                        value={''}
+                                        value={getTipString(itemData).tipString}
+                                        // value={''}
                                         numberOfLines={2}
                                         style={{
                                             fontSize: 11,
