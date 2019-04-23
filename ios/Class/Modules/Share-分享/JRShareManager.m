@@ -104,7 +104,13 @@ SINGLETON_FOR_CLASS(JRShareManager)
   UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
   UMShareImageObject *imageObject = [UMShareImageObject shareObjectWithTitle:nil descr:nil thumImage:nil];
   //分享消息对象设置分享内容对象
-  imageObject.shareImage = [imageStr isKindOfClass:[UIImage class]]?imageStr :  [UIImage imageWithContentsOfFile:imageStr];
+  if ([imageStr isKindOfClass:[UIImage class]] ||
+    ([imageStr isKindOfClass:[NSString class]]&&[imageStr hasPrefix:@"http"])
+      ) {
+    imageObject.shareImage = imageStr;
+  }else{
+    imageObject.shareImage = [UIImage imageWithContentsOfFile:imageStr];
+  }
   message.shareObject = imageObject;
   
   [self shareWithMessageObject:message platform:platform completion:completion];

@@ -70,6 +70,7 @@ export default class DownPricePage extends BasePage {
         return (
 
             <TouchableOpacity
+                style={{flex:1,justifyContent:'center'}}
                 onPress={() => {
                     this.shareModal && this.shareModal.open();
                 }}

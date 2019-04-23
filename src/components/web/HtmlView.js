@@ -19,6 +19,7 @@ import res from '../../comm/res'
 import ScreenUtils from '../../utils/ScreenUtils';
 import Manager,{AdViewBindModal} from './WebModalManager'
 import SmoothPushHighComponent from '../../comm/components/SmoothPushHighComponent';
+import ShareUtil from '../../utils/ShareUtil';
 const moreIcon = res.button.message_three;
 
 @SmoothPushHighComponent
@@ -98,6 +99,10 @@ export default class RequestDetailPage extends BasePage {
         this.webView && this.webView.sendToBridge(JSON.stringify({action: 'clickRightItem'}));
     }
 
+    clickShareBtn = ()=>{
+        this.webView && this.webView.sendToBridge(JSON.stringify({action: 'clickShareBtn'}));
+    }
+
     autoRun = autorun(() => {
         user.token ? (this.webView && this.webView.reload()):null
     });
@@ -111,6 +116,15 @@ export default class RequestDetailPage extends BasePage {
             // this.webJson = msg.shareParmas;
             this.setState({ shareParmas: msg.shareParmas },()=>{this.shareModal && this.shareModal.open();});
             return;
+        }
+
+        if (msg.action === "onShare") {
+            let {data,api,trackParmas,trackEvent} = msg.onShareParmas || {}
+            ShareUtil.onShare(data,api,trackParmas,trackEvent,()=>{
+                console.log('webView reload');
+                this.webView && this.webView.reload();
+            });
+           return;
         }
 
         if (msg.action === "backToHome") {
@@ -168,6 +182,9 @@ export default class RequestDetailPage extends BasePage {
                     ref={(ref) => this.shareModal = ref}
                     reloadWeb={() => {
                         this.webView && this.webView.reload();
+                    }}
+                    clickShareBtn={()=>{
+                        this.clickShareBtn && this.clickShareBtn()
                     }}
                     {...this.state.shareParmas}
                 />
