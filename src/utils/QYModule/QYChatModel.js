@@ -1,5 +1,7 @@
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { observable, computed, action } from "mobx";
+import { NavigationActions } from "react-navigation";
+import RouterMap from "../../navigation/RouterMap";
 
 const QY_MSG_CHANGE = "QY_MSG_CHANGE";
 const QY_CARD_CLICK = "QY_CARD_CLICK";
@@ -94,6 +96,16 @@ class QYChatModel {
 
     cardClickHandle = (handleData) => {
         console.log(handleData);
+        // SPU00000568
+        let productUrl = handleData && handleData.linkUrl ? handleData.linkUrl : "";
+        let productSplitArr = productUrl.split("/");
+        let productCode = productSplitArr.length > 0 ? productSplitArr[productSplitArr.length - 1] : "";
+
+        const navigationAction = NavigationActions.navigate({
+            routeName: RouterMap.ProductDetailPage,
+            params:{productCode:productCode}
+        });
+        global.$navigator.dispatch(navigationAction);
     };
 
 }

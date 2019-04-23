@@ -52,7 +52,7 @@ RCT_EXPORT_METHOD(qiYULogout){
                                                name:QY_MSG_CHANGE
                                              object:nil];
     //增加卡片点击的监听
-    [[NSNotificationCenter defaultCenter] addObserver:self
+  [[NSNotificationCenter defaultCenter] addObserver:self
                                               selector:@selector(toRNHandleCardClick:)
                                                   name:QY_CARD_CLICK
                                                 object:nil];
