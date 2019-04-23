@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
@@ -40,7 +41,6 @@ public class InitializeService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        startForeground();
         mHandler = new WeakHandler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -56,6 +56,12 @@ public class InitializeService extends IntentService {
         });
     }
 
+    @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        startForeground();
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     public InitializeService() {
         super("InitializeService");
     }
@@ -66,7 +72,10 @@ public class InitializeService extends IntentService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent);
         } else {
-            context.startService(intent);
+            try {
+                context.startService(intent);
+            } catch (Exception e) {
+            }
         }
     }
 

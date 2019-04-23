@@ -55,7 +55,7 @@ export default class MyCouponsItems extends Component {
     }
 
     fmtDate(obj) {
-        return formatDate(obj, 'yyyy.MM.dd HH:mm');
+        return formatDate(obj, 'yyyy.MM.dd');
     }
 
 
@@ -332,7 +332,7 @@ export default class MyCouponsItems extends Component {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
-                    timeStr: '无时间限制',
+                    timeStr: '使用有效期：无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
@@ -350,7 +350,7 @@ export default class MyCouponsItems extends Component {
                         arrData.push({
                             status: item.status,
                             name: item.name,
-                            timeStr: '敬请期待',
+                            timeStr: '使用有效期：敬请期待',
                             value: item.type === 11 ? item.value : '拼店',
                             limit: item.type === 11 ? '兑换券：靓号代金券' : '全场券：全场通用券（特殊商品除外）',
                             remarks: item.remarks,
@@ -385,7 +385,7 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
+                timeStr: '使用有效期：'+item.startTime && item.expireTime ? this.fmtDate(item.startTime || 0) + '-' + this.fmtDate(item.expireTime || 0) : null,
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n兑换' : (item.type === 5 ? '兑换' : item.value)),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
@@ -458,7 +458,7 @@ export default class MyCouponsItems extends Component {
                 arrData.push({
                     status: 0,
                     name: '1元现金券',
-                    timeStr: '无时间限制',
+                    timeStr: '使用有效期：无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
