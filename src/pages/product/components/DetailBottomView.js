@@ -30,7 +30,7 @@ export default class DetailBottomView extends Component {
     render() {
         let { pData } = this.props;
         //productStatus  1正常  2下架  3当前时间不能买
-        let { productStatus, skuList } = pData || {};
+        let { productStatus, skuList, showSellOut } = pData || {};
         //总库存
         let stock = 0;
         (skuList || []).forEach((item) => {
@@ -47,6 +47,7 @@ export default class DetailBottomView extends Component {
         let cantBuy = productStatus !== product_status.on || stock === 0;
         //立即购买文案
         let buyText = productStatus === product_status.future ? '暂不可购买' : '立即购买';
+
         return (
             <View style={{ height: 49 + ScreenUtils.safeBottom + (isDown ? 20 : 0), backgroundColor: 'white' }}>
                 {
@@ -61,36 +62,45 @@ export default class DetailBottomView extends Component {
                         <Image style={styles.leftImage} source={me_bangzu_kefu_icon}/>
                         <Text style={styles.leftText}>客服</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.leftBtn}
-                                      onPress={() => this.props.bottomViewAction('gwc')}
-                                      disabled={cantJoin}>
-                        <Image style={styles.leftImage}
-                               source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
-                        <Text style={styles.leftText}>加购</Text>
-                    </TouchableOpacity>
-                    <View style={styles.btnView}>
-                        <TouchableOpacity
-                            style={[styles.btn, { backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor }]}
-                            onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
-                            <LinearGradient style={styles.LinearGradient}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 0 }}
-                                            colors={['#FFCB02', '#FF9502']}>
-                                <Text style={[styles.btnText, {
-                                    color: cantBuy ? DesignRule.textColor_instruction : DesignRule.white
-                                }]}>{buyText}</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.btn, { backgroundColor: '#FBBB50' }]}
-                                          onPress={() => this.props.bottomViewAction('jlj')}>
-                            <LinearGradient style={styles.LinearGradient}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 0 }}
-                                            colors={['#FC5D39', '#FF0050']}>
-                                <Text style={styles.btnText}>分享秀一秀</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-                    </View>
+                    {
+                        showSellOut ?
+                            <View style={styles.outView}>
+                                <Text style={styles.outText}>已抢光~</Text>
+                            </View>
+                            :
+                            <View style={{ flex: 1, flexDirection: 'row' }}>
+                                <TouchableOpacity style={styles.leftBtn}
+                                                  onPress={() => this.props.bottomViewAction('gwc')}
+                                                  disabled={cantJoin}>
+                                    <Image style={styles.leftImage}
+                                           source={cantJoin ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
+                                    <Text style={styles.leftText}>加购</Text>
+                                </TouchableOpacity>
+                                <View style={styles.btnView}>
+                                    <TouchableOpacity
+                                        style={[styles.btn, { backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor }]}
+                                        onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
+                                        <LinearGradient style={styles.LinearGradient}
+                                                        start={{ x: 0, y: 0 }}
+                                                        end={{ x: 1, y: 0 }}
+                                                        colors={['#FFCB02', '#FF9502']}>
+                                            <Text style={[styles.btnText, {
+                                                color: cantBuy ? DesignRule.textColor_instruction : DesignRule.white
+                                            }]}>{buyText}</Text>
+                                        </LinearGradient>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={[styles.btn, { backgroundColor: '#FBBB50' }]}
+                                                      onPress={() => this.props.bottomViewAction('jlj')}>
+                                        <LinearGradient style={styles.LinearGradient}
+                                                        start={{ x: 0, y: 0 }}
+                                                        end={{ x: 1, y: 0 }}
+                                                        colors={['#FC5D39', '#FF0050']}>
+                                            <Text style={styles.btnText}>分享秀一秀</Text>
+                                        </LinearGradient>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                    }
                 </View>
             </View>);
     }
@@ -111,13 +121,21 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     leftBtn: {
-        justifyContent: 'center', alignItems: 'center', flex: 1
+        justifyContent: 'center', alignItems: 'center', width: 54
     },
     leftImage: {
         marginBottom: 1
     },
     leftText: {
         fontSize: 11, color: DesignRule.textColor_secondTitle
+    },
+
+    outView: {
+        flex: 1, justifyContent: 'center', alignItems: 'center', marginRight: 15,
+        borderRadius: 17, height: 37, backgroundColor: DesignRule.bgColor_grayHeader
+    },
+    outText: {
+        fontSize: 17, color: DesignRule.white
     },
 
     btnView: {

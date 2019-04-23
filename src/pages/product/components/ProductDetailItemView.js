@@ -19,6 +19,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import RouterMap, { navigate } from '../../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import res from '../../home/res';
+import { activity_type, activity_status } from '../ProductDetailModel';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -71,14 +72,21 @@ export class HeaderItemView extends Component {
 
     render() {
         const { navigation, productDetailModel, shopAction } = this.props;
-        const { freight, monthSaleCount, originalPrice, minPrice, maxPrice, name, secondName, levelText, priceType } = productDetailModel;
+        const {
+            freight, monthSaleCount, originalPrice, minPrice, maxPrice, name,
+            secondName, levelText, priceType, activityType, activityStatus
+        } = productDetailModel;
+        let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
+        let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
+        let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
+        let showShop = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
         return (
             <View style={styles.bgView}>
                 <DetailBanner data={productDetailModel} navigation={navigation}/>
-                <ActivityWillBeginView/>
-                <ActivityDidBeginView/>
-                {this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText })}
-                {this._renderShop({ priceType, shopAction })}
+                {showWill && <ActivityWillBeginView productDetailModel={productDetailModel}/>}
+                {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
+                {showPrice && this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText })}
+                {showShop && this._renderShop({ priceType, shopAction })}
                 <Text style={styles.nameText} numberOfLines={2}>{name}</Text>
                 {isNoEmpty(secondName) && <Text style={styles.secondNameText} numberOfLines={2}>{secondName}</Text>}
                 <View style={styles.freightMonthView}>
@@ -118,7 +126,7 @@ const styles = StyleSheet.create({
 
     shopView: {
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-        marginHorizontal: 15, marginBottom: 5,
+        marginHorizontal: 15,
         backgroundColor: DesignRule.bgColor, borderRadius: 5, height: 40
     },
     shopText: {
@@ -137,7 +145,7 @@ const styles = StyleSheet.create({
     },
 
     nameText: {
-        marginHorizontal: 15, paddingBottom: 5,
+        marginHorizontal: 15, paddingVertical: 5,
         color: DesignRule.textColor_mainTitle, fontSize: 15, fontWeight: 'bold'
     },
 
@@ -158,7 +166,7 @@ const styles = StyleSheet.create({
 * 套餐
 * */
 export class SuitItemView extends Component {
-    _renderItem = ({item}) => {
+    _renderItem = ({ item }) => {
         const { imgUrl, name, minPrice } = item;
         return (
             <View style={SuitItemViewStyles.item}>
@@ -189,7 +197,7 @@ export class SuitItemView extends Component {
                 </NoMoreClick>
                 <FlatList
                     style={SuitItemViewStyles.flatList}
-                    data={groupActivity.subProductList}
+                    data={groupActivity.subProductList || []}
                     keyExtractor={(item, index) => item.id + index + ''}
                     renderItem={this._renderItem}
                     horizontal={true}
@@ -243,9 +251,6 @@ export class PromoteItemView extends Component {
     render() {
         const { productDetailModel, promotionViewAction } = this.props;
         const { promoteInfoVOList } = productDetailModel;
-        if (!promoteInfoVOList || promoteInfoVOList.length === 0) {
-            return null;
-        }
         return (
             <NoMoreClick style={PromoteItemViewStyles.promotionView} onPress={promotionViewAction}>
                 <View style={PromoteItemViewStyles.promotionItemsView}>

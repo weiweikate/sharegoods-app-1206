@@ -3,24 +3,29 @@ import { View, StyleSheet, Image } from 'react-native';
 import DesignRule from '../../../constants/DesignRule';
 import { MRText } from '../../../components/ui';
 import res from '../res/product';
+import { observer } from 'mobx-react';
 
 const { arrow_right_black } = res.button;
 
 /*
 * 秒杀未开始
 * */
+@observer
 export class ActivityWillBeginView extends Component {
     render() {
+        const { productDetailModel } = this.props;
+        const { promotionUnitAmount, promotionDecreaseAmount, showTimeText } = productDetailModel;
         return (
             <View style={WillBeginStyles.bgView}>
                 <View style={WillBeginStyles.leftView}>
-                    <MRText style={WillBeginStyles.leftPriceText}>¥69</MRText>
+                    <MRText
+                        style={WillBeginStyles.leftPriceText}>{`¥${(promotionUnitAmount - promotionDecreaseAmount).toFixed(2)}`}</MRText>
                     <View style={WillBeginStyles.leftExplainView}>
                         <MRText style={WillBeginStyles.leftExplainText}>秒杀价</MRText>
                     </View>
                 </View>
                 <View style={WillBeginStyles.rightView}>
-                    <MRText style={WillBeginStyles.rightText}>距开抢59:24.9</MRText>
+                    <MRText style={WillBeginStyles.rightText}>距开抢{showTimeText}</MRText>
                     <Image source={arrow_right_black}/>
                 </View>
             </View>
@@ -58,30 +63,36 @@ const WillBeginStyles = StyleSheet.create({
 /*
 * 秒杀开始
 * */
+@observer
 export class ActivityDidBeginView extends Component {
     render() {
+        const { productDetailModel } = this.props;
+        const { promotionPrice, promotionUnitAmount, promotionSaleNum, promotionStockNum, showTimeText } = productDetailModel;
+        let progress = promotionStockNum / (promotionSaleNum + promotionStockNum);
         return (
             <View style={DidBeginViewStyles.bgView}>
                 <View style={DidBeginViewStyles.leftView}>
-                    <MRText style={DidBeginViewStyles.priceText}>¥<MRText style={{ fontSize: 36 }}>69</MRText></MRText>
+                    <MRText style={DidBeginViewStyles.priceText}>¥<MRText
+                        style={{ fontSize: 36 }}>{promotionPrice}</MRText></MRText>
                     <View style={{ flex: 1 }}>
                         <View style={DidBeginViewStyles.skillView}>
                             <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <MRText style={[DidBeginViewStyles.amountText]}>原价¥123</MRText>
                             <MRText
-                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'none' }]}> 已抢222件</MRText>
+                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'line-through' }]}>原价¥{promotionUnitAmount}</MRText>
+                            <MRText
+                                style={[DidBeginViewStyles.amountText]}> 已抢{promotionSaleNum}件</MRText>
                         </View>
                     </View>
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
-                        <MRText style={DidBeginViewStyles.timeText}>距结束23:23:24.9</MRText>
+                        <MRText style={DidBeginViewStyles.timeText}>距结束{showTimeText}</MRText>
                         <View style={DidBeginViewStyles.leaveView}>
-                            <View style={[DidBeginViewStyles.progressView, { width: 0.4 * 90 }]}/>
+                            <View style={[DidBeginViewStyles.progressView, { width: progress * 90 }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
-                                <MRText style={DidBeginViewStyles.leaveAmountText}>还剩50件</MRText>
+                                <MRText style={DidBeginViewStyles.leaveAmountText}>还剩{promotionStockNum}件</MRText>
                             </View>
                         </View>
                     </View>
@@ -112,7 +123,7 @@ const DidBeginViewStyles = StyleSheet.create({
         fontSize: 11, color: DesignRule.white
     },
     amountText: {
-        fontSize: 12, color: DesignRule.white, textDecorationLine: 'line-through'
+        fontSize: 12, color: DesignRule.white
     },
 
     rightView: {

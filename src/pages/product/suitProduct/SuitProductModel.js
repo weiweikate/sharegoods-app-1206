@@ -71,17 +71,25 @@ export default class SuitProductModel {
         let tempProductData = JSON.parse(JSON.stringify(productData || {}));
         let tempGroupActivity = JSON.parse(JSON.stringify(groupActivity || {}));
 
+        let decreaseList = (tempProductData.skuList || []).map((sku) => {
+            return sku.promotionDecreaseAmount;
+        });
         this.mainProduct = {
             ...tempProductData,
             selectedSkuItem: null,
-            isSelected: false
+            isSelected: false,
+            minDecrease: decreaseList && decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList)
         };
         this.subProductArr = (tempGroupActivity.subProductList || []).map((item) => {
+            let decreaseList = (item.skuList || []).map((sku) => {
+                return sku.promotionDecreaseAmount;
+            });
             return {
                 ...item,
                 /*选择的库存*/
                 selectedSkuItem: null,
-                isSelected: false
+                isSelected: false,
+                minDecrease: decreaseList && decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList)
             };
         });
 
