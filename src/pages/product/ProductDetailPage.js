@@ -22,12 +22,10 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorB
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
-<<<<<<< HEAD
 import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
-=======
 import ProductDetailModel, { productItemType } from './ProductDetailModel';
 import { observer } from 'mobx-react';
 import RouterMap from '../../navigation/RouterMap';
@@ -42,7 +40,6 @@ import DetailHeaderScoreView from './components/DetailHeaderScoreView';
 import DetailParamsModal from './components/DetailParamsModal';
 import { ContentSectionView, SectionLineView, SectionNullView } from './components/ProductDetailSectionView';
 import ProductDetailNavView from './components/ProductDetailNavView';
->>>>>>> origin/4.25
 
 /**
  * @author chenyangjun
@@ -52,12 +49,9 @@ import ProductDetailNavView from './components/ProductDetailNavView';
  * @email chenyangjun@meeruu.com
  */
 
-<<<<<<< HEAD
 // const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 @SmoothPushPreLoadHighComponent
-=======
 @observer
->>>>>>> origin/4.25
 export default class ProductDetailPage extends BasePage {
 
     productDetailModel = new ProductDetailModel();
@@ -86,12 +80,10 @@ export default class ProductDetailPage extends BasePage {
         };
     };
 
-<<<<<<< HEAD
+
     componentDidMount() {
     }
 
-=======
->>>>>>> origin/4.25
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', payload => {
                 const { state } = payload;
