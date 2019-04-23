@@ -17,6 +17,13 @@ class LoginModel {
     haveClick = false;
     @observable
     isSelectProtocol = true;
+    @observable
+    isCanOneKeyLogin = false;
+
+    @action
+    setCanOneKeyLogin(canOneKey){
+        this.isCanOneKeyLogin = canOneKey;
+    }
 
     @action
     saveIsSelectProtocol(isSelect) {

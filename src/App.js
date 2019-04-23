@@ -35,6 +35,8 @@ import codePush from "react-native-code-push";
 import { SpellShopFlag } from "./navigation/Tab";
 import chatModel from "./utils/QYModule/QYChatModel";
 import WebViewBridge from "@mr/webview";
+import { checkInitResult } from "./pages/login/model/PhoneAuthenAction";
+import loginModel from "./pages/login/model/LoginModel";
 
 if (__DEV__) {
     const modules = require.getModules();
@@ -92,8 +94,14 @@ class App extends Component {
         //初始化init  定位存储  和app变活跃 会定位
 
         InteractionManager.runAfterInteractions(() => {
-
             TimerMixin.setTimeout(() => {
+                checkInitResult().then((data)=>{
+                    loginModel.setCanOneKeyLogin(data);
+                }).catch((erro)=>{
+                    loginModel.setCanOneKeyLogin(false);
+                })
+
+
                 geolocation.init({
                     ios: "f85b644981f8642aef08e5a361e9ab6b",
                     android: "4a3ff7c2164aaf7d67a98fb9b88ae0e6"

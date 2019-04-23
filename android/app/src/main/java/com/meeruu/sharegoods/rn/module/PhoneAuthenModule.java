@@ -5,14 +5,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.Toast;
 
-//import com.alicom.phonenumberauthsdk.gatewayauth.AlicomAuthHelper;
-//import com.alicom.phonenumberauthsdk.gatewayauth.TokenResultListener;
-//import com.alicom.phonenumberauthsdk.gatewayauth.model.InitResult;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -29,7 +25,6 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "PhoneAuthenModule";
-//    private AlicomAuthHelper mAlicomAuthHelper;
     private InitResult mAutInitResult;
     private Promise authPromise;
     private TokenResultListener mTokenListener;
@@ -46,30 +41,6 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
     public PhoneAuthenModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.mContext = reactContext;
-//        mAlicomAuthHelper = AlicomAuthHelper.getInstance(reactContext, new TokenResultListener() {
-//            @Override
-//            public void onTokenSuccess(String s) {
-//                if (authPromise != null) {
-//                    WritableMap map = Arguments.createMap();
-//                    map.putInt("isCanAuthen", 1);
-//                    map.putInt("resultCode", 6666);
-//                    map.putString("data", s);
-//                    map.putString("phoneNum", mAutInitResult.getSimPhoneNumber());
-//                    authPromise.resolve(map);
-//                }
-//            }
-//
-//            @Override
-//            public void onTokenFailed(String s) {
-//                if (authPromise != null) {
-//                    WritableMap map = Arguments.createMap();
-//                    map.putInt("isCanAuthen", -1);
-//                    map.putString("phoneNum", mAutInitResult.getSimPhoneNumber());
-//                    authPromise.resolve(map);
-//                }
-//            }
-//        });
-//        mAutInitResult = mAlicomAuthHelper.init();
         init();
 
 
@@ -93,8 +64,6 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         };
         mAlicomAuthHelper = PhoneNumberAuthHelper.getInstance(this.mContext,mTokenListener);
         mAlicomAuthHelper.setDebugMode(true);
-        mAutInitResult = mAlicomAuthHelper.init();
-        mAutInitResult
         mAlicomAuthHelper.setAuthUIConfig(new AuthUIConfig.Builder()
                 .setAppPrivacyOne("号码认证APP服务条款", "https://www.aliyun.com/product/dypns")
                 .setSwitchClicker(new View.OnClickListener() {
@@ -104,33 +73,38 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
                     }
                 }).create());
 
-//        if (ActivityCompat.checkSelfPermission(this.mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-//            requestPermission(new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionCallback() {
-//                @Override
-//                public void onPermissionGranted(boolean isRequestUser) {
-//                    /*
-//                     *   5.sdk init
-//                     */
-//                    mAutInitResult = mAlicomAuthHelper.init();
-//                }
-//
-//                @Override
-//                public void onPermissionDenied(boolean isRequestUser) {
-////                    Toast.makeText(MainActivity.this, "请允许相关权限", Toast.LENGTH_LONG).show();
-//                }
-//            });
-//        } else {
-//            /*
-//             *   5.sdk init
-//             */
-//            mAutInitResult = mAlicomAuthHelper.init();
-//        }
+        if (ActivityCompat.checkSelfPermission(this.mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermission(new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionCallback() {
+                @Override
+                public void onPermissionGranted(boolean isRequestUser) {
+                    /*
+                     *   5.sdk init
+                     */
+                    mAutInitResult = mAlicomAuthHelper.init();
+                }
+
+                @Override
+                public void onPermissionDenied(boolean isRequestUser) {
+//                    Toast.makeText(MainActivity.this, "请允许相关权限", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            mAutInitResult = mAlicomAuthHelper.init();
+        }
     }
 
     @ReactMethod
     public void checkInitResult(Promise promise){
-
-        String phone =
+        if(mAutInitResult == null){
+            promise.reject("aliAuth init failed");
+            return;
+        }
+        String phone = mAutInitResult.getSimPhoneNumber();
+        if(TextUtils.isEmpty(phone)){
+            promise.reject("get phone failed");
+            return;
+        }
+        promise.resolve(true);
     }
 
     /**
@@ -185,16 +159,18 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
     protected void requestPermission(String[] permissions, PermissionCallback callback) {
         int result = PackageManager.PERMISSION_GRANTED;
         for (String s : permissions) {
-            if (ContextCompat.checkSelfPermission(this.mContext, s) != PackageManager.PERMISSION_GRANTED)
+            if (ContextCompat.checkSelfPermission(this.mContext, s) != PackageManager.PERMISSION_GRANTED){
                 result = PackageManager.PERMISSION_DENIED;
+            }
         }
 
         if (result == PackageManager.PERMISSION_GRANTED && callback != null) {
             callback.onPermissionGranted(false);
         } else {
             if (Build.VERSION.SDK_INT >= 23) {
-                if (mPerMissionCallbackCache == null)
+                if (mPerMissionCallbackCache == null){
                     mPerMissionCallbackCache = new SparseArray<PermissionCallback>();
+                }
                 mPerMissionCallbackCache.put(mCurrentPermissionRequestCode, callback);
 //                this.mContext.requestPermissions(permissions, mCurrentPermissionRequestCode++);
             } else if (callback != null) {

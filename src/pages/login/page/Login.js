@@ -11,6 +11,8 @@ import RouterMap from "../../../navigation/RouterMap";
 import { wxLoginAction } from "../model/LoginActionModel";
 import { TrackApi } from "../../../utils/SensorsTrack";
 import { startLoginAuth } from "../model/PhoneAuthenAction";
+import { observer } from "mobx-react";
+import loginModel from "../model/LoginModel";
 
 const {
     other: {
@@ -18,7 +20,7 @@ const {
     }
 } = res;
 
-
+@observer
 export default class Login extends BasePage {
 
     constructor(props) {
@@ -60,14 +62,16 @@ export default class Login extends BasePage {
                     </View>
                 </View>
                 {/*中部视图*/}
-                <View style={Styles.middleBgContent}>
-                    {
-                        createLoginButton(loginBtnType.localPhoneNumLoginType, "本机号码一键登录", () => {
-                            this._clickAction(loginBtnType.localPhoneNumLoginType);
-                        })
-                    }
-                </View>
+                {
+                    loginModel.isCanOneKeyLogin ? <View style={Styles.middleBgContent}>
+                        {
+                            createLoginButton(loginBtnType.localPhoneNumLoginType, "本机号码一键登录", () => {
+                                this._clickAction(loginBtnType.localPhoneNumLoginType);
+                            })
+                        }
+                    </View> : null
 
+                }
                 {/*下部分视图*/}
                 <View style={Styles.bottomBgContent}>
                     {
