@@ -8,6 +8,11 @@ const QY_CARD_CLICK = "QY_CARD_CLICK";
 const { JRQYService } = NativeModules;
 const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 
+const CARD_TYPE={
+    PRODUCT_CARD:0,
+    ORDER_CARD:1
+}
+
 const platformShopId = "hzmrwlyxgs";
 
 class QYChatModel {
@@ -100,12 +105,16 @@ class QYChatModel {
         let productUrl = handleData && handleData.linkUrl ? handleData.linkUrl : "";
         let productSplitArr = productUrl.split("/");
         let productCode = productSplitArr.length > 0 ? productSplitArr[productSplitArr.length - 1] : "";
+        let card_type =  handleData && handleData.card_type ?handleData.card_type:"";
 
-        const navigationAction = NavigationActions.navigate({
-            routeName: RouterMap.ProductDetailPage,
-            params:{productCode:productCode}
-        });
-        global.$navigator.dispatch(navigationAction);
+        if (card_type == CARD_TYPE.PRODUCT_CARD) {
+            const navigationAction = NavigationActions.navigate({
+                routeName: RouterMap.ProductDetailPage,
+                params:{productCode:productCode}
+            });
+            global.$navigator.dispatch(navigationAction);
+        }
+
     };
 
 }
