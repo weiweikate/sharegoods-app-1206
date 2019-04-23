@@ -8,6 +8,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
 import { navigateBack } from "../../../navigation/RouterMap";
+import { OrderType } from '../../../utils/EnumUtil';
 
 class ConfirmOrderModel {
     @observable
@@ -83,7 +84,7 @@ class ConfirmOrderModel {
         this.orderParamVO = orderParamVO;
         this.err=null;
         switch (orderParamVO.orderType) {
-            case 2:// 2.降价拍
+            case OrderType.depreciate_old:// 2.降价拍
                 return OrderApi.DepreciateMakeSureOrder({
                     activityCode: orderParamVO.orderProducts[0].code,
                     channel: 2,
@@ -97,7 +98,7 @@ class ConfirmOrderModel {
                     this.disPoseErr(err, orderParamVO, params);
                 });
                 break;
-            case 3://礼包
+            case OrderType.gift://礼包
                 return OrderApi.PackageMakeSureOrder({
                     activityCode: orderParamVO.activityCode,
                     orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
@@ -116,7 +117,7 @@ class ConfirmOrderModel {
                     this.disPoseErr(err, orderParamVO, params);
                 });
                 break;
-            default:
+            default://其他
                 OrderApi.makeSureOrder({
                     orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
                     // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
@@ -184,8 +185,8 @@ class ConfirmOrderModel {
         if (this.canUseCou) {
             let arr = [];
             let params = {};
-            //99的普通商品， 98、经验值专区
-           if ( this.orderParamVO.orderType === 3 || this.orderParamVO.orderType === 2) {
+            //老的降价拍礼包走
+           if ( this.orderParamVO.orderType === OrderType.depreciate_old || this.orderParamVO.orderType === OrderType.gift) {
                 this.orderParamVO.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -196,17 +197,18 @@ class ConfirmOrderModel {
                 params = {
                     productPriceIds: arr,
                     activityCode: this.orderParamVO.activityCode,
-                    activityType: this.orderParamVO.orderType
+                    activityType: this.orderParamVO.orderType === OrderType.gift ? this.orderParamVO.orderSubType :  this.orderParamVO.orderType
                 };
-            } else{
+            } else{//其他
                 this.orderParamVO.orderProducts.map((item, index) => {
 
-                    let {quantity, num , skuCode, productCode} = item
+                    let {quantity, num , skuCode, productCode, activityCode} = item
                     let  amount = quantity || num;
                     arr.push({
                         priceCode: skuCode,
                         productCode: productCode,
-                        amount: amount
+                        amount: amount,
+                        activityCode: activityCode
                     });
                 });
 
@@ -243,7 +245,7 @@ class ConfirmOrderModel {
             addressId: this.addressId,
         };
         switch (orderParamVO.orderType) {
-            case 2:
+            case OrderType.depreciate_old:
                 let needParams2 = {
                     ...baseParams,
                     activityCode: orderParamVO.orderProducts[0].code,
@@ -268,7 +270,7 @@ class ConfirmOrderModel {
                     bridge.$toast(err.msg);
                 });
                 break;
-            case 3:
+            case OrderType.gift:
                 let params = {
                     ...baseParams,
                     activityCode: orderParamVO.activityCode,
@@ -296,7 +298,7 @@ class ConfirmOrderModel {
                     bridge.$toast(err.msg);
                 });
                 break;
-            default:
+            default://其他走正常下单接口
                 let paramsnor = {
                     ...baseParams,
                     orderProductList: orderParamVO.orderProducts,

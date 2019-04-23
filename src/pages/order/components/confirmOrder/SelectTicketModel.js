@@ -32,6 +32,7 @@ import RefreshFlatList from '../../../../comm/components/RefreshFlatList';
 import CouponNormalItem from '../../../mine/components/CouponNormalItem';
 import API from '../../../../api';
 import { formatDate } from '../../../../utils/DateUtils';
+import { OrderType } from '../../../../utils/EnumUtil';
 const emptyIcon = res1.empty_icon;
 let {autoSizeWidth, safeBottom} = ScreenUtils
 
@@ -51,9 +52,9 @@ export default class SelectTicketModel extends React.Component {
 
     open = (orderParamVO, callBack) => {
         let arr = [];
-        let {orderType, orderProducts = [], activityCode} = orderParamVO || {};
+        let {orderType, orderProducts = [], activityCode, orderSubType} = orderParamVO || {};
         let params = {}
-        if (orderType == 3 || orderType == 2 ) {
+        if (this.orderParamVO.orderType === OrderType.depreciate_old || this.orderParamVO.orderType === OrderType.gift) {
             this.props.orderParam.orderProducts.map((item, index) => {
                 arr.push({
                     priceCode: item.skuCode,
@@ -64,14 +65,15 @@ export default class SelectTicketModel extends React.Component {
             params = {
                 productPriceIds: arr,
                 activityCode:activityCode,
-                activityType:orderType
+                activityType:orderType === OrderType.gift ? orderSubType :  orderType
             };
         }   else{
             orderProducts.map((item, index) => {
                 arr.push({
                     priceCode: item.skuCode,
                     productCode: item.productCode,
-                    amount: item.quantity
+                    amount: item.quantity,
+                    activityType: item.item
                 });
             });
             params = { productPriceIds: arr };
