@@ -51,11 +51,14 @@ export default class ShopCartCell extends Component {
 
     _renderCellView = (itemData, rowMap, rowId, cellClickAction, sectionData) => {
         return (
-            <View rowMap={rowMap} style={{backgroundColor:DesignRule.bgColor}}>
+            <View rowMap={rowMap} style={{
+                backgroundColor: DesignRule.bgColor,
+                paddingBottom: px2dp(1),
+                marginTop: itemData.topSpace
+            }}>
                 <TouchableHighlight onPress={() => {
                     cellClickAction(itemData);
                 }}
-                style={{}}
                 >
                     <View style={styles.standaloneRowFront}>
                         <UIImage source={getSelectImage(itemData)} style={styles.itemSelectImg}
@@ -148,7 +151,7 @@ export default class ShopCartCell extends Component {
                                 }
 
                                 <View style={{ flexDirection: "row" }}>
-                                    { this._getTipArrView()}
+                                    {this._getTipArrView(itemData)}
                                 </View>
                             </View>
                             <View style={styles.priceBgView}>
@@ -256,61 +259,62 @@ export default class ShopCartCell extends Component {
                     </View>
                 </TouchableHighlight>
                 {/*<View*/}
-                    {/*style={{*/}
-                        {/*backgroundColor: DesignRule.bgColor*/}
-                    {/*}}*/}
+                {/*style={{*/}
+                {/*backgroundColor: DesignRule.bgColor*/}
+                {/*}}*/}
                 {/*>*/}
-                    {/*{*/}
-                        {/*(*/}
-                            {/*(itemData.activityType === 1 || itemData.activityType === 2) &&*/}
-                            {/*getSkillIsBegin(itemData) === 1 || getSkillIsBegin(itemData) === 0*/}
-                        {/*)*/}
-                            {/*?*/}
-                            {/*<View*/}
-                                {/*style={*/}
-                                    {/*[{*/}
-                                        {/*height: 15,*/}
-                                        {/*width: ScreenUtils.width,*/}
-                                        {/*justifyContent: "center",*/}
-                                        {/*alignItems: "center",*/}
-                                        {/*backgroundColor: DesignRule.mainColor*/}
+                {/*{*/}
+                {/*(*/}
+                {/*(itemData.activityType === 1 || itemData.activityType === 2) &&*/}
+                {/*getSkillIsBegin(itemData) === 1 || getSkillIsBegin(itemData) === 0*/}
+                {/*)*/}
+                {/*?*/}
+                {/*<View*/}
+                {/*style={*/}
+                {/*[{*/}
+                {/*height: 15,*/}
+                {/*width: ScreenUtils.width,*/}
+                {/*justifyContent: "center",*/}
+                {/*alignItems: "center",*/}
+                {/*backgroundColor: DesignRule.mainColor*/}
 
-                                    {/*},*/}
-                                        {/*getSkillIsBegin(itemData) === 0*/}
-                                            {/*?*/}
-                                            {/*{ opacity: 0.5 }*/}
-                                            {/*:*/}
-                                            {/*{ opacity: 1 }*/}
-                                    {/*]*/}
-                                {/*}*/}
-                            {/*>*/}
-                                {/*<UIText style={{*/}
-                                    {/*flex: 1,*/}
-                                    {/*color: "white",*/}
-                                    {/*fontSize: 11*/}
-                                {/*}}*/}
-                                        {/*value={*/}
-                                            {/*itemData.activityType === 1 ?*/}
-                                                {/*(getSkillIsBegin(itemData) === 0 ? "秒杀活动未开始,暂不可购买~" : "该商品正在进行秒杀活动,快去看看~") :*/}
-                                                {/*"该商品正在进行降价拍活动,快去看看~"*/}
-                                        {/*}*/}
-                                {/*>*/}
+                {/*},*/}
+                {/*getSkillIsBegin(itemData) === 0*/}
+                {/*?*/}
+                {/*{ opacity: 0.5 }*/}
+                {/*:*/}
+                {/*{ opacity: 1 }*/}
+                {/*]*/}
+                {/*}*/}
+                {/*>*/}
+                {/*<UIText style={{*/}
+                {/*flex: 1,*/}
+                {/*color: "white",*/}
+                {/*fontSize: 11*/}
+                {/*}}*/}
+                {/*value={*/}
+                {/*itemData.activityType === 1 ?*/}
+                {/*(getSkillIsBegin(itemData) === 0 ? "秒杀活动未开始,暂不可购买~" : "该商品正在进行秒杀活动,快去看看~") :*/}
+                {/*"该商品正在进行降价拍活动,快去看看~"*/}
+                {/*}*/}
+                {/*>*/}
 
-                                {/*</UIText>*/}
-                            {/*</View>*/}
-                            {/*: null*/}
-                    {/*}*/}
-                    {/*<View*/}
-                        {/*style={{ height: 10, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}*/}
-                    {/*/>*/}
+                {/*</UIText>*/}
+                {/*</View>*/}
+                {/*: null*/}
+                {/*}*/}
+                {/*<View*/}
+                {/*style={{ height: 10, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}*/}
+                {/*/>*/}
                 {/*</View>*/}
             </View>
         );
     };
 
-    _getTipArrView = (tipArr = []) => {
-        return tipArr.map((tipItem,index) => {
-            return (<View style={[styles.labelBgView,{ marginLeft:index===0?0:3,}]}>
+    _getTipArrView = (itemData) => {
+        let tipArr = itemData.displayItem && itemData.displayItem.tags !== null ? itemData.displayItem.tags.slice() : [];
+        return tipArr.map((tipItem, index) => {
+            return (<View style={[styles.labelBgView, { marginLeft: index === 0 ? 0 : 3 }]}>
                 <UIText
                     style={styles.labelTextView}
                     value={tipItem}
@@ -457,13 +461,13 @@ const styles = StyleSheet.create({
     labelBgView: {
         paddingLeft: 2,
         paddingRight: 2,
-        backgroundColor: "rgba(241, 217, 232, 1)",
+        backgroundColor: "rgba(241, 217, 232, 1)"
     },
-    labelTextView:{
-        fontSize:10,
-        color:DesignRule.mainColor,
+    labelTextView: {
+        fontSize: 10,
+        color: DesignRule.mainColor
     },
-    priceBgView:{
+    priceBgView: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
