@@ -2,9 +2,8 @@
 import React from 'react';
 import {
     View,
-    StyleSheet,
     ScrollView,
-    TouchableOpacity,
+    StyleSheet,
     Image,
     Alert
 } from 'react-native';
@@ -15,22 +14,59 @@ import DesignRule from '../../../constants/DesignRule';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
+import HTML from 'react-native-render-html';
 import res from '../res';
-import {
-    MRText as Text
-} from '../../../components/ui';
+import { MRText as Text } from '../../../components/ui';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 
 const { openShop_yes, openShop_no } = res.openShop;
 
 export default class OpenShopExplainPage extends BasePage {
 
-
-    $navigationBarOptions = {
-        title: '开店'
+    state = {
+        pageState: PageLoadingState.loading,
+        isSelected: true,
+        netFailedInfo: {},
+        data: null
     };
 
-    state = { isSelected: true };
+    $navigationBarOptions = {
+        title: '拼店权益'
+    };
+
+    $getPageStateOptions = () => {
+        const { netFailedInfo, pageState } = this.state;
+        return {
+            loadingState: pageState,
+            netFailedProps: {
+                netFailedInfo: netFailedInfo,
+                reloadBtnClick: () => {
+                    this.setState({
+                        pageState: PageLoadingState.loading
+                    }, this._openStore());
+                }
+            }
+        };
+    };
+
+    componentDidMount() {
+        this._openStore();
+    }
+
+    _openStore = () => {
+        SpellShopApi.store_openStore().then((data) => {
+            this.setState({
+                data: data.data,
+                pageState: PageLoadingState.success
+            });
+        }).catch((e) => {
+            this.setState({
+                pageState: PageLoadingState.fail
+            });
+        });
+    };
 
     _onPress = () => {
         this.$navigate('HtmlPage', {
@@ -65,151 +101,55 @@ export default class OpenShopExplainPage extends BasePage {
         );
     };
 
-    _renderRow = (title, index, maxIndex) => {
-        return (
-            <View style={{ width: ScreenUtils.width }} key={index}>
-
-                <View style={{ marginHorizontal: ScreenUtils.autoSizeWidth(30) }}>
-
-                    {/*内容间距view*/}
-                    {index !== 0 ?
-                        <View style={{
-                            marginLeft: 8,
-                            width: 2,
-                            backgroundColor: DesignRule.mainColor,
-                            height: ScreenUtils.autoSizeWidth(42)
-                        }}/> : null}
-
-                    <View style={{ flexDirection: 'row' }}>
-                        <View>
-                            <View style={styles.circle}>
-                                <Text style={styles.circleText} allowFontScaling={false}>{index + 1}</Text>
-                            </View>
-                            {index !== maxIndex - 1 ?
-                                <View style={{
-                                    marginLeft: 8,
-                                    width: 2,
-                                    backgroundColor: DesignRule.mainColor,
-                                    flex: 1
-                                }}/> : null}
-                        </View>
-
-                        <View style={styles.desc}>
-                            <Text style={{
-                                marginRight: 0,
-                                fontSize: 13,
-                                color: DesignRule.textColor_mainTitle
-                            }} allowFontScaling={false}>{title}</Text>
-                        </View>
-                    </View>
-                </View>
-
-            </View>
-
-        );
-    };
 
     _render() {
-
-        const arr = [
-            '升级会员等级到V4（达人品鉴官）',
-            '发起拼店',
-            '店员人数达到5人（包括店主）',
-            '成功开启店铺，招募更多店员',
-            '联合店员共同完成目标，取得品牌奖励',
-            '店铺分为3个等级（普通店、服务顾问店、大咖店），每个级别的店铺权益不同，等级越高，享受的权益越多。'
-        ];
-
+        const { data, isSelected } = this.state;
         return (
             <View style={{ flex: 1 }}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={{
-                        alignSelf: 'center',
-                        marginTop: 41,
-                        fontSize: 17,
-                        color: DesignRule.textColor_mainTitle
-                    }} allowFontScaling={false}>拼店规则说明</Text>
-                    <View style={{ marginTop: 32 }}>
-                        {
-                            arr.map((item, index) => {
-                                return this._renderRow(item, index, arr.length);
-                            })
-                        }
-                    </View>
-                    <View style={{
-                        alignItems: 'center',
-                        marginTop: ScreenUtils.autoSizeHeight(70)
-                    }}>
-                        <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
-                            <Text style={{
-                                fontSize: 17,
-                                color: 'white'
-                            }} allowFontScaling={false}>我要开店</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.explainContainer}>
-                        <TouchableOpacity onPress={() => {
-                            this.setState({
-                                isSelected: !this.state.isSelected
-                            });
-                        }}>
-                            <Image source={this.state.isSelected ? openShop_yes : openShop_no}/>
-                        </TouchableOpacity>
-                        <Text style={styles.descText} allowFontScaling={false}>阅读同意</Text>
-                        <TouchableOpacity onPress={this._onPress}>
-                            <Text style={[styles.descText, { color: DesignRule.mainColor }]}
-                                  allowFontScaling={false}>《拼店管理条例》</Text>
-                        </TouchableOpacity>
-                    </View>
+                <ScrollView style={styles.scrollView}>
+                    <HTML html={data}
+                          imagesMaxWidth={ScreenUtils.width - 30}
+                          imagesInitialDimensions={{ width: ScreenUtils.width - 30, height: 0 }}
+                          containerStyle={{ backgroundColor: '#fff' }}/>
                 </ScrollView>
-
+                <NoMoreClick onPress={this._clickOpen} style={styles.btnStyle}>
+                    <Text style={styles.btnText}>我要开店</Text>
+                </NoMoreClick>
+                <View style={styles.explainContainer}>
+                    <NoMoreClick onPress={() => {
+                        this.setState({
+                            isSelected: !isSelected
+                        });
+                    }}>
+                        <Image source={isSelected ? openShop_yes : openShop_no}/>
+                    </NoMoreClick>
+                    <Text style={styles.descText}>点击我要开店则默认同意杭州名融网络有限公司<Text
+                        style={{ color: DesignRule.mainColor }} onPress={this._onPress}>《拼店管理条例》</Text></Text>
+                </View>
             </View>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
-    circle: {
-        width: 18,
-        height: 18,
-        backgroundColor: DesignRule.mainColor,
-        overflow: 'hidden',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 9
-    },
-    circleText: {
-        fontSize: 12,
-        color: 'white'
-    },
-    desc: {
-        marginLeft: 8,
-        flex: 1
+    scrollView: {
+        marginHorizontal: 15, marginTop: 10, borderRadius: 5
     },
     btnStyle: {
-        width: ScreenUtils.autoSizeWidth(260),
-        height: 48,
-        borderRadius: 25,
-        backgroundColor: DesignRule.mainColor,
-        overflow: 'hidden',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'center', alignItems: 'center', marginTop: 20, alignSelf: 'center',
+        width: ScreenUtils.autoSizeWidth(260), height: 44, borderRadius: 22, backgroundColor: DesignRule.mainColor
+    },
+    btnText: {
+        fontSize: 17, color: 'white'
     },
 
     explainContainer: {
-        marginTop: 8,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
+        flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
+        marginTop: 8, marginBottom: ScreenUtils.safeBottom + 20, marginHorizontal: 15
     },
 
     descText: {
-        marginLeft: 5,
-        paddingVertical: 10,
-        fontSize: 11,
-        color: DesignRule.textColor_instruction,
-        textAlign: 'center'
+        marginLeft: 8,
+        fontSize: 10, color: DesignRule.textColor_secondTitle
     }
 });

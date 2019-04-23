@@ -87,7 +87,11 @@ export default class ShowDetailPage extends BasePage {
                                 author: detail.userName,
                                 collectionCount: detail.collectCount
                             });
-                            this.params.ref && this.params.ref.replaceData(this.params.index,detail.click)
+                            if(this.params.isFormHeader){
+                                this.params.ref && this.params.ref.setClick(detail.click)
+                            }else {
+                                this.params.ref && this.params.ref.replaceData(this.params.index,detail.click)
+                            }
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
@@ -105,8 +109,6 @@ export default class ShowDetailPage extends BasePage {
                         });
                     } else {
                         Toast.showLoading();
-                        this.params.ref && this.params.ref.replaceData(this.params.index,30)
-
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             const { detail } = this.showDetailModule;
                             TrackApi.XiuChangDetails({

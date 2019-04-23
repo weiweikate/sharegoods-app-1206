@@ -51,11 +51,12 @@ export default class ShopCartCell extends Component {
 
     _renderCellView = (itemData, rowMap, rowId, cellClickAction, sectionData) => {
         return (
-            <View>
+            <View rowMap={rowMap} style={{backgroundColor:DesignRule.bgColor}}>
                 <TouchableHighlight onPress={() => {
-                    rowMap;
                     cellClickAction(itemData);
-                }}>
+                }}
+                style={{}}
+                >
                     <View style={styles.standaloneRowFront}>
                         <UIImage source={getSelectImage(itemData)} style={styles.itemSelectImg}
                                  onPress={() => {
@@ -254,55 +255,55 @@ export default class ShopCartCell extends Component {
                         </View>
                     </View>
                 </TouchableHighlight>
-                <View
-                    style={{
-                        backgroundColor: DesignRule.bgColor
-                    }}
-                >
-                    {
-                        (
-                            (itemData.activityType === 1 || itemData.activityType === 2) &&
-                            getSkillIsBegin(itemData) === 1 || getSkillIsBegin(itemData) === 0
-                        )
-                            ?
-                            <View
-                                style={
-                                    [{
-                                        height: 15,
-                                        width: ScreenUtils.width,
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        backgroundColor: DesignRule.mainColor
+                {/*<View*/}
+                    {/*style={{*/}
+                        {/*backgroundColor: DesignRule.bgColor*/}
+                    {/*}}*/}
+                {/*>*/}
+                    {/*{*/}
+                        {/*(*/}
+                            {/*(itemData.activityType === 1 || itemData.activityType === 2) &&*/}
+                            {/*getSkillIsBegin(itemData) === 1 || getSkillIsBegin(itemData) === 0*/}
+                        {/*)*/}
+                            {/*?*/}
+                            {/*<View*/}
+                                {/*style={*/}
+                                    {/*[{*/}
+                                        {/*height: 15,*/}
+                                        {/*width: ScreenUtils.width,*/}
+                                        {/*justifyContent: "center",*/}
+                                        {/*alignItems: "center",*/}
+                                        {/*backgroundColor: DesignRule.mainColor*/}
 
-                                    },
-                                        getSkillIsBegin(itemData) === 0
-                                            ?
-                                            { opacity: 0.5 }
-                                            :
-                                            { opacity: 1 }
-                                    ]
-                                }
-                            >
-                                <UIText style={{
-                                    flex: 1,
-                                    color: "white",
-                                    fontSize: 11
-                                }}
-                                        value={
-                                            itemData.activityType === 1 ?
-                                                (getSkillIsBegin(itemData) === 0 ? "秒杀活动未开始,暂不可购买~" : "该商品正在进行秒杀活动,快去看看~") :
-                                                "该商品正在进行降价拍活动,快去看看~"
-                                        }
-                                >
+                                    {/*},*/}
+                                        {/*getSkillIsBegin(itemData) === 0*/}
+                                            {/*?*/}
+                                            {/*{ opacity: 0.5 }*/}
+                                            {/*:*/}
+                                            {/*{ opacity: 1 }*/}
+                                    {/*]*/}
+                                {/*}*/}
+                            {/*>*/}
+                                {/*<UIText style={{*/}
+                                    {/*flex: 1,*/}
+                                    {/*color: "white",*/}
+                                    {/*fontSize: 11*/}
+                                {/*}}*/}
+                                        {/*value={*/}
+                                            {/*itemData.activityType === 1 ?*/}
+                                                {/*(getSkillIsBegin(itemData) === 0 ? "秒杀活动未开始,暂不可购买~" : "该商品正在进行秒杀活动,快去看看~") :*/}
+                                                {/*"该商品正在进行降价拍活动,快去看看~"*/}
+                                        {/*}*/}
+                                {/*>*/}
 
-                                </UIText>
-                            </View>
-                            : null
-                    }
-                    <View
-                        style={{ height: 10, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}
-                    />
-                </View>
+                                {/*</UIText>*/}
+                            {/*</View>*/}
+                            {/*: null*/}
+                    {/*}*/}
+                    {/*<View*/}
+                        {/*style={{ height: 10, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}*/}
+                    {/*/>*/}
+                {/*</View>*/}
             </View>
         );
     };
@@ -410,7 +411,7 @@ const styles = StyleSheet.create({
     standaloneRowFront: {
         alignItems: "center",
         backgroundColor: "#fff",
-        height: px2dp(140),
+        height: px2dp(145),
         width: ScreenUtils.width - px2dp(30),
         flexDirection: "row",
         marginRight: 16

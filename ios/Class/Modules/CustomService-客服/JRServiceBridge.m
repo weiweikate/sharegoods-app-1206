@@ -18,7 +18,8 @@
 
 -(NSArray<NSString *> *)supportedEvents{
   return @[
-           QY_MSG_CHANGE
+           QY_MSG_CHANGE,
+           QY_CARD_CLICK
            ];
 }
 
@@ -46,14 +47,22 @@ RCT_EXPORT_METHOD(qiYULogout){
 -(void)startObserving {
   hasListeners = YES;
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(aaa:)
+                                           selector:@selector(toRNHandleMsg:)
                                                name:QY_MSG_CHANGE
                                              object:nil];
 }
-- (void)aaa:(NSNotification*)notification {
+- (void)toRNHandleMsg:(NSNotification*)notification {
   if (hasListeners) {
     dispatch_async(dispatch_get_main_queue(), ^{
       [self sendEventWithName:QY_MSG_CHANGE body:notification.object];
+    });
+  }
+}
+
+-(void)toRNHandleCardClick:(NSNotification *)notification{
+  if (hasListeners) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self sendEventWithName:QY_CARD_CLICK body:notification.object];
     });
   }
 }

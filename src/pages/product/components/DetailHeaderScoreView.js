@@ -140,7 +140,7 @@ export class DetailHeaderScoreView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 10, paddingHorizontal: 15,
+        paddingHorizontal: 15,
         backgroundColor: DesignRule.white
     },
     /**数量**/
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         flex: 1, fontSize: 15, color: DesignRule.textColor_mainTitle
     },
     moreText: {
-        fontSize: 12, color: DesignRule.textColor_redWarn
+        fontSize: 12, color: DesignRule.textColor_instruction
     },
     moreImage: {
         marginLeft: 5
