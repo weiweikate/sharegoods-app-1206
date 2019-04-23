@@ -66,7 +66,7 @@ export default class SelectionPage extends Component {
             propData: propData,
             specMap: specMapTemp,
             priceList: priceListTemp,
-            tittleList: tittleList,
+            tittleList: tittleList
         }, () => {
             this._indexCanSelectedItems();
 
@@ -216,7 +216,6 @@ export default class SelectionPage extends Component {
         priceList.forEach((item) => {
             if (item.propertyValues === itemValues) {
                 itemData = item;
-                return;
             }
         });
         if (!itemData) {
@@ -261,7 +260,7 @@ export default class SelectionPage extends Component {
                             <ScrollView>
                                 {this._addSelectionSectionView()}
                                 <SelectionAmountView style={{ marginVertical: 30 }}
-                                                     amount = {this.state.amount}
+                                                     amount={this.state.amount}
                                                      amountClickAction={this._amountClickAction}
                                                      maxCount={this.state.maxStock} afterAmount={afterAmount}
                                                      type={type}/>

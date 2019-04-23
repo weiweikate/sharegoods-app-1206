@@ -86,6 +86,7 @@ export default class ShowDetailPage extends BasePage {
                                 author: detail.userName,
                                 collectionCount: detail.collectCount
                             });
+                            this.params.ref && this.params.ref.replaceData(this.params.index,detail.click)
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
@@ -103,6 +104,8 @@ export default class ShowDetailPage extends BasePage {
                         });
                     } else {
                         Toast.showLoading();
+                        this.params.ref && this.params.ref.replaceData(this.params.index,30)
+
                         this.showDetailModule.loadDetail(this.params.id).then(() => {
                             const { detail } = this.showDetailModule;
                             TrackApi.XiuChangDetails({
@@ -256,7 +259,7 @@ export default class ShowDetailPage extends BasePage {
             detail = {imgs: '', products: [], click: 0, content: ''}
         }
         let products = detail.products;
-        let number = this.params.appSetClick;
+        let number = detail.click;
         if (!number) {
             number = 0;
         }

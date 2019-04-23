@@ -176,6 +176,17 @@ export default class TopicDetailSelectPage extends Component {
             surplusNumber = Math.min.apply(Math, tagList);
         }
 
+        const { stockSysConfig } = this.state.data || {};
+        //库存显示变动
+        let goodsNumberText;
+        for (let item of (stockSysConfig || [])) {
+            const tempArr = item.value.split('★');
+            if (parseFloat(surplusNumber) >= parseFloat(tempArr[0])) {
+                goodsNumberText = tempArr[1];
+                break;
+            }
+        }
+
         const { imgUrl = '', levelPrice = '' } = this.state.data || {};
 
         let specs = this.state.selectStrList.filter((item) => {
@@ -204,7 +215,7 @@ export default class TopicDetailSelectPage extends Component {
                                             color: DesignRule.textColor_mainTitle,
                                             fontSize: 13,
                                             marginTop: 6
-                                        }} allowFontScaling={false}>{`库存${surplusNumber}件`}</Text>
+                                        }} allowFontScaling={false}>{`库存${goodsNumberText || surplusNumber}`}</Text>
                                     <Text style={{
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: 13,
@@ -226,7 +237,7 @@ export default class TopicDetailSelectPage extends Component {
                                     height: 30,
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
-                                    marginVertical:30,
+                                    marginVertical: 30
                                 }]}>
                                     <Text style={{
                                         color: DesignRule.textColor_secondTitle,

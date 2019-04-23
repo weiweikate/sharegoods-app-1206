@@ -36,13 +36,10 @@ export default class SelectionHeaderView extends Component {
         const { imgUrl, minPrice, stockSysConfig } = this.props.product || {};
         let price = minPrice || '';
         let stock = 0;
-        let stockUnit = '';
         let specImg;
         this.props.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
             stock = stock + item.sellStock;
-            //件
-            stockUnit = item.stockUnit;
             specImg = item.specImg;
             price = item.price;
         });
@@ -73,7 +70,7 @@ export default class SelectionHeaderView extends Component {
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: 13,
                                 marginTop: 6
-                            }}>库存{goodsNumberText || `${stock}${stockUnit || ''}`}</Text>
+                            }}>{`库存${goodsNumberText || stock}`}</Text>
                         <Text style={{
                             color: DesignRule.textColor_mainTitle,
                             fontSize: 13,

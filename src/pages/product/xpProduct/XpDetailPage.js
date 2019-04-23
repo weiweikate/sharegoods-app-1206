@@ -162,7 +162,6 @@ export class XpDetailPage extends BasePage {
                 'skuCode': skuCode,
                 'productCode': this.xpDetailModel.selectedSpuCode,
                 activityCode: this.params.activityCode,
-                activityType: this.params.activityType
             };
             shopCartCacheTool.addGoodItem(temp);
 

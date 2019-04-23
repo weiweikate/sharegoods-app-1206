@@ -9,7 +9,7 @@ import StringUtils from '../../../utils/StringUtils';
 import UIImage from '@mr/image-placeholder';
 import DesignRule from '../../../constants/DesignRule';
 import { formatDate } from '../../../utils/DateUtils';
-import {MRText as Text} from '../../../components/ui/index';
+import { MRText as Text } from '../../../components/ui/index';
 
 export class DetailBanner extends Component {
     constructor(props) {
@@ -49,7 +49,8 @@ export class DetailBanner extends Component {
 
     _renderViewPageItem = (item = {}, index) => {
         if (item.videoUrl) {
-            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover} navigation = {this.props.navigation}/>;
+            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}
+                              navigation={this.props.navigation}/>;
         } else {
             const { originalImg } = item;
             let imgList = this.getImageList(this.productImgListOutVideo);
@@ -142,12 +143,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         right: 14,
         bottom: 20,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center'
     },
     text: {
-        color: '#fff',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 10,
         paddingHorizontal: 8
     }

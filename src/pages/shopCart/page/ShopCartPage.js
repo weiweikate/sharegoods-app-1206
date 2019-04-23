@@ -23,11 +23,11 @@ import ShopCartEmptyView from "../components/ShopCartEmptyView";
 import ShopCartCell from "../components/ShopCartCell";
 import SectionHeaderView from "../components/SectionHeaderView";
 import RouterMap from "../../../navigation/RouterMap";
-import StringUtils from "../../../utils/StringUtils";
 import { TrackApi } from "../../../utils/SensorsTrack";
 import BottomMenu from "../components/BottomMenu";
 
 const { px2dp } = ScreenUtils;
+
 
 
 @observer
@@ -113,19 +113,10 @@ export default class ShopCartPage extends BasePage {
         }
         const { statusBarHeight } = ScreenUtils;
         return (
-            <View
-                style={{
-                    width: ScreenUtils.width,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flex: 1
-                }}>
-
+            <View style={styles.listBgContent}>
                 <SwipeListView
                     extraData={this.state}
-                    style={{
-                        width: ScreenUtils.width
-                    }}
+                    style={styles.swipeListView}
                     sections={shopCartStore.cartData}
                     useSectionList={true}
                     disableRightSwipe={true}
@@ -168,30 +159,10 @@ export default class ShopCartPage extends BasePage {
                     rowMap[data.item.key].closeRow();
                     this._deleteFromShoppingCartByProductId(data);
                 }}>
-                <View
-                    style={
-                        {
-                            backgroundColor: "white",
-                            height: 140,
-                            width: ScreenUtils.width,
-                            marginTop: -20,
-                            justifyContent: "center",
-                            alignItems: "flex-end"
-                        }
-                    }
-                >
-                    <View
-                        style={{
-                            width: 75,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            backgroundColor: DesignRule.mainColor,
-                            height: 140
-                        }}
-                    >
+                <View style={styles.hideBgView}>
+                    <View style={styles.hideTextBgView}>
                         <UIText style={styles.backUITextWhite} value='删除'/>
                     </View>
-
                 </View>
             </TouchableOpacity>
         );
@@ -252,17 +223,38 @@ export default class ShopCartPage extends BasePage {
     };
 }
 
+const shopCartListWidth = ScreenUtils.width - px2dp(30);
+
 const styles = StyleSheet.create({
+    listBgContent:{
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+        // backgroundColor:'green'
+    },
+    swipeListView:{ width: shopCartListWidth },
     standaloneRowBack: {
         alignItems: "center",
         flex: 1,
         flexDirection: "row",
         justifyContent: "flex-end"
-
     },
     backUITextWhite: {
-        marginRight: 0,
         color: "white",
         fontSize: px2dp(17)
+    },
+    hideBgView:{
+        backgroundColor: "white",
+        height: px2dp(145),
+        width: shopCartListWidth,
+        justifyContent: "center",
+        alignItems: "flex-end",
+    },
+    hideTextBgView:{
+        width: px2dp(75),
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: DesignRule.mainColor,
+        height: px2dp(145)
     }
 });
