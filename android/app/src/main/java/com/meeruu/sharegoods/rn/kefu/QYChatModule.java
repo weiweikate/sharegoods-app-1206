@@ -87,10 +87,12 @@ public class QYChatModule extends ReactContextBaseJavaModule {
             WritableMap sessionData = Arguments.createMap();
             sessionData.putString("hasTrashWords", "");
             sessionData.putString("lastMessageText", session.getContent());
-            sessionData.putString("lastMessageType", msg.getMsgType() + "");
+            if (msg != null) {
+                sessionData.putString("lastMessageType", msg.getMsgType() + "");
+            }
             sessionData.putInt("unreadCount", session.getUnreadCount());
             sessionData.putString("status", session.getMsgStatus() + "");
-            sessionData.putDouble("lastMessageTimeStamp", msg.getTime());
+            sessionData.putDouble("lastMessageTimeStamp", session.getTime());
             sessionData.putString("shopId", session.getContactId());
             if (shopInfo != null) {
                 sessionData.putString("avatarImageUrlString", shopInfo.getAvatar());
@@ -112,25 +114,35 @@ public class QYChatModule extends ReactContextBaseJavaModule {
     public void initQYChat(ReadableMap params) {
         YSFUserInfo userInfo = new YSFUserInfo();
         // APP 的用户 ID
-        userInfo.userId = params.getString("userId");
+        if (params.hasKey("userId")) {
+            userInfo.userId = params.getString("userId");
+        }
         // CRM 扩展字段
         JSONArray arr = new JSONArray();
-        JSONObject name = new JSONObject();
-        name.put("key", "real_name");
-        name.put("value", params.getString("nickName"));
-        arr.add(name);
-        JSONObject avatar = new JSONObject();
-        avatar.put("key", "avatar");
-        avatar.put("value", params.getString("userIcon"));
-        arr.add(avatar);
-        JSONObject device = new JSONObject();
-        device.put("key", "device");
-        device.put("value", params.getString("device"));
-        arr.add(device);
-        JSONObject sysVS = new JSONObject();
-        sysVS.put("key", "platformVersion");
-        sysVS.put("value", params.getString("systemVersion"));
-        arr.add(sysVS);
+        if (params.hasKey("nickName")) {
+            JSONObject name = new JSONObject();
+            name.put("key", "real_name");
+            name.put("value", params.getString("nickName"));
+            arr.add(name);
+        }
+        if (params.hasKey("userIcon")) {
+            JSONObject avatar = new JSONObject();
+            avatar.put("key", "avatar");
+            avatar.put("value", params.getString("userIcon"));
+            arr.add(avatar);
+        }
+        if (params.hasKey("device")) {
+            JSONObject device = new JSONObject();
+            device.put("key", "device");
+            device.put("value", params.getString("device"));
+            arr.add(device);
+        }
+        if (params.hasKey("systemVersion")) {
+            JSONObject sysVS = new JSONObject();
+            sysVS.put("key", "platformVersion");
+            sysVS.put("value", params.getString("systemVersion"));
+            arr.add(sysVS);
+        }
         JSONObject appVS = new JSONObject();
         appVS.put("key", "appVersion");
         appVS.put("value", AppUtils.getVersionName());

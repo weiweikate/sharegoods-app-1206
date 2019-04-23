@@ -5,6 +5,8 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
+import java.lang.reflect.Method;
+
 public class onDidScrollToIndexEvent extends Event<onDidScrollToIndexEvent> {
     private static final String EVENT_NAME = "MrOnDidScrollToIndexEvent";
 
@@ -13,6 +15,17 @@ public class onDidScrollToIndexEvent extends Event<onDidScrollToIndexEvent> {
     @Override
     public void init(int viewTag) {
         super.init(viewTag);
+    }
+
+    public boolean isInit() {
+        try {
+            Method dm = getClass().getDeclaredMethod("isInitialized", null);
+            dm.setAccessible(true);
+            return (boolean) dm.invoke(getClass());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void setIndex(int index) {
