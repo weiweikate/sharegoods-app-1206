@@ -85,6 +85,7 @@ export default class ShowHotView extends React.Component {
             <View style={styles.container}>
                 <ShowGroundView style={{ flex: 1 }}
                                 uri={'/discover/query@GET'}
+                                ref={(ref)=>{this.rightShowList = ref}}
                                 headerHeight={showBannerModules.bannerHeight + showChoiceModules.choiceHeight + px2dp(116)}
                                 renderHeader={Platform.OS === 'ios' ? this.renderHeader() : this.state.headerView}
                                 onStartRefresh={() => {
@@ -104,7 +105,7 @@ export default class ShowHotView extends React.Component {
                                 }}
                                 onItemPress={({ nativeEvent }) => {
                                     const { navigate } = this.props;
-                                    navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code });
+                                    navigate('show/ShowDetailPage', { id: nativeEvent.id, code: nativeEvent.code,ref : this.rightShowList,index:nativeEvent.index });
                                 }}
                 />
             </View>
