@@ -153,7 +153,7 @@ export default class ProductDetailModel {
     @computed get productIsPromotionPrice() {
         const { activityType, activityStatus } = this;
         let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;
-        return !(tempType && activityStatus === activity_status.inSell);
+        return tempType && activityStatus === activity_status.inSell;
     }
 
     /*秒杀倒计时显示*/
