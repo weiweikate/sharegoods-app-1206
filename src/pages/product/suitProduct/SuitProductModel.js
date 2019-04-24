@@ -12,8 +12,6 @@ export default class SuitProductModel {
     * isSelected: false,
     * */
     @observable mainProduct = {};
-    /*主sku*/
-    @observable mainSkuItem = {};
 
     /*子商品们*/
     /*product级别 额外增加字段
@@ -48,7 +46,7 @@ export default class SuitProductModel {
     }
 
     @computed get totalPayMoney() {
-        const { price = 0 } = this.mainSkuItem || {};
+        const { price = 0 } = this.mainProduct.selectedSkuItem || {};
         return this.selectedItems.reduce((pre, cur) => {
             const { promotionPrice } = cur;
             return math.eval(pre + promotionPrice * this.selectedAmount);
@@ -76,9 +74,9 @@ export default class SuitProductModel {
         // this.changeArr();
     };
 
-    @action changeItem = (item, isPromotion) => {
+    @action changeItem = (item, isPromotion, isUpdate) => {
         const { isSelected } = this.selectItem;
-        if (isSelected) {
+        if (isSelected && !isUpdate) {
             /*选择了:删除sku和选择状态*/
             this.selectItem.selectedSkuItem = null;
             this.selectItem.isSelected = false;
@@ -90,9 +88,6 @@ export default class SuitProductModel {
                 this.selectItem.selectedSkuItem = item;
                 this.selectItem.isSelected = true;
             }
-        }
-        if (!isPromotion) {
-            this.mainSkuItem = item;
         }
         //获取选择的item
         let tempArr = this.subProductArr.filter((item1) => {

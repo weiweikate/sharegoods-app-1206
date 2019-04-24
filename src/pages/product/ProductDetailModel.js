@@ -104,7 +104,7 @@ export default class ProductDetailModel {
     @observable paramList = [];
 
     /*商品评论{ headImg, nickname, imgUrl ,comment}*/
-    @observable comment = {};
+    @observable comment;
     /*商品数量*/
     @observable totalComment;
     /*商品详情图片*/
@@ -132,14 +132,14 @@ export default class ProductDetailModel {
     /*套餐*/
     /*subProductList:[]*/
     @observable groupActivity = [];
+    /*活动标签*/
+    @observable tags = [];
     /*
-     * promotionUnitAmount 原价
      * promotionDecreaseAmount 优惠
      * promotionPrice 现价
      * promotionSaleNum 已抢
      * promotionStockNum 还剩
      * */
-    @observable promotionUnitAmount;
     @observable promotionDecreaseAmount;
 
     @observable promotionPrice;
@@ -151,7 +151,7 @@ export default class ProductDetailModel {
 
     /*秒杀倒计时显示*/
     @computed get showTimeText() {
-        const { skillTimeout } = this;
+        const { skillTimeout, activityStatus } = this;
         //天数
         let days = Math.floor(skillTimeout / (24 * 3600 * 1000));
         //去除天数
@@ -174,7 +174,22 @@ export default class ProductDetailModel {
         minutes = minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`;
         second = second >= 10 ? second : second === 0 ? `00` : `0${second}`;
         leave4 = leave4 >= 10 ? leave4 : leave4 === 0 ? `00` : `0${leave4}`;
-        return `${hours}:${minutes}:${second}:${leave4}`;
+        if (activityStatus === activity_status.unBegin) {
+            // if (days >= 1) {
+            //     return `${hours}:${minutes}:${second}:${leave4}`;
+            // } else {
+            return `距开抢${hours}:${minutes}:${second}:${leave4}`;
+            // }
+        } else if (activityStatus === activity_status.inSell) {
+            // if (days >= 1) {
+            //     return `${hours}:${minutes}:${second}:${leave4}`;
+            //
+            // } else {
+            return `距结束${hours}:${minutes}:${second}:${leave4}`;
+            // }
+        } else {
+            return '';
+        }
     }
 
     /*秒杀抢空*/
@@ -201,7 +216,7 @@ export default class ProductDetailModel {
     @computed get levelText() {
         const { priceType, activityStatus, activityType } = this;
         if (activityStatus === activity_status.inSell && activityType === activity_type.verDown) {
-            return '直降';
+            return this.tags[0];
         }
         return priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : 'V1价';
     }
@@ -249,7 +264,7 @@ export default class ProductDetailModel {
                 restrictions, paramList, comment, totalComment,
                 prodCode, upTime, now, content,
                 shopId, title,
-                promotionResult, promotionUnitAmount, promotionDecreaseAmount, promotionPrice,
+                promotionResult, promotionDecreaseAmount, promotionPrice,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice
             } = data || {};
 
@@ -276,7 +291,8 @@ export default class ProductDetailModel {
             this.promoteInfoVOList = promoteInfoVOList || [];
             this.restrictions = restrictions;
             this.paramList = paramList || [];
-            this.comment = comment || {};
+            /*不赋值默认 判空用*/
+            this.comment = comment;
             this.totalComment = totalComment;
             this.contentArr = contentArr;
             this.now = now;
@@ -284,10 +300,10 @@ export default class ProductDetailModel {
             this.shopId = shopId;
             this.title = title;
 
-            const { singleActivity, groupActivity } = promotionResult || {};
+            const { singleActivity, groupActivity, tags } = promotionResult || {};
             this.singleActivity = singleActivity || {};
             this.groupActivity = groupActivity || {};
-            this.promotionUnitAmount = promotionUnitAmount;
+            this.tags = tags;
             this.promotionDecreaseAmount = promotionDecreaseAmount;
 
             this.promotionPrice = promotionPrice;

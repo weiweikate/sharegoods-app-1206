@@ -25,6 +25,7 @@ import bridge from '../../../utils/bridge';
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
 const { arrow_right_red } = RES;
+const { service_true } = RES.service;
 const { toTop } = res.search;
 const { px2dp } = ScreenUtils;
 
@@ -74,13 +75,15 @@ export class HeaderItemView extends Component {
     render() {
         const { navigation, productDetailModel, shopAction } = this.props;
         const {
-            freight, monthSaleCount, originalPrice, promotionUnitAmount, minPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
+            freight, monthSaleCount, originalPrice, minPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
             secondName, levelText, priceType, activityType, activityStatus
         } = productDetailModel;
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
         let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
-        let showShop = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
+        /*直降和秒杀不显示 拼店*/
+        let showShop = !((activityType === activity_type.skill || activityType === activity_type.verDown) && activityStatus === activity_status.inSell);
+        /*直降中显示活动价 价格区间*/
         let verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (
             <View style={styles.bgView}>
@@ -89,7 +92,7 @@ export class HeaderItemView extends Component {
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
                 {
                     showPrice && (verDownInSell ?
-                        this._renderPriceView({ promotionMinPrice, promotionMaxPrice, promotionUnitAmount, levelText })
+                        this._renderPriceView({ promotionMinPrice, promotionMaxPrice, originalPrice, levelText })
                         :
                         this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
                 }
@@ -358,15 +361,25 @@ const PromoteItemViewStyles = StyleSheet.create({
 * 服务
 * */
 export class ServiceItemView extends Component {
+    _imgText(text) {
+        return <View style={ServiceItemViewStyles.itemView}>
+            <Image source={service_true}/>
+            <Text style={ServiceItemViewStyles.serviceValueText}>{text}</Text>
+        </View>;
+    }
+
     render() {
         const { productDetailModel, serviceAction } = this.props;
         const { restrictions } = productDetailModel;
         return (
             <NoMoreClick style={ServiceItemViewStyles.serviceView} onPress={serviceAction}>
                 <Text style={ServiceItemViewStyles.serviceNameText}>服务</Text>
-                <Text style={ServiceItemViewStyles.serviceValueText} numberOfLines={1}>
-                    {`质量保障·48小时发货${(restrictions & 4) === 4 ? `·7天退换` : ``}${(restrictions & 8) === 8 ? `·节假日发货` : ``}`}
-                </Text>
+                <View style={{ flexDirection: 'row', flex: 1 }}>
+                    {this._imgText('质量保障')}
+                    {this._imgText('48小时发货')}
+                    {(restrictions & 4) === 4 && this._imgText('7天退换')}
+                    {(restrictions & 8) === 8 && this._imgText('节假日发货')}
+                </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
         );
@@ -381,8 +394,11 @@ const ServiceItemViewStyles = StyleSheet.create({
     serviceNameText: {
         color: DesignRule.textColor_instruction, fontSize: 13
     },
+    itemView: {
+        flexDirection: 'row', alignItems: 'center', marginLeft: 5
+    },
     serviceValueText: {
-        flex: 1, marginLeft: 15,
+        marginLeft: 5,
         color: DesignRule.textColor_mainTitle, fontSize: 12
     }
 });

@@ -210,7 +210,9 @@ const clipboardSetString = (content) => {
 const clipboardGetString = () => {
     return Clipboard.getString();
 };
-
+function trimWithChar(string,char) {
+    return string.replace(new RegExp('^\\'+char+'+|\\'+char+'+$', 'g'), '');
+}
 //去左空格
 function ltrim(s) {
     return s.replace(/(^\s*)/g, '');
@@ -341,7 +343,8 @@ export default {
     formatDecimal,
     isNumber,
     mul,
-    sub
+    sub,
+    trimWithChar
 };
 
 
