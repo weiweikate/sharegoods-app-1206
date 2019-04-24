@@ -20,13 +20,19 @@
 #import <React/RCTComponent.h>
 #import <React/UIView+React.h>
 #import "ASCollectionNode+ReloadIndexPaths.h"
+#import <SDAutoLayout.h>
+
 
 #define kReuseIdentifier @"ShowCell"
+#define SystemUpgradeCode 9999
 @interface ASDK_ShowGround()<ASCollectionDataSourceInterop, ASCollectionDelegate, ASCollectionViewLayoutInspecting>
 @property (nonatomic, strong) ASCollectionNode * collectionNode;
 @property (nonatomic, strong)NSMutableArray<ShowQuery_dataModel *> *dataArr;
 @property (nonatomic, assign)NSInteger page;
 @property (nonatomic, strong)UIView *headerView;
+@property (nonatomic, assign)NSInteger errCode;
+@property(nonatomic, strong)UILabel *emptyLb;
+@property (nonatomic, strong)UIView *emptyView;
 @property(nonatomic, strong)MosaicCollectionLayoutDelegate *layoutDelegate;
 @end
 @implementation ASDK_ShowGround
@@ -37,6 +43,7 @@
     [self initData];
     [self setUI];
     [self setupRefresh];
+    [self setupEmptyView];
     
   }
   
@@ -107,6 +114,58 @@
 }
 
 /**
+ * 设置空白代理
+ */
+- (void)setupEmptyView{
+  _emptyView = [UIView new];
+  [self addSubview:_emptyView];
+  _emptyView.sd_layout.spaceToSuperView(UIEdgeInsetsZero);
+  _emptyView.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
+  
+  UIImageView *imgView = [UIImageView new];
+  imgView.image = [UIImage imageNamed:@"Systemupgrade"];
+  [_emptyView addSubview:imgView];
+  
+  imgView.sd_layout
+  .centerXEqualToView(_emptyView)
+  .centerYEqualToView(_emptyView)
+  .widthIs(130)
+  .heightIs(150);
+  
+  _emptyLb = [UILabel new];
+  _emptyLb.font = [UIFont systemFontOfSize:13];
+  _emptyLb.textColor = [UIColor colorWithHexString:@"666666"];
+  [_emptyView addSubview:_emptyLb];
+  _emptyLb.textAlignment = 1;
+  
+  _emptyLb.sd_layout
+  .topSpaceToView(imgView, 10)
+  .heightIs(20)
+  .leftSpaceToView(_emptyLb, 0)
+  .rightSpaceToView(_emptyView, 0);
+  //点击刷新
+  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(refreshData)];
+  [_emptyView addGestureRecognizer:tap];
+   _emptyView.hidden = YES;
+}
+
+- (void)setErrCode:(NSInteger)errCode
+{
+  _errCode = errCode;
+  if (self.dataArr.count > 0) {
+    _emptyView.hidden = YES;
+    
+  }else{
+    _emptyView.hidden = NO;
+    if (errCode == SystemUpgradeCode) {
+      _emptyLb.text = @"系统维护升级中 ";
+    }else{
+      _emptyLb.text = @"暂无数据 ";
+    }
+  }
+}
+
+/**
  刷新数据
  */
 - (void)refreshData
@@ -122,6 +181,7 @@
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic  toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
+    weakSelf.errCode = 10000;
     weakSelf.dataArr = [result.data mutableCopy];
     [weakSelf.collectionNode.view.mj_header endRefreshing];
     if(result.data.count < 20){
@@ -137,6 +197,7 @@
       });
     }
   } failure:^(NSString *msg, NSInteger code) {
+    weakSelf.errCode = code;
     [MBProgressHUD showSuccess:msg];
     [weakSelf.collectionNode.view.mj_header endRefreshing];
   } showLoading:nil];
@@ -155,6 +216,7 @@
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
+      weakSelf.errCode = 10000;
     [weakSelf.dataArr addObjectsFromArray:result.data];
     NSMutableArray *indexPaths = [NSMutableArray new];
     for (int i = 0; i<result.data.count; i++) {
@@ -169,6 +231,7 @@
       [weakSelf.collectionNode.view.mj_footer endRefreshing];
     }
   } failure:^(NSString *msg, NSInteger code) {
+    weakSelf.errCode = code;
     [MBProgressHUD showSuccess:msg];
     [weakSelf.collectionNode.view.mj_footer endRefreshing];
   } showLoading:nil];
