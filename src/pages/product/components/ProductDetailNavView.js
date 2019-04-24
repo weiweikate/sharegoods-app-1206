@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     bgView: {
         zIndex: 1025,
         position: 'absolute', top: 0, left: 0, right: 0,
-        flexDirection: 'row', paddingTop: statusBarHeight,
+        flexDirection: 'row', marginTop: statusBarHeight,
         height: 44
     },
     barItemContainer: {
