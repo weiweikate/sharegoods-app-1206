@@ -434,7 +434,7 @@ export default class SelectMentorPage extends BasePage {
                             this.changeSelectIndex(index);
                         }}
                         itemData={item}
-                        isSelect={this.state.selectIndex == -1 ? true : (this.state.selectIndex == index)}
+                        isSelect={this.state.selectIndex === -1 ? true : (this.state.selectIndex === index)}
                     />
                 );
             }

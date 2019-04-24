@@ -13,7 +13,6 @@ import EmptyView from '../../../components/pageDecorator/BaseView/EmptyView';
 import spellStatusModel from '../model/SpellStatusModel';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import { payment, payStatus, payStatusMsg } from '../../payment/Payment';
-import user from '../../../model/user';
 import Toast from '../../../utils/bridge';
 
 export class AddCapacityHistoryPage extends BasePage {

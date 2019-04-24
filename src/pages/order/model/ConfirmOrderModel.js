@@ -207,7 +207,7 @@ class ConfirmOrderModel {
         if (this.canUseCou) {
             let arr = [];
             let params = {};
-            if (this.orderParamVO.orderType == 99 || this.orderParamVO.orderType == 98) {
+            if (this.orderParamVO.orderType === 99 || this.orderParamVO.orderType === 98) {
                 this.orderParamVO.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -216,7 +216,7 @@ class ConfirmOrderModel {
                     });
                 });
                 params = { productPriceIds: arr };
-            } else if (this.orderParamVO.orderType == 1 || this.orderParamVO.orderType == 2 || this.orderParamVO.orderType == 3) {
+            } else if (this.orderParamVO.orderType === 1 || this.orderParamVO.orderType === 2 || this.orderParamVO.orderType === 3) {
                 this.orderParamVO.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -280,7 +280,7 @@ class ConfirmOrderModel {
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderId: data.orderNo,
-                        orderSubmitPage:orderParamVO.source==1?11:1
+                        orderSubmitPage:orderParamVO.source===1?11:1
                     });
                 }).catch(err => {
                     this.canCommit = true;
@@ -305,7 +305,7 @@ class ConfirmOrderModel {
                     shopCartCacheTool.getShopCartGoodsListData();
                     track(trackEvent.submitOrder, {
                         orderId: data.orderNo,
-                        orderSubmitPage: orderParamVO.source == 1 ? 11 : 1
+                        orderSubmitPage: orderParamVO.source === 1 ? 11 : 1
                     });
                 }).catch(err => {
                     this.canCommit = true;

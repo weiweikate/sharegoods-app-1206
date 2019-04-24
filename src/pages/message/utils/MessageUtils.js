@@ -81,6 +81,7 @@ const MessageUtils = {
             case 300://工猫合同详情
                 pagParams = {url:params};
                 navigation(RouterMap.GongMallContractPage,pagParams);
+                break;
             default:
                 break;
 
