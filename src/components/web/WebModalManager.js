@@ -2,7 +2,6 @@ import { action, observable } from "mobx";
 import { AsyncStorage } from 'react-native';
 import HomeAPI from '../../pages/home/api/HomeAPI';
 import { AdViewBindModal } from '../../pages/home/view/HomeMessageModalView';
-import DateUtils from '../../utils/DateUtils'
 // const Type = {
 //     EXCHANGE: 2,
 //     EXPERIENCE: 3,
@@ -16,6 +15,7 @@ class Manager {
     needShowAd = false;
     @observable
     AdData = null;
+    isHome = true;
     //showPage：
     // EXCHANGE(2, "兑换专区"),web
     // EXPERIENCE(3, "经验值专区"),web

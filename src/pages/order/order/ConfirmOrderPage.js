@@ -163,15 +163,14 @@ export default class ConfirmOrderPage extends BasePage {
             this.oneTicketModel && this.oneTicketModel.open(orderAmount, (data) => {
                 //选择完以后回调
                 data = parseInt(data);
-                let legal = data > 0 && data <= (confirmOrderModel.payAmount + confirmOrderModel.tokenCoin);
                 if (data >= 0) {
                     let params = {
-                        tokenCoin: legal? data : 0,
+                        tokenCoin: data,
                         userCouponCode: confirmOrderModel.userCouponCode,
                         addressId: confirmOrderModel.addressId
                     };
-                    confirmOrderModel.tokenCoin = legal? data : 0;
-                    confirmOrderModel.tokenCoinText = legal? '-¥' + data : '选择使用1元券';
+                    confirmOrderModel.tokenCoin = data;
+                    confirmOrderModel.tokenCoinText = data !== 0 ? '-¥' + data : '选择使用1元券';
                     setTimeout(() => {
                         this.loadPageData(params);
                     }, 0);
