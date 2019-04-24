@@ -244,6 +244,7 @@ const SuitItemViewStyles = StyleSheet.create({
         width: px2dp(100) + 5
     },
     itemImg: {
+        overflow: 'hidden',
         width: px2dp(100), height: px2dp(100), borderRadius: 5
     },
     itemText: {

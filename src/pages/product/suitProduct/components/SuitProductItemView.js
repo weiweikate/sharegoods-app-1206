@@ -140,7 +140,7 @@ const mStyles = StyleSheet.create({
         marginHorizontal: 10, width: 17, height: 17
     },
     productImg: {
-        marginRight: 10,
+        marginRight: 10, overflow: 'hidden',
         height: px2dp(80), width: px2dp(80), borderRadius: 5
     },
 
