@@ -56,13 +56,14 @@ export class HeaderItemView extends Component {
     };
 
     /*加入拼店提示*/
-    _renderShop = ({ priceType, shopAction }) => {
+    _renderShop = ({ priceType, shopAction, groupPrice }) => {
         if (priceType === price_type.shop) {
             return null;
         }
         return (
             <NoMoreClick style={styles.shopView} onPress={shopAction}>
-                <Text style={styles.shopText}>加入拼店，享更多特权</Text>
+                <Text style={styles.shopText}>拼店价 <Text
+                    style={{ color: DesignRule.textColor_redWarn }}>￥{groupPrice}</Text></Text>
                 <View style={styles.shopSubView}>
                     <View style={styles.shopSubLineView}/>
                     <Text style={styles.shopSubText}>加入拼店</Text>
@@ -75,14 +76,14 @@ export class HeaderItemView extends Component {
     render() {
         const { navigation, productDetailModel, shopAction } = this.props;
         const {
-            freight, monthSaleCount, originalPrice, minPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
+            freight, monthSaleCount, originalPrice, minPrice, groupPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
             secondName, levelText, priceType, activityType, activityStatus
         } = productDetailModel;
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
         let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
-        /*直降和秒杀不显示 拼店*/
-        let showShop = !((activityType === activity_type.skill || activityType === activity_type.verDown) && activityStatus === activity_status.inSell);
+        /*秒杀不显示 拼店*/
+        let showShop = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
         /*直降中显示活动价 价格区间*/
         let verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (
@@ -96,7 +97,7 @@ export class HeaderItemView extends Component {
                         :
                         this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
                 }
-                {showShop && this._renderShop({ priceType, shopAction })}
+                {showShop && this._renderShop({ priceType, shopAction, groupPrice })}
                 <NoMoreClick onLongPress={() => {
                     Clipboard.setString(name);
                     bridge.$toast('已将商品名称复制至剪贴板');
