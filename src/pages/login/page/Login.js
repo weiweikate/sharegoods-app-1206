@@ -63,7 +63,7 @@ export default class Login extends BasePage {
                 </View>
                 {/*中部视图*/}
                 {
-                    !loginModel.authPhone ? <View style={Styles.middleBgContent}>
+                    loginModel.authPhone ? <View style={Styles.middleBgContent}>
                         {
                             createLoginButton(loginBtnType.localPhoneNumLoginType, "本机号码一键登录", () => {
                                 this._clickAction(loginBtnType.localPhoneNumLoginType);
