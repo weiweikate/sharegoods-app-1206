@@ -149,6 +149,13 @@ export default class ProductDetailModel {
     @observable promotionMinPrice;
     @observable promotionMaxPrice;
 
+    /*产品当前页是否使用活动价格  (直降 秒杀)进行中*/
+    @computed get productIsPromotionPrice() {
+        const { activityType, activityStatus } = this;
+        let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;
+        return !(tempType && activityStatus === activity_status.inSell);
+    }
+
     /*秒杀倒计时显示*/
     @computed get showTimeText() {
         const { skillTimeout, activityStatus } = this;
