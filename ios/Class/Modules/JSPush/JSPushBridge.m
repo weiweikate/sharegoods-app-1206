@@ -35,9 +35,11 @@ RCT_EXPORT_MODULE(JSPushBridge)
                                              object:nil];
 }
 -(void)toHomePageCustomMsg:(NSNotification *)noti{
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [self sendEventWithName:HOME_REFRESH body:noti.object];
-  });
+  if (noti.object) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self sendEventWithName:HOME_REFRESH body:noti.object];
+    });
+  }
 }
 - (void)stopObserving {
   hasListeners = NO;
