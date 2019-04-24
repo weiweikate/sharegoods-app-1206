@@ -44,6 +44,10 @@ export class XpDetailPage extends BasePage {
         title: '经验值专区'
     };
 
+    $NavigationBarDefaultLeftPressed = () => {
+        this.manager.showAd(()=>this.$navigateBack())
+    }
+
     $NavBarRenderRightItem = () => {
         return <TouchableOpacity style={styles.rightNavBtn} onPress={this._rightPressed}>
             <Image source={detail_more_down}/>
