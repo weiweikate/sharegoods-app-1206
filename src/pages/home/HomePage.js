@@ -3,7 +3,9 @@ import {
     View,
     StyleSheet,
     DeviceEventEmitter, InteractionManager,
-    RefreshControl, BackHandler
+    RefreshControl, BackHandler,
+    NativeEventEmitter,
+    NativeModules
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
@@ -45,6 +47,11 @@ import HomeLimitGoView from './view/HomeLimitGoView';
 import { limitGoModule } from './model/HomeLimitGoModel';
 import HomeExpandBannerView from './view/HomeExpandBannerView';
 import HomeFocusAdView from './view/HomeFocusAdView';
+
+const { JSPushBridge } = NativeModules;
+const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
+
+const HOME_REFRESH = 'homeRefresh';
 
 /**
  * @author zhangjian
@@ -199,7 +206,7 @@ class HomePage extends BasePage {
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
-        this.listenerHomeRefresh = DeviceEventEmitter.addListener('homeRefresh', this.homeTypeRefresh);
+        this.listenerHomeRefresh = JSManagerEmitter.addListener(HOME_REFRESH, this.homeTypeRefresh);
 
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
