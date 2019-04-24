@@ -1,9 +1,7 @@
 package com.meeruu.sharegoods.rn.kefu;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -19,15 +17,11 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.service.QiyuUrlEvent;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
-import com.meeruu.sharegoods.R;
-import com.meeruu.sharegoods.event.LoadingDialogEvent;
-import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.ProductDetail;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.UnreadCountChangeListener;
 import com.qiyukf.unicorn.api.YSFUserInfo;
-import com.qiyukf.unicorn.api.msg.ProductReslectOnclickListener;
 import com.qiyukf.unicorn.api.msg.UnicornMessage;
 import com.qiyukf.unicorn.api.pop.POPManager;
 import com.qiyukf.unicorn.api.pop.Session;
@@ -250,8 +244,8 @@ public class QYChatModule extends ReactContextBaseJavaModule {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQiyuUrl(QiyuUrlEvent event) {
         WritableMap map = Arguments.createMap();
-        map.putInt("card_type",0);
-        map.putString("linkUrl",event.getUrl());
-        sendEvent(this.mContext,"QY_CARD_CLICK",map);
+        map.putInt("card_type", 0);
+        map.putString("linkUrl", event.getUrl());
+        sendEvent(this.mContext, "QY_CARD_CLICK", map);
     }
 }
