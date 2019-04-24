@@ -29,7 +29,7 @@ public class ShowgroundPresenter {
             @Override
             public void onErr(String errCode, String msg) {
                 IShowgroundView view = showgroundViewWeakReference.get();
-                view.loadMoreFail();
+                view.loadMoreFail(errCode);
             }
 
             @Override

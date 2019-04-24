@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private onStartRefreshEvent startRefreshEvent;
     private onStartScrollEvent startScrollEvent;
     private onEndScrollEvent endScrollEvent;
+    private View errView;
 
     private WeakReference<View> showgroundView;
 
@@ -59,6 +61,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
 
     private void initView(Context context, final View view) {
         showgroundView = new WeakReference<>(view);
+        errView = view.findViewById(R.id.err_view);
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
@@ -162,10 +165,18 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void loadMoreFail() {
+    public void loadMoreFail(String code) {
         swipeRefreshLayout.setRefreshing(false);
         if (adapter != null) {
             adapter.loadMoreFail();
+        }
+
+        if(TextUtils.equals(code,"9999") && page == 1){
+            errView.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+        }else {
+            errView.setVisibility(View.GONE);
+            swipeRefreshLayout.setVisibility(View.VISIBLE);
         }
     }
 
