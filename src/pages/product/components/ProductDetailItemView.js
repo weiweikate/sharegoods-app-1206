@@ -3,7 +3,7 @@ import {
     View,
     Image,
     StyleSheet,
-    FlatList
+    FlatList, Clipboard
 } from 'react-native';
 
 import DesignRule from '../../../constants/DesignRule';
@@ -20,6 +20,7 @@ import RouterMap, { navigate } from '../../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import res from '../../home/res';
 import { activity_type, activity_status } from '../ProductDetailModel';
+import bridge from '../../../utils/bridge';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -93,7 +94,12 @@ export class HeaderItemView extends Component {
                         this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
                 }
                 {showShop && this._renderShop({ priceType, shopAction })}
-                <Text style={styles.nameText} numberOfLines={2}>{name}</Text>
+                <NoMoreClick onLongPress={() => {
+                    Clipboard.setString(name);
+                    bridge.$toast('已将商品名称复制至剪贴板');
+                }}>
+                    <Text style={styles.nameText} numberOfLines={2}>{name}</Text>
+                </NoMoreClick>
                 {isNoEmpty(secondName) && <Text style={styles.secondNameText} numberOfLines={2}>{secondName}</Text>}
                 <View style={styles.freightMonthView}>
                     {/*值为0*/}
