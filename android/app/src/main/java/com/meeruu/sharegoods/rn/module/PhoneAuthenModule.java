@@ -56,7 +56,6 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         mTokenListener = new TokenResultListener() {
             @Override
             public void onTokenSuccess(String s) {
-                LogUtils.d("AliAuthSDK===",s);
                 if(authPromise != null){
                     authPromise.resolve(s);
                 }
@@ -64,14 +63,13 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onTokenFailed(String s) {
-                LogUtils.d("AliAuthSDK===",s);
                 if(authPromise != null){
                     authPromise.reject(s);
                 }
             }
         };
         mAlicomAuthHelper = PhoneNumberAuthHelper.getInstance(this.mContext,mTokenListener);
-        mAlicomAuthHelper.setDebugMode(true);
+        mAlicomAuthHelper.setDebugMode(false);
         mAlicomAuthHelper.setAuthUIConfig(new AuthUIConfig.Builder()
                 .setNavColor(Color.WHITE)
                 .setNavText("")
