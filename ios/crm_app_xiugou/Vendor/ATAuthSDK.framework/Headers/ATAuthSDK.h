@@ -16,3 +16,4 @@ FOUNDATION_EXPORT const unsigned char ATAuthSDKVersionString[];
 
 #import "TXCommonAuthHandler.h"
 #import "TXCommonUtils.h"
+#import "TXCustomModel.h"

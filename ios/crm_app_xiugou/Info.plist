@@ -190,6 +190,7 @@
 	<string>秀购需要访问您的相册,以便使用上传头像的功能和在实名认证中上传证件照的功能</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>ATAuthSDK.bundle/iconfont.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>Feather.ttf</string>

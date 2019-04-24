@@ -34,4 +34,22 @@ RCT_EXPORT_METHOD(startPhoneAuthenWithPhoneNum:(NSString *)phoneNum resolve:(RCT
   }];
 }
 
+RCT_EXPORT_METHOD(startLoginAuth:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+  
+  [PhoneAutherTool startPhoneAutherWithPhoneNum:@"" andFinshBlock:^(NSDictionary * _Nonnull resultDic) {
+    
+  }];
+}
+
+RCT_EXPORT_METHOD(checkInitResult:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+  if( [PhoneAutherTool isCanPhoneAuthen]){
+    resolve(@(true));
+  }else{
+    resolve(@(false));
+  }
+  
+}
+
 @end

@@ -14,6 +14,9 @@
 #define TX_Auth_Result_Other_Err    @"3333"
 #define TX_Auth_Result_Param_Err    @"3344"
 
+#define TX_Login_SSO_Action         @"6668"
+#define TX_Login_Change_Action      @"6669"
+
 @interface TXCommonUtils : NSObject
 
 /*
@@ -55,5 +58,10 @@
  @return 结果
  */
 + (BOOL)reachableViaWWAN;
+
+/**
+ 获取设备当前网络私网IP地址
+ */
++ (NSString *)getMobilePrivateIPAddress:(BOOL)preferIPv4;
 
 @end
