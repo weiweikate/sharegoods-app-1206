@@ -229,7 +229,7 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, groupActivity, activityStatus } = this;
+        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList } = this;
 
         let sectionArr = [
             { key: productItemType.headerView, data: [productItemType.headerView] }
@@ -245,8 +245,14 @@ export default class ProductDetailModel {
             );
         }
         sectionArr.push(
-            { key: productItemType.service, data: [productItemType.service] },
-            { key: productItemType.param, data: [productItemType.param] },
+            { key: productItemType.service, data: [productItemType.service] }
+        );
+        if (paramList.length !== 0) {
+            sectionArr.push(
+                { key: productItemType.param, data: [productItemType.param] }
+            );
+        }
+        sectionArr.push(
             { key: productItemType.comment, data: [productItemType.comment] },
             { key: productItemType.content, data: contentArr.slice() },
             { key: productItemType.priceExplain, data: [productItemType.priceExplain] }
