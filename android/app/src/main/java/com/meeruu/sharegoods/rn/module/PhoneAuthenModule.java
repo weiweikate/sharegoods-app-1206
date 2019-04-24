@@ -17,6 +17,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
 import com.mobile.auth.gatewayauth.AuthUIConfig;
@@ -70,17 +71,19 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         mAlicomAuthHelper = PhoneNumberAuthHelper.getInstance(this.mContext,mTokenListener);
         mAlicomAuthHelper.setDebugMode(false);
         mAlicomAuthHelper.setAuthUIConfig(new AuthUIConfig.Builder()
-//                .setNavColor(Color.WHITE)
+                .setNavColor(Color.WHITE)
                 .setNavText("")
-                .setLogoImgPath("ic_launcher_round")
+                .setLogoImgPath("auth_logo_shape")
                 .setNumberColor(0xff333333)
                 .setNumberSize(22)
                 .setAppPrivacyOne("秀购用户协议", url)
                 .setAppPrivacyColor(0xff666666,0xffFF0050)
                 .setLogBtnText("一键登录")
                 .setLogBtnTextColor(Color.WHITE)
-                .setLogBtnClickableColor(Color.RED)
-                .setLogBtnUnClickableColor(Color.RED)
+                .setLogBtnBackgroundPath("ali_login_btn")
+                .setSwitchAccTextColor(0xff999999)
+                .setNavReturnImgPath("ali_back")
+                .setLogoHidden(false)
                 .setSwitchClicker(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -114,12 +117,12 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
             promise.reject("aliAuth init failed");
             return;
         }
-        String phone = mAutInitResult.getSimPhoneNumber();
-        if(TextUtils.isEmpty(phone)){
-            promise.reject("get phone failed");
-            return;
+       boolean can4gAuth = mAutInitResult.isCan4GAuth();
+        if(can4gAuth){
+            promise.resolve(true);
+        }else {
+            promise.resolve(false);
         }
-        promise.resolve(phone);
     }
 
     /**
@@ -158,7 +161,6 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startLoginAuth(Promise promise){
         this.authPromise = promise;
-
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override
             public void run() {
