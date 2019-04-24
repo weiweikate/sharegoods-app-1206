@@ -88,9 +88,9 @@ export class HeaderItemView extends Component {
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
                 {
                     showPrice && (verDownInSell ?
-                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText })
+                        this._renderPriceView({ promotionMinPrice, promotionMaxPrice, promotionUnitAmount, levelText })
                         :
-                        this._renderPriceView({ promotionMinPrice, promotionMaxPrice, promotionUnitAmount, levelText }))
+                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
                 }
                 {showShop && this._renderShop({ priceType, shopAction })}
                 <Text style={styles.nameText} numberOfLines={2}>{name}</Text>
@@ -173,13 +173,23 @@ const styles = StyleSheet.create({
 * */
 export class SuitItemView extends Component {
     _renderItem = ({ item }) => {
-        const { imgUrl, name, minPrice, prodCode } = item;
+        const { imgUrl, name, minPrice, prodCode, skuList } = item;
+
+        let decreaseList = (skuList || []).map((sku) => {
+            return sku.promotionDecreaseAmount;
+        });
+        let minDecrease = decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList);
+
         return (
             <View style={SuitItemViewStyles.item}>
                 <NoMoreClick onPress={() => {
                     navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
                 }}>
-                    <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}/>
+                    <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}>
+                        <View style={SuitItemViewStyles.subView}>
+                            <Text style={SuitItemViewStyles.subText}>立省{minDecrease}起</Text>
+                        </View>
+                    </UIImage>
                 </NoMoreClick>
                 <Text style={SuitItemViewStyles.itemText}
                       numberOfLines={2}>{name}</Text>
@@ -246,6 +256,12 @@ const SuitItemViewStyles = StyleSheet.create({
     itemImg: {
         overflow: 'hidden',
         width: px2dp(100), height: px2dp(100), borderRadius: 5
+    },
+    subView: {
+        position: 'absolute', bottom: 5, left: 5, backgroundColor: DesignRule.mainColor, borderRadius: 1
+    },
+    subText: {
+        color: DesignRule.white, fontSize: 10, padding: 2
     },
     itemText: {
         color: DesignRule.textColor_secondTitle, fontSize: 12
