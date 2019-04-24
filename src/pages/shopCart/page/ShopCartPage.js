@@ -159,7 +159,7 @@ export default class ShopCartPage extends BasePage {
                     rowMap[data.item.key].closeRow();
                     this._deleteFromShoppingCartByProductId(data);
                 }}>
-                <View style={styles.hideBgView}>
+                <View style={[styles.hideBgView,{marginTop:data.item.topSpace}]}>
                     <View style={styles.hideTextBgView}>
                         <UIText style={styles.backUITextWhite} value='删除'/>
                     </View>

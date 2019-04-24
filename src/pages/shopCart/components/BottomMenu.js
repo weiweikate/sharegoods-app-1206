@@ -8,7 +8,7 @@
  * Created by huyufeng on 2019/1/3.
  *
  */
-'use strict';
+"use strict";
 import React, { Component } from "react";
 import DesignRule from "../../../constants/DesignRule";
 import ScreenUtils from "../../../utils/ScreenUtils";
@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import user from "../../../model/user";
 import RouterMap from "../../../navigation/RouterMap";
 import bridge from "../../../utils/bridge";
+import LinearGradient from "react-native-linear-gradient";
 
 const dismissKeyboard = require("dismissKeyboard");
 const { px2dp } = ScreenUtils;
@@ -45,22 +46,15 @@ export default class BottomMenu extends Component {
 
         return (
             <View
-                style={[{
-                    height: 49,
-                    width: ScreenUtils.width,
-                    backgroundColor: "white",
-                    zIndex: 20
-                },
-                    (!hideLeft && ScreenUtils.tabBarHeight > 49)
-                        ?
-                        { height: 83 }
-                        :
-                        null
-                ]}
-            >
+                style={[styles.mainBgView, (!hideLeft && ScreenUtils.tabBarHeight > 49)
+                    ?
+                    { height: 83 }
+                    :
+                    null
+                ]}>
                 <View style={styles.CartBottomContainer}>
                     <TouchableOpacity
-                        style={{ flexDirection: "row", paddingLeft: 19, alignItems: "center" }}
+                        style={styles.touchableOpacity}
                         onPress={() => this._selectAll()}
                     >
                         <Image
@@ -68,30 +62,42 @@ export default class BottomMenu extends Component {
                             style={{ width: 22, height: 22 }}/>
                         <UIText
                             value={"全选"}
-                            style={{
-                                fontSize: 13,
-                                color: DesignRule.textColor_instruction,
-                                marginLeft: 10
-                            }}/>
+                            style={styles.selectText}/>
                     </TouchableOpacity>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <UIText
-                            value={"合计"}
-                            style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
-                        <UIText
-                            value={"¥" + shopCartStore.getTotalMoney}
-                            style={styles.totalPrice}/>
-                        <TouchableOpacity
-                            style={styles.selectGoodsNum}
-                            onPress={() => this._toBuyImmediately()}
-                        >
-                            <UIText
-                                value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                                style={{ color: "white", fontSize: 16 }}
-                            />
+                    <View style={{ flexDirection: "row", alignItems: "center", paddingRight: px2dp(10) }}>
+                        <View>
+                            <View style={{ flexDirection: "row" }}>
+                                <UIText
+                                    value={"合计:"}
+                                    style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
+                                <UIText
+                                    value={"¥" + shopCartStore.getTotalMoney}
+                                    style={styles.totalPrice}/>
+                            </View>
+                            <View style={{ justifyContent: "flex-end", flexDirection: "row", marginRight: px2dp(10) }}>
+                                <UIText
+                                    value={"不含运费"}
+                                    style={styles.shippingText}/>
+                            </View>
+
+                        </View>
+
+
+                        <TouchableOpacity onPress={() => this._toBuyImmediately()}>
+                            <LinearGradient colors={["rgba(255, 0, 80, 1)", "rgba(252, 93, 57, 1)"]}
+                                            style={styles.selectGoodsNum}
+                                            start={{ x: 0, y: 0 }}
+                                            end={{ x: 1, y: 1 }}>
+                                <UIText
+                                    value={`去结算(${shopCartStore.getTotalSelectGoodsNum})`}
+                                    style={{ color: "white", fontSize: 16 }}
+                                />
+
+                            </LinearGradient>
                         </TouchableOpacity>
                     </View>
                 </View>
+                <View style={{ height: 1, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
             </View>
         );
     }
@@ -142,9 +148,9 @@ export default class BottomMenu extends Component {
                     skuCode: goods.skuCode,
                     quantity: goods.amount,
                     productCode: goods.spuCode,
-                    batchNo:'1',
-                    shoppingCartId:'',
-                    activityCode:''
+                    batchNo: "1",
+                    shoppingCartId: goods.id,
+                    activityCode: goods.activityCode
                 });
             });
             navigate("order/order/ConfirOrderPage", {
@@ -159,25 +165,40 @@ export default class BottomMenu extends Component {
 }
 
 const styles = StyleSheet.create({
+    mainBgView: {
+        height: 49,
+        width: ScreenUtils.width,
+        backgroundColor: "white",
+        zIndex: 20
+    },
     totalPrice: {
         fontSize: px2dp(13),
         color: DesignRule.mainColor,
         marginLeft: px2dp(10),
         marginRight: px2dp(10)
     },
+    touchableOpacity:{ flexDirection: "row", paddingLeft: 19, alignItems: "center" },
+    selectImg:{ width: px2dp(22), height: px2dp(22) },
+    selectText:{ fontSize: px2dp(13), color: DesignRule.textColor_instruction, marginLeft: px2dp(10)  },
     selectGoodsNum: {
         width: px2dp(110),
-        height: px2dp(49),
+        height: px2dp(34),
+        borderRadius: px2dp(17),
         backgroundColor: DesignRule.mainColor,
         justifyContent: "center",
         alignItems: "center"
     },
     CartBottomContainer: {
         width: ScreenUtils.width,
-        height: px2dp(49),
+        height: px2dp(47.5),
         backgroundColor: "white",
         justifyContent: "space-between",
         flexDirection: "row",
         alignItems: "center"
+    },
+    shippingText: {
+        color: DesignRule.textColor_mainTitle,
+        fontSize: px2dp(10)
     }
+
 });
