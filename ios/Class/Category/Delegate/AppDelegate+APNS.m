@@ -29,15 +29,11 @@
 // 自定义消息 回调
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
   NSDictionary * userInfo = [notification userInfo];
-  NSString *content = [userInfo valueForKey:@"content"];
-  NSString *messageID = [userInfo valueForKey:@"_j_msgid"];
-  NSDictionary *extras = [userInfo valueForKey:@"extras"];
-  NSString *customizeField1 = [extras valueForKey:@"customizeField1"]; //服务端传递的 Extras 附加字段，key 是自己定义的
-  
   [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:nil];
   NSString *typeString = userInfo[@"content_type"];
+  NSString *homeType = userInfo[@"homeType"];
   if ([typeString isEqualToString:@"HomeRefresh"]) {
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:homeType];
   }
 }
 

@@ -332,36 +332,37 @@ const styles = StyleSheet.create({
         paddingRight: px2dp(15)
     },
     labelBgView: {
-        paddingLeft: 2,
-        paddingRight: 2,
-        backgroundColor: "rgba(241, 217, 232, 1)"
+        paddingLeft: px2dp(2),
+        paddingRight: px2dp(2),
+        backgroundColor: "rgba(241, 217, 232, 1)",
+        marginTop:px2dp(2)
     },
     labelTextView: {
-        fontSize: 10,
+        fontSize: px2dp(10),
         color: DesignRule.mainColor
     },
     priceBgView: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        height: 30
+        height: px2dp(30)
     },
     statusImg: {
         position: "absolute",
-        marginLeft: 50,
-        width: 60,
-        height: 60,
+        marginLeft: px2dp(50) ,
+        width: px2dp(60),
+        height: px2dp(60),
         marginTop: px2dp(30)
     },
     productName: {
         marginTop: 0,
-        fontSize: 13,
-        lineHeight: 10,
+        fontSize: px2dp(13),
+        lineHeight: px2dp(10),
         color: DesignRule.textColor_mainTitle
     },
-    specifyContent: { fontSize: 13, color: DesignRule.textColor_instruction },
-    topTipString: { fontSize: 11, color: DesignRule.mainColor },
-    priceText: { fontSize: 14, color: DesignRule.mainColor }
+    specifyContent: { fontSize: px2dp(13), color: DesignRule.textColor_instruction },
+    topTipString: { fontSize: px2dp(11), color: DesignRule.mainColor },
+    priceText: { fontSize: px2dp(14), color: DesignRule.mainColor }
 });
 
 
