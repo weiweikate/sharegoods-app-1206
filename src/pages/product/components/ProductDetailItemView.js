@@ -93,7 +93,7 @@ export class HeaderItemView extends Component {
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
                 {
                     showPrice && (verDownInSell ?
-                        this._renderPriceView({ promotionMinPrice, promotionMaxPrice, originalPrice, levelText })
+                        this._renderPriceView({ minPrice:promotionMinPrice, maxPrice:promotionMaxPrice, originalPrice, levelText })
                         :
                         this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
                 }
