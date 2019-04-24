@@ -124,7 +124,7 @@ export class SubProductView extends Component {
         }
         this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
             changeItem(skuItem, true, isUpdate);
-        }, { sourceType: sourceType.promotion, unShowAmount: true });
+        }, { unShowAmount: true });
     };
 
     render() {
