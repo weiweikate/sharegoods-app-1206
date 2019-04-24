@@ -9,6 +9,7 @@
 #import "AppDelegate+APNS.h"
 // 引入 JPush 功能所需头文件
 #import "JPUSHService.h"
+//#import "JSPush"
 
 // iOS10 注册 APNs 所需头文件
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
