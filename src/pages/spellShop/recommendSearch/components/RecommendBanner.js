@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import XGSwiper from '../../../../components/ui/XGSwiper';
-import EmptyUtils from '../../../../utils/EmptyUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import UIImage from '@mr/image-placeholder';
+import MRBannerView from '../../../../components/ui/bannerView/MRBannerView';
+import DesignRule from '../../../../constants/DesignRule';
+import { bannerModule } from '../PinShopBannerModel';
+import { observer } from 'mobx-react';
 
+@observer
 export class RecommendBanner extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            messageIndex: 0
+            index: 0
         };
     }
 
-    _renderStyleOne = () => {
-        const bannerCount = this.props.bannerList.length;
+    renderIndexView() {
+        const { index } = this.state;
+        const { bannerList } = bannerModule;
         let items = [];
-        for (let i = 0; i < bannerCount; i++) {
-            if (this.state.messageIndex === i) {
+        for (let i = 0; i < bannerList.length; i++) {
+            if (index === i) {
                 items.push(<View key={i} style={styles.activityIndex}/>);
             } else {
                 items.push(<View key={i} style={styles.index}/>);
@@ -26,40 +29,48 @@ export class RecommendBanner extends Component {
         return <View style={styles.indexView}>
             {items}
         </View>;
-    };
+    }
 
     _onPress = (item) => {
         this.props.onPress && this.props.onPress(item);
     };
 
-    _renderViewPageItem = (item) => {
-        const { image } = item;
-        return (
-            <UIImage style={{ width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(230) }}
-                     source={{ uri: image }}
-                     resizeMode="cover"
-            />);
-    };
+    _onDidScrollToIndex(e) {
+        this.setState({ index: e.nativeEvent.index });
+    }
 
     render() {
-        const { bannerList } = this.props;
+        const { bannerList } = bannerModule;
+        if (bannerList.length === 0) {
+            return null;
+        }
+
+        let items = [];
+        bannerList.map(value => {
+            items.push(value.image);
+        });
+
         return (
             <View>
-                <XGSwiper height={ScreenUtils.autoSizeWidth(230)} width={ScreenUtils.width}
-                          renderRow={this._renderViewPageItem}
-                          autoplayTimeout={(bannerList || []).length > 1 ? 5 : 0}
-                          dataSource={EmptyUtils.isEmptyArr(bannerList) ? [] : bannerList}
-                          onDidChange={(item, index) => {
-                              if (this.state.messageIndex !== index) {
-                                  this.setState({
-                                      messageIndex: index
-                                  });
-                              }
-                          }}
-                          onPress={this._onPress}/>
-                {this._renderStyleOne()}
+                <MRBannerView
+                    style={{
+                        height: ScreenUtils.px2dp(230),
+                        width: ScreenUtils.width + 0.5
+                    }}
+                    itemWidth={ScreenUtils.width + 0.5}
+                    imgUrlArray={items}
+                    itemSpace={0}
+                    interceptTouchEvent={true}  //android端起作用，是否拦截touch事件
+                    pageFocused={this.props.pageFocused}
+                    onDidSelectItemAtIndex={(index) => {
+                        bannerList[this.state.index] && this._onPress(bannerList[this.state.index]);
+                    }}
+                    onDidScrollToIndex={(index) => {
+                        this._onDidScrollToIndex(index);
+                    }}
+                />
+                {this.renderIndexView()}
             </View>
-
         );
     }
 }
@@ -67,27 +78,25 @@ export class RecommendBanner extends Component {
 const styles = StyleSheet.create({
     indexView: {
         position: 'absolute',
-        bottom: 13,
+        bottom: 5,
         left: 0,
-        width: ScreenUtils.width,
+        width: ScreenUtils.width - ScreenUtils.px2dp(30),
         flexDirection: 'row',
         justifyContent: 'center'
     },
     activityIndex: {
-        width: 24,
-        height: 5,
-        borderRadius: 2.5,
-        backgroundColor: '#eee',
-        marginLeft: 2.5,
-        marginRight: 2.5
+        width: 14,
+        height: 4,
+        borderRadius: 2,
+        backgroundColor: DesignRule.mainColor,
+        margin: 3
     },
     index: {
-        width: 5,
-        height: 5,
-        borderRadius: 2.5,
-        backgroundColor: '#eee',
-        marginLeft: 2.5,
-        marginRight: 2.5
+        width: 4,
+        height: 4,
+        borderRadius: 2,
+        backgroundColor: 'white',
+        margin: 3
     }
 });
 

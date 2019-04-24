@@ -2,7 +2,13 @@
  * 秀场banner
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, DeviceEventEmitter } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    NativeModules,
+    NativeEventEmitter
+} from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import UIImage from '@mr/image-placeholder';
 
@@ -14,6 +20,12 @@ import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 import { TrackApi } from '../../utils/SensorsTrack';
 import { homeModule } from '../home/model/Modules';
 import { homeType } from '../home/HomeTypes';
+import DesignRule from '../../constants/DesignRule';
+
+const { JSPushBridge } = NativeModules;
+const JSManagerEmitter = new NativeEventEmitter(JSPushBridge);
+
+const HOME_REFRESH = 'homeRefresh';
 
 @observer
 export default class ShowBannerView extends Component {
@@ -85,7 +97,7 @@ export default class ShowBannerView extends Component {
     }
 
     componentDidMount() {
-        this.listenerBannerRefresh = DeviceEventEmitter.addListener('homeRefresh', (type) => {
+        this.listenerBannerRefresh = JSManagerEmitter.addListener(HOME_REFRESH, (type) => {
             if (type === homeType.discover) {
                 showBannerModules.loadBannerList();
             }
@@ -195,16 +207,16 @@ let styles = StyleSheet.create({
     },
     activityIndex: {
         width: 14,
-        height: 5,
-        borderRadius: 2.5,
-        backgroundColor: '#A9B4BC',
+        height: 4,
+        borderRadius: 2,
+        backgroundColor: DesignRule.mainColor,
         margin: 3
     },
     index: {
-        width: 5,
-        height: 5,
-        borderRadius: 2.5,
-        backgroundColor: '#DDE1E4',
+        width: 4,
+        height: 4,
+        borderRadius: 2,
+        backgroundColor: 'white',
         margin: 3
     }
 });
