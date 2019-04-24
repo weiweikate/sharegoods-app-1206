@@ -25,8 +25,10 @@ import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.OnProgressListener;
@@ -37,6 +39,7 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.event.Event;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.rn.preload.PreLoadReactDelegate;
@@ -321,6 +324,20 @@ public class MainRNActivity extends ReactActivity {
         } else {
             isShowLoadingDialog = false;
             mLoadingDialog.dismiss();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHomeRefresh(Event.MRHomeRefreshEvent event) {
+        ReactContext context = null;
+        try {
+            context = ((ReactApplication) getApplication()).getReactNativeHost()
+                    .getReactInstanceManager().getCurrentReactContext();
+        } catch (Exception e) {
+        }
+        if (context != null) {
+            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("homeRefresh", event.getHomeType());
         }
     }
 
