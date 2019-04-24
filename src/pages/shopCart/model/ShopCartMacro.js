@@ -110,7 +110,7 @@ const getTipString = (itemData) => {
         return  returnObj;
     }
     if (itemData.displayItem && !isNaN(parseInt(itemData.displayItem.limitNum ))) {
-        returnObj.tipString = `${tipString} 限购${itemData.displayItem.limitNum}件`
+        returnObj.tipString = `${tipString}限购${itemData.displayItem.limitNum}件`
     }
     return returnObj;
 };
