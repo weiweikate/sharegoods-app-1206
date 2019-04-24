@@ -38,6 +38,7 @@ export default class ConfirmPriceView extends Component {
     };
     renderPriceView = () => {
         let promotionAmount = confirmOrderModel.promotionAmount || 0;
+        promotionAmount = parseFloat(promotionAmount);
         return (
             <View style={{ backgroundColor: 'white' }}>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
