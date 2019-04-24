@@ -164,6 +164,7 @@ class ShopCartStore {
                     goodItem.key = `${index}_${goodItemIndex}`;
                     goodItem.nowTime = itemObj.nowTime;//系统当前时间戳
                     goodItem.activityCode = itemObj.activityCode;
+                    goodItem.topSpace= itemObj.activityType == 8 ? 0 : 10;
 
                     let tempSpecContent = '规格:';
                     goodItem.specifies.map((specify,specifyIndex)=>{
@@ -215,6 +216,7 @@ class ShopCartStore {
             invalidObj.data.map((goodItem, goodItemIndex) => {
                 goodItem.isSelected = false;
                 goodItem.key = ''+tempAllData.length + goodItemIndex;
+                goodItem.topSpace = 0;
 
                 let tempSpecContent = '规格:';
                 goodItem.specifies.map((specify,specifyIndex)=>{
