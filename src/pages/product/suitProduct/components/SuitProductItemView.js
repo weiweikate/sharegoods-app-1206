@@ -7,6 +7,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import UIImage from '@mr/image-placeholder';
 import res from '../../res/product';
 import { observer } from 'mobx-react';
+import { navigate } from '../../../../navigation/RouterMap';
+import RouterMap from '../../../../navigation/RouterMap';
 
 const { px2dp } = ScreenUtils;
 const { suitProduct } = res;
@@ -96,14 +98,18 @@ export class SubProductView extends Component {
     render() {
         const { item, suitProductModel, chooseSku } = this.props;
         const { selectedAmount } = suitProductModel;
-        const { isSelected, name, imgUrl, promotionMinPrice, minDecrease, selectedSkuItem } = item;
+        const { isSelected, name, imgUrl, promotionMinPrice, minDecrease, selectedSkuItem, prodCode } = item;
         const { promotionPrice, promotionDecreaseAmount, propertyValues } = selectedSkuItem || {};
         return (
             <NoMoreClick style={[mStyles.bgView, { marginHorizontal: 15, marginTop: 10, borderRadius: 5 }]}
                          onPress={chooseSku}>
                 <Image style={mStyles.selectImg}
                        source={isSelected ? selected : un_selected}/>
-                <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
+                <NoMoreClick onPress={() => {
+                    navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                }}>
+                    <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
+                </NoMoreClick>
                 <View style={mStyles.productView}>
                     <MRText style={mStyles.nameText}>{name}</MRText>
                     <View style={mStyles.specView}>

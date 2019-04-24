@@ -56,17 +56,19 @@ public class RNSensorsAnalyticsModule extends ReactContextBaseJavaModule {
         }
 
         JSONObject json = null;
-        ReadableNativeMap nativeMap =null;
+        ReadableNativeMap nativeMap = null;
         try {
-            nativeMap= (ReadableNativeMap) properties;
+            nativeMap = (ReadableNativeMap) properties;
             json = new JSONObject(properties.toString()).getJSONObject("NativeMap");
         } catch (Exception e) {
-            Log.e(LOGTAG,  ""+e.getMessage());
-            String superName = nativeMap.getClass().getSuperclass().getSimpleName();
-            try {
-                json = new JSONObject(properties.toString()).getJSONObject(superName);
-            } catch (Exception e1) {
-                Log.e(LOGTAG,  ""+e1.getMessage());
+            Log.e(LOGTAG, "" + e.getMessage());
+            if (nativeMap != null) {
+                String superName = nativeMap.getClass().getSuperclass().getSimpleName();
+                try {
+                    json = new JSONObject(properties.toString()).getJSONObject(superName);
+                } catch (Exception e1) {
+                    Log.e(LOGTAG, "" + e1.getMessage());
+                }
             }
         }
         return json;
@@ -104,7 +106,7 @@ public class RNSensorsAnalyticsModule extends ReactContextBaseJavaModule {
         }
     }
 
-     /**
+    /**
      * 导出 trackTimerStart 方法给 RN 使用.
      * <p>
      * 初始化事件的计时器，默认计时单位为秒(计时开始).
@@ -126,7 +128,7 @@ public class RNSensorsAnalyticsModule extends ReactContextBaseJavaModule {
 
         }
     }
-    
+
     /**
      * 导出 trackTimerBegin 方法给 RN 使用.
      * <p>

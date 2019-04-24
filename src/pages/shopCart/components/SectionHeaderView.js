@@ -209,7 +209,6 @@ const styles = StyleSheet.create({
     },
     topContentBgStyle: {
         flex: 1,
-        // justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -220,21 +219,24 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     leftTipBgStyle: {
-        backgroundColor: DesignRule.mainColor,
-        borderRadius: px2dp(7),
-        width: px2dp(70),
+        borderRadius: px2dp(8.5),
+        width: px2dp(48),
         marginLeft: px2dp(10),
         justifyContent: 'center',
         alignItems: 'center',
-        height: 14
+        height: px2dp(17),
+        borderWidth:px2dp(0.3),
+        paddingLeft:px2dp(2),
+        paddingRight:px2dp(2),
+        borderColor:'rgba(255, 0, 80, 0.5)'
     },
     leftTextStyle: {
-        color: '#fff',
-        fontSize: px2dp(11)
+        color: DesignRule.mainColor,
+        fontSize: px2dp(9)
     },
     middleTextBgStyle: {
         marginLeft: px2dp(20),
-        width: ScreenUtils.width - px2dp(200),
+        width: ScreenUtils.width - px2dp(180),
         height: px2dp(25),
         justifyContent: 'center'
     },

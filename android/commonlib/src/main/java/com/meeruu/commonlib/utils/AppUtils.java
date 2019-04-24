@@ -45,11 +45,13 @@ public class AppUtils {
      */
     public static String getAppName() {
         try {
-            PackageManager packageManager = BaseApplication.appContext.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo(
-                    BaseApplication.appContext.getPackageName(), 0);
-            int labelRes = packageInfo.applicationInfo.labelRes;
-            return BaseApplication.appContext.getResources().getString(labelRes);
+            if (BaseApplication.appContext != null) {
+                PackageManager packageManager = BaseApplication.appContext.getPackageManager();
+                PackageInfo packageInfo = packageManager.getPackageInfo(
+                        BaseApplication.appContext.getPackageName(), 0);
+                int labelRes = packageInfo.applicationInfo.labelRes;
+                return BaseApplication.appContext.getResources().getString(labelRes);
+            }
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -156,7 +158,7 @@ public class AppUtils {
          */
         List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
                 .getRunningAppProcesses();
-        if (appProcesses == null){
+        if (appProcesses == null) {
             return false;
         }
 
@@ -258,7 +260,7 @@ public class AppUtils {
         }
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(context,  "com.meeruu.sharegoods.fileProvider", file);
+            uri = FileProvider.getUriForFile(context, "com.meeruu.sharegoods.fileProvider", file);
         } else {
             uri = Uri.fromFile(file);
         }
@@ -267,7 +269,8 @@ public class AppUtils {
 
     /**
      * 获取application中指定的meta-data
-     * @return 如果没有获取成功(没有对应值，或者异常)，则返回值为空
+     *
+     * @return 如果没有获取成功(没有对应值 ， 或者异常)，则返回值为空
      */
     public static String getAppMetaData(Context ctx, String key) {
         if (ctx == null || TextUtils.isEmpty(key)) {

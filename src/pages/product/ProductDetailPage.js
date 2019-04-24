@@ -4,7 +4,6 @@ import {
     StyleSheet,
     SectionList,
     Alert,
-    Image
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';

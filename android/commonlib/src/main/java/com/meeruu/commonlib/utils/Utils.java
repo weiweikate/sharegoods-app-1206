@@ -88,11 +88,13 @@ public class Utils {
     }
 
     public static boolean isNetworkConnected() {
-        ConnectivityManager mConnectivityManager = (ConnectivityManager) BaseApplication.appContext
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-        if (mNetworkInfo != null) {
-            return mNetworkInfo.isAvailable();
+        if (BaseApplication.appContext != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) BaseApplication.appContext
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
         }
         return false;
     }

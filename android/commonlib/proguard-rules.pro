@@ -190,7 +190,7 @@ public static final int *;
 -dontwarn com.android.volley.toolbox.**
 -dontwarn com.facebook.infer.**
 
-# jpush
+#jiguang
 -dontoptimize
 -dontpreverify
 
@@ -200,3 +200,24 @@ public static final int *;
 
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
+
+#  huawei
+-keepclasscom.huawei.hms.**{*;}
+-dontwarn com.huawei.**
+-keep public class * extends android.app.Activity
+-keep interface com.huawei.android.hms.agent.common.INoProguard {*;}
+-keep class * extends com.huawei.android.hms.agent.common.INoProguard {*;}
+
+
+# xiaomi
+-dontwarncom.xiaomi.push.**
+-keepclasscom.xiaomi.push.**{*;}
+
+# oppo
+-dontwarn com.coloros.mcsdk.**
+-keep class com.coloros.mcsdk.** { *; }
+
+# vivo
+-dontwarn com.vivo.push.**
+-keep class com.vivo.push.**{*; }
+-keep class com.vivo.vms.**{*; }

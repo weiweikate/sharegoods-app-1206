@@ -351,6 +351,8 @@ export default class ProductDetailModel {
                 if (timeOut <= 0) {
                     timeOut = 0;
                     this.skillInterval && clearInterval(this.skillInterval);
+                    this.loadingState = PageLoadingState.loading;
+                    this.requestProductDetail();
                 }
                 this.skillTimeout = timeOut;
             }, 200);
@@ -370,7 +372,7 @@ export default class ProductDetailModel {
         * SPU00000361 套餐主商品 SPU00000098
         * */
         ProductApi.getProductDetailByCodeV2({
-            code: 'SPU00000203'
+            code: this.prodCode
         }).then((data) => {
             this.productSuccess((data || {}).data);
         }).catch((e) => {
