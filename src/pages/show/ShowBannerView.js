@@ -33,13 +33,13 @@ export default class ShowBannerView extends Component {
         index: 0
     };
 
-    renderRow(item) {
+    renderRow = (item) => {
         return <View style={styles.imgView}>
             <UIImage style={styles.img} source={{ uri: item.image }}/>
         </View>;
-    }
+    };
 
-    _onPressRowWithItem(item) {
+    _onPressRowWithItem=(item)=> {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode) || '';
         let params = homeModule.paramsNavigate(item);
         const { navigate } = this.props;
@@ -56,7 +56,7 @@ export default class ShowBannerView extends Component {
         navigate(router, { ...params });
     }
 
-    _onPressRow(e) {
+    _onPressRow=(e)=> {
         let index = e.nativeEvent.index;
         const { bannerList } = showBannerModules;
         let item = bannerList[index];
