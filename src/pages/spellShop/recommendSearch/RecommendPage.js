@@ -8,7 +8,7 @@ import {
     StyleSheet,
     SectionList,
     TouchableOpacity,
-    RefreshControl
+    RefreshControl, DeviceEventEmitter
 } from 'react-native';
 
 import { observer } from 'mobx-react';
@@ -77,8 +77,17 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
+        this.listenerBannerRefresh = DeviceEventEmitter.addListener('homeRefresh', (type) => {
+            if (type === homeType.pinShop) {
+                this._getSwipers;
+            }
+        });
         this._verifyLocation();
         this._getSwipers();
+    }
+
+    componentWillUnmount() {
+        this.listenerBannerRefresh && this.listenerBannerRefresh.remove();
     }
 
     _getSize = () => {

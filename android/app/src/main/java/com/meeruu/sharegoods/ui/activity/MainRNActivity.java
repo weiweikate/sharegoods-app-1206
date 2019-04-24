@@ -337,7 +337,7 @@ public class MainRNActivity extends ReactActivity {
         }
         if (context != null) {
             context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("homeRefresh", null);
+                    .emit("homeRefresh", event.getHomeType());
         }
     }
 
