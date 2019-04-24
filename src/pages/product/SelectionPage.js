@@ -48,9 +48,10 @@ export default class SelectionPage extends Component {
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
-            this.state.sourceType = propData.sourceType;
-            this.state.unShowAmount = propData.unShowAmount;
         }
+        this.state.sourceType = propData.sourceType;
+        this.state.unShowAmount = propData.unShowAmount;
+
         const { specifyList, skuList } = data;
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
         let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
