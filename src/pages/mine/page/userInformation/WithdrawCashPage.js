@@ -41,20 +41,20 @@ function number_format(number, decimals, dec_point, thousands_sep,roundtag) {
     * */
     number = (number + '').replace(/[^0-9+-Ee.]/g, '');
     roundtag = roundtag || "ceil"; //"ceil","floor","round"
-    var n = !isFinite(+number) ? 0 : +number,
+    let n = !isFinite(+number) ? 0 : +number,
         prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
         sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
         dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
         s = '',
         toFixedFix = function (n, prec) {
 
-            var k = Math.pow(10, prec);
+            let k = Math.pow(10, prec);
             console.log();
 
             return '' + parseFloat(Math[roundtag](parseFloat((n * k).toFixed(prec*2))).toFixed(prec*2)) / k;
         };
     s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-    var re = /(-?\d+)(\d{3})/;
+    let re = /(-?\d+)(\d{3})/;
     while (re.test(s[0])) {
         s[0] = s[0].replace(re, "$1" + sep + "$2");
     }

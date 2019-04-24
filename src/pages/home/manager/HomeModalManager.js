@@ -253,12 +253,11 @@ class HomeModalManager {
         }).catch(() => {
             this.actionFinish();
         });
-        ;
     }
 
     actionFinish() {
         this.finishCount++;
-        if (this.finishCount == requsetCount) {
+        if (this.finishCount === requsetCount) {
             this.checkShowAlert();
         }
     }

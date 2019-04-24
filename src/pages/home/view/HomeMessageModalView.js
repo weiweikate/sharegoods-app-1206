@@ -177,8 +177,7 @@ export class HomeAdModal extends React.Component {
                         <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410) }}
                                    source={{ uri: image }}
                                    resizeMode={'contain'}
-                        >
-                        </ImageLoad>
+                        />
                     </TouchableOpacity>
                     <View style={{ flex: 1 }}>
                         <TouchableOpacity onPress={() => {
