@@ -33,7 +33,9 @@ import {
 } from 'react-native';
 import NetNotConnectImage from './source/net_error.png'; //用于断网，超时展示
 import ServerErrorImage from './source/net_error.png'; //用于其他网络请求展示
+import Systemupgrade from './source/Systemupgrade.png'; //用于f服务段code：9999展示
 const BugErrorCode = -20000;       //异常错误，请稍后再试 js bug error
+const SystemUpgradeCode = 9999;
 // const NetUnKnowErrorCode = -20001; //未知错误,请稍后再试 (网络错误，但是没有错误码)
 import DesignRule from '../../../constants/DesignRule';
 
@@ -79,10 +81,24 @@ export default class NetFailedView extends Component {
     _getImgSource = (source, code) => {
         if (Platform.OS === 'ios') {
             // ios -1001 连接超时 -1005 tcp断开 -1009 网络无连接
-            return (code === BugErrorCode || code === -1001 || code === -1005 || code === -1009) ? NetNotConnectImage : (source || ServerErrorImage);
+            if (code === BugErrorCode || code === -1001 || code === -1005 || code === -1009) {
+                return NetNotConnectImage;
+            }
+
+            if (code === SystemUpgradeCode){//服务段定义：系统升级维护
+                return Systemupgrade;
+            }
+
+            return source || ServerErrorImage;
         } else {
             // android 1006 连接超时 1007 网络无连接
-            return (code === BugErrorCode || code === 1006 || code === 1007) ? NetNotConnectImage : (source || ServerErrorImage);
+            if (code === BugErrorCode || code === 1006 || code === 1007) {
+                return NetNotConnectImage;
+            }
+            if (code === SystemUpgradeCode){//服务段定义：系统升级维护
+                return Systemupgrade;
+            }
+            return source || ServerErrorImage;
         }
     };
 
@@ -101,7 +117,7 @@ export default class NetFailedView extends Component {
     };
 
     render() {
-        const {
+        let {
             style,
             source,
             imageStyle,
@@ -110,18 +126,21 @@ export default class NetFailedView extends Component {
         } = this.props;
         const imgS = [styles.img, imageStyle];
 
-        const {
+        let {
             code,
             msg
         } = this._getErrorInfo();
-
+        if (code === SystemUpgradeCode) {
+            msg = '系统维护升级中';
+            showReloadBtn =  false;
+        }
         return (<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[styles.container, style]}>
 
                 <Image source={this._getImgSource(source, code)} style={imgS} resizeMode={'contain'}/>
 
                 <Text style={styles.titleStyle} allowFontScaling={false}>
-                    {BugErrorCode === code ? '' : `${code}`}{msg}
+                    {msg}
                 </Text>
 
                 {showReloadBtn ? this._renderReloadButton(buttonText) : null}
