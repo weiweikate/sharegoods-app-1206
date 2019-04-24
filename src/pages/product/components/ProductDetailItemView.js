@@ -167,10 +167,14 @@ const styles = StyleSheet.create({
 * */
 export class SuitItemView extends Component {
     _renderItem = ({ item }) => {
-        const { imgUrl, name, minPrice } = item;
+        const { imgUrl, name, minPrice, prodCode } = item;
         return (
             <View style={SuitItemViewStyles.item}>
-                <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}/>
+                <NoMoreClick onPress={() => {
+                    navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
+                }}>
+                    <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}/>
+                </NoMoreClick>
                 <Text style={SuitItemViewStyles.itemText}
                       numberOfLines={2}>{name}</Text>
                 <Text style={SuitItemViewStyles.itemPrice}>{`¥${minPrice}起`}</Text>
