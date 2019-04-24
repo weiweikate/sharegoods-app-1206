@@ -130,8 +130,8 @@ export default class ProductDetailPage extends BasePage {
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
                 const { shopId, title, name, secondName, imgUrl, prodCode, showPrice } = this.productDetailModel;
                 QYChatTool.beginQYChat({
-                    shopId: shopId,
-                    title: title,
+                    shopId: shopId || '',
+                    title: title || '',
                     chatType: beginChatType.BEGIN_FROM_PRODUCT,
                     data: {
                         title: name,

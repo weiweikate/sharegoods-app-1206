@@ -23,7 +23,7 @@ export const homeType = {
     limitGo: 'limitGo',   //限时秒杀
     windowAlert: 1, //首页弹框
     guideInfo: 17,
-    Alert: 21,//退出的弹窗
+    Alert: 21//退出的弹窗
 };
 
 
@@ -48,7 +48,7 @@ export const homeRoute = {
     [homeLinkType.good]: 'product/ProductDetailPage',
     [homeLinkType.subject]: 'topic/DownPricePage',
     [homeLinkType.down]: 'topic/TopicDetailPage',
-    [homeLinkType.spike]: 'topic/TopicDetailPage',
+    [homeLinkType.spike]: 'product/ProductDetailPage',
     [homeLinkType.package]: 'topic/TopicDetailPage',
     [homeLinkType.store]: 'spellShop/MyShop_RecruitPage',
     [homeLinkType.link]: 'HtmlPage',
