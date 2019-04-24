@@ -132,6 +132,8 @@ export default class ProductDetailModel {
     /*套餐*/
     /*subProductList:[]*/
     @observable groupActivity = [];
+    /*活动标签*/
+    @observable tags = [];
     /*
      * promotionUnitAmount 原价
      * promotionDecreaseAmount 优惠
@@ -201,7 +203,7 @@ export default class ProductDetailModel {
     @computed get levelText() {
         const { priceType, activityStatus, activityType } = this;
         if (activityStatus === activity_status.inSell && activityType === activity_type.verDown) {
-            return '直降';
+            return this.tags[0];
         }
         return priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : 'V1价';
     }
@@ -284,9 +286,10 @@ export default class ProductDetailModel {
             this.shopId = shopId;
             this.title = title;
 
-            const { singleActivity, groupActivity } = promotionResult || {};
+            const { singleActivity, groupActivity, tags } = promotionResult || {};
             this.singleActivity = singleActivity || {};
             this.groupActivity = groupActivity || {};
+            this.tags = tags;
             this.promotionUnitAmount = promotionUnitAmount;
             this.promotionDecreaseAmount = promotionDecreaseAmount;
 
