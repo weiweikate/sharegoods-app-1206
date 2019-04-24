@@ -87,17 +87,20 @@ export default class Login extends BasePage {
                         }) : null
                     }
                     {
-                        createLoginButton(loginBtnType.otherLoginBtnType, "其他登录方式", () => {
-                            this._clickAction(loginBtnType.otherLoginBtnType);
+                        createLoginButton(loginBtnType.registerBtnType, "注册新账号", () => {
+                            // this._clickAction(loginBtnType.otherLoginBtnType);
+                            this.$navigate(RouterMap.InputPhoneNum);
+
+                            // if (text === "手动注册新账号") {
+                            //     this.$navigate(RouterMap.InputPhoneNum);
+                            // } else {
+                            //     this.$navigate(RouterMap.OtherLoginPage);
+                            // }
                         })
                     }
                     {
-                        createBottomButton(["手动注册新账号"], (text) => {
-                            if (text === "手动注册新账号") {
-                                this.$navigate(RouterMap.InputPhoneNum);
-                            } else {
-                                this.$navigate(RouterMap.OtherLoginPage);
-                            }
+                        createLoginButton(loginBtnType.otherLoginBtnType, "其他登录方式", () => {
+                            this._clickAction(loginBtnType.otherLoginBtnType);
                         })
                     }
                 </View>

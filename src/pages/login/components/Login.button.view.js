@@ -33,7 +33,21 @@ const Styles = StyleSheet.create(
             color: DesignRule.textColor_instruction,
             fontSize: px2dp(17)
         },
+        registerTextView: {
+            color: DesignRule.textColor_instruction,
+            fontSize: px2dp(17)
+        },
         otherLoginBgView: {
+            marginTop: px2dp(20),
+            marginLeft: px2dp(30),
+            width: width - px2dp(60),
+            height: px2dp(40),
+            backgroundColor: DesignRule.color_fff,
+            borderRadius: px2dp(20),
+            borderWidth: px2dp(0.5),
+            borderColor: DesignRule.textColor_instruction
+        },
+        registerBgView:{
             marginTop: px2dp(20),
             marginLeft: px2dp(30),
             width: width - px2dp(60),
@@ -80,17 +94,20 @@ const Styles = StyleSheet.create(
 const loginBtnType = {
     wxLoginBtnType: 0,
     localPhoneNumLoginType: 1,
-    otherLoginBtnType: 2
+    otherLoginBtnType: 2,
+    registerBtnType:3
 };
 const getLoginBtnBgStyle = {
     [loginBtnType.wxLoginBtnType]:Styles.wxLoginBgView  ,
     [loginBtnType.localPhoneNumLoginType]:Styles.localLoginBtnBgView,
-    [loginBtnType.otherLoginBtnType]: Styles.otherLoginBgView
+    [loginBtnType.otherLoginBtnType]: Styles.otherLoginBgView,
+    [loginBtnType.registerBtnType]: Styles.registerBgView
 };
 const getTextStyle = {
     [loginBtnType.wxLoginBtnType]: Styles.wxTextView,
     [loginBtnType.localPhoneNumLoginType]: Styles.localTextView,
-    [loginBtnType.otherLoginBtnType]: Styles.otherTextView
+    [loginBtnType.otherLoginBtnType]: Styles.otherTextView,
+    [loginBtnType.registerBtnType]: Styles.registerTextView,
 
 };
 
