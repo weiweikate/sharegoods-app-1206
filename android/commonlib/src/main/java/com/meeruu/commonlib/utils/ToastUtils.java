@@ -13,7 +13,7 @@ public class ToastUtils {
      * 非阻塞试显示Toast,防止出现连续点击Toast时的显示问题
      */
     public static void showToast(CharSequence text, int duration) {
-        if (text.length() > 0) {
+        if (text != null && text.length() > 0) {
             if (mToast == null) {
                 mToast = Toast.makeText(BaseApplication.appContext, text, duration);
             } else {

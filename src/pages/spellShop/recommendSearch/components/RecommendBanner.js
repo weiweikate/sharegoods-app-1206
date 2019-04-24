@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 5,
         left: 0,
-        width: ScreenUtils.width - ScreenUtils.px2dp(30),
+        width: ScreenUtils.width,
         flexDirection: 'row',
         justifyContent: 'center'
     },
