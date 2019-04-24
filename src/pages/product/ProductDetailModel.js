@@ -5,6 +5,7 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import StringUtils from '../../utils/StringUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
+import DateUtils from '../../utils/DateUtils';
 
 const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -116,10 +117,13 @@ export default class ProductDetailModel {
     @observable title;
 
     /**营销活动**/
+    @observable promotionLimitNum;
     /*0:秒杀;1:套餐;2:直降;3:满减;4:满折*/
     @observable activityType;
     /*活动status 1未开始,2进行中,3已结束*/
     @observable activityStatus;
+    @observable startTime;
+    @observable endTime;
     /*倒计时*/
     @observable skillTimeout = 0;
     /*秒杀*/
@@ -174,26 +178,33 @@ export default class ProductDetailModel {
         //秒
         let second = Math.floor(leave3 / 1000);
         //mill
-        let leave4 = Math.floor(leave3 % 1000 / 10);
+        let leave4 = Math.floor(leave3 % 1000 / 100);
 
         hours = days * 24 + hours;
         hours = hours >= 10 ? hours : hours === 0 ? `00` : `0${hours}`;
         minutes = minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`;
         second = second >= 10 ? second : second === 0 ? `00` : `0${second}`;
-        leave4 = leave4 >= 10 ? leave4 : leave4 === 0 ? `00` : `0${leave4}`;
         if (activityStatus === activity_status.unBegin) {
-            // if (days >= 1) {
-            //     return `${hours}:${minutes}:${second}:${leave4}`;
-            // } else {
-            return `距开抢${hours}:${minutes}:${second}:${leave4}`;
-            // }
+            //'yyyy-MM-dd HH:mm:ss';
+            //小于一小时
+            if (skillTimeout < 3600 * 1000) {
+                return `距开抢${minutes}:${second}:${leave4}`;
+            }
+            if (DateUtils.isToday(this.startTime)) {
+                let time = DateUtils.formatDate(this.startTime, 'HH:mm');
+                return `今天${time}开抢`;
+            }
+            if (DateUtils.isTomorrow(this.startTime)) {
+                let time = DateUtils.formatDate(this.startTime, 'HH:mm');
+                return `明天${time}开抢`;
+            }
+            return DateUtils.formatDate(this.startTime, 'dd号HH:mm') + '开抢';
         } else if (activityStatus === activity_status.inSell) {
-            // if (days >= 1) {
-            //     return `${hours}:${minutes}:${second}:${leave4}`;
-            //
-            // } else {
-            return `距结束${hours}:${minutes}:${second}:${leave4}`;
-            // }
+            if (days < 1) {
+                return `距结束${hours}:${minutes}:${second}:${leave4}`;
+            } else {
+                return DateUtils.formatDate(this.startTime, 'dd-HH mm:ss') + '结束';
+            }
         } else {
             return '';
         }
@@ -229,7 +240,7 @@ export default class ProductDetailModel {
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, groupActivity, activityStatus } = this;
+        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList } = this;
 
         let sectionArr = [
             { key: productItemType.headerView, data: [productItemType.headerView] }
@@ -245,8 +256,14 @@ export default class ProductDetailModel {
             );
         }
         sectionArr.push(
-            { key: productItemType.service, data: [productItemType.service] },
-            { key: productItemType.param, data: [productItemType.param] },
+            { key: productItemType.service, data: [productItemType.service] }
+        );
+        if (paramList.length !== 0) {
+            sectionArr.push(
+                { key: productItemType.param, data: [productItemType.param] }
+            );
+        }
+        sectionArr.push(
             { key: productItemType.comment, data: [productItemType.comment] },
             { key: productItemType.content, data: contentArr.slice() },
             { key: productItemType.priceExplain, data: [productItemType.priceExplain] }
@@ -271,7 +288,7 @@ export default class ProductDetailModel {
                 restrictions, paramList, comment, totalComment,
                 prodCode, upTime, now, content,
                 shopId, title,
-                promotionResult, promotionDecreaseAmount, promotionPrice,
+                promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice
             } = data || {};
 
@@ -313,6 +330,7 @@ export default class ProductDetailModel {
             this.tags = tags;
             this.promotionDecreaseAmount = promotionDecreaseAmount;
 
+            this.promotionLimitNum = promotionLimitNum;
             this.promotionPrice = promotionPrice;
             this.promotionSaleNum = promotionSaleNum;
             this.promotionStockNum = promotionStockNum;
@@ -331,6 +349,9 @@ export default class ProductDetailModel {
                 endTimeT = endTime;
                 startTimeT = startTime;
             }
+
+            this.startTime = startTimeT;
+            this.endTime = endTimeT;
             this.activityType = typeT;
             if (now < startTimeT) {
                 this.activityStatus = activity_status.unBegin;

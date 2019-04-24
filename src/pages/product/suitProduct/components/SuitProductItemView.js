@@ -10,11 +10,11 @@ import { observer } from 'mobx-react';
 import { navigate } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
 import StringUtils from '../../../../utils/StringUtils';
-import SelectionPage, { sourceType } from '../../SelectionPage';
+import SelectionPage from '../../SelectionPage';
 
 const { px2dp } = ScreenUtils;
 const { suitProduct } = res;
-const { selected, default_selected, cant_selected, un_selected, selected_sku } = suitProduct;
+const { selected, default_selected, un_selected, selected_sku } = suitProduct;
 
 @observer
 export class AmountItemView extends Component {
@@ -98,7 +98,7 @@ export class MainProductView extends Component {
                     <MRText style={mStyles.nameText}>{name}</MRText>
                     <View style={mStyles.specView}>
                         <MRText style={mStyles.specText}
-                                numberOfLines={2}>规格: {isSelected ? StringUtils.trimWithChar(propertyValues, '@') : '请选择'}</MRText>
+                                numberOfLines={2}>规格: {isSelected ? StringUtils.trimWithChar(propertyValues, '@').replace(/@/g, ',') : '请选择'}</MRText>
                         <Image style={mStyles.specImg} source={selected_sku}/>
                         <MRText style={mStyles.specAmountText}>x{selectedAmount}</MRText>
                     </View>
@@ -130,8 +130,8 @@ export class SubProductView extends Component {
     render() {
         const { item, suitProductModel } = this.props;
         const { selectedAmount } = suitProductModel;
-        const { isSelected, name, imgUrl, promotionMinPrice, minDecrease, selectedSkuItem, prodCode } = item;
-        const { promotionPrice, promotionDecreaseAmount, propertyValues } = selectedSkuItem || {};
+        const { isSelected, name, imgUrl, minPrice, minDecrease, selectedSkuItem, prodCode } = item;
+        const { price, promotionDecreaseAmount, propertyValues } = selectedSkuItem || {};
         return (
             <NoMoreClick style={[mStyles.bgView, { marginHorizontal: 15, marginTop: 10, borderRadius: 5 }]}
                          onPress={() => this._chooseSku(item)}>
@@ -146,7 +146,7 @@ export class SubProductView extends Component {
                     <MRText style={mStyles.nameText}>{name}</MRText>
                     <View style={mStyles.specView}>
                         <MRText style={mStyles.specText}
-                                numberOfLines={2}>规格: {isSelected ? StringUtils.trimWithChar(propertyValues, '@') : '请选择'}</MRText>
+                                numberOfLines={2}>规格: {isSelected ? StringUtils.trimWithChar(propertyValues, '@').replace(/@/g, ',') : '请选择'}</MRText>
                         <Image style={mStyles.specImg} source={selected_sku}/>
                         <MRText style={mStyles.specAmountText}>x{selectedAmount}</MRText>
                     </View>
@@ -157,7 +157,7 @@ export class SubProductView extends Component {
                         </View>
                     </View>
                     <MRText
-                        style={mStyles.priceText}>{isSelected ? `¥${promotionPrice}` : `¥${promotionMinPrice}起`}</MRText>
+                        style={mStyles.priceText}>{isSelected ? `¥${price}` : `¥${minPrice}起`}</MRText>
                 </NoMoreClick>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </NoMoreClick>
