@@ -27,6 +27,7 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
+    api rootProject.ext.dependencies.eventbus
     api rootProject.ext.dependencies.support
     api rootProject.ext.dependencies.fastjson
     api rootProject.ext.dependencies.zxing

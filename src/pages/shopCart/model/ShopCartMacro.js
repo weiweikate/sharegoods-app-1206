@@ -98,12 +98,8 @@ const formatTime =(updateTime)=>
 const getTipString = (itemData) => {
     let tipString = '';
     //是否需要左上角的小标识
-    let needIconText = false;
-    let iconText = null;
     let returnObj = {
         tipString: tipString,
-        needIconText: needIconText,
-        iconText: iconText
     };
     if (itemData.amount > itemData.sellStock) {
         returnObj.tipString = tipString + '库存不足\n';
@@ -113,58 +109,10 @@ const getTipString = (itemData) => {
         returnObj.tipString += tipString + formatTime(itemData.upTime);
         return  returnObj;
     }
-
-    if (itemData.shoppingCartActivity === null || itemData.shoppingCartActivity === undefined) {
-        return returnObj;
-        // return tipString;
+    if (itemData.displayItem && !isNaN(parseInt(itemData.displayItem.limitNum ))) {
+        returnObj.tipString = `${tipString} 限购${itemData.displayItem.limitNum}件`
     }
-
-    if (itemData.shoppingCartActivity.length > 0) {
-        itemData.shoppingCartActivity.map((activityItem, activityIndex) => {
-            //秒杀活动
-            if (activityItem.activityType === 1 && activityItem.seckill) {
-                if (itemData.nowTime < activityItem.seckill.beginTime) {
-
-                    if (tipString.indexOf("秒杀活动未开始,暂不可购买~") === -1) {
-                        tipString += '秒杀活动未开始,暂不可购买~';
-                    }
-                    //是否存在字符标识
-                    if (activityString[activityItem.activityType]) {
-                         returnObj.tipString = tipString;
-                         returnObj.needIconText = true;
-                         returnObj.iconText = activityString[activityItem.activityType];
-                    }
-                } else if (
-                    activityItem.seckill.beginTime < itemData.nowTime &&
-                    activityItem.seckill.endTime > itemData.nowTime
-                ) {
-                    if (tipString.indexOf('该商品正在进行秒杀活动,快去看看~') === -1){
-                        tipString += '该商品正在进行秒杀活动,快去看看~';
-                    }
-
-                    //是否存在字符标识
-                    if (activityString[activityItem.activityType]) {
-                        returnObj.tipString = tipString;
-                        returnObj.needIconText = true;
-                        returnObj.iconText = activityString[activityItem.activityType];
-                    }
-                }
-            }
-            //降价拍
-            if (activityItem.activityType === 2) {
-
-                if (tipString.indexOf('该商品正在进行降价拍活动,快去看看~') === -1){
-                    tipString += '该商品正在进行降价拍活动,快去看看~';
-                }
-                returnObj.tipString = tipString;
-                returnObj.needIconText = true;
-                returnObj.iconText = activityString[activityItem.activityType];
-            }
-        });
-        return returnObj;
-    } else {
-        return returnObj;
-    }
+    return returnObj;
 };
 
 export { activityCode, activityString, statueImage, getSelectImage, getTipString ,getSkillIsBegin};
