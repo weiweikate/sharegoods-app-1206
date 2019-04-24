@@ -1,5 +1,6 @@
 import { observable, computed, action } from 'mobx';
 import bridge from '../../../utils/bridge';
+import * as math from 'mathjs';
 
 export default class SuitProductModel {
     @observable groupCode;
@@ -50,14 +51,14 @@ export default class SuitProductModel {
         const { price = 0 } = this.mainSkuItem || {};
         return this.selectedItems.reduce((pre, cur) => {
             const { promotionPrice } = cur;
-            return (pre + promotionPrice * this.selectedAmount).toFixed(2);
+            return math.eval(pre + promotionPrice * this.selectedAmount);
         }, 0) + price;
     }
 
     @computed get totalSubMoney() {
         return this.selectedItems.reduce((pre, cur) => {
             const { promotionDecreaseAmount } = cur;
-            return (pre + promotionDecreaseAmount * this.selectedAmount).toFixed(2);
+            return math.eval(pre + promotionDecreaseAmount * this.selectedAmount);
         }, 0);
     }
 

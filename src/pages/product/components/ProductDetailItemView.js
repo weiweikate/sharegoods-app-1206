@@ -73,19 +73,25 @@ export class HeaderItemView extends Component {
     render() {
         const { navigation, productDetailModel, shopAction } = this.props;
         const {
-            freight, monthSaleCount, originalPrice, minPrice, maxPrice, name,
+            freight, monthSaleCount, originalPrice, promotionUnitAmount, minPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
             secondName, levelText, priceType, activityType, activityStatus
         } = productDetailModel;
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
         let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
         let showShop = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
+        let verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (
             <View style={styles.bgView}>
                 <DetailBanner data={productDetailModel} navigation={navigation}/>
                 {showWill && <ActivityWillBeginView productDetailModel={productDetailModel}/>}
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
-                {showPrice && this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText })}
+                {
+                    showPrice && (verDownInSell ?
+                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText })
+                        :
+                        this._renderPriceView({ promotionMinPrice, promotionMaxPrice, promotionUnitAmount, levelText }))
+                }
                 {showShop && this._renderShop({ priceType, shopAction })}
                 <Text style={styles.nameText} numberOfLines={2}>{name}</Text>
                 {isNoEmpty(secondName) && <Text style={styles.secondNameText} numberOfLines={2}>{secondName}</Text>}
