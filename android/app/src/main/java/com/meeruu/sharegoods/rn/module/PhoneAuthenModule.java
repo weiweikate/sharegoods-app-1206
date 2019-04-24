@@ -2,6 +2,7 @@ package com.meeruu.sharegoods.rn.module;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +17,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
+import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.utils.HttpUrlUtils;
 import com.mobile.auth.gatewayauth.AuthUIConfig;
 import com.mobile.auth.gatewayauth.PhoneNumberAuthHelper;
@@ -66,9 +68,20 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
             }
         };
         mAlicomAuthHelper = PhoneNumberAuthHelper.getInstance(this.mContext,mTokenListener);
-        mAlicomAuthHelper.setDebugMode(true);
+        mAlicomAuthHelper.setDebugMode(false);
         mAlicomAuthHelper.setAuthUIConfig(new AuthUIConfig.Builder()
+//                .setNavColor(Color.WHITE)
+//                .setNavColor(0xff000000)
+                .setNavText("")
+                .setLogoImgPath("ic_launcher_round")
+                .setNumberColor(0xff333333)
+                .setNumberSize(22)
                 .setAppPrivacyOne("秀购用户协议", url)
+                .setAppPrivacyColor(0xff666666,0xffFF0050)
+                .setLogBtnText("一键登录")
+                .setLogBtnTextColor(Color.WHITE)
+                .setLogBtnClickableColor(Color.RED)
+                .setLogBtnUnClickableColor(Color.RED)
                 .setSwitchClicker(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
