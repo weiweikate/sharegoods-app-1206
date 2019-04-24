@@ -117,6 +117,7 @@ export default class ProductDetailModel {
     @observable title;
 
     /**营销活动**/
+    @observable promotionLimitNum;
     /*0:秒杀;1:套餐;2:直降;3:满减;4:满折*/
     @observable activityType;
     /*活动status 1未开始,2进行中,3已结束*/
@@ -287,7 +288,7 @@ export default class ProductDetailModel {
                 restrictions, paramList, comment, totalComment,
                 prodCode, upTime, now, content,
                 shopId, title,
-                promotionResult, promotionDecreaseAmount, promotionPrice,
+                promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice
             } = data || {};
 
@@ -329,6 +330,7 @@ export default class ProductDetailModel {
             this.tags = tags;
             this.promotionDecreaseAmount = promotionDecreaseAmount;
 
+            this.promotionLimitNum = promotionLimitNum;
             this.promotionPrice = promotionPrice;
             this.promotionSaleNum = promotionSaleNum;
             this.promotionStockNum = promotionStockNum;

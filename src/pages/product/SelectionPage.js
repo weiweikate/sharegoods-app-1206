@@ -50,10 +50,11 @@ export default class SelectionPage extends Component {
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
         }
+        const { specifyList, skuList, promotionLimitNum } = data;
         this.state.source_Type = propData.sourceType;
         this.state.unShowAmount = propData.unShowAmount;
+        this.state.promotionLimit = promotionLimitNum || 0;
 
-        const { specifyList, skuList } = data;
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
         let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
 
@@ -152,13 +153,6 @@ export default class SelectionPage extends Component {
             stock = stock + item.sellStock;
         });
         this.state.maxStock = stock;
-
-        const { source_Type, selectSpecList } = this.state;
-        if (selectSpecList.length === 1 && source_Type === sourceType.promotion) {
-            this.state.promotionLimit = selectSpecList[0].promotionLimitNum;
-        } else {
-            this.state.promotionLimit = 0;
-        }
     };
 
     //index?获取当前列外符合条件的数据:全部数据

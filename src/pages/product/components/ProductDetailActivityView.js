@@ -20,7 +20,11 @@ export class ActivityWillBeginView extends Component {
         const { productDetailModel } = this.props;
         const { promotionPrice, showTimeText } = productDetailModel;
         return (
-            <View style={WillBeginStyles.bgView}>
+            <NoMoreClick style={WillBeginStyles.bgView} onPress={() => {
+                navigate('HtmlPage', {
+                    uri: `${apiEnvironment.getCurrentH5Url()}/spike`
+                });
+            }}>
                 <View style={WillBeginStyles.leftView}>
                     <MRText
                         style={WillBeginStyles.leftPriceText}>{`¥${promotionPrice}`}</MRText>
@@ -32,7 +36,7 @@ export class ActivityWillBeginView extends Component {
                     <MRText style={WillBeginStyles.rightText}>{showTimeText}</MRText>
                     <Image source={arrow_right_black}/>
                 </View>
-            </View>
+            </NoMoreClick>
         );
     }
 }
