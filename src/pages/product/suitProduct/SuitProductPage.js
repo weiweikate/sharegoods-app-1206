@@ -6,6 +6,7 @@ import SuitProductModel from './SuitProductModel';
 import { observer } from 'mobx-react';
 import SuitProductBottomView from './components/SuitProductBottomView';
 import RouterMap from '../../../navigation/RouterMap';
+import user from '../../../model/user';
 
 @observer
 export default class SuitProductPage extends BasePage {
@@ -28,6 +29,10 @@ export default class SuitProductPage extends BasePage {
     };
 
     _bottomAction = () => {
+        if (!user.isLogin) {
+            this.$navigate(RouterMap.LoginPage);
+            return;
+        }
         const { groupCode, selectedAmount, mainProduct } = this.suitProductModel;
         let orderProductList = this.suitProductModel.selectedItems.map((item) => {
             const { prodCode, skuCode } = item;

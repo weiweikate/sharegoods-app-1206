@@ -5,6 +5,9 @@ import { MRText } from '../../../components/ui';
 import res from '../res/product';
 import { observer } from 'mobx-react';
 import * as math from 'mathjs';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import { navigate } from '../../../navigation/RouterMap';
 
 const { arrow_right_black } = res.button;
 
@@ -72,7 +75,11 @@ export class ActivityDidBeginView extends Component {
         let total = math.eval(promotionSaleNum + promotionStockNum);
         let progress = total == 0 ? 0 : math.eval(promotionStockNum / total);
         return (
-            <View style={DidBeginViewStyles.bgView}>
+            <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
+                navigate('HtmlPage', {
+                    uri: `${apiEnvironment.getCurrentH5Url()}/spike`
+                });
+            }}>
                 <View style={DidBeginViewStyles.leftView}>
                     <MRText style={DidBeginViewStyles.priceText}>¥<MRText
                         style={{ fontSize: 36 }}>{promotionPrice}</MRText></MRText>
@@ -101,7 +108,7 @@ export class ActivityDidBeginView extends Component {
                     </View>
                     <Image source={arrow_right_black} style={{ marginRight: 13 }}/>
                 </View>
-            </View>
+            </NoMoreClick>
         );
     }
 }
