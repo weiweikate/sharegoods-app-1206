@@ -71,7 +71,6 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         mAlicomAuthHelper.setDebugMode(false);
         mAlicomAuthHelper.setAuthUIConfig(new AuthUIConfig.Builder()
 //                .setNavColor(Color.WHITE)
-//                .setNavColor(0xff000000)
                 .setNavText("")
                 .setLogoImgPath("ic_launcher_round")
                 .setNumberColor(0xff333333)
