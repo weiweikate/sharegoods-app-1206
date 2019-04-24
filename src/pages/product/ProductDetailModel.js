@@ -145,6 +145,7 @@ export default class ProductDetailModel {
     @observable promotionPrice;
     @observable promotionSaleNum;
     @observable promotionStockNum;
+
     @observable promotionMinPrice;
     @observable promotionMaxPrice;
 
@@ -326,6 +327,7 @@ export default class ProductDetailModel {
                 }, upTime - now + 500);
             }
 
+
             /*商品详情埋点*/
             track(trackEvent.ProductDetail, {
                 spuCode: prodCode,
@@ -342,10 +344,11 @@ export default class ProductDetailModel {
         this.netFailedInfo = error;
     };
 
+    /*任何活动 未开始到开始  开始到结束  刷新(结束时间加500ms)*/
     @action _startSkillInterval = (start, end) => {
         this.skillInterval && clearInterval(this.skillInterval);
         if (isNoEmpty(start) && isNoEmpty(end)) {
-            let countdownDate = new Date().getTime() + (end - start);
+            let countdownDate = new Date().getTime() + ((end + 500) - start);
             this.skillInterval = setInterval(() => {
                 let timeOut = countdownDate - new Date().getTime();
                 if (timeOut <= 0) {

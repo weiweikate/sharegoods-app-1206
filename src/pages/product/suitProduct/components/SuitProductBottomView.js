@@ -21,11 +21,10 @@ export default class SuitProductBottomView extends Component {
                             style={styles.leftBottomText2}>￥{totalSubMoney}</MRText></MRText>
                     </View>
 
-                    <NoMoreClick style={styles.rightBtn}
-                                 onPress={() => {
-                                     this.props.bottomAction();
-                                 }}>
-                        <LinearGradient style={styles.LinearGradient}
+                    <NoMoreClick onPress={() => {
+                        this.props.bottomAction();
+                    }}>
+                        <LinearGradient style={styles.rightBtn}
                                         start={{ x: 0, y: 0 }}
                                         end={{ x: 1, y: 0 }}
                                         colors={['#FC5D39', '#FF0050']}>
@@ -62,12 +61,8 @@ const styles = StyleSheet.create({
         fontSize: 12, color: DesignRule.textColor_redWarn
     },
     rightBtn: {
-        alignItems: 'center', justifyContent: 'center',
-        height: 34, width: ScreenUtils.px2dp(100), borderRadius: 17, backgroundColor: DesignRule.bgColor_redCard
-    },
-    LinearGradient: {
-        flex: 1,
-        justifyContent: 'center', alignItems: 'center'
+        alignItems: 'center', justifyContent: 'center', marginRight: 15,
+        height: 34, width: ScreenUtils.px2dp(100), borderRadius: 17
     },
     rightText: {
         fontSize: 14, color: DesignRule.white, fontWeight: 'bold'

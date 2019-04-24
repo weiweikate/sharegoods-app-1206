@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Clipboard } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import res from '../res/product';
 import RouterMap, { navigateBack, navigate } from '../../../navigation/RouterMap';
 import { MRText } from '../../../components/ui';
-import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 
@@ -28,11 +27,7 @@ export default class ProductDetailNavView extends Component {
                 </View>
                 <View style={styles.centerView}>
                     {showNavText && <MRText style={styles.centerText}
-                                            numberOfLines={1}
-                                            onLongPress={() => {
-                                                Clipboard.setString(name);
-                                                bridge.$toast('已将商品名称复制至剪贴板');
-                                            }}>{name}</MRText>}
+                                            numberOfLines={1}>{name}</MRText>}
                 </View>
                 <View style={[styles.barItemContainer, { justifyContent: 'flex-end' }]}>
                     <NoMoreClick style={styles.btnContainer} onPress={() => {

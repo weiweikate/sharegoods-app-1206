@@ -3,7 +3,7 @@ import {
     View,
     Image,
     StyleSheet,
-    FlatList
+    FlatList, Clipboard
 } from 'react-native';
 
 import DesignRule from '../../../constants/DesignRule';
@@ -20,6 +20,7 @@ import RouterMap, { navigate } from '../../../navigation/RouterMap';
 import { observer } from 'mobx-react';
 import res from '../../home/res';
 import { activity_type, activity_status } from '../ProductDetailModel';
+import bridge from '../../../utils/bridge';
 
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
@@ -73,21 +74,32 @@ export class HeaderItemView extends Component {
     render() {
         const { navigation, productDetailModel, shopAction } = this.props;
         const {
-            freight, monthSaleCount, originalPrice, minPrice, maxPrice, name,
+            freight, monthSaleCount, originalPrice, promotionUnitAmount, minPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
             secondName, levelText, priceType, activityType, activityStatus
         } = productDetailModel;
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
         let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
         let showShop = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
+        let verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (
             <View style={styles.bgView}>
                 <DetailBanner data={productDetailModel} navigation={navigation}/>
                 {showWill && <ActivityWillBeginView productDetailModel={productDetailModel}/>}
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
-                {showPrice && this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText })}
+                {
+                    showPrice && (verDownInSell ?
+                        this._renderPriceView({ promotionMinPrice, promotionMaxPrice, promotionUnitAmount, levelText })
+                        :
+                        this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
+                }
                 {showShop && this._renderShop({ priceType, shopAction })}
-                <Text style={styles.nameText} numberOfLines={2}>{name}</Text>
+                <NoMoreClick onLongPress={() => {
+                    Clipboard.setString(name);
+                    bridge.$toast('已将商品名称复制至剪贴板');
+                }}>
+                    <Text style={styles.nameText} numberOfLines={2}>{name}</Text>
+                </NoMoreClick>
                 {isNoEmpty(secondName) && <Text style={styles.secondNameText} numberOfLines={2}>{secondName}</Text>}
                 <View style={styles.freightMonthView}>
                     {/*值为0*/}
@@ -167,13 +179,23 @@ const styles = StyleSheet.create({
 * */
 export class SuitItemView extends Component {
     _renderItem = ({ item }) => {
-        const { imgUrl, name, minPrice, prodCode } = item;
+        const { imgUrl, name, minPrice, prodCode, skuList } = item;
+
+        let decreaseList = (skuList || []).map((sku) => {
+            return sku.promotionDecreaseAmount;
+        });
+        let minDecrease = decreaseList.length === 0 ? 0 : Math.min.apply(null, decreaseList);
+
         return (
             <View style={SuitItemViewStyles.item}>
                 <NoMoreClick onPress={() => {
                     navigate(RouterMap.ProductDetailPage, { productCode: prodCode });
                 }}>
-                    <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}/>
+                    <UIImage style={SuitItemViewStyles.itemImg} source={{ uri: imgUrl }}>
+                        <View style={SuitItemViewStyles.subView}>
+                            <Text style={SuitItemViewStyles.subText}>立省{minDecrease}起</Text>
+                        </View>
+                    </UIImage>
                 </NoMoreClick>
                 <Text style={SuitItemViewStyles.itemText}
                       numberOfLines={2}>{name}</Text>
@@ -238,7 +260,14 @@ const SuitItemViewStyles = StyleSheet.create({
         width: px2dp(100) + 5
     },
     itemImg: {
+        overflow: 'hidden',
         width: px2dp(100), height: px2dp(100), borderRadius: 5
+    },
+    subView: {
+        position: 'absolute', bottom: 5, left: 5, backgroundColor: DesignRule.mainColor, borderRadius: 1
+    },
+    subText: {
+        color: DesignRule.white, fontSize: 10, padding: 2
     },
     itemText: {
         color: DesignRule.textColor_secondTitle, fontSize: 12

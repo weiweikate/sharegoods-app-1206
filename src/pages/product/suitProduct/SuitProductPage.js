@@ -54,6 +54,14 @@ export default class SuitProductPage extends BasePage {
             };
         });
         const { prodCode, skuCode } = mainSkuItem;
+        if (!prodCode) {
+            this.$toastShow('请选择主商品规格');
+            return;
+        }
+        if (orderProductList.length === 0) {
+            this.$toastShow('请选择一个套餐商品');
+            return;
+        }
         this.$navigate(RouterMap.ConfirOrderPage, {
             orderParamVO: {
                 orderType: 1,
