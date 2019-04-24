@@ -113,6 +113,7 @@ export default class OrderDetailPriceView extends Component {
 
    render(){
        let promotionAmount = orderDetailModel.status>1 ? orderDetailModel.warehouseOrderDTOList[0].promotionAmount : orderDetailModel.detail.promotionAmount;
+       promotionAmount = parseFloat(promotionAmount);
        return(
            <View style={{ backgroundColor: 'white',marginTop:10 ,paddingTop:10}}>
                {/*{orderDetailModel.orderSubType >= 3 ? this.renderGiftAfterSales() : null}*/}
