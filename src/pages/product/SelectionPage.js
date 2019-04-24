@@ -36,7 +36,8 @@ export default class SelectionPage extends Component {
             maxStock: 0,//最大库存
 
             amount: 1,
-            sourceType: null
+            sourceType: null,
+            unShowAmount: false
         };
     }
 
@@ -48,6 +49,7 @@ export default class SelectionPage extends Component {
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
             this.state.sourceType = propData.sourceType;
+            this.state.unShowAmount = propData.unShowAmount;
         }
         const { specifyList, skuList } = data;
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
@@ -266,7 +268,7 @@ export default class SelectionPage extends Component {
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
-                                {this.props.unShowAmount &&
+                                {!this.state.unShowAmount &&
                                 <SelectionAmountView style={{ marginVertical: 30 }}
                                                      amount={this.state.amount}
                                                      amountClickAction={this._amountClickAction}

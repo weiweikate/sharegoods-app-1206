@@ -4,6 +4,7 @@ import DesignRule from '../../../constants/DesignRule';
 import { MRText } from '../../../components/ui';
 import res from '../res/product';
 import { observer } from 'mobx-react';
+import * as math from 'mathjs';
 
 const { arrow_right_black } = res.button;
 
@@ -14,18 +15,18 @@ const { arrow_right_black } = res.button;
 export class ActivityWillBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionUnitAmount, promotionDecreaseAmount, showTimeText } = productDetailModel;
+        const { promotionPrice, showTimeText } = productDetailModel;
         return (
             <View style={WillBeginStyles.bgView}>
                 <View style={WillBeginStyles.leftView}>
                     <MRText
-                        style={WillBeginStyles.leftPriceText}>{`¥${(promotionUnitAmount - promotionDecreaseAmount).toFixed(2)}`}</MRText>
+                        style={WillBeginStyles.leftPriceText}>{`¥${promotionPrice}`}</MRText>
                     <View style={WillBeginStyles.leftExplainView}>
                         <MRText style={WillBeginStyles.leftExplainText}>秒杀价</MRText>
                     </View>
                 </View>
                 <View style={WillBeginStyles.rightView}>
-                    <MRText style={WillBeginStyles.rightText}>距开抢{showTimeText}</MRText>
+                    <MRText style={WillBeginStyles.rightText}>{showTimeText}</MRText>
                     <Image source={arrow_right_black}/>
                 </View>
             </View>
@@ -67,8 +68,9 @@ const WillBeginStyles = StyleSheet.create({
 export class ActivityDidBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, promotionUnitAmount, promotionSaleNum, promotionStockNum, showTimeText } = productDetailModel;
-        let progress = promotionStockNum / (promotionSaleNum + promotionStockNum);
+        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText } = productDetailModel;
+        let total = math.eval(promotionSaleNum + promotionStockNum);
+        let progress = total == 0 ? 0 : math.eval(promotionStockNum / total);
         return (
             <View style={DidBeginViewStyles.bgView}>
                 <View style={DidBeginViewStyles.leftView}>
@@ -80,7 +82,7 @@ export class ActivityDidBeginView extends Component {
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <MRText
-                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'line-through' }]}>原价¥{promotionUnitAmount}</MRText>
+                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'line-through' }]}>原价¥{originalPrice}</MRText>
                             <MRText
                                 style={[DidBeginViewStyles.amountText]}> 已抢{promotionSaleNum}件</MRText>
                         </View>
@@ -88,11 +90,12 @@ export class ActivityDidBeginView extends Component {
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
-                        <MRText style={DidBeginViewStyles.timeText}>距结束{showTimeText}</MRText>
+                        <MRText style={DidBeginViewStyles.timeText}>{showTimeText}</MRText>
                         <View style={DidBeginViewStyles.leaveView}>
                             <View style={[DidBeginViewStyles.progressView, { width: progress * 90 }]}/>
                             <View style={DidBeginViewStyles.leaveAmountView}>
-                                <MRText style={DidBeginViewStyles.leaveAmountText}>还剩{promotionStockNum}件</MRText>
+                                <MRText
+                                    style={DidBeginViewStyles.leaveAmountText}>{progress == 0 ? '已抢完' : `还剩${promotionStockNum}件`}</MRText>
                             </View>
                         </View>
                     </View>

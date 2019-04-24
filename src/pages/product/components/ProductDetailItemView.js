@@ -75,7 +75,7 @@ export class HeaderItemView extends Component {
     render() {
         const { navigation, productDetailModel, shopAction } = this.props;
         const {
-            freight, monthSaleCount, originalPrice, promotionUnitAmount, minPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
+            freight, monthSaleCount, originalPrice, minPrice, promotionMinPrice, maxPrice, promotionMaxPrice, name,
             secondName, levelText, priceType, activityType, activityStatus
         } = productDetailModel;
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
@@ -92,7 +92,7 @@ export class HeaderItemView extends Component {
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
                 {
                     showPrice && (verDownInSell ?
-                        this._renderPriceView({ promotionMinPrice, promotionMaxPrice, promotionUnitAmount, levelText })
+                        this._renderPriceView({ promotionMinPrice, promotionMaxPrice, originalPrice, levelText })
                         :
                         this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
                 }
