@@ -2,7 +2,7 @@
  * 秀场banner
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, DeviceEventEmitter } from 'react-native';
 import ScreenUtil from '../../utils/ScreenUtils';
 import UIImage from '@mr/image-placeholder';
 
@@ -13,6 +13,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import MRBannerView from '../../components/ui/bannerView/MRBannerView';
 import { TrackApi } from '../../utils/SensorsTrack';
 import { homeModule } from '../home/model/Modules';
+import { homeType } from '../home/HomeTypes';
 
 @observer
 export default class ShowBannerView extends Component {
@@ -81,6 +82,18 @@ export default class ShowBannerView extends Component {
 
     _onDidScrollToIndex(e) {
         this.setState({ index: e.nativeEvent.index });
+    }
+
+    componentDidMount() {
+        this.listenerBannerRefresh = DeviceEventEmitter.addListener('homeRefresh', (type) => {
+            if (type === homeType.discover) {
+                showBannerModules.loadBannerList();
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this.listenerBannerRefresh && this.listenerBannerRefresh.remove();
     }
 
     render() {

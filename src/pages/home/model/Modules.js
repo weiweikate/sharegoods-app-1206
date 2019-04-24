@@ -81,14 +81,18 @@ class HomeModule {
             case homeType.focusGrid:
                 homeFocusAdModel.loadAdList();
                 break;
+            case homeType.focusGrid:
+                homeFocusAdModel.loadAdList();
+                break;
             case homeType.today:
                 todayModule.loadTodayList(this.firstLoad);
                 break;
             case homeType.fine:
                 recommendModule.loadRecommendList(this.firstLoad);
                 break;
+            case homeType.homeHot:
+                subjectModule.loadSubjectList(this.firstLoad);
             default:
-                this.loadHomeList();
                 break;
         }
     };
