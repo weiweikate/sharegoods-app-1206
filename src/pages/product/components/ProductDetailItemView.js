@@ -25,6 +25,7 @@ import bridge from '../../../utils/bridge';
 const { isNoEmpty } = StringUtils;
 const { arrow_right_black } = RES.button;
 const { arrow_right_red } = RES;
+const { service_true } = RES.service;
 const { toTop } = res.search;
 const { px2dp } = ScreenUtils;
 
@@ -358,15 +359,25 @@ const PromoteItemViewStyles = StyleSheet.create({
 * 服务
 * */
 export class ServiceItemView extends Component {
+    _imgText(text) {
+        return <View style={ServiceItemViewStyles.itemView}>
+            <Image source={service_true}/>
+            <Text style={ServiceItemViewStyles.serviceValueText}>{text}</Text>
+        </View>;
+    }
+
     render() {
         const { productDetailModel, serviceAction } = this.props;
         const { restrictions } = productDetailModel;
         return (
             <NoMoreClick style={ServiceItemViewStyles.serviceView} onPress={serviceAction}>
                 <Text style={ServiceItemViewStyles.serviceNameText}>服务</Text>
-                <Text style={ServiceItemViewStyles.serviceValueText} numberOfLines={1}>
-                    {`质量保障·48小时发货${(restrictions & 4) === 4 ? `·7天退换` : ``}${(restrictions & 8) === 8 ? `·节假日发货` : ``}`}
-                </Text>
+                <View style={{ flexDirection: 'row', flex: 1 }}>
+                    {this._imgText('质量保障')}
+                    {this._imgText('48小时发货')}
+                    {(restrictions & 4) === 4 && this._imgText('7天退换')}
+                    {(restrictions & 8) === 8 && this._imgText('节假日发货')}
+                </View>
                 <Image source={arrow_right_black}/>
             </NoMoreClick>
         );
@@ -381,8 +392,11 @@ const ServiceItemViewStyles = StyleSheet.create({
     serviceNameText: {
         color: DesignRule.textColor_instruction, fontSize: 13
     },
+    itemView: {
+        flexDirection: 'row', alignItems: 'center', marginLeft: 5
+    },
     serviceValueText: {
-        flex: 1, marginLeft: 15,
+        marginLeft: 5,
         color: DesignRule.textColor_mainTitle, fontSize: 12
     }
 });
