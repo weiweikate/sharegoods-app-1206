@@ -25,6 +25,9 @@ import DetailHeaderScoreView from '../components/DetailHeaderScoreView';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
+import Manager, { AdViewBindModal } from '../../../components/web/WebModalManager';
+import LuckyIcon from '../../guide/LuckyIcon';
+import { homeType } from '../../home/HomeTypes';
 
 const { arrow_right_black } = productRes.button;
 const { detail_more_down } = productRes.detailNavView;
@@ -34,6 +37,8 @@ const { xp_detail_icon } = productRes.xpProduct;
 export class XpDetailPage extends BasePage {
 
     xpDetailModel = new XpDetailModel();
+    manager = new Manager();
+    AdModal = observer(AdViewBindModal(this.manager))
 
     $navigationBarOptions = {
         title: '经验值专区'
@@ -101,6 +106,9 @@ export class XpDetailPage extends BasePage {
     _request_act_exp_detail = () => {
         const { activityCode, productCode } = this.params;
         this.xpDetailModel.request_act_exp_detail(activityCode, productCode);
+        //浮动弹窗、返回弹框请求接口
+        this.luckyIcon&&this.luckyIcon.getLucky(3,activityCode)
+        this.manager.getAd(3,activityCode,homeType.Alert)
     };
 
     _imgBtnAction = () => {
@@ -162,7 +170,6 @@ export class XpDetailPage extends BasePage {
                 'skuCode': skuCode,
                 'productCode': this.xpDetailModel.selectedSpuCode,
                 activityCode: this.params.activityCode,
-                activityType: this.params.activityType
             };
             shopCartCacheTool.addGoodItem(temp);
 
@@ -271,6 +278,7 @@ export class XpDetailPage extends BasePage {
     _render() {
         const { activityCode } = this.params;
         const { bannerUrl } = this.xpDetailModel;
+        let AdModal = this.AdModal;
         return (
             <View style={styles.container}>
                 {/*页面状态*/}
@@ -302,6 +310,8 @@ export class XpDetailPage extends BasePage {
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&&upuserid=${user.code || ''}`,
                                     miniProgramPath: `/pages/index/index?type=6&id=${activityCode}&inviteId=${user.code || ''}`
                                 }}/>
+                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}}/>
+                <AdModal />
             </View>
         );
     }

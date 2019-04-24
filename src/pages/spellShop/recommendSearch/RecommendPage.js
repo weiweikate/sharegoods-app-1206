@@ -29,7 +29,7 @@ import res from '../res';
 import geolocation from '@mr/rn-geolocation';
 import Storage from '../../../utils/storage';
 import { TrackApi } from '../../../utils/SensorsTrack';
-import { homeLinkType, homeType } from '../../home/HomeTypes';
+import { homeType } from '../../home/HomeTypes';
 import { homeModule } from '../../home/model/Modules';
 
 const ShopItemLogo = res.recommendSearch.dp_03;
@@ -66,13 +66,10 @@ export default class RecommendPage extends BasePage {
     };
 
     $NavBarRenderRightItem = () => {
-        const showShopItem = SpellStatusModel.canCreateStore || SpellStatusModel.storeCode && SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0;
         return <View style={styles.rightBarItemContainer}>
-            {
-                showShopItem ? <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
-                    <Image source={ShopItemLogo}/>
-                </TouchableOpacity> : null
-            }
+            <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
+                <Image source={ShopItemLogo}/>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickSearchItem}>
                 <Image source={SearchItemLogo}/>
             </TouchableOpacity>

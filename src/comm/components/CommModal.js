@@ -77,15 +77,9 @@ export default class CommModal extends PureComponent {
                     visible={this.state.visible}// 是否可见
                     transparent
                 >
-                    <TouchableOpacity
-                        style={{ flex: 1 }}
-                        activeOpacity={1}
-
-                    >
-                        <View style={[styles.container,{ backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
-                            {this.props.children}
-                        </View>
-                    </TouchableOpacity>
+                    <View style={[styles.container,{ backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
+                        {this.props.children}
+                    </View>
                 </Modal>
             );
         }

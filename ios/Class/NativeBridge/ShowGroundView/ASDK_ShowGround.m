@@ -188,9 +188,11 @@
 - (void)collectionNode:(ASCollectionNode *)collectionNode didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
   if (_onItemPress) {
+    self.dataArr[indexPath.item].xg_index = indexPath.row;
     _onItemPress([self.dataArr[indexPath.item] modelToJSONObject]);
-    self.dataArr[indexPath.item].click = self.dataArr[indexPath.item].click + 5;
-    [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//       [_collectionNode reloadItemsAtIndexPaths:@[indexPath]];
+//    });
   }
 }
 
@@ -330,6 +332,13 @@
       self.headerView = view;
       [self.collectionNode reloadData];
     }
+  }
+}
+
+-(void)replaceData:(NSInteger) index num:(NSInteger) num{
+  if (self.dataArr.count>index) {
+      self.dataArr[index].click = num;
+    [self.collectionNode reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
   }
 }
 @end

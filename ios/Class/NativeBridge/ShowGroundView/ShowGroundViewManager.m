@@ -9,6 +9,8 @@
 #import "ShowGroundViewManager.h"
 #import "ShowGroundView.h"
 #import "ASDK_ShowGround.h"
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
 @implementation ShowGroundViewManager
 RCT_EXPORT_VIEW_PROPERTY(onItemPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onStartRefresh, RCTBubblingEventBlock)
@@ -22,6 +24,19 @@ RCT_EXPORT_VIEW_PROPERTY(onEndScroll, RCTBubblingEventBlock)
 {
   ASDK_ShowGround *view = [[ASDK_ShowGround alloc] init];
   return view;
+}
+
+RCT_EXPORT_METHOD(replaceData:(nonnull NSNumber *)reactTag
+                  index:(NSInteger) index
+                  num:(NSInteger) num){
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, ASDK_ShowGround *> *viewRegistry) {
+    ASDK_ShowGround *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[ASDK_ShowGround class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting RNCUIWebView, got: %@", view);
+    } else {
+      [view replaceData:index num:num];
+    }
+  }];
 }
 
 @end
