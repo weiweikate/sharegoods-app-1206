@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(BOOL)isCanPhoneAuthen;
 
-+(void)startPhoneAutherWithPhoneNum:(NSString *)phoneNum andFinshBlock:(void (^)(NSDictionary * resultDic))finshBlock;
++(void)startPhoneAutherWithPhoneNum:(NSString *)phoneNum andFinshBlock:(void (^)(NSString * resultDic))finshBlock;
 @end
 
 NS_ASSUME_NONNULL_END
