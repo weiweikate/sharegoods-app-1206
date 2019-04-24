@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     },
     goodsContent: {
         marginLeft: px2dp(10),
-        marginTop: px2dp(14),
+        marginTop: px2dp(13),
         marginBottom: px2dp(10),
         flex: 1
     },

@@ -251,7 +251,7 @@ export default class HelperFeedbackPage extends BasePage {
     deletePic = (index) => {
         let imageArr = [];
         for (let i = 0; i < this.state.imageArr.length; i++) {
-            if (i != index) {
+            if (i !== index) {
                 imageArr.push(this.state.imageArr[i]);
             }
         }

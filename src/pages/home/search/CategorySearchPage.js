@@ -11,7 +11,6 @@ import DesignRule from '../../../constants/DesignRule';
 import res from '../../order/res';
 import ImageLoad from '@mr/image-placeholder';
 import { MRText as Text } from '../../../components/ui';
-import { homeLinkType } from '../HomeTypes';
 import { TrackApi } from '../../../utils/SensorsTrack';
 import { homeModule } from '../model/Modules';
 

@@ -92,6 +92,7 @@ class HomeModule {
                 break;
             case homeType.homeHot:
                 subjectModule.loadSubjectList(this.firstLoad);
+                break;
             default:
                 break;
         }

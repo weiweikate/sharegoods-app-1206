@@ -90,7 +90,7 @@ export default class PaymentCheckPage extends BasePage {
             let resultData = result.data;
             if (parseInt(resultData.status) === payStatus.paySuccess) {
                 let replace;
-                if (bizType != 1) {
+                if (bizType !== 1) {
                     replace = NavigationActions.replace({
                         key: this.props.navigation.state.key,
                         routeName: RouterMap.PaymentResultPage,
@@ -134,7 +134,7 @@ export default class PaymentCheckPage extends BasePage {
 
     _goToOrder(index) {
         const {bizType} = payment;
-        if (bizType == 1){
+        if (bizType === 1){
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
                 type:'ReplacePayScreen',
@@ -155,7 +155,6 @@ export default class PaymentCheckPage extends BasePage {
 const styles = StyleSheet.create({
     waitBgViewStyle: {
         flex: 1,
-        backgroundColor: DesignRule.color_fff,
         marginTop: -2,
         backgroundColor: DesignRule.bgColor
     },
