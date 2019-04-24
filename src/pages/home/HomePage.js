@@ -199,7 +199,7 @@ class HomePage extends BasePage {
         this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
         this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
         this.listenerRetouchHome = DeviceEventEmitter.addListener('retouch_home', this.retouchHome);
-        this.listenerHomeRefresh = DeviceEventEmitter.addListener('homeRefresh', this._onRefresh);
+        this.listenerHomeRefresh = DeviceEventEmitter.addListener('homeRefresh', this.homeTypeRefresh);
 
         InteractionManager.runAfterInteractions(() => {
             user.getToken().then(() => {//让user初始化完成
@@ -210,6 +210,10 @@ class HomePage extends BasePage {
             });
         });
     }
+
+    homeTypeRefresh = (type) => {
+        homeModule.refreshHome(type);
+    };
 
     componentWillUnmount() {
         this.willBlurSubscription && this.willBlurSubscription.remove();
