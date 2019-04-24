@@ -31,10 +31,30 @@
   NSDictionary * userInfo = [notification userInfo];
   [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:nil];
   NSString *typeString = userInfo[@"content_type"];
-  NSString *homeType = userInfo[@"homeType"];
+  
   if ([typeString isEqualToString:@"HomeRefresh"]) {
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:homeType];
+    NSString *homeTypeStr = userInfo[@"content"];
+    NSDictionary * dic = [self dictionaryWithJsonString:homeTypeStr];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:dic[@"homeType"]];
   }
+}
+-(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
+{
+  if (jsonString == nil) {
+    return nil;
+  }
+  
+  NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+  NSError *err;
+  NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                      options:NSJSONReadingMutableContainers
+                                                        error:&err];
+  if(err)
+  {
+    NSLog(@"json解析失败：%@",err);
+    return nil;
+  }
+  return dic;
 }
 
 #pragma mark 配置推送
