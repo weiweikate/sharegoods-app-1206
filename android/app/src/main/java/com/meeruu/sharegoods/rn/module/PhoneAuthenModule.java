@@ -70,17 +70,21 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
         mAlicomAuthHelper = PhoneNumberAuthHelper.getInstance(this.mContext,mTokenListener);
         mAlicomAuthHelper.setDebugMode(false);
         mAlicomAuthHelper.setAuthUIConfig(new AuthUIConfig.Builder()
-//                .setNavColor(Color.WHITE)
+                .setNavColor(Color.WHITE)
                 .setNavText("")
-                .setLogoImgPath("ic_launcher_round")
+                .setLogoImgPath("yqhy_03")
                 .setNumberColor(0xff333333)
                 .setNumberSize(22)
                 .setAppPrivacyOne("秀购用户协议", url)
                 .setAppPrivacyColor(0xff666666,0xffFF0050)
                 .setLogBtnText("一键登录")
                 .setLogBtnTextColor(Color.WHITE)
-                .setLogBtnClickableColor(Color.RED)
-                .setLogBtnUnClickableColor(Color.RED)
+//                .setLogBtnClickableColor(0xffFF0050)
+//                .setLogBtnUnClickableColor(0xffFF0050)
+                .setLogBtnBackgroundPath("ali_login_btn")
+                .setSwitchAccTextColor(0xff999999)
+                .setNavReturnImgPath("icon_header_back")
+                .setLogoHidden(false)
                 .setSwitchClicker(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -158,6 +162,7 @@ public class PhoneAuthenModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startLoginAuth(Promise promise){
         this.authPromise = promise;
+//        mAlicomAuthHelper.getLoginToken(5000);
 
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override
