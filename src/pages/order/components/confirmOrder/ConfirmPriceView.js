@@ -37,7 +37,8 @@ export default class ConfirmPriceView extends Component {
         );
     };
     renderPriceView = () => {
-        let promotionAmount = confirmOrderModel.promotionAmount;
+        let promotionAmount = confirmOrderModel.promotionAmount || 0;
+        promotionAmount = parseFloat(promotionAmount);
         return (
             <View style={{ backgroundColor: 'white' }}>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
@@ -57,7 +58,7 @@ export default class ConfirmPriceView extends Component {
                     </View>
                 </View>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                {promotionAmount&&promotionAmount !='-￥0'? <View style={styles.couponsStyle}
+                {promotionAmount !== 0 ? <View style={styles.couponsStyle}
                                                                   activeOpacity={0.5}
                                                                   disabled={!confirmOrderModel.canUseCou}
                                                                   onPress={this.props.jumpToCouponsPage}>
@@ -65,7 +66,7 @@ export default class ConfirmPriceView extends Component {
                     {this.renderLine()}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={promotionAmount}
+                            value={promotionAmount>0?('-¥'+promotionAmount):('+¥'+ Math.abs(promotionAmount))}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
