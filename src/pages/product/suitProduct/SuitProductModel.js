@@ -18,7 +18,7 @@ export default class SuitProductModel {
     /*product级别 额外增加字段
     * selectedSkuItem: null,
     * isSelected: false,
-    * minDecrease: 活动商品最小价格
+    * minDecrease: 活动商品最小优惠价格
     * */
     @observable subProductArr = [];
     /*子商品们skuS*/
@@ -47,17 +47,17 @@ export default class SuitProductModel {
     }
 
     @computed get totalPayMoney() {
-        const { price } = this.mainSkuItem;
+        const { price = 0 } = this.mainSkuItem || {};
         return this.selectedItems.reduce((pre, cur) => {
             const { promotionPrice } = cur;
-            return pre + promotionPrice * this.selectedAmount;
+            return (pre + promotionPrice * this.selectedAmount).toFixed(2);
         }, 0) + price;
     }
 
     @computed get totalSubMoney() {
         return this.selectedItems.reduce((pre, cur) => {
             const { promotionDecreaseAmount } = cur;
-            return pre + promotionDecreaseAmount * this.selectedAmount;
+            return (pre + promotionDecreaseAmount * this.selectedAmount).toFixed(2);
         }, 0);
     }
 
