@@ -58,15 +58,11 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 if (scrollToIndexEvent == null) {
                     scrollToIndexEvent = new onDidScrollToIndexEvent();
                 }
-                scrollToIndexEvent.init(banner.getId());
                 scrollToIndexEvent.setIndex(position);
-                try {
-                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
-                } catch (Exception e) {
-                }
+                scrollToIndexEvent.init(banner.getId());
+                eventDispatcher.dispatchEvent(scrollToIndexEvent);
             }
         });
-
     }
 
     static class MRListener implements ForegroundCallbacks.Listener {

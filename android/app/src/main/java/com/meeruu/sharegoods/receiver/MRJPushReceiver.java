@@ -8,7 +8,9 @@ import android.util.Log;
 
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.sharegoods.event.Event;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,8 +46,9 @@ public class MRJPushReceiver extends BroadcastReceiver {
             Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-//            processCustomMessage(context, bundle);
-            receiveMsg(context, bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE), objExtra);
+            String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+            String type = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
+            receiveMsg(context, content, type, objExtra);
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
@@ -66,8 +69,20 @@ public class MRJPushReceiver extends BroadcastReceiver {
         }
     }
 
-    private void receiveMsg(Context context, String type, JSONObject objExtra) {
-        LogUtils.d("======" + type + "======" + objExtra.toString());
+    private void receiveMsg(Context context, String content, String type, JSONObject objExtra) {
+        LogUtils.d("======" + content + "======" + type + "======" + objExtra);
+        switch (type) {
+            case "HomeRefresh":
+                // 刷新首页
+                try {
+                    JSONObject object = new JSONObject(content);
+                    EventBus.getDefault().post(new Event.MRHomeRefreshEvent(object.getInt("homeType")));
+                } catch (JSONException e) {
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     //接收到通知

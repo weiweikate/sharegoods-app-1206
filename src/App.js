@@ -155,7 +155,7 @@ class App extends Component {
                 }
                 {/*{*/}
                     {/*<DebugButton onPress={this.lianjie111} style={{ backgroundColor: "red" }}><Text*/}
-                        {/*style={{ color: "white" }}>微信支付</Text></DebugButton>*/}
+                        {/*style={{ color: "white" }}>客服</Text></DebugButton>*/}
                 {/*}*/}
 
                 <PreComponent ref={(ref)=>{this.preView = ref}}/>
@@ -164,11 +164,13 @@ class App extends Component {
     }
 
     // lianjie111 = () => {
-    //     const navigationAction = NavigationActions.navigate({
-    //         routeName: 'payment/TextWxPay'
-    //     });
-    //     global.$navigator.dispatch(navigationAction);
+    //     // const navigationAction = NavigationActions.navigate({
+    //     //     routeName: 'payment/TextWxPay'
+    //     // });
+    //     // global.$navigator.dispatch(navigationAction);
     // };
+
+
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage

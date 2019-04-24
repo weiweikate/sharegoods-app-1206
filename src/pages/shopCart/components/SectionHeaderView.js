@@ -30,6 +30,8 @@ import RouterMap from "../../../navigation/RouterMap";
 import StringUtils from "../../../utils/StringUtils";
 import bridge from "../../../utils/bridge";
 
+const {px2dp} = ScreenUtils
+
 export default class SectionHeaderView extends Component {
 
     constructor(props) {
@@ -199,14 +201,14 @@ SectionHeaderView.propTypes = {
 };
 const styles = StyleSheet.create({
     bgViewStyle: {
-        height: 40,
+        marginTop:px2dp(15),
+        height: px2dp(40),
         flexDirection: 'column',
         backgroundColor: '#fff',
         justifyContent: 'space-between'
     },
     topContentBgStyle: {
         flex: 1,
-        // justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -217,38 +219,41 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     leftTipBgStyle: {
-        backgroundColor: DesignRule.mainColor,
-        borderRadius: 7,
-        width: 70,
-        marginLeft: 20,
+        borderRadius: px2dp(8.5),
+        width: px2dp(48),
+        marginLeft: px2dp(10),
         justifyContent: 'center',
         alignItems: 'center',
-        height: 14
+        height: px2dp(17),
+        borderWidth:px2dp(0.3),
+        paddingLeft:px2dp(2),
+        paddingRight:px2dp(2),
+        borderColor:'rgba(255, 0, 80, 0.5)'
     },
     leftTextStyle: {
-        color: '#fff',
-        fontSize: 11
+        color: DesignRule.mainColor,
+        fontSize: px2dp(9)
     },
     middleTextBgStyle: {
-        marginLeft: 20,
-        width: ScreenUtils.width - 180,
-        height: 25,
+        marginLeft: px2dp(20),
+        width: ScreenUtils.width - px2dp(180),
+        height: px2dp(25),
         justifyContent: 'center'
     },
     middleTextStyle: {
         color: DesignRule.textColor_secondTitle,
-        fontSize: 10
+        fontSize: px2dp(10)
     },
     bottomLineStyle: {
         height: 1,
         backgroundColor: DesignRule.bgColor
     },
     rightTextBgView: {
-        marginLeft: 20
+        marginLeft: px2dp(10)
     },
     rightTextStyle: {
-        fontSize: 10,
+        fontSize: px2dp(10),
         color: DesignRule.mainColor,
-        marginRight: 10
+        marginRight: px2dp(10)
     }
 });

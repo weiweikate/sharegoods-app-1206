@@ -70,7 +70,7 @@ export class LimitGoModules {
                         currentId = value;
                         _initialPage = index;
                     } else if (lastSeckills !== 0) {
-                        if (lastSeckills > diffTime) {
+                        if (lastSeckills > diffTime && (_currentDate >= parseInt(value, 0))) {
                             lastSeckills = diffTime;
                             _initialPage = index;
                             _currentPage = index;
