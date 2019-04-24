@@ -9,6 +9,7 @@
 #import "AppDelegate+APNS.h"
 // 引入 JPush 功能所需头文件
 #import "JPUSHService.h"
+//#import "JSPush"
 
 // iOS10 注册 APNs 所需头文件
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
@@ -21,6 +22,19 @@
 
 -(void)JR_ConfigAPNS:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
   [self configAPNSWithOption:launchOptions];
+  
+  NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+  [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
+}
+// 自定义消息 回调
+- (void)networkDidReceiveMessage:(NSNotification *)notification {
+  NSDictionary * userInfo = [notification userInfo];
+  [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:nil];
+  NSString *typeString = userInfo[@"content_type"];
+  NSString *homeType = userInfo[@"homeType"];
+  if ([typeString isEqualToString:@"HomeRefresh"]) {
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"HOME_CUSTOM_MSG" object:homeType];
+  }
 }
 
 #pragma mark 配置推送

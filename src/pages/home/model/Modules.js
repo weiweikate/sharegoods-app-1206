@@ -56,7 +56,8 @@ class HomeModule {
             categoryId: data.linkTypeCode,
             uri: data.linkTypeCode,
             id: data.id,
-            code: data.linkTypeCode
+            code: data.linkTypeCode,
+            keywords: data.name
         };
 
     };

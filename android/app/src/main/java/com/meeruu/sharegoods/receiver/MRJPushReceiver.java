@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.sharegoods.event.Event;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,6 +69,15 @@ public class MRJPushReceiver extends BroadcastReceiver {
     }
 
     private void receiveMsg(Context context, String type, JSONObject objExtra) {
+        LogUtils.d("======" + type + "======" + objExtra.toString());
+        switch (type) {
+            case "HomeRefresh":
+                // 刷新首页
+                EventBus.getDefault().post(new Event.MRHomeRefreshEvent());
+                break;
+            default:
+                break;
+        }
     }
 
     //接收到通知
@@ -75,7 +87,7 @@ public class MRJPushReceiver extends BroadcastReceiver {
 
     //用户点击了通知
     private void notifyOpened(final Context context, JSONObject objExtra) {
-        if(!AppUtils.isAppOnForeground(context)){
+        if (!AppUtils.isAppOnForeground(context)) {
             AppUtils.startAPP(context, PACKAGENAME);
         }
     }

@@ -41,6 +41,7 @@ const oneClickLoginValidation = (phone, authenToken, navigation, successCallBack
             //老用户
             gobackPage(navigation);
         }
+
         UserModel.saveUserInfo(result.data);
         UserModel.saveToken(result.data.token);
         homeModule.loadHomeList();
@@ -159,7 +160,6 @@ const codeLoginAction = (LoginParam, callBack) => {
         callBack(data);
         UserModel.saveUserInfo(data.data);
         UserModel.saveToken(data.data.token);
-        track("LoginSuccess", { "loginMethod": 2 });
         TrackApi.codeLoginSuccess();
         bridge.setCookies(data.data);
         DeviceEventEmitter.emit("homePage_message", null);

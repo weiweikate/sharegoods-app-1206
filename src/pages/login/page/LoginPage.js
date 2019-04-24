@@ -167,8 +167,13 @@ export default class LoginPage extends BasePage {
                     this.$toastShow("登录成功");
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
-                    this.$navigateBack(-2);
-
+                    //走了注册
+                    if (data.data.withRegister) {
+                        this.$navigate(RouterMap.InviteCodePage);
+                        // TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
+                    }else {
+                        this.$navigateBack(-2);
+                    }
                 } else {
                     this.$loadingDismiss();
                     this.$toastShow(data.msg);

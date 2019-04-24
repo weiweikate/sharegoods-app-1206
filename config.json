@@ -89,7 +89,7 @@
         },
         "dev_wkl": {
             "name": "王昆仑",
-            "host": "http://172.18.6.123:9090/gateway"
+            "host": "http://172.16.10.181:9090/gateway"
         },
         "dev_yxm": {
             "name": "杨小猛",

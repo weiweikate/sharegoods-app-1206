@@ -86,6 +86,11 @@ export default class ShowDetailPage extends BasePage {
                                 author: detail.userName,
                                 collectionCount: detail.collectCount
                             });
+                            if(this.params.isFormHeader){
+                                this.params.ref && this.params.ref.setClick(detail.click)
+                            }else {
+                                this.params.ref && this.params.ref.replaceData(this.params.index,detail.click)
+                            }
                             this.setState({
                                 pageState: PageLoadingState.success
                             });
@@ -256,7 +261,7 @@ export default class ShowDetailPage extends BasePage {
             detail = {imgs: '', products: [], click: 0, content: ''}
         }
         let products = detail.products;
-        let number = this.params.appSetClick;
+        let number = detail.click;
         if (!number) {
             number = 0;
         }

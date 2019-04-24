@@ -49,9 +49,9 @@ export default class HomeCategoryView extends Component {
         for (let i = 0; i < len; i++) {
             itemsArr.push(
                 <CategoryItem
-                    text={categoryList[i] ? categoryList[i].name : ' '}
+                    text={categoryList[i] ? categoryList[i].secondName : ' '}
                     key={'category' + i}
-                    left={i === 0 ? 0 : px2dp(6)}
+                    left={i === 0 ? 0 : px2dp(10)}
                     press={() => {
                         this._adAction(categoryList[i]);
                     }}

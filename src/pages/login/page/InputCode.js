@@ -149,7 +149,6 @@ export default class InputCode extends BasePage {
                 if (res.code === 10000) {
                     // user.untiedWechat(nickName,this.params.appOpenid,this.params.unionid)
                     this.$navigate(RouterMap.InviteCodePage);
-
                     TrackApi.phoneSignUpSuccess({ 'signUpPhone': phoneNum });
                 } else {
                     this.$toastShow(res.msg);
