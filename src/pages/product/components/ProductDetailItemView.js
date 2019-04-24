@@ -81,7 +81,9 @@ export class HeaderItemView extends Component {
         let showWill = activityType === activity_type.skill && activityStatus === activity_status.unBegin;
         let showIn = activityType === activity_type.skill && activityStatus === activity_status.inSell;
         let showPrice = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
-        let showShop = !(activityType === activity_type.skill && activityStatus === activity_status.inSell);
+        /*直降和秒杀不显示 拼店*/
+        let showShop = !((activityType === activity_type.skill || activityType === activity_type.verDown) && activityStatus === activity_status.inSell);
+        /*直降中显示活动价 价格区间*/
         let verDownInSell = activityType === activity_type.verDown && activityStatus === activity_status.inSell;
         return (
             <View style={styles.bgView}>
