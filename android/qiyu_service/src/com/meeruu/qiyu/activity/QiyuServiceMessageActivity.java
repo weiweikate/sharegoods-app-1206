@@ -90,17 +90,4 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
             KeyBoardUtils.closeKeybord(editText, this);
         }
     }
-
-    public void finish(boolean needFinish) {
-        if (source != null) {
-            String chatType = source.custom;
-            if ("0".equals(chatType) || "3".equals(chatType)) {
-                // do nothing
-            } else {
-                if (needFinish) {
-                    this.finish();
-                }
-            }
-        }
-    }
 }
