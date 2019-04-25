@@ -1,6 +1,8 @@
 /**
  * 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
  */
+import StringUtils from "../../../utils/StringUtils";
+
 const statues = {
     deleteStatue: 0,
     noBegin: 1,
@@ -14,11 +16,11 @@ const statues = {
  * @type {{[p: string]: string, [p: number]: string}}
  */
 const downPriceParam = {
-    [statues.noBegin]: 'startPrice',
-    [statues.isBeginning]: 'markdownPrice',
-    [statues.haveSoldOut]: 'markdownPrice',
-    [statues.timeOver]: 'markdownPrice',
-    [statues.handOver]: 'markdownPrice'
+    [statues.noBegin]: "startPrice",
+    [statues.isBeginning]: "markdownPrice",
+    [statues.haveSoldOut]: "markdownPrice",
+    [statues.timeOver]: "markdownPrice",
+    [statues.handOver]: "markdownPrice"
 };
 
 /**
@@ -35,14 +37,14 @@ const productTypes = {
 };
 
 const typeName = {
-    [productTypes.skill]: 'seckillPrice',
+    [productTypes.skill]: "seckillPrice",
     //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
     [productTypes.down]: downPriceParam,
-    [productTypes.giftPackage]: 'originalPrice',
-    [productTypes.helpFree]: 'originalPrice',
-    [productTypes.newTopic]: 'originalPrice',
-    [productTypes.normalProduct]: 'originalPrice',
-    [productTypes.experienceValue]: 'originalPrice'
+    [productTypes.giftPackage]: "originalPrice",
+    [productTypes.helpFree]: "originalPrice",
+    [productTypes.newTopic]: "originalPrice",
+    [productTypes.normalProduct]: "originalPrice",
+    [productTypes.experienceValue]: "originalPrice"
 };
 
 /**
@@ -50,14 +52,14 @@ const typeName = {
  * @type {{[p: string]: string, [p: number]: string}}
  */
 const jumpPageParams = {
-    [productTypes.skill]: 'product/ProductDetailPage',
+    [productTypes.skill]: "product/ProductDetailPage",
     //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
-    [productTypes.down]: 'topic/TopicDetailPage',
-    [productTypes.giftPackage]: 'topic/TopicDetailPage',
-    [productTypes.helpFree]: 'topic/TopicDetailPage',
-    [productTypes.newTopic]: 'topic/DownPricePage',
-    [productTypes.normalProduct]: 'product/ProductDetailPage',
-    [productTypes.experienceValue]: 'product/xpProduct/XpDetailPage',
+    [productTypes.down]: "topic/TopicDetailPage",
+    [productTypes.giftPackage]: "topic/TopicDetailPage",
+    [productTypes.helpFree]: "topic/TopicDetailPage",
+    [productTypes.newTopic]: "topic/DownPricePage",
+    [productTypes.normalProduct]: "product/ProductDetailPage",
+    [productTypes.experienceValue]: "product/xpProduct/XpDetailPage"
 };
 
 /**
@@ -85,15 +87,16 @@ function getTopicJumpPageParam(itemData) {
  */
 function getShowPrice(itemData) {
     if (itemData.productType === productTypes.newTopic) {
-        return '';
+        return "";
     }
+    console.log("itemData.productType" + itemData.productType + "--itemData.promotionMinPrice----" + itemData.promotionMinPrice + "---" + itemData[typeName[itemData.productType]]);
     let showPrice = itemData.productType === 2
         ?
-        `￥${itemData.promotionMinPrice?itemData.promotionMinPrice:itemData[typeName[itemData.productType][itemData.status]]}`
+        `￥${StringUtils.isEmpty(itemData.promotionMinPrice) ? itemData[typeName[itemData.productType][itemData.status]] : itemData.promotionMinPrice}`
         // '¥' +  itemData[typeName[itemData.productType][itemData.status]]
         :
-        `￥${itemData.promotionMinPrice?itemData.promotionMinPrice:itemData[typeName[itemData.productType]]}`
-        // '¥' + itemData[typeName[itemData.productType]];
+        `￥${StringUtils.isEmpty(itemData.promotionMinPrice) ? itemData[typeName[itemData.productType]] : itemData.promotionMinPrice }`;
+    // '¥' + itemData[typeName[itemData.productType]];
     return showPrice;
 }
 
