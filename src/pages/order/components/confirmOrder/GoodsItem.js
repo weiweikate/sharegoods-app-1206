@@ -56,7 +56,7 @@ const GoodsItem = props => {
     let datas = ["秒杀", "降价拍", "升级礼包", "普通礼包", "经验专区"];
     if (activityCodes){
         activityCodes.forEach((item)=> {
-            let types = item && item.orderType || 0;
+            let types = item.orderType || 0;
             if (0<types && types<6) {
                 tips.push(datas[types-1]);
             }
@@ -77,7 +77,6 @@ const GoodsItem = props => {
             }
         })
     }
-
 
     return (
         <TouchableOpacity style={{

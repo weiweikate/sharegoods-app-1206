@@ -65,6 +65,7 @@ export default class ConfirmOrderPage extends BasePage {
         return (<GoodsItem
             key={item.index}
             uri={item.item.specImg}
+            activityCodes={item.item.activityCodes}
             goodsName={item.item.productName}
             salePrice={StringUtils.formatMoneyString(item.item.unitPrice)}
             category={item.item.spec}
