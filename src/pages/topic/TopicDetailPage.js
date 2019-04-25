@@ -48,7 +48,9 @@ import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceM
 import ProductApi from '../product/api/ProductApi';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
 
-
+/*
+* 仅有礼包了  2019.4.25
+* */
 export default class TopicDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -276,7 +278,7 @@ export default class TopicDetailPage extends BasePage {
                 netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
             });
         } else {
-            ProductApi.getProductDetailByCode({
+            ProductApi.getProductDetailByCodeV2({
                 code: prodCode
             }).then((data) => {
                 this.setState({

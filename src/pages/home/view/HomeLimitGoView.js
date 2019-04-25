@@ -8,6 +8,7 @@ import ImageLoader from '@mr/image-placeholder';
 import { limitGoModule, limitStatus } from '../model/HomeLimitGoModel';
 import DesignRule from '../../../constants/DesignRule';
 import resHome from '../res';
+import { homeLinkType, homeRoute } from '../HomeTypes';
 
 const { px2dp } = ScreenUtils;
 
@@ -71,10 +72,7 @@ export default class HomeLimitGoView extends Component {
     }
 
     _goToDetail(value) {
-        this.props.navigate('topic/TopicDetailPage', {
-            activityCode: value.activityCode,
-            activityType: value.activityType
-        });
+        this.props.navigate(homeRoute[homeLinkType.spike], { productCode: value.activityCode });
     }
 
     _renderGoodsList(id) {

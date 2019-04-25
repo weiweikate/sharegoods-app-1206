@@ -38,15 +38,15 @@ export class XpDetailPage extends BasePage {
 
     xpDetailModel = new XpDetailModel();
     manager = new Manager();
-    AdModal = observer(AdViewBindModal(this.manager))
+    AdModal = observer(AdViewBindModal(this.manager));
 
     $navigationBarOptions = {
         title: '经验值专区'
     };
 
     $NavigationBarDefaultLeftPressed = () => {
-        this.manager.showAd(()=>this.$navigateBack())
-    }
+        this.manager.showAd(() => this.$navigateBack());
+    };
 
     $NavBarRenderRightItem = () => {
         return <TouchableOpacity style={styles.rightNavBtn} onPress={this._rightPressed}>
@@ -111,8 +111,8 @@ export class XpDetailPage extends BasePage {
         const { activityCode, productCode } = this.params;
         this.xpDetailModel.request_act_exp_detail(activityCode, productCode);
         //浮动弹窗、返回弹框请求接口
-        this.luckyIcon&&this.luckyIcon.getLucky(3,activityCode)
-        this.manager.getAd(3,activityCode,homeType.Alert)
+        this.luckyIcon && this.luckyIcon.getLucky(3, activityCode);
+        this.manager.getAd(3, activityCode, homeType.Alert);
     };
 
     _imgBtnAction = () => {
@@ -141,11 +141,11 @@ export class XpDetailPage extends BasePage {
                 this.$navigate('login/login/LoginPage');
                 return;
             }
-            const { pData } = this.xpDetailModel;
-            const { shopId, title, name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
+            const { pData, title, shopId } = this.xpDetailModel;
+            const { name, secondName, imgUrl, prodCode, minPrice, maxPrice } = pData || {};
             QYChatTool.beginQYChat({
-                shopId: shopId,
-                title: title,
+                shopId: shopId || '',
+                title: title || '',
                 chatType: beginChatType.BEGIN_FROM_PRODUCT,
                 data: {
                     title: name,
@@ -173,7 +173,7 @@ export class XpDetailPage extends BasePage {
                 'amount': amount,
                 'skuCode': skuCode,
                 'productCode': this.xpDetailModel.selectedSpuCode,
-                activityCode: this.params.activityCode,
+                activityCode: this.params.activityCode
             };
             shopCartCacheTool.addGoodItem(temp);
 
@@ -314,8 +314,10 @@ export class XpDetailPage extends BasePage {
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/experience?activityCode=${activityCode}&&upuserid=${user.code || ''}`,
                                     miniProgramPath: `/pages/index/index?type=6&id=${activityCode}&inviteId=${user.code || ''}`
                                 }}/>
-                <LuckyIcon ref={(ref)=>{this.luckyIcon = ref}}/>
-                <AdModal />
+                <LuckyIcon ref={(ref) => {
+                    this.luckyIcon = ref;
+                }}/>
+                <AdModal/>
             </View>
         );
     }
