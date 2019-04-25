@@ -3,6 +3,8 @@ import ApiUtils from '../../../api/network/ApiUtils';
 const api = {
     // 根据code获取产品信息 杨小猛
     getProductDetailByCode: ['/product/getProductDetailByCode', { method: 'get' }],
+    //新接口商品详情
+    getProductDetailByCodeV2: ['/product/getProductDetailByCodeV2', { method: 'get' }],
     // 获取产品获取活动信息 蒋大为
     queryByProductCode: ['/operator/activity/queryByProductCode', { method: 'get' }],
     // 获取产品规格信息

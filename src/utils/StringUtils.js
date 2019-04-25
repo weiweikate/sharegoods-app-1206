@@ -211,6 +211,10 @@ const clipboardGetString = () => {
     return Clipboard.getString();
 };
 
+function trimWithChar(string, char) {
+    return string.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '');
+}
+
 //去左空格
 function ltrim(s) {
     return s.replace(/(^\s*)/g, '');
@@ -284,6 +288,36 @@ function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
+function add(arg1, arg2) {
+    let r1, r2, m, c;
+    try {
+        r1 = arg1.toString().split('.')[1].length;
+    } catch (e) {
+        r1 = 0;
+    }
+    try {
+        r2 = arg2.toString().split('.')[1].length;
+    } catch (e) {
+        r2 = 0;
+    }
+    c = Math.abs(r1 - r2);
+    m = Math.pow(10, Math.max(r1, r2));
+    if (c > 0) {
+        let cm = Math.pow(10, c);
+        if (r1 > r2) {
+            arg1 = Number(arg1.toString().replace('.', ''));
+            arg2 = Number(arg2.toString().replace('.', '')) * cm;
+        } else {
+            arg1 = Number(arg1.toString().replace('.', '')) * cm;
+            arg2 = Number(arg2.toString().replace('.', ''));
+        }
+    } else {
+        arg1 = Number(arg1.toString().replace('.', ''));
+        arg2 = Number(arg2.toString().replace('.', ''));
+    }
+    return (arg1 + arg2) / m;
+}
+
 function mul(arg1, arg2) {
     let m = 0,
         s1 = arg1.toString(),
@@ -341,7 +375,9 @@ export default {
     formatDecimal,
     isNumber,
     mul,
-    sub
+    sub,
+    trimWithChar,
+    add
 };
 
 

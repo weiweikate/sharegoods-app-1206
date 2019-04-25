@@ -1,5 +1,7 @@
 package com.meeruu.sharegoods.rn.showground.presenter;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.sharegoods.rn.showground.bean.NewestShowGroundBean;
@@ -20,7 +22,7 @@ public class ShowgroundPresenter {
         showgroundModel = new ShowgroundModel();
     }
 
-    public void setParams(Map map) {
+    public void setParams(Map map){
         showgroundModel.setParams(map);
     }
 
@@ -29,8 +31,9 @@ public class ShowgroundPresenter {
             @Override
             public void onErr(String errCode, String msg) {
                 IShowgroundView view = showgroundViewWeakReference.get();
-                if (view != null) {
-                    view.loadMoreFail();
+                if(view != null){
+//                    view.loadMoreFail(errCode);
+                    view.loadMoreFail("9999");
                 }
             }
 
