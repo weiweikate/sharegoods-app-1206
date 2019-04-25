@@ -160,6 +160,11 @@ export default class ProductDetailModel {
         return tempType && activityStatus === activity_status.inSell;
     }
 
+    @computed get isSkillIn() {
+        const { activityType, activityStatus } = this;
+        return activityType === activity_type.skill && activityStatus === activity_status.inSell;
+    }
+
     /*秒杀倒计时显示*/
     @computed get showTimeText() {
         const { skillTimeout, activityStatus } = this;
