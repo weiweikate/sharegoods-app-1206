@@ -60,7 +60,10 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                 }
                 scrollToIndexEvent.setIndex(position);
                 scrollToIndexEvent.init(banner.getId());
-                eventDispatcher.dispatchEvent(scrollToIndexEvent);
+                try {
+                    eventDispatcher.dispatchEvent(scrollToIndexEvent);
+                } catch (AssertionError e) {
+                }
             }
         });
     }
@@ -127,7 +130,7 @@ public class MRBannerViewManager extends SimpleViewManager<BannerLayout> {
                     selectItemAtIndexEvent.setIndex(position);
                     try {
                         eventDispatcher.dispatchEvent(selectItemAtIndexEvent);
-                    } catch (Exception e) {
+                    } catch (AssertionError e) {
                     }
                 }
             });
