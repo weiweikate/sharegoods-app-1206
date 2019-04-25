@@ -701,9 +701,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         paint.setStrikeThruText(true);
         paint.setTextSize(20);
         canvas.drawText(price, market.right + 30, isTwoLine ? 610 : 585, paint);
-
-
         String retailStr = "V1价： ";
+        if(TextUtils.equals("mr_skill",shareImageBean.priceType)){
+            retailStr = "秒杀价： ";
+        }
         paint.setColor(Color.parseColor("#333333"));
         paint.setStrikeThruText(false);
 
