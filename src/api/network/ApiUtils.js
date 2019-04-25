@@ -1,5 +1,6 @@
 import HttpUtils from './HttpUtils';
 import User from '../../model/user';
+import apiEnvironment from '../ApiEnvironment';
 
 export default function ApiUtils(Urls) {
     let result = {}, list = [];
@@ -45,6 +46,9 @@ export default function ApiUtils(Urls) {
                     config.nav && config.nav.navigate('login/login/LoginPage', {
                         callback: config.callback
                     });
+                }
+                if (response.code !== 9999) {
+                    config.nav && config.nav.navigate('HtmlPage', {uri: apiEnvironment.getCurrentH5Url() + '/system-maintenance'})
                 }
                 return Promise.reject(response);
             }
