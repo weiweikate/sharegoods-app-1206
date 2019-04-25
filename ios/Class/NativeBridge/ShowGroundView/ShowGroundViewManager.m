@@ -9,6 +9,7 @@
 #import "ShowGroundViewManager.h"
 #import "ShowGroundView.h"
 #import "ASDK_ShowGround.h"
+#import "RecommendedView.h"
 @implementation ShowGroundViewManager
 RCT_EXPORT_VIEW_PROPERTY(onItemPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onStartRefresh, RCTBubblingEventBlock)
@@ -20,7 +21,8 @@ RCT_EXPORT_VIEW_PROPERTY(onStartScroll, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onEndScroll, RCTBubblingEventBlock)
 - (UIView *)view
 {
-  ASDK_ShowGround *view = [[ASDK_ShowGround alloc] init];
+//  ASDK_ShowGround *view = [[ASDK_ShowGround alloc] init];
+  RecommendedView *view = [[RecommendedView alloc]init];
   return view;
 }
 
