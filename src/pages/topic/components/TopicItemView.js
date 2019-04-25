@@ -66,7 +66,7 @@ export default class TopicItemView extends Component {
                             :
                             <UIText style={Styles.itemBottomPriceTextStyle}>
                                 {/*{ '¥'+itemData.originalPrice+ '起'}*/}
-                                {/*{'专题类目'}*/}
+                                {'专题类目'}
                             </UIText>
                         }
                     </View>
