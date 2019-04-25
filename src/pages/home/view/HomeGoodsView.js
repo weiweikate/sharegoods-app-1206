@@ -41,7 +41,7 @@ export const Goods = ({ goods, press }) => <TouchableWithoutFeedback onPress={()
         </View>
         <Text style={styles.dis} numberOfLines={2} allowFontScaling={false}>{goods.title}</Text>
         <View style={{ flex: 1 }}/>
-        <MoneyItems money={goods.price}/>
+        <MoneyItems money={goods.promotionMinPrice}/>
     </View>
 </TouchableWithoutFeedback>;
 
