@@ -113,10 +113,9 @@ export class DetailHeaderScoreView extends Component {
     };
 
     _allScoreAction = () => {
-        const { navigation, pData, messageCount } = this.props;
+        const { navigation, pData } = this.props;
         navigation.navigate(RouterMap.P_ScoreListPage, {
-            pData: pData,
-            messageCount: messageCount
+            pData: pData
         });
     };
 
