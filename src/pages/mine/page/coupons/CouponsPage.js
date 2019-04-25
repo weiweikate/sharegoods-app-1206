@@ -80,7 +80,7 @@ export default class CouponsPage extends BasePage {
                     this.setState({ modalVisible: false });
                 }} activeOpacity={1}>
                     <View style={{
-                        marginTop: Platform.OS == 'ios' ? 0 : ScreenUtils.statusBarHeight > 30 ? -ScreenUtils.statusBarHeight : 0
+                        marginTop: Platform.OS === 'ios' ? 0 : ScreenUtils.statusBarHeight > 30 ? -ScreenUtils.statusBarHeight : 0
                     }}>
                         <NavigatorBar renderTitle={this.$NavBarRenderTitle} leftPressed={() => {
                             if (this.state.modalVisible) {
