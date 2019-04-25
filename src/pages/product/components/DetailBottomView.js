@@ -68,7 +68,7 @@ export default class DetailBottomView extends Component {
                                 <Text style={styles.outText}>已抢光~</Text>
                             </View>
                             :
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                                 <TouchableOpacity style={styles.leftBtn}
                                                   onPress={() => this.props.bottomViewAction('gwc')}
                                                   disabled={cantJoin}>
