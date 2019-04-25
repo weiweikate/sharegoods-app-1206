@@ -37,8 +37,8 @@ export default class DetailBottomView extends Component {
             stock = stock + item.sellStock;
         });
         //提示消息样式
-        let isDown = productStatus === product_status.down || stock === 0;
-        let showNoticeText = productStatus === product_status.down ? '商品已经下架啦~' : (stock === 0 ? '商品已售罄' : '');
+        let isDown = productStatus === product_status.down;
+        let showNoticeText = '商品已经下架啦~';
 
         //不能加入购物车
         let cantJoin = productStatus === product_status.down;
@@ -63,9 +63,9 @@ export default class DetailBottomView extends Component {
                         <Text style={styles.leftText}>客服</Text>
                     </TouchableOpacity>
                     {
-                        showSellOut ?
+                        (showSellOut || stock === 0) ?
                             <View style={styles.outView}>
-                                <Text style={styles.outText}>已抢光~</Text>
+                                <Text style={styles.outText}>{stock === 0 ? '已售罄~' : '已抢光~'}</Text>
                             </View>
                             :
                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
