@@ -219,7 +219,7 @@ class XpDetailModel {
     /*第一加载第一个  选择加载  失败重试*/
     request_getProductDetailByCode = () => {
         this.productPageState = PageLoadingState.loading;
-        ProductApi.getProductDetailByCode({
+        ProductApi.getProductDetailByCodeV2({
             // code:'SPU00000375',
             code: this.selectedSpuCode
         }).then((data) => {
