@@ -39,16 +39,29 @@ export default class ConfirmPriceView extends Component {
     renderPriceView = () => {
         let promotionAmount = confirmOrderModel.promotionAmount || 0;
         promotionAmount = parseFloat(promotionAmount);
+        //优惠券文案处理
+        let couponAmount = confirmOrderModel.couponAmount
+        let couponCount = confirmOrderModel.couponCount || 0;
+        if (couponAmount!= undefined){//有优惠金额显示金额
+            couponAmount = couponAmount == 0? '请选择优惠券':'-¥'+couponAmount
+        } else {//无优惠金额显示优惠卷名称
+            couponAmount = couponCount > 0?(confirmOrderModel.couponName+(couponCount>1?'x'+couponCount: '')):'请选择优惠券'
+        }
+        if (!confirmOrderModel.canUseCou) {
+            couponAmount = '不支持使用优惠券'
+        }
         return (
+
             <View style={{ backgroundColor: 'white' }}>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
-                <View style={styles.couponsStyle}>
+                {confirmOrderModel.allProductPrice != undefined? < View style={styles.couponsStyle}>
                     <UIText value={'商品金额'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText value={`¥${confirmOrderModel.allProductPrice}`}
                                 style={[styles.grayText]}/>
                     </View>
-                </View>
+                </View>: null
+                }
                 {this.renderLine()}
                 <View style={[styles.couponsStyle,]}>
                     <UIText value={'运费'} style={styles.blackText}/>
@@ -59,9 +72,9 @@ export default class ConfirmPriceView extends Component {
                 </View>
                 <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
                 {promotionAmount !== 0 ? <View style={styles.couponsStyle}
-                                                                  activeOpacity={0.5}
-                                                                  disabled={!confirmOrderModel.canUseCou}
-                                                                  onPress={this.props.jumpToCouponsPage}>
+                                               activeOpacity={0.5}
+                                               disabled={!confirmOrderModel.canUseCou}
+                                               onPress={this.props.jumpToCouponsPage}>
                     <UIText value={'组合优惠'} style={styles.blackText}/>
                     {this.renderLine()}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -79,7 +92,7 @@ export default class ConfirmPriceView extends Component {
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={!confirmOrderModel.canUseCou ? '不支持使用优惠券' : confirmOrderModel.couponAmount == 0? '请选择优惠券':'-¥'+confirmOrderModel.couponAmount}
+                            value={couponAmount}
                             style={[styles.grayText, { marginRight: ScreenUtils.autoSizeWidth(15) }]}/>
                         <Image source={arrow_right}/>
                     </View>
