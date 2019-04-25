@@ -32,8 +32,7 @@ public class ShowgroundPresenter {
             public void onErr(String errCode, String msg) {
                 IShowgroundView view = showgroundViewWeakReference.get();
                 if(view != null){
-//                    view.loadMoreFail(errCode);
-                    view.loadMoreFail("9999");
+                    view.loadMoreFail(errCode);
                 }
             }
 

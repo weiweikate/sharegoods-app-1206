@@ -46,10 +46,21 @@ export default class HomeCategoryView extends Component {
             len = categoryList.length;
         }
         let itemsArr = [];
+        let itemAll = [];
         for (let i = 0; i < len; i++) {
+            i === 0 ? itemAll.push(
+                <CategoryItem
+                    text={categoryList[i] ? (categoryList[i].secondName ? categoryList[i].secondName : categoryList[i].name) : ' '}
+                    key={'category' + i}
+                    left={0}
+                    press={() => {
+                        this._adAction(categoryList[i]);
+                    }}
+                />
+                ) :
             itemsArr.push(
                 <CategoryItem
-                    text={categoryList[i] ? categoryList[i].secondName : ' '}
+                    text={categoryList[i] ? (categoryList[i].secondName ? categoryList[i].secondName : categoryList[i].name) : ' '}
                     key={'category' + i}
                     left={i === 0 ? 0 : px2dp(10)}
                     press={() => {
@@ -59,10 +70,13 @@ export default class HomeCategoryView extends Component {
             );
         }
         return <View style={styles.container}>
+            <View style={{height: px2dp(20),}}>
+            {itemAll}
+            </View>
             <ScrollView horizontal
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}>
-            {itemsArr}
+                {itemsArr}
             </ScrollView>
         </View>;
     }
@@ -93,6 +107,6 @@ const styles = StyleSheet.create({
         color: '#FF0050',
         fontSize: px2dp(12),
         paddingLeft: px2dp(12),
-        paddingRight: px2dp(12),
+        paddingRight: px2dp(12)
     }
 });
