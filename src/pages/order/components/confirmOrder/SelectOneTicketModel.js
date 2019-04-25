@@ -135,12 +135,12 @@ export default class SelectOneTicketModel extends React.Component {
                         <View style={{flex: 1}}/>
                         <View style={{borderRadius: 5, borderColor: '#E4E4E4', borderWidth: 1, width: autoSizeWidth(105), height: autoSizeWidth(30),flexDirection: 'row'}}>
                             <TouchableOpacity style={{flex: 3, alignItems: 'center', justifyContent: 'center',borderRightColor: '#E4E4E4', borderRightWidth: 1}}
-                                              disabled={this.state.num <= 1 }
+                                              disabled={this.state.num <= 0 }
                                               onPress={()=>{this.setState({num: this.state.num-1})}}
                             >
                                 <Text style={{
                                     fontSize: autoSizeWidth(15),
-                                    color: this.state.num <= 1 ? '#CCCCCC': '#666666'}}>
+                                    color: this.state.num <= 0 ? '#CCCCCC': '#666666'}}>
                                    -
                                 </Text>
                             </TouchableOpacity>
