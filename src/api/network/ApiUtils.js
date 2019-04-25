@@ -21,7 +21,7 @@ export default function ApiUtils(Urls) {
         }
     });
     list.forEach(function(item) {
-        let name = item.name, url = item.uri+1, method = item.method || 'post', isRSA = item.isRSA || false,
+        let name = item.name, url = item.uri, method = item.method || 'post', isRSA = item.isRSA || false,
             filter = item.filter, checkLogin = item.checkLogin || false;
         result[name] = async function(params, config = {}) {
             if (checkLogin === true && !User.isLogin){
