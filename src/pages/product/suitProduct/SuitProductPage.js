@@ -4,9 +4,9 @@ import BasePage from '../../../BasePage';
 import { AmountItemView, MainProductView, SubProductView } from './components/SuitProductItemView';
 import SuitProductModel from './SuitProductModel';
 import { observer } from 'mobx-react';
-import SelectionPage, { sourceType } from '../SelectionPage';
 import SuitProductBottomView from './components/SuitProductBottomView';
 import RouterMap from '../../../navigation/RouterMap';
+import user from '../../../model/user';
 
 @observer
 export default class SuitProductPage extends BasePage {
@@ -25,24 +25,15 @@ export default class SuitProductPage extends BasePage {
 
     _renderItem = ({ item }) => {
         return <SubProductView item={item}
-                               suitProductModel={this.suitProductModel}
-                               chooseSku={() => this._chooseSku(item, true)}/>;
-    };
-
-    _chooseSku = (productItem, isPromotion) => {
-        this.suitProductModel.selectItem = productItem;
-        const { changeItem } = this.suitProductModel;
-        if (productItem.isSelected) {
-            changeItem();
-            return;
-        }
-        this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
-            changeItem(skuItem, isPromotion);
-        }, { needUpdate: true, sourceType: isPromotion ? sourceType.promotion : null, unShowAmount: true });
+                               suitProductModel={this.suitProductModel}/>;
     };
 
     _bottomAction = () => {
-        const { groupCode, selectedAmount, mainSkuItem } = this.suitProductModel;
+        if (!user.isLogin) {
+            this.$navigate(RouterMap.LoginPage);
+            return;
+        }
+        const { groupCode, selectedAmount, mainProduct } = this.suitProductModel;
         let orderProductList = this.suitProductModel.selectedItems.map((item) => {
             const { prodCode, skuCode } = item;
             return {
@@ -53,7 +44,15 @@ export default class SuitProductPage extends BasePage {
                 quantity: selectedAmount
             };
         });
-        const { prodCode, skuCode } = mainSkuItem;
+        const { prodCode, skuCode } = mainProduct.selectedSkuItem || {};
+        if (!prodCode) {
+            this.$toastShow('还有商品未选择规格');
+            return;
+        }
+        if (orderProductList.length === 0) {
+            this.$toastShow('至少选择一件搭配商品');
+            return;
+        }
         this.$navigate(RouterMap.ConfirOrderPage, {
             orderParamVO: {
                 orderType: 1,
@@ -70,18 +69,16 @@ export default class SuitProductPage extends BasePage {
     };
 
     _render() {
-        const { subProductArr, mainProduct } = this.suitProductModel;
+        const { subProductArr } = this.suitProductModel;
         return <View style={{ flex: 1 }}>
             <AmountItemView suitProductModel={this.suitProductModel}/>
-            <MainProductView suitProductModel={this.suitProductModel}
-                             chooseSku={() => this._chooseSku(mainProduct)}/>
+            <MainProductView suitProductModel={this.suitProductModel}/>
             <FlatList data={subProductArr}
                       keyExtractor={(item, index) => item + index}
                       renderItem={this._renderItem}
                       initialNumToRender={5}
             />
             <SuitProductBottomView suitProductModel={this.suitProductModel} bottomAction={this._bottomAction}/>
-            <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
         </View>;
     }
 }

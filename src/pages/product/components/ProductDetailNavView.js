@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Clipboard } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import res from '../res/product';
 import RouterMap, { navigateBack, navigate } from '../../../navigation/RouterMap';
 import { MRText } from '../../../components/ui';
-import bridge from '../../../utils/bridge';
 import DesignRule from '../../../constants/DesignRule';
 import { observer } from 'mobx-react';
+import ShopCartStore from '../../shopCart/model/ShopCartStore';
 
 const { back, share, shopCar } = res.pDetailNav;
 const { statusBarHeight } = ScreenUtils;
@@ -15,6 +15,7 @@ const { statusBarHeight } = ScreenUtils;
 @observer
 export default class ProductDetailNavView extends Component {
     render() {
+        const { getAllGoodsClassNumber } = ShopCartStore;
         const { showAction, productDetailModel } = this.props;
         const { name, showNavText } = productDetailModel;
         return (
@@ -28,17 +29,17 @@ export default class ProductDetailNavView extends Component {
                 </View>
                 <View style={styles.centerView}>
                     {showNavText && <MRText style={styles.centerText}
-                                            numberOfLines={1}
-                                            onLongPress={() => {
-                                                Clipboard.setString(name);
-                                                bridge.$toast('已将商品名称复制至剪贴板');
-                                            }}>{name}</MRText>}
+                                            numberOfLines={1}>{name}</MRText>}
                 </View>
                 <View style={[styles.barItemContainer, { justifyContent: 'flex-end' }]}>
                     <NoMoreClick style={styles.btnContainer} onPress={() => {
                         navigate(RouterMap.ShopCart, { hiddeLeft: false });
                     }}>
                         <Image source={shopCar}/>
+                        {getAllGoodsClassNumber !== 0 && <View style={styles.amountView}>
+                            <MRText
+                                style={styles.amountText}>{getAllGoodsClassNumber > 99 ? 99 : getAllGoodsClassNumber}</MRText>
+                        </View>}
                     </NoMoreClick>
                     <NoMoreClick style={styles.btnContainer} onPress={showAction}>
                         <Image source={share}/>
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     bgView: {
         zIndex: 1025,
         position: 'absolute', top: 0, left: 0, right: 0,
-        flexDirection: 'row', paddingTop: statusBarHeight,
+        flexDirection: 'row', marginTop: statusBarHeight,
         height: 44
     },
     barItemContainer: {
@@ -69,5 +70,14 @@ const styles = StyleSheet.create({
     },
     centerText: {
         color: DesignRule.textColor_mainTitle, fontSize: 14, fontWeight: 'bold'
+    },
+    amountView: {
+        position: 'absolute', top: 4, right: 8, height: 16,
+        paddingHorizontal: 6, justifyContent: 'center', alignItems: 'center',
+        backgroundColor: DesignRule.mainColor,
+        borderRadius: 8
+    },
+    amountText: {
+        color: 'white', fontSize: 10
     }
 });

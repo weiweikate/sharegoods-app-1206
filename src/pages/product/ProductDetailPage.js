@@ -4,12 +4,11 @@ import {
     StyleSheet,
     SectionList,
     Alert,
-    Image
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
 import PriceExplain from './components/PriceExplain';
-import SelectionPage from './SelectionPage';
+import SelectionPage, { sourceType } from './SelectionPage';
 import ScreenUtils from '../../utils/ScreenUtils';
 import shopCartCacheTool from '../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../comm/components/CommShareModal';
@@ -22,7 +21,7 @@ import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorB
 import DetailHeaderServiceModal from './components/DetailHeaderServiceModal';
 import DetailPromoteModal from './components/DetailPromoteModal';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
-import {SmoothPushPreLoadHighComponent} from '../../comm/components/SmoothPushHighComponent';
+import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 // import bridge from '../../../utils/bridge';
 
 // const redEnvelopeBg = res.other.red_big_envelope;
@@ -101,6 +100,7 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewAction = (type) => {
+        const { productIsPromotionPrice } = this.productDetailModel;
         switch (type) {
             case 'jlj':
                 if (!user.isLogin) {
@@ -130,8 +130,8 @@ export default class ProductDetailPage extends BasePage {
                 track(trackEvent.ClickOnlineCustomerService, { customerServiceModuleSource: 2 });
                 const { shopId, title, name, secondName, imgUrl, prodCode, showPrice } = this.productDetailModel;
                 QYChatTool.beginQYChat({
-                    shopId: shopId,
-                    title: title,
+                    shopId: shopId || '',
+                    title: title || '',
                     chatType: beginChatType.BEGIN_FROM_PRODUCT,
                     data: {
                         title: name,
@@ -148,11 +148,11 @@ export default class ProductDetailPage extends BasePage {
                     return;
                 }
                 this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm);
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
                 break;
             case 'gwc':
                 this.state.goType = type;
-                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm);
+                this.SelectionPage.show(this.productDetailModel, this._selectionViewConfirm, { sourceType: productIsPromotionPrice ? sourceType.promotion : null });
                 break;
         }
     };
@@ -181,7 +181,7 @@ export default class ProductDetailPage extends BasePage {
             let orderProducts = [{
                 skuCode: skuCode,
                 quantity: amount,
-                productCode: prodCode,
+                productCode: prodCode
             }];
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {

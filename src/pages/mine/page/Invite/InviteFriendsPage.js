@@ -37,7 +37,7 @@ import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from '../../../../constants/DesignRule';
 import res from '../../res';
 import user from '../../../../model/user';
-import { trackEvent, track } from '../../../../utils/SensorsTrack';
+import { trackEvent} from '../../../../utils/SensorsTrack';
 
 const {
     button: {

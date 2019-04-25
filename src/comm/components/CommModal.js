@@ -100,7 +100,7 @@ export default class CommModal extends PureComponent {
                 >
                     <View
                         style={[styles.container, { backgroundColor: this.props.transparent ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.5)' }]}>
-                        {this.props.children}
+                        {this.state.visible?this.props.children:null}
                     </View>
                 </TouchableOpacity>
             </NativeModalAndroid>

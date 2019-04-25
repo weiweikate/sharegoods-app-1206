@@ -1,4 +1,4 @@
-var fs = require("fs");
+let fs = require("fs");
 
 // 异步读取
 fs.readFile('config.json', function (err, data) {

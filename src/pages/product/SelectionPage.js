@@ -34,9 +34,11 @@ export default class SelectionPage extends Component {
             selectStrList: [],//选择的名称值
             selectSpecList: [],//选择规格所对应的所有库存,
             maxStock: 0,//最大库存
+            promotionLimit: 0,//没值不限购
 
             amount: 1,
-            sourceType: null
+            source_Type: null,
+            unShowAmount: false
         };
     }
 
@@ -47,9 +49,12 @@ export default class SelectionPage extends Component {
             this.state.selectStrList = [];
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
-            this.state.sourceType = propData.sourceType;
         }
-        const { specifyList, skuList } = data;
+        const { specifyList, skuList, promotionLimitNum } = data;
+        this.state.source_Type = propData.sourceType;
+        this.state.unShowAmount = propData.unShowAmount;
+        this.state.promotionLimit = promotionLimitNum || 0;
+
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
         let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
 
@@ -110,7 +115,7 @@ export default class SelectionPage extends Component {
                 //tempArr[index] 每行符合的数据
                 tempArr[index].forEach((item1) => {
                     //库存中有&&剩余数量不为0
-                    let sellStock = this.state.sourceType === sourceType.promotion ? item1.promotionStockNum : item1.sellStock;
+                    let sellStock = this.state.source_Type === sourceType.promotion ? item1.promotionStockNum : item1.sellStock;
                     if (item1.propertyValues.indexOf(`@${item.specValue}@`) !== -1 && StringUtils.isNoEmpty(sellStock) && sellStock !== 0) {
                         //如果是退换货多一次判断
                         if (type === 'after') {
@@ -259,18 +264,20 @@ export default class SelectionPage extends Component {
                     </TouchableWithoutFeedback>
                     <View style={{ flex: 1 }}>
                         <SelectionHeaderView product={this.state.data}
-                                             sourceType={this.state.sourceType}
+                                             sourceType={this.state.source_Type}
                                              selectStrList={this.state.selectStrList}
                                              selectSpecList={this.state.selectSpecList}
                                              closeSelectionPage={() => this.setState({ modalVisible: false })}/>
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
-                                {this.props.unShowAmount &&
+                                {!this.state.unShowAmount &&
                                 <SelectionAmountView style={{ marginVertical: 30 }}
                                                      amount={this.state.amount}
                                                      amountClickAction={this._amountClickAction}
-                                                     maxCount={this.state.maxStock} afterAmount={afterAmount}
+                                                     maxCount={this.state.maxStock}
+                                                     afterAmount={afterAmount}
+                                                     promotionLimit={this.state.promotionLimit}
                                                      type={type}/>}
                             </ScrollView>
                             <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>

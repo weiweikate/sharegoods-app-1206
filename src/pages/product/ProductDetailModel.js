@@ -5,6 +5,7 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import user from '../../model/user';
 import StringUtils from '../../utils/StringUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
+import DateUtils from '../../utils/DateUtils';
 
 const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -104,7 +105,7 @@ export default class ProductDetailModel {
     @observable paramList = [];
 
     /*商品评论{ headImg, nickname, imgUrl ,comment}*/
-    @observable comment = {};
+    @observable comment;
     /*商品数量*/
     @observable totalComment;
     /*商品详情图片*/
@@ -116,10 +117,13 @@ export default class ProductDetailModel {
     @observable title;
 
     /**营销活动**/
+    @observable promotionLimitNum;
     /*0:秒杀;1:套餐;2:直降;3:满减;4:满折*/
     @observable activityType;
     /*活动status 1未开始,2进行中,3已结束*/
     @observable activityStatus;
+    @observable startTime;
+    @observable endTime;
     /*倒计时*/
     @observable skillTimeout = 0;
     /*秒杀*/
@@ -132,25 +136,33 @@ export default class ProductDetailModel {
     /*套餐*/
     /*subProductList:[]*/
     @observable groupActivity = [];
+    /*活动标签*/
+    @observable tags = [];
     /*
-     * promotionUnitAmount 原价
      * promotionDecreaseAmount 优惠
      * promotionPrice 现价
      * promotionSaleNum 已抢
      * promotionStockNum 还剩
      * */
-    @observable promotionUnitAmount;
     @observable promotionDecreaseAmount;
 
     @observable promotionPrice;
     @observable promotionSaleNum;
     @observable promotionStockNum;
+
     @observable promotionMinPrice;
     @observable promotionMaxPrice;
 
+    /*产品当前页是否使用活动价格  (直降 秒杀)进行中*/
+    @computed get productIsPromotionPrice() {
+        const { activityType, activityStatus } = this;
+        let tempType = activityType === activity_type.skill || activityType === activity_type.verDown;
+        return tempType && activityStatus === activity_status.inSell;
+    }
+
     /*秒杀倒计时显示*/
     @computed get showTimeText() {
-        const { skillTimeout } = this;
+        const { skillTimeout, activityStatus } = this;
         //天数
         let days = Math.floor(skillTimeout / (24 * 3600 * 1000));
         //去除天数
@@ -166,14 +178,36 @@ export default class ProductDetailModel {
         //秒
         let second = Math.floor(leave3 / 1000);
         //mill
-        let leave4 = Math.floor(leave3 % 1000 / 10);
+        let leave4 = Math.floor(leave3 % 1000 / 100);
 
         hours = days * 24 + hours;
         hours = hours >= 10 ? hours : hours === 0 ? `00` : `0${hours}`;
         minutes = minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`;
         second = second >= 10 ? second : second === 0 ? `00` : `0${second}`;
-        leave4 = leave4 >= 10 ? leave4 : leave4 === 0 ? `00` : `0${leave4}`;
-        return `${hours}:${minutes}:${second}:${leave4}`;
+        if (activityStatus === activity_status.unBegin) {
+            //'yyyy-MM-dd HH:mm:ss';
+            //小于一小时
+            if (skillTimeout < 3600 * 1000) {
+                return `距开抢${minutes}:${second}:${leave4}`;
+            }
+            if (DateUtils.isToday(this.startTime)) {
+                let time = DateUtils.formatDate(this.startTime, 'HH:mm');
+                return `今天${time}开抢`;
+            }
+            if (DateUtils.isTomorrow(this.startTime)) {
+                let time = DateUtils.formatDate(this.startTime, 'HH:mm');
+                return `明天${time}开抢`;
+            }
+            return DateUtils.formatDate(this.startTime, 'dd号HH:mm') + '开抢';
+        } else if (activityStatus === activity_status.inSell) {
+            if (days < 1) {
+                return `距结束${hours}:${minutes}:${second}:${leave4}`;
+            } else {
+                return DateUtils.formatDate(this.startTime, 'dd-HH mm:ss') + '结束';
+            }
+        } else {
+            return '';
+        }
     }
 
     /*秒杀抢空*/
@@ -200,13 +234,13 @@ export default class ProductDetailModel {
     @computed get levelText() {
         const { priceType, activityStatus, activityType } = this;
         if (activityStatus === activity_status.inSell && activityType === activity_type.verDown) {
-            return '直降';
+            return this.tags[0];
         }
         return priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelRemark}价` : 'V1价';
     }
 
     @computed get sectionDataList() {
-        const { promoteInfoVOList, contentArr, groupActivity, activityStatus } = this;
+        const { promoteInfoVOList, contentArr, groupActivity, activityStatus, paramList } = this;
 
         let sectionArr = [
             { key: productItemType.headerView, data: [productItemType.headerView] }
@@ -222,8 +256,14 @@ export default class ProductDetailModel {
             );
         }
         sectionArr.push(
-            { key: productItemType.service, data: [productItemType.service] },
-            { key: productItemType.param, data: [productItemType.param] },
+            { key: productItemType.service, data: [productItemType.service] }
+        );
+        if (paramList.length !== 0) {
+            sectionArr.push(
+                { key: productItemType.param, data: [productItemType.param] }
+            );
+        }
+        sectionArr.push(
             { key: productItemType.comment, data: [productItemType.comment] },
             { key: productItemType.content, data: contentArr.slice() },
             { key: productItemType.priceExplain, data: [productItemType.priceExplain] }
@@ -248,7 +288,7 @@ export default class ProductDetailModel {
                 restrictions, paramList, comment, totalComment,
                 prodCode, upTime, now, content,
                 shopId, title,
-                promotionResult, promotionUnitAmount, promotionDecreaseAmount, promotionPrice,
+                promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice
             } = data || {};
 
@@ -275,7 +315,8 @@ export default class ProductDetailModel {
             this.promoteInfoVOList = promoteInfoVOList || [];
             this.restrictions = restrictions;
             this.paramList = paramList || [];
-            this.comment = comment || {};
+            /*不赋值默认 判空用*/
+            this.comment = comment;
             this.totalComment = totalComment;
             this.contentArr = contentArr;
             this.now = now;
@@ -283,12 +324,13 @@ export default class ProductDetailModel {
             this.shopId = shopId;
             this.title = title;
 
-            const { singleActivity, groupActivity } = promotionResult || {};
+            const { singleActivity, groupActivity, tags } = promotionResult || {};
             this.singleActivity = singleActivity || {};
             this.groupActivity = groupActivity || {};
-            this.promotionUnitAmount = promotionUnitAmount;
+            this.tags = tags;
             this.promotionDecreaseAmount = promotionDecreaseAmount;
 
+            this.promotionLimitNum = promotionLimitNum;
             this.promotionPrice = promotionPrice;
             this.promotionSaleNum = promotionSaleNum;
             this.promotionStockNum = promotionStockNum;
@@ -307,6 +349,9 @@ export default class ProductDetailModel {
                 endTimeT = endTime;
                 startTimeT = startTime;
             }
+
+            this.startTime = startTimeT;
+            this.endTime = endTimeT;
             this.activityType = typeT;
             if (now < startTimeT) {
                 this.activityStatus = activity_status.unBegin;
@@ -326,6 +371,7 @@ export default class ProductDetailModel {
                 }, upTime - now + 500);
             }
 
+
             /*商品详情埋点*/
             track(trackEvent.ProductDetail, {
                 spuCode: prodCode,
@@ -342,10 +388,11 @@ export default class ProductDetailModel {
         this.netFailedInfo = error;
     };
 
+    /*任何活动 未开始到开始  开始到结束  刷新(结束时间加500ms)*/
     @action _startSkillInterval = (start, end) => {
         this.skillInterval && clearInterval(this.skillInterval);
         if (isNoEmpty(start) && isNoEmpty(end)) {
-            let countdownDate = new Date().getTime() + (end - start);
+            let countdownDate = new Date().getTime() + ((end + 500) - start);
             this.skillInterval = setInterval(() => {
                 let timeOut = countdownDate - new Date().getTime();
                 if (timeOut <= 0) {

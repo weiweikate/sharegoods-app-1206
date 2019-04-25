@@ -9,10 +9,12 @@ import res from '../../res/product';
 import { observer } from 'mobx-react';
 import { navigate } from '../../../../navigation/RouterMap';
 import RouterMap from '../../../../navigation/RouterMap';
+import StringUtils from '../../../../utils/StringUtils';
+import SelectionPage from '../../SelectionPage';
 
 const { px2dp } = ScreenUtils;
 const { suitProduct } = res;
-const { selected, default_selected, cant_selected, un_selected, selected_sku } = suitProduct;
+const { selected, default_selected, un_selected, selected_sku } = suitProduct;
 
 @observer
 export class AmountItemView extends Component {
@@ -67,27 +69,43 @@ const aStyles = StyleSheet.create({
 
 @observer
 export class MainProductView extends Component {
+
+    _chooseSku = (productItem, isUpdate) => {
+        const { suitProductModel } = this.props;
+        suitProductModel.selectItem = productItem;
+        const { changeItem } = suitProductModel;
+        if (productItem.isSelected && !isUpdate) {
+            changeItem();
+            return;
+        }
+
+        this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
+            changeItem(skuItem, false, isUpdate);
+        }, { unShowAmount: true });
+    };
+
     render() {
-        const { suitProductModel, chooseSku } = this.props;
+        const { suitProductModel } = this.props;
         const { selectedAmount, mainProduct } = suitProductModel;
         const { isSelected, name, imgUrl, minPrice, selectedSkuItem } = mainProduct;
         const { propertyValues, price } = selectedSkuItem || {};
         return (
             <NoMoreClick style={[mStyles.bgView, { paddingHorizontal: 15 }]}
-                         onPress={chooseSku}>
+                         onPress={() => this._chooseSku(mainProduct)}>
                 <Image style={mStyles.selectImg} source={default_selected}/>
                 <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
-                <View style={mStyles.productView}>
+                <NoMoreClick style={mStyles.productView} onPress={() => this._chooseSku(mainProduct, true)}>
                     <MRText style={mStyles.nameText}>{name}</MRText>
                     <View style={mStyles.specView}>
                         <MRText style={mStyles.specText}
-                                numberOfLines={2}>规格: {isSelected ? propertyValues : '请选择'}</MRText>
+                                numberOfLines={2}>规格: {isSelected ? StringUtils.trimWithChar(propertyValues, '@').replace(/@/g, ',') : '请选择'}</MRText>
                         <Image style={mStyles.specImg} source={selected_sku}/>
                         <MRText style={mStyles.specAmountText}>x{selectedAmount}</MRText>
                     </View>
                     <MRText
                         style={mStyles.priceText}>{isSelected ? `¥${price}` : `¥${minPrice}起`}</MRText>
-                </View>
+                </NoMoreClick>
+                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </NoMoreClick>
         );
     }
@@ -95,14 +113,28 @@ export class MainProductView extends Component {
 
 @observer
 export class SubProductView extends Component {
+
+    _chooseSku = (productItem, isUpdate) => {
+        const { suitProductModel } = this.props;
+        suitProductModel.selectItem = productItem;
+        const { changeItem } = suitProductModel;
+        if (productItem.isSelected && !isUpdate) {
+            changeItem();
+            return;
+        }
+        this.SelectionPage.show(productItem, (amount, skuCode, skuItem) => {
+            changeItem(skuItem, true, isUpdate);
+        }, { unShowAmount: true });
+    };
+
     render() {
-        const { item, suitProductModel, chooseSku } = this.props;
+        const { item, suitProductModel } = this.props;
         const { selectedAmount } = suitProductModel;
-        const { isSelected, name, imgUrl, promotionMinPrice, minDecrease, selectedSkuItem, prodCode } = item;
-        const { promotionPrice, promotionDecreaseAmount, propertyValues } = selectedSkuItem || {};
+        const { isSelected, name, imgUrl, minPrice, minDecrease, selectedSkuItem, prodCode } = item;
+        const { price, promotionDecreaseAmount, propertyValues } = selectedSkuItem || {};
         return (
             <NoMoreClick style={[mStyles.bgView, { marginHorizontal: 15, marginTop: 10, borderRadius: 5 }]}
-                         onPress={chooseSku}>
+                         onPress={() => this._chooseSku(item)}>
                 <Image style={mStyles.selectImg}
                        source={isSelected ? selected : un_selected}/>
                 <NoMoreClick onPress={() => {
@@ -110,11 +142,11 @@ export class SubProductView extends Component {
                 }}>
                     <UIImage style={mStyles.productImg} source={{ uri: imgUrl }}/>
                 </NoMoreClick>
-                <View style={mStyles.productView}>
+                <NoMoreClick style={mStyles.productView} onPress={() => this._chooseSku(item, true)}>
                     <MRText style={mStyles.nameText}>{name}</MRText>
                     <View style={mStyles.specView}>
                         <MRText style={mStyles.specText}
-                                numberOfLines={2}>规格: {isSelected ? propertyValues : '请选择'}</MRText>
+                                numberOfLines={2}>规格: {isSelected ? StringUtils.trimWithChar(propertyValues, '@').replace(/@/g, ',') : '请选择'}</MRText>
                         <Image style={mStyles.specImg} source={selected_sku}/>
                         <MRText style={mStyles.specAmountText}>x{selectedAmount}</MRText>
                     </View>
@@ -125,8 +157,9 @@ export class SubProductView extends Component {
                         </View>
                     </View>
                     <MRText
-                        style={mStyles.priceText}>{isSelected ? `¥${promotionPrice}` : `¥${promotionMinPrice}起`}</MRText>
-                </View>
+                        style={mStyles.priceText}>{isSelected ? `¥${price}` : `¥${minPrice}起`}</MRText>
+                </NoMoreClick>
+                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </NoMoreClick>
         );
     }
@@ -140,7 +173,7 @@ const mStyles = StyleSheet.create({
         marginHorizontal: 10, width: 17, height: 17
     },
     productImg: {
-        marginRight: 10,
+        marginRight: 10, overflow: 'hidden',
         height: px2dp(80), width: px2dp(80), borderRadius: 5
     },
 
