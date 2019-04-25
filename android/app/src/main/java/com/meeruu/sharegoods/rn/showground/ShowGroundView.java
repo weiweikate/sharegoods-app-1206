@@ -53,7 +53,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
     private View errView;
     private WeakReference<View> showgroundView;
     private Handler handler;
-    private View root;
+    private View errImg;
 
     public ViewGroup getShowGroundView(ReactContext reactContext) {
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
@@ -61,7 +61,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         View view = inflater.inflate(R.layout.view_showground, null);
         initView(reactContext, view);
         initData();
-        root = view;
+
         return (ViewGroup) view;
     }
 
@@ -69,7 +69,23 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         handler = new Handler();
         showgroundView = new WeakReference<>(view);
         errView = view.findViewById(R.id.err_view);
-        errView.setVisibility(View.GONE);
+        errImg = view.findViewById(R.id.errImg);
+        errImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                errView.setVisibility(View.INVISIBLE);
+                swipeRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                        onRefresh();
+                    }
+                }, 200);
+            }
+        });
+
+        errView.setVisibility(View.INVISIBLE);
         swipeRefreshLayout = view.findViewById(R.id.refresh_control);
         swipeRefreshLayout.setColorSchemeResources(R.color.app_main_color);
         recyclerView = view.findViewById(R.id.home_recycler_view);
@@ -179,24 +195,15 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         if (adapter != null) {
             adapter.loadMoreFail();
         }
+
         handler.post(new Runnable() {
             @Override
             public void run() {
                 if (TextUtils.equals(code, "9999") && page == 1) {
-                    Log.e("sss","ss");
-                    recyclerView.clearAnimation();
-                    swipeRefreshLayout.clearAnimation();
                     errView.setVisibility(View.VISIBLE);
-                    swipeRefreshLayout.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.GONE);
-                    swipeRefreshLayout.invalidate();
-                    recyclerView.invalidate();
-                    root.requestLayout();
+                    swipeRefreshLayout.setVisibility(View.INVISIBLE);
                 } else {
-                    Log.e("sss","ss");
-
-                    recyclerView.setVisibility(View.VISIBLE);
-                    errView.setVisibility(View.GONE);
+                    errView.setVisibility(View.INVISIBLE);
                     swipeRefreshLayout.setVisibility(View.VISIBLE);
                 }
             }
@@ -270,8 +277,7 @@ public class ShowGroundView implements IShowgroundView, SwipeRefreshLayout.OnRef
         handler.post(new Runnable() {
             @Override
             public void run() {
-                recyclerView.setVisibility(View.VISIBLE);
-                errView.setVisibility(View.GONE);
+                errView.setVisibility(View.INVISIBLE);
                 swipeRefreshLayout.setVisibility(View.VISIBLE);
             }
         });
