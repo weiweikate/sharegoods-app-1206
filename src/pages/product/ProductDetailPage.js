@@ -297,7 +297,7 @@ export default class ProductDetailPage extends BasePage {
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
                                   showAction={() => {
-                                      this.shareModal.open();
+                                      this.shareModal && this.shareModal.open();
                                   }}/>
             <SectionList onScroll={this._onScroll}
                          ref={(e) => this.SectionList = e}
