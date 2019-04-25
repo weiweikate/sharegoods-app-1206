@@ -49,7 +49,7 @@ export default class HomeCategoryView extends Component {
         for (let i = 0; i < len; i++) {
             itemsArr.push(
                 <CategoryItem
-                    text={categoryList[i] ? categoryList[i].secondName : ' '}
+                    text={categoryList[i] ? (categoryList[i].secondName ? categoryList[i].secondName : categoryList[i].name) : ' '}
                     key={'category' + i}
                     left={i === 0 ? 0 : px2dp(10)}
                     press={() => {
@@ -62,7 +62,7 @@ export default class HomeCategoryView extends Component {
             <ScrollView horizontal
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}>
-            {itemsArr}
+                {itemsArr}
             </ScrollView>
         </View>;
     }
@@ -93,6 +93,6 @@ const styles = StyleSheet.create({
         color: '#FF0050',
         fontSize: px2dp(12),
         paddingLeft: px2dp(12),
-        paddingRight: px2dp(12),
+        paddingRight: px2dp(12)
     }
 });
