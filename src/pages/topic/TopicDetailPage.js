@@ -461,13 +461,18 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderSmallItem = ({ item }) => {
-        return <View style={{ flexDirection: 'row', height: 35 }}>
-            <View style={{ backgroundColor: DesignRule.lineColor_inGrayBg, width: 70, justifyContent: 'center' }}>
+        return <View style={{ flexDirection: 'row' }}>
+            <View style={{
+                backgroundColor: DesignRule.lineColor_inGrayBg,
+                width: 70,
+                alignItems: 'center'
+            }}>
                 <Text style={{
-                    marginLeft: 10,
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
                     color: DesignRule.textColor_mainTitle,
                     fontSize: 12
-                }} allowFontScaling={false}>{item.paramName || ''}</Text>
+                }} numberOfLines={2}>{item.paramName || ''}</Text>
             </View>
             <Text style={{
                 flex: 1,
