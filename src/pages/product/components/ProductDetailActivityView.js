@@ -90,15 +90,15 @@ export class ActivityDidBeginView extends Component {
                     <MRText style={DidBeginViewStyles.priceText}>¥<MRText
                         style={{ fontSize: 36 }}>{promotionPrice}</MRText></MRText>
                     <View style={{ flex: 1 }}>
-                        <View style={DidBeginViewStyles.skillView}>
-                            <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={DidBeginViewStyles.skillView}>
+                                <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
+                            </View>
                             <MRText
-                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'line-through' }]}>原价¥{originalPrice}</MRText>
-                            <MRText
-                                style={[DidBeginViewStyles.amountText]}> 已抢{promotionSaleNum}件</MRText>
+                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'line-through' }]}>¥{originalPrice}</MRText>
                         </View>
+                        <MRText
+                            style={[DidBeginViewStyles.amountText]}> 已抢{promotionSaleNum}件</MRText>
                     </View>
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
@@ -132,7 +132,7 @@ const DidBeginViewStyles = StyleSheet.create({
         fontSize: 20, color: DesignRule.white
     },
     skillView: {
-        justifyContent: 'center', alignItems: 'center', marginBottom: 3,
+        justifyContent: 'center', alignItems: 'center', marginBottom: 3, marginRight: 5,
         borderRadius: 2, backgroundColor: 'rgba(0,0,0,0.1)', width: 40, height: 16
     },
     skillText: {

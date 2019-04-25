@@ -205,13 +205,13 @@ export default class PaymentPage extends BasePage {
         if (bizType === 1){
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
-                type:'ReplacePayScreen',
+                type:'ReplacePaymentPage',
                 routeName: RouterMap.AddCapacityHistoryPage,
             })
         } else {
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
-                type: "ReplacePayScreen",
+                type: "ReplacePaymentPage",
                 routeName: "order/order/MyOrdersListPage",
                 params: { index: index ? index : 1 }
             });
