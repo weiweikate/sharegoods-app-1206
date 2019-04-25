@@ -53,27 +53,11 @@ const GoodsItem = props => {
     //     MAN_JIAN(40, "满减"),
     //     MAN_ZHE(50, "满折"),
     let tips = [];
-    let datas = ["秒杀", "降价拍", "升级礼包", "普通礼包", "经验专区"];
     if (activityCodes){
         activityCodes.forEach((item)=> {
-            let types = item.orderType || 0;
-            if (0<types && types<6) {
-                tips.push(datas[types-1]);
-            }
-            if (types === 10){
-                tips.push('秒杀');
-            }
-            if (types === 20){
-                tips.push('套餐');
-            }
-            if (types === 30){
-                tips.push('直降');
-            }
-            if (types === 40){
-                tips.push('满减');
-            }
-            if (types === 50){
-                tips.push('满折');
+            let types = item.tag
+            if (types) {
+                tips.push(types);
             }
         })
     }
