@@ -30,7 +30,7 @@ import res from "../../res";
 import BusinessUtils from "../../../mine/components/BusinessUtils";
 // import QYChatUtil from "../../../mine/page/helper/QYChatModel";
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
-import { beginChatType, QYChatTool } from '../../../../utils/QYModule/QYChatTool';
+import {  QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 
 const {
     afterSaleService: {

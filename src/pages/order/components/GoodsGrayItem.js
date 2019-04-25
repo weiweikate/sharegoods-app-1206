@@ -64,36 +64,13 @@ export default class GoodsGrayItem extends React.Component {
 
     render() {
         let { uri, goodsName, salePrice, category, goodsNum, onPress,activityCodes} = this.props;
-
-         const datas = [ "秒杀", "降价拍", "升级礼包", "普通礼包", "经验专区"];
-        // MIAO_SHA(10, "新秒杀"),
-        //     TAO_CAN(20, "套餐"),
-        //     ZHI_JIANG(30, "直降"),
-        //     MAN_JIAN(40, "满减"),
-        //     MAN_ZHE(50, "满折"),
         let tips = [];
         if (activityCodes){
             activityCodes.forEach((item)=> {
-                let types = item && item.orderType || 0;
-                if (0<types && types<6) {
-                    tips.push(datas[types-1]);
+                let types = item && item.tag;
+                if (types){
+                    tips.push(types)
                 }
-                if (types === 10){
-                    tips.push('秒杀');
-                }
-                if (types === 20){
-                    tips.push('套餐');
-                }
-                if (types === 30){
-                    tips.push('直降');
-                }
-                if (types === 40){
-                    tips.push('满减');
-                }
-                if (types === 50){
-                    tips.push('满折');
-                }
-
             })
         }
         return (

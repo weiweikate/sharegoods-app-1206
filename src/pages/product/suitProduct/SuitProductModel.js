@@ -48,12 +48,13 @@ export default class SuitProductModel {
     }
 
     @computed get totalPayMoney() {
-        const { price = 0 } = this.mainProduct.selectedSkuItem || {};
         let subPrice = this.selectedItems.reduce((pre, cur) => {
             const { promotionPrice } = cur;
             return add(pre, mul(promotionPrice, this.selectedAmount));
         }, 0);
-        return add(subPrice, price);
+
+        const { price = 0 } = this.mainProduct.selectedSkuItem || {};
+        return add(subPrice, mul(price, this.selectedAmount));
     }
 
     @computed get totalSubMoney() {
