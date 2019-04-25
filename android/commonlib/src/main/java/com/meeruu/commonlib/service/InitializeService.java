@@ -11,8 +11,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -183,18 +181,10 @@ public class InitializeService extends IntentService {
             // 响应 url 点击事件
             @Override
             public void onURLClicked(Context context, String url) {
-                ((QiyuServiceMessageActivity) context).finish(true);
+                ((QiyuServiceMessageActivity) context).finish();
                 QiyuUrlEvent event = new QiyuUrlEvent();
                 event.setUrl(url);
                 EventBus.getDefault().post(event);
-                // 打开内置浏览器等动作
-//                try {
-//                    context.startActivity(new Intent(context, Class.forName("com.meeruu.sharegoods.ui.activity.MRWebviewActivity"))
-//                            .putExtra("web_url", url)
-//                            .putExtra("url_action", "get"));
-//                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
-//                }
             }
         };
         return ysfOptions;
