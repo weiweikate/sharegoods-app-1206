@@ -332,7 +332,7 @@ export default class ProductDetailModel {
             this.tags = tags;
             this.promotionDecreaseAmount = promotionDecreaseAmount;
 
-            this.promotionLimitNum = promotionLimitNum;
+            this.promotionLimitNum = StringUtils.isNoEmpty(promotionLimitNum) ? (promotionLimitNum < 0 ? 0 : promotionLimitNum) : null;
             this.promotionPrice = promotionPrice;
             this.promotionSaleNum = promotionSaleNum;
             this.promotionStockNum = promotionStockNum;
