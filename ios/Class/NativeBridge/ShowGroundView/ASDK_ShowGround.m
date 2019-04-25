@@ -181,7 +181,6 @@
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic  toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
-    weakSelf.errCode = 10000;
     weakSelf.dataArr = [result.data mutableCopy];
     [weakSelf.collectionNode.view.mj_header endRefreshing];
     if(result.data.count < 20){
@@ -196,6 +195,7 @@
         weakSelf.collectionNode.view.mj_footer.hidden = NO;
       });
     }
+    weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;
     [MBProgressHUD showSuccess:msg];
@@ -216,7 +216,6 @@
   [dic addEntriesFromDictionary:@{@"page": [NSString stringWithFormat:@"%ld",self.page], @"size": @"20"}];
   __weak ASDK_ShowGround * weakSelf = self;
   [NetWorkTool requestWithURL:self.uri params:dic toModel:[ShowQueryModel class] success:^(ShowQueryModel* result) {
-      weakSelf.errCode = 10000;
     [weakSelf.dataArr addObjectsFromArray:result.data];
     NSMutableArray *indexPaths = [NSMutableArray new];
     for (int i = 0; i<result.data.count; i++) {
@@ -230,6 +229,7 @@
     }else{
       [weakSelf.collectionNode.view.mj_footer endRefreshing];
     }
+     weakSelf.errCode = 10000;
   } failure:^(NSString *msg, NSInteger code) {
     weakSelf.errCode = code;
     [MBProgressHUD showSuccess:msg];
