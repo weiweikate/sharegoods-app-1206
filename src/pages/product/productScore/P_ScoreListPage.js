@@ -16,9 +16,11 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ProductApi from '../api/ProductApi';
 import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
 import ProductDetailNavView from '../components/ProductDetailNavView';
+import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 
 const { p_score_smile, p_score_empty } = res.productScore;
 
+@SmoothPushPreLoadHighComponent
 export default class P_ScoreListPage extends BasePage {
 
     state = {

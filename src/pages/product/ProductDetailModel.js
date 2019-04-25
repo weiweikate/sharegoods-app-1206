@@ -332,7 +332,7 @@ export default class ProductDetailModel {
             this.tags = tags;
             this.promotionDecreaseAmount = promotionDecreaseAmount;
 
-            this.promotionLimitNum = promotionLimitNum;
+            this.promotionLimitNum = StringUtils.isNoEmpty(promotionLimitNum) ? (promotionLimitNum < 0 ? 0 : promotionLimitNum) : null;
             this.promotionPrice = promotionPrice;
             this.promotionSaleNum = promotionSaleNum;
             this.promotionStockNum = promotionStockNum;
@@ -438,17 +438,17 @@ export default class ProductDetailModel {
         ProductApi.getProductDetailByCodeV2({
             code: this.prodCode
         }).then((data) => {
-            this.productSuccess((data || {}).data);
+            let tempData = data.data || {};
+            this.productSuccess(tempData);
+            this.requestShopInfo(tempData.supplierCode);
         }).catch((e) => {
             this.productError(e);
         });
-
-        this.requestShopInfo();
     };
 
 
-    requestShopInfo = () => {
-        ProductApi.getProductShopInfoBySupplierCode({ supplierCode: this.prodCode }).then((data) => {
+    requestShopInfo = (code) => {
+        ProductApi.getProductShopInfoBySupplierCode({ supplierCode: code }).then((data) => {
             this.shopInfoSuccess(data.data);
         });
     };
