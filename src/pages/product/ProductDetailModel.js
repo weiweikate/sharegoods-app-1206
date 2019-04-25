@@ -209,7 +209,7 @@ export default class ProductDetailModel {
             if (days < 1) {
                 return `距结束${hours}:${minutes}:${second}:${leave4}`;
             } else {
-                return DateUtils.formatDate(this.startTime, 'dd-HH mm:ss') + '结束';
+                return DateUtils.formatDate(this.endTime, 'dd-HH mm:ss') + '结束';
             }
         } else {
             return '';
