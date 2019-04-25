@@ -21,7 +21,7 @@ const AddressItem = props => {
         onPress = this.defaultPress,
         style = {
             flexDirection: 'row',
-            height: 84,
+            minHeight: 84,
             justifyContent: 'space-between',
             alignItems: 'center',
             backgroundColor: 'white'
@@ -45,7 +45,7 @@ const AddressItem = props => {
                             numberOfLines={1}/>
                 </View>
                 <UIText value={address} style={{ color: DesignRule.textColor_instruction, fontSize: 15 }}
-                        numberOfLines={2}/>
+                        numberOfLines={0}/>
             </View>
             {/*{this.renderRightImage()}*/}
         </TouchableOpacity>
