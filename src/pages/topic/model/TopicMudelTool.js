@@ -50,7 +50,7 @@ const typeName = {
  * @type {{[p: string]: string, [p: number]: string}}
  */
 const jumpPageParams = {
-    [productTypes.skill]: 'topic/TopicDetailPage',
+    [productTypes.skill]: 'product/ProductDetailPage',
     //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
     [productTypes.down]: 'topic/TopicDetailPage',
     [productTypes.giftPackage]: 'topic/TopicDetailPage',
