@@ -6,6 +6,7 @@ import user from '../../model/user';
 import StringUtils from '../../utils/StringUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DateUtils from '../../utils/DateUtils';
+import TopicAPI from '../topic/api/TopicApi';
 
 const { width, height } = ScreenUtils;
 const { isNoEmpty } = StringUtils;
@@ -419,6 +420,21 @@ export default class ProductDetailModel {
         * SPU00000375 直降
         * SPU00000361 套餐主商品 SPU00000098
         * */
+        /*兼容旧版本秒杀跳转普通商品*/
+        if (this.prodCode.indexOf('MS') === 0) {
+            TopicAPI.seckill_findByCode({ code: this.prodCode }).then((data) => {
+                const { prodCode } = data.data || {};
+                this.prodCode = prodCode;
+                this.requestProductDetailReal();
+            }).catch(e => {
+                this.productError(e);
+            });
+        } else {
+            this.requestProductDetailReal();
+        }
+    };
+
+    requestProductDetailReal = () => {
         ProductApi.getProductDetailByCodeV2({
             code: this.prodCode
         }).then((data) => {
@@ -429,6 +445,7 @@ export default class ProductDetailModel {
 
         this.requestShopInfo();
     };
+
 
     requestShopInfo = () => {
         ProductApi.getProductShopInfoBySupplierCode({ supplierCode: this.prodCode }).then((data) => {
