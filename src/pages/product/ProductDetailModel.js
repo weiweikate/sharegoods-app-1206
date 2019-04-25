@@ -292,7 +292,6 @@ export default class ProductDetailModel {
                 monthSaleCount, skuList, specifyList, stockSysConfig, promoteInfoVOList,
                 restrictions, paramList, comment, totalComment,
                 prodCode, upTime, now, content,
-                shopId, title,
                 promotionResult, promotionDecreaseAmount, promotionPrice, promotionLimitNum,
                 promotionSaleNum, promotionStockNum, promotionMinPrice, promotionMaxPrice
             } = data || {};
@@ -325,9 +324,6 @@ export default class ProductDetailModel {
             this.totalComment = totalComment;
             this.contentArr = contentArr;
             this.now = now;
-
-            this.shopId = shopId;
-            this.title = title;
 
             const { singleActivity, groupActivity, tags } = promotionResult || {};
             this.singleActivity = singleActivity || {};
@@ -430,5 +426,19 @@ export default class ProductDetailModel {
         }).catch((e) => {
             this.productError(e);
         });
+
+        this.requestShopInfo();
+    };
+
+    requestShopInfo = () => {
+        ProductApi.getProductShopInfoBySupplierCode({ supplierCode: this.prodCode }).then((data) => {
+            this.shopInfoSuccess(data.data);
+        });
+    };
+
+    @action shopInfoSuccess = (data) => {
+        const { shopId, title } = data;
+        this.shopId = shopId;
+        this.title = title;
     };
 }

@@ -3,8 +3,7 @@ import ApiUtils from '../../../api/network/ApiUtils';
 const api = {
     //新接口商品详情
     getProductDetailByCodeV2: ['/product/getProductDetailByCodeV2', { method: 'get' }],
-    // 获取产品获取活动信息 蒋大为
-    queryByProductCode: ['/operator/activity/queryByProductCode', { method: 'get' }],
+    getProductShopInfoBySupplierCode: ['/product/getProductShopInfoBySupplierCode', { method: 'get' }],
     // 获取产品规格信息
     getProductSpec: ['/product/getProductSpec', { method: 'get' }],
     /**评论**/
