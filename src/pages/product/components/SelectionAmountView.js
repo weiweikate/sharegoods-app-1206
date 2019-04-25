@@ -41,7 +41,7 @@ export default class SelectionAmountView extends Component {
 
     _rightAction = () => {
         const { promotionLimit } = this.props;
-        if (promotionLimit !== 0 && promotionLimit <= this.state.amount) {
+        if (promotionLimit !== null && promotionLimit <= this.state.amount) {
             bridge.$toast(`最多只能购买${promotionLimit}件~`);
             return;
         }
@@ -96,7 +96,7 @@ export default class SelectionAmountView extends Component {
     componentWillReceiveProps(nextProps) {
         const { maxCount, promotionLimit } = nextProps;
 
-        if (promotionLimit !== 0 && this.state.amount > promotionLimit) {
+        if (promotionLimit !== null && this.state.amount > promotionLimit) {
             this.setState({
                 amount: promotionLimit
             }, () => {
@@ -133,7 +133,7 @@ export default class SelectionAmountView extends Component {
                         color: DesignRule.textColor_secondTitle,
                         marginLeft: 16,
                         fontSize: 13
-                    }}>购买数量<Text>{promotionLimit === 0 ? '' : `(限购${promotionLimit}件)`}</Text></Text>
+                    }}>购买数量<Text>{promotionLimit !== null ? `(限购${promotionLimit}件)` : ''}</Text></Text>
                 <View style={{
                     flexDirection: 'row',
                     borderColor: DesignRule.lineColor_inGrayBg,

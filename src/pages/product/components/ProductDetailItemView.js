@@ -47,7 +47,7 @@ export class HeaderItemView extends Component {
                         <Text style={styles.priceText}>¥<Text style={{ fontSize: 24 }}>{minPrice}</Text>-¥<Text
                             style={{ fontSize: 24 }}>{maxPrice}</Text></Text>
                 }
-                <Text style={styles.originalText}>{originalPrice}</Text>
+                <Text style={styles.originalText}>¥{originalPrice}</Text>
                 <View style={styles.levelView}>
                     <Text style={styles.levelText}>{levelText}</Text>
                 </View>
@@ -93,7 +93,12 @@ export class HeaderItemView extends Component {
                 {showIn && <ActivityDidBeginView productDetailModel={productDetailModel}/>}
                 {
                     showPrice && (verDownInSell ?
-                        this._renderPriceView({ minPrice:promotionMinPrice, maxPrice:promotionMaxPrice, originalPrice, levelText })
+                        this._renderPriceView({
+                            minPrice: promotionMinPrice,
+                            maxPrice: promotionMaxPrice,
+                            originalPrice,
+                            levelText
+                        })
                         :
                         this._renderPriceView({ minPrice, maxPrice, originalPrice, levelText }))
                 }
@@ -134,7 +139,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_instruction, fontSize: 12, textDecorationLine: 'line-through'
     },
     levelView: {
-        borderColor: DesignRule.textColor_redWarn, borderWidth: 1, borderRadius: 2
+        borderRadius: 2, backgroundColor: 'rgba(255,0,80,0.1)'
     },
     levelText: {
         paddingHorizontal: 4, paddingVertical: 2,

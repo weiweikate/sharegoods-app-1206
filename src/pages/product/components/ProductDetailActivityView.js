@@ -18,10 +18,11 @@ const { arrow_right_black } = res.button;
 export class ActivityWillBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, showTimeText } = productDetailModel;
+        const { promotionPrice, showTimeText, singleActivity } = productDetailModel;
+        const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={WillBeginStyles.bgView} onPress={() => {
-                navigate('HtmlPage', {
+                extraProperty === 'toSpike' && navigate('HtmlPage', {
                     uri: `${apiEnvironment.getCurrentH5Url()}/spike`
                 });
             }}>
@@ -34,7 +35,7 @@ export class ActivityWillBeginView extends Component {
                 </View>
                 <View style={WillBeginStyles.rightView}>
                     <MRText style={WillBeginStyles.rightText}>{showTimeText}</MRText>
-                    <Image source={arrow_right_black}/>
+                    {extraProperty === 'toSpike' && <Image source={arrow_right_black}/>}
                 </View>
             </NoMoreClick>
         );
@@ -75,12 +76,13 @@ const WillBeginStyles = StyleSheet.create({
 export class ActivityDidBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText } = productDetailModel;
+        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText, singleActivity } = productDetailModel;
         let total = math.eval(promotionSaleNum + promotionStockNum);
         let progress = total == 0 ? 0 : math.eval(promotionStockNum / total);
+        const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
-                navigate('HtmlPage', {
+                extraProperty === 'toSpike' && navigate('HtmlPage', {
                     uri: `${apiEnvironment.getCurrentH5Url()}/spike`
                 });
             }}>
@@ -88,15 +90,15 @@ export class ActivityDidBeginView extends Component {
                     <MRText style={DidBeginViewStyles.priceText}>¥<MRText
                         style={{ fontSize: 36 }}>{promotionPrice}</MRText></MRText>
                     <View style={{ flex: 1 }}>
-                        <View style={DidBeginViewStyles.skillView}>
-                            <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={DidBeginViewStyles.skillView}>
+                                <MRText style={DidBeginViewStyles.skillText}>秒杀价</MRText>
+                            </View>
                             <MRText
-                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'line-through' }]}>原价¥{originalPrice}</MRText>
-                            <MRText
-                                style={[DidBeginViewStyles.amountText]}> 已抢{promotionSaleNum}件</MRText>
+                                style={[DidBeginViewStyles.amountText, { textDecorationLine: 'line-through' }]}>¥{originalPrice}</MRText>
                         </View>
+                        <MRText
+                            style={[DidBeginViewStyles.amountText]}> 已抢{promotionSaleNum}件</MRText>
                     </View>
                 </View>
                 <View style={DidBeginViewStyles.rightView}>
@@ -110,7 +112,7 @@ export class ActivityDidBeginView extends Component {
                             </View>
                         </View>
                     </View>
-                    <Image source={arrow_right_black} style={{ marginRight: 13 }}/>
+                    {extraProperty === 'toSpike' && <Image source={arrow_right_black} style={{ marginRight: 13 }}/>}
                 </View>
             </NoMoreClick>
         );
@@ -130,7 +132,7 @@ const DidBeginViewStyles = StyleSheet.create({
         fontSize: 20, color: DesignRule.white
     },
     skillView: {
-        justifyContent: 'center', alignItems: 'center', marginBottom: 3,
+        justifyContent: 'center', alignItems: 'center', marginBottom: 3, marginRight: 5,
         borderRadius: 2, backgroundColor: 'rgba(0,0,0,0.1)', width: 40, height: 16
     },
     skillText: {

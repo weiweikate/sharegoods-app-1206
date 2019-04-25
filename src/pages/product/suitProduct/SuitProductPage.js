@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList } from 'react-native';
 import BasePage from '../../../BasePage';
 import { AmountItemView, MainProductView, SubProductView } from './components/SuitProductItemView';
 import SuitProductModel from './SuitProductModel';

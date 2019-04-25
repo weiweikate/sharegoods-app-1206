@@ -72,35 +72,12 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
         });
     }
 
-    private void handleTop() {
-        View titleBar = findViewById(R.id.ysf_title_bar);
-        if (titleBar.getPaddingTop() != ScreenUtils.getStatusHeight(this)) {
-            titleBar.setPadding(0, ScreenUtils.getStatusHeight(this), 0, 0);
-            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) titleBar.getLayoutParams();
-            param.height += ScreenUtils.getStatusHeight(this);
-            titleBar.setLayoutParams(param);
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EditText editText = findViewById(R.id.editTextMessage);
         if (editText != null) {
             KeyBoardUtils.closeKeybord(editText, this);
-        }
-    }
-
-    public void finish(boolean needFinish) {
-        if (source != null) {
-            String chatType = source.custom;
-            if ("0".equals(chatType) || "3".equals(chatType)) {
-                // do nothing
-            } else {
-                if (needFinish) {
-                    this.finish();
-                }
-            }
         }
     }
 }
