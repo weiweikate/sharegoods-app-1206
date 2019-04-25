@@ -47,10 +47,12 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
 import ProductApi from '../product/api/ProductApi';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
+import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 
 /*
 * 仅有礼包了  2019.4.25
 * */
+@SmoothPushPreLoadHighComponent
 export default class TopicDetailPage extends BasePage {
 
     $navigationBarOptions = {

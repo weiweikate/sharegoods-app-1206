@@ -28,11 +28,13 @@ import { beginChatType, QYChatTool } from '../../../utils/QYModule/QYChatTool';
 import Manager, { AdViewBindModal } from '../../../components/web/WebModalManager';
 import LuckyIcon from '../../guide/LuckyIcon';
 import { homeType } from '../../home/HomeTypes';
+import { SmoothPushPreLoadHighComponent } from '../../../comm/components/SmoothPushHighComponent';
 
 const { arrow_right_black } = productRes.button;
 const { detail_more_down } = productRes.detailNavView;
 const { xp_detail_icon } = productRes.xpProduct;
 
+@SmoothPushPreLoadHighComponent
 @observer
 export class XpDetailPage extends BasePage {
 

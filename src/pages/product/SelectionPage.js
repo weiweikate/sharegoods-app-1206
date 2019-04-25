@@ -34,7 +34,7 @@ export default class SelectionPage extends Component {
             selectStrList: [],//选择的名称值
             selectSpecList: [],//选择规格所对应的所有库存,
             maxStock: 0,//最大库存
-            promotionLimit: 0,//没值不限购
+            promotionLimit: null,//没值不限购
 
             amount: 1,
             source_Type: null,
@@ -53,7 +53,7 @@ export default class SelectionPage extends Component {
         const { specifyList, skuList, promotionLimitNum } = data;
         this.state.source_Type = propData.sourceType;
         this.state.unShowAmount = propData.unShowAmount;
-        this.state.promotionLimit = promotionLimitNum || 0;
+        this.state.promotionLimit = promotionLimitNum;
 
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
         let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
