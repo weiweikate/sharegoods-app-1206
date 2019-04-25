@@ -26,9 +26,8 @@ const MessageUtils = {
 
                 break;
             case 107://秒杀
-                navigation("topic/TopicDetailPage", {
-                    activityCode: params,
-                    activityType: 1
+                navigation(RouterMap.ProductDetailPage, {
+                    productCode: params,
                 });
                 break;
             case 108://降价拍
