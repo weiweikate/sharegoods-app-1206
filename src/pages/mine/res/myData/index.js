@@ -10,5 +10,6 @@ const myData = {
     icon_v4:require('./icon_v4.png'),
     icon_v5:require('./icon_v5.png'),
     next_icon:require('./next_icon.png'),
+    icon_invite:require('./icon_invite.png'),
 };
 export default myData;

@@ -60,7 +60,6 @@ export default class SearchResultPage extends BasePage {
             refreshing: false,//是否显示下拉的菊花
             noMore: false,//是否能加载更多
             loadingMore: false,//是否显示加载更多的菊花
-            loadingMoreError: null,//加载更多是否报错
 
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
@@ -217,13 +216,11 @@ export default class SearchResultPage extends BasePage {
                 this.setState({
                     noMore: data.isMore === 0,
                     loadingMore: false,
-                    loadingMoreError: null,
                     productList: this.state.productList.concat(dataArr || [])
                 });
             }).catch((error) => {
                 this.setState({
                     loadingMore: false,
-                    loadingMoreError: error.msg
                 });
             });
         });
@@ -372,7 +369,6 @@ export default class SearchResultPage extends BasePage {
             return null;
         }
         return <ListFooter loadingMore={this.state.loadingMore}
-                           errorDesc={this.state.loadingMoreError}
                            onPressLoadError={this._onEndReached}/>;
     };
     _onEndReached = () => {

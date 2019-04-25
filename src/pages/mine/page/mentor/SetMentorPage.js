@@ -58,7 +58,7 @@ export default class SetMentorPage extends BasePage {
 
     _searchWithCode = () => {
         if(this.state.nowSearch && StringUtils.isEmpty(this.state.nowSearch.trim())){
-            this.$toastShow('请输入服务顾问的会员号！')
+            this.$toastShow('请输入推荐人会员号！')
             return;
         }
 
@@ -192,7 +192,7 @@ export default class SetMentorPage extends BasePage {
             <View style={styles.searchWrapper}>
                 <View style={styles.textInputWrapper}>
                     <Image resizeMode={'stretch'} source={mentor_search_icon} style={styles.searchIconStyle}/>
-                    <TextInput placeholder={'请输入服务顾问的会员号'} style={styles.textInputStyle}
+                    <TextInput placeholder={'请输入推荐人会员号'} style={styles.textInputStyle}
                                keyboardType={'numeric'}
                                onChangeText={(text) => {
                                    this.setState({

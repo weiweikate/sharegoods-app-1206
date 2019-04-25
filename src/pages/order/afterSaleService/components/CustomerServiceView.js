@@ -30,6 +30,7 @@ import res from "../../res";
 import BusinessUtils from "../../../mine/components/BusinessUtils";
 // import QYChatUtil from "../../../mine/page/helper/QYChatModel";
 import { track, trackEvent } from '../../../../utils/SensorsTrack';
+import { beginChatType, QYChatTool } from '../../../../utils/QYModule/QYChatTool';
 
 const {
     afterSaleService: {
@@ -57,7 +58,18 @@ export default class CustomerServiceView extends React.Component {
     /** 七鱼客服*/
     contactSeller = () => {
         track(trackEvent.ClickOnlineCustomerService, {customerServiceModuleSource: 4});
-        // QYChatUtil.qiYUChat();
+         //QYChatUtil.qiYUChat();
+        // QYChatTool.beginQYChat({
+        //     routePath: '',
+        //     urlString: '',
+        //     title: '平台客服',
+        //     shopId: '',
+        //     chatType: beginChatType.BEGIN_FROM_ORDER,
+        //     data: {
+        //
+        //     }
+        // })
+        QYChatTool.beginQYChat();
     };
 
     render() {

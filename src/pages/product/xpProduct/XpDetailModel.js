@@ -72,6 +72,8 @@ class XpDetailModel {
     @observable pParamList = [];
     @observable pUpTime = '';
 
+    @observable shopId;
+    @observable title;
 
     @computed get pHtml() {
         let contentS = this.pData.content || '';
@@ -219,7 +221,7 @@ class XpDetailModel {
     /*第一加载第一个  选择加载  失败重试*/
     request_getProductDetailByCode = () => {
         this.productPageState = PageLoadingState.loading;
-        ProductApi.getProductDetailByCode({
+        ProductApi.getProductDetailByCodeV2({
             // code:'SPU00000375',
             code: this.selectedSpuCode
         }).then((data) => {
@@ -227,6 +229,8 @@ class XpDetailModel {
         }).catch((error) => {
             this.productError(error);
         });
+
+        this.requestShopInfo();
     };
 
     /**消息数量**/
@@ -238,6 +242,18 @@ class XpDetailModel {
             }
         }).catch((error) => {
         });
+    };
+
+    requestShopInfo = () => {
+        ProductApi.getProductShopInfoBySupplierCode({ supplierCode: this.selectedSpuCode }).then((data) => {
+            this.shopInfoSuccess(data.data);
+        });
+    };
+
+    @action shopInfoSuccess = (data) => {
+        const { shopId, title } = data;
+        this.shopId = shopId;
+        this.title = title;
     };
 }
 
