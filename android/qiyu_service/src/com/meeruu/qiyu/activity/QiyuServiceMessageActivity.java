@@ -72,16 +72,6 @@ public class QiyuServiceMessageActivity extends ServiceMessageActivity {
         });
     }
 
-    private void handleTop() {
-        View titleBar = findViewById(R.id.ysf_title_bar);
-        if (titleBar.getPaddingTop() != ScreenUtils.getStatusHeight(this)) {
-            titleBar.setPadding(0, ScreenUtils.getStatusHeight(this), 0, 0);
-            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) titleBar.getLayoutParams();
-            param.height += ScreenUtils.getStatusHeight(this);
-            titleBar.setLayoutParams(param);
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
