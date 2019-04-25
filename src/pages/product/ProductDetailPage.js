@@ -3,7 +3,7 @@ import {
     View,
     StyleSheet,
     SectionList,
-    Alert,
+    Alert
 } from 'react-native';
 import BasePage from '../../BasePage';
 import DetailBottomView from './components/DetailBottomView';
@@ -292,12 +292,12 @@ export default class ProductDetailPage extends BasePage {
     }
 
     _renderContent = () => {
-        const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, shareMoney, sectionDataList } = this.productDetailModel;
+        const { name, imgUrl, prodCode, originalPrice, groupPrice, v0Price, promotionPrice, shareMoney, sectionDataList, isSkillIn } = this.productDetailModel;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <ProductDetailNavView productDetailModel={this.productDetailModel}
                                   showAction={() => {
-                                      this.shareModal.open();
+                                      this.shareModal && this.shareModal.open();
                                   }}/>
             <SectionList onScroll={this._onScroll}
                          ref={(e) => this.SectionList = e}
@@ -325,21 +325,22 @@ export default class ProductDetailPage extends BasePage {
                             imageJson={{
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
+                                priceType: isSkillIn ? 'mr_skill' : '',
                                 priceStr: `￥${originalPrice}`,
-                                retailPrice: `￥${v0Price}`,
+                                retailPrice: `￥${isSkillIn ? promotionPrice : v0Price}`,
                                 shareMoney: shareMoney,
                                 spellPrice: `￥${groupPrice}`,
                                 QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`
                             }}
                             webJson={{
-                                title: `${name}`,
-                                dec: '商品详情',
+                                title: isSkillIn ? '超值秒杀!' : `${name}`,
+                                dec: isSkillIn ? '[秀购]发现一个很给力的活动,快去看看!' : '商品详情',
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,
                                 thumImage: imgUrl
                             }}
                             miniProgramJson={{
-                                title: `${name}`,
-                                dec: '商品详情',
+                                title: isSkillIn ? '超值秒杀!' : `${name}`,
+                                dec: isSkillIn ? '[秀购]发现一个很给力的活动,快去看看!' : '商品详情',
                                 thumImage: 'logo.png',
                                 hdImageURL: imgUrl,
                                 linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${prodCode}?upuserid=${user.code || ''}`,

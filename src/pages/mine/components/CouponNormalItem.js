@@ -26,7 +26,7 @@ export default class CouponNormalItem extends Component{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(94),
                     margin: 2
-                }} source={item.status == 0 ? (item.levelimit ? usedBg : unUsedBg) : usedBg} resizeMode='stretch'>
+                }} source={item.status === 0 ? (item.levelimit ? usedBg : unUsedBg) : usedBg} resizeMode='stretch'>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <View style={styles.itemFirStyle}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>

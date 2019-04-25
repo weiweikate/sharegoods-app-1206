@@ -202,7 +202,7 @@ export default class PaymentPage extends BasePage {
 
     _goToOrder(index) {
         const {bizType} = payment;
-        if (bizType == 1){
+        if (bizType === 1){
             this.props.navigation.dispatch({
                 key: this.props.navigation.state.key,
                 type:'ReplacePayScreen',

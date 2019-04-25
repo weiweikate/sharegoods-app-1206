@@ -35,8 +35,8 @@ const formatDecimal = (num, needSymbol = true) => {
     let temp = (isNoEmpty(num) ? num : 0) + '';
     if (temp.indexOf('.') === -1) {
         temp += '.00';
-    } else{
-        temp=num.toFixed(2);
+    } else {
+        temp = num.toFixed(2);
     }
     //截取
     // if ((temp.indexOf('.') + 3) < temp.length) {
@@ -210,9 +210,11 @@ const clipboardSetString = (content) => {
 const clipboardGetString = () => {
     return Clipboard.getString();
 };
-function trimWithChar(string,char) {
-    return string.replace(new RegExp('^\\'+char+'+|\\'+char+'+$', 'g'), '');
+
+function trimWithChar(string, char) {
+    return string.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '');
 }
+
 //去左空格
 function ltrim(s) {
     return s.replace(/(^\s*)/g, '');
@@ -283,7 +285,37 @@ function parsingRoute(s) {
 }
 
 function isNumber(n) {
-    return  !isNaN(parseFloat(n))&&isFinite(n);
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function add(arg1, arg2) {
+    let r1, r2, m, c;
+    try {
+        r1 = arg1.toString().split('.')[1].length;
+    } catch (e) {
+        r1 = 0;
+    }
+    try {
+        r2 = arg2.toString().split('.')[1].length;
+    } catch (e) {
+        r2 = 0;
+    }
+    c = Math.abs(r1 - r2);
+    m = Math.pow(10, Math.max(r1, r2));
+    if (c > 0) {
+        let cm = Math.pow(10, c);
+        if (r1 > r2) {
+            arg1 = Number(arg1.toString().replace('.', ''));
+            arg2 = Number(arg2.toString().replace('.', '')) * cm;
+        } else {
+            arg1 = Number(arg1.toString().replace('.', '')) * cm;
+            arg2 = Number(arg2.toString().replace('.', ''));
+        }
+    } else {
+        arg1 = Number(arg1.toString().replace('.', ''));
+        arg2 = Number(arg2.toString().replace('.', ''));
+    }
+    return (arg1 + arg2) / m;
 }
 
 function mul(arg1, arg2) {
@@ -291,27 +323,27 @@ function mul(arg1, arg2) {
         s1 = arg1.toString(),
         s2 = arg2.toString();
     try {
-        m += s1.split(".")[1].length;
+        m += s1.split('.')[1].length;
     }
     catch (e) {
     }
     try {
-        m += s2.split(".")[1].length;
-    }     catch (e) {
+        m += s2.split('.')[1].length;
+    } catch (e) {
     }
-    return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+    return Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m);
 }
 
 function sub(arg1, arg2) {
     let r1, r2, m, n;
     try {
-        r1 = arg1.toString().split(".")[1].length;
+        r1 = arg1.toString().split('.')[1].length;
     }
     catch (e) {
         r1 = 0;
     }
     try {
-        r2 = arg2.toString().split(".")[1].length;
+        r2 = arg2.toString().split('.')[1].length;
     }
     catch (e) {
         r2 = 0;
@@ -344,7 +376,8 @@ export default {
     isNumber,
     mul,
     sub,
-    trimWithChar
+    trimWithChar,
+    add
 };
 
 

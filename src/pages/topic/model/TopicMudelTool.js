@@ -50,7 +50,7 @@ const typeName = {
  * @type {{[p: string]: string, [p: number]: string}}
  */
 const jumpPageParams = {
-    [productTypes.skill]: 'topic/TopicDetailPage',
+    [productTypes.skill]: 'product/ProductDetailPage',
     //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
     [productTypes.down]: 'topic/TopicDetailPage',
     [productTypes.giftPackage]: 'topic/TopicDetailPage',
@@ -89,9 +89,11 @@ function getShowPrice(itemData) {
     }
     let showPrice = itemData.productType === 2
         ?
-        '¥' + itemData[typeName[itemData.productType][itemData.status]]
+        `￥${itemData.promotionMinPrice?itemData.promotionMinPrice:itemData[typeName[itemData.productType][itemData.status]]}`
+        // '¥' +  itemData[typeName[itemData.productType][itemData.status]]
         :
-        '¥' + itemData[typeName[itemData.productType]];
+        `￥${itemData.promotionMinPrice?itemData.promotionMinPrice:itemData[typeName[itemData.productType]]}`
+        // '¥' + itemData[typeName[itemData.productType]];
     return showPrice;
 }
 

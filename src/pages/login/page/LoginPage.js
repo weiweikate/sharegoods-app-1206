@@ -147,7 +147,7 @@ export default class LoginPage extends BasePage {
     weChatLoginClick = () => {
         track(trackEvent.login, { loginMethod: "微信登录用" });
         wxLoginAction((code, data) => {
-            if (code == 10000) {
+            if (code === 10000) {
                 this.params.callback && this.params.callBack();
                 this.$navigateBack(-2);
             } else if (code === 34005) {
@@ -163,7 +163,7 @@ export default class LoginPage extends BasePage {
         if (loginType === 0) {
             track(trackEvent.login, { loginMethod: "验证码登录" });
             codeLoginAction(LoginParam, (data) => {
-                if (data.code == 10000) {
+                if (data.code === 10000) {
                     this.$toastShow("登录成功");
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();
@@ -182,7 +182,7 @@ export default class LoginPage extends BasePage {
         } else {
             track(trackEvent.login, { loginMethod: "密码登录" });
             pwdLoginAction(LoginParam, (data) => {
-                if (data.code == 10000) {
+                if (data.code === 10000) {
                     this.$toastShow("登录成功");
                     this.params.callback && this.params.callback();
                     this.$loadingDismiss();

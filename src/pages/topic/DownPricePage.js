@@ -77,7 +77,6 @@ export default class DownPricePage extends BasePage {
                     this.shareModal && this.shareModal.open();
                 }}
             >
-
                 <Image source={message_three}/>
             </TouchableOpacity>
         );

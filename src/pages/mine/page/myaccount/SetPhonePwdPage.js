@@ -71,16 +71,16 @@ export default class EditPhonePwdPage extends BasePage {
             bridge.$toast('新密码需数字、字母组合');
             return;
         }
-        this.isLoadding == true;
+        this.isLoadding = true;
         MineAPI.SetPhonePwd({
             password: newPwd,
             code: this.params.code,
             phone: user.phone
         }).then((data) => {
             this.$navigateBack(-2);
-            this.isLoadding == false;
+            this.isLoadding = false;
         }).catch((data) => {
-            this.isLoadding == false;
+            this.isLoadding = false;
             bridge.$toast(data.msg);
         });
     };
