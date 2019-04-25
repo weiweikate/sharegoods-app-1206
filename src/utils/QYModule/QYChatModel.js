@@ -8,10 +8,10 @@ const QY_CARD_CLICK = "QY_CARD_CLICK";
 const { JRQYService } = NativeModules;
 const QYManagerEmitter = new NativeEventEmitter(JRQYService);
 
-const CARD_TYPE={
-    PRODUCT_CARD:0,
-    ORDER_CARD:1
-}
+const CARD_TYPE = {
+    PRODUCT_CARD: 0,
+    ORDER_CARD: 1
+};
 
 const platformShopId = "hzmrwlyxgs";
 
@@ -42,6 +42,7 @@ class QYChatModel {
         }
     };
 
+
     /**
      * 供应商聊天数组
      * 里面存储着所有聊天的供应商
@@ -62,13 +63,14 @@ class QYChatModel {
         return this.unreadCount > 0;
     }
 
+    //上次发起客服暂存的商品id
+    preProductUrl = "";
+
 
     constructor() {
         //增加消息监听
         this.listener = QYManagerEmitter.addListener(QY_MSG_CHANGE, this.msgChangeHandle);
-
         this.cardListener = QYManagerEmitter.addListener(QY_CARD_CLICK, this.cardClickHandle);
-
     }
 
     /**
@@ -101,18 +103,18 @@ class QYChatModel {
 
     cardClickHandle = (handleData) => {
         let productUrl = handleData && handleData.linkUrl ? handleData.linkUrl : "";
-        let productSplitArr = productUrl.split("/");
-        let productCode = productSplitArr.length > 0 ? productSplitArr[productSplitArr.length - 1] : "";
-        let card_type =  handleData ?handleData.card_type:"";
-
-        if (parseInt(card_type) === CARD_TYPE.PRODUCT_CARD) {
-            const navigationAction = NavigationActions.navigate({
-                routeName: RouterMap.ProductDetailPage,
-                params:{productCode:productCode}
-            });
-            global.$navigator.dispatch(navigationAction);
+        if (this.preProductUrl !== productUrl) {
+            let productSplitArr = productUrl.split("/");
+            let productCode = productSplitArr.length > 0 ? productSplitArr[productSplitArr.length - 1] : "";
+            let card_type = handleData ? handleData.card_type : "";
+            if (parseInt(card_type) === CARD_TYPE.PRODUCT_CARD) {
+                const navigationAction = NavigationActions.navigate({
+                    routeName: RouterMap.ProductDetailPage,
+                    params: { productCode: productCode }
+                });
+                global.$navigator.dispatch(navigationAction);
+            }
         }
-
     };
 
 }
