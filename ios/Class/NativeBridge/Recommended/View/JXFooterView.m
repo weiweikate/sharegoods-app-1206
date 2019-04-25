@@ -36,7 +36,7 @@
     _titile = [[UILabel alloc]init];
     _titile.font = [UIFont systemFontOfSize:10];
     _titile.textColor = [UIColor grayColor];
-    _titile.text = @"kskkskkskkskkskkskkskkskskskkskskskks";
+    _titile.text = @"kskkskkskkskskk000000000000000s";
   }
   return _titile;
 }
@@ -55,10 +55,7 @@
   if(!_shopCarBtn){
     _shopCarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _shopCarBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-    [_shopCarBtn setImage:[UIImage imageNamed:@"welcome4"] forState:UIControlStateNormal];
-    _shopCarBtn.layer.cornerRadius = 10;
-    _shopCarBtn.layer.borderWidth = 1;
-    _shopCarBtn.layer.masksToBounds = YES;
+    [_shopCarBtn setImage:[UIImage imageNamed:@"welcome1"] forState:UIControlStateNormal];
   }
   return _shopCarBtn;
 }
@@ -67,10 +64,8 @@
   if(!_zanBtn){
     _zanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _zanBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-    [_zanBtn setImage:[UIImage imageNamed:@"welcome4"] forState:UIControlStateNormal];
-    _zanBtn.layer.cornerRadius = 10;
-    _zanBtn.layer.borderWidth = 1;
-    _zanBtn.layer.masksToBounds = YES;
+    [_zanBtn setImage:[UIImage imageNamed:@"welcome2"] forState:UIControlStateNormal];
+    
   }
   return _zanBtn;
 }
@@ -79,10 +74,7 @@
   if(!_downloadBtn){
     _downloadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _downloadBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-    [_downloadBtn setImage:[UIImage imageNamed:@"welcome4"] forState:UIControlStateNormal];
-    _downloadBtn.layer.cornerRadius = 10;
-    _downloadBtn.layer.borderWidth = 1;
-    _downloadBtn.layer.masksToBounds = YES;
+    [_downloadBtn setImage:[UIImage imageNamed:@"welcome3"] forState:UIControlStateNormal];
   }
   return _downloadBtn;
 }
@@ -92,47 +84,47 @@
     _shareBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _shareBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [_shareBtn setImage:[UIImage imageNamed:@"welcome4"] forState:UIControlStateNormal];
-    _shareBtn.layer.cornerRadius = 10;
-    _shareBtn.layer.borderWidth = 1;
-    _shareBtn.layer.masksToBounds = YES;
   }
-  return _zanBtn;
+  return _shareBtn;
 }
+
 -(instancetype)initWithFrame:(CGRect)frame{
   self = [super initWithFrame:frame];
   if (self) {
     [self setUI];
-//    self.backgroundColor = [UIColor greenColor];
+    self.backgroundColor = [UIColor greenColor];
 
   }
   return  self;
 }
 
 -(void)setUI{
-  [self setGoodsView];
+  [self addSubview:self.bgView];
   [self addSubview:self.zanBtn];
   [self addSubview:self.downloadBtn];
   [self addSubview:self.shareBtn];
 
   //商品
   self.bgView.sd_layout.topEqualToView(self)
-  .leftSpaceToView(self, 15)
-  .rightSpaceToView(self, 15)
-  .bottomEqualToView(self);
+  .leftSpaceToView(self, 0)
+  .rightSpaceToView(self, 0)
+  .heightIs(60);
+  self.bgView.backgroundColor = [UIColor yellowColor];
+  [self setGoodsView];
   
   //点赞
-  self.zanBtn.sd_layout.topSpaceToView(self.bgView, 10)
-  .leftSpaceToView(self, 20)
+  self.zanBtn.sd_layout.topSpaceToView(self.bgView,10)
   .widthIs(50).heightIs(50);
   
   //下载
-  self.zanBtn.sd_layout.topSpaceToView(self.bgView, 10)
-  .leftSpaceToView(self.zanBtn, 20)
-  .widthIs(50).heightIs(50);
   
+  self.downloadBtn.sd_layout.centerYEqualToView(self.zanBtn)
+  .leftSpaceToView(self, 100)
+  .widthIs(50).heightIs(50);
+
   //分享/转发
-  self.zanBtn.sd_layout.topSpaceToView(self.bgView, 10)
-  .rightSpaceToView(self, 20)
+  self.shareBtn.sd_layout.centerYEqualToView(self.zanBtn)
+  .rightSpaceToView(self, 0)
   .widthIs(50).heightIs(50);
   
 }
@@ -151,19 +143,18 @@
   //标题
   self.titile.sd_layout.topEqualToView(self.goodsImg)
   .leftSpaceToView(self.goodsImg, 10)
+  .rightSpaceToView(self.bgView, 1)
   .heightIs(20);
-  [_titile setSingleLineAutoResizeWithMaxWidth:200];
   
   //价格
   self.price.sd_layout.bottomEqualToView(self.goodsImg)
   .leftSpaceToView(self.goodsImg, 10)
   .heightIs(20);
-  [_price setSingleLineAutoResizeWithMaxWidth:200];
 
   //购物车
-  self.shopCarBtn.sd_layout.bottomSpaceToView(self.bgView, 10)
-  .rightSpaceToView(self, 20)
-  .widthIs(50).heightIs(50);
+  self.shopCarBtn.sd_layout.bottomSpaceToView(self.bgView, 0)
+  .rightSpaceToView(self.bgView, 20)
+  .widthIs(20).heightIs(20);
 }
 
 

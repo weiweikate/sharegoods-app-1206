@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) UILabel * nameLab;
 @property (nonatomic,strong) UIButton * guanBtn;
 @property (nonatomic,strong) UILabel * timeLab;
+@property (nonatomic,strong) UILabel * contentLab;
 
 @end
 

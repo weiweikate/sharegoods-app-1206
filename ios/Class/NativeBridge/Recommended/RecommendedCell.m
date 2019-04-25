@@ -70,7 +70,7 @@
   .topSpaceToView(self.contentView, 50)
   .leftSpaceToView(self.contentView, 25)
   .rightSpaceToView(self.contentView, 25)
-  .heightIs(30);
+  .heightIs(130);
   
   self.bodyView.sd_layout
   .topSpaceToView(self.headView, 10)
@@ -82,7 +82,7 @@
   .topSpaceToView(self.bodyView, 10)
   .leftSpaceToView(self.contentView, 60)
   .rightSpaceToView(self.contentView, 60)
-  .heightIs(45);
+  .heightIs(130);
 }
 
 -(void)setModel:(JXModel *)model{
