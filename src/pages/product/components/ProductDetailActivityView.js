@@ -18,10 +18,11 @@ const { arrow_right_black } = res.button;
 export class ActivityWillBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, showTimeText } = productDetailModel;
+        const { promotionPrice, showTimeText, singleActivity } = productDetailModel;
+        const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={WillBeginStyles.bgView} onPress={() => {
-                navigate('HtmlPage', {
+                extraProperty === 'toSpike' && navigate('HtmlPage', {
                     uri: `${apiEnvironment.getCurrentH5Url()}/spike`
                 });
             }}>
@@ -34,7 +35,7 @@ export class ActivityWillBeginView extends Component {
                 </View>
                 <View style={WillBeginStyles.rightView}>
                     <MRText style={WillBeginStyles.rightText}>{showTimeText}</MRText>
-                    <Image source={arrow_right_black}/>
+                    {extraProperty === 'toSpike' && <Image source={arrow_right_black}/>}
                 </View>
             </NoMoreClick>
         );
@@ -75,12 +76,13 @@ const WillBeginStyles = StyleSheet.create({
 export class ActivityDidBeginView extends Component {
     render() {
         const { productDetailModel } = this.props;
-        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText } = productDetailModel;
+        const { promotionPrice, originalPrice, promotionSaleNum, promotionStockNum, showTimeText, singleActivity } = productDetailModel;
         let total = math.eval(promotionSaleNum + promotionStockNum);
         let progress = total == 0 ? 0 : math.eval(promotionStockNum / total);
+        const { extraProperty } = singleActivity;
         return (
             <NoMoreClick style={DidBeginViewStyles.bgView} onPress={() => {
-                navigate('HtmlPage', {
+                extraProperty === 'toSpike' && navigate('HtmlPage', {
                     uri: `${apiEnvironment.getCurrentH5Url()}/spike`
                 });
             }}>
@@ -110,7 +112,7 @@ export class ActivityDidBeginView extends Component {
                             </View>
                         </View>
                     </View>
-                    <Image source={arrow_right_black} style={{ marginRight: 13 }}/>
+                    {extraProperty === 'toSpike' && <Image source={arrow_right_black} style={{ marginRight: 13 }}/>}
                 </View>
             </NoMoreClick>
         );
