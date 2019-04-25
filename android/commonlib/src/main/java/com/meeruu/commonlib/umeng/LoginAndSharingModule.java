@@ -796,6 +796,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             shareImageBean.setImageType(null);
         }
 
+        if (map.hasKey("priceType")) {
+            shareImageBean.setPriceType(map.getString("priceType"));
+        } else {
+            shareImageBean.setPriceType(null);
+        }
+
+
         return shareImageBean;
     }
 
