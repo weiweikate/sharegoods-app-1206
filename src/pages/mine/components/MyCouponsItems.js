@@ -403,7 +403,7 @@ export default class MyCouponsItems extends Component {
         if (this.props.fromOrder && status === 0) {
             let arr = [];
             let params = {};
-            if (this.props.orderParam.orderType == 99 || this.props.orderParam.orderType == 98) {
+            if (this.props.orderParam.orderType === 99 || this.props.orderParam.orderType === 98) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -412,7 +412,7 @@ export default class MyCouponsItems extends Component {
                     });
                 });
                 params = { productPriceIds: arr };
-            } else if (this.props.orderParam.orderType == 1 || this.props.orderParam.orderType == 2 || this.props.orderParam.orderType == 3) {
+            } else if (this.props.orderParam.orderType === 1 || this.props.orderParam.orderType === 2 || this.props.orderParam.orderType === 3) {
                 this.props.orderParam.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -503,7 +503,7 @@ export default class MyCouponsItems extends Component {
 
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectTab != this.state.pageStatus) {
+        if (nextProps.selectTab !== this.state.pageStatus) {
             this.onRefresh(couponsModel.params);
         }
     }

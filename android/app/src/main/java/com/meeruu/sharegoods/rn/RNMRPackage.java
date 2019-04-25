@@ -10,6 +10,7 @@ import com.meeruu.sharegoods.rn.kefu.QYChatModule;
 import com.meeruu.sharegoods.rn.loadingview.MRLoadingViewManager;
 import com.meeruu.sharegoods.rn.module.AppPayModule;
 import com.meeruu.sharegoods.rn.module.CommModule;
+import com.meeruu.sharegoods.rn.module.JPushModule;
 import com.meeruu.sharegoods.rn.module.PhoneAuthenModule;
 import com.meeruu.sharegoods.rn.module.QRCodeModule;
 import com.meeruu.sharegoods.rn.popmodal.PopModalManager;
@@ -28,13 +29,14 @@ import java.util.List;
 
 public class RNMRPackage implements ReactPackage {
 
-    public CommModule mModule;
-    public QYChatModule qyChatModule;
-    public AppPayModule appPayModule;
-    public LoginAndSharingModule loginAndSharingModule;
-    public QRCodeModule qrCodeModule;
-    public AnalyticsModule analyticsModule;
-    public PhoneAuthenModule phoneAuthenModule;
+    private CommModule mModule;
+    private QYChatModule qyChatModule;
+    private AppPayModule appPayModule;
+    private LoginAndSharingModule loginAndSharingModule;
+    private QRCodeModule qrCodeModule;
+    private AnalyticsModule analyticsModule;
+    private PhoneAuthenModule phoneAuthenModule;
+    private JPushModule jPushModule;
 
     /**
      * 创建Native Module
@@ -52,6 +54,7 @@ public class RNMRPackage implements ReactPackage {
         qrCodeModule = new QRCodeModule(reactContext);
         analyticsModule = new AnalyticsModule(reactContext);
         phoneAuthenModule = new PhoneAuthenModule(reactContext);
+        jPushModule = new JPushModule(reactContext);
 
         modules.add(mModule);
         modules.add(qyChatModule);
@@ -60,6 +63,7 @@ public class RNMRPackage implements ReactPackage {
         modules.add(qrCodeModule);
         modules.add(analyticsModule);
         modules.add(phoneAuthenModule);
+        modules.add(jPushModule);
 
         return modules;
     }

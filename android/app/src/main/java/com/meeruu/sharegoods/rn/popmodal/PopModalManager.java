@@ -53,19 +53,22 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
 
     @ReactProp(name = "visible")
     public void setVisible(PopModal view, ReadableArray array) {
-        boolean visible = array.getBoolean(0);
-        boolean update = array.getBoolean(1);//目的是强制更新
-        if (visible) {
-            view.showOrUpdate();
-        } else {
-            view.dismiss();
+        if (array != null) {
+            boolean visible = array.getBoolean(0);
+            boolean update = array.getBoolean(1);//目的是强制更新
+            if (visible) {
+                view.showOrUpdate();
+            } else {
+                view.dismiss();
+            }
         }
     }
 
     @ReactProp(name = "focusable")
     public void setFocusable(PopModal view, Boolean focus) {
-       view.setFocus(focus);
+        view.setFocus(focus);
     }
+
     @Override
     public void onActivityCreate(Activity activity) {
     }
@@ -118,7 +121,7 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
                         MapBuilder.of(
                                 "phasedRegistrationNames",
                                 MapBuilder.of(
-                                        "bubbled","onModalDismiss")))
+                                        "bubbled", "onModalDismiss")))
 
                 .build();
     }

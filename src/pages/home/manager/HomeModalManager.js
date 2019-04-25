@@ -105,7 +105,7 @@ class HomeModalManager {
     @action
     closeUpdate(skip) {
         if (skip) {
-            AsyncStorage.setItem('isToUpdate', this.versionData.version);
+            AsyncStorage.setItem('isToUpdate', String(this.versionData.version));
         }
         this.isShowUpdate = false;
         this.versionData = null;
@@ -120,8 +120,8 @@ class HomeModalManager {
 
     @action
     closeMessage() {
-        let currStr = new Date().getTime() + '';
-        AsyncStorage.setItem('lastMessageTime', currStr);
+        let currStr = new Date().getTime();
+        AsyncStorage.setItem('lastMessageTime', String(currStr));
         this.isShowNotice = false;
         this.needShowNotice = false;
         this.noticeData = null;
@@ -141,8 +141,8 @@ class HomeModalManager {
 
     @action
     closeAd() {
-        let currStr = new Date().getTime() + '';
-        AsyncStorage.setItem('home_lastAdTime', currStr);
+        let currStr = new Date().getTime();
+        AsyncStorage.setItem('home_lastAdTime', String(currStr));
         this.isShowAd = false;
         this.needShowAd = false;
         this.AdData = null;
@@ -253,12 +253,11 @@ class HomeModalManager {
         }).catch(() => {
             this.actionFinish();
         });
-        ;
     }
 
     actionFinish() {
         this.finishCount++;
-        if (this.finishCount == requsetCount) {
+        if (this.finishCount === requsetCount) {
             this.checkShowAlert();
         }
     }

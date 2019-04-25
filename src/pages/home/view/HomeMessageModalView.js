@@ -73,7 +73,7 @@ export default class HomeMessageModalView extends React.Component {
         );
     }
 
-    messageRender(item, index) {
+    messageRender = (item, index) => {
         return (
             <View key={'message' + index} onStartShouldSetResponder={() => true}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ showsVerticalScrollIndicator: false }}>
@@ -97,7 +97,7 @@ export default class HomeMessageModalView extends React.Component {
                 </ScrollView>
             </View>
         );
-    }
+    };
 
     render() {
         let dataSource = HomeModalManager.homeMessage || [];
@@ -177,8 +177,7 @@ export class HomeAdModal extends React.Component {
                         <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410) }}
                                    source={{ uri: image }}
                                    resizeMode={'contain'}
-                        >
-                        </ImageLoad>
+                        />
                     </TouchableOpacity>
                     <View style={{ flex: 1 }}>
                         <TouchableOpacity onPress={() => {
