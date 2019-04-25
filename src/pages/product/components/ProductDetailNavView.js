@@ -16,34 +16,37 @@ const { statusBarHeight } = ScreenUtils;
 export default class ProductDetailNavView extends Component {
     render() {
         const { getAllGoodsClassNumber } = ShopCartStore;
-        const { showAction, productDetailModel } = this.props;
+        /*showNavTextT显示文字(优先) showNavText nav渐变时*/
+        const { showAction, productDetailModel, showNavTextT } = this.props;
         const { name, showNavText } = productDetailModel;
         return (
-            <View style={styles.bgView}>
-                <View style={[styles.barItemContainer, { justifyContent: 'flex-start' }]}>
-                    <NoMoreClick style={styles.btnContainer} onPress={() => {
-                        navigateBack();
-                    }}>
-                        <Image source={back}/>
-                    </NoMoreClick>
-                </View>
-                <View style={styles.centerView}>
-                    {showNavText && <MRText style={styles.centerText}
-                                            numberOfLines={1}>{name}</MRText>}
-                </View>
-                <View style={[styles.barItemContainer, { justifyContent: 'flex-end' }]}>
-                    <NoMoreClick style={styles.btnContainer} onPress={() => {
-                        navigate(RouterMap.ShopCart, { hiddeLeft: false });
-                    }}>
-                        <Image source={shopCar}/>
-                        {getAllGoodsClassNumber !== 0 && <View style={styles.amountView}>
-                            <MRText
-                                style={styles.amountText}>{getAllGoodsClassNumber > 99 ? 99 : getAllGoodsClassNumber}</MRText>
-                        </View>}
-                    </NoMoreClick>
-                    <NoMoreClick style={styles.btnContainer} onPress={showAction}>
-                        <Image source={share}/>
-                    </NoMoreClick>
+            <View style={[styles.bgView, showNavTextT && { backgroundColor: 'white' }]}>
+                <View style={styles.containerView}>
+                    <View style={[styles.barItemContainer, { justifyContent: 'flex-start' }]}>
+                        <NoMoreClick style={styles.btnContainer} onPress={() => {
+                            navigateBack();
+                        }}>
+                            <Image source={back}/>
+                        </NoMoreClick>
+                    </View>
+                    <View style={styles.centerView}>
+                        {showNavTextT || showNavText && <MRText style={styles.centerText}
+                                                                numberOfLines={1}>{name}</MRText>}
+                    </View>
+                    <View style={[styles.barItemContainer, { justifyContent: 'flex-end' }]}>
+                        <NoMoreClick style={styles.btnContainer} onPress={() => {
+                            navigate(RouterMap.ShopCart, { hiddeLeft: false });
+                        }}>
+                            <Image source={shopCar}/>
+                            {getAllGoodsClassNumber !== 0 && <View style={styles.amountView}>
+                                <MRText
+                                    style={styles.amountText}>{getAllGoodsClassNumber > 99 ? 99 : getAllGoodsClassNumber}</MRText>
+                            </View>}
+                        </NoMoreClick>
+                        <NoMoreClick style={styles.btnContainer} onPress={showAction}>
+                            <Image source={share}/>
+                        </NoMoreClick>
+                    </View>
                 </View>
             </View>
         );
@@ -53,7 +56,9 @@ export default class ProductDetailNavView extends Component {
 const styles = StyleSheet.create({
     bgView: {
         zIndex: 1025,
-        position: 'absolute', top: 0, left: 0, right: 0,
+        position: 'absolute', top: 0, left: 0, right: 0
+    },
+    containerView: {
         flexDirection: 'row', marginTop: statusBarHeight,
         height: 44
     },
