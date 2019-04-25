@@ -108,7 +108,7 @@ const Styles = StyleSheet.create({
         includeFontPadding: false,
         marginTop: 10,
         color: DesignRule.textColor_mainTitle,
-        height: 29,
+        height: 35,
         fontSize: 12,
         marginLeft: 10
     },
