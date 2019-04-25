@@ -71,13 +71,10 @@ export default class RecommendPage extends BasePage {
     };
 
     $NavBarRenderRightItem = () => {
-        const showShopItem = SpellStatusModel.canCreateStore || SpellStatusModel.storeCode && SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0;
         return <View style={styles.rightBarItemContainer}>
-            {
-                showShopItem ? <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
-                    <Image source={ShopItemLogo}/>
-                </TouchableOpacity> : null
-            }
+            <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
+                <Image source={ShopItemLogo}/>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickSearchItem}>
                 <Image source={SearchItemLogo}/>
             </TouchableOpacity>

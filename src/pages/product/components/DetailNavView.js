@@ -17,7 +17,7 @@ const { detail_back_down, detail_car_down, detail_car_up, detail_more_down } = r
 const { show_detail_back, show_share } = res.button;
 
 /**
- * 商品详情bannerView
+ * 商品详情bannerView(礼包使用中)
  */
 
 @observer

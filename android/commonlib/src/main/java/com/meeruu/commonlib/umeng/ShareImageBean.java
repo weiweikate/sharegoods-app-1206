@@ -9,6 +9,16 @@ public class ShareImageBean {
     public String spell;
     public String imageType;
 
+    public String getPriceType() {
+        return priceType;
+    }
+
+    public void setPriceType(String priceType) {
+        this.priceType = priceType;
+    }
+
+    public String priceType;
+
     public String getImageType() {
         return imageType;
     }
@@ -68,6 +78,6 @@ public class ShareImageBean {
 
     @Override
     public String toString() {
-        return "ShareImageBean{" + "imageUrlStr='" + imageUrlStr + '\'' + ", titleStr='" + titleStr + '\'' + ", priceStr='" + priceStr + '\'' + ", QRCodeStr='" + QRCodeStr + '\'' + ", retail='" + retail + '\'' + ", spell='" + spell + '\'' + ", imageType='" + imageType + '\'' + '}';
+        return "ShareImageBean{" + "imageUrlStr='" + imageUrlStr + '\'' + ", titleStr='" + titleStr + '\'' + ", priceStr='" + priceStr + '\'' + ", QRCodeStr='" + QRCodeStr + '\'' + ", retail='" + retail + '\'' + ", spell='" + spell + '\'' + ", imageType='" + imageType + '\'' + ", priceType='" + priceType + '\'' + '}';
     }
 }

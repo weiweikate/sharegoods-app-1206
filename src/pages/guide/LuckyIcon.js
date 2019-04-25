@@ -44,8 +44,8 @@ export default class LuckyIcon extends React.Component {
     componentDidMount() {
     }
 
-    getLucky = () =>{
-        HomeAPI.getHomeData({type: homeType.float}).then((data) => {
+    getLucky = (showPage,showPageValue) =>{
+        HomeAPI.getHomeData({type: homeType.float,showPage,showPageValue}).then((data) => {
             if (data.data && data.data.length > 0){
                 this.setState({show: true});
                 this.setState({data: data.data[0]})

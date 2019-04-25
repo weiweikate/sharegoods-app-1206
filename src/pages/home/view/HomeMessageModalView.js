@@ -73,7 +73,7 @@ export default class HomeMessageModalView extends React.Component {
         );
     }
 
-    messageRender = (item, index) => {
+    messageRender(item, index) {
         return (
             <View key={'message' + index} onStartShouldSetResponder={() => true}>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ showsVerticalScrollIndicator: false }}>
@@ -97,7 +97,7 @@ export default class HomeMessageModalView extends React.Component {
                 </ScrollView>
             </View>
         );
-    };
+    }
 
     render() {
         let dataSource = HomeModalManager.homeMessage || [];
@@ -139,59 +139,67 @@ export default class HomeMessageModalView extends React.Component {
 }
 
 
-@observer
-export class HomeAdModal extends React.Component {
-    state = {
-        messageIndex: 0
-    };
+function AdViewBindModal(modal) {
+    return (
+    class HomeAdModal extends React.Component {
+        state = {
+            messageIndex: 0
+        };
 
-    constructor(props) {
-        super(props);
-    }
-
-    gotoPage = () => {
-        let data = HomeModalManager.AdData || {};
-        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
-        let params = homeModule.paramsNavigate(data);
-        if (router) {
-            navigate(router, params);
+        constructor(props) {
+            super(props);
         }
-        HomeModalManager.closeAd();
-        //页面跳转
-    };
 
-    render() {
-        let AdData = HomeModalManager.AdData || {};
-        let image = AdData.image || '';
-        return (
-            <CommModal ref={(ref) => {
-                this.messageModal = ref;
-            }}
-                       onRequestClose={() => HomeModalManager.closeAd()}
-                       visible={HomeModalManager.isShowAd && HomeModalManager.isHome}>
-                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
-                    <View style={{ flex: 1 }}/>
-                    <TouchableOpacity onPress={() => {
-                        this.gotoPage();
-                    }}>
-                        <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410) }}
-                                   source={{ uri: image }}
-                                   resizeMode={'contain'}
-                        />
-                    </TouchableOpacity>
-                    <View style={{ flex: 1 }}>
+        gotoPage = () => {
+            let data = modal.AdData || {};
+            const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+            let params = homeModule.paramsNavigate(data);
+            if (router) {
+                navigate(router, params);
+            }
+            modal.closeAd();
+            //页面跳转
+        };
+
+        render() {
+            let AdData = modal.AdData || {};
+            let image = AdData.image || '';
+            return (
+                <CommModal ref={(ref) => {
+                    this.messageModal = ref;
+                }}
+                           onRequestClose={() => modal.closeAd()}
+                           visible={modal.isShowAd && modal.isHome}>
+                    <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
+                        <View style={{ flex: 1 }}/>
                         <TouchableOpacity onPress={() => {
-                            HomeModalManager.closeAd();
-                        }} style={{ marginTop: autoSizeWidth(25) }}>
-                            <Image source={closeImg} style={{ height: autoSizeWidth(24), width: autoSizeWidth(24) }}
-                                   resizeMode={'stretch'}/>
+                            this.gotoPage();
+                        }}>
+                            <ImageLoad style={{ width: autoSizeWidth(310), height: autoSizeWidth(410) }}
+                                       source={{ uri: image }}
+                                       resizeMode={'contain'}
+                            >
+                            </ImageLoad>
                         </TouchableOpacity>
+                        <View style={{ flex: 1 }}>
+                            <TouchableOpacity onPress={() => {
+                                modal.closeAd();
+                            }} style={{ marginTop: autoSizeWidth(25) }}>
+                                <Image source={closeImg} style={{ height: autoSizeWidth(24), width: autoSizeWidth(24) }}
+                                       resizeMode={'stretch'}/>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-            </CommModal>
-        );
-    }
+                </CommModal>
+            );
+        }
+    })
+
 }
+
+let HomeAdModal = observer(AdViewBindModal(HomeModalManager));
+export{HomeAdModal, AdViewBindModal}
+
 
 const styles = StyleSheet.create({
     messageCloseStyle: {

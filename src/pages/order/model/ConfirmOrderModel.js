@@ -8,6 +8,7 @@ import { track, trackEvent } from '../../../utils/SensorsTrack';
 import { Alert } from 'react-native';
 import shopCartCacheTool from "../../shopCart/model/ShopCartCacheTool";
 import { navigateBack } from "../../../navigation/RouterMap";
+import { OrderType } from '../../../utils/EnumUtil';
 
 class ConfirmOrderModel {
     @observable
@@ -52,6 +53,12 @@ class ConfirmOrderModel {
     couponData={}
     @observable
     err=null
+    @observable
+    allProductPrice = 0;
+    @observable
+    promotionAmount
+    @observable
+    couponAmount
 
     @action clearData() {
         this.orderProductList = [];
@@ -74,59 +81,16 @@ class ConfirmOrderModel {
         this.couponCount=0;
         this.couponData={};
         this.err=null;
+        this.allProductPrice = 0;
+        this.couponAmount=0
+        this.promotionAmount='';
     }
 
     @action makeSureProduct(orderParamVO, params = {}) {
         this.orderParamVO = orderParamVO;
         this.err=null;
         switch (orderParamVO.orderType) {
-            case 99://普通商品
-                OrderApi.makeSureOrder({
-                    orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
-                    // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
-                    source: orderParamVO.source,//1.购物车 2.直接下单
-                    sgAppVersion:310,
-                    couponsId: orderParamVO.couponsId,
-                    // source: 4,//1.购物车 2.直接下单,4 周期券
-                    channel: 2,//1.小程序 2.APP 3.H5
-                    orderProductList: orderParamVO.orderProducts,
-                    ...params
-                }).then(response => {
-                    this.handleNetData(response.data);
-                }).catch(err => {
-                    this.disPoseErr(err, orderParamVO, params);
-                });
-                break;
-            case 98:
-                OrderApi.makeSureOrder({
-                    orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
-                    orderSubType: 5,//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包，
-                    source: orderParamVO.source,//1.购物车 2.直接下单
-                    channel: 2,//1.小程序 2.APP 3.H5
-                    orderProductList: orderParamVO.orderProducts,
-                    ...params
-                }).then(response => {
-                    this.handleNetData(response.data);
-                }).catch(err => {
-                    this.disPoseErr(err, orderParamVO, params);
-                });
-                break;
-
-            case 1:
-                OrderApi.SeckillMakeSureOrder({
-                    activityCode: orderParamVO.orderProducts[0].code,
-                    channel: 2,
-                    num: orderParamVO.orderProducts[0].num,
-                    source: 2,
-                    submitType: 1,
-                    ...params
-                }).then(response => {
-                    this.handleNetData(response.data);
-                }).catch(err => {
-                    this.disPoseErr(err, orderParamVO, params);
-                });
-                break;
-            case 2:
+            case OrderType.depreciate_old:// 2.降价拍
                 return OrderApi.DepreciateMakeSureOrder({
                     activityCode: orderParamVO.orderProducts[0].code,
                     channel: 2,
@@ -140,7 +104,7 @@ class ConfirmOrderModel {
                     this.disPoseErr(err, orderParamVO, params);
                 });
                 break;
-            case 3:
+            case OrderType.gift://礼包
                 return OrderApi.PackageMakeSureOrder({
                     activityCode: orderParamVO.activityCode,
                     orderType: 2,//1.普通订单 2.活动订单  -- 下单必传
@@ -159,7 +123,22 @@ class ConfirmOrderModel {
                     this.disPoseErr(err, orderParamVO, params);
                 });
                 break;
-            default:
+            default://其他
+                OrderApi.makeSureOrder({
+                    orderType: 1,//1.普通订单 2.活动订单  -- 下单必传
+                    // orderSubType:  "",//1.秒杀 2.降价拍 3.升级礼包 4.普通礼包
+                    source: orderParamVO.source,//1.购物车 2.直接下单
+                    sgAppVersion:310,
+                    couponsId: orderParamVO.couponsId,
+                    // source: 4,//1.购物车 2.直接下单,4 周期券
+                    channel: 2,//1.小程序 2.APP 3.H5
+                    orderProductList: orderParamVO.orderProducts,
+                    ...params
+                }).then(response => {
+                    this.handleNetData(response.data);
+                }).catch(err => {
+                    this.disPoseErr(err, orderParamVO, params);
+                });
                 break;
 
         }
@@ -199,6 +178,9 @@ class ConfirmOrderModel {
         this.totalFreightFee = data.totalFreightFee ? data.totalFreightFee : 0;
         this.couponList = data.couponList ? data.couponList : null;
         this.couponCount=data.couponCount;
+        this.allProductPrice = data.totalAmount;
+        this.promotionAmount = data.promotionAmount;
+        this.couponAmount = data.couponAmount;
         this.orderProductList.map((item) => {
             if ((item.restrictions & 1) === 1) {
                 this.canUseCou = true;
@@ -207,16 +189,8 @@ class ConfirmOrderModel {
         if (this.canUseCou) {
             let arr = [];
             let params = {};
-            if (this.orderParamVO.orderType === 99 || this.orderParamVO.orderType === 98) {
-                this.orderParamVO.orderProducts.map((item, index) => {
-                    arr.push({
-                        priceCode: item.skuCode,
-                        productCode: item.productCode,
-                        amount: item.quantity || item.num
-                    });
-                });
-                params = { productPriceIds: arr };
-            } else if (this.orderParamVO.orderType === 1 || this.orderParamVO.orderType === 2 || this.orderParamVO.orderType === 3) {
+            //老的降价拍礼包走
+           if ( this.orderParamVO.orderType === OrderType.depreciate_old || this.orderParamVO.orderType === OrderType.gift) {
                 this.orderParamVO.orderProducts.map((item, index) => {
                     arr.push({
                         priceCode: item.skuCode,
@@ -227,8 +201,24 @@ class ConfirmOrderModel {
                 params = {
                     productPriceIds: arr,
                     activityCode: this.orderParamVO.activityCode,
-                    activityType: this.orderParamVO.orderType
+                    activityType: this.orderParamVO.orderType === OrderType.gift ? this.orderParamVO.orderSubType :  this.orderParamVO.orderType
                 };
+            } else{//其他
+                this.orderParamVO.orderProducts.map((item, index) => {
+
+                    let {quantity, num , skuCode, productCode, activityCode, batchNo} = item
+                    let  amount = quantity || num;
+                    arr.push({
+                        priceCode: skuCode,
+                        productCode: productCode,
+                        amount: amount,
+                        activityCode: activityCode,
+                        batchNo
+                    });
+                });
+
+                params = { productPriceIds: arr };
+                //orderType1：秒杀，2：降价拍，3（，orderSubType 3升级礼包 4普通礼包）
             }
             API.listAvailable({ page: 1, pageSize: 20, ...params }).then(resp => {
                 let data = resp.data || {};
@@ -260,85 +250,7 @@ class ConfirmOrderModel {
             addressId: this.addressId,
         };
         switch (orderParamVO.orderType) {
-            case 99:
-                let paramsnor = {
-                    ...baseParams,
-                    orderProductList: orderParamVO.orderProducts,
-                    // orderType: this.state.orderParam.orderType,
-                    orderType: 1,
-                    source:  orderParamVO.source,
-                    channel: 2,
-                    sgAppVersion:310,
-                    couponsId: orderParamVO.couponsId,
-                };
-                OrderApi.submitOrder(paramsnor).then((response) => {
-                    bridge.hiddenLoading();
-                    let data = response.data;
-                    this.canCommit = true;
-                    shopCartCacheTool.getShopCartGoodsListData();
-                    callback(data);
-                    shopCartCacheTool.getShopCartGoodsListData();
-                    track(trackEvent.submitOrder, {
-                        orderId: data.orderNo,
-                        orderSubmitPage:orderParamVO.source===1?11:1
-                    });
-                }).catch(err => {
-                    this.canCommit = true;
-                    bridge.hiddenLoading();
-                    bridge.$toast(err.msg);
-                });
-                break;
-            case 98:
-                let paramsnor2 = {
-                    ...baseParams,
-                    orderProductList: orderParamVO.orderProducts,
-                    orderSubType: 5,
-                    orderType: 2,
-                    source: orderParamVO.source,
-                    channel: 2
-                };
-                OrderApi.submitOrder(paramsnor2).then((response) => {
-                    bridge.hiddenLoading();
-                    let data = response.data;
-                    this.canCommit = true;
-                    callback(data);
-                    shopCartCacheTool.getShopCartGoodsListData();
-                    track(trackEvent.submitOrder, {
-                        orderId: data.orderNo,
-                        orderSubmitPage: orderParamVO.source === 1 ? 11 : 1
-                    });
-                }).catch(err => {
-                    this.canCommit = true;
-                    bridge.hiddenLoading();
-                    bridge.$toast(err.msg);
-                });
-                break;
-            case 1:
-                let needParams = {
-                    ...baseParams,
-                    activityCode: orderParamVO.orderProducts[0].code,
-                    channel: 2,
-                    num: orderParamVO.orderProducts[0].num,
-                    source: 2,
-                    submitType: 2
-                };
-                OrderApi.SeckillSubmitOrder(needParams).then((response) => {
-                    bridge.hiddenLoading();
-                    let data = response.data;
-                    this.canCommit = true;
-                    callback(data);
-                    shopCartCacheTool.getShopCartGoodsListData();
-                    track(trackEvent.submitOrder, {
-                        orderId: data.orderNo,
-                        orderSubmitPage: 1,
-                    });
-                }).catch(err => {
-                    this.canCommit = true;
-                    bridge.hiddenLoading();
-                    bridge.$toast(err.msg);
-                });
-                break;
-            case 2:
+            case OrderType.depreciate_old:
                 let needParams2 = {
                     ...baseParams,
                     activityCode: orderParamVO.orderProducts[0].code,
@@ -363,7 +275,7 @@ class ConfirmOrderModel {
                     bridge.$toast(err.msg);
                 });
                 break;
-            case 3:
+            case OrderType.gift:
                 let params = {
                     ...baseParams,
                     activityCode: orderParamVO.activityCode,
@@ -391,8 +303,35 @@ class ConfirmOrderModel {
                     bridge.$toast(err.msg);
                 });
                 break;
-            default:
+            default://其他走正常下单接口
+                let paramsnor = {
+                    ...baseParams,
+                    orderProductList: orderParamVO.orderProducts,
+                    // orderType: this.state.orderParam.orderType,
+                    orderType: 1,
+                    source:  orderParamVO.source,
+                    channel: 2,
+                    sgAppVersion:310,
+                    couponsId: orderParamVO.couponsId,
+                };
+                OrderApi.submitOrder(paramsnor).then((response) => {
+                    bridge.hiddenLoading();
+                    let data = response.data;
+                    this.canCommit = true;
+                    shopCartCacheTool.getShopCartGoodsListData();
+                    callback(data);
+                    shopCartCacheTool.getShopCartGoodsListData();
+                    track(trackEvent.submitOrder, {
+                        orderId: data.orderNo,
+                        orderSubmitPage:orderParamVO.source==1?11:1
+                    });
+                }).catch(err => {
+                    this.canCommit = true;
+                    bridge.hiddenLoading();
+                    bridge.$toast(err.msg);
+                });
                 break;
+
         }
     }
 }

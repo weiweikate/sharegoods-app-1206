@@ -46,7 +46,8 @@ const detailData = {
     18: { title: '秀购惩罚', icon: res.cashAccount.chengFa_icon },
     19: { title: '抽奖奖励', icon: res.cashAccount.zengsong_icon },
     30: { title: '30天未登录扣除', icon: res.cashAccount.jinggao_icon },
-    31: { title: '周交易额未达标扣除', icon: res.cashAccount.jinggao_icon }
+    31: { title: '周交易额未达标扣除', icon: res.cashAccount.jinggao_icon },
+    32: { title: '邀请有礼奖励', icon: res.myData.icon_invite },
 };
 export default class ExpDetailPage extends BasePage {
     constructor(props) {
@@ -267,10 +268,10 @@ export default class ExpDetailPage extends BasePage {
             let data = response.data;
             data.data.map((item, index) => {
                 arrData.push({
-                    type: detailData[parseInt(item.sourceCode)] && detailData[parseInt(item.sourceCode)].title,
+                    type: detailData[item.sourceCode] && detailData[item.sourceCode].title,
                     time: item.createTime,
                     capital: `${parseInt(item.sourceType) === 1 ? '+' : '-'}${item.experience}`,
-                    iconImage: detailData[parseInt(item.sourceCode)].icon,
+                    iconImage: detailData[item.sourceCode].icon,
                     capitalRed: parseInt(item.sourceType) === 1
 
                 });
