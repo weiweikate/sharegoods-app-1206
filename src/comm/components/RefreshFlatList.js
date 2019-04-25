@@ -89,6 +89,7 @@ export default class RefreshFlatList extends React.Component {
         };
         this.page = props.defaultPage;
         this.allLoadCompleted = false;
+        console.log(111111111)
     }
 
     _bind() {

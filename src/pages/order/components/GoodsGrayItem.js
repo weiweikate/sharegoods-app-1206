@@ -15,11 +15,12 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    TouchableWithoutFeedback, Text
+    TouchableWithoutFeedback
 } from "react-native";
 
 import {
-    UIText
+    UIText,
+    MRText as Text
 } from "../../../components/ui";
 import UIImage from "@mr/image-placeholder";
 import DesignRule from "../../../constants/DesignRule";
@@ -33,24 +34,80 @@ export default class GoodsGrayItem extends React.Component {
     }
 
 
+    _renderTips(tips){
+        if (tips&&tips.length>0 ) {
+            return(
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 4, marginBottom: 10}}>
+                    {
+                        tips.map((item) => {
+                            return(
+                                <Text style={{
+                                    fontSize: 10,
+                                    marginRight: 6,
+                                    paddingHorizontal: 3,
+                                    paddingVertical: 3,
+                                    color: DesignRule.mainColor,
+                                    marginVertical: 2.5,
+                                    backgroundColor: 'rgba(255,0,80,0.1)'
+                                }}>
+                                    {item}
+                                </Text>
+                            )
+                        })
+                    }
+                </View>
+            )
+        }
+
+        return null;
+    }
+
     render() {
-        let { uri, goodsName, salePrice, category, goodsNum, onPress, activityCodes } = this.props;
-        let types = activityCodes && activityCodes[0].orderType || 0;
-        const datas = ["", "秒杀", "降价拍", "升级礼包", "普通礼包", "经验专区"];
+        let { uri, goodsName, salePrice, category, goodsNum, onPress,activityCodes} = this.props;
+
+         const datas = [ "秒杀", "降价拍", "升级礼包", "普通礼包", "经验专区"];
+        // MIAO_SHA(10, "新秒杀"),
+        //     TAO_CAN(20, "套餐"),
+        //     ZHI_JIANG(30, "直降"),
+        //     MAN_JIAN(40, "满减"),
+        //     MAN_ZHE(50, "满折"),
+        let tips = [];
+        if (activityCodes){
+            activityCodes.forEach((item)=> {
+                let types = item && item.orderType || 0;
+                if (0<types && types<6) {
+                    tips.push(datas[types-1]);
+                }
+                if (types === 10){
+                    tips.push('秒杀');
+                }
+                if (types === 20){
+                    tips.push('套餐');
+                }
+                if (types === 30){
+                    tips.push('直降');
+                }
+                if (types === 40){
+                    tips.push('满减');
+                }
+                if (types === 50){
+                    tips.push('满折');
+                }
+
+            })
+        }
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={[styles.container, this.props.style]}>
                     <UIImage source={{ uri: uri }} style={styles.image}/>
-                    <View style={{ marginHorizontal: 10, flex: 1, height: 100 }}>
+                    <View style={{ marginHorizontal: 10, flex: 1, minHeight: 100 }}>
                         <View style={{ flexDirection: "row", marginTop: 5 }}>
-                            <View style={{ flex: 1, flexDirection: "row", marginRight: 10, alignItems: "center" }}>
-                                <Text numberOfLines={2}> <Text style={{
-                                    fontSize: 12, color: DesignRule.mainColor, borderColor: DesignRule.mainColor,
-                                    borderWidth: 1, padding: 1 ,
-                                }}>{types>0?`[${datas[types]}]`:''}</Text>
-                                    <Text style={[styles.title]}>{goodsName}</Text></Text>
+                            <View style={{ flex: 1, flexDirection: "row", marginRight: 10}}>
+                                <Text numberOfLines={2}>
+                                    <Text style={[styles.title]}>{goodsName}</Text>
+                                </Text>
                             </View>
-                            <UIText value={salePrice} style={[styles.title, { marginRight: 4, marginTop: 12 }]}/>
+                            <UIText value={salePrice} style={[styles.title, { marginRight: 4, marginTop: 0 }]}/>
                         </View>
                         <View style={{ marginTop: 10, marginRight: 5, flexDirection: "row" }}>
                             <View style={{ flex: 1, flexDirection: "row", marginRight: 10, alignItems: "center" }}>
@@ -59,6 +116,7 @@ export default class GoodsGrayItem extends React.Component {
                             </View>
                             <UIText value={"x" + goodsNum} style={styles.detail}/>
                         </View>
+                        {this._renderTips(tips)}
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -68,23 +126,23 @@ export default class GoodsGrayItem extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 100,
+        minHeight: 100,
         backgroundColor: DesignRule.bgColor,
         flexDirection: "row",
-        alignItems: "center"
+        paddingTop: 10,
     },
     image: {
         height: 80,
         width: 80,
-        marginLeft: 15
+        marginLeft: 15,
     },
     title: {
         marginTop: 10,
-        fontSize: 13,
+        fontSize: 15,
         color: DesignRule.textColor_mainTitle
     },
     detail: {
-        fontSize: 13,
+        fontSize: 10,
         color: DesignRule.textColor_instruction,
         textAlign: "right"
     }

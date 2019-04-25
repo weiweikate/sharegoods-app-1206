@@ -11,6 +11,7 @@
 @property(nonatomic, copy)NSString * imageType;// product\web
 @property(nonatomic, copy)NSString * imageUrlStr;
 @property(nonatomic, copy)NSString * titleStr;
+@property(nonatomic, copy)NSString * priceType;
 @property(nonatomic, copy)NSString * priceStr;
 @property(nonatomic, copy)NSString * retailPrice;
 @property(nonatomic, copy)NSString * spellPrice;

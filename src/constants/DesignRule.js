@@ -17,6 +17,9 @@ const colors = {
         mainColor: '#F00050',//主色调
         white: 'white',
         bgColor: '#F7F7F7',//背景色
+        bgColor_light_yellow: '#FEF2DD',//浅黄色背景
+        bgColor_yellow: '#FFE89E',//黄色背景
+        bgColor_green: '#02B94D',//绿色背景
         bgColor_btn: '#F00050',//红色按钮背景色
         bgColor_btnSelect: '#EF154C',//红色按钮选中状态背景色
         bgColor_LVLabel: '#F2D3A2',//等级标签背景色
@@ -28,7 +31,7 @@ const colors = {
         bgColor_redHeader: '#FF5781',//头像红色背景
         lineColor_inColorBg: '#EEEEEE',//在有色背景的线的颜色
         lineColor_inWhiteBg: '#E4E4E4',//在白色背景的线的颜色
-        lineColor_inGrayBg: '#D9D9D9',//在灰色背景的线的颜色
+        lineColor_inGrayBg: '#D4D4D4',//在灰色背景的线的颜色
         textColor_1f2d3d: '#1F2D3D',
         textColor_mainTitle: '#333333',//主标题
         textColor_mainTitle_222:'#222222',//?黑色的字
@@ -36,6 +39,7 @@ const colors = {
         textColor_instruction: '#999999',//说明文字
         textColor_placeholder: '#CCCCCC',//预填文字
         textColor_white: 'white',//白色文字
+        textColor_green: '#02B94D',//绿色字体
         textColor_redWarn: '#F00050',//红色警告、提示文字
         textColor_blueURL: '#38ADFF',//文字链接
         textColor_btnText: '#F00050',//按钮红色文字

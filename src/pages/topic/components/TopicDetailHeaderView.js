@@ -168,7 +168,8 @@ export default class TopicDetailHeaderView extends Component {
                     </Text>
                     {activityType !== 3 ? <Image source={arrow_right}/> : null}
                 </NoMoreClick>
-                {activityType === 3 ? null : <DetailHeaderScoreView pData={data} navigation={navigation}/>}
+                {activityType === 3 ? null :
+                    <DetailHeaderScoreView style={{ marginBottom: 10 }} pData={data} navigation={navigation}/>}
             </View>
         );
     }

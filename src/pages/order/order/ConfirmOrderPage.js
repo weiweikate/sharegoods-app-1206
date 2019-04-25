@@ -17,6 +17,8 @@ import ConfirmPriceView from '../components/confirmOrder/ConfirmPriceView';
 import ConfirmBottomView from '../components/confirmOrder/ConfirmBottomView';
 // import { renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { track, trackEvent } from '../../../utils/SensorsTrack';
+import SelectOneTicketModel from '../components/confirmOrder/SelectOneTicketModel';
+import SelectTicketModel from '../components/confirmOrder/SelectTicketModel';
 
 @observer
 export default class ConfirmOrderPage extends BasePage {
@@ -53,6 +55,8 @@ export default class ConfirmOrderPage extends BasePage {
                     renderItem={this._renderItem}
                 />
                 <ConfirmBottomView commitOrder={() => this.commitOrder()}/>
+                <SelectOneTicketModel ref={(ref)=>{this.oneTicketModel = ref}}/>
+                <SelectTicketModel ref={(ref)=>{this.ticketModel = ref}} />
             </View>
         );
     };
@@ -148,59 +152,68 @@ export default class ConfirmOrderPage extends BasePage {
     // 选择优惠券
     jumpToCouponsPage = (params) => {
         if (params === 'justOne') {//一元券
-            this.$navigate('mine/coupons/CouponsPage', {
-                justOne: (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) : 1,
-                callBack: (data) => {
-                    if (parseInt(data) >= 0) {
-                        let params = {
-                            tokenCoin: parseInt(data) > 0 && parseInt(data) <= (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? parseInt(data) : 0,
-                            userCouponCode: confirmOrderModel.userCouponCode,
-                            addressId: confirmOrderModel.addressId
-                        };
-                        confirmOrderModel.tokenCoin = parseInt(data) > 0 && parseInt(data) <= (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? parseInt(data) : 0,
-                            confirmOrderModel.tokenCoinText = parseInt(data) > 0 && (parseInt(confirmOrderModel.payAmount) + parseInt(confirmOrderModel.tokenCoin)) ? '-¥' + parseInt(data) : '选择使用1元券';
-                        setTimeout(() => {
-                            this.loadPageData(params);
-                        }, 0);
-                    }
+            let payAmount = parseInt(confirmOrderModel.payAmount); //要实付钱
+            let tokenCoin =  parseInt(confirmOrderModel.tokenCoin);//一元优惠的券
+            let orderAmount = payAmount + tokenCoin;
+            if (orderAmount < 1){//订单总价格要大于1
+                this.$toastShow('订单价格大于1元才可使用一元优惠');
+                return;
+            }
+            //打开一券选择框
+            this.oneTicketModel && this.oneTicketModel.open(orderAmount, (data) => {
+                //选择完以后回调
+                data = parseInt(data);
+                if (data >= 0) {
+                    let params = {
+                        tokenCoin: data,
+                        userCouponCode: confirmOrderModel.userCouponCode,
+                        addressId: confirmOrderModel.addressId
+                    };
+                    confirmOrderModel.tokenCoin = data;
+                    confirmOrderModel.tokenCoinText = data !== 0 ? '-¥' + data : '选择使用1元券';
+                    setTimeout(() => {
+                        this.loadPageData(params);
+                    }, 0);
                 }
-            });
+            })
         } else {
             track(trackEvent.ViewCoupon,{couponModuleSource:3});
-            this.$navigate('mine/coupons/CouponsPage', {
-                fromOrder: 1,
-                orderParam: confirmOrderModel.orderParamVO, callBack: (data) => {
-                    console.log('CouponsPage', data);
-                    confirmOrderModel.couponData=data;
-                    if (data && data.id) {
-                        let params = {
-                            userCouponCode: data.code,
-                            tokenCoin: 0,
+            this.ticketModel && this.ticketModel.open(confirmOrderModel.orderParamVO, (data) => {
+                console.log('CouponsPage', data);
+                confirmOrderModel.couponData=data;
+                if (data && data.id) {
+                    let params = {
+                        userCouponCode: data.code,
+                        tokenCoin: 0,
+                        addressId: confirmOrderModel.addressId
+                    };
+                    confirmOrderModel.userCouponCode = data.code;
+                    confirmOrderModel.couponName = data.name;
+                    confirmOrderModel.tokenCoin = 0;
+                    confirmOrderModel.tokenCoinText = '选择使用1元券';
+                    setTimeout(() => {
+                        this.loadPageData(params);
+                    }, 0);
+                } else if (data === 'giveUp') {
+                    confirmOrderModel.giveUpCou= true;
+                    confirmOrderModel.userCouponCode = null;
+                    confirmOrderModel.couponName = null;
+                    // confirmOrderModel.tokenCoin = 0;
+                    // confirmOrderModel.tokenCoinText = '选择使用1元券';
+                    setTimeout(() => {
+                        this.loadPageData({
+                            userCouponCode: null,
+                            tokenCoin: confirmOrderModel.tokenCoin ,
                             addressId: confirmOrderModel.addressId
-                        };
-                        confirmOrderModel.userCouponCode = data.code;
-                        confirmOrderModel.couponName = data.name;
-                        confirmOrderModel.tokenCoin = 0;
-                        confirmOrderModel.tokenCoinText = '选择使用1元券';
-                        setTimeout(() => {
-                            this.loadPageData(params);
-                        }, 0);
-                    } else if (data === 'giveUp') {
-                        confirmOrderModel.giveUpCou= true;
-                        confirmOrderModel.userCouponCode = null;
-                        confirmOrderModel.couponName = null;
-                        confirmOrderModel.tokenCoin = 0;
-                        confirmOrderModel.tokenCoinText = '选择使用1元券';
-                        setTimeout(() => {
-                            this.loadPageData({
-                                userCouponCode: null,
-                                tokenCoin: 0,
-                                addressId: confirmOrderModel.addressId
-                            });
-                        }, 0);
-                    }
+                        });
+                    }, 0);
                 }
             });
+            return;
+            // this.$navigate('mine/coupons/CouponsPage', {
+            //     fromOrder: 1,
+            //     orderParam: confirmOrderModel.orderParamVO, callBack:
+            // });
         }
     };
 }

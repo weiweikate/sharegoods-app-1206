@@ -15,6 +15,9 @@ import Modal from '../../comm/components/CommModal';
 import DesignRule from '../../constants/DesignRule';
 import { MRText as Text } from '../../components/ui/index';
 
+export const sourceType = {
+    promotion: 'promotion'
+};
 export default class SelectionPage extends Component {
 
     constructor(props) {
@@ -31,8 +34,11 @@ export default class SelectionPage extends Component {
             selectStrList: [],//选择的名称值
             selectSpecList: [],//选择规格所对应的所有库存,
             maxStock: 0,//最大库存
+            promotionLimit: 0,//没值不限购
 
-            amount: 1
+            amount: 1,
+            source_Type: null,
+            unShowAmount: false
         };
     }
 
@@ -44,7 +50,11 @@ export default class SelectionPage extends Component {
             this.state.selectSpecList = [];
             this.state.maxStock = 0;
         }
-        const { specifyList, skuList } = data;
+        const { specifyList, skuList, promotionLimitNum } = data;
+        this.state.source_Type = propData.sourceType;
+        this.state.unShowAmount = propData.unShowAmount;
+        this.state.promotionLimit = promotionLimitNum || 0;
+
         let specMapTemp = JSON.parse(JSON.stringify(specifyList || []));
         let priceListTemp = JSON.parse(JSON.stringify(skuList || []));
 
@@ -66,7 +76,7 @@ export default class SelectionPage extends Component {
             propData: propData,
             specMap: specMapTemp,
             priceList: priceListTemp,
-            tittleList: tittleList,
+            tittleList: tittleList
         }, () => {
             this._indexCanSelectedItems();
 
@@ -105,7 +115,8 @@ export default class SelectionPage extends Component {
                 //tempArr[index] 每行符合的数据
                 tempArr[index].forEach((item1) => {
                     //库存中有&&剩余数量不为0
-                    if (item1.propertyValues.indexOf(`@${item.specValue}@`) !== -1 && item1.sellStock !== 0) {
+                    let sellStock = this.state.source_Type === sourceType.promotion ? item1.promotionStockNum : item1.sellStock;
+                    if (item1.propertyValues.indexOf(`@${item.specValue}@`) !== -1 && StringUtils.isNoEmpty(sellStock) && sellStock !== 0) {
                         //如果是退换货多一次判断
                         if (type === 'after') {
                             if (afterPrice >= item1.price || productPriceId === item1.id) {
@@ -216,7 +227,6 @@ export default class SelectionPage extends Component {
         priceList.forEach((item) => {
             if (item.propertyValues === itemValues) {
                 itemData = item;
-                return;
             }
         });
         if (!itemData) {
@@ -254,17 +264,21 @@ export default class SelectionPage extends Component {
                     </TouchableWithoutFeedback>
                     <View style={{ flex: 1 }}>
                         <SelectionHeaderView product={this.state.data}
+                                             sourceType={this.state.source_Type}
                                              selectStrList={this.state.selectStrList}
                                              selectSpecList={this.state.selectSpecList}
                                              closeSelectionPage={() => this.setState({ modalVisible: false })}/>
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
+                                {!this.state.unShowAmount &&
                                 <SelectionAmountView style={{ marginVertical: 30 }}
-                                                     amount = {this.state.amount}
+                                                     amount={this.state.amount}
                                                      amountClickAction={this._amountClickAction}
-                                                     maxCount={this.state.maxStock} afterAmount={afterAmount}
-                                                     type={type}/>
+                                                     maxCount={this.state.maxStock}
+                                                     afterAmount={afterAmount}
+                                                     promotionLimit={this.state.promotionLimit}
+                                                     type={type}/>}
                             </ScrollView>
                             <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
                                 <View style={{
