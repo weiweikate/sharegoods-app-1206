@@ -226,11 +226,10 @@ class XpDetailModel {
             code: this.selectedSpuCode
         }).then((data) => {
             this.saveProductData(data.data);
+            this.requestShopInfo((data.data || {}).supplierCode);
         }).catch((error) => {
             this.productError(error);
         });
-
-        this.requestShopInfo();
     };
 
     /**消息数量**/
@@ -244,8 +243,8 @@ class XpDetailModel {
         });
     };
 
-    requestShopInfo = () => {
-        ProductApi.getProductShopInfoBySupplierCode({ supplierCode: this.selectedSpuCode }).then((data) => {
+    requestShopInfo = (code) => {
+        ProductApi.getProductShopInfoBySupplierCode({ supplierCode: code }).then((data) => {
             this.shopInfoSuccess(data.data);
         });
     };

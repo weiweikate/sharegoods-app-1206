@@ -47,10 +47,12 @@ import { track, trackEvent } from '../../utils/SensorsTrack';
 import DetailHeaderServiceModal from '../product/components/DetailHeaderServiceModal';
 import ProductApi from '../product/api/ProductApi';
 import { beginChatType, QYChatTool } from '../../utils/QYModule/QYChatTool';
+import { SmoothPushPreLoadHighComponent } from '../../comm/components/SmoothPushHighComponent';
 
 /*
 * 仅有礼包了  2019.4.25
 * */
+@SmoothPushPreLoadHighComponent
 export default class TopicDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -95,6 +97,17 @@ export default class TopicDetailPage extends BasePage {
 
     componentDidMount() {
         // this.getPromotion();
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { state } = payload;
+                console.log('didFocus', state);
+                if (state && state.routeName === 'topic/TopicDetailPage') {
+                    this._getActivityData();
+                    this._getMessageCount();
+                }
+            }
+        );
     }
 
     // getPromotion = async () => {
@@ -118,20 +131,6 @@ export default class TopicDetailPage extends BasePage {
     //     } catch (error) {
     //     }
     // };
-
-    componentWillMount() {
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('willFocus', state);
-                if (state && state.routeName === 'topic/TopicDetailPage') {
-                    this._getActivityData();
-                    this._getMessageCount();
-                }
-            }
-        );
-    }
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();

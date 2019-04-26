@@ -29,7 +29,6 @@ import BottomMenu from "../components/BottomMenu";
 const { px2dp } = ScreenUtils;
 
 
-
 @observer
 export default class ShopCartPage extends BasePage {
     $navigationBarOptions = {
@@ -159,7 +158,7 @@ export default class ShopCartPage extends BasePage {
                     rowMap[data.item.key].closeRow();
                     this._deleteFromShoppingCartByProductId(data);
                 }}>
-                <View style={[styles.hideBgView,{marginTop:data.item.topSpace}]}>
+                <View style={[styles.hideBgView, { marginTop: data.item.topSpace }]}>
                     <View style={styles.hideTextBgView}>
                         <UIText style={styles.backUITextWhite} value='删除'/>
                     </View>
@@ -226,13 +225,13 @@ export default class ShopCartPage extends BasePage {
 const shopCartListWidth = ScreenUtils.width - px2dp(30);
 
 const styles = StyleSheet.create({
-    listBgContent:{
+    listBgContent: {
         justifyContent: "center",
         alignItems: "center",
-        flex: 1,
+        flex: 1
         // backgroundColor:'green'
     },
-    swipeListView:{ width: shopCartListWidth },
+    swipeListView: { width: shopCartListWidth },
     standaloneRowBack: {
         alignItems: "center",
         flex: 1,
@@ -243,14 +242,14 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: px2dp(17)
     },
-    hideBgView:{
+    hideBgView: {
         backgroundColor: "white",
         height: px2dp(145),
         width: shopCartListWidth,
         justifyContent: "center",
-        alignItems: "flex-end",
+        alignItems: "flex-end"
     },
-    hideTextBgView:{
+    hideTextBgView: {
         width: px2dp(75),
         justifyContent: "center",
         alignItems: "center",

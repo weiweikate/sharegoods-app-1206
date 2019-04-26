@@ -218,7 +218,7 @@ export default class MyCollectPage extends BasePage {
         }
 
     }
-    componentWillMount() {
+    componentDidMount() {
         this.willBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
